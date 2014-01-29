@@ -1,0 +1,3 @@
+package rina;
+
+@license(LGPL);
