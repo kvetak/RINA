@@ -14,6 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/*
+ * @file EFCP.h
+ * @author Marcel Marek
+ * @date Apr 28, 2014
+ * @brief
+ * @detail
+ */
 
 #ifndef EFCP_H_
 #define EFCP_H_
@@ -23,6 +30,7 @@
  */
 
 #include "DTP.h"
+
 class EFCP {
 private:
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
@@ -38,13 +46,11 @@ private:
 
     int initCredit; /*!<an Integer added to the initial sequence number to get right window edge.*/
     int seqNumRollOverThresh; /*!<Integer. When the sequence number is increasing beyond this value, the sequence number space is close to rolling over, a new
-    connection should be instantiated and bound to the same port-ids, so that new PDUs can
-    be sent on the new connection.*/
+                                    connection should be instantiated and bound to the same port-ids, so that new PDUs can
+                                    be sent on the new connection.*/
     int initATimer; /*!<an integer assigned per flow that indicates the maximum time that a
-receiver will wait before sending an Ack. Some DIFs may wish to set a maximum value
-for the DIF. */
-    int initSenderInactivTimer;/*!<an Integer that should be approximately 2Δt. This
-must be bounded. A DIF specification may want to specify a maximum value. */
+                        receiver will wait before sending an Ack. Some DIFs may wish to set a maximum value for the DIF. */
+    int initSenderInactivTimer;/*!<an Integer that should be approximately 2Δt. This must be bounded. A DIF specification may want to specify a maximum value. */
 
     int initRcvrInactivTimer; /*!<an Integer that should be approximately 3Δt. This must be bounded. A DIF specification may want to specify a maximum value.*/
     int sendBytesFree; //The number of bytes that this flow can assume it currently has available for Writes
@@ -54,18 +60,14 @@ must be bounded. A DIF specification may want to specify a maximum value. */
     int sendBuffFree; //The number of buffers of MaxSDU size that this flow can assume it currently has available for Writes.
     int sendBuffPercentFree; //The percent of buffers of MaxSDU size that are free for Writes.
     int sendBuffThresh; //The number of free buffers below which flow control should slow or block the user from doing any more Writes.
-
-
-
-
-
+    int sendBuffPercentThresh; //The percent of free buffers below which flow control should not advance or decreases the amount the Right Window Edge is moved.
 
 
 
 
     DTP dtp; //required part of the EFCP
-    DTStateVector dtStateV; //data-transfer state vector
-    DTCP* dtcp; //optional part of the EFCP
+//    DTStateVector dtStateV; //data-transfer state vector
+//    DTCP* dtcp; //optional part of the EFCP
 
     int portId; //FAI-identifier
 

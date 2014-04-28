@@ -1,0 +1,77 @@
+//
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
+
+cplusplus {{
+#include "APN.h"
+}}
+class noncobject APN;
+
+cplusplus {{
+#include "ConnectionId.h"
+}}
+class noncobject ConnectionId;
+
+//cplusplus {{
+//   #include "cobject.h"
+//}}
+//
+//class noncobject cObject;
+
+
+
+enum PDU_type{
+    	EFCP_PDU = 0x8000;
+    	DATA_TRANSFER_PDU = 0x8001;
+        ACK_ONLY_PDU= 0x8804;
+        NACK_ONLY_PDU = 0x8805;
+        SELECT_ACK_PDU = 0x8806;
+        SELECT_NACK_PDU = 0x8807;
+        FLOW_PDU = 0x8808;
+        ACK_FLOW_PDU = 0x880C;
+        NACK_FLOW_PDU = 0x880D;
+        SELECT_ACK_FLOW_PDU = 0x880E;
+        SELECT_NACK_FLOW_PDU = 0x880F;
+        
+        
+        
+}
+//TODO A1
+enum FLAGS{
+}
+
+//cplusplus {{
+//#include <map>
+//typedef OtherType std::map<int,int>;
+//}}
+
+class noncobject OtherType;
+
+//
+// TODO generated message class
+//
+class PDU {
+    int version;
+    APN destAddr;
+    APN srcAddr;
+    ConnectionId connId;
+    int type;
+    int flags; //8bits
+    int pduLen;
+    int seqNum;
+    cObject userData;
+    
+}

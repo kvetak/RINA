@@ -15,14 +15,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "EFCP.h"
+#include "APN.h"
 
-EFCP::EFCP() {
+APN::APN() {
     // TODO Auto-generated constructor stub
 
 }
 
-EFCP::~EFCP() {
+APN::~APN() {
     // TODO Auto-generated destructor stub
 }
 

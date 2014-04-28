@@ -15,9 +15,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/*
+ * @file QoSCube.h
+ * @author Marcel Marek
+ * @date Apr 28, 2014
+ * @brief
+ * @detail
+ */
+
 #ifndef QOSCUBE_H_
 #define QOSCUBE_H_
 
+#include "Policy.h"
+#include <vector>
 /*
  *
  */
@@ -37,6 +47,14 @@ private:
     int maxAllowGap; //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
     int delay; //Delay in secs
     int jitter; //Jitter in secs2
+
+    int qoSId;
+    std::vector<Policy*> policyList;
+    //Policy-Default-Parameters: List;
+    bool order; /*True if SDUs must be delivered in order. Unless Delimiting is
+“1 for 1”, i.e. one SDU per PDU, implying that the application knows the Max PDU size,
+allowing SDUs that are larger than a MaxPDU implies that PDUs must be ordered. (This
+parameter should probably be eliminated in favor of using very large maximum gaps.) */
 
 public:
     QosCube();

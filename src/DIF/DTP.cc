@@ -18,7 +18,6 @@
 DTP::DTP() {
     // TODO Auto-generated constructor stub
 
-}
 
 DTP::~DTP() {
     // TODO Auto-generated destructor stub

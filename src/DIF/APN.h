@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,14 +15,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef DTP_H_
-#define DTP_H_
+#ifndef APN_H_
+#define APN_H_
 
-#include "DTPState.h"
-class DTP {
+/* Application Process Name
+ *
+ */
+class APN {
 public:
-    DTP();
-    virtual ~DTP();
+    APN();
+    virtual ~APN();
 };
 
-#endif /* DTP_H_ */
+#endif /* APN_H_ */

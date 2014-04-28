@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,14 +15,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef DTP_H_
-#define DTP_H_
+#ifndef CONNECTIONID_H_
+#define CONNECTIONID_H_
 
-#include "DTPState.h"
-class DTP {
+/*
+ *
+ */
+class ConnectionId {
+private:
+    int qoSId;
+    int destCEPId;
+    int srcCEPId;
+
 public:
-    DTP();
-    virtual ~DTP();
+    ConnectionId();
+    virtual ~ConnectionId();
 };
 
-#endif /* DTP_H_ */
+#endif /* CONNECTIONID_H_ */

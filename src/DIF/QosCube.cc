@@ -15,7 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/*
+ * @file QoSCube.cc
+ * @author Marcel Marek
+ * @date Apr 28, 2014
+ * @brief
+ * @detail
+ */
 #include "QosCube.h"
+
 
 QosCube::QosCube() {
     // TODO Auto-generated constructor stub
