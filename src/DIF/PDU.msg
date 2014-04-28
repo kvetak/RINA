@@ -72,6 +72,6 @@ class PDU {
     int flags; //8bits
     int pduLen;
     int seqNum;
-    cObject userData;
+    cObject userData; //unsigned char []? string?
     
 }

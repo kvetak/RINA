@@ -31,14 +31,20 @@
         DTP_STATE_PORT_ID_TRANS = 0x10, //Port-id transition
     } DTPStateState;
 
+
+#include <queue>
 /*
  *
  */
 class DTPState {
 
 private:
+    /* These parameters can set smaller values of the DTAE constants
+     * for a given flow. These must have values less than or equal
+     * those defined for the DIF. */
     int maxFlowSDUSize;
     int maxFlowPDUSize;
+
     int seqNumRollOverThresh;
     int state;
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
@@ -61,12 +67,50 @@ private:
     int senderLeftWinEdge;
     int nextSeqNumToSend;
     //queue<PDU,seqNum> pduReassemblyQ
-    //queue<User_data>
+
+    //moved to DTP.h
+//    queue<unsigned char *> sduQ; //SDUs generated from delimiting
 
 
 public:
     DTPState();
     virtual ~DTPState();
+    bool isClosedWindow() const;
+    void setClosedWindow(bool closedWindow);
+    int getClosedWinQueLen() const;
+    void setClosedWinQueLen(int closedWinQueLen);
+    bool isDtcpPresent() const;
+    void setDtcpPresent(bool dtcpPresent);
+    bool isIncompDeliv() const;
+    void setIncompDeliv(bool incompDeliv);
+    int getMaxClosedWinQueLen() const;
+    void setMaxClosedWinQueLen(int maxClosedWinQueLen);
+    int getMaxFlowPduSize() const;
+    void setMaxFlowPduSize(int maxFlowPduSize);
+    int getMaxFlowSduSize() const;
+    void setMaxFlowSduSize(int maxFlowSduSize);
+    int getMaxSeqNumRcvd() const;
+    void setMaxSeqNumRcvd(int maxSeqNumRcvd);
+    int getNextSeqNumToSend() const;
+    void setNextSeqNumToSend(int nextSeqNumToSend);
+    bool isPartDeliv() const;
+    void setPartDeliv(bool partDeliv);
+    bool isRateBased() const;
+    void setRateBased(bool rateBased);
+    bool isRateFullfilled() const;
+    void setRateFullfilled(bool rateFullfilled);
+    int getRcvLeftWinEdge() const;
+    void setRcvLeftWinEdge(int rcvLeftWinEdge);
+    bool isRexmsnPresent() const;
+    void setRexmsnPresent(bool rexmsnPresent);
+    int getSenderLeftWinEdge() const;
+    void setSenderLeftWinEdge(int senderLeftWinEdge);
+    int getSeqNumRollOverThresh() const;
+    void setSeqNumRollOverThresh(int seqNumRollOverThresh);
+    int getState() const;
+    void setState(int state);
+    bool isWinBased() const;
+    void setWinBased(bool winBased);
 };
 
 #endif /* DTPSTATE_H_ */

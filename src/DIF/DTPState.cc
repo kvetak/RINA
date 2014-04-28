@@ -26,3 +26,146 @@ DTPState::~DTPState() {
     // TODO Auto-generated destructor stub
 }
 
+bool DTPState::isClosedWindow() const {
+    return closedWindow;
+}
+
+void DTPState::setClosedWindow(bool closedWindow) {
+    this->closedWindow = closedWindow;
+}
+
+int DTPState::getClosedWinQueLen() const {
+    return closedWinQueLen;
+}
+
+void DTPState::setClosedWinQueLen(int closedWinQueLen) {
+    this->closedWinQueLen = closedWinQueLen;
+}
+
+bool DTPState::isDtcpPresent() const {
+    return dtcpPresent;
+}
+
+void DTPState::setDtcpPresent(bool dtcpPresent) {
+    this->dtcpPresent = dtcpPresent;
+}
+
+bool DTPState::isIncompDeliv() const {
+    return incompDeliv;
+}
+
+void DTPState::setIncompDeliv(bool incompDeliv) {
+    this->incompDeliv = incompDeliv;
+}
+
+int DTPState::getMaxClosedWinQueLen() const {
+    return maxClosedWinQueLen;
+}
+
+void DTPState::setMaxClosedWinQueLen(int maxClosedWinQueLen) {
+    this->maxClosedWinQueLen = maxClosedWinQueLen;
+}
+
+int DTPState::getMaxFlowPduSize() const {
+    return maxFlowPDUSize;
+}
+
+void DTPState::setMaxFlowPduSize(int maxFlowPduSize) {
+    maxFlowPDUSize = maxFlowPduSize;
+}
+
+int DTPState::getMaxFlowSduSize() const {
+    return maxFlowSDUSize;
+}
+
+void DTPState::setMaxFlowSduSize(int maxFlowSduSize) {
+    maxFlowSDUSize = maxFlowSduSize;
+}
+
+int DTPState::getMaxSeqNumRcvd() const {
+    return maxSeqNumRcvd;
+}
+
+void DTPState::setMaxSeqNumRcvd(int maxSeqNumRcvd) {
+    this->maxSeqNumRcvd = maxSeqNumRcvd;
+}
+
+int DTPState::getNextSeqNumToSend() const {
+    return nextSeqNumToSend;
+}
+
+void DTPState::setNextSeqNumToSend(int nextSeqNumToSend) {
+    this->nextSeqNumToSend = nextSeqNumToSend;
+}
+
+bool DTPState::isPartDeliv() const {
+    return partDeliv;
+}
+
+void DTPState::setPartDeliv(bool partDeliv) {
+    this->partDeliv = partDeliv;
+}
+
+bool DTPState::isRateBased() const {
+    return rateBased;
+}
+
+void DTPState::setRateBased(bool rateBased) {
+    this->rateBased = rateBased;
+}
+
+bool DTPState::isRateFullfilled() const {
+    return rateFullfilled;
+}
+
+void DTPState::setRateFullfilled(bool rateFullfilled) {
+    this->rateFullfilled = rateFullfilled;
+}
+
+int DTPState::getRcvLeftWinEdge() const {
+    return rcvLeftWinEdge;
+}
+
+void DTPState::setRcvLeftWinEdge(int rcvLeftWinEdge) {
+    this->rcvLeftWinEdge = rcvLeftWinEdge;
+}
+
+bool DTPState::isRexmsnPresent() const {
+    return rexmsnPresent;
+}
+
+void DTPState::setRexmsnPresent(bool rexmsnPresent) {
+    this->rexmsnPresent = rexmsnPresent;
+}
+
+int DTPState::getSenderLeftWinEdge() const {
+    return senderLeftWinEdge;
+}
+
+void DTPState::setSenderLeftWinEdge(int senderLeftWinEdge) {
+    this->senderLeftWinEdge = senderLeftWinEdge;
+}
+
+int DTPState::getSeqNumRollOverThresh() const {
+    return seqNumRollOverThresh;
+}
+
+void DTPState::setSeqNumRollOverThresh(int seqNumRollOverThresh) {
+    this->seqNumRollOverThresh = seqNumRollOverThresh;
+}
+
+int DTPState::getState() const {
+    return state;
+}
+
+void DTPState::setState(int state) {
+    this->state = state;
+}
+
+bool DTPState::isWinBased() const {
+    return winBased;
+}
+
+void DTPState::setWinBased(bool winBased) {
+    this->winBased = winBased;
+}

@@ -16,11 +16,37 @@
 #ifndef DTP_H_
 #define DTP_H_
 
+#include <omnetpp.h>
+#include <queue>
+
 #include "DTPState.h"
-class DTP {
+#include "DTPTimers_m.h"
+
+class DTP : public cSimpleModule {
+private:
+    DTPState state; //state of this data-transfer
+
+    std::queue<unsigned char *> sduQ; //SDUs generated from delimiting
+
+    InactivityTimer* senderInactivity;
 public:
     DTP();
     virtual ~DTP();
+
+
+    bool read(int portId, unsigned char * buffer, int len);
+    bool readImmediate(int portId, unsigned char* buffer, int len);
+    bool write(int portId, unsigned char *buffer, int len);
+
+    /** Delimits  content of buffer */
+    int delimit(unsigned char *buffer, int len);
+
+    /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
+    void encapsulate();
+
+protected:
+    virtual void handleMessage(cMessage *msg);
+
 };
 
 #endif /* DTP_H_ */
