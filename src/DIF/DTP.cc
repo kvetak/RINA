@@ -15,14 +15,12 @@
 
 #include "DTP.h"
 
-Define_Module(DTP);
+DTP::DTP() {
+    // TODO Auto-generated constructor stub
 
-void DTP::initialize()
-{
-    // TODO - Generated method body
 }
 
-void DTP::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+DTP::~DTP() {
+    // TODO Auto-generated destructor stub
 }
+

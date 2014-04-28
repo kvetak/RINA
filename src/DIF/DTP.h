@@ -13,19 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_DTP_H_
-#define __RINA_DTP_H_
+#ifndef DTP_H_
+#define DTP_H_
 
-#include <omnetpp.h>
-
-/**
- * TODO - Generated class
- */
-class DTP : public cSimpleModule
-{
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+class DTP {
+public:
+    DTP();
+    virtual ~DTP();
 };
 
-#endif
+#endif /* DTP_H_ */

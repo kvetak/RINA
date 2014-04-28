@@ -15,14 +15,12 @@
 
 #include "DTCP.h"
 
-Define_Module(DTCP);
+DTCP::DTCP() {
+    // TODO Auto-generated constructor stub
 
-void DTCP::initialize()
-{
-    // TODO - Generated method body
 }
 
-void DTCP::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+DTCP::~DTCP() {
+    // TODO Auto-generated destructor stub
 }
+
