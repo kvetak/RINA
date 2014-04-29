@@ -33,7 +33,7 @@ class noncobject ConnectionId;
 
 
 
-enum PDU_type{
+enum PDUType{
     	EFCP_PDU = 0x8000;
     	DATA_TRANSFER_PDU = 0x8001;
         ACK_ONLY_PDU= 0x8804;
@@ -64,14 +64,25 @@ class noncobject OtherType;
 // TODO generated message class
 //
 class PDU {
-    int version;
+    int version = 1;
     APN destAddr;
     APN srcAddr;
     ConnectionId connId;
-    int type;
+    uint8_t type enum(PDUType);
     int flags; //8bits
     int pduLen;
     int seqNum;
-    cObject userData; //unsigned char []? string?
+//    cObject userData; //unsigned char []? string?
+    unsigned char userData[];
     
 }
+
+class DataTransferPDU extends PDU{
+    type = DATA_TRANSFER_PDU;
+    
+}
+
+
+
+
+

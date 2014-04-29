@@ -15,29 +15,39 @@
 
 #include "DTP.h"
 
-DTP::DTP() {
-    // TODO Auto-generated constructor stub
+DTP::DTP()
+{
+  // TODO Auto-generated constructor stub
 
 }
-DTP::~DTP() {
-    // TODO Auto-generated destructor stub
+DTP::~DTP()
+{
+  // TODO Auto-generated destructor stub
 }
 
-void DTP::handleMessage(cMessage *msg){
+void DTP::setConnId(const ConnectionId& connId)
+{
+  this->connId = connId;
+}
+
+void DTP::handleMessage(cMessage *msg)
+{
 
 }
 
-bool DTP::write(int portId, unsigned char* buffer, int len) {
+bool DTP::write(int portId, unsigned char* buffer, int len)
+{
 
-    cancelEvent(this->senderInactivity);
+  cancelEvent(this->senderInactivity);
 
-    this->delimit(buffer, len);
+  this->delimit(buffer, len);
+  /* Now the data from buffer are copied to SDUs so we can free the memory */
+  free(buffer);
 
-    this->encapsulate();
+  this->generatePDUs();
 
-    return true;
+  return true;
 }
-
 
 /**
  * Delimits @param len bytes of buffer into User-data parts and put them on generated PDU
@@ -45,32 +55,51 @@ bool DTP::write(int portId, unsigned char* buffer, int len) {
  * @param len size of incoming data
  * @return number of created SDUs
  */
-int DTP::delimit(unsigned char *buffer, int len){
+int DTP::delimit(unsigned char *buffer, unsigned int len)
+{
 
-    int offset = 0, size = 0, counter = 0;
+  unsigned int offset = 0, size = 0, counter = 0;
 
-    unsigned char * sdu;
-    while (offset < len) {
-        if (len - offset > state.getMaxFlowSduSize()) {
-            size = state.getMaxFlowSduSize();
-
-        } else {
-            size = len;
-        }
-        sdu = new unsigned char[size];
-        memcpy(sdu, buffer, size);
-        //put sdu somewhere
-        sduQ.push(sdu);
-
-        offset += size;
-        counter++;
+  while (offset < len)
+  {
+    if (len - offset > state.getMaxFlowSduSize())
+    {
+      size = state.getMaxFlowSduSize();
 
     }
-    return counter;
+    else
+    {
+      size = len;
+    }
+    SDU sdu;
+    sdu.setUserData(&buffer[offset], size);
+
+    sduQ.push(sdu);
+
+    offset += size;
+    counter++;
+
+  }
+  return counter;
 }
 
+/**
+ * This method takes all SDUs from sduQ and generates PDUs by adding appropriate header content
+ */
+void DTP::generatePDUs()
+{
+
+  DataTransferPDU* dataPDU = new DataTransferPDU();
 
 
-void DTP::encapsulate(){
+  dataPDU->setConnId((const ConnectionId) (*connId.dup()));
+  //setDestAddr... APN
+  //setSrcAddr ... APN
+
+
+
+  //flags
+
+  //pduLen
 
 }

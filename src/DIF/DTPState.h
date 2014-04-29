@@ -42,8 +42,8 @@ private:
     /* These parameters can set smaller values of the DTAE constants
      * for a given flow. These must have values less than or equal
      * those defined for the DIF. */
-    int maxFlowSDUSize;
-    int maxFlowPDUSize;
+    unsigned int maxFlowSDUSize;
+    unsigned int maxFlowPDUSize;
 
     int seqNumRollOverThresh;
     int state;

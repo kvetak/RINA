@@ -18,10 +18,12 @@
 #ifndef CONNECTIONID_H_
 #define CONNECTIONID_H_
 
+#include <cobject.h>
 /*
  *
  */
-class ConnectionId {
+class ConnectionId: public cObject {
+
 private:
     int qoSId;
     int destCEPId;
@@ -30,6 +32,15 @@ private:
 public:
     ConnectionId();
     virtual ~ConnectionId();
+    int getDestCepId() const;
+    void setDestCepId(int destCepId);
+    int getQoSId() const;
+    void setQoSId(int qoSId);
+    int getSrcCepId() const;
+    void setSrcCepId(int srcCepId);
+
+    virtual ConnectionId *dup() const;
+
 };
 
 #endif /* CONNECTIONID_H_ */

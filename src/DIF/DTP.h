@@ -21,30 +21,44 @@
 
 #include "DTPState.h"
 #include "DTPTimers_m.h"
+#include "PDU_m.h"
+#include "SDU.h"
 
-class DTP : public cSimpleModule {
-private:
+#include "FlowAllocator.h" //or FlowAllocatorFactory
+
+class DTP : public cSimpleModule
+{
+  private:
     DTPState state; //state of this data-transfer
 
-    std::queue<unsigned char *> sduQ; //SDUs generated from delimiting
+    std::queue<SDU> sduQ; //SDUs generated from delimiting
 
     InactivityTimer* senderInactivity;
-public:
+
+    FlowAllocator* flowAllocator;
+    /* OR
+     * FlowAllocatorFactory flowFactory;
+     * int flowAllocatorId;
+     */
+
+    ConnectionId connId;
+
+  public:
     DTP();
     virtual ~DTP();
-
 
     bool read(int portId, unsigned char * buffer, int len);
     bool readImmediate(int portId, unsigned char* buffer, int len);
     bool write(int portId, unsigned char *buffer, int len);
 
     /** Delimits  content of buffer */
-    int delimit(unsigned char *buffer, int len);
+    int delimit(unsigned char *buffer, unsigned int len);
 
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
-    void encapsulate();
+    void generatePDUs();
+    void setConnId(const ConnectionId& connId);
 
-protected:
+  protected:
     virtual void handleMessage(cMessage *msg);
 
 };

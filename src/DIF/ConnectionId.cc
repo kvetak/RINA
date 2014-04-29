@@ -22,7 +22,44 @@ ConnectionId::ConnectionId() {
 
 }
 
+int ConnectionId::getDestCepId() const {
+    return destCEPId;
+}
+
+void ConnectionId::setDestCepId(int destCepId) {
+    destCEPId = destCepId;
+}
+
+int ConnectionId::getQoSId() const {
+    return qoSId;
+}
+
+void ConnectionId::setQoSId(int qoSId) {
+    this->qoSId = qoSId;
+}
+
+int ConnectionId::getSrcCepId() const {
+    return srcCEPId;
+}
+
+void ConnectionId::setSrcCepId(int srcCepId) {
+    srcCEPId = srcCepId;
+}
+
 ConnectionId::~ConnectionId() {
     // TODO Auto-generated destructor stub
 }
+
+ConnectionId *ConnectionId::dup() const{
+
+  ConnectionId* connId = new ConnectionId();
+  connId->setDestCepId(this->destCEPId);
+  connId->setSrcCepId(this->srcCEPId);
+  connId->setQoSId(this->qoSId);
+
+  return connId;
+
+}
+
+
 
