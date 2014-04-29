@@ -66,19 +66,19 @@ void DTPState::setMaxClosedWinQueLen(int maxClosedWinQueLen) {
     this->maxClosedWinQueLen = maxClosedWinQueLen;
 }
 
-int DTPState::getMaxFlowPduSize() const {
+unsigned int DTPState::getMaxFlowPduSize() const {
     return maxFlowPDUSize;
 }
 
-void DTPState::setMaxFlowPduSize(int maxFlowPduSize) {
+void DTPState::setMaxFlowPduSize(unsigned int maxFlowPduSize) {
     maxFlowPDUSize = maxFlowPduSize;
 }
 
-int DTPState::getMaxFlowSduSize() const {
+unsigned int DTPState::getMaxFlowSduSize() const {
     return maxFlowSDUSize;
 }
 
-void DTPState::setMaxFlowSduSize(int maxFlowSduSize) {
+void DTPState::setMaxFlowSduSize(unsigned int maxFlowSduSize) {
     maxFlowSDUSize = maxFlowSduSize;
 }
 
@@ -90,12 +90,17 @@ void DTPState::setMaxSeqNumRcvd(int maxSeqNumRcvd) {
     this->maxSeqNumRcvd = maxSeqNumRcvd;
 }
 
-int DTPState::getNextSeqNumToSend() const {
+unsigned int DTPState::getNextSeqNumToSend() const {
     return nextSeqNumToSend;
 }
 
-void DTPState::setNextSeqNumToSend(int nextSeqNumToSend) {
+void DTPState::setNextSeqNumToSend(unsigned int nextSeqNumToSend) {
     this->nextSeqNumToSend = nextSeqNumToSend;
+}
+
+void DTPState::incNextSeqNumToSend(){
+  //TODO A1 what about threshold?
+  this->nextSeqNumToSend++;
 }
 
 bool DTPState::isPartDeliv() const {

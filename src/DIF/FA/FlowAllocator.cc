@@ -16,7 +16,7 @@
 // 
 /**
  * @file FlowAllocator.cpp
- * @author imarek
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Apr 29, 2014
  * @brief
  * @detail

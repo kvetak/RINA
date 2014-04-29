@@ -64,14 +64,14 @@ class noncobject OtherType;
 // TODO generated message class
 //
 class PDU {
-    int version = 1;
+    unsigned int version = 1;
     APN destAddr;
     APN srcAddr;
     ConnectionId connId;
-    uint8_t type enum(PDUType);
-    int flags; //8bits
-    int pduLen;
-    int seqNum;
+    int type enum(PDUType);
+    int flags = 0; //8bits
+    unsigned int pduLen = 0;
+    unsigned int seqNum;
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
     

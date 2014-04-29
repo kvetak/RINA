@@ -12,33 +12,66 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
+/**
+ * @file SDU.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Apr 29, 2014
+ * @brief
+ * @detail
+ */
 #include <SDU.h>
 
-SDU::SDU() {
-    // TODO Auto-generated constructor stub
+SDU::SDU()
+{
+  this->offset = this->size = 0;
 
 }
 
-int SDU::getSize() const {
-    return size;
+unsigned int SDU::getSize() const
+{
+  return size;
 }
 
-void SDU::setSize(int size) {
+void SDU::setSize(unsigned int size)
+{
+  if(userData !=NULL){
+    unsigned char *tmp = new unsigned char[size];
+    memcpy(tmp,userData, (this->size < size) ? this->size : size);
     this->size = size;
+    free(userData);
+    userData = tmp;
+  }else{
+    this->size = size;
+    userData = new unsigned char[size];
+  }
+
 }
 
-unsigned char* SDU::getUserData() const {
-    return userData;
+unsigned char* SDU::getUserData() const
+{
+  return &userData[offset];
 }
 
-void SDU::setUserData(unsigned char* userData, unsigned int size) {
-    this->userData = new unsigned char [size];
-    memcpy(this->userData, userData, size);
+const unsigned char* SDU::getUserData(unsigned int size)
+{
+  offset += size;
+  return &userData[offset - size];
+}
+
+void SDU::setUserData(unsigned char* userData, unsigned int size)
+{
+  if(this->userData != NULL){
+    free(this->userData);
+    this->offset = 0;
+  }
+  this->size = size;
+  this->userData = new unsigned char[size];
+  memcpy(this->userData, userData, size);
 //    this->userData = userData;
 }
 
-SDU::~SDU() {
-    // TODO Auto-generated destructor stub
+SDU::~SDU()
+{
+  // TODO Auto-generated destructor stub
 }
 

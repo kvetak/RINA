@@ -60,12 +60,11 @@ int DTP::delimit(unsigned char *buffer, unsigned int len)
 
   unsigned int offset = 0, size = 0, counter = 0;
 
-  while (offset < len)
+  do
   {
     if (len - offset > state.getMaxFlowSduSize())
     {
       size = state.getMaxFlowSduSize();
-
     }
     else
     {
@@ -79,7 +78,14 @@ int DTP::delimit(unsigned char *buffer, unsigned int len)
     offset += size;
     counter++;
 
-  }
+  } while (offset < len);
+
+  //TODO A1 If len is zero then create empty SDU?
+//  if(len == 0){
+//    SDU sdu;
+//    sduQ.push(sdu);
+//    counter = 1;
+//  }
   return counter;
 }
 
@@ -97,9 +103,58 @@ void DTP::generatePDUs()
   //setSrcAddr ... APN
 
 
+  SDU sdu;
+  while(!sduQ.empty()){
+      sdu = sduQ.front();
+      sduQ.pop();
+      DataTransferPDU* genPDU = dataPDU->dup();
+      //set DRF(false) -> not needed (false is default)
+//      genPDU->setFlags(genPDU->getFlags() && )
+      genPDU->setSeqNum(this->state.getNextSeqNumToSend());
+      this->state.incNextSeqNumToSend();
 
+      //invoke SDU protection
+      sduProtection(&sdu);
+
+      unsigned int offset = 0, size = 0, counter = 0;
+
+       do
+       {
+         if (sdu.getSize() - offset > state.getMaxFlowSduSize())
+         {
+           size = state.getMaxFlowSduSize();
+         }
+         else
+         {
+           size = sdu.getSize();
+         }
+//         SDU sdu;
+//         sdu.setUserData(&buffer[offset], size);
+
+         sduQ.push(sdu);
+
+         offset += size;
+         counter++;
+
+       } while (offset < sdu.getSize());
+
+
+
+  }
   //flags
 
   //pduLen
 
 }
+
+/**
+ * This method calls specified function to perform SDU protection.
+ * SDU size will probably change because of the added CRC or whatnot.
+ * @param sdu is the SDU being protected eg added CRC or otherwise
+ */
+void DTP::sduProtection(SDU *sdu){
+
+
+}
+
+

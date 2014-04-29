@@ -65,7 +65,7 @@ private:
     int rcvLeftWinEdge;
     int maxSeqNumRcvd;
     int senderLeftWinEdge;
-    int nextSeqNumToSend;
+    unsigned int nextSeqNumToSend;
     //queue<PDU,seqNum> pduReassemblyQ
 
     //moved to DTP.h
@@ -85,14 +85,15 @@ public:
     void setIncompDeliv(bool incompDeliv);
     int getMaxClosedWinQueLen() const;
     void setMaxClosedWinQueLen(int maxClosedWinQueLen);
-    int getMaxFlowPduSize() const;
-    void setMaxFlowPduSize(int maxFlowPduSize);
-    int getMaxFlowSduSize() const;
-    void setMaxFlowSduSize(int maxFlowSduSize);
+    unsigned int getMaxFlowPduSize() const;
+    void setMaxFlowPduSize(unsigned int maxFlowPduSize);
+    unsigned int getMaxFlowSduSize() const;
+    void setMaxFlowSduSize(unsigned int maxFlowSduSize);
     int getMaxSeqNumRcvd() const;
     void setMaxSeqNumRcvd(int maxSeqNumRcvd);
-    int getNextSeqNumToSend() const;
-    void setNextSeqNumToSend(int nextSeqNumToSend);
+    unsigned  int getNextSeqNumToSend() const;
+    void setNextSeqNumToSend(unsigned int nextSeqNumToSend);
+    void incNextSeqNumToSend();
     bool isPartDeliv() const;
     void setPartDeliv(bool partDeliv);
     bool isRateBased() const;

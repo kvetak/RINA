@@ -22,14 +22,16 @@ class SDU: public cObject {
 
 private:
     unsigned char * userData;
-    int size;
+    unsigned int size;
+    unsigned int offset;
 
 public:
     SDU();
     virtual ~SDU();
-    int getSize() const;
-    void setSize(int size);
+    unsigned int getSize() const;
+    void setSize(unsigned int size);
     unsigned char* getUserData() const;
+    const unsigned char* getUserData(unsigned int offset);
     void setUserData(unsigned char* userData, unsigned int size);
 };
 

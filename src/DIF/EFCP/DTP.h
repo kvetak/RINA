@@ -56,6 +56,9 @@ class DTP : public cSimpleModule
 
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
     void generatePDUs();
+
+    /** This method does SDU protection eg CRC*/
+    void sduProtection(SDU *sdu);
     void setConnId(const ConnectionId& connId);
 
   protected:
