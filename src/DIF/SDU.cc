@@ -32,6 +32,11 @@ unsigned int SDU::getSize() const
   return size;
 }
 
+unsigned int SDU::getRestSize()const
+{
+  return size - offset;
+}
+
 void SDU::setSize(unsigned int size)
 {
   if(userData !=NULL){

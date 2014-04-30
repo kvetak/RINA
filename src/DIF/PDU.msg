@@ -16,9 +16,13 @@
 // 
 
 cplusplus {{
+#define PDU_HEADER_LEN 10
 #include "APN.h"
+//#include "PDU.h"
+
 }}
 class noncobject APN;
+//packet PDU;
 
 cplusplus {{
 #include "ConnectionId.h"
@@ -53,34 +57,32 @@ enum PDUType{
 enum FLAGS{
 }
 
-//cplusplus {{
-//#include <map>
-//typedef OtherType std::map<int,int>;
-//}}
 
-class noncobject OtherType;
+
+//class noncobject OtherType;
 
 //
 // TODO generated message class
 //
-class PDU {
+packet PDU {
+    @customize(true);
     unsigned int version = 1;
     APN destAddr;
     APN srcAddr;
     ConnectionId connId;
     int type enum(PDUType);
     int flags = 0; //8bits
-    unsigned int pduLen = 0;
+    unsigned int pduLen = PDU_HEADER_LEN;
     unsigned int seqNum;
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
     
 }
 
-class DataTransferPDU extends PDU{
-    type = DATA_TRANSFER_PDU;
-    
-}
+//packet DataTransferPDU extends PDU{
+//    type = DATA_TRANSFER_PDU;
+//    
+//}
 
 
 

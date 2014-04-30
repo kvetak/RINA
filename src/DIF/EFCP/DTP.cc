@@ -70,10 +70,10 @@ int DTP::delimit(unsigned char *buffer, unsigned int len)
     {
       size = len;
     }
-    SDU sdu;
-    sdu.setUserData(&buffer[offset], size);
+    SDU *sdu = new SDU();
+    sdu->setUserData(&buffer[offset], size);
 
-    sduQ.push(sdu);
+    sduQ.push_back(sdu);
 
     offset += size;
     counter++;
@@ -103,40 +103,55 @@ void DTP::generatePDUs()
   //setSrcAddr ... APN
 
 
-  SDU sdu;
-  while(!sduQ.empty()){
-      sdu = sduQ.front();
-      sduQ.pop();
+
+
+  //invoke SDU protection so we don't have to bother with it afterwards
+  for(std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it){
+    sduProtection(*it);
+  }
+
+  SDU *sdu = NULL;
+  DataTransferPDU* genPDU = dataPDU->dup();
+  while (!sduQ.empty())
+  {
+    //genPDU is full so create new PDU and start filling
+    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize())
+    {
+      //TODO A2 what else to do before sending?
+      //what about formating SDUDelimitersFlags in userData?
+      genPDU->putDelimitFlags();
+
+      //put genPDU to generatedPDUs
+      generatedPDUs.push_back(genPDU);
       DataTransferPDU* genPDU = dataPDU->dup();
       //set DRF(false) -> not needed (false is default)
-//      genPDU->setFlags(genPDU->getFlags() && )
+      //      genPDU->setFlags(genPDU->getFlags() && )
       genPDU->setSeqNum(this->state.getNextSeqNumToSend());
       this->state.incNextSeqNumToSend();
+    }
 
-      //invoke SDU protection
-      sduProtection(&sdu);
+    /*
+     * This method fetches next sdu if current one has been put to some PDU(s) (offset = size)
+     */
+    this->getSDUFromQ(sdu);
 
-      unsigned int offset = 0, size = 0, counter = 0;
+    /* if the rest of the SDU is bigger than empty space in PDU then */
+    unsigned int copySize = 0;
+    unsigned int pduRestSize = state.getMaxFlowSduSize() - genPDU->getPduLen();
+    if(sdu->getRestSize() >= (pduRestSize)){
+      copySize = pduRestSize;
+//      genPDU->addUserData(sdu->getUserData(pduRestSize), pduRestSize);
+      //now we can break since the PDU should be full
+//      break;
+    }else{
+      copySize = sdu->getRestSize();
+//      genPDU->addUserData(sdu->getUserData(sdu->getRestSize()), sdu->getRestSize());
 
-       do
-       {
-         if (sdu.getSize() - offset > state.getMaxFlowSduSize())
-         {
-           size = state.getMaxFlowSduSize();
-         }
-         else
-         {
-           size = sdu.getSize();
-         }
-//         SDU sdu;
-//         sdu.setUserData(&buffer[offset], size);
+    }
 
-         sduQ.push(sdu);
+    genPDU->addUserData(sdu->getUserData(copySize), copySize);
 
-         offset += size;
-         counter++;
 
-       } while (offset < sdu.getSize());
 
 
 
@@ -154,6 +169,20 @@ void DTP::generatePDUs()
  */
 void DTP::sduProtection(SDU *sdu){
 
+
+}
+/**
+ * This method
+ * @para
+ */
+
+void DTP::getSDUFromQ(SDU *sdu)
+{
+  if(sdu == NULL){
+    sdu = sduQ.front();
+    sduQ.erase(sduQ.begin());
+    return;
+  }
 
 }
 

@@ -17,11 +17,12 @@
 #define DTP_H_
 
 #include <omnetpp.h>
-#include <queue>
+#include <vector>
 
 #include "DTPState.h"
 #include "DTPTimers_m.h"
-#include "PDU_m.h"
+#include "PDU.h"
+#include "DataTransferPDU_m.h"
 #include "SDU.h"
 
 #include "FlowAllocator.h" //or FlowAllocatorFactory
@@ -31,7 +32,8 @@ class DTP : public cSimpleModule
   private:
     DTPState state; //state of this data-transfer
 
-    std::queue<SDU> sduQ; //SDUs generated from delimiting
+    std::vector<SDU*> sduQ; //SDUs generated from delimiting
+    std::vector<PDU*> generatedPDUs;
 
     InactivityTimer* senderInactivity;
 
@@ -59,6 +61,7 @@ class DTP : public cSimpleModule
 
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
+    void getSDUFromQ(SDU *sdu);
     void setConnId(const ConnectionId& connId);
 
   protected:
