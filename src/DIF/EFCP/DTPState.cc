@@ -90,8 +90,13 @@ void DTPState::setMaxSeqNumRcvd(int maxSeqNumRcvd) {
     this->maxSeqNumRcvd = maxSeqNumRcvd;
 }
 
-unsigned int DTPState::getNextSeqNumToSend() const {
-    return nextSeqNumToSend;
+/*
+ * Return value of nextSeqNumToSend and increments it
+ * @return nextSeqNumToSend value before incrementing
+ */
+unsigned int DTPState::getNextSeqNumToSend() {
+
+    return nextSeqNumToSend++;
 }
 
 void DTPState::setNextSeqNumToSend(unsigned int nextSeqNumToSend) {

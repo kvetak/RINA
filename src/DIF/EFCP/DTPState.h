@@ -91,7 +91,7 @@ public:
     void setMaxFlowSduSize(unsigned int maxFlowSduSize);
     int getMaxSeqNumRcvd() const;
     void setMaxSeqNumRcvd(int maxSeqNumRcvd);
-    unsigned  int getNextSeqNumToSend() const;
+    unsigned  int getNextSeqNumToSend();
     void setNextSeqNumToSend(unsigned int nextSeqNumToSend);
     void incNextSeqNumToSend();
     bool isPartDeliv() const;

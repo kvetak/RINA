@@ -97,13 +97,9 @@ void DTP::generatePDUs()
 
   DataTransferPDU* dataPDU = new DataTransferPDU();
 
-
   dataPDU->setConnId((const ConnectionId) (*connId.dup()));
   //setDestAddr... APN
   //setSrcAddr ... APN
-
-
-
 
   //invoke SDU protection so we don't have to bother with it afterwards
   for(std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it){
@@ -112,54 +108,108 @@ void DTP::generatePDUs()
 
   SDU *sdu = NULL;
   DataTransferPDU* genPDU = dataPDU->dup();
-  while (!sduQ.empty())
+  bool fragment = false;
+  int delimitFlags = 0;
+  do
   {
-    //genPDU is full so create new PDU and start filling
-    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize())
+    //This method fetches next SDU if current one has been put to some PDU(s) (offset = size)
+    this->getSDUFromQ(sdu);
+
+    unsigned int copySize = 0;
+    /* TODO We should take into account also SDUDelimiterFlags etc */
+    unsigned int pduAvailSize = state.getMaxFlowPduSize() - genPDU->getPduLen();
+    /* if the rest of the SDU is bigger than empty space in PDU then fill-up PDU */
+    copySize = (sdu->getRestSize() >= pduAvailSize) ? pduAvailSize : sdu->getRestSize();
+
+
+    if (genPDU->getPduLen() == PDU_HEADER_LEN)    {
+      //PDU is empty
+      //set noLength flag
+      delimitFlags |= 0x04;
+      if (sdu->getRestSize() > pduAvailSize){
+        //(rest of) SDU is bigger than PDU
+        //set noLength flag
+        delimitFlags |= 0x04;
+        if (sdu->getSize() > sdu->getRestSize()){
+          //not first segment, something has been read from SDU
+          //and since it won't fit cannot be last
+          //this is middle segment
+          delimitFlags |= 0x00;
+        }else{
+            //this is first segment of next SDU
+            delimitFlags |= 0x01;
+        }
+      }else{
+        //(rest of) SDU is smaller than available space in PDU
+        if (sdu->getSize() > sdu->getRestSize()){
+          //last fragment of previous SDU
+          delimitFlags |= 0x02;
+        }else{
+          //this is complete SDU
+          delimitFlags |= 0x03;
+        }
+      }
+
+    }else{
+      //clear noLength flag
+      delimitFlags &= 0xFB;
+
+      if(sdu->getRestSize() > pduAvailSize){
+        //(rest of) SDU won't fit into rest of PDU
+        if(sdu->getSize() > sdu->getRestSize()){
+          //this is not first segment
+          if(copySize == sdu->getRestSize()){
+            //this is last segment
+            delimitFlags |= 0x02;
+          }else{
+            //this is middle segment
+            //not permitted
+            throw cRuntimeError("This type of PDU delimiting is not permitted!");
+          }
+        }else{
+          //adding first segment
+          delimitFlags |= 0x01;
+        }
+      }else{
+        //(rest of) SDU will fit into rest of PDU
+        //complete sdu
+        if((delimitFlags && 0x03) == 3){
+          //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
+          delimitFlags &= 0xFC;
+        }
+      }
+    }
+
+    //add whole SDU or fragment to PDU
+    genPDU->addUserData(sdu->getUserData(copySize), copySize, &fragment);
+//    fragment = true;
+
+    if(sdu->getRestSize() == 0){
+      delete sduQ.front();
+      sduQ.erase(sduQ.begin());
+    }
+
+    //if genPDU is full or SDU queue is empty, 'close' PDU and put it to generated PDUs and create new PDU
+    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize() || sduQ.empty())
     {
       //TODO A2 what else to do before sending?
       //what about formating SDUDelimitersFlags in userData?
-      genPDU->putDelimitFlags();
+      genPDU->putDelimitFlags(delimitFlags, fragment);
+
 
       //put genPDU to generatedPDUs
       generatedPDUs.push_back(genPDU);
-      DataTransferPDU* genPDU = dataPDU->dup();
-      //set DRF(false) -> not needed (false is default)
-      //      genPDU->setFlags(genPDU->getFlags() && )
-      genPDU->setSeqNum(this->state.getNextSeqNumToSend());
-      this->state.incNextSeqNumToSend();
+
+      if (!sduQ.empty())
+      {
+        genPDU = dataPDU->dup();
+        fragment = false;
+        //set DRF(false) -> not needed (false is default)
+        genPDU->setSeqNum(this->state.getNextSeqNumToSend());
+      }
     }
 
-    /*
-     * This method fetches next sdu if current one has been put to some PDU(s) (offset = size)
-     */
-    this->getSDUFromQ(sdu);
-
-    /* if the rest of the SDU is bigger than empty space in PDU then */
-    unsigned int copySize = 0;
-    unsigned int pduRestSize = state.getMaxFlowSduSize() - genPDU->getPduLen();
-    if(sdu->getRestSize() >= (pduRestSize)){
-      copySize = pduRestSize;
-//      genPDU->addUserData(sdu->getUserData(pduRestSize), pduRestSize);
-      //now we can break since the PDU should be full
-//      break;
-    }else{
-      copySize = sdu->getRestSize();
-//      genPDU->addUserData(sdu->getUserData(sdu->getRestSize()), sdu->getRestSize());
-
-    }
-
-    genPDU->addUserData(sdu->getUserData(copySize), copySize);
-
-
-
-
-
-  }
-  //flags
-
-  //pduLen
-
+  }while (!sduQ.empty());
 }
 
 /**
@@ -180,10 +230,14 @@ void DTP::getSDUFromQ(SDU *sdu)
 {
   if(sdu == NULL){
     sdu = sduQ.front();
-    sduQ.erase(sduQ.begin());
     return;
+  }else{
+    if (sdu->getRestSize() > 0){
+      return;
+    }else{
+      sdu = sduQ.front();
+    }
   }
-
 }
 
 

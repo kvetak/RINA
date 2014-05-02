@@ -553,7 +553,7 @@ void *authValue_tDescriptor::getFieldStructPointer(void *object, int field, int 
 
 Register_Class(CDAPMessage);
 
-CDAPMessage::CDAPMessage(const char *name, int kind) : cMessage(name,kind)
+CDAPMessage::CDAPMessage(const char *name, int kind) : ::cMessage(name,kind)
 {
     this->absSyntax_var = 0;
     this->opCode_var = 0;
@@ -577,7 +577,7 @@ CDAPMessage::CDAPMessage(const char *name, int kind) : cMessage(name,kind)
     this->version_var = 0;
 }
 
-CDAPMessage::CDAPMessage(const CDAPMessage& other) : cMessage(other)
+CDAPMessage::CDAPMessage(const CDAPMessage& other) : ::cMessage(other)
 {
     copy(other);
 }
@@ -589,7 +589,7 @@ CDAPMessage::~CDAPMessage()
 CDAPMessage& CDAPMessage::operator=(const CDAPMessage& other)
 {
     if (this==&other) return *this;
-    cMessage::operator=(other);
+    ::cMessage::operator=(other);
     copy(other);
     return *this;
 }
@@ -622,7 +622,7 @@ void CDAPMessage::copy(const CDAPMessage& other)
 
 void CDAPMessage::parsimPack(cCommBuffer *b)
 {
-    cMessage::parsimPack(b);
+    ::cMessage::parsimPack(b);
     doPacking(b,this->absSyntax_var);
     doPacking(b,this->opCode_var);
     doPacking(b,this->invokeID_var);
@@ -649,7 +649,7 @@ void CDAPMessage::parsimPack(cCommBuffer *b)
 
 void CDAPMessage::parsimUnpack(cCommBuffer *b)
 {
-    cMessage::parsimUnpack(b);
+    ::cMessage::parsimUnpack(b);
     doUnpacking(b,this->absSyntax_var);
     doUnpacking(b,this->opCode_var);
     doUnpacking(b,this->invokeID_var);

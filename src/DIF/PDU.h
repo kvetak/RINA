@@ -27,6 +27,7 @@
 
 
 #define SDU_FRAG_LEN 2 //number of bytes for length field of a fragment
+#define SDU_DELIMITER_FLAG_LEN 1 //size of SDUDelimiterFlags in bytes
 
 #include <omnetpp.h>
 #include "PDU_m.h"
@@ -45,9 +46,9 @@ class PDU : public PDU_Base
       virtual PDU *dup() const {return new PDU(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from PDU_Base
 
-      void addUserData(const unsigned char *userData, unsigned int size);
+      void addUserData(const unsigned char *userData, unsigned int size, bool *fragment);
 
-      void putDelimitFlags(int sduSeqNum = -1);
+      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
       unsigned int getHeaderSize();
   };
 
