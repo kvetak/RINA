@@ -45,6 +45,19 @@ class DTP : public cSimpleModule
 
     ConnectionId connId;
 
+    /** Delimits  content of buffer */
+    int delimit(unsigned char *buffer, unsigned int len);
+
+    /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
+    void generatePDUs();
+
+    void trySendGenPDUs();
+
+    /** This method does SDU protection eg CRC*/
+    void sduProtection(SDU *sdu);
+    void getSDUFromQ(SDU *sdu);
+    void setConnId(const ConnectionId& connId);
+
   public:
     DTP();
     virtual ~DTP();
@@ -53,16 +66,7 @@ class DTP : public cSimpleModule
     bool readImmediate(int portId, unsigned char* buffer, int len);
     bool write(int portId, unsigned char *buffer, int len);
 
-    /** Delimits  content of buffer */
-    int delimit(unsigned char *buffer, unsigned int len);
 
-    /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
-    void generatePDUs();
-
-    /** This method does SDU protection eg CRC*/
-    void sduProtection(SDU *sdu);
-    void getSDUFromQ(SDU *sdu);
-    void setConnId(const ConnectionId& connId);
 
   protected:
     virtual void handleMessage(cMessage *msg);

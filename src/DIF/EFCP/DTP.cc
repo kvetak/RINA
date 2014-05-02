@@ -46,6 +46,9 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
 
   this->generatePDUs();
 
+  /* Iterate over generated PDUs and decide if we can send them */
+  this->trySendGenPDUs();
+
   return true;
 }
 
@@ -211,6 +214,25 @@ void DTP::generatePDUs()
 
   }while (!sduQ.empty());
 }
+
+
+void DTP::trySendGenPDUs(){
+
+  std::vector<PDU*> postablePDUs;
+  std::vector<PDU*>::iterator it;
+  for(it = generatedPDUs.begin(); it != generatedPDUs.end(); ++it){
+
+    if(state.isDtcpPresent()){
+      if(state.isWinBased() || state.isRateBased()){
+//        if((*it)->getSeqNum() <= state.getRi)
+      }
+
+    }
+  }
+}
+
+
+
 
 /**
  * This method calls specified function to perform SDU protection.

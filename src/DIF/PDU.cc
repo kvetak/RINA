@@ -31,12 +31,12 @@ void PDU::addUserData(const unsigned char* userData, unsigned int size, bool *fr
   if(userData_arraysize == 0){
     userData_var= new unsigned char[size];
     memcpy(userData_var, userData, size);
-    fragment = false;
+    *fragment = false;
 
 
   }else{
 
-    if(!fragment){
+    if(*fragment){
 //    if(pduLen_var - PDU_HEADER_LEN == userData_arraysize){
       //allocate new space
       unsigned char * tmp = new unsigned char[userData_arraysize + SDU_FRAG_LEN];
@@ -52,7 +52,7 @@ void PDU::addUserData(const unsigned char* userData, unsigned int size, bool *fr
       //assign pointer
       userData_var = tmp;
 
-      fragment = true;
+      *fragment = true;
     }
 
     //allocate new space
@@ -98,7 +98,7 @@ void PDU::putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum){
   //update size of the userData array
   userData_arraysize += SDU_DELIMITER_FLAG_LEN;
   //copy existing data
-  memcpy(tmp[SDU_DELIMITER_FLAG_LEN], userData_var, userData_arraysize);
+  memcpy(&tmp[SDU_DELIMITER_FLAG_LEN], userData_var, userData_arraysize);
 
   delete [] userData_var;
   //assign pointer
