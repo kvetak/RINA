@@ -2,3 +2,5 @@
 /DTPTimers_m.h
 /FlowControlPDU_m.h
 /FlowControlPDU_m.cc
+/DataTransferPDU_m.cc
+/DataTransferPDU_m.h

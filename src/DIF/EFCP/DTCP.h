@@ -25,8 +25,16 @@
 #ifndef DTCP_H_
 #define DTCP_H_
 
+#include "FlowControl.h"
+#include "RXControl.h"
+
 class DTCP {
+  private:
+
 public:
+    FlowControl* flowControl;
+    RXControl* rxControl;
+
     DTCP();
     virtual ~DTCP();
 };

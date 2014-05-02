@@ -25,18 +25,22 @@
 #ifndef DTPSTATE_H_
 #define DTPSTATE_H_
 
-    typedef enum {
-        //NULL = 0,
-        DTP_STATE_ACTIVE = 1,
-        DTP_STATE_PORT_ID_TRANS = 0x10, //Port-id transition
-    } DTPStateState;
 
-
+#include <cobject.h>
 #include <queue>
+
+typedef enum
+{
+  //NULL = 0,
+  DTP_STATE_ACTIVE = 0x01,
+  DTP_STATE_PORT_ID_TRANS = 0x10, //Port-id transition
+} DTPStateState;
+
+
 /*
  *
  */
-class DTPState {
+class DTPState : public cObject {
 
 private:
     /* These parameters can set smaller values of the DTAE constants
