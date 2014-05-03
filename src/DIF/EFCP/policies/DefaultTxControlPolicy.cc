@@ -16,33 +16,46 @@
 // 
 
 /*
- * @file FlowControl.cc
+ * @file DefaultTxContrlPolicy.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date May 3, 2014
  * @brief
  * @detail
  */
 
-#include <FlowControl.h>
+#include <DefaultTxControlPolicy.h>
 
-FlowControl::FlowControl()
+DefaultTxControlPolicy::DefaultTxControlPolicy()
 {
   // TODO Auto-generated constructor stub
 
 }
 
-unsigned int FlowControl::getSendRightWindowEdge() const
-{
-  return sendRightWindowEdge;
-}
-
-void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
-{
-  this->sendRightWindowEdge = sendRightWindowEdge;
-}
-
-FlowControl::~FlowControl()
+DefaultTxControlPolicy::~DefaultTxControlPolicy()
 {
   // TODO Auto-generated destructor stub
 }
 
+void DefaultTxControlPolicy::run(cObject *dtpT)
+{
+  /* Default */
+
+    DTP *dtp = static_cast<DTP *>( dtpT);
+    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
+     And Set the ClosedWindow flag appropriately. */
+    std::vector<PDU*>::iterator it;
+    for (it = dtp->generatedPDUs.begin();
+        it != dtp->generatedPDUs.end() || (*it)->getSeqNum() <= dtp->dtcp->getFlowControlRightWinEdge();)
+    {
+      dtp->postablePDUs.push_back((*it));
+      dtp->generatedPDUs.erase(it);
+
+    }
+
+    if (!dtp->generatedPDUs.empty())
+    {
+      dtp->state.setClosedWindowQue(true);
+    }
+
+
+}

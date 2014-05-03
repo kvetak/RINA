@@ -105,7 +105,8 @@ void DTP::generatePDUs()
   //setSrcAddr ... APN
 
   //invoke SDU protection so we don't have to bother with it afterwards
-  for(std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it){
+  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it)
+  {
     sduProtection(*it);
   }
 
@@ -124,59 +125,80 @@ void DTP::generatePDUs()
     /* if the rest of the SDU is bigger than empty space in PDU then fill-up PDU */
     copySize = (sdu->getRestSize() >= pduAvailSize) ? pduAvailSize : sdu->getRestSize();
 
-
-    if (genPDU->getPduLen() == PDU_HEADER_LEN)    {
+    if (genPDU->getPduLen() == PDU_HEADER_LEN)
+    {
       //PDU is empty
       //set noLength flag
       delimitFlags |= 0x04;
-      if (sdu->getRestSize() > pduAvailSize){
+      if (sdu->getRestSize() > pduAvailSize)
+      {
         //(rest of) SDU is bigger than PDU
         //set noLength flag
         delimitFlags |= 0x04;
-        if (sdu->getSize() > sdu->getRestSize()){
+        if (sdu->getSize() > sdu->getRestSize())
+        {
           //not first segment, something has been read from SDU
           //and since it won't fit cannot be last
           //this is middle segment
           delimitFlags |= 0x00;
-        }else{
-            //this is first segment of next SDU
-            delimitFlags |= 0x01;
         }
-      }else{
+        else
+        {
+          //this is first segment of next SDU
+          delimitFlags |= 0x01;
+        }
+      }
+      else
+      {
         //(rest of) SDU is smaller than available space in PDU
-        if (sdu->getSize() > sdu->getRestSize()){
+        if (sdu->getSize() > sdu->getRestSize())
+        {
           //last fragment of previous SDU
           delimitFlags |= 0x02;
-        }else{
+        }
+        else
+        {
           //this is complete SDU
           delimitFlags |= 0x03;
         }
       }
 
-    }else{
+    }
+    else
+    {
       //clear noLength flag
       delimitFlags &= 0xFB;
 
-      if(sdu->getRestSize() > pduAvailSize){
+      if (sdu->getRestSize() > pduAvailSize)
+      {
         //(rest of) SDU won't fit into rest of PDU
-        if(sdu->getSize() > sdu->getRestSize()){
+        if (sdu->getSize() > sdu->getRestSize())
+        {
           //this is not first segment
-          if(copySize == sdu->getRestSize()){
+          if (copySize == sdu->getRestSize())
+          {
             //this is last segment
             delimitFlags |= 0x02;
-          }else{
+          }
+          else
+          {
             //this is middle segment
             //not permitted
             throw cRuntimeError("This type of PDU delimiting is not permitted!");
           }
-        }else{
+        }
+        else
+        {
           //adding first segment
           delimitFlags |= 0x01;
         }
-      }else{
+      }
+      else
+      {
         //(rest of) SDU will fit into rest of PDU
         //complete sdu
-        if((delimitFlags && 0x03) == 3){
+        if ((delimitFlags && 0x03) == 3)
+        {
           //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
           delimitFlags &= 0xFC;
         }
@@ -187,7 +209,8 @@ void DTP::generatePDUs()
     genPDU->addUserData(sdu->getUserData(copySize), copySize, &fragment);
 //    fragment = true;
 
-    if(sdu->getRestSize() == 0){
+    if (sdu->getRestSize() == 0)
+    {
       delete sduQ.front();
       sduQ.erase(sduQ.begin());
     }
@@ -198,7 +221,6 @@ void DTP::generatePDUs()
       //TODO A2 what else to do before sending?
       //what about formating SDUDelimitersFlags in userData?
       genPDU->putDelimitFlags(delimitFlags, fragment);
-
 
       //put genPDU to generatedPDUs
       generatedPDUs.push_back(genPDU);
@@ -212,35 +234,43 @@ void DTP::generatePDUs()
       }
     }
 
-  }while (!sduQ.empty());
+  } while (!sduQ.empty());
 }
 
-
-void DTP::trySendGenPDUs(){
+void DTP::trySendGenPDUs()
+{
 
   std::vector<PDU*> postablePDUs;
   std::vector<PDU*>::iterator it;
-  for(it = generatedPDUs.begin(); it != generatedPDUs.end(); ++it){
+  for (it = generatedPDUs.begin(); it != generatedPDUs.end(); ++it)
+  {
 
-    if(state.isDtcpPresent()){
-      if(state.isWinBased() || state.isRateBased()){
-//        if((*it)->getSeqNum() <= state.getRi)
+    if (state.isDtcpPresent())
+    {
+      //if flowControl present
+      if (state.isWinBased() || state.isRateBased())
+      {
+        if ((*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge())
+        {
+          /* The Window is Open. */
+          runTxControlPolicy();
+          /* Watchout because the current 'it' could be freed */
+        }else{
+          /* The Window is Closed */
+        }
       }
 
     }
   }
 }
 
-
-
-
 /**
  * This method calls specified function to perform SDU protection.
  * SDU size will probably change because of the added CRC or whatnot.
  * @param sdu is the SDU being protected eg added CRC or otherwise
  */
-void DTP::sduProtection(SDU *sdu){
-
+void DTP::sduProtection(SDU *sdu)
+{
 
 }
 /**
@@ -250,16 +280,57 @@ void DTP::sduProtection(SDU *sdu){
 
 void DTP::getSDUFromQ(SDU *sdu)
 {
-  if(sdu == NULL){
+  if (sdu == NULL)
+  {
     sdu = sduQ.front();
     return;
-  }else{
-    if (sdu->getRestSize() > 0){
+  }
+  else
+  {
+    if (sdu->getRestSize() > 0)
+    {
       return;
-    }else{
+    }
+    else
+    {
       sdu = sduQ.front();
     }
   }
 }
 
+unsigned int DTP::getFlowControlRightWinEdge()
+{
+
+  return dtcp->getFlowControlRightWinEdge();
+}
+
+/*
+ * We assume that this policy is used only under flowControl, it doesn't check presence
+ * of flowControl object - it might be NULL
+ */
+void DTP::runTxControlPolicy()
+{
+  /* Default */
+  if (this->txControlPolicy == NULL)
+  {
+    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
+     And Set the ClosedWindow flag appropriately. */
+    std::vector<PDU*>::iterator it;
+    for (it = generatedPDUs.begin();
+        it != generatedPDUs.end() || (*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge();)
+    {
+      postablePDUs.push_back((*it));
+      generatedPDUs.erase(it);
+
+    }
+
+    if (!generatedPDUs.empty())
+    {
+      state.setClosedWindowQue(true);
+    }
+  }else{
+    txControlPolicy->run((cObject *)this);
+  }
+
+}
 

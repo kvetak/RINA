@@ -27,6 +27,7 @@
 #define FLOWCONTROL_H_
 
 #include <csimplemodule.h>
+#include "ControlPDU_m.h"
 
 /*
  *
@@ -62,6 +63,8 @@ class FlowControl : public cSimpleModule
   public:
     FlowControl();
     virtual ~FlowControl();
+    unsigned int getSendRightWindowEdge() const;
+    void setSendRightWindowEdge(unsigned int sendRightWindowEdge);
 };
 
 #endif /* FLOWCONTROL_H_ */

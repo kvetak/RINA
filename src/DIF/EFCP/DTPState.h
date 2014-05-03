@@ -55,7 +55,7 @@ private:
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
     bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
     bool rexmsnPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
-    bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
+    bool closedWindowQue; /*!< This Boolean indicates whether or not the flow control window is closed.*/
 
     bool rateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
 
@@ -79,8 +79,8 @@ private:
 public:
     DTPState();
     virtual ~DTPState();
-    bool isClosedWindow() const;
-    void setClosedWindow(bool closedWindow);
+    bool isClosedWindowQue() const;
+    void setClosedWindowQue(bool closedWindowQue);
     int getClosedWinQueLen() const;
     void setClosedWinQueLen(int closedWinQueLen);
     bool isDtcpPresent() const;
@@ -116,6 +116,7 @@ public:
     void setState(int state);
     bool isWinBased() const;
     void setWinBased(bool winBased);
+
 };
 
 #endif /* DTPSTATE_H_ */

@@ -26,12 +26,12 @@ DTPState::~DTPState() {
     // TODO Auto-generated destructor stub
 }
 
-bool DTPState::isClosedWindow() const {
-    return closedWindow;
+bool DTPState::isClosedWindowQue() const {
+    return closedWindowQue;
 }
 
-void DTPState::setClosedWindow(bool closedWindow) {
-    this->closedWindow = closedWindow;
+void DTPState::setClosedWindowQue(bool closedWindowQue) {
+    this->closedWindowQue = closedWindowQue;
 }
 
 int DTPState::getClosedWinQueLen() const {

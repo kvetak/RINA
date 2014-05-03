@@ -24,3 +24,6 @@ DTCP::~DTCP() {
     // TODO Auto-generated destructor stub
 }
 
+unsigned int DTCP::getFlowControlRightWinEdge(){
+  return flowControl->getSendRightWindowEdge();
+}

@@ -16,33 +16,27 @@
 // 
 
 /*
- * @file FlowControl.cc
+ * @file TxControlPolicy.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date May 3, 2014
  * @brief
  * @detail
  */
 
-#include <FlowControl.h>
+#ifndef TXCONTROLPOLICY_H_
+#define TXCONTROLPOLICY_H_
 
-FlowControl::FlowControl()
+#include <Policy.h>
+
+/*
+ *
+ */
+class TxControlPolicy : public Policy
 {
-  // TODO Auto-generated constructor stub
+  public:
+    TxControlPolicy();
+    virtual ~TxControlPolicy();
+    virtual void run(cObject *dtp);
+};
 
-}
-
-unsigned int FlowControl::getSendRightWindowEdge() const
-{
-  return sendRightWindowEdge;
-}
-
-void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
-{
-  this->sendRightWindowEdge = sendRightWindowEdge;
-}
-
-FlowControl::~FlowControl()
-{
-  // TODO Auto-generated destructor stub
-}
-
+#endif /* TXCONTROLPOLICY_H_ */

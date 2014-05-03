@@ -49,6 +49,8 @@ class RXControl : public cSimpleModule
   public:
     RXControl();
     virtual ~RXControl();
+
+   unsigned int getRightWinEdge();
 };
 
 #endif /* RXCONTROL_H_ */

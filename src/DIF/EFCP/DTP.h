@@ -18,9 +18,12 @@
 
 #include <omnetpp.h>
 #include <vector>
+#include "TxControlPolicy.h"
+#include "DefaultTxControlPolicy.h"
 
 #include "DTPState.h"
 #include "DTPTimers_m.h"
+#include "DTCP.h"
 #include "PDU.h"
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
@@ -29,11 +32,16 @@
 
 class DTP : public cSimpleModule
 {
+    /* Friend policies */
+    friend class DefaultTxControlPolicy;
   private:
     DTPState state; //state of this data-transfer
+    DTCP* dtcp;
+
 
     std::vector<SDU*> sduQ; //SDUs generated from delimiting
     std::vector<PDU*> generatedPDUs;
+    std::vector<PDU*> postablePDUs;
 
     InactivityTimer* senderInactivity;
 
@@ -44,6 +52,13 @@ class DTP : public cSimpleModule
      */
 
     ConnectionId connId;
+
+
+    /* Policies */
+    TxControlPolicy *txControlPolicy;
+
+
+
 
     /** Delimits  content of buffer */
     int delimit(unsigned char *buffer, unsigned int len);
@@ -57,6 +72,10 @@ class DTP : public cSimpleModule
     void sduProtection(SDU *sdu);
     void getSDUFromQ(SDU *sdu);
     void setConnId(const ConnectionId& connId);
+
+    void runTxControlPolicy();
+
+    unsigned int getFlowControlRightWinEdge();
 
   public:
     DTP();

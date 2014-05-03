@@ -27,14 +27,17 @@
 
 #include "FlowControl.h"
 #include "RXControl.h"
+#include "DTCPState.h"
 
 class DTCP {
   private:
 
 public:
+    DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
 
+    unsigned int getFlowControlRightWinEdge();
     DTCP();
     virtual ~DTCP();
 };

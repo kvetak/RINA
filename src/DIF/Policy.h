@@ -23,7 +23,7 @@
  */
 #ifndef POLICY_H_
 #define POLICY_H_
-
+#include <omnetpp.h>
 /*
  *
  */
@@ -31,6 +31,7 @@ class Policy {
 public:
     Policy();
     virtual ~Policy();
+    virtual void run(cObject *object){ throw cRuntimeError("Don't use directly this class!");};
 };
 
 #endif /* POLICY_H_ */
