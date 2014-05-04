@@ -15,32 +15,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef CONNECTIONID_H_
-#define CONNECTIONID_H_
+/*
+ * @file RMT.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 4, 2014
+ * @brief
+ * @detail
+ */
 
-#include <cobject.h>
+#ifndef RMT_H_
+#define RMT_H_
+
+#include <csimplemodule.h>
+#include "APN.h"
+#include "PDU.h"
+
+
 /*
  *
  */
-class ConnectionId: public cObject {
+class RMT : public cSimpleModule
+{
+  public:
+    RMT();
+    virtual ~RMT();
 
-private:
-    unsigned int qoSId;
-    unsigned int destCEPId;
-    unsigned int srcCEPId;
-
-public:
-    ConnectionId();
-    virtual ~ConnectionId();
-    unsigned int getDestCepId() const;
-    void setDestCepId(unsigned int destCepId);
-    unsigned int getQoSId() const;
-    void setQoSId(unsigned int qoSId);
-    unsigned int getSrcCepId() const;
-    void setSrcCepId(unsigned int srcCepId);
-
-    virtual ConnectionId *dup() const;
+    /* Just a placeholder */
+    void fromDTPToRMT(APN* destAddr, unsigned int qosId, PDU *pdu);
 
 };
 
-#endif /* CONNECTIONID_H_ */
+#endif /* RMT_H_ */

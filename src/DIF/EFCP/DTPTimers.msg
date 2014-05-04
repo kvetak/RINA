@@ -18,15 +18,28 @@
 //
 // TODO generated message class
 //
+cplusplus {{
+#include "PDU.h"
+typedef PDU* PDU_p;
+}}
+class noncobject PDU_p;
 
 enum DTPTimerType
 {
-  INACTIVITY_TIMER = 1;   
+  DTP_INACTIVITY_TIMER = 1;   
+  RX_EXPIRY_TIMER = 2;
 }
 message DTPTimers {
 	int type enum(DTPTimerType);
 }
 
 message InactivityTimer extends DTPTimers{
-    type = INACTIVITY_TIMER;
+    type = DTP_INACTIVITY_TIMER;
+}
+
+
+message RxExpiryTimer extends DTPTimers{
+    type = RX_EXPIRY_TIMER;
+    PDU_p pdu = NULL;
+    int expiryCount = 0;
 }

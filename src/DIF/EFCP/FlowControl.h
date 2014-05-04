@@ -34,11 +34,13 @@
  */
 class FlowControl : public cSimpleModule
 {
+    friend class DTCP;
+    friend class DTP;
   private:
     unsigned long timeUnit; //This field contains the unit of time in milliseconds over which the rate is computed.
     unsigned int sendRightWindowEdge; // The largest Sequence Number of a PDU that may be sent without the receiver discarding it.
     unsigned int sendingRate; // This variable contains the number of PDUs that may be sent in one Time Unit. The rate is defined such that the sender may send the specified number of PDUs in that unit of time. Thus, the rate will not necessarily generate a steady flow, but  may exhibit a bursty pattern.
-    unsigned int PDUsSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
+    unsigned int pdusSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
     unsigned long sendingTimeUnit; //The time period used to measure the SendingRate (measured in milliseconds).
     unsigned int sendBytesFree; // The number of bytes that this flow can assume it has available for Writes.
     unsigned int sendBytesPercentFree; // The percent of bytes that are free for Writes.

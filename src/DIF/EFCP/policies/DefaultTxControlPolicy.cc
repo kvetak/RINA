@@ -54,7 +54,7 @@ void DefaultTxControlPolicy::run(cObject *dtpT)
 
     if (!dtp->generatedPDUs.empty())
     {
-      dtp->state.setClosedWindowQue(true);
+      dtp->state.setClosedWindow(true);
     }
 
 

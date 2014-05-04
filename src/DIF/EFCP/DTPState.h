@@ -54,21 +54,21 @@ private:
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
     bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
-    bool rexmsnPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
-    bool closedWindowQue; /*!< This Boolean indicates whether or not the flow control window is closed.*/
+    bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
+    bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
 
     bool rateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
 
-    int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
+    unsigned int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
 
-    int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
+    unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
     bool partDeliv; /* Partial Delivery of SDUs is Allowed */
     bool incompDeliv; /* Delivery of Incomplete SDUs is Allowed */
     //queue<PDU,timer>rexmsnQ; //The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
     //queue<PDU> closedWinQ; //The queue of PDUs ready to be sent once the window opens.
-    int rcvLeftWinEdge;
-    int maxSeqNumRcvd;
-    int senderLeftWinEdge;
+    unsigned int rcvLeftWinEdge;
+    unsigned int maxSeqNumRcvd;
+    unsigned int senderLeftWinEdge;
     unsigned int nextSeqNumToSend;
     //queue<PDU,seqNum> pduReassemblyQ
 
@@ -79,16 +79,16 @@ private:
 public:
     DTPState();
     virtual ~DTPState();
-    bool isClosedWindowQue() const;
-    void setClosedWindowQue(bool closedWindowQue);
-    int getClosedWinQueLen() const;
-    void setClosedWinQueLen(int closedWinQueLen);
+    bool isClosedWindow() const;
+    void setClosedWindow(bool closedWindow);
+    unsigned int getClosedWinQueLen() const;
+    void setClosedWinQueLen(unsigned int closedWinQueLen);
     bool isDtcpPresent() const;
     void setDtcpPresent(bool dtcpPresent);
     bool isIncompDeliv() const;
     void setIncompDeliv(bool incompDeliv);
-    int getMaxClosedWinQueLen() const;
-    void setMaxClosedWinQueLen(int maxClosedWinQueLen);
+    unsigned int getMaxClosedWinQueLen() const;
+    void setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen);
     unsigned int getMaxFlowPduSize() const;
     void setMaxFlowPduSize(unsigned int maxFlowPduSize);
     unsigned int getMaxFlowSduSize() const;
@@ -106,8 +106,8 @@ public:
     void setRateFullfilled(bool rateFullfilled);
     int getRcvLeftWinEdge() const;
     void setRcvLeftWinEdge(int rcvLeftWinEdge);
-    bool isRexmsnPresent() const;
-    void setRexmsnPresent(bool rexmsnPresent);
+    bool isRxPresent() const;
+    void setRxPresent(bool rxPresent);
     int getSenderLeftWinEdge() const;
     void setSenderLeftWinEdge(int senderLeftWinEdge);
     int getSeqNumRollOverThresh() const;

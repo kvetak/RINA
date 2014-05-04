@@ -15,32 +15,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef CONNECTIONID_H_
-#define CONNECTIONID_H_
-
-#include <cobject.h>
 /*
- *
+ * @file RMT.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 4, 2014
+ * @brief
+ * @detail
  */
-class ConnectionId: public cObject {
 
-private:
-    unsigned int qoSId;
-    unsigned int destCEPId;
-    unsigned int srcCEPId;
+#include <RMT.h>
 
-public:
-    ConnectionId();
-    virtual ~ConnectionId();
-    unsigned int getDestCepId() const;
-    void setDestCepId(unsigned int destCepId);
-    unsigned int getQoSId() const;
-    void setQoSId(unsigned int qoSId);
-    unsigned int getSrcCepId() const;
-    void setSrcCepId(unsigned int srcCepId);
+RMT::RMT()
+{
+  // TODO Auto-generated constructor stub
 
-    virtual ConnectionId *dup() const;
+}
 
-};
+RMT::~RMT()
+{
+  // TODO Auto-generated destructor stub
+}
 
-#endif /* CONNECTIONID_H_ */
+void RMT::fromDTPToRMT(APN* destAddr, unsigned int qosId, PDU *pdu){
+
+}

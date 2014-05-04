@@ -29,6 +29,7 @@
 #include "SDU.h"
 
 #include "FlowAllocator.h" //or FlowAllocatorFactory
+#include "RMT.h"
 
 class DTP : public cSimpleModule
 {
@@ -37,11 +38,14 @@ class DTP : public cSimpleModule
   private:
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
+    RMT* rmt;
 
 
     std::vector<SDU*> sduQ; //SDUs generated from delimiting
     std::vector<PDU*> generatedPDUs;
     std::vector<PDU*> postablePDUs;
+    std::vector<PDU*> closedWindowQ;
+    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
 
     InactivityTimer* senderInactivity;
 
@@ -68,14 +72,28 @@ class DTP : public cSimpleModule
 
     void trySendGenPDUs();
 
+    void sendPostablePDUsToRMT();
+
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
     void getSDUFromQ(SDU *sdu);
     void setConnId(const ConnectionId& connId);
 
+    /* Policy-related methods */
     void runTxControlPolicy();
+    void runFlowControlOverrunPolicy();
+    void runNoRateSlowDownPolicy();
+    void runNoOverrideDefaultPeakPolicy();
+    void runReconcileFlowControlPolicy();
 
     unsigned int getFlowControlRightWinEdge();
+
+    /* This method SHOULD return amount of time to wait before retransmission attempt */
+    unsigned int getRxTime();
+
+
+
+    void schedule(DTPTimers* timer, double time =0.0);
 
   public:
     DTP();

@@ -22,27 +22,27 @@ ConnectionId::ConnectionId() {
 
 }
 
-int ConnectionId::getDestCepId() const {
+unsigned int ConnectionId::getDestCepId() const {
     return destCEPId;
 }
 
-void ConnectionId::setDestCepId(int destCepId) {
+void ConnectionId::setDestCepId(unsigned int destCepId) {
     destCEPId = destCepId;
 }
 
-int ConnectionId::getQoSId() const {
+unsigned int ConnectionId::getQoSId() const {
     return qoSId;
 }
 
-void ConnectionId::setQoSId(int qoSId) {
+void ConnectionId::setQoSId(unsigned int qoSId) {
     this->qoSId = qoSId;
 }
 
-int ConnectionId::getSrcCepId() const {
+unsigned int ConnectionId::getSrcCepId() const {
     return srcCEPId;
 }
 
-void ConnectionId::setSrcCepId(int srcCepId) {
+void ConnectionId::setSrcCepId(unsigned int srcCepId) {
     srcCEPId = srcCepId;
 }
 

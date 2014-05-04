@@ -31,6 +31,16 @@ DTCPState::DTCPState()
 
 }
 
+unsigned int DTCPState::getRtt() const
+{
+  return rtt;
+}
+
+void DTCPState::setRtt(unsigned int rtt)
+{
+  this->rtt = rtt;
+}
+
 DTCPState::~DTCPState()
 {
   // TODO Auto-generated destructor stub

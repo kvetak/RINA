@@ -43,6 +43,8 @@ class DTCPState : public cObject
   public:
     DTCPState();
     virtual ~DTCPState();
+    unsigned int getRtt() const;
+    void setRtt(unsigned int rtt);
 };
 
 #endif /* DTCPSTATE_H_ */

@@ -30,12 +30,14 @@
 #include "DTCPState.h"
 
 class DTCP {
+    friend class DTP;
   private:
-
-public:
     DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
+
+public:
+
 
     unsigned int getFlowControlRightWinEdge();
     DTCP();

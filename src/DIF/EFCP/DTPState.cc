@@ -26,19 +26,19 @@ DTPState::~DTPState() {
     // TODO Auto-generated destructor stub
 }
 
-bool DTPState::isClosedWindowQue() const {
-    return closedWindowQue;
+bool DTPState::isClosedWindow() const {
+    return closedWindow;
 }
 
-void DTPState::setClosedWindowQue(bool closedWindowQue) {
-    this->closedWindowQue = closedWindowQue;
+void DTPState::setClosedWindow(bool closedWindowQue) {
+    this->closedWindow = closedWindowQue;
 }
 
-int DTPState::getClosedWinQueLen() const {
+unsigned int DTPState::getClosedWinQueLen() const {
     return closedWinQueLen;
 }
 
-void DTPState::setClosedWinQueLen(int closedWinQueLen) {
+void DTPState::setClosedWinQueLen(unsigned int closedWinQueLen) {
     this->closedWinQueLen = closedWinQueLen;
 }
 
@@ -58,11 +58,11 @@ void DTPState::setIncompDeliv(bool incompDeliv) {
     this->incompDeliv = incompDeliv;
 }
 
-int DTPState::getMaxClosedWinQueLen() const {
+unsigned int DTPState::getMaxClosedWinQueLen() const {
     return maxClosedWinQueLen;
 }
 
-void DTPState::setMaxClosedWinQueLen(int maxClosedWinQueLen) {
+void DTPState::setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen) {
     this->maxClosedWinQueLen = maxClosedWinQueLen;
 }
 
@@ -140,12 +140,12 @@ void DTPState::setRcvLeftWinEdge(int rcvLeftWinEdge) {
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
-bool DTPState::isRexmsnPresent() const {
-    return rexmsnPresent;
+bool DTPState::isRxPresent() const {
+    return rxPresent;
 }
 
-void DTPState::setRexmsnPresent(bool rexmsnPresent) {
-    this->rexmsnPresent = rexmsnPresent;
+void DTPState::setRxPresent(bool rexmsnPresent) {
+    this->rxPresent = rexmsnPresent;
 }
 
 int DTPState::getSenderLeftWinEdge() const {
