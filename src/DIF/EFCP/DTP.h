@@ -95,6 +95,10 @@ class DTP : public cSimpleModule
     void runNoOverrideDefaultPeakPolicy();
     void runReconcileFlowControlPolicy();
     void runInitialSequenceNumberPolicy();
+    void runRcvrFlowControlPolicy();
+    void runRateReductionPolicy();
+    void runRcvrAckPolicy();
+    void runReceivingFlowControlPolicy();
 
 
     unsigned int getFlowControlRightWinEdge();

@@ -59,8 +59,11 @@ class FlowControl : public cSimpleModule
     unsigned int rcvBytesPercentThreshold; //The percent of free bytes at which flow control does not move the Right Window Edge.
     unsigned int rcvBuffersFree; //The number of buffers of MaxPDU size that this flow can assume it has available for incoming PDUs
     unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
-    unsigned int RcvBuffersThreshold; //The number of free buffers at which flow control does not advance the Right Window Edge.
-    unsigned int RcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
+    unsigned int rcvBuffersThreshold; //The number of free buffers at which flow control does not advance the Right Window Edge.
+    unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
+
+    /* Not found in specs but needed */
+    unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
 
   public:
     FlowControl();

@@ -91,6 +91,10 @@ void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
     this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
 }
 
+void DTPState::incMaxSeqNumRcvd() {
+  maxSeqNumRcvd++;
+}
+
 /*
  * Return value of nextSeqNumToSend and increments it
  * @return nextSeqNumToSend value before incrementing
@@ -179,4 +183,15 @@ bool DTPState::isWinBased() const {
 
 void DTPState::setWinBased(bool winBased) {
     this->winBased = winBased;
+}
+
+unsigned int DTPState::getLastSeqNumDeliv() const
+{
+  return lastSeqNumDeliv;
+}
+
+void DTPState::setLastSeqNumDeliv(unsigned int lastSeqNumDeliv)
+{
+  //TODO A1 check that this method is called from somewhere/this variable is set
+  this->lastSeqNumDeliv = lastSeqNumDeliv;
 }
