@@ -388,7 +388,7 @@ void DTP::fromRMT(PDU* pdu){
       return;
     }
 
-    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <)
+//    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <)
   }
 }
 
