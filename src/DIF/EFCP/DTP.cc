@@ -38,7 +38,7 @@ void DTP::handleMessage(cMessage *msg)
 bool DTP::write(int portId, unsigned char* buffer, int len)
 {
 
-  cancelEvent(this->senderInactivity);
+  cancelEvent(senderInactivityTimer);
 
   this->delimit(buffer, len);
   /* Now the data from buffer are copied to SDUs so we can free the memory */
@@ -49,9 +49,10 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
   /* Iterate over generated PDUs and decide if we can send them */
   this->trySendGenPDUs();
 
-  /* iterate over postablePDUs */
-  this->sendPostablePDUsToRMT();
+//  /* iterate over postablePDUs */
+//  this->sendPostablePDUsToRMT();
 
+  schedule(senderInactivityTimer);
   return true;
 }
 
@@ -61,7 +62,7 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
  * @param len size of incoming data
  * @return number of created SDUs
  */
-int DTP::delimit(unsigned char *buffer, unsigned int len)
+unsigned int DTP::delimit(unsigned char *buffer, unsigned int len)
 {
 
   unsigned int offset = 0, size = 0, counter = 0;
@@ -92,6 +93,15 @@ int DTP::delimit(unsigned char *buffer, unsigned int len)
 //    sduQ.push(sdu);
 //    counter = 1;
 //  }
+  return counter;
+}
+
+
+unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len){
+  unsigned int counter = 0;
+
+//  if()
+
   return counter;
 }
 
@@ -200,7 +210,7 @@ void DTP::generatePDUs()
       {
         //(rest of) SDU will fit into rest of PDU
         //complete sdu
-        if ((delimitFlags && 0x03) == 3)
+        if ((delimitFlags & 0x03) == 3)
         {
           //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
           delimitFlags &= 0xFC;
@@ -335,22 +345,70 @@ void DTP::trySendGenPDUs()
     }
   }
 
-  schedule(senderInactivity);
+
 }
 
-/*
- * Iterate over postablePDUs and give them to RMT
- */
-void DTP::sendPostablePDUsToRMT(){
 
-  if(state.isRxPresent()){
-    std::vector<PDU*>::iterator it;
-      for (it = generatedPDUs.begin(); it != generatedPDUs.end(); it = generatedPDUs.begin()){
-        /* Put a copy of each PDU in the RetransmissionQueue */
-      }
+void DTP::fromRMT(PDU* pdu){
 
+  if(state.isFlowControlPresent()){
+    cancelEvent(windowTimer);
+    schedule(windowTimer);
+  }
+  // if PDU.DRF == true
+  if((pdu->getFlags() & 0x80) == 0x80){
+    /* Case 1) DRF is set - either first PDU or new run */
+    //TODO A! Invoke delimiting delimitFromRMT()
+
+    //Flush the PDUReassemblyQueue
+    //TODO A2 free memory of queued PDUs
+    reassemblyPDUQ.clear();
+    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+    /* Initialize the other direction */
+    dtcp->dtcpState->setSetDrfFlag(true);
+
+    runInitialSequenceNumberPolicy();
+
+    if(state.isDtcpPresent()){
+      /* Update RxControl */
+      svUpdate(pdu->getSeqNum());
+    }
+
+  }else{
+    /* Not the start of a run */
+    if(pdu->getSeqNum() < state.getRcvLeftWinEdge()){
+      /* Case 2) A Real Duplicate */
+      //Discard PDU and increment counter of dropped duplicates PDU
+      delete pdu;
+      //TODO A1 increment counter of dropped duplicates PDU
+      state.incDropDup();
+
+      //TODO A! send an Ack/Flow Control PDU with current window values
+
+      return;
+    }
+
+    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <)
   }
 }
+
+///*
+// * Iterate over postablePDUs and give them to RMT
+// */
+//void DTP::sendPostablePDUsToRMT(){
+//
+//  if(state.isRxPresent()){
+//    std::vector<PDU*>::iterator it;
+//      for (it = generatedPDUs.begin(); it != generatedPDUs.end(); it = generatedPDUs.begin()){
+//        /* Put a copy of each PDU in the RetransmissionQueue */
+//      }
+//
+//  }
+//}
+
+
+
+
 
 /**
  * This method calls specified function to perform SDU protection.
@@ -359,6 +417,7 @@ void DTP::sendPostablePDUsToRMT(){
  */
 void DTP::sduProtection(SDU *sdu)
 {
+  //TODO A1
 
 }
 /**
@@ -453,6 +512,13 @@ void DTP::runReconcileFlowControlPolicy(){
   /* Default (is empty) */
 }
 
+void DTP::runInitialSequenceNumberPolicy(){
+
+  /*Default*/
+  //TODO B1 set it to random number
+  state.setNextSeqNumToSend(4);
+}
+
 
 
 unsigned int DTP::getRxTime(){
@@ -466,6 +532,12 @@ unsigned int DTP::getRxTime(){
 }
 
 
+void DTP::svUpdate(unsigned int seqNum){
+
+  //TODO A! Find out what svUpdate should specifically update!
+  state.setRcvLeftWinEdge(seqNum);
+}
+
 
 void DTP::schedule(DTPTimers *timer, double time){
 
@@ -474,10 +546,15 @@ void DTP::schedule(DTPTimers *timer, double time){
     case (RX_EXPIRY_TIMER):{
       break;
     }
-    case (DTP_INACTIVITY_TIMER):{
-      //TODO A! 3(MPL+R+A)
-        scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
-      break;
+    case (DTP_SENDER_INACTIVITY_TIMER):{
+          //TODO A! 3(MPL+R+A)
+            scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+          break;
+        }
+    case (DTP_RCVR_INACTIVITY_TIMER):{
+          //TODO A!
+            scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+          break;
     }
   }
 

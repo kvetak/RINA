@@ -49,7 +49,7 @@ private:
     unsigned int maxFlowSDUSize;
     unsigned int maxFlowPDUSize;
 
-    int seqNumRollOverThresh;
+    unsigned int seqNumRollOverThresh;
     int state;
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
@@ -72,6 +72,8 @@ private:
     unsigned int nextSeqNumToSend;
     //queue<PDU,seqNum> pduReassemblyQ
 
+    unsigned int dropDup; //number of dropped duplicates (this variable is not mentioned in specs)
+
     //moved to DTP.h
 //    queue<unsigned char *> sduQ; //SDUs generated from delimiting
 
@@ -79,6 +81,8 @@ private:
 public:
     DTPState();
     virtual ~DTPState();
+    void incDropDup(){dropDup++;}
+    bool isFlowControlPresent(){ return winBased || rateBased;}
     bool isClosedWindow() const;
     void setClosedWindow(bool closedWindow);
     unsigned int getClosedWinQueLen() const;
@@ -93,9 +97,9 @@ public:
     void setMaxFlowPduSize(unsigned int maxFlowPduSize);
     unsigned int getMaxFlowSduSize() const;
     void setMaxFlowSduSize(unsigned int maxFlowSduSize);
-    int getMaxSeqNumRcvd() const;
-    void setMaxSeqNumRcvd(int maxSeqNumRcvd);
-    unsigned  int getNextSeqNumToSend();
+    unsigned int getMaxSeqNumRcvd() const;
+    void setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd);
+    unsigned int getNextSeqNumToSend();
     void setNextSeqNumToSend(unsigned int nextSeqNumToSend);
     void incNextSeqNumToSend();
     bool isPartDeliv() const;
@@ -104,14 +108,14 @@ public:
     void setRateBased(bool rateBased);
     bool isRateFullfilled() const;
     void setRateFullfilled(bool rateFullfilled);
-    int getRcvLeftWinEdge() const;
-    void setRcvLeftWinEdge(int rcvLeftWinEdge);
+    unsigned int getRcvLeftWinEdge() const;
+    void setRcvLeftWinEdge(unsigned int rcvLeftWinEdge);
     bool isRxPresent() const;
     void setRxPresent(bool rxPresent);
-    int getSenderLeftWinEdge() const;
-    void setSenderLeftWinEdge(int senderLeftWinEdge);
-    int getSeqNumRollOverThresh() const;
-    void setSeqNumRollOverThresh(int seqNumRollOverThresh);
+    unsigned int getSenderLeftWinEdge() const;
+    void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
+    unsigned int getSeqNumRollOverThresh() const;
+    void setSeqNumRollOverThresh(unsigned int seqNumRollOverThresh);
     int getState() const;
     void setState(int state);
     bool isWinBased() const;

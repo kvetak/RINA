@@ -26,15 +26,25 @@ class noncobject PDU_p;
 
 enum DTPTimerType
 {
-  DTP_INACTIVITY_TIMER = 1;   
-  RX_EXPIRY_TIMER = 2;
+  DTP_SENDER_INACTIVITY_TIMER = 1;
+  DTP_RCVR_INACTIVITY_TIMER = 2;   
+  RX_EXPIRY_TIMER = 3;
+  DTP_WINDOW_TIMER = 4;
 }
 message DTPTimers {
 	int type enum(DTPTimerType);
 }
 
 message InactivityTimer extends DTPTimers{
-    type = DTP_INACTIVITY_TIMER;
+ 
+}
+
+message SenderInactivityTimer extends InactivityTimer{
+    type = DTP_SENDER_INACTIVITY_TIMER;
+}
+
+message RcvrInactivityTimer extends InactivityTimer{
+    type = DTP_RCVR_INACTIVITY_TIMER;
 }
 
 
@@ -42,4 +52,8 @@ message RxExpiryTimer extends DTPTimers{
     type = RX_EXPIRY_TIMER;
     PDU_p pdu = NULL;
     int expiryCount = 0;
+}
+
+message WindowTimer extends DTPTimers{
+    type = DTP_WINDOW_TIMER;
 }

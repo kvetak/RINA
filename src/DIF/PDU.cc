@@ -41,8 +41,8 @@ void PDU::addUserData(const unsigned char* userData, unsigned int size, bool *fr
       //allocate new space
       unsigned char * tmp = new unsigned char[userData_arraysize + SDU_FRAG_LEN];
       //put size of the exising segment/SDU in the PDU
-      tmp[0] = userData_arraysize && 0xFF;
-      tmp[1] = (userData_arraysize << 8) && 0xFF;
+      tmp[0] = userData_arraysize & 0xFF;
+      tmp[1] = (userData_arraysize << 8) & 0xFF;
       //update size of the userData array
       userData_arraysize += SDU_FRAG_LEN;
       //copy existing data
@@ -58,8 +58,8 @@ void PDU::addUserData(const unsigned char* userData, unsigned int size, bool *fr
     //allocate new space
     unsigned char * tmp = new unsigned char [size + this->userData_arraysize + SDU_FRAG_LEN];
     //put size of the exising segment/SDU in the PDU
-    tmp[this->userData_arraysize] = size && 0xFF;
-    tmp[this->userData_arraysize +1 ] = (size << 8) && 0xFF;
+    tmp[this->userData_arraysize] = size & 0xFF;
+    tmp[this->userData_arraysize +1 ] = (size << 8) & 0xFF;
     this->userData_arraysize += SDU_FRAG_LEN;
     //copy existing data
     memcpy(tmp, this->userData_var, this->userData_arraysize);
@@ -86,13 +86,13 @@ void PDU::putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum){
     //TODO B2 add support for SDU Seq Number
   }
 
-  flags_var |= 0x08 && (sduSeqNum == -1) ? 0x00: 0xFF;
+  flags_var |= 0x08 & (sduSeqNum == -1) ? 0x00: 0xFF;
   flags_var |= delimitFlags;
 
 
   unsigned char * tmp = new unsigned char[userData_arraysize + SDU_DELIMITER_FLAG_LEN];
   //put size of the exising segment/SDU in the PDU
-  tmp[0] = 0x08 && (sduSeqNum == -1) ? 0x00: 0xFF;
+  tmp[0] = 0x08 & (sduSeqNum == -1) ? 0x00: 0xFF;
   tmp[0] |= delimitFlags;
 
   //update size of the userData array

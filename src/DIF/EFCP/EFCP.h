@@ -71,6 +71,8 @@ private:
 
     int portId; //FAI-identifier
 
+    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
+
 
 public:
     EFCP();

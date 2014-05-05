@@ -36,6 +36,46 @@ unsigned int DTCPState::getRtt() const
   return rtt;
 }
 
+bool DTCPState::isImmediate() const
+{
+  return immediate;
+}
+
+void DTCPState::setImmediate(bool immediate)
+{
+  this->immediate = immediate;
+}
+
+unsigned int DTCPState::getRcvrRightWinEdgeSent() const
+{
+  return rcvrRightWinEdgeSent;
+}
+
+void DTCPState::setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent)
+{
+  this->rcvrRightWinEdgeSent = rcvrRightWinEdgeSent;
+}
+
+unsigned int DTCPState::getSenderRightWinEdge() const
+{
+  return senderRightWinEdge;
+}
+
+void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
+{
+  this->senderRightWinEdge = senderRightWinEdge;
+}
+
+bool DTCPState::isSetDrfFlag() const
+{
+  return setDRFFlag;
+}
+
+void DTCPState::setSetDrfFlag(bool setDrfFlag)
+{
+  setDRFFlag = setDrfFlag;
+}
+
 void DTCPState::setRtt(unsigned int rtt)
 {
   this->rtt = rtt;

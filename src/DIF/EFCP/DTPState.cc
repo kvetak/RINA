@@ -82,12 +82,13 @@ void DTPState::setMaxFlowSduSize(unsigned int maxFlowSduSize) {
     maxFlowSDUSize = maxFlowSduSize;
 }
 
-int DTPState::getMaxSeqNumRcvd() const {
+unsigned int DTPState::getMaxSeqNumRcvd() const {
     return maxSeqNumRcvd;
 }
 
-void DTPState::setMaxSeqNumRcvd(int maxSeqNumRcvd) {
-    this->maxSeqNumRcvd = maxSeqNumRcvd;
+void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
+
+    this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
 }
 
 /*
@@ -132,11 +133,11 @@ void DTPState::setRateFullfilled(bool rateFullfilled) {
     this->rateFullfilled = rateFullfilled;
 }
 
-int DTPState::getRcvLeftWinEdge() const {
+unsigned int DTPState::getRcvLeftWinEdge() const {
     return rcvLeftWinEdge;
 }
 
-void DTPState::setRcvLeftWinEdge(int rcvLeftWinEdge) {
+void DTPState::setRcvLeftWinEdge(unsigned int rcvLeftWinEdge) {
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
@@ -148,19 +149,19 @@ void DTPState::setRxPresent(bool rexmsnPresent) {
     this->rxPresent = rexmsnPresent;
 }
 
-int DTPState::getSenderLeftWinEdge() const {
+unsigned int DTPState::getSenderLeftWinEdge() const {
     return senderLeftWinEdge;
 }
 
-void DTPState::setSenderLeftWinEdge(int senderLeftWinEdge) {
+void DTPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
     this->senderLeftWinEdge = senderLeftWinEdge;
 }
 
-int DTPState::getSeqNumRollOverThresh() const {
+unsigned int DTPState::getSeqNumRollOverThresh() const {
     return seqNumRollOverThresh;
 }
 
-void DTPState::setSeqNumRollOverThresh(int seqNumRollOverThresh) {
+void DTPState::setSeqNumRollOverThresh(unsigned int seqNumRollOverThresh) {
     this->seqNumRollOverThresh = seqNumRollOverThresh;
 }
 

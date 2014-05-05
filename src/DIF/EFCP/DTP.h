@@ -40,14 +40,21 @@ class DTP : public cSimpleModule
     DTCP* dtcp;
     RMT* rmt;
 
-
+    /* Various queues */
+    /* Output queues - from App to RMT */
     std::vector<SDU*> sduQ; //SDUs generated from delimiting
     std::vector<PDU*> generatedPDUs;
     std::vector<PDU*> postablePDUs;
     std::vector<PDU*> closedWindowQ;
     std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
+    /* Input queues - from RMT to App */
+    std::vector<PDU*> reassemblyPDUQ;
 
-    InactivityTimer* senderInactivity;
+    /* Timers */
+    SenderInactivityTimer* senderInactivityTimer;
+    RcvrInactivityTimer* rcvrInactivityTimer;
+
+    WindowTimer* windowTimer;
 
     FlowAllocator* flowAllocator;
     /* OR
@@ -58,26 +65,28 @@ class DTP : public cSimpleModule
     ConnectionId connId;
 
 
-    /* Policies */
-    TxControlPolicy *txControlPolicy;
 
 
-
-
-    /** Delimits  content of buffer */
-    int delimit(unsigned char *buffer, unsigned int len);
-
+    /** Delimits content of buffer from application */
+    unsigned int delimit(unsigned char *buffer, unsigned int len);
+    unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
     void generatePDUs();
 
     void trySendGenPDUs();
 
-    void sendPostablePDUsToRMT();
+//    void sendPostablePDUsToRMT();
+
+    void fromRMT(PDU* pdu);
 
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
+
     void getSDUFromQ(SDU *sdu);
     void setConnId(const ConnectionId& connId);
+
+    /* Policies */
+    TxControlPolicy *txControlPolicy;
 
     /* Policy-related methods */
     void runTxControlPolicy();
@@ -85,11 +94,15 @@ class DTP : public cSimpleModule
     void runNoRateSlowDownPolicy();
     void runNoOverrideDefaultPeakPolicy();
     void runReconcileFlowControlPolicy();
+    void runInitialSequenceNumberPolicy();
+
 
     unsigned int getFlowControlRightWinEdge();
 
     /* This method SHOULD return amount of time to wait before retransmission attempt */
     unsigned int getRxTime();
+
+    void svUpdate(unsigned int seqNum);
 
 
 

@@ -45,6 +45,14 @@ class DTCPState : public cObject
     virtual ~DTCPState();
     unsigned int getRtt() const;
     void setRtt(unsigned int rtt);
+    bool isImmediate() const;
+    void setImmediate(bool immediate);
+    unsigned int getRcvrRightWinEdgeSent() const;
+    void setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
+    unsigned int getSenderRightWinEdge() const;
+    void setSenderRightWinEdge(unsigned int senderRightWinEdge);
+    bool isSetDrfFlag() const;
+    void setSetDrfFlag(bool setDrfFlag);
 };
 
 #endif /* DTCPSTATE_H_ */
