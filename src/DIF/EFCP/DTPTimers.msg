@@ -28,7 +28,7 @@ enum DTPTimerType
 {
   DTP_SENDER_INACTIVITY_TIMER = 1;
   DTP_RCVR_INACTIVITY_TIMER = 2;   
-  RX_EXPIRY_TIMER = 3;
+  DTP_RX_EXPIRY_TIMER = 3;
   DTP_WINDOW_TIMER = 4;
 }
 message DTPTimers {
@@ -49,7 +49,7 @@ message RcvrInactivityTimer extends InactivityTimer{
 
 
 message RxExpiryTimer extends DTPTimers{
-    type = RX_EXPIRY_TIMER;
+    type = DTP_RX_EXPIRY_TIMER;
     PDU_p pdu = NULL;
     int expiryCount = 0;
 }

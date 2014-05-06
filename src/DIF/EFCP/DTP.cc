@@ -32,7 +32,21 @@ void DTP::setConnId(const ConnectionId& connId)
 
 void DTP::handleMessage(cMessage *msg)
 {
+  if(msg->isSelfMessage()){
+    /* Timers */
+    DTPTimers* timer = static_cast<DTPTimers*>(msg);
+    switch(timer->getType()){
+      case(DTP_RX_EXPIRY_TIMER):{
+        handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
+        break;
+      }
+    }
+  }
 
+}
+
+void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer){
+  runRxTimerExpiryPolicy(timer);
 }
 
 bool DTP::write(int portId, unsigned char* buffer, int len)
@@ -317,7 +331,8 @@ void DTP::trySendGenPDUs()
         rxQ.push_back(rxExpTimer);
         scheduleAt(simTime() + getRxTime(),rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
-        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
+        sendToRMT((*it));
+//        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
 
         it = postablePDUs.erase(it);
       }
@@ -359,11 +374,11 @@ void DTP::fromRMT(PDU* pdu){
   if((pdu->getFlags() & 0x80) == 0x80){
     /* Case 1) DRF is set - either first PDU or new run */
     //TODO A! Invoke delimiting delimitFromRMT()
-
+    delimitFromRMT(pdu, pdu->getUserDataArraySize());
 
     //Flush the PDUReassemblyQueue
-    //TODO A2 free memory of queued PDUs
-    reassemblyPDUQ.clear();
+    flushReassemblyPDUQ();
+
     state.setMaxSeqNumRcvd(pdu->getSeqNum());
     /* Initialize the other direction */
     dtcp->dtcpState->setSetDrfFlag(true);
@@ -628,6 +643,30 @@ void DTP::runReceivingFlowControlPolicy(){
   }
 }
 
+void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer){
+
+  PDU* pdu = timer->getPdu();
+/*  unsigned int seqNum = pdu->getSeqNum();
+  std::vector<RxExpiryTimer*>::iterator it;
+   Retransmitt all PDUs that have SeqNum less or equal to the one that just expired?
+  for(it = rxQ.begin(); it != rxQ.end(); ++it){
+    if((*it)->getPdu()->getSeqNum() <= seqNum){
+      sendToRMT((*it)->getPdu());
+      (*it)->setExpiryCount((*it)->getExpiryCount() + 1);
+    }
+  }*/
+
+  if(timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1){
+    //TODO A! Indicate error "Unable to maintain the QoS for this connection"
+  }
+
+}
+
+void DTP::sendToRMT(PDU* pdu){
+
+  rmt->fromDTPToRMT(new APN(), connId.getQoSId(), pdu);
+}
+
 unsigned int DTP::getRxTime(){
   //TODO A! 2MPL + A + epsilon
   //This might be job for a policy, presumably RTT estimator policy?
@@ -641,7 +680,7 @@ unsigned int DTP::getRxTime(){
 
 void DTP::svUpdate(unsigned int seqNum){
 
-//  //TODO A! Find out what svUpdate should specifically update!
+//  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
 
   if(state.isFlowControlPresent()){
@@ -665,12 +704,21 @@ void DTP::svUpdate(unsigned int seqNum){
 
 }
 
+void DTP::flushReassemblyPDUQ(){
+  std::vector<PDU*>::iterator it;
+  for(it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();){
+    delete (*it);
+    it= reassemblyPDUQ.erase(it);
+  }
+}
+
 
 void DTP::schedule(DTPTimers *timer, double time){
 
 
   switch(timer->getType()){
-    case (RX_EXPIRY_TIMER):{
+    case (DTP_RX_EXPIRY_TIMER):{
+      //TODO A! Expiry Timer time interval
       break;
     }
     case (DTP_SENDER_INACTIVITY_TIMER):{

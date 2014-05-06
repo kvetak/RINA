@@ -33,6 +33,7 @@
  */
 class RXControl : public cSimpleModule
 {
+    friend class DTP;
   private:
     unsigned int rightWinEdge; //The highest sequence number that the remote application is currently willing to accept on this connection.
     unsigned int lastRightWinEdgeSent; //The sequence number of the last Right Window Edge Sent in a Control PDU. (This should be the same as RightWindowEdge.)

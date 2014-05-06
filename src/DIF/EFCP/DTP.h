@@ -64,7 +64,8 @@ class DTP : public cSimpleModule
 
     ConnectionId connId;
 
-
+    /* Handle messages and timer */
+    void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
 
 
     /** Delimits content of buffer from application */
@@ -99,6 +100,8 @@ class DTP : public cSimpleModule
     void runRateReductionPolicy();
     void runRcvrAckPolicy();
     void runReceivingFlowControlPolicy();
+    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
+
 
 
     unsigned int getFlowControlRightWinEdge();
@@ -108,7 +111,9 @@ class DTP : public cSimpleModule
 
     void svUpdate(unsigned int seqNum);
 
+    void flushReassemblyPDUQ();
 
+    void sendToRMT(PDU *pdu);
 
     void schedule(DTPTimers* timer, double time =0.0);
 
@@ -119,6 +124,7 @@ class DTP : public cSimpleModule
     bool read(int portId, unsigned char * buffer, int len);
     bool readImmediate(int portId, unsigned char* buffer, int len);
     bool write(int portId, unsigned char *buffer, int len);
+
 
 
 
