@@ -74,7 +74,7 @@ private:
 
     /* Not in specs */
     unsigned int dropDup; //number of dropped duplicates (this variable is not mentioned in specs)
-    unsigned int lastSeqNumDeliv; //sequence number of last delivered PDU
+
 
     //moved to DTP.h
 //    queue<unsigned char *> sduQ; //SDUs generated from delimiting
@@ -123,8 +123,6 @@ public:
     void setState(int state);
     bool isWinBased() const;
     void setWinBased(bool winBased);
-    unsigned int getLastSeqNumDeliv() const;
-    void setLastSeqNumDeliv(unsigned int lastSeqNumDeliv);
 };
 
 #endif /* DTPSTATE_H_ */

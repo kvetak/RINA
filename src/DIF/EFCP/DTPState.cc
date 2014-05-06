@@ -185,13 +185,3 @@ void DTPState::setWinBased(bool winBased) {
     this->winBased = winBased;
 }
 
-unsigned int DTPState::getLastSeqNumDeliv() const
-{
-  return lastSeqNumDeliv;
-}
-
-void DTPState::setLastSeqNumDeliv(unsigned int lastSeqNumDeliv)
-{
-  //TODO A1 check that this method is called from somewhere/this variable is set
-  this->lastSeqNumDeliv = lastSeqNumDeliv;
-}

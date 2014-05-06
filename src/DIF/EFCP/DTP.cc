@@ -360,6 +360,7 @@ void DTP::fromRMT(PDU* pdu){
     /* Case 1) DRF is set - either first PDU or new run */
     //TODO A! Invoke delimiting delimitFromRMT()
 
+
     //Flush the PDUReassemblyQueue
     //TODO A2 free memory of queued PDUs
     reassemblyPDUQ.clear();
@@ -388,7 +389,7 @@ void DTP::fromRMT(PDU* pdu){
       return;
     }
 
-    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() < state.getLastSeqNumDeliv()){
+    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() < state.getMaxSeqNumRcvd()){
       /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
       //TODO A!
       //if a duplicate among the gaps then // search reassemblyQ?
