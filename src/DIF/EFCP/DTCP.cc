@@ -27,3 +27,42 @@ DTCP::~DTCP() {
 unsigned int DTCP::getFlowControlRightWinEdge(){
   return flowControl->getSendRightWindowEdge();
 }
+
+
+void DTCP::schedule(DTCPTimers* timer){
+
+}
+
+void DTCP::resetWindowTimer(){
+  cancelEvent(windowTimer);
+      schedule(windowTimer);
+}
+
+
+void DTCP::handleMessage(cMessage *msg){
+  if(msg->isSelfMessage()){
+    /* Self message */
+    DTCPTimers* timer = static_cast<DTCPTimers*>(msg);
+
+    switch(timer->getType()){
+      case(DTCP_WINDOW_TIMER):{
+        handleWindowTimer(static_cast<WindowTimer*>(timer));
+      }
+    }
+  }else{
+
+    /* PANIC!! */
+  }
+
+}
+
+void DTCP::handleWindowTimer(WindowTimer* timer){
+  resetWindowTimer();
+  sendAckPDU();
+}
+
+
+
+void DTCP::sendAckPDU(){
+
+}

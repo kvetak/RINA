@@ -6,3 +6,7 @@
 /DataTransferPDU_m.h
 /ControlPDU_m.h
 /ControlPDU_m.cc
+/DTCPTimers_m.cc
+/DTCPTimers_m.h
+/FCTimers_m.cc
+/FCTimers_m.h

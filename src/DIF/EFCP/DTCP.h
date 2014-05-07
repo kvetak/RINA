@@ -25,16 +25,32 @@
 #ifndef DTCP_H_
 #define DTCP_H_
 
+#include <csimplemodule.h>
+
 #include "FlowControl.h"
 #include "RXControl.h"
 #include "DTCPState.h"
 
-class DTCP {
+#include "ControlPDU_m.h"
+#include "DTCPTimers_m.h"
+
+class DTCP: public cSimpleModule {
     friend class DTP;
   private:
     DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
+
+    /*Timers*/
+    WindowTimer* windowTimer;
+
+
+
+
+    void schedule(DTCPTimers *timer);
+    void resetWindowTimer();
+
+    void sendAckPDU();
 
 public:
 
@@ -42,6 +58,11 @@ public:
     unsigned int getFlowControlRightWinEdge();
     DTCP();
     virtual ~DTCP();
+
+    void handleWindowTimer(WindowTimer* timer);
+
+protected:
+    virtual void handleMessage(cMessage *msg);
 };
 
 #endif /* DTCP_H_ */

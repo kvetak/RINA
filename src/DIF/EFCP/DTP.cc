@@ -38,8 +38,21 @@ void DTP::handleMessage(cMessage *msg)
     switch(timer->getType()){
       case(DTP_RX_EXPIRY_TIMER):{
         handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
+        schedule(timer);
+
         break;
       }
+      case(DTP_SENDING_RATE_TIMER):{
+        handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
+        schedule(timer);
+        break;
+      }
+
+//      case(DTP_WINDOW_TIMER):{
+//        handleDTPWindowTimer(static_cast<WindowTimer*>(timer));
+//
+//        break;
+//      }
     }
   }
 
@@ -49,6 +62,16 @@ void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer){
   runRxTimerExpiryPolicy(timer);
 }
 
+void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer){
+  //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
+  dtcp->flowControl->pdusSentInTimeUnit = 0;
+  state.setRateFullfilled(false);
+
+}
+
+//void DTP::handleDTPWindowTimer(WindowTimer* timer){
+//  sendAckPDU();
+//}
 bool DTP::write(int portId, unsigned char* buffer, int len)
 {
 
@@ -367,8 +390,8 @@ void DTP::trySendGenPDUs()
 void DTP::fromRMT(PDU* pdu){
 
   if(state.isFlowControlPresent()){
-    cancelEvent(windowTimer);
-    schedule(windowTimer);
+    dtcp->resetWindowTimer();
+
   }
   // if PDU.DRF == true
   if((pdu->getFlags() & 0x80) == 0x80){
@@ -657,7 +680,10 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer){
   }*/
 
   if(timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1){
-    //TODO A! Indicate error "Unable to maintain the QoS for this connection"
+    //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
+  }else{
+    sendToRMT(pdu);
+    timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
 
 }
@@ -730,6 +756,11 @@ void DTP::schedule(DTPTimers *timer, double time){
           //TODO A!
             scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
           break;
+    }
+    case (DTP_SENDING_RATE_TIMER):{
+
+      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000 ), timer);
+      break;
     }
   }
 
