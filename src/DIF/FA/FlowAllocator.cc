@@ -33,3 +33,46 @@ FlowAllocator::~FlowAllocator() {
     // TODO Auto-generated destructor stub
 }
 
+bool FlowAllocator::invokeNewFlowRequestPolicy(){
+    return false;
+}
+
+
+bool FlowAllocator::allocateRequest(Flow fl) {
+
+    //Is malformed?
+    //if (fl == NULL)
+    //    return false;
+
+    //Create FAI
+
+    return true;
+}
+
+void FlowAllocator::processAllocateRequest() {
+    ;
+}
+
+void FlowAllocator::processCreateFlowRequest() {
+    ;
+}
+
+void FlowAllocator::processDeallocateRequest() {
+    ;
+}
+
+void FlowAllocator::initialize() {
+    //Register signals
+    sigCreateRequestFlow = registerSignal("CreateRequest");
+    sigCreateResponseFlow = registerSignal("CreateResponse");
+    sigDeleteRequestFlow = registerSignal("DeleteRequest");
+    sigDeleteResponseFlow = registerSignal("DeleteResponse");
+}
+
+void FlowAllocator::handleMessage(cMessage *msg) {
+    //Rcv Allocate_Request
+
+    //Rcv M_Create(Flow)
+
+    //Rcv Deallocate_Request
+}

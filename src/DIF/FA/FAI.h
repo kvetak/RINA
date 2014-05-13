@@ -24,10 +24,16 @@
 #ifndef FAI_H_
 #define FAI_H_
 
-class FAI {
+//Standard libraries
+#include <omnetpp.h>
+
+class FAI : public cSimpleModule  {
 public:
     FAI();
     virtual ~FAI();
+
+protected:
+    virtual void handleMessage(cMessage *msg);
 };
 
 #endif /* FAI_H_ */

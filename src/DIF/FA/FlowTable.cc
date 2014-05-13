@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,26 +12,26 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file RIBDaemon.cc
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief Kind of a Notification Board for DIF
- * @detail
- */
 
-#ifndef RIBDAEMON_H_
-#define RIBDAEMON_H_
+#include <FlowTable.h>
 
-#include <omnetpp.h>
+FlowTable::FlowTable() {
+    // TODO Auto-generated constructor stub
 
-class RIBDaemon : public cModule {
-public:
-    RIBDaemon();
-    virtual ~RIBDaemon();
+}
 
-    simsignal_t sigUpdateDirFwdTable;
+FlowTable::~FlowTable() {
+    // TODO Auto-generated destructor stub
+}
 
-};
+void FlowTable::add(Flow fl){
+    this->flowTable.insert(this->flowTable.end(), fl);
+}
 
-#endif /* RIBDAEMON_H_ */
+void FlowTable::remove(Flow fl){
+    //TODO: VV - Removing the flow
+}
+
+void FlowTable::search(uint64_t port){
+    //TODO: VV - Searching according to port-id
+}

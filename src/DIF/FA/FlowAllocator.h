@@ -25,12 +25,38 @@
 #ifndef FLOWALLOCATOR_H_
 #define FLOWALLOCATOR_H_
 
-#include <csimplemodule.h>
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "Flow.h"
 
-class FlowAllocator: public cSimpleModule {
+class FlowAllocator : public cModule {
 public:
     FlowAllocator();
     virtual ~FlowAllocator();
+
+    //Signals
+    simsignal_t sigCreateRequestFlow;
+    simsignal_t sigCreateResponseFlow;
+    simsignal_t sigDeleteRequestFlow;
+    simsignal_t sigDeleteResponseFlow;
+
+    bool invokeNewFlowRequestPolicy();
+    bool allocateRequest(Flow fl);
+
+
+protected:
+
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+    void processAllocateRequest();
+    void processCreateFlowRequest();
+    void processDeallocateRequest();
+
+
+
+
 };
 
 #endif /* FLOWALLOCATOR_H_ */

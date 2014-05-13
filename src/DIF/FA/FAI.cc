@@ -24,11 +24,27 @@
 #include <FAI.h>
 
 FAI::FAI() {
-    // TODO Auto-generated constructor stub
-
+    // TODO Auto-generated destructor stub
 }
 
 FAI::~FAI() {
     // TODO Auto-generated destructor stub
+}
+
+void FAI::handleMessage(cMessage *msg) {
+    //Rcv Allocate_Request
+
+    //Rcv Allocate_Response
+
+    //Receive M_Create(Flow)
+
+    //Receive M_Create_R(Flow)
+
+    //Receive Deallocate_Request
+
+    //Receive M_Delete(Flow)
+
+    //Receive M_Delete_R(Flow)
+
 }
 

@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,26 +12,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file RIBDaemon.cc
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief Kind of a Notification Board for DIF
- * @detail
- */
 
-#ifndef RIBDAEMON_H_
-#define RIBDAEMON_H_
+#ifndef FLOWTABLE_H_
+#define FLOWTABLE_H_
 
+//Standard libraries
 #include <omnetpp.h>
+#include <stdint.h>
+//RINASim libraries
+#include "Flow.h"
 
-class RIBDaemon : public cModule {
+class FlowTable : public cModule {
+
+    typedef std::list<Flow>::iterator ftIter;
+
 public:
-    RIBDaemon();
-    virtual ~RIBDaemon();
+    FlowTable();
+    virtual ~FlowTable();
 
-    simsignal_t sigUpdateDirFwdTable;
+    //TODO: VV - Think about changing container to something better
+    //List of all allocated flows
+    std::list<Flow> flowTable;
+
+    void add(Flow fl);
+    void remove(Flow fl);
+    void search(uint64_t port);
 
 };
 
-#endif /* RIBDAEMON_H_ */
+#endif /* FLOWTABLE_H_ */

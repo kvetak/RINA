@@ -22,7 +22,42 @@ APN::APN() {
 
 }
 
+APN::APN(std::string nam) {
+    this->apname = nam;
+}
+
+const std::string& APN::getAeinstance() const {
+    return aeinstance;
+}
+
+void APN::setAeinstance(const std::string& aeinstance) {
+    this->aeinstance = aeinstance;
+}
+
+const std::string& APN::getAename() const {
+    return aename;
+}
+
+void APN::setAename(const std::string& aename) {
+    this->aename = aename;
+}
+
+const std::string& APN::getApinstance() const {
+    return apinstance;
+}
+
+void APN::setApinstance(const std::string& apinstance) {
+    this->apinstance = apinstance;
+}
+
+const std::string& APN::getApname() const {
+    return apname;
+}
+
+void APN::setApname(const std::string& apname) {
+    this->apname = apname;
+}
+
 APN::~APN() {
     // TODO Auto-generated destructor stub
 }
-
