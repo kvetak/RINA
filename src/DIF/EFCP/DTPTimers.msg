@@ -53,7 +53,7 @@ message RcvrInactivityTimer extends InactivityTimer{
 message RxExpiryTimer extends DTPTimers{
     type = DTP_RX_EXPIRY_TIMER;
     PDU_p pdu = NULL;
-    int expiryCount = 0;
+    unsigned int expiryCount = 0;
 }
 
 //message WindowTimer extends DTPTimers{

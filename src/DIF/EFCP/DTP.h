@@ -70,6 +70,8 @@ class DTP : public cSimpleModule
     void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
     void handleDTPSendingRateTimer(SendingRateTimer* timer);
 //    void handleDTPWindowTimer(WindowTimer* timer);
+    void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
+    void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
 
     /* Send */
 
@@ -91,6 +93,8 @@ class DTP : public cSimpleModule
     void sduProtection(SDU *sdu);
 
     void getSDUFromQ(SDU *sdu);
+
+
     void setConnId(const ConnectionId& connId);
 
     /* Policies */
@@ -102,12 +106,14 @@ class DTP : public cSimpleModule
     void runNoRateSlowDownPolicy();
     void runNoOverrideDefaultPeakPolicy();
     void runReconcileFlowControlPolicy();
-    void runInitialSequenceNumberPolicy();
+    bool runInitialSequenceNumberPolicy();
     void runRcvrFlowControlPolicy();
     void runRateReductionPolicy();
     void runRcvrAckPolicy();
     void runReceivingFlowControlPolicy();
     void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
+    void runRcvrInactivityTimerPolicy();
+    void runSenderInactivityTimerPolicy();
 
 
 
@@ -119,6 +125,8 @@ class DTP : public cSimpleModule
     void svUpdate(unsigned int seqNum);
 
     void flushReassemblyPDUQ();
+    void clearRxQ();
+    void clearClosedWindowQ();
 
     void sendToRMT(PDU *pdu);
 

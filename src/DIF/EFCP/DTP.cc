@@ -42,9 +42,20 @@ void DTP::handleMessage(cMessage *msg)
 
         break;
       }
+
       case(DTP_SENDING_RATE_TIMER):{
         handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
         schedule(timer);
+        break;
+      }
+
+      case(DTP_RCVR_INACTIVITY_TIMER):{
+        handleDTPRcvrInactivityTimer(static_cast<RcvrInactivityTimer*>(timer));
+        break;
+      }
+
+      case(DTP_SENDER_INACTIVITY_TIMER):{
+        handleDTPSenderInactivityTimer(static_cast<SenderInactivityTimer*>(timer));
         break;
       }
 
@@ -66,6 +77,18 @@ void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer){
   //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
   dtcp->flowControl->pdusSentInTimeUnit = 0;
   state.setRateFullfilled(false);
+
+}
+
+
+void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer){
+
+  runRcvrInactivityTimerPolicy();
+
+}
+
+void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer){
+  runSenderInactivityTimerPolicy();
 
 }
 
@@ -612,11 +635,12 @@ void DTP::runReconcileFlowControlPolicy(){
   /* Default (is empty) */
 }
 
-void DTP::runInitialSequenceNumberPolicy(){
+bool DTP::runInitialSequenceNumberPolicy(){
 
   /*Default*/
   //TODO B1 set it to random number
   state.setNextSeqNumToSend(4);
+  return false;
 }
 
 void DTP::runRcvrFlowControlPolicy(){
@@ -688,6 +712,50 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer){
 
 }
 
+void DTP::runRcvrInactivityTimerPolicy(){
+
+  /* Default */
+  dtcp->dtcpState->setSetDrfFlag(true);
+  if(runInitialSequenceNumberPolicy()){
+    state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
+  }
+
+  //Discard any PDUs on the PDUretransmissionQueue
+  clearRxQ();
+
+  //Discard any PDUs on the ClosedWindowQueue
+  clearClosedWindowQ();
+
+  //TODO A! Send Control Ack PDU
+
+  //TODO A! Send Transfer PDU With Zero length
+
+  //TOOD A! Notify User Flow there has been no activity for awhile.
+
+}
+
+void DTP::runSenderInactivityTimerPolicy(){
+
+  /* Default */
+  dtcp->dtcpState->setSetDrfFlag(true);
+  if(runInitialSequenceNumberPolicy()){
+    state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
+  }
+
+  //Discard any PDUs on the PDUretransmissionQueue
+  clearRxQ();
+
+  //Discard any PDUs on the ClosedWindowQueue
+  clearClosedWindowQ();
+
+  //TODO A! Send Control Ack PDU
+
+  //TODO A! Send Transfer PDU With Zero length
+
+  //TOOD A! Notify User Flow there has been no activity for awhile.
+
+}
+
 void DTP::sendToRMT(PDU* pdu){
 
   rmt->fromDTPToRMT(new APN(), connId.getQoSId(), pdu);
@@ -735,6 +803,23 @@ void DTP::flushReassemblyPDUQ(){
   for(it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();){
     delete (*it);
     it= reassemblyPDUQ.erase(it);
+  }
+}
+
+void DTP::clearRxQ(){
+  std::vector<RxExpiryTimer*>::iterator it;
+  for(it = rxQ.begin(); it != rxQ.end();){
+    delete (*it)->getPdu();
+    delete (*it);
+    it= rxQ.erase(it);
+  }
+}
+
+void DTP::clearClosedWindowQ(){
+  std::vector<PDU*>::iterator it;
+  for(it = closedWindowQ.begin(); it != closedWindowQ.end();){
+    delete (*it);
+    it= closedWindowQ.erase(it);
   }
 }
 
