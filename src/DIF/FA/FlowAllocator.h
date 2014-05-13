@@ -54,9 +54,6 @@ protected:
     void processCreateFlowRequest();
     void processDeallocateRequest();
 
-
-
-
 };
 
 #endif /* FLOWALLOCATOR_H_ */
