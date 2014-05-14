@@ -31,6 +31,7 @@ enum DTPTimerType
   DTP_RX_EXPIRY_TIMER = 3;
 //  DTP_WINDOW_TIMER = 4;
   DTP_SENDING_RATE_TIMER = 5;
+  DTP_A_TIMER = 6;
   
 }
 message DTPTimers {
@@ -62,6 +63,11 @@ message RxExpiryTimer extends DTPTimers{
 
 message SendingRateTimer extends DTPTimers{
 	type = DTP_SENDING_RATE_TIMER;   
+}
+
+message ATimer extends DTPTimers{
+ 	type = DTP_A_TIMER;   
+ 	PDU_p pdu = NULL;
 }
 
 

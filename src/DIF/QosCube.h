@@ -44,7 +44,7 @@ private:
     bool partDeliv; //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
     bool incompleteDeliv; //Incomplete Delivery – Can SDUs with missing pieces be delivered?
     bool forceOrder; // - Must SDUs be delivered in order?
-    int maxAllowGap; //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    unsigned int maxAllowGap; //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
     int delay; //Delay in secs
     int jitter; //Jitter in secs2
 
@@ -75,8 +75,8 @@ public:
     void setIncompleteDeliv(bool incompleteDeliv);
     int getJitter() const;
     void setJitter(int jitter);
-    int getMaxAllowGap() const;
-    void setMaxAllowGap(int maxAllowGap);
+    unsigned int getMaxAllowGap() const;
+    void setMaxAllowGap(unsigned int maxAllowGap);
     int getMaxSdUsize() const;
     void setMaxSdUsize(int maxSdUsize);
     bool isPartDeliv() const;

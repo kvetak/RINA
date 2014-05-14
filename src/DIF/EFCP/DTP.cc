@@ -59,6 +59,11 @@ void DTP::handleMessage(cMessage *msg)
         break;
       }
 
+      case(DTP_A_TIMER):{
+        handleDTPATimer(static_cast<ATimer*>(timer));
+        break;
+      }
+
 //      case(DTP_WINDOW_TIMER):{
 //        handleDTPWindowTimer(static_cast<WindowTimer*>(timer));
 //
@@ -90,6 +95,13 @@ void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer){
 void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer){
   runSenderInactivityTimerPolicy();
 
+}
+
+void DTP::handleDTPATimer(ATimer*  timer){
+
+  if(state.isDtcpPresent()){
+    runSendingAckPolicy(timer);
+  }
 }
 
 //void DTP::handleDTPWindowTimer(WindowTimer* timer){
@@ -450,7 +462,7 @@ void DTP::fromRMT(PDU* pdu){
       return;
     }
 
-    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() < state.getMaxSeqNumRcvd()){
+    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd()){
       /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
       //TODO A!
       //if a duplicate among the gaps then // search reassemblyQ?
@@ -730,7 +742,7 @@ void DTP::runRcvrInactivityTimerPolicy(){
 
   //TODO A! Send Transfer PDU With Zero length
 
-  //TOOD A! Notify User Flow there has been no activity for awhile.
+  //TODO A! Notify User Flow there has been no activity for awhile.
 
 }
 
@@ -752,8 +764,25 @@ void DTP::runSenderInactivityTimerPolicy(){
 
   //TODO A! Send Transfer PDU With Zero length
 
-  //TOOD A! Notify User Flow there has been no activity for awhile.
+  //TODO A! Notify User Flow there has been no activity for awhile.
 
+}
+
+bool DTP::runSendingAckPolicy(ATimer* timer){
+  /* Default */
+  //TODO A!
+  unsigned int gap = getAllowableGap();
+  unsigned int seqNum = timer->getPdu()->getSeqNum();
+  unsigned int leftWindowEdge = state.getRcvLeftWinEdge();
+
+  if(leftWindowEdge + 1 == leftWindowEdge < seqNum  && leftWindowEdge + gap > seqNum){
+    //this PDU is
+
+  }
+
+  //Update LeftWindowEdge
+
+  return false;
 }
 
 void DTP::sendToRMT(PDU* pdu){
@@ -769,6 +798,16 @@ unsigned int DTP::getRxTime(){
    * epsilon ?
    */
   return dtcp->dtcpState->getRtt();
+}
+
+unsigned int DTP::getAllowableGap(){
+  //TODO A! This is placeholder for calling QoSCube::getAllowableGapSize
+  /*This method is used as a middle-man so when location of QoSCube changes,
+   * I will have to change it only in one place.
+   */
+
+
+  return connId.getQosCube()->getMaxAllowGap();
 }
 
 

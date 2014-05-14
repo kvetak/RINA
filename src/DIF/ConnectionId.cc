@@ -50,12 +50,23 @@ ConnectionId::~ConnectionId() {
     // TODO Auto-generated destructor stub
 }
 
+QosCube* ConnectionId::getQosCube()
+{
+  return qosCube;
+}
+
+void ConnectionId::setQosCube(QosCube* qosCube)
+{
+  this->qosCube = qosCube;
+}
+
 ConnectionId *ConnectionId::dup() const{
 
   ConnectionId* connId = new ConnectionId();
   connId->setDestCepId(this->destCEPId);
   connId->setSrcCepId(this->srcCEPId);
   connId->setQoSId(this->qoSId);
+  connId->setQosCube(this->qosCube);
 
   return connId;
 

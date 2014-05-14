@@ -72,6 +72,7 @@ class DTP : public cSimpleModule
 //    void handleDTPWindowTimer(WindowTimer* timer);
     void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
+    void handleDTPATimer(ATimer* timer);
 
     /* Send */
 
@@ -114,6 +115,7 @@ class DTP : public cSimpleModule
     void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
+    bool runSendingAckPolicy(ATimer* timer);
 
 
 
@@ -121,6 +123,8 @@ class DTP : public cSimpleModule
 
     /* This method SHOULD return amount of time to wait before retransmission attempt */
     unsigned int getRxTime();
+
+    unsigned int getAllowableGap();
 
     void svUpdate(unsigned int seqNum);
 

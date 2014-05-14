@@ -94,11 +94,11 @@ void QosCube::setJitter(int jitter) {
     this->jitter = jitter;
 }
 
-int QosCube::getMaxAllowGap() const {
+unsigned int QosCube::getMaxAllowGap() const {
     return maxAllowGap;
 }
 
-void QosCube::setMaxAllowGap(int maxAllowGap) {
+void QosCube::setMaxAllowGap(unsigned int maxAllowGap) {
     this->maxAllowGap = maxAllowGap;
 }
 

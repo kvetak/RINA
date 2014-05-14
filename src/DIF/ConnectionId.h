@@ -19,6 +19,8 @@
 #define CONNECTIONID_H_
 
 #include <cobject.h>
+
+#include "QosCube.h"
 /*
  *
  */
@@ -28,6 +30,7 @@ private:
     unsigned int qoSId;
     unsigned int destCEPId;
     unsigned int srcCEPId;
+    QosCube* qosCube; //not sure about this (it would make qosId useless
 
 public:
     ConnectionId();
@@ -39,8 +42,10 @@ public:
     unsigned int getSrcCepId() const;
     void setSrcCepId(unsigned int srcCepId);
 
-    virtual ConnectionId *dup() const;
 
+    virtual ConnectionId *dup() const;
+    QosCube* getQosCube();
+    void setQosCube(QosCube* qosCube);
 };
 
 #endif /* CONNECTIONID_H_ */
