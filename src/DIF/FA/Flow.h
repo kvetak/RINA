@@ -19,50 +19,109 @@
 //Standard libraries
 #include <stdint.h>
 //RINASim libraries
-#include "APN.h"
+#include <APNamingInfo.h>
 #include "ConnectionId.h"
 
 class Flow {
 private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
-    APN* srcApn;
-    APN* dstApn;
+    APNamingInfo srcApni;
+    APNamingInfo dstApni;
     uint64_t srcPort;
     uint64_t dstPort;
     uint64_t srcAddr;
     uint64_t dstAddr;
-    ConnectionId* conId;
+    ConnectionId conId;
     uint32_t maxCreateFlowRetries;
     uint32_t createFlowRetries;
     uint32_t hopCount;
 
 public:
     Flow();
-    Flow(APN* src, APN* dst);
+    Flow(APNamingInfo src, APNamingInfo dst);
     virtual ~Flow();
 
     //TODO: VV - Completely missing overloading of ==, < and > operators
 
-    const ConnectionId* getConId() const;
-    void setConId(ConnectionId* conId);
-    uint32_t getCreateFlowRetries() const;
-    void setCreateFlowRetries(uint32_t createFlowRetries);
-    uint64_t getDstAddr() const;
-    void setDstAddr(uint64_t dstAddr);
-    const APN* getDstApn() const;
-    void setDstApn(APN* dstApn);
-    uint64_t getDstPort() const;
-    void setDstPort(uint64_t dstPort);
-    uint32_t getHopCount() const;
-    void setHopCount(uint32_t hopCount);
-    uint32_t getMaxCreateFlowRetries() const;
-    void setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries);
-    uint64_t getSrcAddr() const;
-    void setSrcAddr(uint64_t srcAddr);
-    const APN* getSrcApn() const;
-    void setSrcApn(APN* srcApn);
-    uint64_t getSrcPort() const;
-    void setSrcPort(uint64_t srcPort);
+    const ConnectionId getConId() const {
+        return conId;
+    }
+
+    void setConId(const ConnectionId conId) {
+        this->conId = conId;
+    }
+
+    uint32_t getCreateFlowRetries() const {
+        return createFlowRetries;
+    }
+
+    void setCreateFlowRetries(uint32_t createFlowRetries) {
+        this->createFlowRetries = createFlowRetries;
+    }
+
+    uint64_t getDstAddr() const {
+        return dstAddr;
+    }
+
+    void setDstAddr(uint64_t dstAddr) {
+        this->dstAddr = dstAddr;
+    }
+
+    const APNamingInfo getDstApni() const {
+        return dstApni;
+    }
+
+    void setDstApni(const APNamingInfo dstApni) {
+        this->dstApni = dstApni;
+    }
+
+    uint64_t getDstPort() const {
+        return dstPort;
+    }
+
+    void setDstPort(uint64_t dstPort) {
+        this->dstPort = dstPort;
+    }
+
+    uint32_t getHopCount() const {
+        return hopCount;
+    }
+
+    void setHopCount(uint32_t hopCount) {
+        this->hopCount = hopCount;
+    }
+
+    uint32_t getMaxCreateFlowRetries() const {
+        return maxCreateFlowRetries;
+    }
+
+    void setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries) {
+        this->maxCreateFlowRetries = maxCreateFlowRetries;
+    }
+
+    uint64_t getSrcAddr() const {
+        return srcAddr;
+    }
+
+    void setSrcAddr(uint64_t srcAddr) {
+        this->srcAddr = srcAddr;
+    }
+
+    const APNamingInfo getSrcApni() const {
+        return srcApni;
+    }
+
+    void setSrcApni(const APNamingInfo srcApni) {
+        this->srcApni = srcApni;
+    }
+
+    uint64_t getSrcPort() const {
+        return srcPort;
+    }
+
+    void setSrcPort(uint64_t srcPort) {
+        this->srcPort = srcPort;
+    }
 };
 
 #endif /* FLOW_H_ */

@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,30 +12,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file DirectoryForwardingTable.cc
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief
- * @detail
- */
 
-#include <DirectoryForwardingTable.h>
+package rina.DAF;
 
-Define_Module(DirectoryForwardingTable);
+import rina.DAF.DA.DIFAllocator;
+import rina.DAF.IRM.IRM;
 
-DirectoryForwardingTable::DirectoryForwardingTable() {
-    // TODO Auto-generated constructor stub
-}
 
-DirectoryForwardingTable::~DirectoryForwardingTable() {
-    // TODO Auto-generated destructor stub
-}
-
-void DirectoryForwardingTable::initialize() {
-
-}
-
-void DirectoryForwardingTable::handleMessage(cMessage *msg) {
-
+module ApplicationProcess
+{
+    @display("bgb=337,139;i=misc/node,yellow,30");
+    submodules:
+        irm: IRM {
+            @display("p=99,64");
+        }
+        difAllocator: DIFAllocator {
+            @display("p=213,64");
+        }
 }

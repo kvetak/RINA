@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -19,31 +17,17 @@
 #define APN_H_
 
 #include <string>
-#include <omnetpp.h>
 
-/* Application Process Name
- *
- */
 class APN {
-private:
-    std::string apname;
-    std::string apinstance;
-    std::string aename;
-    std::string aeinstance;
-
 public:
     APN();
     APN(std::string nam);
     virtual ~APN();
+    const std::string& getName() const;
+    void setName(const std::string& name);
 
-    const std::string& getAeinstance() const;
-    void setAeinstance(const std::string& aeinstance);
-    const std::string& getAename() const;
-    void setAename(const std::string& aename);
-    const std::string& getApinstance() const;
-    void setApinstance(const std::string& apinstance);
-    const std::string& getApname() const;
-    void setApname(const std::string& apname);
+private:
+    std::string name;
 };
 
 #endif /* APN_H_ */

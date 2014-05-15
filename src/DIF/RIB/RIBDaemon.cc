@@ -22,7 +22,9 @@
  * @detail
  */
 
-#include <RIB/RIBDaemon.h>
+#include <RIBDaemon.h>
+
+Define_Module(RIBDaemon);
 
 RIBDaemon::RIBDaemon() {
     // TODO Auto-generated constructor stub
@@ -33,3 +35,9 @@ RIBDaemon::~RIBDaemon() {
     // TODO Auto-generated destructor stub
 }
 
+void RIBDaemon::initialize() {
+
+}
+void RIBDaemon::handleMessage(cMessage *msg) {
+
+}

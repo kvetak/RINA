@@ -101,16 +101,6 @@ void DTP::handleDTPATimer(ATimer*  timer){
 
   if(state.isDtcpPresent()){
     runSendingAckPolicy(timer);
-  }else{
-    //TODO A2 this needs revision
-    //update leftWindowEdge
-    state.setRcvLeftWinEdge(timer->getPdu()->getSeqNum());
-    //invoke delimiting
-    delimitFromRMT(timer->getPdu(), timer->getPdu()->getUserDataArraySize());
-
-
-    schedule(senderInactivityTimer);
-
   }
 }
 
@@ -410,7 +400,7 @@ void DTP::trySendGenPDUs()
       std::vector<PDU*>::iterator it;
       for (it = postablePDUs.begin(); it != postablePDUs.end();){
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
-        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
+        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
         it = postablePDUs.erase(it);
       }
 
@@ -421,8 +411,8 @@ void DTP::trySendGenPDUs()
     std::vector<PDU*>::iterator it;
     for (it = postablePDUs.begin(); it != postablePDUs.end();){
       //TODO A! Where do I get destAddr? Probably from FlowAllocator
-      APN* apn = new APN();
-      rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
+      APNamingInfo* apn = new APNamingInfo();
+      rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
       rmt->fromDTPToRMT(apn, 1, (*it));
       it = postablePDUs.erase(it);
     }
@@ -797,7 +787,7 @@ bool DTP::runSendingAckPolicy(ATimer* timer){
 
 void DTP::sendToRMT(PDU* pdu){
 
-  rmt->fromDTPToRMT(new APN(), connId.getQoSId(), pdu);
+  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
 }
 
 unsigned int DTP::getRxTime(){
@@ -883,9 +873,6 @@ void DTP::schedule(DTPTimers *timer, double time){
     }
     case (DTP_SENDER_INACTIVITY_TIMER):{
           //TODO A! 3(MPL+R+A)
-        if(timer->isScheduled()){
-          cancelEvent(timer);
-        }
             scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
           break;
         }

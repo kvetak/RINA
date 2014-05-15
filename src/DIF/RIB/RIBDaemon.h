@@ -27,12 +27,16 @@
 
 #include <omnetpp.h>
 
-class RIBDaemon : public cModule {
+class RIBDaemon : public cSimpleModule {
 public:
     RIBDaemon();
     virtual ~RIBDaemon();
 
     simsignal_t sigUpdateDirFwdTable;
+
+protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
 };
 

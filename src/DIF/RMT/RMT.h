@@ -26,14 +26,10 @@
 #ifndef RMT_H_
 #define RMT_H_
 
-#include <csimplemodule.h>
-#include "APN.h"
+#include <omnetpp.h>
+#include "APNamingInfo.h"
 #include "PDU.h"
 
-
-/*
- *
- */
 class RMT : public cSimpleModule
 {
   public:
@@ -41,7 +37,11 @@ class RMT : public cSimpleModule
     virtual ~RMT();
 
     /* Just a placeholder */
-    void fromDTPToRMT(APN* destAddr, unsigned int qosId, PDU *pdu);
+    void fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu);
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
 };
 

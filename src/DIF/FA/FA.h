@@ -22,18 +22,18 @@
  * @detail
  */
 
-#ifndef FLOWALLOCATOR_H_
-#define FLOWALLOCATOR_H_
+#ifndef FA_H_
+#define FA_H_
 
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
 #include "Flow.h"
 
-class FlowAllocator : public cModule {
+class FA : public cSimpleModule {
 public:
-    FlowAllocator();
-    virtual ~FlowAllocator();
+    FA();
+    virtual ~FA();
 
     //Signals
     simsignal_t sigCreateRequestFlow;
@@ -43,7 +43,6 @@ public:
 
     bool invokeNewFlowRequestPolicy();
     bool allocateRequest(Flow fl);
-
 
 protected:
 

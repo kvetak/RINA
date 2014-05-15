@@ -23,6 +23,8 @@
  */
 #include <FAI.h>
 
+Define_Module(FAI);
+
 FAI::FAI() {
     // TODO Auto-generated destructor stub
 }
@@ -31,6 +33,9 @@ FAI::~FAI() {
     // TODO Auto-generated destructor stub
 }
 
+void FAI::initialize() {
+
+}
 void FAI::handleMessage(cMessage *msg) {
     //Rcv Allocate_Request
 

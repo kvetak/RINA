@@ -33,7 +33,8 @@ public:
     virtual ~FAI();
 
 protected:
-    virtual void handleMessage(cMessage *msg);
+  virtual void initialize();
+  virtual void handleMessage(cMessage *msg);
 };
 
 #endif /* FAI_H_ */

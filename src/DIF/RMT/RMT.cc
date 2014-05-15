@@ -25,6 +25,8 @@
 
 #include <RMT.h>
 
+Define_Module(RMT);
+
 RMT::RMT()
 {
   // TODO Auto-generated constructor stub
@@ -36,6 +38,13 @@ RMT::~RMT()
   // TODO Auto-generated destructor stub
 }
 
-void RMT::fromDTPToRMT(APN* destAddr, unsigned int qosId, PDU *pdu){
+void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu){
+
+}
+
+void RMT::initialize() {
+
+}
+void RMT::handleMessage(cMessage *msg) {
 
 }

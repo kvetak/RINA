@@ -28,7 +28,7 @@
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 
-#include "FlowAllocator.h" //or FlowAllocatorFactory
+#include "FA.h" //or FlowAllocatorFactory
 #include "RMT.h"
 
 class DTP : public cSimpleModule
@@ -48,19 +48,17 @@ class DTP : public cSimpleModule
     std::vector<PDU*> closedWindowQ;
     std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
-    //TODO A! PDUReassemblyQueue is part of FlowInstance (because there could be multiple active flows over one connection)
     std::vector<PDU*> reassemblyPDUQ;
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
-    //TODO A1 move this timer together with rateFullFilled variable to FlowControl
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */
     SendingRateTimer* sendingRateTimer;
 
 //    WindowTimer* windowTimer;
 
-    FlowAllocator* flowAllocator;
+    FA* flowAllocator;
     /* OR
      * FlowAllocatorFactory flowFactory;
      * int flowAllocatorId;

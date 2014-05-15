@@ -15,30 +15,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file FlowAllocator.cpp
+ * @file FA.cpp
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Apr 29, 2014
  * @brief
  * @detail
  */
 
-#include <FlowAllocator.h>
+#include <FA.h>
 
-FlowAllocator::FlowAllocator() {
+Define_Module(FA);
+
+FA::FA() {
     // TODO Auto-generated constructor stub
 
 }
 
-FlowAllocator::~FlowAllocator() {
+FA::~FA() {
     // TODO Auto-generated destructor stub
 }
 
-bool FlowAllocator::invokeNewFlowRequestPolicy(){
+bool FA::invokeNewFlowRequestPolicy(){
     return false;
 }
 
 
-bool FlowAllocator::allocateRequest(Flow fl) {
+bool FA::allocateRequest(Flow fl) {
 
     //Is malformed?
     //if (fl == NULL)
@@ -49,19 +51,19 @@ bool FlowAllocator::allocateRequest(Flow fl) {
     return true;
 }
 
-void FlowAllocator::processAllocateRequest() {
+void FA::processAllocateRequest() {
     ;
 }
 
-void FlowAllocator::processCreateFlowRequest() {
+void FA::processCreateFlowRequest() {
     ;
 }
 
-void FlowAllocator::processDeallocateRequest() {
+void FA::processDeallocateRequest() {
     ;
 }
 
-void FlowAllocator::initialize() {
+void FA::initialize() {
     //Register signals
     sigCreateRequestFlow = registerSignal("CreateRequest");
     sigCreateResponseFlow = registerSignal("CreateResponse");
@@ -69,7 +71,7 @@ void FlowAllocator::initialize() {
     sigDeleteResponseFlow = registerSignal("DeleteResponse");
 }
 
-void FlowAllocator::handleMessage(cMessage *msg) {
+void FA::handleMessage(cMessage *msg) {
     //Rcv Allocate_Request
 
     //Rcv M_Create(Flow)

@@ -25,10 +25,32 @@
 #ifndef DIRECTORYFORWARDINGTABLE_H_
 #define DIRECTORYFORWARDINGTABLE_H_
 
-class DirectoryForwardingTable {
+//Standard libraries
+#include <map>
+#include <string>
+#include <APNamingInfo.h>
+#include <omnetpp.h>
+//RINASim libraries
+//#include <DFFMapping.h>
+
+typedef std::map<APNamingInfo, std::string> DFFMappings;
+
+class DirectoryForwardingTable : public cSimpleModule {
 public:
     DirectoryForwardingTable();
     virtual ~DirectoryForwardingTable();
+
+    std::string search(APNamingInfo apni);
+    void add(APNamingInfo apni, std::string addr);
+    void remove(APNamingInfo apni);
+    void update(APNamingInfo apni);
+
+protected:
+  virtual void initialize();
+  virtual void handleMessage(cMessage *msg);
+
+private:
+    DFFMappings dffMap;
 };
 
 #endif /* DIRECTORYFORWARDINGTABLE_H_ */
