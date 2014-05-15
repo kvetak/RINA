@@ -101,6 +101,16 @@ void DTP::handleDTPATimer(ATimer*  timer){
 
   if(state.isDtcpPresent()){
     runSendingAckPolicy(timer);
+  }else{
+    //TODO A2 this needs revision
+    //update leftWindowEdge
+    state.setRcvLeftWinEdge(timer->getPdu()->getSeqNum());
+    //invoke delimiting
+    delimitFromRMT(timer->getPdu(), timer->getPdu()->getUserDataArraySize());
+
+
+    schedule(senderInactivityTimer);
+
   }
 }
 
@@ -873,6 +883,9 @@ void DTP::schedule(DTPTimers *timer, double time){
     }
     case (DTP_SENDER_INACTIVITY_TIMER):{
           //TODO A! 3(MPL+R+A)
+        if(timer->isScheduled()){
+          cancelEvent(timer);
+        }
             scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
           break;
         }
