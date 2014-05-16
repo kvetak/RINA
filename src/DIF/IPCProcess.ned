@@ -15,7 +15,7 @@
 
 package rina.DIF;
 
-import rina.DIF.DFF.DirectoryForwardingTable;
+import rina.DIF.DFT.DirectoryForwardingTable;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RMT;

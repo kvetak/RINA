@@ -15,6 +15,7 @@
 
 package rina.DAF;
 
+import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DAF.DA.DIFAllocator;
 import rina.DAF.IRM.IRM;
 import rina.DIF.RMT.RMT;
@@ -22,7 +23,7 @@ import rina.DIF.RMT.RMT;
 
 module RelayingProcess
 {
-    @display("bgb=332,266;i=misc/node,#FF80FF,30");
+    @display("bgb=487,266;i=misc/node,#FF80FF,30");
     gates:
         inout southIo[];
     submodules:
@@ -34,6 +35,9 @@ module RelayingProcess
         }
         rmt: RMT {
             @display("p=152,171");
+        }
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            @display("p=346,171");
         }
     connections:
         rmt.rmtIo <--> southIo++;

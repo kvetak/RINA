@@ -13,22 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.DA;
+#ifndef __RINA_CACE_H_
+#define __RINA_CACE_H_
 
-module DIFAllocator
+#include <omnetpp.h>
+
+/**
+ * TODO - Generated class
+ */
+class CACE : public cSimpleModule
 {
-    @display("i=block/classifier2;bgb=487,138");
-    submodules:
-        namingInformation: NamingInformation {
-            @display("p=75,61");
-        }
-        neighborTable: NeighborTable {
-            @display("p=398,61");
-        }
-        directory: Directory {
-            @display("p=188,61");
-        }
-        searchTable: SearchTable {
-            @display("p=295,61");
-        }
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

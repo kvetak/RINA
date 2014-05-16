@@ -13,32 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF;
+package rina.DAF.CDAP;
 
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.IRM;
-import rina.DIF.RMT.RMT;
-
-
-module ApplicationProcess
+//
+// TODO auto-generated module
+//
+simple CDAP
 {
-    @display("bgb=461,251;i=misc/node,yellow,30");
-    gates:
-        inout southIo[];
-    submodules:
-        irm: IRM {
-            @display("p=100,64");
-        }
-        difAllocator: DIFAllocator {
-            @display("p=220,64");
-        }
-        rmt: RMT {
-            @display("p=158,155");
-        }
-        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=331,155");
-        }
-    connections:
-        rmt.rmtIo <--> southIo++;
+    @display("i=block/star");
 }
