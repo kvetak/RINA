@@ -13,28 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF;
+package rina.CS;
 
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.IRM;
-import rina.DIF.RMT.RMT;
+import rina.DAF.RelayingProcess;
+import rina.DIF.IPCProcess;
 
 
-module ApplicationProcess
+module BorderRouter
 {
-    @display("bgb=339,251;i=misc/node,yellow,30");
+    @display("i=abstract/router;bgb=272,341");
     gates:
-        inout southIo[];
+        inout medium[];
     submodules:
-        irm: IRM {
-            @display("p=100,64");
+        relayingProcess: RelayingProcess {
+            @display("p=141,50");
         }
-        difAllocator: DIFAllocator {
-            @display("p=220,64");
+        ipcProcess1: IPCProcess {
+            @display("p=66,160");
         }
-        rmt: RMT {
-            @display("p=158,155");
+        ipcProcess2: IPCProcess {
+            @display("p=206,157");
+        }
+        ipcProcess3: IPCProcess {
+            @display("p=206,266");
         }
     connections:
-        rmt.rmtIo <--> southIo++;
+        relayingProcess.southIo++ <--> ipcProcess1.northIo++;
+        relayingProcess.southIo++ <--> ipcProcess2.northIo++;
+        ipcProcess2.southIo <--> ipcProcess3.northIo++;
+        ipcProcess3.southIo <--> medium++;
+        ipcProcess1.southIo <--> medium++;
 }

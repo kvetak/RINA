@@ -25,9 +25,8 @@ module IPCProcess
 {
     @display("bgb=492,307;i=misc/square,#FF8000,50");
     gates:
-        inout rmtIo;
-        inout appIo[];
-
+        inout southIo;
+        inout northIo[];
     submodules:
         directoryForwardingTable: DirectoryForwardingTable {
             @display("p=378,116");
@@ -43,6 +42,6 @@ module IPCProcess
         }
 
     connections:
-        rmt.rmtIo <--> rmtIo;
+        rmt.rmtIo <--> southIo;
 
 }

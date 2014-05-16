@@ -20,9 +20,9 @@ import rina.DAF.IRM.IRM;
 import rina.DIF.RMT.RMT;
 
 
-module ApplicationProcess
+module RelayingProcess
 {
-    @display("bgb=339,251;i=misc/node,yellow,30");
+    @display("bgb=332,266;i=misc/node,#FF80FF,30");
     gates:
         inout southIo[];
     submodules:
@@ -33,7 +33,7 @@ module ApplicationProcess
             @display("p=220,64");
         }
         rmt: RMT {
-            @display("p=158,155");
+            @display("p=152,171");
         }
     connections:
         rmt.rmtIo <--> southIo++;

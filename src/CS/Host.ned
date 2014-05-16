@@ -19,14 +19,20 @@ import rina.DAF.ApplicationProcess;
 import rina.DIF.IPCProcess;
 
 
-module ComputerSystem
+module Host
 {
-    @display("bgb=303,214");
+    @display("i=device/pc");
+    gates:
+        inout medium;
     submodules:
         applicationProcess: ApplicationProcess {
-            @display("p=154,43");
+            @display("p=133,58");
         }
         ipcProcess: IPCProcess {
-            @display("p=154,139");
+            @display("p=133,153");
         }
+
+    connections:
+        ipcProcess.southIo <--> medium;
+        applicationProcess.southIo++ <--> ipcProcess.northIo++;
 }
