@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.DFF;
+package rina.DIF.DFT;
 
 //
 // TODO auto-generated module

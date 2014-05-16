@@ -33,7 +33,7 @@
 //RINASim libraries
 //#include <DFFMapping.h>
 
-typedef std::map<APNamingInfo, std::string> DFFMappings;
+typedef std::map<APNamingInfo, std::string> DFTMappings;
 
 class DirectoryForwardingTable : public cSimpleModule {
 public:
@@ -50,7 +50,7 @@ protected:
   virtual void handleMessage(cMessage *msg);
 
 private:
-    DFFMappings dffMap;
+    DFTMappings dffMap;
 };
 
 #endif /* DIRECTORYFORWARDINGTABLE_H_ */
