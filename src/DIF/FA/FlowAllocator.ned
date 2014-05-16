@@ -17,7 +17,9 @@ package rina.DIF.FA;
 
 module FlowAllocator
 {
-    @display("i=block/fork;bgb=336,171");
+    parameters:
+    	@display("i=block/fork;bgb=336,171");      
+        int maxFaiLimit = default(100);
     gates:
         inout appIo[];
         inout efcpIo[];  
@@ -25,7 +27,7 @@ module FlowAllocator
         fa: FA {
             @display("p=114,84");
         }
-        fai: FAI {
+        fai[maxFaiLimit]: FAI {
             @display("p=227,84");
         }
 
