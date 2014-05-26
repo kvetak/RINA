@@ -16,6 +16,7 @@
 package rina.DIF;
 
 import rina.DIF.DFT.DirectoryForwardingTable;
+import rina.DIF.EFCP.EFCP;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RMT;
@@ -29,18 +30,21 @@ module IPCProcess
         inout northIo[];
     submodules:
         directoryForwardingTable: DirectoryForwardingTable {
-            @display("p=378,116");
+            @display("p=377,61");
         }
         flowAllocator: FlowAllocator {
-            @display("p=226,116");
+            @display("p=226,61");
         }
         rmt: RMT {
             @display("p=226,240");
         }
         ribDaemon: RIBDaemon {
-            @display("p=85,116");
+            @display("p=90,61");
         }
 
+        efcp: EFCP {
+            @display("p=226,152");
+        }
     connections:
         rmt.rmtIo <--> southIo;
 
