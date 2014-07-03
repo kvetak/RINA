@@ -13,13 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef NAMESPACEMGMT_H_
-#define NAMESPACEMGMT_H_
+#ifndef __RINA_LOCALDIRECTORYCACHE_H_
+#define __RINA_LOCALDIRECTORYCACHE_H_
 
-class NameSpaceMgmt {
-public:
-    NameSpaceMgmt();
-    virtual ~NameSpaceMgmt();
+#include <omnetpp.h>
+
+/**
+ * TODO - Generated class
+ */
+class LocalDirectoryCache : public cSimpleModule
+{
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 };
 
-#endif /* NAMESPACEMGMT_H_ */
+#endif

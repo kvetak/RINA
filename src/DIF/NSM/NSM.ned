@@ -13,14 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.DIF.NSM;
 
 //
 // TODO auto-generated module
 //
-simple RMT
+simple NSM
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    @display("i=block/rx");
 }

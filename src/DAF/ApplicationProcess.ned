@@ -28,17 +28,17 @@ module ApplicationProcess
         inout southIo[];
     submodules:
         irm: IRM {
-            @display("p=100,64");
+            @display("p=317,64");
         }
         difAllocator: DIFAllocator {
-            @display("p=220,64");
+            @display("p=317,178");
         }
         rmt: RMT {
-            @display("p=158,155");
+            @display("p=125,178");
         }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=331,155");
+            @display("p=125,64");
         }
     connections:
-        rmt.rmtIo <--> southIo++;
+        rmt.rmtIo++ <--> southIo++;
 }

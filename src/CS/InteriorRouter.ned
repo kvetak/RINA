@@ -15,7 +15,6 @@
 
 package rina.CS;
 
-import rina.DAF.RelayingProcess;
 import rina.DIF.IPCProcess;
 
 
@@ -25,18 +24,18 @@ module InteriorRouter
     gates:
         inout medium[];
     submodules:
-        relayingProcess: RelayingProcess {
-            @display("p=138,51");
-        }
         ipcProcess1: IPCProcess {
             @display("p=65,145");
         }
         ipcProcess2: IPCProcess {
             @display("p=205,145");
         }
+        ipcProcess0: IPCProcess {
+            @display("p=135,48;i=,#FFB000");
+        }
     connections:
-        relayingProcess.southIo++ <--> ipcProcess1.northIo++;
-        relayingProcess.southIo++ <--> ipcProcess2.northIo++;
-        ipcProcess1.southIo <--> medium++;
-        ipcProcess2.southIo <--> medium++;
+        ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
+        ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
+        ipcProcess1.southIo++ <--> medium++;
+        ipcProcess2.southIo++ <--> medium++;
 }

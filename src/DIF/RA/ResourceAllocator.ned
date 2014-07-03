@@ -13,14 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.DIF.RA;
 
-//
-// TODO auto-generated module
-//
-simple RMT
+module ResourceAllocator
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    @display("i=block/segm;bgb=398,147");
+    submodules:
+        pduForwardingTable: PDUForwardingTable {
+            @display("p=70,68");
+        }
+        ra: RA {
+            @display("p=196,68");
+        }
+        pduFwdTabGenerator: PDUFwdTabGenerator {
+            @display("p=319,68");
+        }
 }

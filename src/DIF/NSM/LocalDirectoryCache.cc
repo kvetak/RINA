@@ -13,14 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#include "LocalDirectoryCache.h"
 
-//
-// TODO auto-generated module
-//
-simple RMT
+Define_Module(LocalDirectoryCache);
+
+void LocalDirectoryCache::initialize()
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    // TODO - Generated method body
+}
+
+void LocalDirectoryCache::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

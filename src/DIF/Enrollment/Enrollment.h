@@ -13,14 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#ifndef __RINA_ENROLLMENT_H_
+#define __RINA_ENROLLMENT_H_
 
-//
-// TODO auto-generated module
-//
-simple RMT
+#include <omnetpp.h>
+
+/**
+ * TODO - Generated class
+ */
+class Enrollment : public cSimpleModule
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

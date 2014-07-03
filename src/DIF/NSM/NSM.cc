@@ -13,14 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#include "NSM.h"
 
-//
-// TODO auto-generated module
-//
-simple RMT
+Define_Module(NSM);
+
+void NSM::initialize()
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    // TODO - Generated method body
+}
+
+void NSM::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

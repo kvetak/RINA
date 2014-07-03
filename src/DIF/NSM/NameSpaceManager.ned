@@ -13,14 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.DIF.NSM;
 
-//
-// TODO auto-generated module
-//
-simple RMT
+import rina.DIF.FA.FAI;
+
+
+module NameSpaceManager
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    @display("i=block/rx;bgb=317,261");
+    submodules:
+        directoryForwardingTable: DirectoryForwardingTable {
+            @display("p=213,164");
+        }
+        nsm: NSM {
+            @display("p=144,71");
+        }
+        localDirectoryCache: LocalDirectoryCache {
+            @display("p=77,164");
+        }
 }

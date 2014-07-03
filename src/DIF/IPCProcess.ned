@@ -15,37 +15,46 @@
 
 package rina.DIF;
 
-import rina.DIF.DFT.DirectoryForwardingTable;
+
+import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DIF.EFCP.EFCP;
+import rina.DIF.Enrollment.Enrollment;
 import rina.DIF.FA.FlowAllocator;
+import rina.DIF.RA.ResourceAllocator;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RMT;
 
 
 module IPCProcess
 {
-    @display("bgb=492,307;i=misc/square,#FF8000,50");
+    @display("bgb=434,307;i=misc/square,#FF8000,50");
     gates:
-        inout southIo;
+        inout southIo[];
         inout northIo[];
     submodules:
-        directoryForwardingTable: DirectoryForwardingTable {
-            @display("p=377,61");
-        }
         flowAllocator: FlowAllocator {
-            @display("p=226,61");
+            @display("p=90,61");
         }
         rmt: RMT {
-            @display("p=226,240");
+            @display("p=90,249");
         }
         ribDaemon: RIBDaemon {
-            @display("p=90,61");
+            @display("p=221,147");
         }
 
         efcp: EFCP {
-            @display("p=226,152");
+            @display("p=90,147");
+        }
+        resourceAllocator: ResourceAllocator {
+            @display("p=333,249");
+        }
+        enrollment: Enrollment {
+            @display("p=333,147");
+        }
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            @display("p=284,61");
         }
     connections:
-        rmt.rmtIo <--> southIo;
+        rmt.rmtIo++ <--> southIo++;
 
 }

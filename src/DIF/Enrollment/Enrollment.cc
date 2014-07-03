@@ -13,32 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF;
+#include "Enrollment.h"
 
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.IRM;
-import rina.DIF.RMT.RMT;
+Define_Module(Enrollment);
 
-
-module RelayingProcess
+void Enrollment::initialize()
 {
-    @display("bgb=487,266;i=misc/node,#FF80FF,30");
-    gates:
-        inout southIo[];
-    submodules:
-        irm: IRM {
-            @display("p=100,64");
-        }
-        difAllocator: DIFAllocator {
-            @display("p=220,64");
-        }
-        rmt: RMT {
-            @display("p=152,171");
-        }
-        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=346,171");
-        }
-    connections:
-        rmt.rmtIo <--> southIo++;
+    // TODO - Generated method body
+}
+
+void Enrollment::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

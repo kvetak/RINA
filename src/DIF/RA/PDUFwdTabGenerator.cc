@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,21 +12,17 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file LocalDirectoryCache.h
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief
- * @detail
- */
 
-#ifndef LOCALDIRECTORYCACHE_H_
-#define LOCALDIRECTORYCACHE_H_
+#include "PDUFwdTabGenerator.h"
 
-class LocalDirectoryCache {
-public:
-    LocalDirectoryCache();
-    virtual ~LocalDirectoryCache();
-};
+Define_Module(PDUFwdTabGenerator);
 
-#endif /* LOCALDIRECTORYCACHE_H_ */
+void PDUFwdTabGenerator::initialize()
+{
+    // TODO - Generated method body
+}
+
+void PDUFwdTabGenerator::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
+}

@@ -13,14 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#include "PDUForwardingTable.h"
 
-//
-// TODO auto-generated module
-//
-simple RMT
+Define_Module(PDUForwardingTable);
+
+void PDUForwardingTable::initialize()
 {
-    @display("i=block/classifier");
-    gates:
-        inout rmtIo[];
+    // TODO - Generated method body
+}
+
+void PDUForwardingTable::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

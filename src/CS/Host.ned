@@ -33,6 +33,6 @@ module Host
         }
 
     connections:
-        ipcProcess.southIo <--> medium;
+        ipcProcess.southIo++ <--> medium;
         applicationProcess.southIo++ <--> ipcProcess.northIo++;
 }

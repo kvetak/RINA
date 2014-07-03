@@ -13,12 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.DFT;
+#ifndef __RINA_PDUFWDTABGENERATOR_H_
+#define __RINA_PDUFWDTABGENERATOR_H_
 
-//
-// TODO auto-generated module
-//
-simple DirectoryForwardingTable
+#include <omnetpp.h>
+
+/**
+ * TODO - Generated class
+ */
+class PDUFwdTabGenerator : public cSimpleModule
 {
-    @display("i=block/table2");
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

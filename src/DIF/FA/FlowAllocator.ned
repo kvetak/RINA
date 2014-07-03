@@ -15,14 +15,17 @@
 
 package rina.DIF.FA;
 
+import rina.DIF.NSM.NameSpaceManager;
+
+
 module FlowAllocator
 {
     parameters:
-    	@display("i=block/fork;bgb=336,171");      
+        @display("i=block/fork;bgb=498,171");
         int maxFaiLimit = default(100);
     gates:
         inout appIo[];
-        inout efcpIo[];  
+        inout efcpIo[];
     submodules:
         fa: FA {
             @display("p=114,84");
@@ -31,5 +34,8 @@ module FlowAllocator
             @display("p=227,84");
         }
 
+        nameSpaceManager: NameSpaceManager {
+            @display("p=404,84");
+        }
     connections:
 }

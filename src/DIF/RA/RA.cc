@@ -13,14 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <NameSpaceMgmt.h>
+#include "RA.h"
 
-NameSpaceMgmt::NameSpaceMgmt() {
-    // TODO Auto-generated constructor stub
+Define_Module(RA);
 
+void RA::initialize()
+{
+    // TODO - Generated method body
 }
 
-NameSpaceMgmt::~NameSpaceMgmt() {
-    // TODO Auto-generated destructor stub
+void RA::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }
-
