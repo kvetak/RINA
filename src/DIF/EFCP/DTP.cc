@@ -15,6 +15,8 @@
 
 #include "DTP.h"
 
+Define_Module(DTP);
+
 DTP::DTP()
 {
   // TODO Auto-generated constructor stub
@@ -775,6 +777,7 @@ bool DTP::runSendingAckPolicy(ATimer* timer){
   unsigned int seqNum = timer->getPdu()->getSeqNum();
   unsigned int leftWindowEdge = state.getRcvLeftWinEdge();
 
+  //TODO Co to je za hovnokod?
   if(leftWindowEdge + 1 == leftWindowEdge < seqNum  && leftWindowEdge + gap > seqNum){
     //this PDU is
 

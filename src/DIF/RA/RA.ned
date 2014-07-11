@@ -15,10 +15,15 @@
 
 package rina.DIF.RA;
 
-//
-// TODO auto-generated module
-//
 simple RA
 {
-    @display("i=block/segm");
+    parameters:
+    	@display("i=block/segm");    
+    	//TODO: Change signal types to objects
+    	@signal[CreateRequestFlow](type="bool");
+    	@signal[CreateResponseFlow](type="bool");
+    	@signal[DeleteRequestFlow](type="bool");
+    	@signal[DeleteResponseFlow](type="bool");
+    	
+    	
 }

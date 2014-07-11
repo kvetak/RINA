@@ -24,6 +24,7 @@
 class PDUFwdTabGenerator : public cSimpleModule
 {
   protected:
+    //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };

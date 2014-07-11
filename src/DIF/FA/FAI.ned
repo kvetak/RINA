@@ -20,5 +20,8 @@ package rina.DIF.FA;
 //
 simple FAI
 {
-    @display("i=block/rxtx");
+    parameters:
+    	@display("i=block/rxtx");
+    	int portId;
+    	int cepId;
 }

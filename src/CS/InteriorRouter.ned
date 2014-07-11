@@ -21,6 +21,7 @@ import rina.DIF.IPCProcess;
 module InteriorRouter
 {
     @display("i=abstract/switch;bgb=282,227");
+    @node;
     gates:
         inout medium[];
     submodules:

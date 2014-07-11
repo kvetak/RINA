@@ -1,0 +1,6 @@
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "Signals" "Signals" "2" "565x342+73+621:normal"
+inspector "Signals.host1.ipcProcess" "IPCProcess" "2" "565x342+75+75:normal"
+inspector "Signals.host1.ipcProcess.flowAllocator" "FlowAllocator" "2" "565x342+196+230:normal"
+inspector "Signals.host1.ipcProcess.resourceAllocator" "ResourceAllocator" "2" "565x342+804+77:normal"
+

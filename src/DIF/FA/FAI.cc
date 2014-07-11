@@ -34,8 +34,34 @@ FAI::~FAI() {
 }
 
 void FAI::initialize() {
-
+    this->portId = par("portId");
+    this->cepId  = par("cepId");
 }
+
+void FAI::processAllocateRequest() {
+}
+
+void FAI::processDegenerateDataTransfer() {
+}
+
+void FAI::processAllocateResponse() {
+}
+
+void FAI::processCreateRequest() {
+}
+
+void FAI::processCreateResponse() {
+}
+
+void FAI::processDeallocateRequest() {
+}
+
+void FAI::processDeleteRequest() {
+}
+
+void FAI::processDeleteResponse() {
+}
+
 void FAI::handleMessage(cMessage *msg) {
     //Rcv Allocate_Request
 
@@ -53,3 +79,13 @@ void FAI::handleMessage(cMessage *msg) {
 
 }
 
+std::string FAI::info() const {
+    std::stringstream os;
+    os << "FAI: port: " << this->portId << "cep:" << this->cepId<< endl;
+    return os.str();
+}
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const FAI& fai) {
+    return os << fai.info();
+}

@@ -28,13 +28,31 @@
 #include <omnetpp.h>
 
 class FAI : public cSimpleModule  {
-public:
+  public:
     FAI();
     virtual ~FAI();
 
-protected:
-  virtual void initialize();
-  virtual void handleMessage(cMessage *msg);
+    std::string info() const;
+
+    void processAllocateRequest();
+    void processDegenerateDataTransfer();
+    void processAllocateResponse();
+    void processCreateRequest();
+    void processCreateResponse();
+    void processDeallocateRequest();
+    void processDeleteRequest();
+    void processDeleteResponse();
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+  private:
+    int portId;
+    int cepId;
 };
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const FAI& fai);
 
 #endif /* FAI_H_ */

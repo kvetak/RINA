@@ -18,14 +18,41 @@
 
 #include <omnetpp.h>
 
-/**
- * TODO - Generated class
- */
+#include "FAListeners.h"
+#include "Flow.h"
+
 class RA : public cSimpleModule
 {
+  public:
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+  private:
+
+    void registerFASigs();
+    void registerFAISigs();
+
+    //--------------------- FA ---------------------
+    //Signals
+    simsignal_t sigFACreReq;
+    simsignal_t sigFACreRes;
+    simsignal_t sigDelReq;
+    simsignal_t sigDelRes;
+    //Listeners
+    LisFACreReq*  lisCreReq;
+    LisFACreRes* lisCreRes;
+    LisFADelReq*  lisDelReq;
+    LisFADelRes* lisDelRes;
+    //Signaling
+    void signalizeFACreateRequestFlow();
+    void signalizeFACreateResponseFlow();
+    void signalizeFADeleteRequestFlow();
+    void signalizeFADeleteResponseFlow();
+    //--------------------- FAI ---------------------
+
+
 };
 
 #endif

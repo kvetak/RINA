@@ -13,13 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <Flow.h>
+#include "Flow.h"
 
-Flow::Flow() {
+Flow::Flow() : srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR), srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR) {
 
 }
 
-Flow::Flow(APNamingInfo src, APNamingInfo dst) {
+Flow::Flow(APNamingInfo src, APNamingInfo dst) : srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR), srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR) {
     this->srcApni = src;
     this->dstApni = dst;
 }
@@ -28,5 +28,15 @@ Flow::~Flow() {
 
 }
 
+std::string Flow::info() const {
+    std::stringstream os;
+    os << "AP: " << srcApni <<  "/" << dstApni <<
+          " port: " << srcPortId << "/" << dstPortId <<
+          " addr: " << srcAddr << "/" << dstAddr;
+    return os.str();
+}
 
-
+//Free function
+std::ostream& operator<< (std::ostream& os, const Flow& fl) {
+    return os << fl.info();
+}

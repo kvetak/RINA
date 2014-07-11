@@ -17,17 +17,29 @@
 #define APNAMINGINFO_H_
 
 #include <string>
-#include <APN.h>
+#include <sstream>
 
-class APNamingInfo {
-public:
+#include "APN.h"
+
+class APNamingInfo
+{
+  public:
     APNamingInfo();
+    APNamingInfo(APN napn);
+    APNamingInfo(APN napn, std::string napinstance, std::string naename, std::string naeinstance);
     virtual ~APNamingInfo();
+
+    bool operator== (const APNamingInfo other) {
+        return (apn == other.apn &&
+                !apinstance.compare(other.apinstance) &&
+                !aename.compare(other.aename) && !aeinstance.compare(other.aeinstance) );
+    }
+
+    std::string info() const;
 
     const std::string& getAeinstance() const {
         return aeinstance;
     }
-
     void setAeinstance(const std::string& aeinstance) {
         this->aeinstance = aeinstance;
     }
@@ -35,7 +47,6 @@ public:
     const std::string& getAename() const {
         return aename;
     }
-
     void setAename(const std::string& aename) {
         this->aename = aename;
     }
@@ -43,7 +54,6 @@ public:
     const std::string& getApinstance() const {
         return apinstance;
     }
-
     void setApinstance(const std::string& apinstance) {
         this->apinstance = apinstance;
     }
@@ -51,16 +61,18 @@ public:
     const APN& getApn() const {
         return apn;
     }
-
     void setApn(const APN& apn) {
         this->apn = apn;
     }
 
-private:
+  private:
     APN apn;
     std::string apinstance;
     std::string aename;
     std::string aeinstance;
 };
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni);
 
 #endif /* APNAMINGINFO_H_ */

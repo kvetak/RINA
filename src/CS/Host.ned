@@ -22,6 +22,7 @@ import rina.DIF.IPCProcess;
 module Host
 {
     @display("i=device/pc");
+    @node;
     gates:
         inout medium;
     submodules:

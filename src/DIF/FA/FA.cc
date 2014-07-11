@@ -22,7 +22,7 @@
  * @detail
  */
 
-#include <FA.h>
+#include "FA.h"
 
 Define_Module(FA);
 
@@ -35,24 +35,20 @@ FA::~FA() {
     // TODO Auto-generated destructor stub
 }
 
-bool FA::invokeNewFlowRequestPolicy(){
-    return false;
+void FA::initialize() {
+
 }
 
-
-bool FA::allocateRequest(Flow fl) {
-
+void FA::receiveAllocateRequest(Flow *fl) {
+    EV << this->getFullPath() << " received AllocateRequest" << endl;
     //Is malformed?
-    //if (fl == NULL)
-    //    return false;
 
+    //Insert pending Allocation
+//    std::string state;
+//    state.assign("pending");
+//    AllocationTable.insert(TFlowStrPair(fl, state));
     //Create FAI
-
-    return true;
-}
-
-void FA::processAllocateRequest() {
-    ;
+    this->createFAI();
 }
 
 void FA::processCreateFlowRequest() {
@@ -63,15 +59,39 @@ void FA::processDeallocateRequest() {
     ;
 }
 
-void FA::initialize() {
-    //Register signals
-    sigCreateRequestFlow = registerSignal("CreateRequest");
-    sigCreateResponseFlow = registerSignal("CreateResponse");
-    sigDeleteRequestFlow = registerSignal("DeleteRequest");
-    sigDeleteResponseFlow = registerSignal("DeleteResponse");
+bool FA::invokeNewFlowRequestPolicy() {
+    //Is flow policy acceptable
+
+    return true;
 }
 
+bool FA::createFAI() {
+    // find factory object
+    cModuleType *moduleType = cModuleType::get("rina.DIF.FA.FAI");
+
+    // create (possibly compound) module and build its submodules (if any)
+    int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+    int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+
+    std::ostringstream ostr;
+    ostr << "fai_" << portId << "_" << cepId;
+
+    cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
+    module->par("portId") = portId;
+    module->par("cepId") = cepId;
+    module->finalizeParameters();
+    module->buildInside();
+
+    // create activation message
+    module->scheduleStart(simTime());
+    module->callInitialize();
+
+    return true;
+}
+
+
 void FA::handleMessage(cMessage *msg) {
+
     //Rcv Allocate_Request
 
     //Rcv M_Create(Flow)

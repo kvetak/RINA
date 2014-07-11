@@ -17,17 +17,29 @@
 #define APN_H_
 
 #include <string>
+#include <sstream>
 
-class APN {
-public:
+class APN
+{
+  public:
     APN();
     APN(std::string nam);
     virtual ~APN();
+
+    bool operator== (const APN other) {
+        return !name.compare(other.getName());
+    }
+
+    std::string info() const;
+
     const std::string& getName() const;
     void setName(const std::string& name);
 
-private:
+  private:
     std::string name;
+
 };
+
+std::ostream& operator<< (std::ostream& os, const APN& apn);
 
 #endif /* APN_H_ */

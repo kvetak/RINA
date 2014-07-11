@@ -15,6 +15,8 @@
 
 #include "DTCP.h"
 
+Define_Module(DTCP);
+
 DTCP::DTCP() {
     // TODO Auto-generated constructor stub
 

@@ -17,7 +17,8 @@ package rina.DIF.RA;
 
 module ResourceAllocator
 {
-    @display("i=block/segm;bgb=398,147");
+    @display("i=block/segm;bgb=398,147");    
+    
     submodules:
         pduForwardingTable: PDUForwardingTable {
             @display("p=70,68");

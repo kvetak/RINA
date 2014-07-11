@@ -13,13 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+package rina.simulations.FA.Signals;
+
+import rina.CS.Host;
+
 
 //
-// TODO auto-generated module
+// TODO Auto-generated network
 //
-simple IRM
+network Signals
 {
-    @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow*);
+    @display("bgb=433,167");
+    submodules:
+        host2: Host {
+            @display("p=285,77");
+        }
+        host1: Host {
+            @display("p=105,77");
+        }
+    connections:
+        host1.medium <--> host2.medium;
 }

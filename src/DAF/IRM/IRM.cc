@@ -13,24 +13,58 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <IRM/IRM.h>
+#include "IRM.h"
 
 Define_Module(IRM);
 
 IRM::IRM() {
-    // TODO Auto-generated constructor stub
-
 }
 
 IRM::~IRM() {
-    // TODO Auto-generated destructor stub
 }
 
 
 void IRM::initialize() {
-
+    this->registerFASigs();
+    //Testing purposes
+    prepareTestMessage(100);
 }
 
-void IRM::handleMessage(cMessage *msg) {
+void IRM::handleTestMessage(cMessage *msg) {
+    //IF it is a TEST message from host1
+    if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host1")){
+        //EV << msg->getName() << endl;
 
+        Flow fl = Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
+
+        signalizeFAAllocateRequest(&fl);
+        delete(msg);
+    }
+}
+
+void IRM::handleMessage(cMessage* msg) {
+    //Testing purpose message
+    this->handleTestMessage(msg);
+}
+
+void IRM::prepareTestMessage(simtime_t tim){
+    cMessage* mcre = new cMessage("TEST");
+    scheduleAt(simTime() + tim, mcre);
+}
+
+void IRM::registerFASigs() {
+    FA* fa = ModuleAccess<FA>("fa").get();
+    //EV << "!!!!!" << fa->getFullPath() << endl;
+    //Register signals
+    sigAllocReq = registerSignal("AllocateRequest");
+    //Subscribe FA signals
+    lisAllocReq = new LisFAAllocReq(fa);
+    this->subscribe(sigAllocReq, lisAllocReq);
+}
+
+
+void IRM::signalizeFAAllocateRequest(Flow* flow) {
+    //EV << "!!!!VYemitovano" << endl;
+    EV << "Vyemitovan AllocReq s Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
+    emit(sigAllocReq, (cObject*) flow);
 }

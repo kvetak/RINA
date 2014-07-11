@@ -13,14 +13,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <APNamingInfo.h>
+#include "APNamingInfo.h"
 
-APNamingInfo::APNamingInfo() {
-    // TODO Auto-generated constructor stub
-
+APNamingInfo::APNamingInfo() : apinstance(""), aename(""), aeinstance("") {
 }
 
+APNamingInfo::APNamingInfo(APN napn) : apinstance(""), aename(""), aeinstance("") {
+    this->apn = napn;
+}
+
+APNamingInfo::APNamingInfo(APN napn, std::string napinstance,
+        std::string naename, std::string naeinstance) {
+    this->apn = napn;
+    this->apinstance = napinstance;
+    this->aename = naename;
+    this->aeinstance = naeinstance;
+}
+
+
 APNamingInfo::~APNamingInfo() {
-    // TODO Auto-generated destructor stub
+    this->apinstance = "";
+    this->aename = "";
+    this->aeinstance = "";
+}
+
+std::string APNamingInfo::info() const{
+    std::stringstream os;
+    os << apn << "(" << apinstance << ", " << aename << "{" << aeinstance << "})";
+    return os.str();
+}
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni) {
+    return os << apni.info();
 }
 

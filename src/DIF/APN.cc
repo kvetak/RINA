@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <APN.h>
+#include "APN.h"
 
 APN::APN() {
     this->name = "";
@@ -34,4 +34,15 @@ const std::string& APN::getName() const {
 
 void APN::setName(const std::string& name) {
     this->name = name;
+}
+
+std::string APN::info() const{
+    std::stringstream os;
+    os << this->getName();
+    return os.str();
+}
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const APN& apn) {
+    return os << apn.info();
 }

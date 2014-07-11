@@ -21,6 +21,7 @@ import rina.DIF.IPCProcess;
 module BorderRouter
 {
     @display("i=abstract/router;bgb=272,341");
+    @node;
     gates:
         inout medium[];
     submodules:

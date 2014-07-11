@@ -27,32 +27,33 @@
 
 //Standard libraries
 #include <omnetpp.h>
-//RINASim libraries
-#include "Flow.h"
+#include <string>
+#include "FlowTable.h"
+#include "ModuleAccess.h"
 
-class FA : public cSimpleModule {
-public:
+#define RANDOM_NUMBER_GENERATOR 0
+#define MAX_PORTID 65535
+#define MAX_CEPID  65535
+
+class FA : public cSimpleModule
+{
+  public:
     FA();
     virtual ~FA();
 
-    //Signals
-    simsignal_t sigCreateRequestFlow;
-    simsignal_t sigCreateResponseFlow;
-    simsignal_t sigDeleteRequestFlow;
-    simsignal_t sigDeleteResponseFlow;
-
+    void receiveAllocateRequest(Flow* fl);
+    void processCreateFlowRequest();
+    void processDeallocateRequest();
     bool invokeNewFlowRequestPolicy();
-    bool allocateRequest(Flow fl);
 
-protected:
-
+  protected:
+    //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    void processAllocateRequest();
-    void processCreateFlowRequest();
-    void processDeallocateRequest();
-
+  private:
+    FlowTable* FlowTab;
+    bool createFAI();
 };
 
 #endif /* FLOWALLOCATOR_H_ */

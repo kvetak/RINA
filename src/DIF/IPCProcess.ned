@@ -27,7 +27,9 @@ import rina.DIF.RMT.RMT;
 
 module IPCProcess
 {
-    @display("bgb=434,307;i=misc/square,#FF8000,50");
+    parameters:    
+    	@display("bgb=457,307;i=misc/square,#FF8000,50");
+    	int ipcAddress;
     gates:
         inout southIo[];
         inout northIo[];
@@ -39,7 +41,7 @@ module IPCProcess
             @display("p=90,249");
         }
         ribDaemon: RIBDaemon {
-            @display("p=221,147");
+            @display("p=210,147");
         }
 
         efcp: EFCP {
@@ -52,9 +54,10 @@ module IPCProcess
             @display("p=333,147");
         }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=284,61");
+            @display("p=333,61");
         }
     connections:
         rmt.rmtIo++ <--> southIo++;
+        flowAllocator.appIo++ <--> northIo++;
 
 }

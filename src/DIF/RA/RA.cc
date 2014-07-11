@@ -19,10 +19,47 @@ Define_Module(RA);
 
 void RA::initialize()
 {
-    // TODO - Generated method body
+    //Register FA signals
+    registerFASigs();
+}
+
+void RA::registerFASigs() {
+    FA* fa = ModuleAccess<FA>("fa").get();
+    //Register signals
+    sigFACreReq = registerSignal("CreateRequestFlow");
+    sigFACreRes = registerSignal("CreateResponseFlow");
+    sigDelReq = registerSignal("DeleteRequestFlow");
+    sigDelRes = registerSignal("DeleteResponseFlow");
+    //Subscribe FA signals
+    //this->getParentModule()->getParentModule()->subscribe("CreateRequest",  lCreReq);
+    lisCreReq = new LisFACreReq(fa);
+    this->subscribe(sigFACreReq,  lisCreReq);
+    lisCreRes = new LisFACreRes(fa);
+    this->subscribe(sigFACreRes, lisCreRes);
+    lisDelReq = new LisFADelReq(fa);
+    this->subscribe(sigDelReq,  lisDelReq);
+    lisDelRes = new LisFADelRes(fa);
+    this->subscribe(sigDelRes, lisDelRes);
+}
+
+void RA::signalizeFACreateRequestFlow() {
+    //EV << "Sending... " << getSignalName(sigFACreReq) << endl;
+    emit(sigFACreReq, true);
+}
+
+void RA::signalizeFACreateResponseFlow() {
+    emit(sigFACreRes, true);
+}
+
+void RA::signalizeFADeleteRequestFlow() {
+    emit(sigDelReq, true);
+}
+
+void RA::signalizeFADeleteResponseFlow() {
+    emit(sigDelRes, true);
 }
 
 void RA::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }

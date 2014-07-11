@@ -13,13 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+package rina.DIF.FA;
 
-//
-// TODO auto-generated module
-//
-simple IRM
+simple FlowTable
 {
-    @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow*);
+    @display("i=block/table2");
 }

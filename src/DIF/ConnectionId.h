@@ -30,7 +30,8 @@ private:
     unsigned int qoSId;
     unsigned int destCEPId;
     unsigned int srcCEPId;
-    QosCube* qosCube; //not sure about this (it would make qosId useless
+    //TODO Vesely - Why is this here? Because in D-Base-2011-015.pdf page 5 is nothing like this in ConnectionId?
+    QosCube* qosCube; //not sure about this (it would make qosId useless)
 
 public:
     ConnectionId();

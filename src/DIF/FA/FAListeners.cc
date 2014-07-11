@@ -13,13 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+#include <FAListeners.h>
 
-//
-// TODO auto-generated module
-//
-simple IRM
-{
-    @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow*);
+void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "AllocateRequest initiated by " << src->getFullPath() << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    fa->receiveAllocateRequest(fl);
+    return;
 }

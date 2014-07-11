@@ -13,37 +13,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef IRM_H_
-#define IRM_H_
+#ifndef __RINA_FLOWTABLE_H_
+#define __RINA_FLOWTABLE_H_
 
-//Standard libraries
 #include <omnetpp.h>
-
-#include "FAListeners.h"
 #include "Flow.h"
+#include "FAI.h"
 
-class IRM : public cSimpleModule   {
+typedef std::map<Flow*, FAI*> TFlowTable;
+typedef TFlowTable::const_iterator TFTIter;
+typedef std::pair<Flow*, FAI*> TFlowTableEntry;
+
+class FlowTable : public cSimpleModule
+{
   public:
-    IRM();
-    virtual ~IRM();
+    std::string info() const;
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
-    void registerFASigs();
-
-    void prepareTestMessage(simtime_t tim);
-    void handleTestMessage(cMessage* msg);
-
-    //Signals
-    simsignal_t sigAllocReq;
-    //Listeners
-    LisFAAllocReq* lisAllocReq;
-    //Signaling
-    void signalizeFAAllocateRequest(Flow* flow);
-
+    TFlowTable FlowTab;
 };
 
-#endif /* IRM_H_ */
+//Free functions
+std::ostream& operator<< (std::ostream& os, const FlowTable& ft);
+std::ostream& operator<< (std::ostream& os, const TFlowTable& ft);
+std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte);
+
+#endif
