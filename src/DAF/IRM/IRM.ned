@@ -21,5 +21,5 @@ package rina.DAF.IRM;
 simple IRM
 {
     @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow*);
+    @signal[AllocateRequest](type=Flow?);
 }

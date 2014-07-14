@@ -32,14 +32,14 @@ void RA::registerFASigs() {
     sigDelRes = registerSignal("DeleteResponseFlow");
     //Subscribe FA signals
     //this->getParentModule()->getParentModule()->subscribe("CreateRequest",  lCreReq);
-    lisCreReq = new LisFACreReq(fa);
-    this->subscribe(sigFACreReq,  lisCreReq);
-    lisCreRes = new LisFACreRes(fa);
-    this->subscribe(sigFACreRes, lisCreRes);
-    lisDelReq = new LisFADelReq(fa);
-    this->subscribe(sigDelReq,  lisDelReq);
-    lisDelRes = new LisFADelRes(fa);
-    this->subscribe(sigDelRes, lisDelRes);
+    fa->lisCreReq = new LisFACreReq(fa);
+    this->subscribe(sigFACreReq,  fa->lisCreReq);
+    fa->lisCreRes = new LisFACreRes(fa);
+    this->subscribe(sigFACreRes, fa->lisCreRes);
+    fa->lisDelReq = new LisFADelReq(fa);
+    this->subscribe(sigDelReq,  fa->lisDelReq);
+    fa->lisDelRes = new LisFADelRes(fa);
+    this->subscribe(sigDelRes, fa->lisDelRes);
 }
 
 void RA::signalizeFACreateRequestFlow() {

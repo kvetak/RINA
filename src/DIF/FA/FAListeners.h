@@ -17,13 +17,14 @@
 #define FALISTENERS_H_
 
 #include <omnetpp.h>
-#include "FA.h"
+#include "FABase.h"
+
 
 class FAListeners : public cListener {
   protected:
-    FA* fa;
+    FABase* fa;
   public:
-    FAListeners(FA* sfa) {
+    FAListeners(FABase* sfa) {
         fa = sfa;
     };
     virtual ~FAListeners(){};
@@ -37,34 +38,34 @@ class FAListeners : public cListener {
 class LisFAAllocReq : public FAListeners
 {
   public:
-    LisFAAllocReq(FA* sfa) : FAListeners(sfa){};
+    LisFAAllocReq(FABase* sfa) : FAListeners(sfa){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
 class LisFACreReq : public FAListeners
 {
   public:
-    LisFACreReq(FA* sfa) : FAListeners(sfa){};
+    LisFACreReq(FABase* sfa) : FAListeners(sfa){};
 };
 
 class LisFACreRes : public FAListeners
 {
   public:
-    LisFACreRes(FA* sfa) : FAListeners(sfa){};
+    LisFACreRes(FABase* sfa) : FAListeners(sfa){};
 };
 
 
 class LisFADelReq : public FAListeners
 {
   public:
-    LisFADelReq(FA* sfa) : FAListeners(sfa){};
+    LisFADelReq(FABase* sfa) : FAListeners(sfa){};
 };
 
 
 class LisFADelRes : public FAListeners
 {
   public:
-    LisFADelRes(FA* sfa) : FAListeners(sfa){};
+    LisFADelRes(FABase* sfa) : FAListeners(sfa){};
 };
 
 #endif /* FALISTENERS_H_ */

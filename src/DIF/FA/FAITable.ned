@@ -15,7 +15,7 @@
 
 package rina.DIF.FA;
 
-simple FlowTable
+simple FAITable
 {
     @display("i=block/table2");
 }

@@ -13,33 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_FLOWTABLE_H_
-#define __RINA_FLOWTABLE_H_
+#ifndef FABASE_H_
+#define FABASE_H_
 
 #include <omnetpp.h>
-#include "Flow.h"
-#include "FAI.h"
 
-typedef std::map<Flow*, FAI*> TFlowTable;
-typedef TFlowTable::const_iterator TFTIter;
-typedef std::pair<Flow*, FAI*> TFlowTableEntry;
-
-class FlowTable : public cSimpleModule
-{
+class FABase : public cSimpleModule {
   public:
-    std::string info() const;
+
+    FABase();
+    virtual ~FABase();
+
+    virtual void receiveAllocateRequest(cObject* fl)=0;
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
 
-  private:
-    TFlowTable FlowTab;
+
+    //SimpleModule overloads
+    virtual void initialize()=0;
+    virtual void handleMessage(cMessage *msg)=0;
+
+
 };
 
-//Free functions
-std::ostream& operator<< (std::ostream& os, const FlowTable& ft);
-std::ostream& operator<< (std::ostream& os, const TFlowTable& ft);
-std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte);
 
-#endif
+#endif /* FABASE_H_ */

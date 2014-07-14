@@ -15,6 +15,8 @@
 
 #include "Flow.h"
 
+Register_Class(Flow);
+
 Flow::Flow() : srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR), srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR) {
 
 }
@@ -25,14 +27,16 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) : srcPortId(UNDEFINED_PORTADDR), 
 }
 
 Flow::~Flow() {
-
+    this->srcPortId = UNDEFINED_PORTADDR;
+    this->dstPortId = UNDEFINED_PORTADDR;
+    this->srcAddr = UNDEFINED_PORTADDR;
+    this->dstAddr = UNDEFINED_PORTADDR;
 }
 
 std::string Flow::info() const {
     std::stringstream os;
-    os << "AP: " << srcApni <<  "/" << dstApni <<
-          " port: " << srcPortId << "/" << dstPortId <<
-          " addr: " << srcAddr << "/" << dstAddr;
+    os << "SRC> " << srcApni <<  "\tport: " << srcPortId << "\taddr: " << srcAddr << "\n" <<
+          "DST> " << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr;
     return os.str();
 }
 

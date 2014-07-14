@@ -26,6 +26,9 @@
 
 //Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "FABase.h"
+#include "Flow.h"
 
 class FAI : public cSimpleModule  {
   public:
@@ -43,13 +46,27 @@ class FAI : public cSimpleModule  {
     void processDeleteRequest();
     void processDeleteResponse();
 
+    void postInitialize(FABase* fa, Flow* fl);
+
+    const FABase* getFa() const {
+        return FlowAlloc;
+    }
+
+    const Flow* getFlow() const {
+        return FlowObject;
+    }
+
   protected:
+    int portId;
+    int cepId;
+
+    FABase* FlowAlloc;
+    Flow* FlowObject;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-  private:
-    int portId;
-    int cepId;
+
 };
 
 //Free function

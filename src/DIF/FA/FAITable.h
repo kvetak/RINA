@@ -13,34 +13,39 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef IRM_H_
-#define IRM_H_
+#ifndef __RINA_FAITABLE_H_
+#define __RINA_FAITABLE_H_
 
 //Standard libraries
 #include <omnetpp.h>
-#include "FA.h"
-#include "Flow.h"
+//RINASim library
+#include "FAITableEntry.h"
 
-class IRM : public cSimpleModule   {
+typedef std::list<FAITableEntry> TFAITable;
+typedef TFAITable::iterator TFTIter;
+typedef TFAITable::const_iterator TFTConstIter;
+
+class FAITable : public cSimpleModule
+{
   public:
-    IRM();
-    virtual ~IRM();
+    std::string info() const;
+    void insert(FAITableEntry entry);
+    void remove();
+    void find();
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
-    void registerFASigs();
-
-    void prepareTestMessage(simtime_t tim);
-    void handleTestMessage(cMessage* msg);
-
-    //Signals
-    simsignal_t sigAllocReq;
-    //Signaling
-    void signalizeFAAllocateRequest(Flow* flow);
-
+    TFAITable FaiTable;
 };
 
-#endif /* IRM_H_ */
+//Free functions
+/*
+std::ostream& operator<< (std::ostream& os, const FlowTable& ft);
+std::ostream& operator<< (std::ostream& os, const TFlowTable& ft);
+std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte);
+*/
+
+#endif

@@ -13,39 +13,57 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "FlowTable.h"
+#include "FAITable.h"
 
-Define_Module(FlowTable);
+Define_Module(FAITable);
 
-void FlowTable::initialize()
+void FAITable::initialize()
 {
-    WATCH(FlowTab);
+    WATCH_LIST(FaiTable);
 }
 
-std::string FlowTable::info() const {
+std::string FAITable::info() const {
     std::stringstream os;
-    for(TFTIter it = FlowTab.begin(); it != FlowTab.end(); ++it )
-        os << it->first << it->second << endl;
+    for(TFTConstIter it = FaiTable.begin(); it != FaiTable.end(); ++it )
+    {
+        FAITableEntry tft = *it;
+        os << tft << endl;
+    }
     return os.str();
 }
 
-void FlowTable::handleMessage(cMessage *msg)
+void FAITable::handleMessage(cMessage *msg)
 {
 
 }
 
+/*
 std::ostream& operator<< (std::ostream& os, const FlowTable& ft) {
     return os << ft.info();
 }
 
 std::ostream& operator<< (std::ostream& os, const TFlowTable& ft) {
-    for(TFTIter it = ft.begin(); it != ft.end(); ++it )
+    for(TFTConstIter it = ft.begin(); it != ft.end(); ++it )
     {
-        os << it->first << it->second << endl;
+        TFlowTableEntry tft = *it;
+        os << tft << endl;
     }
     return os;
 }
 
 std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte) {
-    return os << fte.first << "\n" << fte.second << endl;
+    //EV << "aaaaaaaaaaaa" << fte.first->info() << endl;
+    return os  << *fte.first << "\n" << *fte.second << endl;
+}
+*/
+
+void FAITable::insert(FAITableEntry entry) {
+    Enter_Method("insert()");
+    FaiTable.push_back(entry);
+}
+
+void FAITable::remove() {
+}
+
+void FAITable::find() {
 }

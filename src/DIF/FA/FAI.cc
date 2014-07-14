@@ -21,12 +21,13 @@
  * @brief
  * @detail
  */
-#include <FAI.h>
+#include "FAI.h"
 
 Define_Module(FAI);
 
-FAI::FAI() {
-    // TODO Auto-generated destructor stub
+FAI::FAI() :
+//FlowAlloc(NULL),
+FlowObject(NULL) {
 }
 
 FAI::~FAI() {
@@ -38,7 +39,20 @@ void FAI::initialize() {
     this->cepId  = par("cepId");
 }
 
+void FAI::postInitialize(FABase* fa, Flow* fl) {
+    //Initialize pointers! It cannot be done during model creation :(
+    this->FlowAlloc = fa;
+    this->FlowObject = fl;
+}
+
 void FAI::processAllocateRequest() {
+    Enter_Method("processAllocateRequest()");
+    //Is App local? YES then Degenerate transger ELSE
+
+    //Inove NewFlowReqPolicy
+
+    //EV << "A jsme tam!" << endl;
+
 }
 
 void FAI::processDegenerateDataTransfer() {
@@ -81,7 +95,7 @@ void FAI::handleMessage(cMessage *msg) {
 
 std::string FAI::info() const {
     std::stringstream os;
-    os << "FAI: port: " << this->portId << "cep:" << this->cepId<< endl;
+    os << "FAI>\tPort-ID: " << this->portId << "\tCEP-ID: " << this->cepId;
     return os.str();
 }
 

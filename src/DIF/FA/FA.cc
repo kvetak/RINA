@@ -21,34 +21,36 @@
  * @brief
  * @detail
  */
-
 #include "FA.h"
 
 Define_Module(FA);
 
 FA::FA() {
-    // TODO Auto-generated constructor stub
+    this->FaiTable = NULL;
 
 }
 
 FA::~FA() {
-    // TODO Auto-generated destructor stub
+    this->FaiTable = NULL;
 }
 
 void FA::initialize() {
-
+    this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule("faiTable") );
 }
 
-void FA::receiveAllocateRequest(Flow *fl) {
+void FA::receiveAllocateRequest(cObject* obj) {
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    Enter_Method_Silent();
     EV << this->getFullPath() << " received AllocateRequest" << endl;
     //Is malformed?
 
-    //Insert pending Allocation
-//    std::string state;
-//    state.assign("pending");
-//    AllocationTable.insert(TFlowStrPair(fl, state));
     //Create FAI
-    this->createFAI();
+    FAI* fai = this->createFAI(fl);
+    //Insert to FAITable
+    FAITableEntry* fte = new FAITableEntry(fai);
+    FaiTable->insert(*fte);
+    //Pass the AllocationRequest to newly created FAI
+    fai->processAllocateRequest();
 }
 
 void FA::processCreateFlowRequest() {
@@ -59,13 +61,15 @@ void FA::processDeallocateRequest() {
     ;
 }
 
-bool FA::invokeNewFlowRequestPolicy() {
+bool FA::invokeNewFlowRequestPolicy(Flow* fl) {
     //Is flow policy acceptable
-
+    //TODO: Vesely - Simulate wrong Flow
+    if ( strcmp(fl->getSrcApni().getApn().getName().c_str(), "AppH2") )
+        return false;
     return true;
 }
 
-bool FA::createFAI() {
+FAI* FA::createFAI(Flow* fl) {
     // find factory object
     cModuleType *moduleType = cModuleType::get("rina.DIF.FA.FAI");
 
@@ -86,7 +90,9 @@ bool FA::createFAI() {
     module->scheduleStart(simTime());
     module->callInitialize();
 
-    return true;
+    FAI* fai = dynamic_cast<FAI*>(module);
+    fai->postInitialize(this, fl);
+    return fai;
 }
 
 

@@ -25,7 +25,8 @@
 
 #define UNDEFINED_PORTADDR -1
 
-class Flow {
+class Flow : public cObject
+{
 private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
     APNamingInfo srcApni;

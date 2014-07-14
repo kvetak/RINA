@@ -13,15 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.FA;
 
-//
-// TODO auto-generated module
-//
-simple FAI
-{
-    parameters:
-    	@display("i=block/rxtx");
-    	int portId = default(-1);
-    	int cepId = default(-1);    	
+#include "FABase.h"
+
+FABase::FABase() {
 }
+
+FABase::~FABase() {
+}
+

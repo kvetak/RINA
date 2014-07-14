@@ -13,11 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <FAListeners.h>
+#include "FAListeners.h"
 
 void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     EV << "AllocateRequest initiated by " << src->getFullPath() << endl;
-    Flow* fl = dynamic_cast<Flow*>(obj);
-    fa->receiveAllocateRequest(fl);
+    fa->receiveAllocateRequest(obj);
     return;
 }

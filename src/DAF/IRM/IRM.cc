@@ -13,6 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+
 #include "IRM.h"
 
 Define_Module(IRM);
@@ -35,9 +36,17 @@ void IRM::handleTestMessage(cMessage *msg) {
     if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host1")){
         //EV << msg->getName() << endl;
 
-        Flow fl = Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
+        Flow* fl = new Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
 
-        signalizeFAAllocateRequest(&fl);
+        signalizeFAAllocateRequest(fl);
+        delete(msg);
+    }
+    if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
+        //EV << msg->getName() << endl;
+
+        Flow* fl = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppH3") ) );
+
+        signalizeFAAllocateRequest(fl);
         delete(msg);
     }
 }
@@ -58,13 +67,13 @@ void IRM::registerFASigs() {
     //Register signals
     sigAllocReq = registerSignal("AllocateRequest");
     //Subscribe FA signals
-    lisAllocReq = new LisFAAllocReq(fa);
-    this->subscribe(sigAllocReq, lisAllocReq);
+    fa->lisAllocReq = new LisFAAllocReq(fa);
+    this->subscribe(sigAllocReq, fa->lisAllocReq);
 }
 
 
 void IRM::signalizeFAAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
     EV << "Vyemitovan AllocReq s Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
-    emit(sigAllocReq, (cObject*) flow);
+    emit(sigAllocReq, flow);
 }

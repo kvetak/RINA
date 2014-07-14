@@ -28,23 +28,35 @@
 //Standard libraries
 #include <omnetpp.h>
 #include <string>
-#include "FlowTable.h"
+#include "FABase.h"
+#include "FAListeners.h"
+
+#include "FAI.h"
+#include "Flow.h"
+#include "FAITable.h"
 #include "ModuleAccess.h"
 
 #define RANDOM_NUMBER_GENERATOR 0
 #define MAX_PORTID 65535
 #define MAX_CEPID  65535
 
-class FA : public cSimpleModule
+class FA : public FABase
 {
   public:
     FA();
     virtual ~FA();
 
-    void receiveAllocateRequest(Flow* fl);
+    virtual void receiveAllocateRequest(cObject* obj);
     void processCreateFlowRequest();
     void processDeallocateRequest();
-    bool invokeNewFlowRequestPolicy();
+    bool invokeNewFlowRequestPolicy(Flow* fl);
+
+    //Listeners
+    LisFAAllocReq* lisAllocReq;
+    LisFACreReq*  lisCreReq;
+    LisFACreRes* lisCreRes;
+    LisFADelReq*  lisDelReq;
+    LisFADelRes* lisDelRes;
 
   protected:
     //SimpleModule overloads
@@ -52,8 +64,8 @@ class FA : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
   private:
-    FlowTable* FlowTab;
-    bool createFAI();
+    FAITable* FaiTable;
+    FAI* createFAI(Flow* fl);
 };
 
 #endif /* FLOWALLOCATOR_H_ */

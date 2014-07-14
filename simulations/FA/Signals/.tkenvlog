@@ -1,0 +1,27 @@
+----------------------------------------------------------------------
+
+
+Tcl error: tkutil.cc#279: missing close-brace
+    while executing
+".main.text insert end {(FAI)fai_2732_43567
+status: "
+
+
+----------------------------------------------------------------------
+
+
+Tcl error: tkutil.cc#279: missing close-brace
+    while executing
+".main.text insert end {(FAI)fai_2732_43567
+status: "
+
+
+----------------------------------------------------------------------
+
+
+Tcl error: tkutil.cc#279: missing close-brace
+    while executing
+".main.text insert end {FAI> port: 2732 / cep: 43567
+status: "
+
+

@@ -37,7 +37,7 @@ module FlowAllocator
         nameSpaceManager: NameSpaceManager {
             @display("p=347,84");
         }
-        flowTable: FlowTable {
+        faiTable: FAITable {
             @display("p=223,84");
         }
     connections:

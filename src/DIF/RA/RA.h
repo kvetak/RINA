@@ -17,8 +17,7 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
-
-#include "FAListeners.h"
+#include "FA.h"
 #include "Flow.h"
 
 class RA : public cSimpleModule
@@ -40,11 +39,6 @@ class RA : public cSimpleModule
     simsignal_t sigFACreRes;
     simsignal_t sigDelReq;
     simsignal_t sigDelRes;
-    //Listeners
-    LisFACreReq*  lisCreReq;
-    LisFACreRes* lisCreRes;
-    LisFADelReq*  lisDelReq;
-    LisFADelRes* lisDelRes;
     //Signaling
     void signalizeFACreateRequestFlow();
     void signalizeFACreateResponseFlow();
