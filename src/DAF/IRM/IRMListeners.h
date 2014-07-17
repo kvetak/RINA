@@ -13,65 +13,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef FALISTENERS_H_
-#define FALISTENERS_H_
+#ifndef IRMLISTENERS_H_
+#define IRMLISTENERS_H_
 
+//Standard libraries
 #include <omnetpp.h>
-#include "FABase.h"
+//RINASim libraries
+#include "IRM.h"
 
-class FAListeners : public cListener {
-  protected:
-    FABase* fa;
+class IRM;
+class IRMListeners : public cListener {
   public:
-    FAListeners(FABase* sfa){
-        fa = sfa;
-    };
-    virtual ~FAListeners(){};
+    IRMListeners(IRM* nirm);
+    virtual ~IRMListeners();
 
     virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
-        EV << "Signal to FA initiated by " << src->getFullPath() << endl;
+        EV << "Signal to IRM initiated by " << src->getFullPath() << endl;
     }
-
+  protected:
+      IRM* irm;
 };
 
-class LisFAAllocReq : public FAListeners
+class LisIRMAllocResNega : public IRMListeners
 {
   public:
-    LisFAAllocReq(FABase* sfa) : FAListeners(sfa){};
+    LisIRMAllocResNega(IRM* nirm) : IRMListeners(nirm){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-class LisFADeallocReq : public FAListeners
+class LisIRMAllocReqFromFAI : public IRMListeners
 {
   public:
-    LisFADeallocReq(FABase* sfa) : FAListeners(sfa){};
+    LisIRMAllocReqFromFAI(IRM* nirm) : IRMListeners(nirm){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-class LisFACreReq : public FAListeners
-{
-  public:
-    LisFACreReq(FABase* sfa) : FAListeners(sfa){};
-};
 
-class LisFACreRes : public FAListeners
-{
-  public:
-    LisFACreRes(FABase* sfa) : FAListeners(sfa){};
-};
-
-
-class LisFADelReq : public FAListeners
-{
-  public:
-    LisFADelReq(FABase* sfa) : FAListeners(sfa){};
-};
-
-
-class LisFADelRes : public FAListeners
-{
-  public:
-    LisFADelRes(FABase* sfa) : FAListeners(sfa){};
-};
-
-#endif /* FALISTENERS_H_ */
+#endif /* IRMLISTENERS_H_ */

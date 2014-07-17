@@ -23,24 +23,28 @@
 #include "FAI.h"
 
 class FAITableEntry {
-    enum AllocateStatus {UKNOWN, PENDING, ALLOC_POSI, ALLOC_NEGA};
-
   public:
+    enum AllocateStatus {UNKNOWN, ALLOC_PEND, ALLOC_POSI, ALLOC_NEGA, ALLOC_ERR, DEALLOC_PEND, DEALLOCATED, FORWARDED};
+
     FAITableEntry();
+    FAITableEntry(Flow* nflow);
     FAITableEntry(FAI* nfai);
     virtual ~FAITableEntry();
 
     std::string info() const;
     std::string getAllocateStatusString() const;
-    const FAI* getFai() const;
+    FAI* getFai() const;
     const simtime_t& getTimeCreated() const;
     const simtime_t& getTimeLastActive() const;
     void setTimeLastActive(const simtime_t& timeLastActive);
     AllocateStatus getAllocateStatus() const;
     void setAllocateStatus(AllocateStatus allocateStatus);
+    void setFai(FAI* nfai);
+    const Flow* getFlow() const;
 
   private:
     FAI* fai;
+    Flow* flow;
     AllocateStatus allocStatus;
     simtime_t timeCreated;
     simtime_t timeLastActive;

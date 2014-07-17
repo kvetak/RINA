@@ -37,21 +37,21 @@ class FAI : public cSimpleModule  {
 
     std::string info() const;
 
-    void processAllocateRequest();
+    bool receiveAllocateRequest();
     void processDegenerateDataTransfer();
-    void processAllocateResponse();
-    void processCreateRequest();
+    void receiveAllocateResponsePositive(cObject* obj);
+    void receiveAllocateResponseNegative();
+    bool receiveCreateRequest();
     void processCreateResponse();
-    void processDeallocateRequest();
-    void processDeleteRequest();
-    void processDeleteResponse();
+    void receiveDeallocateRequest();
+    void receiveDeleteRequest();
+    void receiveDeleteResponse();
 
-    void postInitialize(FABase* fa, Flow* fl);
+    void postInitialize(FABase* fa, Flow* fl, simsignal_t sigAlReq);
 
     const FABase* getFa() const {
         return FlowAlloc;
     }
-
     const Flow* getFlow() const {
         return FlowObject;
     }
@@ -63,9 +63,25 @@ class FAI : public cSimpleModule  {
     FABase* FlowAlloc;
     Flow* FlowObject;
 
+    simsignal_t sigFAIAllocReq;
+    simsignal_t sigFAICreReq;
+    simsignal_t sigFAIDelReq;
+    simsignal_t sigFAICreResNega;
+    simsignal_t sigFAICreResPosi;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
+  private:
+    bool createEFCP();
+    bool createBindings();
+    bool deleteBindings();
+
+
+    void signalizeCreateFlowRequest(Flow* flow);
+    void signalizeDeleteFlowRequest();
+    void signalizeDeleteFlowResponse(Flow* flow);
+    void signalizeAllocationRequestFromFAI(Flow* flow);
 
 };
 

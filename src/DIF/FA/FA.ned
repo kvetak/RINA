@@ -15,12 +15,15 @@
 
 package rina.DIF.FA;
 
-//
-// TODO auto-generated module
-//
 simple FA
 {
-    @display("i=block/fork");
+    parameters:
+    	@display("i=block/fork");
+    	@signal[AllocateResponseNegative](type=Flow?);
+    	@signal[AllocateResponsePositive](type=Flow?);
+    	@signal[CreateRequestForward](type=Flow?);
+    	@signal[CreateResponseNegative](type=Flow?);
+    	@signal[CreateResponsePositive](type=Flow?);
     gates:
         inout irmIo;
 }

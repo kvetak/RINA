@@ -20,3 +20,10 @@ void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     fa->receiveAllocateRequest(obj);
     return;
 }
+
+void LisFADeallocReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeallocateRequest initiated by " << src->getFullPath() << endl;
+    fa->receiveDeallocateRequest(obj);
+    return;
+}

@@ -39,41 +39,81 @@ void FAI::initialize() {
     this->cepId  = par("cepId");
 }
 
-void FAI::postInitialize(FABase* fa, Flow* fl) {
+void FAI::postInitialize(FABase* fa, Flow* fl, simsignal_t sigAlReq) {
     //Initialize pointers! It cannot be done during model creation :(
     this->FlowAlloc = fa;
     this->FlowObject = fl;
+    this->sigFAIAllocReq = sigAlReq;
 }
 
-void FAI::processAllocateRequest() {
-    Enter_Method("processAllocateRequest()");
-    //Is App local? YES then Degenerate transger ELSE
+bool FAI::receiveAllocateRequest() {
+    Enter_Method("receiveAllocateRequest()");
+    //Is App local? YES then Degenerate transfer ELSE
 
     //Inove NewFlowReqPolicy
-
+    bool status = this->FlowAlloc->invokeNewFlowRequestPolicy(this->FlowObject);
+    if (!status){
+        EV << "invokeNewFlowPolicy() failed";
+        return false;
+    }
     //EV << "A jsme tam!" << endl;
 
+    status = this->createEFCP();
+    if (!status) {
+        EV << "createEFCP() failed";
+        return false;
+    }
+
+    status = this->createBindings();
+    if (!status) {
+        EV << "createBindings() failed";
+        return false;
+    }
+
+    //Schedule M_Create(Flow)
+    this->createBindings();
+
+    //Everything went fine
+    return true;
 }
 
 void FAI::processDegenerateDataTransfer() {
 }
 
-void FAI::processAllocateResponse() {
+void FAI::receiveAllocateResponsePositive(cObject* obj) {
+
 }
 
-void FAI::processCreateRequest() {
+bool FAI::receiveCreateRequest() {
+    Enter_Method("receiveCreateRequest()");
+    //Invoke NewFlowReqPolicy
+    bool status = this->FlowAlloc->invokeNewFlowRequestPolicy(this->FlowObject);
+    if (!status){
+        EV << "invokeNewFlowPolicy() failed";
+        //Schedule negative M_Crete_R(Flow)
+        return false;
+    }
+    //Pass AllocationRequest to IRM
+
+    //Everything went fine
+    return true;
 }
 
 void FAI::processCreateResponse() {
 }
 
-void FAI::processDeallocateRequest() {
+void FAI::receiveDeallocateRequest() {
+    Enter_Method("receiveDeallocateRequest()");
+    //deleteBindings
+    this->deleteBindings();
+    //signalize
+    this->signalizeDeleteFlowRequest();
 }
 
-void FAI::processDeleteRequest() {
+void FAI::receiveDeleteRequest() {
 }
 
-void FAI::processDeleteResponse() {
+void FAI::receiveDeleteResponse() {
 }
 
 void FAI::handleMessage(cMessage *msg) {
@@ -102,4 +142,37 @@ std::string FAI::info() const {
 //Free function
 std::ostream& operator<< (std::ostream& os, const FAI& fai) {
     return os << fai.info();
+}
+
+bool FAI::createEFCP() {
+    EV << this->getFullPath() << " attempts to create EFCP instance";
+    return false;
+}
+
+bool FAI::createBindings() {
+    EV << this->getFullPath() << " attempts to bind EFCP with FAI and RMT";
+    return false;
+}
+
+bool FAI::deleteBindings() {
+    EV << this->getFullPath() << " attempts to delete bindings between EFCP, FAI and RMT";
+    return false;
+}
+
+void FAI::signalizeCreateFlowRequest(Flow* flow) {
+    emit(this->sigFAICreReq, flow);
+}
+
+void FAI::signalizeDeleteFlowResponse(Flow* flow) {
+    emit(this->sigFAIDelReq, flow);
+}
+
+void FAI::signalizeAllocationRequestFromFAI(Flow* flow) {
+    emit(this->sigFAIAllocReq, flow);
+}
+
+void FAI::signalizeDeleteFlowRequest() {
+}
+
+void FAI::receiveAllocateResponseNegative() {
 }

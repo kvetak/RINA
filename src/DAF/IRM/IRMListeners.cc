@@ -13,14 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+#include "IRM.h"
+#include "IRMListeners.h"
 
-//
-// TODO auto-generated module
-//
-simple IRM
-{
-    @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow?);
-    @signal[DeallocateRequest](type=Flow?);
+IRMListeners::IRMListeners(IRM* nirm) {
+    this->irm = nirm;
 }
+
+IRMListeners::~IRMListeners() {
+
+}
+
+void LisIRMAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "Negative AllocationResponse send by " << src->getFullPath() << endl;
+    this->irm->receiveAllocationResponseNegative(obj);
+}
+
+void LisIRMAllocReqFromFAI::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationRequestFromFAI send by " << src->getFullPath() << endl;
+    this->irm->receiveAllocationRequestFromFAI(obj);
+}
+

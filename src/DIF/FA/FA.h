@@ -47,12 +47,21 @@ class FA : public FABase
     virtual ~FA();
 
     virtual void receiveAllocateRequest(cObject* obj);
-    void processCreateFlowRequest();
-    void processDeallocateRequest();
-    bool invokeNewFlowRequestPolicy(Flow* fl);
+    virtual void receiveDeallocateRequest(cObject* obj);
+    void receiveCreateFlowRequest(cObject* obj);
+    bool invokeNewFlowRequestPolicy(Flow* flow);
 
+    //Signals
+    simsignal_t sigFAAllocReq;
+    simsignal_t sigFAIAllocReq;
+    simsignal_t sigFAAllocResNega;
+    //simsignal_t sigFAAllocResPosi;
+    simsignal_t sigFACreReqFwd;
+    simsignal_t sigFACreResNega;
+    //simsignal_t sigFACreResPosi;
     //Listeners
     LisFAAllocReq* lisAllocReq;
+    LisFADeallocReq* lisDeallocReq;
     LisFACreReq*  lisCreReq;
     LisFACreRes* lisCreRes;
     LisFADelReq*  lisDelReq;
@@ -65,7 +74,14 @@ class FA : public FABase
 
   private:
     FAITable* FaiTable;
-    FAI* createFAI(Flow* fl);
+    bool isMalformedFlow(Flow* flow);
+    FAI* createFAI(Flow* flow);
+    //void registerIRMSigs();
+    void insertNewFTRecord(Flow* flow);
+
+    void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeCreateFlowRequestForward(Flow* flow);
+    void signalizeCreateFlowResponseNegative(Flow* flow);
 };
 
 #endif /* FLOWALLOCATOR_H_ */

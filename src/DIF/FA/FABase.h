@@ -17,6 +17,7 @@
 #define FABASE_H_
 
 #include <omnetpp.h>
+#include <Flow.h>
 
 class FABase : public cSimpleModule {
   public:
@@ -24,14 +25,14 @@ class FABase : public cSimpleModule {
     FABase();
     virtual ~FABase();
 
-    virtual void receiveAllocateRequest(cObject* fl)=0;
+    virtual void receiveAllocateRequest(cObject* fl) = 0;
+    virtual void receiveDeallocateRequest(cObject* fl) = 0;
+    virtual bool invokeNewFlowRequestPolicy(Flow* fl) = 0;
 
   protected:
-
-
     //SimpleModule overloads
-    virtual void initialize()=0;
-    virtual void handleMessage(cMessage *msg)=0;
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
 
 
 };

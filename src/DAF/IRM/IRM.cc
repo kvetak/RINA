@@ -24,7 +24,6 @@ IRM::IRM() {
 IRM::~IRM() {
 }
 
-
 void IRM::initialize() {
     this->registerFASigs();
     //Testing purposes
@@ -44,7 +43,7 @@ void IRM::handleTestMessage(cMessage *msg) {
     if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
         //EV << msg->getName() << endl;
 
-        Flow* fl = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppH3") ) );
+        Flow* fl = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
 
         signalizeFAAllocateRequest(fl);
         delete(msg);
@@ -64,16 +63,47 @@ void IRM::prepareTestMessage(simtime_t tim){
 void IRM::registerFASigs() {
     FA* fa = ModuleAccess<FA>("fa").get();
     //EV << "!!!!!" << fa->getFullPath() << endl;
-    //Register signals
-    sigAllocReq = registerSignal("AllocateRequest");
     //Subscribe FA signals
+    //  Allocation Request
+    sigIRMAllocReq = registerSignal("AllocateRequest");
     fa->lisAllocReq = new LisFAAllocReq(fa);
-    this->subscribe(sigAllocReq, fa->lisAllocReq);
+    this->subscribe(sigIRMAllocReq, fa->lisAllocReq);
+
+    //  Allocation Response NEGATIVE
+    fa->sigFAAllocResNega = registerSignal("AllocateResponseNegative");
+    lisAllocResNega = new LisIRMAllocResNega(this);
+    fa->subscribe(fa->sigFAAllocResNega, this->lisAllocResNega);
+
+    //  Deallocation Request
+    sigIRMDeallocReq = registerSignal("DeallocateRequest");
+    fa->lisDeallocReq = new LisFADeallocReq(fa);
+    this->subscribe(sigIRMDeallocReq, fa->lisDeallocReq);
+
+    //  Allocation Request from FAI
+    sigFAIAllocReq = registerSignal("AllocateRequestFromFAI");
+    fa->sigFAIAllocReq = sigFAIAllocReq;
+    this->lisAllocReqFromFai = new LisIRMAllocReqFromFAI(this);
+    this->subscribe(sigFAIAllocReq, this->lisAllocReqFromFai);
+
+    //  Allocation Response POSITIVE
+    sigIRMAllocResPosi = registerSignal("AllocateResponsePositive");
+
+    //  Allocation Response NEGATIVE
+    sigIRMAllocResNega = registerSignal("AllocateResponseNegative");
 }
 
+void IRM::receiveAllocationResponseNegative(cObject* obj) {
+    //Flow* fl = dynamic_cast<Flow*>(obj);
+    EV << this->getFullPath() << " received Negative Allocation Response" << endl;
+}
+
+void IRM::receiveAllocationRequestFromFAI(cObject* obj) {
+    //Flow* fl = dynamic_cast<Flow*>(obj);
+    EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+}
 
 void IRM::signalizeFAAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
     EV << "Vyemitovan AllocReq s Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
-    emit(sigAllocReq, flow);
+    emit(sigIRMAllocReq, flow);
 }

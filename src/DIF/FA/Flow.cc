@@ -35,8 +35,8 @@ Flow::~Flow() {
 
 std::string Flow::info() const {
     std::stringstream os;
-    os << "SRC> " << srcApni <<  "\tport: " << srcPortId << "\taddr: " << srcAddr << "\n" <<
-          "DST> " << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr;
+    os << "SRC>\t" << srcApni <<  "\tport: " << srcPortId << "\taddr: " << srcAddr << "\n" <<
+          "DST>\t" << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr;
     return os.str();
 }
 

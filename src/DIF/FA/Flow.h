@@ -25,7 +25,7 @@
 
 #define UNDEFINED_PORTADDR -1
 
-class Flow : public cObject
+class Flow : public cObject, noncopyable
 {
 private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6

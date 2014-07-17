@@ -21,7 +21,7 @@ import rina.DIF.NSM.NameSpaceManager;
 module FlowAllocator
 {
     parameters:
-        @display("i=block/fork;bgb=455,410");
+        @display("i=block/fork;bgb=590,410");
         //int maxFaiLimit = default(1);
     gates:
         inout appIo[];
@@ -35,10 +35,10 @@ module FlowAllocator
         // }
 
         nameSpaceManager: NameSpaceManager {
-            @display("p=347,84");
+            @display("p=447,84");
         }
         faiTable: FAITable {
-            @display("p=223,84");
+            @display("p=283,84");
         }
     connections:
 

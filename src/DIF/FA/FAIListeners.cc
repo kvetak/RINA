@@ -13,14 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+#include "FAI.h"
+#include "FAIListeners.h"
 
-//
-// TODO auto-generated module
-//
-simple IRM
-{
-    @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow?);
-    @signal[DeallocateRequest](type=Flow?);
+FAIListeners::FAIListeners(FAI* nfai) {
+    this->fai = nfai;
+
+}
+
+FAIListeners::~FAIListeners() {
+    // TODO Auto-generated destructor stub
+
+}
+
+void LisFAIAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    fai->receiveAllocateResponsePositive(obj);
+}
+
+void LisFAIAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
 }
