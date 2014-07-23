@@ -24,15 +24,20 @@ IRMListeners::~IRMListeners() {
 
 }
 
-void LisIRMAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
+void LisIRMAllocResNegaFa::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "Negative AllocationResponse send by " << src->getFullPath() << endl;
+    EV << "AllocationResponseNegative{fromFA} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
     this->irm->receiveAllocationResponseNegative(obj);
 }
 
-void LisIRMAllocReqFromFAI::receiveSignal(cComponent* src, simsignal_t id,
+void LisIRMAllocReqFai::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "AllocationRequestFromFAI send by " << src->getFullPath() << endl;
+    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
     this->irm->receiveAllocationRequestFromFAI(obj);
 }
 
+void LisIRMAllocResNegaFai::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationResponseNegative{fromFAI} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
+    this->irm->receiveAllocationResponseNegative(obj);
+}

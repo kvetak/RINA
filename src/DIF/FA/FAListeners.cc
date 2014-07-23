@@ -16,14 +16,32 @@
 #include "FAListeners.h"
 
 void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
-    EV << "AllocateRequest initiated by " << src->getFullPath() << endl;
+    EV << "AllocateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     fa->receiveAllocateRequest(obj);
     return;
 }
 
 void LisFADeallocReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "DeallocateRequest initiated by " << src->getFullPath() << endl;
+    EV << "DeallocateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     fa->receiveDeallocateRequest(obj);
     return;
+}
+
+void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    fa->receiveCreateFlowRequest(obj);
+    return;
+}
+
+void LisFAAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    fa->receiveAllocateResponsePositive(obj);
+}
+
+void LisFAAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    fa->receiveAllocateResponseNegative(obj);
 }

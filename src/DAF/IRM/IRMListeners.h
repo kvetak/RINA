@@ -34,17 +34,25 @@ class IRMListeners : public cListener {
       IRM* irm;
 };
 
-class LisIRMAllocResNega : public IRMListeners
+class LisIRMAllocResNegaFa : public IRMListeners
 {
   public:
-    LisIRMAllocResNega(IRM* nirm) : IRMListeners(nirm){};
+    LisIRMAllocResNegaFa(IRM* nirm) : IRMListeners(nirm){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-class LisIRMAllocReqFromFAI : public IRMListeners
+class LisIRMAllocResNegaFai : public IRMListeners
 {
   public:
-    LisIRMAllocReqFromFAI(IRM* nirm) : IRMListeners(nirm){};
+    LisIRMAllocResNegaFai(IRM* nirm) : IRMListeners(nirm){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+
+class LisIRMAllocReqFai : public IRMListeners
+{
+  public:
+    LisIRMAllocReqFai(IRM* nirm) : IRMListeners(nirm){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

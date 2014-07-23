@@ -66,7 +66,7 @@ void FAITable::insert(FAITableEntry entry) {
 void FAITable::remove() {
 }
 
-FAITableEntry* FAITable::findByFlow(Flow* flow) {
+FAITableEntry* FAITable::findEntryByFlow(Flow* flow) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getFlow() == flow)
@@ -75,7 +75,7 @@ FAITableEntry* FAITable::findByFlow(Flow* flow) {
     return NULL;
 }
 
-FAITableEntry* FAITable::findByFai(FAI* fai) {
+FAITableEntry* FAITable::findEntryByFai(FAI* fai) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getFai() == fai)
@@ -85,7 +85,7 @@ FAITableEntry* FAITable::findByFai(FAI* fai) {
 }
 
 void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status) {
-    FAITableEntry* fte = findByFlow(flow);
+    FAITableEntry* fte = findEntryByFlow(flow);
     if (fte)
         fte->setAllocateStatus(status);
     else
@@ -93,7 +93,7 @@ void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus statu
 }
 
 void FAITable::changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status) {
-    FAITableEntry* fte = findByFai(fai);
+    FAITableEntry* fte = findEntryByFai(fai);
     if (fte)
         fte->setAllocateStatus(status);
     else
@@ -101,6 +101,6 @@ void FAITable::changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status)
 }
 
 void FAITable::bindFaiToFlow(FAI* fai, Flow* flow) {
-    FAITableEntry* fte = findByFlow(flow);
+    FAITableEntry* fte = findEntryByFlow(flow);
     fte->setFai(fai);
 }

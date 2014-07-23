@@ -21,6 +21,8 @@ package rina.DAF.IRM;
 simple IRM
 {
     @display("i=block/cogwheel");
-    @signal[AllocateRequest](type=Flow?);
-    @signal[DeallocateRequest](type=Flow?);
+    @signal[IRM-AllocateRequest](type=Flow?);
+    @signal[IRM-DeallocateRequest](type=Flow?);
+    @signal[IRM-AllocateResponsePositive](type=Flow?);
+    @signal[IRM-AllocateResponseNegative](type=Flow?);
 }

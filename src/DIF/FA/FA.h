@@ -34,11 +34,12 @@
 #include "FAI.h"
 #include "Flow.h"
 #include "FAITable.h"
+#include "RINASignals.h"
 #include "ModuleAccess.h"
 
-#define RANDOM_NUMBER_GENERATOR 0
-#define MAX_PORTID 65535
-#define MAX_CEPID  65535
+const int RANDOM_NUMBER_GENERATOR = 0;
+const int MAX_PORTID = 65535;
+const int MAX_CEPID  = 65535;
 
 class FA : public FABase
 {
@@ -47,20 +48,27 @@ class FA : public FABase
     virtual ~FA();
 
     virtual void receiveAllocateRequest(cObject* obj);
+    virtual void receiveAllocateResponsePositive(cObject* obj);
+    virtual void receiveAllocateResponseNegative(cObject* obj);
     virtual void receiveDeallocateRequest(cObject* obj);
-    void receiveCreateFlowRequest(cObject* obj);
+    virtual void receiveCreateFlowRequest(cObject* obj);
+
+    virtual void deinstantiateFai(Flow* flow);
+
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
     //Signals
-    simsignal_t sigFAAllocReq;
-    simsignal_t sigFAIAllocReq;
+    //simsignal_t sigFAIAllocReq;
     simsignal_t sigFAAllocResNega;
-    //simsignal_t sigFAAllocResPosi;
+    simsignal_t sigFAAllocResPosi;
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
-    //simsignal_t sigFACreResPosi;
+    simsignal_t sigFACreResPosi;
+
     //Listeners
     LisFAAllocReq* lisAllocReq;
+    LisFAAllocResPosi* lisAllocResPosi;
+    LisFAAllocResNega* lisAllocResNega;
     LisFADeallocReq* lisDeallocReq;
     LisFACreReq*  lisCreReq;
     LisFACreRes* lisCreRes;
@@ -75,9 +83,12 @@ class FA : public FABase
   private:
     FAITable* FaiTable;
     bool isMalformedFlow(Flow* flow);
+    bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
     //void registerIRMSigs();
     void insertNewFTRecord(Flow* flow);
+
+    void initSignalsAndListeners();
 
     void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlowRequestForward(Flow* flow);

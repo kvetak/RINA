@@ -22,6 +22,17 @@ simple FAI
 {
     parameters:
     	@display("i=block/rxtx");
+    	
+    	@signal[FAI-AllocateRequest](type=Flow?);
+    	@signal[FAI-AllocateResponsePositive](type=Flow?);
+    	@signal[FAI-AllocateResponseNegative](type=Flow?);
+    	@signal[FAI-CreateFlowRequest](type=Flow?);
+    	@signal[FAI-DeleteFlowRequest](type=Flow?);
+    	@signal[FAI-CreateFlowResponsePositive](type=Flow?);
+    	@signal[FAI-CreateFlowResponseNegative](type=Flow?);
+    	@signal[FAI-DeleteFlowResponse](type=Flow?);
+    	
     	int portId = default(-1);
-    	int cepId = default(-1);    	
+    	int cepId = default(-1);  
+    	  	
 }

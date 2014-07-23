@@ -28,9 +28,54 @@ FAIListeners::~FAIListeners() {
 
 void LisFAIAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    fai->receiveAllocateResponsePositive(obj);
+    EV << "AllocateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    if (fai->getFlow() == fl)
+        fai->receiveAllocateResponsePositive();
 }
 
 void LisFAIAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
+    EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    if (fai->getFlow() == fl)
+        fai->receiveAllocateResponseNegative();
+}
+
+void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    if (fai->getFlow() == fl)
+        fai->receiveAllocateRequest();
+}
+
+void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    fai->receiveCreateResponsePositive();
+}
+
+void LisFAICreReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    fai->receiveCreateRequest();
+}
+
+void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    fai->receiveCreateResponseNegative();
+}
+
+void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeleteResponse initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    fai->receiveDeleteResponse();
+}
+
+void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeleteRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
+    fai->receiveDeleteRequest();
 }

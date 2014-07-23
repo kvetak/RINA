@@ -17,11 +17,17 @@
 
 Register_Class(Flow);
 
-Flow::Flow() : srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR), srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR) {
 
+Flow::Flow() :
+        srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR),
+        srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR),
+        createFlowRetries(0), maxCreateFlowRetries(MAX_CREATERETRIES), hopCount(MAX_HOPCOUNT) {
 }
 
-Flow::Flow(APNamingInfo src, APNamingInfo dst) : srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR), srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR) {
+Flow::Flow(APNamingInfo src, APNamingInfo dst) :
+        srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR),
+        srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR),
+        createFlowRetries(0), maxCreateFlowRetries(MAX_CREATERETRIES), hopCount(MAX_HOPCOUNT) {
     this->srcApni = src;
     this->dstApni = dst;
 }
@@ -31,12 +37,17 @@ Flow::~Flow() {
     this->dstPortId = UNDEFINED_PORTADDR;
     this->srcAddr = UNDEFINED_PORTADDR;
     this->dstAddr = UNDEFINED_PORTADDR;
+    this->createFlowRetries = 0;
+    this->maxCreateFlowRetries = 0;
+    this->hopCount = 0;
 }
 
 std::string Flow::info() const {
     std::stringstream os;
     os << "SRC>\t" << srcApni <<  "\tport: " << srcPortId << "\taddr: " << srcAddr << "\n" <<
-          "DST>\t" << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr;
+          "DST>\t" << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr << "\n" <<
+          "Hop Count: " << hopCount << "\n" <<
+          "Retries: " << createFlowRetries << "/" << maxCreateFlowRetries << endl;
     return os.str();
 }
 

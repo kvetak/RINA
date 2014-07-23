@@ -19,11 +19,11 @@ simple FA
 {
     parameters:
     	@display("i=block/fork");
-    	@signal[AllocateResponseNegative](type=Flow?);
-    	@signal[AllocateResponsePositive](type=Flow?);
-    	@signal[CreateRequestForward](type=Flow?);
-    	@signal[CreateResponseNegative](type=Flow?);
-    	@signal[CreateResponsePositive](type=Flow?);
+    	@signal[FA-AllocateResponseNegative](type=Flow?);
+    	@signal[FA-AllocateResponsePositive](type=Flow?);
+    	@signal[FA-CreateFlowRequestForward](type=Flow?);
+    	@signal[FA-CreateFlowResponseNegative](type=Flow?);
+    	@signal[FA-CreateFlowResponsePositive](type=Flow?);
     gates:
         inout irmIo;
 }

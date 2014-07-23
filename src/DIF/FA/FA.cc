@@ -36,6 +36,8 @@ FA::~FA() {
 
 void FA::initialize() {
     this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule("faiTable") );
+
+    this->initSignalsAndListeners();
 }
 
 void FA::receiveAllocateRequest(cObject* obj) {
@@ -53,17 +55,47 @@ void FA::receiveAllocateRequest(cObject* obj) {
     }
     //Create FAI
     FAI* fai = this->createFAI(fl);
-    //Pass the AllocationRequest to newly created FAI
-    bool status = fai->receiveAllocateRequest();
+    //Is App local? YES then Degenerate transfer ELSE
+    bool status;
+    if (this->isAppLocal(fl)) {
+        //Proceed with DegenerateDataTransfer
+        status = fai->processDegenerateDataTransfer();
+    }
+    else {
+        //Pass the AllocationRequest to newly created FAI
+        status = fai->receiveAllocateRequest();
+    }
     //If allocation was unsuccessful then return negative response
     if (!status)
     {
         //Change allocation status to rejected
         FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
-        //Send negative response
-        this->signalizeAllocateResponseNegative(fl);
     }
     //Else wait
+}
+
+void FA::receiveAllocateResponsePositive(cObject* obj) {
+    Enter_Method("receiveAllocateResponsePositive()");
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    //Change status
+    FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_POSI);
+    //Delegate it towards FAI
+    FAI* fai = FaiTable->findEntryByFlow(fl)->getFai();
+    bool status = fai->receiveAllocateResponsePositive();
+    if (!status){
+        //Error occurred
+        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_ERR);
+    }
+}
+
+void FA::receiveAllocateResponseNegative(cObject* obj) {
+    Enter_Method("receiveAllocateResponseNegative()");
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    //Change status
+    FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_NEGA);
+    //Delegate it towards FAI
+    FAI* fai = FaiTable->findEntryByFlow(fl)->getFai();
+    fai->receiveAllocateResponseNegative();
 }
 
 void FA::receiveCreateFlowRequest(cObject* obj) {
@@ -115,7 +147,7 @@ void FA::receiveDeallocateRequest(cObject* obj) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
     //Pass the request to appropriate FAI
-    FAITableEntry* fte = FaiTable->findByFlow(fl);
+    FAITableEntry* fte = FaiTable->findEntryByFlow(fl);
     FAI* fai = fte->getFai();
     fai->receiveDeallocateRequest();
 }
@@ -149,13 +181,18 @@ FAI* FA::createFAI(Flow* flow) {
     module->callInitialize();
     //Prepare return pointer and setup internal FAI pointers
     FAI* fai = dynamic_cast<FAI*>(module);
-    fai->postInitialize(this, flow, sigFAIAllocReq);
+    fai->postInitialize(this, flow);
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
     return fai;
 }
 
+void FA::deinstantiateFai(Flow* flow) {
+    FaiTable->changeAllocStatus(flow, FAITableEntry::DEINST_PEND);
+    //TODO: Vesely
+    //Prepare deinstantitation self-message
+}
 
 void FA::handleMessage(cMessage *msg) {
     //Rcv Allocate_Request
@@ -163,6 +200,9 @@ void FA::handleMessage(cMessage *msg) {
     //Rcv M_Create(Flow)
 
     //Rcv Deallocate_Request
+
+    //Deinstantiation
+    //deleteModule();
 }
 
 bool FA::isMalformedFlow(Flow* flow) {
@@ -172,10 +212,45 @@ bool FA::isMalformedFlow(Flow* flow) {
     return false;
 }
 
+bool FA::isAppLocal(Flow* flow) {
+    //TODO: Vesely - Simulate localApp
+    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "App11") )
+        return true;
+    return false;
+}
+
 void FA::insertNewFTRecord(Flow* flow) {
     //Insert to FAITable
     FAITableEntry* fte = new FAITableEntry(flow);
     FaiTable->insert(*fte);
+}
+
+void FA::initSignalsAndListeners() {
+    cModule* catcher = this->getParentModule()->getParentModule()->getParentModule();
+
+    //Signals that this module is emitting
+    sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
+    sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
+    sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
+    sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
+    sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
+
+    //Signals that this module is processing
+    //  AllocateRequest
+    this->lisAllocReq = new LisFAAllocReq(this);
+    catcher->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
+    //  AllocateResponsePositive
+    this->lisAllocResPosi = new LisFAAllocResPosi(this);
+    catcher->subscribe(SIG_IRM_AllocateResponsePositive, this->lisAllocResPosi);
+    //  AllocateResponseNegative
+    this->lisAllocResNega = new LisFAAllocResNega(this);
+    catcher->subscribe(SIG_IRM_AllocateResponseNegative, this->lisAllocResNega);
+    //  DeallocateRequest
+    this->lisDeallocReq = new LisFADeallocReq(this);
+    catcher->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
+
+
+
 }
 
 void FA::signalizeAllocateResponseNegative(Flow* flow) {
@@ -189,3 +264,4 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
+

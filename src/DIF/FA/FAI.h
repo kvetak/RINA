@@ -29,6 +29,8 @@
 //RINASim libraries
 #include "FABase.h"
 #include "Flow.h"
+#include "FAIListeners.h"
+#include "RINASignals.h"
 
 class FAI : public cSimpleModule  {
   public:
@@ -38,21 +40,22 @@ class FAI : public cSimpleModule  {
     std::string info() const;
 
     bool receiveAllocateRequest();
-    void processDegenerateDataTransfer();
-    void receiveAllocateResponsePositive(cObject* obj);
+    bool processDegenerateDataTransfer();
+    bool receiveAllocateResponsePositive();
     void receiveAllocateResponseNegative();
     bool receiveCreateRequest();
-    void processCreateResponse();
+    bool receiveCreateResponsePositive();
+    bool receiveCreateResponseNegative();
     void receiveDeallocateRequest();
     void receiveDeleteRequest();
     void receiveDeleteResponse();
 
-    void postInitialize(FABase* fa, Flow* fl, simsignal_t sigAlReq);
+    void postInitialize(FABase* fa, Flow* fl);
 
     const FABase* getFa() const {
         return FlowAlloc;
     }
-    const Flow* getFlow() const {
+    Flow* getFlow()  {
         return FlowObject;
     }
 
@@ -63,25 +66,45 @@ class FAI : public cSimpleModule  {
     FABase* FlowAlloc;
     Flow* FlowObject;
 
+    //Signals
     simsignal_t sigFAIAllocReq;
+    simsignal_t sigFAIAllocResPosi;
+    simsignal_t sigFAIAllocResNega;
     simsignal_t sigFAICreReq;
     simsignal_t sigFAIDelReq;
+    simsignal_t sigFAIDelRes;
     simsignal_t sigFAICreResNega;
     simsignal_t sigFAICreResPosi;
+    //Listeners
+    LisFAIAllocReq*      lisAllocReq;
+    LisFAIAllocResNega*  lisAllocResNega;
+    LisFAIAllocResPosi*  lisAllocResPosi;
+    LisFAICreReq*        lisCreReq;
+    LisFAICreResNega*    lisCreResNega;
+    LisFAICreResPosi*    lisCreResPosi;
+    LisFAIDelReq*        lisDelReq;
+    LisFAIDelRes*        lisDelRes;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
+    void initSignalsAndListeners();
+
     bool createEFCP();
     bool createBindings();
     bool deleteBindings();
 
+    bool invokeAllocateRetryPolicy();
 
-    void signalizeCreateFlowRequest(Flow* flow);
+    void signalizeCreateFlowRequest();
+    void signalizeCreateFlowResponsePositive();
+    void signalizeCreateFlowResponseNegative();
     void signalizeDeleteFlowRequest();
-    void signalizeDeleteFlowResponse(Flow* flow);
-    void signalizeAllocationRequestFromFAI(Flow* flow);
+    void signalizeDeleteFlowResponse();
+    void signalizeAllocationRequestFromFAI();
+    void signalizeAllocateResponseNegative();
+    void signalizeAllocateResponsePositive();
 
 };
 

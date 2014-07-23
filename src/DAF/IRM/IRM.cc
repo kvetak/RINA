@@ -25,7 +25,7 @@ IRM::~IRM() {
 }
 
 void IRM::initialize() {
-    this->registerFASigs();
+    this->initSignalsAndListeners();
     //Testing purposes
     prepareTestMessage(100);
 }
@@ -34,18 +34,18 @@ void IRM::handleTestMessage(cMessage *msg) {
     //IF it is a TEST message from host1
     if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host1")){
         //EV << msg->getName() << endl;
-
         Flow* fl = new Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
-
-        signalizeFAAllocateRequest(fl);
+        signalizeAllocateRequest(fl);
         delete(msg);
     }
     if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
         //EV << msg->getName() << endl;
+        Flow* fl1 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
+        signalizeAllocateRequest(fl1);
+        Flow* fl2 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppH3") ) );
+        signalizeAllocateRequest(fl2);
 
-        Flow* fl = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
 
-        signalizeFAAllocateRequest(fl);
         delete(msg);
     }
 }
@@ -60,36 +60,25 @@ void IRM::prepareTestMessage(simtime_t tim){
     scheduleAt(simTime() + tim, mcre);
 }
 
-void IRM::registerFASigs() {
-    FA* fa = ModuleAccess<FA>("fa").get();
-    //EV << "!!!!!" << fa->getFullPath() << endl;
-    //Subscribe FA signals
-    //  Allocation Request
-    sigIRMAllocReq = registerSignal("AllocateRequest");
-    fa->lisAllocReq = new LisFAAllocReq(fa);
-    this->subscribe(sigIRMAllocReq, fa->lisAllocReq);
+void IRM::initSignalsAndListeners() {
+    cModule* catcher = this->getParentModule()->getParentModule();
 
-    //  Allocation Response NEGATIVE
-    fa->sigFAAllocResNega = registerSignal("AllocateResponseNegative");
-    lisAllocResNega = new LisIRMAllocResNega(this);
-    fa->subscribe(fa->sigFAAllocResNega, this->lisAllocResNega);
+    //Signals that this module is emitting
+    sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
+    sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
+    sigIRMAllocResPosi  = registerSignal(SIG_IRM_AllocateResponsePositive);
+    sigIRMAllocResNega  = registerSignal(SIG_IRM_AllocateResponseNegative);
 
-    //  Deallocation Request
-    sigIRMDeallocReq = registerSignal("DeallocateRequest");
-    fa->lisDeallocReq = new LisFADeallocReq(fa);
-    this->subscribe(sigIRMDeallocReq, fa->lisDeallocReq);
-
-    //  Allocation Request from FAI
-    sigFAIAllocReq = registerSignal("AllocateRequestFromFAI");
-    fa->sigFAIAllocReq = sigFAIAllocReq;
-    this->lisAllocReqFromFai = new LisIRMAllocReqFromFAI(this);
-    this->subscribe(sigFAIAllocReq, this->lisAllocReqFromFai);
-
-    //  Allocation Response POSITIVE
-    sigIRMAllocResPosi = registerSignal("AllocateResponsePositive");
-
-    //  Allocation Response NEGATIVE
-    sigIRMAllocResNega = registerSignal("AllocateResponseNegative");
+    //Signals that this module is processing
+    //  AllocationResponseNegative from FA
+    lisAllocResNegaFa = new LisIRMAllocResNegaFa(this);
+    catcher->subscribe(SIG_FA_AllocateResponseNegative, this->lisAllocResNegaFa);
+    //  AllocationResponseNegative from FAI
+    lisAllocResNegaFai = new LisIRMAllocResNegaFai(this);
+    catcher->subscribe(SIG_FAI_AllocateResponseNegative, this->lisAllocResNegaFai);
+    //  AllocationRequest from FAI
+    this->lisAllocReqFai = new LisIRMAllocReqFai(this);
+    catcher->subscribe(SIG_FAI_AllocateRequest, this->lisAllocReqFai);
 }
 
 void IRM::receiveAllocationResponseNegative(cObject* obj) {
@@ -98,12 +87,31 @@ void IRM::receiveAllocationResponseNegative(cObject* obj) {
 }
 
 void IRM::receiveAllocationRequestFromFAI(cObject* obj) {
-    //Flow* fl = dynamic_cast<Flow*>(obj);
-    EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    //TODO: Vesely - Simulate AllocationResponses
+    if (true) {
+        this->signalizeAllocateResponsePositive(fl);
+    }
+    else {
+        this->signalizeAllocateResponseNegative(fl);
+    }
 }
 
-void IRM::signalizeFAAllocateRequest(Flow* flow) {
+void IRM::signalizeAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
-    EV << "Vyemitovan AllocReq s Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
+    //EV << "Emits AllocReq Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
     emit(sigIRMAllocReq, flow);
+}
+
+void IRM::signalizeDeallocateRequest(Flow* flow) {
+    emit(sigIRMDeallocReq, flow);
+}
+
+void IRM::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigIRMAllocResPosi, flow);
+}
+
+void IRM::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigIRMAllocResNega, flow);
 }

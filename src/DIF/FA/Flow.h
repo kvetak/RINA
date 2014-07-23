@@ -23,7 +23,9 @@
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
 
-#define UNDEFINED_PORTADDR -1
+const int UNDEFINED_PORTADDR = -1;
+const int MAX_HOPCOUNT = 16;
+const int MAX_CREATERETRIES = 3;
 
 class Flow : public cObject, noncopyable
 {
@@ -36,8 +38,8 @@ private:
     int srcAddr;
     int dstAddr;
     ConnectionId conId;
-    uint32_t maxCreateFlowRetries;
     uint32_t createFlowRetries;
+    uint32_t maxCreateFlowRetries;
     uint32_t hopCount;
 
 public:

@@ -31,8 +31,8 @@ class FAITable : public cSimpleModule
     std::string info() const;
     void insert(FAITableEntry entry);
     void remove();
-    FAITableEntry* findByFlow(Flow* flow);
-    FAITableEntry* findByFai(FAI* fai);
+    FAITableEntry* findEntryByFlow(Flow* flow);
+    FAITableEntry* findEntryByFai(FAI* fai);
     void bindFaiToFlow(FAI* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
     void changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status);
