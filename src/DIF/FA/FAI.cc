@@ -25,13 +25,12 @@
 
 Define_Module(FAI);
 
-FAI::FAI() :
-//FlowAlloc(NULL),
-FlowObject(NULL) {
+FAI::FAI() : FlowObject(NULL) {
 }
 
 FAI::~FAI() {
-    // TODO Auto-generated destructor stub
+    this->FlowAlloc = NULL;
+    this->FlowObject = NULL;
 }
 
 void FAI::initialize() {
@@ -79,7 +78,7 @@ bool FAI::receiveAllocateRequest() {
 }
 
 bool FAI::processDegenerateDataTransfer() {
-
+    return true;
 }
 
 bool FAI::receiveAllocateResponsePositive() {

@@ -39,7 +39,10 @@ void FA::initialize() {
 
     this->initSignalsAndListeners();
 }
-
+/**
+ *
+ * @param obj
+ */
 void FA::receiveAllocateRequest(cObject* obj) {
     Flow* fl = dynamic_cast<Flow*>(obj);
     Enter_Method("receiveAllocateRequest()");

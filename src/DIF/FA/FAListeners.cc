@@ -28,6 +28,12 @@ void LisFADeallocReq::receiveSignal(cComponent* src, simsignal_t id,
     return;
 }
 
+/**
+ *
+ * @param src
+ * @param id
+ * @param obj
+ */
 void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     fa->receiveCreateFlowRequest(obj);

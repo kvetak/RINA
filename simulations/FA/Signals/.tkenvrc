@@ -1,10 +1,4 @@
-# Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "Signals" "Signals" "2" "565x342+52+52:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.faiTable.FaiTable" "std::list<FAITableEntry>" "1" "528x314+22+209:normal"
-inspector "Signals.host2.ipcProcess.flowAllocator.faiTable.FaiTable" "std::list<FAITableEntry>" "1" "530x314+74+447:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.flowTable" "FlowTable" "1" "527x314+104+104:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.flowTable.FT" "std::list<std::pair>" "1" "476x314+182+182:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.flowTable.FlowTab" "std::list<FlowTableEntry>" "1" "547x314+104+104:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.flowTable.FlowTab" "std::list<std::pair>" "1" "510x314+130+130:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator.flowTable.FlowTab" "std::list<FlowTableEntry *>" "1" "557x314+304+162:normal"
+# Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
+config default-configname	{General}
+config default-runnumber	{0}
 
