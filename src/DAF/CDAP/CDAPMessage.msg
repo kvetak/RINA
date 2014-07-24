@@ -275,6 +275,10 @@ message CDAP_M_Start_R {
 	int filter;		
 }
 
+//////////////////////////////////////////////
+//CDAP M_STOP messages
+//////////////////////////////////////////////
+
 message CDAP_M_Stop {
 	unsigned char opCode enum(opCode_t) = M_STOP;
 	int invokeID;	
