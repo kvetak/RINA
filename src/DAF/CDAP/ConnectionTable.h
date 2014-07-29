@@ -13,13 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+#ifndef __RINA_CONNECTIONTABLE_H_
+#define __RINA_CONNECTIONTABLE_H_
 
-simple Auth
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include <ConnectionTableEntry.h>
+
+typedef std::list<ConnectionTableEntry> TConTable;
+typedef TConTable::iterator TCTIter;
+typedef TConTable::const_iterator TCTConstIter;
+
+class ConnectionTable : public cSimpleModule
 {
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
-}
+  public:
+    std::string info() const;
+
+    void insert();
+    void remove();
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+  private:
+    TConTable ConTable;
+};
+
+#endif

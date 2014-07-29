@@ -18,9 +18,6 @@
 
 #include <omnetpp.h>
 
-/**
- * TODO - Generated class
- */
 class CACE : public cSimpleModule
 {
   protected:

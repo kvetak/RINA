@@ -15,10 +15,11 @@
 
 package rina.DAF.CDAP;
 
-//
-// TODO auto-generated module
-//
 simple CDAP
 {
-    @display("i=block/star");
+    parameters:
+        @display("i=block/star");
+        
+    gates:
+   	    inout splitterIo;       
 }

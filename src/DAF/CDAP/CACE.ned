@@ -20,5 +20,9 @@ package rina.DAF.CDAP;
 //
 simple CACE
 {
-    @display("i=block/triangle");
+	parameters:
+    	@display("i=block/triangle");
+    	
+   	gates:
+   	    inout splitterIo;
 }

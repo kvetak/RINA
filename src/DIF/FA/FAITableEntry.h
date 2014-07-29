@@ -32,12 +32,12 @@ class FAITableEntry {
     virtual ~FAITableEntry();
 
     std::string info() const;
+
     std::string getAllocateStatusString() const;
     FAI* getFai() const;
     const simtime_t& getTimeCreated() const;
     const simtime_t& getTimeLastActive() const;
     void setTimeLastActive(const simtime_t& timeLastActive);
-    AllocateStatus getAllocateStatus() const;
     void setAllocateStatus(AllocateStatus allocateStatus);
     void setFai(FAI* nfai);
     const Flow* getFlow() const;

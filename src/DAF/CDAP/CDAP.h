@@ -18,12 +18,10 @@
 
 #include <omnetpp.h>
 
-/**
- * TODO - Generated class
- */
 class CDAP : public cSimpleModule
 {
   protected:
+    enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 };

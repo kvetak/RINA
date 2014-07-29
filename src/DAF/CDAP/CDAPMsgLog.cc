@@ -13,13 +13,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+#include <CDAPMsgLog.h>
 
-simple Auth
-{
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
+Define_Module(CDAPMsgLog);
+
+CDAPMsgLog::CDAPMsgLog() {
+    // TODO Auto-generated constructor stub
+
+}
+
+CDAPMsgLog::~CDAPMsgLog() {
+    // TODO Auto-generated destructor stub
+
+}
+
+void CDAPMsgLog::insert() {
+}
+
+void CDAPMsgLog::remove() {
+}
+
+void CDAPMsgLog::initialize() {
+}
+
+void CDAPMsgLog::handleMessage(cMessage* msg) {
+}
+
+std::string CDAPMsgLog::info() const {
+    std::string os;
+    return os;
 }

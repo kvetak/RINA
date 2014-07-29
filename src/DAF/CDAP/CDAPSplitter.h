@@ -13,13 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+#ifndef __RINA_CDAPSPLITTER_H_
+#define __RINA_CDAPSPLITTER_H_
 
-simple Auth
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "CDAPMessage_m.h"
+
+class CDAPSplitter : public cSimpleModule
 {
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

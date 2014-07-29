@@ -65,8 +65,8 @@ enum opCode_t {
  * Enum generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
  * <pre>
  * enum flagValues_t {
- * 	F_SYNC = 1;								
- * 	F_RD_INCOMPLETE = 2;					
+ * 	F_SYNC = 1;						
+ * 	F_RD_INCOMPLETE = 2;			
  * }
  * </pre>
  */
@@ -79,10 +79,10 @@ enum flagValues_t {
  * Enum generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
  * <pre>
  * enum authTypes_t {
- * 	AUTH_NONE = 0;							
- * 	AUTH_PASSWD = 1;						
- * 	AUTH_SSHRSA = 2;						
- * 	AUTH_SSHDSA = 3;						
+ * 	AUTH_NONE = 0;					
+ * 	AUTH_PASSWD = 1;				
+ * 	AUTH_SSHRSA = 2;				
+ * 	AUTH_SSHDSA = 3;				
  * }
  * </pre>
  */
@@ -91,6 +91,46 @@ enum authTypes_t {
     AUTH_PASSWD = 1,
     AUTH_SSHRSA = 2,
     AUTH_SSHDSA = 3
+};
+
+/**
+ * Enum generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * enum resultVal_t {
+ * 	R_CLASSNOTFOUND = -5;
+ * 	R_OBJBADINST = -4;
+ * 	R_OBJNOTFOUND = -3;
+ * 	R_OS_ERR = -2;
+ * 	R_FAIL = -1;
+ * 	R_SUCCESS = 0;
+ * 	R_SYNC_UNIMP = 1;
+ * 	R_FILTER_FALSE = 2;
+ * 	R_FILTER_MIXED = 3;
+ * }
+ * </pre>
+ */
+enum resultVal_t {
+    R_CLASSNOTFOUND = -5,
+    R_OBJBADINST = -4,
+    R_OBJNOTFOUND = -3,
+    R_OS_ERR = -2,
+    R_FAIL = -1,
+    R_SUCCESS = 0,
+    R_SYNC_UNIMP = 1,
+    R_FILTER_FALSE = 2,
+    R_FILTER_MIXED = 3
+};
+
+/**
+ * Enum generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
+ * <pre>
+ * enum absSyntax_t {
+ * 	GPB = 0x08;
+ * }
+ * </pre>
+ */
+enum absSyntax_t {
+    GPB = 0x08
 };
 
 /**
@@ -173,8 +213,8 @@ struct object_t
 {
     object_t();
     opp_string objectClass;
-    int objectInstance;
     opp_string objectName;
+    int objectInstance;
     cObject objectVal;
 };
 
@@ -185,7 +225,7 @@ void doUnpacking(cCommBuffer *b, object_t& a);
  * Class generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
  * <pre>
  * message CDAP_General_Message {
- * 	uint32 absSyntax;							
+ * 	unsigned char absSyntax enum(absSyntax_t);	
  * 	unsigned char opCode enum(opCode_t);		
  * 	uint32 invokeID;							
  * 	unsigned char flags enum(flagValues_t);		
@@ -214,7 +254,7 @@ void doUnpacking(cCommBuffer *b, object_t& a);
 class CDAP_General_Message : public ::cMessage
 {
   protected:
-    uint32 absSyntax_var;
+    unsigned char absSyntax_var;
     unsigned char opCode_var;
     uint32 invokeID_var;
     unsigned char flags_var;
@@ -254,8 +294,8 @@ class CDAP_General_Message : public ::cMessage
     virtual void parsimUnpack(cCommBuffer *b);
 
     // field getter/setter methods
-    virtual uint32 getAbsSyntax() const;
-    virtual void setAbsSyntax(uint32 absSyntax);
+    virtual unsigned char getAbsSyntax() const;
+    virtual void setAbsSyntax(unsigned char absSyntax);
     virtual unsigned char getOpCode() const;
     virtual void setOpCode(unsigned char opCode);
     virtual uint32 getInvokeID() const;
@@ -313,7 +353,7 @@ inline void doUnpacking(cCommBuffer *b, CDAP_General_Message& obj) {obj.parsimUn
  * 	int invokeID;	
  * 	unsigned char flags enum(flagValues_t);
  * 	int version;		
- * 	int absSyntax;	
+ * 	int absSyntax enum(absSyntax_t);	
  * 	auth_t auth;	
  * 	naming_t src;
  * 	naming_t dst;
@@ -382,7 +422,7 @@ inline void doUnpacking(cCommBuffer *b, CDAP_M_Connect& obj) {obj.parsimUnpack(b
  * 	unsigned char flags enum(flagValues_t);
  * 	int version;		
  * 	result_t result;		   
- * 	int absSyntax;	
+ * 	int absSyntax enum(absSyntax_t);	
  * 	auth_t auth;	
  * 	naming_t src;
  * 	naming_t dst;
@@ -1097,7 +1137,7 @@ inline void doUnpacking(cCommBuffer *b, CDAP_M_Write& obj) {obj.parsimUnpack(b);
 /**
  * Class generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.
  * <pre>
- * message CDAP_M_WRITE_R {
+ * message CDAP_M_Write_R {
  * 	unsigned char opCode enum(opCode_t) = M_WRITE_R;
  * 	int invokeID;	
  * 	unsigned char flags enum(flagValues_t);
@@ -1108,7 +1148,7 @@ inline void doUnpacking(cCommBuffer *b, CDAP_M_Write& obj) {obj.parsimUnpack(b);
  * }
  * </pre>
  */
-class CDAP_M_WRITE_R : public ::cMessage
+class CDAP_M_Write_R : public ::cMessage
 {
   protected:
     unsigned char opCode_var;
@@ -1120,18 +1160,18 @@ class CDAP_M_WRITE_R : public ::cMessage
     int filter_var;
 
   private:
-    void copy(const CDAP_M_WRITE_R& other);
+    void copy(const CDAP_M_Write_R& other);
 
   protected:
     // protected and unimplemented operator==(), to prevent accidental usage
-    bool operator==(const CDAP_M_WRITE_R&);
+    bool operator==(const CDAP_M_Write_R&);
 
   public:
-    CDAP_M_WRITE_R(const char *name=NULL, int kind=0);
-    CDAP_M_WRITE_R(const CDAP_M_WRITE_R& other);
-    virtual ~CDAP_M_WRITE_R();
-    CDAP_M_WRITE_R& operator=(const CDAP_M_WRITE_R& other);
-    virtual CDAP_M_WRITE_R *dup() const {return new CDAP_M_WRITE_R(*this);}
+    CDAP_M_Write_R(const char *name=NULL, int kind=0);
+    CDAP_M_Write_R(const CDAP_M_Write_R& other);
+    virtual ~CDAP_M_Write_R();
+    CDAP_M_Write_R& operator=(const CDAP_M_Write_R& other);
+    virtual CDAP_M_Write_R *dup() const {return new CDAP_M_Write_R(*this);}
     virtual void parsimPack(cCommBuffer *b);
     virtual void parsimUnpack(cCommBuffer *b);
 
@@ -1145,17 +1185,17 @@ class CDAP_M_WRITE_R : public ::cMessage
     virtual int getVersion() const;
     virtual void setVersion(int version);
     virtual result_t& getResult();
-    virtual const result_t& getResult() const {return const_cast<CDAP_M_WRITE_R*>(this)->getResult();}
+    virtual const result_t& getResult() const {return const_cast<CDAP_M_Write_R*>(this)->getResult();}
     virtual void setResult(const result_t& result);
     virtual object_t& getObject();
-    virtual const object_t& getObject() const {return const_cast<CDAP_M_WRITE_R*>(this)->getObject();}
+    virtual const object_t& getObject() const {return const_cast<CDAP_M_Write_R*>(this)->getObject();}
     virtual void setObject(const object_t& object);
     virtual int getFilter() const;
     virtual void setFilter(int filter);
 };
 
-inline void doPacking(cCommBuffer *b, CDAP_M_WRITE_R& obj) {obj.parsimPack(b);}
-inline void doUnpacking(cCommBuffer *b, CDAP_M_WRITE_R& obj) {obj.parsimUnpack(b);}
+inline void doPacking(cCommBuffer *b, CDAP_M_Write_R& obj) {obj.parsimPack(b);}
+inline void doUnpacking(cCommBuffer *b, CDAP_M_Write_R& obj) {obj.parsimUnpack(b);}
 
 /**
  * Class generated from <tt>DAF/CDAP/CDAPMessage.msg</tt> by opp_msgc.

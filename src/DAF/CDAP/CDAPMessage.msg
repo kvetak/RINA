@@ -39,17 +39,17 @@ enum opCode_t {
 
 // Values for the flags field.
 enum flagValues_t {
-	F_SYNC = 1;								// set on READ/WRITE to request synchronous r/w
-	F_RD_INCOMPLETE = 2;					// set on all but final reply to an M_READ
+	F_SYNC = 1;						// set on READ/WRITE to request synchronous r/w
+	F_RD_INCOMPLETE = 2;			// set on all but final reply to an M_READ
 }
 
-struct objVal_t {							// value of an object
+struct objVal_t {					// value of an object
 	uint32	intval;
 	int32	sintval;
 	uint64	int64val;
 	int64	sint64val;
 	string	strval;
-//	char	byteval;			// arbitrary structure or message
+//	char	byteval;				// arbitrary structure or message
 	float 	floatval;
 	double 	doubleval;
 }
@@ -57,10 +57,27 @@ struct objVal_t {							// value of an object
 // CDAP-reserved authentication types are 0-99 and >1000
 // Authentication types 100-1000 are reserved for private application use.
 enum authTypes_t {
-	AUTH_NONE = 0;							// No authentication
-	AUTH_PASSWD = 1;						// User name and password provided
-	AUTH_SSHRSA = 2;						// SSH RSA (version 1 or 2)
-	AUTH_SSHDSA = 3;						// SSH DSA (version 2 only)
+	AUTH_NONE = 0;					// No authentication
+	AUTH_PASSWD = 1;				// User name and password provided
+	AUTH_SSHRSA = 2;				// SSH RSA (version 1 or 2)
+	AUTH_SSHDSA = 3;				// SSH DSA (version 2 only)
+}
+
+enum resultVal_t {
+	R_CLASSNOTFOUND = -5;
+	R_OBJBADINST = -4;
+	R_OBJNOTFOUND = -3;
+	R_OS_ERR = -2;
+	R_FAIL = -1;
+	R_SUCCESS = 0;
+	R_SYNC_UNIMP = 1;
+	R_FILTER_FALSE = 2;
+	R_FILTER_MIXED = 3;
+}
+
+// Supported abstract syntax types
+enum absSyntax_t {
+	GPB = 0x08;
 }
 
 // Reserved authentication fields 1-99, >1000 are reserved for CDAP future use.
@@ -71,32 +88,36 @@ struct authValue_t {
 	string authOther;			// Additional authentication information
 };
 
+// General structure holding operation return value and potentionaly its verbal
+// explanation for debugging purposes
 struct result_t {        
-    string resultReason;		//Additional explanation of resultValue
-    int resultValue;			//The result of an operation, indicating its success, partial success in the case of synchronized operations, or reason for failure.
+    string resultReason;	//Additional explanation of resultValue
+    int resultValue;		//The result of an operation, indicating its success, partial success in the case of synchronized operations, or reason for failure.
 }
 
+// General structure holding authentication related information
 struct auth_t {
-    unsigned char authType enum(authTypes_t);
-    authValue_t authValue;
+    unsigned char authType enum(authTypes_t);	//Authentication type
+    authValue_t authValue;						//Relevant authentication data
 }
 
+// General structures for holding naming information regarding requestor/responder
 struct naming_t {
-	string AEInst;							
-	string AEName;							
-	string ApInst;							
-	string ApName;							    
+	string AEInst;			//AE instance-id							
+	string AEName;			//AE name				
+	string ApInst;			//AP instance-id				
+	string ApName;			//AP name				    
 }
 
 struct object_t {
-    string objectClass;
-    int objectInstance;
-    string objectName;
-    cObject objectVal;
+    string objectClass;		//Object class (e.g. flow, string, int)
+    string objectName;		//Unambiguous object name
+    int objectInstance;    //Synonym to class+name concatenation
+    cObject objectVal;		//Actual object
 }
 
 message CDAP_General_Message {
-	uint32 absSyntax;							// Abstract Syntax of messages, see text.
+	unsigned char absSyntax enum(absSyntax_t);	// Abstract Syntax of messages, see text.
 	unsigned char opCode enum(opCode_t);		// op Code.
 	uint32 invokeID;							// Invoke ID, omitted if no reply desired.
 	unsigned char flags enum(flagValues_t);		// misc. flags
@@ -121,12 +142,16 @@ message CDAP_General_Message {
 	int64 version;								// For application use - RIB/class version.
 }
 
+//////////////////////////////////////////////
+//CDAP M_CONNECT(_R) messages
+//////////////////////////////////////////////
+
 message CDAP_M_Connect {	
 	unsigned char opCode enum(opCode_t) = M_CONNECT;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
 	int version;		
-	int absSyntax;	
+	int absSyntax enum(absSyntax_t);	
 	auth_t auth;	
 	naming_t src;
 	naming_t dst;
@@ -138,11 +163,15 @@ message CDAP_M_Connect_R {
 	unsigned char flags enum(flagValues_t);
 	int version;		
 	result_t result;		   
-	int absSyntax;	
+	int absSyntax enum(absSyntax_t);	
 	auth_t auth;	
 	naming_t src;
 	naming_t dst;
 }
+
+//////////////////////////////////////////////
+//CDAP M_RELEASE(_R) messages
+//////////////////////////////////////////////
 
 message CDAP_M_Release {
 	unsigned char opCode enum(opCode_t) = M_RELEASE;
@@ -158,6 +187,10 @@ message CDAP_M_Release_R {
 	int version;
 	result_t result;	
 }
+
+//////////////////////////////////////////////
+//CDAP M_CREATE(_R) messages
+//////////////////////////////////////////////
 
 message CDAP_M_Create {
 	unsigned char opCode enum(opCode_t) = M_CREATE;
@@ -179,6 +212,10 @@ message CDAP_M_Create_R {
 	int filter;		
 }
 
+//////////////////////////////////////////////
+//CDAP M_DELETE(_R) messages
+//////////////////////////////////////////////
+
 message CDAP_M_Delete {
 	unsigned char opCode enum(opCode_t) = M_DELETE;
 	int invokeID;	
@@ -198,6 +235,10 @@ message CDAP_M_Delete_R {
 	object_t object;
 	int filter;		
 }
+
+//////////////////////////////////////////////
+//CDAP M_READ(_R) messages
+//////////////////////////////////////////////
 
 message CDAP_M_Read {
 	unsigned char opCode enum(opCode_t) = M_READ;
@@ -219,6 +260,10 @@ message CDAP_M_Read_R {
 	int filter;		
 }
 
+//////////////////////////////////////////////
+//CDAP M_CANCELREAD(_R) messages
+//////////////////////////////////////////////
+
 message CDAP_M_CancelRead {
 	unsigned char opCode enum(opCode_t) = M_CANCELREAD;
 	int invokeID;	
@@ -235,6 +280,10 @@ message CDAP_M_CancelRead_R {
 	result_t result;	
 }
 
+//////////////////////////////////////////////
+//CDAP M_WRITE(_R) messages
+//////////////////////////////////////////////
+
 message CDAP_M_Write {
 	unsigned char opCode enum(opCode_t) = M_WRITE;
 	int invokeID;	
@@ -245,7 +294,7 @@ message CDAP_M_Write {
 	int filter;					
 }
 
-message CDAP_M_WRITE_R {
+message CDAP_M_Write_R {
 	unsigned char opCode enum(opCode_t) = M_WRITE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -254,6 +303,10 @@ message CDAP_M_WRITE_R {
 	object_t object;
 	int filter;			
 }
+
+//////////////////////////////////////////////
+//CDAP M_START(_R) messages
+//////////////////////////////////////////////
 
 message CDAP_M_Start {
 	unsigned char opCode enum(opCode_t) = M_START;
@@ -276,7 +329,7 @@ message CDAP_M_Start_R {
 }
 
 //////////////////////////////////////////////
-//CDAP M_STOP messages
+//CDAP M_STOP(_R) messages
 //////////////////////////////////////////////
 
 message CDAP_M_Stop {

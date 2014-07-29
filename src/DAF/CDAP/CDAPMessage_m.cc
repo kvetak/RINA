@@ -92,6 +92,26 @@ EXECUTE_ON_STARTUP(
     e->insert(AUTH_SSHDSA, "AUTH_SSHDSA");
 );
 
+EXECUTE_ON_STARTUP(
+    cEnum *e = cEnum::find("resultVal_t");
+    if (!e) enums.getInstance()->add(e = new cEnum("resultVal_t"));
+    e->insert(R_CLASSNOTFOUND, "R_CLASSNOTFOUND");
+    e->insert(R_OBJBADINST, "R_OBJBADINST");
+    e->insert(R_OBJNOTFOUND, "R_OBJNOTFOUND");
+    e->insert(R_OS_ERR, "R_OS_ERR");
+    e->insert(R_FAIL, "R_FAIL");
+    e->insert(R_SUCCESS, "R_SUCCESS");
+    e->insert(R_SYNC_UNIMP, "R_SYNC_UNIMP");
+    e->insert(R_FILTER_FALSE, "R_FILTER_FALSE");
+    e->insert(R_FILTER_MIXED, "R_FILTER_MIXED");
+);
+
+EXECUTE_ON_STARTUP(
+    cEnum *e = cEnum::find("absSyntax_t");
+    if (!e) enums.getInstance()->add(e = new cEnum("absSyntax_t"));
+    e->insert(GPB, "GPB");
+);
+
 objVal_t::objVal_t()
 {
     intval = 0;
@@ -1210,23 +1230,23 @@ void *naming_tDescriptor::getFieldStructPointer(void *object, int field, int i) 
 object_t::object_t()
 {
     objectClass = 0;
-    objectInstance = 0;
     objectName = 0;
+    objectInstance = 0;
 }
 
 void doPacking(cCommBuffer *b, object_t& a)
 {
     doPacking(b,a.objectClass);
-    doPacking(b,a.objectInstance);
     doPacking(b,a.objectName);
+    doPacking(b,a.objectInstance);
     doPacking(b,a.objectVal);
 }
 
 void doUnpacking(cCommBuffer *b, object_t& a)
 {
     doUnpacking(b,a.objectClass);
-    doUnpacking(b,a.objectInstance);
     doUnpacking(b,a.objectName);
+    doUnpacking(b,a.objectInstance);
     doUnpacking(b,a.objectVal);
 }
 
@@ -1307,8 +1327,8 @@ const char *object_tDescriptor::getFieldName(void *object, int field) const
     }
     static const char *fieldNames[] = {
         "objectClass",
-        "objectInstance",
         "objectName",
+        "objectInstance",
         "objectVal",
     };
     return (field>=0 && field<4) ? fieldNames[field] : NULL;
@@ -1319,8 +1339,8 @@ int object_tDescriptor::findField(void *object, const char *fieldName) const
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
     if (fieldName[0]=='o' && strcmp(fieldName, "objectClass")==0) return base+0;
-    if (fieldName[0]=='o' && strcmp(fieldName, "objectInstance")==0) return base+1;
-    if (fieldName[0]=='o' && strcmp(fieldName, "objectName")==0) return base+2;
+    if (fieldName[0]=='o' && strcmp(fieldName, "objectName")==0) return base+1;
+    if (fieldName[0]=='o' && strcmp(fieldName, "objectInstance")==0) return base+2;
     if (fieldName[0]=='o' && strcmp(fieldName, "objectVal")==0) return base+3;
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
@@ -1335,8 +1355,8 @@ const char *object_tDescriptor::getFieldTypeString(void *object, int field) cons
     }
     static const char *fieldTypeStrings[] = {
         "string",
-        "int",
         "string",
+        "int",
         "cObject",
     };
     return (field>=0 && field<4) ? fieldTypeStrings[field] : NULL;
@@ -1380,8 +1400,8 @@ std::string object_tDescriptor::getFieldAsString(void *object, int field, int i)
     object_t *pp = (object_t *)object; (void)pp;
     switch (field) {
         case 0: return oppstring2string(pp->objectClass);
-        case 1: return long2string(pp->objectInstance);
-        case 2: return oppstring2string(pp->objectName);
+        case 1: return oppstring2string(pp->objectName);
+        case 2: return long2string(pp->objectInstance);
         case 3: {std::stringstream out; out << pp->objectVal; return out.str();}
         default: return "";
     }
@@ -1398,8 +1418,8 @@ bool object_tDescriptor::setFieldAsString(void *object, int field, int i, const 
     object_t *pp = (object_t *)object; (void)pp;
     switch (field) {
         case 0: pp->objectClass = (value); return true;
-        case 1: pp->objectInstance = string2long(value); return true;
-        case 2: pp->objectName = (value); return true;
+        case 1: pp->objectName = (value); return true;
+        case 2: pp->objectInstance = string2long(value); return true;
         default: return false;
     }
 }
@@ -1556,12 +1576,12 @@ void CDAP_General_Message::parsimUnpack(cCommBuffer *b)
     doUnpacking(b,this->version_var);
 }
 
-uint32 CDAP_General_Message::getAbsSyntax() const
+unsigned char CDAP_General_Message::getAbsSyntax() const
 {
     return absSyntax_var;
 }
 
-void CDAP_General_Message::setAbsSyntax(uint32 absSyntax)
+void CDAP_General_Message::setAbsSyntax(unsigned char absSyntax)
 {
     this->absSyntax_var = absSyntax;
 }
@@ -1934,7 +1954,7 @@ const char *CDAP_General_MessageDescriptor::getFieldTypeString(void *object, int
         field -= basedesc->getFieldCount(object);
     }
     static const char *fieldTypeStrings[] = {
-        "uint32",
+        "unsigned char",
         "unsigned char",
         "uint32",
         "unsigned char",
@@ -1969,6 +1989,9 @@ const char *CDAP_General_MessageDescriptor::getFieldProperty(void *object, int f
         field -= basedesc->getFieldCount(object);
     }
     switch (field) {
+        case 0:
+            if (!strcmp(propertyname,"enum")) return "absSyntax_t";
+            return NULL;
         case 1:
             if (!strcmp(propertyname,"enum")) return "opCode_t";
             return NULL;
@@ -2386,6 +2409,9 @@ const char *CDAP_M_ConnectDescriptor::getFieldProperty(void *object, int field, 
         case 2:
             if (!strcmp(propertyname,"enum")) return "flagValues_t";
             return NULL;
+        case 4:
+            if (!strcmp(propertyname,"enum")) return "absSyntax_t";
+            return NULL;
         default: return NULL;
     }
 }
@@ -2783,6 +2809,9 @@ const char *CDAP_M_Connect_RDescriptor::getFieldProperty(void *object, int field
             return NULL;
         case 2:
             if (!strcmp(propertyname,"enum")) return "flagValues_t";
+            return NULL;
+        case 5:
+            if (!strcmp(propertyname,"enum")) return "absSyntax_t";
             return NULL;
         default: return NULL;
     }
@@ -6670,9 +6699,9 @@ void *CDAP_M_WriteDescriptor::getFieldStructPointer(void *object, int field, int
     }
 }
 
-Register_Class(CDAP_M_WRITE_R);
+Register_Class(CDAP_M_Write_R);
 
-CDAP_M_WRITE_R::CDAP_M_WRITE_R(const char *name, int kind) : ::cMessage(name,kind)
+CDAP_M_Write_R::CDAP_M_Write_R(const char *name, int kind) : ::cMessage(name,kind)
 {
     this->opCode_var = M_WRITE_R;
     this->invokeID_var = 0;
@@ -6681,16 +6710,16 @@ CDAP_M_WRITE_R::CDAP_M_WRITE_R(const char *name, int kind) : ::cMessage(name,kin
     this->filter_var = 0;
 }
 
-CDAP_M_WRITE_R::CDAP_M_WRITE_R(const CDAP_M_WRITE_R& other) : ::cMessage(other)
+CDAP_M_Write_R::CDAP_M_Write_R(const CDAP_M_Write_R& other) : ::cMessage(other)
 {
     copy(other);
 }
 
-CDAP_M_WRITE_R::~CDAP_M_WRITE_R()
+CDAP_M_Write_R::~CDAP_M_Write_R()
 {
 }
 
-CDAP_M_WRITE_R& CDAP_M_WRITE_R::operator=(const CDAP_M_WRITE_R& other)
+CDAP_M_Write_R& CDAP_M_Write_R::operator=(const CDAP_M_Write_R& other)
 {
     if (this==&other) return *this;
     ::cMessage::operator=(other);
@@ -6698,7 +6727,7 @@ CDAP_M_WRITE_R& CDAP_M_WRITE_R::operator=(const CDAP_M_WRITE_R& other)
     return *this;
 }
 
-void CDAP_M_WRITE_R::copy(const CDAP_M_WRITE_R& other)
+void CDAP_M_Write_R::copy(const CDAP_M_Write_R& other)
 {
     this->opCode_var = other.opCode_var;
     this->invokeID_var = other.invokeID_var;
@@ -6709,7 +6738,7 @@ void CDAP_M_WRITE_R::copy(const CDAP_M_WRITE_R& other)
     this->filter_var = other.filter_var;
 }
 
-void CDAP_M_WRITE_R::parsimPack(cCommBuffer *b)
+void CDAP_M_Write_R::parsimPack(cCommBuffer *b)
 {
     ::cMessage::parsimPack(b);
     doPacking(b,this->opCode_var);
@@ -6721,7 +6750,7 @@ void CDAP_M_WRITE_R::parsimPack(cCommBuffer *b)
     doPacking(b,this->filter_var);
 }
 
-void CDAP_M_WRITE_R::parsimUnpack(cCommBuffer *b)
+void CDAP_M_Write_R::parsimUnpack(cCommBuffer *b)
 {
     ::cMessage::parsimUnpack(b);
     doUnpacking(b,this->opCode_var);
@@ -6733,81 +6762,81 @@ void CDAP_M_WRITE_R::parsimUnpack(cCommBuffer *b)
     doUnpacking(b,this->filter_var);
 }
 
-unsigned char CDAP_M_WRITE_R::getOpCode() const
+unsigned char CDAP_M_Write_R::getOpCode() const
 {
     return opCode_var;
 }
 
-void CDAP_M_WRITE_R::setOpCode(unsigned char opCode)
+void CDAP_M_Write_R::setOpCode(unsigned char opCode)
 {
     this->opCode_var = opCode;
 }
 
-int CDAP_M_WRITE_R::getInvokeID() const
+int CDAP_M_Write_R::getInvokeID() const
 {
     return invokeID_var;
 }
 
-void CDAP_M_WRITE_R::setInvokeID(int invokeID)
+void CDAP_M_Write_R::setInvokeID(int invokeID)
 {
     this->invokeID_var = invokeID;
 }
 
-unsigned char CDAP_M_WRITE_R::getFlags() const
+unsigned char CDAP_M_Write_R::getFlags() const
 {
     return flags_var;
 }
 
-void CDAP_M_WRITE_R::setFlags(unsigned char flags)
+void CDAP_M_Write_R::setFlags(unsigned char flags)
 {
     this->flags_var = flags;
 }
 
-int CDAP_M_WRITE_R::getVersion() const
+int CDAP_M_Write_R::getVersion() const
 {
     return version_var;
 }
 
-void CDAP_M_WRITE_R::setVersion(int version)
+void CDAP_M_Write_R::setVersion(int version)
 {
     this->version_var = version;
 }
 
-result_t& CDAP_M_WRITE_R::getResult()
+result_t& CDAP_M_Write_R::getResult()
 {
     return result_var;
 }
 
-void CDAP_M_WRITE_R::setResult(const result_t& result)
+void CDAP_M_Write_R::setResult(const result_t& result)
 {
     this->result_var = result;
 }
 
-object_t& CDAP_M_WRITE_R::getObject()
+object_t& CDAP_M_Write_R::getObject()
 {
     return object_var;
 }
 
-void CDAP_M_WRITE_R::setObject(const object_t& object)
+void CDAP_M_Write_R::setObject(const object_t& object)
 {
     this->object_var = object;
 }
 
-int CDAP_M_WRITE_R::getFilter() const
+int CDAP_M_Write_R::getFilter() const
 {
     return filter_var;
 }
 
-void CDAP_M_WRITE_R::setFilter(int filter)
+void CDAP_M_Write_R::setFilter(int filter)
 {
     this->filter_var = filter;
 }
 
-class CDAP_M_WRITE_RDescriptor : public cClassDescriptor
+class CDAP_M_Write_RDescriptor : public cClassDescriptor
 {
   public:
-    CDAP_M_WRITE_RDescriptor();
-    virtual ~CDAP_M_WRITE_RDescriptor();
+    CDAP_M_Write_RDescriptor();
+    virtual ~CDAP_M_Write_RDescriptor();
 
     virtual bool doesSupport(cObject *obj) const;
     virtual const char *getProperty(const char *propertyname) const;
@@ -6826,34 +6855,34 @@ class CDAP_M_WRITE_RDescriptor : public cClassDescriptor
     virtual void *getFieldStructPointer(void *object, int field, int i) const;
 };
 
-Register_ClassDescriptor(CDAP_M_WRITE_RDescriptor);
+Register_ClassDescriptor(CDAP_M_Write_RDescriptor);
 
-CDAP_M_WRITE_RDescriptor::CDAP_M_WRITE_RDescriptor() : cClassDescriptor("CDAP_M_WRITE_R", "cMessage")
+CDAP_M_Write_RDescriptor::CDAP_M_Write_RDescriptor() : cClassDescriptor("CDAP_M_Write_R", "cMessage")
 {
 }
 
-CDAP_M_WRITE_RDescriptor::~CDAP_M_WRITE_RDescriptor()
+CDAP_M_Write_RDescriptor::~CDAP_M_Write_RDescriptor()
 {
 }
 
-bool CDAP_M_WRITE_RDescriptor::doesSupport(cObject *obj) const
+bool CDAP_M_Write_RDescriptor::doesSupport(cObject *obj) const
 {
-    return dynamic_cast<CDAP_M_WRITE_R *>(obj)!=NULL;
+    return dynamic_cast<CDAP_M_Write_R *>(obj)!=NULL;
 }
 
-const char *CDAP_M_WRITE_RDescriptor::getProperty(const char *propertyname) const
+const char *CDAP_M_Write_RDescriptor::getProperty(const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? basedesc->getProperty(propertyname) : NULL;
 }
 
-int CDAP_M_WRITE_RDescriptor::getFieldCount(void *object) const
+int CDAP_M_Write_RDescriptor::getFieldCount(void *object) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     return basedesc ? 7+basedesc->getFieldCount(object) : 7;
 }
 
-unsigned int CDAP_M_WRITE_RDescriptor::getFieldTypeFlags(void *object, int field) const
+unsigned int CDAP_M_Write_RDescriptor::getFieldTypeFlags(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6873,7 +6902,7 @@ unsigned int CDAP_M_WRITE_RDescriptor::getFieldTypeFlags(void *object, int field
     return (field>=0 && field<7) ? fieldTypeFlags[field] : 0;
 }
 
-const char *CDAP_M_WRITE_RDescriptor::getFieldName(void *object, int field) const
+const char *CDAP_M_Write_RDescriptor::getFieldName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6893,7 +6922,7 @@ const char *CDAP_M_WRITE_RDescriptor::getFieldName(void *object, int field) cons
     return (field>=0 && field<7) ? fieldNames[field] : NULL;
 }
 
-int CDAP_M_WRITE_RDescriptor::findField(void *object, const char *fieldName) const
+int CDAP_M_Write_RDescriptor::findField(void *object, const char *fieldName) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     int base = basedesc ? basedesc->getFieldCount(object) : 0;
@@ -6907,7 +6936,7 @@ int CDAP_M_WRITE_RDescriptor::findField(void *object, const char *fieldName) con
     return basedesc ? basedesc->findField(object, fieldName) : -1;
 }
 
-const char *CDAP_M_WRITE_RDescriptor::getFieldTypeString(void *object, int field) const
+const char *CDAP_M_Write_RDescriptor::getFieldTypeString(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6927,7 +6956,7 @@ const char *CDAP_M_WRITE_RDescriptor::getFieldTypeString(void *object, int field
     return (field>=0 && field<7) ? fieldTypeStrings[field] : NULL;
 }
 
-const char *CDAP_M_WRITE_RDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
+const char *CDAP_M_Write_RDescriptor::getFieldProperty(void *object, int field, const char *propertyname) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6946,7 +6975,7 @@ const char *CDAP_M_WRITE_RDescriptor::getFieldProperty(void *object, int field, 
     }
 }
 
-int CDAP_M_WRITE_RDescriptor::getArraySize(void *object, int field) const
+int CDAP_M_Write_RDescriptor::getArraySize(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6954,13 +6983,13 @@ int CDAP_M_WRITE_RDescriptor::getArraySize(void *object, int field) const
             return basedesc->getArraySize(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    CDAP_M_WRITE_R *pp = (CDAP_M_WRITE_R *)object; (void)pp;
+    CDAP_M_Write_R *pp = (CDAP_M_Write_R *)object; (void)pp;
     switch (field) {
         default: return 0;
     }
 }
 
-std::string CDAP_M_WRITE_RDescriptor::getFieldAsString(void *object, int field, int i) const
+std::string CDAP_M_Write_RDescriptor::getFieldAsString(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6968,7 +6997,7 @@ std::string CDAP_M_WRITE_RDescriptor::getFieldAsString(void *object, int field, 
             return basedesc->getFieldAsString(object,field,i);
         field -= basedesc->getFieldCount(object);
     }
-    CDAP_M_WRITE_R *pp = (CDAP_M_WRITE_R *)object; (void)pp;
+    CDAP_M_Write_R *pp = (CDAP_M_Write_R *)object; (void)pp;
     switch (field) {
         case 0: return ulong2string(pp->getOpCode());
         case 1: return long2string(pp->getInvokeID());
@@ -6981,7 +7010,7 @@ std::string CDAP_M_WRITE_RDescriptor::getFieldAsString(void *object, int field, 
     }
 }
 
-bool CDAP_M_WRITE_RDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
+bool CDAP_M_Write_RDescriptor::setFieldAsString(void *object, int field, int i, const char *value) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -6989,7 +7018,7 @@ bool CDAP_M_WRITE_RDescriptor::setFieldAsString(void *object, int field, int i, 
             return basedesc->setFieldAsString(object,field,i,value);
         field -= basedesc->getFieldCount(object);
     }
-    CDAP_M_WRITE_R *pp = (CDAP_M_WRITE_R *)object; (void)pp;
+    CDAP_M_Write_R *pp = (CDAP_M_Write_R *)object; (void)pp;
     switch (field) {
         case 0: pp->setOpCode(string2ulong(value)); return true;
         case 1: pp->setInvokeID(string2long(value)); return true;
@@ -7000,7 +7029,7 @@ bool CDAP_M_WRITE_RDescriptor::setFieldAsString(void *object, int field, int i, 
     }
 }
 
-const char *CDAP_M_WRITE_RDescriptor::getFieldStructName(void *object, int field) const
+const char *CDAP_M_Write_RDescriptor::getFieldStructName(void *object, int field) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -7015,7 +7044,7 @@ const char *CDAP_M_WRITE_RDescriptor::getFieldStructName(void *object, int field
     };
 }
 
-void *CDAP_M_WRITE_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
+void *CDAP_M_Write_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
 {
     cClassDescriptor *basedesc = getBaseClassDescriptor();
     if (basedesc) {
@@ -7023,7 +7052,7 @@ void *CDAP_M_WRITE_RDescriptor::getFieldStructPointer(void *object, int field, i
             return basedesc->getFieldStructPointer(object, field, i);
         field -= basedesc->getFieldCount(object);
     }
-    CDAP_M_WRITE_R *pp = (CDAP_M_WRITE_R *)object; (void)pp;
+    CDAP_M_Write_R *pp = (CDAP_M_Write_R *)object; (void)pp;
     switch (field) {
         case 4: return (void *)(&pp->getResult()); break;
         case 5: return (void *)(&pp->getObject()); break;

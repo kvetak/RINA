@@ -13,13 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+#ifndef CDAPMSGLOG_H_
+#define CDAPMSGLOG_H_
 
-simple Auth
-{
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
-}
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "CDAPMsgLogEntry.h"
+
+typedef std::list<CDAPMsgLogEntry> TMessageLog;
+typedef TMessageLog::iterator TMLIter;
+typedef TMessageLog::const_iterator TMLConstIter;
+
+class CDAPMsgLog : public cSimpleModule {
+  public:
+    CDAPMsgLog();
+    virtual ~CDAPMsgLog();
+
+    std::string info() const;
+
+    void insert();
+    void remove();
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+  private:
+    TMessageLog MsgLog;
+};
+
+#endif /* CDAPMSGLOG_H_ */

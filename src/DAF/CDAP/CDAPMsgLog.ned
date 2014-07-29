@@ -15,11 +15,7 @@
 
 package rina.DAF.CDAP;
 
-simple Auth
+simple CDAPMsgLog
 {
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
+    @display("i=block/table");
 }

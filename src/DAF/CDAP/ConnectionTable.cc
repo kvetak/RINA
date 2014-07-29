@@ -13,13 +13,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+#include "ConnectionTable.h"
 
-simple Auth
+Define_Module(ConnectionTable);
+
+void ConnectionTable::initialize()
 {
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
+    // TODO - Generated method body
+}
+
+std::string ConnectionTable::info() const {
+    std::string os;
+    return os;
+}
+
+void ConnectionTable::insert() {
+}
+
+void ConnectionTable::remove() {
+}
+
+void ConnectionTable::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

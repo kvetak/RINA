@@ -17,15 +17,32 @@ package rina.DAF.CDAP;
 
 module CommonDistributedApplicationProtocol
 {
-    @display("bgb=331,132;i=block/circle");
+    parameters:
+        @display("bgb=331,308;i=block/circle");
+
+    gates:
+        inout southIo[];
+
     submodules:
         cace: CACE {
-            @display("p=61,53");
+            @display("p=59,137");
         }
         auth: Auth {
-            @display("p=161,54");
+            @display("p=159,138");
         }
         cdap: CDAP {
-            @display("p=256,54");
+            @display("p=256,138");
         }
+        cdapSplitter: CDAPSplitter {
+            @display("p=159,234");
+        }
+
+        cdapMsgLog: CDAPMsgLog {
+            @display("p=207,58");
+        }
+    connections:
+        cace.splitterIo <--> cdapSplitter.caceIo;
+        cdapSplitter.authIo <--> auth.splitterIo;
+        cdapSplitter.cdapIo <--> cdap.splitterIo;
+        cdapSplitter.irmIo <--> southIo++;
 }

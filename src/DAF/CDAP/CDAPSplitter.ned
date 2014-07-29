@@ -15,11 +15,13 @@
 
 package rina.DAF.CDAP;
 
-simple Auth
+simple CDAPSplitter
 {
     parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
+    	@display("i=block/layer");
+ 	gates:
+ 	    inout caceIo;
+ 	    inout authIo;
+ 	    inout cdapIo;
+ 	    inout irmIo;
 }

@@ -15,14 +15,16 @@
 
 package rina.DAF.IRM;
 
-//
-// TODO auto-generated module
-//
 simple IRM
 {
-    @display("i=block/cogwheel");
-    @signal[IRM-AllocateRequest](type=Flow?);
-    @signal[IRM-DeallocateRequest](type=Flow?);
-    @signal[IRM-AllocateResponsePositive](type=Flow?);
-    @signal[IRM-AllocateResponseNegative](type=Flow?);
+    parameters:
+        @display("i=block/cogwheel");
+        @signal[IRM-AllocateRequest](type=Flow?);
+        @signal[IRM-DeallocateRequest](type=Flow?);
+        @signal[IRM-AllocateResponsePositive](type=Flow?);
+        @signal[IRM-AllocateResponseNegative](type=Flow?);
+    gates:
+        inout irmIo[];
+        inout cdapIo[];
+            
 }

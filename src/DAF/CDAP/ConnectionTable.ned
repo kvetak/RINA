@@ -15,11 +15,10 @@
 
 package rina.DAF.CDAP;
 
-simple Auth
+//
+// TODO auto-generated module
+//
+simple ConnectionTable
 {
-    parameters:
-        @display("i=block/square");
-        
-    gates:
-   	    inout splitterIo;
+    @display("i=block/table2");
 }
