@@ -37,8 +37,7 @@ void IRM::handleTestMessage(cMessage *msg) {
         Flow* fl = new Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
         signalizeAllocateRequest(fl);
         delete(msg);
-    }
-    if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
+    }else if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
         //EV << msg->getName() << endl;
         Flow* fl1 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
         signalizeAllocateRequest(fl1);
