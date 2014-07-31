@@ -28,6 +28,7 @@ Define_Module(EFCPTable);
 
 EFCPTable::EFCPTable()
 {
+
   efcpTable.clear();
   // TODO Auto-generated constructor stub
 
@@ -47,6 +48,7 @@ EFCPTableEntry* EFCPTable::getEntryByFlow(Flow* flow){
   //TODO A! remove
   return NULL;
   for(TEFCPTable::iterator it = this->efcpTable.begin(); it != efcpTable.end(); ++it){
+
 
     if((*it)->getFlow() == flow){
       return (*it);

@@ -29,15 +29,25 @@
  *
  */
 #include <omnetpp.h>
+<<<<<<< HEAD
 
 #include "EFCPTable.h"
 #include "FAI.h"
 //#include "EFCPInstance.h"
 //#include "Delimiting.h"
+=======
+#include "DTP.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
+<<<<<<< HEAD
 //class EFCPInstance;
 //class EFCPTableEntry;
 //class EFCPTable;
+=======
+#include "EFCPTable.h"
+#include "EFCPInstance.h"
+#include "Delimiting.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
 
 class EFCP : public cSimpleModule {
@@ -71,7 +81,11 @@ private:
     int sendBuffThresh; //The number of free buffers below which flow control should slow or block the user from doing any more Writes.
     int sendBuffPercentThresh; //The percent of free buffers below which flow control should not advance or decreases the amount the Right Window Edge is moved.
 
+<<<<<<< HEAD
     EFCPTable* efcpTable;
+=======
+    EFCPTable efcpTable;
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
 
 //    DTP dtp; //required part of the EFCP
@@ -87,7 +101,11 @@ public:
     EFCP();
     virtual ~EFCP();
 
+<<<<<<< HEAD
     EFCPInstance* createEFCPI(FAI* fai);
+=======
+    EFCPInstance* createEFCPI(Flow* flow);
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 };
 
 #endif /* EFCP_H_ */

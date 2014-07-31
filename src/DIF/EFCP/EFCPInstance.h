@@ -30,7 +30,6 @@
 
 class DTP;
 class DTCP;
-
 class EFCPInstance
 {
   private:

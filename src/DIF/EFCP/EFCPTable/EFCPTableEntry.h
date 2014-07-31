@@ -28,12 +28,18 @@
 #include <omnetpp.h>
 #include <vector>
 #include <string>
+<<<<<<< HEAD
 //#include "FAI.h"
 #include "Flow.h"
 #include "EFCPInstance.h"
 #include "Delimiting.h"
 
 //class EFCPInstance;
+=======
+#include "FAI.h"
+#include "EFCPInstance.h"
+#include "Delimiting.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
 typedef std::vector<EFCPInstance*> TEFCPITab; //type EFCP instance
 

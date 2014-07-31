@@ -29,10 +29,14 @@
 #include <csimplemodule.h>
 
 #include "EFCPTableEntry.h"
+<<<<<<< HEAD
 //#include "Delimiting.h"
 //#include "EFCPInstance.h"
 //class EFCPTableEntry;
 //class EFCPInstance;
+=======
+#include "Delimiting.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
 typedef std::vector<EFCPTableEntry*> TEFCPTable;
 
