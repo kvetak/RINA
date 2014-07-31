@@ -28,10 +28,15 @@
 /*
  *
  */
-
+#include <omnetpp.h>
 #include "DTP.h"
 
-class EFCP {
+#include "EFCPTable.h"
+#include "EFCPInstance.h"
+#include "Delimiting.h"
+
+
+class EFCP : public cSimpleModule {
 private:
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
@@ -62,21 +67,23 @@ private:
     int sendBuffThresh; //The number of free buffers below which flow control should slow or block the user from doing any more Writes.
     int sendBuffPercentThresh; //The percent of free buffers below which flow control should not advance or decreases the amount the Right Window Edge is moved.
 
+    EFCPTable efcpTable;
 
 
-
-    DTP dtp; //required part of the EFCP
+//    DTP dtp; //required part of the EFCP
 //    DTStateVector dtStateV; //data-transfer state vector
 //    DTCP* dtcp; //optional part of the EFCP
 
-    int portId; //FAI-identifier
+//    int portId; //FAI-identifier
 
-    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
+//    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
 
 
 public:
     EFCP();
     virtual ~EFCP();
+
+    EFCPInstance* createEFCPI(Flow* flow);
 };
 
 #endif /* EFCP_H_ */

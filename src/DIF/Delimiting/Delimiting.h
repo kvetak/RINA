@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -12,16 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file Delimiting.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jul 31, 2014
+ * @brief
+ * @detail
+ */
 
-package rina.DIF.RMT;
+#ifndef DELIMITING_H_
+#define DELIMITING_H_
 
-//
-// TODO auto-generated module
-//
-simple RMT
+#include <csimplemodule.h>
+
+class Delimiting : public cSimpleModule
 {
-    @display("i=block/classifier");
-    gates:
-        inout efcpIo[];
-        inout rmtIo[];
-}
+  public:
+    Delimiting();
+    virtual ~Delimiting();
+};
+
+#endif /* DELIMITING_H_ */

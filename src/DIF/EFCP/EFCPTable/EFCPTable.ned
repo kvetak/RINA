@@ -13,15 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.DIF.EFCP.EFCPTable;
 
-//
-// TODO auto-generated module
-//
-simple RMT
+simple EFCPTable
 {
-    @display("i=block/classifier");
-    gates:
-        inout efcpIo[];
-        inout rmtIo[];
+    @display("i=block/table2");
 }

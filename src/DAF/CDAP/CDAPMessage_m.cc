@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.5 from DAF/CDAP/CDAPMessage.msg.
+// Generated file, do not edit! Created by opp_msgc 4.4 from DAF/CDAP/CDAPMessage.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -14,6 +14,9 @@
 
 USING_NAMESPACE
 
+// Template rule which fires if a struct or class doesn't have operator<<
+template<typename T>
+std::ostream& operator<<(std::ostream& out,const T&) {return out;}
 
 // Another default rule (prevents compiler from choosing base class' doPacking())
 template<typename T>
@@ -28,30 +31,6 @@ void doUnpacking(cCommBuffer *, T& t) {
 
 
 
-
-// Template rule for outputting std::vector<T> types
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-    
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
 
 EXECUTE_ON_STARTUP(
     cEnum *e = cEnum::find("opCode_t");
@@ -346,9 +325,16 @@ const char *objVal_tDescriptor::getFieldStructName(void *object, int field) cons
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *objVal_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -563,9 +549,12 @@ const char *authValue_tDescriptor::getFieldStructName(void *object, int field) c
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<3) ? fieldStructNames[field] : NULL;
 }
 
 void *authValue_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -771,9 +760,11 @@ const char *result_tDescriptor::getFieldStructName(void *object, int field) cons
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
 }
 
 void *result_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -980,10 +971,11 @@ const char *auth_tDescriptor::getFieldStructName(void *object, int field) const
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 1: return opp_typename(typeid(authValue_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        "authValue_t",
     };
+    return (field>=0 && field<2) ? fieldStructNames[field] : NULL;
 }
 
 void *auth_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -1208,9 +1200,13 @@ const char *naming_tDescriptor::getFieldStructName(void *object, int field) cons
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<4) ? fieldStructNames[field] : NULL;
 }
 
 void *naming_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -1432,10 +1428,13 @@ const char *object_tDescriptor::getFieldStructName(void *object, int field) cons
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 3: return opp_typename(typeid(cObject));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        "cObject",
     };
+    return (field>=0 && field<4) ? fieldStructNames[field] : NULL;
 }
 
 void *object_tDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -2097,11 +2096,31 @@ const char *CDAP_General_MessageDescriptor::getFieldStructName(void *object, int
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 7: return opp_typename(typeid(objVal_t));
-        case 11: return opp_typename(typeid(authValue_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "objVal_t",
+        NULL,
+        NULL,
+        NULL,
+        "authValue_t",
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<22) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_General_MessageDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -2479,12 +2498,17 @@ const char *CDAP_M_ConnectDescriptor::getFieldStructName(void *object, int field
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 5: return opp_typename(typeid(auth_t));
-        case 6: return opp_typename(typeid(naming_t));
-        case 7: return opp_typename(typeid(naming_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "auth_t",
+        "naming_t",
+        "naming_t",
     };
+    return (field>=0 && field<8) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_ConnectDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -2881,13 +2905,18 @@ const char *CDAP_M_Connect_RDescriptor::getFieldStructName(void *object, int fie
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 6: return opp_typename(typeid(auth_t));
-        case 7: return opp_typename(typeid(naming_t));
-        case 8: return opp_typename(typeid(naming_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        NULL,
+        "auth_t",
+        "naming_t",
+        "naming_t",
     };
+    return (field>=0 && field<9) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Connect_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -3190,9 +3219,13 @@ const char *CDAP_M_ReleaseDescriptor::getFieldStructName(void *object, int field
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<4) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_ReleaseDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -3509,10 +3542,14 @@ const char *CDAP_M_Release_RDescriptor::getFieldStructName(void *object, int fie
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
     };
+    return (field>=0 && field<5) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Release_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -3870,10 +3907,16 @@ const char *CDAP_M_CreateDescriptor::getFieldStructName(void *object, int field)
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_CreateDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -4229,11 +4272,16 @@ const char *CDAP_M_Create_RDescriptor::getFieldStructName(void *object, int fiel
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Create_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -4592,10 +4640,16 @@ const char *CDAP_M_DeleteDescriptor::getFieldStructName(void *object, int field)
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_DeleteDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -4951,11 +5005,16 @@ const char *CDAP_M_Delete_RDescriptor::getFieldStructName(void *object, int fiel
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Delete_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -5314,10 +5373,16 @@ const char *CDAP_M_ReadDescriptor::getFieldStructName(void *object, int field) c
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_ReadDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -5673,11 +5738,16 @@ const char *CDAP_M_Read_RDescriptor::getFieldStructName(void *object, int field)
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Read_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -5996,10 +6066,14 @@ const char *CDAP_M_CancelReadDescriptor::getFieldStructName(void *object, int fi
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
     };
+    return (field>=0 && field<5) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_CancelReadDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -6317,10 +6391,14 @@ const char *CDAP_M_CancelRead_RDescriptor::getFieldStructName(void *object, int 
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
     };
+    return (field>=0 && field<5) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_CancelRead_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -6678,10 +6756,16 @@ const char *CDAP_M_WriteDescriptor::getFieldStructName(void *object, int field) 
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_WriteDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -7037,11 +7121,16 @@ const char *CDAP_M_Write_RDescriptor::getFieldStructName(void *object, int field
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Write_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -7400,10 +7489,16 @@ const char *CDAP_M_StartDescriptor::getFieldStructName(void *object, int field) 
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_StartDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -7759,11 +7854,16 @@ const char *CDAP_M_Start_RDescriptor::getFieldStructName(void *object, int field
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Start_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -8122,10 +8222,16 @@ const char *CDAP_M_StopDescriptor::getFieldStructName(void *object, int field) c
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "object_t",
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_StopDescriptor::getFieldStructPointer(void *object, int field, int i) const
@@ -8481,11 +8587,16 @@ const char *CDAP_M_Stop_RDescriptor::getFieldStructName(void *object, int field)
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 4: return opp_typename(typeid(result_t));
-        case 5: return opp_typename(typeid(object_t));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        "result_t",
+        "object_t",
+        NULL,
     };
+    return (field>=0 && field<7) ? fieldStructNames[field] : NULL;
 }
 
 void *CDAP_M_Stop_RDescriptor::getFieldStructPointer(void *object, int field, int i) const
