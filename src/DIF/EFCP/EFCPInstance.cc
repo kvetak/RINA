@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -12,16 +14,46 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file EFCPInstance.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jul 31, 2014
+ * @brief
+ * @detail
+ */
 
-package rina.DIF.RMT;
+#include <EFCPInstance.h>
 
-//
-// TODO auto-generated module
-//
-simple RMT
+EFCPInstance::EFCPInstance()
 {
-    @display("i=block/classifier");
-    gates:
-        inout efcpIo[];
-        inout rmtIo[];
+
+// this->dtp
+  // TODO Auto-generated constructor stub
+
 }
+
+DTCP* EFCPInstance::getDtcp()
+{
+  return dtcp;
+}
+
+void EFCPInstance::setDtcp(DTCP* dtcp)
+{
+  this->dtcp = dtcp;
+}
+
+DTP* EFCPInstance::getDtp()
+{
+  return dtp;
+}
+
+void EFCPInstance::setDtp(DTP* dtp)
+{
+  this->dtp = dtp;
+}
+
+EFCPInstance::~EFCPInstance()
+{
+  // TODO Auto-generated destructor stub
+}
+

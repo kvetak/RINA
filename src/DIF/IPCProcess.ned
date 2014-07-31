@@ -17,7 +17,8 @@ package rina.DIF;
 
 
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DIF.EFCP.EFCP;
+import rina.DIF.EFCP.EFCPI;
+import rina.DIF.EFCP.EFCPModule;
 import rina.DIF.Enrollment.Enrollment;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RA.ResourceAllocator;
@@ -43,9 +44,8 @@ module IPCProcess
         ribDaemon: RIBDaemon {
             @display("p=238,147");
         }
-
-        efcp: EFCP {
-            @display("p=90,147");
+        efcp: EFCPModule {
+            @display("p=90,156");
         }
         resourceAllocator: ResourceAllocator {
             @display("p=390,195");
@@ -58,6 +58,8 @@ module IPCProcess
         }
     connections:
         rmt.rmtIo++ <--> southIo++;
+        rmt.efcpIo++ <--> efcp.rmtIo++;
         flowAllocator.appIo++ <--> northIo++;
         commonDistributedApplicationProtocol.southIo++ <--> rmt.rmtIo++;
+
 }

@@ -13,15 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.DIF.Delimiting;
 
-//
-// TODO auto-generated module
-//
-simple RMT
+simple Delimiting
 {
-    @display("i=block/classifier");
+    @display("i=block/subqueue");
+    
     gates:
+        inout faiIo;
         inout efcpIo[];
-        inout rmtIo[];
 }

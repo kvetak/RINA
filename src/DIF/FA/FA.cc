@@ -36,7 +36,7 @@ FA::~FA() {
 
 void FA::initialize() {
     this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule("faiTable") );
-
+    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
     this->initSignalsAndListeners();
 }
 /**
@@ -188,6 +188,9 @@ FAI* FA::createFAI(Flow* flow) {
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+
+    this->efcp->createEFCPI(fai);
+
     return fai;
 }
 

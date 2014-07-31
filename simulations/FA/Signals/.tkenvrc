@@ -1,4 +1,6 @@
-# Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
-config default-configname	{General}
-config default-runnumber	{0}
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "Signals" "Signals" "2" "607x337+1024+104:normal"
+inspector "Signals.host1" "Host" "2" "607x337+1024+104:normal"
+inspector "Signals.host1.ipcProcess" "IPCProcess" "2" "607x337+1860+353:normal"
+inspector "Signals.host1.ipcProcess.flowAllocator" "FlowAllocator" "2" "607x337+338+339:normal"
 

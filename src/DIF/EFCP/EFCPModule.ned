@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,15 +15,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
 
-//
-// TODO auto-generated module
-//
-simple RMT
+package rina.DIF.EFCP;
+
+import rina.DIF.EFCP.EFCPTable.EFCPTable;
+
+module EFCPModule
 {
-    @display("i=block/classifier");
+    @display("i=block/layer");
     gates:
-        inout efcpIo[];
+        inout faIo[];
         inout rmtIo[];
+
+    submodules:
+        efcpTable: EFCPTable {
+            @display("p=177,51");
+        }
+        efcp: EFCP {
+            @display("p=74,78");
+        }
+
+
+    connections:
+        efcp.rmtIo <--> rmtIo++;
+
+
 }
