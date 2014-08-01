@@ -64,7 +64,7 @@ enum FLAGS{
 
 //
 // TODO generated message class
-//
+
 packet PDU {
     @customize(true);
     unsigned int version = 1;

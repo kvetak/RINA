@@ -28,10 +28,29 @@
 /*
  *
  */
+#include <omnetpp.h>
+<<<<<<< HEAD
 
+#include "EFCPTable.h"
+#include "FAI.h"
+//#include "EFCPInstance.h"
+//#include "Delimiting.h"
+=======
 #include "DTP.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
-class EFCP {
+<<<<<<< HEAD
+//class EFCPInstance;
+//class EFCPTableEntry;
+//class EFCPTable;
+=======
+#include "EFCPTable.h"
+#include "EFCPInstance.h"
+#include "Delimiting.h"
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
+
+
+class EFCP : public cSimpleModule {
 private:
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
@@ -62,21 +81,31 @@ private:
     int sendBuffThresh; //The number of free buffers below which flow control should slow or block the user from doing any more Writes.
     int sendBuffPercentThresh; //The percent of free buffers below which flow control should not advance or decreases the amount the Right Window Edge is moved.
 
+<<<<<<< HEAD
+    EFCPTable* efcpTable;
+=======
+    EFCPTable efcpTable;
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 
 
-
-    DTP dtp; //required part of the EFCP
+//    DTP dtp; //required part of the EFCP
 //    DTStateVector dtStateV; //data-transfer state vector
 //    DTCP* dtcp; //optional part of the EFCP
 
-    int portId; //FAI-identifier
+//    int portId; //FAI-identifier
 
-    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
+//    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
 
 
 public:
     EFCP();
     virtual ~EFCP();
+
+<<<<<<< HEAD
+    EFCPInstance* createEFCPI(FAI* fai);
+=======
+    EFCPInstance* createEFCPI(Flow* flow);
+>>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 };
 
 #endif /* EFCP_H_ */

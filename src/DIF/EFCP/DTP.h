@@ -28,7 +28,7 @@
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 
-#include "FA.h" //or FlowAllocatorFactory
+//#include "FA.h" //or FlowAllocatorFactory
 #include "RMT.h"
 
 class DTP : public cSimpleModule
@@ -58,7 +58,7 @@ class DTP : public cSimpleModule
 
 //    WindowTimer* windowTimer;
 
-    FA* flowAllocator;
+//    FA* flowAllocator;
     /* OR
      * FlowAllocatorFactory flowFactory;
      * int flowAllocatorId;

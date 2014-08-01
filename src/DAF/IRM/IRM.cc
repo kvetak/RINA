@@ -26,6 +26,30 @@ IRM::~IRM() {
 
 void IRM::initialize() {
     this->initSignalsAndListeners();
+<<<<<<< HEAD
+=======
+    //Testing purposes
+    prepareTestMessage(100);
+}
+
+void IRM::handleTestMessage(cMessage *msg) {
+    //IF it is a TEST message from host1
+    if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host1")){
+        //EV << msg->getName() << endl;
+        Flow* fl = new Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
+        signalizeAllocateRequest(fl);
+        delete(msg);
+    }else if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
+        //EV << msg->getName() << endl;
+        Flow* fl1 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
+        signalizeAllocateRequest(fl1);
+        Flow* fl2 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppH3") ) );
+        signalizeAllocateRequest(fl2);
+
+
+        delete(msg);
+    }
+>>>>>>> ba3c44c80d3019145c6d1fe522cdbc32d1e7a5c5
 }
 
 void IRM::handleMessage(cMessage* msg) {

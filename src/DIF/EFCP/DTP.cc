@@ -27,6 +27,10 @@ DTP::~DTP()
   // TODO Auto-generated destructor stub
 }
 
+/**
+ *
+ * @param connId
+ */
 void DTP::setConnId(const ConnectionId& connId)
 {
   this->connId = connId;
@@ -72,6 +76,8 @@ void DTP::handleMessage(cMessage *msg)
 //        break;
 //      }
     }
+  }else{
+    /* Either PDUs from RMT or SDUs from AP */
   }
 
 }

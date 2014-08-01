@@ -37,9 +37,13 @@
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 
+#include "EFCP.h"
+
 const int RANDOM_NUMBER_GENERATOR = 0;
 const int MAX_PORTID = 65535;
 const int MAX_CEPID  = 65535;
+
+//class EFCP;
 
 class FA : public FABase
 {
@@ -82,6 +86,7 @@ class FA : public FABase
 
   private:
     FAITable* FaiTable;
+    EFCP* efcp;
     bool isMalformedFlow(Flow* flow);
     bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
