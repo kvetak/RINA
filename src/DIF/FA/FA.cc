@@ -44,8 +44,8 @@ void FA::initialize() {
  * @param obj
  */
 void FA::receiveAllocateRequest(cObject* obj) {
-    Flow* fl = dynamic_cast<Flow*>(obj);
     Enter_Method("receiveAllocateRequest()");
+    Flow* fl = dynamic_cast<Flow*>(obj);
     EV << this->getFullPath() << " received AllocateRequest" << endl;
     //Insert new Flow into FAITable
     this->insertNewFTRecord(fl);
@@ -146,8 +146,8 @@ void FA::receiveCreateFlowRequest(cObject* obj) {
 }
 
 void FA::receiveDeallocateRequest(cObject* obj) {
-    Flow* fl = dynamic_cast<Flow*>(obj);
     Enter_Method("receiveDeallocateRequest()");
+    Flow* fl = dynamic_cast<Flow*>(obj);
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
     //Pass the request to appropriate FAI
     FAITableEntry* fte = FaiTable->findEntryByFlow(fl);

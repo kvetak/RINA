@@ -13,38 +13,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.FA;
+#ifndef __RINA_AEPING_H_
+#define __RINA_AEPING_H_
 
-import rina.DIF.NSM.NameSpaceManager;
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "AE.h"
 
-
-module FlowAllocator
+class AEPing : public AE
 {
-    parameters:
-        @display("i=block/fork;bgb=590,410");
-        int numOfAPs;
-                
-    gates:
-        inout appIo[numOfAPs];
-        inout efcpIo[] @loose;
-    
-    submodules:
-        fa: FA {
-            @display("p=114,84");
-            numOfAPs = numOfAPs;
-        }
+  public:
+    AEPing();
+    virtual ~AEPing();
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
-        nameSpaceManager: NameSpaceManager {
-            @display("p=447,84");
-        }
-        
-        faiTable: FAITable {
-            @display("p=283,84");
-        }
-        
-    connections:
-        for i = 0 .. numOfAPs - 1 {
-            appIo[i] <--> fa.appIo[i];        
-        }   
-        
-}
+    void handleSelfMessage(cMessage* msg);
+
+  private:
+    std::string dstApName;
+    std::string dstApInstance;
+    std::string dstAeName;
+    std::string dstAeInstance;
+
+    simtime_t startAt;
+    simtime_t stopAt;
+    simtime_t pingAt;
+    int rate;
+
+    void prepareAllocateRequest();
+    void preparePing();
+    void prepareDeallocateRequest();
+
+};
+
+#endif

@@ -15,33 +15,32 @@
 
 package rina.CS;
 
+import rina.DAF.ApplicationProcess;
 import rina.DIF.IPCProcess;
 
 
-module BorderRouter
+module Host1AP
 {
-    @display("i=abstract/router;bgb=272,341");
-    @node;
-    gates:
-        inout medium[];
-    submodules:
-        ipcProcess1: IPCProcess {
-            @display("p=66,160");
-        }
-        ipcProcess2: IPCProcess {
-            @display("p=206,157");
-        }
-        ipcProcess3: IPCProcess {
-            @display("p=206,266;i=,#FF4000");
-        }
-        ipcProcess0: IPCProcess {
-            @display("p=139,39;i=,#FFB000");
-        }
+    parameters:
+        @display("i=device/pc");
+        @node;
+        int numOfDIFs = 1;
+        int numOfAPs = 1;
         
-    connections allowunconnected:
-        ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
-        ipcProcess2.southIo++ <--> ipcProcess3.northIo++;
-        ipcProcess3.southIo++ <--> medium++;
-        ipcProcess1.southIo++ <--> medium++;
+    gates:
+        inout medium @loose;
+        
+    submodules:
+        applicationProcess1: ApplicationProcess {
+            @display("p=133,58");
+            numOfDIFs = numOfDIFs;            
+        }
+        ipcProcess1: IPCProcess {
+            @display("p=133,153");
+			numOfAPs = numOfAPs;
+        }
+
+    connections:
+        ipcProcess1.southIo++ <--> medium;
+        ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];
 }

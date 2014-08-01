@@ -13,35 +13,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.CS;
+package rina.examples.TwoCSs;
 
-import rina.DIF.IPCProcess;
+import rina.CS.Host1AP;
 
 
-module BorderRouter
+network TwoCSs
 {
-    @display("i=abstract/router;bgb=272,341");
-    @node;
-    gates:
-        inout medium[];
+    @display("bgb=325,196");
     submodules:
-        ipcProcess1: IPCProcess {
-            @display("p=66,160");
+        host1: Host1AP {
+            @display("p=82,92");
         }
-        ipcProcess2: IPCProcess {
-            @display("p=206,157");
+        host2: Host1AP {
+            @display("p=231,92");
         }
-        ipcProcess3: IPCProcess {
-            @display("p=206,266;i=,#FF4000");
-        }
-        ipcProcess0: IPCProcess {
-            @display("p=139,39;i=,#FFB000");
-        }
-        
     connections allowunconnected:
-        ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
-        ipcProcess2.southIo++ <--> ipcProcess3.northIo++;
-        ipcProcess3.southIo++ <--> medium++;
-        ipcProcess1.southIo++ <--> medium++;
+        host1.medium <--> host2.medium;
 }

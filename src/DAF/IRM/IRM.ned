@@ -22,9 +22,9 @@ simple IRM
         @signal[IRM-AllocateRequest](type=Flow?);
         @signal[IRM-DeallocateRequest](type=Flow?);
         @signal[IRM-AllocateResponsePositive](type=Flow?);
-        @signal[IRM-AllocateResponseNegative](type=Flow?);
+        @signal[IRM-AllocateResponseNegative](type=Flow?);   
+        int numOfDIFs;     
     gates:
-        inout irmIo[];
-        inout cdapIo[];
-            
+        inout irmIo[numOfDIFs];
+        inout cdapIo[];            
 }

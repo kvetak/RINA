@@ -20,7 +20,6 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "IRMListeners.h"
-//#include "FA.h"
 #include "Flow.h"
 #include "RINASignals.h"
 
@@ -29,6 +28,9 @@ class IRM : public cSimpleModule   {
     IRM();
     virtual ~IRM();
 
+    void receiveAllocationRequest(cObject* obj);
+    void receiveDeallocationRequest(cObject* obj);
+    void receiveAllocationResponseNegativeAppNotFound(cObject* obj);
     void receiveAllocationResponseNegative(cObject* obj);
     void receiveAllocationRequestFromFAI(cObject* obj);
 
@@ -38,9 +40,6 @@ class IRM : public cSimpleModule   {
 
   private:
     void initSignalsAndListeners();
-
-    void prepareTestMessage(simtime_t tim);
-    void handleTestMessage(cMessage* msg);
 
     //Signals
     simsignal_t sigIRMAllocReq;
@@ -52,13 +51,14 @@ class IRM : public cSimpleModule   {
     LisIRMAllocResNegaFa* lisAllocResNegaFa;
     LisIRMAllocResNegaFai* lisAllocResNegaFai;
     LisIRMAllocReqFai* lisAllocReqFai;
+    LisIRMAllocReq* lisAllocReq;
+    LisIRMDeallocReq* lisDeallocReq;
+
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
     void signalizeAllocateResponsePositive(Flow* flow);
     void signalizeAllocateResponseNegative(Flow* flow);
-
-
 
 };
 

@@ -13,38 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.FA;
+package rina.examples.SingleCS;
 
-import rina.DIF.NSM.NameSpaceManager;
+import rina.CS.Host2AP;
 
 
-module FlowAllocator
+network SingleCS
 {
-    parameters:
-        @display("i=block/fork;bgb=590,410");
-        int numOfAPs;
-                
-    gates:
-        inout appIo[numOfAPs];
-        inout efcpIo[] @loose;
-    
     submodules:
-        fa: FA {
-            @display("p=114,84");
-            numOfAPs = numOfAPs;
-        }
-
-        nameSpaceManager: NameSpaceManager {
-            @display("p=447,84");
-        }
-        
-        faiTable: FAITable {
-            @display("p=283,84");
+        host: Host2AP {
+            @display("p=138,82");
         }
         
     connections:
-        for i = 0 .. numOfAPs - 1 {
-            appIo[i] <--> fa.appIo[i];        
-        }   
-        
 }

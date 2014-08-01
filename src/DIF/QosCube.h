@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright Â© 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -42,17 +42,17 @@ private:
     int undetectedBitErr; //Undetected bit error rate measured as a probability
     int maxSDUsize; //MaxSDUSize measured in bytes
     bool partDeliv; //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-    bool incompleteDeliv; //Incomplete Delivery – Can SDUs with missing pieces be delivered?
+    bool incompleteDeliv; //Incomplete Delivery â€“ Can SDUs with missing pieces be delivered?
     bool forceOrder; // - Must SDUs be delivered in order?
     unsigned int maxAllowGap; //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
     int delay; //Delay in secs
     int jitter; //Jitter in secs2
-
+    bool dtcpEnable;    //DTCP turned on
     int qoSId;
     std::vector<Policy*> policyList;
     //Policy-Default-Parameters: List;
     bool order; /*True if SDUs must be delivered in order. Unless Delimiting is
-“1 for 1”, i.e. one SDU per PDU, implying that the application knows the Max PDU size,
+â€œ1 for 1â€�, i.e. one SDU per PDU, implying that the application knows the Max PDU size,
 allowing SDUs that are larger than a MaxPDU implies that PDUs must be ordered. (This
 parameter should probably be eliminated in favor of using very large maximum gaps.) */
 

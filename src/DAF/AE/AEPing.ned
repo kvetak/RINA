@@ -13,38 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.FA;
+package rina.DAF.AE;
 
-import rina.DIF.NSM.NameSpaceManager;
-
-
-module FlowAllocator
+simple AEPing extends AE 
 {
     parameters:
-        @display("i=block/fork;bgb=590,410");
-        int numOfAPs;
-                
-    gates:
-        inout appIo[numOfAPs];
-        inout efcpIo[] @loose;
-    
-    submodules:
-        fa: FA {
-            @display("p=114,84");
-            numOfAPs = numOfAPs;
-        }
-
-        nameSpaceManager: NameSpaceManager {
-            @display("p=447,84");
-        }
+        @class(AEPing);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
         
-        faiTable: FAITable {
-            @display("p=283,84");
-        }
-        
-    connections:
-        for i = 0 .. numOfAPs - 1 {
-            appIo[i] <--> fa.appIo[i];        
-        }   
-        
+        int start @unit(s) = default(0s);
+        int stop @unit(s) = default(0s);
+        int ping @unit(s) = default(0s);
+        int rate = default(1);    
 }
