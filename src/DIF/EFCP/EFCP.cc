@@ -107,6 +107,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
       dtcp->callInitialize();
 
       efcpi->setDtcp(dtcp);
+
   }
 
 
@@ -117,6 +118,38 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   //done
 
   //TODO A! Connect modules
+//  cGate*
+
+  int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
+  tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size+1 );
+//  delToEfcp->size();
+
+  cGate* delToEfcpiI = (cGate*)tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo",cGate::INPUT, size);
+  cGate* delToEfcpiO = (cGate*)tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo",cGate::OUTPUT, size);
+
+//  cModule* efcpModule = this->getParentModule();
+//  efcpModule->addGate("fa_" + flow->getDstPortId(), cGate::INOUT, false);
+//  cGate* efcpToFA = efcpModule->gate("fa_" + flow->getDstPortId());
+
+
+   cGate* dtpToEfcpI = dtp->gateHalf("efcpIo",cGate::INPUT);
+   cGate* dtpToEfcpO = dtp->gateHalf("efcpIo",cGate::OUTPUT);
+
+
+
+
+   cGate* efcpiToDtpI = efcpiModule->gateHalf("delimitIo",cGate::INPUT);
+   cGate* efcpiToDtpO = efcpiModule->gateHalf("delimitIo",cGate::OUTPUT);
+
+   efcpiToDtpO->connectTo(dtpToEfcpI);
+   dtpToEfcpO->connectTo(efcpiToDtpI);
+
+//   delToEfcpiI->connectTo(efcpiToDtpO);
+//   delToEfcpiO->connectTo(efcpiToDtpI);
+
+//   delToEfcpiO->connectTo(efcpiToDtp);
+//   dtpToEfcpO->connectTo(delToEfcpiI);
+
 //  cGate* gateDelimitToFAI = (cGate*)tmpEfcpEntry->getDelimit()->gate("faiIo$i");
 //  cGate* gateFAIToDelimit = (cGate*)fai->gate("efcpIo$o");
 //  gateDelimitToFAI->connectTo(gateFAIToDelimit);

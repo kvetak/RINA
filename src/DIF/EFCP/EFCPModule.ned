@@ -24,8 +24,8 @@ module EFCPModule
 {
     @display("i=block/layer");
     gates:
-        inout faIo[];
-        inout rmtIo[];
+//        inout faIo[];
+//        inout rmtIo[];
 
     submodules:
         efcpTable: EFCPTable {

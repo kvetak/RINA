@@ -23,11 +23,17 @@ package rina.DIF.EFCP;
 module EFCPI
 {
     @display("i=block/layer");
+    gates:
+        inout delimitIo;
+        inout rmtIo;
     submodules:
         dtcp: DTCP {
-            @display("p=195,97");
+            @display("p=349,101");
         }
         dtp: DTP {
-            @display("p=78,97");
+            @display("p=146,86");
         }
+    connections:
+        dtp.efcpIo <--> delimitIo;
+        dtp.rmtIo <--> rmtIo;
 }

@@ -50,7 +50,7 @@ class EFCPTableEntry
     virtual ~EFCPTableEntry();
 
     std::string info() const;
-    const Delimiting* getDelimit() const;
+    Delimiting* getDelimit() const;
     const TEFCPITab* getEfcpiTab();
     const Flow* getFlow() const;
     void setDelimit(Delimiting* delimit);
