@@ -37,8 +37,7 @@ module BorderRouter
         ipcProcess0: IPCProcess {
             @display("p=139,39;i=,#FFB000");
         }
-        
-    connections allowunconnected:
+    connections:
         ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
         ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
         ipcProcess2.southIo++ <--> ipcProcess3.northIo++;

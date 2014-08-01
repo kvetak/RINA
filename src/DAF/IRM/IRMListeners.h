@@ -48,29 +48,13 @@ class LisIRMAllocResNegaFai : public IRMListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-class LisIRMAllocReq : public IRMListeners {
-  public:
-    LisIRMAllocReq(IRM* nirm) : IRMListeners(nirm){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisIRMDeallocReq : public IRMListeners {
-  public:
-    LisIRMDeallocReq(IRM* nirm) : IRMListeners(nirm){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
 
 class LisIRMAllocReqFai : public IRMListeners
 {
   public:
     LisIRMAllocReqFai(IRM* nirm) : IRMListeners(nirm){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-}; 
-
-class LisIRMAllocResNegaAppNotFound : public IRMListeners {
-  public:
-    LisIRMAllocResNegaAppNotFound(IRM* nirm) : IRMListeners(nirm){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
+
 
 #endif /* IRMLISTENERS_H_ */

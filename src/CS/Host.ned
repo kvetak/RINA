@@ -19,35 +19,21 @@ import rina.DAF.ApplicationProcess;
 import rina.DIF.IPCProcess;
 
 
-module Host2AP
+module Host
 {
-    parameters:
-        @display("i=device/pc;bgb=289,221");
-        @node;
-        int numOfDIFs = 1;
-        int numOfAPs = 2;
-
+    @display("i=device/pc");
+    @node;
     gates:
-        inout medium @loose;
-
+        inout medium;
     submodules:
-        applicationProcess1: ApplicationProcess {
-            @display("p=72,57");
-            numOfDIFs = numOfDIFs;
+        applicationProcess: ApplicationProcess {
+            @display("p=133,58");
         }
-        
-        applicationProcess2: ApplicationProcess {
-            @display("p=218,57");
-            numOfDIFs = numOfDIFs;
-        }
-        
-        ipcProcess1: IPCProcess {
+        ipcProcess: IPCProcess {
             @display("p=133,153");
-            numOfAPs = numOfAPs;
         }
-        
+
     connections:
-        ipcProcess1.southIo++ <--> medium;
-        ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];
-        ipcProcess1.northIo[1] <--> applicationProcess2.southIo[0];
+        ipcProcess.southIo++ <--> medium;
+        applicationProcess.southIo++ <--> ipcProcess.northIo++;
 }

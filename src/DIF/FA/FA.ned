@@ -24,8 +24,6 @@ simple FA
     	@signal[FA-CreateFlowRequestForward](type=Flow?);
     	@signal[FA-CreateFlowResponseNegative](type=Flow?);
     	@signal[FA-CreateFlowResponsePositive](type=Flow?);
-    	int numOfAPs;
     gates:
-        inout appIo[numOfAPs];
-        inout faiIo[] @loose;
+        inout irmIo;
 }

@@ -15,7 +15,6 @@
 
 package rina.DAF;
 
-import rina.DAF.AE.AEPing;
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DAF.DA.DIFAllocator;
 import rina.DAF.IRM.IRM;
@@ -24,17 +23,12 @@ import rina.DIF.RMT.RMT;
 
 module ApplicationProcess
 {
-    parameters:
-        @display("bgb=434,251;i=misc/node,yellow,30");
-        int numOfDIFs;
-        string apName = default("App");
-        string apInstance = default("0");
+    @display("bgb=461,251;i=misc/node,yellow,30");
     gates:
-        inout southIo[numOfDIFs];
+        inout southIo[];
     submodules:
         irm: IRM {
             @display("p=125,178");
-            numOfDIFs = numOfDIFs;
         }
         difAllocator: DIFAllocator {
             @display("p=315,178");
@@ -42,13 +36,7 @@ module ApplicationProcess
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             @display("p=125,64");
         }
-        aePing: AEPing {
-            @display("p=315,64");
-        }
     connections:
-        for i = 0 .. numOfDIFs - 1
-        {
-            irm.irmIo[i] <--> southIo[i];            
-        }        
+        irm.irmIo++ <--> southIo++;
         commonDistributedApplicationProtocol.southIo++ <--> irm.cdapIo++;
 }

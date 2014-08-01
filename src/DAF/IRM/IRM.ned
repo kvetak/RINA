@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM; 
+package rina.DAF.IRM;
 
 simple IRM
 {
@@ -22,9 +22,9 @@ simple IRM
         @signal[IRM-AllocateRequest](type=Flow?);
         @signal[IRM-DeallocateRequest](type=Flow?);
         @signal[IRM-AllocateResponsePositive](type=Flow?);
-        @signal[IRM-AllocateResponseNegative](type=Flow?);   
-        int numOfDIFs;     
+        @signal[IRM-AllocateResponseNegative](type=Flow?);
     gates:
-        inout irmIo[numOfDIFs];
-        inout cdapIo[];            
+        inout irmIo[];
+        inout cdapIo[];
+            
 }

@@ -29,7 +29,7 @@ const int MAX_CREATERETRIES = 3;
 
 class Flow : public cObject, noncopyable
 {
-  private:
+private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
     APNamingInfo srcApni;
     APNamingInfo dstApni;
@@ -42,7 +42,7 @@ class Flow : public cObject, noncopyable
     uint32_t maxCreateFlowRetries;
     uint32_t hopCount;
 
-  public:
+public:
     Flow();
     Flow(APNamingInfo src, APNamingInfo dst);
     virtual ~Flow();

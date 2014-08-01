@@ -34,7 +34,7 @@ module InteriorRouter
         ipcProcess0: IPCProcess {
             @display("p=135,48;i=,#FFB000");
         }
-    connections allowunconnected:
+    connections:
         ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
         ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
         ipcProcess1.southIo++ <--> medium++;
