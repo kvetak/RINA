@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -37,6 +37,8 @@ void FAI::initialize() {
     this->portId = par("portId");
     this->cepId  = par("cepId");
     this->initSignalsAndListeners();
+
+    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
 }
 
 void FAI::postInitialize(FABase* fa, Flow* fl) {
@@ -188,8 +190,11 @@ std::ostream& operator<< (std::ostream& os, const FAI& fai) {
 }
 
 bool FAI::createEFCP() {
+
+
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
-    return false;
+    efcp->createEFCPI(this);
+    return false; //TODO return true
 }
 
 bool FAI::createBindings() {

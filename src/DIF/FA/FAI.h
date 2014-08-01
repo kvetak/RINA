@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -31,6 +31,8 @@
 #include "Flow.h"
 #include "FAIListeners.h"
 #include "RINASignals.h"
+
+#include "EFCP.h"
 
 class FAI : public cSimpleModule  {
   public:
@@ -89,6 +91,8 @@ class FAI : public cSimpleModule  {
     virtual void handleMessage(cMessage *msg);
 
   private:
+    EFCP* efcp;
+
     void initSignalsAndListeners();
 
     bool createEFCP();

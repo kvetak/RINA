@@ -36,8 +36,8 @@ module EFCPModule
         }
 
 
-    connections:
-        efcp.rmtIo <--> rmtIo++;
+    connections allowunconnected:
+//        efcp.rmtIo <--> rmtIo++;
 
 
 }

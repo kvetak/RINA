@@ -189,7 +189,7 @@ FAI* FA::createFAI(Flow* flow) {
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
-    this->efcp->createEFCPI(fai);
+
 
     return fai;
 }

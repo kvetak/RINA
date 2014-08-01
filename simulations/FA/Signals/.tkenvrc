@@ -1,7 +1,7 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "Signals.host1.ipcProcess" "IPCProcess" "2" "607x337+1860+353:normal"
-inspector "Signals.host1.ipcProcess.flowAllocator" "FlowAllocator" "2" "607x337+2538+391:normal"
-inspector "Signals" "Signals" "2" "607x337+1366+52:normal"
-inspector "Signals.host1.ipcProcess.efcp" "EFCPModule" "2" "607x337+1367+80:normal"
+inspector "Signals" "Signals" "2" "607x337+1024+104:normal"
 inspector "Signals.host1.ipcProcess.efcp.delimit" "Delimiting" "1" "532x314+1368+108:normal"
+inspector "Signals.host1.ipcProcess" "IPCProcess" "2" "607x337+1860+353:normal"
+inspector "Signals.host1.ipcProcess.efcp" "EFCPModule" "2" "607x337+1367+80:normal"
+inspector "Signals.host1.ipcProcess.flowAllocator" "FlowAllocator" "2" "607x337+2538+391:normal"
 

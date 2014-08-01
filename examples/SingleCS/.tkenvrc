@@ -1,5 +1,6 @@
-# Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
-config default-configname	{General}
-config default-runnumber	{0}
-inspector SingleCS.host.applicationProcess1 ApplicationProcess 3 2 411x300+296+304:normal
+# Partial Tkenv config file -- see $HOME/.tkenvrc as well
+inspector "SingleCS" "SingleCS" "2" "607x337+1024+104:normal"
+inspector "SingleCS.host" "Host2AP" "2" "607x337+1024+104:normal"
+inspector "SingleCS.host.ipcProcess1" "IPCProcess" "2" "607x337+1024+104:normal"
+inspector "SingleCS.host.ipcProcess1.efcp" "EFCPModule" "2" "607x337+1819+231:normal"
 
