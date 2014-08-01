@@ -42,7 +42,7 @@ std::string EFCPTableEntry::info() const {
     return os.str();
 }
 
-const Delimiting* EFCPTableEntry::getDelimit() const
+Delimiting* EFCPTableEntry::getDelimit() const
 {
   return delimit;
 }

@@ -23,4 +23,7 @@ package rina.DIF.EFCP;
 simple DTP
 {
     @display("i=block/layer");
+    gates:
+        inout efcpIo;
+        inout rmtIo;
 }

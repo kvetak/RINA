@@ -21,6 +21,7 @@ simple Delimiting
     @display("i=block/subqueue");
     
     gates:
-        inout faiIo;
-        inout efcpIo[];
+        inout efcpModuleIo;
+        inout efcpiIo[];
+        
 }
