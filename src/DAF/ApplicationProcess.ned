@@ -26,29 +26,31 @@ module ApplicationProcess
 {
     parameters:
         @display("bgb=434,251;i=misc/node,yellow,30");
-        int numOfDIFs;
+        //int numOfDIFs;
         string apName = default("App");
         string apInstance = default("0");
+
     gates:
-        inout southIo[numOfDIFs];
+        //inout southIo[numOfDIFs];
+
     submodules:
         irm: IRM {
             @display("p=125,178");
-            numOfDIFs = numOfDIFs;
+            //numOfDIFs = numOfDIFs;
         }
         difAllocator: DIFAllocator {
             @display("p=315,178");
         }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=125,64");
+            @display("p=315,56");
         }
         aePing: AEPing {
-            @display("p=315,64");
+            @display("p=125,56");
         }
-    connections:
-        for i = 0 .. numOfDIFs - 1
-        {
-            irm.irmIo[i] <--> southIo[i];            
-        }        
-        commonDistributedApplicationProtocol.southIo++ <--> irm.cdapIo++;
+
+    connections allowunconnected:
+        //for i = 0 .. numOfDIFs - 1 {
+        //    irm.irmIo[i] <--> southIo[i];            
+        //}        
+        //commonDistributedApplicationProtocol.southIo++ <--> irm.cdapIo++;
 }

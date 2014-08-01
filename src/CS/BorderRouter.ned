@@ -38,9 +38,9 @@ module BorderRouter
             @display("p=139,39;i=,#FFB000");
         }
     connections:
-        ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
-        ipcProcess2.southIo++ <--> ipcProcess3.northIo++;
+        //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
+        //ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
+        //ipcProcess2.southIo++ <--> ipcProcess3.northIo++;
         ipcProcess3.southIo++ <--> medium++;
         ipcProcess1.southIo++ <--> medium++;
 }

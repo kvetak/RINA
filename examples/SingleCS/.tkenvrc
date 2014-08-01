@@ -1,9 +1,4 @@
-# Partial Tkenv config file -- see $HOME/.tkenvrc as well
-inspector "SingleCS.host.ipcProcess1.efcp" "EFCPModule" "2" "607x337+1812+231:normal"
-inspector "SingleCS" "SingleCS" "2" "607x337+250+456:normal"
-inspector "SingleCS.host.ipcProcess1" "IPCProcess" "2" "607x337+1017+104:normal"
-inspector "SingleCS.host" "Host2AP" "2" "607x337+1829+138:normal"
-inspector "SingleCS.host.ipcProcess1.flowAllocator" "FlowAllocator" "2" "607x337+33+89:normal"
-inspector "SingleCS.host.ipcProcess1.flowAllocator.appIo$i[1]" "cGate" "2" "430x298+1334+534:normal"
-inspector "SingleCS.host.ipcProcess1.flowAllocator.fa" "FA" "1" "475x284+-7+910:normal"
+# Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
+config default-configname	{}
+config default-runnumber	{}
 

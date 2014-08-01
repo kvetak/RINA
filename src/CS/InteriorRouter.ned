@@ -35,8 +35,8 @@ module InteriorRouter
             @display("p=135,48;i=,#FFB000");
         }
     connections:
-        ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
+        //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
+        //ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
         ipcProcess1.southIo++ <--> medium++;
         ipcProcess2.southIo++ <--> medium++;
 }

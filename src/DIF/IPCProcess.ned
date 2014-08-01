@@ -27,17 +27,17 @@ import rina.DIF.RMT.RMT;
 
 module IPCProcess
 {
-    parameters:        
+    parameters:
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         int ipcAddress;
-        int numOfAPs;
+        //int numOfAPs;
     gates:
         inout southIo[];
-        inout northIo[numOfAPs];
+        //inout northIo[numOfAPs];
     submodules:
         flowAllocator: FlowAllocator {
             @display("p=90,61");
-            numOfAPs = numOfAPs;
+            //numOfAPs = numOfAPs;
         }
         rmt: RMT {
             @display("p=90,249");
@@ -59,10 +59,11 @@ module IPCProcess
             @display("p=238,249");
         }
     connections allowunconnected:
-        rmt.rmtIo++ <--> southIo++;
-        
-        for i = 0 .. numOfAPs - 1 {
-            flowAllocator.appIo[i] <--> northIo[i];        
-        }        
-        commonDistributedApplicationProtocol.southIo++ <--> rmt.rmtIo++;
+       // rmt.rmtIo++ <--> southIo++;
+
+        //for i = 0 .. numOfAPs - 1 {
+        //    flowAllocator.appIo[i] <--> northIo[i];        
+        //}        
+        //commonDistributedApplicationProtocol.southIo++ <--> rmt.rmtIo++;
+        rmt.rmtIo++ <--> commonDistributedApplicationProtocol.southIo;
 }

@@ -7,16 +7,16 @@ module FlowAllocator
 {
     parameters:
         @display("i=block/fork;bgb=590,410");
-        int numOfAPs;
+        //int numOfAPs;
                 
     gates:
-        inout appIo[numOfAPs];
-//        inout efcpIo[] @loose;
+        //inout appIo[numOfAPs];
+		//inout efcpIo[] @loose;
     
     submodules:
         fa: FA {
             @display("p=114,84");
-            numOfAPs = numOfAPs;
+            //numOfAPs = numOfAPs;
         }
 
         nameSpaceManager: NameSpaceManager {
@@ -28,8 +28,8 @@ module FlowAllocator
         }
         
     connections:
-        for i = 0 .. numOfAPs - 1 {
-            appIo[i] <--> fa.appIo[i];        
-        }   
+        //for i = 0 .. numOfAPs - 1 {
+        //    appIo[i] <--> fa.appIo[i];        
+        //}   
         
 }

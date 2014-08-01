@@ -105,6 +105,7 @@ bool FAI::receiveAllocateResponsePositive() {
 void FAI::receiveAllocateResponseNegative() {
     this->signalizeCreateFlowResponseNegative();
 }
+
 bool FAI::receiveCreateRequest() {
     Enter_Method("receiveCreateRequest()");
     //Invoke NewFlowReqPolicy
@@ -191,15 +192,55 @@ std::ostream& operator<< (std::ostream& os, const FAI& fai) {
 }
 
 bool FAI::createEFCP() {
-
-
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
     efcp->createEFCPI(this->getFlow());
-    return false; //TODO return true
+
+    return true; //TODO return true
 }
 
 bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP with FAI and RMT" << endl;
+
+    std::ostringstream nam1;
+    nam1 << "efcpIo_" << cepId;
+    //const char* nam1c = nam1.str().c_str();
+    this->addGate(nam1.str().c_str(), cGate::INOUT, false);
+    cGate* g1i = this->gateHalf(nam1.str().c_str(), cGate::INPUT);
+    cGate* g1o = this->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
+
+    std::ostringstream nam23;
+    nam23 << "appIo_" << portId;
+    //const char* nam23c = nam23.str().c_str();
+
+    this->addGate(nam23.str().c_str(), cGate::INOUT, false);
+    cGate* g2i = this->gateHalf(nam23.str().c_str(), cGate::INPUT);
+    cGate* g2o = this->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
+
+    cModule* FAModule = FlowAlloc->getParentModule();
+    EV << FAModule->getFullPath() << endl;
+    FAModule->addGate(nam23.str().c_str(), cGate::INOUT, false);
+    cGate* g3i = FAModule->gateHalf(nam23.str().c_str(), cGate::INPUT);
+    cGate* g3o = FAModule->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
+
+    std::ostringstream nam4;
+    nam4 << "northIo_" << portId;
+    //const char* nam4c = nam4.str().c_str();
+
+    cModule* IPCModule = FAModule->getParentModule();
+    EV << IPCModule->getFullPath() << endl;
+    IPCModule->addGate(nam4.str().c_str(), cGate::INOUT, false);
+    cGate* g4i = IPCModule->gateHalf(nam4.str().c_str(), cGate::INPUT);
+    cGate* g4o = IPCModule->gateHalf(nam4.str().c_str(), cGate::OUTPUT);
+
+    g3o->connectTo(g2i);
+    g2o->connectTo(g3i);
+
+    EV << "Brana " << g3i->getName() << " vne: " << g3i->isConnectedOutside() << " uvnitr: "
+            << g3i->isConnectedInside() << endl;
+    EV << "Brana " << g3o->getName() << " vne: " << g3o->isConnectedOutside() << " uvnitr: "
+            << g3o->isConnectedInside() << endl;
+
+
     return false;
 }
 

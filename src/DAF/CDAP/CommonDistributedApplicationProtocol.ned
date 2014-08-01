@@ -21,7 +21,7 @@ module CommonDistributedApplicationProtocol
         @display("bgb=331,308;i=block/circle");
 
     gates:
-        inout southIo[];
+        inout southIo;
 
     submodules:
         cace: CACE {
@@ -40,9 +40,10 @@ module CommonDistributedApplicationProtocol
         cdapMsgLog: CDAPMsgLog {
             @display("p=207,58");
         }
-    connections:
+    connections allowunconnected:
         cace.splitterIo <--> cdapSplitter.caceIo;
         cdapSplitter.authIo <--> auth.splitterIo;
         cdapSplitter.cdapIo <--> cdap.splitterIo;
-        cdapSplitter.irmIo <--> southIo++;
+        //cdapSplitter.irmIo <--> southIo++;
+        cdapSplitter.irmIo <--> southIo;
 }

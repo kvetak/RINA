@@ -33,11 +33,5 @@ simple FAI
     	@signal[FAI-DeleteFlowResponse](type=Flow?);
     	
     	int portId = default(-1);
-    	int cepId = default(-1);  
-    	
-	gates:
-	    inout efcpIo; //it gets connected to Delimiting module
-	    
-    	    
-    	  	
+    	int cepId = default(-1);      	  	
 }

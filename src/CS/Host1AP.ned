@@ -24,8 +24,8 @@ module Host1AP
     parameters:
         @display("i=device/pc");
         @node;
-        int numOfDIFs = 1;
-        int numOfAPs = 1;
+        //int numOfDIFs = 1;
+        //int numOfAPs = 1;
         
     gates:
         inout medium @loose;
@@ -33,14 +33,14 @@ module Host1AP
     submodules:
         applicationProcess1: ApplicationProcess {
             @display("p=133,58");
-            numOfDIFs = numOfDIFs;            
+            //numOfDIFs = numOfDIFs;            
         }
         ipcProcess1: IPCProcess {
             @display("p=133,153");
-			numOfAPs = numOfAPs;
+			//numOfAPs = numOfAPs;
         }
 
     connections:
         ipcProcess1.southIo++ <--> medium;
-        ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];
+        //ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];
 }
