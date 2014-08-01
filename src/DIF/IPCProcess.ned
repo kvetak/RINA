@@ -17,8 +17,7 @@ package rina.DIF;
 
 
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DIF.EFCP.EFCPI;
-import rina.DIF.EFCP.EFCPModule;
+import rina.DIF.EFCP.EFCP;
 import rina.DIF.Enrollment.Enrollment;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RA.ResourceAllocator;
@@ -28,15 +27,17 @@ import rina.DIF.RMT.RMT;
 
 module IPCProcess
 {
-    parameters:
+    parameters:        
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         int ipcAddress;
+        int numOfAPs;
     gates:
         inout southIo[];
-        inout northIo[];
+        inout northIo[numOfAPs];
     submodules:
         flowAllocator: FlowAllocator {
             @display("p=90,61");
+            numOfAPs = numOfAPs;
         }
         rmt: RMT {
             @display("p=90,249");
@@ -44,8 +45,9 @@ module IPCProcess
         ribDaemon: RIBDaemon {
             @display("p=238,147");
         }
-        efcp: EFCPModule {
-            @display("p=90,156");
+
+        efcp: EFCP {
+            @display("p=90,147");
         }
         resourceAllocator: ResourceAllocator {
             @display("p=390,195");
@@ -58,8 +60,9 @@ module IPCProcess
         }
     connections:
         rmt.rmtIo++ <--> southIo++;
-        rmt.efcpIo++ <--> efcp.rmtIo++;
-        flowAllocator.appIo++ <--> northIo++;
+        
+        for i = 0 .. numOfAPs - 1 {
+            flowAllocator.appIo[i] <--> northIo[i];        
+        }        
         commonDistributedApplicationProtocol.southIo++ <--> rmt.rmtIo++;
-
 }

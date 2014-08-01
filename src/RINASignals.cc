@@ -7,6 +7,9 @@
 
 #include "RINASignals.h"
 
+const char* SIG_AE_AllocateRequest             = "AE-AllocateRequest";
+const char* SIG_AE_DeallocateRequest           = "AE-DeallocateRequest";
+
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
 const char* SIG_IRM_AllocateResponsePositive    = "IRM-AllocateResponsePositive";

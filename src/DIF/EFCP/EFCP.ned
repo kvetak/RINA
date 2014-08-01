@@ -18,17 +18,10 @@ package rina.DIF.EFCP;
 simple EFCP
 {
     parameters:
-<<<<<<< HEAD
+
         @display("i=block/fork");
         
     gates:
         inout rmtIo;
         
-=======
-    	@display("i=block/fork");
-    	
-    	gates:
-        inout rmtIo;
-    
->>>>>>> branch 'master' of https://github.com/kvetak/RINA.git
 }
