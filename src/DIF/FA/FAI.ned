@@ -34,10 +34,8 @@ simple FAI
     	
     	int portId = default(-1);
     	int cepId = default(-1);  
-    	
-	gates:
-	    inout efcpIo; //it gets connected to Delimiting module
-	    
-    	    
-    	  	
+
+    gates:
+        inout appIo;
+        inout efcpIo; //it gets connected to Delimiting module    	  	
 }

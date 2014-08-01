@@ -8,6 +8,10 @@
 #ifndef RINASIGNALS_H_
 #define RINASIGNALS_H_
 
+//AE
+extern const char* SIG_AE_AllocateRequest;
+extern const char* SIG_AE_DeallocateRequest;
+
 //IRM
 extern const char* SIG_IRM_AllocateRequest;
 extern const char* SIG_IRM_DeallocateRequest;

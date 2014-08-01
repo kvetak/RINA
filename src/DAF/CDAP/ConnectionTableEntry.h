@@ -30,7 +30,7 @@ class ConnectionTableEntry {
 
     //De-constructors
     ConnectionTableEntry();
-    ConnectionTableEntry(APNamingInfo napni);
+    ConnectionTableEntry(APNamingInfo napni); 
     virtual ~ConnectionTableEntry();
 
     std::string info() const;

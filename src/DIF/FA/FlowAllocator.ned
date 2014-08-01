@@ -22,25 +22,29 @@ module FlowAllocator
 {
     parameters:
         @display("i=block/fork;bgb=590,410");
-        //int maxFaiLimit = default(1);
+        int numOfAPs;
+                
     gates:
-        inout appIo[];
-        inout efcpIo[];
+        inout appIo[numOfAPs];
+        inout efcpIo[] @loose;
+    
     submodules:
         fa: FA {
             @display("p=114,84");
+            numOfAPs = numOfAPs;
         }
-        //fai[maxFaiLimit]: FAI {
-        //    @display("p=227,84");
-        // }
 
         nameSpaceManager: NameSpaceManager {
             @display("p=447,84");
         }
+        
         faiTable: FAITable {
             @display("p=283,84");
         }
+        
     connections:
-
-        fa.irmIo <--> appIo++;
+        for i = 0 .. numOfAPs - 1 {
+            appIo[i] <--> fa.appIo[i];        
+        }   
+        
 }

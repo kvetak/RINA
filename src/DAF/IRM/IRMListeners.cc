@@ -41,3 +41,20 @@ void LisIRMAllocResNegaFai::receiveSignal(cComponent* src, simsignal_t id,
     EV << "AllocationResponseNegative{fromFAI} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
     this->irm->receiveAllocationResponseNegative(obj);
 }
+
+void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationRequest initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
+    irm->receiveAllocationRequest(obj);
+}
+
+void LisIRMAllocResNegaAppNotFound::receiveSignal(cComponent* src,
+        simsignal_t id, cObject* obj) {
+    EV << "AllocationResponseNegative{AppNotFound} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
+}
+
+void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationRequest initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
+    irm->receiveDeallocationRequest(obj);
+}

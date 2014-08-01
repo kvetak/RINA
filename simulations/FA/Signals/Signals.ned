@@ -15,7 +15,7 @@
 
 package rina.simulations.FA.Signals;
 
-import rina.CS.Host;
+import rina.CS.Host1AP;
 
 
 //
@@ -25,10 +25,10 @@ network Signals
 {
     @display("bgb=433,167");
     submodules:
-        host2: Host {
+        host2: Host1AP {
             @display("p=285,77");
         }
-        host1: Host {
+        host1: Host1AP {
             @display("p=105,77");
         }
     connections:

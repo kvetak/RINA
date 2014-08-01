@@ -1,0 +1,5 @@
+# Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
+config default-configname	{General}
+config default-runnumber	{0}
+inspector SingleCS.host.applicationProcess1 ApplicationProcess 3 2 411x300+26+433:normal
+

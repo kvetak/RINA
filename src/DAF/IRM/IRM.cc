@@ -26,37 +26,11 @@ IRM::~IRM() {
 
 void IRM::initialize() {
     this->initSignalsAndListeners();
-    //Testing purposes
-    prepareTestMessage(100);
-}
 
-void IRM::handleTestMessage(cMessage *msg) {
-    //IF it is a TEST message from host1
-    if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host1")){
-        //EV << msg->getName() << endl;
-        Flow* fl = new Flow( APNamingInfo( APN("AppH1") ), APNamingInfo( APN("AppH2") ) );
-        signalizeAllocateRequest(fl);
-        delete(msg);
-    }else if ( msg->isSelfMessage() && !strcmp(msg->getName(), "TEST") && strstr(this->getFullPath().c_str(), "host2")){
-        //EV << msg->getName() << endl;
-        Flow* fl1 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppERR") ) );
-        signalizeAllocateRequest(fl1);
-        Flow* fl2 = new Flow( APNamingInfo( APN("AppH2") ), APNamingInfo( APN("AppH3") ) );
-        signalizeAllocateRequest(fl2);
-
-
-        delete(msg);
-    }
 }
 
 void IRM::handleMessage(cMessage* msg) {
-    //Testing purpose message
-    this->handleTestMessage(msg);
-}
 
-void IRM::prepareTestMessage(simtime_t tim){
-    cMessage* mcre = new cMessage("TEST");
-    scheduleAt(simTime() + tim, mcre);
 }
 
 void IRM::initSignalsAndListeners() {
@@ -78,6 +52,31 @@ void IRM::initSignalsAndListeners() {
     //  AllocationRequest from FAI
     this->lisAllocReqFai = new LisIRMAllocReqFai(this);
     catcher->subscribe(SIG_FAI_AllocateRequest, this->lisAllocReqFai);
+    //  Allocate Request from App
+    this->lisAllocReq = new LisIRMAllocReq(this);
+    catcher->subscribe(SIG_AE_AllocateRequest, this->lisAllocReq);
+    //  Deallocate Request from App
+    this->lisDeallocReq = new LisIRMDeallocReq(this);
+    catcher->subscribe(SIG_AE_DeallocateRequest, this->lisDeallocReq);
+}
+
+void IRM::receiveAllocationRequest(cObject* obj) {
+    Enter_Method("receiveAllocateRequest()");
+    EV << this->getFullPath() << " received Allocation Request" << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    signalizeAllocateRequest(fl);
+}
+
+void IRM::receiveDeallocationRequest(cObject* obj) {
+    Enter_Method("receiveDeallocateRequest()");
+    EV << this->getFullPath() << " received DeallocationRequest" << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
+    signalizeDeallocateRequest(fl);
+}
+
+
+void IRM::receiveAllocationResponseNegativeAppNotFound(cObject* obj) {
+    EV << this->getFullPath() << " received Negative Allocation Response App not found" << endl;
 }
 
 void IRM::receiveAllocationResponseNegative(cObject* obj) {
