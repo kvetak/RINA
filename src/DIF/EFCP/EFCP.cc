@@ -38,7 +38,7 @@ EFCP::~EFCP() {
 
 
 
-EFCPInstance * EFCP::createEFCPI(FAI* fai){
+EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   EFCPInstance* efcpi = new EFCPInstance();
 
@@ -64,7 +64,7 @@ EFCPInstance * EFCP::createEFCPI(FAI* fai){
 
     //-1. Check for existing Delimiting module for this Flow
   EFCPTableEntry* tmpEfcpEntry;
-  if((tmpEfcpEntry = efcpTable->getEntryByFlow(fai->getFlow())) ==NULL){
+  if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
    //Flow is not in EFCPTable -> create delimiting
 
     //0. Create Delimiting module within EFCPModule
@@ -117,9 +117,9 @@ EFCPInstance * EFCP::createEFCPI(FAI* fai){
   //done
 
   //TODO A! Connect modules
-  cGate* gateDelimitToFAI = (cGate*)tmpEfcpEntry->getDelimit()->gate("faiIo$i");
-  cGate* gateFAIToDelimit = (cGate*)fai->gate("efcpIo$o");
-  gateDelimitToFAI->connectTo(gateFAIToDelimit);
+//  cGate* gateDelimitToFAI = (cGate*)tmpEfcpEntry->getDelimit()->gate("faiIo$i");
+//  cGate* gateFAIToDelimit = (cGate*)fai->gate("efcpIo$o");
+//  gateDelimitToFAI->connectTo(gateFAIToDelimit);
 //  gateDelimitToFAI->connectTo()
 
 

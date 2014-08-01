@@ -30,9 +30,10 @@
  */
 #include <omnetpp.h>
 
-
+#include "Flow.h"
 #include "EFCPTable.h"
-#include "FAI.h"
+
+
 //#include "EFCPInstance.h"
 //#include "Delimiting.h"
 
@@ -93,7 +94,7 @@ public:
     virtual ~EFCP();
 
 
-    EFCPInstance* createEFCPI(FAI* fai);
+    EFCPInstance* createEFCPI(Flow* flow);
 
 };
 

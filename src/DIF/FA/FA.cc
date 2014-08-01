@@ -184,7 +184,7 @@ FAI* FA::createFAI(Flow* flow) {
     module->callInitialize();
     //Prepare return pointer and setup internal FAI pointers
     FAI* fai = dynamic_cast<FAI*>(module);
-    fai->postInitialize(this, flow);
+    fai->postInitialize(this, flow, efcp);
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);

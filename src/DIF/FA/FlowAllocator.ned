@@ -11,7 +11,7 @@ module FlowAllocator
                 
     gates:
         inout appIo[numOfAPs];
-        inout efcpIo[] @loose;
+//        inout efcpIo[] @loose;
     
     submodules:
         fa: FA {

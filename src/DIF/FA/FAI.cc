@@ -38,13 +38,14 @@ void FAI::initialize() {
     this->cepId  = par("cepId");
     this->initSignalsAndListeners();
 
-    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
+//    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
 }
 
-void FAI::postInitialize(FABase* fa, Flow* fl) {
+void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
     //Initialize pointers! It cannot be done during model creation :(
     this->FlowAlloc = fa;
     this->FlowObject = fl;
+    this->efcp = efcp;
     //this->sigFAIAllocReq = sigAlReq;
 }
 
@@ -193,7 +194,7 @@ bool FAI::createEFCP() {
 
 
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
-    efcp->createEFCPI(this);
+    efcp->createEFCPI(this->getFlow());
     return false; //TODO return true
 }
 

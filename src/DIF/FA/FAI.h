@@ -27,12 +27,15 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
+
 #include "FABase.h"
 #include "Flow.h"
 #include "FAIListeners.h"
 #include "RINASignals.h"
-
 #include "EFCP.h"
+
+
+
 
 class FAI : public cSimpleModule  {
   public:
@@ -52,7 +55,7 @@ class FAI : public cSimpleModule  {
     void receiveDeleteRequest();
     void receiveDeleteResponse();
 
-    void postInitialize(FABase* fa, Flow* fl);
+    void postInitialize(FABase* fa, Flow* fl, EFCP* efcp);
 
     const FABase* getFa() const {
         return FlowAlloc;
