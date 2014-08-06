@@ -33,9 +33,7 @@
 #include "FAIListeners.h"
 #include "RINASignals.h"
 #include "EFCP.h"
-
-
-
+#include "ModuleAccess.h"
 
 class FAI : public cSimpleModule  {
   public:
@@ -58,7 +56,7 @@ class FAI : public cSimpleModule  {
     void postInitialize(FABase* fa, Flow* fl, EFCP* efcp);
 
     const FABase* getFa() const {
-        return FlowAlloc;
+        return FaModule;
     }
     Flow* getFlow()  {
         return FlowObject;
@@ -68,7 +66,7 @@ class FAI : public cSimpleModule  {
     int portId;
     int cepId;
 
-    FABase* FlowAlloc;
+    FABase* FaModule;
     Flow* FlowObject;
 
     //Signals

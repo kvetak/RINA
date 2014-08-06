@@ -38,6 +38,7 @@ RIBDaemon::~RIBDaemon() {
 void RIBDaemon::initialize() {
 
 }
+
 void RIBDaemon::handleMessage(cMessage *msg) {
 
 }

@@ -20,8 +20,11 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "IRMListeners.h"
+#include "AE.h"
 #include "Flow.h"
 #include "RINASignals.h"
+
+typedef std::list< std::pair<AE*, Flow*> > AETable;
 
 class IRM : public cSimpleModule   {
   public:
@@ -39,6 +42,8 @@ class IRM : public cSimpleModule   {
     virtual void handleMessage(cMessage *msg);
 
   private:
+
+    AETable AeTable;
     void initSignalsAndListeners();
 
     //Signals

@@ -43,8 +43,6 @@ const int RANDOM_NUMBER_GENERATOR = 0;
 const int MAX_PORTID = 65535;
 const int MAX_CEPID  = 65535;
 
-//class EFCP;
-
 class FA : public FABase
 {
   public:

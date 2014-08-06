@@ -29,7 +29,7 @@ FAI::FAI() : FlowObject(NULL) {
 }
 
 FAI::~FAI() {
-    this->FlowAlloc = NULL;
+    this->FaModule = NULL;
     this->FlowObject = NULL;
 }
 
@@ -43,7 +43,7 @@ void FAI::initialize() {
 
 void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
     //Initialize pointers! It cannot be done during model creation :(
-    this->FlowAlloc = fa;
+    this->FaModule = fa;
     this->FlowObject = fl;
     this->efcp = efcp;
     //this->sigFAIAllocReq = sigAlReq;
@@ -52,7 +52,7 @@ void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
 bool FAI::receiveAllocateRequest() {
     Enter_Method("receiveAllocateRequest()");
     //Invoke NewFlowReqPolicy
-    bool status = this->FlowAlloc->invokeNewFlowRequestPolicy(this->FlowObject);
+    bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
         //Send negative response
@@ -63,13 +63,13 @@ bool FAI::receiveAllocateRequest() {
 
     status = this->createEFCP();
     if (!status) {
-        EV << "createEFCP() failed";
+        EV << "createEFCP() failed" << endl;
         return false;
     }
 
     status = this->createBindings();
     if (!status) {
-        EV << "createBindings() failed";
+        EV << "createBindings() failed" << endl;
         return false;
     }
 
@@ -109,7 +109,7 @@ void FAI::receiveAllocateResponseNegative() {
 bool FAI::receiveCreateRequest() {
     Enter_Method("receiveCreateRequest()");
     //Invoke NewFlowReqPolicy
-    bool status = this->FlowAlloc->invokeNewFlowRequestPolicy(this->FlowObject);
+    bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
         //Schedule negative M_Crete_R(Flow)
@@ -159,7 +159,7 @@ bool FAI::receiveCreateResponsePositive() {
 }
 
 void FAI::receiveDeleteResponse() {
-    this->FlowAlloc->deinstantiateFai(this->FlowObject);
+    this->FaModule->deinstantiateFai(this->FlowObject);
 }
 
 
@@ -203,50 +203,89 @@ bool FAI::createBindings() {
 
     std::ostringstream nam1;
     nam1 << "efcpIo_" << cepId;
-    //const char* nam1c = nam1.str().c_str();
     this->addGate(nam1.str().c_str(), cGate::INOUT, false);
     cGate* g1i = this->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = this->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nam23;
     nam23 << "appIo_" << portId;
-    //const char* nam23c = nam23.str().c_str();
-
     this->addGate(nam23.str().c_str(), cGate::INOUT, false);
     cGate* g2i = this->gateHalf(nam23.str().c_str(), cGate::INPUT);
     cGate* g2o = this->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
 
-    cModule* FAModule = FlowAlloc->getParentModule();
-    EV << FAModule->getFullPath() << endl;
+    cModule* FAModule = FaModule->getParentModule();
     FAModule->addGate(nam23.str().c_str(), cGate::INOUT, false);
     cGate* g3i = FAModule->gateHalf(nam23.str().c_str(), cGate::INPUT);
     cGate* g3o = FAModule->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nam4;
     nam4 << "northIo_" << portId;
-    //const char* nam4c = nam4.str().c_str();
-
     cModule* IPCModule = FAModule->getParentModule();
-    EV << IPCModule->getFullPath() << endl;
     IPCModule->addGate(nam4.str().c_str(), cGate::INOUT, false);
     cGate* g4i = IPCModule->gateHalf(nam4.str().c_str(), cGate::INPUT);
     cGate* g4o = IPCModule->gateHalf(nam4.str().c_str(), cGate::OUTPUT);
 
-    g3o->connectTo(g2i);
-    g2o->connectTo(g3i);
+    g2o->connectTo(g3o);
+    g3o->connectTo(g4o);
 
+    g2i->connectTo(g3i);
+    g3i->connectTo(g4i);
+
+    /*
+    cModule* test = ModuleAccess<cModule>("test").get();
+    cGate* g5i = test->gate("testIn");
+    cGate* g5o = test->gate("testOut");
+    g4o->connectTo(g5i);
+    g4i->connectTo(g5o);
     EV << "Brana " << g3i->getName() << " vne: " << g3i->isConnectedOutside() << " uvnitr: "
             << g3i->isConnectedInside() << endl;
     EV << "Brana " << g3o->getName() << " vne: " << g3o->isConnectedOutside() << " uvnitr: "
             << g3o->isConnectedInside() << endl;
-
-
-    return false;
+    cMessage *msg = new cMessage("TEST");
+    send(msg, g2o);
+    */
+    return true;
 }
 
 bool FAI::deleteBindings() {
     EV << this->getFullPath() << " attempts to delete bindings between EFCP, FAI and RMT" << endl;
-    return false;
+
+    std::ostringstream nam1;
+    nam1 << "efcpIo_" << cepId;
+    cGate* g1i = this->gateHalf(nam1.str().c_str(), cGate::INPUT);
+    cGate* g1o = this->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
+
+    std::ostringstream nam23;
+    nam23 << "appIo_" << portId;
+    cGate* g2i = this->gateHalf(nam23.str().c_str(), cGate::INPUT);
+    cGate* g2o = this->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
+
+    cModule* FAModule = FaModule->getParentModule();
+    cGate* g3i = FAModule->gateHalf(nam23.str().c_str(), cGate::INPUT);
+    cGate* g3o = FAModule->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
+
+    std::ostringstream nam4;
+    nam4 << "northIo_" << portId;
+    cModule* IPCModule = FAModule->getParentModule();
+    cGate* g4i = IPCModule->gateHalf(nam4.str().c_str(), cGate::INPUT);
+    cGate* g4o = IPCModule->gateHalf(nam4.str().c_str(), cGate::OUTPUT);
+
+    g1o->disconnect();
+    g2o->disconnect();
+    g3o->disconnect();
+    g4o->disconnect();
+
+    g1i->disconnect();
+    g2i->disconnect();
+    g3i->disconnect();
+    g4i->disconnect();
+
+    this->deleteGate(nam1.str().c_str());
+    this->deleteGate(nam23.str().c_str());
+    FAModule->deleteGate(nam23.str().c_str());
+    IPCModule->deleteGate(nam4.str().c_str());
+
+    return true;
 }
 
 bool FAI::invokeAllocateRetryPolicy() {

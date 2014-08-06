@@ -13,13 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.Common;
 
-simple RMT
+//
+// TODO auto-generated module
+//
+simple Test
+
 {
-    @display("i=block/classifier");
     gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
+        input testIn;
+        output testOut;
 }

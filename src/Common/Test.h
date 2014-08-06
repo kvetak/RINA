@@ -13,13 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#ifndef __RINA_TEST_H_
+#define __RINA_TEST_H_
 
-simple RMT
+#include <omnetpp.h>
+
+class Test : public cSimpleModule
 {
-    @display("i=block/classifier");
-    gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

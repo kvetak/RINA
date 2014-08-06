@@ -13,13 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#ifndef SDU_H_
+#define SDU_H_
 
-simple RMT
-{
-    @display("i=block/classifier");
-    gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
-}
+
+#include <cobject.h>
+
+class SDU: public cObject {
+
+private:
+    unsigned char * userData;
+    unsigned int size;
+    unsigned int offset;
+
+public:
+    SDU();
+    virtual ~SDU();
+    unsigned int getSize() const;
+    unsigned int getRestSize() const;
+    void setSize(unsigned int size);
+    unsigned char* getUserData() const;
+    const unsigned char* getUserData(unsigned int offset);
+    void setUserData(unsigned char* userData, unsigned int size);
+};
+
+#endif /* SDU_H_ */

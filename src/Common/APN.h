@@ -13,13 +13,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#ifndef APN_H_
+#define APN_H_
 
-simple RMT
+#include <string>
+#include <sstream>
+
+class APN
 {
-    @display("i=block/classifier");
-    gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
-}
+  public:
+    APN();
+    APN(std::string nam);
+    virtual ~APN();
+
+    bool operator== (const APN other) {
+        return !name.compare(other.getName());
+    }
+
+    std::string info() const;
+
+    const std::string& getName() const;
+    void setName(const std::string& name);
+
+  private:
+    std::string name;
+
+};
+
+std::ostream& operator<< (std::ostream& os, const APN& apn);
+
+#endif /* APN_H_ */

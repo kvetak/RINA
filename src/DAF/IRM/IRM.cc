@@ -26,6 +26,14 @@ IRM::~IRM() {
 
 void IRM::initialize() {
     this->initSignalsAndListeners();
+    for (cModule::SubmoduleIterator i(this->getParentModule()); !i.end(); i++)
+    {
+         cModule *submodp = i();
+         if ( dynamic_cast<AE*>(submodp) ) {
+             EV << this->getFullPath() << " registered " << submodp->getFullPath() << endl;
+             //AeTable.insert()
+         }
+    }
 }
 
 void IRM::handleMessage(cMessage* msg) {

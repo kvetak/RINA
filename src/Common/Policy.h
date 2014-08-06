@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -12,14 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/*
+ * @file Policy.h
+ * @author Marcel Marek
+ * @date Apr 28, 2014
+ * @brief
+ * @detail
+ */
+#ifndef POLICY_H_
+#define POLICY_H_
+#include <omnetpp.h>
+/*
+ *
+ */
+class Policy {
+public:
+    Policy();
+    virtual ~Policy();
+    virtual void run(cObject *object){ throw cRuntimeError("Don't use directly this class!");};
+};
 
-package rina.DIF.RMT;
-
-simple RMT
-{
-    @display("i=block/classifier");
-    gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
-}
+#endif /* POLICY_H_ */

@@ -16,10 +16,15 @@
 package rina.DAF.AE;
 
 simple AE
-{
+{        
     parameters:
         @display("i=block/socket");
         @class(AE);
         string aeName = default("AeErr");
-        string aeInstance = default("0");           
+        string aeInstance = default("0");
+        
+    gates:
+        input dataIn;
+        output dataOut;
+                   
 }

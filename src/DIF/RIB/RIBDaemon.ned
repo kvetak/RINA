@@ -20,5 +20,9 @@ package rina.DIF.RIB;
 //
 simple RIBDaemon
 {
-    @display("i=block/control");
+    parameters:
+    	@display("i=block/control");
+    	
+    gates:
+        inout rmtIo;
 }

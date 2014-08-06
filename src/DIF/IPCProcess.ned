@@ -59,11 +59,6 @@ module IPCProcess
             @display("p=238,249");
         }
     connections allowunconnected:
-       // rmt.rmtIo++ <--> southIo++;
-
-        //for i = 0 .. numOfAPs - 1 {
-        //    flowAllocator.appIo[i] <--> northIo[i];        
-        //}        
-        //commonDistributedApplicationProtocol.southIo++ <--> rmt.rmtIo++;
-        rmt.rmtIo++ <--> commonDistributedApplicationProtocol.southIo;
+        rmt.ribdIo <--> ribDaemon.rmtIo;
+        rmt.southIo++ <--> southIo++;
 }

@@ -1,4 +1,5 @@
 # Partial OMNeT++/Tkenv config file -- see $HOME/.tkenvrc as well
 config default-configname	{}
 config default-runnumber	{}
+inspector SingleCS.host.ipcProcess1.flowAllocator.fai_2732_43567.X12Out cGate {} 2 431x158+913+460:normal
 

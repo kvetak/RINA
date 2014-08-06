@@ -53,4 +53,6 @@ module ApplicationProcess
         //    irm.irmIo[i] <--> southIo[i];            
         //}        
         //commonDistributedApplicationProtocol.southIo++ <--> irm.cdapIo++;
+        irm.aeOut++ --> aePing.dataIn;
+        aePing.dataOut --> irm.aeIn++;
 }

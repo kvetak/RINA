@@ -13,13 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+#include "Test.h"
 
-simple RMT
+Define_Module(Test);
+
+void Test::initialize()
 {
-    @display("i=block/classifier");
-    gates:
-        //inout efcpIo[];
-        inout southIo[];
-        inout ribdIo;
+    // TODO - Generated method body
+}
+
+void Test::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
 }

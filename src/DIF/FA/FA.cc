@@ -146,8 +146,8 @@ void FA::receiveCreateFlowRequest(cObject* obj) {
 }
 
 void FA::receiveDeallocateRequest(cObject* obj) {
-    Flow* fl = dynamic_cast<Flow*>(obj);
     Enter_Method("receiveDeallocateRequest()");
+    Flow* fl = dynamic_cast<Flow*>(obj);
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
     //Pass the request to appropriate FAI
     FAITableEntry* fte = FaiTable->findEntryByFlow(fl);
@@ -188,9 +188,8 @@ FAI* FA::createFAI(Flow* flow) {
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
-
-
-
+    //Update flow object
+    flow->setSrcPortId(portId);
     return fai;
 }
 
