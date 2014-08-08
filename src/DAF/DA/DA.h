@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,21 +12,34 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/*
- * @file Policy.cc
- * @author Marcel Marek
- * @date Apr 28, 2014
- * @brief
- * @detail
- */
-#include "Policy.h"
 
-Policy::Policy() {
-    // TODO Auto-generated constructor stub
+#ifndef __RINA_DA_H_
+#define __RINA_DA_H_
 
-}
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "Directory.h"
+#include "NamingInformation.h"
+#include "NeighborTable.h"
+#include "SearchTable.h"
+#include "ModuleAccess.h"
+#include "FABase.h"
 
-Policy::~Policy() {
-    // TODO Auto-generated destructor stub
-}
+class DA : public cSimpleModule
+{
+  public:
+    FABase* resolveApnToDif(const APN& apn);
+    FABase* resolveApniToDif(const APNamingInfo& apni);
 
+  protected:
+    Directory*          Dir;
+    NamingInformation*  NamInfo;
+    NeighborTable*      NeighborTab;
+    SearchTable*        SearchTab;
+
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

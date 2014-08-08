@@ -26,7 +26,7 @@ class APN
     APN(std::string nam);
     virtual ~APN();
 
-    bool operator== (const APN other) {
+    bool operator== (const APN& other) const {
         return !name.compare(other.getName());
     }
 

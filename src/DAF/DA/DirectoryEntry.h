@@ -13,33 +13,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef APN_H_
-#define APN_H_
+#ifndef DIRECTORYENTRY_H_
+#define DIRECTORYENTRY_H_
 
-#include <string>
-#include <sstream>
+//RINASim libraries
+#include "APNamingInfo.h"
+#include "FABase.h"
 
-class APN
-{
+class DirectoryEntry {
+
   public:
-    APN();
-    APN(std::string nam);
-    virtual ~APN();
-
-    bool operator== (const APN other) {
-        return !name.compare(other.getName());
-    }
+    DirectoryEntry();
+    DirectoryEntry(APNamingInfo napni, std::string path, FABase* fa);
+    virtual ~DirectoryEntry();
 
     std::string info() const;
 
-    const std::string& getName() const;
-    void setName(const std::string& name);
+    const APNamingInfo& getApni() const;
+    void setApni(const APNamingInfo& apni);
+    FABase* getFlowAlloc() const;
+    void setFlowAlloc(FABase* flowAlloc);
+    const std::string& getIpcPath() const;
+    void setIpcPath(const std::string& ipcPath);
 
   private:
-    std::string name;
-
+    APNamingInfo apni;
+    std::string ipcPath;
+    FABase* FlowAlloc;
 };
 
-std::ostream& operator<< (std::ostream& os, const APN& apn);
+//Free function
+std::ostream& operator<< (std::ostream& os, const DirectoryEntry& fte);
 
-#endif /* APN_H_ */
+#endif /* DIRECTORYENTRY_H_ */

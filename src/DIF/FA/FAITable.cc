@@ -24,12 +24,14 @@ void FAITable::initialize()
 
 std::string FAITable::info() const {
     std::stringstream os;
-    os << endl;
+    os << "id=" << this->getId() << endl;
+    /*
     for(TFTConstIter it = FaiTable.begin(); it != FaiTable.end(); ++it )
     {
         FAITableEntry tft = *it;
         os << tft << endl;
     }
+    */
     return os.str();
 }
 
@@ -58,7 +60,7 @@ std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte) {
 }
 */
 
-void FAITable::insert(FAITableEntry entry) {
+void FAITable::insert(const FAITableEntry& entry) {
     Enter_Method("insert()");
     FaiTable.push_back(entry);
 }

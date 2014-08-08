@@ -23,13 +23,44 @@
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
 
-const int UNDEFINED_PORTADDR = -1;
-const int MAX_HOPCOUNT = 16;
-const int MAX_CREATERETRIES = 3;
+extern const int UNDEFINED_PORTADDR;
+extern const int MAX_HOPCOUNT;
+extern const int MAX_CREATERETRIES;
 
-class Flow : public cObject, noncopyable
+class Flow : public cObject
 {
-private:
+  public:
+    Flow();
+    Flow(APNamingInfo src, APNamingInfo dst);
+    virtual ~Flow();
+
+    //TODO: VV - Completely missing overloading of < and > operators
+
+    bool operator== (const Flow& other);
+
+    std::string info() const;
+    const ConnectionId& getConId() const;
+    void setConId(const ConnectionId& conId);
+    uint32_t getCreateFlowRetries() const;
+    void setCreateFlowRetries(uint32_t createFlowRetries);
+    int getDstAddr() const;
+    void setDstAddr(int dstAddr);
+    const APNamingInfo& getDstApni() const;
+    void setDstApni(const APNamingInfo& dstApni);
+    int getDstPortId() const;
+    void setDstPortId(int dstPortId);
+    uint32_t getHopCount() const;
+    void setHopCount(uint32_t hopCount);
+    uint32_t getMaxCreateFlowRetries() const;
+    void setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries);
+    int getSrcAddr() const;
+    void setSrcAddr(int srcAddr);
+    const APNamingInfo& getSrcApni() const;
+    void setSrcApni(const APNamingInfo& srcApni);
+    int getSrcPortId() const;
+    void setSrcPortId(int srcPortId);
+
+  private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
     APNamingInfo srcApni;
     APNamingInfo dstApni;
@@ -41,91 +72,6 @@ private:
     uint32_t createFlowRetries;
     uint32_t maxCreateFlowRetries;
     uint32_t hopCount;
-
-public:
-    Flow();
-    Flow(APNamingInfo src, APNamingInfo dst);
-    virtual ~Flow();
-
-    //TODO: VV - Completely missing overloading of ==, < and > operators
-
-    bool operator== (const Flow& other) {
-        return (srcApni == other.srcApni && dstApni == other.dstApni &&
-                srcPortId == other.srcPortId && dstPortId == other.dstPortId &&
-                srcAddr == other.srcAddr && dstAddr && other.dstAddr);
-    }
-
-    std::string info() const;
-
-    const ConnectionId getConId() const {
-        return conId;
-    }
-    void setConId(const ConnectionId conId) {
-        this->conId = conId;
-    }
-
-    uint32_t getCreateFlowRetries() const {
-        return createFlowRetries;
-    }
-    void setCreateFlowRetries(uint32_t createFlowRetries) {
-        this->createFlowRetries = createFlowRetries;
-    }
-
-    uint64_t getDstAddr() const {
-        return dstAddr;
-    }
-    void setDstAddr(uint64_t dstAddr) {
-        this->dstAddr = dstAddr;
-    }
-
-    const APNamingInfo getDstApni() const {
-        return dstApni;
-    }
-    void setDstApni(const APNamingInfo dstApni) {
-        this->dstApni = dstApni;
-    }
-
-    uint32_t getHopCount() const {
-        return hopCount;
-    }
-    void setHopCount(uint32_t hopCount) {
-        this->hopCount = hopCount;
-    }
-
-    uint32_t getMaxCreateFlowRetries() const {
-        return maxCreateFlowRetries;
-    }
-    void setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries) {
-        this->maxCreateFlowRetries = maxCreateFlowRetries;
-    }
-
-    uint64_t getSrcAddr() const {
-        return srcAddr;
-    }
-    void setSrcAddr(int srcAddr) {
-        this->srcAddr = srcAddr;
-    }
-
-    const APNamingInfo getSrcApni() const {
-        return srcApni;
-    }
-    void setSrcApni(const APNamingInfo srcApni) {
-        this->srcApni = srcApni;
-    }
-
-    uint64_t getDstPortId() const {
-        return dstPortId;
-    }
-    void setDstPortId(int dstPortId) {
-        this->dstPortId = dstPortId;
-    }
-
-    uint64_t getSrcPortId() const {
-        return srcPortId;
-    }
-    void setSrcPortId(int srcPortId) {
-        this->srcPortId = srcPortId;
-    }
 };
 
 //Free function

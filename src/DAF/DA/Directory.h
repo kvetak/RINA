@@ -16,16 +16,34 @@
 #ifndef __RINA_DIRECTORY_H_
 #define __RINA_DIRECTORY_H_
 
+//Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "DirectoryEntry.h"
 
-/**
- * TODO - Generated class
- */
+typedef std::list<DirectoryEntry> TDirectory;
+typedef TDirectory::iterator TDirIter;
+
+//Constants
+extern const char* DIRECTORY_MAPPING;
+
 class Directory : public cSimpleModule
 {
+  public:
+    std::string info() const;
+    DirectoryEntry* findEntryByApn(const APN& apn);
+    DirectoryEntry* findEntryByApni(const APNamingInfo& apni);
+
+    void insert(const DirectoryEntry& entry);
+
   protected:
+    TDirectory Director;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+  private:
+
 };
 
 #endif

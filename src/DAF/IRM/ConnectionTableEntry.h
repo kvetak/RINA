@@ -16,7 +16,11 @@
 #ifndef CONNECTIONTABLEENTRY_H_
 #define CONNECTIONTABLEENTRY_H_
 
-#include "APNamingInfo.h"
+//Standard libraries
+#include <string>
+//RINASim libraries
+#include "Flow.h"
+#include "AEBase.h"
 
 class ConnectionTableEntry {
   public:
@@ -30,20 +34,38 @@ class ConnectionTableEntry {
 
     //De-constructors
     ConnectionTableEntry();
-    ConnectionTableEntry(APNamingInfo napni);
+    ConnectionTableEntry(AEBase* nae);
+    ConnectionTableEntry(AEBase* nae, cGate* norI, cGate* norO);
+    ConnectionTableEntry(AEBase* nae, cGate* norI, cGate* norO, cGate* souI, cGate* souO);
     virtual ~ConnectionTableEntry();
 
     std::string info() const;
     std::string getConnectionStatusString() const;
 
     //Getters and Setters
-    const APNamingInfo& getApni() const;
-    void setApni(const APNamingInfo& apni);
     void setConStatus(ConnectionStatus conStatus);
+    AEBase* getAppEntity() const;
+    void setAppEntity(AEBase* appEntity);
+
+    //const Flow* getFlowObject() const;
+    //void setFlowObject(Flow* flowObject);
+    const cGate* getNorthGateIn() const;
+    void setNorthGateIn(cGate* northGateIn);
+    const cGate* getNorthGateOut() const;
+    void setNorthGateOut(cGate* northGateOut);
+    const cGate* getSouthGateIn() const;
+    void setSouthGateIn(cGate* southGateIn);
+    const cGate* getSouthGateOut() const;
+    void setSouthGateOut(cGate* southGateOut);
 
   private:
-    APNamingInfo apni;
     ConnectionStatus conStatus;
+    AEBase*     AppEntity;
+    //Flow*   FlowObject;
+    cGate*  northGateIn;
+    cGate*  northGateOut;
+    cGate*  southGateIn;
+    cGate*  southGateOut;
 
 };
 

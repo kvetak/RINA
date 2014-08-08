@@ -26,6 +26,7 @@ class AEPing : public AE
   public:
     AEPing();
     virtual ~AEPing();
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

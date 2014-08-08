@@ -25,15 +25,9 @@ IRM::~IRM() {
 }
 
 void IRM::initialize() {
-    this->initSignalsAndListeners();
-    for (cModule::SubmoduleIterator i(this->getParentModule()); !i.end(); i++)
-    {
-         cModule *submodp = i();
-         if ( dynamic_cast<AE*>(submodp) ) {
-             EV << this->getFullPath() << " registered " << submodp->getFullPath() << endl;
-             //AeTable.insert()
-         }
-    }
+    ConTable = ModuleAccess<ConnectionTable>("connectionTable").get();
+    DifAllocator = ModuleAccess<DA>("da").get();
+    initSignalsAndListeners();
 }
 
 void IRM::handleMessage(cMessage* msg) {
@@ -71,6 +65,7 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received Allocation Request" << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
+
     signalizeAllocateRequest(fl);
 }
 

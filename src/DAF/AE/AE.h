@@ -21,28 +21,28 @@
 #include <sstream>
 //RINASim libraries
 #include "AEListeners.h"
-#include "Flow.h"
 #include "RINASignals.h"
+#include "IRM.h"
 
-class AE : public cSimpleModule
+class AE : public AEBase
 {
   public:
     AE();
     virtual ~AE();
 
-  protected:
-    Flow* flow;
+    bool operator== (const AE& other) {
+        return (apni == other.apni);
+    }
 
-    std::string srcApName;
-    std::string srcApInstance;
-    std::string srcAeName;
-    std::string srcAeInstance;
+  protected:
+    IRM* irm;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
+    void initPointers();
     void initSignalsAndListeners();
-    void initNamingInfo();
+    void initConnections();
 
     //Signals
     simsignal_t sigAEAllocReq;
@@ -51,8 +51,8 @@ class AE : public cSimpleModule
     //Listeners
 
     //Signaling
-    void signalizeAllocateRequest();
-    void signalizeDeallocateRequest();
+    void signalizeAllocateRequest(Flow* flow);
+    void signalizeDeallocateRequest(Flow* flow);
 
 };
 

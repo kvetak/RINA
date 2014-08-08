@@ -21,7 +21,13 @@
  * @brief
  * @detail
  */
+
 #include "FA.h"
+
+//Constants
+const int RANDOM_NUMBER_GENERATOR = 0;
+const int MAX_PORTID = 65535;
+const int MAX_CEPID  = 65535;
 
 Define_Module(FA);
 

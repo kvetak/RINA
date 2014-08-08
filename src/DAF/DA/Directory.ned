@@ -15,10 +15,9 @@
 
 package rina.DAF.DA;
 
-//
-// TODO auto-generated module
-//
 simple Directory
 {
-    @display("i=block/delay");
+    parameters:
+    	@display("i=block/delay");
+    	xml directoryData; 
 }

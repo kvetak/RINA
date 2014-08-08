@@ -1,0 +1,9 @@
+<Host id="host">
+	<DA>
+		<Directory>
+			<APNtoDIF apn="App1"	ipcAddress="1" />
+			<APNtoDIF apn="App2" 	ipcAddress="1" />
+			<APNtoDIF apn="AppErr" 	ipcAddress="1" />
+		</Directory>
+	</DA>
+</Host>

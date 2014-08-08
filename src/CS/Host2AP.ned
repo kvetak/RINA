@@ -17,13 +17,14 @@ package rina.CS;
 
 import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
+import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
 
 
 module Host2AP
 {
     parameters:
-        @display("i=device/pc;bgb=289,221");
+        @display("i=device/pc;bgb=340,221");
         @node;
 
     gates:
@@ -31,17 +32,20 @@ module Host2AP
 
     submodules:
         applicationProcess1: ApplicationProcess {
-            @display("p=72,57");            
+            @display("p=72,57");
         }
 
         applicationProcess2: ApplicationProcess {
-            @display("p=218,57");            
+            @display("p=268,57");
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=133,153");            
+            @display("p=170,156");
         }
 
+        difAllocator: DIFAllocator {
+            @display("p=170,57");
+        }
     connections allowunconnected:
         ipcProcess1.southIo++ <--> medium;
 }

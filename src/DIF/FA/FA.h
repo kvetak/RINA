@@ -30,18 +30,16 @@
 #include <string>
 #include "FABase.h"
 #include "FAListeners.h"
-
 #include "FAI.h"
 #include "Flow.h"
 #include "FAITable.h"
 #include "RINASignals.h"
 #include "ModuleAccess.h"
-
 #include "EFCP.h"
 
-const int RANDOM_NUMBER_GENERATOR = 0;
-const int MAX_PORTID = 65535;
-const int MAX_CEPID  = 65535;
+extern const int RANDOM_NUMBER_GENERATOR;
+extern const int MAX_PORTID;
+extern const int MAX_CEPID;
 
 class FA : public FABase
 {

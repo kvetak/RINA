@@ -17,18 +17,21 @@ package rina.DAF.DA;
 
 module DIFAllocator
 {
-    @display("i=block/classifier2;bgb=487,138");
+    @display("i=misc/node,green;bgb=487,206");
     submodules:
         namingInformation: NamingInformation {
-            @display("p=75,61");
+            @display("p=80,143");
         }
         neighborTable: NeighborTable {
-            @display("p=398,61");
+            @display("p=403,143");
         }
         directory: Directory {
-            @display("p=188,61");
+            @display("p=193,143");
         }
         searchTable: SearchTable {
-            @display("p=295,61");
+            @display("p=300,143");
+        }
+        da: DA {
+            @display("p=247,52");
         }
 }

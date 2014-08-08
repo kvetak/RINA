@@ -29,7 +29,7 @@ class FAITable : public cSimpleModule
 {
   public:
     std::string info() const;
-    void insert(FAITableEntry entry);
+    void insert(const FAITableEntry& entry);
     void remove();
     FAITableEntry* findEntryByFlow(Flow* flow);
     FAITableEntry* findEntryByFai(FAI* fai);

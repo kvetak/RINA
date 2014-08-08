@@ -13,27 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "ConnectionTable.h"
+package rina.DAF.DA;
 
-Define_Module(ConnectionTable);
-
-void ConnectionTable::initialize()
+simple DA
 {
-    // TODO - Generated method body
-}
-
-std::string ConnectionTable::info() const {
-    std::string os;
-    return os;
-}
-
-void ConnectionTable::insert() {
-}
-
-void ConnectionTable::remove() {
-}
-
-void ConnectionTable::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+    parameters:
+    	@display("i=block/uparrow");
 }

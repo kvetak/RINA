@@ -29,7 +29,7 @@ class APNamingInfo
     APNamingInfo(APN napn, std::string napinstance, std::string naename, std::string naeinstance);
     virtual ~APNamingInfo();
 
-    bool operator== (const APNamingInfo other) {
+    bool operator== (const APNamingInfo& other) const {
         return (apn == other.apn &&
                 !apinstance.compare(other.apinstance) &&
                 !aename.compare(other.aename) && !aeinstance.compare(other.aeinstance) );

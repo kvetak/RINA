@@ -18,6 +18,7 @@ package rina.DAF;
 import rina.DAF.AE.AEPing;
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DAF.DA.DIFAllocator;
+import rina.DAF.IRM.ConnectionTable;
 import rina.DAF.IRM.IRM;
 import rina.DIF.RMT.RMT;
 
@@ -25,7 +26,7 @@ import rina.DIF.RMT.RMT;
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=434,251;i=misc/node,yellow,30");
+        @display("bgb=386,251;i=misc/node,yellow,30");
         //int numOfDIFs;
         string apName = default("App");
         string apInstance = default("0");
@@ -35,24 +36,18 @@ module ApplicationProcess
 
     submodules:
         irm: IRM {
-            @display("p=125,178");
+            @display("p=64,180");
             //numOfDIFs = numOfDIFs;
         }
-        difAllocator: DIFAllocator {
-            @display("p=315,178");
-        }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=315,56");
+            @display("p=254,58");
         }
         aePing: AEPing {
-            @display("p=125,56");
+            @display("p=64,58");
         }
 
+        connectionTable: ConnectionTable {
+            @display("p=254,180");
+        }
     connections allowunconnected:
-        //for i = 0 .. numOfDIFs - 1 {
-        //    irm.irmIo[i] <--> southIo[i];            
-        //}        
-        //commonDistributedApplicationProtocol.southIo++ <--> irm.cdapIo++;
-        irm.aeOut++ --> aePing.dataIn;
-        aePing.dataOut --> irm.aeIn++;
 }

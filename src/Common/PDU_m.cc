@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.5 from DIF/PDU.msg.
+// Generated file, do not edit! Created by opp_msgc 4.5 from Common/PDU.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:

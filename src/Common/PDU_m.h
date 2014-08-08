@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.5 from DIF/PDU.msg.
+// Generated file, do not edit! Created by opp_msgc 4.5 from Common/PDU.msg.
 //
 
 #ifndef _PDU_M_H_
@@ -25,7 +25,7 @@
 
 
 /**
- * Enum generated from <tt>DIF/PDU.msg</tt> by opp_msgc.
+ * Enum generated from <tt>Common/PDU.msg</tt> by opp_msgc.
  * <pre>
  * enum PDUType{
  *     	EFCP_PDU 				= 0x8000;
@@ -62,7 +62,7 @@ enum PDUType {
 };
 
 /**
- * Enum generated from <tt>DIF/PDU.msg</tt> by opp_msgc.
+ * Enum generated from <tt>Common/PDU.msg</tt> by opp_msgc.
  * <pre>
  * enum FLAGS{
  * }
@@ -72,7 +72,7 @@ enum FLAGS {
 };
 
 /**
- * Class generated from <tt>DIF/PDU.msg</tt> by opp_msgc.
+ * Class generated from <tt>Common/PDU.msg</tt> by opp_msgc.
  * <pre>
  * packet PDU {
  *     @customize(true);

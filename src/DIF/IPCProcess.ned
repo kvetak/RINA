@@ -29,7 +29,7 @@ module IPCProcess
 {
     parameters:
         @display("bgb=457,307;i=misc/square,#FF8000,50");
-        int ipcAddress;
+        string ipcAddress;
         //int numOfAPs;
     gates:
         inout southIo[];

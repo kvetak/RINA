@@ -16,9 +16,10 @@
 #ifndef FABASE_H_
 #define FABASE_H_
 
+//Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
 #include <Flow.h>
-
 
 class FABase : public cSimpleModule {
   public:
@@ -38,7 +39,6 @@ class FABase : public cSimpleModule {
     //SimpleModule overloads
     virtual void initialize() = 0;
     virtual void handleMessage(cMessage *msg) = 0;
-
 
 };
 

@@ -20,11 +20,11 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "IRMListeners.h"
-#include "AE.h"
-#include "Flow.h"
+#include "ConnectionTable.h"
+#include "ModuleAccess.h"
 #include "RINASignals.h"
-
-typedef std::list< std::pair<AE*, Flow*> > AETable;
+#include "DA.h"
+#include "FABase.h"
 
 class IRM : public cSimpleModule   {
   public:
@@ -43,7 +43,9 @@ class IRM : public cSimpleModule   {
 
   private:
 
-    AETable AeTable;
+    ConnectionTable* ConTable;
+    DA* DifAllocator;
+
     void initSignalsAndListeners();
 
     //Signals

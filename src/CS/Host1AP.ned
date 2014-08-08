@@ -16,6 +16,7 @@
 package rina.CS;
 
 import rina.DAF.ApplicationProcess;
+import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
 
 
@@ -26,13 +27,13 @@ module Host1AP
         @node;
         //int numOfDIFs = 1;
         //int numOfAPs = 1;
-        
+
     gates:
         inout medium @loose;
-        
+
     submodules:
         applicationProcess1: ApplicationProcess {
-            @display("p=133,58");
+            @display("p=70,56");
             //numOfDIFs = numOfDIFs;            
         }
         ipcProcess1: IPCProcess {
@@ -40,6 +41,9 @@ module Host1AP
 			//numOfAPs = numOfAPs;
         }
 
+        difAllocator: DIFAllocator {
+            @display("p=210,56");
+        }
     connections:
         ipcProcess1.southIo++ <--> medium;
         //ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];

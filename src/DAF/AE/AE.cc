@@ -17,7 +17,7 @@
 
 Define_Module(AE);
 
-AE::AE() {
+AE::AE()  {
 }
 
 AE::~AE() {
@@ -34,27 +34,49 @@ void AE::initSignalsAndListeners() {
 
 }
 
-void AE::initNamingInfo() {
-    //Source info
-    srcApName = this->getParentModule()->par("apName").str();
-    srcApInstance = this->getParentModule()->par("apInstance").str();
-    srcAeName = this->par("aeName").str();
-    srcAeInstance = this->par("aeInstance").str();
-}
-
-void AE::signalizeAllocateRequest() {
-    emit(sigAEAllocReq, flow);
-}
-
 void AE::initialize() {
+    //Init pointers
+    initPointers();
+    //Source info
     initNamingInfo();
+    //Setup signals
     initSignalsAndListeners();
+    //Init connection
+    initConnections();
 }
 
 void AE::handleMessage(cMessage* msg) {
 }
 
-void AE::signalizeDeallocateRequest() {
+void AE::initConnections() {
+    EV << this->getFullPath() << " registered and created IRM connections" << endl;
+
+    cModule* Irm = this->getParentModule()->getSubmodule("irm");
+    //Create new gates
+    cGate* g1i;
+    cGate* g1o;
+    Irm->getOrCreateFirstUnconnectedGatePair("aeIo", true, true, *&g1i, *&g1o);
+    //cGate* g0i;
+    //cGate* g0o;
+    //this->getOrCreateFirstUnconnectedGatePair("southIo", true, true, *&g0i, *&g0o);
+
+    //Get AE gates
+    cGate* g2i = this->gate("dataIn");
+    cGate* g2o = this->gate("dataOut");
+
+    //Connect gates together
+    g1o->connectTo(g2i);
+    g2o->connectTo(g1i);
+}
+
+void AE::initPointers() {
+}
+
+void AE::signalizeAllocateRequest(Flow* flow) {
+    emit(sigAEAllocReq, flow);
+}
+
+void AE::signalizeDeallocateRequest(Flow* flow) {
     emit(sigAEDeallocReq, flow);
 }
 

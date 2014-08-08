@@ -52,6 +52,8 @@ void AEPing::initialize()
     initNamingInfo();
     //Setup signals
     initSignalsAndListeners();
+    //Init connection
+    initConnections();
 
     //Timers
     startAt = simTime() + par("start");
@@ -70,7 +72,7 @@ void AEPing::initialize()
                                                      this->srcAeName, this->srcAeInstance);
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                                      this->dstAeName, this->dstAeInstance);
-    flow = new Flow( src, dst );
+    this->insert(Flow(src, dst));
 
     //Schedule AllocateRequest
     if (startAt > 0)
@@ -85,9 +87,9 @@ void AEPing::initialize()
 
 void AEPing::handleSelfMessage(cMessage *msg) {
     if ( !strcmp(msg->getName(), "StartCommunication") )
-        signalizeAllocateRequest();
+        signalizeAllocateRequest(&flows.back());
     else if ( !strcmp(msg->getName(), "StopCommunication") )
-        signalizeDeallocateRequest();
+        signalizeDeallocateRequest(&flows.back());
     else if ( strstr(msg->getName(), "PING") ) {
         //TODO: Vesely - Send M_READ
     }
