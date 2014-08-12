@@ -32,18 +32,17 @@ module ApplicationProcess
         string apInstance = default("0");
 
     gates:
-        //inout southIo[numOfDIFs];
 
     submodules:
         irm: IRM {
-            @display("p=64,180");
+            @display("p=78,180");
             //numOfDIFs = numOfDIFs;
         }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             @display("p=254,58");
         }
         aePing: AEPing {
-            @display("p=64,58");
+            @display("p=78,58");
         }
 
         connectionTable: ConnectionTable {

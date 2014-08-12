@@ -20,9 +20,11 @@
 #include <omnetpp.h>
 #include <sstream>
 //RINASim libraries
+#include "AEBase.h"
 #include "AEListeners.h"
 #include "RINASignals.h"
 #include "IRM.h"
+#include "ConnectionTable.h"
 
 class AE : public AEBase
 {
@@ -30,19 +32,18 @@ class AE : public AEBase
     AE();
     virtual ~AE();
 
-    bool operator== (const AE& other) {
-        return (apni == other.apni);
-    }
-
   protected:
-    IRM* irm;
+    IRM* Irm;
+    ConnectionTable* ConTab;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
     void initPointers();
     void initSignalsAndListeners();
-    void initConnections();
+
+    void insert(Flow& flow);
+    void createBinding(Flow& flow);
 
     //Signals
     simsignal_t sigAEAllocReq;

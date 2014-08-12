@@ -29,8 +29,14 @@
 class DA : public cSimpleModule
 {
   public:
-    FABase* resolveApnToDif(const APN& apn);
-    FABase* resolveApniToDif(const APNamingInfo& apni);
+    FABase* resolveApnToDifFa(const APN& apn);
+    FABase* resolveApniToDifFa(const APNamingInfo& apni);
+
+    cModule* resolveApnToDif(const APN& apn);
+    cModule* resolveApniToDif(const APNamingInfo& apni);
+
+    std::string resolveApnToDifName(const APN& apn);
+    std::string resolveApniToDifName(const APNamingInfo& apni);
 
   protected:
     Directory*          Dir;
@@ -40,6 +46,7 @@ class DA : public cSimpleModule
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    void initPointers();
 };
 
 #endif

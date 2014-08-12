@@ -24,7 +24,5 @@ simple AE
         string aeInstance = default("0");
         
     gates:
-        input dataIn;
-        output dataOut;
-                   
+		inout dataIo[];		                  
 }

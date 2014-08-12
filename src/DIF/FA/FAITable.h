@@ -29,6 +29,7 @@ class FAITable : public cSimpleModule
 {
   public:
     std::string info() const;
+    void insertNew(Flow* flow);
     void insert(const FAITableEntry& entry);
     void remove();
     FAITableEntry* findEntryByFlow(Flow* flow);
@@ -36,7 +37,6 @@ class FAITable : public cSimpleModule
     void bindFaiToFlow(FAI* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
     void changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status);
-
 
   protected:
     virtual void initialize();

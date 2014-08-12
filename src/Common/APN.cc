@@ -20,7 +20,7 @@ APN::APN() {
 }
 
 APN::APN(std::string nam) {
-    this->name = nam;
+    this->setName(nam);
 }
 
 

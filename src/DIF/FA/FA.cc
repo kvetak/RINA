@@ -49,18 +49,20 @@ void FA::initialize() {
  *
  * @param obj
  */
-void FA::receiveAllocateRequest(cObject* obj) {
-    Flow* fl = dynamic_cast<Flow*>(obj);
+bool FA::receiveAllocateRequest(cObject* obj) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
+
+    Flow* fl = dynamic_cast<Flow*>(obj);
+
     //Insert new Flow into FAITable
-    this->insertNewFTRecord(fl);
+    FaiTable->insertNew(fl);
     //Is malformed?
     if (isMalformedFlow(fl)){
         FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_ERR);
         //TODO: Vesely - What about special signal for errors????
-        this->signalizeAllocateResponseNegative(fl);
-        return;
+        //this->signalizeAllocateResponseNegative(fl);
+        return false;
     }
     //Create FAI
     FAI* fai = this->createFAI(fl);
@@ -81,6 +83,9 @@ void FA::receiveAllocateRequest(cObject* obj) {
         FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
     }
     //Else wait
+
+
+    return status;
 }
 
 void FA::receiveAllocateResponsePositive(cObject* obj) {
@@ -108,11 +113,11 @@ void FA::receiveAllocateResponseNegative(cObject* obj) {
 }
 
 void FA::receiveCreateFlowRequest(cObject* obj) {
-    Flow* fl = dynamic_cast<Flow*>(obj);
     Enter_Method("receiveCreateFlowRequest()");
     EV << this->getFullPath() << " received CreateFlowRequest" << endl;
+    Flow* fl = dynamic_cast<Flow*>(obj);
     //Insert new Flow into FAITable
-    this->insertNewFTRecord(fl);
+    FaiTable->insertNew(fl);
     //Is requested APP local?
     if (true){
         //Change allocation status to rejected
@@ -173,29 +178,37 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
 FAI* FA::createFAI(Flow* flow) {
     // find factory object
     cModuleType *moduleType = cModuleType::get("rina.DIF.FA.FAI");
+
     //Prepare parameters
     int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
     int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+
     //Create a name
     std::ostringstream ostr;
     ostr << "fai_" << portId << "_" << cepId;
+
     //Instatiate module
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
     module->par("portId") = portId;
     module->par("cepId") = cepId;
     module->finalizeParameters();
     module->buildInside();
+
     // create activation message
     module->scheduleStart(simTime());
     module->callInitialize();
+
     //Prepare return pointer and setup internal FAI pointers
     FAI* fai = dynamic_cast<FAI*>(module);
     fai->postInitialize(this, flow, efcp);
+
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+
     //Update flow object
     flow->setSrcPortId(portId);
+
     return fai;
 }
 
@@ -228,12 +241,6 @@ bool FA::isAppLocal(Flow* flow) {
     if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "App11") )
         return true;
     return false;
-}
-
-void FA::insertNewFTRecord(Flow* flow) {
-    //Insert to FAITable
-    FAITableEntry* fte = new FAITableEntry(flow);
-    FaiTable->insert(*fte);
 }
 
 void FA::initSignalsAndListeners() {

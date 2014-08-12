@@ -201,6 +201,7 @@ bool FAI::createEFCP() {
 bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP with FAI and RMT" << endl;
 
+    //TODO: Vesely - Connection with EFCPi
     std::ostringstream nam1;
     nam1 << "efcpIo_" << cepId;
     this->addGate(nam1.str().c_str(), cGate::INOUT, false);
@@ -225,26 +226,20 @@ bool FAI::createBindings() {
     cGate* g4i = IPCModule->gateHalf(nam4.str().c_str(), cGate::INPUT);
     cGate* g4o = IPCModule->gateHalf(nam4.str().c_str(), cGate::OUTPUT);
 
+    //EV << "Connecting " << g2o->getName() << " with " << g3o->getName() << endl;
     g2o->connectTo(g3o);
+    //EV << "Connecting " << g3o->getName() << " with " << g4o->getName() << endl;
     g3o->connectTo(g4o);
 
-    g2i->connectTo(g3i);
-    g3i->connectTo(g4i);
+    //EV << "Connecting " << g3i->getName() << " with " << g4i->getName() << endl;
+    g4i->connectTo(g3i);
+    //EV << "Connecting " << g2i->getName() << " with " << g3i->getName() << endl;
+    g3i->connectTo(g2i);
 
-    /*
-    cModule* test = ModuleAccess<cModule>("test").get();
-    cGate* g5i = test->gate("testIn");
-    cGate* g5o = test->gate("testOut");
-    g4o->connectTo(g5i);
-    g4i->connectTo(g5o);
-    EV << "Brana " << g3i->getName() << " vne: " << g3i->isConnectedOutside() << " uvnitr: "
-            << g3i->isConnectedInside() << endl;
-    EV << "Brana " << g3o->getName() << " vne: " << g3o->isConnectedOutside() << " uvnitr: "
-            << g3o->isConnectedInside() << endl;
-    cMessage *msg = new cMessage("TEST");
-    send(msg, g2o);
-    */
-    return true;
+    bool status = g2o->isConnected() && g2i->isConnected() &&
+                  g3o->isConnected() && g3i->isConnected();
+
+    return status;
 }
 
 bool FAI::deleteBindings() {

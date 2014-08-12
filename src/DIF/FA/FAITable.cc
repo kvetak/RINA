@@ -40,26 +40,9 @@ void FAITable::handleMessage(cMessage *msg)
 
 }
 
-/*
-std::ostream& operator<< (std::ostream& os, const FlowTable& ft) {
-    return os << ft.info();
+void FAITable::insertNew(Flow* flow) {
+    this->insert(FAITableEntry(flow));
 }
-
-std::ostream& operator<< (std::ostream& os, const TFlowTable& ft) {
-    for(TFTConstIter it = ft.begin(); it != ft.end(); ++it )
-    {
-        TFlowTableEntry tft = *it;
-        os << tft << endl;
-    }
-    return os;
-}
-
-std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte) {
-    //EV << "aaaaaaaaaaaa" << fte.first->info() << endl;
-    return os  << *fte.first << "\n" << *fte.second << endl;
-}
-*/
-
 void FAITable::insert(const FAITableEntry& entry) {
     Enter_Method("insert()");
     FaiTable.push_back(entry);
@@ -106,3 +89,4 @@ void FAITable::bindFaiToFlow(FAI* fai, Flow* flow) {
     FAITableEntry* fte = findEntryByFlow(flow);
     fte->setFai(fai);
 }
+

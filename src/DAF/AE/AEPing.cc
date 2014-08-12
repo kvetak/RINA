@@ -48,12 +48,12 @@ void AEPing::prepareDeallocateRequest() {
 
 void AEPing::initialize()
 {
+    //Init pointers
+    initPointers();
     //Source info
     initNamingInfo();
     //Setup signals
     initSignalsAndListeners();
-    //Init connection
-    initConnections();
 
     //Timers
     startAt = simTime() + par("start");
@@ -62,17 +62,19 @@ void AEPing::initialize()
     rate    = par("rate");
 
     //Destination for flow
-    dstApName     = this->par("dstApName").str();
-    dstApInstance = this->par("dstApInstance").str();
-    dstAeName     = this->par("dstAeName").str();
-    dstAeInstance = this->par("dstAeInstance").str();
+    dstApName     = this->par("dstApName").stringValue();
+    dstApInstance = this->par("dstApInstance").stringValue();
+    dstAeName     = this->par("dstAeName").stringValue();
+    dstAeInstance = this->par("dstAeInstance").stringValue();
 
     //Flow
-    APNamingInfo src = APNamingInfo( APN(this->srcApName), this->srcApInstance,
-                                                     this->srcAeName, this->srcAeInstance);
+    APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                                     this->dstAeName, this->dstAeInstance);
-    this->insert(Flow(src, dst));
+                                     this->dstAeName, this->dstAeInstance);
+    Flow fl = Flow(src, dst);
+
+    //Insert it to the Flows ADT
+    insert(fl);
 
     //Schedule AllocateRequest
     if (startAt > 0)
@@ -83,15 +85,28 @@ void AEPing::initialize()
     //Schedule DeallocateRequest
     if (stopAt > 0)
         prepareDeallocateRequest();
+
+    //Watchers
+    WATCH_LIST(flows);
 }
 
 void AEPing::handleSelfMessage(cMessage *msg) {
-    if ( !strcmp(msg->getName(), "StartCommunication") )
-        signalizeAllocateRequest(&flows.back());
+    //EV << flows.back().info() << endl;
+    if ( !strcmp(msg->getName(), "StartCommunication") ) {
+        //signalizeAllocateRequest(&flows.back());
+        //FIXME: Vesely - last flow in a list?!
+        Irm->receiveAllocationRequest(&flows.back());
+    }
     else if ( !strcmp(msg->getName(), "StopCommunication") )
-        signalizeDeallocateRequest(&flows.back());
+        //signalizeDeallocateRequest(&flows.back());
+        //Irm->receiveDeallocationRequest(&flows.back());
+        EV << "StopCommunication";
     else if ( strstr(msg->getName(), "PING") ) {
         //TODO: Vesely - Send M_READ
+        std::stringstream ss;
+        ss << "M_READ(" << msg->getName() << ")";
+        cMessage* ping = new cMessage(ss.str().c_str());
+        send(ping , "dataIo$o", 0);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();

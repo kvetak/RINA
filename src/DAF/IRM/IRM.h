@@ -40,6 +40,7 @@ class IRM : public cSimpleModule   {
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    void initPointers();
 
   private:
 
@@ -47,6 +48,7 @@ class IRM : public cSimpleModule   {
     DA* DifAllocator;
 
     void initSignalsAndListeners();
+    bool createBindings(Flow& flow);
 
     //Signals
     simsignal_t sigIRMAllocReq;

@@ -17,22 +17,56 @@
 
 Define_Module(DA);
 
+void DA::initPointers() {
+    //Retrieve pointers to submodules
+    Dir = ModuleAccess<Directory>("directory").get();
+    NamInfo = ModuleAccess<NamingInformation>("namingInformation").get();
+    NeighborTab = ModuleAccess<NeighborTable>("neighborTable").get();
+    SearchTab = ModuleAccess<SearchTable>("searchTable").get();
+}
+
 void DA::initialize()
 {
     //Retrieve pointers to submodules
-    Dir         = ModuleAccess<Directory>("directory").get();
-    NamInfo     = ModuleAccess<NamingInformation>("namingInformation").get();
-    NeighborTab = ModuleAccess<NeighborTable>("neighborTable").get();
-    SearchTab   = ModuleAccess<SearchTable>("searchTable").get();
+    initPointers();
 }
 
-FABase* DA::resolveApnToDif(const APN& apn) {
-    return Dir->findEntryByApn(apn)->getFlowAlloc();
+FABase* DA::resolveApnToDifFa(const APN& apn) {
+    Enter_Method("resolveApnToDifFa()");
+    DirectoryEntry* dre = Dir->findEntryByApn(apn);
+    return dre ? dre->getFlowAlloc() : NULL;
 }
 
-FABase* DA::resolveApniToDif(const APNamingInfo& apni) {
-    return Dir->findEntryByApni(apni)->getFlowAlloc();
+FABase* DA::resolveApniToDifFa(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDifFa()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToDifFa(apni.getApn());
 }
+
+cModule* DA::resolveApnToDif(const APN& apn) {
+    Enter_Method("resolveApnToDif()");
+    FABase* fab = resolveApnToDifFa(apn);
+    return  fab ? fab->getParentModule()->getParentModule() : NULL;
+}
+
+cModule* DA::resolveApniToDif(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDif()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToDif(apni.getApn());
+}
+
+std::string DA::resolveApnToDifName(const APN& apn) {
+    Enter_Method("resolveApnToDifName()");
+    cModule* dif = resolveApnToDif(apn);
+    return  dif ? dif->getFullPath() : NULL;
+}
+
+std::string DA::resolveApniToDifName(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDifName()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToDifName(apni.getApn());
+}
+
 
 void DA::handleMessage(cMessage *msg)
 {

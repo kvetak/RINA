@@ -16,51 +16,45 @@
 #include <ConnectionTableEntry.h>
 
 ConnectionTableEntry::ConnectionTableEntry()
-    :  conStatus(UNKNOWN), AppEntity(NULL),
-       //FlowObject(NULL),
+    :  FlowObject(NULL), conStatus(UNKNOWN),
        northGateIn(NULL), northGateOut(NULL),
-       southGateIn(NULL), southGateOut(NULL)
+       southGateIn(NULL), southGateOut(NULL),
+       FlowAlloc(NULL)
 {
 }
 
-ConnectionTableEntry::ConnectionTableEntry(AEBase* nae) : AppEntity(nae) {
-    northGateIn = nae->gate("dataOut")->getPathEndGate();
-    northGateOut = nae->gate("dataIn")->getPathStartGate();
-    southGateIn = NULL;
-    southGateOut = NULL;
+ConnectionTableEntry::ConnectionTableEntry(Flow* flow)
+    :  FlowObject(flow), conStatus(FLOWPENDING),
+       northGateIn(NULL), northGateOut(NULL),
+       southGateIn(NULL), southGateOut(NULL),
+       FlowAlloc(NULL)
+{
 }
 
-ConnectionTableEntry::ConnectionTableEntry(AEBase* nae, cGate* norI, cGate* norO)
-    : AppEntity(nae), northGateIn(norI), northGateOut(norO)
+ConnectionTableEntry::ConnectionTableEntry(Flow* flow, cGate* nIn, cGate* nOut)
+:  FlowObject(flow), conStatus(FLOWPENDING),
+   northGateIn(nIn), northGateOut(nOut),
+   southGateIn(NULL), southGateOut(NULL),
+   FlowAlloc(NULL)
 {
-    southGateIn = NULL;
-    southGateOut = NULL;
-    //FlowObject = NULL;
-}
-
-ConnectionTableEntry::ConnectionTableEntry(AEBase* nae, cGate* norI, cGate* norO, cGate* souI, cGate* souO)
-    : AppEntity(nae), northGateIn(norI), northGateOut(norO), southGateIn(souI), southGateOut(souO)
-{
-    //FlowObject = NULL;
 }
 
 ConnectionTableEntry::~ConnectionTableEntry() {
-    this->AppEntity = NULL;
-    //this->FlowObject = NULL;
+    this->FlowObject = NULL;
     this->conStatus = UNKNOWN;
     this->northGateIn = NULL;
     this->northGateOut = NULL;
     this->southGateIn = NULL;
     this->southGateOut = NULL;
+    this->FlowAlloc = NULL;
 }
 
 std::string ConnectionTableEntry::info() const {
     std::stringstream os;
-    //FIXME: Veseli
-    //if (AppEntity->getF)
-    //    os << *(AppEntity->getFlow()) << "\n";
-    //else
-    //    os << *(AppEntity->getApni()) << "\n";
+    if (FlowObject)
+        os << FlowObject->info() << "\n";
+    if (FlowAlloc)
+        os << "FA path: " << FlowAlloc->getFullPath() << "\n";
     if (northGateIn && northGateOut)
         os << "northIn: " << this->northGateIn->getName() << "[" << this->northGateIn->getIndex() << "]"
            << "\tnorthOut: " << this->northGateOut->getName() << "[" << this->northGateIn->getIndex() << "]\n";
@@ -93,15 +87,23 @@ std::ostream& operator <<(std::ostream& os, const ConnectionTableEntry& cte) {
     return os << cte.info();
 }
 
-AEBase* ConnectionTableEntry::getAppEntity() const {
-    return AppEntity;
+FABase* ConnectionTableEntry::getFlowAlloc() const {
+    return FlowAlloc;
 }
 
-void ConnectionTableEntry::setAppEntity(AEBase* appEntity) {
-    AppEntity = appEntity;
+void ConnectionTableEntry::setFlowAlloc(FABase* flowAlloc) {
+    FlowAlloc = flowAlloc;
 }
 
-const cGate* ConnectionTableEntry::getNorthGateIn() const {
+Flow* ConnectionTableEntry::getFlowObject() const {
+    return FlowObject;
+}
+
+void ConnectionTableEntry::setFlowObject(Flow* flowObject) {
+    FlowObject = flowObject;
+}
+
+cGate* ConnectionTableEntry::getNorthGateIn() const {
     return northGateIn;
 }
 
@@ -109,7 +111,7 @@ void ConnectionTableEntry::setNorthGateIn(cGate* northGateIn) {
     this->northGateIn = northGateIn;
 }
 
-const cGate* ConnectionTableEntry::getNorthGateOut() const {
+cGate* ConnectionTableEntry::getNorthGateOut() const {
     return northGateOut;
 }
 
@@ -117,7 +119,7 @@ void ConnectionTableEntry::setNorthGateOut(cGate* northGateOut) {
     this->northGateOut = northGateOut;
 }
 
-const cGate* ConnectionTableEntry::getSouthGateIn() const {
+cGate* ConnectionTableEntry::getSouthGateIn() const {
     return southGateIn;
 }
 
@@ -125,7 +127,7 @@ void ConnectionTableEntry::setSouthGateIn(cGate* southGateIn) {
     this->southGateIn = southGateIn;
 }
 
-const cGate* ConnectionTableEntry::getSouthGateOut() const {
+cGate* ConnectionTableEntry::getSouthGateOut() const {
     return southGateOut;
 }
 

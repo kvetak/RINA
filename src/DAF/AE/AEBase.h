@@ -28,21 +28,14 @@ typedef Flows::iterator TFlowsIter;
 class AEBase : public cSimpleModule
 {
   public:
-    bool isFlowUsed(const Flow* flow);
-    void insert(const Flow& flow);
+    bool hasFlow(const Flow* flow);
 
     const APNamingInfo& getApni() const;
-    void setApni(const APNamingInfo& apni);
     const Flows& getFlows() const;
-    void setFlows(const Flows& flows);
-    const std::string& getSrcAeInstance() const;
-    void setSrcAeInstance(const std::string& srcAeInstance);
-    const std::string& getSrcAeName() const;
-    void setSrcAeName(const std::string& srcAeName);
-    const std::string& getSrcApInstance() const;
-    void setSrcApInstance(const std::string& srcApInstance);
-    const std::string& getSrcApName() const;
-    void setSrcApName(const std::string& srcApName);
+
+    bool operator== (const AEBase& other) {
+        return (apni == other.apni);
+    }
 
   protected:
     Flows flows;
@@ -53,10 +46,26 @@ class AEBase : public cSimpleModule
     std::string srcAeName;
     std::string srcAeInstance;
 
+    //Getters/Setters
+    const std::string& getSrcAeInstance() const;
+    void setSrcAeInstance(const std::string& srcAeInstance);
+    const std::string& getSrcAeName() const;
+    void setSrcAeName(const std::string& srcAeName);
+    const std::string& getSrcApInstance() const;
+    void setSrcApInstance(const std::string& srcApInstance);
+    const std::string& getSrcApName() const;
+    void setSrcApName(const std::string& srcApName);
+    void setApni(const APNamingInfo& apni);
+    void setFlows(const Flows& flows);
+
+    void initNamingInfo();
+    void insert(Flow& flow);
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    void initNamingInfo();
+  private:
+
 };
 
 #endif

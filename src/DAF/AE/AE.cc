@@ -41,39 +41,55 @@ void AE::initialize() {
     initNamingInfo();
     //Setup signals
     initSignalsAndListeners();
-    //Init connection
-    initConnections();
+    //Watchers
+    WATCH_LIST(flows);
 }
 
 void AE::handleMessage(cMessage* msg) {
 }
 
-void AE::initConnections() {
-    EV << this->getFullPath() << " registered and created IRM connections" << endl;
-
-    cModule* Irm = this->getParentModule()->getSubmodule("irm");
+void AE::createBinding(Flow& flow) {
+    EV << this->getFullPath() << " created bindings and registered a new flow" << endl;
     //Create new gates
     cGate* g1i;
     cGate* g1o;
-    Irm->getOrCreateFirstUnconnectedGatePair("aeIo", true, true, *&g1i, *&g1o);
+    Irm->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&g1i, *&g1o);
+
     //cGate* g0i;
     //cGate* g0o;
     //this->getOrCreateFirstUnconnectedGatePair("southIo", true, true, *&g0i, *&g0o);
 
     //Get AE gates
-    cGate* g2i = this->gate("dataIn");
-    cGate* g2o = this->gate("dataOut");
+    cGate* g2i;
+    cGate* g2o;
+    this->getOrCreateFirstUnconnectedGatePair("dataIo", false, true, *&g2i, *&g2o);
 
     //Connect gates together
     g1o->connectTo(g2i);
     g2o->connectTo(g1i);
+
+    //Set north-half of the routing in ConnectionTable
+    ConTab->setNorthGates(&flow, g1i, g1o);
 }
 
 void AE::initPointers() {
+    Irm = ModuleAccess<IRM>("irm").get();
+    ConTab = ModuleAccess<ConnectionTable>("connectionTable").get();
 }
 
 void AE::signalizeAllocateRequest(Flow* flow) {
     emit(sigAEAllocReq, flow);
+}
+
+void AE::insert(Flow& flow) {
+    //Add a new flow to the end of the Flow list
+    flows.push_back(flow);
+
+    //Create a new record in ConnectionTable
+    ConTab->insertNew(&flows.back());
+
+    //Interconnect IRM and AE
+    createBinding(flows.back());
 }
 
 void AE::signalizeDeallocateRequest(Flow* flow) {

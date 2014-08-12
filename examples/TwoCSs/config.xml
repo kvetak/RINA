@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Host id="host1">
+		<DA>
+			<Directory>
+				<APNtoDIF apn="App2" 	ipcAddress="2" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
+			</Directory>
+		</DA>
+	</Host>
+	<Host id="host2">
+		<DA>
+			<Directory>
+				<APNtoDIF apn="App1" 	ipcAddress="1" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
+			</Directory>
+		</DA>
+	</Host>
+</Configuration>

@@ -23,11 +23,11 @@ void ConnectionTable::initialize()
     //Insert info to the ConnectionTable
 
     //Scan all AEs in DAP and add them to table
-    for (cModule::SubmoduleIterator i(this->getParentModule()); !i.end(); i++) {
-        cModule *submodp = i();
-        if (dynamic_cast<AEBase*>(submodp))
-            insertNewAe(dynamic_cast<AEBase*>(submodp));
-    }
+//    for (cModule::SubmoduleIterator i(this->getParentModule()); !i.end(); i++) {
+//        cModule *submodp = i();
+//        if (dynamic_cast<AEBase*>(submodp))
+//            insertNewAe(dynamic_cast<AEBase*>(submodp));
+//    }
 }
 
 std::string ConnectionTable::info() const {
@@ -43,6 +43,16 @@ std::string ConnectionTable::info() const {
     return os.str();
 }
 
+void ConnectionTable::insertNew(Flow* flow) {
+    Enter_Method("insertNew()");
+    this->insert(ConnectionTableEntry(flow));
+}
+
+void ConnectionTable::insertNew(Flow* flow, cGate* nIn, cGate* nOut) {
+    Enter_Method("insertNew()");
+    this->insert(ConnectionTableEntry(flow, nIn, nOut));
+}
+
 void ConnectionTable::insert(const ConnectionTableEntry& entry) {
     Enter_Method("insert()");
     ConTable.push_back(entry);
@@ -51,25 +61,57 @@ void ConnectionTable::insert(const ConnectionTableEntry& entry) {
 void ConnectionTable::remove() {
 }
 
-ConnectionTableEntry* ConnectionTable::findEntryByAe(AEBase* ae) {
+ConnectionTableEntry* ConnectionTable::findEntryByFlow(Flow* flow) {
     for(TCTIter it = ConTable.begin(); it != ConTable.end(); ++it) {
-        if (it->getAppEntity() == ae)
+        //EV << "Comparing" << it->getFlowObject() << " and " << flow << endl;
+        //EV << "=========NOVY=========\n" << it->getFlowObject()->info() << endl;
+        //EV << "=========STARY=========\n" << flow->info() << endl;
+        if ( it->getFlowObject() == flow )
             return &(*it);
     }
     return NULL;
 }
 
-ConnectionTableEntry* ConnectionTable::findEntryByFlow(const Flow* flow) {
-    for(TCTIter it = ConTable.begin(); it != ConTable.end(); ++it) {
-        if ( it->getAppEntity()->isFlowUsed(flow) )
-            return &(*it);
+bool ConnectionTable::setSouthGates(Flow* flow, cGate* sIn, cGate* sOut) {
+    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    if (cte) {
+        cte->setSouthGateIn(sIn);
+        cte->setSouthGateOut(sOut);
+        return true;
     }
-    return NULL;
+    else
+        return false;
 }
 
-void ConnectionTable::insertNewAe(AEBase* ae) {
-    ConnectionTableEntry* entry = new ConnectionTableEntry(ae);
-    insert(*entry);
+bool ConnectionTable::setNorthGates(Flow* flow, cGate* nIn, cGate* nOut) {
+    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    if (cte) {
+        cte->setNorthGateIn(nIn);
+        cte->setNorthGateOut(nOut);
+        return true;
+    }
+    else
+        return false;
+}
+
+bool ConnectionTable::setFa(Flow* flow, FABase* fa) {
+    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    if (cte) {
+        cte->setFlowAlloc(fa);
+        return true;
+    }
+    else
+        return false;
+}
+
+cGate* ConnectionTable::findOutputGate(cGate* input) {
+    for(TCTIter it = ConTable.begin(); it != ConTable.end(); ++it) {
+        if ( it->getNorthGateIn() == input )
+            return it->getSouthGateOut();
+        if ( it->getSouthGateIn() == input )
+            return it->getNorthGateOut();
+    }
+    return NULL;
 }
 
 void ConnectionTable::handleMessage(cMessage *msg)

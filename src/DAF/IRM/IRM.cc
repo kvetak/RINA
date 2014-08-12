@@ -24,13 +24,27 @@ IRM::IRM() {
 IRM::~IRM() {
 }
 
-void IRM::initialize() {
+void IRM::initPointers() {
     ConTable = ModuleAccess<ConnectionTable>("connectionTable").get();
     DifAllocator = ModuleAccess<DA>("da").get();
+}
+
+void IRM::initialize() {
+    initPointers();
     initSignalsAndListeners();
 }
 
 void IRM::handleMessage(cMessage* msg) {
+    if (!msg->isSelfMessage()) {
+        //Find output gate based on input
+        cGate* g = ConTable->findOutputGate(msg->getArrivalGate());
+        //Send out
+        send(msg, g);
+    }
+    //Process self-message
+    else {
+
+    }
 
 }
 
@@ -61,12 +75,78 @@ void IRM::initSignalsAndListeners() {
     catcher->subscribe(SIG_AE_DeallocateRequest, this->lisDeallocReq);
 }
 
+bool IRM::createBindings(Flow& flow) {
+    EV << "Attempts to create bindings and bind registration of gates"<< endl;
+    //Retrieve IPC process with allocated flow and prepared bindings
+    cModule* Ipc = DifAllocator->resolveApniToDif(flow.getDstApni());
+    cModule* Ap = this->getParentModule();
+
+    //Create connections
+
+    //  Retrieve IPC gates
+    std::ostringstream nam1;
+    nam1 << "northIo_" << flow.getSrcPortId();
+    cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
+    cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
+
+    //   Add AP gates
+    std::ostringstream nam2;
+    nam2 << "southIo_" << flow.getSrcPortId();
+    Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
+    cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+
+    //   Add IRM gates
+    this->addGate(nam2.str().c_str(), cGate::INOUT, false);
+    cGate* g3i = this->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g3o = this->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+
+    //TODO: Status check
+
+    //   Connect gates together
+    g1o->connectTo(g2o);
+    g2o->connectTo(g3i);
+
+    g3o->connectTo(g2i);
+    g2i->connectTo(g1i);
+
+    //Set south-half of the routing in ConnectionTable
+    bool status = ConTable->setSouthGates(&flow, g3i, g3o);
+
+    return status;
+}
+
 void IRM::receiveAllocationRequest(cObject* obj) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received Allocation Request" << endl;
-    Flow* fl = dynamic_cast<Flow*>(obj);
 
-    signalizeAllocateRequest(fl);
+    Flow* flow = dynamic_cast<Flow*>(obj);
+
+    //Ask DA which IPC to use to reach dst App
+    FABase* fa = DifAllocator->resolveApniToDifFa(flow->getDstApni());
+
+    //Store info into ConnectionTable
+    ConTable->setFa(flow, fa);
+
+    //Command target FA to allocate flow
+    bool status = false;
+    if (fa)
+        //signalizeAllocateRequest(flow);
+        status = fa->receiveAllocateRequest(flow);
+    else
+        EV << "DA does not know target application" << endl;
+
+    //If AllocationRequest ended by creating connections
+    if (status)
+        status = createBindings(*flow);
+    //Allocation either failed OR app not found
+    else
+       EV << "Flow not allocated!\n" << flow << endl;
+
+    if (!status)
+        EV << "Flow not binded!\n" << flow << endl;
+
+    //Change ConnectionTable status
 }
 
 void IRM::receiveDeallocationRequest(cObject* obj) {
@@ -75,7 +155,6 @@ void IRM::receiveDeallocationRequest(cObject* obj) {
     Flow* fl = dynamic_cast<Flow*>(obj);
     signalizeDeallocateRequest(fl);
 }
-
 
 void IRM::receiveAllocationResponseNegativeAppNotFound(cObject* obj) {
     EV << this->getFullPath() << " received Negative Allocation Response App not found" << endl;

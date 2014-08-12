@@ -67,10 +67,10 @@ void AEBase::setSrcApName(const std::string& srcApName) {
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getParentModule()->par("apName").str();
-    srcApInstance = this->getParentModule()->par("apInstance").str();
-    srcAeName = this->par("aeName").str();
-    srcAeInstance = this->par("aeInstance").str();
+    srcApName = this->getParentModule()->par("apName").stdstringValue();
+    srcApInstance = this->getParentModule()->par("apInstance").stdstringValue();
+    srcAeName = this->par("aeName").stdstringValue();
+    srcAeInstance = this->par("aeInstance").stdstringValue();
 
     apni = APNamingInfo(APN(this->srcApName), this->srcApInstance,
             this->srcAeName, this->srcAeInstance);
@@ -86,11 +86,11 @@ void AEBase::handleMessage(cMessage *msg)
     // TODO - Generated method body
 }
 
-void AEBase::insert(const Flow& flow) {
+void AEBase::insert(Flow& flow) {
     flows.push_back(flow);
 }
 
-bool AEBase::isFlowUsed(const Flow* flow) {
+bool AEBase::hasFlow(const Flow* flow) {
     for (TFlowsIter it = flows.begin(); it != flows.end(); ++it) {
         if (*it == *flow)
             return true;

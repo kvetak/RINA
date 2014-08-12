@@ -30,11 +30,18 @@ class ConnectionTable : public cSimpleModule
   public:
     std::string info() const;
 
-    void insertNewAe(AEBase* ae);
+    void insertNew(Flow* flow);
+    void insertNew(Flow* flow, cGate* nIn, cGate* nOut);
     void insert(const ConnectionTableEntry& entry);
     void remove();
-    ConnectionTableEntry* findEntryByAe(AEBase* ae);
-    ConnectionTableEntry* findEntryByFlow(const Flow* flow);
+
+    ConnectionTableEntry* findEntryByFlow(Flow* flow);
+
+    cGate* findOutputGate(cGate* input);
+
+    bool setSouthGates(Flow* flow, cGate* sIn, cGate* sOut);
+    bool setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);
+    bool setFa(Flow* flow, FABase* fa);
 
   protected:
     virtual void initialize();

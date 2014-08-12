@@ -28,6 +28,7 @@
 //Standard libraries
 #include <omnetpp.h>
 #include <string>
+//RINASim libraries
 #include "FABase.h"
 #include "FAListeners.h"
 #include "FAI.h"
@@ -47,7 +48,7 @@ class FA : public FABase
     FA();
     virtual ~FA();
 
-    virtual void receiveAllocateRequest(cObject* obj);
+    virtual bool receiveAllocateRequest(cObject* obj);
     virtual void receiveAllocateResponsePositive(cObject* obj);
     virtual void receiveAllocateResponseNegative(cObject* obj);
     virtual void receiveDeallocateRequest(cObject* obj);
@@ -87,7 +88,6 @@ class FA : public FABase
     bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
     //void registerIRMSigs();
-    void insertNewFTRecord(Flow* flow);
 
     void initSignalsAndListeners();
 

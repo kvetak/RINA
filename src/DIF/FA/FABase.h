@@ -27,7 +27,7 @@ class FABase : public cSimpleModule {
     FABase();
     virtual ~FABase();
 
-    virtual void receiveAllocateRequest(cObject* fl) = 0;
+    virtual bool receiveAllocateRequest(cObject* fl) = 0;
     virtual void receiveAllocateResponsePositive(cObject* obj) = 0;
     virtual void receiveAllocateResponseNegative(cObject* obj) = 0;
     virtual void receiveCreateFlowRequest(cObject* fl) = 0;
