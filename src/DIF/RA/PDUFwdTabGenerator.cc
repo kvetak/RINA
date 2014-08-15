@@ -20,10 +20,34 @@ Define_Module(PDUFwdTabGenerator);
 
 void PDUFwdTabGenerator::initialize()
 {
-    // TODO - Generated method body
+    FwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+
+    cXMLElement* dirXml = par("PDUFwData").xmlValue();
+    cXMLElementList map = dirXml->getChildrenByTagName("FwTableItem");
+
+    for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
+    {
+        cXMLElement* m = *i;
+
+        int qosid = atoi(m->getAttribute("qosId"));
+        int portid = atoi(m->getAttribute("portId"));
+
+        this->insertFwEntry(APN(m->getAttribute("dest")), qosid, portid);
+    }
+    //FwTable->printAll();
 }
 
 void PDUFwdTabGenerator::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
+}
+
+void PDUFwdTabGenerator::removeFwEntry(int portId) {
+    FwTable->remove(portId);
+}
+
+void PDUFwdTabGenerator::insertFwEntry(APN destAddr, const int qosId, const int portId)
+{
+    PDUTableEntry *ret = new PDUTableEntry(destAddr, qosId, portId);
+    FwTable->insert(ret);
 }

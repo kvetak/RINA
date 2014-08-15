@@ -29,14 +29,21 @@
 #include <omnetpp.h>
 #include "APNamingInfo.h"
 #include "PDU.h"
+#include "PDUForwardingTable.h"
+#include "ModuleAccess.h"
+#include "DataTransferPDU_m.h"
 
 class RMT : public cSimpleModule
 {
+  private:
+    PDUForwardingTable *FwTable;
+
+
   public:
     RMT();
     virtual ~RMT();
 
-    /* Just a placeholder */
+    /* Just a placeholder -- TO BE DELETED */
     void fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu);
 
   protected:

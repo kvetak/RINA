@@ -21,4 +21,5 @@ package rina.DIF.RA;
 simple PDUFwdTabGenerator
 {
     @display("i=block/network2");
+    xml PDUFwData;
 }

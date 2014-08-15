@@ -13,32 +13,41 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_PDUFORWARDINGTABLE_H_
-#define __RINA_PDUFORWARDINGTABLE_H_
+#ifndef __RINA_PDUTABLEENTRY_H_
+#define __RINA_PDUTABLEENTRY_H_
+
+#include <iostream>
+#include <vector>
 
 #include <omnetpp.h>
-#include "APN.h"
-#include "PDUForwardingTable.h"
-#include "PDUTableEntry.h"
+#include <APN.h>
 
-typedef std::list<PDUTableEntry> PDUFwTable;
-typedef PDUFwTable::iterator PDUFwIter;
 
-class PDUForwardingTable : public cSimpleModule
+class PDUTableEntry
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
   private:
-    PDUFwTable FwTable;
+    APN destAddr;
+    int qosId;
+    int portId;
 
   public:
-    PDUForwardingTable();
-    void printAll();
-    int lookup(APN destAddr, int QoSid);
-    void insert(const PDUTableEntry* entry);
-    void remove(int portId);
+    PDUTableEntry();
+    PDUTableEntry(APN destaddr, int qosid, int portid);
+    virtual ~PDUTableEntry();
+
+    std::string info() const;
+
+    APN getDestAddr();
+    int getQosId();
+    int getPortId();
+
+    void setDestAddr(APN destaddr);
+    void setQosId(int qosid);
+    void setPortId(int portid);
+
 };
 
+std::ostream& operator<< (std::ostream& os, const PDUTableEntry& cte);
+
 #endif
+

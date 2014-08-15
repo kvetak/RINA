@@ -20,5 +20,5 @@ package rina.DIF.RA;
 //
 simple PDUForwardingTable
 {
-    @display("i=block/table2");
+    @display("i=block/table2");    
 }

@@ -18,15 +18,23 @@
 
 #include <omnetpp.h>
 
+#include "PDUForwardingTable.h"
+#include "ModuleAccess.h"
+#include "APN.h"
+
 /**
  * TODO - Generated class
  */
 class PDUFwdTabGenerator : public cSimpleModule
 {
   protected:
-    //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+  public:
+    void removeFwEntry(int portId);
+    void insertFwEntry(APN destAddr, const int qosId, const int portId);
+  private:
+    PDUForwardingTable *FwTable;
 };
 
 #endif

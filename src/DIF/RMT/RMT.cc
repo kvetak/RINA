@@ -29,13 +29,12 @@ Define_Module(RMT);
 
 RMT::RMT()
 {
-  // TODO Auto-generated constructor stub
 
 }
 
 RMT::~RMT()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu){
@@ -44,7 +43,54 @@ void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu){
 
 void RMT::initialize() {
 
+    FwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
 }
+
+
 void RMT::handleMessage(cMessage *msg) {
 
+    EV << this->getFullPath() << " Received a message." << endl;
+
+    if (msg->isSelfMessage())
+    {
+        //
+    }
+    else if (dynamic_cast<DataTransferPDU*>(msg) != NULL)
+    { // should we identify the sender module as well?
+        DataTransferPDU* pdu = (DataTransferPDU*) msg;
+
+        std::string name = pdu->getDestAddr().getName();
+        int qosid = pdu->getConnId().getQoSId();
+
+        EV << this->getFullPath() << " dest address: " << name << "; QoS-id: " << qosid << endl;
+
+
+        if (name == this->getParentModule()->par("ipcAddress").stdstringValue())
+        {
+            // EV << this->getFullPath() << " this goes to my IPC!" << endl;
+            // pass to an EFCP instance
+        }
+        else
+        {
+            //EV << this->getFullPath() << " initating table lookup..." << endl;
+
+            if (FwTable->lookup(pdu->getDestAddr(), qosid) == -1)
+            {
+                EV << this->getFullPath() << " Couldn't find the item in FWTable." << endl;
+                // drop the PDU?
+            }
+            else
+            {
+                // TODO: SDU protection call?
+
+                //send(pdu, "southIo$o[]");
+            }
+        }
+    }
+    else
+    {
+        EV << this->getFullPath() << " unsupported" << endl;
+    }
+
+    delete msg;
 }

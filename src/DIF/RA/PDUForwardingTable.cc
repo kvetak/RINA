@@ -19,10 +19,65 @@ Define_Module(PDUForwardingTable);
 
 void PDUForwardingTable::initialize()
 {
-    // TODO - Generated method body
+    WATCH_LIST(FwTable);
 }
+
+PDUForwardingTable::PDUForwardingTable()
+{
+
+}
+
 
 void PDUForwardingTable::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }
+
+
+void PDUForwardingTable::printAll() {
+    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
+
+    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
+    {
+        PDUTableEntry a = *it;
+        EV << this->getFullPath() << " destination: " << a.getDestAddr().getName() << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
+    }
+}
+
+int PDUForwardingTable::lookup(APN destAddr, int QoSid) {
+    //EV << this->getFullPath() << " lookin' up" << endl;
+    for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
+    {
+        PDUTableEntry a = *it;
+        if ((a.getDestAddr().getName() == destAddr.getName()) && a.getQosId() == QoSid)
+        {
+            EV << this->getFullPath() << " found a match: " << a.getPortId() << endl;
+            return a.getPortId();
+        }
+    }
+    return -1;
+}
+
+void PDUForwardingTable::insert(const PDUTableEntry* entry) {
+    Enter_Method("insert()");
+    FwTable.push_back(*entry);
+    //EV << this->getFullPath() << " inserted an item" << endl;
+}
+
+void PDUForwardingTable::remove(int portId)
+{
+    PDUFwIter i = FwTable.begin();
+    while (i != FwTable.end())
+    {
+        if (i->getPortId() == portId)
+        {
+            i = FwTable.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+}
+
+
