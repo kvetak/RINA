@@ -34,62 +34,87 @@ RMT::RMT()
 
 RMT::~RMT()
 {
-
+//    delete inputQueues;
+//    delete outputQueues;
 }
 
-void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu){
-
+void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu)
+{
+    // to be purged
 }
 
 void RMT::initialize() {
 
-    FwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    inputQueues = new RMTQueueList;
+    outputQueues = new RMTQueueList;
 }
 
 
-void RMT::handleMessage(cMessage *msg) {
+void RMT::relayPDU(DataTransferPDU* pdu)
+{
+    //inputQueues->getQueue(portID)->insertPDU(*pdu);;
+    // TODO: invoke monitoring & scheduling policy
+}
 
-    EV << this->getFullPath() << " Received a message." << endl;
+void RMT::multiplexPDU(DataTransferPDU* pdu)
+{
+    std::string pduDestAddr = pdu->getDestAddr().getName();
+    int pduQosId = pdu->getConnId().getQoSId();
 
-    if (msg->isSelfMessage())
+    // forwarding table lookup
+    // TODO: ditch the -1 and make it throw an exception instead
+    int outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+
+    if (outPortId == -1)
     {
-        //
-    }
-    else if (dynamic_cast<DataTransferPDU*>(msg) != NULL)
-    { // should we identify the sender module as well?
-        DataTransferPDU* pdu = (DataTransferPDU*) msg;
-
-        std::string name = pdu->getDestAddr().getName();
-        int qosid = pdu->getConnId().getQoSId();
-
-        EV << this->getFullPath() << " dest address: " << name << "; QoS-id: " << qosid << endl;
-
-
-        if (name == this->getParentModule()->par("ipcAddress").stdstringValue())
-        {
-            // EV << this->getFullPath() << " this goes to my IPC!" << endl;
-            // pass to an EFCP instance
-        }
-        else
-        {
-            //EV << this->getFullPath() << " initating table lookup..." << endl;
-
-            if (FwTable->lookup(pdu->getDestAddr(), qosid) == -1)
-            {
-                EV << this->getFullPath() << " Couldn't find the item in FWTable." << endl;
-                // drop the PDU?
-            }
-            else
-            {
-                // TODO: SDU protection call?
-
-                //send(pdu, "southIo$o[]");
-            }
-        }
+        //EV << this->getFullPath() << " no match in FWTable." << endl;
+        // drop the PDU?
     }
     else
     {
-        EV << this->getFullPath() << " unsupported" << endl;
+        // TODO: optional SDU protection call (when?)
+
+        // TODO: ditch the NULL and make it throw an exception instead
+        RMTQueue* qOut = outputQueues->getQueue(outPortId);
+
+        if (qOut != NULL)
+        {
+            qOut->insertPDU(*pdu);
+            // TODO: invoke monitoring & scheduling policy
+        }
+        else
+        {
+            //EV << " output queue " << outPortId << " not present" << endl;
+        }
+    }
+}
+
+
+void RMT::handleMessage(cMessage *msg)
+{
+    if (msg->isSelfMessage())
+    {
+        // RMT management stuff
+    }
+    else if (dynamic_cast<DataTransferPDU*>(msg) != NULL)
+    {
+        DataTransferPDU* pdu = (DataTransferPDU*) msg;
+        std::string gate = msg->getArrivalGate()->getName();
+
+        if (gate == "southIo$i")
+        {
+            this->relayPDU(pdu);
+        }
+        else if (gate == "efcpIo$i")
+        {
+            this->multiplexPDU(pdu);
+        }
+
+    }
+    else
+    {
+        EV << this->getFullPath() << " message type unsupported" << endl;
     }
 
     delete msg;

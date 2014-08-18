@@ -51,7 +51,7 @@ int PDUForwardingTable::lookup(APN destAddr, int QoSid) {
         PDUTableEntry a = *it;
         if ((a.getDestAddr().getName() == destAddr.getName()) && a.getQosId() == QoSid)
         {
-            EV << this->getFullPath() << " found a match: " << a.getPortId() << endl;
+            //EV << this->getFullPath() << " found a match: " << a.getPortId() << endl;
             return a.getPortId();
         }
     }

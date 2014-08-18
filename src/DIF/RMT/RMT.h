@@ -28,16 +28,26 @@
 
 #include <omnetpp.h>
 #include "APNamingInfo.h"
-#include "PDU.h"
 #include "PDUForwardingTable.h"
 #include "ModuleAccess.h"
 #include "DataTransferPDU_m.h"
+#include "RMTQueueList.h"
+#include "RMTQueue.h"
+#include "ConnectionId.h"
+
+// conn-id:EFCPI-id for local delivery
+typedef std::map<ConnectionId*, int> EFCPIMapping;
 
 class RMT : public cSimpleModule
 {
   private:
-    PDUForwardingTable *FwTable;
+    PDUForwardingTable* fwTable;
+    EFCPIMapping efcpFlows;
+    RMTQueueList* inputQueues;
+    RMTQueueList* outputQueues;
 
+    void relayPDU(DataTransferPDU* pdu);
+    void multiplexPDU(DataTransferPDU* pdu);
 
   public:
     RMT();
@@ -45,6 +55,7 @@ class RMT : public cSimpleModule
 
     /* Just a placeholder -- TO BE DELETED */
     void fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu);
+
 
   protected:
     virtual void initialize();
