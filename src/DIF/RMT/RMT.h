@@ -15,39 +15,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/*
- * @file RMT.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 4, 2014
- * @brief
- * @detail
- */
 
 #ifndef RMT_H_
 #define RMT_H_
 
 #include <omnetpp.h>
+
 #include "APNamingInfo.h"
 #include "PDUForwardingTable.h"
 #include "ModuleAccess.h"
 #include "DataTransferPDU_m.h"
-#include "RMTQueueList.h"
-#include "RMTQueue.h"
 #include "ConnectionId.h"
 
-// conn-id:EFCPI-id for local delivery
-typedef std::map<ConnectionId*, int> EFCPIMapping;
+#include "RMTFlowManager.h"
+#include "RMTFlow.h"
+
+
+//// conn-id:EFCPI-id for local delivery
+//typedef std::map<ConnectionId, int> EFCPIMapping;
+
+typedef std::map<int, int> PortToIntMapping;
 
 class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
-    EFCPIMapping efcpFlows;
-    RMTQueueList* inputQueues;
-    RMTQueueList* outputQueues;
+    RMTFlowManager* flows;
+    PortToIntMapping interfaces;
 
-    void relayPDU(DataTransferPDU* pdu);
-    void multiplexPDU(DataTransferPDU* pdu);
+    void enqueueRelayPDU(DataTransferPDU* pdu);
+    void enqueueMuxPDU(DataTransferPDU* pdu);
+    void runRelay();
+    void runMux();
 
   public:
     RMT();

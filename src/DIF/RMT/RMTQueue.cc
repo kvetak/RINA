@@ -15,40 +15,50 @@
 
 #include "RMTQueue.h"
 
+const int MAXLENGTH = 50;
+const int THRESHLENGTH = 30;
 
 RMTQueue::RMTQueue()
 {
-    EV << "creating a RMTqueue" << endl;
-    this->isActive = true;
+    //EV << "creating a RMTqueue" << endl;
+    this->maxQLength = MAXLENGTH;
+    this->thresholdQLength = THRESHLENGTH;
 }
 
-RMTQueue::RMTQueue(int MaxQLength, int threshQLength, int qLength)
+RMTQueue::RMTQueue(int MaxQLength, int threshQLength)
 {
-    EV << "creating a specified RMTqueue" << endl;
-    this->isActive = true;
+    //EV << "creating a specified RMTqueue" << endl;
+    this->maxQLength = MaxQLength;
+    this->thresholdQLength = threshQLength;
 }
 
 
 RMTQueue::~RMTQueue()
 {
-    EV << "destroying a RMTqueue" << endl;
+    //EV << "destroying a RMTqueue" << endl;
 }
 
-
-void RMTQueue::initialize()
+void RMTQueue::insertPDU(DataTransferPDU* pdu)
 {
-
+    queue.push(pdu);
 }
 
-void RMTQueue::handleMessage(cMessage *msg)
+DataTransferPDU* RMTQueue::popPDU(void)
 {
+    //EV << "popping a PDU" << endl;
+    if (this->getLength() > 0)
+    {
+        DataTransferPDU* ret = queue.front();
+        queue.pop();
+        return ret;
+    }
+    else
+    {
+        return NULL;
+    }
 
 }
 
-void RMTQueue::insertPDU(DataTransferPDU pdu)
-{
-    queue.push_back(pdu);
-}
 
 int RMTQueue::getMaxLength()
 {
@@ -62,7 +72,7 @@ int RMTQueue::getThreshLength()
 
 int RMTQueue::getLength()
 {
-    return qLength;
+    return queue.size();
 }
 
 void RMTQueue::setMaxLength(int val)
@@ -73,24 +83,5 @@ void RMTQueue::setMaxLength(int val)
 void RMTQueue::setThreshLength(int val)
 {
     this->thresholdQLength = val;
-}
-
-void RMTQueue::setLength(int val)
-{
-    this->qLength = val;
-}
-
-bool RMTQueue::qState()
-{
-    return isActive;
-}
-void RMTQueue::suspendQ()
-{
-    this->isActive = false;
-}
-
-void RMTQueue::resumeQ()
-{
-    this->isActive = true;
 }
 

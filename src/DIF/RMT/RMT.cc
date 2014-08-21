@@ -15,17 +15,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/*
- * @file RMT.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 4, 2014
- * @brief
- * @detail
- */
 
 #include <RMT.h>
 
 Define_Module(RMT);
+
+const int PROCESSING_DELAY = 0.0;
 
 RMT::RMT()
 {
@@ -34,8 +29,6 @@ RMT::RMT()
 
 RMT::~RMT()
 {
-//    delete inputQueues;
-//    delete outputQueues;
 }
 
 void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu)
@@ -45,47 +38,106 @@ void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu)
 
 void RMT::initialize() {
 
+    // TODO: interface-to-portID mapping
+
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
-    inputQueues = new RMTQueueList;
-    outputQueues = new RMTQueueList;
+    flows = ModuleAccess<RMTFlowManager>("rmtFlowManager").get();
 }
 
-
-void RMT::relayPDU(DataTransferPDU* pdu)
+// a primitive implementation of queue processing (for now)
+// just iterate through queues and empty all of them in current simTime
+void RMT::runRelay()
 {
-    //inputQueues->getQueue(portID)->insertPDU(*pdu);;
-    // TODO: invoke monitoring & scheduling policy
+    //EV << this->getFullPath() << " emptying input queues." << endl;
+    for(RMTFlowManager::iterator it = flows->begin(); it != flows->end(); ++it)
+    {
+        int gate = it->second->getEfcpiGateId();
+
+        while (it->second->getIncomingLength())
+        {
+            DataTransferPDU* pdu = it->second->popIncomingPDU();
+
+            if (pdu->getDestAddr().getName() !=
+                    this->getParentModule()->getParentModule()->par("ipcAddress").stdstringValue())
+            { // this PDU isn't for us, let's relay it elsewhere
+                this->enqueueMuxPDU(pdu);
+                EV << this->getFullPath() << " relaying a PDU elsewhere (gate " << gate << ")" << endl;
+                continue;
+            }
+            // TODO: any additional inbound processing
+
+            EV << this->getFullPath() << " delivering a PDU to EFCPI (gate " << gate << ")" << endl;
+            //send(pdu, gate);
+
+            delete pdu;
+        }
+    }
 }
 
-void RMT::multiplexPDU(DataTransferPDU* pdu)
+// a primitive implementation of queue processing (for now)
+// just iterate through queues and empty all of them in current simTime
+void RMT::runMux()
+{
+    //EV << this->getFullPath() << " emptying output queues." << endl;
+    for(RMTFlowManager::iterator it = flows->begin(); it != flows->end(); ++it)
+    {
+        int gate = it->second->getSouthGateId();
+
+        while (it->second->getOutgoingLength())
+        {
+            DataTransferPDU* pdu = it->second->popOutgoingPDU();
+
+            // TODO: any additional outbound processing
+
+            EV << this->getFullPath() << " sending a PDU out of gate " << gate << endl;
+            send(pdu, "southIo$o", 0);
+
+            //delete pdu;
+        }
+    }
+}
+
+// processing of messages arriving from (N-1) ports
+void RMT::enqueueRelayPDU(DataTransferPDU* pdu)
+{
+    // TODO: identify CDAP packets and put them in a separate queue
+
+    flows->getFlow(1)->addIncomingPDU(pdu);
+
+    cMessage *selfmsg = new cMessage("processIn");
+    scheduleAt(simTime() + PROCESSING_DELAY, selfmsg);
+}
+
+
+// processing of messages arriving from EFCP instances
+void RMT::enqueueMuxPDU(DataTransferPDU* pdu)
 {
     std::string pduDestAddr = pdu->getDestAddr().getName();
     int pduQosId = pdu->getConnId().getQoSId();
 
     // forwarding table lookup
-    // TODO: ditch the -1 and make it throw an exception instead
     int outPortId = fwTable->lookup(pduDestAddr, pduQosId);
 
+    // TODO: ditch the -1 and make it throw an exception instead
     if (outPortId == -1)
     {
-        //EV << this->getFullPath() << " no match in FWTable." << endl;
-        // drop the PDU?
+        EV << this->getFullPath() << " couldn't find any match in FWTable." << endl;
+        delete pdu;
     }
     else
     {
-        // TODO: optional SDU protection call (when?)
-
-        // TODO: ditch the NULL and make it throw an exception instead
-        RMTQueue* qOut = outputQueues->getQueue(outPortId);
+        RMTFlow* qOut = flows->getFlow(outPortId);
 
         if (qOut != NULL)
         {
-            qOut->insertPDU(*pdu);
-            // TODO: invoke monitoring & scheduling policy
+            qOut->addOutgoingPDU(pdu);
+
+            cMessage *selfmsg = new cMessage("processOut");
+            scheduleAt(simTime() + PROCESSING_DELAY, selfmsg);
         }
         else
         {
-            //EV << " output queue " << outPortId << " not present" << endl;
+            // this shouldn't happen (RA's fault)
         }
     }
 }
@@ -94,28 +146,36 @@ void RMT::multiplexPDU(DataTransferPDU* pdu)
 void RMT::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
-    {
-        // RMT management stuff
+    { // scheduled PDU processing
+        std::string msgtype = msg->getName();
+
+        if (msgtype == "processOut")
+        {
+            this->runMux();
+        }
+        else if (msgtype == "processIn")
+        {
+            this->runRelay();
+        }
+        delete msg;
     }
     else if (dynamic_cast<DataTransferPDU*>(msg) != NULL)
-    {
+    { // PDU arrival
         DataTransferPDU* pdu = (DataTransferPDU*) msg;
         std::string gate = msg->getArrivalGate()->getName();
 
         if (gate == "southIo$i")
         {
-            this->relayPDU(pdu);
+            this->enqueueRelayPDU(pdu);
         }
-        else if (gate == "efcpIo$i")
+        else if ((gate == "efcpIo$i") || (gate == "ribdIo$i"))
         {
-            this->multiplexPDU(pdu);
+            this->enqueueMuxPDU(pdu);
         }
-
     }
     else
     {
-        EV << this->getFullPath() << " message type unsupported" << endl;
+        EV << this->getFullPath() << " message type not supported" << endl;
+        delete msg;
     }
-
-    delete msg;
 }

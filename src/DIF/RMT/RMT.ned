@@ -19,7 +19,7 @@ simple RMT
 {
     @display("i=block/classifier");
     gates:
-        //inout efcpIo[];
+        inout efcpIo[];
         inout southIo[];
         inout ribdIo;
 }

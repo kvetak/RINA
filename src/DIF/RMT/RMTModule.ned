@@ -15,10 +15,25 @@
 
 package rina.DIF.RMT;
 
-//
-// TODO auto-generated module
-//
-simple RMTPortList 
+module RMTModule
 {
-    @display("i=block/table2");    
+    @display("i=block/classifier;bgb=240,113");
+    gates:
+        inout southIo[];
+        inout efcpIo[];
+        inout ribdIo;
+
+    submodules:
+        rmt: RMT {
+            @display("p=55,55");
+        }
+        rmtFlowManager: RMTFlowManager {
+            @display("p=147,55");
+        }
+
+
+    connections allowunconnected:
+        southIo++ <--> rmt.southIo++;        
+        ribdIo <--> rmt.ribdIo;
+        //efcpIo++ <--> rmt.efcpIo++;
 }

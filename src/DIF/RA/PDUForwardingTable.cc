@@ -40,7 +40,8 @@ void PDUForwardingTable::printAll() {
     for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
     {
         PDUTableEntry a = *it;
-        EV << this->getFullPath() << " destination: " << a.getDestAddr().getName() << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
+        EV << this->getFullPath() << " destination: " << a.getDestAddr().getName()
+                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
     }
 }
 

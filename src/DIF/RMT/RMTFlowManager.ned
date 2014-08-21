@@ -14,21 +14,11 @@
 // 
 
 package rina.DIF.RMT;
-import ned.IBidirectionalChannel;
-
 
 //
-// TODO documentation
+// TODO auto-generated module
 //
-module RMTModule
+simple RMTFlowManager
 {
-    @display("i=block/layer");
-    submodules:
-        rmt: RMT {
-            @display("p=59,68");
-        }
-        rmtPortList: RMTPortList {
-            @display("p=168,68");
-        }
+    @display("i=block/subqueue");
 }
-

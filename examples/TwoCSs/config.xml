@@ -9,7 +9,7 @@
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="App2"	qosId="1"	portId="1"/>
+				<FwTableItem dest="2"	qosId="1"	portId="1"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>
@@ -22,7 +22,7 @@
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="App1"	qosId="2"	portId="2"/>
+				<FwTableItem dest="1"	qosId="2"	portId="2"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>

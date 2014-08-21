@@ -22,7 +22,7 @@ import rina.DIF.Enrollment.Enrollment;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RA.ResourceAllocator;
 import rina.DIF.RIB.RIBDaemon;
-import rina.DIF.RMT.RMT;
+import rina.DIF.RMT.RMTModule;
 
 
 module IPCProcess
@@ -39,7 +39,7 @@ module IPCProcess
             @display("p=90,61");
             //numOfAPs = numOfAPs;
         }
-        rmt: RMT {
+        rmt: RMTModule {
             @display("p=90,249");
         }
         ribDaemon: RIBDaemon {
@@ -61,4 +61,5 @@ module IPCProcess
     connections allowunconnected:
         rmt.ribdIo <--> ribDaemon.rmtIo;
         rmt.southIo++ <--> southIo++;
+        //rmt.efcpIo++ <--> efcp.rmtIo++
 }

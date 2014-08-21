@@ -13,32 +13,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTQUEUELIST_H_
-#define __RINA_RMTQUEUELIST_H_
+#ifndef __RINA_RMTFLOWMANAGER_H_
+#define __RINA_RMTFLOWMANAGER_H_
 
 #include <omnetpp.h>
 
-#include "RMTQueue.h"
+#include "RMTFlow.h"
 
-typedef std::map<int, RMTQueue*>  RMTQueues;
+typedef std::map<int, RMTFlow*>  RMTFlows;
 
-class RMTQueueList : public cSimpleModule
+class RMTFlowManager : public cSimpleModule
 {
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   public:
-      RMTQueueList();
-      virtual ~RMTQueueList();
+    RMTFlowManager();
+    virtual ~RMTFlowManager();
 
-      RMTQueue* getQueue(int portId);
-      void addQueue(int portId);
-      void removeQueue(int portId);
+    typedef RMTFlows::iterator iterator;
+    iterator begin();
+    iterator end();
+
+    RMTFlow* getRibFlow();
+
+    // identifiers shared with corresponding EFCP instances
+    RMTFlow* getFlow(int portId);
+    void addFlow(int portId);
+    void removeFlow(int portId);
+
   private:
-      RMTQueues queueList;
+    RMTFlows flows;
+    // dedicated management flow
+    RMTFlow* ribFlow;
 };
 
 #endif
-
-

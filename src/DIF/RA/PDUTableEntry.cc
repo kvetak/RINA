@@ -31,9 +31,8 @@ PDUTableEntry::~PDUTableEntry()
 
 std::string PDUTableEntry::info() const {
     std::stringstream os;
-    os << "dest:\t" << destAddr.getName() << endl
-       << "qos-id:\t" << qosId << endl
-       << "port-id:\t" << portId << endl;
+    os << "dest: " << destAddr.getName() << "; qos-id: " << qosId
+       << "; port-id: " << portId;
     return os.str();
 }
 

@@ -17,46 +17,38 @@
 #define __RINA_RMTQUEUE_H_
 
 #include <omnetpp.h>
+#include <queue>
 
 #include "PDU.h"
 #include "DataTransferPDU_m.h"
 
 class RMTQueue
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
   public:
     RMTQueue();
-    RMTQueue(int MaxQLength, int threshQLength, int qLength);
+    RMTQueue(int MaxQLength, int threshQLength);
     virtual ~RMTQueue();
 
-    void insertPDU(DataTransferPDU pdu);
-    void sendFirst();
-    void sendLast();
+    void insertPDU(DataTransferPDU* pdu);
+    DataTransferPDU* popPDU();
 
     int getMaxLength();
     int getThreshLength();
     int getLength();
 
+    int getGateId();
+    void setGate(int gate);
+
     void setMaxLength(int value);
     void setThreshLength(int value);
-    void setLength(int value);
-
-    // only needed for output queues, might separate this in the future
-    bool qState();
-    void suspendQ();
-    void resumeQ();
 
   private:
-    std::vector<PDU> queue;
+    std::queue<DataTransferPDU*> queue;
+
     int maxQLength;
     int thresholdQLength;
-    int qLength;
 
-    // only needed for output queues as well
-    bool isActive;
+    int gateId;
 };
 
 #endif
