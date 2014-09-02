@@ -1,5 +1,5 @@
 //
-// Generated file, do not edit! Created by opp_msgc 4.5 from Common/PDU.msg.
+// Generated file, do not edit! Created by opp_msgc 4.4 from Common/PDU.msg.
 //
 
 // Disable warnings about unused variables, empty switch stmts, etc:
@@ -14,6 +14,9 @@
 
 USING_NAMESPACE
 
+// Template rule which fires if a struct or class doesn't have operator<<
+template<typename T>
+std::ostream& operator<<(std::ostream& out,const T&) {return out;}
 
 // Another default rule (prevents compiler from choosing base class' doPacking())
 template<typename T>
@@ -28,30 +31,6 @@ void doUnpacking(cCommBuffer *, T& t) {
 
 
 
-
-// Template rule for outputting std::vector<T> types
-template<typename T, typename A>
-inline std::ostream& operator<<(std::ostream& out, const std::vector<T,A>& vec)
-{
-    out.put('{');
-    for(typename std::vector<T,A>::const_iterator it = vec.begin(); it != vec.end(); ++it)
-    {
-        if (it != vec.begin()) {
-            out.put(','); out.put(' ');
-        }
-        out << *it;
-    }
-    out.put('}');
-    
-    char buf[32];
-    sprintf(buf, " (size=%u)", (unsigned int)vec.size());
-    out.write(buf, strlen(buf));
-    return out;
-}
-
-// Template rule which fires if a struct or class doesn't have operator<<
-template<typename T>
-inline std::ostream& operator<<(std::ostream& out,const T&) {return out;}
 
 EXECUTE_ON_STARTUP(
     cEnum *e = cEnum::find("PDUType");
@@ -484,12 +463,18 @@ const char *PDUDescriptor::getFieldStructName(void *object, int field) const
             return basedesc->getFieldStructName(object, field);
         field -= basedesc->getFieldCount(object);
     }
-    switch (field) {
-        case 1: return opp_typename(typeid(APN));
-        case 2: return opp_typename(typeid(APN));
-        case 3: return opp_typename(typeid(ConnectionId));
-        default: return NULL;
+    static const char *fieldStructNames[] = {
+        NULL,
+        "APN",
+        "APN",
+        "ConnectionId",
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
     };
+    return (field>=0 && field<9) ? fieldStructNames[field] : NULL;
 }
 
 void *PDUDescriptor::getFieldStructPointer(void *object, int field, int i) const
