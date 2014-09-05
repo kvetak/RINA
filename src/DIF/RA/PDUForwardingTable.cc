@@ -40,23 +40,23 @@ void PDUForwardingTable::printAll() {
     for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
     {
         PDUTableEntry a = *it;
-        EV << this->getFullPath() << " destination: " << a.getDestAddr().getName()
+        EV << this->getFullPath() << " destination: " << a.getDestAddr()
                 << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
     }
 }
 
-int PDUForwardingTable::lookup(APN destAddr, int QoSid) {
-    //EV << this->getFullPath() << " lookin' up" << endl;
+int PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
     for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
     {
         PDUTableEntry a = *it;
-        if ((a.getDestAddr().getName() == destAddr.getName()) && a.getQosId() == QoSid)
+        if ((a.getDestAddr() == destAddr) && a.getQosId() == QoSid)
         {
             //EV << this->getFullPath() << " found a match: " << a.getPortId() << endl;
             return a.getPortId();
         }
     }
-    return -1;
+
+    throw;
 }
 
 void PDUForwardingTable::insert(const PDUTableEntry* entry) {

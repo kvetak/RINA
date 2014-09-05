@@ -13,40 +13,45 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTFLOWMANAGER_H_
-#define __RINA_RMTFLOWMANAGER_H_
+#ifndef __RINA_RMTPORT_H_
+#define __RINA_RMTPORT_H_
 
 #include <omnetpp.h>
 
-#include "RMTFlow.h"
+#include "RMTQueue.h"
 
-typedef std::map<int, RMTFlow*>  RMTFlows;
-
-class RMTFlowManager : public cSimpleModule
+// representation of a (N-1)-port & its corresponding queues
+class RMTPort
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
   public:
-    RMTFlowManager();
-    virtual ~RMTFlowManager();
+    RMTPort();
+    virtual ~RMTPort();
 
-    typedef RMTFlows::iterator iterator;
-    iterator begin();
-    iterator end();
+    // connection with a EFCP instance
+    void setEfcpiGate(cGate* val);
+    cGate* getEfcpiGate();
 
-    RMTFlow* getRibFlow();
+    // output queue write supression
+    bool outboundState();
+    void suspendOutbound();
+    void resumeOutbound();
 
-    // identifiers shared with corresponding EFCP instances
-    RMTFlow* getFlow(int portId);
-    void addFlow(int portId);
-    void removeFlow(int portId);
+    int getIncomingLength();
+    int getOutgoingLength();
+
+    void addIncomingPDU(PDU_Base* pdu);
+    void addOutgoingPDU(PDU_Base* pdu);
+
+    PDU_Base* popIncomingPDU();
+    PDU_Base* popOutgoingPDU();
 
   private:
-    RMTFlows flows;
-    // dedicated management flow
-    RMTFlow* ribFlow;
+    RMTQueue inQ;
+    RMTQueue outQ;
+
+    cGate* efcpiGate;
+
+    bool outboundActive;
 };
 
 #endif

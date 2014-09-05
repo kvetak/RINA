@@ -32,9 +32,9 @@ module InteriorRouter
             @display("p=205,145");
         }
         ipcProcess0: IPCProcess {
-            @display("p=135,48;i=,#FFB000");
+            @display("p=135,48;i=,#FFB000");            
         }
-    connections:
+    connections allowunconnected:
         //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
         //ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
         ipcProcess1.southIo++ <--> medium++;

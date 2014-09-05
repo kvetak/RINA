@@ -20,7 +20,7 @@ Define_Module(PDUFwdTabGenerator);
 
 void PDUFwdTabGenerator::initialize()
 {
-    FwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
 
     cXMLElement* dirXml = par("PDUFwData").xmlValue();
     cXMLElementList map = dirXml->getChildrenByTagName("FwTableItem");
@@ -32,9 +32,9 @@ void PDUFwdTabGenerator::initialize()
         int qosid = atoi(m->getAttribute("qosId"));
         int portid = atoi(m->getAttribute("portId"));
 
-        this->insertFwEntry(APN(m->getAttribute("dest")), qosid, portid);
+        this->insertFwEntry(m->getAttribute("dest"), qosid, portid);
     }
-    //FwTable->printAll();
+    //fwTable->printAll();
 }
 
 void PDUFwdTabGenerator::handleMessage(cMessage *msg)
@@ -43,11 +43,11 @@ void PDUFwdTabGenerator::handleMessage(cMessage *msg)
 }
 
 void PDUFwdTabGenerator::removeFwEntry(int portId) {
-    FwTable->remove(portId);
+    fwTable->remove(portId);
 }
 
-void PDUFwdTabGenerator::insertFwEntry(APN destAddr, const int qosId, const int portId)
+void PDUFwdTabGenerator::insertFwEntry(std::string destAddr, const int qosId, int portId)
 {
     PDUTableEntry *ret = new PDUTableEntry(destAddr, qosId, portId);
-    FwTable->insert(ret);
+    fwTable->insert(ret);
 }

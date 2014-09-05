@@ -24,33 +24,45 @@
 #include "APNamingInfo.h"
 #include "PDUForwardingTable.h"
 #include "ModuleAccess.h"
-#include "DataTransferPDU_m.h"
+#include "PDU_m.h"
+#include "CDAPMessage_m.h"
 #include "ConnectionId.h"
 
-#include "RMTFlowManager.h"
-#include "RMTFlow.h"
+#include "RMTPortManager.h"
+#include "RMTPort.h"
 
-
-//// conn-id:EFCPI-id for local delivery
-//typedef std::map<ConnectionId, int> EFCPIMapping;
-
-typedef std::map<int, int> PortToIntMapping;
+typedef std::map<int, cGate*> southMapping;
+typedef std::map<int, cGate*> efcpiMapping;
 
 class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
-    RMTFlowManager* flows;
-    PortToIntMapping interfaces;
 
-    void enqueueRelayPDU(DataTransferPDU* pdu);
-    void enqueueMuxPDU(DataTransferPDU* pdu);
-    void runRelay();
-    void runMux();
+    southMapping intGates;
+    efcpiMapping efcpiGates;
+
+    std::string processName;
+    bool relayOn;
+
+    void createEfcpiGate(int efcpiId);
+    void deleteEfcpiGate(int efcpiId);
+
+//    RMTPortManager* ports;
+
+//    void enqueueRelayPDU(PDU_Base* pdu);
+//    void enqueueMuxPDU(PDU_Base* pdu);
+//    void runRelay();
+//    void runMux();
+
+    void sendDown(PDU_Base* pdu);
+    void sendUp(PDU_Base* pdu);
 
   public:
     RMT();
     virtual ~RMT();
+
+    bool relayStatus();
 
     /* Just a placeholder -- TO BE DELETED */
     void fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu);

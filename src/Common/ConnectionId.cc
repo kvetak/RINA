@@ -73,4 +73,23 @@ ConnectionId *ConnectionId::dup() const{
 }
 
 
+bool ConnectionId::operator<(const ConnectionId other) const
+{
+    if (qoSId < other.qoSId)  return true;
+    if (qoSId > other.qoSId)  return false;
+
+    if (destCEPId < other.destCEPId)  return true;
+    if (destCEPId > other.destCEPId)  return false;
+
+    if (srcCEPId < other.srcCEPId)  return true;
+    if (srcCEPId > other.srcCEPId)  return false;
+
+    return false;
+}
+
+bool ConnectionId::operator==(const ConnectionId other) const
+{
+    return ((qoSId == other.qoSId) && (destCEPId == other.destCEPId)
+            && (srcCEPId < other.srcCEPId));
+}
 

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Router id="router1"><RA><PDUFwdTabGenerator>
+		<FwTableItem dest="5"	qosId="2"	portId="2"/>
+	</PDUFwdTabGenerator></RA></Router>
+	
+	<Router id="router2"><RA><PDUFwdTabGenerator>
+		<FwTableItem dest="5"	qosId="1"	portId="0"/>
+	</PDUFwdTabGenerator></RA></Router>
+	
+</Configuration>

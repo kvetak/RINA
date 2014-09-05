@@ -19,7 +19,7 @@ PDUTableEntry::PDUTableEntry()
 {
 }
 
-PDUTableEntry::PDUTableEntry(APN destaddr, int qosid, int portid)
+PDUTableEntry::PDUTableEntry(std::string destaddr, int qosid, int portid)
 :  destAddr(destaddr), qosId(qosid), portId(portid)
 {
 }
@@ -31,8 +31,8 @@ PDUTableEntry::~PDUTableEntry()
 
 std::string PDUTableEntry::info() const {
     std::stringstream os;
-    os << "dest: " << destAddr.getName() << "; qos-id: " << qosId
-       << "; port-id: " << portId;
+    os << "dest: " << destAddr << endl << "qos-id: " << qosId << endl \
+       << "; port-id: " << portId << endl;
     return os.str();
 }
 
@@ -40,7 +40,7 @@ std::ostream& operator <<(std::ostream& os, const PDUTableEntry& cte) {
     return os << cte.info();
 }
 
-APN PDUTableEntry::getDestAddr()
+std::string PDUTableEntry::getDestAddr()
 {
     return destAddr;
 }
@@ -55,7 +55,7 @@ int PDUTableEntry::getPortId()
     return portId;
 }
 
-void PDUTableEntry::setDestAddr(APN destaddr)
+void PDUTableEntry::setDestAddr(std::string destaddr)
 {
     this->destAddr = destaddr;
 }

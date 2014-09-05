@@ -20,30 +20,30 @@
 #include <vector>
 
 #include <omnetpp.h>
-#include <APN.h>
+#include "ConnectionTable.h"
 
 
 class PDUTableEntry
 {
   private:
-    APN destAddr;
+    std::string destAddr;
     int qosId;
     int portId;
 
   public:
     PDUTableEntry();
-    PDUTableEntry(APN destaddr, int qosid, int portid);
+    PDUTableEntry(std::string destaddr, int qosid, int portid);
     virtual ~PDUTableEntry();
 
     std::string info() const;
 
-    APN getDestAddr();
+    std::string getDestAddr();
     int getQosId();
     int getPortId();
 
-    void setDestAddr(APN destaddr);
+    void setDestAddr(std::string destaddr);
     void setQosId(int qosid);
-    void setPortId(int portid);
+    void setPortId(int portId);
 
 };
 

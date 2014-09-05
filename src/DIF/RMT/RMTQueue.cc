@@ -38,17 +38,17 @@ RMTQueue::~RMTQueue()
     //EV << "destroying a RMTqueue" << endl;
 }
 
-void RMTQueue::insertPDU(DataTransferPDU* pdu)
+void RMTQueue::insertPDU(PDU_Base* pdu)
 {
     queue.push(pdu);
 }
 
-DataTransferPDU* RMTQueue::popPDU(void)
+PDU_Base* RMTQueue::popPDU(void)
 {
     //EV << "popping a PDU" << endl;
     if (this->getLength() > 0)
     {
-        DataTransferPDU* ret = queue.front();
+        PDU_Base* ret = queue.front();
         queue.pop();
         return ret;
     }

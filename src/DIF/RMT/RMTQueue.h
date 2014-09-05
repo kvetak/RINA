@@ -29,26 +29,22 @@ class RMTQueue
     RMTQueue(int MaxQLength, int threshQLength);
     virtual ~RMTQueue();
 
-    void insertPDU(DataTransferPDU* pdu);
-    DataTransferPDU* popPDU();
+    void insertPDU(PDU_Base* pdu);
+    PDU_Base* popPDU();
 
     int getMaxLength();
     int getThreshLength();
     int getLength();
 
-    int getGateId();
-    void setGate(int gate);
-
     void setMaxLength(int value);
     void setThreshLength(int value);
 
   private:
-    std::queue<DataTransferPDU*> queue;
+    std::queue<PDU_Base*> queue;
 
     int maxQLength;
     int thresholdQLength;
 
-    int gateId;
 };
 
 #endif

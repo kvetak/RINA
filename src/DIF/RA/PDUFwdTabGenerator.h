@@ -20,7 +20,9 @@
 
 #include "PDUForwardingTable.h"
 #include "ModuleAccess.h"
-#include "APN.h"
+#include "ConnectionId.h"
+#include "RMT.h"
+
 
 /**
  * TODO - Generated class
@@ -32,9 +34,9 @@ class PDUFwdTabGenerator : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
   public:
     void removeFwEntry(int portId);
-    void insertFwEntry(APN destAddr, const int qosId, const int portId);
+    void insertFwEntry(std::string destAddr, const int qosId, int portId);
   private:
-    PDUForwardingTable *FwTable;
+    PDUForwardingTable* fwTable;
 };
 
 #endif

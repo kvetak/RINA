@@ -43,6 +43,8 @@ public:
     unsigned int getSrcCepId() const;
     void setSrcCepId(unsigned int srcCepId);
 
+    bool operator<(const ConnectionId other) const;
+    bool operator==(const ConnectionId other) const;
 
     virtual ConnectionId *dup() const;
     QosCube* getQosCube();

@@ -17,7 +17,8 @@
 #define __RINA_PDUFORWARDINGTABLE_H_
 
 #include <omnetpp.h>
-#include "APN.h"
+#include "ConnectionId.h"
+
 #include "PDUForwardingTable.h"
 #include "PDUTableEntry.h"
 
@@ -36,7 +37,7 @@ class PDUForwardingTable : public cSimpleModule
   public:
     PDUForwardingTable();
     void printAll();
-    int lookup(APN destAddr, int QoSid);
+    int lookup(std::string destAddr, int QoSid);
     void insert(const PDUTableEntry* entry);
     void remove(int portId);
 };

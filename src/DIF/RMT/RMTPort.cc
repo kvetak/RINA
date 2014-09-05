@@ -13,80 +13,71 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RMTFlow.h"
+#include "RMTPort.h"
 
 
-RMTFlow::RMTFlow()
+RMTPort::RMTPort()
 {
 
 }
 
-RMTFlow::~RMTFlow()
+RMTPort::~RMTPort()
 {
 
 }
 
-bool RMTFlow::outboundState()
+bool RMTPort::outboundState()
 {
     return outboundActive;
 }
-void RMTFlow::suspendOutbound()
+void RMTPort::suspendOutbound()
 {
     this->outboundActive = false;
 }
 
-void RMTFlow::resumeOutbound()
+void RMTPort::resumeOutbound()
 {
     this->outboundActive = true;
 }
 
 
-void RMTFlow::setEfcpiGateId(int val)
+void RMTPort::setEfcpiGate(cGate* val)
 {
-    this->efcpId = val;
+    this->efcpiGate = val;
 }
 
-int RMTFlow::getEfcpiGateId()
+cGate* RMTPort::getEfcpiGate()
 {
-    return this->efcpId;
+    return this->efcpiGate;
 }
 
-void RMTFlow::setSouthGateId(int val)
-{
-    this->outGateId = val;
-}
 
-int RMTFlow::getSouthGateId()
-{
-    return this->outGateId;
-}
-
-void RMTFlow::addIncomingPDU(DataTransferPDU* pdu)
+void RMTPort::addIncomingPDU(PDU_Base* pdu)
 {
     inQ.insertPDU(pdu);
 }
 
-void RMTFlow::addOutgoingPDU(DataTransferPDU* pdu)
+void RMTPort::addOutgoingPDU(PDU_Base* pdu)
 {
     outQ.insertPDU(pdu);
 }
 
-DataTransferPDU* RMTFlow::popIncomingPDU()
+PDU_Base* RMTPort::popIncomingPDU()
 {
     return inQ.popPDU();
 }
 
-DataTransferPDU* RMTFlow::popOutgoingPDU()
+PDU_Base* RMTPort::popOutgoingPDU()
 {
     return outQ.popPDU();
 }
 
-int RMTFlow::getIncomingLength()
+int RMTPort::getIncomingLength()
 {
     return inQ.getLength();
 }
 
-int RMTFlow::getOutgoingLength()
+int RMTPort::getOutgoingLength()
 {
     return outQ.getLength();
 }
