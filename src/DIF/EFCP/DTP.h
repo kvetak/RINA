@@ -28,6 +28,8 @@
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 
+
+#define DTP_MODULE_NAME "dtp"
 //#include "FA.h" //or FlowAllocatorFactory
 #include "RMT.h"
 

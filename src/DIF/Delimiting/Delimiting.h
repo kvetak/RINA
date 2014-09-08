@@ -27,6 +27,8 @@
 
 #include <csimplemodule.h>
 
+#define DELIMITING_MODULE_NAME "delimiting"
+
 class Delimiting : public cSimpleModule
 {
   public:

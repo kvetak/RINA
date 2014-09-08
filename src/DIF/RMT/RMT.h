@@ -64,8 +64,6 @@ class RMT : public cSimpleModule
 
     bool relayStatus();
 
-    /* Just a placeholder -- TO BE DELETED */
-    void fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu);
 
 
   protected:

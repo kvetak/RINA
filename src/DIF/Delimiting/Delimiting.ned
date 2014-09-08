@@ -22,6 +22,6 @@ simple Delimiting
     
     gates:
         inout efcpModuleIo;
-        inout efcpiIo[];
+        inout efcpiIo[1];
         
 }
