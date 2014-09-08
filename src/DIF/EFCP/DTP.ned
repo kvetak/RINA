@@ -24,6 +24,6 @@ simple DTP
 {
     @display("i=block/layer");
     gates:
-        inout efcpIo;
+        inout efcpiIo; //towards Delimiting
         inout rmtIo;
 }

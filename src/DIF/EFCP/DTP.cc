@@ -408,7 +408,8 @@ void DTP::trySendGenPDUs()
       std::vector<PDU*>::iterator it;
       for (it = postablePDUs.begin(); it != postablePDUs.end();){
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
-        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
+        //TODO A! change to send using omnet messages
+//        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
         it = postablePDUs.erase(it);
       }
 
@@ -420,8 +421,9 @@ void DTP::trySendGenPDUs()
     for (it = postablePDUs.begin(); it != postablePDUs.end();){
       //TODO A! Where do I get destAddr? Probably from FlowAllocator
       APNamingInfo* apn = new APNamingInfo();
-      rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
-      rmt->fromDTPToRMT(apn, 1, (*it));
+      //TODO A! change to send using omnet messages
+//      rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
+//      rmt->fromDTPToRMT(apn, 1, (*it));
       it = postablePDUs.erase(it);
     }
   }
@@ -795,8 +797,8 @@ bool DTP::runSendingAckPolicy(ATimer* timer){
 }
 
 void DTP::sendToRMT(PDU* pdu){
-
-  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
+  //TODO A! change to send using omnet messages
+//  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
 }
 
 unsigned int DTP::getRxTime(){
@@ -815,8 +817,9 @@ unsigned int DTP::getAllowableGap(){
    * I will have to change it only in one place.
    */
 
-
-  return connId.getQosCube()->getMaxAllowGap();
+  //TODO A! find QoSCube
+//  return connId.getQosCube()->getMaxAllowGap();
+  return 4;
 }
 
 

@@ -30,10 +30,7 @@ RMT::~RMT()
 {
 }
 
-void RMT::fromDTPToRMT(APNamingInfo* destAddr, unsigned int qosId, PDU *pdu)
-{
-    // to be purged
-}
+
 
 void RMT::initialize() {
 

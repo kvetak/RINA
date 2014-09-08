@@ -17,23 +17,24 @@
 
 package rina.DIF.EFCP;
 
+
+
+
 //
 // TODO auto-generated type
 //
 module EFCPI
 {
-    @display("i=block/layer");
+    @display("i=block/layer;bgb=517,232");
     gates:
-        inout delimitIo;
+        inout delToEfcpiIo;
         inout rmtIo;
     submodules:
-        dtcp: DTCP {
-            @display("p=349,101");
-        }
         dtp: DTP {
-            @display("p=146,86");
+            @display("p=148,116");
         }
-    connections:
-        dtp.efcpIo <--> delimitIo;
+    connections allowunconnected:
+        dtp.efcpiIo <--> delToEfcpiIo;
         dtp.rmtIo <--> rmtIo;
+
 }

@@ -28,8 +28,9 @@
 #include "DTP.h"
 #include "DTCP.h"
 
-class DTP;
-class DTCP;
+//class DTP;
+//class DTCP;
+
 class EFCPInstance
 {
   private:
