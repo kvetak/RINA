@@ -39,7 +39,7 @@ EFCP::~EFCP() {
 
 
 EFCPInstance* EFCP::createEFCPI(Flow* flow){
-
+  Enter_Method("createEFCPI()");
   EFCPInstance* efcpi = new EFCPInstance();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
@@ -122,15 +122,20 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   //TODO A! Connect modules
 
-  std::ostringstream gateName_str;
-  gateName_str << "efcpiToEfcpM_" << flow->getConId().getSrcCepId();
 
+
+
+
+  /* Connect EFCPi module with delimiting */
   int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
   tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
 //  delToEfcp->size();
 
   cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::INPUT, size);
   cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::OUTPUT, size);
+
+  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::INPUT);
+  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
 
 
 //  cModule* efcpModule = this->getParentModule();
@@ -162,10 +167,20 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 //  gateDelimitToFAI->connectTo()
 
 
+  /* Create gate in EFCPModule */
+  std::ostringstream gateName_str;
+  gateName_str << "fai_" << flow->getConId().getSrcCepId();
+
+    cModule* efcpModule = this->getParentModule();
+    efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
+    cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
+    cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
 
 
-
+    /* Connect Delimiting with compound module's gates */
+    delToFaO->connectTo(efcpToFaO);
+    delToFaI->connectTo(efcpToFaI);
   return efcpi;
 }
 
