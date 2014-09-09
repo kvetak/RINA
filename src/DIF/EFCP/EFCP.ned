@@ -21,7 +21,6 @@ simple EFCP
 
         @display("i=block/fork");
         
-    gates:
-        inout rmtIo;
+
         
 }

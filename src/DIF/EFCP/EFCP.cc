@@ -166,21 +166,33 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 //  gateDelimitToFAI->connectTo(gateFAIToDelimit);
 //  gateDelimitToFAI->connectTo()
 
-
-  /* Create gate in EFCPModule */
+  /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
   gateName_str << "fai_" << flow->getConId().getSrcCepId();
 
-    cModule* efcpModule = this->getParentModule();
-    efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
-    cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
-    cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
+  cModule* efcpModule = this;
+  efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
+  cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
+  cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
+  /* Connect Delimiting with compound module's gates */
+  delToFaO->connectTo(efcpToFaO);
+  efcpToFaI->connectTo(delToFaI);
 
+  /* Create gate in EFCPModule for EFCPi <--> RMT */
+  gateName_str.str(std::string());
+  gateName_str << "rmt_" << flow->getConId().getSrcCepId();
+  efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
 
-    /* Connect Delimiting with compound module's gates */
-    delToFaO->connectTo(efcpToFaO);
-    delToFaI->connectTo(efcpToFaI);
+  cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
+  cGate* efcpToEfcpiO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
+
+  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::INPUT);
+  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::OUTPUT);
+
+  efcpiToRmtO->connectTo(efcpToEfcpiO);
+  efcpToEfcpiI->connectTo(efcpiToRmtI);
+
   return efcpi;
 }
 

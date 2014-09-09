@@ -239,6 +239,55 @@ bool FAI::createBindings() {
     bool status = g2o->isConnected() && g2i->isConnected() &&
                   g3o->isConnected() && g3i->isConnected();
 
+    /******************************/
+    //
+    std::ostringstream nam15;
+    nam15 << "efcpIo_" << portId;
+    FAModule->addGate(nam15.str().c_str(), cGate::INOUT, false);
+    cGate* g15i = FAModule->gateHalf(nam15.str().c_str(), cGate::INPUT);
+    cGate* g15o = FAModule->gateHalf(nam15.str().c_str(), cGate::OUTPUT);
+
+    std::ostringstream nam5;
+    nam5 << "fai_" << this->getFlow()->getConId().getSrcCepId();
+//    this->addGate(nam5.str().c_str(), cGate::INOUT, false);
+    cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
+    cGate* g5i = efcpModule->gateHalf(nam5.str().c_str(), cGate::INPUT);
+    cGate* g5o = efcpModule->gateHalf(nam5.str().c_str(), cGate::OUTPUT);
+
+    g1o->connectTo(g15o);
+    g15o->connectTo(g5i);
+
+    g15i->connectTo(g1i);
+    g5o->connectTo(g15i);
+
+    /******************************/
+
+
+    /* Create bindings in RMT */
+
+    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
+    rmtModule->createEfcpiGate(this->getFlow()->getConId().getSrcCepId());
+    std::ostringstream nam6;
+    nam6 << "efcpIo_" << this->getFlow()->getConId().getSrcCepId();
+    cGate* g6i = rmtModule->getParentModule()->gateHalf(nam6.str().c_str(), cGate::INPUT);
+    cGate* g6o = rmtModule->getParentModule()->gateHalf(nam6.str().c_str(), cGate::OUTPUT);
+
+
+
+
+    std::ostringstream nam7;
+    nam7 << "rmt_" << this->getFlow()->getConId().getSrcCepId();
+    cGate* g7i = efcpModule->gateHalf(nam7.str().c_str(), cGate::INPUT);
+    cGate* g7o = efcpModule->gateHalf(nam7.str().c_str(), cGate::OUTPUT);
+
+
+
+    g6o->connectTo(g7i);
+    g7o->connectTo(g6i);
+
+
+
+
     return status;
 }
 

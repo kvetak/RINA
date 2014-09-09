@@ -71,7 +71,7 @@ bool RMT::relayStatus()
     return relayOn;
 }
 
-void RMT::createEfcpiGate(int efcpiId)
+void RMT::createEfcpiGate(unsigned int efcpiId)
 {
     if (efcpiGates.count(efcpiId))
     {

@@ -45,7 +45,7 @@ class RMT : public cSimpleModule
     std::string processName;
     bool relayOn;
 
-    void createEfcpiGate(int efcpiId);
+
     void deleteEfcpiGate(int efcpiId);
 
 //    RMTPortManager* ports;
@@ -59,6 +59,9 @@ class RMT : public cSimpleModule
     void sendUp(PDU_Base* pdu);
 
   public:
+
+    void createEfcpiGate(unsigned int efcpiId);
+
     RMT();
     virtual ~RMT();
 
