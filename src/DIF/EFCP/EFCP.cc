@@ -40,11 +40,11 @@ EFCP::~EFCP() {
 
 EFCPInstance* EFCP::createEFCPI(Flow* flow){
   Enter_Method("createEFCPI()");
+
+
   EFCPInstance* efcpi = new EFCPInstance();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-//  std::ostringstream ostr;
-//      ostr << "test";
   cModule* efcpiModule = moduleType->create("efcpi", this);
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
@@ -53,83 +53,33 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   efcpiModule->callInitialize();
 
 
-
-  //TODO:
   //-1. Check for existing Delimiting module for this Flow
-  //0. Create Delimiting module within EFCPModule
-  //1. Create DTP module within the "module" aka EFCI
-  //2. If necessary create DTCP module
-  //3. create EFCPInstance and set dtp (and dtcp) variables in EFCPInstance
-  //4. Start modules
-
-  //-1. Check for existing Delimiting module for this Flow
-  EFCPTableEntry* tmpEfcpEntry;
+  EFCPTableEntry* tmpEfcpEntry = new EFCPTableEntry();
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
    //Flow is not in EFCPTable -> create delimiting
+    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
 
-    //0. Create Delimiting module within EFCPModule
-    cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
-
-    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this);
-    delimit->finalizeParameters();
-    delimit->buildInside();
-    delimit->scheduleStart(simTime());
-    delimit->callInitialize();
-
-
-    tmpEfcpEntry = new EFCPTableEntry();
-    tmpEfcpEntry->setDelimit(delimit);
-
-    //TODO A1: Connect Delimiting and FAI modules
     //TODO A!: Add tmpEFCPEntry to efcpTable
-
   }
 
   Delimiting* delModule = (Delimiting*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
-
-  //1. Create DTP module within the "module" aka EFCI
-//  cModuleType* dtpType = cModuleType::get("rina.DIF.EFCP.DTP");
-
-//  DTP* dtp = (DTP*)dtpType->create("dtp",efcpiModule);
-//  dtp->finalizeParameters();
-//  dtp->buildInside();
-//  dtp->scheduleStart(simTime());
-//  dtp->callInitialize();
 
   efcpi->setDtp(dtpModule);
 
   //2. If necessary create DTCP module
   //TODO how to determine DTCP module is needed
   if(true){
-    cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
-    DTCP* dtcpModule = (DTCP*)dtcpType->create("dtcp",efcpiModule);
-      dtcpModule->finalizeParameters();
-      dtcpModule->buildInside();
-      dtcpModule->scheduleStart(simTime());
-      dtcpModule->callInitialize();
-
-      efcpi->setDtcp(dtcpModule);
-
+      efcpi->setDtcp(this->createDTCP(efcpiModule));
   }
 
-
-  //3. create EFCPInstance and set dtp (and dtcp) variables in EFCPInstance
-  //done
-
-  //4. Start modules
-  //done
-
-  //TODO A! Connect modules
-
-
-
-
+ //insert triplet (DTP,DTCP,Delimiting) to efcpTable
+  efcpTable->insertEntry(tmpEfcpEntry);
 
   /* Connect EFCPi module with delimiting */
   int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
   tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
-//  delToEfcp->size();
+
 
   cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::INPUT, size);
   cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::OUTPUT, size);
@@ -138,33 +88,12 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
 
 
-//  cModule* efcpModule = this->getParentModule();
-//  efcpModule->addGate("fa_" + flow->getDstPortId(), cGate::INOUT, false);
-//  cGate* efcpToFA = efcpModule->gate("fa_" + flow->getDstPortId());
-
-//  cGate* dtpToEfcpI = dtpModule->gateHalf("efcpIo", cGate::INPUT);
-//  cGate* dtpToEfcpO = dtpModule->gateHalf("efcpIo", cGate::OUTPUT);
-
-//  efcpiModule->addGate(std::string("delToEfcpiIo").c_str(), cGate::INOUT);
-
   cGate* efcpiToDelI = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::INPUT);
   cGate* efcpiToDelO = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::OUTPUT);
 
   delToEfcpiO->connectTo(efcpiToDelI);
   efcpiToDelO->connectTo(delToEfcpiI);
-//  efcpiToDtpO->connectTo(dtpToEfcpI);
-//  dtpToEfcpO->connectTo(efcpiToDtpI);
-//
-//   delToEfcpiI->connectTo(efcpiToDtpO);
-//   delToEfcpiO->connectTo(efcpiToDtpI);
 
-//   delToEfcpiO->connectTo(efcpiToDtp);
-//   dtpToEfcpO->connectTo(delToEfcpiI);
-
-//  cGate* gateDelimitToFAI = (cGate*)tmpEfcpEntry->getDelimit()->gate("faiIo$i");
-//  cGate* gateFAIToDelimit = (cGate*)fai->gate("efcpIo$o");
-//  gateDelimitToFAI->connectTo(gateFAIToDelimit);
-//  gateDelimitToFAI->connectTo()
 
   /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
@@ -195,4 +124,32 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   return efcpi;
 }
+
+DTCP* EFCP::createDTCP(cModule* efcpiModule)
+{
+    cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
+    DTCP* dtcpModule = (DTCP*) dtcpType->create("dtcp", efcpiModule);
+    dtcpModule->finalizeParameters();
+    dtcpModule->buildInside();
+    dtcpModule->scheduleStart(simTime());
+    dtcpModule->callInitialize();
+
+
+    return dtcpModule;
+}
+
+
+Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
+    //0. Create Delimiting module within EFCPModule
+    cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
+
+    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this);
+    delimit->finalizeParameters();
+    delimit->buildInside();
+    delimit->scheduleStart(simTime());
+    delimit->callInitialize();
+
+    return delimit;
+}
+
 

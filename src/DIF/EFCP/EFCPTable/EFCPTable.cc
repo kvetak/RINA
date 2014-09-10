@@ -98,3 +98,10 @@ EFCPTableEntry* EFCPTable::getEntryByDelimit(Delimiting* delimit){
 
 }
 
+
+
+void EFCPTable::insertEntry(EFCPTableEntry* entry){
+    efcpTable.push_back(entry);
+
+
+}

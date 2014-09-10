@@ -46,6 +46,7 @@ class EFCPTable : public cSimpleModule
     EFCPTableEntry* getEntryByFlow(Flow* flow);
     EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
     EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
+    void insertEntry(EFCPTableEntry* entry);
 
 };
 

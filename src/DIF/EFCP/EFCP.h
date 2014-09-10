@@ -78,7 +78,8 @@ private:
 
     EFCPTable* efcpTable;
 
-
+    Delimiting* createDelimiting(cModule* efcpi);
+    DTCP* createDTCP(cModule* efcpi);
 
 //    DTP dtp; //required part of the EFCP
 //    DTStateVector dtStateV; //data-transfer state vector
