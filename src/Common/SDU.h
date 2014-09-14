@@ -18,13 +18,16 @@
 
 
 #include <cobject.h>
-
+#include <vector>
+#include "EFCP_defs.h"
+#include "CDAPMessage_m.h"
 class SDU: public cObject {
 
 private:
-    unsigned char * userData;
+    unsigned char * userData; //depricated
     unsigned int size;
     unsigned int offset;
+    std::vector<mCDAPMessage*> mUserData;
 
 public:
     SDU();
@@ -35,6 +38,8 @@ public:
     unsigned char* getUserData() const;
     const unsigned char* getUserData(unsigned int offset);
     void setUserData(unsigned char* userData, unsigned int size);
+
+    bool addUserData(mCDAPMessage* msg);
 };
 
 #endif /* SDU_H_ */

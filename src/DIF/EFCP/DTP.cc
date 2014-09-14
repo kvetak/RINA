@@ -80,9 +80,33 @@ void DTP::handleMessage(cMessage *msg)
     /* Either PDUs from RMT or SDUs from AP */
       if(msg->arrivedOn("efcpiIo")){
           //handle SDUs
+//          handleSDUs((mCDAPMessage*) msg);
 
       }
   }
+
+}
+
+
+void DTP::handleSDUs(mCDAPMessage* cdap){
+
+    cancelEvent(senderInactivityTimer);
+
+//    this->delimit(buffer, len);
+    delimit(cdap);
+
+    /* Now the data from buffer are copied to SDUs so we can free the memory */
+//    free(buffer);
+
+    this->generatePDUs();
+
+    /* Iterate over generated PDUs and decide if we can send them */
+    this->trySendGenPDUs();
+
+  //  /* iterate over postablePDUs */
+  //  this->sendPostablePDUsToRMT();
+
+    schedule(senderInactivityTimer);
 
 }
 /**
@@ -141,6 +165,39 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
 
   schedule(senderInactivityTimer);
   return true;
+}
+
+unsigned int DTP::delimit(mCDAPMessage* msg)
+{
+
+  unsigned int offset = 0, size = 0, counter = 0;
+
+  if (size + msg->getSize() < state.getMaxFlowSduSize())
+  {
+    SDU *sdu = new SDU();
+    sdu->addUserData(msg);
+
+    sduQ.push_back(sdu);
+
+    counter++;
+  }
+  else
+  {
+    do {
+
+
+    counter++;
+    }while(size < msg->getSize());
+  }
+
+
+
+    //discard rest of this method
+//    do
+//    {
+////        if()
+//
+//    } while (offset < len);
 }
 
 /**

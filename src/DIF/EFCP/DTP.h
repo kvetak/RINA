@@ -27,11 +27,12 @@
 #include "PDU.h"
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
-
+#include "RMT.h"
+//#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
 //#include "FA.h" //or FlowAllocatorFactory
-#include "RMT.h"
+
 
 class DTP : public cSimpleModule
 {
@@ -82,6 +83,8 @@ class DTP : public cSimpleModule
 
     /** Delimits content of buffer from application */
     unsigned int delimit(unsigned char *buffer, unsigned int len);
+    unsigned int delimit(mCDAPMessage* cdap);
+
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
     void generatePDUs();
@@ -138,6 +141,7 @@ class DTP : public cSimpleModule
 
     void schedule(DTPTimers* timer, double time =0.0);
 
+    void handleSDUs(mCDAPMessage* cdap);
   public:
     DTP();
     virtual ~DTP();

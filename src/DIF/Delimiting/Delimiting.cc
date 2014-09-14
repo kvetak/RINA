@@ -32,6 +32,12 @@ Delimiting::Delimiting()
 
 }
 
+
+void Delimiting::handleMessage(cMessage* msg){
+
+
+}
+
 Delimiting::~Delimiting()
 {
   // TODO Auto-generated destructor stub

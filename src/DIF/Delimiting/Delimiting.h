@@ -34,6 +34,9 @@ class Delimiting : public cSimpleModule
   public:
     Delimiting();
     virtual ~Delimiting();
+
+  protected:
+    virtual void handleMessage(cMessage *msg);
 };
 
 #endif /* DELIMITING_H_ */

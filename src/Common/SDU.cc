@@ -75,6 +75,14 @@ void SDU::setUserData(unsigned char* userData, unsigned int size)
 //    this->userData = userData;
 }
 
+bool SDU::addUserData(mCDAPMessage* msg){
+
+//    if(msg->getSize() > MAXSDUSIZE){
+//        return false;
+//    }
+    return true;
+}
+
 SDU::~SDU()
 {
   // TODO Auto-generated destructor stub
