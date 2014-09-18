@@ -15,33 +15,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file Delimiting.h
+ * @file SDUFrag.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+#ifndef SDUFRAG_H_
+#define SDUFRAG_H_
 
 #include <omnetpp.h>
-//#include <csimplemodule.h>
+#include "SDUFrag_m.h"
 
-#define DELIMITING_MODULE_NAME "delimiting"
-
-class Delimiting : public cSimpleModule
+class SDUFrag: public SDUFrag_Base
 {
-  private:
-    void processMsgFromFAI(cMessage* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-
-
+    private:
+      void copy(const SDUFrag& other) { };
+    public:
+          SDUFrag(const char *name=NULL, int kind=0) : SDUFrag_Base(name,kind) {}
+          SDUFrag(const SDUFrag& other) : SDUFrag_Base(other) {copy(other);}
+          SDUFrag& operator=(const SDUFrag& other) {if (this==&other) return *this; SDUFrag_Base::operator=(other); copy(other); return *this;}
+          virtual SDUFrag *dup() const {return new SDUFrag(*this);}
+          // ADD CODE HERE to redefine and implement pure virtual functions from SDUFrag_Base
+    SDUFrag();
+    virtual ~SDUFrag();
 };
 
-#endif /* DELIMITING_H_ */
+#endif /* SDUFRAG_H_ */

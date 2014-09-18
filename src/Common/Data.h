@@ -15,33 +15,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file Delimiting.h
+ * @file Data.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+#ifndef DATA_H_
+#define DATA_H_
 
 #include <omnetpp.h>
-//#include <csimplemodule.h>
+#include "Data_m.h"
 
-#define DELIMITING_MODULE_NAME "delimiting"
+class Data : public Data_Base
+  {
+    private:
+      void copy(const Data& other) {};
+    public:
+     Data(const char *name=NULL, int kind=0) : Data_Base(name,kind) {}
+     Data(const Data& other) : Data_Base(other) {copy(other);}
+     Data& operator=(const Data& other) {if (this==&other) return *this; Data_Base::operator=(other); copy(other); return *this;}
+     virtual Data *dup() const {return new Data(*this);}
+      // ADD CODE HERE to redefine and implement pure virtual functions from Data_Base
+  };
+//class Data
+//{
+//    public:
+//        Data();
+//        virtual ~Data();
+//};
 
-class Delimiting : public cSimpleModule
-{
-  private:
-    void processMsgFromFAI(cMessage* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-
-
-};
-
-#endif /* DELIMITING_H_ */
+#endif /* DATA_H_ */

@@ -21,17 +21,29 @@
 #include <vector>
 #include "EFCP_defs.h"
 #include "CDAPMessage_m.h"
-class SDU: public cObject {
+#include "SDU_m.h"
 
-private:
+class SDU : public SDU_Base
+{
+
+  private:
     unsigned char * userData; //depricated
-    unsigned int size;
-    unsigned int offset;
-    std::vector<mCDAPMessage*> mUserData;
+//    unsigned int size;
+//    unsigned int offset;
+//    std::vector<mCDAPMessage*> mUserData;
+
+    void copy(const SDU& other){};
 
 public:
-    SDU();
-    virtual ~SDU();
+//  SDU();
+  virtual ~SDU();
+
+    SDU(const char *name=NULL, int kind=0) : SDU_Base(name,kind) {this->offset_var = this->size_var = 0;}
+    SDU(const SDU& other) : SDU_Base(other) {copy(other);}
+    SDU& operator=(const SDU& other) {if (this==&other) return *this; SDU_Base::operator=(other); copy(other); return *this;}
+    virtual SDU *dup() const {return new SDU(*this);}
+    // ADD CODE HERE to redefine and implement pure virtual functions from SDU_Base
+
     unsigned int getSize() const;
     unsigned int getRestSize() const;
     void setSize(unsigned int size);
@@ -40,6 +52,8 @@ public:
     void setUserData(unsigned char* userData, unsigned int size);
 
     bool addUserData(mCDAPMessage* msg);
+
+
 };
 
 #endif /* SDU_H_ */

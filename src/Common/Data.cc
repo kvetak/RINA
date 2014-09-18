@@ -15,33 +15,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file Delimiting.h
+ * @file Data.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+#include <Data.h>
 
-#include <omnetpp.h>
-//#include <csimplemodule.h>
+Register_Class(Data);
 
-#define DELIMITING_MODULE_NAME "delimiting"
+//Data::Data()
+//{
+//    // TODO Auto-generated constructor stub
+//
+//}
+//
+//Data::~Data()
+//{
+//    // TODO Auto-generated destructor stub
+//}
 
-class Delimiting : public cSimpleModule
-{
-  private:
-    void processMsgFromFAI(cMessage* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-
-
-};
-
-#endif /* DELIMITING_H_ */

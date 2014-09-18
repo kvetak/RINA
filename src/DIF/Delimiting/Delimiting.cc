@@ -34,8 +34,31 @@ Delimiting::Delimiting()
 
 
 void Delimiting::handleMessage(cMessage* msg){
+  if(msg->isSelfMessage()){
+    //self-message
+  }else{
+    if(msg->arrivedOn("efcModuleIo")){
+      processMsgFromFAI(msg);
+    }else if(msg->arrivedOn("efcpiIo")){
+
+    }else{
+      //A2 panic!
+    }
 
 
+  }
+
+
+}
+
+void Delimiting::processMsgFromFAI(cMessage* msg){
+
+  /*
+   * 1. Create new SDU and put msg to this new SDU.
+   * 2. Check if SDU.size < (MAXPDUSIZE - header)
+   *  2a partition it creating multiple SDUFrag and put them into some vector
+   * 3. Go through Data vector and send them to EFCPI
+   */
 }
 
 Delimiting::~Delimiting()

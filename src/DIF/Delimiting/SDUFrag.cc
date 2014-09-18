@@ -15,33 +15,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file Delimiting.h
+ * @file SDUFrag.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+#include <SDUFrag.h>
 
-#include <omnetpp.h>
-//#include <csimplemodule.h>
-
-#define DELIMITING_MODULE_NAME "delimiting"
-
-class Delimiting : public cSimpleModule
+SDUFrag::SDUFrag()
 {
-  private:
-    void processMsgFromFAI(cMessage* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
+  // TODO Auto-generated constructor stub
 
-  protected:
-    virtual void handleMessage(cMessage *msg);
+}
 
+SDUFrag::~SDUFrag()
+{
+  // TODO Auto-generated destructor stub
+}
 
-};
-
-#endif /* DELIMITING_H_ */
