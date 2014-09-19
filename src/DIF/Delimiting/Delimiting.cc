@@ -38,7 +38,7 @@ void Delimiting::handleMessage(cMessage* msg){
     //self-message
   }else{
     if(msg->arrivedOn("efcModuleIo")){
-      processMsgFromFAI(msg);
+      processMsgFromFAI((mCDAPMessage*)(msg));
     }else if(msg->arrivedOn("efcpiIo")){
 
     }else{
@@ -51,7 +51,7 @@ void Delimiting::handleMessage(cMessage* msg){
 
 }
 
-void Delimiting::processMsgFromFAI(cMessage* msg){
+void Delimiting::processMsgFromFAI(mCDAPMessage* msg){
 
   /*
    * 1. Create new SDU and put msg to this new SDU.
@@ -59,6 +59,12 @@ void Delimiting::processMsgFromFAI(cMessage* msg){
    *  2a partition it creating multiple SDUFrag and put them into some vector
    * 3. Go through Data vector and send them to EFCPI
    */
+
+  SDU* sdu = new SDU();
+  sdu->addUserData(msg);
+
+  //TODO A1 handle multiple gates
+  send(sdu, "efcpiIo", 0);
 }
 
 Delimiting::~Delimiting()

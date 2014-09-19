@@ -81,12 +81,22 @@ void DTP::handleMessage(cMessage *msg)
       if(msg->arrivedOn("efcpiIo")){
           //handle SDUs
 //          handleSDUs((mCDAPMessage*) msg);
+        handleMsgFromDelimiting((Data*) msg);
 
       }
   }
 
 }
 
+
+void DTP::handleMsgFromDelimiting(Data* msg){
+
+  DataTransferPDU* pdu = new DataTransferPDU();
+  this->
+
+  send(pdu, "rmtIo");
+
+}
 
 void DTP::handleSDUs(mCDAPMessage* cdap){
 

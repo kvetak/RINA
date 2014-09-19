@@ -80,6 +80,11 @@ bool SDU::addUserData(mCDAPMessage* msg){
 //    if(msg->getSize() > MAXSDUSIZE){
 //        return false;
 //    }
+
+    //TODO A1 check current SDU size
+
+  this->mUserData_var.push_back(msg);
+
     return true;
 }
 

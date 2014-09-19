@@ -16,8 +16,16 @@
 //
 // TODO generated message class
 //
+
+enum DataType{
+    	SDU_TYPE 				= 1;
+    	SDU_FRAGMENT_TYPE		= 2;
+}
+
+
 message Data {
     @customize(true);  // see the generated C++ header for more info
-    int someField;
+    unsigned int dataType;
+    
 //    abstract int anotherField;Register_Class(Data);
 }

@@ -65,6 +65,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   Delimiting* delModule = (Delimiting*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
+
   efcpi->setDtp(dtpModule);
 
   //2. If necessary create DTCP module

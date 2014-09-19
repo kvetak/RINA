@@ -24,7 +24,7 @@
 #include "DTPState.h"
 #include "DTPTimers_m.h"
 #include "DTCP.h"
-#include "PDU.h"
+//#include "PDU.h"
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
@@ -76,6 +76,8 @@ class DTP : public cSimpleModule
     void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
     void handleDTPATimer(ATimer* timer);
+
+    void handleMsgFromDelimiting(Data* msg);
 
     /* Send */
 

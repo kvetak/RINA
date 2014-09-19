@@ -26,6 +26,8 @@
 #define DELIMITING_H_
 
 #include <omnetpp.h>
+#include "CDAPMessage_m.h"
+#include "SDU.h"
 //#include <csimplemodule.h>
 
 #define DELIMITING_MODULE_NAME "delimiting"
@@ -33,7 +35,7 @@
 class Delimiting : public cSimpleModule
 {
   private:
-    void processMsgFromFAI(cMessage* msg);
+    void processMsgFromFAI(mCDAPMessage* msg);
   public:
     Delimiting();
     virtual ~Delimiting();
