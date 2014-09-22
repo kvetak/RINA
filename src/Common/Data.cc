@@ -15,43 +15,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file EFCPTable.h
+ * @file Data.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef EFCPTABLE_H_
-#define EFCPTABLE_H_
+#include <Data.h>
 
-#include <omnetpp.h>
+Register_Class(Data);
 
-#include "EFCPTableEntry.h"
+//Data::Data()
+//{
+//    // TODO Auto-generated constructor stub
+//
+//}
+//
+//Data::~Data()
+//{
+//    // TODO Auto-generated destructor stub
+//}
 
-
-typedef std::vector<EFCPTableEntry*> TEFCPTable;
-
-class EFCPTable : public cSimpleModule
-{
-  private:
-    TEFCPTable efcpTable;
-
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-
-  public:
-    EFCPTable();
-    virtual ~EFCPTable();
-    EFCPTableEntry* getEntryByFlow(Flow* flow);
-    EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
-    EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
-    void insertEntry(EFCPTableEntry* entry);
-
-    std::string info() const;
-
-};
-
-#endif /* EFCPTABLE_H_ */

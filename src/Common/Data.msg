@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,36 +12,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file Delimiting.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
- * @brief
- * @detail
- */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+//
+// TODO generated message class
+//
 
-#include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "SDU.h"
-//#include <csimplemodule.h>
-
-#define DELIMITING_MODULE_NAME "delimiting"
-
-class Delimiting : public cSimpleModule
-{
-  private:
-    void processMsgFromFAI(CDAPMessage* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
+enum DataType{
+    	SDU_TYPE 				= 1;
+    	SDU_FRAGMENT_TYPE		= 2;
+}
 
 
-};
-
-#endif /* DELIMITING_H_ */
+message Data {
+    @customize(true);  // see the generated C++ header for more info
+    unsigned int dataType;
+    
+//    abstract int anotherField;Register_Class(Data);
+}

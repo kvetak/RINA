@@ -24,7 +24,7 @@
 #include "DTPState.h"
 #include "DTPTimers_m.h"
 #include "DTCP.h"
-#include "PDU.h"
+//#include "PDU.h"
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
@@ -77,13 +77,15 @@ class DTP : public cSimpleModule
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
     void handleDTPATimer(ATimer* timer);
 
+    void handleMsgFromDelimiting(Data* msg);
+
     /* Send */
 
 
 
     /** Delimits content of buffer from application */
     unsigned int delimit(unsigned char *buffer, unsigned int len);
-    unsigned int delimit(mCDAPMessage* cdap);
+    unsigned int delimit(CDAPMessage* cdap);
 
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
@@ -141,7 +143,7 @@ class DTP : public cSimpleModule
 
     void schedule(DTPTimers* timer, double time =0.0);
 
-    void handleSDUs(mCDAPMessage* cdap);
+    void handleSDUs(CDAPMessage* cdap);
   public:
     DTP();
     virtual ~DTP();

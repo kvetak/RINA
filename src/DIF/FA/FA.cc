@@ -42,7 +42,7 @@ FA::~FA() {
 
 void FA::initialize() {
     this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule("faiTable") );
-    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
+    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp")->getSubmodule("efcp"));
     this->initSignalsAndListeners();
 }
 /**

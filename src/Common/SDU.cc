@@ -21,32 +21,32 @@
  */
 #include <SDU.h>
 
-SDU::SDU()
-{
-  this->offset = this->size = 0;
-
-}
+//SDU::SDU()
+//{
+//  this->offset = this->size = 0;
+//
+//}
 
 unsigned int SDU::getSize() const
 {
-  return size;
+  return size_var;
 }
 
 unsigned int SDU::getRestSize()const
 {
-  return size - offset;
+  return size_var - offset_var;
 }
 
 void SDU::setSize(unsigned int size)
 {
   if(userData !=NULL){
     unsigned char *tmp = new unsigned char[size];
-    memcpy(tmp,userData, (this->size < size) ? this->size : size);
-    this->size = size;
+    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
+    this->size_var = size;
     free(userData);
     userData = tmp;
   }else{
-    this->size = size;
+    this->size_var = size;
     userData = new unsigned char[size];
   }
 
@@ -54,32 +54,37 @@ void SDU::setSize(unsigned int size)
 
 unsigned char* SDU::getUserData() const
 {
-  return &userData[offset];
+  return &userData[offset_var];
 }
 
 const unsigned char* SDU::getUserData(unsigned int size)
 {
-  offset += size;
-  return &userData[offset - size];
+  offset_var += size;
+  return &userData[offset_var - size];
 }
 
 void SDU::setUserData(unsigned char* userData, unsigned int size)
 {
   if(this->userData != NULL){
     free(this->userData);
-    this->offset = 0;
+    this->offset_var = 0;
   }
-  this->size = size;
+  this->size_var = size;
   this->userData = new unsigned char[size];
   memcpy(this->userData, userData, size);
 //    this->userData = userData;
 }
 
-bool SDU::addUserData(mCDAPMessage* msg){
+bool SDU::addUserData(CDAPMessage* msg){
 
 //    if(msg->getSize() > MAXSDUSIZE){
 //        return false;
 //    }
+
+    //TODO A1 check current SDU size
+
+  this->mUserData_var.push_back(msg);
+
     return true;
 }
 

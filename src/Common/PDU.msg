@@ -65,7 +65,7 @@ enum FLAGS{
 //
 // TODO generated message class
 
-packet PDU {
+message PDU {
     @customize(true);
     unsigned int version = 1;
     APN destAddr;

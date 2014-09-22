@@ -27,7 +27,7 @@ Define_Module(EFCP);
 
 EFCP::EFCP() {
     // TODO Auto-generated constructor stub
-  this->efcpTable = (EFCPTable*)this->getParentModule()->getSubmodule("efcpTable");
+
 
 
 }
@@ -36,13 +36,19 @@ EFCP::~EFCP() {
     // TODO Auto-generated destructor stub
 }
 
+void EFCP::initialize(int step){
+  if(step == 3){
+    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule("efcpTable");
+  }
+}
+
 
 
 EFCPInstance* EFCP::createEFCPI(Flow* flow){
   Enter_Method("createEFCPI()");
 
+//  this->efcpTable = (EFCPTable*)this->getSubmodule("efcpTable");
 
-  EFCPInstance* efcpi = new EFCPInstance();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
   cModule* efcpiModule = moduleType->create("efcpi", this);
@@ -54,8 +60,9 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
 
   //-1. Check for existing Delimiting module for this Flow
-  EFCPTableEntry* tmpEfcpEntry = new EFCPTableEntry();
+  EFCPTableEntry* tmpEfcpEntry;
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
+    tmpEfcpEntry = new EFCPTableEntry();
    //Flow is not in EFCPTable -> create delimiting
     tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
 
@@ -65,6 +72,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   Delimiting* delModule = (Delimiting*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
+  EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
 
   //2. If necessary create DTCP module
@@ -72,9 +80,13 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   if(true){
       efcpi->setDtcp(this->createDTCP(efcpiModule));
   }
+  //Put created EFCP instance to EFCP Table Entry
+  tmpEfcpEntry->addEFCPI(efcpi);
 
+ //TODO A! if it already exists in efcpTable?
  //insert triplet (DTP,DTCP,Delimiting) to efcpTable
   efcpTable->insertEntry(tmpEfcpEntry);
+
 
   /* Connect EFCPi module with delimiting */
   int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
@@ -99,7 +111,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   std::ostringstream gateName_str;
   gateName_str << "fai_" << flow->getConId().getSrcCepId();
 
-  cModule* efcpModule = this;
+  cModule* efcpModule = this->getParentModule();
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
   cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);

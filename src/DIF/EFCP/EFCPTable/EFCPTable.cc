@@ -29,14 +29,40 @@ Define_Module(EFCPTable);
 EFCPTable::EFCPTable()
 {
 
-  efcpTable.clear();
+//  efcpTable.clear();
   // TODO Auto-generated constructor stub
+
+  if(this->isModule()){
+    int a = 5;
+  }
 
 }
 
 EFCPTable::~EFCPTable()
 {
   // TODO Auto-generated destructor stub
+}
+
+void EFCPTable::handleMessage(cMessage* msg){
+
+}
+
+void EFCPTable::initialize(){
+
+//  WATCH_LIST(efcpTable);
+}
+
+std::string EFCPTable::info() const {
+    std::stringstream os;
+    os << "id=" << endl;// this->getId() << endl;
+    /*
+    for(TFTConstIter it = FaiTable.begin(); it != FaiTable.end(); ++it )
+    {
+        FAITableEntry tft = *it;
+        os << tft << endl;
+    }
+    */
+    return os.str();
 }
 
 /**
@@ -46,7 +72,7 @@ EFCPTable::~EFCPTable()
  */
 EFCPTableEntry* EFCPTable::getEntryByFlow(Flow* flow){
   //TODO A! remove
-  return NULL;
+//  return NULL;
   for(TEFCPTable::iterator it = this->efcpTable.begin(); it != efcpTable.end(); ++it){
 
 
@@ -101,7 +127,10 @@ EFCPTableEntry* EFCPTable::getEntryByDelimit(Delimiting* delimit){
 
 
 void EFCPTable::insertEntry(EFCPTableEntry* entry){
-    efcpTable.push_back(entry);
+//  Enter_Method("insertEntry(EFCPTableEntry* entry)");
+
+  this->efcpTable.empty();
+  this->efcpTable.push_back(entry);
 
 
 }

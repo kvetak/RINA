@@ -15,43 +15,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file EFCPTable.h
+ * @file SDUFrag.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Sep 18, 2014
  * @brief
  * @detail
  */
 
-#ifndef EFCPTABLE_H_
-#define EFCPTABLE_H_
+#include <SDUFrag.h>
 
-#include <omnetpp.h>
-
-#include "EFCPTableEntry.h"
-
-
-typedef std::vector<EFCPTableEntry*> TEFCPTable;
-
-class EFCPTable : public cSimpleModule
+SDUFrag::SDUFrag()
 {
-  private:
-    TEFCPTable efcpTable;
+  // TODO Auto-generated constructor stub
 
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+}
 
+SDUFrag::~SDUFrag()
+{
+  // TODO Auto-generated destructor stub
+}
 
-  public:
-    EFCPTable();
-    virtual ~EFCPTable();
-    EFCPTableEntry* getEntryByFlow(Flow* flow);
-    EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
-    EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
-    void insertEntry(EFCPTableEntry* entry);
-
-    std::string info() const;
-
-};
-
-#endif /* EFCPTABLE_H_ */
