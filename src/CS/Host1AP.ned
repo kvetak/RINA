@@ -23,7 +23,7 @@ import rina.DIF.IPCProcess;
 module Host1AP
 {
     parameters:
-        @display("i=device/pc");
+        @display("i=device/pc;bgb=255,271");
         @node;
         //int numOfDIFs = 1;
         //int numOfAPs = 1;
@@ -36,15 +36,23 @@ module Host1AP
             @display("p=70,56");
             //numOfDIFs = numOfDIFs;            
         }
-        ipcProcess1: IPCProcess {
-            @display("p=133,153");
-			//numOfAPs = numOfAPs;
-        }
 
         difAllocator: DIFAllocator {
             @display("p=210,56");
         }
+
+        ipcProcess0: IPCProcess {
+            @display("p=133,212");
+			//numOfAPs = numOfAPs;
+        }
+
+        ipcProcess1: IPCProcess {
+            @display("p=133,130");
+			//numOfAPs = numOfAPs;
+        }
+
     connections:
-        ipcProcess1.southIo++ <--> medium;
-        //ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];
+        ipcProcess0.southIo++ <--> medium;
+        ipcProcess0.northIo++ <--> ipcProcess1.southIo++;
+        //ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];        
 }

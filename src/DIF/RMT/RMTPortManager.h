@@ -20,9 +20,8 @@
 
 #include "RMTPort.h"
 
-typedef std::map<ConnectionId, RMTPort*>  RMTPorts;
+typedef std::map<int, RMTPort*>  RMTPorts;
 
-// TODO: move the whole thing into RA
 class RMTPortManager : public cSimpleModule
 {
   protected:
@@ -37,9 +36,9 @@ class RMTPortManager : public cSimpleModule
     iterator begin();
     iterator end();
 
-    RMTPort* getPort(ConnectionId conId);
-    void addPort(ConnectionId conId);
-    void removePort(ConnectionId conId);
+    RMTPort* getPort(int portId);
+    void addPort(int portId);
+    void removePort(int portId);
 
   private:
     RMTPorts ports;

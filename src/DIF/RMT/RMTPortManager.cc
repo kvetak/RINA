@@ -38,11 +38,11 @@ RMTPortManager::~RMTPortManager()
 }
 
 
-RMTPort* RMTPortManager::getPort(ConnectionId conId)
+RMTPort* RMTPortManager::getPort(int portId)
 {
-    if (ports.count(conId))
+    if (ports.count(portId))
     {
-        return ports[conId];
+        return ports[portId];
     }
     else
     {
@@ -51,71 +51,26 @@ RMTPort* RMTPortManager::getPort(ConnectionId conId)
 }
 
 
-void RMTPortManager::addPort(ConnectionId conId)
+void RMTPortManager::addPort(int portId)
 {
-    if (ports.count(conId))
+    if (ports.count(portId))
     {
         return;
     }
 
-    ports[conId] = new RMTPort;
-
-    cModule* rmt = getParentModule()->getSubmodule("rmt");
-    cModule* rmtModule = getParentModule();
-
-    std::ostringstream gateName_str;
-    gateName_str << "efcpIo_" << conId.getSrcCepId();
-    const char* gateName = gateName_str.str().c_str();
-
-
-    rmt->addGate(gateName, cGate::INOUT, false);
-    cGate* rmtIn = rmt->gateHalf(gateName, cGate::INPUT);
-    cGate* rmtOut = rmt->gateHalf(gateName, cGate::OUTPUT);
-
-    rmtModule->addGate(gateName, cGate::INOUT, false);
-    cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
-    cGate* rmtModuleOut = rmtModule->gateHalf(gateName, cGate::OUTPUT);
-
-    rmtModuleIn->connectTo(rmtIn);
-    rmtOut->connectTo(rmtModuleOut);
-
-    ports[conId]->setEfcpiGate(rmtOut);
-
-    // RMT<->EFCP interconnection shall be done by the FAI
-
-//    EV << "rmtModuleOut: is connected outside: " << rmtModuleOut->isConnectedOutside() << endl;
-//    EV << "rmtModuleOut: is connected inside: " << rmtModuleOut->isConnectedInside() << endl;
-//
-//    EV << "rmtModuleIn: is connected outside: " << rmtModuleIn->isConnectedOutside() << endl;
-//    EV << "rmtModuleIn: is connected inside: " << rmtModuleIn->isConnectedInside() << endl;
-
+    ports[portId] = new RMTPort;
 }
 
-void RMTPortManager::removePort(ConnectionId conId)
+void RMTPortManager::removePort(int portId)
 {
-    if (!ports.count(conId))
+    if (!ports.count(portId))
     {
         return;
     }
 
-    cModule* rmt = getParentModule()->getSubmodule("rmt");
-    cModule* rmtModule = getParentModule();
 
-    std::ostringstream gateName_str;
-    gateName_str << "efcpIo_" << conId.getSrcCepId();
-    const char* gateName = gateName_str.str().c_str();
-
-    cGate* rmtOut = rmt->gateHalf(gateName, cGate::OUTPUT);
-    cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
-
-    rmtOut->disconnect();
-    rmtModuleIn->disconnect();
-
-    rmt->deleteGate(gateName);
-    rmtModule->deleteGate(gateName);
-
-    delete ports[conId];
-    ports.erase(conId);
+    delete ports[portId];
+    ports.erase(portId);
 }
 
 RMTPortManager::iterator RMTPortManager::begin(){

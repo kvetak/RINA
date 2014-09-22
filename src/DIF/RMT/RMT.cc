@@ -31,28 +31,27 @@ RMT::~RMT()
 }
 
 
-
 void RMT::initialize() {
 
     processName = this->getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
     cModule* hostModule = getParentModule()->getParentModule();
 
-    // determine whether we're on wire or on top of another DIF
     std::string bottomModule = hostModule->gate("southIo$o", 0)->getNextGate()->getName();
 
     if (bottomModule == "medium$o")
-    { // we're on wire! no need to relay anything
+    { // we're on wire! this is the bottommost mux-only RMT
         relayOn = false;
+        EV << this->getFullPath() << " is a shim DIF" << endl;
     }
     else if (bottomModule == "northIo$o")
-    { // there are some other IPC processes below
+    { // other IPC processes are below us
         if (hostModule->gateSize("northIo") > 1)
-        {
+        { // multiple (N-1)-DIFs are present, we shall be relaying
             fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
             relayOn = true;
         }
         else
-        {
+        { // this is yet another mux-only RMT
             relayOn = false;
         }
     }
@@ -63,7 +62,9 @@ void RMT::initialize() {
         intGates[i] = this->gateHalf("southIo", cGate::OUTPUT, i);
     }
 
-//    ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
+    // TODO: create flows with underlying DIFs
+
+    ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
 }
 
 bool RMT::relayStatus()

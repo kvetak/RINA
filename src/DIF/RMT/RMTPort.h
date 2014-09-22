@@ -28,8 +28,8 @@ class RMTPort
     virtual ~RMTPort();
 
     // connection with a EFCP instance
-    void setEfcpiGate(cGate* val);
-    cGate* getEfcpiGate();
+    void setOutGate(cGate* val);
+    cGate* getOutGate();
 
     // output queue write supression
     bool outboundState();
@@ -49,7 +49,8 @@ class RMTPort
     RMTQueue inQ;
     RMTQueue outQ;
 
-    cGate* efcpiGate;
+    cGate* outGate;
+    cGate* inboundGate;
 
     bool outboundActive;
 };

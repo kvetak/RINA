@@ -27,6 +27,7 @@
 #include "PDU_m.h"
 #include "CDAPMessage_m.h"
 #include "ConnectionId.h"
+#include "Flow.h"
 
 #include "RMTPortManager.h"
 #include "RMTPort.h"
@@ -44,11 +45,12 @@ class RMT : public cSimpleModule
 
     std::string processName;
     bool relayOn;
+    bool onWire;
 
 
     void deleteEfcpiGate(int efcpiId);
 
-//    RMTPortManager* ports;
+    RMTPortManager* ports;
 
 //    void enqueueRelayPDU(PDU_Base* pdu);
 //    void enqueueMuxPDU(PDU_Base* pdu);

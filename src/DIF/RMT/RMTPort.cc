@@ -41,14 +41,14 @@ void RMTPort::resumeOutbound()
 }
 
 
-void RMTPort::setEfcpiGate(cGate* val)
+void RMTPort::setOutGate(cGate* val)
 {
-    this->efcpiGate = val;
+    this->outGate = val;
 }
 
-cGate* RMTPort::getEfcpiGate()
+cGate* RMTPort::getOutGate()
 {
-    return this->efcpiGate;
+    return this->outGate;
 }
 
 
