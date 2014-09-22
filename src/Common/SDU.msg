@@ -18,7 +18,7 @@ cplusplus {{
 #include <vector>
 #include "CDAPMessage_m.h"
 #include "Data.h"
-typedef std::vector<mCDAPMessage*> mUserDataType;
+typedef std::vector<CDAPMessage*> mUserDataType;
 }}
 message Data;
 //message mCDAPMessage;

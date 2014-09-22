@@ -80,7 +80,7 @@ void DTP::handleMessage(cMessage *msg)
     /* Either PDUs from RMT or SDUs from AP */
       if(msg->arrivedOn("efcpiIo")){
           //handle SDUs
-//          handleSDUs((mCDAPMessage*) msg);
+//          handleSDUs((CDAPMessage*) msg);
         handleMsgFromDelimiting((Data*) msg);
 
       }
@@ -98,7 +98,7 @@ void DTP::handleMsgFromDelimiting(Data* msg){
 
 }
 
-void DTP::handleSDUs(mCDAPMessage* cdap){
+void DTP::handleSDUs(CDAPMessage* cdap){
 
     cancelEvent(senderInactivityTimer);
 
@@ -177,7 +177,7 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
   return true;
 }
 
-unsigned int DTP::delimit(mCDAPMessage* msg)
+unsigned int DTP::delimit(CDAPMessage* msg)
 {
 
   unsigned int offset = 0, size = 0, counter = 0;

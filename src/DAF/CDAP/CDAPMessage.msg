@@ -115,41 +115,17 @@ struct object_t {
     int objectInstance;    //Synonym to class+name concatenation
     cObject objectVal;		//Actual object
 }
-message mCDAPMessage {
+message CDAPMessage {
     unsigned int size;
     
 }
-message CDAP_General_Message extends mCDAPMessage {
-	unsigned char absSyntax enum(absSyntax_t);	// Abstract Syntax of messages, see text.
-	unsigned char opCode enum(opCode_t);		// op Code.
-	uint32 invokeID;							// Invoke ID, omitted if no reply desired.
-	unsigned char flags enum(flagValues_t);		// misc. flags
-	string objClass;							// Name of the object class of objName
-	string objName;								// Object name, unique in its class
-	uint64 objInst;								// Unique object instance
-	objVal_t objValue;							// value of object in read/write/etc.
-	uint32 result; 								// result of operation, 0 == success
-	uint32 scope;								// scope of READ/WRITE operation
-//	char[] filter;								// filter script
-	unsigned char authMech enum(authTypes_t);	// Authentication mechanism
-	authValue_t authValue;						// Authentication information
-	string destAEInst;							// Destination AE Instance name
-	string destAEName;							// Destination AE name
-	string destApInst;							// Destination Application Instance name
-	string destApName;							// Destination Application name
-	string srcAEInst;							// Source AE Instance name
-	string srcAEName;							// Source AE name
-	string srcApInst;							// Source Application Instance name
-	string srcApName;							// Source Application name
-	string resultReason;						// further explanation of result
-	int64 version;								// For application use - RIB/class version.
-}
+
 
 //////////////////////////////////////////////
 //CDAP M_CONNECT(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Connect extends mCDAPMessage {	
+message CDAP_M_Connect extends CDAPMessage {	
 	unsigned char opCode enum(opCode_t) = M_CONNECT;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -160,7 +136,7 @@ message CDAP_M_Connect extends mCDAPMessage {
 	naming_t dst;
 }
 
-message CDAP_M_Connect_R extends mCDAPMessage {
+message CDAP_M_Connect_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_CONNECT_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -176,14 +152,14 @@ message CDAP_M_Connect_R extends mCDAPMessage {
 //CDAP M_RELEASE(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Release extends mCDAPMessage {
+message CDAP_M_Release extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_RELEASE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
 	int version;
 }
 
-message CDAP_M_Release_R extends mCDAPMessage {
+message CDAP_M_Release_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_RELEASE_R;	
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -195,7 +171,7 @@ message CDAP_M_Release_R extends mCDAPMessage {
 //CDAP M_CREATE(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Create extends mCDAPMessage {
+message CDAP_M_Create extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_CREATE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -205,7 +181,7 @@ message CDAP_M_Create extends mCDAPMessage {
 	int filter;	
 }
 
-message CDAP_M_Create_R extends mCDAPMessage {
+message CDAP_M_Create_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_CREATE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -219,7 +195,7 @@ message CDAP_M_Create_R extends mCDAPMessage {
 //CDAP M_DELETE(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Delete extends mCDAPMessage {
+message CDAP_M_Delete extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_DELETE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -229,7 +205,7 @@ message CDAP_M_Delete extends mCDAPMessage {
 	int filter;		
 }
 
-message CDAP_M_Delete_R extends mCDAPMessage {
+message CDAP_M_Delete_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_DELETE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -243,7 +219,7 @@ message CDAP_M_Delete_R extends mCDAPMessage {
 //CDAP M_READ(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Read extends mCDAPMessage {
+message CDAP_M_Read extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_READ;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -253,7 +229,7 @@ message CDAP_M_Read extends mCDAPMessage {
 	int filter;			
 }
 
-message CDAP_M_Read_R extends mCDAPMessage {
+message CDAP_M_Read_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_READ_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -267,7 +243,7 @@ message CDAP_M_Read_R extends mCDAPMessage {
 //CDAP M_CANCELREAD(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_CancelRead extends mCDAPMessage {
+message CDAP_M_CancelRead extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_CANCELREAD;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -275,7 +251,7 @@ message CDAP_M_CancelRead extends mCDAPMessage {
 	result_t result;
 }
 
-message CDAP_M_CancelRead_R extends mCDAPMessage {
+message CDAP_M_CancelRead_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_CANCELREAD_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -287,7 +263,7 @@ message CDAP_M_CancelRead_R extends mCDAPMessage {
 //CDAP M_WRITE(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Write extends mCDAPMessage {
+message CDAP_M_Write extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_WRITE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -297,7 +273,7 @@ message CDAP_M_Write extends mCDAPMessage {
 	int filter;					
 }
 
-message CDAP_M_Write_R extends mCDAPMessage {
+message CDAP_M_Write_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_WRITE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -311,7 +287,7 @@ message CDAP_M_Write_R extends mCDAPMessage {
 //CDAP M_START(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Start extends mCDAPMessage {
+message CDAP_M_Start extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_START;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -321,7 +297,7 @@ message CDAP_M_Start extends mCDAPMessage {
 	int filter;		
 }
 
-message CDAP_M_Start_R extends mCDAPMessage {
+message CDAP_M_Start_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_START_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -335,7 +311,7 @@ message CDAP_M_Start_R extends mCDAPMessage {
 //CDAP M_STOP(_R) messages
 //////////////////////////////////////////////
 
-message CDAP_M_Stop extends mCDAPMessage {
+message CDAP_M_Stop extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_STOP;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -346,7 +322,7 @@ message CDAP_M_Stop extends mCDAPMessage {
 	
 }
 
-message CDAP_M_Stop_R extends mCDAPMessage {
+message CDAP_M_Stop_R extends CDAPMessage {
 	unsigned char opCode enum(opCode_t) = M_STOP_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);

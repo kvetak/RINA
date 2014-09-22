@@ -51,7 +51,7 @@ public:
     const unsigned char* getUserData(unsigned int offset);
     void setUserData(unsigned char* userData, unsigned int size);
 
-    bool addUserData(mCDAPMessage* msg);
+    bool addUserData(CDAPMessage* msg);
 
 
 };

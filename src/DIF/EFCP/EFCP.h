@@ -90,6 +90,10 @@ private:
 //    std::map<unsigned int, DTP*> dtpMap; //list of currently existing DTP instances
 
 
+protected:
+    virtual void initialize(int step);
+    virtual int numInitStages() const {return 4;};
+
 public:
     EFCP();
     virtual ~EFCP();

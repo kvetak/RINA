@@ -38,7 +38,7 @@ void Delimiting::handleMessage(cMessage* msg){
     //self-message
   }else{
     if(msg->arrivedOn("efcModuleIo")){
-      processMsgFromFAI((mCDAPMessage*)(msg));
+      processMsgFromFAI((CDAPMessage*)(msg));
     }else if(msg->arrivedOn("efcpiIo")){
 
     }else{
@@ -51,7 +51,7 @@ void Delimiting::handleMessage(cMessage* msg){
 
 }
 
-void Delimiting::processMsgFromFAI(mCDAPMessage* msg){
+void Delimiting::processMsgFromFAI(CDAPMessage* msg){
 
   /*
    * 1. Create new SDU and put msg to this new SDU.

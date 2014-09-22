@@ -26,7 +26,6 @@
 #define EFCPTABLE_H_
 
 #include <omnetpp.h>
-#include <csimplemodule.h>
 
 #include "EFCPTableEntry.h"
 
@@ -38,6 +37,9 @@ class EFCPTable : public cSimpleModule
   private:
     TEFCPTable efcpTable;
 
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
 
   public:
@@ -47,6 +49,8 @@ class EFCPTable : public cSimpleModule
     EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
     EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
     void insertEntry(EFCPTableEntry* entry);
+
+    std::string info() const;
 
 };
 

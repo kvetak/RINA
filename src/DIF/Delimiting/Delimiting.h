@@ -35,7 +35,7 @@
 class Delimiting : public cSimpleModule
 {
   private:
-    void processMsgFromFAI(mCDAPMessage* msg);
+    void processMsgFromFAI(CDAPMessage* msg);
   public:
     Delimiting();
     virtual ~Delimiting();

@@ -75,7 +75,7 @@ void SDU::setUserData(unsigned char* userData, unsigned int size)
 //    this->userData = userData;
 }
 
-bool SDU::addUserData(mCDAPMessage* msg){
+bool SDU::addUserData(CDAPMessage* msg){
 
 //    if(msg->getSize() > MAXSDUSIZE){
 //        return false;
