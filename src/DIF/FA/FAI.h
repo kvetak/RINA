@@ -93,6 +93,10 @@ class FAI : public cSimpleModule  {
 
   private:
     EFCP* efcp;
+    cGate* southI;
+    cGate* southO;
+    cGate* northI;
+    cGate* northO;
 
     void initSignalsAndListeners();
 

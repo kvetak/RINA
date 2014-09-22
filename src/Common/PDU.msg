@@ -26,8 +26,10 @@ class noncobject APN;
 
 cplusplus {{
 #include "ConnectionId.h"
+typedef cObject* cObjectPtr;
 }}
 class noncobject ConnectionId;
+class noncobject cObjectPtr;
 
 //cplusplus {{
 //   #include "cobject.h"
@@ -77,6 +79,7 @@ message PDU {
     unsigned int seqNum;
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
+    cObjectPtr mUserData;
     
 }
 

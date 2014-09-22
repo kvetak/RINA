@@ -49,9 +49,10 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
 //  this->efcpTable = (EFCPTable*)this->getSubmodule("efcpTable");
 
+  cModule* efcpModule = this->getParentModule();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-  cModule* efcpiModule = moduleType->create("efcpi", this);
+  cModule* efcpiModule = moduleType->create("efcpi", efcpModule);
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -69,7 +70,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
     //TODO A!: Add tmpEFCPEntry to efcpTable
   }
 
-  Delimiting* delModule = (Delimiting*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
   EFCPInstance* efcpi = new EFCPInstance();
@@ -111,7 +112,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   std::ostringstream gateName_str;
   gateName_str << "fai_" << flow->getConId().getSrcCepId();
 
-  cModule* efcpModule = this->getParentModule();
+
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
   cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
@@ -155,7 +156,7 @@ Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
     //0. Create Delimiting module within EFCPModule
     cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
 
-    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this);
+    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this->getParentModule());
     delimit->finalizeParameters();
     delimit->buildInside();
     delimit->scheduleStart(simTime());

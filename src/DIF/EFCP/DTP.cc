@@ -78,7 +78,7 @@ void DTP::handleMessage(cMessage *msg)
     }
   }else{
     /* Either PDUs from RMT or SDUs from AP */
-      if(msg->arrivedOn("efcpiIo")){
+      if(msg->arrivedOn("efcpiIo$i")){
           //handle SDUs
 //          handleSDUs((CDAPMessage*) msg);
         handleMsgFromDelimiting((Data*) msg);
@@ -92,9 +92,10 @@ void DTP::handleMessage(cMessage *msg)
 void DTP::handleMsgFromDelimiting(Data* msg){
 
   DataTransferPDU* pdu = new DataTransferPDU();
-  this->
+  pdu->setMUserData(msg);
+  pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
-  send(pdu, "rmtIo");
+  send(pdu, "rmtIo$o");
 
 }
 

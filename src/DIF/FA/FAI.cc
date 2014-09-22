@@ -177,6 +177,10 @@ void FAI::handleMessage(cMessage *msg) {
     //Receive M_Delete(Flow)
 
     //Receive M_Delete_R(Flow)
+cGate* tmpGate = msg->getArrivalGate();
+  if(msg->getArrivalGate() == this->northI){
+    send(msg, this->southO);
+  }
 
 }
 
@@ -207,12 +211,16 @@ bool FAI::createBindings() {
     this->addGate(nam1.str().c_str(), cGate::INOUT, false);
     cGate* g1i = this->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = this->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
+    this->southI=g1i;
+    this->southO=g1o;
 
     std::ostringstream nam23;
     nam23 << "appIo_" << portId;
     this->addGate(nam23.str().c_str(), cGate::INOUT, false);
     cGate* g2i = this->gateHalf(nam23.str().c_str(), cGate::INPUT);
     cGate* g2o = this->gateHalf(nam23.str().c_str(), cGate::OUTPUT);
+    this->northI = g2i;
+    this->northO = g2o;
 
     cModule* FAModule = FaModule->getParentModule();
     FAModule->addGate(nam23.str().c_str(), cGate::INOUT, false);

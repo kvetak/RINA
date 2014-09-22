@@ -37,9 +37,9 @@ void Delimiting::handleMessage(cMessage* msg){
   if(msg->isSelfMessage()){
     //self-message
   }else{
-    if(msg->arrivedOn("efcModuleIo")){
+    if(msg->arrivedOn("efcpModuleIo$i")){
       processMsgFromFAI((CDAPMessage*)(msg));
-    }else if(msg->arrivedOn("efcpiIo")){
+    }else if(msg->arrivedOn("efcpiIo$i")){
 
     }else{
       //A2 panic!
@@ -63,8 +63,8 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
   SDU* sdu = new SDU();
   sdu->addUserData(msg);
 
-  //TODO A1 handle multiple gates
-  send(sdu, "efcpiIo", 0);
+  //TODO A1 handle multiple gates -> change to cGate*
+  send(sdu, "efcpiIo$o", 0);
 }
 
 Delimiting::~Delimiting()
