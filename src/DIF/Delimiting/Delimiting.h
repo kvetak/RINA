@@ -28,6 +28,7 @@
 #include <omnetpp.h>
 #include "CDAPMessage_m.h"
 #include "SDU.h"
+#include "DataTransferPDU_m.h"
 //#include <csimplemodule.h>
 
 #define DELIMITING_MODULE_NAME "delimiting"
@@ -36,6 +37,7 @@ class Delimiting : public cSimpleModule
 {
   private:
     void processMsgFromFAI(CDAPMessage* msg);
+    void handleMsgFromEfcpi(DataTransferPDU* msg);
   public:
     Delimiting();
     virtual ~Delimiting();

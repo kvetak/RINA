@@ -41,7 +41,7 @@ public:
     SDU(const char *name=NULL, int kind=0) : SDU_Base(name,kind) {this->offset_var = this->size_var = 0;}
     SDU(const SDU& other) : SDU_Base(other) {copy(other);}
     SDU& operator=(const SDU& other) {if (this==&other) return *this; SDU_Base::operator=(other); copy(other); return *this;}
-    virtual SDU *dup() const {return new SDU(*this);}
+//    virtual SDU *dup() const {return new SDU(*this);}
     // ADD CODE HERE to redefine and implement pure virtual functions from SDU_Base
 
     unsigned int getSize() const;

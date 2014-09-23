@@ -83,6 +83,8 @@ void DTP::handleMessage(cMessage *msg)
 //          handleSDUs((CDAPMessage*) msg);
         handleMsgFromDelimiting((Data*) msg);
 
+      }else if(msg->arrivedOn("rmtIo$i")){
+        handleMsgFromRmt((PDU*) msg);
       }
   }
 
@@ -93,10 +95,21 @@ void DTP::handleMsgFromDelimiting(Data* msg){
 
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
+  pdu->setConnId(this->flow->getConId());
+  pdu->setDstApni(this->flow->getDstApni());
+
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
   send(pdu, "rmtIo$o");
 
+}
+
+void DTP::handleMsgFromRmt(PDU* msg){
+
+  if(dynamic_cast<DataTransferPDU*>(msg)){
+    DataTransferPDU* pdu = (DataTransferPDU*)msg;
+    send(pdu->getMUserData(), "efcpiIo$o");
+  }
 }
 
 void DTP::handleSDUs(CDAPMessage* cdap){
@@ -975,4 +988,9 @@ void DTP::schedule(DTPTimers *timer, double time){
     }
   }
 
+}
+
+
+void DTP::setFlow(Flow* flow){
+  this->flow = flow;
 }

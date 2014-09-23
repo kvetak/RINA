@@ -40,7 +40,7 @@ void Delimiting::handleMessage(cMessage* msg){
     if(msg->arrivedOn("efcpModuleIo$i")){
       processMsgFromFAI((CDAPMessage*)(msg));
     }else if(msg->arrivedOn("efcpiIo$i")){
-
+      handleMsgFromEfcpi((DataTransferPDU*)(msg));
     }else{
       //A2 panic!
     }
@@ -65,6 +65,12 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
 
   //TODO A1 handle multiple gates -> change to cGate*
   send(sdu, "efcpiIo$o", 0);
+}
+
+void Delimiting::handleMsgFromEfcpi(DataTransferPDU* msg){
+
+  SDU* sdu = (SDU*) msg->getMUserData();
+  send(sdu->getMUserData().front(), "efcpModuleIo$o");
 }
 
 Delimiting::~Delimiting()

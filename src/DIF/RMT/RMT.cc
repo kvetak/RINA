@@ -194,7 +194,9 @@ void RMT::handleMessage(cMessage *msg)
         }
         else if (gate.substr(0, 6) == "efcpIo")
         {
-            sendDown(pdu);
+          //TODO change it back to Tomas's version
+            //sendDown(pdu);
+          send(msg, efcpiGates[pdu->getConnId().getSrcCepId()]);
         }
     }
     // TODO: ew, replace this with a shared base class when it's available

@@ -28,6 +28,7 @@
 #include "DataTransferPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
+
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
@@ -42,6 +43,7 @@ class DTP : public cSimpleModule
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
     RMT* rmt;
+    Flow* flow;
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -78,6 +80,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
     void handleMsgFromDelimiting(Data* msg);
+    void handleMsgFromRmt(PDU* msg);
 
     /* Send */
 
@@ -151,6 +154,8 @@ class DTP : public cSimpleModule
     bool read(int portId, unsigned char * buffer, int len);
     bool readImmediate(int portId, unsigned char* buffer, int len);
     bool write(int portId, unsigned char *buffer, int len);
+
+    void setFlow(Flow* flow);
 
 
 

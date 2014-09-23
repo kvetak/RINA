@@ -18,18 +18,18 @@
 cplusplus {{
 #define PDU_HEADER_LEN 10
 #include "APN.h"
+#include "APNamingInfo.h"
+#include "ConnectionId.h"
+typedef cObject* cObjectPtr;
+typedef cMessage* cMessagePtr;
 //#include "PDU.h"
 
 }}
 class noncobject APN;
-//packet PDU;
-
-cplusplus {{
-#include "ConnectionId.h"
-typedef cObject* cObjectPtr;
-}}
+class noncobject APNamingInfo;
 class noncobject ConnectionId;
 class noncobject cObjectPtr;
+class noncobject cMessagePtr;
 
 //cplusplus {{
 //   #include "cobject.h"
@@ -70,8 +70,10 @@ enum FLAGS{
 message PDU {
     @customize(true);
     unsigned int version = 1;
-    APN destAddr;
-    APN srcAddr;
+    APN destAddr; //deprecated?
+    APN srcAddr;  //deprecated?
+    APNamingInfo dstApni;
+    APNamingInfo srcApni;
     ConnectionId connId;
     int type enum(PDUType);
     int flags = 0; //8bits
@@ -79,7 +81,8 @@ message PDU {
     unsigned int seqNum;
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
-    cObjectPtr mUserData;
+    cMessagePtr mUserData;
+    
     
 }
 
