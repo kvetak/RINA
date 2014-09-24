@@ -20,5 +20,5 @@ package rina.DIF.RMT;
 //
 simple RMTPortManager
 {
-    @display("i=block/subqueue");
+    @display("i=block/mac");
 }

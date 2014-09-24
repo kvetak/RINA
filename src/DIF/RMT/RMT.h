@@ -15,6 +15,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file RMT.h
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief Relaying and Multiplexing Task
+ * @detail
+ */
 
 #ifndef RMT_H_
 #define RMT_H_
@@ -26,48 +32,49 @@
 #include "ModuleAccess.h"
 #include "PDU_m.h"
 #include "CDAPMessage_m.h"
-#include "ConnectionId.h"
+#include "Flow.h"
 
-#include "RMTPortManager.h"
-#include "RMTPort.h"
+//#include "RMTPortManager.h"
+//#include "RMTPort.h"
 
-typedef std::map<int, cGate*> southMapping;
 typedef std::map<int, cGate*> efcpiMapping;
+typedef std::map<std::string, cGate*> rmtPorts;
 
 class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
 
-    southMapping intGates;
     efcpiMapping efcpiGates;
+    rmtPorts ports;
 
     std::string processName;
     bool relayOn;
+    bool onWire;
 
+    void sendDown(PDU_Base* pdu);
+    void sendUp(PDU_Base* pdu);
 
-    void deleteEfcpiGate(int efcpiId);
 
 //    RMTPortManager* ports;
-
 //    void enqueueRelayPDU(PDU_Base* pdu);
 //    void enqueueMuxPDU(PDU_Base* pdu);
 //    void runRelay();
 //    void runMux();
 
-    void sendDown(PDU_Base* pdu);
-    void sendUp(PDU_Base* pdu);
-
   public:
-
-    void createEfcpiGate(unsigned int efcpiId);
-
     RMT();
     virtual ~RMT();
 
-    bool relayStatus();
+    void createEfcpiGate(unsigned int efcpiId);
+    void deleteEfcpiGate(unsigned int efcpiId);
 
+    void createSouthGate(std::string portId);
+    void deleteSouthGate(std::string portId);
 
+    void enableRelay() { relayOn = true; };
+    void disableRelay() { relayOn = false; };
+    bool getRelayStatus() { return relayOn; };
 
   protected:
     virtual void initialize();

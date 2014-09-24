@@ -33,7 +33,7 @@ module RMTModule
 
 
     connections allowunconnected:
-        southIo++ <--> rmt.southIo++;        
+        //southIo++ <--> rmt.southIo++;        
         ribdIo <--> rmt.ribdIo;
         //efcpIo <--> rmt.efcpIo;
 }

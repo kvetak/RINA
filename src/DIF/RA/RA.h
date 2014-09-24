@@ -13,12 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file RA.h
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief
+ * @detail
+ */
+
 #ifndef __RINA_RA_H_
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
 #include "FA.h"
+#include "DA.h"
 #include "Flow.h"
+#include "FABase.h"
+#include "RMT.h"
 
 class RA : public cSimpleModule
 {
@@ -29,6 +39,15 @@ class RA : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
   private:
+    DA* DifAllocator;
+    RMT* rmt;
+    std::string processName;
+
+    void createFlow(std::string dstIpc);
+    void removeFlow();
+
+    void bindFlowToRMT(cModule* ipc, Flow *flow);
+    void bindMediumToRMT();
 
     void registerFASigs();
     void registerFAISigs();

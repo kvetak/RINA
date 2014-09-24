@@ -33,7 +33,7 @@ module IPCProcess
         //int numOfAPs;
     gates:
         inout southIo[];
-        //inout northIo[numOfAPs];
+        inout northIo[];
     submodules:
         flowAllocator: FlowAllocator {
             @display("p=90,61");
@@ -60,6 +60,6 @@ module IPCProcess
         }
     connections allowunconnected:
         rmt.ribdIo <--> ribDaemon.rmtIo;
-        rmt.southIo++ <--> southIo++;
+        //rmt.southIo++ <--> southIo++;
         //rmt.efcpIo++ <--> efcp.rmtIo++
 }

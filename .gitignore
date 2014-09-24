@@ -46,3 +46,5 @@ gcc-debug
 # ignore backup and temp files 
 *.bak 
 *~ 
+*.tkenvlog
+*.tkenvrc
