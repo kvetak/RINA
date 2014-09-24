@@ -13,6 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUForwardingTable.h
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief PDU forwarding (routing) table used by RMT relay.
+ * @detail
+ */
+
 #ifndef __RINA_PDUFORWARDINGTABLE_H_
 #define __RINA_PDUFORWARDINGTABLE_H_
 
@@ -33,13 +40,15 @@ class PDUForwardingTable : public cSimpleModule
 
   private:
     PDUFwTable FwTable;
+    void printAll();
 
   public:
     PDUForwardingTable();
-    void printAll();
-    int lookup(std::string destAddr, int QoSid);
+
     void insert(const PDUTableEntry* entry);
-    void remove(int portId);
+    void insert(std::string destAddr, int qosId, std::string portId);
+    std::string lookup(std::string destAddr, int QoSid);
+    void remove(std::string portId);
 };
 
 #endif

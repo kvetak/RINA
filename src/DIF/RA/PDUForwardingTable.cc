@@ -13,6 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUForwardingTable.cc
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief PDU forwarding (routing) table used by RMT relay.
+ * @detail
+ */
+
 #include "PDUForwardingTable.h"
 
 Define_Module(PDUForwardingTable);
@@ -33,7 +40,10 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 
 }
 
-
+/**
+* Dumps the contents of the forwarding table to OMNeT++ output console.
+*
+*/
 void PDUForwardingTable::printAll() {
     EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
 
@@ -45,7 +55,14 @@ void PDUForwardingTable::printAll() {
     }
 }
 
-int PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
+/**
+* Looks up a port-id to be used for given address and Qos-id.
+*
+* @param destAddr destination IPC process address
+* @param QoSid QoS-id
+* @return port-id
+*/
+std::string PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
     for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
     {
         PDUTableEntry a = *it;
@@ -59,13 +76,34 @@ int PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
     throw;
 }
 
+/**
+* Inserts a prepared forwarding table entry into the table.
+*
+* @param entry table entry to be inserted
+*/
 void PDUForwardingTable::insert(const PDUTableEntry* entry) {
     Enter_Method("insert()");
     FwTable.push_back(*entry);
-    //EV << this->getFullPath() << " inserted an item" << endl;
 }
 
-void PDUForwardingTable::remove(int portId)
+/**
+* Constructs a new forwarding table entry and adds it into the table.
+*
+* @param destAddr destination IPC process address
+* @param qosId flow QoS ID
+*/
+void PDUForwardingTable::insert(std::string destAddr, int qosId, std::string portId) {
+    Enter_Method("insert()");
+    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, portId);
+    FwTable.push_back(entry);
+}
+
+/**
+* Removes entries with matching port-id from the forwarding table.
+*
+* @param portId target port-id
+*/
+void PDUForwardingTable::remove(std::string portId)
 {
     PDUFwIter i = FwTable.begin();
     while (i != FwTable.end())

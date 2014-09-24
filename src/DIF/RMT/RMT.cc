@@ -15,6 +15,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file RMT.cc
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief Relaying and Multiplexing Task
+ * @detail
+ */
+
 #include <RMT.h>
 
 Define_Module(RMT);
@@ -23,7 +30,7 @@ const int PROCESSING_DELAY = 0.0;
 
 RMT::RMT()
 {
-
+    relayOn = false;
 }
 
 RMT::~RMT()
@@ -32,46 +39,72 @@ RMT::~RMT()
 
 
 void RMT::initialize() {
-
-    processName = this->getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
-    cModule* hostModule = getParentModule()->getParentModule();
-
-    std::string bottomModule = hostModule->gate("southIo$o", 0)->getNextGate()->getName();
-
-    if (bottomModule == "medium$o")
-    { // we're on wire! this is the bottommost mux-only RMT
-        relayOn = false;
-        EV << this->getFullPath() << " is a shim DIF" << endl;
-    }
-    else if (bottomModule == "northIo$o")
-    { // other IPC processes are below us
-        if (hostModule->gateSize("northIo") > 1)
-        { // multiple (N-1)-DIFs are present, we shall be relaying
-            fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
-            relayOn = true;
-        }
-        else
-        { // this is yet another mux-only RMT
-            relayOn = false;
-        }
-    }
-
-    // store the available output gates
-    for (int i = 0; i < this->gateSize("southIo"); i++)
-    {
-        intGates[i] = this->gateHalf("southIo", cGate::OUTPUT, i);
-    }
-
-    // TODO: create flows with underlying DIFs
-
-    ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
+    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    //ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
 }
 
-bool RMT::relayStatus()
+/**
+ * Creates a gate to be used for connection to an (N-1)-flow.
+ *
+ * @param gateName name to be given to the newly created gate; it has to be
+ *        unambiguous within the scope of this IPC's management of (N-1)-flows
+ */
+void RMT::createSouthGate(std::string gateName)
 {
-    return relayOn;
+    if (ports.count(gateName))
+    {
+        return;
+    }
+
+    cModule* rmtModule = getParentModule();
+
+    this->addGate(gateName.c_str(), cGate::INOUT, false);
+    cGate* rmtIn = this->gateHalf(gateName.c_str(), cGate::INPUT);
+    cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
+
+    rmtModule->addGate(gateName.c_str(), cGate::INOUT, false);
+    cGate* rmtModuleIn = rmtModule->gateHalf(gateName.c_str(), cGate::INPUT);
+    cGate* rmtModuleOut = rmtModule->gateHalf(gateName.c_str(), cGate::OUTPUT);
+
+    rmtModuleIn->connectTo(rmtIn);
+    rmtOut->connectTo(rmtModuleOut);
+
+    ports[gateName] = rmtOut;
+
+    // RMT<->(N-1)-EFCP interconnection shall be done by the RA
 }
 
+/**
+ * Removes a gate used for a (N-1)-flow.
+ *
+ * @param gateName name of the gate meant for removal
+ */
+void RMT::deleteSouthGate(std::string gateName)
+{
+    if (!ports.count(gateName))
+    {
+        return;
+    }
+
+    cModule* rmtModule = getParentModule();
+
+    cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
+    cGate* rmtModuleIn = rmtModule->gateHalf(gateName.c_str(), cGate::INPUT);
+
+    rmtOut->disconnect();
+    rmtModuleIn->disconnect();
+
+    this->deleteGate(gateName.c_str());
+    rmtModule->deleteGate(gateName.c_str());
+
+    ports.erase(gateName);
+}
+
+/**
+ * Creates a gate to be used for connection to an EFCP instance.
+ *
+ * @param efcpiId CEP-id to be used in the gate's name
+ */
 void RMT::createEfcpiGate(unsigned int efcpiId)
 {
     if (efcpiGates.count(efcpiId))
@@ -100,7 +133,12 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
     // RMT<->EFCP interconnection shall be done by the FAI
 }
 
-void RMT::deleteEfcpiGate(int efcpiId)
+/**
+ * Removes a gate used for an EFCP instance.
+ *
+ * @param efcpiId CEP-id of the gate meant for removal
+ */
+void RMT::deleteEfcpiGate(unsigned int efcpiId)
 {
     if (!efcpiGates.count(efcpiId))
     {
@@ -124,6 +162,11 @@ void RMT::deleteEfcpiGate(int efcpiId)
     efcpiGates.erase(efcpiId);
 }
 
+/**
+ * Passes given PDU to an (N-1)-flow using information from the forwarding table.
+ *
+ * @param pdu PDU to be sent
+ */
 void RMT::sendDown(PDU_Base* pdu)
 {
     std::string pduDestAddr = pdu->getDestAddr().getName();
@@ -133,9 +176,9 @@ void RMT::sendDown(PDU_Base* pdu)
     if (relayOn)
     {
         try
-        { // forwarding table lookup
-            int outPortId = fwTable->lookup(pduDestAddr, pduQosId);
-            outPort = intGates[outPortId];
+        { // forwarding table lookup (returns IPC process ID for now)
+            std::string outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+            outPort = ports[outPortId];
         }
         catch (...)
         {
@@ -146,12 +189,19 @@ void RMT::sendDown(PDU_Base* pdu)
     }
     else
     {
-        outPort = intGates[0];
+        // decide which (N-1)-flow should get the PDU...
+        // fwtable lookup seems unnecessary here, should the decision be based only on QoS?
+        outPort = ports.begin()->second;
     }
 
     send(pdu, outPort);
 }
 
+/**
+ * Passes given PDU to the appropriate EFCP instance using PDU's destination CEP-id.
+ *
+ * @param pdu PDU to be sent
+ */
 void RMT::sendUp(PDU_Base* pdu)
 {
     if (pdu->getDestAddr().getName() != processName)
@@ -169,12 +219,10 @@ void RMT::sendUp(PDU_Base* pdu)
     }
     else
     {
-        createEfcpiGate(pdu->getConnId().getSrcCepId());
-        cGate* efcpiGate = efcpiGates[pdu->getConnId().getSrcCepId()];
+        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDestCepId()];
 
         EV << this->getFullPath() << " delivering a PDU to EFCPI " << efcpiGate->getName() << endl;
-        //send(pdu, efcpiGate);
-        delete pdu;
+        send(pdu, efcpiGate);
     }
 }
 
@@ -189,11 +237,11 @@ void RMT::handleMessage(cMessage *msg)
     else if (dynamic_cast<PDU_Base*>(msg) != NULL)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
-        if ((gate == "southIo$i") || (gate == "ribdIo$i"))
+        if (gate.substr(0, 7) == "southIo_")
         {
             sendUp(pdu);
         }
-        else if (gate.substr(0, 6) == "efcpIo")
+        else if (gate.substr(0, 7) == "efcpIo_")
         {
             sendDown(pdu);
         }

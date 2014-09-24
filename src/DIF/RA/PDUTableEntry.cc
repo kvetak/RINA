@@ -13,13 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUTableEntry.cc
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief A class representing a single item of the forwarding table.
+ * @detail
+ */
+
 #include "PDUTableEntry.h"
 
 PDUTableEntry::PDUTableEntry()
 {
 }
 
-PDUTableEntry::PDUTableEntry(std::string destaddr, int qosid, int portid)
+PDUTableEntry::PDUTableEntry(std::string destaddr, int qosid, std::string portid)
 :  destAddr(destaddr), qosId(qosid), portId(portid)
 {
 }
@@ -32,7 +39,7 @@ PDUTableEntry::~PDUTableEntry()
 std::string PDUTableEntry::info() const {
     std::stringstream os;
     os << "dest: " << destAddr << endl << "qos-id: " << qosId << endl \
-       << "; port-id: " << portId << endl;
+       << "port-id: " << portId << endl;
     return os.str();
 }
 
@@ -50,7 +57,7 @@ int PDUTableEntry::getQosId()
     return qosId;
 }
 
-int PDUTableEntry::getPortId()
+std::string PDUTableEntry::getPortId()
 {
     return portId;
 }
@@ -65,7 +72,7 @@ void PDUTableEntry::setQosId(int qosid)
     this->qosId = qosid;
 }
 
-void PDUTableEntry::setPortId(int portid)
+void PDUTableEntry::setPortId(std::string portid)
 {
     this->portId = portid;
 }

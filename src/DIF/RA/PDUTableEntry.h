@@ -13,6 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUTableEntry.h
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief A class representing a single item of the forwarding table.
+ * @detail
+ */
+
 #ifndef __RINA_PDUTABLEENTRY_H_
 #define __RINA_PDUTABLEENTRY_H_
 
@@ -28,22 +35,22 @@ class PDUTableEntry
   private:
     std::string destAddr;
     int qosId;
-    int portId;
+    std::string portId;
 
   public:
     PDUTableEntry();
-    PDUTableEntry(std::string destaddr, int qosid, int portid);
+    PDUTableEntry(std::string destaddr, int qosid, std::string portid);
     virtual ~PDUTableEntry();
 
     std::string info() const;
 
     std::string getDestAddr();
     int getQosId();
-    int getPortId();
+    std::string getPortId();
 
     void setDestAddr(std::string destaddr);
     void setQosId(int qosid);
-    void setPortId(int portId);
+    void setPortId(std::string portId);
 
 };
 

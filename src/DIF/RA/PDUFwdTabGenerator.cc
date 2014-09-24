@@ -13,6 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUFwdTabGenerator.cc
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief PDU forwarding (routing) table generator.
+ * @detail Responds to various events happening inside the IPC process
+ *         by adding, removing and editing entries in the forwarding table.
+ */
+
 #include "PDUFwdTabGenerator.h"
 
 Define_Module(PDUFwdTabGenerator);
@@ -28,13 +36,10 @@ void PDUFwdTabGenerator::initialize()
     for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
     {
         cXMLElement* m = *i;
-
         int qosid = atoi(m->getAttribute("qosId"));
-        int portid = atoi(m->getAttribute("portId"));
 
-        this->insertFwEntry(m->getAttribute("dest"), qosid, portid);
+        fwTable->insert(m->getAttribute("dest"), qosid, m->getAttribute("outputIpc"));
     }
-    //fwTable->printAll();
 }
 
 void PDUFwdTabGenerator::handleMessage(cMessage *msg)
@@ -42,12 +47,3 @@ void PDUFwdTabGenerator::handleMessage(cMessage *msg)
 
 }
 
-void PDUFwdTabGenerator::removeFwEntry(int portId) {
-    fwTable->remove(portId);
-}
-
-void PDUFwdTabGenerator::insertFwEntry(std::string destAddr, const int qosId, int portId)
-{
-    PDUTableEntry *ret = new PDUTableEntry(destAddr, qosId, portId);
-    fwTable->insert(ret);
-}

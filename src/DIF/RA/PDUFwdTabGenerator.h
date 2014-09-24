@@ -13,6 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+/**
+ * @file PDUFwdTabGenerator.h
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @brief PDU forwarding (routing) table generator.
+ * @detail Responds to various events happening inside the IPC process
+ *         by adding, removing and editing entries in the forwarding table.
+ */
+
 #ifndef __RINA_PDUFWDTABGENERATOR_H_
 #define __RINA_PDUFWDTABGENERATOR_H_
 
@@ -33,8 +41,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
   public:
-    void removeFwEntry(int portId);
-    void insertFwEntry(std::string destAddr, const int qosId, int portId);
+
   private:
     PDUForwardingTable* fwTable;
 };
