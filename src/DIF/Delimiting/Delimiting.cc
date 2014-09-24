@@ -40,7 +40,7 @@ void Delimiting::handleMessage(cMessage* msg){
     if(msg->arrivedOn("efcpModuleIo$i")){
       processMsgFromFAI((CDAPMessage*)(msg));
     }else if(msg->arrivedOn("efcpiIo$i")){
-      handleMsgFromEfcpi((DataTransferPDU*)(msg));
+      handleMsgFromEfcpi((Data*)(msg));
     }else{
       //A2 panic!
     }
@@ -67,10 +67,12 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
   send(sdu, "efcpiIo$o", 0);
 }
 
-void Delimiting::handleMsgFromEfcpi(DataTransferPDU* msg){
+void Delimiting::handleMsgFromEfcpi(Data* msg){
 
-  SDU* sdu = (SDU*) msg->getMUserData();
-  send(sdu->getMUserData().front(), "efcpModuleIo$o");
+  SDU* sdu = (SDU*) msg;
+  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
+  CDAPMessage* cdap = msgVector.front();
+  send(cdap, "efcpModuleIo$o");
 }
 
 Delimiting::~Delimiting()
