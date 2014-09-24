@@ -169,7 +169,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 void RMT::sendDown(PDU_Base* pdu)
 {
-    std::string pduDestAddr = pdu->getDestAddr().getName();
+    std::string pduDestAddr = pdu->getDstAddr().getName();
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
@@ -204,7 +204,7 @@ void RMT::sendDown(PDU_Base* pdu)
  */
 void RMT::sendUp(PDU_Base* pdu)
 {
-    if (pdu->getDestAddr().getName() != processName)
+    if (pdu->getDstAddr().getName() != processName)
     { // this PDU isn't for us
         if (relayOn)
         { // ...let's relay it somewhere else
@@ -243,9 +243,7 @@ void RMT::handleMessage(cMessage *msg)
         }
         else if (gate.substr(0, 7) == "efcpIo_")
         {
-          //TODO change it back to Tomas's version
-            //sendDown(pdu);
-          send(msg, efcpiGates[pdu->getConnId().getSrcCepId()]);
+            sendDown(pdu);
         }
     }
     // TODO: ew, replace this with a shared base class when it's available

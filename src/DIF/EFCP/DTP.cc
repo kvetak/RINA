@@ -96,7 +96,7 @@ void DTP::handleMsgFromDelimiting(Data* msg){
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
   pdu->setConnId(this->flow->getConId());
-  pdu->setDstApni(this->flow->getDstApni());
+  pdu->setDstAddr(this->flow->getDstApni().getApn());
 
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
