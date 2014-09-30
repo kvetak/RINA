@@ -24,7 +24,6 @@
  */
 #include "QosCube.h"
 
-
 QosCube::QosCube() {
     // TODO Auto-generated constructor stub
 
@@ -146,3 +145,10 @@ QosCube::~QosCube() {
     // TODO Auto-generated destructor stub
 }
 
+bool QosCube::isDtcpOn() const {
+    return dtcpOn;
+}
+
+void QosCube::setDtcpOn(bool dtcpOn) {
+    this->dtcpOn = dtcpOn;
+}

@@ -3,29 +3,28 @@
 	<Host id="host1">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App2" 	ipcAddress="2" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
-				<APNtoDIF apn="3" 		ipcAddress="0" />
+				<APNtoDIF apn="App2" 	ipcAddress="22" difName="Layer1" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />				
 			</Directory>
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="2"	qosId="1"	outputIpc="0"/>
-				<FwTableItem dest="2"	qosId="2"	outputIpc="0"/>
-				<FwTableItem dest="2"	qosId="3"	outputIpc="0"/>
+				<FwTableItem dest="22"	qosId="1"	outputIpc="1"/>
+				<FwTableItem dest="22"	qosId="2"	outputIpc="1"/>
+				<FwTableItem dest="22"	qosId="3"	outputIpc="1"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>
 	<Host id="host2">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App1" 	ipcAddress="1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
+				<APNtoDIF apn="App1" 	ipcAddress="11" difName="Layer1" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />
 			</Directory>
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="1"	qosId="2"	outputIpc="2"/>
+				<FwTableItem dest="11"	qosId="2"	outputIpc="2"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>

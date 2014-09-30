@@ -29,14 +29,27 @@
 class DA : public cSimpleModule
 {
   public:
-    FABase* resolveApnToDifFa(const APN& apn);
-    FABase* resolveApniToDifFa(const APNamingInfo& apni);
 
-    cModule* resolveApnToDif(const APN& apn);
-    cModule* resolveApniToDif(const APNamingInfo& apni);
+    DirectoryEntry* resolveApni(const APNamingInfo& apni);
+    FABase* resolveApniToFa(const APNamingInfo& apni);
+    cModule* resolveApniToIpc(const APNamingInfo& apni);
+    std::string resolveApniToIpcPath(const APNamingInfo& apni);
 
-    std::string resolveApnToDifName(const APN& apn);
-    std::string resolveApniToDifName(const APNamingInfo& apni);
+    /** Check whether any IPC within given DIF name is available on computation system with source IPC
+     *
+     * @param difName Given DIF name
+     * @param ipc Source IPC Process
+     * @return True if yes, otherwise false
+     */
+    bool isDifLocalToIpc(std::string difName, cModule* ipc);
+
+    /**
+     * Check whether given IPC X is on the same computation system as IPC Y
+     * @param ipcX target
+     * @param ipcY source
+     * @return True if yes, otherwise false.
+     */
+    bool isIpcXLocalToY(cModule* ipcX, cModule* ipcY);
 
   protected:
     Directory*          Dir;
@@ -47,6 +60,11 @@ class DA : public cSimpleModule
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void initPointers();
+
+    DirectoryEntry* resolveApn(const APN& apn);
+    FABase* resolveApnToFa(const APN& apn);
+    std::string resolveApnToIpcPath(const APN& apn);
+    cModule* resolveApnToIpc(const APN& apn);
 };
 
 #endif

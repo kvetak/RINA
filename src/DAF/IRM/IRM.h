@@ -25,6 +25,7 @@
 #include "RINASignals.h"
 #include "DA.h"
 #include "FABase.h"
+#include "ExternConsts.h"
 
 class IRM : public cSimpleModule   {
   public:

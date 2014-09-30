@@ -22,6 +22,7 @@
 //RINASim libraries
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
+#include "Address.h"
 
 extern const int UNDEFINED_PORTADDR;
 extern const int MAX_HOPCOUNT;
@@ -43,8 +44,6 @@ class Flow : public cObject
     void setConId(const ConnectionId& conId);
     uint32_t getCreateFlowRetries() const;
     void setCreateFlowRetries(uint32_t createFlowRetries);
-    int getDstAddr() const;
-    void setDstAddr(int dstAddr);
     const APNamingInfo& getDstApni() const;
     void setDstApni(const APNamingInfo& dstApni);
     int getDstPortId() const;
@@ -53,12 +52,16 @@ class Flow : public cObject
     void setHopCount(uint32_t hopCount);
     uint32_t getMaxCreateFlowRetries() const;
     void setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries);
-    int getSrcAddr() const;
-    void setSrcAddr(int srcAddr);
     const APNamingInfo& getSrcApni() const;
     void setSrcApni(const APNamingInfo& srcApni);
     int getSrcPortId() const;
     void setSrcPortId(int srcPortId);
+    const Address& getDstAddr() const;
+    void setDstAddr(const Address& dstAddr);
+    const Address& getSrcAddr() const;
+    void setSrcAddr(const Address& srcAddr);
+    const QosCube& getQosParameters() const;
+    void setQosParameters(const QosCube& qosParameters);
 
   private:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
@@ -66,12 +69,14 @@ class Flow : public cObject
     APNamingInfo dstApni;
     int srcPortId;
     int dstPortId;
-    int srcAddr;
-    int dstAddr;
+    Address srcAddr;
+    Address dstAddr;
     ConnectionId conId;
     uint32_t createFlowRetries;
     uint32_t maxCreateFlowRetries;
     uint32_t hopCount;
+
+    QosCube qosParameters;
 };
 
 //Free function

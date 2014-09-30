@@ -23,13 +23,13 @@ Register_Class(Flow);
 
 Flow::Flow() :
         srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR),
-        srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR),
+        srcAddr(Address()), dstAddr(Address()),
         createFlowRetries(0), maxCreateFlowRetries(MAX_CREATERETRIES), hopCount(MAX_HOPCOUNT) {
 }
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcPortId(UNDEFINED_PORTADDR), dstPortId(UNDEFINED_PORTADDR),
-        srcAddr(UNDEFINED_PORTADDR), dstAddr(UNDEFINED_PORTADDR),
+        srcAddr(Address()), dstAddr(Address()),
         createFlowRetries(0), maxCreateFlowRetries(MAX_CREATERETRIES), hopCount(MAX_HOPCOUNT) {
     this->srcApni = src;
     this->dstApni = dst;
@@ -38,8 +38,8 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
 Flow::~Flow() {
     this->srcPortId = UNDEFINED_PORTADDR;
     this->dstPortId = UNDEFINED_PORTADDR;
-    this->srcAddr = UNDEFINED_PORTADDR;
-    this->dstAddr = UNDEFINED_PORTADDR;
+    this->srcAddr = Address();
+    this->dstAddr = Address();
     this->createFlowRetries = 0;
     this->maxCreateFlowRetries = 0;
     this->hopCount = 0;
@@ -62,7 +62,7 @@ std::ostream& operator<< (std::ostream& os, const Flow& fl) {
 bool Flow::operator ==(const Flow& other) {
     return (srcApni == other.srcApni && dstApni == other.dstApni &&
             srcPortId == other.srcPortId && dstPortId == other.dstPortId &&
-            srcAddr == other.srcAddr && dstAddr && other.dstAddr);
+            srcAddr == other.srcAddr && dstAddr == other.dstAddr);
 }
 
 const ConnectionId& Flow::getConId() const {
@@ -81,13 +81,7 @@ void Flow::setCreateFlowRetries(uint32_t createFlowRetries) {
     this->createFlowRetries = createFlowRetries;
 }
 
-int Flow::getDstAddr() const {
-    return dstAddr;
-}
 
-void Flow::setDstAddr(int dstAddr) {
-    this->dstAddr = dstAddr;
-}
 
 const APNamingInfo& Flow::getDstApni() const {
     return dstApni;
@@ -121,14 +115,6 @@ void Flow::setMaxCreateFlowRetries(uint32_t maxCreateFlowRetries) {
     this->maxCreateFlowRetries = maxCreateFlowRetries;
 }
 
-int Flow::getSrcAddr() const {
-    return srcAddr;
-}
-
-void Flow::setSrcAddr(int srcAddr) {
-    this->srcAddr = srcAddr;
-}
-
 const APNamingInfo& Flow::getSrcApni() const {
     return srcApni;
 }
@@ -143,4 +129,28 @@ int Flow::getSrcPortId() const {
 
 void Flow::setSrcPortId(int srcPortId) {
     this->srcPortId = srcPortId;
+}
+
+const Address& Flow::getDstAddr() const {
+    return dstAddr;
+}
+
+void Flow::setDstAddr(const Address& dstAddr) {
+    this->dstAddr = dstAddr;
+}
+
+const Address& Flow::getSrcAddr() const {
+    return srcAddr;
+}
+
+void Flow::setSrcAddr(const Address& srcAddr) {
+    this->srcAddr = srcAddr;
+}
+
+const QosCube& Flow::getQosParameters() const {
+    return qosParameters;
+}
+
+void Flow::setQosParameters(const QosCube& qosParameters) {
+    this->qosParameters = qosParameters;
 }

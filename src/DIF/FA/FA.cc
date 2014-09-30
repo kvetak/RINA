@@ -41,14 +41,11 @@ FA::~FA() {
 }
 
 void FA::initialize() {
-    this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule("faiTable") );
-    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp")->getSubmodule("efcp"));
+    this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule(MOD_FAITABLE) );
+    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP));
     this->initSignalsAndListeners();
 }
-/**
- *
- * @param obj
- */
+
 bool FA::receiveAllocateRequest(cObject* obj) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
@@ -169,9 +166,15 @@ void FA::receiveDeallocateRequest(cObject* obj) {
 bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
     Enter_Method("invokeNewFlowRequest()");
     //Is flow policy acceptable
-    //TODO: Vesely - Simulate wrong Flow
-    if ( !strcmp(flow->getSrcApni().getApn().getName().c_str(), "AppH2") )
+    std::string apname = flow->getSrcApni().getApn().getName();
+
+    //FIXME: Vesely - Simulate error and DTCP flag better
+    if ( apname.find("Err") != std::string::npos) {
         return false;
+    }
+
+    //TODO: Compare Qos Parameters with available QoS cubes
+
     return true;
 }
 

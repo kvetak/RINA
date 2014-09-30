@@ -181,8 +181,8 @@ void RA::createFlow(std::string dstIpc)
     Flow *fl = new Flow(src, dst);
 
     //Ask DA which IPC to use to reach dst App
-    cModule* ipc = DifAllocator->resolveApniToDif(fl->getDstApni());
-    FABase* fa = DifAllocator->resolveApniToDifFa(fl->getDstApni());
+    cModule* ipc = DifAllocator->resolveApniToIpc(fl->getDstApni());
+    FABase* fa = DifAllocator->resolveApniToFa(fl->getDstApni());
 
 
     bool status = false;

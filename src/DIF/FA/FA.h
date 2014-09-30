@@ -37,6 +37,7 @@
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 #include "EFCP.h"
+#include "ExternConsts.h"
 
 extern const int RANDOM_NUMBER_GENERATOR;
 extern const int MAX_PORTID;
