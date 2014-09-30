@@ -37,16 +37,16 @@
 //#include "RMTPortManager.h"
 //#include "RMTPort.h"
 
-typedef std::map<int, cGate*> efcpiMapping;
-typedef std::map<std::string, cGate*> rmtPorts;
+typedef std::map<int, cGate*> EfcpiMapping;
+typedef std::map<RMTPortId, cGate*> RmtPorts;
 
 class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
 
-    efcpiMapping efcpiGates;
-    rmtPorts ports;
+    EfcpiMapping efcpiGates;
+    RmtPorts ports;
 
     std::string processName;
     bool relayOn;
@@ -71,6 +71,7 @@ class RMT : public cSimpleModule
 
     void createSouthGate(std::string portId);
     void deleteSouthGate(std::string portId);
+    void addRMTPort(RMTPortId portId, cGate* gate);
 
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };

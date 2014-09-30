@@ -13,25 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+#ifndef FLOWTABLEITEM_H_
+#define FLOWTABLEITEM_H_
 
-module ResourceAllocator
-{
-    parameters:
-        @display("i=block/segm;bgb=327,210");
-        string dstIpc = default("-1");
+#include <omnetpp.h>
 
-    submodules:
-        pduForwardingTable: PDUForwardingTable {
-            @display("p=218,132");
-        }
-        ra: RA {
-            @display("p=71,55");
-        }
-        pduFwdTabGenerator: PDUFwdTabGenerator {
-            @display("p=218,55");
-        }
-        flowTable: FlowTable {
-            @display("p=71,132");
-        }
-}
+#include "Flow.h"
+#include "FABase.h"
+
+class FlowTableItem {
+  public:
+    FlowTableItem(Flow* flow, FABase* fa);
+    virtual ~FlowTableItem();
+
+    std::string info() const;
+
+  private:
+    Flow* flow;
+    FABase* fa;
+};
+
+std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);
+
+#endif /* FLOWTABLEITEM_H_ */

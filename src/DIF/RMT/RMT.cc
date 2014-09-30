@@ -51,11 +51,6 @@ void RMT::initialize() {
  */
 void RMT::createSouthGate(std::string gateName)
 {
-    if (ports.count(gateName))
-    {
-        return;
-    }
-
     cModule* rmtModule = getParentModule();
 
     this->addGate(gateName.c_str(), cGate::INOUT, false);
@@ -69,8 +64,6 @@ void RMT::createSouthGate(std::string gateName)
     rmtModuleIn->connectTo(rmtIn);
     rmtOut->connectTo(rmtModuleOut);
 
-    ports[gateName] = rmtOut;
-
     // RMT<->(N-1)-EFCP interconnection shall be done by the RA
 }
 
@@ -81,11 +74,6 @@ void RMT::createSouthGate(std::string gateName)
  */
 void RMT::deleteSouthGate(std::string gateName)
 {
-    if (!ports.count(gateName))
-    {
-        return;
-    }
-
     cModule* rmtModule = getParentModule();
 
     cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
@@ -97,7 +85,12 @@ void RMT::deleteSouthGate(std::string gateName)
     this->deleteGate(gateName.c_str());
     rmtModule->deleteGate(gateName.c_str());
 
-    ports.erase(gateName);
+    //ports.erase(gateName);
+}
+
+void RMT::addRMTPort(RMTPortId portId, cGate* gate)
+{
+    ports[portId] = gate;
 }
 
 /**
@@ -176,8 +169,8 @@ void RMT::sendDown(PDU_Base* pdu)
     if (relayOn)
     {
         try
-        { // forwarding table lookup (returns IPC process ID for now)
-            std::string outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+        { // forwarding table lookup
+            RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
             outPort = ports[outPortId];
         }
         catch (...)
@@ -190,8 +183,7 @@ void RMT::sendDown(PDU_Base* pdu)
     else
     {
         // decide which (N-1)-flow should get the PDU...
-        // fwtable lookup seems unnecessary here, should the decision be based only on QoS?
-        outPort = ports.begin()->second;
+        // TODO: fwtable lookup seems unnecessary here, should the decision be based only on QoS?
     }
 
     send(pdu, outPort);
@@ -247,9 +239,9 @@ void RMT::handleMessage(cMessage *msg)
         }
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-    {
+    { // management message arrival
         if (gate == "southIo$i")
-        { // temporary queue bypass
+        {
             send(msg, "ribdIo$o");
         }
         else

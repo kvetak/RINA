@@ -3,29 +3,27 @@
 	<Host id="host1">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App2" 	ipcAddress="2" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
-				<APNtoDIF apn="3" 		ipcAddress="0" />
+				<APNtoDIF apn="App2" 	ipcAddress="12" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="11" />
+				<APNtoDIF apn="12" 		ipcAddress="2" />
 			</Directory>
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="2"	qosId="1"	outputIpc="0"/>
-				<FwTableItem dest="2"	qosId="2"	outputIpc="0"/>
-				<FwTableItem dest="2"	qosId="3"	outputIpc="0"/>
+				<FwTableItem dest="12"	qosId="0"	outputIpc="ipcProcess0"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>
 	<Host id="host2">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App1" 	ipcAddress="1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="2" />
+				<APNtoDIF apn="App1" 	ipcAddress="11" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="12" />
 			</Directory>
 		</DA>
 		<RA>
 			<PDUFwdTabGenerator>
-				<FwTableItem dest="1"	qosId="2"	outputIpc="2"/>
+				<FwTableItem dest="11"	qosId="0"	outputIpc="ipcProcess0"/>
 			</PDUFwdTabGenerator>
 		</RA>		
 	</Host>

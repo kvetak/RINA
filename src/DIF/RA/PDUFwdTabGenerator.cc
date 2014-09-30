@@ -38,7 +38,8 @@ void PDUFwdTabGenerator::initialize()
         cXMLElement* m = *i;
         int qosid = atoi(m->getAttribute("qosId"));
 
-        fwTable->insert(m->getAttribute("dest"), qosid, m->getAttribute("outputIpc"));
+        //fwTable->insert(m->getAttribute("dest"), qosid, m->getAttribute("outputIpc"));
+        fwTable->insert(m->getAttribute("dest"), qosid, NULL, -1);
     }
 }
 

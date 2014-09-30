@@ -13,25 +13,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+#include "FlowTable.h"
 
-module ResourceAllocator
+Define_Module(FlowTable);
+
+void FlowTable::initialize()
 {
-    parameters:
-        @display("i=block/segm;bgb=327,210");
-        string dstIpc = default("-1");
+    WATCH_LIST(flows);
+    this->insert(NULL, NULL);
+    this->insert(NULL, NULL);
+    this->insert(NULL, NULL);
+}
 
-    submodules:
-        pduForwardingTable: PDUForwardingTable {
-            @display("p=218,132");
-        }
-        ra: RA {
-            @display("p=71,55");
-        }
-        pduFwdTabGenerator: PDUFwdTabGenerator {
-            @display("p=218,55");
-        }
-        flowTable: FlowTable {
-            @display("p=71,132");
-        }
+void FlowTable::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
+}
+
+void FlowTable::insert(const FlowTableItem* entry)
+{
+    flows.push_back(*entry);
+}
+
+void FlowTable::insert(Flow* flow, FABase* fa)
+{
+    FlowTableItem entry = FlowTableItem(flow, fa);
+    flows.push_back(entry);
 }

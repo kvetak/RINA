@@ -24,33 +24,34 @@
 #define __RINA_PDUTABLEENTRY_H_
 
 #include <iostream>
-#include <vector>
 
 #include <omnetpp.h>
 #include "ConnectionTable.h"
 
+typedef std::pair<cModule*, int> RMTPortId;
 
 class PDUTableEntry
 {
   private:
     std::string destAddr;
     int qosId;
-    std::string portId;
+    RMTPortId portId;
 
   public:
     PDUTableEntry();
-    PDUTableEntry(std::string destaddr, int qosid, std::string portid);
+    PDUTableEntry(std::string destaddr, int qosid, cModule* ipc);
+    PDUTableEntry(std::string destaddr, int qosid, cModule* ipc, int portid);
     virtual ~PDUTableEntry();
 
     std::string info() const;
 
     std::string getDestAddr();
     int getQosId();
-    std::string getPortId();
+    RMTPortId getPortId();
 
     void setDestAddr(std::string destaddr);
     void setQosId(int qosid);
-    void setPortId(std::string portId);
+    void setPortId(RMTPortId portId);
 
 };
 

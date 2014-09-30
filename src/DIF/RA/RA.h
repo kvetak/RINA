@@ -24,7 +24,9 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
-#include "FA.h"
+#include "RINASignals.h"
+#include "PDUForwardingTable.h"
+#include "FlowTable.h"
 #include "DA.h"
 #include "Flow.h"
 #include "FABase.h"
@@ -39,7 +41,9 @@ class RA : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
   private:
-    DA* DifAllocator;
+    DA* difAllocator;
+    PDUForwardingTable* fwTable;
+    FlowTable* flTable;
     RMT* rmt;
     std::string processName;
 
@@ -49,22 +53,25 @@ class RA : public cSimpleModule
     void bindFlowToRMT(cModule* ipc, Flow *flow);
     void bindMediumToRMT();
 
-    void registerFASigs();
-    void registerFAISigs();
+    std::string normalizePortId(std::string ipcName, int flowPortId);
 
-    //--------------------- FA ---------------------
-    //Signals
-    simsignal_t sigFACreReq;
-    simsignal_t sigFACreRes;
-    simsignal_t sigDelReq;
-    simsignal_t sigDelRes;
-    //Signaling
-    void signalizeFACreateRequestFlow();
-    void signalizeFACreateResponseFlow();
-    void signalizeFADeleteRequestFlow();
-    void signalizeFADeleteResponseFlow();
-    //--------------------- FAI ---------------------
+    void initSignalsAndListeners();
 
+    // signals emitted by this module
+    simsignal_t sigRAAllocReq;
+    simsignal_t sigRADeallocReq;
+    simsignal_t sigRAAllocResPosi;
+    simsignal_t sigRAAllocResNega;
+    simsignal_t sigRAFlowAllocd;
+    simsignal_t sigRAFlowDeallocd;
+
+    // emit wrapper functions
+    void signalizeAllocateRequest(Flow* flow);
+    void signalizeDeallocateRequest(Flow* flow);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeFlowAllocated(Flow* flow);
+    void signalizeFlowDeallocated(Flow* flow);
 
 };
 

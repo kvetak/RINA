@@ -15,23 +15,10 @@
 
 package rina.DIF.RA;
 
-module ResourceAllocator
+//
+// TODO auto-generated module
+//
+simple FlowTable
 {
-    parameters:
-        @display("i=block/segm;bgb=327,210");
-        string dstIpc = default("-1");
-
-    submodules:
-        pduForwardingTable: PDUForwardingTable {
-            @display("p=218,132");
-        }
-        ra: RA {
-            @display("p=71,55");
-        }
-        pduFwdTabGenerator: PDUFwdTabGenerator {
-            @display("p=218,55");
-        }
-        flowTable: FlowTable {
-            @display("p=71,132");
-        }
+    @display("i=block/table2");
 }
