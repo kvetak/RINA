@@ -7,5 +7,42 @@
 	<Router id="router2"><RA><PDUFwdTabGenerator>
 		<FwTableItem dest="5"	qosId="1"	portId="0"/>
 	</PDUFwdTabGenerator></RA></Router>
+
+	<QoSCubesSet>
+		<QosCube id="1">
+			<AvgBandwidth>1000000</AvgBandwidth>
+			<AvgSDUBandwidth>1000</AvgSDUBandwidth>
+			<PeakBandwidthDuration>2000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10</BurstPeriod>
+			<BurstDuration>5</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>5</MaxAllowableGap>
+			<Delay>1</Delay>
+			<Jitter>1</Jitter>
+			<DTCPOn>1</DTCPOn>
+		</QosCube>
+		<QosCube id="2">
+			<AvgBandwidth>1000000</AvgBandwidth>
+			<AvgSDUBandwidth>1000</AvgSDUBandwidth>
+			<PeakBandwidthDuration>2000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10</BurstPeriod>
+			<BurstDuration>5</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>1</PartialDelivery>
+			<IncompleteDelivery>1</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>5</MaxAllowableGap>
+			<Delay>1</Delay>
+			<Jitter>1</Jitter>
+			<DTCPOn>0</DTCPOn>
+		</QosCube>		
+	</QoSCubesSet>
 	
 </Configuration>

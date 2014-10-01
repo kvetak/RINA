@@ -43,7 +43,8 @@ FA::~FA() {
 void FA::initialize() {
     this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule(MOD_FAITABLE) );
     this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP));
-    this->initSignalsAndListeners();
+
+    initSignalsAndListeners();
 }
 
 bool FA::receiveAllocateRequest(cObject* obj) {

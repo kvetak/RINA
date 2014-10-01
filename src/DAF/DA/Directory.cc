@@ -17,7 +17,7 @@
 
 //Constants
 const char*   PAR_DIRDATA         = "directoryData";
-const char*   ATTR_DIRMAPPING     = "APNtoDIF";
+const char*   ELEM_DIRMAPPING     = "APNtoDIF";
 const char*   ATTR_IPCADDR        = "ipcAddress";
 const char*   ATTR_APN            = "apn";
 const char*   ATTR_DIFNAME        = "difName";
@@ -26,10 +26,13 @@ Define_Module(Directory);
 
 void Directory::initialize()
 {
-    cXMLElement* dirXml = par(PAR_DIRDATA).xmlValue();
-    cXMLElementList map = dirXml->getChildrenByTagName(ATTR_DIRMAPPING);
+    cXMLElement* dirXml = NULL;
+    if ( par(PAR_DIRDATA).xmlValue() != NULL && par(PAR_DIRDATA).xmlValue()->hasChildren() )
+        dirXml = par(PAR_DIRDATA).xmlValue();
+    else
+        error("directoryData parameter not initialized!");
 
-
+    cXMLElementList map = dirXml->getChildrenByTagName(ELEM_DIRMAPPING);
     cModule* top = this->getParentModule()->getParentModule()->getParentModule();
 
     for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i) {

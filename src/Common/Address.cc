@@ -15,6 +15,18 @@
 
 #include <Address.h>
 
+Address::Address() : ipcAddress(""), difName("")
+{
+}
+
+
+
+Address::Address(const char* ipcaddr, const char* difnam) :
+        ipcAddress(ipcaddr), difName(difnam)
+{
+}
+
+
 Address::~Address()
 {
 }
@@ -29,15 +41,6 @@ void Address::setDifName(const std::string& difName) {
 
 const std::string& Address::getIpcAddress() const {
     return ipcAddress;
-}
-
-Address::Address(const char* ipcaddr, const char* difnam) :
-        ipcAddress(ipcaddr), difName(difnam)
-{
-}
-
-Address::Address() : ipcAddress(""), difName("")
-{
 }
 
 bool Address::operator ==(const Address& other) const {

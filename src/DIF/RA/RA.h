@@ -30,9 +30,34 @@
 #include "FABase.h"
 #include "RMT.h"
 
+typedef std::list<QosCube> QosCubeSet;
+typedef QosCubeSet::const_iterator QCubeCItem;
+
+//Consts
+extern const char* PAR_QOSDATA;
+extern const char* ELEM_QOSCUBE;
+extern const char* ELEM_AVGBW;
+extern const char* ELEM_AVGSDUBW;
+extern const char* ELEM_PEAKBWDUR;
+extern const char* ELEM_PEAKSDUBWDUR;
+extern const char* ELEM_BURSTPERIOD;
+extern const char* ELEM_BURSTDURATION;
+extern const char* ELEM_UNDETECTBITERR;
+extern const char* ELEM_MAXSDUSIZE;
+extern const char* ELEM_PARTIALDELIVER;
+extern const char* ELEM_INCOMPLETEDELIVER;
+extern const char* ELEM_FORCEORDER;
+extern const char* ELEM_MAXALLOWGAP;
+extern const char* ELEM_DELAY;
+extern const char* ELEM_JITTER;
+extern const char* ELEM_DTCPON;
+extern const int   VAL_QOSPARAMDONOTCARE;
+extern const bool  VAL_QOSPARAMDEFBOOL;
+
 class RA : public cSimpleModule
 {
   public:
+    const QosCubeSet& getQosCubes() const;
 
   protected:
     virtual void initialize();
@@ -42,6 +67,10 @@ class RA : public cSimpleModule
     DA* DifAllocator;
     RMT* rmt;
     std::string processName;
+
+    QosCubeSet QosCubes;
+
+    void initQoSCubes();
 
     void createFlow(std::string dstIpc);
     void removeFlow();
@@ -64,8 +93,9 @@ class RA : public cSimpleModule
     void signalizeFADeleteRequestFlow();
     void signalizeFADeleteResponseFlow();
     //--------------------- FAI ---------------------
-
-
 };
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
 
 #endif

@@ -15,9 +15,6 @@
 
 package rina.DIF.FA;
 
-//
-// TODO auto-generated module
-//
 simple FAI
 {
     parameters:
