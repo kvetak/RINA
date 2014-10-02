@@ -37,6 +37,9 @@
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 #include "EFCP.h"
+#include "ExternConsts.h"
+
+//Constants
 
 extern const int RANDOM_NUMBER_GENERATOR;
 extern const int MAX_PORTID;
@@ -87,8 +90,8 @@ class FA : public FABase
     bool isMalformedFlow(Flow* flow);
     bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
-    //void registerIRMSigs();
 
+    void initQoSCubes();
     void initSignalsAndListeners();
 
     void signalizeAllocateResponseNegative(Flow* flow);

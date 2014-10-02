@@ -25,8 +25,8 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = ModuleAccess<ConnectionTable>("connectionTable").get();
-    DifAllocator = ModuleAccess<DA>("da").get();
+    ConTable = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
+    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
 }
 
 void IRM::initialize() {
@@ -78,20 +78,20 @@ void IRM::initSignalsAndListeners() {
 bool IRM::createBindings(Flow& flow) {
     EV << "Attempts to create bindings and bind registration of gates"<< endl;
     //Retrieve IPC process with allocated flow and prepared bindings
-    cModule* Ipc = DifAllocator->resolveApniToDif(flow.getDstApni());
+    cModule* Ipc = DifAllocator->resolveApniToIpc(flow.getDstApni());
     cModule* Ap = this->getParentModule();
 
     //Create connections
 
     //  Retrieve IPC gates
     std::ostringstream nam1;
-    nam1 << "northIo_" << flow.getSrcPortId();
+    nam1 << GATE_NORTHIO << flow.getSrcPortId();
     cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
 
     //   Add AP gates
     std::ostringstream nam2;
-    nam2 << "southIo_" << flow.getSrcPortId();
+    nam2 << GATE_SOUTHIO << flow.getSrcPortId();
     Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
@@ -123,7 +123,7 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
 
     //Ask DA which IPC to use to reach dst App
-    FABase* fa = DifAllocator->resolveApniToDifFa(flow->getDstApni());
+    FABase* fa = DifAllocator->resolveApniToFa(flow->getDstApni());
 
     //Store info into ConnectionTable
     ConTable->setFa(flow, fa);

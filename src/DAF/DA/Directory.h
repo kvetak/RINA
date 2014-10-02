@@ -20,12 +20,17 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "DirectoryEntry.h"
+#include "ExternConsts.h"
 
 typedef std::list<DirectoryEntry> TDirectory;
 typedef TDirectory::iterator TDirIter;
 
 //Constants
-extern const char* DIRECTORY_MAPPING;
+extern const char*      PAR_DIRDATA;
+extern const char*      ELEM_DIRMAPPING;
+extern const char*      ATTR_IPCADDR;
+extern const char*      ATTR_APN;
+extern const char*      ATTR_DIFNAME;
 
 class Directory : public cSimpleModule
 {

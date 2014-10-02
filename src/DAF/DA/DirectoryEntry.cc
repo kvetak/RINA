@@ -15,12 +15,18 @@
 
 #include <DirectoryEntry.h>
 
-DirectoryEntry::DirectoryEntry() : ipcPath(""), FlowAlloc(NULL) {
+DirectoryEntry::DirectoryEntry() :
+    ipcPath(""), FlowAlloc(NULL)
+{
 
 }
 
-DirectoryEntry::DirectoryEntry(APNamingInfo napni, std::string path,
-        FABase* fa) : apni(napni), ipcPath(path), FlowAlloc(fa) {
+DirectoryEntry::DirectoryEntry(APNamingInfo napni, Address naddr, std::string path,
+        FABase* fa) :
+                apni(napni),
+                addr(naddr),
+                ipcPath(path), FlowAlloc(fa)
+{
 }
 
 DirectoryEntry::~DirectoryEntry() {
@@ -31,8 +37,8 @@ DirectoryEntry::~DirectoryEntry() {
 std::string DirectoryEntry::info() const {
     std::stringstream os;
     os << "APNI>\t" << apni << endl
-       << "IPC>\t" << ipcPath << endl
-       << " FA>\t" << FlowAlloc << " id=" << FlowAlloc->getId();
+       << "Addr\t" << addr << endl
+       << "FA>\t" << FlowAlloc << " id=" << FlowAlloc->getId();
     return os.str();
 }
 
@@ -64,4 +70,10 @@ std::ostream& operator <<(std::ostream& os, const DirectoryEntry& fte) {
     return os << fte.info();
 }
 
+const Address& DirectoryEntry::getAddr() const {
+    return addr;
+}
 
+void DirectoryEntry::setAddr(const Address& addr) {
+    this->addr = addr;
+}

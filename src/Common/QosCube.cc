@@ -24,7 +24,6 @@
  */
 #include "QosCube.h"
 
-
 QosCube::QosCube() {
     // TODO Auto-generated constructor stub
 
@@ -78,11 +77,11 @@ void QosCube::setForceOrder(bool forceOrder) {
     this->forceOrder = forceOrder;
 }
 
-bool QosCube::isIncompleteDeliv() const {
+bool QosCube::isIncompleteDelivery() const {
     return incompleteDeliv;
 }
 
-void QosCube::setIncompleteDeliv(bool incompleteDeliv) {
+void QosCube::setIncompleteDelivery(bool incompleteDeliv) {
     this->incompleteDeliv = incompleteDeliv;
 }
 
@@ -102,19 +101,19 @@ void QosCube::setMaxAllowGap(unsigned int maxAllowGap) {
     this->maxAllowGap = maxAllowGap;
 }
 
-int QosCube::getMaxSdUsize() const {
+int QosCube::getMaxSduSize() const {
     return maxSDUsize;
 }
 
-void QosCube::setMaxSdUsize(int maxSdUsize) {
+void QosCube::setMaxSduSize(int maxSdUsize) {
     maxSDUsize = maxSdUsize;
 }
 
-bool QosCube::isPartDeliv() const {
+bool QosCube::isPartialDelivery() const {
     return partDeliv;
 }
 
-void QosCube::setPartDeliv(bool partDeliv) {
+void QosCube::setPartialDelivery(bool partDeliv) {
     this->partDeliv = partDeliv;
 }
 
@@ -146,3 +145,38 @@ QosCube::~QosCube() {
     // TODO Auto-generated destructor stub
 }
 
+bool QosCube::isDtcpOn() const {
+    return dtcpOn;
+}
+
+unsigned short QosCube::getQosId() const {
+    return qoSId;
+}
+
+void QosCube::setQosId(unsigned short qoSId) {
+    this->qoSId = qoSId;
+}
+
+void QosCube::setDtcpOn(bool dtcpOn) {
+    this->dtcpOn = dtcpOn;
+}
+
+std::ostream& operator <<(std::ostream& os, const QosCube& cube) {
+    os << "QoSCube Id> " << cube.getQosId() << endl
+       << "   average BW = " << cube.getAvgBand() << " bit/s" << endl
+       << "   average SDU BW = " << cube.getAvgSduBand() << " SDU/s" << endl
+       << "   peak BW duration = " << cube.getPeakBandDuration() << " bit/s" << endl
+       << "   peak SDU BW duration = " << cube.getPeakSduBandDuration() << " SDU/s" << endl
+       << "   burst period = " << cube.getBurstPeriod() << " s" << endl
+       << "   burst duration = " << cube.getBurstDuration() << " s" << endl
+       << "   undetect. bit errors = " << cube.getUndetectedBitErr() << "%" << endl
+       << "   max SDU Size = " << cube.getMaxSduSize() << " B" << endl
+       << "   partial delivery = " << (cube.isPartialDelivery() ? "yes" : "no" ) << endl
+       << "   incomplete delivery = " << (cube.isIncompleteDelivery() ? "yes" : "no" ) << endl
+       << "   force order = " << (cube.isForceOrder() ? "yes" : "no" ) << endl
+       << "   max allowed gap = " << cube.getMaxAllowGap() << " SDUs" << endl
+       << "   delay = " << cube.getDelay() << " s" << endl
+       << "   jitter = " << cube.getJitter() << " s" << endl
+       << "   dtcp-on = " << (cube.isDtcpOn() ? "yes" : "no" ) << endl;
+    return os;
+}

@@ -19,12 +19,12 @@
 //RINASim libraries
 #include "APNamingInfo.h"
 #include "FABase.h"
+#include "Address.h"
 
 class DirectoryEntry {
-
   public:
     DirectoryEntry();
-    DirectoryEntry(APNamingInfo napni, std::string path, FABase* fa);
+    DirectoryEntry(APNamingInfo napni, Address naddr, std::string path, FABase* fa);
     virtual ~DirectoryEntry();
 
     std::string info() const;
@@ -35,9 +35,12 @@ class DirectoryEntry {
     void setFlowAlloc(FABase* flowAlloc);
     const std::string& getIpcPath() const;
     void setIpcPath(const std::string& ipcPath);
+    const Address& getAddr() const;
+    void setAddr(const Address& addr);
 
   private:
     APNamingInfo apni;
+    Address addr;
     std::string ipcPath;
     FABase* FlowAlloc;
 };

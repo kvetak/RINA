@@ -13,11 +13,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.DA;
+#ifndef ADDRESS_H_
+#define ADDRESS_H_
 
-simple Directory
-{
-    parameters:
-    	@display("i=block/delay");
-    	xml directoryData = default(xml("<APNtoDIF/>")); 
-}
+#include <string>
+#include <sstream>
+
+class Address {
+  public:
+    Address();
+    Address(const char* ipcaddr, const char* difnam);
+    virtual ~Address();
+
+    bool operator== (const Address& other) const;
+
+    std::string info() const;
+
+    const std::string& getDifName() const;
+    void setDifName(const std::string& difName);
+    const std::string& getIpcAddress() const;
+    void setIpcAddress(const std::string& ipcAddress);
+
+  private:
+    std::string ipcAddress;
+    std::string difName;
+};
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const Address& addr);
+
+#endif /* ADDRESS_H_ */

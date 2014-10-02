@@ -31,40 +31,72 @@ void DA::initialize()
     initPointers();
 }
 
-FABase* DA::resolveApnToDifFa(const APN& apn) {
+FABase* DA::resolveApnToFa(const APN& apn) {
     Enter_Method("resolveApnToDifFa()");
     DirectoryEntry* dre = Dir->findEntryByApn(apn);
     return dre ? dre->getFlowAlloc() : NULL;
 }
 
-FABase* DA::resolveApniToDifFa(const APNamingInfo& apni) {
+FABase* DA::resolveApniToFa(const APNamingInfo& apni) {
     Enter_Method("resolveApniToDifFa()");
     //TODO: Vesely - Complete APNI search
-    return resolveApnToDifFa(apni.getApn());
+    return resolveApnToFa(apni.getApn());
 }
 
-cModule* DA::resolveApnToDif(const APN& apn) {
+/** Check whether any IPC within given DIF name is available on computation system with source IPC
+  *
+  * @param difName Given DIF name
+  * @param ipc Source IPC Process
+  * @return True if yes, otherwise false
+  */
+bool DA::isDifLocalToIpc(std::string difName, cModule* ipc) {
+    cModule* top = ipc->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule *submodp = j();
+        if (isIpcXLocalToY(submodp, ipc)
+                && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.c_str())                    //...has a given DIF name
+           )
+            return true;
+    }
+    return false;
+}
+
+/**
+ * Check whether given IPC X is on the same computation system as IPC Y
+ * @param ipcX target
+ * @param ipcY source
+ * @return True if yes, otherwise false.
+ */
+bool DA::isIpcXLocalToY(cModule* ipcX, cModule* ipcY) {
+    //Both of them have same parent module
+    //...AND both of them are IPC (has IPCAddress parameter)
+    return ipcX->getParentModule() == ipcY->getParentModule()
+            && ipcX->hasPar(PAR_IPCADDR) && ipcX->hasPar(PAR_IPCADDR)
+            && ipcY->hasPar(PAR_IPCADDR) && ipcY->hasPar(PAR_IPCADDR);
+}
+
+cModule* DA::resolveApnToIpc(const APN& apn) {
     Enter_Method("resolveApnToDif()");
-    FABase* fab = resolveApnToDifFa(apn);
+    FABase* fab = resolveApnToFa(apn);
     return  fab ? fab->getParentModule()->getParentModule() : NULL;
 }
 
-cModule* DA::resolveApniToDif(const APNamingInfo& apni) {
+cModule* DA::resolveApniToIpc(const APNamingInfo& apni) {
     Enter_Method("resolveApniToDif()");
     //TODO: Vesely - Complete APNI search
-    return resolveApnToDif(apni.getApn());
+    return resolveApnToIpc(apni.getApn());
 }
 
-std::string DA::resolveApnToDifName(const APN& apn) {
+std::string DA::resolveApnToIpcPath(const APN& apn) {
     Enter_Method("resolveApnToDifName()");
-    cModule* dif = resolveApnToDif(apn);
+    cModule* dif = resolveApnToIpc(apn);
     return  dif ? dif->getFullPath() : NULL;
 }
 
-std::string DA::resolveApniToDifName(const APNamingInfo& apni) {
+std::string DA::resolveApniToIpcPath(const APNamingInfo& apni) {
     Enter_Method("resolveApniToDifName()");
     //TODO: Vesely - Complete APNI search
-    return resolveApnToDifName(apni.getApn());
+    return resolveApnToIpcPath(apni.getApn());
 }
 
 
@@ -72,3 +104,12 @@ void DA::handleMessage(cMessage *msg)
 {
 
 }
+
+DirectoryEntry* DA::resolveApni(const APNamingInfo& apni) {
+    return Dir->findEntryByApni(apni);
+}
+
+DirectoryEntry* DA::resolveApn(const APN& apn) {
+    return Dir->findEntryByApn(apn);
+}
+

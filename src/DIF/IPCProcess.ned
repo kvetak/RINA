@@ -30,24 +30,25 @@ module IPCProcess
     parameters:
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         string ipcAddress;
+        string difName;
         //int numOfAPs;
     gates:
         inout southIo[];
         inout northIo[];
     submodules:
         flowAllocator: FlowAllocator {
-            @display("p=90,61");
+            @display("p=167,61");
             //numOfAPs = numOfAPs;
         }
         rmt: RMTModule {
-            @display("p=90,249");
+            @display("p=79,249");
         }
         ribDaemon: RIBDaemon {
             @display("p=238,147");
         }
 
         efcp: EFCPModule {
-            @display("p=90,156");
+            @display("p=79,108");
         }
         resourceAllocator: ResourceAllocator {
             @display("p=390,195");

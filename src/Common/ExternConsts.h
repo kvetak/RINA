@@ -13,11 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.DA;
+#ifndef EXTERNCONSTS_H_
+#define EXTERNCONSTS_H_
 
-simple Directory
-{
-    parameters:
-    	@display("i=block/delay");
-    	xml directoryData = default(xml("<APNtoDIF/>")); 
-}
+//Module names
+extern const char* MOD_FLOWALLOC;
+extern const char* MOD_FA;
+extern const char* MOD_CONNTABLE;
+extern const char* MOD_DA;
+extern const char* MOD_EFCP;
+extern const char* MOD_FAITABLE;
+
+//Module parameters
+extern const char* PAR_IPCADDR;
+extern const char* PAR_DIFNAME;
+
+
+//Gate names
+extern const char* GATE_NORTHIO;
+extern const char* GATE_SOUTHIO;
+extern const char* GATE_EFCPIO;
+extern const char* GATE_RMT;
+extern const char* GATE_APPIO;
+
+
+#endif /* EXTERNCONSTS_H_ */
