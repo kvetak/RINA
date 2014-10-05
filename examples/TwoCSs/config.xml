@@ -5,6 +5,7 @@
 			<Directory>
 				<APNtoDIF apn="App2" 	ipcAddress="22" difName="Layer1" />
 				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />				
+				<APNtoDIF apn="22"     ipcAddress="1" difName="Layer0" />
 			</Directory>
 		</DA>
 		<RA>

@@ -78,7 +78,7 @@ void RA::initialize()
             // we're on top of a single IPC process, RMT will only multiplex
         }
     }
-
+    if (processName == "11") createFlow("22");
 
     initQoSCubes();
     WATCH_LIST(this->QosCubes);
