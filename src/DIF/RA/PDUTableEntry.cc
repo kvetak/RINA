@@ -45,10 +45,13 @@ PDUTableEntry::~PDUTableEntry()
 std::string PDUTableEntry::info() const {
     std::stringstream os;
 
-    os << "dest: " << destAddr << endl << "qos-id: " << qosId << endl
-       << "port-id: "
-       << (portId.first != NULL ? portId.first->getFullName() : "NULL")
-       << ":" << portId.second;
+    os << "type: "
+       << (portId.second == -1 ? "static" : "dynamic") << endl;
+
+    os << "dest: " << destAddr << endl
+       << "qos-id: " << qosId << endl
+       << "port-id: " << portId.first->getFullName() << ":" << portId.second;
+
     return os.str();
 }
 

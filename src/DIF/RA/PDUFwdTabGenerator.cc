@@ -33,13 +33,27 @@ void PDUFwdTabGenerator::initialize()
     cXMLElement* dirXml = par("PDUFwData").xmlValue();
     cXMLElementList map = dirXml->getChildrenByTagName("FwTableItem");
 
+    // go through specified static forwarding table items
     for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
     {
         cXMLElement* m = *i;
         int qosid = atoi(m->getAttribute("qosId"));
+        const char* outputIpc = m->getAttribute("outputIpc");
 
-        //fwTable->insert(m->getAttribute("dest"), qosid, m->getAttribute("outputIpc"));
-        fwTable->insert(m->getAttribute("dest"), qosid, NULL, -1);
+        cModule* top = this->getParentModule()->getParentModule()->getParentModule();
+
+        cModule* module = NULL;
+        // find the specified output IPC module and get its address
+        for (cModule::SubmoduleIterator k(top); !k.end(); k++) {
+            module = k();
+
+            if (module->hasPar("ipcAddress") && !opp_strcmp(module->getFullName(), outputIpc))
+            {
+                // insert a new item
+                fwTable->insert(m->getAttribute("dest"), qosid, module, -1);
+                break;
+            }
+        }
     }
 }
 

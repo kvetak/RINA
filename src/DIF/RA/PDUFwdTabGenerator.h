@@ -32,9 +32,6 @@
 #include "RMT.h"
 
 
-/**
- * TODO - Generated class
- */
 class PDUFwdTabGenerator : public cSimpleModule
 {
   protected:

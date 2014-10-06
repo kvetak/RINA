@@ -71,12 +71,15 @@ class RA : public cSimpleModule
     FlowTable* flTable;
     RMT* rmt;
     std::string processName;
+    std::list<Flow*> preparedFlows;
 
     QosCubeSet QosCubes;
 
     void initQoSCubes();
+    void initFlowAlloc();
+    void setRmtMode();
 
-    void createFlow(std::string dstIpc);
+    void createFlow(Flow *fl);
     void removeFlow();
 
     void bindFlowToRMT(cModule* ipc, Flow *flow);

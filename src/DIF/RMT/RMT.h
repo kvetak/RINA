@@ -33,6 +33,7 @@
 #include "PDU_m.h"
 #include "CDAPMessage_m.h"
 #include "Flow.h"
+#include "ExternConsts.h"
 
 //#include "RMTPortManager.h"
 //#include "RMTPort.h"

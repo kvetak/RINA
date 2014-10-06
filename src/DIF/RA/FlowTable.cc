@@ -20,9 +20,6 @@ Define_Module(FlowTable);
 void FlowTable::initialize()
 {
     WATCH_LIST(flows);
-    this->insert(NULL, NULL);
-    this->insert(NULL, NULL);
-    this->insert(NULL, NULL);
 }
 
 void FlowTable::handleMessage(cMessage *msg)

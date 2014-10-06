@@ -54,9 +54,43 @@ void RA::initialize()
     flTable = ModuleAccess<FlowTable>("flowTable").get();
     rmt = (RMT*) this->getParentModule()->getParentModule()->getModuleByPath(".rmt.rmt");
 
-    // identify the role of IPC process in processing system
+    // initialize attributes
+    processName = getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
+
+    // determine and set RMT mode of operation
+    setRmtMode();
+
+    initSignalsAndListeners();
+	initQoSCubes();
+    WATCH_LIST(this->QosCubes);
+
+    initFlowAlloc();
+}
+
+void RA::initFlowAlloc()
+{
+    cXMLElement* dirXml = par("flows").xmlValue();
+    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
+
+    for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
+    {
+        cXMLElement* m = *i;
+
+        APNamingInfo src = APNamingInfo(APN(processName));
+        APNamingInfo dst = APNamingInfo(APN(m->getAttribute("dest")));
+        Flow *fl = new Flow(src, dst);
+
+        preparedFlows.push_back(fl);
+
+        cMessage* msg = new cMessage("RA-CreateFlow");
+        scheduleAt(simTime(), msg);
+    }
+}
+
+void RA::setRmtMode()
+{
+    // identify the role of this IPC process in processing system
     cModule* hostModule = getParentModule()->getParentModule();
-    processName = hostModule->par("ipcAddress").stdstringValue();
     std::string bottomGate = hostModule->gate("southIo$o", 0)->getNextGate()->getName();
 
     if (bottomGate == "medium$o")
@@ -77,19 +111,7 @@ void RA::initialize()
             // we're on top of a single IPC process
         }
     }
-
-
-	initQoSCubes();
-    WATCH_LIST(this->QosCubes);
-
-    std::string dstIpc = getParentModule()->par("dstIpc").stdstringValue();
-
-    if (dstIpc != "-1")
-    {
-        createFlow(dstIpc);
-    }
 }
-
 
 
 void RA::initQoSCubes() {
@@ -203,7 +225,16 @@ const QosCubeSet& RA::getQosCubes() const {
 
 void RA::handleMessage(cMessage *msg)
 {
+    if (!msg->isSelfMessage())
+    {
+        delete msg;
+        return;
+    }
 
+    if ( !strcmp(msg->getName(), "RA-CreateFlow") ) {
+        createFlow(preparedFlows.front());
+        preparedFlows.pop_front();
+    }
 }
 
 /**
@@ -212,9 +243,12 @@ void RA::handleMessage(cMessage *msg)
  */
 void RA::bindMediumToRMT()
 {
-    rmt->createSouthGate("rmtIo_PHY");
-    cGate* rmtIn = rmt->getParentModule()->gateHalf("rmtIo_PHY", cGate::INPUT);
-    cGate* rmtOut = rmt->getParentModule()->gateHalf("rmtIo_PHY", cGate::OUTPUT);
+    std::ostringstream rmtGate;
+    rmtGate << GATE_SOUTHIO << "PHY";
+
+    rmt->createSouthGate(rmtGate.str().c_str());
+    cGate* rmtIn = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
+    cGate* rmtOut = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::OUTPUT);
 
     cModule* thisIpc = this->getParentModule()->getParentModule();
     cGate* thisIpcIn = thisIpc->gateHalf("southIo$i", cGate::INPUT, 0);
@@ -222,6 +256,8 @@ void RA::bindMediumToRMT()
 
     rmtOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtIn);
+
+    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut);
 }
 
 /**
@@ -236,7 +272,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     std::string combinedPortId = normalizePortId(ipc->getFullName(), flow->getSrcPortId());
 
     std::ostringstream rmtGate;
-    rmtGate << "rmtIo_" << combinedPortId;
+    rmtGate << GATE_SOUTHIO << combinedPortId;
 
     rmt->createSouthGate(rmtGate.str());
 
@@ -291,17 +327,13 @@ std::string RA::normalizePortId(std::string ipcName, int flowPortId)
  *
  * @param dstIpc address of the destination IPC process
  */
-void RA::createFlow(std::string dstIpc)
+void RA::createFlow(Flow *fl)
 {
     EV << " allocating an (N-1)-flow for IPC " << processName << endl;
 
-    APNamingInfo src = APNamingInfo(APN(processName));
-    APNamingInfo dst = APNamingInfo(APN(dstIpc));
-    Flow *fl = new Flow(src, dst);
-
     //Ask DA which IPC to use to reach dst App
-    cModule* ipc = DifAllocator->resolveApniToIpc(fl->getDstApni());
-    FABase* fa = DifAllocator->resolveApniToFa(fl->getDstApni());
+    cModule* ipc = difAllocator->resolveApniToIpc(fl->getDstApni());
+    FABase* fa = difAllocator->resolveApniToFa(fl->getDstApni());
 
     bool status = false;
     if (fa)
