@@ -318,7 +318,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
 std::string RA::normalizePortId(std::string ipcName, int flowPortId)
 {
     std::ostringstream newPortId;
-    newPortId << ipcName << '_' << flowPortId << endl;
+    newPortId << ipcName << '_' << flowPortId;
     return newPortId.str();
 }
 
