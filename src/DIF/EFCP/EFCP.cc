@@ -37,9 +37,9 @@ EFCP::~EFCP() {
 }
 
 void EFCP::initialize(int step){
-  if(step == 3){
+//  if(step == 3){
     this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule("efcpTable");
-  }
+//  }
 }
 
 

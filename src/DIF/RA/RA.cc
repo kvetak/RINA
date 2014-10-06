@@ -78,6 +78,7 @@ void RA::initialize()
         }
     }
 
+
 	initQoSCubes();
     WATCH_LIST(this->QosCubes);
 
