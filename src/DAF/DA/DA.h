@@ -36,6 +36,14 @@ class DA : public cSimpleModule
     std::string resolveApnToIpcPath(const APN& apn);
     cModule* resolveApnToIpc(const APN& apn);
 
+
+    //Methods checking local-ness relevant to DA
+    bool isAppLocal(const APN apn);
+    bool isDifLocal(const std::string difName);
+    bool isIpcLocal(cModule* ipc);
+
+    //DIFAllocator magical oraculum methods
+
     /** Check whether any IPC within given DIF name is available on computation system with source IPC
      *
      * @param difName Given DIF name
@@ -50,10 +58,8 @@ class DA : public cSimpleModule
      * @param ipcY source
      * @return True if yes, otherwise false.
      */
-    bool isIpcXLocal(cModule* ipcX, cModule* ipcY);
+    bool isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY);
 
-    bool isAppLocal(const APN apn);
-    bool isDifLocal(const std::string difName);
 
   protected:
     Directory*          Dir;

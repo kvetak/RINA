@@ -77,3 +77,7 @@ const Address& DirectoryEntry::getAddr() const {
 void DirectoryEntry::setAddr(const Address& addr) {
     this->addr = addr;
 }
+
+cModule* DirectoryEntry::getIpc() {
+    return  getFlowAlloc() ? getFlowAlloc()->getParentModule()->getParentModule() : NULL;
+}
