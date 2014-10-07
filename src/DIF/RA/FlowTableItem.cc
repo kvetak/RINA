@@ -13,13 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+#include <FlowTableItem.h>
 
-//
-// TODO auto-generated module
-//
-simple PDUFwdTabGenerator
+FlowTableItem::FlowTableItem(Flow* flow, FABase* fa)
+:   flow(flow), fa(fa)
 {
-    @display("i=block/network2");
-    xml PDUFwData = default(xml("<FwTableItem/>"));
+}
+
+FlowTableItem::~FlowTableItem() {
+
+}
+
+std::string FlowTableItem::info() const {
+    std::stringstream os;
+
+    if (flow != NULL)
+    {
+        os << flow->info() << endl;
+    }
+    if (fa != NULL)
+    {
+        os << "FA path: " << fa->getFullPath() << "\n";
+    }
+    return os.str();
+}
+
+
+std::ostream& operator <<(std::ostream& os, const FlowTableItem& cte) {
+    return os << cte.info();
 }

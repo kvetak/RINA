@@ -47,14 +47,50 @@ const char* ELEM_COSTBITS            = "CostBits";
 void RA::initialize()
 {
     // connect to other modules
-    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
-    cModule* hostModule = getParentModule()->getParentModule();
+    difAllocator = ModuleAccess<DA>(MOD_DA).get();
+    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    flTable = ModuleAccess<FlowTable>("flowTable").get();
     rmt = (RMT*) this->getParentModule()->getParentModule()->getModuleByPath(".rmt.rmt");
 
-    processName = hostModule->par(PAR_IPCADDR).stdstringValue();
+    // initialize attributes
+    processName = getParentModule()->getParentModule()->par(PAR_IPCADDR).stdstringValue();
+
+    // determine and set RMT mode of operation
+    setRmtMode();
+
+    initSignalsAndListeners();
+	initQoSCubes();
+    WATCH_LIST(this->QosCubes);
+
+    initFlowAlloc();
+}
+
+void RA::initFlowAlloc()
+{
+    cXMLElement* dirXml = par("flows").xmlValue();
+    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
+
+    for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
+    {
+        cXMLElement* m = *i;
+
+        APNamingInfo src = APNamingInfo(APN(processName));
+        APNamingInfo dst = APNamingInfo(APN(m->getAttribute("dest")));
+        Flow *fl = new Flow(src, dst);
+
+        preparedFlows.push_back(fl);
+
+        cMessage* msg = new cMessage("RA-CreateFlow");
+        scheduleAt(simTime(), msg);
+    }
+}
+
+void RA::setRmtMode()
+{
+    // identify the role of this IPC process in processing system
+    cModule* hostModule = getParentModule()->getParentModule();
     std::string bottomGate = hostModule->gate("southIo$o", 0)->getNextGate()->getName();
 
-    // identify the role of IPC process in processing system
     if (bottomGate == "medium$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
@@ -70,15 +106,11 @@ void RA::initialize()
         }
         else
         {
-            // we're on top of a single IPC process, RMT will only multiplex
+            // we're on top of a single IPC process
         }
     }
-
-    initQoSCubes();
-    initSignalsAndListeners();
-
-    WATCH_LIST(this->QosCubes);
 }
+
 
 void RA::initQoSCubes() {
     cXMLElement* qosXml = NULL;
@@ -224,30 +256,18 @@ void RA::initQoSCubes() {
     }
 }
 
-void RA::initSignalsAndListeners() {
-/*
-    FABase* fa = ModuleAccess<FABase>(MOD_FA).get();
-    //Register signals
-    sigFACreReq = registerSignal("CreateRequestFlow");
-    sigFACreRes = registerSignal("CreateResponseFlow");
-    sigDelReq = registerSignal("DeleteRequestFlow");
-    sigDelRes = registerSignal("DeleteResponseFlow");
-    //Subscribe FA signals
-    //this->getParentModule()->getParentModule()->subscribe("CreateRequest",  lCreReq);
-    fa->lisCreReq = new LisFACreReq(fa);
-    this->subscribe(sigFACreReq,  fa->lisCreReq);
-    fa->lisCreRes = new LisFACreRes(fa);
-    this->subscribe(sigFACreRes, fa->lisCreRes);
-    fa->lisDelReq = new LisFADelReq(fa);
-    this->subscribe(sigDelReq,  fa->lisDelReq);
-    fa->lisDelRes = new LisFADelRes(fa);
-    this->subscribe(sigDelRes, fa->lisDelRes);
-*/
-}
-
 void RA::handleMessage(cMessage *msg)
 {
+    if (!msg->isSelfMessage())
+    {
+        delete msg;
+        return;
+    }
 
+    if ( !strcmp(msg->getName(), "RA-CreateFlow") ) {
+        createFlow(preparedFlows.front());
+        preparedFlows.pop_front();
+    }
 }
 
 /**
@@ -256,9 +276,12 @@ void RA::handleMessage(cMessage *msg)
  */
 void RA::bindMediumToRMT()
 {
-    rmt->createSouthGate("rmtIo_PHY");
-    cGate* rmtIn = rmt->getParentModule()->gateHalf("rmtIo_PHY", cGate::INPUT);
-    cGate* rmtOut = rmt->getParentModule()->gateHalf("rmtIo_PHY", cGate::OUTPUT);
+    std::ostringstream rmtGate;
+    rmtGate << GATE_SOUTHIO << "PHY";
+
+    rmt->createSouthGate(rmtGate.str().c_str());
+    cGate* rmtIn = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
+    cGate* rmtOut = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::OUTPUT);
 
     cModule* thisIpc = this->getParentModule()->getParentModule();
     cGate* thisIpcIn = thisIpc->gateHalf("southIo$i", cGate::INPUT, 0);
@@ -266,6 +289,8 @@ void RA::bindMediumToRMT()
 
     rmtOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtIn);
+
+    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut);
 }
 
 /**
@@ -276,12 +301,13 @@ void RA::bindMediumToRMT()
  */
 void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
 {
-    std::ostringstream rmtPortId;
-    rmtPortId << "rmtIo_"
-              << ipc->getFullName()
-              << '_' << flow->getSrcPortId() << endl;
+    // expand the given portId so it's unambiguous within this IPC
+    std::string combinedPortId = normalizePortId(ipc->getFullName(), flow->getSrcPortId());
 
-    rmt->createSouthGate(rmtPortId.str());
+    std::ostringstream rmtGate;
+    rmtGate << GATE_SOUTHIO << combinedPortId;
+
+    rmt->createSouthGate(rmtGate.str());
 
     // get (N-1)-IPC gates
     std::ostringstream bottomIpcGate;
@@ -290,15 +316,13 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     cGate* bottomIpcOut = ipc->gateHalf(bottomIpcGate.str().c_str(), cGate::OUTPUT);
 
     // get RMT gates
-    cGate* rmtIn = rmt->getParentModule()->gateHalf(rmtPortId.str().c_str(), cGate::INPUT);
-    cGate* rmtOut = rmt->getParentModule()->gateHalf(rmtPortId.str().c_str(), cGate::OUTPUT);
+    cGate* rmtIn = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
+    cGate* rmtOut = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::OUTPUT);
 
     // create an intermediate border gate
     cModule* thisIpc = this->getParentModule()->getParentModule();
     std::ostringstream thisIpcGate;
-    thisIpcGate << "southIo_"
-                << ipc->getFullName()
-                << '_' << flow->getSrcPortId() << endl;
+    thisIpcGate << "southIo_" << combinedPortId;
 
     thisIpc->addGate(thisIpcGate.str().c_str(), cGate::INOUT, false);
     cGate* thisIpcIn = thisIpc->gateHalf(thisIpcGate.str().c_str(), cGate::INPUT);
@@ -311,6 +335,24 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     rmtOut->connectTo(thisIpcOut);
     thisIpcOut->connectTo(bottomIpcIn);
 
+    // modules are connected; register a handle
+    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut);
+
+}
+
+/**
+ * Prefixes given port-id (originally returned by an FAI) with IPC process's ID
+ * to prevent name collisions in current IPC process.
+ *
+ * @param ipcName module identifier of an underlying IPC process
+ * @param flowPortId original portId to be expanded
+ * @return normalizes port-id
+ */
+std::string RA::normalizePortId(std::string ipcName, int flowPortId)
+{
+    std::ostringstream newPortId;
+    newPortId << ipcName << '_' << flowPortId;
+    return newPortId.str();
 }
 
 /**
@@ -318,55 +360,79 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
  *
  * @param dstIpc address of the destination IPC process
  */
-void RA::createFlow(std::string dstIpc)
+void RA::createFlow(Flow *fl)
 {
-    EV << "allocating an (N-1)-flow for IPC " << processName << endl;
-
-    /*XXX: Vesely @Hykel ->
-     *     Vytvaret Flow, ve kterem je SrcAPNI klasicke aplikacni jmeno
-     *     a DstAPNI adresa IPC, je nepochybne spatne. Flow object jako takovy
-     *     uz existuje a ty si v nem MAXIMALNE prepises nejake hodnoty.
-     *     Chapu, ze zbytek metody je Ctrl+C+V nad obdobnou metodou v IRM,
-     *     ale svou cinnosti je to rozhodne spatny koncept 8-X Prepracovat, predelat!
-     */
-    APNamingInfo src = APNamingInfo(APN(processName));
-    APNamingInfo dst = APNamingInfo(APN(dstIpc));
-    Flow *fl = new Flow(src, dst);
+    EV << " allocating an (N-1)-flow for IPC " << processName << endl;
 
     //Ask DA which IPC to use to reach dst App
-    cModule* ipc = DifAllocator->resolveApnToIpc(fl->getDstApni().getApn());
-    FABase* fa = DifAllocator->resolveApnToFa(fl->getDstApni().getApn());
-
+    cModule* ipc = difAllocator->resolveApnToIpc(fl->getDstApni().getApn());
+    FABase* fa = difAllocator->resolveApnToFa(fl->getDstApni().getApn());
 
     bool status = false;
     if (fa)
-        //signalizeAllocateRequest(flow);
+    {
+        //signalizeAllocateRequest(fl);
         status = fa->receiveAllocateRequest(fl);
+    }
     else
-        EV << "DA does not know target application" << endl;
+    {
+        EV << "DA does not know target IPC process!" << endl;
+    }
 
-    if (status)
+    if (!status)
+    {
+        EV << "Flow not allocated!" << endl;
+    }
+    else
+    {
         // connect the new flow to the RMT
         bindFlowToRMT(ipc, fl);
-    else
-        EV << "Flow not allocated!" << endl;
+        // we're ready to go!
+        //signalizeFlowAllocated(fl);
+        flTable->insert(fl, fa);
+    }
+}
+
+
+void RA::initSignalsAndListeners() {
+/*
+    // allocation request
+    sigRAAllocReq      = registerSignal(SIG_RA_AllocateRequest);
+    // deallocation request
+    sigRADeallocReq    = registerSignal(SIG_RA_DeallocateRequest);
+    // positive response to allocation request
+    sigRAAllocResPosi  = registerSignal(SIG_RA_AllocateResponsePositive);
+    // negative response to allocation request
+    sigRAAllocResNega  = registerSignal(SIG_RA_AllocateResponseNegative);
+    // successful allocation of an (N-1)-flow
+    sigRAFlowAllocd  = registerSignal(SIG_RA_FlowAllocated);
+    // successful deallocation of an (N-1)-flow
+    sigRAFlowDeallocd  = registerSignal(SIG_RA_FlowDeallocated);
+*/
 }
 
 /*
-void RA::signalizeFADeleteResponseFlow() {
-    emit(sigDelRes, true);
+void RA::signalizeAllocateRequest(Flow* flow) {
+    emit(sigRAAllocReq, flow);
 }
 
-void RA::signalizeFACreateResponseFlow() {
-    emit(sigFACreRes, true);
+void RA::signalizeDeallocateRequest(Flow* flow) {
+    emit(sigRADeallocReq, flow);
 }
 
-void RA::signalizeFADeleteRequestFlow() {
-    emit(sigDelReq, true);
+void RA::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigRAAllocResPosi, flow);
 }
 
-void RA::signalizeFACreateRequestFlow() {
-    //EV << "Sending... " << getSignalName(sigFACreReq) << endl;
-    emit(sigFACreReq, true);
+void RA::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigRAAllocResNega, flow);
+}
+
+void RA::signalizeFlowAllocated(Flow* flow) {
+    emit(sigRAFlowAllocd, flow);
+}
+
+void RA::signalizeFlowDeallocated(Flow* flow) {
+    emit(sigRAFlowDeallocd, flow);
 }
 */

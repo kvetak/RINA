@@ -13,34 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/**
- * @file PDUFwdTabGenerator.h
- * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief PDU forwarding (routing) table generator.
- * @detail Responds to various events happening inside the IPC process
- *         by adding, removing and editing entries in the forwarding table.
- */
-
-#ifndef __RINA_PDUFWDTABGENERATOR_H_
-#define __RINA_PDUFWDTABGENERATOR_H_
+#ifndef FLOWTABLEITEM_H_
+#define FLOWTABLEITEM_H_
 
 #include <omnetpp.h>
 
-#include "PDUForwardingTable.h"
-#include "ModuleAccess.h"
-#include "ConnectionId.h"
-#include "RMT.h"
+#include "Flow.h"
+#include "FABase.h"
 
-
-class PDUFwdTabGenerator : public cSimpleModule
-{
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+class FlowTableItem {
   public:
+    FlowTableItem(Flow* flow, FABase* fa);
+    virtual ~FlowTableItem();
+
+    std::string info() const;
 
   private:
-    PDUForwardingTable* fwTable;
+    Flow* flow;
+    FABase* fa;
 };
 
-#endif
+std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);
+
+#endif /* FLOWTABLEITEM_H_ */

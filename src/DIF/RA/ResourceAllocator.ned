@@ -17,16 +17,21 @@ package rina.DIF.RA;
 
 module ResourceAllocator
 {
-    @display("i=block/segm;bgb=398,147");    
-    
+    parameters:
+        @display("i=block/segm;bgb=327,210");
+        string dstIpc = default("-1");
+
     submodules:
         pduForwardingTable: PDUForwardingTable {
-            @display("p=70,68");
+            @display("p=218,132");
         }
         ra: RA {
-            @display("p=196,68");
+            @display("p=71,55");
         }
         pduFwdTabGenerator: PDUFwdTabGenerator {
-            @display("p=319,68");
+            @display("p=218,55");
+        }
+        flowTable: FlowTable {
+            @display("p=71,132");
         }
 }

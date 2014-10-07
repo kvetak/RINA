@@ -24,6 +24,9 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
+#include "RINASignals.h"
+#include "PDUForwardingTable.h"
+#include "FlowTable.h"
 #include "DA.h"
 #include "Flow.h"
 #include "FABase.h"
@@ -57,17 +60,24 @@ class RA : public RABase {
     virtual void handleMessage(cMessage *msg);
 
   private:
-    DA* DifAllocator;
+    DA* difAllocator;
+    PDUForwardingTable* fwTable;
+    FlowTable* flTable;
     RMT* rmt;
     std::string processName;
+    std::list<Flow*> preparedFlows;
 
     void initQoSCubes();
+    void initFlowAlloc();
+    void setRmtMode();
 
-    void createFlow(std::string dstIpc);
+    void createFlow(Flow *fl);
     void removeFlow();
 
     void bindFlowToRMT(cModule* ipc, Flow *flow);
     void bindMediumToRMT();
+
+    std::string normalizePortId(std::string ipcName, int flowPortId);
 
     void initSignalsAndListeners();
 
@@ -78,23 +88,25 @@ class RA : public RABase {
  *      Navic jsem si vzpomnel, proc byly FA signaly v RIBDemonovi. RIBDemon bude emitovat
  *      signaly pro vsechny DIF manangement komponenty, protoze je zpracovatelem ridicich CDAP
  *      zprav. Vysvetleni kdyztak na dalsi schuzce.
- */
-
+ */	
 /*
-    //--------------------- FA ---------------------
-    //Signals
-    simsignal_t sigFACreReq;
-    simsignal_t sigFACreRes;
-    simsignal_t sigDelReq;
-    simsignal_t sigDelRes;
-    //Signaling
-    void signalizeFACreateRequestFlow();
-    void signalizeFACreateResponseFlow();
-    void signalizeFADeleteRequestFlow();
-    void signalizeFADeleteResponseFlow();
-    //--------------------- FAI ---------------------
+    // signals emitted by this module
+    simsignal_t sigRAAllocReq;
+    simsignal_t sigRADeallocReq;
+    simsignal_t sigRAAllocResPosi;
+    simsignal_t sigRAAllocResNega;
+    simsignal_t sigRAFlowAllocd;
+    simsignal_t sigRAFlowDeallocd;
+    
+    // emit wrapper functions
+    void signalizeAllocateRequest(Flow* flow);
+    void signalizeDeallocateRequest(Flow* flow);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeFlowAllocated(Flow* flow);
+    void signalizeFlowDeallocated(Flow* flow);
 */
 };
-
+    
 
 #endif

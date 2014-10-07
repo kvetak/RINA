@@ -13,42 +13,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/**
- * @file PDUForwardingTable.h
- * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief PDU forwarding (routing) table used by RMT relay.
- * @detail
- */
-
-#ifndef __RINA_PDUFORWARDINGTABLE_H_
-#define __RINA_PDUFORWARDINGTABLE_H_
+#ifndef __RINA_FLOWTABLE_H_
+#define __RINA_FLOWTABLE_H_
 
 #include <omnetpp.h>
-#include "ConnectionId.h"
 
-#include "PDUForwardingTable.h"
-#include "PDUTableEntry.h"
+#include "FlowTableItem.h"
 
-typedef std::list<PDUTableEntry> PDUFwTable;
-typedef PDUFwTable::iterator PDUFwIter;
+typedef std::list<FlowTableItem> FlTable;
+typedef FlTable::iterator FlTableIter;
 
-class PDUForwardingTable : public cSimpleModule
+class FlowTable : public cSimpleModule
 {
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-  private:
-    PDUFwTable FwTable;
-    void printAll();
-
   public:
-    PDUForwardingTable();
+    void insert(const FlowTableItem* entry);
+    void insert(Flow* flow, FABase* fa);
 
-    void insert(const PDUTableEntry* entry);
-    void insert(std::string destAddr, int qosId, cModule* ipc, int portId);
-    RMTPortId lookup(std::string destAddr, int QoSid);
-    void remove(std::string portId);
+  private:
+    FlTable flows;
 };
 
 #endif

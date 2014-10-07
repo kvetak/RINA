@@ -25,5 +25,6 @@ simple RA
     	@signal[DeleteRequestFlow](type="bool");
     	@signal[DeleteResponseFlow](type="bool");
     	
-    	xml qoscubesData = default(xml("<QosCube/>"));    	    	
+    	xml qoscubesData = default(xml("<QosCube/>"));
+    	xml flows = default(xml("<Flows/>"));    	    	
 }
