@@ -256,6 +256,20 @@ void RA::initQoSCubes() {
     }
 }
 
+void RA::handleMessage(cMessage *msg)
+{
+    if (!msg->isSelfMessage())
+    {
+        delete msg;
+        return;
+    }
+
+    if ( !strcmp(msg->getName(), "RA-CreateFlow") ) {
+        createFlow(preparedFlows.front());
+        preparedFlows.pop_front();
+    }
+}
+
 /**
  * Connects the RMT module to the medium defined in NED.
  * Used only for the bottom IPC process in a processing system.
@@ -374,12 +388,14 @@ void RA::createFlow(Flow *fl)
         // connect the new flow to the RMT
         bindFlowToRMT(ipc, fl);
         // we're ready to go!
-        signalizeFlowAllocated(fl);
+        //signalizeFlowAllocated(fl);
         flTable->insert(fl, fa);
     }
 }
 
+
 void RA::initSignalsAndListeners() {
+/*
     // allocation request
     sigRAAllocReq      = registerSignal(SIG_RA_AllocateRequest);
     // deallocation request
@@ -392,7 +408,7 @@ void RA::initSignalsAndListeners() {
     sigRAFlowAllocd  = registerSignal(SIG_RA_FlowAllocated);
     // successful deallocation of an (N-1)-flow
     sigRAFlowDeallocd  = registerSignal(SIG_RA_FlowDeallocated);
-
+*/
 }
 
 /*

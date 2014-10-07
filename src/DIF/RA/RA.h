@@ -31,9 +31,7 @@
 #include "Flow.h"
 #include "FABase.h"
 #include "RMT.h"
-
-typedef std::list<QosCube> QosCubeSet;
-typedef QosCubeSet::const_iterator QCubeCItem;
+#include "RABase.h"
 
 //Consts
 extern const char* PAR_QOSDATA;
@@ -62,7 +60,7 @@ class RA : public RABase {
     virtual void handleMessage(cMessage *msg);
 
   private:
-    DA* DifAllocator;
+    DA* difAllocator;
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
     RMT* rmt;
@@ -109,9 +107,6 @@ class RA : public RABase {
     void signalizeFlowDeallocated(Flow* flow);
 */
 };
-       
-//Free function
-std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
     
 
 #endif
