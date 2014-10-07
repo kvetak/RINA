@@ -52,28 +52,22 @@ extern const char* ELEM_FORCEORDER;
 extern const char* ELEM_MAXALLOWGAP;
 extern const char* ELEM_DELAY;
 extern const char* ELEM_JITTER;
-extern const char* ELEM_DTCPON;
-extern const int   VAL_QOSPARAMDONOTCARE;
-extern const bool  VAL_QOSPARAMDEFBOOL;
+extern const char* ELEM_COSTTIME;
+extern const char* ELEM_COSTBITS;
 
-class RA : public cSimpleModule
-{
-  public:
-    const QosCubeSet& getQosCubes() const;
+class RA : public RABase {
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
-    DA* difAllocator;
+    DA* DifAllocator;
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
     RMT* rmt;
     std::string processName;
     std::list<Flow*> preparedFlows;
-
-    QosCubeSet QosCubes;
 
     void initQoSCubes();
     void initFlowAlloc();
@@ -89,6 +83,15 @@ class RA : public cSimpleModule
 
     void initSignalsAndListeners();
 
+/*
+ * XXX: Vesely @Hykel ->
+ *      Takhle tedy signaly urcite ne, kdyz uz, tak s RABase a RAListeners tridami,
+ *      aby nedochazelo k cyklickym zavislostem mezi FA - RA
+ *      Navic jsem si vzpomnel, proc byly FA signaly v RIBDemonovi. RIBDemon bude emitovat
+ *      signaly pro vsechny DIF manangement komponenty, protoze je zpracovatelem ridicich CDAP
+ *      zprav. Vysvetleni kdyztak na dalsi schuzce.
+ */	
+/*
     // signals emitted by this module
     simsignal_t sigRAAllocReq;
     simsignal_t sigRADeallocReq;
@@ -104,6 +107,7 @@ class RA : public cSimpleModule
     void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeFlowAllocated(Flow* flow);
     void signalizeFlowDeallocated(Flow* flow);
+*/
 };
        
 //Free function

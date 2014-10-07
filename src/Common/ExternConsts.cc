@@ -22,10 +22,20 @@ const char* MOD_CONNTABLE       = "connectionTable";
 const char* MOD_DA              = "da";
 const char* MOD_FAITABLE        = "faiTable";
 const char* MOD_EFCP            = "efcp";
+const char* MOD_RESALLOC        = "resourceAllocator";
+const char* MOD_RA              = "ra";
+const char* MOD_IRM             = "irm";
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
 const char* PAR_DIFNAME         = "difName";
+const char* PAR_PORTID          = "portId";
+const char* PAR_CEPID           = "cepId";
+const char* PAR_APNAME          = "apName";
+const char* PAR_APINSTANCE      = "apInstance";
+const char* PAR_AENAME          = "aeName";
+const char* PAR_AEINSTANCE      = "aeInstance";
+
 
 //Gate names
 const char* GATE_NORTHIO        = "northIo_";
@@ -33,5 +43,11 @@ const char* GATE_SOUTHIO        = "southIo_";
 const char* GATE_EFCPIO         = "efcpIo_";
 const char* GATE_RMT            = "rmt_";
 const char* GATE_APPIO          = "appIo_";
+const char* GATE_AEIO           = "aeIo";
+const char* GATE_DATAIO         = "dataIo";
 
+//Values
+//TODO: Vesely @Marek - What about -1 as default DoNotCare value?
+const int   VAL_QOSPARAMDONOTCARE    = -1;
+const bool  VAL_QOSPARAMDEFBOOL      = false;
 

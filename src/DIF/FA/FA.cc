@@ -40,10 +40,20 @@ FA::~FA() {
     this->FaiTable = NULL;
 }
 
-void FA::initialize() {
-    this->FaiTable = dynamic_cast<FAITable*>( getParentModule()->getSubmodule(MOD_FAITABLE) );
-    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP));
+void FA::initPointers() {
+//    EV << ( dynamic_cast<FAITable*>(getParentModule()->getSubmodule(MOD_FAITABLE))
+//          == ModuleAccess<FAITable>(MOD_FAITABLE).get() ) << endl;
+//
+//    EV << ( dynamic_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA))
+//          == ModuleAccess<RABase>(MOD_RA).get() ) << endl;
+    FaiTable = ModuleAccess<FAITable>(MOD_FAITABLE).get();
+    Efcp = (EFCP*) ((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
+    ResourceAllocator = ModuleAccess<RABase>(MOD_RA).get();
+    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
+}
 
+void FA::initialize() {
+    initPointers();
     initSignalsAndListeners();
 }
 
@@ -55,6 +65,7 @@ bool FA::receiveAllocateRequest(cObject* obj) {
 
     //Insert new Flow into FAITable
     FaiTable->insertNew(fl);
+
     //Is malformed?
     if (isMalformedFlow(fl)){
         FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_ERR);
@@ -62,8 +73,14 @@ bool FA::receiveAllocateRequest(cObject* obj) {
         //this->signalizeAllocateResponseNegative(fl);
         return false;
     }
+
     //Create FAI
     FAI* fai = this->createFAI(fl);
+
+    //Update flow object
+    fl->setSrcPortId(fai->par(PAR_PORTID));
+    fl->getConId().setSrcCepId(fai->par(PAR_CEPID));
+
     //Is App local? YES then Degenerate transfer ELSE
     bool status;
     if (this->isAppLocal(fl)) {
@@ -74,6 +91,7 @@ bool FA::receiveAllocateRequest(cObject* obj) {
         //Pass the AllocationRequest to newly created FAI
         status = fai->receiveAllocateRequest();
     }
+
     //If allocation was unsuccessful then return negative response
     if (!status)
     {
@@ -116,14 +134,22 @@ void FA::receiveCreateFlowRequest(cObject* obj) {
     Flow* fl = dynamic_cast<Flow*>(obj);
     //Insert new Flow into FAITable
     FaiTable->insertNew(fl);
+
     //Is requested APP local?
-    if (true){
-        //Change allocation status to rejected
+    if ( DifAllocator->isAppLocal(fl->getDstApni().getApn()) ){
+        //Change allocation status to pending
         FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_PEND);
+
         //Create FAI
         FAI* fai = this->createFAI(fl);
+
+        //Update flow object
+        fl->setDstPortId(fai->par(PAR_PORTID));
+        fl->getConId().setDstCepId(fai->par(PAR_CEPID));
+
         //Pass the CreateRequest to newly created FAI
         bool status = fai->receiveCreateRequest();
+
         //If allocation was unsuccessful then return negative response
         if (!status)
         {
@@ -174,9 +200,22 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
         return false;
     }
 
-    //TODO: Compare Qos Parameters with available QoS cubes
+    //TODO: Compare QoS Parameters with available QoS cubes
+    QosCubeSet cubes = ResourceAllocator->getQosCubes();
+    //EV << ResourceAllocator->getQosCubes();
 
-    return true;
+    unsigned short qosid = 0;
+    short score = 0;
+
+    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
+        short tmpscore = flow->getQosParameters().countFeasibilityScore(*it);
+        //EV << "QosID: " << it->getQosId() << "  tmpscore: " << tmpscore << endl;
+        if (score < tmpscore)
+            qosid = it->getQosId();
+    }
+
+    flow->getConId().setQoSId(qosid);
+    return qosid ? true : false;
 }
 
 FAI* FA::createFAI(Flow* flow) {
@@ -191,10 +230,10 @@ FAI* FA::createFAI(Flow* flow) {
     std::ostringstream ostr;
     ostr << "fai_" << portId << "_" << cepId;
 
-    //Instatiate module
+    //Instantiate module
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
-    module->par("portId") = portId;
-    module->par("cepId") = cepId;
+    module->par(PAR_PORTID) = portId;
+    module->par(PAR_CEPID) = cepId;
     module->finalizeParameters();
     module->buildInside();
 
@@ -204,14 +243,11 @@ FAI* FA::createFAI(Flow* flow) {
 
     //Prepare return pointer and setup internal FAI pointers
     FAI* fai = dynamic_cast<FAI*>(module);
-    fai->postInitialize(this, flow, efcp);
+    fai->postInitialize(this, flow, Efcp);
 
     //Change state in FAITable
     FaiTable->bindFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
-
-    //Update flow object
-    flow->setSrcPortId(portId);
 
     return fai;
 }

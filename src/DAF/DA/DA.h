@@ -25,15 +25,27 @@
 #include "SearchTable.h"
 #include "ModuleAccess.h"
 #include "FABase.h"
+#include "ExternConsts.h"
 
 class DA : public cSimpleModule
 {
   public:
 
-    DirectoryEntry* resolveApni(const APNamingInfo& apni);
-    FABase* resolveApniToFa(const APNamingInfo& apni);
-    cModule* resolveApniToIpc(const APNamingInfo& apni);
-    std::string resolveApniToIpcPath(const APNamingInfo& apni);
+    DirectoryEntry* resolveApn(const APN& apn);
+    FABase* resolveApnToFa(const APN& apn);
+    std::string resolveApnToIpcPath(const APN& apn);
+    cModule* resolveApnToIpc(const APN& apn);
+
+
+    //Methods checking local-ness relevant to DA
+    bool isAppLocal(const APN apn);
+    bool isDifLocal(const std::string difName);
+    bool isIpcLocal(cModule* ipc);
+
+    //DIFAllocator magical oraculum methods
+
+    cModule* findIpc(const Address& addr);
+    FABase* findFaInsideIpc(cModule* ipc);
 
     /** Check whether any IPC within given DIF name is available on computation system with source IPC
      *
@@ -41,7 +53,7 @@ class DA : public cSimpleModule
      * @param ipc Source IPC Process
      * @return True if yes, otherwise false
      */
-    bool isDifLocalToIpc(std::string difName, cModule* ipc);
+    bool isDifLocalToIpc(const std::string difName, cModule* ipc);
 
     /**
      * Check whether given IPC X is on the same computation system as IPC Y
@@ -49,7 +61,8 @@ class DA : public cSimpleModule
      * @param ipcY source
      * @return True if yes, otherwise false.
      */
-    bool isIpcXLocalToY(cModule* ipcX, cModule* ipcY);
+    bool isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY);
+
 
   protected:
     Directory*          Dir;
@@ -61,10 +74,11 @@ class DA : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
     void initPointers();
 
-    DirectoryEntry* resolveApn(const APN& apn);
-    FABase* resolveApnToFa(const APN& apn);
-    std::string resolveApnToIpcPath(const APN& apn);
-    cModule* resolveApnToIpc(const APN& apn);
+    DirectoryEntry* resolveApni(const APNamingInfo& apni);
+    FABase* resolveApniToFa(const APNamingInfo& apni);
+    cModule* resolveApniToIpc(const APNamingInfo& apni);
+    std::string resolveApniToIpcPath(const APNamingInfo& apni);
+
 };
 
 #endif

@@ -19,13 +19,10 @@ Address::Address() : ipcAddress(""), difName("")
 {
 }
 
-
-
 Address::Address(const char* ipcaddr, const char* difnam) :
         ipcAddress(ipcaddr), difName(difnam)
 {
 }
-
 
 Address::~Address()
 {
@@ -50,7 +47,8 @@ bool Address::operator ==(const Address& other) const {
 
 std::string Address::info() const {
     std::stringstream os;
-    os << ipcAddress << "(" << difName << ")";
+    if (!ipcAddress.empty() && !difName.empty())
+        os << ipcAddress << "(" << difName << ")";
     return os.str();
 }
 

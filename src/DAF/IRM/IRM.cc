@@ -51,7 +51,7 @@ void IRM::handleMessage(cMessage* msg) {
 void IRM::initSignalsAndListeners() {
     cModule* catcher = this->getParentModule()->getParentModule();
 
-    //Signals that this module is emitting
+    //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
     sigIRMAllocResPosi  = registerSignal(SIG_IRM_AllocateResponsePositive);
@@ -78,7 +78,7 @@ void IRM::initSignalsAndListeners() {
 bool IRM::createBindings(Flow& flow) {
     EV << "Attempts to create bindings and bind registration of gates"<< endl;
     //Retrieve IPC process with allocated flow and prepared bindings
-    cModule* Ipc = DifAllocator->resolveApniToIpc(flow.getDstApni());
+    cModule* Ipc = DifAllocator->resolveApnToIpc(flow.getDstApni().getApn());
     cModule* Ap = this->getParentModule();
 
     //Create connections
@@ -123,18 +123,23 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
 
     //Ask DA which IPC to use to reach dst App
-    FABase* fa = DifAllocator->resolveApniToFa(flow->getDstApni());
+    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
+
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return;
+    }
+
+    if (!DifAllocator->isIpcLocal(de->getIpc())) {
+        EV << "IPC not on the local computation system! Searching for it is currently unsupported feature!" << endl;
+        return;
+    }
 
     //Store info into ConnectionTable
-    ConTable->setFa(flow, fa);
+    ConTable->setFa(flow, de->getFlowAlloc());
 
     //Command target FA to allocate flow
-    bool status = false;
-    if (fa)
-        //signalizeAllocateRequest(flow);
-        status = fa->receiveAllocateRequest(flow);
-    else
-        EV << "DA does not know target application" << endl;
+    bool status = de->getFlowAlloc()->receiveAllocateRequest(flow);
 
     //If AllocationRequest ended by creating connections
     if (status)
@@ -143,10 +148,7 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     else
        EV << "Flow not allocated!\n" << flow << endl;
 
-    if (!status)
-        EV << "Flow not binded!\n" << flow << endl;
-
-    //Change ConnectionTable status
+    //TODO: Vesely - Change ConnectionTable status
 }
 
 void IRM::receiveDeallocationRequest(cObject* obj) {

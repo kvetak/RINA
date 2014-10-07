@@ -21,9 +21,29 @@
 //RINASim libraries
 #include "APNamingInfo.h"
 #include "Flow.h"
+#include "ExternConsts.h"
 
 typedef std::list<Flow> Flows;
 typedef Flows::iterator TFlowsIter;
+
+//Consts
+
+extern const char* PAR_AVGBW;
+extern const char* PAR_AVGSDUBW;
+extern const char* PAR_PEAKBWDUR;
+extern const char* PAR_PEAKSDUBWDUR;
+extern const char* PAR_BURSTPERIOD;
+extern const char* PAR_BURSTDURATION;
+extern const char* PAR_UNDETECTBITERR;
+extern const char* PAR_MAXSDUSIZE;
+extern const char* PAR_PARTIALDELIVER;
+extern const char* PAR_INCOMPLETEDELIVER;
+extern const char* PAR_FORCEORDER;
+extern const char* PAR_MAXALLOWGAP;
+extern const char* PAR_DELAY;
+extern const char* PAR_JITTER;
+extern const char* PAR_COSTTIME;
+extern const char* PAR_COSTBITS;
 
 class AEBase : public cSimpleModule
 {
@@ -46,6 +66,8 @@ class AEBase : public cSimpleModule
     std::string srcAeName;
     std::string srcAeInstance;
 
+    QosCube QoSRequirements;
+
     //Getters/Setters
     const std::string& getSrcAeInstance() const;
     void setSrcAeInstance(const std::string& srcAeInstance);
@@ -57,9 +79,13 @@ class AEBase : public cSimpleModule
     void setSrcApName(const std::string& srcApName);
     void setApni(const APNamingInfo& apni);
     void setFlows(const Flows& flows);
+    const QosCube& getQoSRequirements() const;
+    void setQoSRequirements(const QosCube& qoSRequirements);
 
     void initNamingInfo();
-    void insert(Flow& flow);
+    void initQoSRequiremets();
+
+    void insertFlow(Flow& flow);
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
