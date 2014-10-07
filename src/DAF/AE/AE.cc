@@ -24,7 +24,7 @@ AE::~AE() {
 }
 
 void AE::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule();
+    //cModule* catcher = this->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
     sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
@@ -53,7 +53,7 @@ void AE::createBinding(Flow& flow) {
     //Create new gates
     cGate* g1i;
     cGate* g1o;
-    Irm->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&g1i, *&g1o);
+    Irm->getOrCreateFirstUnconnectedGatePair(GATE_AEIO, false, true, *&g1i, *&g1o);
 
     //cGate* g0i;
     //cGate* g0o;
@@ -62,7 +62,7 @@ void AE::createBinding(Flow& flow) {
     //Get AE gates
     cGate* g2i;
     cGate* g2o;
-    this->getOrCreateFirstUnconnectedGatePair("dataIo", false, true, *&g2i, *&g2o);
+    this->getOrCreateFirstUnconnectedGatePair(GATE_DATAIO, false, true, *&g2i, *&g2o);
 
     //Connect gates together
     g1o->connectTo(g2i);
@@ -73,15 +73,15 @@ void AE::createBinding(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = ModuleAccess<IRM>("irm").get();
-    ConTab = ModuleAccess<ConnectionTable>("connectionTable").get();
+    Irm = ModuleAccess<IRM>(MOD_IRM).get();
+    ConTab = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
 }
 
 void AE::signalizeAllocateRequest(Flow* flow) {
     emit(sigAEAllocReq, flow);
 }
 
-void AE::insert(Flow& flow) {
+void AE::insertFlow(Flow& flow) {
     //Add a new flow to the end of the Flow list
     flows.push_back(flow);
 

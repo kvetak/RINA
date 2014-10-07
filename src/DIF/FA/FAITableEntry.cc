@@ -45,6 +45,7 @@ std::string FAITableEntry::info() const {
           "\tcreated: " << this->getTimeCreated() << "\tlastActive: " << this->getTimeLastActive() << endl;
     if ( this->getFlow() )
         os << *(this->getFlow()) << endl;
+        //os << this->getFlow()->getQosParameters();
     if ( this->getFai() )
         os << *(this->getFai()) << endl;
     return os.str();

@@ -13,19 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+#include <RABase.h>
 
-simple AEPing extends AE 
-{
-    parameters:
-        @class(AEPing);
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
-        
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
-        int pingAt  @unit(s) = default(0s);
-        int rate 			 = default(1);    
+RABase::RABase() {
+    // TODO Auto-generated constructor stub
+
+}
+
+RABase::~RABase() {
+    // TODO Auto-generated destructor stub
+
+}
+
+const QosCubeSet& RABase::getQosCubes() const {
+    return QosCubes;
+}
+
+std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
+    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
+        os << *it;
+    return os;
 }

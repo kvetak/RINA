@@ -24,14 +24,11 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
-#include "FA.h"
 #include "DA.h"
 #include "Flow.h"
 #include "FABase.h"
 #include "RMT.h"
-
-typedef std::list<QosCube> QosCubeSet;
-typedef QosCubeSet::const_iterator QCubeCItem;
+#include "RABase.h"
 
 //Consts
 extern const char* PAR_QOSDATA;
@@ -50,14 +47,10 @@ extern const char* ELEM_FORCEORDER;
 extern const char* ELEM_MAXALLOWGAP;
 extern const char* ELEM_DELAY;
 extern const char* ELEM_JITTER;
-extern const char* ELEM_DTCPON;
-extern const int   VAL_QOSPARAMDONOTCARE;
-extern const bool  VAL_QOSPARAMDEFBOOL;
+extern const char* ELEM_COSTTIME;
+extern const char* ELEM_COSTBITS;
 
-class RA : public cSimpleModule
-{
-  public:
-    const QosCubeSet& getQosCubes() const;
+class RA : public RABase {
 
   protected:
     virtual void initialize();
@@ -68,8 +61,6 @@ class RA : public cSimpleModule
     RMT* rmt;
     std::string processName;
 
-    QosCubeSet QosCubes;
-
     void initQoSCubes();
 
     void createFlow(std::string dstIpc);
@@ -78,9 +69,18 @@ class RA : public cSimpleModule
     void bindFlowToRMT(cModule* ipc, Flow *flow);
     void bindMediumToRMT();
 
-    void registerFASigs();
-    void registerFAISigs();
+    void initSignalsAndListeners();
 
+/*
+ * XXX: Vesely @Hykel ->
+ *      Takhle tedy signaly urcite ne, kdyz uz, tak s RABase a RAListeners tridami,
+ *      aby nedochazelo k cyklickym zavislostem mezi FA - RA
+ *      Navic jsem si vzpomnel, proc byly FA signaly v RIBDemonovi. RIBDemon bude emitovat
+ *      signaly pro vsechny DIF manangement komponenty, protoze je zpracovatelem ridicich CDAP
+ *      zprav. Vysvetleni kdyztak na dalsi schuzce.
+ */
+
+/*
     //--------------------- FA ---------------------
     //Signals
     simsignal_t sigFACreReq;
@@ -93,9 +93,8 @@ class RA : public cSimpleModule
     void signalizeFADeleteRequestFlow();
     void signalizeFADeleteResponseFlow();
     //--------------------- FAI ---------------------
+*/
 };
 
-//Free function
-std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
 
 #endif

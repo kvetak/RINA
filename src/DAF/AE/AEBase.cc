@@ -1,4 +1,4 @@
-//
+
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -16,6 +16,23 @@
 #include "AEBase.h"
 
 Define_Module(AEBase);
+
+const char* PAR_AVGBW               = "averageBandwidth";
+const char* PAR_AVGSDUBW            = "averageSDUBandwidth";
+const char* PAR_PEAKBWDUR           = "peakBandwidthDuration";
+const char* PAR_PEAKSDUBWDUR        = "peakSDUBandwidthDuration";
+const char* PAR_BURSTPERIOD         = "burstPeriod";
+const char* PAR_BURSTDURATION       = "burstDuration";
+const char* PAR_UNDETECTBITERR      = "undetectedBitErr";
+const char* PAR_MAXSDUSIZE          = "maxSDUsize";
+const char* PAR_PARTIALDELIVER      = "partialDelivery";
+const char* PAR_INCOMPLETEDELIVER   = "incompleteDelivery";
+const char* PAR_FORCEORDER          = "forceOrder";
+const char* PAR_MAXALLOWGAP         = "maxAllowGap";
+const char* PAR_DELAY               = "delay";
+const char* PAR_JITTER              = "jitter";
+const char* PAR_COSTTIME            = "costTime";
+const char* PAR_COSTBITS            = "costBits";
 
 const APNamingInfo& AEBase::getApni() const {
     return apni;
@@ -67,10 +84,10 @@ void AEBase::setSrcApName(const std::string& srcApName) {
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getParentModule()->par("apName").stdstringValue();
-    srcApInstance = this->getParentModule()->par("apInstance").stdstringValue();
-    srcAeName = this->par("aeName").stdstringValue();
-    srcAeInstance = this->par("aeInstance").stdstringValue();
+    srcApName = this->getParentModule()->par(PAR_APNAME).stdstringValue();
+    srcApInstance = this->getParentModule()->par(PAR_APINSTANCE).stdstringValue();
+    srcAeName = this->par(PAR_AENAME).stdstringValue();
+    srcAeInstance = this->par(PAR_AEINSTANCE).stdstringValue();
 
     apni = APNamingInfo(APN(this->srcApName), this->srcApInstance,
             this->srcAeName, this->srcAeInstance);
@@ -79,6 +96,127 @@ void AEBase::initNamingInfo() {
 void AEBase::initialize()
 {
     initNamingInfo();
+    initQoSRequiremets();
+}
+
+const QosCube& AEBase::getQoSRequirements() const {
+    return QoSRequirements;
+}
+
+void AEBase::setQoSRequirements(const QosCube& qoSRequirements) {
+    QoSRequirements = qoSRequirements;
+}
+
+void AEBase::initQoSRequiremets() {
+    //Check whether module has all QoS parameters
+    if (! (hasPar(PAR_AVGBW) &&
+           hasPar(PAR_AVGSDUBW) &&
+           hasPar(PAR_PEAKBWDUR) &&
+           hasPar(PAR_PEAKSDUBWDUR) &&
+           hasPar(PAR_BURSTPERIOD) &&
+           hasPar(PAR_BURSTDURATION) &&
+           hasPar(PAR_UNDETECTBITERR) &&
+           hasPar(PAR_MAXSDUSIZE) &&
+           hasPar(PAR_PARTIALDELIVER) &&
+           hasPar(PAR_INCOMPLETEDELIVER) &&
+           hasPar(PAR_FORCEORDER) &&
+           hasPar(PAR_MAXALLOWGAP) &&
+           hasPar(PAR_DELAY) &&
+           hasPar(PAR_JITTER) &&
+           hasPar(PAR_COSTTIME) &&
+           hasPar(PAR_COSTBITS)
+          )
+       ) {
+        std::stringstream ss;
+        ss << "Module " << this->getFullName() << " is not derived from AEBase. It misses some important QoS parameters!";
+        error(ss.str().c_str());
+    }
+
+    //Create QoS cube according to parameters
+    QosCube cube;
+
+    int avgBand                 = VAL_QOSPARAMDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
+    int avgSDUBand              = VAL_QOSPARAMDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
+    int peakBandDuration        = VAL_QOSPARAMDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
+    int peakSDUBandDuration     = VAL_QOSPARAMDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    int burstPeriod             = VAL_QOSPARAMDONOTCARE;    //Burst period measured in useconds
+    int burstDuration           = VAL_QOSPARAMDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
+    int undetectedBitErr        = VAL_QOSPARAMDONOTCARE;    //Undetected bit error rate measured as a probability
+    int maxSDUsize              = VAL_QOSPARAMDONOTCARE;    //MaxSDUSize measured in bytes
+    bool partDeliv              = VAL_QOSPARAMDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    bool incompleteDeliv        = VAL_QOSPARAMDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    bool forceOrder             = VAL_QOSPARAMDEFBOOL;      //Must SDUs be delivered in order?
+    unsigned int maxAllowGap    = VAL_QOSPARAMDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    int delay                   = VAL_QOSPARAMDONOTCARE;    //Delay in usecs
+    int jitter                  = VAL_QOSPARAMDONOTCARE;    //Jitter in usecs2
+    int costtime                = VAL_QOSPARAMDONOTCARE;    //measured in $/ms
+    int costbits                = VAL_QOSPARAMDONOTCARE;    //measured in $/Mb
+
+    avgBand = par(PAR_AVGBW);
+    if (avgBand < 0)
+        avgBand = VAL_QOSPARAMDONOTCARE;
+    avgSDUBand = par(PAR_AVGSDUBW);
+    if (avgSDUBand < 0)
+        avgSDUBand = VAL_QOSPARAMDONOTCARE;
+    peakBandDuration = par(PAR_PEAKBWDUR);
+    if (peakBandDuration < 0)
+        peakBandDuration = VAL_QOSPARAMDONOTCARE;
+    peakSDUBandDuration = par(PAR_PEAKSDUBWDUR);
+    if (peakSDUBandDuration < 0)
+        peakSDUBandDuration = VAL_QOSPARAMDONOTCARE;
+    burstPeriod = par(PAR_BURSTPERIOD);
+    if (burstPeriod < 0)
+        burstPeriod = VAL_QOSPARAMDONOTCARE;
+    burstDuration = par(PAR_BURSTDURATION);
+    if (burstDuration < 0)
+        burstDuration = VAL_QOSPARAMDONOTCARE;
+    undetectedBitErr = par(PAR_UNDETECTBITERR);
+    if (undetectedBitErr < 0 || undetectedBitErr > 1 )
+        undetectedBitErr = VAL_QOSPARAMDONOTCARE;
+    maxSDUsize = par(PAR_MAXSDUSIZE);
+    if (maxSDUsize < 0)
+        maxSDUsize = VAL_QOSPARAMDONOTCARE;
+    partDeliv = par(PAR_PARTIALDELIVER);
+    incompleteDeliv = par(PAR_INCOMPLETEDELIVER);
+    forceOrder = par(PAR_FORCEORDER);
+    maxAllowGap = par(PAR_MAXALLOWGAP);
+    if (maxAllowGap < 0)
+        maxAllowGap = VAL_QOSPARAMDONOTCARE;
+    delay = par(PAR_DELAY);
+    if (delay < 0)
+        delay = VAL_QOSPARAMDONOTCARE;
+    jitter = par(PAR_JITTER);
+    if (jitter < 0)
+        jitter = VAL_QOSPARAMDONOTCARE;
+    costtime = par(PAR_COSTTIME);
+    if (costtime < 0)
+        costtime = VAL_QOSPARAMDONOTCARE;
+    costbits = par(PAR_COSTBITS);
+    if (costbits < 0)
+        costbits = VAL_QOSPARAMDONOTCARE;
+
+    cube.setQosId(0);
+    cube.setAvgBand(avgBand);
+    cube.setAvgSduBand(avgSDUBand);
+    cube.setPeakBandDuration(peakBandDuration);
+    cube.setPeakSduBandDuration(peakSDUBandDuration);
+    cube.setBurstPeriod(burstPeriod);
+    cube.setBurstDuration(burstDuration);
+    cube.setUndetectedBitErr(undetectedBitErr);
+    cube.setMaxSduSize(maxSDUsize);
+    cube.setPartialDelivery(partDeliv);
+    cube.setIncompleteDelivery(incompleteDeliv);
+    cube.setForceOrder(forceOrder);
+    cube.setMaxAllowGap(maxAllowGap);
+    cube.setDelay(delay);
+    cube.setJitter(jitter);
+    cube.setCostBits(costbits);
+    cube.setCostTime(costtime);
+
+    this->setQoSRequirements(cube);
+
+    //EV << "QQQQQQ\n" << cube << "\n\nXXXX\n" << this->getQoSRequirements();
+
 }
 
 void AEBase::handleMessage(cMessage *msg)
@@ -86,7 +224,7 @@ void AEBase::handleMessage(cMessage *msg)
     // TODO - Generated method body
 }
 
-void AEBase::insert(Flow& flow) {
+void AEBase::insertFlow(Flow& flow) {
     flows.push_back(flow);
 }
 

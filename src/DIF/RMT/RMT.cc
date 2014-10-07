@@ -219,7 +219,7 @@ void RMT::sendUp(PDU_Base* pdu)
     }
     else
     {
-        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDestCepId()];
+        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
 
         EV << this->getFullPath() << " delivering a PDU to EFCPI " << efcpiGate->getName() << endl;
         send(pdu, efcpiGate);

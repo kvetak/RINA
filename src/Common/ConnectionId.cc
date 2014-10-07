@@ -17,25 +17,29 @@
 
 #include "ConnectionId.h"
 
-ConnectionId::ConnectionId() {
-    // TODO Auto-generated constructor stub
+//Consts
+const unsigned short VAL_RESERVEDQOSID = 0;
+const int VAL_UNDEF_CEPID = -1;
 
+ConnectionId::ConnectionId() :
+    qosId(VAL_RESERVEDQOSID), srcCEPId(VAL_UNDEF_CEPID), dstCEPId(VAL_UNDEF_CEPID)
+{
 }
 
-unsigned int ConnectionId::getDestCepId() const {
-    return destCEPId;
+unsigned int ConnectionId::getDstCepId() const {
+    return dstCEPId;
 }
 
-void ConnectionId::setDestCepId(unsigned int destCepId) {
-    destCEPId = destCepId;
+void ConnectionId::setDstCepId(unsigned int destCepId) {
+    dstCEPId = destCepId;
 }
 
-unsigned int ConnectionId::getQoSId() const {
-    return qoSId;
+unsigned short ConnectionId::getQoSId() const {
+    return qosId;
 }
 
-void ConnectionId::setQoSId(unsigned int qoSId) {
-    this->qoSId = qoSId;
+void ConnectionId::setQoSId(unsigned short qoSId) {
+    this->qosId = qoSId;
 }
 
 unsigned int ConnectionId::getSrcCepId() const {
@@ -63,22 +67,20 @@ ConnectionId::~ConnectionId() {
 ConnectionId *ConnectionId::dup() const{
 
   ConnectionId* connId = new ConnectionId();
-  connId->setDestCepId(this->destCEPId);
+  connId->setDstCepId(this->dstCEPId);
   connId->setSrcCepId(this->srcCEPId);
-  connId->setQoSId(this->qoSId);
-//  connId->setQosCube(this->qosCube);
-
+  connId->setQoSId(this->qosId);
   return connId;
 
 }
 
 bool ConnectionId::operator<(const ConnectionId other) const
 {
-    if (qoSId < other.qoSId)  return true;
-    if (qoSId > other.qoSId)  return false;
+    if (qosId < other.qosId)  return true;
+    if (qosId > other.qosId)  return false;
 
-    if (destCEPId < other.destCEPId)  return true;
-    if (destCEPId > other.destCEPId)  return false;
+    if (dstCEPId < other.dstCEPId)  return true;
+    if (dstCEPId > other.dstCEPId)  return false;
 
     if (srcCEPId < other.srcCEPId)  return true;
     if (srcCEPId > other.srcCEPId)  return false;
@@ -88,7 +90,7 @@ bool ConnectionId::operator<(const ConnectionId other) const
 
 bool ConnectionId::operator==(const ConnectionId other) const
 {
-    return ((qoSId == other.qoSId) && (destCEPId == other.destCEPId)
+    return ((qosId == other.qosId) && (dstCEPId == other.dstCEPId)
             && (srcCEPId < other.srcCEPId));
 }
 

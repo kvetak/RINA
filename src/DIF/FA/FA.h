@@ -38,6 +38,8 @@
 #include "ModuleAccess.h"
 #include "EFCP.h"
 #include "ExternConsts.h"
+#include "RABase.h"
+#include "DA.h"
 
 //Constants
 
@@ -83,15 +85,18 @@ class FA : public FABase
     //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    void initPointers();
 
   private:
     FAITable* FaiTable;
-    EFCP* efcp;
+    EFCP* Efcp;
+    RABase* ResourceAllocator;
+    DA* DifAllocator;
+
     bool isMalformedFlow(Flow* flow);
     bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
 
-    void initQoSCubes();
     void initSignalsAndListeners();
 
     void signalizeAllocateResponseNegative(Flow* flow);

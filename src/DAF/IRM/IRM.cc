@@ -51,7 +51,7 @@ void IRM::handleMessage(cMessage* msg) {
 void IRM::initSignalsAndListeners() {
     cModule* catcher = this->getParentModule()->getParentModule();
 
-    //Signals that this module is emitting
+    //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
     sigIRMAllocResPosi  = registerSignal(SIG_IRM_AllocateResponsePositive);
@@ -78,7 +78,7 @@ void IRM::initSignalsAndListeners() {
 bool IRM::createBindings(Flow& flow) {
     EV << "Attempts to create bindings and bind registration of gates"<< endl;
     //Retrieve IPC process with allocated flow and prepared bindings
-    cModule* Ipc = DifAllocator->resolveApniToIpc(flow.getDstApni());
+    cModule* Ipc = DifAllocator->resolveApnToIpc(flow.getDstApni().getApn());
     cModule* Ap = this->getParentModule();
 
     //Create connections
@@ -123,7 +123,7 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
 
     //Ask DA which IPC to use to reach dst App
-    FABase* fa = DifAllocator->resolveApniToFa(flow->getDstApni());
+    FABase* fa = DifAllocator->resolveApnToFa(flow->getDstApni().getApn());
 
     //Store info into ConnectionTable
     ConTable->setFa(flow, fa);

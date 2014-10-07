@@ -49,11 +49,11 @@ FABase* DA::resolveApniToFa(const APNamingInfo& apni) {
   * @param ipc Source IPC Process
   * @return True if yes, otherwise false
   */
-bool DA::isDifLocalToIpc(std::string difName, cModule* ipc) {
+bool DA::isDifLocalToIpc(const std::string difName, cModule* ipc) {
     cModule* top = ipc->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule *submodp = j();
-        if (isIpcXLocalToY(submodp, ipc)
+        if (isIpcXLocal(submodp, ipc)
                 && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.c_str())                    //...has a given DIF name
            )
             return true;
@@ -67,12 +67,12 @@ bool DA::isDifLocalToIpc(std::string difName, cModule* ipc) {
  * @param ipcY source
  * @return True if yes, otherwise false.
  */
-bool DA::isIpcXLocalToY(cModule* ipcX, cModule* ipcY) {
+bool DA::isIpcXLocal(cModule* ipcX, cModule* ipcY) {
     //Both of them have same parent module
     //...AND both of them are IPC (has IPCAddress parameter)
     return ipcX->getParentModule() == ipcY->getParentModule()
-            && ipcX->hasPar(PAR_IPCADDR) && ipcX->hasPar(PAR_IPCADDR)
-            && ipcY->hasPar(PAR_IPCADDR) && ipcY->hasPar(PAR_IPCADDR);
+            && ipcX->hasPar(PAR_IPCADDR) && ipcX->hasPar(PAR_DIFNAME)
+            && ipcY->hasPar(PAR_IPCADDR) && ipcY->hasPar(PAR_DIFNAME);
 }
 
 cModule* DA::resolveApnToIpc(const APN& apn) {
@@ -91,6 +91,30 @@ std::string DA::resolveApnToIpcPath(const APN& apn) {
     Enter_Method("resolveApnToDifName()");
     cModule* dif = resolveApnToIpc(apn);
     return  dif ? dif->getFullPath() : NULL;
+}
+
+bool DA::isAppLocal(const APN apn) {
+    cModule* top = this->getParentModule()->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule *submodp = j();
+        if (submodp->hasPar(PAR_APNAME)
+            && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str())
+           )
+            return true;
+    }
+    return false;
+}
+
+bool DA::isDifLocal(const std::string difName) {
+    cModule* top = this->getParentModule()->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule *submodp = j();
+        if (submodp->hasPar(PAR_DIFNAME)
+            && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.c_str())
+           )
+            return true;
+    }
+    return false;
 }
 
 std::string DA::resolveApniToIpcPath(const APNamingInfo& apni) {

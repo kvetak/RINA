@@ -13,19 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+#ifndef RABASE_H_
+#define RABASE_H_
 
-simple AEPing extends AE 
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "QosCube.h"
+
+typedef std::list<QosCube> QosCubeSet;
+typedef QosCubeSet::const_iterator QCubeCItem;
+
+class RABase : public cSimpleModule
 {
-    parameters:
-        @class(AEPing);
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
-        
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
-        int pingAt  @unit(s) = default(0s);
-        int rate 			 = default(1);    
-}
+  public:
+    RABase();
+    virtual ~RABase();
+
+    const QosCubeSet& getQosCubes() const;
+
+  protected:
+    //SimpleModule overloads
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
+
+    QosCubeSet QosCubes;
+};
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
+
+#endif /* RABASE_H_ */

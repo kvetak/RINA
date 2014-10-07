@@ -22,34 +22,31 @@
 #include <string>
 #include "QosCube.h"
 
-/*
- *
- */
+//Consts
+extern const unsigned short VAL_RESERVEDQOSID;
+extern const int VAL_UNDEF_CEPID;
+
 class ConnectionId: public cObject {
-
-private:
-    unsigned int qoSId;
-    unsigned int destCEPId;
-    unsigned int srcCEPId;
-
-
-public:
+  public:
     ConnectionId();
     virtual ~ConnectionId();
-    unsigned int getDestCepId() const;
-    void setDestCepId(unsigned int destCepId);
-    unsigned int getQoSId() const;
-    void setQoSId(unsigned int qoSId);
+    unsigned int getDstCepId() const;
+    void setDstCepId(unsigned int destCepId);
+    unsigned short getQoSId() const;
+    void setQoSId(unsigned short qoSId);
     unsigned int getSrcCepId() const;
     void setSrcCepId(unsigned int srcCepId);
-
 
     bool operator<(const ConnectionId other) const;
     bool operator==(const ConnectionId other) const;
 
     virtual ConnectionId *dup() const;
-//    QosCube* getQosCube();
-//    void setQosCube(QosCube* qosCube);
+
+  private:
+    unsigned int qosId;
+    unsigned int srcCEPId;
+    unsigned int dstCEPId;
+
 };
 
 #endif /* CONNECTIONID_H_ */
