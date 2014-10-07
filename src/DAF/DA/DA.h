@@ -44,6 +44,9 @@ class DA : public cSimpleModule
 
     //DIFAllocator magical oraculum methods
 
+    cModule* findIpc(const Address& addr);
+    FABase* findFaInsideIpc(cModule* ipc);
+
     /** Check whether any IPC within given DIF name is available on computation system with source IPC
      *
      * @param difName Given DIF name

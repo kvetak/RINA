@@ -127,6 +127,23 @@ bool DA::isIpcLocal(cModule* ipc) {
     return false;
 }
 
+cModule* DA::findIpc(const Address& addr) {
+    cModule* top = this->getParentModule()->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule *submodp = j();
+        if (submodp->hasPar(PAR_IPCADDR) && submodp->hasPar(PAR_DIFNAME)) {
+            Address adr = Address(submodp->par(PAR_IPCADDR), submodp->par(PAR_DIFNAME));
+            if (adr == addr)
+                return submodp;
+        }
+    }
+    return NULL;
+}
+
+FABase* DA::findFaInsideIpc(cModule* ipc) {
+    return dynamic_cast<FABase*>(ipc->getSubmodule(MOD_FLOWALLOC)->getSubmodule(MOD_FA));
+}
+
 std::string DA::resolveApniToIpcPath(const APNamingInfo& apni) {
     Enter_Method("resolveApniToDifName()");
     //TODO: Vesely - Complete APNI search
