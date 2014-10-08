@@ -77,6 +77,7 @@ void DTP::handleMessage(cMessage *msg)
 //      }
     }
   }else{
+
     /* Either PDUs from RMT or SDUs from AP */
       if(msg->arrivedOn("efcpiIo$i")){
           //handle SDUs
