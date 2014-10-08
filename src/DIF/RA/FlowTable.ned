@@ -18,8 +18,7 @@ package rina.DIF.RA;
 //
 // TODO auto-generated module
 //
-simple PDUFwdTabGenerator
+simple FlowTable
 {
-    @display("i=block/network2");
-    xml PDUFwData = default(xml("<FwTableItem/>"));
+    @display("i=block/table2");
 }

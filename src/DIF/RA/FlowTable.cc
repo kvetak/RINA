@@ -13,13 +13,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+#include "FlowTable.h"
 
-//
-// TODO auto-generated module
-//
-simple PDUFwdTabGenerator
+Define_Module(FlowTable);
+
+void FlowTable::initialize()
 {
-    @display("i=block/network2");
-    xml PDUFwData = default(xml("<FwTableItem/>"));
+    WATCH_LIST(flows);
+}
+
+void FlowTable::handleMessage(cMessage *msg)
+{
+    // TODO - Generated method body
+}
+
+void FlowTable::insert(const FlowTableItem* entry)
+{
+    flows.push_back(*entry);
+}
+
+void FlowTable::insert(Flow* flow, FABase* fa)
+{
+    FlowTableItem entry = FlowTableItem(flow, fa);
+    flows.push_back(entry);
 }

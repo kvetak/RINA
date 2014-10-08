@@ -4,17 +4,17 @@
 		<DA>
 			<Directory>
 				<APNtoDIF apn="App2" 	ipcAddress="22" difName="Layer1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />				
+				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />
 				<APNtoDIF apn="22"     ipcAddress="1" difName="Layer0" />
 			</Directory>
-		</DA>
-		<RA>
-			<PDUFwdTabGenerator>
-				<FwTableItem dest="22"	qosId="1"	outputIpc="1"/>
-				<FwTableItem dest="22"	qosId="2"	outputIpc="1"/>
-				<FwTableItem dest="22"	qosId="3"	outputIpc="1"/>
-			</PDUFwdTabGenerator>
-		</RA>		
+		</DA>	
+		<IPC id="ipcProcess1">
+			<RA>
+				<Flows>
+					<Flow dest="22"/>
+				</Flows>
+			</RA>
+		</IPC>
 	</Host>
 	<Host id="host2">
 		<DA>
@@ -22,48 +22,45 @@
 				<APNtoDIF apn="App1" 	ipcAddress="11" difName="Layer1" />
 				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />
 			</Directory>
-		</DA>
-		<RA>
-			<PDUFwdTabGenerator>
-				<FwTableItem dest="11"	qosId="2"	outputIpc="2"/>
-			</PDUFwdTabGenerator>
-		</RA>		
+		</DA>	
 	</Host>
 	
 	<QoSCubesSet>
 		<QosCube id="1">
-			<AvgBandwidth>1000000</AvgBandwidth>
-			<AvgSDUBandwidth>1000</AvgSDUBandwidth>
-			<PeakBandwidthDuration>2000000</PeakBandwidthDuration>
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10</BurstPeriod>
-			<BurstDuration>5</BurstDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>5</MaxAllowableGap>
-			<Delay>1</Delay>
-			<Jitter>1</Jitter>
-			<DTCPOn>1</DTCPOn>
+			<MaxAllowableGap>10</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>						
 		</QosCube>
 		<QosCube id="2">
-			<AvgBandwidth>1000000</AvgBandwidth>
-			<AvgSDUBandwidth>1000</AvgSDUBandwidth>
-			<PeakBandwidthDuration>2000000</PeakBandwidthDuration>
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10</BurstPeriod>
-			<BurstDuration>5</BurstDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
 			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>1</PartialDelivery>
-			<IncompleteDelivery>1</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>5</MaxAllowableGap>
-			<Delay>1</Delay>
-			<Jitter>1</Jitter>
-			<DTCPOn>0</DTCPOn>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>10</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>						
 		</QosCube>		
-	</QoSCubesSet>	
+	</QoSCubesSet>
 </Configuration>

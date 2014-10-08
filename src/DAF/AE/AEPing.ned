@@ -24,8 +24,8 @@ simple AEPing extends AE
         string dstAeName = default("AeErr");
         string dstAeInstance = default("0");
         
-        int start @unit(s) = default(0s);
-        int stop @unit(s) = default(0s);
-        int ping @unit(s) = default(0s);
-        int rate = default(1);    
+        int startAt @unit(s) = default(0s);
+        int stopAt  @unit(s) = default(0s);
+        int pingAt  @unit(s) = default(0s);
+        int rate 			 = default(1);    
 }

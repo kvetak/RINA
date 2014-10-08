@@ -23,11 +23,19 @@ extern const char* MOD_CONNTABLE;
 extern const char* MOD_DA;
 extern const char* MOD_EFCP;
 extern const char* MOD_FAITABLE;
+extern const char* MOD_RESALLOC;
+extern const char* MOD_RA;
+extern const char* MOD_IRM;
 
 //Module parameters
 extern const char* PAR_IPCADDR;
 extern const char* PAR_DIFNAME;
-
+extern const char* PAR_PORTID;
+extern const char* PAR_CEPID;
+extern const char* PAR_APNAME;
+extern const char* PAR_APINSTANCE;
+extern const char* PAR_AENAME;
+extern const char* PAR_AEINSTANCE;
 
 //Gate names
 extern const char* GATE_NORTHIO;
@@ -35,6 +43,12 @@ extern const char* GATE_SOUTHIO;
 extern const char* GATE_EFCPIO;
 extern const char* GATE_RMT;
 extern const char* GATE_APPIO;
+extern const char* GATE_AEIO;
+extern const char* GATE_DATAIO;
+
+//Values
+extern const int   VAL_QOSPARAMDONOTCARE;
+extern const bool  VAL_QOSPARAMDEFBOOL;
 
 
 #endif /* EXTERNCONSTS_H_ */

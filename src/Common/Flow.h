@@ -24,9 +24,9 @@
 #include "ConnectionId.h"
 #include "Address.h"
 
-extern const int UNDEFINED_PORTADDR;
-extern const int MAX_HOPCOUNT;
-extern const int MAX_CREATERETRIES;
+extern const int VAL_UNDEF_PORTADDR;
+extern const int VAL_MAXHOPCOUNT;
+extern const int VAL_MAXCREATERETRIES;
 
 class Flow : public cObject
 {
@@ -39,8 +39,11 @@ class Flow : public cObject
 
     bool operator== (const Flow& other);
 
+    virtual Flow* dup() const;
+
     std::string info() const;
-    const ConnectionId& getConId() const;
+
+    ConnectionId& getConId();
     void setConId(const ConnectionId& conId);
     uint32_t getCreateFlowRetries() const;
     void setCreateFlowRetries(uint32_t createFlowRetries);

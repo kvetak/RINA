@@ -45,14 +45,14 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 *
 */
 void PDUForwardingTable::printAll() {
-    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
-
-    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
-    {
-        PDUTableEntry a = *it;
-        EV << this->getFullPath() << " destination: " << a.getDestAddr()
-                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
-    }
+//    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
+//
+//    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
+//    {
+//        PDUTableEntry a = *it;
+//        EV << this->getFullPath() << " destination: " << a.getDestAddr()
+//                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
+//    }
 }
 
 /**
@@ -62,7 +62,7 @@ void PDUForwardingTable::printAll() {
 * @param QoSid QoS-id
 * @return port-id
 */
-std::string PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
+RMTPortId PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
     for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
     {
         PDUTableEntry a = *it;
@@ -92,9 +92,9 @@ void PDUForwardingTable::insert(const PDUTableEntry* entry) {
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(std::string destAddr, int qosId, std::string portId) {
+void PDUForwardingTable::insert(std::string destAddr, int qosId, cModule* ipc, int portId) {
     Enter_Method("insert()");
-    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, portId);
+    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, ipc, portId);
     FwTable.push_back(entry);
 }
 
@@ -105,18 +105,18 @@ void PDUForwardingTable::insert(std::string destAddr, int qosId, std::string por
 */
 void PDUForwardingTable::remove(std::string portId)
 {
-    PDUFwIter i = FwTable.begin();
-    while (i != FwTable.end())
-    {
-        if (i->getPortId() == portId)
-        {
-            i = FwTable.erase(i);
-        }
-        else
-        {
-            ++i;
-        }
-    }
+//    PDUFwIter i = FwTable.begin();
+//    while (i != FwTable.end())
+//    {
+//        if (i->getPortId() == portId)
+//        {
+//            i = FwTable.erase(i);
+//        }
+//        else
+//        {
+//            ++i;
+//        }
+//    }
 }
 
 

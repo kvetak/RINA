@@ -13,34 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/**
- * @file PDUFwdTabGenerator.h
- * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief PDU forwarding (routing) table generator.
- * @detail Responds to various events happening inside the IPC process
- *         by adding, removing and editing entries in the forwarding table.
- */
+#ifndef RABASE_H_
+#define RABASE_H_
 
-#ifndef __RINA_PDUFWDTABGENERATOR_H_
-#define __RINA_PDUFWDTABGENERATOR_H_
-
+//Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "QosCube.h"
 
-#include "PDUForwardingTable.h"
-#include "ModuleAccess.h"
-#include "ConnectionId.h"
-#include "RMT.h"
+typedef std::list<QosCube> QosCubeSet;
+typedef QosCubeSet::const_iterator QCubeCItem;
 
-
-class PDUFwdTabGenerator : public cSimpleModule
+class RABase : public cSimpleModule
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
   public:
+    RABase();
+    virtual ~RABase();
 
-  private:
-    PDUForwardingTable* fwTable;
+    const QosCubeSet& getQosCubes() const;
+
+  protected:
+    //SimpleModule overloads
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
+
+    QosCubeSet QosCubes;
 };
 
-#endif
+//Free function
+std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
+
+#endif /* RABASE_H_ */

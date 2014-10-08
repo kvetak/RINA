@@ -30,19 +30,21 @@ class DirectoryEntry {
     std::string info() const;
 
     const APNamingInfo& getApni() const;
-    void setApni(const APNamingInfo& apni);
     FABase* getFlowAlloc() const;
-    void setFlowAlloc(FABase* flowAlloc);
     const std::string& getIpcPath() const;
-    void setIpcPath(const std::string& ipcPath);
     const Address& getAddr() const;
-    void setAddr(const Address& addr);
+    cModule* getIpc();
 
   private:
     APNamingInfo apni;
     Address addr;
     std::string ipcPath;
     FABase* FlowAlloc;
+
+    void setIpcPath(const std::string& ipcPath);
+    void setFlowAlloc(FABase* flowAlloc);
+    void setApni(const APNamingInfo& apni);
+    void setAddr(const Address& addr);
 };
 
 //Free function

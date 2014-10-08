@@ -13,13 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+#include <RABase.h>
 
-//
-// TODO auto-generated module
-//
-simple PDUFwdTabGenerator
-{
-    @display("i=block/network2");
-    xml PDUFwData = default(xml("<FwTableItem/>"));
+RABase::RABase() {
+    // TODO Auto-generated constructor stub
+
+}
+
+RABase::~RABase() {
+    // TODO Auto-generated destructor stub
+
+}
+
+const QosCubeSet& RABase::getQosCubes() const {
+    return QosCubes;
+}
+
+std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
+    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
+        os << *it;
+    return os;
 }

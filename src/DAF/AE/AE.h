@@ -25,6 +25,7 @@
 #include "RINASignals.h"
 #include "IRM.h"
 #include "ConnectionTable.h"
+#include "ExternConsts.h"
 
 class AE : public AEBase
 {
@@ -42,7 +43,7 @@ class AE : public AEBase
     void initPointers();
     void initSignalsAndListeners();
 
-    void insert(Flow& flow);
+    void insertFlow(Flow& flow);
     void createBinding(Flow& flow);
 
     //Signals
