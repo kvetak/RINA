@@ -76,7 +76,10 @@ void RA::initFlowAlloc()
 
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(m->getAttribute("dest")));
+
         Flow *fl = new Flow(src, dst);
+        // just use the first QoS cube available (temporary workaround)
+        fl->setQosParameters(getQosCubes().front());
 
         preparedFlows.push_back(fl);
         cMessage* msg = new cMessage("RA-CreateFlow");

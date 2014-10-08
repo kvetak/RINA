@@ -193,6 +193,9 @@ void RMT::sendDown(PDU_Base* pdu)
 
     if (outPort != NULL)
     {
+        // FIXME: why the flying fuck does OMNeT++ 4.5 need this step?
+        outPort = outPort->getPathStartGate();
+
         // TODO: OMNeT++ 4.4.1 renders the message transfer as if this was sent to this IPC's EFCP. Is this a bug?
         send(pdu, outPort);
     }
