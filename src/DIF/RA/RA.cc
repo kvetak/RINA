@@ -292,7 +292,7 @@ void RA::bindMediumToRMT()
     rmtOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtIn);
 
-    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut);
+    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut->getPathStartGate());
 }
 
 /**
@@ -338,7 +338,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     thisIpcOut->connectTo(bottomIpcIn);
 
     // modules are connected; register a handle
-    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut);
+    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut->getPathStartGate());
 
 }
 
