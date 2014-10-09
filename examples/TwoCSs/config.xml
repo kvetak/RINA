@@ -3,9 +3,9 @@
 	<Host id="host1">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App2" 	ipcAddress="22" difName="Layer1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="22" difName="Layer1" />
-				<APNtoDIF apn="22"     ipcAddress="2" difName="Layer0" />
+				<APNtoDIF apn="App2" 	ipcAddress="11" difName="Layer1" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="11" difName="Layer1" />
+				<APNtoDIF apn="22"     ipcAddress="1" difName="Layer0" />
 			</Directory>
 		</DA>	
 		<IPC id="ipcProcess1">
