@@ -45,7 +45,6 @@ class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
-
     EfcpiMapping efcpiGates;
     RmtPorts ports;
 
