@@ -76,10 +76,12 @@ void RA::initFlowAlloc()
 
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(m->getAttribute("dest")));
+
         Flow *fl = new Flow(src, dst);
+        // just use the first QoS cube available (temporary workaround)
+        fl->setQosParameters(getQosCubes().front());
 
         preparedFlows.push_back(fl);
-
         cMessage* msg = new cMessage("RA-CreateFlow");
         scheduleAt(simTime(), msg);
     }
@@ -290,7 +292,7 @@ void RA::bindMediumToRMT()
     rmtOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtIn);
 
-    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut);
+    rmt->addRMTPort(std::make_pair((cModule*)NULL, -1), rmtOut->getPathStartGate());
 }
 
 /**
@@ -336,7 +338,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     thisIpcOut->connectTo(bottomIpcIn);
 
     // modules are connected; register a handle
-    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut);
+    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut->getPathStartGate());
 
 }
 
@@ -362,37 +364,37 @@ std::string RA::normalizePortId(std::string ipcName, int flowPortId)
  */
 void RA::createFlow(Flow *fl)
 {
-    EV << " allocating an (N-1)-flow for IPC " << processName << endl;
-
     //Ask DA which IPC to use to reach dst App
-    cModule* ipc = difAllocator->resolveApnToIpc(fl->getDstApni().getApn());
-    FABase* fa = difAllocator->resolveApnToFa(fl->getDstApni().getApn());
+    DirectoryEntry* de = difAllocator->resolveApn(fl->getDstApni().getApn());
 
-    bool status = false;
-    if (fa)
-    {
-        //signalizeAllocateRequest(fl);
-        status = fa->receiveAllocateRequest(fl);
-    }
-    else
-    {
-        EV << "DA does not know target IPC process!" << endl;
+    if (de == NULL) {
+        EV << "DA does not know target application." << endl;
+        return;
     }
 
-    if (!status)
-    {
-        EV << "Flow not allocated!" << endl;
+    if (!difAllocator->isIpcLocal(de->getIpc())) {
+        EV << "IPC not on the local computation system! Searching for it is currently unsupported feature!" << endl;
+        return;
     }
-    else
+
+    //Command target FA to allocate flow
+    bool status = de->getFlowAlloc()->receiveAllocateRequest(fl);
+
+    //If AllocationRequest ended by creating connections
+    if (status)
     {
         // connect the new flow to the RMT
-        bindFlowToRMT(ipc, fl);
+        bindFlowToRMT(de->getIpc(), fl);
         // we're ready to go!
         //signalizeFlowAllocated(fl);
-        flTable->insert(fl, fa);
+        flTable->insert(fl, de->getFlowAlloc());
     }
-}
+    else
+    {
+       EV << "Flow not allocated!" << endl;
+    }
 
+}
 
 void RA::initSignalsAndListeners() {
 /*

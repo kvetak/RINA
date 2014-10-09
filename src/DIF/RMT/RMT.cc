@@ -189,8 +189,20 @@ void RMT::sendDown(PDU_Base* pdu)
         outPort = ports.begin()->second;
     }
 
-    // TODO: OMNeT++ 4.4.1 renders the message transfer as if this was sent to this IPC's EFCP. Is this a bug?
-    send(pdu, outPort);
+    EV << this->getFullPath() << " passing a PDU downwards..." << endl;
+
+    if (outPort != NULL)
+    {
+        // TODO: OMNeT++ 4.4.1 renders the message transfer as if this was sent to this IPC's EFCP. Is this a bug?
+        send(pdu, outPort);
+    }
+    else
+    {
+        EV << this->getFullPath()
+           << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
+           << endl;
+        delete pdu;
+    }
 }
 
 /**
@@ -215,10 +227,21 @@ void RMT::sendUp(PDU_Base* pdu)
     }
     else
     {
+        EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
         cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
 
-        EV << this->getFullPath() << " delivering a PDU to EFCPI " << efcpiGate->getName() << endl;
-        send(pdu, efcpiGate);
+        if (efcpiGate != NULL)
+        {
+            send(pdu, efcpiGate);
+        }
+        else
+        {
+            EV << this->getFullPath()
+               << " I'm not connected to such EFCPI! Notifying other modules."
+               << endl;
+            // emit(cosi)
+            delete pdu;
+        }
     }
 }
 
@@ -233,15 +256,13 @@ void RMT::handleMessage(cMessage *msg)
     else if (dynamic_cast<PDU_Base*>(msg) != NULL)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
-        EV << gate << endl;
+
         if (gate.substr(0, 8) == GATE_SOUTHIO)
         {
-            EV << "sendin' up" << endl;
             sendUp(pdu);
         }
         else if (gate.substr(0, 7) == GATE_EFCPIO)
         {
-            EV << "sendin' down" << endl;
             sendDown(pdu);
         }
     }

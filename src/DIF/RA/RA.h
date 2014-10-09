@@ -28,6 +28,7 @@
 #include "PDUForwardingTable.h"
 #include "FlowTable.h"
 #include "DA.h"
+#include "DirectoryEntry.h"
 #include "Flow.h"
 #include "FABase.h"
 #include "RMT.h"
