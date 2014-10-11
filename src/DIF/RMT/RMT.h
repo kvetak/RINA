@@ -33,6 +33,7 @@
 #include "PDU_m.h"
 #include "CDAPMessage_m.h"
 #include "Flow.h"
+#include "Address.h"
 #include "ExternConsts.h"
 
 //#include "RMTPortManager.h"
@@ -48,7 +49,7 @@ class RMT : public cSimpleModule
     EfcpiMapping efcpiGates;
     RmtPorts ports;
 
-    std::string processName;
+    Address thisIpcAddr;
     bool relayOn;
     bool onWire;
 

@@ -27,12 +27,12 @@ PDUTableEntry::PDUTableEntry()
 }
 
 
-PDUTableEntry::PDUTableEntry(std::string destaddr, int qosid, cModule* ipc)
+PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc)
 :  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, -1))
 {
 }
 
-PDUTableEntry::PDUTableEntry(std::string destaddr, int qosid, cModule* ipc, int portid)
+PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid)
 :  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, portid))
 {
 }
@@ -59,7 +59,7 @@ std::ostream& operator <<(std::ostream& os, const PDUTableEntry& cte) {
     return os << cte.info();
 }
 
-std::string PDUTableEntry::getDestAddr()
+Address& PDUTableEntry::getDestAddr()
 {
     return destAddr;
 }
@@ -74,7 +74,7 @@ RMTPortId PDUTableEntry::getPortId()
     return portId;
 }
 
-void PDUTableEntry::setDestAddr(std::string destaddr)
+void PDUTableEntry::setDestAddr(Address& destaddr)
 {
     this->destAddr = destaddr;
 }

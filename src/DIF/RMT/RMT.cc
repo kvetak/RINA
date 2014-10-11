@@ -42,7 +42,11 @@ void RMT::initialize() {
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
     //ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
 
-    processName = getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
+    cModule* ipcModule = getParentModule()->getParentModule();
+    thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
+                          ipcModule->par("difName").stringValue());
+
+    //this->enableRelay();
 }
 
 /**
@@ -164,23 +168,26 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 void RMT::sendDown(PDU_Base* pdu)
 {
-    std::string pduDestAddr = pdu->getDstApn().getName();
+    Address& pduDestAddr = pdu->getDstAddr();
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
     if (relayOn)
     {
-        try
-        { // forwarding table lookup
-            RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+        // forwarding table lookup
+        RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+
+        if (outPortId.first != NULL)
+        {
             outPort = ports[outPortId];
         }
-        catch (...)
+        else
         {
-            EV << this->getFullPath() << " couldn't find any match in FWTable." << endl;
+            EV << this->getFullPath() << " couldn't find any match in FWTable; dropping." << endl;
             delete pdu;
             return;
         }
+
     }
     else
     {
@@ -212,20 +219,9 @@ void RMT::sendDown(PDU_Base* pdu)
  */
 void RMT::sendUp(PDU_Base* pdu)
 {
-    if (pdu->getDstApn().getName() != processName)
-    { // this PDU isn't for us
-        if (relayOn)
-        { // ...let's relay it somewhere else
-            EV << this->getFullPath() << " relaying a PDU elsewhere" << endl;
-            sendDown(pdu);
-        }
-        else
-        {
-            EV << this->getFullPath() << " this PDU isn't for me! dropping." << endl;
-            delete pdu;
-        }
-    }
-    else
+    Address& pduAddr = pdu->getDstAddr();
+
+    if (thisIpcAddr == pduAddr)
     {
         EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
         cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
@@ -239,7 +235,22 @@ void RMT::sendUp(PDU_Base* pdu)
             EV << this->getFullPath()
                << " I'm not connected to such EFCPI! Notifying other modules."
                << endl;
-            // emit(cosi)
+            // TODO: emit(cosi)
+            delete pdu;
+        }
+    }
+    else
+    { // this PDU isn't for us
+        if (relayOn)
+        { // ...let's relay it somewhere else
+            EV << this->getFullPath() << " relaying a PDU elsewhere" << endl;
+            sendDown(pdu);
+        }
+        else
+        { //
+            EV << this->getFullPath()
+               << " this PDU isn't for me, dropping it! (" << thisIpcAddr << " != " << pduAddr << ")"
+               << endl;
             delete pdu;
         }
     }
