@@ -16,6 +16,7 @@
 #ifndef APN_H_
 #define APN_H_
 
+#include <omnetpp.h>
 #include <string>
 #include <sstream>
 
@@ -40,6 +41,12 @@ class APN
 
 };
 
+typedef std::list<APN> APNList;
+typedef APNList::const_iterator ApnCItem;
+typedef APNList::iterator ApnItem;
+
+//Free functions
 std::ostream& operator<< (std::ostream& os, const APN& apn);
+std::ostream& operator<< (std::ostream& os, const APNList& apns);
 
 #endif /* APN_H_ */

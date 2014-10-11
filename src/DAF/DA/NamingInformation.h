@@ -17,15 +17,38 @@
 #define __RINA_NAMINGINFORMATION_H_
 
 #include <omnetpp.h>
+//RINASim libraries
+#include "NamingInformationEntry.h"
+#include "ExternConsts.h"
 
-/**
- * TODO - Generated class
- */
+typedef std::list<NamingInformationEntry> NamingInformations;
+typedef NamingInformations::iterator NamingItem;
+typedef NamingInformations::const_iterator NamingCItem;
+
+//Constants
+extern const char*   ELEM_NAMINGTABLE;
+extern const char*   ELEM_SYNONYM;
+
 class NamingInformation : public cSimpleModule
 {
+  public:
+
+    void addNamingEntry(const APN& apn);
+    NamingInformationEntry* findNamingEntryByApn(const APN& apn);
+    NamingInformationEntry* findNamingEntryBySynonym(const APN& synonym);
+    const APN* findApnBySynonym(const APN& synonym);
+    const APNList findAllApnNames(const APN& apn);
+    void addNewSynonym(const APN& apn, const APN& synonym);
+    void removeNamingEntry(const APN& apn);
+
   protected:
+    NamingInformations NamingInfoTable;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void parseConfig(cXMLElement* config);
+
 };
 
 #endif

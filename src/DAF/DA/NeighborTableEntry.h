@@ -13,43 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+#ifndef NEIGHBORTABLEENTRY_H_
+#define NEIGHBORTABLEENTRY_H_
+
+//RINASim libraries
 #include "APN.h"
 
-APN::APN() {
-    this->name = "";
-}
+class NeighborTableEntry {
+  public:
+    NeighborTableEntry(const APN& napn);
+    virtual ~NeighborTableEntry();
 
-APN::APN(std::string nam) {
-    this->setName(nam);
-}
+    bool operator== (const NeighborTableEntry& other) const;
 
+    std::string info() const;
 
-APN::~APN() {
-    this->name = "";
-}
+    const APN& getApn() const;
+    void setApn(const APN& apn);
+    const APNList& getNeigbors() const;
+    void setNeigbors(const APNList& neigbors);
 
-const std::string& APN::getName() const {
-    return name;
-}
+    void addNeighbor(const APN& neighbor);
 
-void APN::setName(const std::string& name) {
-    this->name = name;
-}
-
-std::string APN::info() const{
-    std::stringstream os;
-    os << this->getName();
-    return os.str();
-}
+  private:
+    APN Apn;
+    APNList Neigbors;
+};
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const APN& apn) {
-    return os << apn.info();
-}
+std::ostream& operator<< (std::ostream& os, const NeighborTableEntry& nte);
 
-std::ostream& operator <<(std::ostream& os, const APNList& apns) {
-    for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
-        os << *it << " ";
-    }
-    return os;
-}
+#endif /* NEIGHBORTABLEENTRY_H_ */

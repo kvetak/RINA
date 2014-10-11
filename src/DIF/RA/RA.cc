@@ -372,22 +372,30 @@ void RA::createFlow(Flow *fl)
         return;
     }
 
-    if (!difAllocator->isIpcLocal(de->getIpc())) {
-        EV << "IPC not on the local computation system! Searching for it is currently unsupported feature!" << endl;
+    //TODO: Vesely - Now using first available APN to DIFMember mapping
+    Address addr = de->getSupportedDifs().front();
+
+    //TODO: Vesely - New IPC must be enrolled or DIF created
+    if (!difAllocator->isDifLocal(addr.getDifName())) {
+        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
         return;
     }
 
+    //Retrieve DIF's local IPC member
+    cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
+    FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
+
     //Command target FA to allocate flow
-    bool status = de->getFlowAlloc()->receiveAllocateRequest(fl);
+    bool status = fab->receiveAllocateRequest(fl);
 
     //If AllocationRequest ended by creating connections
     if (status)
     {
         // connect the new flow to the RMT
-        bindFlowToRMT(de->getIpc(), fl);
+        bindFlowToRMT(targetIpc, fl);
         // we're ready to go!
         //signalizeFlowAllocated(fl);
-        flTable->insert(fl, de->getFlowAlloc());
+        flTable->insert(fl, fab);
     }
     else
     {

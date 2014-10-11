@@ -118,3 +118,8 @@ void ConnectionTable::handleMessage(cMessage *msg)
 {
 
 }
+
+FABase* ConnectionTable::getFa(Flow* flow) {
+    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    return cte ? cte->getFlowAlloc() : NULL;
+}

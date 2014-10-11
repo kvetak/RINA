@@ -15,14 +15,58 @@
 
 #include "NeighborTable.h"
 
+//Constants
+const char*   ELEM_NEIGHTAB        = "NeighborTable";
+const char*   ELEM_NEIGHBOR        = "Neighbor";
+
 Define_Module(NeighborTable);
 
 void NeighborTable::initialize()
 {
-    // TODO - Generated method body
+    //Parse XML config
+    parseConfig(par(PAR_CONFIGDATA).xmlValue());
+
+    //Init watchers
+    WATCH_LIST(NeiTable);
 }
 
 void NeighborTable::handleMessage(cMessage *msg)
 {
     // TODO - Generated method body
+}
+
+void NeighborTable::addNeighborEntry(const APN& apn) {
+    NeiTable.push_back(NeighborTableEntry(apn));
+}
+
+NeighborTableEntry* NeighborTable::findNeighborEntryByApn(const APN& apn) {
+    for (NeigborItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
+        if (it->getApn() == apn)
+            return &(*it);
+    }
+    return NULL;
+}
+
+const APNList* NeighborTable::findNeighborsByApn(const APN& apn) {
+    NeighborTableEntry* entry = findNeighborEntryByApn(apn);
+    return entry ? &(entry->getNeigbors()) : NULL;
+}
+
+void NeighborTable::addNewNeighbor(const APN& apn, const APN& neighbor) {
+    findNeighborEntryByApn(apn)->addNeighbor(neighbor);
+}
+
+void NeighborTable::removeNeighborEntry(const APN& apn) {
+    NeiTable.remove(*(findNeighborEntryByApn(apn)));
+}
+
+void NeighborTable::parseConfig(cXMLElement* config) {
+    cXMLElement* mainTag = NULL;
+    if (config != NULL && config->hasChildren() && config->getFirstChildWithTag(ELEM_NEIGHTAB))
+        mainTag = config->getFirstChildWithTag(ELEM_NEIGHTAB);
+    else {
+        EV << "configData parameter not initialized!" << endl;
+        return;
+    }
+
 }

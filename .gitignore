@@ -27,6 +27,7 @@ out/
 *.so
 *.dylib
 *.dll
+*.tmp*
 *.a
 *.lib
 *.exe

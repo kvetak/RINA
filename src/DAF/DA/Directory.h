@@ -26,26 +26,28 @@ typedef std::list<DirectoryEntry> TDirectory;
 typedef TDirectory::iterator TDirIter;
 
 //Constants
-extern const char*      PAR_DIRDATA;
-extern const char*      ELEM_DIRMAPPING;
+extern const char*      ELEM_DIRDATA;
+extern const char*      ELEM_DIF;
 extern const char*      ATTR_IPCADDR;
-extern const char*      ATTR_APN;
 extern const char*      ATTR_DIFNAME;
 
 class Directory : public cSimpleModule
 {
   public:
     std::string info() const;
-    DirectoryEntry* findEntryByApn(const APN& apn);
-    DirectoryEntry* findEntryByApni(const APNamingInfo& apni);
 
-    void insert(const DirectoryEntry& entry);
+    void addDirEntry(const APN& apn);
+    DirectoryEntry* findDirEntryByApn(const APN& apn);
+    void addNewDif(const APN& apn, const Address& member);
+    void removeDirEntry(const APN& apn);
 
   protected:
     TDirectory Director;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void parseConfig(cXMLElement* config);
 
   private:
 

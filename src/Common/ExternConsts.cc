@@ -35,7 +35,7 @@ const char* PAR_APNAME          = "apName";
 const char* PAR_APINSTANCE      = "apInstance";
 const char* PAR_AENAME          = "aeName";
 const char* PAR_AEINSTANCE      = "aeInstance";
-
+const char* PAR_CONFIGDATA      = "configData";
 
 //Gate names
 const char* GATE_NORTHIO        = "northIo_";
@@ -46,8 +46,12 @@ const char* GATE_APPIO          = "appIo_";
 const char* GATE_AEIO           = "aeIo";
 const char* GATE_DATAIO         = "dataIo";
 
+//XML attributes and elements
+const char* ELEM_APN         = "APN";
+const char* ATTR_APN            = "apn";
+
 //Values
-//TODO: Vesely @Marek - What about -1 as default DoNotCare value?
+//TODO: Vesely @Marek - What about -1 as default DoNotCare value
 const int   VAL_QOSPARAMDONOTCARE    = -1;
 const bool  VAL_QOSPARAMDEFBOOL      = false;
 

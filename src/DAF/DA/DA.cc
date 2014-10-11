@@ -15,32 +15,26 @@
 
 #include "DA.h"
 
+//Constants
+const char* MOD_DIRECTORY       = "directory";
+const char* MOD_NAMINFO         = "namingInformation";
+const char* MOD_NEIGHBORTAB     = "neighborTable";
+const char* MOD_SEARCHTAB       = "searchTable";
+
 Define_Module(DA);
 
 void DA::initPointers() {
     //Retrieve pointers to submodules
-    Dir = ModuleAccess<Directory>("directory").get();
-    NamInfo = ModuleAccess<NamingInformation>("namingInformation").get();
-    NeighborTab = ModuleAccess<NeighborTable>("neighborTable").get();
-    SearchTab = ModuleAccess<SearchTable>("searchTable").get();
+    Dir = ModuleAccess<Directory>(MOD_DIRECTORY).get();
+    NamInfo = ModuleAccess<NamingInformation>(MOD_NAMINFO).get();
+    NeighborTab = ModuleAccess<NeighborTable>(MOD_NEIGHBORTAB).get();
+    SearchTab = ModuleAccess<SearchTable>(MOD_SEARCHTAB).get();
 }
 
 void DA::initialize()
 {
     //Retrieve pointers to submodules
     initPointers();
-}
-
-FABase* DA::resolveApnToFa(const APN& apn) {
-    Enter_Method("resolveApnToDifFa()");
-    DirectoryEntry* dre = Dir->findEntryByApn(apn);
-    return dre ? dre->getFlowAlloc() : NULL;
-}
-
-FABase* DA::resolveApniToFa(const APNamingInfo& apni) {
-    Enter_Method("resolveApniToDifFa()");
-    //TODO: Vesely - Complete APNI search
-    return resolveApnToFa(apni.getApn());
 }
 
 /** Check whether any IPC within given DIF name is available on computation system with source IPC
@@ -75,28 +69,10 @@ bool DA::isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY) {
             && ipcY->hasPar(PAR_IPCADDR) && ipcY->hasPar(PAR_DIFNAME);
 }
 
-cModule* DA::resolveApnToIpc(const APN& apn) {
-    Enter_Method("resolveApnToDif()");
-    DirectoryEntry* dre = Dir->findEntryByApn(apn);
-    return  dre ? dre->getIpc() : NULL;
-}
-
-cModule* DA::resolveApniToIpc(const APNamingInfo& apni) {
-    Enter_Method("resolveApniToDif()");
-    //TODO: Vesely - Complete APNI search
-    return resolveApnToIpc(apni.getApn());
-}
-
-std::string DA::resolveApnToIpcPath(const APN& apn) {
-    Enter_Method("resolveApnToDifName()");
-    DirectoryEntry* dre = Dir->findEntryByApn(apn);
-    return  dre ? dre->getIpcPath() : NULL;
-}
-
-bool DA::isAppLocal(const APN apn) {
+bool DA::isAppLocal(const APN& apn) {
     cModule* top = this->getParentModule()->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule* submodp = j();
         if (submodp->hasPar(PAR_APNAME)
             && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str())
            )
@@ -105,12 +81,12 @@ bool DA::isAppLocal(const APN apn) {
     return false;
 }
 
-bool DA::isDifLocal(const std::string difName) {
+bool DA::isDifLocal(const DAP& difName) {
     cModule* top = this->getParentModule()->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
-            && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.c_str())
+            && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.getName().c_str())
            )
             return true;
     }
@@ -120,11 +96,23 @@ bool DA::isDifLocal(const std::string difName) {
 bool DA::isIpcLocal(cModule* ipc) {
     cModule* top = this->getParentModule()->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule* submodp = j();
         if (submodp == ipc)
             return true;
     }
     return false;
+}
+
+cModule* DA::getDifMember(const DAP& difName) {
+    cModule* top = this->getParentModule()->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule* submodp = j();
+        if (submodp->hasPar(PAR_DIFNAME)
+            && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.getName().c_str())
+           )
+            return submodp;
+    }
+    return NULL;
 }
 
 cModule* DA::findIpc(const Address& addr) {
@@ -144,10 +132,16 @@ FABase* DA::findFaInsideIpc(cModule* ipc) {
     return dynamic_cast<FABase*>(ipc->getSubmodule(MOD_FLOWALLOC)->getSubmodule(MOD_FA));
 }
 
-std::string DA::resolveApniToIpcPath(const APNamingInfo& apni) {
-    Enter_Method("resolveApniToDifName()");
-    //TODO: Vesely - Complete APNI search
-    return resolveApnToIpcPath(apni.getApn());
+DirectoryEntry* DA::resolveApn(const APN& apn) {
+    Enter_Method("resolveApn()");
+    APNList apns = NamInfo->findAllApnNames(apn);
+    //Return first Directory mapping from APN and all its synonyms
+    for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
+        DirectoryEntry* dre = Dir->findDirEntryByApn(*it);
+        if (dre)
+            return dre;
+    }
+    return NULL;
 }
 
 void DA::handleMessage(cMessage *msg)
@@ -155,11 +149,44 @@ void DA::handleMessage(cMessage *msg)
 
 }
 
+/*
+cModule* DA::resolveApnToIpc(const APN& apn) {
+    Enter_Method("resolveApnToDif()");
+    DirectoryEntry* dre = Dir->findDirEntryByApn(apn);
+    return  dre ? dre->getIpc() : NULL;
+}
+
+FABase* DA::resolveApnToFa(const APN& apn) {
+    Enter_Method("resolveApnToDifFa()");
+    DirectoryEntry* dre = Dir->findDirEntryByApn(apn);
+    return dre ? dre->getFlowAlloc() : NULL;
+}
+
+std::string DA::resolveApnToIpcPath(const APN& apn) {
+    Enter_Method("resolveApnToDifName()");
+    DirectoryEntry* dre = Dir->findDirEntryByApn(apn);
+    return  dre ? dre->getIpcPath() : NULL;
+}
+
+std::string DA::resolveApniToIpcPath(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDifName()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToIpcPath(apni.getApn());
+}
+
+cModule* DA::resolveApniToIpc(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDif()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToIpc(apni.getApn());
+}
+
+FABase* DA::resolveApniToFa(const APNamingInfo& apni) {
+    Enter_Method("resolveApniToDifFa()");
+    //TODO: Vesely - Complete APNI search
+    return resolveApnToFa(apni.getApn());
+}
+
 DirectoryEntry* DA::resolveApni(const APNamingInfo& apni) {
     return Dir->findEntryByApni(apni);
 }
-
-DirectoryEntry* DA::resolveApn(const APN& apn) {
-    return Dir->findEntryByApn(apn);
-}
-
+*/

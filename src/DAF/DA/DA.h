@@ -27,22 +27,27 @@
 #include "FABase.h"
 #include "ExternConsts.h"
 
+//Constants
+extern const char* MOD_DIRECTORY;
+extern const char* MOD_NAMINFO;
+extern const char* MOD_SEARCHTAB;
+extern const char* MOD_NEIGHBORTAB;
+
 class DA : public cSimpleModule
 {
   public:
 
     DirectoryEntry* resolveApn(const APN& apn);
-    FABase* resolveApnToFa(const APN& apn);
-    std::string resolveApnToIpcPath(const APN& apn);
-    cModule* resolveApnToIpc(const APN& apn);
 
-
-    //Methods checking local-ness relevant to DA
-    bool isAppLocal(const APN apn);
-    bool isDifLocal(const std::string difName);
+    //Methods checking local-ness relevant to this DA
+    bool isAppLocal(const APN& apn);
+    bool isDifLocal(const DAP& difName);
     bool isIpcLocal(cModule* ipc);
 
-    //DIFAllocator magical oraculum methods
+    //Gets local IPC that is member of a given DIF
+    cModule* getDifMember(const DAP& difName);
+
+    //------------------ DIFAllocator magical oraculum methods ------------------
 
     cModule* findIpc(const Address& addr);
     FABase* findFaInsideIpc(cModule* ipc);
@@ -74,11 +79,12 @@ class DA : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
     void initPointers();
 
+/*
     DirectoryEntry* resolveApni(const APNamingInfo& apni);
     FABase* resolveApniToFa(const APNamingInfo& apni);
     cModule* resolveApniToIpc(const APNamingInfo& apni);
     std::string resolveApniToIpcPath(const APNamingInfo& apni);
-
+*/
 };
 
 #endif

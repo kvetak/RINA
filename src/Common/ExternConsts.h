@@ -36,6 +36,7 @@ extern const char* PAR_APNAME;
 extern const char* PAR_APINSTANCE;
 extern const char* PAR_AENAME;
 extern const char* PAR_AEINSTANCE;
+extern const char* PAR_CONFIGDATA;
 
 //Gate names
 extern const char* GATE_NORTHIO;
@@ -45,6 +46,10 @@ extern const char* GATE_RMT;
 extern const char* GATE_APPIO;
 extern const char* GATE_AEIO;
 extern const char* GATE_DATAIO;
+
+//XML attributes and elements
+extern const char* ELEM_APN;
+extern const char* ATTR_APN;
 
 //Values
 extern const int   VAL_QOSPARAMDONOTCARE;

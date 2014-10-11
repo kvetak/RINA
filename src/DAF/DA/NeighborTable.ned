@@ -15,10 +15,9 @@
 
 package rina.DAF.DA;
 
-//
-// TODO auto-generated module
-//
 simple NeighborTable
 {
-    @display("i=block/table2");
+    parameters:
+    	@display("i=block/table2");
+    	xml configData = default(xml("<NeighborTable></NeighborTable>"));
 }

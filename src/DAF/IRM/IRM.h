@@ -49,7 +49,7 @@ class IRM : public cSimpleModule   {
     DA* DifAllocator;
 
     void initSignalsAndListeners();
-    bool createBindings(Flow& flow);
+    bool createBindings(Flow* flow);
 
     //Signals
     simsignal_t sigIRMAllocReq;

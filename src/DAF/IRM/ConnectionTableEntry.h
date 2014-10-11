@@ -56,6 +56,8 @@ class ConnectionTableEntry {
     cGate* getSouthGateOut() const;
     void setSouthGateOut(cGate* southGateOut);
 
+    cModule* getIpc() const;
+
   private:
     Flow*   FlowObject;
     ConnectionStatus conStatus;

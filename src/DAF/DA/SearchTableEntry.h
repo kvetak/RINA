@@ -13,43 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+#ifndef SEARCHTABLEENTRY_H_
+#define SEARCHTABLEENTRY_H_
+
+//RINASim libraries
 #include "APN.h"
 
-APN::APN() {
-    this->name = "";
-}
+class SearchTableEntry {
+  public:
+    SearchTableEntry(const APN& napn);
+    virtual ~SearchTableEntry();
 
-APN::APN(std::string nam) {
-    this->setName(nam);
-}
+    bool operator== (const SearchTableEntry& other) const;
 
+    std::string info() const;
 
-APN::~APN() {
-    this->name = "";
-}
+    const APN& getApn() const;
+    void setApn(const APN& apn);
+    const APNList& getPeers() const;
+    void setPeers(const APNList& peerDas);
 
-const std::string& APN::getName() const {
-    return name;
-}
+    void addPeer(const APN& peer);
 
-void APN::setName(const std::string& name) {
-    this->name = name;
-}
-
-std::string APN::info() const{
-    std::stringstream os;
-    os << this->getName();
-    return os.str();
-}
+  private:
+    APN Apn;
+    APNList PeerDAs;
+};
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const APN& apn) {
-    return os << apn.info();
-}
+std::ostream& operator<< (std::ostream& os, const SearchTableEntry& ste);
 
-std::ostream& operator <<(std::ostream& os, const APNList& apns) {
-    for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
-        os << *it << " ";
-    }
-    return os;
-}
+#endif /* SEARCHTABLEENTRY_H_ */

@@ -134,3 +134,7 @@ cGate* ConnectionTableEntry::getSouthGateOut() const {
 void ConnectionTableEntry::setSouthGateOut(cGate* southGateOut) {
     this->southGateOut = southGateOut;
 }
+
+cModule* ConnectionTableEntry::getIpc() const {
+    return FlowAlloc->getParentModule()->getParentModule();
+}

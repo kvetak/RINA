@@ -13,43 +13,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "APN.h"
+#include <DAP.h>
 
-APN::APN() {
-    this->name = "";
+DAP::DAP() : name("")
+{
 }
 
-APN::APN(std::string nam) {
-    this->setName(nam);
+DAP::DAP(std::string nam) : name(nam)
+{
 }
 
 
-APN::~APN() {
-    this->name = "";
+DAP::~DAP() {
+    name = "";
 }
 
-const std::string& APN::getName() const {
-    return name;
+bool DAP::operator ==(const DAP& other) const {
+    return !name.compare(other.getName());
 }
 
-void APN::setName(const std::string& name) {
-    this->name = name;
-}
-
-std::string APN::info() const{
+std::string DAP::info() const {
     std::stringstream os;
     os << this->getName();
     return os.str();
 }
 
-//Free function
-std::ostream& operator<< (std::ostream& os, const APN& apn) {
-    return os << apn.info();
+const std::string& DAP::getName() const {
+    return name;
 }
 
-std::ostream& operator <<(std::ostream& os, const APNList& apns) {
-    for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
-        os << *it << " ";
-    }
-    return os;
+
+void DAP::setName(const std::string& name) {
+    this->name = name;
+}
+
+std::ostream& operator <<(std::ostream& os, const DAP& dap) {
+    return os << dap.info();
 }

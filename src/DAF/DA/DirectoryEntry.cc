@@ -15,6 +15,7 @@
 
 #include <DirectoryEntry.h>
 
+/*
 DirectoryEntry::DirectoryEntry() :
     ipcPath(""), FlowAlloc(NULL)
 {
@@ -28,20 +29,62 @@ DirectoryEntry::DirectoryEntry(APNamingInfo napni, Address naddr, std::string pa
                 ipcPath(path), FlowAlloc(fa)
 {
 }
+*/
+DirectoryEntry::DirectoryEntry(const APN& napn) :
+        Apn(napn)
+{
+}
 
 DirectoryEntry::~DirectoryEntry() {
-    FlowAlloc = NULL;
-    ipcPath = "";
+    SupportedDifs.clear();
+}
+
+std::ostream& operator <<(std::ostream& os, const DirectoryEntry& dte) {
+    return os << dte.info();
 }
 
 std::string DirectoryEntry::info() const {
     std::stringstream os;
-    os << "APNI>\t" << apni << endl
-       << "Addr\t" << addr << endl
-       << "FA>\t" << FlowAlloc << " id=" << FlowAlloc->getId();
+    os << "APN: " << Apn << ", supported DIFs: ";
+    for (AddrCItem it = SupportedDifs.begin(); it != SupportedDifs.end(); ++it)
+        os << "\n    DIF: " << it->getDifName() << ", IPCaddress: " << it->getIpcAddress();
     return os.str();
 }
 
+const APN& DirectoryEntry::getApn() const {
+    return Apn;
+}
+
+void DirectoryEntry::setApn(const APN& apn) {
+    Apn = apn;
+}
+
+const Addresses& DirectoryEntry::getSupportedDifs() const {
+    return SupportedDifs;
+}
+
+void DirectoryEntry::setSupportedDifs(const Addresses& supportedDifs) {
+    SupportedDifs = supportedDifs;
+}
+
+
+
+bool DirectoryEntry::hasDif(const Address& member) {
+    for (AddrCItem it = SupportedDifs.begin(); it != SupportedDifs.end(); ++it) {
+        if (*it == member)
+            return true;
+    }
+    return false;
+}
+
+void DirectoryEntry::addDif(const Address& member) {
+    SupportedDifs.push_back(member);
+}
+
+bool DirectoryEntry::operator ==(const DirectoryEntry& other) const {
+    return Apn == other.Apn && SupportedDifs == other.SupportedDifs;
+}
+/*
 const APNamingInfo& DirectoryEntry::getApni() const {
     return apni;
 }
@@ -65,11 +108,8 @@ const std::string& DirectoryEntry::getIpcPath() const {
 void DirectoryEntry::setIpcPath(const std::string& ipcPath) {
     this->ipcPath = ipcPath;
 }
-
-std::ostream& operator <<(std::ostream& os, const DirectoryEntry& fte) {
-    return os << fte.info();
-}
-
+*/
+/*
 const Address& DirectoryEntry::getAddr() const {
     return addr;
 }
@@ -81,3 +121,4 @@ void DirectoryEntry::setAddr(const Address& addr) {
 cModule* DirectoryEntry::getIpc() {
     return  getFlowAlloc() ? getFlowAlloc()->getParentModule()->getParentModule() : NULL;
 }
+*/

@@ -43,6 +43,8 @@ class ConnectionTable : public cSimpleModule
     bool setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);
     bool setFa(Flow* flow, FABase* fa);
 
+    FABase* getFa(Flow* flow);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

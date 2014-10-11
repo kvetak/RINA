@@ -16,8 +16,12 @@
 #ifndef ADDRESS_H_
 #define ADDRESS_H_
 
+//Standard libraries
 #include <string>
 #include <sstream>
+//RINASim libraries
+#include "APN.h"
+#include "DAP.h"
 
 class Address {
   public:
@@ -29,17 +33,22 @@ class Address {
 
     std::string info() const;
 
-    const std::string& getDifName() const;
-    void setDifName(const std::string& difName);
-    const std::string& getIpcAddress() const;
-    void setIpcAddress(const std::string& ipcAddress);
+    const DAP& getDifName() const;
+    void setDifName(const DAP& difName);
+    const APN& getIpcAddress() const;
+    void setIpcAddress(const APN& ipcAddress);
 
   private:
-    std::string ipcAddress;
-    std::string difName;
+    APN ipcAddress;
+    DAP difName;
 };
+
+typedef std::list<Address> Addresses;
+typedef Addresses::const_iterator AddrCItem;
+typedef Addresses::iterator AddrItem;
 
 //Free function
 std::ostream& operator<< (std::ostream& os, const Address& addr);
+std::ostream& operator<< (std::ostream& os, const Addresses& dims);
 
 #endif /* ADDRESS_H_ */
