@@ -164,7 +164,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 void RMT::sendDown(PDU_Base* pdu)
 {
-    std::string pduDestAddr = pdu->getDstAddr().getName();
+    std::string pduDestAddr = pdu->getDstApn().getName();
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
@@ -212,7 +212,7 @@ void RMT::sendDown(PDU_Base* pdu)
  */
 void RMT::sendUp(PDU_Base* pdu)
 {
-    if (pdu->getDstAddr().getName() != processName)
+    if (pdu->getDstApn().getName() != processName)
     { // this PDU isn't for us
         if (relayOn)
         { // ...let's relay it somewhere else

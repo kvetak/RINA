@@ -17,17 +17,18 @@
 
 cplusplus {{
 #define PDU_HEADER_LEN 10
+#include "Address.h"
 #include "APN.h"
 #include "ConnectionId.h"
-typedef cObject* cObjectPtr;
 typedef cMessage* cMessagePtr;
-//#include "PDU.h"
+typedef cObject* cObjectPtr;
 
 }}
+class noncobject Address;
 class noncobject APN;
 class noncobject ConnectionId;
-class noncobject cObjectPtr;
 class noncobject cMessagePtr;
+class noncobject cObjectPtr;
 
 //cplusplus {{
 //   #include "cobject.h"
@@ -68,8 +69,10 @@ enum FLAGS{
 message PDU {
     @customize(true);
     unsigned int version = 1;
-    APN dstAddr; 
-    APN srcAddr;  
+    Address srcAddr;
+    Address dstAddr;
+    APN srcApn; 
+    APN dstApn;  
     ConnectionId connId;
     int type enum(PDUType);
     int flags = 0; //8bits
