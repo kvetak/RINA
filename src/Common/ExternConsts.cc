@@ -25,6 +25,8 @@ const char* MOD_EFCP            = "efcp";
 const char* MOD_RESALLOC        = "resourceAllocator";
 const char* MOD_RA              = "ra";
 const char* MOD_IRM             = "irm";
+const char* MOD_EFCPTABLE       = "efcpTable";
+const char* MOD_DTCP            = "dtcp";
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
@@ -45,6 +47,10 @@ const char* GATE_RMT            = "rmt_";
 const char* GATE_APPIO          = "appIo_";
 const char* GATE_AEIO           = "aeIo";
 const char* GATE_DATAIO         = "dataIo";
+const char* GATE_DTP_NORTHIO    = "northIo";
+const char* GATE_DTP_SOUTHIO    = "southIo";
+const char* GATE_EFCPI_NORTHIO  = "northIo";
+const char* GATE_EFCPI_SOUTHIO  = "southIo";
 
 //XML attributes and elements
 const char* ELEM_APN         = "APN";
@@ -52,6 +58,7 @@ const char* ATTR_APN            = "apn";
 
 //Values
 //TODO: Vesely @Marek - What about -1 as default DoNotCare value
+//TODO: Marek @Vesely - OK
 const int   VAL_QOSPARAMDONOTCARE    = -1;
 const bool  VAL_QOSPARAMDEFBOOL      = false;
 

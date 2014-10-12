@@ -42,8 +42,8 @@ class DTP : public cSimpleModule
   private:
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
-    RMT* rmt;
     Flow* flow;
+
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -63,11 +63,16 @@ class DTP : public cSimpleModule
 
 //    WindowTimer* windowTimer;
 
-//    FA* flowAllocator;
-    /* OR
-     * FlowAllocatorFactory flowFactory;
-     * int flowAllocatorId;
-     */
+    /* Gates */
+    /* To FAI */
+    cGate* northI;
+    cGate* northO;
+
+    /* To RMT */
+    cGate* southI;
+    cGate* southO;
+
+
 
     ConnectionId connId;
 
@@ -159,9 +164,9 @@ class DTP : public cSimpleModule
 
 
 
-
   protected:
     virtual void handleMessage(cMessage *msg);
+    virtual void initialize(int step);
 
 };
 

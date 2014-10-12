@@ -30,11 +30,6 @@ class noncobject ConnectionId;
 class noncobject cMessagePtr;
 class noncobject cObjectPtr;
 
-//cplusplus {{
-//   #include "cobject.h"
-//}}
-//
-//class noncobject cObject;
 
 
 
@@ -60,11 +55,6 @@ enum FLAGS{
 }
 
 
-
-//class noncobject OtherType;
-
-//
-// TODO generated message class
 
 message PDU {
     @customize(true);

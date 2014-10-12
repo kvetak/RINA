@@ -50,7 +50,11 @@ class PDU : public PDU_Base
 
       void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
       unsigned int getHeaderSize();
+
+//      std::string info() const;
   };
+
+//std::ostream& operator << (std::ostream& os, const PDU& pdu);
 
 
 #endif /* PDU_H_ */

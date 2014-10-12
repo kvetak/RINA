@@ -27,14 +27,14 @@ module EFCPI
 {
     @display("i=block/layer;bgb=517,232");
     gates:
-        inout delToEfcpiIo;
-        inout rmtIo;
+        inout northIo; //to FAI
+        inout southIo; //to RMT
     submodules:
         dtp: DTP {
             @display("p=148,116");
         }
     connections allowunconnected:
-        dtp.efcpiIo <--> delToEfcpiIo;
-        dtp.rmtIo <--> rmtIo;
+        dtp.northIo <--> northIo;
+        dtp.southIo <--> southIo;
 
 }

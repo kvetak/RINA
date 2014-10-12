@@ -26,6 +26,8 @@ extern const char* MOD_FAITABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
 extern const char* MOD_IRM;
+extern const char* MOD_EFCPTABLE;
+extern const char* MOD_DTCP;
 
 //Module parameters
 extern const char* PAR_IPCADDR;
@@ -46,6 +48,10 @@ extern const char* GATE_RMT;
 extern const char* GATE_APPIO;
 extern const char* GATE_AEIO;
 extern const char* GATE_DATAIO;
+extern const char* GATE_DTP_NORTHIO;
+extern const char* GATE_DTP_SOUTHIO;
+extern const char* GATE_EFCPI_NORTHIO;
+extern const char* GATE_EFCPI_SOUTHIO;
 
 //XML attributes and elements
 extern const char* ELEM_APN;

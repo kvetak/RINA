@@ -38,7 +38,7 @@ EFCP::~EFCP() {
 
 void EFCP::initialize(int step){
 //  if(step == 3){
-    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule("efcpTable");
+    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
 //  }
 }
 
@@ -102,8 +102,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
 
 
-  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::INPUT);
-  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
+  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::OUTPUT);
 
   delToEfcpiO->connectTo(efcpiToDelI);
   efcpiToDelO->connectTo(delToEfcpiI);
@@ -130,8 +130,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToEfcpiO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
-  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::INPUT);
-  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("southIo").c_str(), cGate::INPUT);
+  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("southIo").c_str(), cGate::OUTPUT);
 
   efcpiToRmtO->connectTo(efcpToEfcpiO);
   efcpToEfcpiI->connectTo(efcpiToRmtI);
@@ -142,7 +142,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
     cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
-    DTCP* dtcpModule = (DTCP*) dtcpType->create("dtcp", efcpiModule);
+    DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
