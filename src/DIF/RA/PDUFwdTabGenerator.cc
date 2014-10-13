@@ -50,7 +50,9 @@ void PDUFwdTabGenerator::initialize()
             if (module->hasPar("ipcAddress") && !opp_strcmp(module->getFullName(), outputIpc))
             {
                 // insert a new item
-                fwTable->insert(m->getAttribute("dest"), qosid, module, -1);
+                fwTable->insert(Address(m->getAttribute("destIpc"),
+                                        m->getAttribute("destDif")),
+                                qosid, module, -1);
                 break;
             }
         }
