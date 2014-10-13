@@ -28,6 +28,7 @@ extern const char* MOD_RA;
 extern const char* MOD_IRM;
 extern const char* MOD_EFCPTABLE;
 extern const char* MOD_DTCP;
+extern const char* MOD_EFCPI;
 
 //Module parameters
 extern const char* PAR_IPCADDR;
@@ -40,6 +41,7 @@ extern const char* PAR_AENAME;
 extern const char* PAR_AEINSTANCE;
 extern const char* PAR_CONFIGDATA;
 
+//TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names
 extern const char* GATE_NORTHIO;
 extern const char* GATE_SOUTHIO;

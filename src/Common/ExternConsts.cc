@@ -27,6 +27,7 @@ const char* MOD_RA              = "ra";
 const char* MOD_IRM             = "irm";
 const char* MOD_EFCPTABLE       = "efcpTable";
 const char* MOD_DTCP            = "dtcp";
+const char* MOD_EFCPI            = "efcpi";
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";

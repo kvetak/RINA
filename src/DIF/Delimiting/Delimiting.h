@@ -33,6 +33,9 @@
 
 #define DELIMITING_MODULE_NAME "delimiting"
 
+#define GATE_DELIMIT_NORTHIO "northIo"
+#define GATE_DELIMIT_SOUTHIO "southIo"
+
 class Delimiting : public cSimpleModule
 {
   private:

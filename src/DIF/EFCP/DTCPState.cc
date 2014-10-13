@@ -58,12 +58,12 @@ void DTCPState::setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent)
 
 unsigned int DTCPState::getSenderRightWinEdge() const
 {
-  return senderRightWinEdge;
+  return sndRightWinEdge;
 }
 
 void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
-  this->senderRightWinEdge = senderRightWinEdge;
+  this->sndRightWinEdge = senderRightWinEdge;
 }
 
 bool DTCPState::isSetDrfFlag() const

@@ -52,7 +52,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cModule* efcpModule = this->getParentModule();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-  cModule* efcpiModule = moduleType->create("efcpi", efcpModule);
+  cModule* efcpiModule = moduleType->create(MOD_EFCPI, efcpModule);
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -95,11 +95,11 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
 
 
-  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::INPUT, size);
-  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::OUTPUT, size);
+  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
+  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, size);
 
-  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::INPUT);
-  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
+  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
+  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
 
 
   cGate* efcpiToDelI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
@@ -130,8 +130,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToEfcpiO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
-  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("southIo").c_str(), cGate::INPUT);
-  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("southIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToRmtI = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::INPUT);
+  cGate* efcpiToRmtO = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::OUTPUT);
 
   efcpiToRmtO->connectTo(efcpToEfcpiO);
   efcpToEfcpiI->connectTo(efcpiToRmtI);
