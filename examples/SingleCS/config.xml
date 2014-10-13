@@ -7,7 +7,10 @@
 				</APN>
 				<APN apn="App1">
 					<DIF difName="Layer1" ipcAddress="11" />
-				</APN>				
+				</APN>			
+				<APN apn="11">
+					<DIF difName="Layer0" ipcAddress="1" />
+				</APN>						
 			</Directory>
 			<NamingInfo>
 				<APN apn="App2">
