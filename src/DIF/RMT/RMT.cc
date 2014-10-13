@@ -172,6 +172,13 @@ void RMT::sendDown(PDU_Base* pdu)
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
+    // not sure whether this should stay here...
+    if (thisIpcAddr == pduDestAddr)
+    {
+        sendUp(pdu);
+        return;
+    }
+
     if (relayOn)
     {
         // forwarding table lookup
@@ -193,7 +200,14 @@ void RMT::sendDown(PDU_Base* pdu)
     {
         // decide which (N-1)-flow should get the PDU...
         // we'll just grab the first one for now
-        outPort = ports.begin()->second;
+        if (!ports.empty())
+        {
+            outPort = ports.begin()->second;
+        }
+        else
+        {
+            outPort = NULL;
+        }
     }
 
     EV << this->getFullPath() << " passing a PDU downwards..." << endl;
