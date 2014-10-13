@@ -136,99 +136,99 @@ void RA::initQoSCubes() {
         QosCube cube;
         cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
         //Following data types should be same as in QosCubes.h
-        int avgBand                 = VAL_QOSPARAMDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
-        int avgSDUBand              = VAL_QOSPARAMDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
-        int peakBandDuration        = VAL_QOSPARAMDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
-        int peakSDUBandDuration     = VAL_QOSPARAMDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-        int burstPeriod             = VAL_QOSPARAMDONOTCARE;    //Burst period measured in useconds
-        int burstDuration           = VAL_QOSPARAMDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-        int undetectedBitErr        = VAL_QOSPARAMDONOTCARE;    //Undetected bit error rate measured as a probability
-        int maxSDUsize              = VAL_QOSPARAMDONOTCARE;    //MaxSDUSize measured in bytes
-        bool partDeliv              = VAL_QOSPARAMDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-        bool incompleteDeliv        = VAL_QOSPARAMDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
-        bool forceOrder             = VAL_QOSPARAMDEFBOOL;      //Must SDUs be delivered in order?
-        unsigned int maxAllowGap    = VAL_QOSPARAMDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-        int delay                   = VAL_QOSPARAMDONOTCARE;    //Delay in usecs
-        int jitter                  = VAL_QOSPARAMDONOTCARE;    //Jitter in usecs2
-        int costtime                = VAL_QOSPARAMDONOTCARE;    //measured in $/ms
-        int costbits                = VAL_QOSPARAMDONOTCARE;    //measured in $/Mb
+        int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
+        int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
+        int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
+        int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+        int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
+        int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
+        int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
+        bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+        bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+        bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
+        unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+        int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
+        int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
+        int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
+        int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
 
         cXMLElementList attrs = m->getChildren();
         for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
             cXMLElement* n = *jt;
             if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
-                avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (avgBand < 0)
-                    avgBand = VAL_QOSPARAMDONOTCARE;
+                    avgBand = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_AVGSDUBW)) {
-                avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (avgSDUBand < 0)
-                    avgSDUBand = VAL_QOSPARAMDONOTCARE;
+                    avgSDUBand = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_PEAKBWDUR)) {
-                peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (peakBandDuration < 0)
-                    peakBandDuration = VAL_QOSPARAMDONOTCARE;
+                    peakBandDuration = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_PEAKSDUBWDUR)) {
-                peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (peakSDUBandDuration < 0)
-                    peakSDUBandDuration = VAL_QOSPARAMDONOTCARE;
+                    peakSDUBandDuration = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_BURSTPERIOD)) {
-                burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (burstPeriod < 0)
-                    burstPeriod = VAL_QOSPARAMDONOTCARE;
+                    burstPeriod = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_BURSTDURATION)) {
-                burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (burstDuration < 0)
-                    burstDuration = VAL_QOSPARAMDONOTCARE;
+                    burstDuration = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
-                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (undetectedBitErr < 0 || undetectedBitErr > 1 )
-                    undetectedBitErr = VAL_QOSPARAMDONOTCARE;
+                    undetectedBitErr = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
-                maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (maxSDUsize < 0)
-                    maxSDUsize = VAL_QOSPARAMDONOTCARE;
+                    maxSDUsize = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_PARTIALDELIVER)) {
-                partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDEFBOOL;
+                partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
             }
             else if (!strcmp(n->getTagName(), ELEM_INCOMPLETEDELIVER)) {
-                incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDEFBOOL;
+                incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
             }
             else if (!strcmp(n->getTagName(), ELEM_FORCEORDER)) {
-                forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDEFBOOL;
+                forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
             }
             else if (!strcmp(n->getTagName(), ELEM_MAXALLOWGAP)) {
-                maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (maxAllowGap < 0)
-                    maxAllowGap = VAL_QOSPARAMDONOTCARE;
+                    maxAllowGap = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_DELAY)) {
-                delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (delay < 0)
-                    delay = VAL_QOSPARAMDONOTCARE;
+                    delay = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_JITTER)) {
-                jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDONOTCARE;
+                jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (jitter < 0)
-                    jitter = VAL_QOSPARAMDONOTCARE;
+                    jitter = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_COSTTIME)) {
-                costtime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDEFBOOL;
+                costtime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
                 if (costtime < 0)
-                    costtime = VAL_QOSPARAMDONOTCARE;
+                    costtime = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_COSTBITS)) {
-                costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARAMDEFBOOL;
+                costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
                 if (costbits < 0)
-                    costbits = VAL_QOSPARAMDONOTCARE;
+                    costbits = VAL_QOSPARDONOTCARE;
             }
         }
 
@@ -279,7 +279,7 @@ void RA::handleMessage(cMessage *msg)
 void RA::bindMediumToRMT()
 {
     std::ostringstream rmtGate;
-    rmtGate << GATE_SOUTHIO << "PHY";
+    rmtGate << GATE_SOUTHIO_ << "PHY";
 
     rmt->createSouthGate(rmtGate.str().c_str());
     cGate* rmtIn = rmt->getParentModule()->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
@@ -307,7 +307,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     std::string combinedPortId = normalizePortId(ipc->getFullName(), flow->getSrcPortId());
 
     std::ostringstream rmtGate;
-    rmtGate << GATE_SOUTHIO << combinedPortId;
+    rmtGate << GATE_SOUTHIO_ << combinedPortId;
 
     rmt->createSouthGate(rmtGate.str());
 

@@ -19,10 +19,35 @@ Define_Module(CDAP);
 
 void CDAP::initialize()
 {
-    // TODO - Generated method body
+    initSignalsAndListeners();
 }
 
 void CDAP::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+    signalizeReceiveData(msg);
+}
+
+void CDAP::initSignalsAndListeners() {
+    cModule* catcher = this->getParentModule()->getParentModule();
+
+    //Signals emmited by this module
+    sigCDAPReceiveData = registerSignal(SIG_CDAP_DateReceive);
+
+    //Listeners registered to process signal
+    lisCDAPSendData = new LisCDAPSendData(this);
+    catcher->subscribe(SIG_AE_DataSend, lisCDAPSendData);
+}
+
+void CDAP::sendData(cObject* obj) {
+    //Change and take ownership
+    Enter_Method("SendData()");
+    take(check_and_cast<cOwnedObject*>(obj) );
+
+    //Send message
+    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
+    send(msg, "splitterIo$o", msg->getHandle());
+}
+
+void CDAP::signalizeReceiveData(cMessage* msg) {
+    emit(sigCDAPReceiveData, msg);
 }

@@ -22,10 +22,22 @@
 #include "AE.h"
 
 class AE;
-class AEListeners {
-public:
-    AEListeners();
+class AEListeners : public cListener {
+  public:
+    AEListeners(AE* nae);
     virtual ~AEListeners();
+
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+        EV << "Signal to AE initiated by " << src->getFullPath() << endl;
+    }
+  protected:
+    AE* ae;
+};
+
+class LisAEReceiveData : public AEListeners {
+  public:
+    LisAEReceiveData(AE* nae) : AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
 #endif /* AELISTENERS_H_ */

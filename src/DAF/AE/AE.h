@@ -26,6 +26,7 @@
 #include "IRM.h"
 #include "ConnectionTable.h"
 #include "ExternConsts.h"
+#include "CDAPMessage_m.h"
 
 class AE : public AEBase
 {
@@ -33,9 +34,13 @@ class AE : public AEBase
     AE();
     virtual ~AE();
 
+    void receiveData(cObject* obj);
+    void sendData(Flow* flow, CDAPMessage* msg);
+
   protected:
     IRM* Irm;
     ConnectionTable* ConTab;
+    cModule* Cdap;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -44,17 +49,21 @@ class AE : public AEBase
     void initSignalsAndListeners();
 
     void insertFlow(Flow& flow);
-    void createBinding(Flow& flow);
+    bool createBinding(Flow& flow);
 
     //Signals
     simsignal_t sigAEAllocReq;
     simsignal_t sigAEDeallocReq;
+    simsignal_t sigAESendData;
 
     //Listeners
+    LisAEReceiveData* lisAERcvData;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
+    void signalizeSendData(cMessage* msg);
+
 
 };
 

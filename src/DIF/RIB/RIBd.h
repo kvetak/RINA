@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -12,17 +14,33 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file RIBd.cc
+ * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Apr 30, 2014
+ * @brief Kind of a Notification Board for DIF
+ * @detail
+ */
 
-package rina.DAF.IRM;
+#ifndef RIBDAEMON_H_
+#define RIBDAEMON_H_
 
-simple IRM
-{
-    parameters:
-        @display("i=block/cogwheel");
-        @signal[IRM-AllocateRequest](type=Flow?);
-        @signal[IRM-DeallocateRequest](type=Flow?);
-        @signal[IRM-AllocateResponsePositive](type=Flow?);
-        @signal[IRM-AllocateResponseNegative](type=Flow?);   
-    gates:
-        inout aeIo[];  
-}
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "CDAPMessage_m.h"
+#include "ExternConsts.h"
+
+class RIBd : public cSimpleModule {
+  public:
+    simsignal_t sigUpdateDirFwdTable;
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+    void initCdapBindings();
+
+};
+
+#endif /* RIBDAEMON_H_ */

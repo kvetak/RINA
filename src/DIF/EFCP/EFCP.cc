@@ -111,7 +111,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
-  gateName_str << GATE_APPIO << flow->getConId().getSrcCepId();
+  gateName_str << GATE_APPIO_ << flow->getConId().getSrcCepId();
 
 
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
@@ -124,7 +124,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   /* Create gate in EFCPModule for EFCPi <--> RMT */
   gateName_str.str(std::string());
-  gateName_str << GATE_RMT << flow->getConId().getSrcCepId();
+  gateName_str << GATE_RMT_ << flow->getConId().getSrcCepId();
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
 
   cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);

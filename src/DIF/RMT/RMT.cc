@@ -110,7 +110,7 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << GATE_EFCPIO << efcpiId;
+    gateName_str << GATE_EFCPIO_ << efcpiId;
 
     this->addGate(gateName_str.str().c_str(), cGate::INOUT, false);
     cGate* rmtIn = this->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -143,7 +143,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << GATE_EFCPIO << efcpiId;
+    gateName_str << GATE_EFCPIO_ << efcpiId;
 
     cGate* rmtOut = this->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -257,11 +257,11 @@ void RMT::handleMessage(cMessage *msg)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
 
-        if (gate.substr(0, 8) == GATE_SOUTHIO)
+        if (gate.substr(0, 8) == GATE_SOUTHIO_)
         {
             sendUp(pdu);
         }
-        else if (gate.substr(0, 7) == GATE_EFCPIO)
+        else if (gate.substr(0, 7) == GATE_EFCPIO_)
         {
             sendDown(pdu);
         }

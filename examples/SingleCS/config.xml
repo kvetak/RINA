@@ -2,10 +2,18 @@
 	<Host id="host">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App1"	ipcAddress="11"  difName="Layer1" />
-				<APNtoDIF apn="App2" 	ipcAddress="11"  difName="Layer1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="11"  difName="Layer1" />
+				<APN apn="App2">
+					<DIF difName="Layer1" ipcAddress="11" />
+				</APN>
+				<APN apn="App1">
+					<DIF difName="Layer1" ipcAddress="11" />
+				</APN>				
 			</Directory>
+			<NamingInfo>
+				<APN apn="App2">
+					<Synonym apn="AppErr" />
+				</APN>
+			</NamingInfo>
 		</DA>
 	</Host>
 	<QoSCubesSet>

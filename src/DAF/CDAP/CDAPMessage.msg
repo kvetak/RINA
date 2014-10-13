@@ -115,11 +115,14 @@ struct object_t {
     int objectInstance;    //Synonym to class+name concatenation
     cObject objectVal;		//Actual object
 }
+
+//////////////////////////////////////////////
+//CDAP general messages
+//////////////////////////////////////////////
 message CDAPMessage {
     unsigned int size;
-    
+    int handle;    
 }
-
 
 //////////////////////////////////////////////
 //CDAP M_CONNECT(_R) messages

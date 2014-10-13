@@ -13,15 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "AEListeners.h"
 #include "AE.h"
+#include "AEListeners.h"
 
-AEListeners::AEListeners() {
-    // TODO Auto-generated constructor stub
-
+AEListeners::AEListeners(AE* nae) : ae(nae)
+{
 }
 
 AEListeners::~AEListeners() {
-    // TODO Auto-generated destructor stub
+    ae = NULL;
 }
 
+void LisAEReceiveData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "ReceiveData initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    ae->receiveData(obj);
+}

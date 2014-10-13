@@ -11,6 +11,10 @@
 //AE
 extern const char* SIG_AE_AllocateRequest;
 extern const char* SIG_AE_DeallocateRequest;
+extern const char* SIG_AE_DataSend;
+
+//CDAP
+extern const char* SIG_CDAP_DateReceive;
 
 //IRM
 extern const char* SIG_IRM_AllocateRequest;

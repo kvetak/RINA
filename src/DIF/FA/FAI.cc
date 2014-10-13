@@ -189,7 +189,7 @@ bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP and RMT" << endl;
 
     std::ostringstream nameIpcDown;
-    nameIpcDown << GATE_NORTHIO << portId;
+    nameIpcDown << GATE_NORTHIO_ << portId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
     IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
@@ -197,7 +197,7 @@ bool FAI::createBindings() {
 
     std::ostringstream nameEfcpNorth;
     //FIXME: Vesely @Marek -> How come that I cannot replace this->getFlow()->getConId().getSrcCepId() with cepID???!!!!
-    nameEfcpNorth << GATE_APPIO << this->getFlow()->getConId().getSrcCepId();
+    nameEfcpNorth << GATE_APPIO_ << this->getFlow()->getConId().getSrcCepId();
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
@@ -211,12 +211,12 @@ bool FAI::createBindings() {
     rmtModule->createEfcpiGate(this->getFlow()->getConId().getSrcCepId());
 
     std::ostringstream nameRmtUp;
-    nameRmtUp << GATE_EFCPIO << this->getFlow()->getConId().getSrcCepId();
+    nameRmtUp << GATE_EFCPIO_ << this->getFlow()->getConId().getSrcCepId();
     cGate* gateRmtUpIn = rmtModule->getParentModule()->gateHalf(nameRmtUp.str().c_str(), cGate::INPUT);
     cGate* gateRmtUpOut = rmtModule->getParentModule()->gateHalf(nameRmtUp.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpDown;
-    nameEfcpDown << GATE_RMT << this->getFlow()->getConId().getSrcCepId();
+    nameEfcpDown << GATE_RMT_ << this->getFlow()->getConId().getSrcCepId();
     cGate* gateEfcpDownIn = efcpModule->gateHalf(nameEfcpDown.str().c_str(), cGate::INPUT);
     cGate* gateEfcpDownOut = efcpModule->gateHalf(nameEfcpDown.str().c_str(), cGate::OUTPUT);
 
@@ -236,14 +236,14 @@ bool FAI::deleteBindings() {
     EV << this->getFullPath() << " attempts to delete bindings between EFCP, IPC and RMT" << endl;
 
     std::ostringstream nameIpcDown;
-    nameIpcDown << GATE_NORTHIO << portId;
+    nameIpcDown << GATE_NORTHIO_ << portId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
     IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
     cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpNorth;
-    nameEfcpNorth << GATE_APPIO << this->getFlow()->getConId().getSrcCepId();
+    nameEfcpNorth << GATE_APPIO_ << this->getFlow()->getConId().getSrcCepId();
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
@@ -258,12 +258,12 @@ bool FAI::deleteBindings() {
     RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
 
     std::ostringstream nameRmtUp;
-    nameRmtUp << GATE_EFCPIO << this->getFlow()->getConId().getSrcCepId();
+    nameRmtUp << GATE_EFCPIO_ << this->getFlow()->getConId().getSrcCepId();
     cGate* gateRmtUpIn = rmtModule->getParentModule()->gateHalf(nameRmtUp.str().c_str(), cGate::INPUT);
     cGate* gateRmtUpOut = rmtModule->getParentModule()->gateHalf(nameRmtUp.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpDown;
-    nameEfcpDown << GATE_RMT << this->getFlow()->getConId().getSrcCepId();
+    nameEfcpDown << GATE_RMT_ << this->getFlow()->getConId().getSrcCepId();
     cGate* gateEfcpDownIn = efcpModule->gateHalf(nameEfcpDown.str().c_str(), cGate::INPUT);
     cGate* gateEfcpDownOut = efcpModule->gateHalf(nameEfcpDown.str().c_str(), cGate::OUTPUT);
 

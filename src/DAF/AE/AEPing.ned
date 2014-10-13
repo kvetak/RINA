@@ -15,7 +15,7 @@
 
 package rina.DAF.AE;
 
-simple AEPing extends AE 
+simple AEPing extends AE like IAE
 {
     parameters:
         @class(AEPing);

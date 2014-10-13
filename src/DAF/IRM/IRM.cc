@@ -90,13 +90,13 @@ bool IRM::createBindings(Flow* flow) {
 
     //  Retrieve IPC gates
     std::ostringstream nam1;
-    nam1 << GATE_NORTHIO << flow->getSrcPortId();
+    nam1 << GATE_NORTHIO_ << flow->getSrcPortId();
     cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
 
     //   Add AP gates
     std::ostringstream nam2;
-    nam2 << GATE_SOUTHIO << flow->getSrcPortId();
+    nam2 << GATE_SOUTHIO_ << flow->getSrcPortId();
     Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
@@ -109,11 +109,11 @@ bool IRM::createBindings(Flow* flow) {
     //TODO: Status check
 
     //   Connect gates together
-    g1o->connectTo(g2o);
-    g2o->connectTo(g3i);
+    g1o->connectTo(g2i);
+    g2i->connectTo(g3i);
 
-    g3o->connectTo(g2i);
-    g2i->connectTo(g1i);
+    g3o->connectTo(g2o);
+    g2o->connectTo(g1i);
 
     //Set south-half of the routing in ConnectionTable
     bool status = ConTable->setSouthGates(flow, g3i, g3o);

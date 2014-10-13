@@ -25,6 +25,12 @@ const char* MOD_EFCP            = "efcp";
 const char* MOD_RESALLOC        = "resourceAllocator";
 const char* MOD_RA              = "ra";
 const char* MOD_IRM             = "irm";
+const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
+const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
+const char* MOD_CDAPSPLIT       = "cdapSplitter";
+const char* MOD_CDAPCACE        = "cace";
+const char* MOD_CDAPAUTH        = "auth";
+const char* MOD_CDAPCDAP        = "cdap";
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
@@ -38,20 +44,26 @@ const char* PAR_AEINSTANCE      = "aeInstance";
 const char* PAR_CONFIGDATA      = "configData";
 
 //Gate names
-const char* GATE_NORTHIO        = "northIo_";
-const char* GATE_SOUTHIO        = "southIo_";
-const char* GATE_EFCPIO         = "efcpIo_";
-const char* GATE_RMT            = "rmt_";
-const char* GATE_APPIO          = "appIo_";
+const char* GATE_SOUTHIO        = "southIo";
+const char* GATE_NORTHIO_       = "northIo_";
+const char* GATE_SOUTHIO_       = "southIo_";
+const char* GATE_EFCPIO_        = "efcpIo_";
+const char* GATE_RMT_           = "rmt_";
+const char* GATE_RMTIO          = "rmtIo";
+const char* GATE_APPIO_         = "appIo_";
 const char* GATE_AEIO           = "aeIo";
 const char* GATE_DATAIO         = "dataIo";
+const char* GATE_SPLITIO        = "splitterIo";
+const char* GATE_CACEIO         = "caceIo";
+const char* GATE_AUTHIO         = "authIo";
+const char* GATE_CDAPIO         = "cdapIo";
 
 //XML attributes and elements
-const char* ELEM_APN         = "APN";
+const char* ELEM_APN            = "APN";
 const char* ATTR_APN            = "apn";
 
 //Values
 //TODO: Vesely @Marek - What about -1 as default DoNotCare value
-const int   VAL_QOSPARAMDONOTCARE    = -1;
-const bool  VAL_QOSPARAMDEFBOOL      = false;
+const int   VAL_QOSPARDONOTCARE = -1;
+const bool  VAL_QOSPARDEFBOOL   = false;
 

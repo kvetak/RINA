@@ -13,16 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+#include "CDAP.h"
+#include "CDAPListeners.h"
 
-simple IRM
+CDAPListeners::CDAPListeners(CDAP* ncdap): cdap(ncdap)
 {
-    parameters:
-        @display("i=block/cogwheel");
-        @signal[IRM-AllocateRequest](type=Flow?);
-        @signal[IRM-DeallocateRequest](type=Flow?);
-        @signal[IRM-AllocateResponsePositive](type=Flow?);
-        @signal[IRM-AllocateResponseNegative](type=Flow?);   
-    gates:
-        inout aeIo[];  
+}
+
+CDAPListeners::~CDAPListeners() {
+    cdap = NULL;
+}
+
+void LisCDAPSendData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cdap->getFullPath() << endl;
+    cdap->sendData(obj);
 }

@@ -82,13 +82,15 @@ void AEPing::initialize()
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+
+    //FIXME: Vesely - Move to StartCommunication processing
     //Flow
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                      this->dstAeName, this->dstAeInstance);
+
     Flow fl = Flow(src, dst);
     fl.setQosParameters(this->getQoSRequirements());
-
     //Insert it to the Flows ADT
     insertFlow(fl);
 
@@ -118,11 +120,13 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         //Irm->receiveDeallocationRequest(&flows.back());
         EV << "StopCommunication";
     else if ( strstr(msg->getName(), "PING") ) {
-        //TODO: Vesely - Send M_READ
+        //Create PING messsage
         std::stringstream ss;
         ss << "M_READ(" << msg->getName() << ")";
-        cMessage* ping = new cMessage(ss.str().c_str());
-        send(ping , "dataIo$o", 0);
+        CDAPMessage* ping = new CDAPMessage(ss.str().c_str());
+
+        //Send message
+        sendData(&flows.back(), ping);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();

@@ -13,25 +13,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_CDAPSPLITTER_H_
-#define __RINA_CDAPSPLITTER_H_
+#ifndef CDAPLISTENERS_H_
+#define CDAPLISTENERS_H_
 
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPMessage_m.h"
-#include "CDAPMsgLog.h"
-#include "ExternConsts.h"
+#include "CDAP.h"
 
-class CDAPSplitter : public cSimpleModule
-{
+class CDAP;
+class CDAPListeners : public cListener {
+  public:
+    CDAPListeners(CDAP* ncdap);
+    virtual ~CDAPListeners();
+
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+           EV << "Signal to CDAP initiated by " << src->getFullPath() << endl;
+    }
   protected:
-    CDAPMsgLog* MsgLog;
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-
+    CDAP* cdap;
 };
 
-#endif
+class LisCDAPSendData : public CDAPListeners {
+  public:
+    LisCDAPSendData(CDAP* ncdap): CDAPListeners(ncdap){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+#endif /* CDAPLISTENERS_H_ */

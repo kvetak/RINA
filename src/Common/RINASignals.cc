@@ -7,8 +7,11 @@
 
 #include "RINASignals.h"
 
-const char* SIG_AE_AllocateRequest             = "AE-AllocateRequest";
-const char* SIG_AE_DeallocateRequest           = "AE-DeallocateRequest";
+const char* SIG_AE_AllocateRequest              = "AE-AllocateRequest";
+const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
+const char* SIG_AE_DataSend                     = "AE-DataSend";
+
+const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
