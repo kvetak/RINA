@@ -37,9 +37,9 @@ EFCP::~EFCP() {
 }
 
 void EFCP::initialize(int step){
-  if(step == 3){
-    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule("efcpTable");
-  }
+//  if(step == 3){
+    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
+//  }
 }
 
 
@@ -52,7 +52,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   cModule* efcpModule = this->getParentModule();
 
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-  cModule* efcpiModule = moduleType->create("efcpi", efcpModule);
+  cModule* efcpiModule = moduleType->create(MOD_EFCPI, efcpModule);
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -95,15 +95,15 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
   tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
 
 
-  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::INPUT, size);
-  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::OUTPUT, size);
+  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
+  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, size);
 
-  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::INPUT);
-  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
+  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
+  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
 
 
-  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::INPUT);
-  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
+  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::OUTPUT);
 
   delToEfcpiO->connectTo(efcpiToDelI);
   efcpiToDelO->connectTo(delToEfcpiI);
@@ -111,7 +111,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
-  gateName_str << "fai_" << flow->getConId().getSrcCepId();
+  gateName_str << GATE_APPIO << flow->getConId().getSrcCepId();
 
 
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
@@ -124,14 +124,14 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 
   /* Create gate in EFCPModule for EFCPi <--> RMT */
   gateName_str.str(std::string());
-  gateName_str << "rmt_" << flow->getConId().getSrcCepId();
+  gateName_str << GATE_RMT << flow->getConId().getSrcCepId();
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
 
   cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToEfcpiO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
-  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::INPUT);
-  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToRmtI = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::INPUT);
+  cGate* efcpiToRmtO = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::OUTPUT);
 
   efcpiToRmtO->connectTo(efcpToEfcpiO);
   efcpToEfcpiI->connectTo(efcpiToRmtI);
@@ -142,7 +142,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow){
 DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
     cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
-    DTCP* dtcpModule = (DTCP*) dtcpType->create("dtcp", efcpiModule);
+    DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());

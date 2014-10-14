@@ -17,6 +17,19 @@
 
 Define_Module(AEPing);
 
+//Consts
+const char* TIM_START           = "StartCommunication";
+const char* TIM_STOP            = "StopCommunication";
+const char* MSG_PING            = "PING-";
+const char* PAR_START           = "startAt";
+const char* PAR_STOP            = "stopAt";
+const char* PAR_PING            = "pingAt";
+const char* PAR_RATE            = "rate";
+const char* PAR_DSTAPNAME       = "dstApName";
+const char* PAR_DSTAPINSTANCE   = "dstApInstance";
+const char* PAR_DSTAENAME       = "dstAeName";
+const char* PAR_DSTAEINSTANCE   = "dstAeInstance";
+
 AEPing::AEPing() {
 }
 
@@ -26,7 +39,7 @@ AEPing::~AEPing() {
 
 void AEPing::prepareAllocateRequest() {
     //Schedule AllocateRequest
-    cMessage* m1 = new cMessage("StartCommunication");
+    cMessage* m1 = new cMessage(TIM_START);
     scheduleAt(startAt, m1);
 }
 
@@ -34,7 +47,7 @@ void AEPing::preparePing() {
     //Schedule Data transfer
     for (int i = 0; i < rate && pingAt + i < stopAt; i++) {
         std::stringstream ss;
-        ss << "PING-" << i;
+        ss << MSG_PING << i;
         cMessage* m2 = new cMessage(ss.str().c_str());
         scheduleAt(pingAt + i, m2);
     }
@@ -42,7 +55,7 @@ void AEPing::preparePing() {
 
 void AEPing::prepareDeallocateRequest() {
     //Schedule DeallocateRequest
-    cMessage* m3 = new cMessage("StopCommunication");
+    cMessage* m3 = new cMessage(TIM_STOP);
     scheduleAt(stopAt, m3);
 }
 
@@ -54,27 +67,30 @@ void AEPing::initialize()
     initNamingInfo();
     //Setup signals
     initSignalsAndListeners();
+    //Init QoSRequirements
+    initQoSRequiremets();
 
     //Timers
-    startAt = simTime() + par("start");
-    stopAt  = simTime() + par("stop");
-    pingAt  = simTime() + par("ping");
-    rate    = par("rate");
+    startAt = simTime() + par(PAR_START);
+    stopAt  = simTime() + par(PAR_STOP);
+    pingAt  = simTime() + par(PAR_PING);
+    rate    = par(PAR_RATE);
 
     //Destination for flow
-    dstApName     = this->par("dstApName").stringValue();
-    dstApInstance = this->par("dstApInstance").stringValue();
-    dstAeName     = this->par("dstAeName").stringValue();
-    dstAeInstance = this->par("dstAeInstance").stringValue();
+    dstApName     = this->par(PAR_DSTAPNAME).stringValue();
+    dstApInstance = this->par(PAR_DSTAPINSTANCE).stringValue();
+    dstAeName     = this->par(PAR_DSTAENAME).stringValue();
+    dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
     //Flow
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                      this->dstAeName, this->dstAeInstance);
     Flow fl = Flow(src, dst);
+    fl.setQosParameters(this->getQoSRequirements());
 
     //Insert it to the Flows ADT
-    insert(fl);
+    insertFlow(fl);
 
     //Schedule AllocateRequest
     if (startAt > 0)

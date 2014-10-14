@@ -46,3 +46,10 @@ std::string APN::info() const{
 std::ostream& operator<< (std::ostream& os, const APN& apn) {
     return os << apn.info();
 }
+
+std::ostream& operator <<(std::ostream& os, const APNList& apns) {
+    for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
+        os << *it << " ";
+    }
+    return os;
+}

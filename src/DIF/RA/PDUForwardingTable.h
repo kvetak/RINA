@@ -46,8 +46,8 @@ class PDUForwardingTable : public cSimpleModule
     PDUForwardingTable();
 
     void insert(const PDUTableEntry* entry);
-    void insert(std::string destAddr, int qosId, std::string portId);
-    std::string lookup(std::string destAddr, int QoSid);
+    void insert(std::string destAddr, int qosId, cModule* ipc, int portId);
+    RMTPortId lookup(std::string destAddr, int QoSid);
     void remove(std::string portId);
 };
 

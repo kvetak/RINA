@@ -26,8 +26,7 @@ import rina.DIF.RMT.RMT;
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=386,251;i=misc/node,yellow,30");
-        //int numOfDIFs;
+        @display("bgb=386,251;i=misc/node,yellow,30");        
         string apName = default("App");
         string apInstance = default("0");
 
@@ -35,8 +34,7 @@ module ApplicationProcess
 
     submodules:
         irm: IRM {
-            @display("p=78,180");
-            //numOfDIFs = numOfDIFs;
+            @display("p=78,180");            
         }
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             @display("p=254,58");

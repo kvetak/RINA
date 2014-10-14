@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright Â© 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -27,36 +27,38 @@
 #define QOSCUBE_H_
 
 #include "Policy.h"
+#include "ExternConsts.h"
 #include <vector>
-/*
- *
- */
-class QosCube {
-private:
-    int avgBand; //Average bandwidth (measured at the application in bits/sec)
-    int avgSDUBand;//Average SDU bandwidth (measured in SDUs/sec)
-    int peakBandDuration; //Peak bandwidth-duration (measured in bits/sec);
-    int peakSDUBandDuration; //Peak SDU bandwidth-duration (measured in SDUs/sec);
-    int burstPeriod; //Burst period measured in seconds
-    int burstDuration; //Burst duration, measured in fraction of Burst Period
-    int undetectedBitErr; //Undetected bit error rate measured as a probability
-    int maxSDUsize; //MaxSDUSize measured in bytes
-    bool partDeliv; //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-    bool incompleteDeliv; //Incomplete Delivery – Can SDUs with missing pieces be delivered?
-    bool forceOrder; // - Must SDUs be delivered in order?
-    unsigned int maxAllowGap; //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-    int delay; //Delay in secs
-    int jitter; //Jitter in secs2
 
-    int qoSId;
+extern const char* STR_DONOTCARE;
+extern const char* STR_YES;
+extern const char* STR_NO;
+
+class QosCube {
+
+  private:
+    unsigned short qoSId;
+    int avgBand ;               //Average bandwidth (measured at the application in bits/sec)
+    int avgSDUBand;             //Average SDU bandwidth (measured in SDUs/sec)
+    int peakBandDuration;       //Peak bandwidth-duration (measured in bits/sec);
+    int peakSDUBandDuration;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    int burstPeriod;            //Burst period measured in useconds
+    int burstDuration;          //Burst duration, measured in useconds fraction of Burst Period
+    double undetectedBitErr;    //Undetected bit error rate measured as a probability
+    int maxSDUsize;             //MaxSDUSize measured in bytes
+    bool partDeliv;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    bool incompleteDeliv;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    bool forceOrder;            //Must SDUs be delivered in-order bits
+    int maxAllowGap;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    int delay;                  //Delay in usecs
+    int jitter;                 //Jitter in usecs
+    int costTime;               //measured in $/ms
+    int costBits;               //measured in $/Mb
+
     std::vector<Policy*> policyList;
     //Policy-Default-Parameters: List;
-    bool order; /*True if SDUs must be delivered in order. Unless Delimiting is
-“1 for 1”, i.e. one SDU per PDU, implying that the application knows the Max PDU size,
-allowing SDUs that are larger than a MaxPDU implies that PDUs must be ordered. (This
-parameter should probably be eliminated in favor of using very large maximum gaps.) */
 
-public:
+  public:
     QosCube();
     virtual ~QosCube();
     int getAvgBand() const;
@@ -71,22 +73,33 @@ public:
     void setDelay(int delay);
     bool isForceOrder() const;
     void setForceOrder(bool forceOrder);
-    bool isIncompleteDeliv() const;
-    void setIncompleteDeliv(bool incompleteDeliv);
+    bool isIncompleteDelivery() const;
+    void setIncompleteDelivery(bool incompleteDeliv);
     int getJitter() const;
     void setJitter(int jitter);
-    unsigned int getMaxAllowGap() const;
-    void setMaxAllowGap(unsigned int maxAllowGap);
-    int getMaxSdUsize() const;
-    void setMaxSdUsize(int maxSdUsize);
-    bool isPartDeliv() const;
-    void setPartDeliv(bool partDeliv);
+    int getMaxAllowGap() const;
+    void setMaxAllowGap(int maxAllowGap);
+    int getMaxSduSize() const;
+    void setMaxSduSize(int maxSdUsize);
+    bool isPartialDelivery() const;
+    void setPartialDelivery(bool partDeliv);
     int getPeakBandDuration() const;
     void setPeakBandDuration(int peakBandDuration);
     int getPeakSduBandDuration() const;
     void setPeakSduBandDuration(int peakSduBandDuration);
-    int getUndetectedBitErr() const;
-    void setUndetectedBitErr(int undetectedBitErr);
+    double getUndetectedBitErr() const;
+    void setUndetectedBitErr(double undetectedBitErr);
+    unsigned short getQosId() const;
+    void setQosId(unsigned short qoSId);
+    int getCostBits() const;
+    void setCostBits(int costBits);
+    int getCostTime() const;
+    void setCostTime(int costTime);
+
+    short countFeasibilityScore(const QosCube templ) const;
 };
+
+//Free function
+std::ostream& operator<< (std::ostream& os, const QosCube& cube);
 
 #endif /* QOSCUBE_H_ */

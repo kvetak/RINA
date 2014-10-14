@@ -38,4 +38,20 @@ extern const char* SIG_FAI_CreateFlowResponsePositive;
 extern const char* SIG_FAI_CreateFlowResponseNegative;
 extern const char* SIG_FAI_DeleteFlowResponse;
 
+//RA
+extern const char* SIG_RA_AllocateRequest;
+extern const char* SIG_RA_DeallocateRequest;
+extern const char* SIG_RA_AllocateResponsePositive;
+extern const char* SIG_RA_AllocateResponseNegative;
+extern const char* SIG_RA_FlowAllocated;
+extern const char* SIG_RA_FlowDeallocated;
+
+
+//RIB
+extern const char* SIG_RIB_CreateRequestFlow;
+extern const char* SIG_RIB_CreateResponseFlow;
+extern const char* SIG_RIB_DeleteRequestFlow;
+extern const char* SIG_RIB_DeleteResponseFlow;
+
+
 #endif /* RINASIGNALS_H_ */

@@ -25,6 +25,7 @@
 #include "RINASignals.h"
 #include "DA.h"
 #include "FABase.h"
+#include "ExternConsts.h"
 
 class IRM : public cSimpleModule   {
   public:
@@ -48,7 +49,7 @@ class IRM : public cSimpleModule   {
     DA* DifAllocator;
 
     void initSignalsAndListeners();
-    bool createBindings(Flow& flow);
+    bool createBindings(Flow* flow);
 
     //Signals
     simsignal_t sigIRMAllocReq;

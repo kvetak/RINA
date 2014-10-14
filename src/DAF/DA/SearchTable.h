@@ -17,15 +17,33 @@
 #define __RINA_SEARCHTABLE_H_
 
 #include <omnetpp.h>
+#include "SearchTableEntry.h"
+#include "ExternConsts.h"
 
-/**
- * TODO - Generated class
- */
+typedef std::list<SearchTableEntry> SearchEntries;
+typedef SearchEntries::iterator SearchItem;
+typedef SearchEntries::const_iterator SearchCItem;
+
+//Constants
+extern const char*   ELEM_SEARCHTAB;
+extern const char*   ELEM_PEER;
+
+
 class SearchTable : public cSimpleModule
 {
+  public:
+    void addSearchEntry(const APN& apn);
+    SearchTableEntry* findSearchEntryByApn(const APN& apn);
+    const APNList* findPeersByApn(const APN& apn);
+    void addNewPeerDa(const APN& apn, const APN& peer);
+    void removeSearchEntry(const APN& apn);
   protected:
+    SearchEntries SrchTable;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void parseConfig(cXMLElement* config);
 };
 
 #endif

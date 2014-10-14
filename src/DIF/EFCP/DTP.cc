@@ -27,6 +27,15 @@ DTP::~DTP()
   // TODO Auto-generated destructor stub
 }
 
+void DTP::initialize(int step){
+
+  northI = this->gateHalf(GATE_DTP_NORTHIO, cGate::INPUT);
+  northO = this->gateHalf(GATE_DTP_NORTHIO, cGate::OUTPUT);
+
+  southI = this->gateHalf(GATE_DTP_SOUTHIO, cGate::INPUT);
+  southO = this->gateHalf(GATE_DTP_SOUTHIO, cGate::OUTPUT);
+}
+
 /**
  *
  * @param connId
@@ -77,13 +86,14 @@ void DTP::handleMessage(cMessage *msg)
 //      }
     }
   }else{
+
     /* Either PDUs from RMT or SDUs from AP */
-      if(msg->arrivedOn("efcpiIo$i")){
+      if(msg->arrivedOn(northI->getId())){
           //handle SDUs
 //          handleSDUs((CDAPMessage*) msg);
         handleMsgFromDelimiting((Data*) msg);
 
-      }else if(msg->arrivedOn("rmtIo$i")){
+      }else if(msg->arrivedOn(southI->getId())){
         handleMsgFromRmt((PDU*) msg);
       }
   }
@@ -96,11 +106,15 @@ void DTP::handleMsgFromDelimiting(Data* msg){
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
   pdu->setConnId(this->flow->getConId());
-  pdu->setDstApni(this->flow->getDstApni());
+  pdu->setSrcAddr(this->flow->getSrcAddr());
+  pdu->setDstAddr(this->flow->getDstAddr());
+  pdu->setSrcApn(this->flow->getDstApni().getApn());
+  pdu->setDstApn(this->flow->getSrcApni().getApn());
+
 
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
-  send(pdu, "rmtIo$o");
+  send(pdu, southO);
 
 }
 
@@ -108,7 +122,7 @@ void DTP::handleMsgFromRmt(PDU* msg){
 
   if(dynamic_cast<DataTransferPDU*>(msg)){
     DataTransferPDU* pdu = (DataTransferPDU*)msg;
-    send(pdu->getMUserData(), "efcpiIo$o");
+    send(pdu->getMUserData(), northO);
   }
 }
 

@@ -2,10 +2,48 @@
 	<Host id="host">
 		<DA>
 			<Directory>
-				<APNtoDIF apn="App1"	ipcAddress="1" />
-				<APNtoDIF apn="App2" 	ipcAddress="1" />
-				<APNtoDIF apn="AppErr" 	ipcAddress="1" />
+				<APNtoDIF apn="App1"	ipcAddress="11"  difName="Layer1" />
+				<APNtoDIF apn="App2" 	ipcAddress="11"  difName="Layer1" />
+				<APNtoDIF apn="AppErr" 	ipcAddress="11"  difName="Layer1" />
 			</Directory>
 		</DA>
 	</Host>
+	<QoSCubesSet>
+		<QosCube id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>10</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>						
+		</QosCube>
+		<QosCube id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>10</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>						
+		</QosCube>		
+	</QoSCubesSet>
 </Configuration>

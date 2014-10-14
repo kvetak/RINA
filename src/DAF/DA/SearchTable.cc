@@ -15,14 +15,50 @@
 
 #include "SearchTable.h"
 
+//Constants
+const char*   ELEM_SEARCHTAB    = "SearchTable";
+const char*   ELEM_PEER         = "Peer";
+
 Define_Module(SearchTable);
 
 void SearchTable::initialize()
 {
-    // TODO - Generated method body
+    //Parse XML config
+    parseConfig(par(PAR_CONFIGDATA).xmlValue());
+
+    //Init watchers
+    WATCH_LIST(SrchTable);
+}
+
+SearchTableEntry* SearchTable::findSearchEntryByApn(const APN& apn) {
+    for (SearchItem it = SrchTable.begin(); it != SrchTable.end(); ++it) {
+        if (it->getApn() == apn)
+            return &(*it);
+    }
+    return NULL;
 }
 
 void SearchTable::handleMessage(cMessage *msg)
 {
     // TODO - Generated method body
+}
+
+void SearchTable::addSearchEntry(const APN& apn) {
+    SrchTable.push_back(SearchTableEntry(apn));
+}
+
+const APNList* SearchTable::findPeersByApn(const APN& apn) {
+    SearchTableEntry* entry = findSearchEntryByApn(apn);
+    return entry ? &(entry->getPeers()) : NULL;
+}
+
+void SearchTable::addNewPeerDa(const APN& apn, const APN& peer) {
+    findSearchEntryByApn(apn)->addPeer(peer);
+}
+
+void SearchTable::removeSearchEntry(const APN& apn) {
+    SrchTable.remove(*(findSearchEntryByApn(apn)));
+}
+
+void SearchTable::parseConfig(cXMLElement* config) {
 }

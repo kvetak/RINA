@@ -17,21 +17,32 @@ package rina.DAF.DA;
 
 module DIFAllocator
 {
-    @display("i=misc/node,green;bgb=487,206");
+    parameters:
+    	@display("i=misc/node,green;bgb=487,206");
+    	xml configData = default(xml("<DA />"));
     submodules:
         namingInformation: NamingInformation {
-            @display("p=80,143");
+            parameters:
+            	@display("p=80,143");
+            	configData = configData;
         }
         neighborTable: NeighborTable {
-            @display("p=403,143");
+            parameters:
+	            @display("p=403,143");
+	            configData = configData;
         }
         directory: Directory {
-            @display("p=193,143");
+            parameters:
+    	        @display("p=193,143");
+    	        configData = configData;
         }
         searchTable: SearchTable {
-            @display("p=300,143");
+            parameters:
+	            @display("p=300,143");
+	            configData = configData;
         }
         da: DA {
-            @display("p=247,52");
+            parameters:        
+	            @display("p=247,52");
         }
 }

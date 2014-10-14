@@ -17,32 +17,62 @@
 #define DIRECTORYENTRY_H_
 
 //RINASim libraries
-#include "APNamingInfo.h"
-#include "FABase.h"
+//#include "APNamingInfo.h"
+//#include "FABase.h"
+#include "Address.h"
+
+
 
 class DirectoryEntry {
-
   public:
+/*
     DirectoryEntry();
-    DirectoryEntry(APNamingInfo napni, std::string path, FABase* fa);
+    DirectoryEntry(APNamingInfo napni, Address naddr, std::string path, FABase* fa);
+*/
+    DirectoryEntry(const APN& napn);
     virtual ~DirectoryEntry();
+
+    bool operator== (const DirectoryEntry& other) const;
+
+    const APN& getApn() const;
+    void setApn(const APN& apn);
+    const Addresses& getSupportedDifs() const;
+    void setSupportedDifs(const Addresses& supportedDifs);
 
     std::string info() const;
 
+    void addDif(const Address& member);
+    bool hasDif(const Address& member);
+
+/*
     const APNamingInfo& getApni() const;
-    void setApni(const APNamingInfo& apni);
     FABase* getFlowAlloc() const;
-    void setFlowAlloc(FABase* flowAlloc);
     const std::string& getIpcPath() const;
-    void setIpcPath(const std::string& ipcPath);
+    const Address& getAddr() const;
+    cModule* getIpc();
+*/
 
   private:
+    APN Apn;
+    Addresses SupportedDifs;
+/*
     APNamingInfo apni;
+    Address addr;
     std::string ipcPath;
     FABase* FlowAlloc;
+*/
+
+/*
+    void setIpcPath(const std::string& ipcPath);
+    void setFlowAlloc(FABase* flowAlloc);
+    void setApni(const APNamingInfo& apni);
+    void setAddr(const Address& addr);
+*/
+
 };
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const DirectoryEntry& fte);
+std::ostream& operator<< (std::ostream& os, const DirectoryEntry& dte);
+
 
 #endif /* DIRECTORYENTRY_H_ */

@@ -41,6 +41,8 @@ RMT::~RMT()
 void RMT::initialize() {
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
     //ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
+
+    processName = getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
 }
 
 /**
@@ -51,11 +53,6 @@ void RMT::initialize() {
  */
 void RMT::createSouthGate(std::string gateName)
 {
-    if (ports.count(gateName))
-    {
-        return;
-    }
-
     cModule* rmtModule = getParentModule();
 
     this->addGate(gateName.c_str(), cGate::INOUT, false);
@@ -69,8 +66,6 @@ void RMT::createSouthGate(std::string gateName)
     rmtModuleIn->connectTo(rmtIn);
     rmtOut->connectTo(rmtModuleOut);
 
-    ports[gateName] = rmtOut;
-
     // RMT<->(N-1)-EFCP interconnection shall be done by the RA
 }
 
@@ -81,11 +76,6 @@ void RMT::createSouthGate(std::string gateName)
  */
 void RMT::deleteSouthGate(std::string gateName)
 {
-    if (!ports.count(gateName))
-    {
-        return;
-    }
-
     cModule* rmtModule = getParentModule();
 
     cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
@@ -97,7 +87,12 @@ void RMT::deleteSouthGate(std::string gateName)
     this->deleteGate(gateName.c_str());
     rmtModule->deleteGate(gateName.c_str());
 
-    ports.erase(gateName);
+    //ports.erase(gateName);
+}
+
+void RMT::addRMTPort(RMTPortId portId, cGate* gate)
+{
+    ports[portId] = gate;
 }
 
 /**
@@ -115,7 +110,7 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << "efcpIo_" << efcpiId;
+    gateName_str << GATE_EFCPIO << efcpiId;
 
     this->addGate(gateName_str.str().c_str(), cGate::INOUT, false);
     cGate* rmtIn = this->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -148,7 +143,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << "efcpIo_" << efcpiId;
+    gateName_str << GATE_EFCPIO << efcpiId;
 
     cGate* rmtOut = this->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -169,15 +164,15 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 void RMT::sendDown(PDU_Base* pdu)
 {
-    std::string pduDestAddr = pdu->getDestAddr().getName();
+    std::string pduDestAddr = pdu->getDstApn().getName();
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
     if (relayOn)
     {
         try
-        { // forwarding table lookup (returns IPC process ID for now)
-            std::string outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+        { // forwarding table lookup
+            RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
             outPort = ports[outPortId];
         }
         catch (...)
@@ -190,11 +185,24 @@ void RMT::sendDown(PDU_Base* pdu)
     else
     {
         // decide which (N-1)-flow should get the PDU...
-        // fwtable lookup seems unnecessary here, should the decision be based only on QoS?
+        // we'll just grab the first one for now
         outPort = ports.begin()->second;
     }
 
-    send(pdu, outPort);
+    EV << this->getFullPath() << " passing a PDU downwards..." << endl;
+
+    if (outPort != NULL)
+    {
+        // TODO: OMNeT++ 4.4.1 renders the message transfer as if this was sent to this IPC's EFCP. Is this a bug?
+        send(pdu, outPort);
+    }
+    else
+    {
+        EV << this->getFullPath()
+           << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
+           << endl;
+        delete pdu;
+    }
 }
 
 /**
@@ -204,7 +212,7 @@ void RMT::sendDown(PDU_Base* pdu)
  */
 void RMT::sendUp(PDU_Base* pdu)
 {
-    if (pdu->getDestAddr().getName() != processName)
+    if (pdu->getDstApn().getName() != processName)
     { // this PDU isn't for us
         if (relayOn)
         { // ...let's relay it somewhere else
@@ -219,10 +227,21 @@ void RMT::sendUp(PDU_Base* pdu)
     }
     else
     {
-        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDestCepId()];
+        EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
+        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
 
-        EV << this->getFullPath() << " delivering a PDU to EFCPI " << efcpiGate->getName() << endl;
-        send(pdu, efcpiGate);
+        if (efcpiGate != NULL)
+        {
+            send(pdu, efcpiGate);
+        }
+        else
+        {
+            EV << this->getFullPath()
+               << " I'm not connected to such EFCPI! Notifying other modules."
+               << endl;
+            // emit(cosi)
+            delete pdu;
+        }
     }
 }
 
@@ -237,28 +256,20 @@ void RMT::handleMessage(cMessage *msg)
     else if (dynamic_cast<PDU_Base*>(msg) != NULL)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
-        if (gate.substr(0, 7) == "southIo_")
+
+        if (gate.substr(0, 8) == GATE_SOUTHIO)
         {
             sendUp(pdu);
         }
-        else if (gate.substr(0, 7) == "efcpIo_")
+        else if (gate.substr(0, 7) == GATE_EFCPIO)
         {
-          //TODO change it back to Tomas's version
-            //sendDown(pdu);
-          send(msg, efcpiGates[pdu->getConnId().getSrcCepId()]);
+            sendDown(pdu);
         }
     }
-    // TODO: ew, replace this with a shared base class when it's available
-    else if (dynamic_cast<CDAP_M_Create*>(msg) || dynamic_cast<CDAP_M_Create_R*>(msg) ||
-             dynamic_cast<CDAP_M_Delete*>(msg) || dynamic_cast<CDAP_M_Delete_R*>(msg) ||
-             dynamic_cast<CDAP_M_Start*>(msg) || dynamic_cast<CDAP_M_Start_R*>(msg)   ||
-             dynamic_cast<CDAP_M_Stop*>(msg) || dynamic_cast<CDAP_M_Stop_R*>(msg)     ||
-             dynamic_cast<CDAP_M_Write*>(msg) || dynamic_cast<CDAP_M_Write_R*>(msg)   ||
-             dynamic_cast<CDAP_M_Read*>(msg) || dynamic_cast<CDAP_M_Read_R*>(msg)     ||
-             dynamic_cast<CDAP_M_CancelRead*>(msg) || dynamic_cast<CDAP_M_CancelRead_R*>(msg))
-    {
+    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+    { // management message arrival
         if (gate == "southIo$i")
-        { // temporary queue bypass
+        {
             send(msg, "ribdIo$o");
         }
         else

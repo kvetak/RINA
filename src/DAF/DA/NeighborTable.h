@@ -17,15 +17,34 @@
 #define __RINA_NEIGHBORTABLE_H_
 
 #include <omnetpp.h>
+//RINASim libraries
+#include "NeighborTableEntry.h"
+#include "ExternConsts.h"
 
-/**
- * TODO - Generated class
- */
+typedef std::list<NeighborTableEntry> NeighborEntries;
+typedef NeighborEntries::iterator NeigborItem;
+typedef NeighborEntries::const_iterator NeighborCItem;
+
+//Constants
+extern const char*   ELEM_NEIGHTAB;
+extern const char*   ELEM_NEIGHBOR;
+
 class NeighborTable : public cSimpleModule
 {
+  public:
+    void addNeighborEntry(const APN& apn);
+    NeighborTableEntry* findNeighborEntryByApn(const APN& apn);
+    const APNList* findNeighborsByApn(const APN& apn);
+    void addNewNeighbor(const APN& apn, const APN& neighbor);
+    void removeNeighborEntry(const APN& apn);
   protected:
+    NeighborEntries NeiTable;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void parseConfig(cXMLElement* config);
+
 };
 
 #endif

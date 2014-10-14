@@ -32,6 +32,7 @@
 
 #include "Flow.h"
 #include "EFCPTable.h"
+#include "ExternConsts.h"
 
 
 //#include "EFCPInstance.h"
@@ -92,7 +93,7 @@ private:
 
 protected:
     virtual void initialize(int step);
-    virtual int numInitStages() const {return 4;};
+//    virtual int numInitStages() const {return 4;};
 
 public:
     EFCP();

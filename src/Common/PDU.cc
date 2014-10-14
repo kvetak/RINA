@@ -109,6 +109,12 @@ unsigned int getHeaderSize(){
   return PDU_HEADER_LEN;
 }
 
+//std::string PDU::info() const {
+//  std::stringstream os;
+//  os << "srcAddr: " << srcAddr_var;
+//  return os.str();
+//}
+
 //PDU::PDU()
 //{
 //  // TODO Auto-generated constructor stub

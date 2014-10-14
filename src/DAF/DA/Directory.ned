@@ -19,5 +19,5 @@ simple Directory
 {
     parameters:
     	@display("i=block/delay");
-    	xml directoryData; 
+    	xml configData = default(xml("<Directory><APNtoDIF/></Directory>")); 
 }

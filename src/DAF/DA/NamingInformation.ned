@@ -15,10 +15,9 @@
 
 package rina.DAF.DA;
 
-//
-// TODO auto-generated module
-//
 simple NamingInformation
 {
-    @display("i=block/table");
+    parameters:
+	    @display("i=block/table");
+	    xml configData = default(xml("<NamingTable></NamingTable>"));
 }

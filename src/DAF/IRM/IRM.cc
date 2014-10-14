@@ -25,8 +25,8 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = ModuleAccess<ConnectionTable>("connectionTable").get();
-    DifAllocator = ModuleAccess<DA>("da").get();
+    ConTable = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
+    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
 }
 
 void IRM::initialize() {
@@ -38,8 +38,12 @@ void IRM::handleMessage(cMessage* msg) {
     if (!msg->isSelfMessage()) {
         //Find output gate based on input
         cGate* g = ConTable->findOutputGate(msg->getArrivalGate());
-        //Send out
-        send(msg, g);
+        //Send out if gate exist
+        if (g)
+            send(msg, g);
+        else {
+            EV << "Received message but destination gate is not in the ConnectionTable!" << endl;
+        }
     }
     //Process self-message
     else {
@@ -51,7 +55,7 @@ void IRM::handleMessage(cMessage* msg) {
 void IRM::initSignalsAndListeners() {
     cModule* catcher = this->getParentModule()->getParentModule();
 
-    //Signals that this module is emitting
+    //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
     sigIRMAllocResPosi  = registerSignal(SIG_IRM_AllocateResponsePositive);
@@ -75,23 +79,24 @@ void IRM::initSignalsAndListeners() {
     catcher->subscribe(SIG_AE_DeallocateRequest, this->lisDeallocReq);
 }
 
-bool IRM::createBindings(Flow& flow) {
+bool IRM::createBindings(Flow* flow) {
     EV << "Attempts to create bindings and bind registration of gates"<< endl;
     //Retrieve IPC process with allocated flow and prepared bindings
-    cModule* Ipc = DifAllocator->resolveApniToDif(flow.getDstApni());
+
+    cModule* Ipc = ConTable->findEntryByFlow(flow)->getIpc();
     cModule* Ap = this->getParentModule();
 
     //Create connections
 
     //  Retrieve IPC gates
     std::ostringstream nam1;
-    nam1 << "northIo_" << flow.getSrcPortId();
+    nam1 << GATE_NORTHIO << flow->getSrcPortId();
     cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
 
     //   Add AP gates
     std::ostringstream nam2;
-    nam2 << "southIo_" << flow.getSrcPortId();
+    nam2 << GATE_SOUTHIO << flow->getSrcPortId();
     Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
@@ -111,7 +116,7 @@ bool IRM::createBindings(Flow& flow) {
     g2i->connectTo(g1i);
 
     //Set south-half of the routing in ConnectionTable
-    bool status = ConTable->setSouthGates(&flow, g3i, g3o);
+    bool status = ConTable->setSouthGates(flow, g3i, g3o);
 
     return status;
 }
@@ -123,30 +128,40 @@ void IRM::receiveAllocationRequest(cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
 
     //Ask DA which IPC to use to reach dst App
-    FABase* fa = DifAllocator->resolveApniToDifFa(flow->getDstApni());
+    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
+
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return;
+    }
+
+    //TODO: Vesely - Now using first available APN to DIFMember mapping
+    Address addr = de->getSupportedDifs().front();
+
+    //TODO: Vesely - New IPC must be enrolled or DIF created
+    if (!DifAllocator->isDifLocal(addr.getDifName())) {
+        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
+        return;
+    }
+
+    //Retrieve DIF's local IPC member
+    cModule* targetIpc = DifAllocator->getDifMember(addr.getDifName());
 
     //Store info into ConnectionTable
-    ConTable->setFa(flow, fa);
+    ConTable->setFa(flow, DifAllocator->findFaInsideIpc(targetIpc));
+
 
     //Command target FA to allocate flow
-    bool status = false;
-    if (fa)
-        //signalizeAllocateRequest(flow);
-        status = fa->receiveAllocateRequest(flow);
-    else
-        EV << "DA does not know target application" << endl;
+    bool status = ConTable->getFa(flow)->receiveAllocateRequest(flow);
 
     //If AllocationRequest ended by creating connections
     if (status)
-        status = createBindings(*flow);
+        status = createBindings(flow);
     //Allocation either failed OR app not found
     else
        EV << "Flow not allocated!\n" << flow << endl;
 
-    if (!status)
-        EV << "Flow not binded!\n" << flow << endl;
-
-    //Change ConnectionTable status
+    //TODO: Vesely - Change ConnectionTable status
 }
 
 void IRM::receiveDeallocationRequest(cObject* obj) {
