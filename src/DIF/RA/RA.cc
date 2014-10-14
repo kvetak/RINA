@@ -269,6 +269,7 @@ void RA::handleMessage(cMessage *msg)
     if ( !strcmp(msg->getName(), "RA-CreateFlow") ) {
         createFlow(preparedFlows.front());
         preparedFlows.pop_front();
+        delete msg;
     }
 }
 
