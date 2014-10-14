@@ -293,13 +293,23 @@ void RMT::handleMessage(cMessage *msg)
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     { // management message arrival
-        if (gate == "southIo$i")
+        if (gate.substr(0, 8) == GATE_SOUTHIO_)
         {
             send(msg, "ribdIo$o");
         }
         else
         {
-            send(msg, "southIo$o", 0);
+            if (!ports.empty())
+            {
+                send(msg, ports.begin()->second);
+            }
+            else
+            {
+                EV << this->getFullPath()
+                   << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
+                   << endl;
+                delete msg;
+            }
         }
     }
     else
