@@ -13,40 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_CDAP_H_
-#define __RINA_CDAP_H_
+#ifndef RIBDBASE_H_
+#define RIBDBASE_H_
 
 //Standard libraries
 #include <omnetpp.h>
-//RINASim libraries
-#include "CDAPListeners.h"
-#include "RINASignals.h"
-#include "CDAPMessage_m.h"
-#include "ExternConsts.h"
 
-class CDAP : public cSimpleModule
-{
+class RIBdBase : public cSimpleModule {
   public:
-    enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
+    RIBdBase();
+    virtual ~RIBdBase();
 
-    void sendData(cObject* obj);
+    virtual void sendCreateRequestFlow(cObject* obj) = 0;
+    virtual void receiveData(cObject* obj) = 0;
 
   protected:
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-
-    //Signals
-    simsignal_t sigCDAPReceiveData;
-
-    //Listeners
-    LisCDAPSendData* lisCDAPSendData;
-
-    //Signaling
-    void signalizeReceiveData(cMessage* msg);
-
+    //SimpleModule overloads
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
 };
 
-#endif
+#endif /* RIBDBASE_H_ */

@@ -33,7 +33,6 @@ Define_Module(FA);
 
 FA::FA() {
     this->FaiTable = NULL;
-
 }
 
 FA::~FA() {
@@ -55,6 +54,11 @@ void FA::initPointers() {
 void FA::initialize() {
     initPointers();
     initSignalsAndListeners();
+
+    //Setup MyAddress
+    cModule* ipc = this->getParentModule()->getParentModule();
+    MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
+    EV << "SrcAddress that this FA will use is " << MyAddress << endl;
 }
 
 bool FA::receiveAllocateRequest(cObject* obj) {
@@ -65,6 +69,9 @@ bool FA::receiveAllocateRequest(cObject* obj) {
 
     //Insert new Flow into FAITable
     FaiTable->insertNew(fl);
+
+    //Add source and destination addresses
+    fl->setSrcAddr(MyAddress);
 
     //Is malformed?
     if (isMalformedFlow(fl)){
@@ -83,7 +90,7 @@ bool FA::receiveAllocateRequest(cObject* obj) {
 
     //Is App local? YES then Degenerate transfer ELSE
     bool status;
-    if (this->isAppLocal(fl)) {
+    if ( DifAllocator->isAppLocal( fl->getDstApni().getApn() ) ) {
         //Proceed with DegenerateDataTransfer
         status = fai->processDegenerateDataTransfer();
     }
@@ -99,7 +106,6 @@ bool FA::receiveAllocateRequest(cObject* obj) {
         FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
     }
     //Else wait
-
 
     return status;
 }
@@ -272,13 +278,6 @@ void FA::handleMessage(cMessage *msg) {
 bool FA::isMalformedFlow(Flow* flow) {
     //TODO: Vesely - Simulate malformed
     if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "AppERR") )
-        return true;
-    return false;
-}
-
-bool FA::isAppLocal(Flow* flow) {
-    //TODO: Vesely - Simulate localApp
-    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "App11") )
         return true;
     return false;
 }

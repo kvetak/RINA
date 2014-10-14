@@ -59,7 +59,6 @@ bool FAI::receiveAllocateRequest() {
         this->signalizeAllocateResponseNegative();
         return false;
     }
-    //EV << "A jsme tam!" << endl;
 
     status = this->createEFCP();
     if (!status) {

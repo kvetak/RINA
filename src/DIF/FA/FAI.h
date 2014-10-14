@@ -27,7 +27,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-
+#include "FAIBase.h"
 #include "FABase.h"
 #include "Flow.h"
 #include "FAIListeners.h"
@@ -35,7 +35,7 @@
 #include "EFCP.h"
 #include "ModuleAccess.h"
 
-class FAI : public cSimpleModule  {
+class FAI : public FAIBase  {
   public:
     FAI();
     virtual ~FAI();

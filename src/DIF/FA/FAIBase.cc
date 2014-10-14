@@ -13,40 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_CDAP_H_
-#define __RINA_CDAP_H_
+#include <FAIBase.h>
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
-#include "CDAPListeners.h"
-#include "RINASignals.h"
-#include "CDAPMessage_m.h"
-#include "ExternConsts.h"
+FAIBase::FAIBase() {
+    // TODO Auto-generated constructor stub
 
-class CDAP : public cSimpleModule
-{
-  public:
-    enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
+}
 
-    void sendData(cObject* obj);
+FAIBase::~FAIBase() {
+    // TODO Auto-generated destructor stub
+}
 
-  protected:
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-
-    //Signals
-    simsignal_t sigCDAPReceiveData;
-
-    //Listeners
-    LisCDAPSendData* lisCDAPSendData;
-
-    //Signaling
-    void signalizeReceiveData(cMessage* msg);
-
-};
-
-#endif

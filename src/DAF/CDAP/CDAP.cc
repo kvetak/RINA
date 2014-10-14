@@ -36,6 +36,7 @@ void CDAP::initSignalsAndListeners() {
     //Listeners registered to process signal
     lisCDAPSendData = new LisCDAPSendData(this);
     catcher->subscribe(SIG_AE_DataSend, lisCDAPSendData);
+    catcher->subscribe(SIG_RIBD_DataSend, lisCDAPSendData);
 }
 
 void CDAP::sendData(cObject* obj) {
@@ -45,7 +46,8 @@ void CDAP::sendData(cObject* obj) {
 
     //Send message
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
-    send(msg, "splitterIo$o", msg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, msg->getHandle());
+    send(msg, out);
 }
 
 void CDAP::signalizeReceiveData(cMessage* msg) {

@@ -13,40 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_CDAP_H_
-#define __RINA_CDAP_H_
+#include "RIBdListeners.h"
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
-#include "CDAPListeners.h"
-#include "RINASignals.h"
-#include "CDAPMessage_m.h"
-#include "ExternConsts.h"
-
-class CDAP : public cSimpleModule
+RIBdListeners::RIBdListeners(RIBdBase* nribd) : ribd(nribd)
 {
-  public:
-    enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
+}
 
-    void sendData(cObject* obj);
+RIBdListeners::~RIBdListeners() {
+    ribd = NULL;
+}
 
-  protected:
+void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "CreateRequest initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    ribd->sendCreateRequestFlow(obj);
+}
 
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-
-    //Signals
-    simsignal_t sigCDAPReceiveData;
-
-    //Listeners
-    LisCDAPSendData* lisCDAPSendData;
-
-    //Signaling
-    void signalizeReceiveData(cMessage* msg);
-
-};
-
-#endif
+void LisRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "ReceiveData initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    ribd->receiveData(obj);
+}

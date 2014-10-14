@@ -137,6 +137,7 @@ void IRM::receiveAllocationRequest(cObject* obj) {
 
     //TODO: Vesely - Now using first available APN to DIFMember mapping
     Address addr = de->getSupportedDifs().front();
+    flow->setDstAddr(addr);
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!DifAllocator->isDifLocal(addr.getDifName())) {

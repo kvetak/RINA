@@ -13,40 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_CDAP_H_
-#define __RINA_CDAP_H_
+#include <RIBdBase.h>
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
-#include "CDAPListeners.h"
-#include "RINASignals.h"
-#include "CDAPMessage_m.h"
-#include "ExternConsts.h"
+RIBdBase::RIBdBase() {
+    // TODO Auto-generated constructor stub
 
-class CDAP : public cSimpleModule
-{
-  public:
-    enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
+}
 
-    void sendData(cObject* obj);
+RIBdBase::~RIBdBase() {
+    // TODO Auto-generated destructor stub
+}
 
-  protected:
-
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-
-    //Signals
-    simsignal_t sigCDAPReceiveData;
-
-    //Listeners
-    LisCDAPSendData* lisCDAPSendData;
-
-    //Signaling
-    void signalizeReceiveData(cMessage* msg);
-
-};
-
-#endif

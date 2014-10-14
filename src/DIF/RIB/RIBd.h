@@ -28,18 +28,33 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
+#include "RIBdBase.h"
+#include "Flow.h"
 #include "CDAPMessage_m.h"
 #include "ExternConsts.h"
+#include "RIBdListeners.h"
+#include "RINASignals.h"
 
-class RIBd : public cSimpleModule {
+class RIBd : public RIBdBase {
   public:
-    simsignal_t sigUpdateDirFwdTable;
+    virtual void sendCreateRequestFlow(cObject* obj);
+    virtual void receiveData(cObject* obj);
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
     void initCdapBindings();
+    void initSignalsAndListeners();
+
+    //Signals
+    simsignal_t sigRIBDAllocReq;
+
+    //Listeners
+    LisRIBDRcvData* lisRIBDRcvData;
+    LisRIBDCreReq* lisRIBDCreReq;
+
+    void signalizeSendData(CDAPMessage* msg);
 
 };
 

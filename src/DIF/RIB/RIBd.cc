@@ -27,8 +27,11 @@
 Define_Module(RIBd);
 
 void RIBd::initialize() {
+    //Init signals and listeners
+    initSignalsAndListeners();
     //Init CDAP gates and connections
     initCdapBindings();
+
 }
 
 void RIBd::handleMessage(cMessage *msg) {
@@ -97,4 +100,50 @@ void RIBd::initCdapBindings() {
     gSplitCdapOut->connectTo(gCdapIn);
     gCdapOut->connectTo(gSplitCdapIn);
 
+}
+
+void RIBd::sendCreateRequestFlow(cObject* obj) {
+    Enter_Method("sendCreateRequestFlow()");
+
+    Flow* flow = dynamic_cast<Flow*>(obj);
+
+    //Prepare M_CREATE Flow
+    CDAP_M_Create* mcref = new CDAP_M_Create("CreateRequestFlow");
+    object_t flowobj;
+    flowobj.objectClass = flow->getClassName();
+    flowobj.objectVal = *flow;
+    //FIXME: Vesely - Assign appropriate values
+    flowobj.objectName = "";
+    flowobj.objectInstance = -1;
+    mcref->setObject(flowobj);
+
+    //Send it
+    signalizeSendData(mcref);
+}
+
+void RIBd::receiveData(cObject* obj) {
+    Enter_Method("receiveData()");
+
+}
+
+void RIBd::initSignalsAndListeners() {
+    cModule* catcher = this->getParentModule()->getParentModule();
+
+    //Signals that this module is emitting
+    sigRIBDAllocReq      = registerSignal(SIG_RIBD_DataSend);
+
+    //Signals that this module is processing
+    lisRIBDRcvData = new LisRIBDRcvData(this);
+    catcher->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
+
+    lisRIBDCreReq = new LisRIBDCreReq(this);
+    catcher->subscribe(SIG_FAI_CreateFlowRequest, lisRIBDCreReq);
+}
+
+void RIBd::signalizeSendData(CDAPMessage* msg) {
+    msg->setHandle(0);
+
+    //Pass message to CDAP
+    EV << "Emits SendData signal for message " << msg->getName() << endl;
+    emit(sigRIBDAllocReq, msg);
 }

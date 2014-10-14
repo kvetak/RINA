@@ -93,8 +93,9 @@ class FA : public FABase
     RABase* ResourceAllocator;
     DA* DifAllocator;
 
+    Address MyAddress;
+
     bool isMalformedFlow(Flow* flow);
-    bool isAppLocal(Flow* flow);
     FAI* createFAI(Flow* flow);
 
     void initSignalsAndListeners();
