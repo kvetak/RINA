@@ -43,7 +43,7 @@ PDUTableEntry::~PDUTableEntry()
 }
 
 std::string PDUTableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
 
     os << "type: "
        << (portId.second == -1 ? "static" : "dynamic") << endl;

@@ -31,7 +31,7 @@ void ConnectionTable::initialize()
 }
 
 std::string ConnectionTable::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "id=" << this->getId() << endl;
     /*
     for(TCTConstIter it = ConTable.begin(); it != ConTable.end(); ++it )

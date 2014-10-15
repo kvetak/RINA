@@ -33,7 +33,7 @@ bool DAP::operator ==(const DAP& other) const {
 }
 
 std::string DAP::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << this->getName();
     return os.str();
 }

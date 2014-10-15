@@ -15,6 +15,9 @@ extern const char* SIG_AE_DataSend;
 
 //RIBd
 extern const char* SIG_RIBD_DataSend;
+extern const char* SIG_RIBD_CreateRequestFlow;
+extern const char* SIG_RIBD_CreateFlow;
+
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
@@ -22,8 +25,8 @@ extern const char* SIG_CDAP_DateReceive;
 //IRM
 extern const char* SIG_IRM_AllocateRequest;
 extern const char* SIG_IRM_DeallocateRequest;
-extern const char* SIG_IRM_AllocateResponsePositive;
-extern const char* SIG_IRM_AllocateResponseNegative;
+extern const char* SIG_AERIBD_AllocateResponsePositive;
+extern const char* SIG_AERIBD_AllocateResponseNegative;
 
 //FA
 extern const char* SIG_FA_CreateFlowResponseNegative;
@@ -52,7 +55,6 @@ extern const char* SIG_RA_AllocateResponsePositive;
 extern const char* SIG_RA_AllocateResponseNegative;
 extern const char* SIG_RA_FlowAllocated;
 extern const char* SIG_RA_FlowDeallocated;
-
 
 //RIB
 extern const char* SIG_RIB_CreateRequestFlow;

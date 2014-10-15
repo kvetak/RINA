@@ -20,7 +20,7 @@
 #include <omnetpp.h>
 #include <string>
 //RINASim libraries
-#include "FAI.h"
+#include "FAIBase.h"
 
 class FAITableEntry {
   public:
@@ -28,22 +28,22 @@ class FAITableEntry {
 
     FAITableEntry();
     FAITableEntry(Flow* nflow);
-    FAITableEntry(FAI* nfai);
+    FAITableEntry(FAIBase* nfai);
     virtual ~FAITableEntry();
 
     std::string info() const;
 
     std::string getAllocateStatusString() const;
-    FAI* getFai() const;
+    FAIBase* getFai() const;
     const simtime_t& getTimeCreated() const;
     const simtime_t& getTimeLastActive() const;
     void setTimeLastActive(const simtime_t& timeLastActive);
     void setAllocateStatus(AllocateStatus allocateStatus);
-    void setFai(FAI* nfai);
+    void setFai(FAIBase* nfai);
     const Flow* getFlow() const;
 
   private:
-    FAI* fai;
+    FAIBase* fai;
     Flow* flow;
     AllocateStatus allocStatus;
     simtime_t timeCreated;

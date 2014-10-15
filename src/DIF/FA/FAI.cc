@@ -114,6 +114,7 @@ bool FAI::receiveCreateRequest() {
         //Schedule negative M_Crete_R(Flow)
         return false;
     }
+    createNorthGates();
     //Pass AllocationRequest to IRM
     this->signalizeAllocationRequestFromFAI();
     //Everything went fine
@@ -161,7 +162,6 @@ void FAI::receiveDeleteResponse() {
     this->FaModule->deinstantiateFai(this->FlowObject);
 }
 
-
 void FAI::handleMessage(cMessage *msg) {
 
 }
@@ -190,12 +190,14 @@ bool FAI::createBindings() {
     std::ostringstream nameIpcDown;
     nameIpcDown << GATE_NORTHIO_ << portId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
-    IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
+    if (!IPCModule->hasGate(nameIpcDown.str().c_str()))
+        createNorthGates();
     cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
     cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpNorth;
     //FIXME: Vesely @Marek -> How come that I cannot replace this->getFlow()->getConId().getSrcCepId() with cepID???!!!!
+    //XXX:   Vesely @Marek -> 15.10.2014, stale tady ta sracka je :-) ... uklidit!
     nameEfcpNorth << GATE_APPIO_ << this->getFlow()->getConId().getSrcCepId();
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
@@ -340,7 +342,7 @@ void FAI::signalizeCreateFlowResponseNegative() {
 }
 
 void FAI::signalizeAllocationRequestFromFAI() {
-    emit(this->sigFAIAllocReq, this->FlowObject);
+    emit(sigFAIAllocReq, FlowObject);
 }
 
 void FAI::signalizeDeleteFlowRequest() {
@@ -355,3 +357,9 @@ void FAI::signalizeAllocateResponsePositive() {
     emit(this->sigFAIAllocResNega, this->FlowObject);
 }
 
+void FAI::createNorthGates() {
+    std::ostringstream nameIpcDown;
+    nameIpcDown << GATE_NORTHIO_ << portId;
+    cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+    IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
+}

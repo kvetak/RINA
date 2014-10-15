@@ -32,8 +32,6 @@ void LisIRMAllocResNegaFa::receiveSignal(cComponent* src, simsignal_t id,
 
 void LisIRMAllocReqFai::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-    this->irm->receiveAllocationRequestFromFAI(obj);
 }
 
 void LisIRMAllocResNegaFai::receiveSignal(cComponent* src, simsignal_t id,

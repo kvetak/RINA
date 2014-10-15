@@ -24,6 +24,9 @@
 
 #include "RIBd.h"
 
+const char* MSG_CREREQFLO       = "CreateRequestFlow";
+const char* CLS_FLOW            = "Flow";
+
 Define_Module(RIBd);
 
 void RIBd::initialize() {
@@ -31,7 +34,8 @@ void RIBd::initialize() {
     initSignalsAndListeners();
     //Init CDAP gates and connections
     initCdapBindings();
-
+    //Init MyAddress
+    initMyAddress();
 }
 
 void RIBd::handleMessage(cMessage *msg) {
@@ -102,48 +106,99 @@ void RIBd::initCdapBindings() {
 
 }
 
-void RIBd::sendCreateRequestFlow(cObject* obj) {
+void RIBd::sendCreateRequestFlow(Flow* flow) {
     Enter_Method("sendCreateRequestFlow()");
 
-    Flow* flow = dynamic_cast<Flow*>(obj);
-
     //Prepare M_CREATE Flow
-    CDAP_M_Create* mcref = new CDAP_M_Create("CreateRequestFlow");
+    CDAP_M_Create* mcref = new CDAP_M_Create(MSG_CREREQFLO);
     object_t flowobj;
     flowobj.objectClass = flow->getClassName();
-    flowobj.objectVal = *flow;
+    flowobj.objectName = flow->getFlowName();
     //FIXME: Vesely - Assign appropriate values
-    flowobj.objectName = "";
     flowobj.objectInstance = -1;
+    flowobj.objectVal = flow;
+    //EV << "XXX:" << flow << " - " << flowobj.objectVal << endl;
+    //mcref->setFlow(*flow);
     mcref->setObject(flowobj);
-
+    mcref->setDstAddr(flow->getDstAddr());
     //Send it
     signalizeSendData(mcref);
 }
 
-void RIBd::receiveData(cObject* obj) {
+void RIBd::receiveData(CDAPMessage* msg) {
     Enter_Method("receiveData()");
+    //M_CREATE_Request
+    if (dynamic_cast<CDAP_M_Create*>(msg)) {
+        CDAP_M_Create* msg1 = check_and_cast<CDAP_M_Create*>(msg);
+        EV << "Received M_Create";
+        object_t object = msg1->getObject();
+        EV << " with object '" << object.objectClass << "'" << endl;
+        //EV << "FlowCast>" << dynamic_cast<Flow*>(object.objectVal) << endl;
+        Flow* flow = dynamic_cast<Flow*>(object.objectVal);
+        if (flow) {
+            Flow* fl = flow->dup();
+            signalizeCreateRequestFlow(fl);
+        }
+        //EV << "!!!!!!!!!!\n" << flow->info() << "!!!!!!!" << endl;
+        //CreateFlowRequest
+        //if ( dynamic_cast<CDAP_M_Create_Flow*>(msg1) ) {
+        //    CDAP_M_Create_Flow* msg2 = dynamic_cast<CDAP_M_Create_Flow*>(msg1);
+        //}
 
+        delete msg1;
+    }
 }
 
 void RIBd::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher1 = this->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
-    sigRIBDAllocReq      = registerSignal(SIG_RIBD_DataSend);
+    sigRIBDSendData      = registerSignal(SIG_RIBD_DataSend);
+    sigRIBDCreReqFlo     = registerSignal(SIG_RIBD_CreateRequestFlow);
+    sigRIBDAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
 
     //Signals that this module is processing
-    lisRIBDRcvData = new LisRIBDRcvData(this);
-    catcher->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
 
     lisRIBDCreReq = new LisRIBDCreReq(this);
-    catcher->subscribe(SIG_FAI_CreateFlowRequest, lisRIBDCreReq);
+    catcher2->subscribe(SIG_FAI_CreateFlowRequest, lisRIBDCreReq);
+
+    lisRIBDRcvData = new LisRIBDRcvData(this);
+    catcher1->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
+
+    lisRIBDAllReqFromFai = new LisRIBDAllReqFromFai(this);
+    catcher3->subscribe(SIG_FAI_AllocateRequest, lisRIBDAllReqFromFai);
+
 }
 
 void RIBd::signalizeSendData(CDAPMessage* msg) {
+    //Setup handle which is for RIBd always 0
     msg->setHandle(0);
-
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
-    emit(sigRIBDAllocReq, msg);
+    emit(sigRIBDSendData, msg);
+}
+
+void RIBd::receiveAllocationRequestFromFAI(Flow* flow) {
+    //Execute flow allocate
+    signalizeCreateFlow(flow);
+    //TODO: Vesely - Return result
+    signalizeAllocateResponsePositive(flow);
+}
+
+void RIBd::signalizeCreateRequestFlow(Flow* flow) {
+    EV << "Emits CreateRequestFlow signal for flow" << endl;
+    emit(sigRIBDCreReqFlo, flow);
+}
+
+void RIBd::signalizeAllocateResponsePositive(Flow* flow) {
+    EV << "Emits AllocateResponsePositive signal for flow" << endl;
+    emit(sigRIBDAllocResPosi, flow);
+}
+
+void RIBd::signalizeCreateFlow(Flow* flow) {
+    EV << "Emits CreateFlow signal for flow" << endl;
+    emit(sigRIBDCreFlow, flow);
 }

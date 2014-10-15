@@ -44,4 +44,10 @@ class LisRIBDRcvData : public RIBdListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisRIBDAllReqFromFai : public RIBdListeners {
+  public:
+    LisRIBDAllReqFromFai(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 #endif /* RIBDLISTENERS_H_ */

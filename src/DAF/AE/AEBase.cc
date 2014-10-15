@@ -127,7 +127,7 @@ void AEBase::initQoSRequiremets() {
            hasPar(PAR_COSTBITS)
           )
        ) {
-        std::stringstream ss;
+        std::ostringstream ss;
         ss << "Module " << this->getFullName() << " is not derived from AEBase. It misses some important QoS parameters!";
         error(ss.str().c_str());
     }

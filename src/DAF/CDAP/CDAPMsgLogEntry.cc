@@ -28,7 +28,7 @@ CDAPMsgLogEntry::~CDAPMsgLogEntry() {
 }
 
 std::string CDAPMsgLogEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "" << this->getOpCode() << "status: " << this->getMessageStatusString()
        << "requested at: " << this->requestedAt
        << "\tresponded at:" << this->respondedAt << endl;

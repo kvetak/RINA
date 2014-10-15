@@ -17,8 +17,20 @@
 #include "FABase.h"
 
 FABase::FABase() {
+    this->FaiTable = NULL;
 }
 
 FABase::~FABase() {
+    this->FaiTable = NULL;
 }
 
+FAITable* FABase::getFaiTable() const {
+    return FaiTable;
+}
+
+void FABase::initMyAddress() {
+    //Setup MyAddress
+    cModule* ipc = this->getParentModule()->getParentModule();
+    MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
+    EV << "SrcAddress that this FA will use is " << MyAddress << endl;
+}

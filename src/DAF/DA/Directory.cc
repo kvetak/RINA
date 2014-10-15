@@ -46,7 +46,7 @@ void Directory::addDirEntry(const APN& apn) {
 }
 
 std::string Directory::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "id=" << this->getId() << endl;
     return os.str();
 }

@@ -27,5 +27,9 @@ CDAPListeners::~CDAPListeners() {
 void LisCDAPSendData::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cdap->getFullPath() << endl;
-    cdap->sendData(obj);
+    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
+    if (msg)
+        cdap->sendData(msg);
+    else
+        EV << "Received not a CDAPMessage!" << endl;
 }

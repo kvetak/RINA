@@ -23,7 +23,7 @@ void FAITable::initialize()
 }
 
 std::string FAITable::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "id=" << this->getId() << endl;
     /*
     for(TFTConstIter it = FaiTable.begin(); it != FaiTable.end(); ++it )
@@ -43,8 +43,9 @@ void FAITable::handleMessage(cMessage *msg)
 void FAITable::insertNew(Flow* flow) {
     this->insert(FAITableEntry(flow));
 }
+
 void FAITable::insert(const FAITableEntry& entry) {
-    Enter_Method("insert()");
+    Enter_Method("insertFlow()");
     FaiTable.push_back(entry);
 }
 
@@ -60,7 +61,7 @@ FAITableEntry* FAITable::findEntryByFlow(Flow* flow) {
     return NULL;
 }
 
-FAITableEntry* FAITable::findEntryByFai(FAI* fai) {
+FAITableEntry* FAITable::findEntryByFai(FAIBase* fai) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getFai() == fai)
@@ -77,7 +78,7 @@ void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus statu
         EV << "findByFlow() returned NULL" << endl;
 }
 
-void FAITable::changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status) {
+void FAITable::changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status) {
     FAITableEntry* fte = findEntryByFai(fai);
     if (fte)
         fte->setAllocateStatus(status);
@@ -85,7 +86,7 @@ void FAITable::changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status)
         EV << "findByFai() returned NULL" << endl;
 }
 
-void FAITable::bindFaiToFlow(FAI* fai, Flow* flow) {
+void FAITable::bindFaiToFlow(FAIBase* fai, Flow* flow) {
     FAITableEntry* fte = findEntryByFlow(flow);
     fte->setFai(fai);
 }

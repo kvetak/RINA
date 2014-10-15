@@ -29,7 +29,6 @@
 //RINASim libraries
 #include "FAIBase.h"
 #include "FABase.h"
-#include "Flow.h"
 #include "FAIListeners.h"
 #include "RINASignals.h"
 #include "EFCP.h"
@@ -101,6 +100,7 @@ class FAI : public FAIBase  {
     void initSignalsAndListeners();
 
     bool createEFCP();
+    void createNorthGates();
     bool createBindings();
     bool deleteBindings();
 

@@ -22,9 +22,16 @@ void CDAP::initialize()
     initSignalsAndListeners();
 }
 
-void CDAP::handleMessage(cMessage *msg)
+void CDAP::handleMessage(cMessage* msg)
 {
-    signalizeReceiveData(msg);
+    //Pass CDAP message to AE or RIBd
+    if (dynamic_cast<CDAPMessage*>(msg)) {
+        CDAPMessage* cmsg = check_and_cast<CDAPMessage*>(msg);
+        cmsg->setHandle(cmsg->getArrivalGate()->getIndex());
+        signalizeReceiveData(cmsg);
+    }
+    //FIXME: Vesely - Proper disposing of object
+    //delete msg;
 }
 
 void CDAP::initSignalsAndListeners() {
@@ -39,17 +46,16 @@ void CDAP::initSignalsAndListeners() {
     catcher->subscribe(SIG_RIBD_DataSend, lisCDAPSendData);
 }
 
-void CDAP::sendData(cObject* obj) {
+void CDAP::sendData(CDAPMessage* cmsg) {
     //Change and take ownership
     Enter_Method("SendData()");
-    take(check_and_cast<cOwnedObject*>(obj) );
+    take(check_and_cast<cOwnedObject*>(cmsg) );
 
     //Send message
-    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, msg->getHandle());
-    send(msg, out);
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    send(cmsg, out);
 }
 
-void CDAP::signalizeReceiveData(cMessage* msg) {
-    emit(sigCDAPReceiveData, msg);
+void CDAP::signalizeReceiveData(CDAPMessage* cmsg) {
+    emit(sigCDAPReceiveData, cmsg);
 }

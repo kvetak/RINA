@@ -16,6 +16,8 @@
 #ifndef EXTERNCONSTS_H_
 #define EXTERNCONSTS_H_
 
+#include <sstream>
+
 //Module names
 extern const char* MOD_FLOWALLOC;
 extern const char* MOD_FA;
@@ -67,5 +69,14 @@ extern const char* ATTR_APN;
 extern const int   VAL_QOSPARDONOTCARE;
 extern const bool  VAL_QOSPARDEFBOOL;
 
+
+class ExternConsts {
+  public:
+    static const char* prepareCiName(const char* name) {
+        std::ostringstream os;
+        os << "CI-" << name;
+        return os.str().c_str();
+    }
+};
 
 #endif /* EXTERNCONSTS_H_ */

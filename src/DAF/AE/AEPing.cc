@@ -46,7 +46,7 @@ void AEPing::prepareAllocateRequest() {
 void AEPing::preparePing() {
     //Schedule Data transfer
     for (int i = 0; i < rate && pingAt + i < stopAt; i++) {
-        std::stringstream ss;
+        std::ostringstream ss;
         ss << MSG_PING << i;
         cMessage* m2 = new cMessage(ss.str().c_str());
         scheduleAt(pingAt + i, m2);
@@ -121,7 +121,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         EV << "StopCommunication";
     else if ( strstr(msg->getName(), "PING") ) {
         //Create PING messsage
-        std::stringstream ss;
+        std::ostringstream ss;
         ss << "M_READ(" << msg->getName() << ")";
         CDAPMessage* ping = new CDAPMessage(ss.str().c_str());
 

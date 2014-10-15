@@ -29,16 +29,19 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "RIBdBase.h"
-#include "Flow.h"
-#include "CDAPMessage_m.h"
 #include "ExternConsts.h"
 #include "RIBdListeners.h"
 #include "RINASignals.h"
 
+//Constants
+extern const char* MSG_CREREQFLO;
+extern const char* CLS_FLOW;
+
 class RIBd : public RIBdBase {
   public:
-    virtual void sendCreateRequestFlow(cObject* obj);
-    virtual void receiveData(cObject* obj);
+    virtual void sendCreateRequestFlow(Flow* flow);
+    virtual void receiveData(CDAPMessage* cimsg);
+    virtual void receiveAllocationRequestFromFAI(Flow* flow);
 
   protected:
     virtual void initialize();
@@ -48,13 +51,20 @@ class RIBd : public RIBdBase {
     void initSignalsAndListeners();
 
     //Signals
-    simsignal_t sigRIBDAllocReq;
+    simsignal_t sigRIBDSendData;
+    simsignal_t sigRIBDCreReqFlo;
+    simsignal_t sigRIBDAllocResPosi;
+    simsignal_t sigRIBDCreFlow;
 
     //Listeners
-    LisRIBDRcvData* lisRIBDRcvData;
-    LisRIBDCreReq* lisRIBDCreReq;
+    LisRIBDRcvData*             lisRIBDRcvData;
+    LisRIBDCreReq*              lisRIBDCreReq;
+    LisRIBDAllReqFromFai*       lisRIBDAllReqFromFai;
 
     void signalizeSendData(CDAPMessage* msg);
+    void signalizeCreateRequestFlow(Flow* flow);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeCreateFlow(Flow* flow);
 
 };
 

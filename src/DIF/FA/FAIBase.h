@@ -18,6 +18,8 @@
 
 //Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "Flow.h"
 
 class FAIBase : public cSimpleModule {
   public:

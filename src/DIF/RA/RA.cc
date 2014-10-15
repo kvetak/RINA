@@ -252,7 +252,7 @@ void RA::initQoSCubes() {
         QosCubes.push_back(cube);
     }
     if (!QosCubes.size()) {
-        std::stringstream os;
+        std::ostringstream os;
         os << this->getFullPath() << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!" << endl;
         error(os.str().c_str());
     }
@@ -304,8 +304,16 @@ void RA::bindMediumToRMT()
  */
 void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
 {
+    int portId;
+    if ( difAllocator->isAppLocal(flow->getDstApni().getApn()) )
+        portId = flow->getDstPortId();
+    else if ( difAllocator->isAppLocal(flow->getSrcApni().getApn()) )
+        portId = flow->getSrcPortId();
+    else
+            throw("Binding to inconsistant PortId occured!");
+
     // expand the given portId so it's unambiguous within this IPC
-    std::string combinedPortId = normalizePortId(ipc->getFullName(), flow->getSrcPortId());
+    std::string combinedPortId = normalizePortId(ipc->getFullName(), portId);
 
     std::ostringstream rmtGate;
     rmtGate << GATE_SOUTHIO_ << combinedPortId;
@@ -313,8 +321,9 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     rmt->createSouthGate(rmtGate.str());
 
     // get (N-1)-IPC gates
+
     std::ostringstream bottomIpcGate;
-    bottomIpcGate << "northIo_" << flow->getSrcPortId();
+    bottomIpcGate << "northIo_" << portId;
     cGate* bottomIpcIn = ipc->gateHalf(bottomIpcGate.str().c_str(), cGate::INPUT);
     cGate* bottomIpcOut = ipc->gateHalf(bottomIpcGate.str().c_str(), cGate::OUTPUT);
 
@@ -339,7 +348,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     thisIpcOut->connectTo(bottomIpcIn);
 
     // modules are connected; register a handle
-    rmt->addRMTPort(std::make_pair(ipc, flow->getSrcPortId()), rmtOut->getPathStartGate());
+    rmt->addRMTPort(std::make_pair(ipc, portId), rmtOut->getPathStartGate());
 
 }
 
@@ -365,6 +374,7 @@ std::string RA::normalizePortId(std::string ipcName, int flowPortId)
  */
 void RA::createFlow(Flow *fl)
 {
+    Enter_Method("createFlow()");
     //Ask DA which IPC to use to reach dst App
     DirectoryEntry* de = difAllocator->resolveApn(fl->getDstApni().getApn());
 
@@ -402,48 +412,41 @@ void RA::createFlow(Flow *fl)
     {
        EV << "Flow not allocated!" << endl;
     }
+}
 
+void RA::createFlowWithoutAllocate(Flow* flow) {
+    Enter_Method("createFlowWoAlloc()");
+    //Ask DA which IPC to use to reach dst App
+    DirectoryEntry* de = difAllocator->resolveApn(flow->getDstApni().getApn());
+
+    if (de == NULL) {
+        EV << "DA does not know target application." << endl;
+        return;
+    }
+
+    //TODO: Vesely - Now using first available APN to DIFMember mapping
+    Address addr = de->getSupportedDifs().front();
+
+    //TODO: Vesely - New IPC must be enrolled or DIF created
+    if (!difAllocator->isDifLocal(addr.getDifName())) {
+        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
+        return;
+    }
+
+    //Retrieve DIF's local IPC member
+    cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
+    FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
+
+    // connect the new flow to the RMT
+    bindFlowToRMT(targetIpc, flow);
+    // we're ready to go!
+    flTable->insert(flow, fab);
 }
 
 void RA::initSignalsAndListeners() {
-/*
-    // allocation request
-    sigRAAllocReq      = registerSignal(SIG_RA_AllocateRequest);
-    // deallocation request
-    sigRADeallocReq    = registerSignal(SIG_RA_DeallocateRequest);
-    // positive response to allocation request
-    sigRAAllocResPosi  = registerSignal(SIG_RA_AllocateResponsePositive);
-    // negative response to allocation request
-    sigRAAllocResNega  = registerSignal(SIG_RA_AllocateResponseNegative);
-    // successful allocation of an (N-1)-flow
-    sigRAFlowAllocd  = registerSignal(SIG_RA_FlowAllocated);
-    // successful deallocation of an (N-1)-flow
-    sigRAFlowDeallocd  = registerSignal(SIG_RA_FlowDeallocated);
-*/
-}
+    cModule* catcher2 = this->getParentModule()->getParentModule();
 
-/*
-void RA::signalizeAllocateRequest(Flow* flow) {
-    emit(sigRAAllocReq, flow);
-}
+    lisRACreFlow = new LisRACreFlow(this);
+    catcher2->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
 
-void RA::signalizeDeallocateRequest(Flow* flow) {
-    emit(sigRADeallocReq, flow);
 }
-
-void RA::signalizeAllocateResponsePositive(Flow* flow) {
-    emit(sigRAAllocResPosi, flow);
-}
-
-void RA::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(sigRAAllocResNega, flow);
-}
-
-void RA::signalizeFlowAllocated(Flow* flow) {
-    emit(sigRAFlowAllocd, flow);
-}
-
-void RA::signalizeFlowDeallocated(Flow* flow) {
-    emit(sigRAFlowDeallocd, flow);
-}
-*/

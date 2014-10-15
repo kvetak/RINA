@@ -22,5 +22,16 @@ RIBdBase::RIBdBase() {
 
 RIBdBase::~RIBdBase() {
     // TODO Auto-generated destructor stub
+
 }
 
+const Address& RIBdBase::getMyAddress() const {
+    return MyAddress;
+}
+
+void RIBdBase::initMyAddress() {
+    //Setup MyAddress
+    cModule* ipc = this->getParentModule()->getParentModule();
+    MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
+    EV << "SrcAddress that this RIBd will use is " << MyAddress << endl;
+}

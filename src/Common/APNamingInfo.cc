@@ -38,7 +38,7 @@ APNamingInfo::~APNamingInfo() {
 }
 
 std::string APNamingInfo::info() const{
-    std::stringstream os;
+    std::ostringstream os;
     os << "AP: "<< apn;
     if (!apinstance.empty())
         os << " (" << apinstance << ")";

@@ -15,6 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+cplusplus {{
+    #include "Address.h"       
+    typedef cObject* ObjectPtr;
+}}
+
+class noncobject Address;
+class noncobject ObjectPtr;
+
+
 //Message operation codes
 enum opCode_t {
 	M_CONNECT = 0;
@@ -112,8 +121,8 @@ struct naming_t {
 struct object_t {
     string objectClass;		//Object class (e.g. flow, string, int)
     string objectName;		//Unambiguous object name
-    int objectInstance;    //Synonym to class+name concatenation
-    cObject objectVal;		//Actual object
+    int objectInstance;     //Synonym to class+name concatenation
+    ObjectPtr objectVal;	//Actual object
 }
 
 //////////////////////////////////////////////
@@ -121,7 +130,8 @@ struct object_t {
 //////////////////////////////////////////////
 message CDAPMessage {
     unsigned int size;
-    int handle;    
+    int handle;
+    Address dstAddr;  
 }
 
 //////////////////////////////////////////////
@@ -215,7 +225,7 @@ message CDAP_M_Delete_R extends CDAPMessage {
 	int version;	
 	result_t result;
 	object_t object;
-	int filter;		
+	int filter;			
 }
 
 //////////////////////////////////////////////

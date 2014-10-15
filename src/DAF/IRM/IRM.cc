@@ -58,8 +58,6 @@ void IRM::initSignalsAndListeners() {
     //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
-    sigIRMAllocResPosi  = registerSignal(SIG_IRM_AllocateResponsePositive);
-    sigIRMAllocResNega  = registerSignal(SIG_IRM_AllocateResponseNegative);
 
     //Signals that this module is processing
     //  AllocationResponseNegative from FA
@@ -68,9 +66,9 @@ void IRM::initSignalsAndListeners() {
     //  AllocationResponseNegative from FAI
     lisAllocResNegaFai = new LisIRMAllocResNegaFai(this);
     catcher->subscribe(SIG_FAI_AllocateResponseNegative, this->lisAllocResNegaFai);
-    //  AllocationRequest from FAI
-    this->lisAllocReqFai = new LisIRMAllocReqFai(this);
-    catcher->subscribe(SIG_FAI_AllocateRequest, this->lisAllocReqFai);
+//    //  AllocationRequest from FAI
+//    this->lisAllocReqFai = new LisIRMAllocReqFai(this);
+//    catcher->subscribe(SIG_FAI_AllocateRequest, this->lisAllocReqFai);
     //  Allocate Request from App
     this->lisAllocReq = new LisIRMAllocReq(this);
     catcher->subscribe(SIG_AE_AllocateRequest, this->lisAllocReq);
@@ -137,7 +135,6 @@ void IRM::receiveAllocationRequest(cObject* obj) {
 
     //TODO: Vesely - Now using first available APN to DIFMember mapping
     Address addr = de->getSupportedDifs().front();
-    flow->setDstAddr(addr);
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!DifAllocator->isDifLocal(addr.getDifName())) {
@@ -181,17 +178,11 @@ void IRM::receiveAllocationResponseNegative(cObject* obj) {
     EV << this->getFullPath() << " received Negative Allocation Response" << endl;
 }
 
+/*
 void IRM::receiveAllocationRequestFromFAI(cObject* obj) {
-    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
-    Flow* fl = dynamic_cast<Flow*>(obj);
-    //TODO: Vesely - Simulate AllocationResponses
-    if (true) {
-        this->signalizeAllocateResponsePositive(fl);
-    }
-    else {
-        this->signalizeAllocateResponseNegative(fl);
-    }
+
 }
+*/
 
 void IRM::signalizeAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
@@ -203,10 +194,11 @@ void IRM::signalizeDeallocateRequest(Flow* flow) {
     emit(sigIRMDeallocReq, flow);
 }
 
-void IRM::signalizeAllocateResponsePositive(Flow* flow) {
-    emit(sigIRMAllocResPosi, flow);
+ConnectionTable* IRM::getConTable() const {
+    return ConTable;
 }
 
-void IRM::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(sigIRMAllocResNega, flow);
+DA* IRM::getDifAllocator() const {
+    return DifAllocator;
 }
+

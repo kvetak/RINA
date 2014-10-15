@@ -33,10 +33,10 @@ class FAITable : public cSimpleModule
     void insert(const FAITableEntry& entry);
     void remove();
     FAITableEntry* findEntryByFlow(Flow* flow);
-    FAITableEntry* findEntryByFai(FAI* fai);
-    void bindFaiToFlow(FAI* fai, Flow* flow);
+    FAITableEntry* findEntryByFai(FAIBase* fai);
+    void bindFaiToFlow(FAIBase* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
-    void changeAllocStatus(FAI* fai, FAITableEntry::AllocateStatus status);
+    void changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status);
 
   protected:
     virtual void initialize();

@@ -18,19 +18,31 @@
 
 //Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "ExternConsts.h"
+#include "Flow.h"
+#include "CDAPMessage_m.h"
 
 class RIBdBase : public cSimpleModule {
   public:
     RIBdBase();
     virtual ~RIBdBase();
 
-    virtual void sendCreateRequestFlow(cObject* obj) = 0;
-    virtual void receiveData(cObject* obj) = 0;
+    virtual void sendCreateRequestFlow(Flow* obj) = 0;
+    virtual void receiveData(CDAPMessage* obj) = 0;
+    virtual void receiveAllocationRequestFromFAI(Flow* flow) = 0;
+
+    const Address& getMyAddress() const;
 
   protected:
+    Address MyAddress;
+
     //SimpleModule overloads
     virtual void initialize() = 0;
     virtual void handleMessage(cMessage *msg) = 0;
+
+    void initMyAddress();
+
 };
 
 #endif /* RIBDBASE_H_ */

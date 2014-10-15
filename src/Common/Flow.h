@@ -43,7 +43,10 @@ class Flow : public cObject
 
     std::string info() const;
 
-    ConnectionId& getConId();
+    std::string getFlowName() const;
+
+    ConnectionId& getConnectionId();
+    const ConnectionId& getConId() const;
     void setConId(const ConnectionId& conId);
     uint32_t getCreateFlowRetries() const;
     void setCreateFlowRetries(uint32_t createFlowRetries);

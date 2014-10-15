@@ -29,7 +29,7 @@ class CDAP : public cSimpleModule
   public:
     enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
 
-    void sendData(cObject* obj);
+    void sendData(CDAPMessage* cmsg);
 
   protected:
 
@@ -45,7 +45,7 @@ class CDAP : public cSimpleModule
     LisCDAPSendData* lisCDAPSendData;
 
     //Signaling
-    void signalizeReceiveData(cMessage* msg);
+    void signalizeReceiveData(CDAPMessage* cmsg);
 
 };
 

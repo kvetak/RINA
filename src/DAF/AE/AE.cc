@@ -24,17 +24,24 @@ AE::~AE() {
 }
 
 void AE::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule();
+    cModule* catcher1 = this->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
     sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
     sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
     sigAESendData      = registerSignal(SIG_AE_DataSend);
+    sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
+
 
     //Signals that this module is processing
     lisAERcvData = new LisAEReceiveData(this);
-    catcher->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
+    catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
 
+    //  AllocationRequest from FAI
+    lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
 }
 
 void AE::initialize() {
@@ -168,9 +175,30 @@ void AE::signalizeDeallocateRequest(Flow* flow) {
 void AE::receiveData(cObject* obj) {
 }
 
+void AE::receiveAllocationRequestFromFAI(Flow* flow) {
+    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+
+    //TODO: Vesely - More sophisticated decission
+    if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
+        insertFlow(*flow);
+        this->signalizeAllocateResponsePositive(flow);
+    }
+    else {
+        this->signalizeAllocateResponseNegative(flow);
+    }
+}
+
 void AE::signalizeSendData(cMessage* msg) {
     EV << "Emits SendData signal for message " << msg->getName() << endl;
     emit(sigAESendData, msg);
+}
+
+void AE::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigAEAllocResPosi, flow);
+}
+
+void AE::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigAEAllocResNega, flow);
 }
 
 
@@ -179,6 +207,6 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
     ConnectionTableEntry* cte = ConTab->findEntryByFlow(flow);
     msg->setHandle(cte->getNorthGateIn()->getIndex());
 
-    //Pass message to CDAP
+    //Pass ControlInfo to CDAP
     signalizeSendData(msg);
 }

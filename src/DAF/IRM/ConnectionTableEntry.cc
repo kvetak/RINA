@@ -50,7 +50,7 @@ ConnectionTableEntry::~ConnectionTableEntry() {
 }
 
 std::string ConnectionTableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     if (FlowObject)
         os << FlowObject->info() << "\n";
     if (FlowAlloc)
