@@ -36,10 +36,20 @@
 //Constants
 extern const char* MSG_CREREQFLO;
 extern const char* CLS_FLOW;
+extern const char* MSG_CRERESFLOPOSI;
+extern const char* MSG_CRERESFLONEGA;
+extern const int   VAL_DEFINSTANCE;
+extern const int   VAL_FLOWPOSI;
+extern const int   VAL_FLOWNEGA;
+extern const char* VAL_FLREQ;
+extern const char* VAL_FLREQPOSI;
+extern const char* VAL_FLREQNEGA;
 
 class RIBd : public RIBdBase {
   public:
     virtual void sendCreateRequestFlow(Flow* flow);
+    virtual void sendCreateResponseNegative(Flow* flow);
+    virtual void sendCreateResponsePostive(Flow* flow);
     virtual void receiveData(CDAPMessage* cimsg);
     virtual void receiveAllocationRequestFromFAI(Flow* flow);
 
@@ -53,19 +63,32 @@ class RIBd : public RIBdBase {
     //Signals
     simsignal_t sigRIBDSendData;
     simsignal_t sigRIBDCreReqFlo;
+    simsignal_t sigRIBDCreResFloPosi;
+    simsignal_t sigRIBDCreResFloNega;
     simsignal_t sigRIBDAllocResPosi;
     simsignal_t sigRIBDCreFlow;
 
     //Listeners
     LisRIBDRcvData*             lisRIBDRcvData;
     LisRIBDCreReq*              lisRIBDCreReq;
+    LisRIBDCreReq*              lisRIBDCreReqByForward;
     LisRIBDAllReqFromFai*       lisRIBDAllReqFromFai;
+    LisRIBDCreResNega*          lisRIBDCreResNega;
+    LisRIBDCreResNega*          lisRIBDCreResNegaFromFa;
+    LisRIBDCreResPosi*          lisRIBDCreResPosi;
 
     void signalizeSendData(CDAPMessage* msg);
     void signalizeCreateRequestFlow(Flow* flow);
     void signalizeAllocateResponsePositive(Flow* flow);
     void signalizeCreateFlow(Flow* flow);
+    void signalizeCreateResponseFlowPositive(Flow* flow);
+    void signalizeCreateResponseFlowNegative(Flow* flow);
 
+    void processMCreate(CDAPMessage* msg);
+    void processMCreateR(CDAPMessage* msg);
+
+  private:
+    int invokeIdCounter;
 };
 
 #endif /* RIBDAEMON_H_ */

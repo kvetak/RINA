@@ -59,16 +59,6 @@ void IRM::initSignalsAndListeners() {
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
 
-    //Signals that this module is processing
-    //  AllocationResponseNegative from FA
-    lisAllocResNegaFa = new LisIRMAllocResNegaFa(this);
-    catcher->subscribe(SIG_FA_AllocateResponseNegative, this->lisAllocResNegaFa);
-    //  AllocationResponseNegative from FAI
-    lisAllocResNegaFai = new LisIRMAllocResNegaFai(this);
-    catcher->subscribe(SIG_FAI_AllocateResponseNegative, this->lisAllocResNegaFai);
-//    //  AllocationRequest from FAI
-//    this->lisAllocReqFai = new LisIRMAllocReqFai(this);
-//    catcher->subscribe(SIG_FAI_AllocateRequest, this->lisAllocReqFai);
     //  Allocate Request from App
     this->lisAllocReq = new LisIRMAllocReq(this);
     catcher->subscribe(SIG_AE_AllocateRequest, this->lisAllocReq);
@@ -78,23 +68,36 @@ void IRM::initSignalsAndListeners() {
 }
 
 bool IRM::createBindings(Flow* flow) {
+    Enter_Method("createBindings()");
     EV << "Attempts to create bindings and bind registration of gates"<< endl;
     //Retrieve IPC process with allocated flow and prepared bindings
 
-    cModule* Ipc = ConTable->findEntryByFlow(flow)->getIpc();
+    ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
+    //if (!cte) {
+    //    EV << "======================" << endl << flow->info() << endl;
+    //    return false;
+    //}
+    cModule* Ipc = cte->getIpc();
     cModule* Ap = this->getParentModule();
 
-    //Create connections
+    //Decide portId
+    int portId;
+    if ( DifAllocator->isAppLocal(flow->getDstApni().getApn()) )
+        portId = flow->getDstPortId();
+    else if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) )
+        portId = flow->getSrcPortId();
+    else
+        throw("Binding to inconsistant PortId occured!");
 
     //  Retrieve IPC gates
     std::ostringstream nam1;
-    nam1 << GATE_NORTHIO_ << flow->getSrcPortId();
+    nam1 << GATE_NORTHIO_ << portId;
     cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
     cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
 
     //   Add AP gates
     std::ostringstream nam2;
-    nam2 << GATE_SOUTHIO_ << flow->getSrcPortId();
+    nam2 << GATE_SOUTHIO_ << portId;
     Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
@@ -119,11 +122,34 @@ bool IRM::createBindings(Flow* flow) {
     return status;
 }
 
-void IRM::receiveAllocationRequest(cObject* obj) {
+void IRM::receiveAllocationRequest(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received Allocation Request" << endl;
 
-    Flow* flow = dynamic_cast<Flow*>(obj);
+    //Command target FA to allocate flow
+    bool status = ConTable->getFa(flow)->receiveAllocateRequest(flow);
+
+    //If AllocationRequest NOT ended by creating connections
+    if (!status)
+       EV << "Flow not allocated!\n" << flow << endl;
+}
+
+void IRM::receiveDeallocationRequest(Flow* fl) {
+    Enter_Method("receiveDeallocateRequest()");
+    EV << this->getFullPath() << " received DeallocationRequest" << endl;
+    signalizeDeallocateRequest(fl);
+}
+
+void IRM::signalizeAllocateRequest(Flow* flow) {
+    //EV << "!!!!VYemitovano" << endl;
+    //EV << "Emits AllocReq Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
+    emit(sigIRMAllocReq, flow);
+}
+
+void IRM::newFlow(Flow* flow) {
+    Enter_Method("newFlow()");
+    //Create a new record in ConnectionTable
+    ConTable->insertNew(flow);
 
     //Ask DA which IPC to use to reach dst App
     DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
@@ -147,47 +173,6 @@ void IRM::receiveAllocationRequest(cObject* obj) {
 
     //Store info into ConnectionTable
     ConTable->setFa(flow, DifAllocator->findFaInsideIpc(targetIpc));
-
-
-    //Command target FA to allocate flow
-    bool status = ConTable->getFa(flow)->receiveAllocateRequest(flow);
-
-    //If AllocationRequest ended by creating connections
-    if (status)
-        status = createBindings(flow);
-    //Allocation either failed OR app not found
-    else
-       EV << "Flow not allocated!\n" << flow << endl;
-
-    //TODO: Vesely - Change ConnectionTable status
-}
-
-void IRM::receiveDeallocationRequest(cObject* obj) {
-    Enter_Method("receiveDeallocateRequest()");
-    EV << this->getFullPath() << " received DeallocationRequest" << endl;
-    Flow* fl = dynamic_cast<Flow*>(obj);
-    signalizeDeallocateRequest(fl);
-}
-
-void IRM::receiveAllocationResponseNegativeAppNotFound(cObject* obj) {
-    EV << this->getFullPath() << " received Negative Allocation Response App not found" << endl;
-}
-
-void IRM::receiveAllocationResponseNegative(cObject* obj) {
-    //Flow* fl = dynamic_cast<Flow*>(obj);
-    EV << this->getFullPath() << " received Negative Allocation Response" << endl;
-}
-
-/*
-void IRM::receiveAllocationRequestFromFAI(cObject* obj) {
-
-}
-*/
-
-void IRM::signalizeAllocateRequest(Flow* flow) {
-    //EV << "!!!!VYemitovano" << endl;
-    //EV << "Emits AllocReq Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
-    emit(sigIRMAllocReq, flow);
 }
 
 void IRM::signalizeDeallocateRequest(Flow* flow) {
@@ -198,7 +183,8 @@ ConnectionTable* IRM::getConTable() const {
     return ConTable;
 }
 
-DA* IRM::getDifAllocator() const {
-    return DifAllocator;
+bool IRM::receiveAllocationResponsePositive(Flow* flow) {
+    Enter_Method("allocationResponsePositive()");
+    bool status = createBindings(flow);
+    return status;
 }
-

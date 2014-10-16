@@ -21,38 +21,31 @@ IRMListeners::IRMListeners(IRM* nirm) {
 }
 
 IRMListeners::~IRMListeners() {
-
+    irm = NULL;
 }
 
-void LisIRMAllocResNegaFa::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "AllocationResponseNegative{fromFA} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-    this->irm->receiveAllocationResponseNegative(obj);
+void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "AllocationRequest initiated by " << src->getFullPath()
+       << " and processed by " << irm->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+
+    if (flow) {
+       if (irm->getConTable()->findEntryByFlow(flow))
+           irm->receiveAllocationRequest(flow);
+    }
+    else
+       EV << "IRMListener received unknown object!" << endl;
 }
 
-void LisIRMAllocReqFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-}
+void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "DeallocationRequest initiated by " << src->getFullPath()
+       << " and processed by " << irm->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
 
-void LisIRMAllocResNegaFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "AllocationResponseNegative{fromFAI} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-    this->irm->receiveAllocationResponseNegative(obj);
-}
-
-void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "AllocationRequest initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-    irm->receiveAllocationRequest(obj);
-}
-
-void LisIRMAllocResNegaAppNotFound::receiveSignal(cComponent* src,
-        simsignal_t id, cObject* obj) {
-    EV << "AllocationResponseNegative{AppNotFound} initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-}
-
-void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "AllocationRequest initiated by " << src->getFullPath() << " and processed by " << irm->getFullPath() << endl;
-    irm->receiveDeallocationRequest(obj);
+    if (flow) {
+       if (irm->getConTable()->findEntryByFlow(flow))
+           irm->receiveDeallocationRequest(flow);
+    }
+    else
+       EV << "IRMListener received unknown object!" << endl;
 }

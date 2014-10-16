@@ -28,8 +28,10 @@ class RIBdBase : public cSimpleModule {
     RIBdBase();
     virtual ~RIBdBase();
 
-    virtual void sendCreateRequestFlow(Flow* obj) = 0;
-    virtual void receiveData(CDAPMessage* obj) = 0;
+    virtual void sendCreateRequestFlow(Flow* flow) = 0;
+    virtual void sendCreateResponseNegative(Flow* flow) = 0;
+    virtual void sendCreateResponsePostive(Flow* flow) = 0;
+    virtual void receiveData(CDAPMessage* flow) = 0;
     virtual void receiveAllocationRequestFromFAI(Flow* flow) = 0;
 
     const Address& getMyAddress() const;

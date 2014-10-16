@@ -160,7 +160,7 @@ Flow* Flow::dup() const {
 
 std::string Flow::getFlowName() const {
     std::stringstream os;
-    os << srcApni << "-" << dstApni;
+    os << srcApni << "<=>" << dstApni;
     return os.str();
 }
 

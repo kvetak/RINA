@@ -53,16 +53,13 @@ class FA : public FABase
     FA();
     virtual ~FA();
 
-    virtual bool receiveAllocateRequest(cObject* obj);
-    virtual void receiveAllocateResponsePositive(Flow* flow);
-    virtual void receiveAllocateResponseNegative(Flow* flow);
-    virtual void receiveDeallocateRequest(cObject* obj);
+    virtual bool receiveAllocateRequest(Flow* flow);
+    virtual void receiveDeallocateRequest(Flow* flow);
     virtual void receiveCreateFlowRequest(Flow* flow);
 
     virtual void deinstantiateFai(Flow* flow);
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
-
 
     //Signals
     //simsignal_t sigFAIAllocReq;
@@ -74,13 +71,11 @@ class FA : public FABase
 
     //Listeners
     LisFAAllocReq* lisAllocReq;
-    LisFAAllocResPosi* lisAllocResPosi;
-    LisFAAllocResNega* lisAllocResNega;
     LisFADeallocReq* lisDeallocReq;
     LisFACreReq*  lisCreReq;
-    LisFACreRes* lisCreRes;
-    LisFADelReq*  lisDelReq;
-    LisFADelRes* lisDelRes;
+    //LisFACreRes* lisCreRes;
+    //LisFADelReq*  lisDelReq;
+    //LisFADelRes* lisDelRes;
 
   protected:
     //SimpleModule overloads
@@ -99,7 +94,7 @@ class FA : public FABase
 
     void initSignalsAndListeners();
 
-    void signalizeAllocateResponseNegative(Flow* flow);
+    //void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
 };

@@ -31,16 +31,24 @@ class FAIBase : public cSimpleModule {
     virtual bool receiveAllocateResponsePositive() = 0;
     virtual void receiveAllocateResponseNegative() = 0;
     virtual bool receiveCreateRequest() = 0;
-    virtual bool receiveCreateResponsePositive() = 0;
-    virtual bool receiveCreateResponseNegative() = 0;
+    virtual bool receiveCreateResponsePositive(Flow* flow) = 0;
+    virtual bool receiveCreateResponseNegative(Flow* flow) = 0;
     virtual void receiveDeallocateRequest() = 0;
     virtual void receiveDeleteRequest() = 0;
     virtual void receiveDeleteResponse() = 0;
 
+    Flow* getFlow()  {
+        return FlowObject;
+    }
+
   protected:
+    Flow* FlowObject;
+
     //SimpleModule overloads
     virtual void initialize() = 0;
     virtual void handleMessage(cMessage *msg) = 0;
+
+
 };
 
 #endif /* FAIBASE_H_ */

@@ -100,7 +100,7 @@ public:
     virtual ~EFCP();
 
 
-    EFCPInstance* createEFCPI(Flow* flow);
+    EFCPInstance* createEFCPI(Flow* flow, int cepId);
 
 };
 

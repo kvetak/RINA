@@ -15,9 +15,8 @@
 
 #include <FAIBase.h>
 
-FAIBase::FAIBase() {
-    // TODO Auto-generated constructor stub
-
+FAIBase::FAIBase() : FlowObject(NULL)
+{
 }
 
 FAIBase::~FAIBase() {

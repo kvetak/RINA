@@ -50,22 +50,42 @@ void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
         fai->receiveAllocateRequest();
 }
 
-void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "CreateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
-    fai->receiveCreateResponsePositive();
-}
-
 void LisFAICreReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     fai->receiveCreateRequest();
 }
 
+void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponsePositive initiated by " << src->getFullPath()
+       << " and processed by " << fai->getFullPath() << endl;
+
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        //Only FAI with same CepId and PortId process this call
+        if (fai->getFlow()->getSrcPortId() == flow->getSrcPortId()
+                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() )
+            fai->receiveCreateResponsePositive(flow);
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+}
+
 void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "CreateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
-    fai->receiveCreateResponseNegative();
+    EV << "CreateResponseNegative initiated by " << src->getFullPath()
+       << " and processed by " << fai->getFullPath() << endl;
+
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        //Only FAI with same CepId and PortId process this call
+        if (fai->getFlow()->getSrcPortId() == flow->getSrcPortId()
+                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() )
+        fai->receiveCreateResponseNegative(flow);
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
 }
 
 void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,

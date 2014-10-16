@@ -113,7 +113,9 @@ void DTP::handleMsgFromRmt(PDU* msg){
 
   if(dynamic_cast<DataTransferPDU*>(msg)){
     DataTransferPDU* pdu = (DataTransferPDU*)msg;
-    send(pdu->getMUserData(), "efcpiIo$o");
+    cMessage* sdu = pdu->getMUserData();
+    take(check_and_cast<cOwnedObject*>(sdu) );
+    send(sdu, "efcpiIo$o");
   }
 }
 

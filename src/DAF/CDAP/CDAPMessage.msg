@@ -23,7 +23,6 @@ cplusplus {{
 class noncobject Address;
 class noncobject ObjectPtr;
 
-
 //Message operation codes
 enum opCode_t {
 	M_CONNECT = 0;

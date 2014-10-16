@@ -28,12 +28,14 @@ void LisAEReceiveData::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveData initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
+
     ae->receiveData(obj);
 }
 
 void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath() << " and processed by " << ae->getFullPath() << endl;
+    EV << "XXXXXXXXXXXXXxAllocationRequest{fromFAI} initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //Check whether dstApp is local...
@@ -43,4 +45,20 @@ void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     }
     else
         EV << "AEListener received unknown object!" << endl;
+}
+
+void LisAEAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateResponsePositive initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    //TODO: Vesely
+
+}
+
+void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateResponseNegative initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    //TODO: Vesely
+
 }

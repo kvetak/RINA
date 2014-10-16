@@ -60,3 +60,25 @@ void LisRIBDAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
         EV << "RIBdListener received unknown object!" << endl;
 
 }
+
+void LisRIBDCreResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponseFlowNegative initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->sendCreateResponseNegative(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+}
+
+void LisRIBDCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponseFlowPositive initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->sendCreateResponsePostive(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+}

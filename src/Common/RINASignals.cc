@@ -14,6 +14,8 @@ const char* SIG_AE_DataSend                     = "AE-DataSend";
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
 const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
+const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
+const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 

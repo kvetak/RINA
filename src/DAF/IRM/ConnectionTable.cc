@@ -66,7 +66,7 @@ ConnectionTableEntry* ConnectionTable::findEntryByFlow(Flow* flow) {
         //EV << "Comparing" << it->getFlowObject() << " and " << flow << endl;
         //EV << "=========NOVY=========\n" << it->getFlowObject()->info() << endl;
         //EV << "=========STARY=========\n" << flow->info() << endl;
-        if ( it->getFlowObject() == flow )
+        if ( *(it->getFlowObject()) == *flow )
             return &(*it);
     }
     return NULL;
@@ -112,6 +112,16 @@ cGate* ConnectionTable::findOutputGate(cGate* input) {
             return it->getNorthGateOut();
     }
     return NULL;
+}
+
+bool ConnectionTable::setStatus(Flow* flow, ConnectionTableEntry::ConnectionStatus status) {
+    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    if (cte) {
+        cte->setConStatus(status);
+        return true;
+    }
+    else
+        return false;
 }
 
 void ConnectionTable::handleMessage(cMessage *msg)

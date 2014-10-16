@@ -310,7 +310,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     else if ( difAllocator->isAppLocal(flow->getSrcApni().getApn()) )
         portId = flow->getSrcPortId();
     else
-            throw("Binding to inconsistant PortId occured!");
+        throw("Binding to inconsistant PortId occured!");
 
     // expand the given portId so it's unambiguous within this IPC
     std::string combinedPortId = normalizePortId(ipc->getFullName(), portId);

@@ -82,18 +82,6 @@ void AEPing::initialize()
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
-
-    //FIXME: Vesely - Move to StartCommunication processing
-    //Flow
-    APNamingInfo src = this->getApni();
-    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                     this->dstAeName, this->dstAeInstance);
-
-    Flow fl = Flow(src, dst);
-    fl.setQosParameters(this->getQoSRequirements());
-    //Insert it to the Flows ADT
-    insertFlow(fl);
-
     //Schedule AllocateRequest
     if (startAt > 0)
         prepareAllocateRequest();
@@ -111,14 +99,25 @@ void AEPing::initialize()
 void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), "StartCommunication") ) {
-        //signalizeAllocateRequest(&flows.back());
         //FIXME: Vesely - last flow in a list?!
-        Irm->receiveAllocationRequest(&flows.back());
+
+        //Flow
+        APNamingInfo src = this->getApni();
+        APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
+                                         this->dstAeName, this->dstAeInstance);
+
+        Flow fl = Flow(src, dst);
+        fl.setQosParameters(this->getQoSRequirements());
+
+        //Insert it to the Flows ADT
+        insertFlow(fl);
+
+        sendAllocationRequest(&flows.back());
     }
-    else if ( !strcmp(msg->getName(), "StopCommunication") )
-        //signalizeDeallocateRequest(&flows.back());
-        //Irm->receiveDeallocationRequest(&flows.back());
-        EV << "StopCommunication";
+    else if ( !strcmp(msg->getName(), "StopCommunication") ) {
+        //FIXME: Vesely - last flow in a list?!
+        //sendDeallocationRequest(&flows.back());
+    }
     else if ( strstr(msg->getName(), "PING") ) {
         //Create PING messsage
         std::ostringstream ss;

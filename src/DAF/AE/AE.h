@@ -36,7 +36,14 @@ class AE : public AEBase
 
     void receiveData(cObject* obj);
     void sendData(Flow* flow, CDAPMessage* msg);
+
+    void sendAllocationRequest(Flow* flow);
+    void sendDeallocationRequest(Flow* flow);
+
     void receiveAllocationRequestFromFAI(Flow* flow);
+
+    void receiveAllocationResponseNegative(Flow* flow);
+    void receiveAllocationResponsePositive(Flow* flow);
 
   protected:
     IRM* Irm;
@@ -62,6 +69,8 @@ class AE : public AEBase
     //Listeners
     LisAEReceiveData* lisAERcvData;
     LisAEAllReqFromFai* lisAEAllReqFromFai;
+    LisAEAllResPosi* lisAEAllResPosi;
+    LisAEAllResNega* lisAEAllResNega;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
@@ -69,9 +78,6 @@ class AE : public AEBase
     void signalizeSendData(cMessage* msg);
     void signalizeAllocateResponsePositive(Flow* flow);
     void signalizeAllocateResponseNegative(Flow* flow);
-
-
-
 };
 
 #endif

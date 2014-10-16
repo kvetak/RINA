@@ -34,7 +34,6 @@ void AE::initSignalsAndListeners() {
     sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
     sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
 
-
     //Signals that this module is processing
     lisAERcvData = new LisAEReceiveData(this);
     catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
@@ -42,6 +41,12 @@ void AE::initSignalsAndListeners() {
     //  AllocationRequest from FAI
     lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
     catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
+
+    lisAEAllResPosi = new LisAEAllResPosi(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
+
+    lisAEAllResNega = new LisAEAllResNega(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResPosi);
 }
 
 void AE::initialize() {
@@ -154,11 +159,11 @@ void AE::insertFlow(Flow& flow) {
     //Add a new flow to the end of the Flow list
     flows.push_back(flow);
 
-    //Create a new record in ConnectionTable
-    ConTab->insertNew(&flows.back());
+    //Prepare flow
+    Irm->newFlow(&flows.back());
 
     //Interconnect IRM and AE
-    bool status = createBinding(flows.back());
+    bool status = createBinding(flow);
     if (!status) {
         throw("Gate inconsistency during creation of a new flow!");
     }
@@ -176,11 +181,17 @@ void AE::receiveData(cObject* obj) {
 }
 
 void AE::receiveAllocationRequestFromFAI(Flow* flow) {
+    Enter_Method("receiveAllocationRequestFromFai()");
     //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
 
     //TODO: Vesely - More sophisticated decission
     if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
+        //Initialize flow within AE
         insertFlow(*flow);
+        //EV << "======================" << endl << flow->info() << endl;
+        //Interconnect IRM and IPC
+        Irm->receiveAllocationResponsePositive(flow);
+
         this->signalizeAllocateResponsePositive(flow);
     }
     else {
@@ -197,16 +208,47 @@ void AE::signalizeAllocateResponsePositive(Flow* flow) {
     emit(sigAEAllocResPosi, flow);
 }
 
+void AE::receiveAllocationResponseNegative(Flow* flow) {
+    Enter_Method("receiveAllocationResponseNegative()");
+    //Change allocation status
+    ConTab->setStatus(flow, ConnectionTableEntry::CON_ERROR);
+}
+
+void AE::receiveAllocationResponsePositive(Flow* flow) {
+    Enter_Method("receiveAllocationResponsePositive()");
+    //Interconnect IRM and IPC
+    Irm->receiveAllocationResponsePositive(flow);
+
+    //Change allocation status
+    ConTab->setStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
+
+    //TODO: Vesely - Work with return value?
+}
+
+void AE::sendAllocationRequest(Flow* flow) {
+    //TODO: Vesely - Substitute with signal
+    Irm->receiveAllocationRequest(flow);
+}
+
+void AE::sendDeallocationRequest(Flow* flow) {
+    //TODO: Vesely - Substitute with signal
+    Irm->receiveDeallocationRequest(flow);
+}
+
 void AE::signalizeAllocateResponseNegative(Flow* flow) {
     emit(sigAEAllocResNega, flow);
 }
 
-
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
     ConnectionTableEntry* cte = ConTab->findEntryByFlow(flow);
-    msg->setHandle(cte->getNorthGateIn()->getIndex());
-
-    //Pass ControlInfo to CDAP
-    signalizeSendData(msg);
+    if (cte && cte->getNorthGateIn()) {
+        msg->setHandle(cte->getNorthGateIn()->getIndex());
+        //Pass Data to CDAP
+        signalizeSendData(msg);
+    }
+    else {
+        EV << "Sending data before flow is allocated!" << endl;
+        delete msg;
+    }
 }

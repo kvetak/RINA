@@ -17,7 +17,8 @@ extern const char* SIG_AE_DataSend;
 extern const char* SIG_RIBD_DataSend;
 extern const char* SIG_RIBD_CreateRequestFlow;
 extern const char* SIG_RIBD_CreateFlow;
-
+extern const char* SIG_RIBD_CreateFlowResponseNegative;
+extern const char* SIG_RIBD_CreateFlowResponsePositive;
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;

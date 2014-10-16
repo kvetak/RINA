@@ -46,8 +46,8 @@ class FAI : public FAIBase  {
     bool receiveAllocateResponsePositive();
     void receiveAllocateResponseNegative();
     bool receiveCreateRequest();
-    bool receiveCreateResponsePositive();
-    bool receiveCreateResponseNegative();
+    bool receiveCreateResponsePositive(Flow* flow);
+    bool receiveCreateResponseNegative(Flow* flow);
     void receiveDeallocateRequest();
     void receiveDeleteRequest();
     void receiveDeleteResponse();
@@ -57,16 +57,12 @@ class FAI : public FAIBase  {
     const FABase* getFa() const {
         return FaModule;
     }
-    Flow* getFlow()  {
-        return FlowObject;
-    }
 
   protected:
     int portId;
     int cepId;
 
     FABase* FaModule;
-    Flow* FlowObject;
 
     //Signals
     simsignal_t sigFAIAllocReq;
