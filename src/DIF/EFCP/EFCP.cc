@@ -73,6 +73,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
   dtpModule->setFlow(flow);
+  dtpModule->setCepId(cepId);
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);

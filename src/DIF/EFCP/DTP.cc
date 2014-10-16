@@ -19,6 +19,7 @@ Define_Module(DTP);
 
 DTP::DTP()
 {
+  difAllocator = ModuleAccess<DA>(MOD_DA).get();
   // TODO Auto-generated constructor stub
 
 }
@@ -97,10 +98,20 @@ void DTP::handleMsgFromDelimiting(Data* msg){
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
   pdu->setConnId(this->flow->getConId());
-  pdu->setSrcAddr(this->flow->getSrcAddr());
-  pdu->setDstAddr(this->flow->getDstAddr());
-  pdu->setSrcApn(this->flow->getDstApni().getApn());
-  pdu->setDstApn(this->flow->getSrcApni().getApn());
+
+  if(difAllocator->isAppLocal(flow->getSrcApni().getApn())){
+    pdu->setSrcAddr(this->flow->getSrcAddr());
+      pdu->setDstAddr(this->flow->getDstAddr());
+      pdu->setSrcApn(this->flow->getDstApni().getApn());
+      pdu->setDstApn(this->flow->getSrcApni().getApn());
+  }else{
+    pdu->setSrcAddr(this->flow->getDstAddr());
+      pdu->setDstAddr(this->flow->getSrcAddr());
+      pdu->setSrcApn(this->flow->getSrcApni().getApn());
+      pdu->setDstApn(this->flow->getDstApni().getApn());
+  }
+
+
 
 
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
@@ -1000,4 +1011,8 @@ void DTP::schedule(DTPTimers *timer, double time){
 
 void DTP::setFlow(Flow* flow){
   this->flow = flow;
+}
+
+void DTP::setCepId(int cepId){
+  this->cepId = cepId;
 }

@@ -29,6 +29,9 @@
 #include "SDU.h"
 #include "RMT.h"
 
+#include "ModuleAccess.h"
+#include "DA.h"
+
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
@@ -44,6 +47,9 @@ class DTP : public cSimpleModule
     DTCP* dtcp;
     RMT* rmt;
     Flow* flow;
+    DA* difAllocator;
+
+    int cepId;
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -156,6 +162,7 @@ class DTP : public cSimpleModule
     bool write(int portId, unsigned char *buffer, int len);
 
     void setFlow(Flow* flow);
+    void setCepId(int cepId);
 
 
 
