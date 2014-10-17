@@ -48,12 +48,12 @@ void DTCPState::setImmediate(bool immediate)
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
-  return rcvrRightWinEdgeSent;
+  return rcvRightWinEdgeSent;
 }
 
-void DTCPState::setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent)
+void DTCPState::setRcvrRightWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
-  this->rcvrRightWinEdgeSent = rcvrRightWinEdgeSent;
+  this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const

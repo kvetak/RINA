@@ -27,7 +27,8 @@ DTP::~DTP()
   // TODO Auto-generated destructor stub
 }
 
-void DTP::initialize(int step){
+void DTP::initialize(int step)
+{
 
   northI = this->gateHalf(GATE_DTP_NORTHIO, cGate::INPUT);
   northO = this->gateHalf(GATE_DTP_NORTHIO, cGate::OUTPUT);
@@ -47,34 +48,36 @@ void DTP::setConnId(const ConnectionId& connId)
 
 void DTP::handleMessage(cMessage *msg)
 {
-  if(msg->isSelfMessage()){
+  if (msg->isSelfMessage())
+  {
     /* Timers */
     DTPTimers* timer = static_cast<DTPTimers*>(msg);
-    switch(timer->getType()){
-      case(DTP_RX_EXPIRY_TIMER):{
+    switch (timer->getType())
+    {
+      case (DTP_RX_EXPIRY_TIMER): {
         handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
         schedule(timer);
 
         break;
       }
 
-      case(DTP_SENDING_RATE_TIMER):{
+      case (DTP_SENDING_RATE_TIMER): {
         handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
         schedule(timer);
         break;
       }
 
-      case(DTP_RCVR_INACTIVITY_TIMER):{
+      case (DTP_RCVR_INACTIVITY_TIMER): {
         handleDTPRcvrInactivityTimer(static_cast<RcvrInactivityTimer*>(timer));
         break;
       }
 
-      case(DTP_SENDER_INACTIVITY_TIMER):{
+      case (DTP_SENDER_INACTIVITY_TIMER): {
         handleDTPSenderInactivityTimer(static_cast<SenderInactivityTimer*>(timer));
         break;
       }
 
-      case(DTP_A_TIMER):{
+      case (DTP_A_TIMER): {
         handleDTPATimer(static_cast<ATimer*>(timer));
         break;
       }
@@ -85,23 +88,30 @@ void DTP::handleMessage(cMessage *msg)
 //        break;
 //      }
     }
-  }else{
+  }
+  else
+  {
 
     /* Either PDUs from RMT or SDUs from AP */
-      if(msg->arrivedOn(northI->getId())){
-          //handle SDUs
+    if (msg->arrivedOn(northI->getId()))
+    {
+      //handle SDUs
 //          handleSDUs((CDAPMessage*) msg);
-        handleMsgFromDelimiting((Data*) msg);
+      handleMsgFromDelimiting((Data*) msg);
 
-      }else if(msg->arrivedOn(southI->getId())){
-        handleMsgFromRmt((PDU*) msg);
-      }
+    }
+    else if (msg->arrivedOn(southI->getId()))
+    {
+      handleMsgFromRmt((PDU*) msg);
+    }
   }
 
 }
 
+void DTP::handleMsgFromDelimiting(Data* msg)
+{
 
-void DTP::handleMsgFromDelimiting(Data* msg){
+  cancelEvent(senderInactivityTimer);
 
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
@@ -111,72 +121,78 @@ void DTP::handleMsgFromDelimiting(Data* msg){
   pdu->setSrcApn(this->flow->getDstApni().getApn());
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 
-
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
   send(pdu, southO);
 
 }
 
-void DTP::handleMsgFromRmt(PDU* msg){
+void DTP::handleMsgFromRmt(PDU* msg)
+{
 
-  if(dynamic_cast<DataTransferPDU*>(msg)){
-    DataTransferPDU* pdu = (DataTransferPDU*)msg;
+  if (dynamic_cast<DataTransferPDU*>(msg))
+  {
+    DataTransferPDU* pdu = (DataTransferPDU*) msg;
     send(pdu->getMUserData(), northO);
   }
 }
 
-void DTP::handleSDUs(CDAPMessage* cdap){
+void DTP::handleSDUs(CDAPMessage* cdap)
+{
 
-    cancelEvent(senderInactivityTimer);
+  cancelEvent(senderInactivityTimer);
 
 //    this->delimit(buffer, len);
-    delimit(cdap);
+//  delimit(cdap);
 
-    /* Now the data from buffer are copied to SDUs so we can free the memory */
+  /* Now the data from buffer are copied to SDUs so we can free the memory */
 //    free(buffer);
+  this->generatePDUs();
 
-    this->generatePDUs();
-
-    /* Iterate over generated PDUs and decide if we can send them */
-    this->trySendGenPDUs();
+  /* Iterate over generated PDUs and decide if we can send them */
+  this->trySendGenPDUs();
 
   //  /* iterate over postablePDUs */
   //  this->sendPostablePDUsToRMT();
 
-    schedule(senderInactivityTimer);
+  schedule(senderInactivityTimer);
 
 }
 /**
  *
  * @param timer
  */
-void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer){
+void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
+{
   runRxTimerExpiryPolicy(timer);
 }
 
-void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer){
+void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
+{
   //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
   dtcp->flowControl->pdusSentInTimeUnit = 0;
   state.setRateFullfilled(false);
 
 }
 
-
-void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer){
+void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)
+{
 
   runRcvrInactivityTimerPolicy();
 
 }
 
-void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer){
+void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer)
+{
   runSenderInactivityTimerPolicy();
 
 }
 
-void DTP::handleDTPATimer(ATimer*  timer){
+void DTP::handleDTPATimer(ATimer* timer)
+{
 
-  if(state.isDtcpPresent()){
+  if (state.isDtcpPresent())
+  {
     runSendingAckPolicy(timer);
   }
 }
@@ -205,32 +221,54 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
   return true;
 }
 
-unsigned int DTP::delimit(CDAPMessage* msg)
+unsigned int DTP::delimit(SDU* sdu)
 {
 
-  unsigned int offset = 0, size = 0, counter = 0;
-
-  if (size + msg->getSize() < state.getMaxFlowSduSize())
+  //TODO B2 Does PDU header counts to MaxFlowPDUSize?
+  if (sdu->getSize() > state.getMaxFlowPduSize())
   {
-    SDU *sdu = new SDU();
-    sdu->addUserData(msg);
+    unsigned int size = state.getMaxFlowPduSize();
+    //SDU is bigger than Max Allowed PDU
+    //S/DUFrag *frag = new SDUFrag
 
-    sduQ.push_back(sdu);
-
-    counter++;
+    SDU* tmp;
+    for (unsigned int i = 0; i * size < sdu->getSize(); i++)
+    {
+      tmp = sdu->genFragment(size, i, i * size);
+      dataQ.push_back(tmp);
+      return i;
+    }
   }
   else
   {
-    do {
-
-
-    counter++;
-    }while(size < msg->getSize());
+    dataQ.push_back(sdu);
+    return 1;
   }
 
+  //old
+//  unsigned int offset = 0, size = 0, counter = 0;
+//
+//  if (size + sdu->getSize() < state.getMaxFlowSduSize())
+//  {
+////    SDU *sdu = new SDU();
+//    sdu->addUserData(sdu);
+//
+//    sduQ.push_back(sdu);
+//
+//    counter++;
+//  }
+//  else
+//  {
+//    do
+//    {
+//
+//      counter++;
+//    } while (size < sdu->getSize());
+//  }
+//
+//  return counter;
 
-
-    //discard rest of this method
+  //discard rest of this method
 //    do
 //    {
 ////        if()
@@ -278,8 +316,8 @@ unsigned int DTP::delimit(unsigned char *buffer, unsigned int len)
   return counter;
 }
 
-
-unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len){
+unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len)
+{
   unsigned int counter = 0;
 
 //  if()
@@ -435,7 +473,6 @@ void DTP::generatePDUs()
 void DTP::trySendGenPDUs()
 {
 
-
   if (state.isDtcpPresent())
   {
     //postablePDUs = empty;
@@ -446,69 +483,88 @@ void DTP::trySendGenPDUs()
       std::vector<PDU*>::iterator it;
       for (it = generatedPDUs.begin(); it != generatedPDUs.end(); it = generatedPDUs.begin())
       {
-        if(state.isWinBased()){
+        if (state.isWinBased())
+        {
           if ((*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge())
           {
             /* The Window is Open. */
             runTxControlPolicy();
             /* Watchout because the current 'it' could be freed */
-          }else{
+          }
+          else
+          {
             /* The Window is Closed */
             state.setClosedWindow(true);
-            if(state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() -1){
+            if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
+            {
               /* Put PDU on the closedWindowQueue */
               closedWindowQ.push_back((*it));
               generatedPDUs.erase(it);
-            }else{
+            }
+            else
+            {
               runFlowControlOverrunPolicy();
             }
           }
-        }// end of Window based
+        }      // end of Window based
 
-        if(state.isRateBased()){
-          if(dtcp->flowControl->pdusSentInTimeUnit < dtcp->flowControl->sendingRate){
+        if (state.isRateBased())
+        {
+          if (dtcp->flowControl->pdusSentInTimeUnit < dtcp->flowControl->sendingRate)
+          {
             runNoRateSlowDownPolicy();
-          }else{
+          }
+          else
+          {
             /* Exceeding Sending Rate */
             runNoOverrideDefaultPeakPolicy();
           }
-        }// end of RateBased
+        }      // end of RateBased
 
-        if(state.isClosedWindow() ^ state.isRateFullfilled()){
+        if (state.isClosedWindow() ^ state.isRateFullfilled())
+        {
           runReconcileFlowControlPolicy();
         }
-      }//end of for
-    }else{
+      }      //end of for
+    }
+    else
+    {
       //TODO A1 This should probably put ALL generatedPDUs to postablePDUs
       std::vector<PDU*>::iterator it;
-      for (it = generatedPDUs.begin(); it != generatedPDUs.end();){
+      for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
+      {
         postablePDUs.push_back((*it));
         it = generatedPDUs.erase(it);
       }
     }
 
     /* Iterate over postablePDUs and give them to the RMT */
-    if(state.isRxPresent()){
+    if (state.isRxPresent())
+    {
       std::vector<PDU*>::iterator it;
-      for (it = postablePDUs.begin(); it != postablePDUs.end();){
+      for (it = postablePDUs.begin(); it != postablePDUs.end();)
+      {
         /* Put a copy of each PDU in the RetransmissionQueue */
         //new rxTimerMessage
         RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
         rxExpTimer->setPdu((*it)->dup());
 
         rxQ.push_back(rxExpTimer);
-        scheduleAt(simTime() + getRxTime(),rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+        scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
         sendToRMT((*it));
 //        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
 
         it = postablePDUs.erase(it);
       }
-    }else{
+    }
+    else
+    {
       /*No Retransmission Control is present, but FlowControl */
       /* Post all postablePDUs to RMT */
       std::vector<PDU*>::iterator it;
-      for (it = postablePDUs.begin(); it != postablePDUs.end();){
+      for (it = postablePDUs.begin(); it != postablePDUs.end();)
+      {
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
         //TODO A! change to send using omnet messages
 //        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
@@ -516,11 +572,14 @@ void DTP::trySendGenPDUs()
       }
 
     }
-  }else{
+  }
+  else
+  {
     /* DTCP is not present */
     /* Post all generatedPDUs to RMT */
     std::vector<PDU*>::iterator it;
-    for (it = postablePDUs.begin(); it != postablePDUs.end();){
+    for (it = postablePDUs.begin(); it != postablePDUs.end();)
+    {
       //TODO A! Where do I get destAddr? Probably from FlowAllocator
       APNamingInfo* apn = new APNamingInfo();
       //TODO A! change to send using omnet messages
@@ -530,18 +589,19 @@ void DTP::trySendGenPDUs()
     }
   }
 
-
 }
 
+void DTP::fromRMT(PDU* pdu)
+{
 
-void DTP::fromRMT(PDU* pdu){
-
-  if(state.isFlowControlPresent()){
+  if (state.isFlowControlPresent())
+  {
     dtcp->resetWindowTimer();
 
   }
   // if PDU.DRF == true
-  if((pdu->getFlags() & 0x80) == 0x80){
+  if ((pdu->getFlags() & 0x80) == 0x80)
+  {
     /* Case 1) DRF is set - either first PDU or new run */
     //TODO A! Invoke delimiting delimitFromRMT()
     delimitFromRMT(pdu, pdu->getUserDataArraySize());
@@ -555,14 +615,18 @@ void DTP::fromRMT(PDU* pdu){
 
     runInitialSequenceNumberPolicy();
 
-    if(state.isDtcpPresent()){
+    if (state.isDtcpPresent())
+    {
       /* Update RxControl */
       svUpdate(pdu->getSeqNum());
     }
 
-  }else{
+  }
+  else
+  {
     /* Not the start of a run */
-    if(pdu->getSeqNum() < state.getRcvLeftWinEdge()){
+    if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
+    {
       /* Case 2) A Real Duplicate */
       //Discard PDU and increment counter of dropped duplicates PDU
       delete pdu;
@@ -574,11 +638,13 @@ void DTP::fromRMT(PDU* pdu){
       return;
     }
 
-    if(state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd()){
+    if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+    {
       /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
       //TODO A!
       //if a duplicate among the gaps then // search reassemblyQ?
-      if(false){
+      if (false)
+      {
         /* Case 3) Duplicate Among gaps */
 
         //Discard PDU and increment counter of dropped duplicates PDU
@@ -588,13 +654,18 @@ void DTP::fromRMT(PDU* pdu){
 
         //TODO A! send an Ack/Flow Control PDU with current window values
         return;
-      }else{
+      }
+      else
+      {
         /* Case 3) This goes in a gap */
         /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
         reassemblyPDUQ.push_back(pdu);
-        if(state.isDtcpPresent()){
+        if (state.isDtcpPresent())
+        {
           svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
-        }else{
+        }
+        else
+        {
           state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
           /* No A-Timer necessary, already running */
         }
@@ -604,27 +675,37 @@ void DTP::fromRMT(PDU* pdu){
       }
     }
 
-    if(pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1){
+    if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+    {
       state.incMaxSeqNumRcvd();
-      if(state.isDtcpPresent()){
+      if (state.isDtcpPresent())
+      {
         svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-      }else{
+      }
+      else
+      {
         state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
         //TODO A! start A-Timer (for this PDU)
       }
       delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
 
-    }else{
+    }
+    else
+    {
       /* Case 5) it is out of order */
-      if(pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1){
-        if(state.isDtcpPresent()){
+      if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+      {
+        if (state.isDtcpPresent())
+        {
           svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-        }else{
+        }
+        else
+        {
           //TODO A! start A-timer
         }
         delimitFromRMT(pdu, pdu->getUserDataArraySize());
       }
-      schedule(rcvrInactivityTimer);//TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
+      schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
 
       //TODO A1 DIF.integrity
       /* If we are encrypting, we can't let PDU sequence numbers roll over */
@@ -633,7 +714,6 @@ void DTP::fromRMT(PDU* pdu){
       ///* Security requires a new flow */
       //RequestFAICreateNewConnection( PDU.FlowID )
       //Fi
-
     }
 
   }
@@ -652,10 +732,6 @@ void DTP::fromRMT(PDU* pdu){
 //
 //  }
 //}
-
-
-
-
 
 /**
  * This method calls specified function to perform SDU protection.
@@ -722,14 +798,16 @@ void DTP::runTxControlPolicy()
     {
       state.setClosedWindow(true);
     }
-  }else{
-    txControlPolicy->run((cObject *)this);
+  }
+  else
+  {
+    txControlPolicy->run((cObject *) this);
   }
 
 }
 
-
-void DTP::runFlowControlOverrunPolicy(){
+void DTP::runFlowControlOverrunPolicy()
+{
   /* Default */
   closedWindowQ.push_back(generatedPDUs.front());
   generatedPDUs.erase(generatedPDUs.begin());
@@ -737,29 +815,32 @@ void DTP::runFlowControlOverrunPolicy(){
   //TODO A1 How to block further Write API calls on this port-id
 }
 
-
-void DTP::runNoRateSlowDownPolicy(){
+void DTP::runNoRateSlowDownPolicy()
+{
   /* Default */
   postablePDUs.push_back(generatedPDUs.front());
   generatedPDUs.erase(generatedPDUs.begin());
   dtcp->flowControl->pdusSentInTimeUnit++;
 }
 
-
-void DTP::runNoOverrideDefaultPeakPolicy(){
+void DTP::runNoOverrideDefaultPeakPolicy()
+{
   /*Default */
   state.setRateFullfilled(true);
-  if(state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1){
+  if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
+  {
     closedWindowQ.push_back(generatedPDUs.front());
     generatedPDUs.erase(generatedPDUs.begin());
   }
 }
 
-void DTP::runReconcileFlowControlPolicy(){
+void DTP::runReconcileFlowControlPolicy()
+{
   /* Default (is empty) */
 }
 
-bool DTP::runInitialSequenceNumberPolicy(){
+bool DTP::runInitialSequenceNumberPolicy()
+{
 
   /*Default*/
   //TODO B1 set it to random number
@@ -767,25 +848,34 @@ bool DTP::runInitialSequenceNumberPolicy(){
   return false;
 }
 
-void DTP::runRcvrFlowControlPolicy(){
+void DTP::runRcvrFlowControlPolicy()
+{
   /* This policy has to be the one to impose the condition to set WindowClosed to True */
   /* Default */
-  if(dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold){
+  if (dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold)
+  {
     dtcp->flowControl->rcvRightWindowEdge++;
-  }else{
+  }
+  else
+  {
     /* Buffers are getting low */
     //Leave RightWindowEdge unchanged.
   }
   /* End default */
 }
 
-void DTP::runRateReductionPolicy(){
+void DTP::runRateReductionPolicy()
+{
   /* Default */
-  if(dtcp->flowControl->rcvBuffersPercentFree <= dtcp->flowControl->rcvBufferPercentThreshold){
+  if (dtcp->flowControl->rcvBuffersPercentFree <= dtcp->flowControl->rcvBufferPercentThreshold)
+  {
     dtcp->flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
-  }else{
-    if(dtcp->flowControl->rcvrRate < dtcp->flowControl->configRcvrRate &&
-        dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold){
+  }
+  else
+  {
+    if (dtcp->flowControl->rcvrRate < dtcp->flowControl->configRcvrRate
+        && dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold)
+    {
       //set rate back to config rate
       dtcp->flowControl->rcvrRate = dtcp->flowControl->configRcvrRate;
     }
@@ -794,53 +884,65 @@ void DTP::runRateReductionPolicy(){
 }
 
 /* TODO A! either add argument to this policy (PDU* pdu) or variable currentPDU to DTP class */
-void DTP::runRcvrAckPolicy(){
+void DTP::runRcvrAckPolicy()
+{
   /* Default */
-  if(dtcp->dtcpState->isImmediate()){
+  if (dtcp->dtcpState->isImmediate())
+  {
     //TODO A!
     //Update LeftWindowEdge removing allowed gaps;
     //send an Ack/FlowControlPDU
     //stop any A-Timers asscociated with this PDU and earlier ones.
 
-  }else{
+  }
+  else
+  {
     //set A-timer for this PDU
   }
 }
 
-void DTP::runReceivingFlowControlPolicy(){
-  if(state.isWinBased()){
+void DTP::runReceivingFlowControlPolicy()
+{
+  if (state.isWinBased())
+  {
     //TODO A!
     //Send FlowControl PDU /* Already updated the window and not sending Ack */
   }
 }
 
-void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer){
+void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
+{
 
   PDU* pdu = timer->getPdu();
-/*  unsigned int seqNum = pdu->getSeqNum();
-  std::vector<RxExpiryTimer*>::iterator it;
+  /*  unsigned int seqNum = pdu->getSeqNum();
+   std::vector<RxExpiryTimer*>::iterator it;
    Retransmitt all PDUs that have SeqNum less or equal to the one that just expired?
-  for(it = rxQ.begin(); it != rxQ.end(); ++it){
-    if((*it)->getPdu()->getSeqNum() <= seqNum){
-      sendToRMT((*it)->getPdu());
-      (*it)->setExpiryCount((*it)->getExpiryCount() + 1);
-    }
-  }*/
+   for(it = rxQ.begin(); it != rxQ.end(); ++it){
+   if((*it)->getPdu()->getSeqNum() <= seqNum){
+   sendToRMT((*it)->getPdu());
+   (*it)->setExpiryCount((*it)->getExpiryCount() + 1);
+   }
+   }*/
 
-  if(timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1){
+  if (timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1)
+  {
     //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
-  }else{
+  }
+  else
+  {
     sendToRMT(pdu);
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
 
 }
 
-void DTP::runRcvrInactivityTimerPolicy(){
+void DTP::runRcvrInactivityTimerPolicy()
+{
 
   /* Default */
   dtcp->dtcpState->setSetDrfFlag(true);
-  if(runInitialSequenceNumberPolicy()){
+  if (runInitialSequenceNumberPolicy())
+  {
     state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
   }
 
@@ -858,11 +960,13 @@ void DTP::runRcvrInactivityTimerPolicy(){
 
 }
 
-void DTP::runSenderInactivityTimerPolicy(){
+void DTP::runSenderInactivityTimerPolicy()
+{
 
   /* Default */
   dtcp->dtcpState->setSetDrfFlag(true);
-  if(runInitialSequenceNumberPolicy()){
+  if (runInitialSequenceNumberPolicy())
+  {
     state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
   }
 
@@ -880,7 +984,8 @@ void DTP::runSenderInactivityTimerPolicy(){
 
 }
 
-bool DTP::runSendingAckPolicy(ATimer* timer){
+bool DTP::runSendingAckPolicy(ATimer* timer)
+{
   /* Default */
   //TODO A!
   unsigned int gap = getAllowableGap();
@@ -888,7 +993,8 @@ bool DTP::runSendingAckPolicy(ATimer* timer){
   unsigned int leftWindowEdge = state.getRcvLeftWinEdge();
 
   //TODO Co to je za hovnokod?
-  if(leftWindowEdge + 1 == leftWindowEdge < seqNum  && leftWindowEdge + gap > seqNum){
+  if (leftWindowEdge + 1 == leftWindowEdge < seqNum && leftWindowEdge + gap > seqNum)
+  {
     //this PDU is
 
   }
@@ -898,12 +1004,14 @@ bool DTP::runSendingAckPolicy(ATimer* timer){
   return false;
 }
 
-void DTP::sendToRMT(PDU* pdu){
+void DTP::sendToRMT(PDU* pdu)
+{
   //TODO A! change to send using omnet messages
 //  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
 }
 
-unsigned int DTP::getRxTime(){
+unsigned int DTP::getRxTime()
+{
   //TODO A! 2MPL + A + epsilon
   //This might be job for a policy, presumably RTT estimator policy?
   /* 2MPL == RTT
@@ -913,7 +1021,8 @@ unsigned int DTP::getRxTime(){
   return dtcp->dtcpState->getRtt();
 }
 
-unsigned int DTP::getAllowableGap(){
+unsigned int DTP::getAllowableGap()
+{
   //TODO A! This is placeholder for calling QoSCube::getAllowableGapSize
   /*This method is used as a middle-man so when location of QoSCube changes,
    * I will have to change it only in one place.
@@ -924,87 +1033,97 @@ unsigned int DTP::getAllowableGap(){
   return 4;
 }
 
-
-void DTP::svUpdate(unsigned int seqNum){
+void DTP::svUpdate(unsigned int seqNum)
+{
 
 //  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
 
-  if(state.isFlowControlPresent()){
-    if(state.isWinBased()){
+  if (state.isFlowControlPresent())
+  {
+    if (state.isWinBased())
+    {
       runRcvrFlowControlPolicy();
     }
 
-    if(state.isRateBased()){
-        runRateReductionPolicy();
+    if (state.isRateBased())
+    {
+      runRateReductionPolicy();
     }
   }
 
-  if(state.isRxPresent()){
+  if (state.isRxPresent())
+  {
     runRcvrAckPolicy();
   }
 
-  if(state.isFlowControlPresent() && !state.isRxPresent()){
+  if (state.isFlowControlPresent() && !state.isRxPresent())
+  {
     runReceivingFlowControlPolicy();
   }
 
-
 }
 
-void DTP::flushReassemblyPDUQ(){
+void DTP::flushReassemblyPDUQ()
+{
   std::vector<PDU*>::iterator it;
-  for(it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();){
+  for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();)
+  {
     delete (*it);
-    it= reassemblyPDUQ.erase(it);
+    it = reassemblyPDUQ.erase(it);
   }
 }
 
-void DTP::clearRxQ(){
+void DTP::clearRxQ()
+{
   std::vector<RxExpiryTimer*>::iterator it;
-  for(it = rxQ.begin(); it != rxQ.end();){
+  for (it = rxQ.begin(); it != rxQ.end();)
+  {
     delete (*it)->getPdu();
     delete (*it);
-    it= rxQ.erase(it);
+    it = rxQ.erase(it);
   }
 }
 
-void DTP::clearClosedWindowQ(){
+void DTP::clearClosedWindowQ()
+{
   std::vector<PDU*>::iterator it;
-  for(it = closedWindowQ.begin(); it != closedWindowQ.end();){
+  for (it = closedWindowQ.begin(); it != closedWindowQ.end();)
+  {
     delete (*it);
-    it= closedWindowQ.erase(it);
+    it = closedWindowQ.erase(it);
   }
 }
 
+void DTP::schedule(DTPTimers *timer, double time)
+{
 
-void DTP::schedule(DTPTimers *timer, double time){
-
-
-  switch(timer->getType()){
-    case (DTP_RX_EXPIRY_TIMER):{
+  switch (timer->getType())
+  {
+    case (DTP_RX_EXPIRY_TIMER): {
       //TODO A! Expiry Timer time interval
       break;
     }
-    case (DTP_SENDER_INACTIVITY_TIMER):{
-          //TODO A! 3(MPL+R+A)
-            scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
-          break;
-        }
-    case (DTP_RCVR_INACTIVITY_TIMER):{
-          //TODO A!
-            scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
-          break;
+    case (DTP_SENDER_INACTIVITY_TIMER): {
+      //TODO A! 3(MPL+R+A)
+      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+      break;
     }
-    case (DTP_SENDING_RATE_TIMER):{
+    case (DTP_RCVR_INACTIVITY_TIMER): {
+      //TODO A!
+      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+      break;
+    }
+    case (DTP_SENDING_RATE_TIMER): {
 
-      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000 ), timer);
+      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000), timer);
       break;
     }
   }
 
 }
 
-
-void DTP::setFlow(Flow* flow){
+void DTP::setFlow(Flow* flow)
+{
   this->flow = flow;
 }

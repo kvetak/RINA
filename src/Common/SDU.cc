@@ -21,11 +21,12 @@
  */
 #include <SDU.h>
 
-//SDU::SDU()
-//{
-//  this->offset = this->size = 0;
-//
-//}
+SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
+{
+   fSeqNum_var = seqNum_var = fOffset_var = fSize_var = this->offset_var = this->size_var = 0;
+
+}
+
 
 unsigned int SDU::getSize() const
 {
@@ -86,6 +87,36 @@ bool SDU::addUserData(CDAPMessage* msg){
   this->mUserData_var.push_back(msg);
 
     return true;
+}
+/**
+ * Returns SDU Fragments vector of specified size
+ *
+ */
+std::vector<SDU*> SDU::fragment(unsigned int size){
+
+  std::vector<SDU*> frags;
+  SDU* tmp;
+  for(unsigned int i = 0; i* size < this->size_var; i++){
+    tmp = this->genFragment(size, i, i*size);
+    frags.push_back(tmp);
+  }
+
+  return frags;
+}
+
+SDU* SDU::genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset){
+  SDU* tmp = this->dup();
+  tmp = new SDU(*this);
+  tmp->setFragment(size, fSeqNum, fOffset);
+  return tmp;
+
+}
+
+void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOffset){
+  fSize_var = fSize;
+  fSeqNum_var = fSeqNum;
+  fOffset_var = fOffset;
+  dataType_var = SDU_FRAGMENT_TYPE;
 }
 
 SDU::~SDU()

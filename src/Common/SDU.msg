@@ -32,4 +32,10 @@ message SDU extends Data {
     unsigned int size;
     unsigned int offset;
     mUserDataType mUserData;
+    
+    unsigned int fSize;
+    unsigned int fOffset;
+    
+    unsigned int seqNum;
+    unsigned int fSeqNum;
 }

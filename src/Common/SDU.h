@@ -38,7 +38,7 @@ public:
 //  SDU();
   virtual ~SDU();
 
-    SDU(const char *name=NULL, int kind=0) : SDU_Base(name,kind) {this->offset_var = this->size_var = 0;}
+    SDU(const char *name=NULL, int kind=0);
     SDU(const SDU& other) : SDU_Base(other) {copy(other);}
     SDU& operator=(const SDU& other) {if (this==&other) return *this; SDU_Base::operator=(other); copy(other); return *this;}
     virtual SDU *dup() const {return new SDU(*this);}
@@ -52,6 +52,10 @@ public:
     void setUserData(unsigned char* userData, unsigned int size);
 
     bool addUserData(CDAPMessage* msg);
+
+    std::vector<SDU*>fragment(unsigned int size);
+    SDU* genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);
+    void setFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);
 
 
 };

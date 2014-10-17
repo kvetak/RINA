@@ -47,7 +47,8 @@ class DTP : public cSimpleModule
 
     /* Various queues */
     /* Output queues - from App to RMT */
-    std::vector<SDU*> sduQ; //SDUs generated from delimiting
+    std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
+    std::vector<Data*> dataQ; //SDU or SDUFragments generated from delimiting
     std::vector<PDU*> generatedPDUs;
     std::vector<PDU*> postablePDUs;
     std::vector<PDU*> closedWindowQ;
@@ -93,7 +94,7 @@ class DTP : public cSimpleModule
 
     /** Delimits content of buffer from application */
     unsigned int delimit(unsigned char *buffer, unsigned int len);
-    unsigned int delimit(CDAPMessage* cdap);
+    unsigned int delimit(SDU* sdu);
 
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
