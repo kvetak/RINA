@@ -98,22 +98,12 @@ void DTP::handleMsgFromDelimiting(Data* msg){
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
 
-  //SRC end of flow is here
-  if(difAllocator->isAppLocal(flow->getSrcApni().getApn())) {
     pdu->setSrcAddr(this->flow->getSrcAddr());
-      pdu->setDstAddr(this->flow->getDstAddr());
-      pdu->setSrcApn(this->flow->getSrcApni().getApn());
-      pdu->setDstApn(this->flow->getDstApni().getApn());
-      pdu->setConnId(this->flow->getConId());
-  }
-  //DST end of flow is here
-  else {
-    pdu->setSrcAddr(this->flow->getDstAddr());
-      pdu->setDstAddr(this->flow->getSrcAddr());
-      pdu->setSrcApn(this->flow->getDstApni().getApn());
-      pdu->setDstApn(this->flow->getSrcApni().getApn());
-      pdu->setConnId(this->flow->getConnectionId().swapCepIds());
-  }
+    pdu->setDstAddr(this->flow->getDstAddr());
+    pdu->setSrcApn(this->flow->getSrcApni().getApn());
+    pdu->setDstApn(this->flow->getDstApni().getApn());
+    pdu->setConnId(this->flow->getConId());
+
 
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 

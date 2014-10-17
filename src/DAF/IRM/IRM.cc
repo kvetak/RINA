@@ -81,13 +81,15 @@ bool IRM::createBindings(Flow* flow) {
     cModule* Ap = this->getParentModule();
 
     //Decide portId
-    int portId;
+    int portId = flow->getSrcPortId();
+    /*
     if ( DifAllocator->isAppLocal(flow->getDstApni().getApn()) )
         portId = flow->getDstPortId();
     else if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) )
-        portId = flow->getSrcPortId();
+        portId
     else
         throw("Binding to inconsistant PortId occured!");
+    */
 
     //  Retrieve IPC gates
     std::ostringstream nam1;

@@ -175,7 +175,6 @@ void Flow::swapPortIds() {
 }
 
 void Flow::swapAddresses() {
-    swapPortIds();
     Address tmpa = srcAddr;
     srcAddr = dstAddr;
     dstAddr = tmpa;
@@ -185,12 +184,22 @@ void Flow::swapCepIds() {
     conId = conId.swapCepIds();
 }
 
+void Flow::swapApni() {
+    APNamingInfo tmpapni = srcApni;
+    srcApni = dstApni;
+    dstApni = tmpapni;
+}
+
 Flow& Flow::swapFlow() {
+    swapApni();
+
     swapAddresses();
 
     swapPortIds();
 
     swapCepIds();
+
+    return *this;
 }
 
 void Flow::setQosParameters(const QosCube& qosParameters) {

@@ -165,8 +165,7 @@ void AEPing::processMRead(CDAPMessage* msg) {
         obj.objectName = VAL_MODULEPATH;
         obj.objectClass = "string";
         obj.objectInstance = -1;
-        std::string nam = this->getFullPath();
-        obj.objectVal = (cObject*)(&nam);
+        obj.objectVal = (cObject*)(&myPath);
         pong->setObject(obj);
 
         sendData(&flows.back(), pong);

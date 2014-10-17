@@ -43,7 +43,7 @@ void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //Check whether dstApp is local...
-        const APN dstApn = flow->getDstApni().getApn();
+        const APN dstApn = flow->getSrcApni().getApn();
         if (ae->getApni().getApn() == dstApn)
             ae->receiveAllocationRequestFromFAI(flow);
     }

@@ -304,13 +304,16 @@ void RA::bindMediumToRMT()
  */
 void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
 {
-    int portId;
+
+    int portId = flow->getSrcPortId();
+    /*
     if ( difAllocator->isAppLocal(flow->getDstApni().getApn()) )
         portId = flow->getDstPortId();
     else if ( difAllocator->isAppLocal(flow->getSrcApni().getApn()) )
         portId = flow->getSrcPortId();
     else
         throw("Binding to inconsistant PortId occured!");
+    */
 
     // expand the given portId so it's unambiguous within this IPC
     std::string combinedPortId = normalizePortId(ipc->getFullName(), portId);
@@ -417,7 +420,7 @@ void RA::createFlow(Flow *fl)
 void RA::createFlowWithoutAllocate(Flow* flow) {
     Enter_Method("createFlowWoAlloc()");
     //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = difAllocator->resolveApn(flow->getDstApni().getApn());
+    DirectoryEntry* de = difAllocator->resolveApn(flow->getSrcApni().getApn());
 
     if (de == NULL) {
         EV << "DA does not know target application." << endl;

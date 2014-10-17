@@ -88,6 +88,7 @@ class Flow : public cObject
     void swapPortIds();
     void swapAddresses();
     void swapCepIds();
+    void swapApni();
 };
 
 //Free function
