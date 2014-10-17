@@ -153,6 +153,9 @@ void RIBd::processMCreate(CDAPMessage* msg) {
     //CreateRequest Flow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
+        EV << fl->info();
+        fl->swapFlow();
+        EV << "===========\n" << fl->info();
         signalizeCreateRequestFlow(fl);
     }
 }
@@ -167,7 +170,7 @@ void RIBd::processMCreateR(CDAPMessage* msg) {
     //CreateResponseFlow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
-
+        flow->swapFlow();
         //Positive response
         if (!msg1->getResult().resultValue) {
             signalizeCreateResponseFlowPositive(flow);

@@ -60,32 +60,31 @@ void DTP::handleMessage(cMessage *msg)
   {
     /* Timers */
     DTPTimers* timer = static_cast<DTPTimers*>(msg);
-    switch (timer->getType())
-    {
-      case (DTP_RX_EXPIRY_TIMER): {
+    switch(timer->getType()){
+      case(DTP_RX_EXPIRY_TIMER):{
         handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
         schedule(timer);
 
         break;
       }
 
-      case (DTP_SENDING_RATE_TIMER): {
+      case(DTP_SENDING_RATE_TIMER):{
         handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
         schedule(timer);
         break;
       }
 
-      case (DTP_RCVR_INACTIVITY_TIMER): {
+      case(DTP_RCVR_INACTIVITY_TIMER):{
         handleDTPRcvrInactivityTimer(static_cast<RcvrInactivityTimer*>(timer));
         break;
       }
 
-      case (DTP_SENDER_INACTIVITY_TIMER): {
+      case(DTP_SENDER_INACTIVITY_TIMER):{
         handleDTPSenderInactivityTimer(static_cast<SenderInactivityTimer*>(timer));
         break;
       }
 
-      case (DTP_A_TIMER): {
+      case(DTP_A_TIMER):{
         handleDTPATimer(static_cast<ATimer*>(timer));
         break;
       }
@@ -209,8 +208,7 @@ void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer)
 void DTP::handleDTPATimer(ATimer* timer)
 {
 
-  if (state.isDtcpPresent())
-  {
+  if(state.isDtcpPresent()){
     runSendingAckPolicy(timer);
   }
 }
@@ -540,7 +538,7 @@ void DTP::trySendGenPDUs()
               runFlowControlOverrunPolicy();
             }
           }
-        }      // end of Window based
+        }// end of Window based
 
         if (state.isRateBased())
         {
@@ -553,16 +551,14 @@ void DTP::trySendGenPDUs()
             /* Exceeding Sending Rate */
             runNoOverrideDefaultPeakPolicy();
           }
-        }      // end of RateBased
+        }// end of RateBased
 
         if (state.isClosedWindow() ^ state.isRateFullfilled())
         {
           runReconcileFlowControlPolicy();
         }
-      }      //end of for
-    }
-    else
-    {
+      }//end of for
+    }else{
       //TODO A1 This should probably put ALL generatedPDUs to postablePDUs
       std::vector<PDU*>::iterator it;
       for (it = generatedPDUs.begin(); it != generatedPDUs.end();)

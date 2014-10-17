@@ -150,7 +150,7 @@ void FA::receiveCreateFlowRequest(Flow* flow) {
     FaiTable->insertNew(flow);
 
     //Is requested APP local?
-    if ( DifAllocator->isAppLocal(flow->getDstApni().getApn()) ){
+    if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
@@ -158,8 +158,8 @@ void FA::receiveCreateFlowRequest(Flow* flow) {
         FAI* fai = this->createFAI(flow);
 
         //Update flow object
-        flow->setDstPortId(fai->par(PAR_PORTID));
-        flow->getConnectionId().setDstCepId(fai->par(PAR_CEPID));
+        flow->setSrcPortId(fai->par(PAR_PORTID));
+        flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
 
         //Pass the CreateRequest to newly created FAI
         bool status = fai->receiveCreateRequest();
