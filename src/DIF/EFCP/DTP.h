@@ -99,8 +99,11 @@ class DTP : public cSimpleModule
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
     void generatePDUs();
+    void generatePDUsnew();
 
     void trySendGenPDUs();
+
+
 
 //    void sendPostablePDUsToRMT();
 
@@ -153,6 +156,8 @@ class DTP : public cSimpleModule
     void schedule(DTPTimers* timer, double time =0.0);
 
     void handleSDUs(CDAPMessage* cdap);
+    void setPDUHeader(DataTransferPDU* pdu);
+
   public:
     DTP();
     virtual ~DTP();

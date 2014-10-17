@@ -108,6 +108,19 @@ void DTP::handleMessage(cMessage *msg)
 
 }
 
+/**
+ * This method fills header fields in given @param pdu
+ * @param pdu
+ */
+void DTP::setPDUHeader(DataTransferPDU* pdu)
+{
+  pdu->setConnId(this->flow->getConId());
+  pdu->setSrcAddr(this->flow->getSrcAddr());
+  pdu->setDstAddr(this->flow->getDstAddr());
+  pdu->setSrcApn(this->flow->getDstApni().getApn());
+  pdu->setDstApn(this->flow->getSrcApni().getApn());
+}
+
 void DTP::handleMsgFromDelimiting(Data* msg)
 {
 
@@ -115,12 +128,7 @@ void DTP::handleMsgFromDelimiting(Data* msg)
 
   DataTransferPDU* pdu = new DataTransferPDU();
   pdu->setMUserData(msg);
-  pdu->setConnId(this->flow->getConId());
-  pdu->setSrcAddr(this->flow->getSrcAddr());
-  pdu->setDstAddr(this->flow->getDstAddr());
-  pdu->setSrcApn(this->flow->getDstApni().getApn());
-  pdu->setDstApn(this->flow->getSrcApni().getApn());
-
+  setPDUHeader(pdu);
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
   send(pdu, southO);
@@ -145,7 +153,7 @@ void DTP::handleSDUs(CDAPMessage* cdap)
 //    this->delimit(buffer, len);
 //  delimit(cdap);
 
-  /* Now the data from buffer are copied to SDUs so we can free the memory */
+  /* Now tae data from buffer are copied to SDUs so we can free the memory */
 //    free(buffer);
   this->generatePDUs();
 
@@ -325,8 +333,10 @@ unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len)
   return counter;
 }
 
+
+
 /**
- * This method takes all SDUs from sduQ and generates PDUs by adding appropriate header content
+ * This method takes all SDUs from sduQ and generates PDUs by filling appropriate header fields
  */
 void DTP::generatePDUs()
 {
@@ -470,6 +480,20 @@ void DTP::generatePDUs()
   } while (!sduQ.empty());
 }
 
+void DTP::generatePDUsnew(){
+
+  DataTransferPDU* dataPDU = new DataTransferPDU();
+
+  setPDUHeader(dataPDU);
+
+}
+
+
+
+
+/**
+ *
+ */
 void DTP::trySendGenPDUs()
 {
 
@@ -1127,3 +1151,6 @@ void DTP::setFlow(Flow* flow)
 {
   this->flow = flow;
 }
+
+
+
