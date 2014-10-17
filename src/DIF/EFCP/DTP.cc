@@ -27,14 +27,22 @@ DTP::~DTP()
   // TODO Auto-generated destructor stub
 }
 
+void DTP::initGates()
+{
+  northI = this->gateHalf(GATE_DTP_NORTHIO, cGate::INPUT);
+  northO = this->gateHalf(GATE_DTP_NORTHIO, cGate::OUTPUT);
+  southI = this->gateHalf(GATE_DTP_SOUTHIO, cGate::INPUT);
+  southO = this->gateHalf(GATE_DTP_SOUTHIO, cGate::OUTPUT);
+}
+
 void DTP::initialize(int step)
 {
 
-  northI = this->gateHalf(GATE_DTP_NORTHIO, cGate::INPUT);
-  northO = this->gateHalf(GATE_DTP_NORTHIO, cGate::OUTPUT);
+  initGates();
 
-  southI = this->gateHalf(GATE_DTP_SOUTHIO, cGate::INPUT);
-  southO = this->gateHalf(GATE_DTP_SOUTHIO, cGate::OUTPUT);
+  senderInactivityTimer = new SenderInactivityTimer();
+
+
 }
 
 /**
@@ -141,6 +149,8 @@ void DTP::handleMsgFromRmt(PDU* msg)
   if (dynamic_cast<DataTransferPDU*>(msg))
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
+    cMessage* sdu = pdu->getMUserData();
+    take(check_and_cast<cOwnedObject*>(sdu) );
     send(pdu->getMUserData(), northO);
   }
 }

@@ -157,6 +157,7 @@ class DTP : public cSimpleModule
 
     void handleSDUs(CDAPMessage* cdap);
     void setPDUHeader(DataTransferPDU* pdu);
+    void initGates();
 
   public:
     DTP();

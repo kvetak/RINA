@@ -39,14 +39,24 @@
 class Delimiting : public cSimpleModule
 {
   private:
+
+    cGate* northI;
+    cGate* northO;
+    //TODO A2 Change to [] of gates
+    cGate* southI;
+    cGate* southO;
+
     void processMsgFromFAI(CDAPMessage* msg);
     void handleMsgFromEfcpi(Data* msg);
   public:
     Delimiting();
     virtual ~Delimiting();
 
+    void initGates();
+
   protected:
     virtual void handleMessage(cMessage *msg);
+    virtual void initialize(int step);
 
 
 };

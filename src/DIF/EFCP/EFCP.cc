@@ -91,8 +91,11 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
 
   /* Connect EFCPi module with delimiting */
-  int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
-  tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
+  int size = tmpEfcpEntry->getDelimit()->gateSize(GATE_DELIMIT_SOUTHIO);
+  tmpEfcpEntry->getDelimit()->setGateSize(GATE_DELIMIT_SOUTHIO, size + 1);
+
+  tmpEfcpEntry->getDelimit()->initGates();
+
 
 
   cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
