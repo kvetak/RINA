@@ -32,11 +32,14 @@ class IRM : public cSimpleModule   {
     IRM();
     virtual ~IRM();
 
-    void receiveAllocationRequest(cObject* obj);
-    void receiveDeallocationRequest(cObject* obj);
-    void receiveAllocationResponseNegativeAppNotFound(cObject* obj);
-    void receiveAllocationResponseNegative(cObject* obj);
-    void receiveAllocationRequestFromFAI(cObject* obj);
+    void receiveAllocationRequest(Flow* flow);
+    void receiveDeallocationRequest(Flow* flow);
+
+    bool receiveAllocationResponsePositive(Flow* flow);
+
+    void newFlow(Flow* flow);
+
+    ConnectionTable* getConTable() const;
 
   protected:
     virtual void initialize();
@@ -54,21 +57,14 @@ class IRM : public cSimpleModule   {
     //Signals
     simsignal_t sigIRMAllocReq;
     simsignal_t sigIRMDeallocReq;
-    simsignal_t sigIRMAllocResPosi;
-    simsignal_t sigIRMAllocResNega;
 
     //Listeners
-    LisIRMAllocResNegaFa* lisAllocResNegaFa;
-    LisIRMAllocResNegaFai* lisAllocResNegaFai;
-    LisIRMAllocReqFai* lisAllocReqFai;
     LisIRMAllocReq* lisAllocReq;
     LisIRMDeallocReq* lisDeallocReq;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
-    void signalizeAllocateResponsePositive(Flow* flow);
-    void signalizeAllocateResponseNegative(Flow* flow);
 
 };
 

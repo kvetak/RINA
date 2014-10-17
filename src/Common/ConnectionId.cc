@@ -94,3 +94,9 @@ bool ConnectionId::operator==(const ConnectionId other) const
             && (srcCEPId < other.srcCEPId));
 }
 
+ConnectionId& ConnectionId::swapCepIds() {
+    int tmp = srcCEPId;
+    srcCEPId = dstCEPId;
+    dstCEPId = tmp;
+    return *this;
+}

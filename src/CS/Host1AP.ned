@@ -15,6 +15,7 @@
 
 package rina.CS;
 
+import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
@@ -51,8 +52,7 @@ module Host1AP
 			//numOfAPs = numOfAPs;
         }
 
-    connections:
+    connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;
         ipcProcess0.northIo++ <--> ipcProcess1.southIo++;
-        //ipcProcess1.northIo[0] <--> applicationProcess1.southIo[0];        
 }

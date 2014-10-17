@@ -24,4 +24,5 @@ simple Test
     gates:
         input testIn;
         output testOut;
+        inout testIo;
 }

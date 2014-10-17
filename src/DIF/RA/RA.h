@@ -28,11 +28,10 @@
 #include "PDUForwardingTable.h"
 #include "FlowTable.h"
 #include "DA.h"
-#include "DirectoryEntry.h"
-#include "Flow.h"
 #include "FABase.h"
 #include "RMT.h"
 #include "RABase.h"
+#include "RAListeners.h"
 
 //Consts
 extern const char* PAR_QOSDATA;
@@ -72,7 +71,9 @@ class RA : public RABase {
     void initFlowAlloc();
     void setRmtMode();
 
-    void createFlow(Flow *fl);
+    virtual void createFlow(Flow *flow);
+    virtual void createFlowWithoutAllocate(Flow *flow);
+
     void removeFlow();
 
     void bindFlowToRMT(cModule* ipc, Flow *flow);
@@ -82,31 +83,8 @@ class RA : public RABase {
 
     void initSignalsAndListeners();
 
-/*
- * XXX: Vesely @Hykel ->
- *      Takhle tedy signaly urcite ne, kdyz uz, tak s RABase a RAListeners tridami,
- *      aby nedochazelo k cyklickym zavislostem mezi FA - RA
- *      Navic jsem si vzpomnel, proc byly FA signaly v RIBDemonovi. RIBDemon bude emitovat
- *      signaly pro vsechny DIF manangement komponenty, protoze je zpracovatelem ridicich CDAP
- *      zprav. Vysvetleni kdyztak na dalsi schuzce.
- */	
-/*
-    // signals emitted by this module
-    simsignal_t sigRAAllocReq;
-    simsignal_t sigRADeallocReq;
-    simsignal_t sigRAAllocResPosi;
-    simsignal_t sigRAAllocResNega;
-    simsignal_t sigRAFlowAllocd;
-    simsignal_t sigRAFlowDeallocd;
-    
-    // emit wrapper functions
-    void signalizeAllocateRequest(Flow* flow);
-    void signalizeDeallocateRequest(Flow* flow);
-    void signalizeAllocateResponsePositive(Flow* flow);
-    void signalizeAllocateResponseNegative(Flow* flow);
-    void signalizeFlowAllocated(Flow* flow);
-    void signalizeFlowDeallocated(Flow* flow);
-*/
+    LisRACreFlow* lisRACreFlow;
+
 };
     
 

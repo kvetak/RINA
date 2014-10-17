@@ -15,14 +15,25 @@
 
 package rina.DIF.RIB;
 
-//
-// TODO auto-generated module
-//
-simple RIBDaemon
+import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
+
+module RIBDaemon
 {
     parameters:
-    	@display("i=block/control");
-    	
+        @display("i=block/control;bgb=271,228");
+
     gates:
         inout rmtIo;
+    submodules:
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            parameters:
+                @display("p=135,148");
+            gates:
+                southIo[1];
+        }
+        ribd: RIBd {
+            parameters:
+                @display("p=135,52");
+        }
+    connections allowunconnected:
 }

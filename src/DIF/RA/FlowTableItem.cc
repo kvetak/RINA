@@ -25,7 +25,7 @@ FlowTableItem::~FlowTableItem() {
 }
 
 std::string FlowTableItem::info() const {
-    std::stringstream os;
+    std::ostringstream os;
 
     if (flow != NULL)
     {

@@ -288,28 +288,28 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
     EV << "CostBits> \t" << getCostBits() << " / " << templ.getCostBits() << endl;
     */
 
-    if (getAvgBand() != VAL_QOSPARAMDONOTCARE)
+    if (getAvgBand() != VAL_QOSPARDONOTCARE)
         (getAvgBand() <= templ.getAvgBand()) ? score++ : score--;
 
-    if (getAvgSduBand() != VAL_QOSPARAMDONOTCARE)
+    if (getAvgSduBand() != VAL_QOSPARDONOTCARE)
         (getAvgSduBand() <= templ.getAvgSduBand()) ? score++ : score--;
 
-    if (getPeakBandDuration() != VAL_QOSPARAMDONOTCARE)
+    if (getPeakBandDuration() != VAL_QOSPARDONOTCARE)
         (getPeakBandDuration() <= templ.getPeakBandDuration()) ? score++ : score--;
 
-    if (getPeakSduBandDuration() != VAL_QOSPARAMDONOTCARE)
+    if (getPeakSduBandDuration() != VAL_QOSPARDONOTCARE)
         (getPeakSduBandDuration() <= templ.getPeakSduBandDuration()) ? score++ : score--;
 
-    if (getBurstPeriod() != VAL_QOSPARAMDONOTCARE)
+    if (getBurstPeriod() != VAL_QOSPARDONOTCARE)
         (getBurstPeriod() <= templ.getBurstPeriod()) ? score++ : score--;
 
-    if (getBurstDuration() != VAL_QOSPARAMDONOTCARE)
+    if (getBurstDuration() != VAL_QOSPARDONOTCARE)
         (getBurstDuration() <= templ.getBurstDuration()) ? score++ : score--;
 
-    if (getUndetectedBitErr() != VAL_QOSPARAMDONOTCARE)
+    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
         (getUndetectedBitErr() <= templ.getUndetectedBitErr()) ? score++ : score--;
 
-    if (getMaxSduSize() != VAL_QOSPARAMDONOTCARE)
+    if (getMaxSduSize() != VAL_QOSPARDONOTCARE)
         (getMaxSduSize() <= templ.getMaxSduSize()) ? score++ : score--;
 
     (isPartialDelivery() == templ.isPartialDelivery()) ? score++ : score--;
@@ -318,19 +318,19 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
 
     (isForceOrder() == templ.isForceOrder()) ? score++ : score--;
 
-    if (getMaxAllowGap() != VAL_QOSPARAMDONOTCARE)
+    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE)
         (getMaxAllowGap() <= templ.getMaxAllowGap()) ? score++ : score--;
 
-    if (getDelay() != VAL_QOSPARAMDONOTCARE)
+    if (getDelay() != VAL_QOSPARDONOTCARE)
         (getDelay() <= templ.getDelay()) ? score++ : score--;
 
-    if (getJitter() != VAL_QOSPARAMDONOTCARE)
+    if (getJitter() != VAL_QOSPARDONOTCARE)
         (getJitter() <= templ.getJitter()) ? score++ : score--;
 
-    if (getCostTime() != VAL_QOSPARAMDONOTCARE)
+    if (getCostTime() != VAL_QOSPARDONOTCARE)
         (getCostTime() <= templ.getCostTime()) ? score++ : score--;
 
-    if (getCostBits() != VAL_QOSPARAMDONOTCARE)
+    if (getCostBits() != VAL_QOSPARDONOTCARE)
         (getCostBits() <= templ.getCostBits()) ? score++ : score--;
 
     return score;

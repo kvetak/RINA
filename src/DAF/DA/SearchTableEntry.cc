@@ -40,7 +40,7 @@ bool SearchTableEntry::operator ==(const SearchTableEntry& other) const {
 }
 
 std::string SearchTableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "APN: " << Apn << ", Peer DifAllocs: " << PeerDAs;
     return os.str();
 }

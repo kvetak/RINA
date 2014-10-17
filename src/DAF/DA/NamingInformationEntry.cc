@@ -25,7 +25,7 @@ NamingInformationEntry::~NamingInformationEntry() {
 }
 
 std::string NamingInformationEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "APN: " << Apn << ", Synonyms: " << Synonyms;
     return os.str();
 }

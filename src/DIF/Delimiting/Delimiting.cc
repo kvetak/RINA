@@ -72,6 +72,7 @@ void Delimiting::handleMsgFromEfcpi(Data* msg){
   SDU* sdu = (SDU*) msg;
   std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
   CDAPMessage* cdap = msgVector.front();
+  take(check_and_cast<cOwnedObject*>(cdap) );
   send(cdap, "efcpModuleIo$o");
 }
 

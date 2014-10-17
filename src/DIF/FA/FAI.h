@@ -27,15 +27,14 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-
+#include "FAIBase.h"
 #include "FABase.h"
-#include "Flow.h"
 #include "FAIListeners.h"
 #include "RINASignals.h"
 #include "EFCP.h"
 #include "ModuleAccess.h"
 
-class FAI : public cSimpleModule  {
+class FAI : public FAIBase  {
   public:
     FAI();
     virtual ~FAI();
@@ -47,8 +46,8 @@ class FAI : public cSimpleModule  {
     bool receiveAllocateResponsePositive();
     void receiveAllocateResponseNegative();
     bool receiveCreateRequest();
-    bool receiveCreateResponsePositive();
-    bool receiveCreateResponseNegative();
+    bool receiveCreateResponsePositive(Flow* flow);
+    bool receiveCreateResponseNegative(Flow* flow);
     void receiveDeallocateRequest();
     void receiveDeleteRequest();
     void receiveDeleteResponse();
@@ -58,16 +57,12 @@ class FAI : public cSimpleModule  {
     const FABase* getFa() const {
         return FaModule;
     }
-    Flow* getFlow()  {
-        return FlowObject;
-    }
 
   protected:
     int portId;
     int cepId;
 
     FABase* FaModule;
-    Flow* FlowObject;
 
     //Signals
     simsignal_t sigFAIAllocReq;
@@ -101,6 +96,7 @@ class FAI : public cSimpleModule  {
     void initSignalsAndListeners();
 
     bool createEFCP();
+    void createNorthGates();
     bool createBindings();
     bool deleteBindings();
 

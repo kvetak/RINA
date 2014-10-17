@@ -47,6 +47,8 @@ class AEPing : public AE
     void handleSelfMessage(cMessage* msg);
 
   private:
+    std::string myPath;
+
     std::string dstApName;
     std::string dstApInstance;
     std::string dstAeName;
@@ -60,6 +62,9 @@ class AEPing : public AE
     void prepareAllocateRequest();
     void preparePing();
     void prepareDeallocateRequest();
+
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
 
 };
 

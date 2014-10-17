@@ -24,14 +24,29 @@ AE::~AE() {
 }
 
 void AE::initSignalsAndListeners() {
-    //cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher1 = this->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
     sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
     sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
+    sigAESendData      = registerSignal(SIG_AE_DataSend);
+    sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
 
     //Signals that this module is processing
+    lisAERcvData = new LisAEReceiveData(this);
+    catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
 
+    //  AllocationRequest from FAI
+    lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
+
+    lisAEAllResPosi = new LisAEAllResPosi(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
+
+    lisAEAllResNega = new LisAEAllResNega(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
 }
 
 void AE::initialize() {
@@ -48,52 +63,211 @@ void AE::initialize() {
 void AE::handleMessage(cMessage* msg) {
 }
 
-void AE::createBinding(Flow& flow) {
+bool AE::createBinding(Flow& flow) {
     EV << this->getFullPath() << " created bindings and registered a new flow" << endl;
     //Create new gates
-    cGate* g1i;
-    cGate* g1o;
-    Irm->getOrCreateFirstUnconnectedGatePair(GATE_AEIO, false, true, *&g1i, *&g1o);
-
-    //cGate* g0i;
-    //cGate* g0o;
-    //this->getOrCreateFirstUnconnectedGatePair("southIo", true, true, *&g0i, *&g0o);
+    cGate* gIrmIn;
+    cGate* gIrmOut;
+    Irm->getOrCreateFirstUnconnectedGatePair(GATE_AEIO, false, true, *&gIrmIn, *&gIrmOut);
 
     //Get AE gates
-    cGate* g2i;
-    cGate* g2o;
-    this->getOrCreateFirstUnconnectedGatePair(GATE_DATAIO, false, true, *&g2i, *&g2o);
+    cGate* gAeIn;
+    cGate* gAeOut;
+    this->getParentModule()->getOrCreateFirstUnconnectedGatePair(GATE_DATAIO, false, true, *&gAeIn, *&gAeOut);
+
+    //CDAPParent Module gates
+    cGate* gCdapParentIn;
+    cGate* gCdapParentOut;
+    Cdap->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gCdapParentIn, *&gCdapParentOut);
+
+    //CDAPSplitter gates
+    cModule* CdapSplit = Cdap->getSubmodule(MOD_CDAPSPLIT);
+    cGate* gSplitIn;
+    cGate* gSplitOut;
+    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gSplitIn, *&gSplitOut);
+    cGate* gSplitCaceIn;
+    cGate* gSplitCaceOut;
+    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CACEIO, false, true, *&gSplitCaceIn, *&gSplitCaceOut);
+    cGate* gSplitAuthIn;
+    cGate* gSplitAuthOut;
+    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_AUTHIO, false, true, *&gSplitAuthIn, *&gSplitAuthOut);
+    cGate* gSplitCdapIn;
+    cGate* gSplitCdapOut;
+    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CDAPIO, false, true, *&gSplitCdapIn, *&gSplitCdapOut);
+
+    //CACE Module gates
+    cModule* CdapCace = Cdap->getSubmodule(MOD_CDAPCACE);
+    cGate* gCaceIn;
+    cGate* gCaceOut;
+    CdapCace->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCaceIn, *&gCaceOut);
+
+    //AUTH Module gates
+    cModule* CdapAuth = Cdap->getSubmodule(MOD_CDAPAUTH);
+    cGate* gAuthIn;
+    cGate* gAuthOut;
+    CdapAuth->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gAuthIn, *&gAuthOut);
+
+    //CDAP Module gates
+    cModule* CdapCdap = Cdap->getSubmodule(MOD_CDAPCDAP);
+    cGate* gCdapIn;
+    cGate* gCdapOut;
+    CdapCdap->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCdapIn, *&gCdapOut);
 
     //Connect gates together
-    g1o->connectTo(g2i);
-    g2o->connectTo(g1i);
+    gIrmOut->connectTo(gAeIn);
+    gAeIn->connectTo(gCdapParentIn);
+    gCdapParentIn->connectTo(gSplitIn);
+
+
+    gSplitOut->connectTo(gCdapParentOut);
+    gCdapParentOut->connectTo(gAeOut);
+    gAeOut->connectTo(gIrmIn);
+
+
+    gSplitCaceOut->connectTo(gCaceIn);
+    gCaceOut->connectTo(gSplitCaceIn);
+
+    gSplitAuthOut->connectTo(gAuthIn);
+    gAuthOut->connectTo(gSplitAuthIn);
+
+    gSplitCdapOut->connectTo(gCdapIn);
+    gCdapOut->connectTo(gSplitCdapIn);
+
 
     //Set north-half of the routing in ConnectionTable
-    ConTab->setNorthGates(&flow, g1i, g1o);
+    ConTab->setNorthGates(&flow, gIrmIn, gIrmOut);
+
+    //Return true if all dynamically created gates have same index
+    return gIrmIn->getIndex() == gAeIn->getIndex()
+           && gIrmIn->getIndex() == gCdapParentIn->getIndex()
+           && gIrmIn->getIndex() == gSplitIn->getIndex()
+           && gIrmIn->getIndex() == gSplitCaceIn->getIndex()
+           && gIrmIn->getIndex() == gSplitAuthIn->getIndex()
+           && gIrmIn->getIndex() == gSplitCdapIn->getIndex();
 }
 
 void AE::initPointers() {
     Irm = ModuleAccess<IRM>(MOD_IRM).get();
     ConTab = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
-}
+    Cdap = this->getParentModule()->getSubmodule(MOD_CDAP);
 
-void AE::signalizeAllocateRequest(Flow* flow) {
-    emit(sigAEAllocReq, flow);
+    if (!Irm || !ConTab || !Cdap)
+        error("Pointers to Irm or ConnectionTable or Cdap is not initialized!");
 }
 
 void AE::insertFlow(Flow& flow) {
     //Add a new flow to the end of the Flow list
     flows.push_back(flow);
 
-    //Create a new record in ConnectionTable
-    ConTab->insertNew(&flows.back());
+    //Prepare flow
+    Irm->newFlow(&flows.back());
 
     //Interconnect IRM and AE
-    createBinding(flows.back());
+    bool status = createBinding(flow);
+    if (!status) {
+        throw("Gate inconsistency during creation of a new flow!");
+    }
+}
+
+void AE::signalizeAllocateRequest(Flow* flow) {
+    emit(sigAEAllocReq, flow);
 }
 
 void AE::signalizeDeallocateRequest(Flow* flow) {
     emit(sigAEDeallocReq, flow);
 }
 
+void AE::receiveData(CDAPMessage* msg) {
+    Enter_Method("receiveData()");
+    //M_READ_Request
+    if (dynamic_cast<CDAP_M_Read*>(msg)) {
+        processMRead(msg);
+    }
+    //M_READ_Response
+    else if (dynamic_cast<CDAP_M_Read_R*>(msg)) {
+        processMReadR(msg);
+    }
 
+    delete msg;
+}
+
+void AE::receiveAllocationRequestFromFAI(Flow* flow) {
+    Enter_Method("receiveAllocationRequestFromFai()");
+    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+
+    //TODO: Vesely - More sophisticated decission
+    if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
+        //Initialize flow within AE
+        insertFlow(*flow);
+        //EV << "======================" << endl << flow->info() << endl;
+        //Interconnect IRM and IPC
+        Irm->receiveAllocationResponsePositive(flow);
+
+        this->signalizeAllocateResponsePositive(flow);
+    }
+    else {
+        this->signalizeAllocateResponseNegative(flow);
+    }
+}
+
+void AE::signalizeSendData(cMessage* msg) {
+    EV << "Emits SendData signal for message " << msg->getName() << endl;
+    emit(sigAESendData, msg);
+}
+
+void AE::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigAEAllocResPosi, flow);
+}
+
+void AE::receiveAllocationResponseNegative(Flow* flow) {
+    Enter_Method("receiveAllocationResponseNegative()");
+    //Change allocation status
+    ConTab->setStatus(flow, ConnectionTableEntry::CON_ERROR);
+}
+
+void AE::receiveAllocationResponsePositive(Flow* flow) {
+    Enter_Method("receiveAllocationResponsePositive()");
+    //Interconnect IRM and IPC
+    Irm->receiveAllocationResponsePositive(flow);
+
+    //Change allocation status
+    ConTab->setStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
+
+    //TODO: Vesely - Work with return value?
+}
+
+void AE::sendAllocationRequest(Flow* flow) {
+    //TODO: Vesely - Substitute with signal
+    Irm->receiveAllocationRequest(flow);
+}
+
+void AE::sendDeallocationRequest(Flow* flow) {
+    //TODO: Vesely - Substitute with signal
+    Irm->receiveDeallocationRequest(flow);
+}
+
+void AE::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigAEAllocResNega, flow);
+}
+
+void AE::sendData(Flow* flow, CDAPMessage* msg) {
+    //Retrieve handle from ConTab record
+    ConnectionTableEntry* cte = ConTab->findEntryByFlow(flow);
+    if (cte && cte->getNorthGateIn()) {
+        msg->setHandle(cte->getNorthGateIn()->getIndex());
+        //Pass Data to CDAP
+        signalizeSendData(msg);
+    }
+    else {
+        EV << "Sending data before flow is allocated!" << endl;
+        delete msg;
+    }
+}
+
+void AE::processMRead(CDAPMessage* msg) {
+
+}
+
+void AE::processMReadR(CDAPMessage* msg) {
+
+}

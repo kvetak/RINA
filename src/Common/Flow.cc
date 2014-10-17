@@ -22,20 +22,25 @@ const int VAL_MAXCREATERETRIES = 3;
 Register_Class(Flow);
 
 Flow::Flow() :
+        srcApni(APNamingInfo()), dstApni(APNamingInfo()),
         srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
         srcAddr(Address()), dstAddr(Address()),
+        conId(ConnectionId()),
         createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT) {
 }
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
+        srcApni(src), dstApni(dst),
         srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
         srcAddr(Address()), dstAddr(Address()),
-        createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT) {
-    this->srcApni = src;
-    this->dstApni = dst;
+        conId(ConnectionId()),
+        createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT)
+{
 }
 
 Flow::~Flow() {
+    this->srcApni = APNamingInfo();
+    this->dstApni = APNamingInfo();
     this->srcPortId = VAL_UNDEF_PORTADDR;
     this->dstPortId = VAL_UNDEF_PORTADDR;
     this->srcAddr = Address();
@@ -52,7 +57,7 @@ bool Flow::operator ==(const Flow& other) {
             srcAddr == other.srcAddr && dstAddr == other.dstAddr);
 }
 
-ConnectionId& Flow::getConId() {
+const ConnectionId& Flow::getConId() const {
     return conId;
 }
 
@@ -138,10 +143,54 @@ const QosCube& Flow::getQosParameters() const {
 
 Flow* Flow::dup() const {
     Flow* flow = new Flow();
-    flow->setQosParameters(this->getQosParameters());
     flow->setSrcApni(this->getSrcApni());
     flow->setDstApni(this->getDstApni());
+    flow->setSrcAddr(this->getSrcAddr());
+    flow->setDstAddr(this->getDstAddr());
+    flow->setSrcPortId(this->getSrcPortId());
+    flow->setDstPortId(this->getDstPortId());
+    flow->setConId(this->getConId());
+    flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
+    flow->setHopCount(this->getHopCount());
+    flow->setCreateFlowRetries(this->getCreateFlowRetries());
+    flow->setQosParameters(this->getQosParameters());
+
     return flow;
+}
+
+std::string Flow::getFlowName() const {
+    std::stringstream os;
+    os << srcApni << "<=>" << dstApni;
+    return os.str();
+}
+
+ConnectionId& Flow::getConnectionId() {
+    return conId;
+}
+
+void Flow::swapPortIds() {
+    int tmp = srcPortId;
+    srcPortId = dstPortId;
+    dstPortId = tmp;
+}
+
+void Flow::swapAddresses() {
+    swapPortIds();
+    Address tmpa = srcAddr;
+    srcAddr = dstAddr;
+    dstAddr = tmpa;
+}
+
+void Flow::swapCepIds() {
+    conId = conId.swapCepIds();
+}
+
+Flow& Flow::swapFlow() {
+    swapAddresses();
+
+    swapPortIds();
+
+    swapCepIds();
 }
 
 void Flow::setQosParameters(const QosCube& qosParameters) {

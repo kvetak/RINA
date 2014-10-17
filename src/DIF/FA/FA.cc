@@ -33,7 +33,6 @@ Define_Module(FA);
 
 FA::FA() {
     this->FaiTable = NULL;
-
 }
 
 FA::~FA() {
@@ -55,35 +54,51 @@ void FA::initPointers() {
 void FA::initialize() {
     initPointers();
     initSignalsAndListeners();
+
+    //Setup MyAddress
+    initMyAddress();
 }
 
-bool FA::receiveAllocateRequest(cObject* obj) {
+bool FA::receiveAllocateRequest(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
 
-    Flow* fl = dynamic_cast<Flow*>(obj);
-
     //Insert new Flow into FAITable
-    FaiTable->insertNew(fl);
+    FaiTable->insertNew(flow);
+
+    //Add source...
+    flow->setSrcAddr(MyAddress);
+    //Ask DA which IPC to use to reach dst App
+    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return false;
+    }
+    //TODO: Vesely - Now using first available APN to DIFMember mapping
+    Address addr = de->getSupportedDifs().front();
+    //...and destination addresses
+    flow->setDstAddr(addr);
 
     //Is malformed?
-    if (isMalformedFlow(fl)){
-        FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_ERR);
+    if (isMalformedFlow(flow)){
+        FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_ERR);
         //TODO: Vesely - What about special signal for errors????
         //this->signalizeAllocateResponseNegative(fl);
         return false;
     }
 
     //Create FAI
-    FAI* fai = this->createFAI(fl);
+    FAI* fai = this->createFAI(flow);
 
     //Update flow object
-    fl->setSrcPortId(fai->par(PAR_PORTID));
-    fl->getConId().setSrcCepId(fai->par(PAR_CEPID));
+    flow->setSrcPortId(fai->par(PAR_PORTID));
+    flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
 
-    //Is App local? YES then Degenerate transfer ELSE
+    //Are both Apps local? YES then Degenerate transfer ELSE
     bool status;
-    if (this->isAppLocal(fl)) {
+    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() )
+         && DifAllocator->isAppLocal( flow->getSrcApni().getApn() )
+       ) {
         //Proceed with DegenerateDataTransfer
         status = fai->processDegenerateDataTransfer();
     }
@@ -100,17 +115,16 @@ bool FA::receiveAllocateRequest(cObject* obj) {
     }
     //Else wait
 
-
     return status;
 }
 
-void FA::receiveAllocateResponsePositive(cObject* obj) {
+/*
+void FA::receiveAllocateResponsePositive(Flow* flow) {
     Enter_Method("receiveAllocateResponsePositive()");
-    Flow* fl = dynamic_cast<Flow*>(obj);
     //Change status
-    FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_POSI);
+    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_POSI);
     //Delegate it towards FAI
-    FAI* fai = FaiTable->findEntryByFlow(fl)->getFai();
+    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
     bool status = fai->receiveAllocateResponsePositive();
     if (!status){
         //Error occurred
@@ -118,75 +132,68 @@ void FA::receiveAllocateResponsePositive(cObject* obj) {
     }
 }
 
-void FA::receiveAllocateResponseNegative(cObject* obj) {
+void FA::receiveAllocateResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocateResponseNegative()");
-    Flow* fl = dynamic_cast<Flow*>(obj);
     //Change status
-    FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_NEGA);
+    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_NEGA);
     //Delegate it towards FAI
-    FAI* fai = FaiTable->findEntryByFlow(fl)->getFai();
+    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
     fai->receiveAllocateResponseNegative();
 }
+*/
 
-void FA::receiveCreateFlowRequest(cObject* obj) {
+void FA::receiveCreateFlowRequest(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
     EV << this->getFullPath() << " received CreateFlowRequest" << endl;
-    Flow* fl = dynamic_cast<Flow*>(obj);
+
     //Insert new Flow into FAITable
-    FaiTable->insertNew(fl);
+    FaiTable->insertNew(flow);
 
     //Is requested APP local?
-    if ( DifAllocator->isAppLocal(fl->getDstApni().getApn()) ){
+    if ( DifAllocator->isAppLocal(flow->getDstApni().getApn()) ){
         //Change allocation status to pending
-        FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_PEND);
+        FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
         //Create FAI
-        FAI* fai = this->createFAI(fl);
+        FAI* fai = this->createFAI(flow);
 
         //Update flow object
-        fl->setDstPortId(fai->par(PAR_PORTID));
-        fl->getConId().setDstCepId(fai->par(PAR_CEPID));
+        flow->setDstPortId(fai->par(PAR_PORTID));
+        flow->getConnectionId().setDstCepId(fai->par(PAR_CEPID));
 
         //Pass the CreateRequest to newly created FAI
         bool status = fai->receiveCreateRequest();
 
         //If allocation was unsuccessful then return negative response
-        if (!status)
-        {
-            //Change allocation status to rejected
-            FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
-            //Send negative response
-            this->signalizeAllocateResponseNegative(fl);
-        }
-        else {
+        if (status)
             FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_POSI);
-        }
+        else
+            FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
     }
     else {
         //Decrement HopCount
-        fl->setHopCount(fl->getHopCount() - 1);
-        if (fl->getHopCount()) {
+        flow->setHopCount(flow->getHopCount() - 1);
+        if (flow->getHopCount()) {
             //Change status to forward
-            FaiTable->changeAllocStatus(fl, FAITableEntry::FORWARDED);
+            FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
             //TODO: Vesely - Forward M_Create(Flow)
-            this->signalizeCreateFlowRequestForward(fl);
+            this->signalizeCreateFlowRequestForward(flow);
         }
         else {
             //TODO: Vesely - More granular error
-            FaiTable->changeAllocStatus(fl, FAITableEntry::ALLOC_ERR);
+            FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_ERR);
             //Schedule M_Create_R(Flow)
-            this->signalizeCreateFlowResponseNegative(fl);
+            this->signalizeCreateFlowResponseNegative(flow);
         }
     }
 }
 
-void FA::receiveDeallocateRequest(cObject* obj) {
+void FA::receiveDeallocateRequest(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
-    Flow* fl = dynamic_cast<Flow*>(obj);
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
     //Pass the request to appropriate FAI
-    FAITableEntry* fte = FaiTable->findEntryByFlow(fl);
-    FAI* fai = fte->getFai();
+    FAITableEntry* fte = FaiTable->findEntryByFlow(flow);
+    FAIBase* fai = fte->getFai();
     fai->receiveDeallocateRequest();
 }
 
@@ -214,7 +221,7 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
             qosid = it->getQosId();
     }
 
-    flow->getConId().setQoSId(qosid);
+    flow->getConnectionId().setQoSId(qosid);
     return qosid ? true : false;
 }
 
@@ -276,48 +283,39 @@ bool FA::isMalformedFlow(Flow* flow) {
     return false;
 }
 
-bool FA::isAppLocal(Flow* flow) {
-    //TODO: Vesely - Simulate localApp
-    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "App11") )
-        return true;
-    return false;
-}
-
 void FA::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
-    sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
-    sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
+    //sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
+    //sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
-    sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
+    //sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
 
     //Signals that this module is processing
     //  AllocateRequest
     this->lisAllocReq = new LisFAAllocReq(this);
-    catcher->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
-    //  AllocateResponsePositive
-    this->lisAllocResPosi = new LisFAAllocResPosi(this);
-    catcher->subscribe(SIG_IRM_AllocateResponsePositive, this->lisAllocResPosi);
-    //  AllocateResponseNegative
-    this->lisAllocResNega = new LisFAAllocResNega(this);
-    catcher->subscribe(SIG_IRM_AllocateResponseNegative, this->lisAllocResNega);
+    catcher3->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
     //  DeallocateRequest
     this->lisDeallocReq = new LisFADeallocReq(this);
-    catcher->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
-
-
-
+    catcher3->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
+    //CreateRequestFlow
+    lisCreReq = new LisFACreReq(this);
+    catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 }
 
+/*
 void FA::signalizeAllocateResponseNegative(Flow* flow) {
     emit(this->sigFAAllocResNega, flow);
 }
+*/
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
+
 
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);

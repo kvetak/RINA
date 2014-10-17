@@ -20,12 +20,18 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "CDAPMessage_m.h"
+#include "CDAPMsgLog.h"
+#include "ExternConsts.h"
 
 class CDAPSplitter : public cSimpleModule
 {
   protected:
+    CDAPMsgLog* MsgLog;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+
 };
 
 #endif

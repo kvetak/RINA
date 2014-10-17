@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,31 +12,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file RIBDaemon.cc
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief Kind of a Notification Board for DIF
- * @detail
- */
 
-#include <RIBDaemon.h>
+#include <FAIBase.h>
 
-Define_Module(RIBDaemon);
-
-RIBDaemon::RIBDaemon() {
-    // TODO Auto-generated constructor stub
-
+FAIBase::FAIBase() : FlowObject(NULL)
+{
 }
 
-RIBDaemon::~RIBDaemon() {
+FAIBase::~FAIBase() {
     // TODO Auto-generated destructor stub
 }
 
-void RIBDaemon::initialize() {
-
-}
-
-void RIBDaemon::handleMessage(cMessage *msg) {
-
-}

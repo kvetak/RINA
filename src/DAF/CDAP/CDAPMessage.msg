@@ -15,6 +15,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+cplusplus {{
+    #include "Address.h"       
+    typedef cObject* ObjectPtr;
+}}
+
+class noncobject Address;
+class noncobject ObjectPtr;
+
 //Message operation codes
 enum opCode_t {
 	M_CONNECT = 0;
@@ -112,20 +120,26 @@ struct naming_t {
 struct object_t {
     string objectClass;		//Object class (e.g. flow, string, int)
     string objectName;		//Unambiguous object name
-    int objectInstance;    //Synonym to class+name concatenation
-    cObject objectVal;		//Actual object
-}
-message CDAPMessage {
-    unsigned int size;
-    
+    int objectInstance;     //Synonym to class+name concatenation
+    ObjectPtr objectVal;	//Actual object
 }
 
+//////////////////////////////////////////////
+//CDAP general messages
+//////////////////////////////////////////////
+message CDAPMessage {
+    string displayString;
+    unsigned int size;
+    int handle;
+    Address dstAddr;  
+}
 
 //////////////////////////////////////////////
 //CDAP M_CONNECT(_R) messages
 //////////////////////////////////////////////
 
 message CDAP_M_Connect extends CDAPMessage {	
+    displayString = "b=15,15,oval,#0066CC,#0066CC,0";
 	unsigned char opCode enum(opCode_t) = M_CONNECT;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -137,6 +151,7 @@ message CDAP_M_Connect extends CDAPMessage {
 }
 
 message CDAP_M_Connect_R extends CDAPMessage {
+	displayString = "b=15,15,oval,#0099FF,#0099FF,0";
 	unsigned char opCode enum(opCode_t) = M_CONNECT_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -153,6 +168,7 @@ message CDAP_M_Connect_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Release extends CDAPMessage {
+	displayString = "b=15,15,oval,#993399,#993399,0";    
 	unsigned char opCode enum(opCode_t) = M_RELEASE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -160,6 +176,7 @@ message CDAP_M_Release extends CDAPMessage {
 }
 
 message CDAP_M_Release_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#9966CC,#9966CC,0";
 	unsigned char opCode enum(opCode_t) = M_RELEASE_R;	
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -172,6 +189,7 @@ message CDAP_M_Release_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Create extends CDAPMessage {
+    displayString = "b=15,15,oval,#FFEE00,#FFEE00,0";
 	unsigned char opCode enum(opCode_t) = M_CREATE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -182,6 +200,7 @@ message CDAP_M_Create extends CDAPMessage {
 }
 
 message CDAP_M_Create_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#FFFF66,#FFFF66,0";
 	unsigned char opCode enum(opCode_t) = M_CREATE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -196,6 +215,7 @@ message CDAP_M_Create_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Delete extends CDAPMessage {
+	displayString = "b=15,15,oval,#CC6633,#CC6633,0";    
 	unsigned char opCode enum(opCode_t) = M_DELETE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -206,13 +226,14 @@ message CDAP_M_Delete extends CDAPMessage {
 }
 
 message CDAP_M_Delete_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#CC9966,#CC9966,0";
 	unsigned char opCode enum(opCode_t) = M_DELETE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
 	int version;	
 	result_t result;
 	object_t object;
-	int filter;		
+	int filter;			
 }
 
 //////////////////////////////////////////////
@@ -220,6 +241,7 @@ message CDAP_M_Delete_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Read extends CDAPMessage {
+    displayString = "b=15,15,oval,#33CCCC,#33CCCC,0"; 
 	unsigned char opCode enum(opCode_t) = M_READ;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -230,6 +252,7 @@ message CDAP_M_Read extends CDAPMessage {
 }
 
 message CDAP_M_Read_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#33FFCC,#33FFCC,0";
 	unsigned char opCode enum(opCode_t) = M_READ_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -244,6 +267,7 @@ message CDAP_M_Read_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_CancelRead extends CDAPMessage {
+    displayString = "b=15,15,oval,#333366,#333366,0";
 	unsigned char opCode enum(opCode_t) = M_CANCELREAD;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -252,6 +276,7 @@ message CDAP_M_CancelRead extends CDAPMessage {
 }
 
 message CDAP_M_CancelRead_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#333399,#333399,0";
 	unsigned char opCode enum(opCode_t) = M_CANCELREAD_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -264,6 +289,7 @@ message CDAP_M_CancelRead_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Write extends CDAPMessage {
+    displayString = "b=15,15,oval,#CC9900,#CC9900,0";
 	unsigned char opCode enum(opCode_t) = M_WRITE;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -274,6 +300,7 @@ message CDAP_M_Write extends CDAPMessage {
 }
 
 message CDAP_M_Write_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#CC9933,#CC9933,0";
 	unsigned char opCode enum(opCode_t) = M_WRITE_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -288,6 +315,7 @@ message CDAP_M_Write_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Start extends CDAPMessage {
+    displayString = "b=15,15,oval,#99CC00,#99CC00,0";
 	unsigned char opCode enum(opCode_t) = M_START;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -298,6 +326,7 @@ message CDAP_M_Start extends CDAPMessage {
 }
 
 message CDAP_M_Start_R extends CDAPMessage {
+	displayString = "b=15,15,oval,#99FF33,#99FF33,0";
 	unsigned char opCode enum(opCode_t) = M_START_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -312,6 +341,7 @@ message CDAP_M_Start_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 message CDAP_M_Stop extends CDAPMessage {
+	displayString = "b=15,15,oval,#FF3333,#FF3333,0";
 	unsigned char opCode enum(opCode_t) = M_STOP;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);
@@ -323,6 +353,7 @@ message CDAP_M_Stop extends CDAPMessage {
 }
 
 message CDAP_M_Stop_R extends CDAPMessage {
+    displayString = "b=15,15,oval,#FF6666,#FF6666,0";
 	unsigned char opCode enum(opCode_t) = M_STOP_R;
 	int invokeID;	
 	unsigned char flags enum(flagValues_t);

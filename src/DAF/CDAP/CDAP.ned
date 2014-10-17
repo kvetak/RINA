@@ -21,5 +21,5 @@ simple CDAP
         @display("i=block/star");
         
     gates:
-   	    inout splitterIo;       
+   	    inout splitterIo[];       
 }

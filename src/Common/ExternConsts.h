@@ -16,6 +16,8 @@
 #ifndef EXTERNCONSTS_H_
 #define EXTERNCONSTS_H_
 
+#include <sstream>
+
 //Module names
 extern const char* MOD_FLOWALLOC;
 extern const char* MOD_FA;
@@ -26,6 +28,12 @@ extern const char* MOD_FAITABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
 extern const char* MOD_IRM;
+extern const char* MOD_CDAP;
+extern const char* MOD_CDAPMSGLOG;
+extern const char* MOD_CDAPSPLIT;
+extern const char* MOD_CDAPCACE;
+extern const char* MOD_CDAPAUTH;
+extern const char* MOD_CDAPCDAP;
 extern const char* MOD_EFCPTABLE;
 extern const char* MOD_DTCP;
 extern const char* MOD_EFCPI;
@@ -43,13 +51,19 @@ extern const char* PAR_CONFIGDATA;
 
 //TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names
-extern const char* GATE_NORTHIO;
 extern const char* GATE_SOUTHIO;
-extern const char* GATE_EFCPIO;
-extern const char* GATE_RMT;
-extern const char* GATE_APPIO;
+extern const char* GATE_NORTHIO_;
+extern const char* GATE_SOUTHIO_;
+extern const char* GATE_EFCPIO_;
+extern const char* GATE_RMT_;
+extern const char* GATE_RMTIO;
+extern const char* GATE_APPIO_;
 extern const char* GATE_AEIO;
 extern const char* GATE_DATAIO;
+extern const char* GATE_SPLITIO;
+extern const char* GATE_CACEIO;
+extern const char* GATE_AUTHIO;
+extern const char* GATE_CDAPIO;
 extern const char* GATE_DTP_NORTHIO;
 extern const char* GATE_DTP_SOUTHIO;
 extern const char* GATE_EFCPI_NORTHIO;
@@ -60,8 +74,17 @@ extern const char* ELEM_APN;
 extern const char* ATTR_APN;
 
 //Values
-extern const int   VAL_QOSPARAMDONOTCARE;
-extern const bool  VAL_QOSPARAMDEFBOOL;
+extern const int   VAL_QOSPARDONOTCARE;
+extern const bool  VAL_QOSPARDEFBOOL;
 
+
+class ExternConsts {
+  public:
+    static const char* prepareCiName(const char* name) {
+        std::ostringstream os;
+        os << "CI-" << name;
+        return os.str().c_str();
+    }
+};
 
 #endif /* EXTERNCONSTS_H_ */

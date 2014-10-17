@@ -7,13 +7,25 @@
 
 #include "RINASignals.h"
 
-const char* SIG_AE_AllocateRequest             = "AE-AllocateRequest";
-const char* SIG_AE_DeallocateRequest           = "AE-DeallocateRequest";
+const char* SIG_AE_AllocateRequest              = "AE-AllocateRequest";
+const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
+const char* SIG_AE_DataSend                     = "AE-DataSend";
+
+const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
+const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
+const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
+const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
+const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
+
+const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
 const char* SIG_IRM_AllocateResponsePositive    = "IRM-AllocateResponsePositive";
 const char* SIG_IRM_AllocateResponseNegative    = "IRM-AllocateResponseNegative";
+
+const char* SIG_AERIBD_AllocateResponsePositive = "AEorRIBd-AllocateResponsePositive";
+const char* SIG_AERIBD_AllocateResponseNegative = "AEorRIBd-AllocateResponseNegative";
 
 const char* SIG_FA_CreateFlowResponseNegative   = "FA-CreateFlowResponseNegative";
 const char* SIG_FA_CreateFlowResponsePositive   = "FA-CreateFlowResponsePositive";

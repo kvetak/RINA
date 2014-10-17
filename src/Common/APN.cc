@@ -37,7 +37,7 @@ void APN::setName(const std::string& name) {
 }
 
 std::string APN::info() const{
-    std::stringstream os;
+    std::ostringstream os;
     os << this->getName();
     return os.str();
 }

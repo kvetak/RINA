@@ -45,7 +45,7 @@ bool Address::operator ==(const Address& other) const {
 }
 
 std::string Address::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     if (!ipcAddress.getName().empty() && !difName.getName().empty())
         os << ipcAddress << "(" << difName << ")";
     return os.str();

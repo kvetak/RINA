@@ -84,8 +84,8 @@ void AEBase::setSrcApName(const std::string& srcApName) {
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getParentModule()->par(PAR_APNAME).stdstringValue();
-    srcApInstance = this->getParentModule()->par(PAR_APINSTANCE).stdstringValue();
+    srcApName = this->getParentModule()->getParentModule()->par(PAR_APNAME).stdstringValue();
+    srcApInstance = this->getParentModule()->getParentModule()->par(PAR_APINSTANCE).stdstringValue();
     srcAeName = this->par(PAR_AENAME).stdstringValue();
     srcAeInstance = this->par(PAR_AEINSTANCE).stdstringValue();
 
@@ -127,7 +127,7 @@ void AEBase::initQoSRequiremets() {
            hasPar(PAR_COSTBITS)
           )
        ) {
-        std::stringstream ss;
+        std::ostringstream ss;
         ss << "Module " << this->getFullName() << " is not derived from AEBase. It misses some important QoS parameters!";
         error(ss.str().c_str());
     }
@@ -135,65 +135,65 @@ void AEBase::initQoSRequiremets() {
     //Create QoS cube according to parameters
     QosCube cube;
 
-    int avgBand                 = VAL_QOSPARAMDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
-    int avgSDUBand              = VAL_QOSPARAMDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
-    int peakBandDuration        = VAL_QOSPARAMDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
-    int peakSDUBandDuration     = VAL_QOSPARAMDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-    int burstPeriod             = VAL_QOSPARAMDONOTCARE;    //Burst period measured in useconds
-    int burstDuration           = VAL_QOSPARAMDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-    int undetectedBitErr        = VAL_QOSPARAMDONOTCARE;    //Undetected bit error rate measured as a probability
-    int maxSDUsize              = VAL_QOSPARAMDONOTCARE;    //MaxSDUSize measured in bytes
-    bool partDeliv              = VAL_QOSPARAMDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-    bool incompleteDeliv        = VAL_QOSPARAMDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
-    bool forceOrder             = VAL_QOSPARAMDEFBOOL;      //Must SDUs be delivered in order?
-    unsigned int maxAllowGap    = VAL_QOSPARAMDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-    int delay                   = VAL_QOSPARAMDONOTCARE;    //Delay in usecs
-    int jitter                  = VAL_QOSPARAMDONOTCARE;    //Jitter in usecs2
-    int costtime                = VAL_QOSPARAMDONOTCARE;    //measured in $/ms
-    int costbits                = VAL_QOSPARAMDONOTCARE;    //measured in $/Mb
+    int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
+    int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
+    int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
+    int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
+    int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
+    int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+    int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
+    bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
+    unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
+    int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
+    int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
+    int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
 
     avgBand = par(PAR_AVGBW);
     if (avgBand < 0)
-        avgBand = VAL_QOSPARAMDONOTCARE;
+        avgBand = VAL_QOSPARDONOTCARE;
     avgSDUBand = par(PAR_AVGSDUBW);
     if (avgSDUBand < 0)
-        avgSDUBand = VAL_QOSPARAMDONOTCARE;
+        avgSDUBand = VAL_QOSPARDONOTCARE;
     peakBandDuration = par(PAR_PEAKBWDUR);
     if (peakBandDuration < 0)
-        peakBandDuration = VAL_QOSPARAMDONOTCARE;
+        peakBandDuration = VAL_QOSPARDONOTCARE;
     peakSDUBandDuration = par(PAR_PEAKSDUBWDUR);
     if (peakSDUBandDuration < 0)
-        peakSDUBandDuration = VAL_QOSPARAMDONOTCARE;
+        peakSDUBandDuration = VAL_QOSPARDONOTCARE;
     burstPeriod = par(PAR_BURSTPERIOD);
     if (burstPeriod < 0)
-        burstPeriod = VAL_QOSPARAMDONOTCARE;
+        burstPeriod = VAL_QOSPARDONOTCARE;
     burstDuration = par(PAR_BURSTDURATION);
     if (burstDuration < 0)
-        burstDuration = VAL_QOSPARAMDONOTCARE;
+        burstDuration = VAL_QOSPARDONOTCARE;
     undetectedBitErr = par(PAR_UNDETECTBITERR);
     if (undetectedBitErr < 0 || undetectedBitErr > 1 )
-        undetectedBitErr = VAL_QOSPARAMDONOTCARE;
+        undetectedBitErr = VAL_QOSPARDONOTCARE;
     maxSDUsize = par(PAR_MAXSDUSIZE);
     if (maxSDUsize < 0)
-        maxSDUsize = VAL_QOSPARAMDONOTCARE;
+        maxSDUsize = VAL_QOSPARDONOTCARE;
     partDeliv = par(PAR_PARTIALDELIVER);
     incompleteDeliv = par(PAR_INCOMPLETEDELIVER);
     forceOrder = par(PAR_FORCEORDER);
     maxAllowGap = par(PAR_MAXALLOWGAP);
     if (maxAllowGap < 0)
-        maxAllowGap = VAL_QOSPARAMDONOTCARE;
+        maxAllowGap = VAL_QOSPARDONOTCARE;
     delay = par(PAR_DELAY);
     if (delay < 0)
-        delay = VAL_QOSPARAMDONOTCARE;
+        delay = VAL_QOSPARDONOTCARE;
     jitter = par(PAR_JITTER);
     if (jitter < 0)
-        jitter = VAL_QOSPARAMDONOTCARE;
+        jitter = VAL_QOSPARDONOTCARE;
     costtime = par(PAR_COSTTIME);
     if (costtime < 0)
-        costtime = VAL_QOSPARAMDONOTCARE;
+        costtime = VAL_QOSPARDONOTCARE;
     costbits = par(PAR_COSTBITS);
     if (costbits < 0)
-        costbits = VAL_QOSPARAMDONOTCARE;
+        costbits = VAL_QOSPARDONOTCARE;
 
     cube.setQosId(0);
     cube.setAvgBand(avgBand);

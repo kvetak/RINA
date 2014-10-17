@@ -16,6 +16,7 @@
 package rina.DIF;
 
 
+import rina.Common.Test;
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DIF.EFCP.EFCPModule;
 import rina.DIF.Enrollment.Enrollment;
@@ -31,14 +32,14 @@ module IPCProcess
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         string ipcAddress;
         string difName;
-        //int numOfAPs;
+        //int    rank;        
     gates:
         inout southIo[];
         inout northIo[];
+        //inout test;
     submodules:
         flowAllocator: FlowAllocator {
-            @display("p=167,61");
-            //numOfAPs = numOfAPs;
+            @display("p=167,50");
         }
         rmt: RMTModule {
             @display("p=79,249");
@@ -56,11 +57,6 @@ module IPCProcess
         enrollment: Enrollment {
             @display("p=390,100");
         }
-        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            @display("p=238,249");
-        }
     connections allowunconnected:
         rmt.ribdIo <--> ribDaemon.rmtIo;
-        //rmt.southIo++ <--> southIo++;
-        //rmt.efcpIo++ <--> efcp.rmtIo++
 }

@@ -4,7 +4,8 @@
 /Makefile
 /Makefile.vc
 src/rina
-
+/doc/
+/doxy.cfg
 .settings/
 *_m.h
 *_m.cc
@@ -28,6 +29,7 @@ out/
 *.dylib
 *.dll
 *.tmp*
+sta*
 *.a
 *.lib
 *.exe

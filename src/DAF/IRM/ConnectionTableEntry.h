@@ -24,13 +24,13 @@
 
 class ConnectionTableEntry {
   public:
-    enum ConnectionStatus {UNKNOWN,
-                           NIL,
-                           FLOWPENDING,
-                           CONNECTPENDING,
-                           AUTHENTICATING,
-                           ESTABLISHED,
-                           RELEASING};
+    enum ConnectionStatus {CON_ERROR,
+                           CON_NIL,
+                           CON_FLOWPENDING,
+                           CON_CONNECTPENDING,
+                           CON_AUTHENTICATING,
+                           CON_ESTABLISHED,
+                           CON_RELEASING};
 
     //De-constructors
     ConnectionTableEntry();

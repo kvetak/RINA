@@ -42,7 +42,11 @@ void RMT::initialize() {
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
     //ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
 
-    processName = getParentModule()->getParentModule()->par("ipcAddress").stdstringValue();
+    cModule* ipcModule = getParentModule()->getParentModule();
+    thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
+                          ipcModule->par("difName").stringValue());
+
+    //this->enableRelay();
 }
 
 /**
@@ -110,7 +114,7 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << GATE_EFCPIO << efcpiId;
+    gateName_str << GATE_EFCPIO_ << efcpiId;
 
     this->addGate(gateName_str.str().c_str(), cGate::INOUT, false);
     cGate* rmtIn = this->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -143,7 +147,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     cModule* rmtModule = getParentModule();
 
     std::ostringstream gateName_str;
-    gateName_str << GATE_EFCPIO << efcpiId;
+    gateName_str << GATE_EFCPIO_ << efcpiId;
 
     cGate* rmtOut = this->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
@@ -164,29 +168,46 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 void RMT::sendDown(PDU_Base* pdu)
 {
-    std::string pduDestAddr = pdu->getDstApn().getName();
+    Address& pduDestAddr = pdu->getDstAddr();
     int pduQosId = pdu->getConnId().getQoSId();
     cGate* outPort;
 
+    // not sure whether this should stay here...
+    if (thisIpcAddr == pduDestAddr)
+    {
+        sendUp(pdu);
+        return;
+    }
+
     if (relayOn)
     {
-        try
-        { // forwarding table lookup
-            RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+        // forwarding table lookup
+        RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
+
+        if (outPortId.first != NULL)
+        {
             outPort = ports[outPortId];
         }
-        catch (...)
+        else
         {
-            EV << this->getFullPath() << " couldn't find any match in FWTable." << endl;
+            EV << this->getFullPath() << " couldn't find any match in FWTable; dropping." << endl;
             delete pdu;
             return;
         }
+
     }
     else
     {
         // decide which (N-1)-flow should get the PDU...
         // we'll just grab the first one for now
-        outPort = ports.begin()->second;
+        if (!ports.empty())
+        {
+            outPort = ports.begin()->second;
+        }
+        else
+        {
+            outPort = NULL;
+        }
     }
 
     EV << this->getFullPath() << " passing a PDU downwards..." << endl;
@@ -212,20 +233,9 @@ void RMT::sendDown(PDU_Base* pdu)
  */
 void RMT::sendUp(PDU_Base* pdu)
 {
-    if (pdu->getDstApn().getName() != processName)
-    { // this PDU isn't for us
-        if (relayOn)
-        { // ...let's relay it somewhere else
-            EV << this->getFullPath() << " relaying a PDU elsewhere" << endl;
-            sendDown(pdu);
-        }
-        else
-        {
-            EV << this->getFullPath() << " this PDU isn't for me! dropping." << endl;
-            delete pdu;
-        }
-    }
-    else
+    Address& pduAddr = pdu->getDstAddr();
+
+    if (thisIpcAddr == pduAddr)
     {
         EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
         cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
@@ -239,7 +249,22 @@ void RMT::sendUp(PDU_Base* pdu)
             EV << this->getFullPath()
                << " I'm not connected to such EFCPI! Notifying other modules."
                << endl;
-            // emit(cosi)
+            // TODO: emit(cosi)
+            delete pdu;
+        }
+    }
+    else
+    { // this PDU isn't for us
+        if (relayOn)
+        { // ...let's relay it somewhere else
+            EV << this->getFullPath() << " relaying a PDU elsewhere" << endl;
+            sendDown(pdu);
+        }
+        else
+        { //
+            EV << this->getFullPath()
+               << " this PDU isn't for me, dropping it! (" << thisIpcAddr << " != " << pduAddr << ")"
+               << endl;
             delete pdu;
         }
     }
@@ -257,24 +282,34 @@ void RMT::handleMessage(cMessage *msg)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
 
-        if (gate.substr(0, 8) == GATE_SOUTHIO)
+        if (gate.substr(0, 8) == GATE_SOUTHIO_)
         {
             sendUp(pdu);
         }
-        else if (gate.substr(0, 7) == GATE_EFCPIO)
+        else if (gate.substr(0, 7) == GATE_EFCPIO_)
         {
             sendDown(pdu);
         }
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     { // management message arrival
-        if (gate == "southIo$i")
+        if (gate.substr(0, 8) == GATE_SOUTHIO_)
         {
             send(msg, "ribdIo$o");
         }
         else
         {
-            send(msg, "southIo$o", 0);
+            if (!ports.empty())
+            {
+                send(msg, ports.begin()->second);
+            }
+            else
+            {
+                EV << this->getFullPath()
+                   << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
+                   << endl;
+                delete msg;
+            }
         }
     }
     else

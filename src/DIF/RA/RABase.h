@@ -20,6 +20,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "QosCube.h"
+#include "Flow.h"
 
 typedef std::list<QosCube> QosCubeSet;
 typedef QosCubeSet::const_iterator QCubeCItem;
@@ -29,6 +30,9 @@ class RABase : public cSimpleModule
   public:
     RABase();
     virtual ~RABase();
+
+    virtual void createFlow(Flow *flow) = 0;
+    virtual void createFlowWithoutAllocate(Flow *flow) = 0;
 
     const QosCubeSet& getQosCubes() const;
 

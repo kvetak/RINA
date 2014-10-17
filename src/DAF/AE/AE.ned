@@ -15,7 +15,7 @@
 
 package rina.DAF.AE;
 
-simple AE
+simple AE like IAE
 {        
     parameters:
         @display("i=block/socket");
@@ -57,8 +57,5 @@ simple AE
 //        int jitter @unit(us)					= default(delay/2); //Jitter in usecs
 //        int costTime							= default(0); //measured in $/ms
 //        int costBits							= default(0); //measured in $/Mb
-//        bool dtcpOn							= default(false); //DTCPOn flag
-                
-    gates:
-		inout dataIo[];		                  
+//        bool dtcpOn							= default(false); //DTCPOn flag			                  
 }

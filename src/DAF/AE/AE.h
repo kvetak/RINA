@@ -26,6 +26,7 @@
 #include "IRM.h"
 #include "ConnectionTable.h"
 #include "ExternConsts.h"
+#include "CDAPMessage_m.h"
 
 class AE : public AEBase
 {
@@ -33,9 +34,21 @@ class AE : public AEBase
     AE();
     virtual ~AE();
 
+    void receiveData(CDAPMessage* obj);
+    void sendData(Flow* flow, CDAPMessage* msg);
+
+    void sendAllocationRequest(Flow* flow);
+    void sendDeallocationRequest(Flow* flow);
+
+    void receiveAllocationRequestFromFAI(Flow* flow);
+
+    void receiveAllocationResponseNegative(Flow* flow);
+    void receiveAllocationResponsePositive(Flow* flow);
+
   protected:
     IRM* Irm;
     ConnectionTable* ConTab;
+    cModule* Cdap;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -44,17 +57,30 @@ class AE : public AEBase
     void initSignalsAndListeners();
 
     void insertFlow(Flow& flow);
-    void createBinding(Flow& flow);
+    bool createBinding(Flow& flow);
 
     //Signals
     simsignal_t sigAEAllocReq;
     simsignal_t sigAEDeallocReq;
+    simsignal_t sigAESendData;
+    simsignal_t sigAEAllocResPosi;
+    simsignal_t sigAEAllocResNega;
 
     //Listeners
+    LisAEReceiveData* lisAERcvData;
+    LisAEAllReqFromFai* lisAEAllReqFromFai;
+    LisAEAllResPosi* lisAEAllResPosi;
+    LisAEAllResNega* lisAEAllResNega;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
+    void signalizeSendData(cMessage* msg);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
+
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
 
 };
 

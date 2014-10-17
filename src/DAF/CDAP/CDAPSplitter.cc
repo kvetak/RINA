@@ -19,36 +19,51 @@ Define_Module(CDAPSplitter);
 
 void CDAPSplitter::initialize()
 {
-    // TODO - Generated method body
+    MsgLog = dynamic_cast<CDAPMsgLog*>(this->getParentModule()->getSubmodule(MOD_CDAPMSGLOG));
+    if (!MsgLog)
+        error("Pointer to CDAPMsgLog is not initialized!");
 }
 
 void CDAPSplitter::handleMessage(cMessage *msg)
 {
-    //Pass it to the CACE module
-    if (dynamic_cast<CDAP_M_Connect*>(msg) ||  dynamic_cast<CDAP_M_Connect_R*>(msg) ||
-        dynamic_cast<CDAP_M_Release*>(msg) ||  dynamic_cast<CDAP_M_Release_R*>(msg) )
-    {
+    //Output gate pointer
+    cGate* out;
 
-        send(msg, "caceIo");
+    //Received from south gates
+    if ( strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) != NULL ) {
+        //Pass it to the CACE module
+        if (dynamic_cast<CDAP_M_Connect*>(msg) ||  dynamic_cast<CDAP_M_Connect_R*>(msg) ||
+            dynamic_cast<CDAP_M_Release*>(msg) ||  dynamic_cast<CDAP_M_Release_R*>(msg) )
+        {
+            out = gateHalf(GATE_CACEIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
+        }
+
+        //Pass it to the Auth module
+
+        //Pass it to the CDAP module
+        else if (dynamic_cast<CDAP_M_Create*>(msg) || dynamic_cast<CDAP_M_Create_R*>(msg) ||
+                 dynamic_cast<CDAP_M_Delete*>(msg) || dynamic_cast<CDAP_M_Delete_R*>(msg) ||
+                 dynamic_cast<CDAP_M_Start*>(msg) || dynamic_cast<CDAP_M_Start_R*>(msg)   ||
+                 dynamic_cast<CDAP_M_Stop*>(msg) || dynamic_cast<CDAP_M_Stop_R*>(msg)     ||
+                 dynamic_cast<CDAP_M_Write*>(msg) || dynamic_cast<CDAP_M_Write_R*>(msg)   ||
+                 dynamic_cast<CDAP_M_Read*>(msg) || dynamic_cast<CDAP_M_Read_R*>(msg)     ||
+                 dynamic_cast<CDAP_M_CancelRead*>(msg) || dynamic_cast<CDAP_M_CancelRead_R*>(msg) )
+        {
+            //EV <<"XXXXXXXX "<< msg->getArrivalGate()->getFullName() << "-" << msg->getArrivalGate()->getIndex() << endl;
+            out = gateHalf(GATE_CDAPIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
+        }
+
     }
-
-    //Pass it to the Auth module
-
-    //Pass it to the CDAP module
-    else if (dynamic_cast<CDAP_M_Create*>(msg) || dynamic_cast<CDAP_M_Create_R*>(msg) ||
-             dynamic_cast<CDAP_M_Delete*>(msg) || dynamic_cast<CDAP_M_Delete_R*>(msg) ||
-             dynamic_cast<CDAP_M_Start*>(msg) || dynamic_cast<CDAP_M_Start_R*>(msg)   ||
-             dynamic_cast<CDAP_M_Stop*>(msg) || dynamic_cast<CDAP_M_Stop_R*>(msg)     ||
-             dynamic_cast<CDAP_M_Write*>(msg) || dynamic_cast<CDAP_M_Write_R*>(msg)   ||
-             dynamic_cast<CDAP_M_Read*>(msg) || dynamic_cast<CDAP_M_Read_R*>(msg)     ||
-             dynamic_cast<CDAP_M_CancelRead*>(msg) || dynamic_cast<CDAP_M_CancelRead_R*>(msg) )
-    {
-        send(msg, "cdapIo");
+    //Received from north gates
+    else if (strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) == NULL) {
+        out = gateHalf(GATE_SOUTHIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
     }
-
     //Unknown message
     else {
         EV << this->getFullPath() << " received unknown message" << endl;
         delete msg;
     }
+
+    //Forward message
+    send(msg, out);
 }

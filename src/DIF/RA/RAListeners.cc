@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,30 +12,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file RIBDaemon.cc
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief Kind of a Notification Board for DIF
- * @detail
- */
 
-#ifndef RIBDAEMON_H_
-#define RIBDAEMON_H_
+#include <RAListeners.h>
 
-#include <omnetpp.h>
+RAListeners::RAListeners(RABase* nra) : ra(nra) {
+}
 
-class RIBDaemon : public cSimpleModule {
-public:
-    RIBDaemon();
-    virtual ~RIBDaemon();
+RAListeners::~RAListeners() {
+    ra = NULL;
 
-    simsignal_t sigUpdateDirFwdTable;
+}
 
-protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateFlow initiated by " << src->getFullPath()
+       << " and processed by " << ra->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ra->createFlowWithoutAllocate(flow);
+    else
+        EV << "RAListener received unknown object!" << endl;
 
-};
-
-#endif /* RIBDAEMON_H_ */
+}

@@ -33,23 +33,23 @@ typedef std::pair<cModule*, int> RMTPortId;
 class PDUTableEntry
 {
   private:
-    std::string destAddr;
+    Address destAddr;
     int qosId;
     RMTPortId portId;
 
   public:
     PDUTableEntry();
-    PDUTableEntry(std::string destaddr, int qosid, cModule* ipc);
-    PDUTableEntry(std::string destaddr, int qosid, cModule* ipc, int portid);
+    PDUTableEntry(Address& destaddr, int qosid, cModule* ipc);
+    PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid);
     virtual ~PDUTableEntry();
 
     std::string info() const;
 
-    std::string getDestAddr();
+    Address& getDestAddr();
     int getQosId();
     RMTPortId getPortId();
 
-    void setDestAddr(std::string destaddr);
+    void setDestAddr(Address& destaddr);
     void setQosId(int qosid);
     void setPortId(RMTPortId portId);
 

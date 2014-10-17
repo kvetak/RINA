@@ -62,7 +62,7 @@ void PDUForwardingTable::printAll() {
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTPortId PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
+RMTPortId PDUForwardingTable::lookup(Address& destAddr, int QoSid) {
     for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
     {
         PDUTableEntry a = *it;
@@ -73,7 +73,7 @@ RMTPortId PDUForwardingTable::lookup(std::string destAddr, int QoSid) {
         }
     }
 
-    throw;
+    return std::make_pair((cModule*)NULL, -1);
 }
 
 /**
@@ -92,7 +92,7 @@ void PDUForwardingTable::insert(const PDUTableEntry* entry) {
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(std::string destAddr, int qosId, cModule* ipc, int portId) {
+void PDUForwardingTable::insert(Address destAddr, int qosId, cModule* ipc, int portId) {
     Enter_Method("insert()");
     PDUTableEntry entry = PDUTableEntry(destAddr, qosId, ipc, portId);
     FwTable.push_back(entry);

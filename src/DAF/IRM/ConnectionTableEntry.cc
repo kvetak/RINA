@@ -16,7 +16,7 @@
 #include <ConnectionTableEntry.h>
 
 ConnectionTableEntry::ConnectionTableEntry()
-    :  FlowObject(NULL), conStatus(UNKNOWN),
+    :  FlowObject(NULL), conStatus(CON_ERROR),
        northGateIn(NULL), northGateOut(NULL),
        southGateIn(NULL), southGateOut(NULL),
        FlowAlloc(NULL)
@@ -24,7 +24,7 @@ ConnectionTableEntry::ConnectionTableEntry()
 }
 
 ConnectionTableEntry::ConnectionTableEntry(Flow* flow)
-    :  FlowObject(flow), conStatus(FLOWPENDING),
+    :  FlowObject(flow), conStatus(CON_FLOWPENDING),
        northGateIn(NULL), northGateOut(NULL),
        southGateIn(NULL), southGateOut(NULL),
        FlowAlloc(NULL)
@@ -32,7 +32,7 @@ ConnectionTableEntry::ConnectionTableEntry(Flow* flow)
 }
 
 ConnectionTableEntry::ConnectionTableEntry(Flow* flow, cGate* nIn, cGate* nOut)
-:  FlowObject(flow), conStatus(FLOWPENDING),
+:  FlowObject(flow), conStatus(CON_FLOWPENDING),
    northGateIn(nIn), northGateOut(nOut),
    southGateIn(NULL), southGateOut(NULL),
    FlowAlloc(NULL)
@@ -41,7 +41,7 @@ ConnectionTableEntry::ConnectionTableEntry(Flow* flow, cGate* nIn, cGate* nOut)
 
 ConnectionTableEntry::~ConnectionTableEntry() {
     this->FlowObject = NULL;
-    this->conStatus = UNKNOWN;
+    this->conStatus = CON_ERROR;
     this->northGateIn = NULL;
     this->northGateOut = NULL;
     this->southGateIn = NULL;
@@ -50,7 +50,7 @@ ConnectionTableEntry::~ConnectionTableEntry() {
 }
 
 std::string ConnectionTableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     if (FlowObject)
         os << FlowObject->info() << "\n";
     if (FlowAlloc)
@@ -68,13 +68,13 @@ std::string ConnectionTableEntry::info() const {
 std::string ConnectionTableEntry::getConnectionStatusString() const {
     switch(this->conStatus)
     {
-        case NIL:               return "NULL";
-        case FLOWPENDING:       return "flowpending";
-        case CONNECTPENDING:    return "connectpending";
-        case AUTHENTICATING:    return "authenticating";
-        case ESTABLISHED:       return "established";
-        case RELEASING:         return "releasing";
-        case UNKNOWN:
+        case CON_NIL:               return "NULL";
+        case CON_FLOWPENDING:       return "flowpending";
+        case CON_CONNECTPENDING:    return "connectpending";
+        case CON_AUTHENTICATING:    return "authenticating";
+        case CON_ESTABLISHED:       return "established";
+        case CON_RELEASING:         return "releasing";
+        case CON_ERROR:
         default:                return "UNKNOWN";
     }
 }

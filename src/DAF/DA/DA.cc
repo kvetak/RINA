@@ -73,8 +73,11 @@ bool DA::isAppLocal(const APN& apn) {
     cModule* top = this->getParentModule()->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
-        if (submodp->hasPar(PAR_APNAME)
-            && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str())
+        if ( (submodp->hasPar(PAR_APNAME)
+                && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str() ) )
+             ||
+             (submodp->hasPar(PAR_IPCADDR)
+                && !opp_strcmp(submodp->par(PAR_IPCADDR), apn.getName().c_str() ) )
            )
             return true;
     }
@@ -149,6 +152,16 @@ void DA::handleMessage(cMessage *msg)
 
 }
 
+cModule* DA::findApp(const APN& apn) {
+    cModule* top = this->getParentModule()->getParentModule();
+    for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
+        cModule *submodp = j();
+        if (submodp->hasPar(PAR_APNAME) && !strcmp(submodp->par(PAR_APNAME), apn.getName().c_str()) ) {
+            return submodp;
+        }
+    }
+    return NULL;
+}
 /*
 cModule* DA::resolveApnToIpc(const APN& apn) {
     Enter_Method("resolveApnToDif()");

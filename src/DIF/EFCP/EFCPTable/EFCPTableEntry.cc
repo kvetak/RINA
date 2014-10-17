@@ -37,7 +37,7 @@ EFCPTableEntry::~EFCPTableEntry()
 
 
 std::string EFCPTableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "TODO";
     return os.str();
 }

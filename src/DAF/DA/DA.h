@@ -51,6 +51,7 @@ class DA : public cSimpleModule
 
     cModule* findIpc(const Address& addr);
     FABase* findFaInsideIpc(cModule* ipc);
+    cModule* findApp(const APN& apn);
 
     /** Check whether any IPC within given DIF name is available on computation system with source IPC
      *

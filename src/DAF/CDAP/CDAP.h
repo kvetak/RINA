@@ -16,14 +16,37 @@
 #ifndef __RINA_CDAP_H_
 #define __RINA_CDAP_H_
 
+//Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "CDAPListeners.h"
+#include "RINASignals.h"
+#include "CDAPMessage_m.h"
+#include "ExternConsts.h"
 
 class CDAP : public cSimpleModule
 {
-  protected:
+  public:
     enum ConnectionState {NIL, CONNECTED, AWAITCLOSE, AWAITCON};
+
+    void sendData(CDAPMessage* cmsg);
+
+  protected:
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void initSignalsAndListeners();
+
+    //Signals
+    simsignal_t sigCDAPReceiveData;
+
+    //Listeners
+    LisCDAPSendData* lisCDAPSendData;
+
+    //Signaling
+    void signalizeReceiveData(CDAPMessage* cmsg);
+
 };
 
 #endif

@@ -53,7 +53,7 @@ void EFCPTable::initialize(){
 }
 
 std::string EFCPTable::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "id=" << endl;// this->getId() << endl;
     /*
     for(TFTConstIter it = FaiTable.begin(); it != FaiTable.end(); ++it )

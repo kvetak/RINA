@@ -3,6 +3,12 @@
 	<Host id="host1">
 		<DA>
 			<Directory>
+				<APN apn="App1">
+					<DIF difName="Layer1" ipcAddress="11" />
+				</APN>
+				<APN apn="11">
+					<DIF difName="Layer0" ipcAddress="1" />
+				</APN>					
 				<APN apn="App2">
 					<DIF difName="Layer1" ipcAddress="22" />
 				</APN>
@@ -32,7 +38,13 @@
 				</APN>
 				<APN apn="11">
 					<DIF difName="Layer0" ipcAddress="1" />
-				</APN>				
+				</APN>		
+				<APN apn="App2">
+					<DIF difName="Layer1" ipcAddress="22" />
+				</APN>
+				<APN apn="22">
+					<DIF difName="Layer0" ipcAddress="2" />
+				</APN>										
 			</Directory>
 			<NamingInfo>
 				<APN apn="App2">

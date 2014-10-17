@@ -25,7 +25,7 @@ FAITableEntry::FAITableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN)
     this->timeLastActive = simTime();
 }
 
-FAITableEntry::FAITableEntry(FAI* nfai): flow(NULL), allocStatus(this->UNKNOWN) {
+FAITableEntry::FAITableEntry(FAIBase* nfai): flow(NULL), allocStatus(this->UNKNOWN) {
     this->fai            = nfai;
     this->timeCreated    = simTime();
     this->timeLastActive = simTime();
@@ -40,7 +40,7 @@ FAITableEntry::~FAITableEntry() {
 }
 
 std::string FAITableEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "status: " << this->getAllocateStatusString() <<
           "\tcreated: " << this->getTimeCreated() << "\tlastActive: " << this->getTimeLastActive() << endl;
     if ( this->getFlow() )
@@ -55,7 +55,7 @@ std::ostream& operator <<(std::ostream& os, const FAITableEntry& fte) {
     return os << fte.info();
 }
 
-FAI* FAITableEntry::getFai() const {
+FAIBase* FAITableEntry::getFai() const {
     return fai;
 }
 
@@ -90,7 +90,7 @@ void FAITableEntry::setTimeLastActive(const simtime_t& timeLastActive) {
     this->timeLastActive = timeLastActive;
 }
 
-void FAITableEntry::setFai(FAI* nfai) {
+void FAITableEntry::setFai(FAIBase* nfai) {
     this->fai = nfai;
 }
 

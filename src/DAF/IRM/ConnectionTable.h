@@ -42,6 +42,7 @@ class ConnectionTable : public cSimpleModule
     bool setSouthGates(Flow* flow, cGate* sIn, cGate* sOut);
     bool setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);
     bool setFa(Flow* flow, FABase* fa);
+    bool setStatus(Flow* flow, ConnectionTableEntry::ConnectionStatus status);
 
     FABase* getFa(Flow* flow);
 

@@ -44,7 +44,7 @@ std::ostream& operator <<(std::ostream& os, const DirectoryEntry& dte) {
 }
 
 std::string DirectoryEntry::info() const {
-    std::stringstream os;
+    std::ostringstream os;
     os << "APN: " << Apn << ", supported DIFs: ";
     for (AddrCItem it = SupportedDifs.begin(); it != SupportedDifs.end(); ++it)
         os << "\n    DIF: " << it->getDifName() << ", IPCaddress: " << it->getIpcAddress();

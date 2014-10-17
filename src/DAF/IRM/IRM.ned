@@ -24,5 +24,5 @@ simple IRM
         @signal[IRM-AllocateResponsePositive](type=Flow?);
         @signal[IRM-AllocateResponseNegative](type=Flow?);   
     gates:
-        inout aeIo[];          
+        inout aeIo[];  
 }
