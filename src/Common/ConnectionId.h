@@ -42,6 +42,8 @@ class ConnectionId: public cObject {
 
     virtual ConnectionId *dup() const;
 
+    ConnectionId& swapCepIds();
+
   private:
     unsigned int qosId;
     unsigned int srcCEPId;

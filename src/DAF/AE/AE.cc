@@ -46,7 +46,7 @@ void AE::initSignalsAndListeners() {
     catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
 
     lisAEAllResNega = new LisAEAllResNega(this);
-    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResPosi);
+    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
 }
 
 void AE::initialize() {
@@ -177,7 +177,18 @@ void AE::signalizeDeallocateRequest(Flow* flow) {
     emit(sigAEDeallocReq, flow);
 }
 
-void AE::receiveData(cObject* obj) {
+void AE::receiveData(CDAPMessage* msg) {
+    Enter_Method("receiveData()");
+    //M_READ_Request
+    if (dynamic_cast<CDAP_M_Read*>(msg)) {
+        processMRead(msg);
+    }
+    //M_READ_Response
+    else if (dynamic_cast<CDAP_M_Read_R*>(msg)) {
+        processMReadR(msg);
+    }
+
+    delete msg;
 }
 
 void AE::receiveAllocationRequestFromFAI(Flow* flow) {
@@ -251,4 +262,12 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
         EV << "Sending data before flow is allocated!" << endl;
         delete msg;
     }
+}
+
+void AE::processMRead(CDAPMessage* msg) {
+
+}
+
+void AE::processMReadR(CDAPMessage* msg) {
+
 }

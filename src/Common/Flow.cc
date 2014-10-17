@@ -168,6 +168,31 @@ ConnectionId& Flow::getConnectionId() {
     return conId;
 }
 
+void Flow::swapPortIds() {
+    int tmp = srcPortId;
+    srcPortId = dstPortId;
+    dstPortId = tmp;
+}
+
+void Flow::swapAddresses() {
+    swapPortIds();
+    Address tmpa = srcAddr;
+    srcAddr = dstAddr;
+    dstAddr = tmpa;
+}
+
+void Flow::swapCepIds() {
+    conId = conId.swapCepIds();
+}
+
+Flow& Flow::swapFlow() {
+    swapAddresses();
+
+    swapPortIds();
+
+    swapCepIds();
+}
+
 void Flow::setQosParameters(const QosCube& qosParameters) {
     this->qosParameters = qosParameters;
 }

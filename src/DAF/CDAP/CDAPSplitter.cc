@@ -49,23 +49,21 @@ void CDAPSplitter::handleMessage(cMessage *msg)
                  dynamic_cast<CDAP_M_Read*>(msg) || dynamic_cast<CDAP_M_Read_R*>(msg)     ||
                  dynamic_cast<CDAP_M_CancelRead*>(msg) || dynamic_cast<CDAP_M_CancelRead_R*>(msg) )
         {
+            //EV <<"XXXXXXXX "<< msg->getArrivalGate()->getFullName() << "-" << msg->getArrivalGate()->getIndex() << endl;
             out = gateHalf(GATE_CDAPIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
         }
 
     }
     //Received from north gates
-    else {
+    else if (strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) == NULL) {
         out = gateHalf(GATE_SOUTHIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
     }
-
-    //Forward message
-    send(msg, out);
-
-/*
     //Unknown message
     else {
         EV << this->getFullPath() << " received unknown message" << endl;
         delete msg;
     }
-*/
+
+    //Forward message
+    send(msg, out);
 }

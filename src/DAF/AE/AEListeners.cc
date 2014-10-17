@@ -28,13 +28,17 @@ void LisAEReceiveData::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveData initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
-
-    ae->receiveData(obj);
+    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
+    if (msg) {
+        ae->receiveData(msg);
+    }
+    else
+        EV << "AEListener received unknown object!" << endl;
 }
 
 void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "XXXXXXXXXXXXXxAllocationRequest{fromFAI} initiated by " << src->getFullPath()
+    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
@@ -51,14 +55,24 @@ void LisAEAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateResponsePositive initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
-    //TODO: Vesely
-
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (ae->hasFlow(flow))
+            ae->receiveAllocationResponsePositive(flow);
+    }
+    else
+        EV << "AEListener received unknown object!" << endl;
 }
 
 void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateResponseNegative initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
-    //TODO: Vesely
-
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (ae->hasFlow(flow))
+            ae->receiveAllocationResponsePositive(flow);
+    }
+    else
+        EV << "AEListener received unknown object!" << endl;
 }

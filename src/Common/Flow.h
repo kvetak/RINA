@@ -44,6 +44,7 @@ class Flow : public cObject
     std::string info() const;
 
     std::string getFlowName() const;
+    Flow& swapFlow();
 
     ConnectionId& getConnectionId();
     const ConnectionId& getConId() const;
@@ -69,7 +70,7 @@ class Flow : public cObject
     const QosCube& getQosParameters() const;
     void setQosParameters(const QosCube& qosParameters);
 
-  private:
+  protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
     APNamingInfo srcApni;
     APNamingInfo dstApni;
@@ -83,6 +84,10 @@ class Flow : public cObject
     uint32_t hopCount;
 
     QosCube qosParameters;
+
+    void swapPortIds();
+    void swapAddresses();
+    void swapCepIds();
 };
 
 //Free function

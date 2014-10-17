@@ -34,7 +34,7 @@ class AE : public AEBase
     AE();
     virtual ~AE();
 
-    void receiveData(cObject* obj);
+    void receiveData(CDAPMessage* obj);
     void sendData(Flow* flow, CDAPMessage* msg);
 
     void sendAllocationRequest(Flow* flow);
@@ -78,6 +78,10 @@ class AE : public AEBase
     void signalizeSendData(cMessage* msg);
     void signalizeAllocateResponsePositive(Flow* flow);
     void signalizeAllocateResponseNegative(Flow* flow);
+
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
+
 };
 
 #endif
