@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,35 +15,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-cplusplus {{
+/*
+ * @file DataTransferPDU.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Oct 19, 2014
+ * @brief
+ * @detail
+ */
 
-#include <vector>
-#include "CDAPMessage_m.h"
-#include "Data.h"
-typedef std::vector<CDAPMessage*> mUserDataType;
-}}
+#include <DataTransferPDU.h>
 
-message Data;
-class noncobject mUserDataType;
+Register_Class(DataTransferPDU);
 
-enum FragmentType{
-    	SDU_FRAG_FIRST 		= 0x01;
-    	SDU_FRAG_MIDDLE		= 0x00;
-    	SDU_FRAG_LAST		= 0x02;
+DataTransferPDU::DataTransferPDU(const char *name, int kind): DataTransferPDU_Base(name,kind)
+{
+  // TODO Auto-generated constructor stub
+
+}
+void DataTransferPDU::copy(const DataTransferPDU& other){
+
 }
 
-message SDU extends Data {
-    @customize(true);
-    unsigned int size = 0;
-    unsigned int offset = 0;
-    mUserDataType mUserData;
-    
-    unsigned int fSize = 0;
-    unsigned int fOffset = 0;
-    
-    unsigned int seqNum = 0;
-    unsigned int fSeqNum = 0;
-    
-    int fragType enum(FragmentType) = 0	;
-    
+unsigned int DataTransferPDU::getSize(){
+  //TODO B2 check PDU_HEADER_LEN
+  return userDataField_var->getSize() + PDU_HEADER_LEN;
 }
+
+DataTransferPDU::~DataTransferPDU()
+{
+  // TODO Auto-generated destructor stub
+}
+

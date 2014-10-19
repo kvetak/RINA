@@ -14,37 +14,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file Data.h
+
+/*
+ * @file DataTransferPDU.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Sep 18, 2014
+ * @date Oct 19, 2014
  * @brief
  * @detail
  */
 
-#ifndef DATA_H_
-#define DATA_H_
+#ifndef DATATRANSFERPDU_H_
+#define DATATRANSFERPDU_H_
 
-#include <omnetpp.h>
-#include "Data_m.h"
-
-class Data : public Data_Base
+#include "DataTransferPDU_m.h"
+/*
+ *
+ */
+class DataTransferPDU : public DataTransferPDU_Base
   {
     private:
-      void copy(const Data& other) {};
+      void copy(const DataTransferPDU& other);
+
     public:
-     Data(const char *name=NULL, int kind=0) : Data_Base(name,kind) {}
-     Data(const Data& other) : Data_Base(other) {copy(other);}
-     Data& operator=(const Data& other) {if (this==&other) return *this; Data_Base::operator=(other); copy(other); return *this;}
-     virtual Data *dup() const {return new Data(*this);}
+      DataTransferPDU(const char *name=NULL, int kind=0);
+      DataTransferPDU(const DataTransferPDU& other) : DataTransferPDU_Base(other) {copy(other);}
+      DataTransferPDU& operator=(const DataTransferPDU& other) {if (this==&other) return *this; DataTransferPDU_Base::operator=(other); copy(other); return *this;}
+      virtual DataTransferPDU *dup() const {return new DataTransferPDU(*this);}
+      // ADD CODE HERE to redefine and implement pure virtual functions from DataTransferPDU_Base
+      ~DataTransferPDU();
 
-      // ADD CODE HERE to redefine and implement pure virtual functions from Data_Base
+      unsigned int getSize();
   };
-//class Data
-//{
-//    public:
-//        Data();
-//        virtual ~Data();
-//};
 
-#endif /* DATA_H_ */
+#endif /* DATATRANSFERPDU_H_ */

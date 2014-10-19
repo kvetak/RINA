@@ -29,6 +29,8 @@
 #include <cobject.h>
 #include <queue>
 
+#define MAX_CLOSED_WIN_Q_LEN 20
+
 typedef enum
 {
   //NULL = 0,
@@ -84,7 +86,7 @@ public:
     DTPState();
     virtual ~DTPState();
     void incDropDup(){dropDup++;}
-    bool isFlowControlPresent(){ return winBased || rateBased;}
+    bool isFCPresent(){ return winBased || rateBased;}
     bool isClosedWindow() const;
     void setClosedWindow(bool closedWindow);
     unsigned int getClosedWinQueLen() const;

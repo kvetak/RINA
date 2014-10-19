@@ -22,5 +22,6 @@ packet PDU;
 // TODO generated message class
 //
 packet DataTransferPDU extends PDU {
+    @customize(true);
     type = DATA_TRANSFER_PDU;
 }

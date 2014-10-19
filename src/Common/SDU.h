@@ -45,6 +45,7 @@ public:
     // ADD CODE HERE to redefine and implement pure virtual functions from SDU_Base
 
     unsigned int getSize() const;
+    unsigned int getAbsoluteSize() const;
     unsigned int getRestSize() const;
     void setSize(unsigned int size);
     unsigned char* getUserData() const;

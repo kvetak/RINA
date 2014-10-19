@@ -32,7 +32,7 @@
 #define SEQNUMLENGTH 64
 
 #define MAXSDUSIZE  1500 //made up
-#define MAXPDUSIZE  1500 //made up
+#define MAX_PDU_SIZE  1500 //made up
 
 
 

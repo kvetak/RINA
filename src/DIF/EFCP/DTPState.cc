@@ -20,6 +20,15 @@
 DTPState::DTPState() {
     // TODO Auto-generated constructor stub
 
+  closedWindow = false;
+  closedWinQueLen = 0;
+  dropDup = 0;
+
+  //TODO
+  dtcpPresent = false;
+  incompDeliv = false;
+  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
+
 }
 
 DTPState::~DTPState() {

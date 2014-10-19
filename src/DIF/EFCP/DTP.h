@@ -25,7 +25,7 @@
 #include "DTPTimers_m.h"
 #include "DTCP.h"
 //#include "PDU.h"
-#include "DataTransferPDU_m.h"
+#include "DataTransferPDU.h"
 #include "SDU.h"
 #include "RMT.h"
 
@@ -48,7 +48,7 @@ class DTP : public cSimpleModule
     /* Various queues */
     /* Output queues - from App to RMT */
     std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
-    std::vector<Data*> dataQ; //SDU or SDUFragments generated from delimiting
+    std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
     std::vector<PDU*> generatedPDUs;
     std::vector<PDU*> postablePDUs;
     std::vector<PDU*> closedWindowQ;
@@ -86,7 +86,9 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
     void handleMsgFromDelimiting(Data* msg);
+    void handleMsgFromDelimitingnew(SDU* sdu);
     void handleMsgFromRmt(PDU* msg);
+    void handleMsgFromRmtnew(PDU* msg);
 
     /* Send */
 
@@ -102,10 +104,14 @@ class DTP : public cSimpleModule
     void generatePDUsnew();
 
     void trySendGenPDUs();
+    void trySendGenPDUsnew();
+
+
 
 
 
 //    void sendPostablePDUsToRMT();
+    void sendPDUToRMT(PDU* pdu);
 
     void fromRMT(PDU* pdu);
 

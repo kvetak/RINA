@@ -27,10 +27,27 @@ SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
 
 }
 
-
+/*
+ * This size returns size depending on @var dataType_var
+ */
 unsigned int SDU::getSize() const
 {
+  if (dataType_var == SDU_TYPE)
+  {
+    return size_var;
+  }
+  else if (dataType_var == SDU_FRAGMENT_TYPE)
+  {
+    return fSize_var;
+  }
+}
+/*
+ * This method returns the absolute size of the SDU.
+ */
+unsigned int SDU::getAbsoluteSize() const
+{
   return size_var;
+
 }
 
 unsigned int SDU::getRestSize()const
@@ -117,6 +134,13 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
   fSeqNum_var = fSeqNum;
   fOffset_var = fOffset;
   dataType_var = SDU_FRAGMENT_TYPE;
+  if(fSeqNum == 0){
+    fragType_var = SDU_FRAG_FIRST;
+  }else if(fSize + fOffset == this->size_var){
+    fragType_var = SDU_FRAG_LAST;
+  }else{
+    fragType_var = SDU_FRAG_MIDDLE;
+  }
 }
 
 SDU::~SDU()

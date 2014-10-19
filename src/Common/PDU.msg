@@ -20,8 +20,11 @@ cplusplus {{
 #include "Address.h"
 #include "APN.h"
 #include "ConnectionId.h"
+#include "UserDataField.h"
+
 typedef cMessage* cMessagePtr;
 typedef cObject* cObjectPtr;
+typedef UserDataField* UserDataFieldPtr;
 
 }}
 class noncobject Address;
@@ -29,6 +32,7 @@ class noncobject APN;
 class noncobject ConnectionId;
 class noncobject cMessagePtr;
 class noncobject cObjectPtr;
+class noncobject UserDataFieldPtr;
 
 
 
@@ -71,6 +75,7 @@ message PDU {
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
     cMessagePtr mUserData;
+    UserDataFieldPtr userDataField;
     
     
 }

@@ -104,12 +104,14 @@ void DTP::handleMessage(cMessage *msg)
     {
       //handle SDUs
 //          handleSDUs((CDAPMessage*) msg);
-      handleMsgFromDelimiting((Data*) msg);
+//      handleMsgFromDelimiting((Data*) msg);
+      handleMsgFromDelimitingnew((SDU*) msg);
 
     }
     else if (msg->arrivedOn(southI->getId()))
     {
-      handleMsgFromRmt((PDU*) msg);
+//      handleMsgFromRmt((PDU*) msg);
+      handleMsgFromRmtnew((PDU*) msg);
     }
   }
 
@@ -142,6 +144,18 @@ void DTP::handleMsgFromDelimiting(Data* msg)
 
 }
 
+void DTP::handleMsgFromDelimitingnew(SDU* sdu){
+  cancelEvent(senderInactivityTimer);
+
+  delimit(sdu);
+
+  generatePDUsnew();
+
+  this->trySendGenPDUs();
+
+  schedule(senderInactivityTimer);
+}
+
 void DTP::handleMsgFromRmt(PDU* msg)
 {
 
@@ -151,6 +165,26 @@ void DTP::handleMsgFromRmt(PDU* msg)
     cMessage* sdu = pdu->getMUserData();
     take(check_and_cast<cOwnedObject*>(sdu) );
     send(pdu->getMUserData(), northO);
+  }
+}
+
+void DTP::handleMsgFromRmtnew(PDU* msg){
+
+  if (dynamic_cast<DataTransferPDU*>(msg))
+  {
+    DataTransferPDU* pdu = (DataTransferPDU*) msg;
+//    cMessage* sdu = pdu->getMUserData();
+    UserDataField* userData = pdu->getUserDataField();
+    SDU* sdu;
+    while((sdu = userData->getData())!= NULL){
+      //TODO Delimiting/de-fragmentation
+      take(sdu);
+      send(sdu, northO);
+    }
+
+
+
+//    send(pdu->getMUserData(), northO);
   }
 }
 
@@ -488,11 +522,37 @@ void DTP::generatePDUs()
   } while (!sduQ.empty());
 }
 
-void DTP::generatePDUsnew(){
+void DTP::generatePDUsnew()
+{
 
-  DataTransferPDU* dataPDU = new DataTransferPDU();
+  DataTransferPDU* baseDataPDU = new DataTransferPDU();
+  setPDUHeader(baseDataPDU);
 
-  setPDUHeader(dataPDU);
+  //invoke SDU protection so we don't have to bother with it afterwards
+  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it){
+    sduProtection(*it);
+  }
+
+  while (!dataQ.empty())
+  {
+    DataTransferPDU* genPDU = baseDataPDU->dup();
+    genPDU->setSeqNum(state.getNextSeqNumToSend());
+
+    UserDataField* userData = new UserDataField();
+
+    while (!dataQ.empty() && dataQ.front()->getSize() <= MAX_PDU_SIZE - userData->getSize())
+    {
+      userData->addData((dataQ.front()));
+
+      dataQ.erase(dataQ.begin());
+
+    }
+
+    genPDU->setUserDataField(userData);
+
+    generatedPDUs.push_back(genPDU);
+
+  }
 
 }
 
@@ -582,7 +642,7 @@ void DTP::trySendGenPDUs()
         rxQ.push_back(rxExpTimer);
         scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
-        sendToRMT((*it));
+        sendPDUToRMT((*it));
 //        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
 
         it = postablePDUs.erase(it);
@@ -598,6 +658,7 @@ void DTP::trySendGenPDUs()
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
         //TODO A! change to send using omnet messages
 //        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
+        sendPDUToRMT((*it));
         it = postablePDUs.erase(it);
       }
 
@@ -608,23 +669,36 @@ void DTP::trySendGenPDUs()
     /* DTCP is not present */
     /* Post all generatedPDUs to RMT */
     std::vector<PDU*>::iterator it;
-    for (it = postablePDUs.begin(); it != postablePDUs.end();)
+    for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
     {
       //TODO A! Where do I get destAddr? Probably from FlowAllocator
-      APNamingInfo* apn = new APNamingInfo();
+
       //TODO A! change to send using omnet messages
 //      rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
 //      rmt->fromDTPToRMT(apn, 1, (*it));
-      it = postablePDUs.erase(it);
+
+      sendPDUToRMT((*it));
+      it = generatedPDUs.erase(it);
     }
   }
 
 }
 
+
+void DTP::trySendGenPDUsnew(){
+
+}
+
+
+
+
+
+
+
 void DTP::fromRMT(PDU* pdu)
 {
 
-  if (state.isFlowControlPresent())
+  if (state.isFCPresent())
   {
     dtcp->resetWindowTimer();
 
@@ -756,12 +830,25 @@ void DTP::fromRMT(PDU* pdu)
 //
 //  if(state.isRxPresent()){
 //    std::vector<PDU*>::iterator it;
-//      for (it = generatedPDUs.begin(); it != generatedPDUs.end(); it = generatedPDUs.begin()){
+//      for (it = postablePDUs.begin(); it != postablePDUs.end(); it = postablePDUs.begin()){
 //        /* Put a copy of each PDU in the RetransmissionQueue */
+//        //TODO A1 start retransmission timer
 //      }
 //
+//  }else if(state.isFCPresent()){
+//    std::vector<PDU*>::iterator it;
+//    /* Post all postable PDU */
+//    for (it = postablePDUs.begin(); it != postablePDUs.end(); it = postablePDUs.begin()){
+//
+//    }
 //  }
 //}
+
+
+void DTP::sendPDUToRMT(PDU* pdu){
+
+  send(pdu, southO);
+}
 
 /**
  * This method calls specified function to perform SDU protection.
@@ -992,7 +1079,7 @@ void DTP::runRcvrInactivityTimerPolicy()
 
 void DTP::runSenderInactivityTimerPolicy()
 {
-
+//TODO A! Move SenderInactivityTimer, DRF to DT-SV
   /* Default */
   dtcp->dtcpState->setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
@@ -1022,12 +1109,12 @@ bool DTP::runSendingAckPolicy(ATimer* timer)
   unsigned int seqNum = timer->getPdu()->getSeqNum();
   unsigned int leftWindowEdge = state.getRcvLeftWinEdge();
 
-  //TODO Co to je za hovnokod?
-  if (leftWindowEdge + 1 == leftWindowEdge < seqNum && leftWindowEdge + gap > seqNum)
-  {
-    //this PDU is
 
-  }
+//  if (leftWindowEdge + 1 == leftWindowEdge < seqNum && leftWindowEdge + gap > seqNum)
+//  {
+//    //this PDU is
+//
+//  }
 
   //Update LeftWindowEdge
 
@@ -1069,7 +1156,7 @@ void DTP::svUpdate(unsigned int seqNum)
 //  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
 
-  if (state.isFlowControlPresent())
+  if (state.isFCPresent())
   {
     if (state.isWinBased())
     {
@@ -1087,7 +1174,7 @@ void DTP::svUpdate(unsigned int seqNum)
     runRcvrAckPolicy();
   }
 
-  if (state.isFlowControlPresent() && !state.isRxPresent())
+  if (state.isFCPresent() && !state.isRxPresent())
   {
     runReceivingFlowControlPolicy();
   }
@@ -1136,7 +1223,8 @@ void DTP::schedule(DTPTimers *timer, double time)
     }
     case (DTP_SENDER_INACTIVITY_TIMER): {
       //TODO A! 3(MPL+R+A)
-      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+//      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+      scheduleAt(simTime() + 10, timer);
       break;
     }
     case (DTP_RCVR_INACTIVITY_TIMER): {

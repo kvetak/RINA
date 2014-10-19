@@ -29,10 +29,14 @@ DTCPState::DTCPState()
 {
   // TODO Auto-generated constructor stub
 
+  //TODO B! Fix
+  rtt = 10;
+
 }
 
 unsigned int DTCPState::getRtt() const
 {
+  //TODO B1 RTT estimator policy
   return rtt;
 }
 
