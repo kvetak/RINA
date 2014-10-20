@@ -34,27 +34,27 @@
 class DTCPState : public cObject
 {
   private:
-    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
+//    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
     unsigned int sndRightWinEdge;
     unsigned int rcvRightWinEdgeSent;
-    unsigned int rtt;
+//    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
     //retransmissionQ
   public:
     DTCPState();
     virtual ~DTCPState();
-    unsigned int getRtt() const;
-    void setRtt(unsigned int rtt);
+//    unsigned int getRtt() const;
+//    void setRtt(unsigned int rtt);
     bool isImmediate() const;
     void setImmediate(bool immediate);
     unsigned int getRcvrRightWinEdgeSent() const;
     void setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
     unsigned int getSenderRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
-    bool isSetDrfFlag() const;
-    void setSetDrfFlag(bool setDrfFlag);
+//    bool isSetDrfFlag() const;
+//    void setSetDrfFlag(bool setDrfFlag);
 };
 
 #endif /* DTCPSTATE_H_ */

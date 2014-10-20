@@ -77,6 +77,9 @@ private:
     /* Not in specs */
     unsigned int dropDup; //number of dropped duplicates (this variable is not mentioned in specs)
 
+    /* Moved from DTCP-SV */
+    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
+    unsigned int rtt;
 
     //moved to DTP.h
 //    queue<unsigned char *> sduQ; //SDUs generated from delimiting
@@ -125,6 +128,10 @@ public:
     void setState(int state);
     bool isWinBased() const;
     void setWinBased(bool winBased);
+    bool isSetDrfFlag() const;
+    void setSetDrfFlag(bool setDrfFlag);
+    unsigned int getRtt() const;
+    void setRtt(unsigned int rtt);
 };
 
 #endif /* DTPSTATE_H_ */

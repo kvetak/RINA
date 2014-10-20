@@ -335,3 +335,8 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
 
     return score;
 }
+
+
+bool QosCube::isDTCPNeeded()const {
+  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery();
+}

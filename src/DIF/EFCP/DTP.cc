@@ -715,7 +715,8 @@ void DTP::fromRMT(PDU* pdu)
 
     state.setMaxSeqNumRcvd(pdu->getSeqNum());
     /* Initialize the other direction */
-    dtcp->dtcpState->setSetDrfFlag(true);
+    state.setSetDrfFlag(true);
+
 
     runInitialSequenceNumberPolicy();
 
@@ -1057,7 +1058,7 @@ void DTP::runRcvrInactivityTimerPolicy()
 {
 
   /* Default */
-  dtcp->dtcpState->setSetDrfFlag(true);
+  state.setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
   {
     state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
@@ -1081,7 +1082,7 @@ void DTP::runSenderInactivityTimerPolicy()
 {
 //TODO A! Move SenderInactivityTimer, DRF to DT-SV
   /* Default */
-  dtcp->dtcpState->setSetDrfFlag(true);
+  state.setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
   {
     state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
@@ -1135,7 +1136,7 @@ unsigned int DTP::getRxTime()
    * A == ?
    * epsilon ?
    */
-  return dtcp->dtcpState->getRtt();
+  return state.getRtt();
 }
 
 unsigned int DTP::getAllowableGap()
@@ -1223,13 +1224,13 @@ void DTP::schedule(DTPTimers *timer, double time)
     }
     case (DTP_SENDER_INACTIVITY_TIMER): {
       //TODO A! 3(MPL+R+A)
-//      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
-      scheduleAt(simTime() + 10, timer);
+      scheduleAt(simTime() + state.getRtt(), timer);
+//      scheduleAt(simTime() + 10, timer);
       break;
     }
     case (DTP_RCVR_INACTIVITY_TIMER): {
       //TODO A!
-      scheduleAt(simTime() + dtcp->dtcpState->getRtt(), timer);
+      scheduleAt(simTime() + state.getRtt(), timer);
       break;
     }
     case (DTP_SENDING_RATE_TIMER): {
@@ -1244,6 +1245,10 @@ void DTP::schedule(DTPTimers *timer, double time)
 void DTP::setFlow(Flow* flow)
 {
   this->flow = flow;
+}
+
+void DTP::setDTCP(DTCP* dtcp){
+  this->dtcp = dtcp;
 }
 
 

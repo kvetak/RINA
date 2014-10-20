@@ -29,6 +29,8 @@ DTPState::DTPState() {
   incompDeliv = false;
   maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
 
+  //TODO B! Fix
+  rtt = 10;
 }
 
 DTPState::~DTPState() {
@@ -194,3 +196,23 @@ void DTPState::setWinBased(bool winBased) {
     this->winBased = winBased;
 }
 
+bool DTPState::isSetDrfFlag() const
+{
+  return setDRFFlag;
+}
+
+unsigned int DTPState::getRtt() const
+{
+  //TODO B1 RTT estimator policy
+  return rtt;
+}
+
+void DTPState::setRtt(unsigned int rtt)
+{
+  this->rtt = rtt;
+}
+
+void DTPState::setSetDrfFlag(bool setDrfFlag)
+{
+  setDRFFlag = setDrfFlag;
+}

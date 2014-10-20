@@ -40,6 +40,9 @@ DTCP* EFCPInstance::getDtcp()
 void EFCPInstance::setDtcp(DTCP* dtcp)
 {
   this->dtcp = dtcp;
+  if(dtp!=NULL){
+    dtp->setDTCP(dtcp);
+  }
 }
 
 DTP* EFCPInstance::getDtp()

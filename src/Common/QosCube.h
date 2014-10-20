@@ -96,6 +96,8 @@ class QosCube {
     int getCostTime() const;
     void setCostTime(int costTime);
 
+    bool isDTCPNeeded() const;
+
     short countFeasibilityScore(const QosCube templ) const;
 };
 

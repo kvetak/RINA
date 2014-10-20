@@ -78,9 +78,11 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   efcpi->setDtp(dtpModule);
 
   //2. If necessary create DTCP module
-  //TODO how to determine DTCP module is needed
-  if(true){
+
+  if((flow->getQosParameters()).isDTCPNeeded()){
       efcpi->setDtcp(this->createDTCP(efcpiModule));
+  }else{
+    efcpi->setDtcp(NULL);
   }
   //Put created EFCP instance to EFCP Table Entry
   tmpEfcpEntry->addEFCPI(efcpi);

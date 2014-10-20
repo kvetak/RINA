@@ -30,15 +30,11 @@ DTCPState::DTCPState()
   // TODO Auto-generated constructor stub
 
   //TODO B! Fix
-  rtt = 10;
+//  rtt = 10;
 
 }
 
-unsigned int DTCPState::getRtt() const
-{
-  //TODO B1 RTT estimator policy
-  return rtt;
-}
+
 
 bool DTCPState::isImmediate() const
 {
@@ -70,20 +66,26 @@ void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
   this->sndRightWinEdge = senderRightWinEdge;
 }
 
-bool DTCPState::isSetDrfFlag() const
-{
-  return setDRFFlag;
-}
+//bool DTCPState::isSetDrfFlag() const
+//{
+//  return setDRFFlag;
+//}
+//
+//void DTCPState::setSetDrfFlag(bool setDrfFlag)
+//{
+//  setDRFFlag = setDrfFlag;
+//}
 
-void DTCPState::setSetDrfFlag(bool setDrfFlag)
-{
-  setDRFFlag = setDrfFlag;
-}
+//unsigned int DTCPState::getRtt() const
+//{
+//  //TODO B1 RTT estimator policy
+//  return rtt;
+//}
 
-void DTCPState::setRtt(unsigned int rtt)
-{
-  this->rtt = rtt;
-}
+//void DTCPState::setRtt(unsigned int rtt)
+//{
+//  this->rtt = rtt;
+//}
 
 DTCPState::~DTCPState()
 {

@@ -174,6 +174,7 @@ class DTP : public cSimpleModule
     bool write(int portId, unsigned char *buffer, int len);
 
     void setFlow(Flow* flow);
+    void setDTCP(DTCP* dtcp);
 
 
 
