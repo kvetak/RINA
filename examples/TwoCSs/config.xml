@@ -22,13 +22,6 @@
 				</APN>
 			</NamingInfo>
 		</DA>	
-		<IPC id="ipcProcess1">
-			<RA>
-				<Flows>
-					<Flow dest="22"/>
-				</Flows>
-			</RA>
-		</IPC>
 	</Host>
 	<Host id="host2">
 		<DA>

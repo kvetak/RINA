@@ -15,8 +15,8 @@
 
 #include <FlowTableItem.h>
 
-FlowTableItem::FlowTableItem(Flow* flow, FABase* fa)
-:   flow(flow), fa(fa)
+FlowTableItem::FlowTableItem(Flow* flow, FABase* fa, cGate* rmtPort)
+:   flow(flow), fa(fa), rmtPort(rmtPort)
 {
 }
 
@@ -41,4 +41,19 @@ std::string FlowTableItem::info() const {
 
 std::ostream& operator <<(std::ostream& os, const FlowTableItem& cte) {
     return os << cte.info();
+}
+
+Flow* FlowTableItem::getFlow() const
+{
+    return flow;
+}
+
+FABase* FlowTableItem::getFaBase() const
+{
+    return fa;
+}
+
+cGate* FlowTableItem::getRmtPort() const
+{
+    return rmtPort;
 }

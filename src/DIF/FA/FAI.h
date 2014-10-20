@@ -32,6 +32,7 @@
 #include "FAIListeners.h"
 #include "RINASignals.h"
 #include "EFCP.h"
+#include "RABase.h"
 #include "ModuleAccess.h"
 
 class FAI : public FAIBase  {

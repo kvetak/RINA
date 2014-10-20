@@ -265,6 +265,10 @@ bool FAI::createBindings() {
     gateRmtUpOut->connectTo(gateEfcpDownIn);
     gateEfcpDownOut->connectTo(gateRmtUpIn);
 
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) IPCModule->getModuleByPath(".resourceAllocator.ra");
+    raModule->bindToLowerFlow(this->FlowObject);
+
     //FIXME: Vesely - IPC gate checks are failing. Why?
     //return gateIpcDownIn->isConnected() && gateIpcDownOut->isConnected()
     return gateEfcpDownIn->isConnected() && gateEfcpDownOut->isConnected()

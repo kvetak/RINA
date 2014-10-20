@@ -62,30 +62,8 @@ void RA::initialize()
 	initQoSCubes();
     WATCH_LIST(this->QosCubes);
 
-    initFlowAlloc();
 }
 
-void RA::initFlowAlloc()
-{
-    cXMLElement* dirXml = par("flows").xmlValue();
-    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
-
-    for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i)
-    {
-        cXMLElement* m = *i;
-
-        APNamingInfo src = APNamingInfo(APN(processName));
-        APNamingInfo dst = APNamingInfo(APN(m->getAttribute("dest")));
-
-        Flow *fl = new Flow(src, dst);
-        // just use the first QoS cube available (temporary workaround)
-        fl->setQosParameters(getQosCubes().front());
-
-        preparedFlows.push_back(fl);
-        cMessage* msg = new cMessage("RA-CreateFlow");
-        scheduleAt(simTime(), msg);
-    }
-}
 
 void RA::setRmtMode()
 {
@@ -93,10 +71,13 @@ void RA::setRmtMode()
     cModule* hostModule = getParentModule()->getParentModule();
     std::string bottomGate = hostModule->gate("southIo$o", 0)->getNextGate()->getName();
 
+    onWire = false;
+
     if (bottomGate == "medium$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
         // let's connect RMT to the medium
+        onWire = true;
         bindMediumToRMT();
     }
     else if (bottomGate == "northIo$o")
@@ -302,7 +283,7 @@ void RA::bindMediumToRMT()
  * @param ipc IPC process containing the (N-1)-flow
  * @param flow the (N-1)-flow
  */
-void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
+cGate* RA::bindFlowToRMT(cModule* ipc, Flow* flow)
 {
 
     int portId = flow->getSrcPortId();
@@ -353,6 +334,7 @@ void RA::bindFlowToRMT(cModule* ipc, Flow* flow)
     // modules are connected; register a handle
     rmt->addRMTPort(std::make_pair(ipc, portId), rmtOut->getPathStartGate());
 
+    return rmtOut->getPathStartGate();
 }
 
 /**
@@ -406,10 +388,10 @@ void RA::createFlow(Flow *fl)
     if (status)
     {
         // connect the new flow to the RMT
-        bindFlowToRMT(targetIpc, fl);
+        cGate* ret = bindFlowToRMT(targetIpc, fl);
         // we're ready to go!
         //signalizeFlowAllocated(fl);
-        flTable->insert(fl, fab);
+        flTable->insert(fl, fab, ret);
     }
     else
     {
@@ -441,9 +423,9 @@ void RA::createFlowWithoutAllocate(Flow* flow) {
     FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
 
     // connect the new flow to the RMT
-    bindFlowToRMT(targetIpc, flow);
+    cGate* ret = bindFlowToRMT(targetIpc, flow);
     // we're ready to go!
-    flTable->insert(flow, fab);
+    flTable->insert(flow, fab, ret);
 }
 
 void RA::initSignalsAndListeners() {
@@ -453,3 +435,47 @@ void RA::initSignalsAndListeners() {
     catcher2->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
 
 }
+
+bool RA::bindToLowerFlow(Flow* flow)
+{
+    if (onWire)
+    {
+        EV << "binding a flow to the medium" << endl;
+
+        cGate* efcpiGate = rmt->efcpiIn[flow->getConnectionId().getSrcCepId()];
+        cGate* flowGate = rmt->gateHalf("southIo_PHY", cGate::OUTPUT);
+        rmt->efcpiToFlow[efcpiGate] = flowGate;
+        return true;
+    }
+
+
+    // see if any appropriate (N-1)-flow already exists
+    std::string dstAddr = flow->getDstAddr().getIpcAddress().getName();
+
+    FlowTableItem* ret = NULL;
+    ret = flTable->lookup(dstAddr);
+
+    if (ret == NULL)
+    {
+        // we need to create a new (N-1)-flow to suit our needs
+        EV << "creating an (N-1)-flow (dst AP " << dstAddr << ")" << endl;
+
+        APNamingInfo src = APNamingInfo(APN(processName));
+        APNamingInfo dst = APNamingInfo(APN(dstAddr));
+
+        Flow *fl = new Flow(src, dst);
+        // just use the first QoS cube available (temporary workaround)
+        fl->setQosParameters(getQosCubes().front());
+
+        createFlow(fl);
+    }
+
+    EV << "binding a flow to an (N-1)-flow" << endl;
+
+    cGate* efcpiGate = rmt->efcpiIn[flow->getConnectionId().getSrcCepId()];
+    cGate* flowGate = flTable->lookup(dstAddr)->getRmtPort();
+    rmt->efcpiToFlow[efcpiGate] = flowGate;
+
+    return true;
+}
+

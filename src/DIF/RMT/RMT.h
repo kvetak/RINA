@@ -41,13 +41,12 @@
 
 typedef std::map<int, cGate*> EfcpiMapping;
 typedef std::map<RMTPortId, cGate*> RmtPorts;
+typedef std::map<cGate*, cGate*> EfcpiToFlow;
 
 class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
-    EfcpiMapping efcpiGates;
-    RmtPorts ports;
 
     Address thisIpcAddr;
     bool relayOn;
@@ -73,6 +72,12 @@ class RMT : public cSimpleModule
     void createSouthGate(std::string portId);
     void deleteSouthGate(std::string portId);
     void addRMTPort(RMTPortId portId, cGate* gate);
+
+    // TODO: purge this mess as soon as queues are back
+    EfcpiMapping efcpiOut;
+    EfcpiMapping efcpiIn;
+    RmtPorts ports;
+    EfcpiToFlow efcpiToFlow;
 
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };

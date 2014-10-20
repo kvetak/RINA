@@ -32,8 +32,20 @@ void FlowTable::insert(const FlowTableItem* entry)
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa)
+void FlowTable::insert(Flow* flow, FABase* fa, cGate* rmtPort)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa);
+    FlowTableItem entry = FlowTableItem(flow, fa, rmtPort);
     flows.push_back(entry);
+}
+
+FlowTableItem* FlowTable::lookup(std::string addr) {
+    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    {
+        FlowTableItem a = *it;
+        if (a.getFlow()->getDstApni().getApn().getName() == addr)
+        {
+            return &(*it);
+        }
+    }
+    return NULL;
 }
