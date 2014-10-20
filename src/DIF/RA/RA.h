@@ -55,6 +55,11 @@ extern const char* ELEM_COSTBITS;
 
 class RA : public RABase {
 
+  public:
+    virtual bool bindToLowerFlow(Flow* flow);
+    virtual void createFlow(Flow *flow);
+    virtual void createFlowWithoutAllocate(Flow *flow);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -67,16 +72,14 @@ class RA : public RABase {
     std::string processName;
     std::list<Flow*> preparedFlows;
 
-    void initQoSCubes();
-    void initFlowAlloc();
-    void setRmtMode();
+    bool onWire;
 
-    virtual void createFlow(Flow *flow);
-    virtual void createFlowWithoutAllocate(Flow *flow);
+    void initQoSCubes();
+    void setRmtMode();
 
     void removeFlow();
 
-    void bindFlowToRMT(cModule* ipc, Flow *flow);
+    cGate* bindFlowToRMT(cModule* ipc, Flow *flow);
     void bindMediumToRMT();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);

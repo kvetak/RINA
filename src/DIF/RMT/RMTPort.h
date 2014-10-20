@@ -50,7 +50,6 @@ class RMTPort
     RMTQueue outQ;
 
     cGate* outGate;
-    cGate* inboundGate;
 
     bool outboundActive;
 };

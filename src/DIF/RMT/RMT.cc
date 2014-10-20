@@ -106,7 +106,7 @@ void RMT::addRMTPort(RMTPortId portId, cGate* gate)
  */
 void RMT::createEfcpiGate(unsigned int efcpiId)
 {
-    if (efcpiGates.count(efcpiId))
+    if (efcpiOut.count(efcpiId))
     {
         return;
     }
@@ -127,7 +127,8 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
     rmtModuleIn->connectTo(rmtIn);
     rmtOut->connectTo(rmtModuleOut);
 
-    efcpiGates[efcpiId] = rmtOut;
+    efcpiOut[efcpiId] = rmtOut;
+    efcpiIn[efcpiId] = rmtIn;
 
     // RMT<->EFCP interconnection shall be done by the FAI
 }
@@ -139,7 +140,7 @@ void RMT::createEfcpiGate(unsigned int efcpiId)
  */
 void RMT::deleteEfcpiGate(unsigned int efcpiId)
 {
-    if (!efcpiGates.count(efcpiId))
+    if (!efcpiOut.count(efcpiId))
     {
         return;
     }
@@ -158,7 +159,8 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     this->deleteGate(gateName_str.str().c_str());
     rmtModule->deleteGate(gateName_str.str().c_str());
 
-    efcpiGates.erase(efcpiId);
+    efcpiOut.erase(efcpiId);
+    efcpiIn.erase(efcpiId);
 }
 
 /**
@@ -194,34 +196,24 @@ void RMT::sendDown(PDU_Base* pdu)
             delete pdu;
             return;
         }
-
     }
     else
     {
-        // decide which (N-1)-flow should get the PDU...
-        // we'll just grab the first one for now
-        if (!ports.empty())
-        {
-            outPort = ports.begin()->second;
-        }
-        else
-        {
-            outPort = NULL;
-        }
+        outPort = efcpiToFlow[pdu->getArrivalGate()];
     }
 
     EV << this->getFullPath() << " passing a PDU downwards..." << endl;
 
     if (outPort != NULL)
     {
-        // TODO: OMNeT++ 4.4.1 renders the message transfer as if this was sent to this IPC's EFCP. Is this a bug?
         send(pdu, outPort);
     }
     else
     {
         EV << this->getFullPath()
-           << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
+           << " I can't reach any suitable (N-1)-flow! Seems like none is allocated. Dropping."
            << endl;
+
         delete pdu;
     }
 }
@@ -238,7 +230,7 @@ void RMT::sendUp(PDU_Base* pdu)
     if (thisIpcAddr == pduAddr)
     {
         EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
-        cGate* efcpiGate = efcpiGates[pdu->getConnId().getDstCepId()];
+        cGate* efcpiGate = efcpiOut[pdu->getConnId().getDstCepId()];
 
         if (efcpiGate != NULL)
         {
@@ -305,9 +297,6 @@ void RMT::handleMessage(cMessage *msg)
             }
             else
             {
-                EV << this->getFullPath()
-                   << " I can't reach a suitable (N-1)-flow! It's probably not allocated. Dropping."
-                   << endl;
                 delete msg;
             }
         }
