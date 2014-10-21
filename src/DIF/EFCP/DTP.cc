@@ -209,6 +209,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
     }else{
       if((delimitFlags & SDU_L_COMP_SDU) == SDU_L_COMP_SDU){
         /* PDU contain ZERO or more complete SDUs */
+        /*  TODO PUT this in separate method */
         it = reassemblyPDUQ.erase(it);
         UserDataField* userData = (*it)->getUserDataField();
         SDU* sdu;
@@ -217,17 +218,11 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
           //TODO Delimiting/de-fragmentation
           take(sdu);
 
-
-
           send(sdu, northO);
         }
       }
     }
   }
-
-
-
-
 }
 
 void DTP::handleMsgFromRmtnew(PDU* msg){
