@@ -32,6 +32,7 @@
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
+#define DEFAULT_INIT_SEQUENCE_NUMBER 1
 //#include "FA.h" //or FlowAllocatorFactory
 
 
@@ -89,6 +90,7 @@ class DTP : public cSimpleModule
     void handleMsgFromDelimitingnew(SDU* sdu);
     void handleMsgFromRmt(PDU* msg);
     void handleMsgFromRmtnew(PDU* msg);
+    void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
 
     /* Send */
 
@@ -99,6 +101,8 @@ class DTP : public cSimpleModule
     unsigned int delimit(SDU* sdu);
 
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
+
+
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
     void generatePDUs();
     void generatePDUsnew();
@@ -164,6 +168,7 @@ class DTP : public cSimpleModule
     void handleSDUs(CDAPMessage* cdap);
     void setPDUHeader(DataTransferPDU* pdu);
     void initGates();
+    void delimitFromRMT(DataTransferPDU* pdu);
 
   public:
     DTP();

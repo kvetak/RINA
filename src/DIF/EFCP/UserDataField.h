@@ -31,6 +31,16 @@
 
 //TODO put it somewhere reasonable
 #define SDU_SEQ_NUM_PRESENT 0x08
+#define SDU_NO_LENGTH 0x04
+#define SDU_NO_L_MID_FRAG 0x00
+#define SDU_NO_L_FIRST_FRAG 0x01
+#define SDU_NO_L_LAST_FRAG 0x02
+#define SDU_NO_L_ONE_SDU 0x03
+
+#define SDU_L_COMP_SDU 0x00 /* It may express ZERO or more complete SDUs*/
+#define SDU_L_SDU_FIRST_FRAG 0x01
+#define SDU_L_LAST_FRAG_SDU 0x02
+#define SDU_L_LAST_SDU_FIRST_FRAG 0x03 /* Last fragment, ZERO or more SDUs followed by first fragment */
 
 typedef std::vector<SDU*> PDUData;
 /*
@@ -51,6 +61,8 @@ class UserDataField: public cObject
     SDU* getData();
 
     unsigned int getSize();
+    unsigned int getSduDelimitFlags() const;
+    void setSduDelimitFlags(unsigned int sduDelimitFlags);
 };
 
 #endif /* USERDATAFIELD_H_ */

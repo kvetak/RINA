@@ -20,17 +20,30 @@
 DTPState::DTPState() {
     // TODO Auto-generated constructor stub
 
+  initDefaults();
+}
+
+void DTPState::initDefaults(){
   closedWindow = false;
   closedWinQueLen = 0;
   dropDup = 0;
 
-  //TODO
+  //TODO A1 load it from flow->qosparameters
   dtcpPresent = false;
+  winBased = false;
+  rateBased = false;
   incompDeliv = false;
   maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
 
+  //TODO A1
+  rcvLeftWinEdge = 0;
+  maxSeqNumRcvd = 0;
+  nextSeqNumToSend = 1;
+
+
   //TODO B! Fix
   rtt = 10;
+
 }
 
 DTPState::~DTPState() {

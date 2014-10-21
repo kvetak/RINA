@@ -88,6 +88,9 @@ private:
 public:
     DTPState();
     virtual ~DTPState();
+
+    void initDefaults();
+
     void incDropDup(){dropDup++;}
     bool isFCPresent(){ return winBased || rateBased;}
     bool isClosedWindow() const;

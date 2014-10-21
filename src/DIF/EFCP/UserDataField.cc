@@ -58,6 +58,16 @@ SDU* UserDataField::getData(){
   return tmp;
 }
 
+unsigned int UserDataField::getSduDelimitFlags() const
+{
+  return sduDelimitFlags;
+}
+
+void UserDataField::setSduDelimitFlags(unsigned int sduDelimitFlags)
+{
+  this->sduDelimitFlags = sduDelimitFlags;
+}
+
 unsigned int UserDataField::getSize(){
   return size;
 }

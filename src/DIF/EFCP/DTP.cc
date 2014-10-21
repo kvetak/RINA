@@ -39,8 +39,10 @@ void DTP::initialize(int step)
 {
 
   initGates();
+  state.initDefaults();
 
   senderInactivityTimer = new SenderInactivityTimer();
+  rcvrInactivityTimer = new RcvrInactivityTimer();
 
 
 }
@@ -168,27 +170,213 @@ void DTP::handleMsgFromRmt(PDU* msg)
   }
 }
 
+void DTP::delimitFromRMT(DataTransferPDU* pdu)
+{
+  /* Maybe it is good idea to split this method into two
+   * The first one would put PDU on reassemblyQ and
+   * the second one would create as many whole SDUs from reassemblyQ as possible */
+
+  if(reassemblyPDUQ.empty()){
+    reassemblyPDUQ.push_back(pdu);
+  }else{
+    if(reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum()){
+      reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
+    }
+    else
+    {
+      for (std::vector<PDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+      {
+        if ((*it)->getSeqNum() == pdu->getSeqNum()){
+          //Not sure if this case could ever happen
+          state.incDropDup();
+          delete pdu;
+          return;
+        }else if ((*it)->getSeqNum() > pdu->getSeqNum()){
+          /* Put the incoming PDU before one with bigger seqNum */
+          reassemblyPDUQ.insert(it, pdu);
+        }
+      }
+    }
+  }
+
+
+  for (std::vector<PDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
+  {
+    /* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
+    unsigned int delimitFlags = (*it)->getUserDataField()->getSduDelimitFlags();
+    if((delimitFlags & SDU_NO_LENGTH) == SDU_NO_LENGTH){
+//      if(delimitFlags & SDU_)
+    }else{
+      if((delimitFlags & SDU_L_COMP_SDU) == SDU_L_COMP_SDU){
+        /* PDU contain ZERO or more complete SDUs */
+        it = reassemblyPDUQ.erase(it);
+        UserDataField* userData = (*it)->getUserDataField();
+        SDU* sdu;
+        while ((sdu = userData->getData()) != NULL)
+        {
+          //TODO Delimiting/de-fragmentation
+          take(sdu);
+
+
+
+          send(sdu, northO);
+        }
+      }
+    }
+  }
+
+
+
+
+}
+
 void DTP::handleMsgFromRmtnew(PDU* msg){
+  //TODO A1 Not sure about canceling rcvrInactivTimer
   cancelEvent(rcvrInactivityTimer);
 
   if (dynamic_cast<DataTransferPDU*>(msg))
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
-//    cMessage* sdu = pdu->getMUserData();
-    UserDataField* userData = pdu->getUserDataField();
-    SDU* sdu;
-    while((sdu = userData->getData())!= NULL){
-      //TODO Delimiting/de-fragmentation
-      take(sdu);
-      send(sdu, northO);
-    }
+    handleDataTransferPDUFromRmtnew(pdu);
 
-
+    /* TODO A! Move to separate method (probably delimitFromRMT or so)*/
 
 //    send(pdu->getMUserData(), northO);
   }
 
+  //TODO not sure about this scheduling
   schedule(rcvrInactivityTimer);
+}
+
+void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
+
+  if (state.isFCPresent())
+  {
+    dtcp->resetWindowTimer();
+
+  }
+  // if PDU.DRF == true
+  if ((pdu->getFlags() & 0x80) == 0x80)
+  {
+    /* Case 1) DRF is set - either first PDU or new run */
+    //TODO A! Invoke delimiting delimitFromRMT()
+//    delimitFromRMT(pdu, pdu->getUserDataArraySize());
+    delimitFromRMT(pdu);
+
+    //Flush the PDUReassemblyQueue
+    flushReassemblyPDUQ();
+
+    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+    /* Initialize the other direction */
+    state.setSetDrfFlag(true);
+
+
+    runInitialSequenceNumberPolicy();
+
+    if (state.isDtcpPresent())
+    {
+      /* Update RxControl */
+      svUpdate(pdu->getSeqNum());
+    }
+
+  }
+  else
+
+  /* Not the start of a run */
+  if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
+  {
+    /* Case 2) A Real Duplicate */
+    //Discard PDU and increment counter of dropped duplicates PDU
+    delete pdu;
+    //TODO A1 increment counter of dropped duplicates PDU
+    state.incDropDup();
+
+    //TODO A! send an Ack/Flow Control PDU with current window values
+
+    return;
+  }
+
+  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+  {
+    /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
+    //TODO A!
+    //if a duplicate among the gaps then // search reassemblyQ?
+    if (false)
+    {
+      /* Case 3) Duplicate Among gaps */
+
+      //Discard PDU and increment counter of dropped duplicates PDU
+      delete pdu;
+      //TODO A1 increment counter of dropped duplicates PDU
+      state.incDropDup();
+
+      //TODO A! send an Ack/Flow Control PDU with current window values
+      return;
+    }
+    else
+    {
+      /* Case 3) This goes in a gap */
+      /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
+      reassemblyPDUQ.push_back(pdu);
+      if (state.isDtcpPresent())
+      {
+        svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
+      }
+      else
+      {
+        state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+        /* No A-Timer necessary, already running */
+      }
+      //TODO A1
+//      delimitFromRMT(pdu, pdu->getUserDataArraySize());
+      delimitFromRMT(pdu);
+      return;
+    }
+  }
+  /* Case 4) This is in order */
+  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+  {
+    state.incMaxSeqNumRcvd();
+    if (state.isDtcpPresent())
+    {
+      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+    }
+    else
+    {
+      state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+      //TODO A! start A-Timer (for this PDU)
+    }
+//    delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
+    delimitFromRMT(pdu);
+
+  }
+  else{
+
+    /* Case 5) it is out of order */
+    if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+    {
+      if (state.isDtcpPresent())
+      {
+        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+      }
+      else
+      {
+        //LeftWindowEdge = MaxSeqNumRcvd;
+        //TODO A! start A-timer
+      }
+      //TODO A1
+//      delimitFromRMT(pdu, pdu->getUserDataArraySize());
+      delimitFromRMT(pdu);
+    }
+    schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
+  }
+  //TODO A1 DIF.integrity
+  /* If we are encrypting, we can't let PDU sequence numbers roll over */
+
+  //If DIF.Integrity and PDU.SeqNum > SequenceNumberRollOverThreshhold Then
+  ///* Security requires a new flow */
+  //RequestFAICreateNewConnection( PDU.FlowID )
+  //Fi
 }
 
 void DTP::handleSDUs(CDAPMessage* cdap)
@@ -798,24 +986,24 @@ void DTP::fromRMT(PDU* pdu)
     delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
 
   }
-  else
+  else{
 
-  /* Case 5) it is out of order */
-  if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
-  {
-    if (state.isDtcpPresent())
+    /* Case 5) it is out of order */
+    if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
     {
-      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+      if (state.isDtcpPresent())
+      {
+        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+      }
+      else
+      {
+        //LeftWindowEdge = MaxSeqNumRcvd;
+        //TODO A! start A-timer
+      }
+      delimitFromRMT(pdu, pdu->getUserDataArraySize());
     }
-    else
-    {
-      //LeftWindowEdge = MaxSeqNumRcvd;
-      //TODO A! start A-timer
-    }
-    delimitFromRMT(pdu, pdu->getUserDataArraySize());
+    schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
   }
-  schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
-
   //TODO A1 DIF.integrity
   /* If we are encrypting, we can't let PDU sequence numbers roll over */
 
@@ -823,8 +1011,6 @@ void DTP::fromRMT(PDU* pdu)
   ///* Security requires a new flow */
   //RequestFAICreateNewConnection( PDU.FlowID )
   //Fi
-
-
 
 }
 
@@ -966,7 +1152,7 @@ bool DTP::runInitialSequenceNumberPolicy()
 
   /*Default*/
   //TODO B1 set it to random number
-  state.setNextSeqNumToSend(4);
+  state.setNextSeqNumToSend(DEFAULT_INIT_SEQUENCE_NUMBER);
   return false;
 }
 
@@ -1065,7 +1251,7 @@ void DTP::runRcvrInactivityTimerPolicy()
   state.setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
   {
-    state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
+    state.setNextSeqNumToSend(DEFAULT_INIT_SEQUENCE_NUMBER); //TODO A2 It SHOULD return random value;
   }
 
   //Discard any PDUs on the PDUretransmissionQueue
@@ -1089,7 +1275,7 @@ void DTP::runSenderInactivityTimerPolicy()
   state.setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
   {
-    state.setNextSeqNumToSend(4); //TODO A2 It SHOULD return random value;
+    state.setNextSeqNumToSend(DEFAULT_INIT_SEQUENCE_NUMBER); //TODO A2 It SHOULD return random value;
   }
 
   //Discard any PDUs on the PDUretransmissionQueue
