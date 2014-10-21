@@ -23,22 +23,21 @@
 			</NamingInfo>
 		</DA>	
 	</Host>
-
 	<Host id="host2">
 		<DA>
-			<Directory>			
+			<Directory>
 				<APN apn="App1">
-					<DIF difName="Layer1" ipcAddress="11" />
+					<DIF difName="Layer11" ipcAddress="11" />
 				</APN>
 				<APN apn="11">
-					<DIF difName="Layer0" ipcAddress="1" />
-				</APN>		
+					<DIF difName="Layer01" ipcAddress="1" />
+				</APN>					
 				<APN apn="App2">
-					<DIF difName="Layer1" ipcAddress="22" />
+					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>
-				<APN apn="22">
-					<DIF difName="Layer0" ipcAddress="2" />
-				</APN>										
+				<APN apn="33">
+					<DIF difName="Layer02" ipcAddress="4" />
+				</APN>				
 			</Directory>
 			<NamingInfo>
 				<APN apn="App2">
