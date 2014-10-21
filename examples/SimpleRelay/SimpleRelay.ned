@@ -13,12 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.examples.SimpleRelay;
+import rina.CS.Host1AP;
+import rina.CS.InteriorRouter2Int;
 
-//
-// TODO auto-generated module
-//
-simple PDUFwdTabGenerator
+
+network SimpleRelay
 {
-    @display("i=block/network2");
+    @display("bgb=368,202");
+    submodules:
+        host1: Host1AP {
+            @display("p=70,101");
+        }
+        interiorRouter: InteriorRouter2Int {
+            @display("p=180,101");
+        }
+        host2: Host1AP {
+            @display("p=290,101");
+        }
+    connections allowunconnected:
+        host1.medium <--> interiorRouter.medium++;
+        host2.medium <--> interiorRouter.medium++;
 }

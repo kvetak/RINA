@@ -1,13 +1,54 @@
 <?xml version="1.0"?>
 <Configuration>
-	<Router id="router1"><RA><PDUFwdTabGenerator>
-		<FwTableItem dest="5"	qosId="2"	portId="2"/>
-	</PDUFwdTabGenerator></RA></Router>
-	
-	<Router id="router2"><RA><PDUFwdTabGenerator>
-		<FwTableItem dest="5"	qosId="1"	portId="0"/>
-	</PDUFwdTabGenerator></RA></Router>
+	<Host id="host1">
+		<DA>
+			<Directory>
+				<APN apn="App1">
+					<DIF difName="Layer11" ipcAddress="11" />
+				</APN>
+				<APN apn="11">
+					<DIF difName="Layer01" ipcAddress="1" />
+				</APN>					
+				<APN apn="App2">
+					<DIF difName="Layer11" ipcAddress="22" />
+				</APN>
+				<APN apn="33">
+					<DIF difName="Layer01" ipcAddress="3" />
+				</APN>				
+			</Directory>
+			<NamingInfo>
+				<APN apn="App2">
+					<Synonym apn="AppErr" />
+				</APN>
+			</NamingInfo>
+		</DA>	
+	</Host>
 
+	<Host id="host2">
+		<DA>
+			<Directory>			
+				<APN apn="App1">
+					<DIF difName="Layer1" ipcAddress="11" />
+				</APN>
+				<APN apn="11">
+					<DIF difName="Layer0" ipcAddress="1" />
+				</APN>		
+				<APN apn="App2">
+					<DIF difName="Layer1" ipcAddress="22" />
+				</APN>
+				<APN apn="22">
+					<DIF difName="Layer0" ipcAddress="2" />
+				</APN>										
+			</Directory>
+			<NamingInfo>
+				<APN apn="App2">
+					<Synonym apn="AppErr" />
+				</APN>
+			</NamingInfo>
+			-->		
+		</DA>	
+	</Host>
+	
 	<QoSCubesSet>
 		<QosCube id="1">
 			<AverageBandwidth>12000000</AverageBandwidth>
@@ -25,7 +66,7 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>			
+			<CostBits>0</CostBits>						
 		</QosCube>
 		<QosCube id="2">
 			<AverageBandwidth>12000000</AverageBandwidth>
@@ -43,7 +84,7 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>			
+			<CostBits>0</CostBits>						
 		</QosCube>		
-	</QoSCubesSet>	
+	</QoSCubesSet>
 </Configuration>

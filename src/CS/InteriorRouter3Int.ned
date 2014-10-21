@@ -15,15 +15,16 @@
 
 package rina.CS;
 
+import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
 
 
-module InteriorRouter
+module InteriorRouter3Int
 {
-    @display("i=abstract/switch;bgb=282,227");
+    @display("i=abstract/switch;bgb=282,267");
     @node;
     gates:
-        inout medium[];
+        inout medium[3];
     submodules:
         ipcProcess1: IPCProcess {
             @display("p=65,145");
@@ -31,12 +32,20 @@ module InteriorRouter
         ipcProcess2: IPCProcess {
             @display("p=205,145");
         }
-        ipcProcess0: IPCProcess {
-            @display("p=135,48;i=,#FFB000");            
+        relayIpc: IPCProcess {
+            @display("p=135,53;i=,#FFB000");
+        }
+        difAllocator: DIFAllocator {
+            @display("p=227,53");
+        }
+        ipcProcess3: IPCProcess {
+            @display("p=136,201");
         }
     connections allowunconnected:
-        //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        //ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
         ipcProcess1.southIo++ <--> medium++;
         ipcProcess2.southIo++ <--> medium++;
+        relayIpc.southIo++ <--> ipcProcess1.northIo++;
+        relayIpc.southIo++ <--> ipcProcess2.northIo++;
+        ipcProcess3.southIo++ <--> medium[0];
+        relayIpc.southIo++ <--> ipcProcess3.northIo++;
 }

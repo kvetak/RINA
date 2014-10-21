@@ -13,12 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.Routing;
-import rina.CS.Host1AP;
-import rina.CS.InteriorRouter;
+package rina.examples.SmallNetwork;
+import rina.CS.*;
 
 
-network Routing
+network SmallNetwork
 {
     @display("bgb=621,378");
     submodules:
@@ -37,10 +36,10 @@ network Routing
         host5: Host1AP {
             @display("p=393,253");
         }
-        router1: InteriorRouter {
+        router1: InteriorRouter3Int {
             @display("p=174,165");
         }
-        router2: InteriorRouter {
+        router2: InteriorRouter3Int {
             @display("p=305,166");
         }
     connections allowunconnected:
