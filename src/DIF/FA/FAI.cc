@@ -78,7 +78,7 @@ bool FAI::receiveAllocateRequest() {
 
     // bind this flow to a suitable (N-1)-flow
     RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-    status = raModule->bindToLowerFlow(this->FlowObject);
+    status = raModule->bindFlowToLowerFlow(this->FlowObject);
     //IF connected to wire then schedule M_Create(Flow)
     if (status)
         this->signalizeCreateFlowRequest();
@@ -111,6 +111,10 @@ bool FAI::receiveAllocateResponsePositive() {
         this->signalizeCreateFlowResponseNegative();
         return false;
     }
+
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
+    raModule->bindFlowToLowerFlow(this->FlowObject);
 
     //Signalizes M_Create_R(flow)
     this->signalizeCreateFlowResponsePositive();

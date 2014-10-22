@@ -438,21 +438,26 @@ void RA::initSignalsAndListeners() {
 
 }
 
+void RA::bindFlowToMedium(Flow* flow)
+{
+    EV << "binding a flow to the medium" << endl;
+
+    cGate* efcpiGate = rmt->efcpiIn[flow->getConnectionId().getSrcCepId()];
+    cGate* flowGate = rmt->gateHalf("southIo_PHY", cGate::OUTPUT);
+    rmt->efcpiToFlow[efcpiGate] = flowGate;
+}
+
 /**
  *
  * @param flow
  * @return Returns TRUE if connected onWire else return FALSE
  */
-bool RA::bindToLowerFlow(Flow* flow)
+bool RA::bindFlowToLowerFlow(Flow* flow)
 {
     Enter_Method("bindToLowerFlow()");
     if (onWire)
     {
-        EV << "binding a flow to the medium" << endl;
-
-        cGate* efcpiGate = rmt->efcpiIn[flow->getConnectionId().getSrcCepId()];
-        cGate* flowGate = rmt->gateHalf("southIo_PHY", cGate::OUTPUT);
-        rmt->efcpiToFlow[efcpiGate] = flowGate;
+        bindFlowToMedium(flow);
         return true;
     }
 

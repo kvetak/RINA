@@ -33,7 +33,8 @@ class RABase : public cSimpleModule
 
     virtual void createFlow(Flow *flow) = 0;
     virtual void createFlowWithoutAllocate(Flow *flow) = 0;
-    virtual bool bindToLowerFlow(Flow* flow) = 0;
+    virtual bool bindFlowToLowerFlow(Flow* flow) = 0;
+    virtual void bindFlowToMedium(Flow* flow) = 0;
 
     const QosCubeSet& getQosCubes() const;
 

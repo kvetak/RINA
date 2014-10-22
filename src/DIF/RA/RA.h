@@ -56,9 +56,11 @@ extern const char* ELEM_COSTBITS;
 class RA : public RABase {
 
   public:
-    virtual bool bindToLowerFlow(Flow* flow);
     virtual void createFlow(Flow *flow);
     virtual void createFlowWithoutAllocate(Flow *flow);
+
+    virtual bool bindFlowToLowerFlow(Flow* flow);
+    virtual void bindFlowToMedium(Flow* flow);
 
   protected:
     virtual void initialize();
