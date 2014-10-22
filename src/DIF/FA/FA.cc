@@ -107,12 +107,14 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         status = fai->receiveAllocateRequest();
     }
 
+    //Wait for response from RA, after this continue with X
+
     //If allocation was unsuccessful then return negative response
-    if (!status)
-    {
-        //Change allocation status to rejected
-        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
-    }
+//    if (!status)
+//    {
+//        //Change allocation status to rejected
+//        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
+//    }
     //Else wait
 
     return status;
@@ -315,7 +317,6 @@ void FA::signalizeAllocateResponseNegative(Flow* flow) {
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
-
 
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);

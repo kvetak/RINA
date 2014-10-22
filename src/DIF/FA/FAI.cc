@@ -55,7 +55,7 @@ bool FAI::receiveAllocateRequest() {
     bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -63,7 +63,7 @@ bool FAI::receiveAllocateRequest() {
     status = this->createEFCP();
     if (!status) {
         EV << "createEFCP() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -71,13 +71,17 @@ bool FAI::receiveAllocateRequest() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
 
-    //Schedule M_Create(Flow)
-    this->signalizeCreateFlowRequest();
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
+    status = raModule->bindToLowerFlow(this->FlowObject);
+    //IF connected to wire then schedule M_Create(Flow)
+    if (status)
+        this->signalizeCreateFlowRequest();
 
     //Everything went fine
     return true;
@@ -236,8 +240,6 @@ bool FAI::createBindings() {
     cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpNorth;
-    //FIXME: Vesely @Marek -> How come that I cannot replace this->getFlow()->getConId().getSrcCepId() with cepID???!!!!
-    //XXX:   Vesely @Marek -> 15.10.2014, stale tady ta sracka je :-) ... uklidit!
     nameEfcpNorth << GATE_APPIO_ << cepId;
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
@@ -265,12 +267,6 @@ bool FAI::createBindings() {
     gateRmtUpOut->connectTo(gateEfcpDownIn);
     gateEfcpDownOut->connectTo(gateRmtUpIn);
 
-    // bind this flow to a suitable (N-1)-flow
-    RABase* raModule = (RABase*) IPCModule->getModuleByPath(".resourceAllocator.ra");
-    raModule->bindToLowerFlow(this->FlowObject);
-
-    //FIXME: Vesely - IPC gate checks are failing. Why?
-    //return gateIpcDownIn->isConnected() && gateIpcDownOut->isConnected()
     return gateEfcpDownIn->isConnected() && gateEfcpDownOut->isConnected()
            && gateEfcpUpIn->isConnected() && gateEfcpUpOut->isConnected()
            && gateRmtUpIn->isConnected() && gateRmtUpOut->isConnected();
@@ -330,7 +326,7 @@ bool FAI::invokeAllocateRetryPolicy() {
 }
 
 void FAI::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
     //Signals that module emits
     sigFAIAllocReq      = registerSignal(SIG_FAI_AllocateRequest);
     sigFAIAllocResPosi  = registerSignal(SIG_FAI_AllocateResponsePositive);
@@ -344,28 +340,38 @@ void FAI::initSignalsAndListeners() {
     //Signals that module processes
     //  AllocationRequest
     this->lisAllocReq       = new LisFAIAllocReq(this);
-    catcher->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
+    catcher3->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
     //  AllocationRespNegative
     this->lisAllocResNega   = new LisFAIAllocResNega(this);
-    catcher->subscribe(SIG_toFAI_AllocateResponseNegative, this->lisAllocResNega);
+    catcher3->subscribe(SIG_toFAI_AllocateResponseNegative, this->lisAllocResNega);
     //  AllocationRespPositive
     this->lisAllocResPosi   = new LisFAIAllocResPosi(this);
-    catcher->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
+    catcher3->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
 //    //  CreateFlowRequest
 //    this->lisCreReq         = new LisFAICreReq(this);
 //    catcher->subscribe(SIG_FAI_CreateFlowRequest, this->lisCreReq);
     //  CreateFlowResponseNegative
     this->lisCreResNega     = new LisFAICreResNega(this);
-    catcher->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);
     // CreateFlowResponsePositive
     this->lisCreResPosi     = new LisFAICreResPosi(this);
-    catcher->subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisCreResPosi);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisCreResPosi);
+
+    //  CreateFlowResponseNegative
+    lisCreResNegaNmO     = new LisFAICreResNegaNminusOne(this);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, lisCreResNegaNmO);
+    // CreateFlowResponsePositive
+    lisCreResPosiNmO     = new LisFAICreResPosiNminusOne(this);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResPosiNmO);
+
 //    // CreateFlowDeleteRequest
 //    this->lisDelReq         = new LisFAIDelReq(this);
 //    catcher->subscribe(SIG_FAI_DeleteFlowRequest, this->lisDelReq);
 //    // CreateFlowDeleteResponse
 //    this->lisDelRes         = new LisFAIDelRes(this);
 //    catcher->subscribe(SIG_FAI_DeleteFlowResponse, this->lisDelRes);
+
+
 }
 
 void FAI::signalizeCreateFlowRequest() {
@@ -407,3 +413,13 @@ void FAI::createNorthGates() {
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
     IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
 }
+
+void FAI::receiveCreateFlowResponsePositiveFromNminusOne() {
+    //Schedule M_Create(Flow)
+    this->signalizeCreateFlowRequest();
+}
+
+void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {
+    this->signalizeAllocateResponseNegative();
+}
+

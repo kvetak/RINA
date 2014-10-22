@@ -99,3 +99,29 @@ void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
     EV << "DeleteRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     fai->receiveDeleteRequest();
 }
+
+void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponsePositiveNminusOne initiated by " << src->getFullPath()
+       << " and processed by " << fai->getFullPath() << endl;
+
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (fai->getFa()->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn() )
+            fai->receiveCreateFlowResponsePositiveFromNminusOne();
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+}
+
+void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (fai->getFa()->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn() )
+            fai->receiveCreateFlowResponseNegativeFromNminusOne();
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+
+}

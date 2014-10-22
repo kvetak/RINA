@@ -37,6 +37,10 @@ class FAIBase : public cSimpleModule {
     virtual void receiveDeleteRequest() = 0;
     virtual void receiveDeleteResponse() = 0;
 
+    virtual void receiveCreateFlowResponsePositiveFromNminusOne() = 0;
+    virtual void receiveCreateFlowResponseNegativeFromNminusOne() = 0;
+
+
     Flow* getFlow()  {
         return FlowObject;
     }

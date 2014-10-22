@@ -36,6 +36,7 @@ class FABase : public cSimpleModule {
     virtual bool invokeNewFlowRequestPolicy(Flow* flow) = 0;
 
     FAITable* getFaiTable() const;
+    const Address& getMyAddress() const;
 
     //FAITable* getFaiTable() const;
 

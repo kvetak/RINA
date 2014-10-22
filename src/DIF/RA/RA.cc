@@ -384,6 +384,8 @@ void RA::createFlow(Flow *fl)
     //Command target FA to allocate flow
     bool status = fab->receiveAllocateRequest(fl);
 
+    //FIXME: Vesely - WAIT!
+
     //If AllocationRequest ended by creating connections
     if (status)
     {
@@ -436,8 +438,14 @@ void RA::initSignalsAndListeners() {
 
 }
 
+/**
+ *
+ * @param flow
+ * @return Returns TRUE if connected onWire else return FALSE
+ */
 bool RA::bindToLowerFlow(Flow* flow)
 {
+    Enter_Method("bindToLowerFlow()");
     if (onWire)
     {
         EV << "binding a flow to the medium" << endl;
@@ -476,6 +484,6 @@ bool RA::bindToLowerFlow(Flow* flow)
     cGate* flowGate = flTable->lookup(dstAddr)->getRmtPort();
     rmt->efcpiToFlow[efcpiGate] = flowGate;
 
-    return true;
+    return false;
 }
 
