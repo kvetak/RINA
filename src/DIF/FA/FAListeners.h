@@ -71,14 +71,6 @@ class LisFACreReq : public FAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-
-class LisFADelReq : public FAListeners
-{
-  public:
-    LisFADelReq(FABase* sfa) : FAListeners(sfa){};
-};
-
-
 class LisFADelRes : public FAListeners
 {
   public:

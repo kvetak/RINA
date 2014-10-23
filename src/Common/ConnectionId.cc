@@ -90,8 +90,9 @@ bool ConnectionId::operator<(const ConnectionId other) const
 
 bool ConnectionId::operator==(const ConnectionId other) const
 {
-    return ((qosId == other.qosId) && (dstCEPId == other.dstCEPId)
-            && (srcCEPId < other.srcCEPId));
+    return qosId == other.qosId
+           && dstCEPId == other.dstCEPId
+           && srcCEPId == other.srcCEPId;
 }
 
 ConnectionId& ConnectionId::swapCepIds() {

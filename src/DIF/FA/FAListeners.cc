@@ -48,7 +48,7 @@ void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
-        fa->receiveCreateFlowRequest(flow);
+        fa->receiveCreateFlowRequestFromRibd(flow);
     else
         EV << "Received not a flow object!" << endl;
     return;

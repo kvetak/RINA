@@ -82,3 +82,25 @@ void LisRIBDCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "RIBdListener received unknown object!" << endl;
 }
+
+void LisRIBDDelReq::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeleteRequest initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->sendDeleteRequestFlow(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+}
+
+void LisRIBDDelRes::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeleteResponse initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->sendDeleteResponseFlow(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+}

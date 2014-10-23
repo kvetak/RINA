@@ -107,15 +107,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         status = fai->receiveAllocateRequest();
     }
 
-    //Wait for response from RA, after this continue with X
-
-    //If allocation was unsuccessful then return negative response
-//    if (!status)
-//    {
-//        //Change allocation status to rejected
-//        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
-//    }
-    //Else wait
+    //Potentially wait for response from RA, after this continue with X
 
     return status;
 }
@@ -144,7 +136,7 @@ void FA::receiveAllocateResponseNegative(Flow* flow) {
 }
 */
 
-void FA::receiveCreateFlowRequest(Flow* flow) {
+void FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
     EV << this->getFullPath() << " received CreateFlowRequest" << endl;
 
@@ -190,13 +182,21 @@ void FA::receiveCreateFlowRequest(Flow* flow) {
     }
 }
 
-void FA::receiveDeallocateRequest(Flow* flow) {
+bool FA::receiveDeallocateRequest(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
     //Pass the request to appropriate FAI
     FAITableEntry* fte = FaiTable->findEntryByFlow(flow);
-    FAIBase* fai = fte->getFai();
-    fai->receiveDeallocateRequest();
+    if (fte && fte->getFai()) {
+        FAIBase* fai = fte->getFai();
+        FaiTable->changeAllocStatus(fai, FAITableEntry::DEALLOC_PEND);
+        fai->receiveDeallocateRequest();
+        return true;
+    }
+    else {
+        EV << "Flow or FAI not found in FAITable!" << endl;
+        return false;
+    }
 }
 
 bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
@@ -262,7 +262,7 @@ FAI* FA::createFAI(Flow* flow) {
 }
 
 void FA::deinstantiateFai(Flow* flow) {
-    FaiTable->changeAllocStatus(flow, FAITableEntry::DEINST_PEND);
+    FaiTable->changeAllocStatus(flow, FAITableEntry::DEINSTANTIATED);
     //TODO: Vesely
     //Prepare deinstantitation self-message
 }
@@ -306,6 +306,7 @@ void FA::initSignalsAndListeners() {
     //CreateRequestFlow
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
+
 }
 
 /*

@@ -32,14 +32,15 @@ class IRM : public cSimpleModule   {
     IRM();
     virtual ~IRM();
 
-    void receiveAllocationRequest(Flow* flow);
-    void receiveDeallocationRequest(Flow* flow);
+    bool receiveAllocationRequestFromAe(Flow* flow);
+    bool receiveDeallocationRequestFromAe(Flow* flow);
 
-    bool receiveAllocationResponsePositive(Flow* flow);
+    bool receiveAllocationResponsePositiveFromIpc(Flow* flow);
 
     void newFlow(Flow* flow);
 
     ConnectionTable* getConTable() const;
+    bool deleteBindings(Flow* flow);
 
   protected:
     virtual void initialize();
@@ -53,6 +54,7 @@ class IRM : public cSimpleModule   {
 
     void initSignalsAndListeners();
     bool createBindings(Flow* flow);
+
 
     //Signals
     simsignal_t sigIRMAllocReq;

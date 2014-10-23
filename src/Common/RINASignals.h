@@ -16,6 +16,8 @@ extern const char* SIG_AE_DataSend;
 //RIBd
 extern const char* SIG_RIBD_DataSend;
 extern const char* SIG_RIBD_CreateRequestFlow;
+extern const char* SIG_RIBD_DeleteRequestFlow;
+extern const char* SIG_RIBD_DeleteResponseFlow;
 extern const char* SIG_RIBD_CreateFlow;
 extern const char* SIG_RIBD_CreateFlowResponseNegative;
 extern const char* SIG_RIBD_CreateFlowResponsePositive;
@@ -41,6 +43,8 @@ extern const char* SIG_toFAI_AllocateRequest;
 extern const char* SIG_toFAI_AllocateResponsePositive;
 extern const char* SIG_toFAI_AllocateResponseNegative;
 extern const char* SIG_FAI_AllocateRequest;
+extern const char* SIG_FAI_DeallocateRequest;
+extern const char* SIG_FAI_DeallocateResponse;
 extern const char* SIG_FAI_AllocateResponsePositive;
 extern const char* SIG_FAI_AllocateResponseNegative;
 extern const char* SIG_FAI_CreateFlowRequest;

@@ -31,6 +31,8 @@ class RIBdBase : public cSimpleModule {
     virtual void sendCreateRequestFlow(Flow* flow) = 0;
     virtual void sendCreateResponseNegative(Flow* flow) = 0;
     virtual void sendCreateResponsePostive(Flow* flow) = 0;
+    virtual void sendDeleteRequestFlow(Flow* flow) = 0;
+    virtual void sendDeleteResponseFlow(Flow* flow) = 0;
     virtual void receiveData(CDAPMessage* flow) = 0;
     virtual void receiveAllocationRequestFromFAI(Flow* flow) = 0;
 

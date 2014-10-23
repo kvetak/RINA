@@ -38,6 +38,18 @@ class LisRIBDCreReq : public RIBdListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisRIBDDelReq : public RIBdListeners {
+  public:
+    LisRIBDDelReq(RIBdBase* nribd) : RIBdListeners(nribd){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDDelRes : public RIBdListeners {
+  public:
+    LisRIBDDelRes(RIBdBase* nribd) : RIBdListeners(nribd){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 class LisRIBDRcvData : public RIBdListeners {
   public:
     LisRIBDRcvData(RIBdBase* nribd) : RIBdListeners(nribd) {};

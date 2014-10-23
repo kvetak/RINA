@@ -76,3 +76,18 @@ void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "AEListener received unknown object!" << endl;
 }
+
+void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "DeallocationRequest{fromFAI} initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        //Check whether dstApp is local...
+        const APN dstApn = flow->getSrcApni().getApn();
+        if (ae->getApni().getApn() == dstApn && ae->hasFlow(flow))
+            ae->receiveDeallocationRequestFromFAI(flow);
+    }
+    else
+        EV << "AEListener received unknown object!" << endl;
+}

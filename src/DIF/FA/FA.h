@@ -54,8 +54,8 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
-    virtual void receiveDeallocateRequest(Flow* flow);
-    virtual void receiveCreateFlowRequest(Flow* flow);
+    virtual bool receiveDeallocateRequest(Flow* flow);
+    virtual void receiveCreateFlowRequestFromRibd(Flow* flow);
 
     virtual void deinstantiateFai(Flow* flow);
 
@@ -73,9 +73,6 @@ class FA : public FABase
     LisFAAllocReq* lisAllocReq;
     LisFADeallocReq* lisDeallocReq;
     LisFACreReq*  lisCreReq;
-    //LisFACreRes* lisCreRes;
-    //LisFADelReq*  lisDelReq;
-    //LisFADelRes* lisDelRes;
 
   protected:
     //SimpleModule overloads

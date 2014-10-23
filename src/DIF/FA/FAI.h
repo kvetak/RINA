@@ -49,7 +49,7 @@ class FAI : public FAIBase  {
     virtual bool receiveCreateRequest();
     virtual bool receiveCreateResponsePositive(Flow* flow);
     virtual bool receiveCreateResponseNegative(Flow* flow);
-    virtual void receiveDeallocateRequest();
+    virtual bool receiveDeallocateRequest();
     virtual void receiveDeleteRequest();
     virtual void receiveDeleteResponse();
 
@@ -71,6 +71,8 @@ class FAI : public FAIBase  {
 
     //Signals
     simsignal_t sigFAIAllocReq;
+    simsignal_t sigFAIDeallocReq;
+    simsignal_t sigFAIDeallocRes;
     simsignal_t sigFAIAllocResPosi;
     simsignal_t sigFAIAllocResNega;
     simsignal_t sigFAICreReq;
@@ -114,7 +116,9 @@ class FAI : public FAIBase  {
     void signalizeCreateFlowResponseNegative();
     void signalizeDeleteFlowRequest();
     void signalizeDeleteFlowResponse();
-    void signalizeAllocationRequestFromFAI();
+    void signalizeAllocationRequestFromFai();
+    void signalizeDeallocateRequestFromFai();
+    void signalizeDeallocateResponseFromFai();
     void signalizeAllocateResponseNegative();
     void signalizeAllocateResponsePositive();
 

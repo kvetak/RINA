@@ -41,6 +41,7 @@ class AE : public AEBase
     void sendDeallocationRequest(Flow* flow);
 
     void receiveAllocationRequestFromFAI(Flow* flow);
+    void receiveDeallocationRequestFromFAI(Flow* flow);
 
     void receiveAllocationResponseNegative(Flow* flow);
     void receiveAllocationResponsePositive(Flow* flow);
@@ -57,7 +58,8 @@ class AE : public AEBase
     void initSignalsAndListeners();
 
     void insertFlow(Flow& flow);
-    bool createBinding(Flow& flow);
+    bool createBindings(Flow& flow);
+    bool deleteBindings(Flow& flow);
 
     //Signals
     simsignal_t sigAEAllocReq;
@@ -71,6 +73,8 @@ class AE : public AEBase
     LisAEAllReqFromFai* lisAEAllReqFromFai;
     LisAEAllResPosi* lisAEAllResPosi;
     LisAEAllResNega* lisAEAllResNega;
+    LisAEDeallReqFromFai* lisAEDeallReqFromFai;
+    LisAEDeallReqFromFai* lisAEDeallResFromFai;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);

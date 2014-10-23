@@ -46,6 +46,12 @@ class LisAEAllReqFromFai : public AEListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisAEDeallReqFromFai : public AEListeners {
+  public:
+    LisAEDeallReqFromFai(AE* nae) : AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 class LisAEAllResPosi : public AEListeners {
   public:
     LisAEAllResPosi(AE* nae) : AEListeners(nae){};

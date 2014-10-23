@@ -119,7 +119,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
         //FIXME: Vesely - last flow in a list?!
-        //sendDeallocationRequest(&flows.back());
+        sendDeallocationRequest(&flows.back());
     }
     else if ( strstr(msg->getName(), MSG_PING) ) {
         //Create PING messsage
