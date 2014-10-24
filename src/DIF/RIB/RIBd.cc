@@ -242,6 +242,7 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDDelReqFlo     = registerSignal(SIG_RIBD_DeleteRequestFlow);
     sigRIBDDelResFlo     = registerSignal(SIG_RIBD_DeleteResponseFlow);
     sigRIBDAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigRIBDAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
     sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
@@ -265,6 +266,8 @@ void RIBd::initSignalsAndListeners() {
 
     lisRIBDCreResPosi = new LisRIBDCreResPosi(this);
     catcher2->subscribe(SIG_FAI_CreateFlowResponsePositive, lisRIBDCreResPosi);
+    lisRIBDCreResPosiForward = new LisRIBDCreResPosi(this);
+    catcher2->subscribe(SIG_FA_CreateFlowResponseForward, lisRIBDCreResPosiForward);
 
     lisRIBDRcvData = new LisRIBDRcvData(this);
     catcher1->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
@@ -272,14 +275,16 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDAllReqFromFai = new LisRIBDAllReqFromFai(this);
     catcher3->subscribe(SIG_FAI_AllocateRequest, lisRIBDAllReqFromFai);
 
+    lisRIBDCreFloPosi = new LisRIBDCreFloPosi(this);
+    catcher2->subscribe(SIG_RA_CreateFlowPositive, lisRIBDCreFloPosi);
+    lisRIBDCreFloNega = new LisRIBDCreFloNega(this);
+    catcher2->subscribe(SIG_RA_CreateFlowNegative, lisRIBDCreFloNega);
 }
 
-void RIBd::receiveAllocationRequestFromFAI(Flow* flow) {
+void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
     //Execute flow allocate
     signalizeCreateFlow(flow);
-    //TODO: Vesely - Return result
-    signalizeAllocateResponsePositive(flow);
 }
 
 void RIBd::sendCreateResponseNegative(Flow* flow) {
@@ -338,7 +343,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getSrcAddr());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -363,12 +368,12 @@ void RIBd::signalizeCreateRequestFlow(Flow* flow) {
 }
 
 void RIBd::signalizeCreateResponseFlowPositive(Flow* flow) {
-    EV << "Emits CreateRequestFlow signal for flow" << endl;
+    EV << "Emits CreateResponsetFlowPositive signal for flow" << endl;
     emit(sigRIBDCreResFloPosi, flow);
 }
 
 void RIBd::signalizeCreateResponseFlowNegative(Flow* flow) {
-    EV << "Emits CreateRequestFlow signal for flow" << endl;
+    EV << "Emits CreateResponsetFlowNegative signal for flow" << endl;
     emit(sigRIBDCreResFloNega, flow);
 }
 
@@ -423,7 +428,7 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mderesf->setDstAddr(flow->getSrcAddr());
+    mderesf->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mderesf);
@@ -433,6 +438,19 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
 void RIBd::signalizeDeleteResponseFlow(Flow* flow) {
     EV << "Emits DeleteResponseFlow signal for flow" << endl;
     emit(sigRIBDDelResFlo, flow);
+}
+
+void RIBd::receiveCreateFlowPositiveFromRa(Flow* flow) {
+    signalizeAllocateResponsePositive(flow);
+}
+
+void RIBd::receiveCreateFlowNegativeFromRa(Flow* flow) {
+    signalizeAllocateResponseNegative(flow);
+}
+
+void RIBd::signalizeAllocateResponseNegative(Flow* flow) {
+    EV << "Emits AllocateResponseNegative signal for flow" << endl;
+    emit(sigRIBDAllocResNega, flow);
 }
 
 void RIBd::processMDeleteR(CDAPMessage* msg) {

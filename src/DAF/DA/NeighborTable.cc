@@ -69,4 +69,31 @@ void NeighborTable::parseConfig(cXMLElement* config) {
         return;
     }
 
+    cXMLElementList apnlist = mainTag->getChildrenByTagName(ELEM_APN);
+    for (cXMLElementList::const_iterator it = apnlist.begin(); it != apnlist.end(); ++it) {
+        cXMLElement* m = *it;
+
+        if (!(m->getAttribute(ATTR_APN) && m->getFirstChildWithTag(ELEM_NEIGHBOR))) {
+            EV << "\nError when parsing NeighborTable record" << endl;
+            continue;
+        }
+
+        APN newapn = APN(m->getAttribute(ATTR_APN));
+
+        addNeighborEntry(newapn);
+
+        cXMLElementList neighborlist = m->getChildrenByTagName(ELEM_NEIGHBOR);
+        for (cXMLElementList::const_iterator jt = neighborlist.begin(); jt != neighborlist.end(); ++jt) {
+            cXMLElement* n = *jt;
+
+            if (!(n->getAttribute(ATTR_APN))) {
+                EV << "\nError when parsing Synonym record" << endl;
+                continue;
+            }
+
+            addNewNeighbor(newapn, APN(n->getAttribute(ATTR_APN)));
+        }
+    }
+
+
 }

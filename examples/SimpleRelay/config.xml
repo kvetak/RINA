@@ -6,36 +6,14 @@
 				<APN apn="App1">
 					<DIF difName="Layer11" ipcAddress="11" />
 				</APN>
+				<APN apn="App2">
+					<DIF difName="Layer11" ipcAddress="22" />
+				</APN>				
 				<APN apn="11">
 					<DIF difName="Layer01" ipcAddress="1" />
 				</APN>					
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="22" />
-				</APN>
 				<APN apn="33">
 					<DIF difName="Layer01" ipcAddress="3" />
-				</APN>				
-			</Directory>
-			<NamingInfo>
-				<APN apn="App2">
-					<Synonym apn="AppErr" />
-				</APN>
-			</NamingInfo>
-		</DA>	
-	</Host>
-	<Host id="host2">
-		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="11" />
-				</APN>
-				<APN apn="11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>					
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="22" />
-				</APN>
-				<APN apn="33">
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>				
 			</Directory>
@@ -44,9 +22,65 @@
 					<Synonym apn="AppErr" />
 				</APN>
 			</NamingInfo>
-			-->		
+			<NeighborTable>
+				<APN apn="22">
+					<Neighbor apn="33" />
+				</APN>			
+			</NeighborTable>
 		</DA>	
 	</Host>
+	<Host id="host2">
+		<DA>
+			<Directory>
+				<APN apn="App1">
+					<DIF difName="Layer11" ipcAddress="11" />
+				</APN>
+				<APN apn="App2">
+					<DIF difName="Layer11" ipcAddress="22" />
+				</APN>				
+				<APN apn="11">
+					<DIF difName="Layer01" ipcAddress="1" />
+				</APN>					
+				<APN apn="33">
+					<DIF difName="Layer01" ipcAddress="3" />				
+					<DIF difName="Layer02" ipcAddress="4" />
+				</APN>				
+			</Directory>
+			<NamingInfo>
+				<APN apn="App2">
+					<Synonym apn="AppErr" />
+				</APN>
+			</NamingInfo>
+			<NeighborTable>
+				<APN apn="11">
+					<Neighbor apn="33" />
+				</APN>			
+			</NeighborTable>
+			
+		</DA>	
+	</Host>
+	<Router id="interiorRouter">
+		<DA>
+			<Directory>
+				<APN apn="App1">
+					<DIF difName="Layer11" ipcAddress="11" />
+				</APN>
+				<APN apn="App2">
+					<DIF difName="Layer11" ipcAddress="22" />
+				</APN>			
+				<APN apn="11">
+					<DIF difName="Layer01" ipcAddress="1" />
+				</APN>					
+				<APN apn="22">
+					<DIF difName="Layer02" ipcAddress="2" />
+				</APN>	
+				<APN apn="33">
+					<DIF difName="Layer01" ipcAddress="3" />				
+					<DIF difName="Layer02" ipcAddress="4" />
+				</APN>								
+			</Directory>			
+		</DA>
+	</Router>
 	
 	<QoSCubesSet>
 		<QosCube id="1">

@@ -41,21 +41,13 @@ class LisFAAllocReq : public FAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-/*
-class LisFAAllocResPosi : public FAListeners
-{
-  public:
-    LisFAAllocResPosi(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
 
-class LisFAAllocResNega : public FAListeners
+class LisFACreFloPosi : public FAListeners
 {
   public:
-    LisFAAllocResNega(FABase* sfa) : FAListeners(sfa){};
+    LisFACreFloPosi(FABase* sfa) : FAListeners(sfa){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-*/
 
 class LisFADeallocReq : public FAListeners
 {
@@ -68,6 +60,13 @@ class LisFACreReq : public FAListeners
 {
   public:
     LisFACreReq(FABase* sfa) : FAListeners(sfa){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisFACreRes : public FAListeners
+{
+  public:
+    LisFACreRes(FABase* sfa) : FAListeners(sfa){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

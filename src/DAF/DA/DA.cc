@@ -23,6 +23,29 @@ const char* MOD_SEARCHTAB       = "searchTable";
 
 Define_Module(DA);
 
+const APNList* DA::findApnNeigbors(const APN& apn) {
+    return NeighborTab->findNeighborsByApn(apn);
+}
+
+const Address* DA::resolveApnToBestAddress(const APN& apn) {
+    Enter_Method("resolveApnToBestAddress()");
+
+    DirectoryEntry* de = resolveApn(apn);
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return NULL;
+    }
+
+    //Return first local DIF address
+    for (AddrCItem it = de->getSupportedDifs().begin(); it != de->getSupportedDifs().end(); ++it) {
+        if (isDifLocal(it->getDifName()))
+            return &(*it);
+    }
+
+    EV << "None of found DIFs is local!" << endl;
+    return NULL;
+}
+
 void DA::initPointers() {
     //Retrieve pointers to submodules
     Dir = ModuleAccess<Directory>(MOD_DIRECTORY).get();

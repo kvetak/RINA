@@ -279,10 +279,18 @@ void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
 
     bool status;
     status = deleteBindings(*flow);
+    if (!status) {
+        EV << "deleteBindings() failed during DeallocateRequest processing!" << endl;
+        return;
+    }
 
     status = Irm->deleteBindings(flow);
+    if (!status) {
+        EV << "IRM.deleteBindings() failed during DeallocateRequest processing!" << endl;
+        return;
+    }
 
-    EV << "Statusak> " << status;
+    //EV << "Statusak> " << status;
 }
 
 bool AE::deleteBindings(Flow& flow) {

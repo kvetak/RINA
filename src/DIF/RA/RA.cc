@@ -357,19 +357,17 @@ std::string RA::normalizePortId(std::string ipcName, int flowPortId)
  *
  * @param dstIpc address of the destination IPC process
  */
-void RA::createFlow(Flow *fl)
+void RA::createFlow(Flow *flow)
 {
     Enter_Method("createFlow()");
-    //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = difAllocator->resolveApn(fl->getDstApni().getApn());
 
-    if (de == NULL) {
-        EV << "DA does not know target application." << endl;
+    //Ask DA which IPC to use to reach dst App
+    const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
         return;
     }
-
-    //TODO: Vesely - Now using first available APN to DIFMember mapping
-    Address addr = de->getSupportedDifs().front();
+    Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!difAllocator->isDifLocal(addr.getDifName())) {
@@ -382,7 +380,7 @@ void RA::createFlow(Flow *fl)
     FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
 
     //Command target FA to allocate flow
-    bool status = fab->receiveAllocateRequest(fl);
+    bool status = fab->receiveAllocateRequest(flow);
 
     //FIXME: Vesely - WAIT!
 
@@ -390,10 +388,10 @@ void RA::createFlow(Flow *fl)
     if (status)
     {
         // connect the new flow to the RMT
-        cGate* ret = bindFlowToRMT(targetIpc, fl);
+        cGate* ret = bindFlowToRMT(targetIpc, flow);
         // we're ready to go!
         //signalizeFlowAllocated(fl);
-        flTable->insert(fl, fab, ret);
+        flTable->insert(flow, fab, ret);
     }
     else
     {
@@ -403,20 +401,20 @@ void RA::createFlow(Flow *fl)
 
 void RA::createFlowWithoutAllocate(Flow* flow) {
     Enter_Method("createFlowWoAlloc()");
-    //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = difAllocator->resolveApn(flow->getSrcApni().getApn());
 
-    if (de == NULL) {
-        EV << "DA does not know target application." << endl;
+    //Ask DA which IPC to use to reach dst App
+    const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
+        signalizeCreateFlowNegativeToRibd(flow);
         return;
     }
-
-    //TODO: Vesely - Now using first available APN to DIFMember mapping
-    Address addr = de->getSupportedDifs().front();
+    Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!difAllocator->isDifLocal(addr.getDifName())) {
         EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
+        signalizeCreateFlowNegativeToRibd(flow);
         return;
     }
 
@@ -428,10 +426,15 @@ void RA::createFlowWithoutAllocate(Flow* flow) {
     cGate* ret = bindFlowToRMT(targetIpc, flow);
     // we're ready to go!
     flTable->insert(flow, fab, ret);
+
+    signalizeCreateFlowPositiveToRibd(flow);
 }
 
 void RA::initSignalsAndListeners() {
     cModule* catcher2 = this->getParentModule()->getParentModule();
+
+    sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
+    sigRACreFloNega = registerSignal(SIG_RA_CreateFlowNegative);
 
     lisRACreFlow = new LisRACreFlow(this);
     catcher2->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
@@ -492,3 +495,12 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     return false;
 }
 
+void RA::signalizeCreateFlowPositiveToRibd(Flow* flow) {
+    EV << "Emits CreateFlowPositive signal for flow" << endl;
+    emit(sigRACreFloPosi, flow);
+}
+
+void RA::signalizeCreateFlowNegativeToRibd(Flow* flow) {
+    EV << "Emits CreateFlowNegative signal for flow" << endl;
+    emit(sigRACreFloNega, flow);
+}

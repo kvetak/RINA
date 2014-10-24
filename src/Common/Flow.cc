@@ -51,7 +51,7 @@ Flow::~Flow() {
 }
 
 //Free function
-bool Flow::operator ==(const Flow& other) {
+bool Flow::operator ==(const Flow& other) const {
     return (srcApni == other.srcApni && dstApni == other.dstApni &&
             srcPortId == other.srcPortId && dstPortId == other.dstPortId &&
             srcAddr == other.srcAddr && dstAddr == other.dstAddr &&

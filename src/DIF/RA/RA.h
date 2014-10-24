@@ -88,7 +88,12 @@ class RA : public RABase {
 
     void initSignalsAndListeners();
 
+    simsignal_t sigRACreFloPosi;
+    simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
+
+    void signalizeCreateFlowPositiveToRibd(Flow* flow);
+    void signalizeCreateFlowNegativeToRibd(Flow* flow);
 
 };
     

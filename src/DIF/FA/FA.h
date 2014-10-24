@@ -54,6 +54,8 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
+    virtual void receiveCreateFlowPositive(Flow* flow);
+    virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual void receiveCreateFlowRequestFromRibd(Flow* flow);
 
@@ -63,23 +65,26 @@ class FA : public FABase
 
     //Signals
     //simsignal_t sigFAIAllocReq;
-    simsignal_t sigFAAllocResNega;
-    simsignal_t sigFAAllocResPosi;
+    //simsignal_t sigFAAllocResNega;
+    //simsignal_t sigFAAllocResPosi;
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
-    simsignal_t sigFACreResPosi;
+    //simsignal_t sigFACreResPosi;
+    simsignal_t sigFACreResPosiFwd;
 
     //Listeners
-    LisFAAllocReq* lisAllocReq;
-    LisFADeallocReq* lisDeallocReq;
-    LisFACreReq*  lisCreReq;
+    LisFAAllocReq*      lisAllocReq;
+    LisFACreFloPosi*    lisCreFloPosi;
+    LisFADeallocReq*    lisDeallocReq;
+    LisFACreReq*        lisCreReq;
+    LisFACreRes*        lisCreResFloPosi;
 
   protected:
     //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void initPointers();
-
+    bool appendAddresses(Flow* flow);
 
   private:
     EFCP* Efcp;
@@ -94,6 +99,7 @@ class FA : public FABase
     //void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
+    void signalizeCreateFlowResponsePositiveForward(Flow* flow);
 };
 
 #endif /* FLOWALLOCATOR_H_ */

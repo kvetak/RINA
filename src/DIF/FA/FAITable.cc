@@ -35,6 +35,27 @@ std::string FAITable::info() const {
     return os.str();
 }
 
+FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& ipcAddr) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getFlow()->getDstAddr().getIpcAddress() == ipcAddr
+                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+            return &(*it);
+    }
+    return NULL;
+}
+
+FAITableEntry* FAITable::findEntryBySrcAddressAndFwd(const APN& ipcAddr) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getFlow()->getSrcAddr().getIpcAddress() == ipcAddr
+                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+            return &(*it);
+    }
+    return NULL;
+
+}
+
 void FAITable::handleMessage(cMessage *msg)
 {
 
@@ -49,13 +70,17 @@ void FAITable::insert(const FAITableEntry& entry) {
     FaiTable.push_back(entry);
 }
 
-void FAITable::remove() {
+void FAITable::removeByFlow(Flow* flow) {
+    Enter_Method("removeFlow()");
+    FAITableEntry* entry = findEntryByFlow(flow);
+    if (entry)
+        FaiTable.remove(*entry);
 }
 
-FAITableEntry* FAITable::findEntryByFlow(Flow* flow) {
+FAITableEntry* FAITable::findEntryByFlow(const Flow* flow) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getFlow() == flow)
+        if (*(tft.getFlow()) == *flow)
             return &(*it);
     }
     return NULL;
@@ -72,8 +97,9 @@ FAITableEntry* FAITable::findEntryByFai(FAIBase* fai) {
 
 void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status) {
     FAITableEntry* fte = findEntryByFlow(flow);
-    if (fte)
+    if (fte) {
         fte->setAllocateStatus(status);
+    }
     else
         EV << "findByFlow() returned NULL" << endl;
 }

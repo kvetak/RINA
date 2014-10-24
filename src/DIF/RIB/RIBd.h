@@ -53,7 +53,9 @@ class RIBd : public RIBdBase {
     virtual void sendDeleteRequestFlow(Flow* flow);
     virtual void sendDeleteResponseFlow(Flow* flow);
     virtual void receiveData(CDAPMessage* cimsg);
-    virtual void receiveAllocationRequestFromFAI(Flow* flow);
+    virtual void receiveAllocationRequestFromFai(Flow* flow);
+    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
+    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
 
   protected:
     virtual void initialize();
@@ -70,6 +72,7 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDCreResFloPosi;
     simsignal_t sigRIBDCreResFloNega;
     simsignal_t sigRIBDAllocResPosi;
+    simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
 
     //Listeners
@@ -80,14 +83,18 @@ class RIBd : public RIBdBase {
     LisRIBDCreResNega*          lisRIBDCreResNega;
     LisRIBDCreResNega*          lisRIBDCreResNegaFromFa;
     LisRIBDCreResPosi*          lisRIBDCreResPosi;
+    LisRIBDCreResPosi*          lisRIBDCreResPosiForward;
     LisRIBDDelReq*              lisRIBDDelReq;
     LisRIBDDelRes*              lisRIBDDelRes;
+    LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
+    LisRIBDCreFloNega*          lisRIBDCreFloNega;
 
     void signalizeSendData(CDAPMessage* msg);
     void signalizeCreateRequestFlow(Flow* flow);
     void signalizeDeleteRequestFlow(Flow* flow);
     void signalizeDeleteResponseFlow(Flow* flow);
     void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlow(Flow* flow);
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative(Flow* flow);

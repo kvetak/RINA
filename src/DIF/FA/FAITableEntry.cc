@@ -76,6 +76,9 @@ std::string FAITableEntry::getAllocateStatusString() const {
         case ALLOC_ERR:     return "allocation error";
         case DEALLOC_PEND:  return "deallocation pending";
         case DEALLOCATED:   return "deallocated";
+        case DEINST_PEND:   return "deinstantiation pending";
+        case DEINSTANTIATED:return "deinstantiated";
+        case FORWARDED:     return "allocation forwarded";
         default:            return "UNKNOWN";
     }
 //    static std::string AllocateStatusStrings[] = {"Pending", "Allocation Positive", "Allocation Negative"};
@@ -96,4 +99,15 @@ void FAITableEntry::setFai(FAIBase* nfai) {
 
 const Flow* FAITableEntry::getFlow() const {
     return flow;
+}
+
+bool FAITableEntry::operator ==(const FAITableEntry& other) const {
+    return this->fai == other.fai
+            && this->flow == other.flow
+            && this->allocStatus == other.allocStatus
+            && this->timeCreated == other.timeCreated;
+}
+
+FAITableEntry::AllocateStatus FAITableEntry::getAllocateStatus() const {
+    return allocStatus;
 }

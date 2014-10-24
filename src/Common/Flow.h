@@ -37,7 +37,7 @@ class Flow : public cObject
 
     //TODO: VV - Completely missing overloading of < and > operators
 
-    bool operator== (const Flow& other);
+    bool operator== (const Flow& other) const;
 
     virtual Flow* dup() const;
 

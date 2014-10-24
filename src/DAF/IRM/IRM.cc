@@ -175,15 +175,12 @@ void IRM::newFlow(Flow* flow) {
     ConTable->insertNew(flow);
 
     //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
-
-    if (de == NULL) {
-        EV << "DA does not know target application" << endl;
+    const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
         return;
     }
-
-    //TODO: Vesely - Now using first available APN to DIFMember mapping
-    Address addr = de->getSupportedDifs().front();
+    Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!DifAllocator->isDifLocal(addr.getDifName())) {

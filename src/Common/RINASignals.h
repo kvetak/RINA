@@ -35,6 +35,7 @@ extern const char* SIG_AERIBD_AllocateResponseNegative;
 extern const char* SIG_FA_CreateFlowResponseNegative;
 extern const char* SIG_FA_CreateFlowResponsePositive;
 extern const char* SIG_FA_CreateFlowRequestForward;
+extern const char* SIG_FA_CreateFlowResponseForward;
 extern const char* SIG_FA_AllocateResponsePositive;
 extern const char* SIG_FA_AllocateResponseNegative;
 
@@ -60,6 +61,9 @@ extern const char* SIG_RA_AllocateResponsePositive;
 extern const char* SIG_RA_AllocateResponseNegative;
 extern const char* SIG_RA_FlowAllocated;
 extern const char* SIG_RA_FlowDeallocated;
+extern const char* SIG_RA_CreateFlowPositive;
+extern const char* SIG_RA_CreateFlowNegative;
+
 
 //RIB
 extern const char* SIG_RIB_CreateRequestFlow;

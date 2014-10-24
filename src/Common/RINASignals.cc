@@ -30,6 +30,7 @@ const char* SIG_AERIBD_AllocateResponseNegative = "AEorRIBd-AllocateResponseNega
 const char* SIG_FA_CreateFlowResponseNegative   = "FA-CreateFlowResponseNegative";
 const char* SIG_FA_CreateFlowResponsePositive   = "FA-CreateFlowResponsePositive";
 const char* SIG_FA_CreateFlowRequestForward     = "FA-CreateFlowRequestForward";
+const char* SIG_FA_CreateFlowResponseForward    = "FA-CreateFlowResponseForward";
 const char* SIG_FA_AllocateResponsePositive     = "FA-AllocateResponsePositive";
 const char* SIG_FA_AllocateResponseNegative     = "FA-AllocateResponseNegative";
 
@@ -53,6 +54,9 @@ const char* SIG_RA_AllocateResponsePositive     = "RA-AllocateResponsePositive";
 const char* SIG_RA_AllocateResponseNegative     = "RA-AllocateResponseNegative";
 const char* SIG_RA_FlowAllocated                = "RA-FlowAllocated";
 const char* SIG_RA_FlowDeallocated              = "RA-FlowDeallocated";
+const char* SIG_RA_CreateFlowPositive           = "RA-CreateFlowPositive";
+const char* SIG_RA_CreateFlowNegative           = "RA-CreateFlowNegative";
+
 
 const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";

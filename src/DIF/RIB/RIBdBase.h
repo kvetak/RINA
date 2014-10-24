@@ -34,7 +34,9 @@ class RIBdBase : public cSimpleModule {
     virtual void sendDeleteRequestFlow(Flow* flow) = 0;
     virtual void sendDeleteResponseFlow(Flow* flow) = 0;
     virtual void receiveData(CDAPMessage* flow) = 0;
-    virtual void receiveAllocationRequestFromFAI(Flow* flow) = 0;
+    virtual void receiveAllocationRequestFromFai(Flow* flow) = 0;
+    virtual void receiveCreateFlowPositiveFromRa(Flow* flow) = 0;
+    virtual void receiveCreateFlowNegativeFromRa(Flow* flow) = 0;
 
     const Address& getMyAddress() const;
 

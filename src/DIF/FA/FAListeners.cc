@@ -54,15 +54,18 @@ void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     return;
 }
 
-/*
-void LisFAAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
+
+void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "AllocateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    EV << "CreateFlowPositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        //Pass request to FA that has this Flow in its Flow table
-        if (fa->getFaiTable()->findEntryByFlow(flow))
-            fa->receiveAllocateResponsePositive(flow);
+        FAITableEntry* entry = fa->getFaiTable()->findEntryByDstAddressAndFwd(flow->getDstApni().getApn());
+        if (fa->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn()
+            && entry )
+            //EV << "!!!!!!!!!!!placeholder" << endl;
+            //TODO: Vesely - Remove const_cast
+            fa->receiveCreateFlowPositive(const_cast<Flow*>(entry->getFlow()));
         else
             EV << "Flow not in FaiTable" << endl;
     }
@@ -70,6 +73,22 @@ void LisFAAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
         EV << "Received not a flow object!" << endl;
 }
 
+void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "CreateFlowPositive initiated by " << src->getFullPath()
+       << " and processed by " << fa->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        FAITableEntry* entry = fa->getFaiTable()->findEntryBySrcAddressAndFwd(flow->getDstAddr().getIpcAddress());
+        if (entry )
+            //EV << "!!!!!!!!!!!placeholder" << endl;
+            fa->receiveCreateResponseFlowPositiveFromRibd(flow);
+        else
+            EV << "Flow not in FaiTable" << endl;
+    }
+    else
+        EV << "Received not a flow object!" << endl;
+}
+/*
 void LisFAAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;

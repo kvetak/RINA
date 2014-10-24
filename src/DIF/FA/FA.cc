@@ -59,6 +59,29 @@ void FA::initialize() {
     initMyAddress();
 }
 
+bool FA::appendAddresses(Flow* flow) {
+    //Add source...
+
+    flow->setSrcAddr(MyAddress);
+    //Ask DA which IPC to use to reach dst App
+    const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
+        return false;
+    }
+    Address addr = *ad;
+
+    //...and destination addresses
+
+    //If destination address does have neighbor then use neighbor address
+    const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getIpcAddress());
+    if (apnlist)
+        addr.setIpcAddress(apnlist->front());
+    flow->setDstAddr(addr);
+
+    return true;
+}
+
 bool FA::receiveAllocateRequest(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
@@ -66,18 +89,11 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Insert new Flow into FAITable
     FaiTable->insertNew(flow);
 
-    //Add source...
-    flow->setSrcAddr(MyAddress);
-    //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
-    if (de == NULL) {
-        EV << "DA does not know target application" << endl;
+    //Add source and destination address
+    bool status;
+    status = appendAddresses(flow);
+    if (!status)
         return false;
-    }
-    //TODO: Vesely - Now using first available APN to DIFMember mapping
-    Address addr = de->getSupportedDifs().front();
-    //...and destination addresses
-    flow->setDstAddr(addr);
 
     //Is malformed?
     if (isMalformedFlow(flow)){
@@ -95,7 +111,6 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
 
     //Are both Apps local? YES then Degenerate transfer ELSE
-    bool status;
     if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() )
          && DifAllocator->isAppLocal( flow->getSrcApni().getApn() )
        ) {
@@ -140,11 +155,12 @@ void FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
     EV << this->getFullPath() << " received CreateFlowRequest" << endl;
 
-    //Insert new Flow into FAITable
-    FaiTable->insertNew(flow);
-
     //Is requested APP local?
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
+        //Insert new Flow into FAITable
+        FaiTable->insertNew(flow);
+
+        EV << "Processing M_Create(flow)" << endl;
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
@@ -164,21 +180,40 @@ void FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         else
             FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
     }
+    //...if not then forward CreateRequest Flow to next neighbor
     else {
+        EV << "Forwarding M_Create(flow)" << endl;
+
+        //Before that reverse SRC-DST information back
+        flow->swapFlow();
+        //Insert new Flow into FAITable
+        FaiTable->insertNew(flow);
+        //Change status to forward
+        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
+
         //Decrement HopCount
         flow->setHopCount(flow->getHopCount() - 1);
-        if (flow->getHopCount()) {
-            //Change status to forward
-            FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
-            //TODO: Vesely - Forward M_Create(Flow)
-            this->signalizeCreateFlowRequestForward(flow);
-        }
-        else {
+        if (!flow->getHopCount()) {
             //TODO: Vesely - More granular error
             FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_ERR);
             //Schedule M_Create_R(Flow)
             this->signalizeCreateFlowResponseNegative(flow);
+            return;
         }
+
+        //Change addresses
+
+        //Add source and destination address
+        bool status;
+        status = appendAddresses(flow);
+        if (!status)
+            return;
+
+        // bind this flow to a suitable (N-1)-flow
+        RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
+        status = raModule->bindFlowToLowerFlow(flow);
+
+        //WAIT until allocation of N-1 flow is completed
     }
 }
 
@@ -293,6 +328,7 @@ void FA::initSignalsAndListeners() {
     //sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
     //sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
+    sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
     //sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
 
@@ -303,9 +339,18 @@ void FA::initSignalsAndListeners() {
     //  DeallocateRequest
     this->lisDeallocReq = new LisFADeallocReq(this);
     catcher3->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
+
+    //AllocateResponsePositive
+    lisCreFloPosi = new LisFACreFloPosi(this);
+    catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisCreFloPosi);
+
     //CreateRequestFlow
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
+
+    //CreateResponseFlowPositive
+    lisCreResFloPosi = new LisFACreRes(this);
+    catcher2->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResFloPosi);
 
 }
 
@@ -319,7 +364,21 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
 
+void FA::receiveCreateFlowPositive(Flow* flow) {
+    Enter_Method("receiveCreateFlowPositive()");
+    EV << "Continue M_CREATE(flow) forward!" << endl;
+    this->signalizeCreateFlowRequestForward(flow);
+}
+
+void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
+    Enter_Method("createFlowResponseForward()");
+    signalizeCreateFlowResponsePositiveForward(flow);
+}
+
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
 
+void FA::signalizeCreateFlowResponsePositiveForward(Flow* flow) {
+    emit(this->sigFACreResPosiFwd, flow);
+}

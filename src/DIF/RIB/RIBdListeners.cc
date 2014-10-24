@@ -54,7 +54,7 @@ void LisRIBDAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
         //Check whether dstApp is local...
         const APN dstApn = flow->getSrcApni().getApn();
         if (ribd->getMyAddress().getIpcAddress() == dstApn)
-            ribd->receiveAllocationRequestFromFAI(flow);
+            ribd->receiveAllocationRequestFromFai(flow);
     }
     else
         EV << "RIBdListener received unknown object!" << endl;
@@ -103,4 +103,28 @@ void LisRIBDDelRes::receiveSignal(cComponent* src, simsignal_t id,
         ribd->sendDeleteResponseFlow(flow);
     else
         EV << "RIBdListener received unknown object!" << endl;
+}
+
+void LisRIBDCreFloNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateFlowNega initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->receiveCreateFlowNegativeFromRa(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+
+}
+
+void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateFlowNegative initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->receiveCreateFlowPositiveFromRa(flow);
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+
 }

@@ -28,6 +28,8 @@ class FABase : public cSimpleModule {
     virtual ~FABase();
 
     virtual bool receiveAllocateRequest(Flow* flow) = 0;
+    virtual void receiveCreateFlowPositive(Flow* flow) = 0;
+    virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow) = 0;
     virtual void receiveCreateFlowRequestFromRibd(Flow* flow) = 0;
     virtual bool receiveDeallocateRequest(Flow* flow) = 0;
     virtual void deinstantiateFai(Flow* flow) = 0;

@@ -38,6 +38,9 @@ class DA : public cSimpleModule
   public:
 
     DirectoryEntry* resolveApn(const APN& apn);
+    const Address* resolveApnToBestAddress(const APN& apn);
+
+    const APNList* findApnNeigbors(const APN& apn);
 
     //Methods checking local-ness relevant to this DA
     bool isAppLocal(const APN& apn);
