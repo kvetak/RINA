@@ -36,12 +36,11 @@
 #include "Address.h"
 #include "ExternConsts.h"
 
-//#include "RMTPortManager.h"
-//#include "RMTPort.h"
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
-typedef std::map<RMTPortId, cGate*> RmtPorts;
-typedef std::map<cGate*, cGate*> EfcpiToFlow;
+typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
 
 class RMT : public cSimpleModule
 {
@@ -50,17 +49,15 @@ class RMT : public cSimpleModule
 
     Address thisIpcAddr;
     bool relayOn;
-    bool onWire;
 
     void sendDown(PDU_Base* pdu);
     void sendUp(PDU_Base* pdu);
 
+    RMTQueueManager* queues;
 
-//    RMTPortManager* ports;
-//    void enqueueRelayPDU(PDU_Base* pdu);
-//    void enqueueMuxPDU(PDU_Base* pdu);
-//    void runRelay();
-//    void runMux();
+    int qxpos, qypos;
+
+    cGate* fwTableLookup(Address& destAddr, short pduQosId);
 
   public:
     RMT();
@@ -71,13 +68,14 @@ class RMT : public cSimpleModule
 
     void createSouthGate(std::string portId);
     void deleteSouthGate(std::string portId);
-    void addRMTPort(RMTPortId portId, cGate* gate);
+    RMTQueue* addQueue(const char* queueName, RMTQueue::queueType type);
+    void addQueueSet(const char* queueName);
 
     // TODO: purge this mess as soon as queues are back
     EfcpiMapping efcpiOut;
     EfcpiMapping efcpiIn;
-    RmtPorts ports;
-    EfcpiToFlow efcpiToFlow;
+    EfcpiToQueue efcpiToQueue;
+    bool onWire;
 
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };

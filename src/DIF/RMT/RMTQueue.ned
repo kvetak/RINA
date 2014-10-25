@@ -15,10 +15,9 @@
 
 package rina.DIF.RMT;
 
-//
-// TODO auto-generated module
-//
-simple RMTPortManager
+simple RMTQueue
 {
-    @display("i=block/mac");
+    @display("i=block/queue;is=vs");
+    gates:
+        output outputGate;
 }

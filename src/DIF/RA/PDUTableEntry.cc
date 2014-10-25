@@ -26,16 +26,20 @@ PDUTableEntry::PDUTableEntry()
 {
 }
 
-
-PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc)
-:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, -1))
+PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, RMTQueue* queue)
+:  destAddr(destaddr), qosId(qosid), rmtQueue(queue)
 {
 }
 
-PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid)
-:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, portid))
-{
-}
+//PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc)
+//:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, -1))
+//{
+//}
+//
+//PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid)
+//:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, portid))
+//{
+//}
 
 PDUTableEntry::~PDUTableEntry()
 {
@@ -45,12 +49,9 @@ PDUTableEntry::~PDUTableEntry()
 std::string PDUTableEntry::info() const {
     std::ostringstream os;
 
-    os << "type: "
-       << (portId.second == -1 ? "static" : "dynamic") << endl;
-
     os << "dest: " << destAddr << endl
        << "qos-id: " << qosId << endl
-       << "port-id: " << portId.first->getFullName() << ":" << portId.second;
+       << "output queue: " << rmtQueue->getFullName();
 
     return os.str();
 }
@@ -69,9 +70,9 @@ int PDUTableEntry::getQosId()
     return qosId;
 }
 
-RMTPortId PDUTableEntry::getPortId()
+RMTQueue* PDUTableEntry::getQueueId()
 {
-    return portId;
+    return rmtQueue;
 }
 
 void PDUTableEntry::setDestAddr(Address& destaddr)
@@ -84,7 +85,7 @@ void PDUTableEntry::setQosId(int qosid)
     this->qosId = qosid;
 }
 
-void PDUTableEntry::setPortId(RMTPortId portid)
+void PDUTableEntry::setPortId(RMTQueue* portid)
 {
-    this->portId = portid;
+    this->rmtQueue = portid;
 }

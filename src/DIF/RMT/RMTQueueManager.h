@@ -13,45 +13,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTPORT_H_
-#define __RINA_RMTPORT_H_
+#ifndef __RINA_RMTQUEUEMANAGER_H_
+#define __RINA_RMTQUEUEMANAGER_H_
 
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
 
-// representation of a (N-1)-port & its corresponding queues
-class RMTPort
+typedef std::vector<RMTQueue*>  RMTQueues;
+
+class RMTQueueManager : public cSimpleModule
 {
+  protected:
+    virtual void initialize() {};
+    virtual void handleMessage(cMessage *msg) {};
+
   public:
-    RMTPort();
-    virtual ~RMTPort();
+    RMTQueueManager();
+    virtual ~RMTQueueManager();
 
-    // connection with a EFCP instance
-    void setOutGate(cGate* val);
-    cGate* getOutGate();
+    typedef RMTQueues::iterator iterator;
+    iterator begin();
+    iterator end();
 
-    // output queue write supression
-    bool outboundState();
-    void suspendOutbound();
-    void resumeOutbound();
-
-    int getIncomingLength();
-    int getOutgoingLength();
-
-    void addIncomingPDU(PDU_Base* pdu);
-    void addOutgoingPDU(PDU_Base* pdu);
-
-    PDU_Base* popIncomingPDU();
-    PDU_Base* popOutgoingPDU();
+    RMTQueue* getFirst(RMTQueue::queueType type);
+    RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
+    void addQueue(RMTQueue* queue);
+    void removeQueue(RMTQueue* queue);
 
   private:
-    RMTQueue inQ;
-    RMTQueue outQ;
-
-    cGate* outGate;
-
-    bool outboundActive;
+    RMTQueues queues;
 };
 
 #endif

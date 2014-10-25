@@ -28,6 +28,7 @@
 
 #include "PDUForwardingTable.h"
 #include "PDUTableEntry.h"
+#include "RMTQueue.h"
 
 typedef std::list<PDUTableEntry> PDUFwTable;
 typedef PDUFwTable::iterator PDUFwIter;
@@ -39,16 +40,16 @@ class PDUForwardingTable : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
   private:
-    PDUFwTable FwTable;
+    PDUFwTable fwTable;
     void printAll();
 
   public:
     PDUForwardingTable();
 
     void insert(const PDUTableEntry* entry);
-    void insert(Address destAddr, int qosId, cModule* ipc, int portId);
-    RMTPortId lookup(Address& destAddr, int QoSid);
-    void remove(std::string portId);
+    void insert(Address destAddr, int qosId, RMTQueue* queue);
+    RMTQueue* lookup(Address& destAddr, int QoSid);
+    void remove(RMTQueue *portId);
 };
 
 #endif

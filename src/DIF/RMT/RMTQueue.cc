@@ -15,19 +15,19 @@
 
 #include "RMTQueue.h"
 
+Define_Module(RMTQueue);
+
 const int MAXLENGTH = 50;
 const int THRESHLENGTH = 30;
 
 RMTQueue::RMTQueue()
 {
-    //EV << "creating a RMTqueue" << endl;
     this->maxQLength = MAXLENGTH;
     this->thresholdQLength = THRESHLENGTH;
 }
 
 RMTQueue::RMTQueue(int MaxQLength, int threshQLength)
 {
-    //EV << "creating a specified RMTqueue" << endl;
     this->maxQLength = MaxQLength;
     this->thresholdQLength = threshQLength;
 }
@@ -35,39 +35,68 @@ RMTQueue::RMTQueue(int MaxQLength, int threshQLength)
 
 RMTQueue::~RMTQueue()
 {
-    //EV << "destroying a RMTqueue" << endl;
+
 }
 
-void RMTQueue::insertPDU(PDU_Base* pdu)
+void RMTQueue::initialize()
+{
+    outputGate = gate("outputGate");
+    name = getName();
+}
+
+std::string RMTQueue::info() const {
+    std::ostringstream os;
+
+    os << "name: " << this->getFullName();
+
+    return os.str();
+}
+
+std::ostream& operator <<(std::ostream& os, const RMTQueue& cte) {
+    return os << cte.info();
+}
+
+void RMTQueue::handleMessage(cMessage *msg)
+{
+    if (msg->isSelfMessage())
+    {
+        // wtf?
+    }
+    else
+    {
+        enqueuePDU(msg);
+        releasePDU();
+    }
+}
+
+void RMTQueue::enqueuePDU(cMessage* pdu)
 {
     queue.push(pdu);
 }
 
-PDU_Base* RMTQueue::popPDU(void)
+void RMTQueue::releasePDU(void)
 {
-    //EV << "popping a PDU" << endl;
     if (this->getLength() > 0)
     {
-        PDU_Base* ret = queue.front();
+        cMessage* pdu = queue.front();
         queue.pop();
-        return ret;
+        send(pdu, outputGate);
     }
-    else
-    {
-        return NULL;
-    }
-
 }
 
-
-int RMTQueue::getMaxLength()
+std::string RMTQueue::getName()
 {
-    return maxQLength;
+    return name;
 }
 
-int RMTQueue::getThreshLength()
+std::string RMTQueue::getDifName()
 {
-    return thresholdQLength;
+    return difName;
+}
+
+short RMTQueue::getQosId()
+{
+    return qosId;
 }
 
 int RMTQueue::getLength()
@@ -75,13 +104,49 @@ int RMTQueue::getLength()
     return queue.size();
 }
 
+int RMTQueue::getMaxLength()
+{
+    return maxQLength;
+}
+
 void RMTQueue::setMaxLength(int val)
 {
     this->maxQLength = val;
 }
 
+int RMTQueue::getThreshLength()
+{
+    return thresholdQLength;
+}
+
 void RMTQueue::setThreshLength(int val)
 {
     this->thresholdQLength = val;
+}
+
+RMTQueue::queueType RMTQueue::getType()
+{
+    return type;
+}
+
+void RMTQueue::setType(RMTQueue::queueType type)
+{
+    this->type = type;
+}
+
+
+cGate* RMTQueue::getRmtAccessGate()
+{
+    return rmtAccessGate;
+}
+
+void RMTQueue::setRmtAccessGate(cGate* gate)
+{
+    rmtAccessGate = gate;
+}
+
+cGate* RMTQueue::getOutputGate()
+{
+    return outputGate;
 }
 

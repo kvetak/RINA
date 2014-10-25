@@ -32,9 +32,9 @@ void FlowTable::insert(const FlowTableItem* entry)
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa, cGate* rmtPort)
+void FlowTable::insert(Flow* flow, FABase* fa)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa, rmtPort);
+    FlowTableItem entry = FlowTableItem(flow, fa);
     flows.push_back(entry);
 }
 
@@ -48,4 +48,8 @@ FlowTableItem* FlowTable::lookup(std::string addr) {
         }
     }
     return NULL;
+}
+
+void FlowTable::remove(FlowTableItem* flow) {
+
 }

@@ -26,7 +26,7 @@ Define_Module(PDUForwardingTable);
 
 void PDUForwardingTable::initialize()
 {
-    WATCH_LIST(FwTable);
+    WATCH_LIST(fwTable);
 }
 
 PDUForwardingTable::PDUForwardingTable()
@@ -44,7 +44,8 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 * Dumps the contents of the forwarding table to OMNeT++ output console.
 *
 */
-void PDUForwardingTable::printAll() {
+void PDUForwardingTable::printAll()
+{
 //    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
 //
 //    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
@@ -62,18 +63,18 @@ void PDUForwardingTable::printAll() {
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTPortId PDUForwardingTable::lookup(Address& destAddr, int QoSid) {
-    for(PDUFwIter it = FwTable.begin(); it != FwTable.end(); ++it )
+RMTQueue* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
+{
+    for(PDUFwIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
         PDUTableEntry a = *it;
-        if ((a.getDestAddr() == destAddr) && a.getQosId() == QoSid)
+        // can't compare DIF names at this moment
+        if ((a.getDestAddr().getIpcAddress() == destAddr.getIpcAddress()) && ((a.getQosId() == QoSid) || QoSid == -1))
         {
-            //EV << this->getFullPath() << " found a match: " << a.getPortId() << endl;
-            return a.getPortId();
+            return a.getQueueId();
         }
     }
-
-    return std::make_pair((cModule*)NULL, -1);
+    return NULL;
 }
 
 /**
@@ -81,9 +82,10 @@ RMTPortId PDUForwardingTable::lookup(Address& destAddr, int QoSid) {
 *
 * @param entry table entry to be inserted
 */
-void PDUForwardingTable::insert(const PDUTableEntry* entry) {
+void PDUForwardingTable::insert(const PDUTableEntry* entry)
+{
     Enter_Method("insert()");
-    FwTable.push_back(*entry);
+    fwTable.push_back(*entry);
 }
 
 /**
@@ -92,10 +94,11 @@ void PDUForwardingTable::insert(const PDUTableEntry* entry) {
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(Address destAddr, int qosId, cModule* ipc, int portId) {
+void PDUForwardingTable::insert(Address destAddr, int qosId, RMTQueue* queue)
+{
     Enter_Method("insert()");
-    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, ipc, portId);
-    FwTable.push_back(entry);
+    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, queue);
+    fwTable.push_back(entry);
 }
 
 /**
@@ -103,20 +106,20 @@ void PDUForwardingTable::insert(Address destAddr, int qosId, cModule* ipc, int p
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(std::string portId)
+void PDUForwardingTable::remove(RMTQueue* portId)
 {
-//    PDUFwIter i = FwTable.begin();
-//    while (i != FwTable.end())
-//    {
-//        if (i->getPortId() == portId)
-//        {
-//            i = FwTable.erase(i);
-//        }
-//        else
-//        {
-//            ++i;
-//        }
-//    }
+    PDUFwIter i = fwTable.begin();
+    while (i != fwTable.end())
+    {
+        if (i->getQueueId() == portId)
+        {
+            i = fwTable.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
 }
 
 

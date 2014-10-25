@@ -13,35 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTPORTMANAGER_H_
-#define __RINA_RMTPORTMANAGER_H_
+package rina.DIF.RMT;
 
-#include <omnetpp.h>
-
-#include "RMTPort.h"
-
-typedef std::map<int, RMTPort*>  RMTPorts;
-
-class RMTPortManager : public cSimpleModule
+//
+// TODO auto-generated module
+//
+simple RMTQueueManager
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-  public:
-    RMTPortManager();
-    virtual ~RMTPortManager();
-
-    typedef RMTPorts::iterator iterator;
-    iterator begin();
-    iterator end();
-
-    RMTPort* getPort(int portId);
-    void addPort(int portId);
-    void removePort(int portId);
-
-  private:
-    RMTPorts ports;
-};
-
-#endif
+    @display("i=block/mac");
+}

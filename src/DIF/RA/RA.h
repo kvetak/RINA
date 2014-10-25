@@ -71,6 +71,7 @@ class RA : public RABase {
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
     RMT* rmt;
+    RMTQueueManager* rmtQM;
     std::string processName;
     std::list<Flow*> preparedFlows;
 
@@ -81,7 +82,7 @@ class RA : public RABase {
 
     void removeFlow();
 
-    cGate* bindFlowToRMT(cModule* ipc, Flow *flow);
+    void bindFlowToRMTQueue(cModule* ipc, Flow* flow);
     void bindMediumToRMT();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);

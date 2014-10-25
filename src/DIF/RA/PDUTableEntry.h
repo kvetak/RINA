@@ -27,6 +27,7 @@
 
 #include <omnetpp.h>
 #include "ConnectionTable.h"
+#include "RMTQueue.h"
 
 typedef std::pair<cModule*, int> RMTPortId;
 
@@ -35,23 +36,22 @@ class PDUTableEntry
   private:
     Address destAddr;
     int qosId;
-    RMTPortId portId;
+    RMTQueue* rmtQueue;
 
   public:
     PDUTableEntry();
-    PDUTableEntry(Address& destaddr, int qosid, cModule* ipc);
-    PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid);
+    PDUTableEntry(Address& destaddr, int qosid, RMTQueue*);
     virtual ~PDUTableEntry();
 
     std::string info() const;
 
     Address& getDestAddr();
     int getQosId();
-    RMTPortId getPortId();
+    RMTQueue* getQueueId();
 
     void setDestAddr(Address& destaddr);
     void setQosId(int qosid);
-    void setPortId(RMTPortId portId);
+    void setPortId(RMTQueue* portId);
 
 };
 

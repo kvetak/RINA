@@ -20,22 +20,21 @@
 
 #include "Flow.h"
 #include "FABase.h"
+#include "RMTQueue.h"
 
 class FlowTableItem {
   public:
-    FlowTableItem(Flow* flow, FABase* fa, cGate* rmtPort);
+    FlowTableItem(Flow* flow, FABase* fa);
     virtual ~FlowTableItem();
 
     std::string info() const;
 
     Flow* getFlow() const;
     FABase* getFaBase() const;
-    cGate* getRmtPort() const;
 
   private:
     Flow* flow;
     FABase* fa;
-    cGate* rmtPort;
 };
 
 std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);

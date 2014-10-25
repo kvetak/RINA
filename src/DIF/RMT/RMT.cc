@@ -31,72 +31,59 @@ const int PROCESSING_DELAY = 0.0;
 RMT::RMT()
 {
     relayOn = false;
+    qypos = 120;
+    qxpos = 45;
 }
 
-RMT::~RMT()
-{
-}
+RMT::~RMT() {}
 
 
 void RMT::initialize() {
+    WATCH_PTRMAP(efcpiToQueue);
+
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
-    //ports = ModuleAccess<RMTPortManager>("rmtPortManager").get();
+    queues = ModuleAccess<RMTQueueManager>("rmtQueueManager").get();
 
     cModule* ipcModule = getParentModule()->getParentModule();
     thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
                           ipcModule->par("difName").stringValue());
 
-    //this->enableRelay();
 }
 
-/**
- * Creates a gate to be used for connection to an (N-1)-flow.
- *
- * @param gateName name to be given to the newly created gate; it has to be
- *        unambiguous within the scope of this IPC's management of (N-1)-flows
- */
-void RMT::createSouthGate(std::string gateName)
+RMTQueue* RMT::addQueue(const char* queueName, RMTQueue::queueType type)
 {
-    cModule* rmtModule = getParentModule();
+    // find factory object
+    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
 
-    this->addGate(gateName.c_str(), cGate::INOUT, false);
-    cGate* rmtIn = this->gateHalf(gateName.c_str(), cGate::INPUT);
-    cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
+    // instantiate a new object
+    cModule *module_f = moduleType->createScheduleInit(queueName, this->getParentModule());
+    RMTQueue* module = dynamic_cast<RMTQueue*>(module_f);
 
-    rmtModule->addGate(gateName.c_str(), cGate::INOUT, false);
-    cGate* rmtModuleIn = rmtModule->gateHalf(gateName.c_str(), cGate::INPUT);
-    cGate* rmtModuleOut = rmtModule->gateHalf(gateName.c_str(), cGate::OUTPUT);
+    // modify the position a little
+    std::ostringstream istr;
+    istr << "p=" << qxpos << "," << qypos << ";i=block/queue;is=vs";
 
-    rmtModuleIn->connectTo(rmtIn);
-    rmtOut->connectTo(rmtModuleOut);
+    cDisplayString& dispStr = module->getDisplayString();
+    dispStr.parse(istr.str().c_str());
+    qxpos = qxpos + 45;
 
-    // RMT<->(N-1)-EFCP interconnection shall be done by the RA
-}
+    // connect to RMT submodule
+    if (type == RMTQueue::OUTPUT)
+    {
+        cGate* rmtOut = this->addGate(queueName, cGate::OUTPUT, false);
+        cGate* queueIn = module->addGate("rmtInput", cGate::INPUT, false);
+        rmtOut->connectTo(queueIn);
+        module->setRmtAccessGate(rmtOut);
+    }
+    else if (type == RMTQueue::INPUT)
+    {
+        cGate* rmtIn = this->addGate(queueName, cGate::INPUT, false);
+        module->getOutputGate()->connectTo(rmtIn);
+    }
 
-/**
- * Removes a gate used for a (N-1)-flow.
- *
- * @param gateName name of the gate meant for removal
- */
-void RMT::deleteSouthGate(std::string gateName)
-{
-    cModule* rmtModule = getParentModule();
-
-    cGate* rmtOut = this->gateHalf(gateName.c_str(), cGate::OUTPUT);
-    cGate* rmtModuleIn = rmtModule->gateHalf(gateName.c_str(), cGate::INPUT);
-
-    rmtOut->disconnect();
-    rmtModuleIn->disconnect();
-
-    this->deleteGate(gateName.c_str());
-    rmtModule->deleteGate(gateName.c_str());
-
-    //ports.erase(gateName);
-}
-
-void RMT::addRMTPort(RMTPortId portId, cGate* gate)
-{
-    ports[portId] = gate;
+    module->setType(type);
+    queues->addQueue(module);
+    return module;
 }
 
 /**
@@ -163,6 +150,19 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     efcpiIn.erase(efcpiId);
 }
 
+cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
+{
+    cGate* outGate = NULL;
+    RMTQueue* outQueue = fwTable->lookup(destAddr, qosId);
+
+    if (outQueue != NULL)
+    {
+        outGate = outQueue->getRmtAccessGate();
+    }
+
+    return outGate;
+}
+
 /**
  * Passes given PDU to an (N-1)-flow using information from the forwarding table.
  *
@@ -171,10 +171,10 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
 void RMT::sendDown(PDU_Base* pdu)
 {
     Address& pduDestAddr = pdu->getDstAddr();
-    int pduQosId = pdu->getConnId().getQoSId();
-    cGate* outPort;
+    //int pduQosId = pdu->getConnId().getQoSId();
+    cGate* outGate;
 
-    // not sure whether this should stay here...
+    // local degenerate flow
     if (thisIpcAddr == pduDestAddr)
     {
         sendUp(pdu);
@@ -183,30 +183,18 @@ void RMT::sendDown(PDU_Base* pdu)
 
     if (relayOn)
     {
-        // forwarding table lookup
-        RMTPortId outPortId = fwTable->lookup(pduDestAddr, pduQosId);
-
-        if (outPortId.first != NULL)
-        {
-            outPort = ports[outPortId];
-        }
-        else
-        {
-            EV << this->getFullPath() << " couldn't find any match in FWTable; dropping." << endl;
-            delete pdu;
-            return;
-        }
+        outGate = fwTableLookup(pduDestAddr, -1);
     }
     else
     {
-        outPort = efcpiToFlow[pdu->getArrivalGate()];
+        outGate = efcpiToQueue[pdu->getArrivalGate()]->getRmtAccessGate();
     }
 
     EV << this->getFullPath() << " passing a PDU downwards..." << endl;
 
-    if (outPort != NULL)
+    if (outGate != NULL)
     {
-        send(pdu, outPort);
+        send(pdu, outGate);
     }
     else
     {
@@ -274,7 +262,7 @@ void RMT::handleMessage(cMessage *msg)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
 
-        if (gate.substr(0, 8) == GATE_SOUTHIO_)
+        if (gate.substr(0, 2) == "q_")
         {
             sendUp(pdu);
         }
@@ -285,19 +273,32 @@ void RMT::handleMessage(cMessage *msg)
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     { // management message arrival
-        if (gate.substr(0, 8) == GATE_SOUTHIO_)
+        CDAPMessage* cdap = (CDAPMessage*) msg;
+
+        if (gate.substr(0, 2) == "q_")
         {
             send(msg, "ribdIo$o");
         }
         else
         {
-            if (!ports.empty())
+            cGate* outGate = NULL;
+
+            if (relayOn)
             {
-                send(msg, ports.begin()->second);
+                outGate = fwTableLookup(cdap->getDstAddr(), -1);
             }
             else
             {
-                delete msg;
+                outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
+            }
+
+            if (outGate != NULL)
+            {
+                send(msg, outGate);
+            }
+            else
+            {
+                EV << "there isn't any suitable output queue available!" << endl;
             }
         }
     }

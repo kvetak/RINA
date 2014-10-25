@@ -15,8 +15,8 @@
 
 #include <FlowTableItem.h>
 
-FlowTableItem::FlowTableItem(Flow* flow, FABase* fa, cGate* rmtPort)
-:   flow(flow), fa(fa), rmtPort(rmtPort)
+FlowTableItem::FlowTableItem(Flow* flow, FABase* fa)
+:   flow(flow), fa(fa)
 {
 }
 
@@ -53,7 +53,3 @@ FABase* FlowTableItem::getFaBase() const
     return fa;
 }
 
-cGate* FlowTableItem::getRmtPort() const
-{
-    return rmtPort;
-}

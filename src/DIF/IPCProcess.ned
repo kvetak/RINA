@@ -32,6 +32,7 @@ module IPCProcess
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         string ipcAddress;
         string difName;
+        bool routing = default(false);
         //int    rank;        
     gates:
         inout southIo[];
