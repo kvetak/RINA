@@ -84,7 +84,8 @@ class FA : public FABase
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void initPointers();
-    bool appendAddresses(Flow* flow);
+    bool changeDstAddresses(Flow* flow);
+    void changeSrcAddress(Flow* flow);
 
   private:
     EFCP* Efcp;

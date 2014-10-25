@@ -43,8 +43,8 @@ std::string FAITableEntry::info() const {
     std::ostringstream os;
     os << "status: " << this->getAllocateStatusString() <<
           "\tcreated: " << this->getTimeCreated() << "\tlastActive: " << this->getTimeLastActive() << endl;
-    if ( this->getFlow() )
-        os << *(this->getFlow()) << endl;
+    if ( this->getCFlow() )
+        os << *(this->getCFlow()) << endl;
         //os << this->getFlow()->getQosParameters();
     if ( this->getFai() )
         os << *(this->getFai()) << endl;
@@ -97,7 +97,7 @@ void FAITableEntry::setFai(FAIBase* nfai) {
     this->fai = nfai;
 }
 
-const Flow* FAITableEntry::getFlow() const {
+const Flow* FAITableEntry::getCFlow() const {
     return flow;
 }
 
@@ -110,4 +110,8 @@ bool FAITableEntry::operator ==(const FAITableEntry& other) const {
 
 FAITableEntry::AllocateStatus FAITableEntry::getAllocateStatus() const {
     return allocStatus;
+}
+
+Flow* FAITableEntry::getFlow() {
+    return flow;
 }

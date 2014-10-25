@@ -38,7 +38,7 @@ std::string FAITable::info() const {
 FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& ipcAddr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getFlow()->getDstAddr().getIpcAddress() == ipcAddr
+        if (tft.getCFlow()->getDstAddr().getIpcAddress() == ipcAddr
                 && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
             return &(*it);
     }
@@ -46,14 +46,28 @@ FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& ipcAddr) {
 }
 
 FAITableEntry* FAITable::findEntryBySrcAddressAndFwd(const APN& ipcAddr) {
+    //EV << "Look APN> " << ipcAddr << endl;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getFlow()->getSrcAddr().getIpcAddress() == ipcAddr
+        //EV << "XXXX " << tft.getCFlow()->getSrcAddr().getIpcAddress() << endl
+        //   << "YYYY " << (tft.getAllocateStatus() == FAITableEntry::FORWARDED) << endl;
+        if (tft.getCFlow()->getSrcAddr().getIpcAddress() == ipcAddr
                 && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
             return &(*it);
     }
     return NULL;
 
+}
+
+FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getSrcApni().getApn() == srcApn
+                && tft.getCFlow()->getDstApni().getApn() == dstApn
+                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+            return &(*it);
+    }
+    return NULL;
 }
 
 void FAITable::handleMessage(cMessage *msg)
@@ -80,7 +94,7 @@ void FAITable::removeByFlow(Flow* flow) {
 FAITableEntry* FAITable::findEntryByFlow(const Flow* flow) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (*(tft.getFlow()) == *flow)
+        if (*(tft.getCFlow()) == *flow)
             return &(*it);
     }
     return NULL;

@@ -59,10 +59,12 @@ void FA::initialize() {
     initMyAddress();
 }
 
-bool FA::appendAddresses(Flow* flow) {
+void FA::changeSrcAddress(Flow* flow) {
     //Add source...
-
     flow->setSrcAddr(MyAddress);
+}
+
+bool FA::changeDstAddresses(Flow* flow) {
     //Ask DA which IPC to use to reach dst App
     const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
     if (ad == NULL) {
@@ -91,7 +93,8 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 
     //Add source and destination address
     bool status;
-    status = appendAddresses(flow);
+    changeSrcAddress(flow);
+    status = changeDstAddresses(flow);
     if (!status)
         return false;
 
@@ -186,6 +189,13 @@ void FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         //Before that reverse SRC-DST information back
         flow->swapFlow();
+
+        //Change Dst address
+        bool status;
+        status = changeDstAddresses(flow);
+        if (!status)
+            return;
+
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
         //Change status to forward
@@ -201,17 +211,14 @@ void FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
             return;
         }
 
-        //Change addresses
+        Flow* tmpfl = flow->dup();
 
         //Add source and destination address
-        bool status;
-        status = appendAddresses(flow);
-        if (!status)
-            return;
+        changeSrcAddress(tmpfl);
 
         // bind this flow to a suitable (N-1)-flow
         RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-        status = raModule->bindFlowToLowerFlow(flow);
+        status = raModule->bindFlowToLowerFlow(tmpfl);
 
         //WAIT until allocation of N-1 flow is completed
     }
@@ -367,12 +374,25 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
 void FA::receiveCreateFlowPositive(Flow* flow) {
     Enter_Method("receiveCreateFlowPositive()");
     EV << "Continue M_CREATE(flow) forward!" << endl;
-    this->signalizeCreateFlowRequestForward(flow);
+
+    Flow* tmpfl = flow->dup();
+    //Add source address
+    changeSrcAddress(tmpfl);
+
+    this->signalizeCreateFlowRequestForward(tmpfl);
 }
 
 void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
     Enter_Method("createFlowResponseForward()");
-    signalizeCreateFlowResponsePositiveForward(flow);
+
+    Flow* tmpfl = flow->dup();
+    tmpfl->swapFlow();
+
+    //tmpfl->setDstAddr(tmpfl->getSrcAddr());
+    //Add source address
+    changeSrcAddress(tmpfl);
+
+    signalizeCreateFlowResponsePositiveForward(tmpfl);
 }
 
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {

@@ -33,6 +33,7 @@ class FAITable : public cSimpleModule
     void insert(const FAITableEntry& entry);
     void removeByFlow(Flow* flow);
     FAITableEntry* findEntryByFlow(const Flow* flow);
+    FAITableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
     FAITableEntry* findEntryByDstAddressAndFwd(const APN& ipcAddr);
     FAITableEntry* findEntryBySrcAddressAndFwd(const APN& ipcAddr);
     FAITableEntry* findEntryByFai(FAIBase* fai);

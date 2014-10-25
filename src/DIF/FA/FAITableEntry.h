@@ -47,7 +47,8 @@ class FAITableEntry {
     void setAllocateStatus(FAITableEntry::AllocateStatus allocateStatus);
     FAITableEntry::AllocateStatus getAllocateStatus() const;
     void setFai(FAIBase* nfai);
-    const Flow* getFlow() const;
+    const Flow* getCFlow() const;
+    Flow* getFlow();
 
 
   private:

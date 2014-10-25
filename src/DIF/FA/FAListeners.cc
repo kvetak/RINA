@@ -60,14 +60,14 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     EV << "CreateFlowPositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
+
         FAITableEntry* entry = fa->getFaiTable()->findEntryByDstAddressAndFwd(flow->getDstApni().getApn());
         if (fa->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn()
             && entry )
-            //EV << "!!!!!!!!!!!placeholder" << endl;
-            //TODO: Vesely - Remove const_cast
-            fa->receiveCreateFlowPositive(const_cast<Flow*>(entry->getFlow()));
+
+            fa->receiveCreateFlowPositive(entry->getFlow());
         else
-            EV << "Flow not in FaiTable" << endl;
+            EV << "Flow not in my FaiTable" << endl;
     }
     else
         EV << "Received not a flow object!" << endl;
@@ -78,10 +78,9 @@ void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
        << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        FAITableEntry* entry = fa->getFaiTable()->findEntryBySrcAddressAndFwd(flow->getDstAddr().getIpcAddress());
-        if (entry )
-            //EV << "!!!!!!!!!!!placeholder" << endl;
-            fa->receiveCreateResponseFlowPositiveFromRibd(flow);
+        FAITableEntry* entry = fa->getFaiTable()->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
+        if ( entry )
+            fa->receiveCreateResponseFlowPositiveFromRibd(entry->getFlow());
         else
             EV << "Flow not in FaiTable" << endl;
     }

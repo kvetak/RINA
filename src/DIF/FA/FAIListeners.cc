@@ -65,8 +65,11 @@ void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
     if (flow) {
         //Only FAI with same CepId and PortId process this call
         if (fai->getFlow()->getSrcPortId() == flow->getSrcPortId()
-                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() )
+                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() ) {
+            //EV << "A!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateResponsePositive(flow);
+        }
+
     }
     else
         EV << "FAIListener received unknown object!" << endl;
@@ -125,8 +128,11 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
 
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (fai->getFa()->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn() )
+        if (fai->getFa()->getMyAddress().getIpcAddress() == flow->getSrcApni().getApn() ) {
+            //EV << "B!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateFlowResponsePositiveFromNminusOne();
+        }
+
     }
     else
         EV << "FAIListener received unknown object!" << endl;
