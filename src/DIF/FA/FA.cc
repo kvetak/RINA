@@ -385,10 +385,13 @@ void FA::receiveCreateFlowPositive(Flow* flow) {
 void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
     Enter_Method("createFlowResponseForward()");
 
+    FAITableEntry* entry = FaiTable->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
+    entry->getFlow()->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
+    entry->getFlow()->setDstPortId(flow->getDstPortId());
+
     Flow* tmpfl = flow->dup();
     tmpfl->swapFlow();
 
-    //tmpfl->setDstAddr(tmpfl->getSrcAddr());
     //Add source address
     changeSrcAddress(tmpfl);
 

@@ -80,7 +80,7 @@ void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     if (flow) {
         FAITableEntry* entry = fa->getFaiTable()->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
         if ( entry )
-            fa->receiveCreateResponseFlowPositiveFromRibd(entry->getFlow());
+            fa->receiveCreateResponseFlowPositiveFromRibd(flow);
         else
             EV << "Flow not in FaiTable" << endl;
     }
