@@ -38,11 +38,14 @@ class RMTQueueManager : public cSimpleModule
 
     RMTQueue* getFirst(RMTQueue::queueType type);
     RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
-    void addQueue(RMTQueue* queue);
+    RMTQueue* addQueue(RMTQueue::queueType type);
     void removeQueue(RMTQueue* queue);
 
   private:
     RMTQueues queues;
+
+    int qxpos, qypos; // module coordinates
+
 };
 
 #endif

@@ -44,12 +44,12 @@ class RMTQueue : public cSimpleModule
     int getThreshLength();
     void setThreshLength(int value);
 
-    int getLength();
+    int getLength() const;
     short getQosId();
-    std::string getName();
     std::string getDifName();
 
     cGate* getOutputGate();
+    cGate* getInputGate();
 
     cGate* getRmtAccessGate();
     void setRmtAccessGate(cGate* gate);
@@ -58,7 +58,6 @@ class RMTQueue : public cSimpleModule
     std::string info() const;
 
   private:
-    std::string name;
     std::queue<cMessage*> queue;
     const char* difName;
     short qosId;
@@ -68,6 +67,7 @@ class RMTQueue : public cSimpleModule
 
     cGate* rmtAccessGate;
     cGate* outputGate;
+    cGate* inputGate;
 
     void enqueuePDU(cMessage* pdu);
     void releasePDU();

@@ -24,17 +24,20 @@
 
 class FlowTableItem {
   public:
-    FlowTableItem(Flow* flow, FABase* fa);
+    FlowTableItem(Flow* flow, FABase* fa, RMTQueue* queue);
     virtual ~FlowTableItem();
 
     std::string info() const;
 
     Flow* getFlow() const;
     FABase* getFaBase() const;
+    RMTQueue* getRmtQueue() const;
+    void setRmtQueue(RMTQueue* queue);
 
   private:
     Flow* flow;
     FABase* fa;
+    RMTQueue* rmtQueue;
 };
 
 std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);

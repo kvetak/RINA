@@ -15,8 +15,8 @@
 
 #include <FlowTableItem.h>
 
-FlowTableItem::FlowTableItem(Flow* flow, FABase* fa)
-:   flow(flow), fa(fa)
+FlowTableItem::FlowTableItem(Flow* flow, FABase* fa, RMTQueue* queue)
+:   flow(flow), fa(fa), rmtQueue(queue)
 {
 }
 
@@ -35,6 +35,10 @@ std::string FlowTableItem::info() const {
     {
         os << "FA path: " << fa->getFullPath() << "\n";
     }
+    if (rmtQueue != NULL)
+    {
+        os << "output RMT queue: " << rmtQueue << "\n";
+    }
     return os.str();
 }
 
@@ -51,5 +55,15 @@ Flow* FlowTableItem::getFlow() const
 FABase* FlowTableItem::getFaBase() const
 {
     return fa;
+}
+
+RMTQueue* FlowTableItem::getRmtQueue() const
+{
+    return rmtQueue;
+}
+
+void FlowTableItem::setRmtQueue(RMTQueue* queue)
+{
+    this->rmtQueue = queue;
 }
 

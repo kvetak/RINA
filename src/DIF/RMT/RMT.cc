@@ -31,8 +31,7 @@ const int PROCESSING_DELAY = 0.0;
 RMT::RMT()
 {
     relayOn = false;
-    qypos = 120;
-    qxpos = 45;
+    onWire = false;
 }
 
 RMT::~RMT() {}
@@ -48,42 +47,6 @@ void RMT::initialize() {
     thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
                           ipcModule->par("difName").stringValue());
 
-}
-
-RMTQueue* RMT::addQueue(const char* queueName, RMTQueue::queueType type)
-{
-    // find factory object
-    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
-
-    // instantiate a new object
-    cModule *module_f = moduleType->createScheduleInit(queueName, this->getParentModule());
-    RMTQueue* module = dynamic_cast<RMTQueue*>(module_f);
-
-    // modify the position a little
-    std::ostringstream istr;
-    istr << "p=" << qxpos << "," << qypos << ";i=block/queue;is=vs";
-
-    cDisplayString& dispStr = module->getDisplayString();
-    dispStr.parse(istr.str().c_str());
-    qxpos = qxpos + 45;
-
-    // connect to RMT submodule
-    if (type == RMTQueue::OUTPUT)
-    {
-        cGate* rmtOut = this->addGate(queueName, cGate::OUTPUT, false);
-        cGate* queueIn = module->addGate("rmtInput", cGate::INPUT, false);
-        rmtOut->connectTo(queueIn);
-        module->setRmtAccessGate(rmtOut);
-    }
-    else if (type == RMTQueue::INPUT)
-    {
-        cGate* rmtIn = this->addGate(queueName, cGate::INPUT, false);
-        module->getOutputGate()->connectTo(rmtIn);
-    }
-
-    module->setType(type);
-    queues->addQueue(module);
-    return module;
 }
 
 /**
@@ -150,6 +113,24 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     efcpiIn.erase(efcpiId);
 }
 
+/**
+ * Creates a direct mapping from an EFCPI input gate to a RMT queue.
+ *
+ * @param cepId EFCP ID
+ * @param outQueue output RMT queue
+ */
+void RMT::addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue)
+{
+    efcpiToQueue[efcpiIn[cepId]] = outQueue;
+}
+
+/**
+ * Wrapper around forwarding table lookup returning the target output gate itself.
+ *
+ * @param destAddr destination address
+ * @param qosId qos-id
+ * @return RMT gate leading to an output RMT queue
+ */
 cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
 {
     cGate* outGate = NULL;
@@ -164,148 +145,222 @@ cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
 }
 
 /**
- * Passes given PDU to an (N-1)-flow using information from the forwarding table.
+ * Passes a PDU from an EFCP instance to an appropriate output queue.
  *
- * @param pdu PDU to be sent
+ * @param pdu PDU to be passed
  */
-void RMT::sendDown(PDU_Base* pdu)
+void RMT::efcpiToPort(PDU_Base* pdu)
 {
-    Address& pduDestAddr = pdu->getDstAddr();
-    //int pduQosId = pdu->getConnId().getQoSId();
-    cGate* outGate;
+    cGate* outGate = NULL;
 
-    // local degenerate flow
-    if (thisIpcAddr == pduDestAddr)
-    {
-        sendUp(pdu);
-        return;
-    }
-
-    if (relayOn)
-    {
-        outGate = fwTableLookup(pduDestAddr, -1);
-    }
-    else
-    {
-        outGate = efcpiToQueue[pdu->getArrivalGate()]->getRmtAccessGate();
-    }
-
-    EV << this->getFullPath() << " passing a PDU downwards..." << endl;
-
+    outGate = efcpiToQueue[pdu->getArrivalGate()]->getRmtAccessGate();
     if (outGate != NULL)
     {
+        EV << this->getFullPath() << " passing a PDU downwards" << endl;
         send(pdu, outGate);
     }
     else
     {
-        EV << this->getFullPath()
-           << " I can't reach any suitable (N-1)-flow! Seems like none is allocated. Dropping."
-           << endl;
-
-        delete pdu;
+        EV << this->getFullPath() << "efcpi->port-id mapping not present!" << endl;
     }
 }
 
 /**
- * Passes given PDU to the appropriate EFCP instance using PDU's destination CEP-id.
+ * Passes a PDU from an (N-1)-port to an EFCP instance.
  *
- * @param pdu PDU to be sent
+ * @param pdu PDU to be passed
  */
-void RMT::sendUp(PDU_Base* pdu)
+void RMT::portToEfcpi(PDU_Base* pdu)
 {
-    Address& pduAddr = pdu->getDstAddr();
+    unsigned cepId = pdu->getConnId().getDstCepId();
+    cGate* efcpiGate = efcpiOut[cepId];
 
-    if (thisIpcAddr == pduAddr)
+    if (efcpiGate != NULL)
     {
-        EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << pdu->getConnId().getDstCepId() << endl;
-        cGate* efcpiGate = efcpiOut[pdu->getConnId().getDstCepId()];
-
-        if (efcpiGate != NULL)
-        {
-            send(pdu, efcpiGate);
-        }
-        else
-        {
-            EV << this->getFullPath()
-               << " I'm not connected to such EFCPI! Notifying other modules."
-               << endl;
-            // TODO: emit(cosi)
-            delete pdu;
-        }
+        EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << cepId << endl;
+        send(pdu, efcpiGate);
     }
     else
-    { // this PDU isn't for us
-        if (relayOn)
-        { // ...let's relay it somewhere else
-            EV << this->getFullPath() << " relaying a PDU elsewhere" << endl;
-            sendDown(pdu);
-        }
-        else
-        { //
-            EV << this->getFullPath()
-               << " this PDU isn't for me, dropping it! (" << thisIpcAddr << " != " << pduAddr << ")"
-               << endl;
-            delete pdu;
-        }
+    {
+        EV << this->getFullPath() << " EFCPI " << cepId << " isn't present on this system! Notifying other modules." << endl;
+        // TODO: emit(cosi)
+        delete pdu;
+    }
+
+}
+
+/**
+ * Passes a PDU from an EFCP instance to another local EFCP instance.
+ *
+ * @param pdu PDU to be passed
+ */
+void RMT::efcpiToEfcpi(PDU_Base* pdu)
+{
+    portToEfcpi(pdu);
+}
+
+/**
+ * Passes a CDAP mesage from an (N-1)-port instance to RIB daemon.
+ *
+ * @param cdap CDAP message to be passed
+ */
+void RMT::portToRIB(CDAPMessage* cdap)
+{
+
+    send(cdap, "ribdIo$o");
+}
+
+/**
+ * Passes a CDAP mesage from the RIB daemon to an appropriate output queue.
+ *
+ * @param cdap CDAP message to be passed
+ */
+void RMT::RIBToPort(CDAPMessage* cdap)
+{
+    cGate* outGate = NULL;
+
+    if (!onWire)
+    {
+        outGate = fwTableLookup(cdap->getDstAddr(), -1);
+    }
+    else
+    {
+        outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
+    }
+
+    if (outGate != NULL)
+    {
+        EV << this->getFullPath() << " passing a CDAP message downwards" << endl;
+        send(cdap, outGate);
+    }
+    else
+    {
+        EV << "there isn't any suitable output queue available!" << endl;
     }
 }
 
-void RMT::handleMessage(cMessage *msg)
+/**
+ * Relays incoming message to an output queue based on data from PDUFwTable.
+ *
+ * @param msg either a PDU or a CDAP message to be relayed
+ */
+void RMT::portToPort(cMessage* msg)
+{
+    Address destAddr;
+    short qosId;
+
+    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    {
+        destAddr = ((PDU_Base*)msg)->getDstAddr();
+        qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
+    }
+    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+    {
+        destAddr = ((CDAPMessage*)msg)->getDstAddr();
+        qosId = -1;
+    }
+    cGate* outGate = NULL;
+
+    if (onWire)
+    {
+        outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
+    }
+    else
+    {
+        outGate = fwTableLookup(destAddr, qosId);
+    }
+
+    if (outGate != NULL)
+    {
+        EV << this->getFullPath() << " relaying a message" << endl;
+        send(msg, outGate);
+    }
+    else
+    {
+        EV << this->getFullPath() << " I can't reach any suitable (N-1)-flow! Seems like none is allocated." << endl;
+    }
+
+}
+
+/**
+ * The main finite state machine of Relaying and Multiplexing task.
+ * Makes a decision about what to do with incoming message based on arrival gate,
+ * message type, message destination address and RMT mode of operation.
+ *
+ * @param msg either a PDU or a CDAP message
+ */
+void RMT::processMessage(cMessage* msg)
 {
     std::string gate = msg->getArrivalGate()->getName();
 
-    if (msg->isSelfMessage())
-    {
-        delete msg;
-    }
-    else if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    // the main FSM of RMT
+    if (dynamic_cast<PDU_Base*>(msg) != NULL)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
 
-        if (gate.substr(0, 2) == "q_")
+        if (gate.substr(0, 2) == "in")
         {
-            sendUp(pdu);
+            if (pdu->getDstAddr() == thisIpcAddr)
+            {
+                portToEfcpi(pdu);
+            }
+            else if (relayOn)
+            {
+                portToPort(msg);
+            }
+            else
+            {
+                EV << getFullPath() << " This PDU isn't for me! Holding it here." << endl;
+            }
         }
         else if (gate.substr(0, 7) == GATE_EFCPIO_)
         {
-            sendDown(pdu);
+            if (pdu->getDstAddr() == thisIpcAddr)
+            {
+                efcpiToEfcpi(pdu);
+            }
+            else
+            {
+                efcpiToPort(pdu);
+            }
         }
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     { // management message arrival
         CDAPMessage* cdap = (CDAPMessage*) msg;
 
-        if (gate.substr(0, 2) == "q_")
+        if (gate.substr(0, 2) == "in")
         {
-            send(msg, "ribdIo$o");
+            if (cdap->getDstAddr() == thisIpcAddr)
+            {
+                portToRIB(cdap);
+            }
+            else
+            {
+                portToPort(msg);
+            }
         }
         else
         {
-            cGate* outGate = NULL;
-
-            if (relayOn)
-            {
-                outGate = fwTableLookup(cdap->getDstAddr(), -1);
-            }
-            else
-            {
-                outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
-            }
-
-            if (outGate != NULL)
-            {
-                send(msg, outGate);
-            }
-            else
-            {
-                EV << "there isn't any suitable output queue available!" << endl;
-            }
+            RIBToPort(cdap);
         }
     }
     else
     {
         EV << this->getFullPath() << " message type not supported" << endl;
         delete msg;
+    }
+}
+
+void RMT::handleMessage(cMessage *msg)
+{
+    if (msg->isSelfMessage())
+    {
+        // ?
+    }
+    else
+    {
+        processMessage(msg);
     }
 }
 

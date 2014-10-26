@@ -20,6 +20,8 @@ Define_Module(RMTQueueManager);
 RMTQueueManager::RMTQueueManager()
 {
     WATCH_PTRVECTOR(queues);
+    qypos = 120;
+    qxpos = 45;
 }
 
 RMTQueueManager::~RMTQueueManager()
@@ -28,10 +30,63 @@ RMTQueueManager::~RMTQueueManager()
 }
 
 
-void RMTQueueManager::addQueue(RMTQueue* queue)
+RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
 {
-    queues.push_back(queue);
+    // find factory object
+    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
+
+    // instantiate a new object
+    std::ostringstream queueName;
+
+    // generate a name
+    const char* strType = (type == RMTQueue::INPUT ? "in" : "out");
+
+    for (int i = 0; ; i++)
+    {
+        queueName << strType << i;
+        if (lookup(queueName.str().c_str(), type) != NULL)
+        {
+            queueName.str(std::string());
+            queueName.clear();
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    cModule *module_f = moduleType->createScheduleInit(queueName.str().c_str(), this->getParentModule());
+    RMTQueue* module = dynamic_cast<RMTQueue*>(module_f);
+
+    // modify the position a little
+    std::ostringstream istr;
+    istr << "p=" << qxpos << "," << qypos << ";i=block/queue;is=vs";
+
+    cDisplayString& dispStr = module->getDisplayString();
+    dispStr.parse(istr.str().c_str());
+    qxpos = qxpos + 45;
+
+    // connect to RMT submodule
+    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
+    if (type == RMTQueue::OUTPUT)
+    {
+        cGate* rmtOut = rmt->addGate(queueName.str().c_str(), cGate::OUTPUT, false);
+        rmtOut->connectTo(module->getInputGate());
+        module->setRmtAccessGate(rmtOut);
+    }
+    else if (type == RMTQueue::INPUT)
+    {
+        cGate* rmtIn = rmt->addGate(queueName.str().c_str(), cGate::INPUT, false);
+        module->getOutputGate()->connectTo(rmtIn);
+    }
+
+    module->setType(type);
+    queues.push_back(module);
+    return module;
 }
+
+
 
 void RMTQueueManager::removeQueue(RMTQueue* queue)
 {
@@ -56,7 +111,7 @@ RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType typ
     for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
-        if ((a->getName() == queueName) && (a->getType() == type))
+        if (!opp_strcmp(a->getName(), queueName) && (a->getType() == type))
         {
             return a;
         }

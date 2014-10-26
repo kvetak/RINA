@@ -32,17 +32,29 @@ void FlowTable::insert(const FlowTableItem* entry)
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa)
+void FlowTable::insert(Flow* flow, FABase* fa, RMTQueue* queue)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa);
+    FlowTableItem entry = FlowTableItem(flow, fa, queue);
     flows.push_back(entry);
 }
 
-FlowTableItem* FlowTable::lookup(std::string addr) {
+FlowTableItem* FlowTable::lookup(Flow* flow) {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         FlowTableItem a = *it;
-        if (a.getFlow()->getDstApni().getApn().getName() == addr)
+        if (a.getFlow() == flow)
+        {
+            return &(*it);
+        }
+    }
+    return NULL;
+}
+
+FlowTableItem* FlowTable::lookup(std::string addr, short qosId) {
+    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    {
+        FlowTableItem a = *it;
+        if ((a.getFlow()->getDstApni().getApn().getName() == addr) && a.getFlow()->getConId().getQoSId() == qosId)
         {
             return &(*it);
         }

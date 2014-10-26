@@ -46,16 +46,23 @@ class RMT : public cSimpleModule
 {
   private:
     PDUForwardingTable* fwTable;
+    RMTQueueManager* queues;
 
     Address thisIpcAddr;
     bool relayOn;
+    bool onWire;
 
-    void sendDown(PDU_Base* pdu);
-    void sendUp(PDU_Base* pdu);
+    EfcpiMapping efcpiOut;
+    EfcpiMapping efcpiIn;
+    EfcpiToQueue efcpiToQueue;
 
-    RMTQueueManager* queues;
-
-    int qxpos, qypos;
+    void processMessage(cMessage* msg);
+    void efcpiToPort(PDU_Base* msg);
+    void efcpiToEfcpi(PDU_Base* msg);
+    void portToEfcpi(PDU_Base* msg);
+    void RIBToPort(CDAPMessage* msg);
+    void portToRIB(CDAPMessage* msg);
+    void portToPort(cMessage* msg);
 
     cGate* fwTableLookup(Address& destAddr, short pduQosId);
 
@@ -65,17 +72,10 @@ class RMT : public cSimpleModule
 
     void createEfcpiGate(unsigned int efcpiId);
     void deleteEfcpiGate(unsigned int efcpiId);
+    void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
 
-    void createSouthGate(std::string portId);
-    void deleteSouthGate(std::string portId);
-    RMTQueue* addQueue(const char* queueName, RMTQueue::queueType type);
-    void addQueueSet(const char* queueName);
-
-    // TODO: purge this mess as soon as queues are back
-    EfcpiMapping efcpiOut;
-    EfcpiMapping efcpiIn;
-    EfcpiToQueue efcpiToQueue;
-    bool onWire;
+    void setOnWire(bool status) { onWire = status; };
+    bool isOnWire() { return onWire; };
 
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };

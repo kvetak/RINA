@@ -19,5 +19,6 @@ simple RMTQueue
 {
     @display("i=block/queue;is=vs");
     gates:
-        output outputGate;
+        input inputGate;
+        output outputGate;        
 }

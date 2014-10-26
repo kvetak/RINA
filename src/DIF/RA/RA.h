@@ -68,12 +68,12 @@ class RA : public RABase {
 
   private:
     DA* difAllocator;
-    PDUForwardingTable* fwTable;
-    FlowTable* flTable;
     RMT* rmt;
     RMTQueueManager* rmtQM;
+    PDUForwardingTable* fwTable;
+    FlowTable* flTable;
+
     std::string processName;
-    std::list<Flow*> preparedFlows;
 
     bool onWire;
 
@@ -82,8 +82,8 @@ class RA : public RABase {
 
     void removeFlow();
 
-    void bindFlowToRMTQueue(cModule* ipc, Flow* flow);
-    void bindMediumToRMT();
+    RMTQueue* bindLowerFlowToRmtQueue(cModule* ipc, Flow* flow);
+    void bindMediumToRMTQueue();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);
 

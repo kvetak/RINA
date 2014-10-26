@@ -41,13 +41,15 @@ RMTQueue::~RMTQueue()
 void RMTQueue::initialize()
 {
     outputGate = gate("outputGate");
-    name = getName();
+    inputGate = gate("inputGate");
 }
 
 std::string RMTQueue::info() const {
     std::ostringstream os;
 
-    os << "name: " << this->getFullName();
+    os << "name: " << this->getFullName()
+       << "; type: " << this->type
+       << "; saturation: " << getLength() << "/" << this->maxQLength;
 
     return os.str();
 }
@@ -84,11 +86,6 @@ void RMTQueue::releasePDU(void)
     }
 }
 
-std::string RMTQueue::getName()
-{
-    return name;
-}
-
 std::string RMTQueue::getDifName()
 {
     return difName;
@@ -99,7 +96,7 @@ short RMTQueue::getQosId()
     return qosId;
 }
 
-int RMTQueue::getLength()
+int RMTQueue::getLength() const
 {
     return queue.size();
 }
@@ -134,7 +131,6 @@ void RMTQueue::setType(RMTQueue::queueType type)
     this->type = type;
 }
 
-
 cGate* RMTQueue::getRmtAccessGate()
 {
     return rmtAccessGate;
@@ -148,5 +144,10 @@ void RMTQueue::setRmtAccessGate(cGate* gate)
 cGate* RMTQueue::getOutputGate()
 {
     return outputGate;
+}
+
+cGate* RMTQueue::getInputGate()
+{
+    return inputGate;
 }
 
