@@ -389,7 +389,7 @@ void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
     entry->getFlow()->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
     entry->getFlow()->setDstPortId(flow->getDstPortId());
 
-    Flow* tmpfl = flow->dup();
+    Flow* tmpfl = entry->getFlow()->dup();
     tmpfl->swapFlow();
 
     //Add source address
