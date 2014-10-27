@@ -270,11 +270,15 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
 
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
         short tmpscore = flow->getQosParameters().countFeasibilityScore(*it);
-        //EV << "QosID: " << it->getQosId() << "  tmpscore: " << tmpscore << endl;
-        if (score < tmpscore)
+//        EV << "QosID: " << it->getQosId()
+//           << " tmpscore: " << tmpscore
+//           << " score: " << score << endl
+//           << " qosid: " << qosid << endl;
+        if (score < tmpscore) {
+            score = tmpscore;
             qosid = it->getQosId();
+        }
     }
-
     flow->getConnectionId().setQoSId(qosid);
     return qosid ? true : false;
 }

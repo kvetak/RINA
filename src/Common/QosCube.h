@@ -99,7 +99,6 @@ class QosCube {
     short countFeasibilityScore(const QosCube templ) const;
 
     std::string info() const;
-    std::string infoQosId() const;
 };
 
 //Free function

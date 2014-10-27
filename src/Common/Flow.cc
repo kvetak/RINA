@@ -218,7 +218,8 @@ std::string Flow::infoOther() const {
 
 std::string Flow::infoQoS() const {
     std::stringstream os;
-    os << qosParameters.infoQosId();
+    os << "Chosen RA's QoS cube>" << conId.getQoSId();
+    //os << qosParameters.info();
     return os.str();
 }
 

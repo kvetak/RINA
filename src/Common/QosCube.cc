@@ -174,8 +174,7 @@ void QosCube::setQosId(unsigned short qoSId) {
 }
 
 std::ostream& operator <<(std::ostream& os, const QosCube& cube) {
-
-    return os;
+    return os << cube.info();
 }
 
 short QosCube::countFeasibilityScore(const QosCube templ) const {
@@ -339,12 +338,5 @@ std::string QosCube::info() const {
         os << STR_DONOTCARE;
     else
         os << this->getCostBits() << " $/Mb";
-    return os.str();
-}
-
-std::string QosCube::infoQosId() const {
-    std::ostringstream os;
-    if (this->getQosId())
-        os << "QoSCube Id> " << this->getQosId();
     return os.str();
 }
