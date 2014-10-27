@@ -62,8 +62,8 @@ void RA::initialize()
     initSignalsAndListeners();
     initQoSCubes();
 
-	// determine and set RMT mode of operation
-	setRmtMode();
+    // determine and set RMT mode of operation
+    setRmtMode();
 
     WATCH_LIST(this->QosCubes);
 
@@ -464,8 +464,8 @@ void RA::createFlowWithoutAllocate(Flow* flow) {
     // we're ready to go!
     // update the flow table
     flTable->insert(flow, fab, outQ);
-    // update the PDU forwarding table (with an ugly hack for now)
-    fwTable->insert(Address(flow->getDstApni().getApn().getName().c_str(), "bogus"), flow->getConId().getQoSId(), outQ);
+    // update the PDU forwarding table
+    fwTable->insert(Address(flow->getDstApni().getApn().getName()), flow->getConId().getQoSId(), outQ);
 
     signalizeCreateFlowPositiveToRibd(flow);
 }
@@ -533,8 +533,16 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     EV << "binding a flow to an (N-1)-flow" << endl;
 
     // add efcpi->rmtQueue mapping for direct multiplexing
-    RMTQueue* outQueue = flTable->lookup(dstAddr, qosId)->getRmtQueue();
-    rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), outQueue);
+    FlowTableItem* targetFlow = flTable->lookup(dstAddr, qosId);
+    if (targetFlow == NULL)
+    {
+        EV << "!!! something went wrong! there isn't any suitable (N-1)-flow present for dst"
+           << dstAddr << " so it won't be multiplexed further." << endl;
+    }
+    else
+    {
+        rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), targetFlow->getRmtQueue());
+    }
 
     return false;
 }
