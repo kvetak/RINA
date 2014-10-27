@@ -128,7 +128,7 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
 
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (fai->getFa()->getMyAddress().getCompositeApn() == flow->getSrcApni().getApn() ) {
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() ) {
             //EV << "B!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateFlowResponsePositiveFromNminusOne();
         }
@@ -142,7 +142,7 @@ void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (fai->getFa()->getMyAddress().getCompositeApn() == flow->getSrcApni().getApn() )
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() )
             fai->receiveCreateFlowResponseNegativeFromNminusOne();
     }
     else

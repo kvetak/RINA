@@ -312,7 +312,7 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getSrcNeighbor());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -343,7 +343,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getDstNeighbor());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -428,7 +428,7 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mderesf->setDstAddr(flow->getDstNeighbor());
+    mderesf->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mderesf);

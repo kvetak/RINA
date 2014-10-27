@@ -15,7 +15,7 @@
 
 #include <Address.h>
 
-Address::Address() : ipcAddress(APN()), difName(""), compositeAPN(APN())
+Address::Address() : ipcAddress(APN()), difName(""), apname(APN())
 {
 }
 
@@ -38,7 +38,7 @@ Address::Address(std::string composite)
         difName = DAP(tokens.back());
         std::ostringstream os;
         os << ipcAddress << "_" << difName;
-        compositeAPN = APN(os.str().c_str());
+        apname = APN(os.str().c_str());
     }
 
 
@@ -49,14 +49,14 @@ Address::Address(const char* ipcaddr, const char* difnam) :
 {
         std::ostringstream os;
         os << ipcaddr << "_" << difnam;
-        compositeAPN = APN(os.str().c_str());
+        apname = APN(os.str().c_str());
 }
 
 Address::~Address()
 {
     ipcAddress = APN();
     difName = DAP();
-    compositeAPN = APN();
+    apname = APN();
 }
 
 const DAP& Address::getDifName() const {
@@ -86,8 +86,8 @@ bool Address::isUnspecified() const {
     return ipcAddress.getName().empty() && difName.getName().empty();
 }
 
-const APN& Address::getCompositeApn() const {
-    return compositeAPN;
+const APN& Address::getApname() const {
+    return apname;
 }
 
 void Address::setIpcAddress(const APN& ipcAddress) {

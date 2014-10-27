@@ -504,6 +504,7 @@ void RA::bindFlowToMedium(Flow* flow)
  */
 bool RA::bindFlowToLowerFlow(Flow* flow)
 {
+    //EV << "XXXXXXXXXXXXXX" << flow->info();
     Enter_Method("bindToLowerFlow()");
     if (rmt->isOnWire())
     {
@@ -512,7 +513,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     }
 
     // see if any appropriate (N-1)-flow already exists
-    std::string dstAddr = flow->getDstNeighbor().getCompositeApn().getName();
+    std::string dstAddr = flow->getDstNeighbor().getApname().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
     FlowTableItem* curFlow = NULL;
@@ -544,7 +545,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(),
                                     targetFlow->getRmtQueue());
         // add another fwtable entry for direct srcApp->dstApp messages
-        fwTable->insert(Address(flow->getDstAddr().getCompositeApn().getName()), qosId,
+        fwTable->insert(Address(flow->getDstAddr().getApname().getName()), qosId,
                         targetFlow->getRmtQueue());
     }
 

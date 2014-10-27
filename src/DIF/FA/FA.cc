@@ -448,9 +448,17 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
     }
     Address addr = *ad;
     if (useNeighbor) {
-        const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getIpcAddress());
-        if (apnlist)
-            addr.setIpcAddress(apnlist->front());
+        const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getApname());
+        if (apnlist) {
+            for (ApnCItem it = apnlist->begin(); it != apnlist->end(); ++it) {
+                Address tmp = Address(it->getName());
+                //EV << "!!!!!" << tmp << endl;
+                if (addr.getDifName() == tmp.getDifName()) {
+                    addr = tmp;
+                    break;
+                }
+            }
+        }
     }
     return addr;
 }

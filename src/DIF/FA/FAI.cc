@@ -76,6 +76,8 @@ bool FAI::receiveAllocateRequest() {
         return false;
     }
 
+    //EV << "!!!!!!" << FlowObject->info() << endl << FlowObject->getDstNeighbor() << endl;
+
     // bind this flow to a suitable (N-1)-flow
     RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
     status = raModule->bindFlowToLowerFlow(FlowObject);

@@ -117,9 +117,9 @@ bool DA::isAppLocal(const APN& apn) {
         cModule* submodp = j();
         if ( (submodp->hasPar(PAR_APNAME)
                 && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str() ) )
-             ||
-             (submodp->hasPar(PAR_IPCADDR)
-                && !opp_strcmp(submodp->par(PAR_IPCADDR), apn.getName().c_str() ) )
+//             ||
+//             (submodp->hasPar(PAR_IPCADDR)
+//                && !opp_strcmp(submodp->par(PAR_IPCADDR), apn.getName().c_str() ) )
            )
             return true;
     }

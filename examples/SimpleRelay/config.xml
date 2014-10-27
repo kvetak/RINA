@@ -26,8 +26,8 @@
 				</APN>
 			</NamingInfo>
 			<NeighborTable>
-				<APN apn="22">
-					<Neighbor apn="33" />
+				<APN apn="22_Layer11">
+					<Neighbor apn="33_Layer11" />
 				</APN>			
 			</NeighborTable>
 		</DA>	
@@ -58,8 +58,8 @@
 				</APN>
 			</NamingInfo>
 			<NeighborTable>
-				<APN apn="11">
-					<Neighbor apn="33" />
+				<APN apn="11_Layer11">
+					<Neighbor apn="33_Layer11" />
 				</APN>			
 			</NeighborTable>
 			

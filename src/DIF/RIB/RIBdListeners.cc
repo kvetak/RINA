@@ -53,7 +53,7 @@ void LisRIBDAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     if (flow) {
         //Check whether dstApp is local...
         const APN dstApn = flow->getSrcApni().getApn();
-        if (ribd->getMyAddress().getCompositeApn() == dstApn)
+        if (ribd->getMyAddress().getApname() == dstApn)
             ribd->receiveAllocationRequestFromFai(flow);
     }
     else

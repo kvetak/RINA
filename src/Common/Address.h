@@ -35,7 +35,7 @@ class Address {
     std::string info() const;
 
     bool isUnspecified() const;
-    const APN& getCompositeApn() const;
+    const APN& getApname() const;
 
     const DAP& getDifName() const;
     void setDifName(const DAP& difName);
@@ -45,7 +45,7 @@ class Address {
   private:
     APN ipcAddress;
     DAP difName;
-    APN compositeAPN;
+    APN apname;
 };
 
 typedef std::list<Address> Addresses;

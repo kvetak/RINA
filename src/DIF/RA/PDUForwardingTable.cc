@@ -69,7 +69,7 @@ RMTQueue* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
     {
         PDUTableEntry a = *it;
         // can't compare DIF names at this moment
-        if ((a.getDestAddr().getCompositeApn() == destAddr.getCompositeApn()) && ((a.getQosId() == QoSid) || QoSid == -1))
+        if ((a.getDestAddr().getApname() == destAddr.getApname()) && ((a.getQosId() == QoSid) || QoSid == -1))
         {
             return a.getQueueId();
         }

@@ -62,7 +62,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     if (flow) {
 
         FAITableEntry* entry = fa->getFaiTable()->findEntryByDstAddressAndFwd(flow->getDstApni().getApn());
-        if (fa->getMyAddress().getCompositeApn() == flow->getSrcApni().getApn()
+        if (fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
             && entry )
 
             fa->receiveCreateFlowPositive(entry->getFlow());
