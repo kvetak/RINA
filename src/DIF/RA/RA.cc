@@ -511,7 +511,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
 
     // see if any appropriate (N-1)-flow already exists
     // FIXME: this variable needs to contain the whole Address object!
-    std::string dstAddr = flow->getDstAddr().getIpcAddress().getName();
+    std::string dstAddr = flow->getDstNeighbor().getIpcAddress().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
     FlowTableItem* curFlow = NULL;

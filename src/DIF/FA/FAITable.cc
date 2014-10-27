@@ -70,6 +70,7 @@ FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     return NULL;
 }
 
+
 void FAITable::handleMessage(cMessage *msg)
 {
 
@@ -126,7 +127,7 @@ void FAITable::changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus sta
         EV << "findByFai() returned NULL" << endl;
 }
 
-void FAITable::bindFaiToFlow(FAIBase* fai, Flow* flow) {
+void FAITable::setFaiToFlow(FAIBase* fai, Flow* flow) {
     FAITableEntry* fte = findEntryByFlow(flow);
     fte->setFai(fai);
 }

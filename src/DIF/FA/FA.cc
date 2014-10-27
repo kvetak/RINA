@@ -88,7 +88,7 @@ bool FA::changeDstAddresses(Flow* flow, bool useNeighbor) {
 
     //...and destination addresses
 
-    //If destination address does have neighbor then use neighbor address
+    //If destination address does have neighbor then use first neighbor address
     if (useNeighbor) {
         const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getIpcAddress());
         if (apnlist)
@@ -110,7 +110,8 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     FaiTable->insertNew(flow);
 
     //Add source and destination address
-    changeToOriginalAddresses(flow);
+    setOriginalAddresses(flow);
+    setNeighborAddresses(flow);
 
     //Is malformed?
     if (isMalformedFlow(flow)){
@@ -179,7 +180,8 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
-
+        //Change neighbor addresses
+        setNeighborAddresses(flow);
         EV << "Processing M_Create(flow)" << endl;
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
@@ -208,8 +210,8 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         flow->swapFlow();
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
-        //Change addresses
-        changeToOriginalAddresses(flow);
+        //Change neighbor addresses
+        setNeighborAddresses(flow);
         //Change status to forward
         FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
 
@@ -223,12 +225,9 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
             return false;
         }
 
-        Flow* tmpfl = flow->dup();
-        changeToNeighborAddresses(tmpfl);
-
         // bind this flow to a suitable (N-1)-flow
         RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-        status = raModule->bindFlowToLowerFlow(tmpfl);
+        status = raModule->bindFlowToLowerFlow(flow);
 
         //WAIT until allocation of N-1 flow is completed
     }
@@ -308,7 +307,7 @@ FAI* FA::createFAI(Flow* flow) {
     fai->postInitialize(this, flow, Efcp);
 
     //Change state in FAITable
-    FaiTable->bindFaiToFlow(fai, flow);
+    FaiTable->setFaiToFlow(fai, flow);
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
     return fai;
@@ -387,7 +386,7 @@ void FA::receiveCreateFlowPositive(Flow* flow) {
     EV << "Continue M_CREATE(flow) forward!" << endl;
 
     Flow* tmpfl = flow->dup();
-    changeToNeighborAddresses(tmpfl);
+    setNeighborAddresses(tmpfl);
 
     this->signalizeCreateFlowRequestForward(tmpfl);
 }
@@ -403,7 +402,7 @@ void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
     tmpfl->swapFlow();
 
     //Add source address
-    changeToNeighborAddresses(tmpfl);
+    setNeighborAddresses(tmpfl);
 
     signalizeCreateFlowResponsePositiveForward(tmpfl);
 }
@@ -412,37 +411,49 @@ void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
 
-bool FA::changeToOriginalAddresses(Flow* flow) {
-    bool status;
-
-    //Change SrcAddress
-    status = changeSrcAddress(flow, false);
-    if (!status)
+bool FA::setOriginalAddresses(Flow* flow) {
+    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false);
+    if (adr.isUnspecified())
         return false;
+    flow->setSrcAddr(adr);
 
-    //Change Dst address
-    status = changeDstAddresses(flow, false);
-    if (!status)
+    adr = getAddressFromDa(flow->getDstApni().getApn(), false);
+    if (adr.isUnspecified())
         return false;
-
+    flow->setDstAddr(adr);
     return true;
 }
 
-bool FA::changeToNeighborAddresses(Flow* flow) {
-    bool status;
-
-    //Change SrcAddress
-    status = changeSrcAddress(flow, true);
-    if (!status)
+bool FA::setNeighborAddresses(Flow* flow) {
+    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), true);
+    if (adr.isUnspecified())
         return false;
+    flow->setSrcNeighbor(adr);
 
-    //Change Dst address
-    status = changeDstAddresses(flow, true);
-    if (!status)
+    adr = getAddressFromDa(flow->getDstApni().getApn(), true);
+    if (adr.isUnspecified())
         return false;
-
+    flow->setDstNeighbor(adr);
     return true;
 }
+
+
+const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
+    //Ask DA which IPC to use to reach src App
+    const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << apn << endl;
+        return Address();
+    }
+    Address addr = *ad;
+    if (useNeighbor) {
+        const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getIpcAddress());
+        if (apnlist)
+            addr.setIpcAddress(apnlist->front());
+    }
+    return addr;
+}
+
 
 void FA::signalizeCreateFlowResponsePositiveForward(Flow* flow) {
     emit(this->sigFACreResPosiFwd, flow);

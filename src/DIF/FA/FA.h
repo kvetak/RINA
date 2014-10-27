@@ -61,12 +61,9 @@ class FA : public FABase
 
     virtual void deinstantiateFai(Flow* flow);
 
+    virtual bool setOriginalAddresses(Flow* flow);
+    virtual bool setNeighborAddresses(Flow* flow);
 
-    virtual bool changeToOriginalAddresses(Flow* flow);
-    virtual bool changeToNeighborAddresses(Flow* flow);
-
-    virtual bool changeDstAddresses(Flow* flow, bool useNeighbor);
-    virtual bool changeSrcAddress(Flow* flow, bool useNeighbor);
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
@@ -107,6 +104,14 @@ class FA : public FABase
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
     void signalizeCreateFlowResponsePositiveForward(Flow* flow);
+
+    const Address getAddressFromDa(const APN& apn, bool useNeighbor);
+
+    bool changeDstAddresses(Flow* flow, bool useNeighbor);
+    bool changeSrcAddress(Flow* flow, bool useNeighbor);
+
+
+
 };
 
 #endif /* FLOWALLOCATOR_H_ */

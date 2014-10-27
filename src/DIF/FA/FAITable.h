@@ -37,7 +37,7 @@ class FAITable : public cSimpleModule
     FAITableEntry* findEntryByDstAddressAndFwd(const APN& ipcAddr);
     FAITableEntry* findEntryBySrcAddressAndFwd(const APN& ipcAddr);
     FAITableEntry* findEntryByFai(FAIBase* fai);
-    void bindFaiToFlow(FAIBase* fai, Flow* flow);
+    void setFaiToFlow(FAIBase* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
     void changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status);
 

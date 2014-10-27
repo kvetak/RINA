@@ -51,6 +51,10 @@ std::string Address::info() const {
     return os.str();
 }
 
+bool Address::isUnspecified() const {
+    return ipcAddress.getName().empty() && difName.getName().empty();
+}
+
 void Address::setIpcAddress(const APN& ipcAddress) {
     this->ipcAddress = ipcAddress;
 }

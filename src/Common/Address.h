@@ -33,6 +33,8 @@ class Address {
 
     std::string info() const;
 
+    bool isUnspecified() const;
+
     const DAP& getDifName() const;
     void setDifName(const DAP& difName);
     const APN& getIpcAddress() const;

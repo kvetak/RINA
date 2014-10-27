@@ -22,17 +22,19 @@ const int VAL_MAXCREATERETRIES = 3;
 Register_Class(Flow);
 
 Flow::Flow() :
-        srcApni(APNamingInfo()), dstApni(APNamingInfo()),
-        srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
-        srcAddr(Address()), dstAddr(Address()),
-        conId(ConnectionId()),
-        createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT) {
+    srcApni(APNamingInfo()), dstApni(APNamingInfo()),
+    srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
+    srcAddr(Address()), dstAddr(Address()),
+    srcNeighbor(Address()), dstNeighbor(Address()),
+    conId(ConnectionId()),
+    createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT) {
 }
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcApni(src), dstApni(dst),
         srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
         srcAddr(Address()), dstAddr(Address()),
+        srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
         createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT)
 {
@@ -48,6 +50,8 @@ Flow::~Flow() {
     this->createFlowRetries = 0;
     this->maxCreateFlowRetries = 0;
     this->hopCount = 0;
+    srcNeighbor = Address();
+    dstNeighbor = Address();
 }
 
 //Free function
@@ -185,6 +189,39 @@ void Flow::swapCepIds() {
     conId = conId.swapCepIds();
 }
 
+std::string Flow::infoSource() const {
+    std::stringstream os;
+    os << "SRC> " << srcApni
+       << "\n   address:  " << srcAddr
+       << "\n   neighbor: " << srcNeighbor
+       << "\n   port: " << srcPortId
+       << "\n   cep: " << conId.getSrcCepId();
+    return os.str();
+}
+
+std::string Flow::infoDestination() const {
+    std::stringstream os;
+    os << "DST> " << dstApni
+       << "\n   address:  " << dstAddr
+       << "\n   neighbor: " << dstNeighbor
+       << "\n   port: " << dstPortId
+       << "\n   cep: " << conId.getDstCepId();
+    return os.str();
+}
+
+std::string Flow::infoOther() const {
+    std::stringstream os;
+    os << "Hop Count: " << hopCount << endl
+       << "Retries: " << createFlowRetries << "/" << maxCreateFlowRetries;
+    return os.str();
+}
+
+std::string Flow::infoQoS() const {
+    std::stringstream os;
+    os << qosParameters.infoQosId();
+    return os.str();
+}
+
 void Flow::swapApni() {
     APNamingInfo tmpapni = srcApni;
     srcApni = dstApni;
@@ -209,11 +246,10 @@ void Flow::setQosParameters(const QosCube& qosParameters) {
 
 std::string Flow::info() const {
     std::stringstream os;
-    os << "SRC>\t" << srcApni <<  "\tport: " << srcPortId << "\taddr: " << srcAddr << "\tcep:" << conId.getSrcCepId() << endl
-       << "DST>\t" << dstApni <<  "\tport: " << dstPortId << "\taddr: " << dstAddr << "\tcep:" << conId.getDstCepId() << endl
-       << "Hop Count: " << hopCount << endl
-       << "Retries: " << createFlowRetries << "/" << maxCreateFlowRetries << endl
-       <<  qosParameters;
+    os << infoSource() << endl;
+    os << infoDestination() << endl;
+    os << infoOther() << endl;
+    os << infoQoS() << endl;
     return os.str();
 }
 
@@ -221,3 +257,18 @@ std::ostream& operator<< (std::ostream& os, const Flow& fl) {
     return os << fl.info();
 }
 
+const Address& Flow::getDstNeighbor() const {
+    return dstNeighbor;
+}
+
+void Flow::setDstNeighbor(const Address& dstNeighbor) {
+    this->dstNeighbor = dstNeighbor;
+}
+
+const Address& Flow::getSrcNeighbor() const {
+    return srcNeighbor;
+}
+
+void Flow::setSrcNeighbor(const Address& srcNeighbor) {
+    this->srcNeighbor = srcNeighbor;
+}

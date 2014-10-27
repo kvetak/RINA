@@ -77,10 +77,8 @@ bool FAI::receiveAllocateRequest() {
     }
 
     // bind this flow to a suitable (N-1)-flow
-    Flow* tmpfl = FlowObject->dup();
-    FaModule->changeToNeighborAddresses(tmpfl);
     RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-    status = raModule->bindFlowToLowerFlow(tmpfl);
+    status = raModule->bindFlowToLowerFlow(FlowObject);
     //IF connected to wire then schedule M_Create(Flow)
     if (status)
         this->signalizeCreateFlowRequest();
@@ -114,11 +112,9 @@ bool FAI::receiveAllocateResponsePositive() {
         return false;
     }
 
-    Flow* tmpfl = FlowObject->dup();
-    FaModule->changeToNeighborAddresses(tmpfl);
     // bind this flow to a suitable (N-1)-flow
     RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-    raModule->bindFlowToLowerFlow(tmpfl);
+    raModule->bindFlowToLowerFlow(FlowObject);
 
     //Signalizes M_Create_R(flow)
     this->signalizeCreateFlowResponsePositive();
@@ -398,9 +394,7 @@ void FAI::initSignalsAndListeners() {
 }
 
 void FAI::signalizeCreateFlowRequest() {
-    Flow* tmpfl = FlowObject->dup();
-    FaModule->changeToNeighborAddresses(tmpfl);
-    emit(this->sigFAICreReq, tmpfl);
+    emit(this->sigFAICreReq, FlowObject);
 }
 
 void FAI::signalizeDeleteFlowResponse() {
@@ -409,15 +403,11 @@ void FAI::signalizeDeleteFlowResponse() {
 }
 
 void FAI::signalizeCreateFlowResponsePositive() {
-    Flow* tmpfl = FlowObject->dup();
-    FaModule->changeToNeighborAddresses(tmpfl);
-    emit(this->sigFAICreResPosi, tmpfl);
+    emit(this->sigFAICreResPosi, FlowObject);
 }
 
 void FAI::signalizeCreateFlowResponseNegative() {
-    Flow* tmpfl = FlowObject->dup();
-    FaModule->changeToNeighborAddresses(tmpfl);
-    emit(this->sigFAICreResNega, tmpfl);
+    emit(this->sigFAICreResNega, FlowObject);
 }
 
 void FAI::signalizeAllocationRequestFromFai() {

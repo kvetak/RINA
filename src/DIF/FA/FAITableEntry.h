@@ -50,7 +50,6 @@ class FAITableEntry {
     const Flow* getCFlow() const;
     Flow* getFlow();
 
-
   private:
     FAIBase* fai;
     Flow* flow;

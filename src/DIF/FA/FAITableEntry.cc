@@ -41,13 +41,17 @@ FAITableEntry::~FAITableEntry() {
 
 std::string FAITableEntry::info() const {
     std::ostringstream os;
-    os << "status: " << this->getAllocateStatusString() <<
-          "\tcreated: " << this->getTimeCreated() << "\tlastActive: " << this->getTimeLastActive() << endl;
-    if ( this->getCFlow() )
-        os << *(this->getCFlow()) << endl;
-        //os << this->getFlow()->getQosParameters();
+    os << "STATUS: " << this->getAllocateStatusString() << endl;
     if ( this->getFai() )
-        os << *(this->getFai()) << endl;
+        os << "FAI> " << *(this->getFai()) << endl;
+    if ( this->getCFlow() ) {
+        os << this->getCFlow()->infoSource() << endl;
+        os << this->getCFlow()->infoDestination() << endl;
+        os << this->getCFlow()->infoOther() << endl;
+        os << this->getCFlow()->infoQoS() << endl;
+    }
+    os << "Created at: " << this->getTimeCreated()
+       << "\tLast active at: " << this->getTimeLastActive() << endl;
     return os.str();
 }
 

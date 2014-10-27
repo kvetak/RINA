@@ -35,10 +35,8 @@ class FABase : public cSimpleModule {
     virtual void deinstantiateFai(Flow* flow) = 0;
     virtual bool invokeNewFlowRequestPolicy(Flow* flow) = 0;
 
-    virtual bool changeToOriginalAddresses(Flow* flow) = 0;
-    virtual bool changeToNeighborAddresses(Flow* flow) = 0;
-    virtual bool changeDstAddresses(Flow* flow, bool useNeighbor) = 0;
-    virtual bool changeSrcAddress(Flow* flow, bool useNeighbor) = 0;
+    virtual bool setOriginalAddresses(Flow* flow) = 0;
+    virtual bool setNeighborAddresses(Flow* flow) = 0;
 
     FAITable* getFaiTable() const;
     const Address& getMyAddress() const;
