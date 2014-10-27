@@ -33,6 +33,8 @@
 #include "RABase.h"
 #include "RAListeners.h"
 
+#include "RMTPolicies/LongestQFirst.h"
+
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
@@ -53,8 +55,8 @@ extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
 
-class RA : public RABase {
-
+class RA : public RABase
+{
   public:
     virtual void createFlow(Flow *flow);
     virtual void createFlowWithoutAllocate(Flow *flow);

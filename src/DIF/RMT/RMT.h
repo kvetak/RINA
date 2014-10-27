@@ -27,22 +27,23 @@
 
 #include <omnetpp.h>
 
-#include "APNamingInfo.h"
-#include "PDUForwardingTable.h"
+#include "RINASignals.h"
 #include "ModuleAccess.h"
-#include "PDU_m.h"
-#include "CDAPMessage_m.h"
-#include "Flow.h"
 #include "Address.h"
 #include "ExternConsts.h"
-
+#include "PDU_m.h"
+#include "CDAPMessage_m.h"
+#include "PDUForwardingTable.h"
+#include "RMTBase.h"
+#include "RMTListeners.h"
+#include "RMTSchedulingBase.h"
 #include "RMTQueueManager.h"
 #include "RMTQueue.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
 typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
 
-class RMT : public cSimpleModule
+class RMT : public RMTBase
 {
   private:
     PDUForwardingTable* fwTable;
@@ -56,6 +57,9 @@ class RMT : public cSimpleModule
     EfcpiMapping efcpiIn;
     EfcpiToQueue efcpiToQueue;
 
+    RMTSchedulingBase* schedPolicy;
+    unsigned int waitingMsgs;
+
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU_Base* msg);
     void efcpiToEfcpi(PDU_Base* msg);
@@ -64,7 +68,12 @@ class RMT : public cSimpleModule
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
+    void scheduleServiceEnd();
+
     cGate* fwTableLookup(Address& destAddr, short pduQosId);
+
+    simsignal_t sigRMTNoConnID;
+    LisRMTPDURcvd* lisRMTMsgRcvd;
 
   public:
     RMT();
@@ -80,6 +89,10 @@ class RMT : public cSimpleModule
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };
     bool getRelayStatus() { return relayOn; };
+
+    RMTSchedulingBase* getSchedulingPolicy();
+    void setSchedulingPolicy(RMTSchedulingBase* policy);
+    void invokeSchedulingPolicy();
 
   protected:
     virtual void initialize();

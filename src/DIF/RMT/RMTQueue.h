@@ -19,8 +19,7 @@
 #include <omnetpp.h>
 #include <queue>
 
-#include "PDU.h"
-#include "DataTransferPDU_m.h"
+#include "RINASignals.h"
 
 class RMTQueue : public cSimpleModule
 {
@@ -54,6 +53,7 @@ class RMTQueue : public cSimpleModule
     cGate* getRmtAccessGate();
     void setRmtAccessGate(cGate* gate);
 
+    void releasePDU();
 
     std::string info() const;
 
@@ -69,8 +69,9 @@ class RMTQueue : public cSimpleModule
     cGate* outputGate;
     cGate* inputGate;
 
+    simsignal_t sigRMTPDURcvd;
+
     void enqueuePDU(cMessage* pdu);
-    void releasePDU();
 
 };
 

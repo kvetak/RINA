@@ -13,19 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTQMONITORPOLICY_H_
-#define __RINA_RMTQMONITORPOLICY_H_
+#ifndef RMTSCHEDULINGBASE_H_
+#define RMTSCHEDULINGBASE_H_
 
 #include <omnetpp.h>
 
-/**
- * TODO - Generated class
- */
-class RMTQMonitorPolicy : public cSimpleModule
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
+
+class RMTSchedulingBase
 {
+  public:
+    RMTSchedulingBase();
+    virtual ~RMTSchedulingBase();
+    std::string getName() { return name; };
+    virtual void run(RMTQueueManager* queues) = 0;
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    std::string name;
 };
 
-#endif
+#endif /* RMTSCHEDULINGBASE_H_ */

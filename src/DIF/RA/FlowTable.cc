@@ -38,7 +38,8 @@ void FlowTable::insert(Flow* flow, FABase* fa, RMTQueue* queue)
     flows.push_back(entry);
 }
 
-FlowTableItem* FlowTable::lookup(Flow* flow) {
+FlowTableItem* FlowTable::lookup(Flow* flow)
+{
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         FlowTableItem a = *it;
@@ -50,7 +51,8 @@ FlowTableItem* FlowTable::lookup(Flow* flow) {
     return NULL;
 }
 
-FlowTableItem* FlowTable::lookup(std::string addr, short qosId) {
+FlowTableItem* FlowTable::lookup(std::string addr, short qosId)
+{
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         FlowTableItem a = *it;
@@ -62,6 +64,6 @@ FlowTableItem* FlowTable::lookup(std::string addr, short qosId) {
     return NULL;
 }
 
-void FlowTable::remove(FlowTableItem* flow) {
-
+void FlowTable::remove(FlowTableItem* flow)
+{
 }

@@ -13,16 +13,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RMTSchedulingPolicy.h"
+#ifndef RMTLISTENERS_H_
+#define RMTLISTENERS_H_
 
-Define_Module(RMTSchedulingPolicy);
+#include <omnetpp.h>
+#include "RMTBase.h"
 
-void RMTSchedulingPolicy::initialize()
+class RMTListeners : public cListener
 {
-    // TODO - Generated method body
-}
+  public:
+    RMTListeners(RMTBase* rmt);
+    virtual ~RMTListeners();
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b)
+    {
+        EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
+    }
+  protected:
+    RMTBase* rmt;
+};
 
-void RMTSchedulingPolicy::handleMessage(cMessage *msg)
+class LisRMTPDURcvd : public RMTListeners
 {
-    // TODO - Generated method body
-}
+  public:
+    LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, bool b);
+};
+
+#endif /* RMTLISTENERS_H_ */

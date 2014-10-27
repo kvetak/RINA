@@ -26,18 +26,20 @@
 
 Define_Module(RMT);
 
-const int PROCESSING_DELAY = 0.0;
+const int QUEUE_SERVICE_TIME = 0.0;
 
 RMT::RMT()
 {
     relayOn = false;
     onWire = false;
+    waitingMsgs = 0;
 }
 
 RMT::~RMT() {}
 
 
-void RMT::initialize() {
+void RMT::initialize()
+{
     WATCH_PTRMAP(efcpiToQueue);
 
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
@@ -47,6 +49,60 @@ void RMT::initialize() {
     thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
                           ipcModule->par("difName").stringValue());
 
+    // register signal for notifying others about a missing local EFCP instance
+    sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
+
+    // listen for a signal indicating that a new message has arrived into a queue
+    lisRMTMsgRcvd = new LisRMTPDURcvd(this);
+    getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
+}
+
+/**
+ * Returns the current scheduling policy.
+ *
+ *@return pointer to current policy class
+ */
+RMTSchedulingBase* RMT::getSchedulingPolicy()
+{
+    return schedPolicy;
+}
+
+/**
+ * Changes the current scheduling policy.
+ *
+ * @param policy pointer to the new policy class
+ */
+void RMT::setSchedulingPolicy(RMTSchedulingBase* policy)
+{
+    schedPolicy = policy;
+}
+
+/**
+ * Schedules an end-of-queue-service event.
+ *
+ */
+void RMT::scheduleServiceEnd()
+{
+    scheduleAt(simTime() + QUEUE_SERVICE_TIME, new cMessage("queueServiceDone"));
+}
+
+/**
+ * Tries to begin service of a message that has newly arrived into a queue.
+ * If servicing takes place right now, the wait counter is increased instead.
+ *
+ */
+void RMT::invokeSchedulingPolicy()
+{
+    Enter_Method("invokeSchedulingPolicy()");
+
+    if (!waitingMsgs)
+    {
+        scheduleServiceEnd();
+    }
+    else
+    {
+        waitingMsgs++;
+    }
 }
 
 /**
@@ -156,7 +212,7 @@ void RMT::efcpiToPort(PDU_Base* pdu)
     outGate = efcpiToQueue[pdu->getArrivalGate()]->getRmtAccessGate();
     if (outGate != NULL)
     {
-        EV << this->getFullPath() << " passing a PDU downwards" << endl;
+        EV << this->getFullPath() << " passing a PDU to an output queue" << endl;
         send(pdu, outGate);
     }
     else
@@ -183,8 +239,8 @@ void RMT::portToEfcpi(PDU_Base* pdu)
     else
     {
         EV << this->getFullPath() << " EFCPI " << cepId << " isn't present on this system! Notifying other modules." << endl;
-        // TODO: emit(cosi)
-        delete pdu;
+        emit(sigRMTNoConnID, pdu);
+        //delete pdu;
     }
 
 }
@@ -230,7 +286,7 @@ void RMT::RIBToPort(CDAPMessage* cdap)
 
     if (outGate != NULL)
     {
-        EV << this->getFullPath() << " passing a CDAP message downwards" << endl;
+        EV << this->getFullPath() << " passing a CDAP message to an output queue" << endl;
         send(cdap, outGate);
     }
     else
@@ -293,7 +349,6 @@ void RMT::processMessage(cMessage* msg)
 {
     std::string gate = msg->getArrivalGate()->getName();
 
-    // the main FSM of RMT
     if (dynamic_cast<PDU_Base*>(msg) != NULL)
     { // PDU arrival
         PDU_Base* pdu = (PDU_Base*) msg;
@@ -356,7 +411,15 @@ void RMT::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        // ?
+        if (!opp_strcmp(msg->getFullName(), "queueServiceDone"))
+        {
+            schedPolicy->run(queues);
+            if (waitingMsgs)
+            {
+                scheduleServiceEnd();
+                waitingMsgs--;
+            }
+        }
     }
     else
     {

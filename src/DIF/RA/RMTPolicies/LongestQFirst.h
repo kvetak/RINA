@@ -13,19 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_MAXQPOLICY_H_
-#define __RINA_MAXQPOLICY_H_
+#ifndef LONGESTQFIRST_H_
+#define LONGESTQFIRST_H_
 
-#include <omnetpp.h>
+#include "RMTSchedulingBase.h"
 
-/**
- * TODO - Generated class
- */
-class MaxQPolicy : public cSimpleModule
+class LongestQFirst : public RMTSchedulingBase
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+  public:
+    LongestQFirst();
+    virtual ~LongestQFirst();
+    virtual void run(RMTQueueManager* queues);
 };
 
-#endif
+#endif /* LONGESTQFIRST_H_ */

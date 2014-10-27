@@ -13,16 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RMTQMonitorPolicy.h"
+#include <LongestQFirst.h>
 
-Define_Module(RMTQMonitorPolicy);
-
-void RMTQMonitorPolicy::initialize()
+LongestQFirst::LongestQFirst()
 {
-    // TODO - Generated method body
+    name = "LongestQFirst";
 }
 
-void RMTQMonitorPolicy::handleMessage(cMessage *msg)
+LongestQFirst::~LongestQFirst()
 {
-    // TODO - Generated method body
+
+}
+
+
+void LongestQFirst::run(RMTQueueManager* queues)
+{
+    RMTQueue* outQ = queues->getLongest(RMTQueue::OUTPUT);
+    RMTQueue* inQ = queues->getLongest(RMTQueue::INPUT);
+
+    if (outQ != NULL) outQ->releasePDU();
+    if (inQ != NULL) inQ->releasePDU();
 }

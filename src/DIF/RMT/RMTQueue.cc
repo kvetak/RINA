@@ -42,9 +42,11 @@ void RMTQueue::initialize()
 {
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
+    sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
 }
 
-std::string RMTQueue::info() const {
+std::string RMTQueue::info() const
+{
     std::ostringstream os;
 
     os << "name: " << this->getFullName()
@@ -54,7 +56,8 @@ std::string RMTQueue::info() const {
     return os.str();
 }
 
-std::ostream& operator <<(std::ostream& os, const RMTQueue& cte) {
+std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
+{
     return os << cte.info();
 }
 
@@ -67,7 +70,7 @@ void RMTQueue::handleMessage(cMessage *msg)
     else
     {
         enqueuePDU(msg);
-        releasePDU();
+        emit(sigRMTPDURcvd, true);
     }
 }
 

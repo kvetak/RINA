@@ -105,6 +105,9 @@ void RA::setRmtMode()
     {
         rmt->enableRelay();
     }
+
+    rmt->setSchedulingPolicy(new LongestQFirst);
+    EV << rmt->getSchedulingPolicy()->getName() << endl;
 }
 
 
@@ -415,7 +418,6 @@ void RA::createFlow(Flow *flow)
         // connect the new flow to the RMT
         RMTQueue* outQ = bindLowerFlowToRmtQueue(targetIpc, flow);
         // we're ready to go!
-        // TODO: replace both with a signal emit
         // update the flow table
         flTable->insert(flow, fab, outQ);
         // update the PDU forwarding table (with an ugly hack for now)
@@ -458,7 +460,6 @@ void RA::createFlowWithoutAllocate(Flow* flow) {
     // connect the new flow to the RMT
     RMTQueue* outQ = bindLowerFlowToRmtQueue(targetIpc, flow);
     // we're ready to go!
-    // TODO: replace both with a signal emit
     // update the flow table
     flTable->insert(flow, fab, outQ);
     // update the PDU forwarding table (with an ugly hack for now)
@@ -475,6 +476,8 @@ void RA::initSignalsAndListeners() {
 
     lisRACreFlow = new LisRACreFlow(this);
     catcher2->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
+
+
 
 }
 

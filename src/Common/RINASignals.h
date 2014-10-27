@@ -1,4 +1,5 @@
 /*
+
  * RINASignals.h
  *
  *  Created on: 21. 7. 2014
@@ -71,5 +72,8 @@ extern const char* SIG_RIB_CreateResponseFlow;
 extern const char* SIG_RIB_DeleteRequestFlow;
 extern const char* SIG_RIB_DeleteResponseFlow;
 
+//RMT
+extern const char* SIG_RMT_NoConnId;
+extern const char* SIG_RMT_MessageReceived;
 
 #endif /* RINASIGNALS_H_ */

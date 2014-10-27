@@ -95,7 +95,7 @@ void RMTQueueManager::removeQueue(RMTQueue* queue)
 
 RMTQueue* RMTQueueManager::getFirst(RMTQueue::queueType type)
 {
-    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
+    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
         if (a->getType() == type)
@@ -108,7 +108,7 @@ RMTQueue* RMTQueueManager::getFirst(RMTQueue::queueType type)
 
 RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType type)
 {
-    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
+    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
         if (!opp_strcmp(a->getName(), queueName) && (a->getType() == type))
@@ -119,10 +119,30 @@ RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType typ
     return NULL;
 }
 
-RMTQueueManager::iterator RMTQueueManager::begin(){
+RMTQueue* RMTQueueManager::getLongest(RMTQueue::queueType type)
+{
+    int longest = 0;
+    RMTQueue* result = NULL;
+
+    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it)
+    {
+        RMTQueue* a = *it;
+        if (a->getLength() > longest)
+        {
+            longest = a->getLength();
+            result = a;
+        }
+    }
+
+    return result;
+}
+
+RMTQueueManager::iterator RMTQueueManager::begin()
+{
     return this->queues.begin();
 }
 
-RMTQueueManager::iterator RMTQueueManager::end(){
+RMTQueueManager::iterator RMTQueueManager::end()
+{
     return this->queues.end();
 }

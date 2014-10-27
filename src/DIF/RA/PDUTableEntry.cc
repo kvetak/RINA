@@ -31,22 +31,12 @@ PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, RMTQueue* queue)
 {
 }
 
-//PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc)
-//:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, -1))
-//{
-//}
-//
-//PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, cModule* ipc, int portid)
-//:  destAddr(destaddr), qosId(qosid), portId(std::make_pair(ipc, portid))
-//{
-//}
-
 PDUTableEntry::~PDUTableEntry()
 {
-
 }
 
-std::string PDUTableEntry::info() const {
+std::string PDUTableEntry::info() const
+{
     std::ostringstream os;
 
     os << "dest: " << destAddr << endl
@@ -56,7 +46,8 @@ std::string PDUTableEntry::info() const {
     return os.str();
 }
 
-std::ostream& operator <<(std::ostream& os, const PDUTableEntry& cte) {
+std::ostream& operator <<(std::ostream& os, const PDUTableEntry& cte)
+{
     return os << cte.info();
 }
 

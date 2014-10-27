@@ -13,16 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "MaxQPolicy.h"
+#include <RMTBase.h>
 
-Define_Module(MaxQPolicy);
-
-void MaxQPolicy::initialize()
+RMTBase::RMTBase()
 {
-    // TODO - Generated method body
 }
 
-void MaxQPolicy::handleMessage(cMessage *msg)
+RMTBase::~RMTBase()
 {
-    // TODO - Generated method body
 }
