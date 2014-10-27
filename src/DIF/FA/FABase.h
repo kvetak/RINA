@@ -30,10 +30,15 @@ class FABase : public cSimpleModule {
     virtual bool receiveAllocateRequest(Flow* flow) = 0;
     virtual void receiveCreateFlowPositive(Flow* flow) = 0;
     virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow) = 0;
-    virtual void receiveCreateFlowRequestFromRibd(Flow* flow) = 0;
+    virtual bool receiveCreateFlowRequestFromRibd(Flow* flow) = 0;
     virtual bool receiveDeallocateRequest(Flow* flow) = 0;
     virtual void deinstantiateFai(Flow* flow) = 0;
     virtual bool invokeNewFlowRequestPolicy(Flow* flow) = 0;
+
+    virtual bool changeToOriginalAddresses(Flow* flow) = 0;
+    virtual bool changeToNeighborAddresses(Flow* flow) = 0;
+    virtual bool changeDstAddresses(Flow* flow, bool useNeighbor) = 0;
+    virtual bool changeSrcAddress(Flow* flow, bool useNeighbor) = 0;
 
     FAITable* getFaiTable() const;
     const Address& getMyAddress() const;

@@ -57,9 +57,16 @@ class FA : public FABase
     virtual void receiveCreateFlowPositive(Flow* flow);
     virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
-    virtual void receiveCreateFlowRequestFromRibd(Flow* flow);
+    virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
 
     virtual void deinstantiateFai(Flow* flow);
+
+
+    virtual bool changeToOriginalAddresses(Flow* flow);
+    virtual bool changeToNeighborAddresses(Flow* flow);
+
+    virtual bool changeDstAddresses(Flow* flow, bool useNeighbor);
+    virtual bool changeSrcAddress(Flow* flow, bool useNeighbor);
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
@@ -84,8 +91,7 @@ class FA : public FABase
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void initPointers();
-    bool changeDstAddresses(Flow* flow);
-    void changeSrcAddress(Flow* flow);
+
 
   private:
     EFCP* Efcp;

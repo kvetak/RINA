@@ -46,6 +46,25 @@ const Address* DA::resolveApnToBestAddress(const APN& apn) {
     return NULL;
 }
 
+const Address* DA::resolveApnToBestAddress(const APN& apn, const DAP& difName) {
+    Enter_Method("resolveApnToBestAddress()");
+
+    DirectoryEntry* de = resolveApn(apn);
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return NULL;
+    }
+
+    //Return address from a given DIF
+    for (AddrCItem it = de->getSupportedDifs().begin(); it != de->getSupportedDifs().end(); ++it) {
+        if (it->getDifName() == difName && isDifLocal(it->getDifName()))
+            return &(*it);
+    }
+
+    EV << "None of found DIFs is local!" << endl;
+    return NULL;
+}
+
 void DA::initPointers() {
     //Retrieve pointers to submodules
     Dir = ModuleAccess<Directory>(MOD_DIRECTORY).get();
@@ -113,8 +132,10 @@ bool DA::isDifLocal(const DAP& difName) {
         cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
             && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.getName().c_str())
-           )
+           ) {
+            //EV << "!!!!!" << difName << "!!!!!" << submodp->getFullPath() << endl;
             return true;
+        }
     }
     return false;
 }

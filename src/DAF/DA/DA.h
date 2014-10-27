@@ -39,6 +39,7 @@ class DA : public cSimpleModule
 
     DirectoryEntry* resolveApn(const APN& apn);
     const Address* resolveApnToBestAddress(const APN& apn);
+    const Address* resolveApnToBestAddress(const APN& apn, const DAP& difName);
 
     const APNList* findApnNeigbors(const APN& apn);
 

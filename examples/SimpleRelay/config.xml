@@ -11,7 +11,10 @@
 				</APN>				
 				<APN apn="11">
 					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>					
+				</APN>		
+				<APN apn="22">
+					<DIF difName="Layer02" ipcAddress="2" />
+				</APN>								
 				<APN apn="33">
 					<DIF difName="Layer01" ipcAddress="3" />
 					<DIF difName="Layer02" ipcAddress="4" />
@@ -40,7 +43,10 @@
 				</APN>				
 				<APN apn="11">
 					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>					
+				</APN>	
+				<APN apn="22">
+					<DIF difName="Layer02" ipcAddress="2" />
+				</APN>									
 				<APN apn="33">
 					<DIF difName="Layer01" ipcAddress="3" />				
 					<DIF difName="Layer02" ipcAddress="4" />
