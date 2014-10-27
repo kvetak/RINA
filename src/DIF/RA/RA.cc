@@ -536,12 +536,16 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     FlowTableItem* targetFlow = flTable->lookup(dstAddr, qosId);
     if (targetFlow == NULL)
     {
-        EV << "!!! something went wrong! there isn't any suitable (N-1)-flow present for dst"
+        EV << "!!! something went wrong! there isn't any suitable (N-1)-flow present for dst "
            << dstAddr << " so it won't be multiplexed further." << endl;
     }
     else
     {
-        rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), targetFlow->getRmtQueue());
+        rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(),
+                                    targetFlow->getRmtQueue());
+        // add another fwtable entry for direct srcApp->dstApp messages
+        fwTable->insert(Address(flow->getDstApni().getApn().getName()), qosId,
+                        targetFlow->getRmtQueue());
     }
 
     return false;
