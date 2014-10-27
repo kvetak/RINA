@@ -26,6 +26,7 @@
 class Address {
   public:
     Address();
+    Address(std::string composite);
     Address(const char* ipcaddr, const char* difnam);
     virtual ~Address();
 
@@ -34,6 +35,7 @@ class Address {
     std::string info() const;
 
     bool isUnspecified() const;
+    const APN& getCompositeApn() const;
 
     const DAP& getDifName() const;
     void setDifName(const DAP& difName);
@@ -43,6 +45,7 @@ class Address {
   private:
     APN ipcAddress;
     DAP difName;
+    APN compositeAPN;
 };
 
 typedef std::list<Address> Addresses;

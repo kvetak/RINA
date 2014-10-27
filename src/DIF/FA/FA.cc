@@ -100,8 +100,6 @@ bool FA::changeDstAddresses(Flow* flow, bool useNeighbor) {
     return true;
 }
 
-
-
 bool FA::receiveAllocateRequest(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
@@ -440,7 +438,6 @@ bool FA::setNeighborAddresses(Flow* flow) {
     flow->setDstNeighbor(adr);
     return true;
 }
-
 
 const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
     //Ask DA which IPC to use to reach src App

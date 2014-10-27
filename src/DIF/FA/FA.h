@@ -110,8 +110,6 @@ class FA : public FABase
     bool changeDstAddresses(Flow* flow, bool useNeighbor);
     bool changeSrcAddress(Flow* flow, bool useNeighbor);
 
-
-
 };
 
 #endif /* FLOWALLOCATOR_H_ */

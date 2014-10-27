@@ -38,7 +38,7 @@ std::string FAITable::info() const {
 FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& ipcAddr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getCFlow()->getDstAddr().getIpcAddress() == ipcAddr
+        if (tft.getCFlow()->getDstAddr().getCompositeApn() == ipcAddr
                 && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
             return &(*it);
     }

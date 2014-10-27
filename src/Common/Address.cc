@@ -15,17 +15,48 @@
 
 #include <Address.h>
 
-Address::Address() : ipcAddress(APN()), difName("")
+Address::Address() : ipcAddress(APN()), difName(""), compositeAPN(APN())
 {
+}
+
+Address::Address(std::string composite)
+{
+    std::string delimiter = "_";
+
+    size_t pos = 0;
+    std::vector<std::string> tokens;
+    while ((pos = composite.find(delimiter)) != std::string::npos) {
+        tokens.push_back(composite.substr(0, pos));
+        EV << tokens.back() << endl;
+        composite.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(composite);
+    EV << tokens.back() << endl;
+
+    if (tokens.size() == 2) {
+        ipcAddress = APN(tokens.front());
+        difName = DAP(tokens.back());
+        std::ostringstream os;
+        os << ipcAddress << "_" << difName;
+        compositeAPN = APN(os.str().c_str());
+    }
+
+
 }
 
 Address::Address(const char* ipcaddr, const char* difnam) :
         ipcAddress(APN(ipcaddr)), difName(DAP(difnam))
 {
+        std::ostringstream os;
+        os << ipcaddr << "_" << difnam;
+        compositeAPN = APN(os.str().c_str());
 }
 
 Address::~Address()
 {
+    ipcAddress = APN();
+    difName = DAP();
+    compositeAPN = APN();
 }
 
 const DAP& Address::getDifName() const {
@@ -53,6 +84,10 @@ std::string Address::info() const {
 
 bool Address::isUnspecified() const {
     return ipcAddress.getName().empty() && difName.getName().empty();
+}
+
+const APN& Address::getCompositeApn() const {
+    return compositeAPN;
 }
 
 void Address::setIpcAddress(const APN& ipcAddress) {

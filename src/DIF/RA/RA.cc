@@ -54,11 +54,13 @@ void RA::initialize()
     rmtQM = (RMTQueueManager*) this->getParentModule()->getParentModule()->getModuleByPath(".rmt.rmtQueueManager");
 
     // initialize attributes
-    processName = getParentModule()->getParentModule()->par(PAR_IPCADDR).stdstringValue();
-
+    std::ostringstream os;
+    os << getParentModule()->getParentModule()->par(PAR_IPCADDR).stdstringValue()
+       << "_" << getParentModule()->getParentModule()->par(PAR_DIFNAME).stdstringValue();
+    processName  = os.str();
 
     initSignalsAndListeners();
-	initQoSCubes();
+    initQoSCubes();
 
 	// determine and set RMT mode of operation
 	setRmtMode();
@@ -420,8 +422,8 @@ void RA::createFlow(Flow *flow)
         // we're ready to go!
         // update the flow table
         flTable->insert(flow, fab, outQ);
-        // update the PDU forwarding table (with an ugly hack for now)
-        fwTable->insert(Address(flow->getDstApni().getApn().getName().c_str(), "bogus"), flow->getConId().getQoSId(), outQ);
+        // update the PDU forwarding table
+        fwTable->insert(Address(flow->getDstApni().getApn().getName()), flow->getConId().getQoSId(), outQ);
     }
     else
     {
@@ -510,8 +512,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     }
 
     // see if any appropriate (N-1)-flow already exists
-    // FIXME: this variable needs to contain the whole Address object!
-    std::string dstAddr = flow->getDstNeighbor().getIpcAddress().getName();
+    std::string dstAddr = flow->getDstNeighbor().getCompositeApn().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
     FlowTableItem* curFlow = NULL;

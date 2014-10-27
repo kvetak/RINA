@@ -9,14 +9,14 @@
 				<APN apn="App2">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>				
-				<APN apn="11">
+				<APN apn="11_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>		
-				<APN apn="22">
+				</APN>	
+				<APN apn="22_Layer11">
 					<DIF difName="Layer02" ipcAddress="2" />
-				</APN>								
-				<APN apn="33">
-					<DIF difName="Layer01" ipcAddress="3" />
+				</APN>									
+				<APN apn="33_Layer11">
+					<DIF difName="Layer01" ipcAddress="3" />				
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>				
 			</Directory>
@@ -41,13 +41,13 @@
 				<APN apn="App2">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>				
-				<APN apn="11">
+				<APN apn="11_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
 				</APN>	
-				<APN apn="22">
+				<APN apn="22_Layer11">
 					<DIF difName="Layer02" ipcAddress="2" />
 				</APN>									
-				<APN apn="33">
+				<APN apn="33_Layer11">
 					<DIF difName="Layer01" ipcAddress="3" />				
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>				
@@ -74,13 +74,13 @@
 				<APN apn="App2">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>			
-				<APN apn="11">
+				<APN apn="11_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>					
-				<APN apn="22">
-					<DIF difName="Layer02" ipcAddress="2" />
 				</APN>	
-				<APN apn="33">
+				<APN apn="22_Layer11">
+					<DIF difName="Layer02" ipcAddress="2" />
+				</APN>									
+				<APN apn="33_Layer11">
 					<DIF difName="Layer01" ipcAddress="3" />				
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>								
