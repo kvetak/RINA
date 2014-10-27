@@ -544,7 +544,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(),
                                     targetFlow->getRmtQueue());
         // add another fwtable entry for direct srcApp->dstApp messages
-        fwTable->insert(Address(flow->getDstApni().getApn().getName()), qosId,
+        fwTable->insert(Address(flow->getDstAddr().getCompositeApn().getName()), qosId,
                         targetFlow->getRmtQueue());
     }
 
