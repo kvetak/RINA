@@ -15,39 +15,46 @@
 
 #include "APN.h"
 
-APN::APN() {
+APN::APN()
+{
     this->name = "";
 }
 
-APN::APN(std::string nam) {
+APN::APN(std::string nam)
+{
     this->setName(nam);
 }
 
-
-APN::~APN() {
+APN::~APN()
+{
     this->name = "";
 }
 
-const std::string& APN::getName() const {
+const std::string& APN::getName() const
+{
     return name;
 }
 
-void APN::setName(const std::string& name) {
+void APN::setName(const std::string& name)
+{
     this->name = name;
 }
 
-std::string APN::info() const{
+std::string APN::info() const
+{
     std::ostringstream os;
     os << this->getName();
     return os.str();
 }
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const APN& apn) {
+std::ostream& operator<< (std::ostream& os, const APN& apn)
+{
     return os << apn.info();
 }
 
-std::ostream& operator <<(std::ostream& os, const APNList& apns) {
+std::ostream& operator <<(std::ostream& os, const APNList& apns)
+{
     for (ApnCItem it = apns.begin(); it != apns.end(); ++it) {
         os << *it << " ";
     }

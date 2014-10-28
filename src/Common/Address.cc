@@ -59,46 +59,58 @@ Address::~Address()
     apname = APN();
 }
 
-const DAP& Address::getDifName() const {
+const DAP& Address::getDifName() const
+{
     return difName;
 }
 
-void Address::setDifName(const DAP& difName) {
+void Address::setDifName(const DAP& difName)
+{
     this->difName = difName;
 }
 
-const APN& Address::getIpcAddress() const {
+const APN& Address::getIpcAddress() const
+{
     return ipcAddress;
 }
 
-bool Address::operator ==(const Address& other) const {
-    return ipcAddress == other.ipcAddress && difName == other.difName;
+bool Address::operator ==(const Address& other) const
+{
+    return ipcAddress == other.ipcAddress
+            && difName == other.difName
+            && apname == other.apname;
 }
 
-std::string Address::info() const {
+std::string Address::info() const
+{
     std::ostringstream os;
     if (!ipcAddress.getName().empty() && !difName.getName().empty())
         os << ipcAddress << "(" << difName << ")";
     return os.str();
 }
 
-bool Address::isUnspecified() const {
+bool Address::isUnspecified() const
+{
     return ipcAddress.getName().empty() && difName.getName().empty();
 }
 
-const APN& Address::getApname() const {
+const APN& Address::getApname() const
+{
     return apname;
 }
 
-void Address::setIpcAddress(const APN& ipcAddress) {
+void Address::setIpcAddress(const APN& ipcAddress)
+{
     this->ipcAddress = ipcAddress;
 }
 
-std::ostream& operator <<(std::ostream& os, const Address& addr) {
+std::ostream& operator <<(std::ostream& os, const Address& addr)
+{
     return os << addr.info();
 }
 
-std::ostream& operator <<(std::ostream& os, const Addresses& dims) {
+std::ostream& operator <<(std::ostream& os, const Addresses& dims)
+{
     for (AddrCItem it = dims.begin(); it != dims.end(); ++it)
         os << it->info() << endl;
     return os;
