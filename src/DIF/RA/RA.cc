@@ -109,11 +109,11 @@ void RA::setRmtMode()
     }
 
     rmt->setSchedulingPolicy(new LongestQFirst);
-    EV << rmt->getSchedulingPolicy()->getName() << endl;
 }
 
 
-void RA::initQoSCubes() {
+void RA::initQoSCubes()
+{
     cXMLElement* qosXml = NULL;
     if (par(PAR_QOSDATA).xmlValue() != NULL && par(PAR_QOSDATA).xmlValue()->hasChildren())
         qosXml = par(PAR_QOSDATA).xmlValue();
@@ -306,7 +306,7 @@ void RA::bindMediumToRMTQueue()
  */
 RMTQueue* RA::bindLowerFlowToRmtQueue(cModule* ipc, Flow* flow)
 {
-
+    EV << "attempting to bind an (N-1)-flow to a RMT queue..." << endl;
     int portId = flow->getSrcPortId();
     /*
     if ( difAllocator->isAppLocal(flow->getDstApni().getApn()) )
@@ -436,7 +436,8 @@ void RA::createFlow(Flow *flow)
  *
  * @param flow specified flow object
  */
-void RA::createFlowWithoutAllocate(Flow* flow) {
+void RA::createFlowWithoutAllocate(Flow* flow)
+{
     Enter_Method("createFlowWoAlloc()");
 
     //Ask DA which IPC to use to reach dst App
@@ -470,7 +471,8 @@ void RA::createFlowWithoutAllocate(Flow* flow) {
     signalizeCreateFlowPositiveToRibd(flow);
 }
 
-void RA::initSignalsAndListeners() {
+void RA::initSignalsAndListeners()
+{
     cModule* catcher2 = this->getParentModule()->getParentModule();
 
     sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
@@ -478,9 +480,6 @@ void RA::initSignalsAndListeners() {
 
     lisRACreFlow = new LisRACreFlow(this);
     catcher2->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
-
-
-
 }
 
 /**
@@ -512,19 +511,20 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         return true;
     }
 
-    // see if any appropriate (N-1)-flow already exists
-    std::string dstAddr = flow->getDstNeighbor().getApname().getName();
+    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
+    std::string dstAddr = flow->getDstAddr().getApname().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
+    // see if any appropriate (N-1)-flow already exists
     FlowTableItem* curFlow = NULL;
-    curFlow = flTable->lookup(dstAddr, qosId);
+    curFlow = flTable->lookup(neighAddr, qosId);
 
     if (curFlow == NULL)
     { // we need to create a new (N-1)-flow to suit our needs
-        EV << "creating an (N-1)-flow (dst AP " << dstAddr << ")" << endl;
+        EV << "creating an (N-1)-flow (dst Addr " << neighAddr << ")" << endl;
 
         APNamingInfo src = APNamingInfo(APN(processName));
-        APNamingInfo dst = APNamingInfo(APN(dstAddr));
+        APNamingInfo dst = APNamingInfo(APN(neighAddr));
 
         Flow *lowerFlow = new Flow(src, dst);
         lowerFlow->setQosParameters(flow->getQosParameters());
@@ -534,19 +534,21 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     EV << "binding a flow to an (N-1)-flow" << endl;
 
     // add efcpi->rmtQueue mapping for direct multiplexing
-    FlowTableItem* targetFlow = flTable->lookup(dstAddr, qosId);
+    FlowTableItem* targetFlow = flTable->lookup(neighAddr, qosId);
     if (targetFlow == NULL)
     {
         EV << "!!! something went wrong! there isn't any suitable (N-1)-flow present for dst "
-           << dstAddr << " so it won't be multiplexed further." << endl;
+           << neighAddr << " so it won't be multiplexed further." << endl;
     }
     else
     {
         rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(),
                                     targetFlow->getRmtQueue());
-        // add another fwtable entry for direct srcApp->dstApp messages
-        fwTable->insert(Address(flow->getDstAddr().getApname().getName()), qosId,
-                        targetFlow->getRmtQueue());
+        // add another fwtable entry for direct srcApp->dstApp messages (if needed)
+        if (neighAddr != dstAddr)
+        {
+            fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtQueue());
+        }
     }
 
     return false;

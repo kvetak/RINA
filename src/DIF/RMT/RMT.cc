@@ -420,6 +420,7 @@ void RMT::handleMessage(cMessage *msg)
                 waitingMsgs--;
             }
         }
+        delete msg;
     }
     else
     {
