@@ -30,7 +30,7 @@
  * and concatenation of previous two that should be used as unique APN.
  *
  * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Last refactorized and documented on 2014-10-28
+ * @date Last refactorized and documented on 2014-10-29
  */
 class Address {
   public:

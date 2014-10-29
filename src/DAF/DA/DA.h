@@ -42,6 +42,7 @@ class DA : public cSimpleModule
     const Address* resolveApnToBestAddress(const APN& apn, const DAP& difName);
 
     const APNList* findApnNeigbors(const APN& apn);
+    const APNList* findNeigborApns(const APN& neighbor);
 
     //Methods checking local-ness relevant to this DA
     bool isAppLocal(const APN& apn);

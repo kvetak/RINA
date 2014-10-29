@@ -19,5 +19,6 @@ simple SearchTable
 {
     parameters:
 	    @display("i=block/table2");
-	    xml configData = default(xml("<SearchTable></SearchTable>"));
+	    xml daConfigData = default(xml("<DA><SearchTable/></DA>")); 
+	    xml configData = default(daConfigData);
 }

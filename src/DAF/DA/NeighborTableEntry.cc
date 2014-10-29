@@ -57,3 +57,13 @@ void NeighborTableEntry::addNeighbor(const APN& neighbor) {
 std::ostream& operator <<(std::ostream& os, const NeighborTableEntry& nte) {
     return os << nte.info();
 }
+
+bool NeighborTableEntry::hasNeighbor(const APN& neighbor) const
+{
+    for (ApnCItem it = Neigbors.begin(); it != Neigbors.end(); ++it) {
+        if (*it == neighbor)
+            return true;
+    }
+    return false;
+
+}

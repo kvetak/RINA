@@ -22,8 +22,8 @@
 #include "ExternConsts.h"
 
 typedef std::list<NeighborTableEntry> NeighborEntries;
-typedef NeighborEntries::iterator NeigborItem;
-typedef NeighborEntries::const_iterator NeighborCItem;
+typedef NeighborEntries::iterator NeiEntryItem;
+typedef NeighborEntries::const_iterator NeiEntryCItem;
 
 //Constants
 extern const char*   ELEM_NEIGHTAB;
@@ -35,6 +35,7 @@ class NeighborTable : public cSimpleModule
     void addNeighborEntry(const APN& apn);
     NeighborTableEntry* findNeighborEntryByApn(const APN& apn);
     const APNList* findNeighborsByApn(const APN& apn);
+    const APNList* findApnsByNeighbor(const APN& neighbor);
     void addNewNeighbor(const APN& apn, const APN& neighbor);
     void removeNeighborEntry(const APN& apn);
   protected:

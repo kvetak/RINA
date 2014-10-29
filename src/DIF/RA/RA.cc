@@ -476,6 +476,16 @@ void RA::createFlowWithoutAllocate(Flow* flow)
     // we're ready to go!
     // update the PDU forwarding table
     fwTable->insert(Address(flow->getDstApni().getApn().getName()), flow->getConId().getQoSId(), outQ);
+    // add other accessible applications into forwarding table
+    const APNList* remoteApps = difAllocator->findNeigborApns(flow->getDstApni().getApn());
+    if (remoteApps)
+    {
+        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
+        {
+            Address addr = Address(it->getName());
+            fwTable->insert(addr, flow->getConId().getQoSId(), outQ);
+        }
+    }
 
     signalizeCreateFlowPositiveToRibd(flow);
 }

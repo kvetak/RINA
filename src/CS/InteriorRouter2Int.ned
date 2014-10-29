@@ -26,10 +26,10 @@ module InteriorRouter2Int
     gates:
         inout medium[2];
     submodules:
-        ipcProcess1: IPCProcess {
+        ipcProcess0: IPCProcess {
             @display("p=65,145");
         }
-        ipcProcess2: IPCProcess {
+        ipcProcess1: IPCProcess {
             @display("p=205,145");
         }
         relayIpc: IPCProcess {
@@ -38,9 +38,9 @@ module InteriorRouter2Int
         difAllocator: DIFAllocator {
             @display("p=227,53");
         }
-    connections allowunconnected:
-        ipcProcess1.southIo++ <--> medium++;
-        ipcProcess2.southIo++ <--> medium++;
+    connections:
+        ipcProcess0.southIo++ <--> medium[0];
+        ipcProcess1.southIo++ <--> medium[1];
+        relayIpc.southIo++ <--> ipcProcess0.northIo++;
         relayIpc.southIo++ <--> ipcProcess1.northIo++;
-        relayIpc.southIo++ <--> ipcProcess2.northIo++;
 }

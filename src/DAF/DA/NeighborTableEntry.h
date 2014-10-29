@@ -34,6 +34,7 @@ class NeighborTableEntry {
     void setNeigbors(const APNList& neigbors);
 
     void addNeighbor(const APN& neighbor);
+    bool hasNeighbor(const APN& neighbor) const;
 
   private:
     APN Apn;
