@@ -31,8 +31,8 @@ class FlowTable : public cSimpleModule
 
   public:
     void insert(const FlowTableItem* entry);
-    void insert(Flow* flow, FABase* fa, RMTQueue* queue);
-    void remove(FlowTableItem* flow);
+    void insert(Flow* flow, FABase* fa, RMTQueue* inQ, RMTQueue* outQ, std::string gateName);
+    void remove(Flow* flow);
     virtual FlowTableItem* lookup(std::string addr, short qosId);
     virtual FlowTableItem* lookup(Flow* flow);
 

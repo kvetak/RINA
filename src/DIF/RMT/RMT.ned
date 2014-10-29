@@ -16,10 +16,13 @@
 package rina.DIF.RMT;
 
 simple RMT
-{
-    @display("i=block/classifier");
+{    
+    parameters:
+		double queueServiceTime = default(0.0);
+		@display("i=block/classifier");    
+		
     gates:
         //inout efcpIo;
         inout southIo[];
-        inout ribdIo;
+        inout ribdIo;        
 }

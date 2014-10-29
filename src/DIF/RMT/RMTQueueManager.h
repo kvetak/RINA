@@ -21,6 +21,7 @@
 #include "RMTQueue.h"
 
 typedef std::vector<RMTQueue*>  RMTQueues;
+typedef RMTQueues::iterator  RMTQueuesIter;
 
 class RMTQueueManager : public cSimpleModule
 {

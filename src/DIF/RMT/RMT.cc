@@ -26,8 +26,6 @@
 
 Define_Module(RMT);
 
-const int QUEUE_SERVICE_TIME = 0.0;
-
 RMT::RMT()
 {
     relayOn = false;
@@ -83,7 +81,7 @@ void RMT::setSchedulingPolicy(RMTSchedulingBase* policy)
  */
 void RMT::scheduleServiceEnd()
 {
-    scheduleAt(simTime() + QUEUE_SERVICE_TIME, new cMessage("queueServiceDone"));
+    scheduleAt(simTime() + par("queueServiceTime"), new cMessage("queueServiceDone"));
 }
 
 /**
@@ -165,6 +163,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     this->deleteGate(gateName_str.str().c_str());
     rmtModule->deleteGate(gateName_str.str().c_str());
 
+    deleteEfcpiToQueueMapping(efcpiId);
     efcpiOut.erase(efcpiId);
     efcpiIn.erase(efcpiId);
 }
@@ -178,6 +177,16 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
 void RMT::addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue)
 {
     efcpiToQueue[efcpiIn[cepId]] = outQueue;
+}
+
+/**
+ * Deletes a direct EFCPI->queue mapping.
+ *
+ * @param cepId EFCP ID
+ */
+void RMT::deleteEfcpiToQueueMapping(unsigned cepId)
+{
+    efcpiToQueue.erase(efcpiIn[cepId]);
 }
 
 /**
@@ -315,6 +324,7 @@ void RMT::portToPort(cMessage* msg)
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
         qosId = -1;
     }
+
     cGate* outGate = NULL;
 
     if (onWire)
@@ -420,6 +430,7 @@ void RMT::handleMessage(cMessage *msg)
                 waitingMsgs--;
             }
         }
+        delete msg;
     }
     else
     {
