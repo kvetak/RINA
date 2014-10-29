@@ -32,9 +32,9 @@ void FlowTable::insert(const FlowTableItem* entry)
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa, RMTQueue* queue)
+void FlowTable::insert(Flow* flow, FABase* fa, RMTQueue* inQ, RMTQueue* outQ, std::string gateName)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa, queue);
+    FlowTableItem entry = FlowTableItem(flow, fa, inQ, outQ, gateName);
     flows.push_back(entry);
 }
 
@@ -56,7 +56,8 @@ FlowTableItem* FlowTable::lookup(std::string addr, short qosId)
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         FlowTableItem a = *it;
-        if ((a.getFlow()->getDstApni().getApn().getName() == addr) && a.getFlow()->getConId().getQoSId() == qosId)
+        if ((a.getFlow()->getDstApni().getApn().getName() == addr) &&
+             a.getFlow()->getConId().getQoSId() == qosId)
         {
             return &(*it);
         }
@@ -64,6 +65,18 @@ FlowTableItem* FlowTable::lookup(std::string addr, short qosId)
     return NULL;
 }
 
-void FlowTable::remove(FlowTableItem* flow)
+void FlowTable::remove(Flow* flow)
 {
+    FlTableIter i = flows.begin();
+    while (i != flows.end())
+    {
+        if (i->getFlow() == flow)
+        {
+            i = flows.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
 }

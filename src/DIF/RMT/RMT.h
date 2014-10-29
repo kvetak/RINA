@@ -82,6 +82,7 @@ class RMT : public RMTBase
     void createEfcpiGate(unsigned int efcpiId);
     void deleteEfcpiGate(unsigned int efcpiId);
     void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
+    void deleteEfcpiToQueueMapping(unsigned cepId);
 
     void setOnWire(bool status) { onWire = status; };
     bool isOnWire() { return onWire; };

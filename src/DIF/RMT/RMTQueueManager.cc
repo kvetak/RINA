@@ -90,7 +90,34 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
 
 void RMTQueueManager::removeQueue(RMTQueue* queue)
 {
+    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
 
+    if (queue->getType() == RMTQueue::OUTPUT)
+    {
+        queue->getRmtAccessGate()->disconnect();
+    }
+    else
+    {
+        queue->getOutputGate()->disconnect();
+    }
+
+    rmt->deleteGate(queue->getName());
+
+    // remove item from table
+    RMTQueuesIter i = queues.begin();
+    while (i != queues.end())
+    {
+        if (*i == queue)
+        {
+            i = queues.erase(i);
+        }
+        else
+        {
+            ++i;
+        }
+    }
+
+    queue->deleteModule();
 }
 
 RMTQueue* RMTQueueManager::getFirst(RMTQueue::queueType type)

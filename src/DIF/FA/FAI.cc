@@ -313,7 +313,7 @@ bool FAI::deleteBindings() {
     gateIpcDownOut->disconnect();
     gateIpcDownIn->disconnect();
 
-    //Create bindings in RMT
+    //Delete bindings in RMT
     RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
 
     std::ostringstream nameRmtUp;
@@ -331,6 +331,8 @@ bool FAI::deleteBindings() {
     gateRmtUpIn->disconnect();
     gateEfcpDownIn->disconnect();
     gateEfcpDownOut->disconnect();
+
+    rmtModule->deleteEfcpiGate(cepId);
 
     return true;
 }

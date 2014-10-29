@@ -40,7 +40,7 @@ class PDUTableEntry
 
   public:
     PDUTableEntry();
-    PDUTableEntry(Address& destaddr, int qosid, RMTQueue*);
+    PDUTableEntry(Address& destaddr, int qosid, RMTQueue* queue);
     virtual ~PDUTableEntry();
 
     std::string info() const;

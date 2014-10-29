@@ -60,6 +60,7 @@ class RA : public RABase
   public:
     virtual void createFlow(Flow *flow);
     virtual void createFlowWithoutAllocate(Flow *flow);
+    virtual void removeFlow(Flow *flow);
 
     virtual bool bindFlowToLowerFlow(Flow* flow);
     virtual void bindFlowToMedium(Flow* flow);
@@ -82,9 +83,7 @@ class RA : public RABase
     void initQoSCubes();
     void setRmtMode();
 
-    void removeFlow();
-
-    RMTQueue* bindLowerFlowToRmtQueue(cModule* ipc, Flow* flow);
+    RMTQueue* bindLowerFlowToRmtQueue(cModule* ipc, FABase* fab, Flow* flow);
     void bindMediumToRMTQueue();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);
