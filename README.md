@@ -3,7 +3,7 @@ RINA Simulator
 
 ###Version progress
 
-* October 2014 - version for Barcelona F2F meeting with working SimpleRelay and TwoCSs scenarios
+* October 2014 - version for Madrid F2F meeting with working SimpleRelay and TwoCSs scenarios
 
 ###Directory structure
 
