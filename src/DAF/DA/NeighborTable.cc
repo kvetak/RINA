@@ -40,7 +40,7 @@ void NeighborTable::addNeighborEntry(const APN& apn) {
 }
 
 NeighborTableEntry* NeighborTable::findNeighborEntryByApn(const APN& apn) {
-    for (NeigborItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
+    for (NeiEntryItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
         if (it->getApn() == apn)
             return &(*it);
     }
@@ -58,6 +58,16 @@ void NeighborTable::addNewNeighbor(const APN& apn, const APN& neighbor) {
 
 void NeighborTable::removeNeighborEntry(const APN& apn) {
     NeiTable.remove(*(findNeighborEntryByApn(apn)));
+}
+
+const APNList* NeighborTable::findApnsByNeighbor(const APN& neighbor) {
+    APNList* apnlist = new APNList();
+    for (NeiEntryCItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
+        if (it->hasNeighbor(neighbor)) {
+            apnlist->push_back(it->getApn());
+        }
+    }
+    return apnlist;
 }
 
 void NeighborTable::parseConfig(cXMLElement* config) {
