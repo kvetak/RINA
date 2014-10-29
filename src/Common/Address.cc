@@ -27,11 +27,9 @@ Address::Address(std::string composite)
     std::vector<std::string> tokens;
     while ((pos = composite.find(delimiter)) != std::string::npos) {
         tokens.push_back(composite.substr(0, pos));
-        EV << tokens.back() << endl;
         composite.erase(0, pos + delimiter.length());
     }
     tokens.push_back(composite);
-    EV << tokens.back() << endl;
 
     if (tokens.size() == 2) {
         ipcAddress = APN(tokens.front());

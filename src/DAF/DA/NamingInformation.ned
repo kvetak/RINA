@@ -19,5 +19,6 @@ simple NamingInformation
 {
     parameters:
 	    @display("i=block/table");
-	    xml configData = default(xml("<NamingTable></NamingTable>"));
+	    xml daConfigData = default(xml("<DA><NamingTable/></DA>"));
+	    xml configData = default(daConfigData);
 }

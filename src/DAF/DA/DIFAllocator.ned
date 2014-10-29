@@ -19,27 +19,27 @@ module DIFAllocator
 {
     parameters:
     	@display("i=misc/node,green;bgb=487,206");
-    	xml configData = default(xml("<DA />"));
+    	xml configData = default(xml("<DA><NeighborTable/><NamingTable/><SearchTable/><Directory/></DA>"));
     submodules:
         namingInformation: NamingInformation {
             parameters:
             	@display("p=80,143");
-            	configData = configData;
+            	daConfigData = configData;
         }
         neighborTable: NeighborTable {
             parameters:
 	            @display("p=403,143");
-	            configData = configData;
+	            daConfigData = configData;
         }
         directory: Directory {
             parameters:
     	        @display("p=193,143");
-    	        configData = configData;
+    	        daConfigData = configData;
         }
         searchTable: SearchTable {
             parameters:
 	            @display("p=300,143");
-	            configData = configData;
+	            daConfigData = configData;
         }
         da: DA {
             parameters:        

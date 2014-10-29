@@ -60,8 +60,8 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     EV << "CreateFlowPositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-
-        FAITableEntry* entry = fa->getFaiTable()->findEntryByDstAddressAndFwd(flow->getDstApni().getApn());
+        EV << "-----\n" << flow->info() << endl;
+        FAITableEntry* entry = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
         if (fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
             && entry )
 
@@ -74,7 +74,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
-    EV << "CreateFlowPositive initiated by " << src->getFullPath()
+    EV << "CreateFlowResponsePositive initiated by " << src->getFullPath()
        << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {

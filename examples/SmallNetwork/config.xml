@@ -6,21 +6,32 @@
 				<APN apn="App1">
 					<DIF difName="Layer11" ipcAddress="101" />
 				</APN>
-				<APN apn="App2">
+				<APN apn="App5">
 					<DIF difName="Layer11" ipcAddress="105" />
 				</APN>
+				
 				<APN apn="101_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
 				</APN>	
 				<APN apn="105_Layer11">
 					<DIF difName="Layer07" ipcAddress="5" />
 				</APN>
-
+				
 				<APN apn="106_Layer11">
 					<DIF difName="Layer01" ipcAddress="6" />
 					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>				
+					<DIF difName="Layer03" ipcAddress="8" />					
+				</APN>	
+				<APN apn="107_Layer11">
+					<DIF difName="Layer03" ipcAddress="9" />
+					<DIF difName="Layer04" ipcAddress="10" />
+					<DIF difName="Layer05" ipcAddress="11" />
+				</APN>					
+				<APN apn="108_Layer11">
+					<DIF difName="Layer04" ipcAddress="12" />
+					<DIF difName="Layer06" ipcAddress="13" />
+					<DIF difName="Layer07" ipcAddress="14" />
+				</APN>							
 			</Directory>
 			<NeighborTable>
 				<APN apn="105_Layer11">
@@ -32,101 +43,24 @@
 
 	<Host id="host2">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
 
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>				
-			</Directory>
 		</DA>	
 	</Host>
 
 	<Host id="host3">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
 
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>				
-			</Directory>
 		</DA>	
 	</Host>
 
 	<Host id="host4">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
 
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>				
-			</Directory>
 		</DA>	
 	</Host>
 
 	<Host id="host5">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
-
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>				
-			</Directory>
 			<NeighborTable>
 				<APN apn="101_Layer11">
 					<Neighbor apn="108_Layer11" />
@@ -141,9 +75,10 @@
 				<APN apn="App1">
 					<DIF difName="Layer11" ipcAddress="101" />
 				</APN>
-				<APN apn="App2">
+				<APN apn="App5">
 					<DIF difName="Layer11" ipcAddress="105" />
 				</APN>				
+
 				<APN apn="101_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
 				</APN>	
@@ -154,15 +89,15 @@
 				<APN apn="106_Layer11">
 					<DIF difName="Layer01" ipcAddress="6" />
 					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>
+					<DIF difName="Layer03" ipcAddress="8" />					
+				</APN>	
 				<APN apn="107_Layer11">
 					<DIF difName="Layer03" ipcAddress="9" />
 					<DIF difName="Layer04" ipcAddress="10" />
 					<DIF difName="Layer05" ipcAddress="11" />
-				</APN>
+				</APN>					
 				<APN apn="108_Layer11">
-					<DIF difName="Layer05" ipcAddress="12" />
+					<DIF difName="Layer04" ipcAddress="12" />
 					<DIF difName="Layer06" ipcAddress="13" />
 					<DIF difName="Layer07" ipcAddress="14" />
 				</APN>
@@ -177,81 +112,22 @@
 	</Router>
 	<Router id="router2">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
-
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>
-				<APN apn="107_Layer11">
-					<DIF difName="Layer03" ipcAddress="9" />
-					<DIF difName="Layer04" ipcAddress="10" />
-					<DIF difName="Layer05" ipcAddress="11" />
-				</APN>
-				<APN apn="108_Layer11">
-					<DIF difName="Layer05" ipcAddress="12" />
-					<DIF difName="Layer06" ipcAddress="13" />
-					<DIF difName="Layer07" ipcAddress="14" />
-				</APN>
-							
-			</Directory>
 			<NeighborTable>
 				<APN apn="105_Layer11">
 					<Neighbor apn="108_Layer11" />
-				</APN>			
+				</APN>
+				<APN apn="101_Layer11">
+					<Neighbor apn="106_Layer11" />
+				</APN>				
 			</NeighborTable>
 		</DA>	
 	</Router>
 	<Router id="router3">
 		<DA>
-			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer11" ipcAddress="101" />
-				</APN>
-				<APN apn="App2">
-					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>				
-				<APN apn="101_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="105_Layer11">
-					<DIF difName="Layer07" ipcAddress="5" />
-				</APN>
-
-				<APN apn="106_Layer11">
-					<DIF difName="Layer01" ipcAddress="6" />
-					<DIF difName="Layer02" ipcAddress="7" />
-					<DIF difName="Layer03" ipcAddress="8" />
-				</APN>
-				<APN apn="107_Layer11">
-					<DIF difName="Layer03" ipcAddress="9" />
-					<DIF difName="Layer04" ipcAddress="10" />
-					<DIF difName="Layer05" ipcAddress="11" />
-				</APN>
-				<APN apn="108_Layer11">
-					<DIF difName="Layer05" ipcAddress="12" />
-					<DIF difName="Layer06" ipcAddress="13" />
-					<DIF difName="Layer07" ipcAddress="14" />
-				</APN>
-								
-			</Directory>
 			<NeighborTable>
-				<APN apn="105_Layer11">
-					<Neighbor apn="108_Layer11" />
-				</APN>			
+				<APN apn="101_Layer11">
+					<Neighbor apn="107_Layer11" />
+				</APN>						
 			</NeighborTable>
 		</DA>	
 	</Router>	

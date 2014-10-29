@@ -35,23 +35,23 @@ std::string FAITable::info() const {
     return os.str();
 }
 
-FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& ipcAddr) {
+FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& apname) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getCFlow()->getDstAddr().getApname() == ipcAddr
+        if (tft.getCFlow()->getDstAddr().getApname() == apname
                 && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
             return &(*it);
     }
     return NULL;
 }
 
-FAITableEntry* FAITable::findEntryBySrcAddressAndFwd(const APN& ipcAddr) {
+FAITableEntry* FAITable::findEntryBySrcAddressAndFwd(const APN& apname) {
     //EV << "Look APN> " << ipcAddr << endl;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         //EV << "XXXX " << tft.getCFlow()->getSrcAddr().getIpcAddress() << endl
         //   << "YYYY " << (tft.getAllocateStatus() == FAITableEntry::FORWARDED) << endl;
-        if (tft.getCFlow()->getSrcAddr().getIpcAddress() == ipcAddr
+        if (tft.getCFlow()->getSrcAddr().getIpcAddress() == apname
                 && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
             return &(*it);
     }
@@ -70,6 +70,15 @@ FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     return NULL;
 }
 
+FAITableEntry* FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstNeighbor().getApname() == apname
+                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+            return &(*it);
+    }
+    return NULL;
+}
 
 void FAITable::handleMessage(cMessage *msg)
 {
