@@ -65,6 +65,10 @@ const Address* DA::resolveApnToBestAddress(const APN& apn, const DAP& difName) {
     return NULL;
 }
 
+const APNList* DA::findNeigborApns(const APN& neighbor) {
+    return NeighborTab->findApnsByNeighbor(neighbor);
+}
+
 void DA::initPointers() {
     //Retrieve pointers to submodules
     Dir = ModuleAccess<Directory>(MOD_DIRECTORY).get();
