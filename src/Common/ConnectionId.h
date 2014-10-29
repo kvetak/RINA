@@ -31,7 +31,7 @@ extern const int VAL_UNDEF_CEPID;
 
 /**
  * @brief Connection identifier as defined in specifications
- * @authors Vladimir Vesely
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
  * @date Last refactorized and documented 2014-10-28
  */
 class ConnectionId: public cObject {
@@ -79,7 +79,7 @@ class ConnectionId: public cObject {
 
     /**
      * @brief Setter of source Connection-Endpoint identifier
-     * @param destCepId A new source CEP-id value
+     * @param srcCepId A new source CEP-id value
      */
     void setSrcCepId(int srcCepId);
 

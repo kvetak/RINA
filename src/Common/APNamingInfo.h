@@ -30,7 +30,7 @@
  * AE name, AE-instance id. Only the first one is mandatory, the rest
  * is optional.
  *
- * @authors Vladimir Vesely
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
  * @date Last refactorized and documented on 2014-10-28
  */
 class APNamingInfo

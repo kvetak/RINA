@@ -65,7 +65,6 @@ extern const char* SIG_RA_FlowDeallocated;
 extern const char* SIG_RA_CreateFlowPositive;
 extern const char* SIG_RA_CreateFlowNegative;
 
-
 //RIB
 extern const char* SIG_RIB_CreateRequestFlow;
 extern const char* SIG_RIB_CreateResponseFlow;

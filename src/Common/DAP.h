@@ -21,6 +21,8 @@
 
 /**
  * @brief Distributed Application Process name a.k.a. DAP class
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2014-10-28
  */
 class DAP {
   public:

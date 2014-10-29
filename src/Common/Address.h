@@ -29,7 +29,7 @@
  * Class contains three attributes: IPC address identifier, common DIF name
  * and concatenation of previous two that should be used as unique APN.
  *
- * @authors Vladimir Vesely
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
  * @date Last refactorized and documented on 2014-10-28
  */
 class Address {
@@ -42,7 +42,7 @@ class Address {
 
     /**
      * @brief Address constructor from unique APN
-     * @param composite Expected is a string with following syntax <ipcaddress>_<difname>
+     * @param composite Expected is a string with following syntax @<ipcaddress@>_@<difname@>
      */
     Address(std::string composite);
 
@@ -81,7 +81,7 @@ class Address {
 
     /**
      * @brief Getter of unique APN which is initialized during object construction
-     * @return Returns APN in form of <ipcaddress>_<difname>
+     * @return Returns APN in form of @<ipcaddress@>_@<difname@>
      */
     const APN& getApname() const;
 
