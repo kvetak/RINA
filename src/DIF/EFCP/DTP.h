@@ -26,6 +26,7 @@
 #include "DTCP.h"
 //#include "PDU.h"
 #include "DataTransferPDU.h"
+//#include "ControlPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
 
@@ -139,7 +140,7 @@ class DTP : public cSimpleModule
     bool runInitialSequenceNumberPolicy();
     void runRcvrFlowControlPolicy();
     void runRateReductionPolicy();
-    void runRcvrAckPolicy();
+    void runRcvrAckPolicy(unsigned int seqNum);
     void runReceivingFlowControlPolicy();
     void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();

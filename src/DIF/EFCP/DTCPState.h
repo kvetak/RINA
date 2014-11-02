@@ -38,10 +38,16 @@ class DTCPState : public cObject
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
     unsigned int sndRightWinEdge;
     unsigned int rcvRightWinEdgeSent;
+    unsigned int rcvRtWinEdge;
 //    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
     //retransmissionQ
+
+    unsigned int controlSeqNum; //sequence number for ControlPDUs
+
+
+    void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
   public:
     DTCPState();
     virtual ~DTCPState();
@@ -55,6 +61,14 @@ class DTCPState : public cObject
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
 //    bool isSetDrfFlag() const;
 //    void setSetDrfFlag(bool setDrfFlag);
+    unsigned int getRcvCredit() const;
+    void setRcvCredit(unsigned int rcvCredit);
+    unsigned int getSndCredit() const;
+    void setSndCredit(unsigned int sndCredit);
+    unsigned int getRcvRtWinEdge() const;
+    void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
+    unsigned int getNextCtrlSeqNum();
+
 };
 
 #endif /* DTCPSTATE_H_ */

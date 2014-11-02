@@ -29,7 +29,7 @@ void DTPState::initDefaults(){
   dropDup = 0;
 
   //TODO A1 load it from flow->qosparameters
-  dtcpPresent = false;
+  dtcpPresent = true;
   winBased = false;
   rateBased = false;
   incompDeliv = false;

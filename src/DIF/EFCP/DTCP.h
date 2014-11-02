@@ -30,16 +30,19 @@
 #include "FlowControl.h"
 #include "RXControl.h"
 #include "DTCPState.h"
-
+#include "DTPState.h"
 #include "ControlPDU_m.h"
 #include "DTCPTimers_m.h"
 
 class DTCP: public cSimpleModule {
     friend class DTP;
   private:
+
     DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
+
+
 
     /*Timers*/
     WindowTimer* windowTimer;
@@ -61,8 +64,13 @@ public:
 
     void handleWindowTimer(WindowTimer* timer);
 
+    void updateRcvRtWinEdge(DTPState* dtpState);
+
+    unsigned int getNextCtrlSeqNum();
+
 protected:
     virtual void handleMessage(cMessage *msg);
+    virtual void initialize();
 };
 
 #endif /* DTCP_H_ */

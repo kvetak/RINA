@@ -18,13 +18,20 @@
 Define_Module(DTCP);
 
 DTCP::DTCP() {
-    // TODO Auto-generated constructor stub
-  dtcpState = new DTCPState();
+
 
 }
 
 DTCP::~DTCP() {
     // TODO Auto-generated destructor stub
+}
+
+void DTCP::initialize(){
+  // TODO Auto-generated constructor stub
+dtcpState = new DTCPState();
+
+//TODO A2 based on DTCPState create appropriate components
+rxControl = new RXControl();
 }
 
 unsigned int DTCP::getFlowControlRightWinEdge(){
@@ -41,6 +48,10 @@ void DTCP::resetWindowTimer(){
       schedule(windowTimer);
 }
 
+void DTCP::updateRcvRtWinEdge(DTPState* dtpState)
+{
+  dtcpState->updateRcvRtWinEdge(dtpState->getRcvLeftWinEdge());
+}
 
 void DTCP::handleMessage(cMessage *msg){
   if(msg->isSelfMessage()){
@@ -68,4 +79,8 @@ void DTCP::handleWindowTimer(WindowTimer* timer){
 
 void DTCP::sendAckPDU(){
 
+}
+
+unsigned int DTCP::getNextCtrlSeqNum(){
+  return dtcpState->getNextCtrlSeqNum();
 }

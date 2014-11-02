@@ -27,7 +27,18 @@
 
 DTCPState::DTCPState()
 {
-  // TODO Auto-generated constructor stub
+
+  //TODO B1
+  rcvCredit = 10;
+  sndCredit = 10; //TODO this variable should be set from the opposite side
+  immediate = true;
+  rcvRtWinEdge = rcvCredit;
+  rcvRightWinEdgeSent = 0;
+  sndRightWinEdge = sndCredit;
+
+  controlSeqNum = 1;
+
+
 
   //TODO B! Fix
 //  rtt = 10;
@@ -92,3 +103,42 @@ DTCPState::~DTCPState()
   // TODO Auto-generated destructor stub
 }
 
+unsigned int DTCPState::getRcvCredit() const
+{
+  return rcvCredit;
+}
+
+void DTCPState::setRcvCredit(unsigned int rcvCredit)
+{
+  this->rcvCredit = rcvCredit;
+}
+
+unsigned int DTCPState::getSndCredit() const
+{
+  return sndCredit;
+}
+
+void DTCPState::setSndCredit(unsigned int sndCredit)
+{
+  this->sndCredit = sndCredit;
+}
+
+unsigned int DTCPState::getRcvRtWinEdge() const
+{
+  return rcvRtWinEdge;
+}
+
+void DTCPState::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
+{
+  this->rcvRtWinEdge = rcvRtWinEdge;
+}
+
+void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
+{
+  setRcvRtWinEdge(rcvLtWinEdge + getSndCredit());
+}
+
+
+unsigned int DTCPState::getNextCtrlSeqNum(){
+  return controlSeqNum++;
+}

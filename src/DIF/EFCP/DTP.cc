@@ -340,6 +340,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     {
       state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
       //TODO A! start A-Timer (for this PDU)
+      //FIX: @Marek Why start A-timer when DTCP is not present?
     }
 //    delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
     delimitFromRMT(pdu);
@@ -1187,14 +1188,24 @@ void DTP::runRateReductionPolicy()
 }
 
 /* TODO A! either add argument to this policy (PDU* pdu) or variable currentPDU to DTP class */
-void DTP::runRcvrAckPolicy()
+void DTP::runRcvrAckPolicy(unsigned int seqNum)
 {
+
   /* Default */
   if (dtcp->dtcpState->isImmediate())
   {
-    //TODO A!
+    //TODO A2 How to remove allowed gaps?
     //Update LeftWindowEdge removing allowed gaps;
+
+
     //send an Ack/FlowControlPDU
+    AckOnlyPDU* ackPDU = new AckOnlyPDU();
+    ackPDU->setControlSeqNum(dtcp->getNextCtrlSeqNum());
+    ackPDU->setAckNackSeqNum(seqNum);
+
+    send(ackPDU, southO);
+
+    //TODO A1 Add handling for A-timer != 0
     //stop any A-Timers asscociated with this PDU and earlier ones.
 
   }
@@ -1342,6 +1353,12 @@ void DTP::svUpdate(unsigned int seqNum)
 //  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
 
+  /* XXX Don't know where else to put */
+  if(state.getRcvLeftWinEdge() + 1 == seqNum){
+    state.setRcvLeftWinEdge(seqNum);
+  }
+
+
   if (state.isFCPresent())
   {
     if (state.isWinBased())
@@ -1357,7 +1374,7 @@ void DTP::svUpdate(unsigned int seqNum)
 
   if (state.isRxPresent())
   {
-    runRcvrAckPolicy();
+    runRcvrAckPolicy(seqNum);
   }
 
   if (state.isFCPresent() && !state.isRxPresent())

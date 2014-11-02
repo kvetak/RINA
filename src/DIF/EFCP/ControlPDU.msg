@@ -18,13 +18,13 @@
 cplusplus {{
 #include "PDU.h"
 }}
-packet PDU;
+message PDU;
 
-packet ControlPDU extends PDU{
+message ControlPDU extends PDU{
     unsigned int controlSeqNum;
 }
 
-packet FlowControlPDU extends ControlPDU {
+message FlowControlPDU extends ControlPDU {
     
 	
     unsigned int rateLen;
@@ -34,40 +34,40 @@ packet FlowControlPDU extends ControlPDU {
     unsigned int myRcvRate;
 }
 
-packet NAckPDU extends ControlPDU{
+message NAckPDU extends ControlPDU{
     unsigned int ackNackSeqNum;
     type = -1;
 }
 
-packet AckOnlyPDU extends NAckPDU{
+message AckOnlyPDU extends NAckPDU{
     type = ACK_ONLY_PDU;
 }
 
-packet NackOnlyPDU extends NAckPDU{
+message NackOnlyPDU extends NAckPDU{
     type = NACK_ONLY_PDU;
 }
-packet NAck extends NAckPDU{
+message NAck extends NAckPDU{
     
 }
 
-packet NAckFlow extends FlowControlPDU{
+message NAckFlow extends FlowControlPDU{
     
 }
 
-packet AckFlowPDU extends NAckFlow{
+message AckFlowPDU extends NAckFlow{
     type = ACK_FLOW_PDU;
 }
 
-packet NackFlowPDU extends NAckFlow{
+message NackFlowPDU extends NAckFlow{
     type = NACK_FLOW_PDU;
 }
 
-packet FlowControlOnlyPDU extends FlowControlPDU{
+message FlowControlOnlyPDU extends FlowControlPDU{
     type = FLOW_ONLY_PDU;
 }
 
 
-packet SelectiveNAckFlow extends FlowControlPDU{
+message SelectiveNAckFlow extends FlowControlPDU{
     unsigned int newLeftWinEdge;
     unsigned int newRightWinEdge;
     
@@ -75,19 +75,19 @@ packet SelectiveNAckFlow extends FlowControlPDU{
     unsigned int nackList [];
 }
 
-packet SelectiveAckFlowPDU extends SelectiveNAckFlow{
+message SelectiveAckFlowPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_FLOW_PDU;
 }
 
-packet SelectiveNackFlowPDU extends SelectiveNAckFlow{
+message SelectiveNackFlowPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_FLOW_PDU;
 }
 
-packet SelectiveAckPDU extends SelectiveNAckFlow{
+message SelectiveAckPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_PDU;
 }
 
-packet SelectiveNackPDU extends SelectiveNAckFlow{
+message SelectiveNackPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_PDU;
 }
 
