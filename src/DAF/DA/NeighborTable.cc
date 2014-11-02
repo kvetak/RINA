@@ -40,7 +40,7 @@ void NeighborTable::addNeighborEntry(const APN& apn) {
 }
 
 NeighborTableEntry* NeighborTable::findNeighborEntryByApn(const APN& apn) {
-    for (NeigborItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
+    for (NeiEntryItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
         if (it->getApn() == apn)
             return &(*it);
     }
@@ -60,6 +60,16 @@ void NeighborTable::removeNeighborEntry(const APN& apn) {
     NeiTable.remove(*(findNeighborEntryByApn(apn)));
 }
 
+const APNList* NeighborTable::findApnsByNeighbor(const APN& neighbor) {
+    APNList* apnlist = new APNList();
+    for (NeiEntryCItem it = NeiTable.begin(); it != NeiTable.end(); ++it) {
+        if (it->hasNeighbor(neighbor)) {
+            apnlist->push_back(it->getApn());
+        }
+    }
+    return apnlist;
+}
+
 void NeighborTable::parseConfig(cXMLElement* config) {
     cXMLElement* mainTag = NULL;
     if (config != NULL && config->hasChildren() && config->getFirstChildWithTag(ELEM_NEIGHTAB))
@@ -68,5 +78,32 @@ void NeighborTable::parseConfig(cXMLElement* config) {
         EV << "configData parameter not initialized!" << endl;
         return;
     }
+
+    cXMLElementList apnlist = mainTag->getChildrenByTagName(ELEM_APN);
+    for (cXMLElementList::const_iterator it = apnlist.begin(); it != apnlist.end(); ++it) {
+        cXMLElement* m = *it;
+
+        if (!(m->getAttribute(ATTR_APN) && m->getFirstChildWithTag(ELEM_NEIGHBOR))) {
+            EV << "\nError when parsing NeighborTable record" << endl;
+            continue;
+        }
+
+        APN newapn = APN(m->getAttribute(ATTR_APN));
+
+        addNeighborEntry(newapn);
+
+        cXMLElementList neighborlist = m->getChildrenByTagName(ELEM_NEIGHBOR);
+        for (cXMLElementList::const_iterator jt = neighborlist.begin(); jt != neighborlist.end(); ++jt) {
+            cXMLElement* n = *jt;
+
+            if (!(n->getAttribute(ATTR_APN))) {
+                EV << "\nError when parsing Synonym record" << endl;
+                continue;
+            }
+
+            addNewNeighbor(newapn, APN(n->getAttribute(ATTR_APN)));
+        }
+    }
+
 
 }

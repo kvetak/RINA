@@ -19,32 +19,62 @@
 #include <omnetpp.h>
 #include <queue>
 
-#include "PDU.h"
-#include "DataTransferPDU_m.h"
+#include "RINASignals.h"
 
-class RMTQueue
+class RMTQueue : public cSimpleModule
 {
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
   public:
     RMTQueue();
     RMTQueue(int MaxQLength, int threshQLength);
     virtual ~RMTQueue();
 
-    void insertPDU(PDU_Base* pdu);
-    PDU_Base* popPDU();
+    enum queueType { INPUT = 'I', OUTPUT = 'O'};
+
+    RMTQueue::queueType getType();
+    void setType(RMTQueue::queueType type);
 
     int getMaxLength();
-    int getThreshLength();
-    int getLength();
-
     void setMaxLength(int value);
+
+    int getThreshLength();
     void setThreshLength(int value);
 
-  private:
-    std::queue<PDU_Base*> queue;
+    int getLength() const;
+    short getQosId();
+    std::string getDifName();
 
+    cGate* getOutputGate();
+    cGate* getInputGate();
+
+    cGate* getRmtAccessGate();
+    void setRmtAccessGate(cGate* gate);
+
+    void releasePDU();
+
+    std::string info() const;
+
+  private:
+    std::queue<cMessage*> queue;
+    const char* difName;
+    short qosId;
     int maxQLength;
     int thresholdQLength;
+    queueType type;
+
+    cGate* rmtAccessGate;
+    cGate* outputGate;
+    cGate* inputGate;
+
+    simsignal_t sigRMTPDURcvd;
+
+    void enqueuePDU(cMessage* pdu);
 
 };
+
+std::ostream& operator<< (std::ostream& os, const RMTQueue& cte);
 
 #endif

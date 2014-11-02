@@ -13,19 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTSCHEDULINGPOLICY_H_
-#define __RINA_RMTSCHEDULINGPOLICY_H_
+#include <RMTSchedulingBase.h>
 
-#include <omnetpp.h>
-
-/**
- * TODO - Generated class
- */
-class RMTSchedulingPolicy : public cSimpleModule
+RMTSchedulingBase::RMTSchedulingBase()
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-};
+    name = "base";
+}
 
-#endif
+RMTSchedulingBase::~RMTSchedulingBase()
+{
+}
+
+

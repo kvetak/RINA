@@ -26,52 +26,50 @@ ConnectionId::ConnectionId() :
 {
 }
 
-unsigned int ConnectionId::getDstCepId() const {
+int ConnectionId::getDstCepId() const
+{
     return dstCEPId;
 }
 
-void ConnectionId::setDstCepId(unsigned int destCepId) {
+void ConnectionId::setDstCepId(int destCepId)
+{
     dstCEPId = destCepId;
 }
 
-unsigned short ConnectionId::getQoSId() const {
+unsigned short ConnectionId::getQoSId() const
+{
     return qosId;
 }
 
-void ConnectionId::setQoSId(unsigned short qoSId) {
+void ConnectionId::setQoSId(unsigned short qoSId)
+{
     this->qosId = qoSId;
 }
 
-unsigned int ConnectionId::getSrcCepId() const {
+int ConnectionId::getSrcCepId() const
+{
     return srcCEPId;
 }
 
-void ConnectionId::setSrcCepId(unsigned int srcCepId) {
+void ConnectionId::setSrcCepId(int srcCepId)
+{
     srcCEPId = srcCepId;
 }
 
-ConnectionId::~ConnectionId() {
-    // TODO Auto-generated destructor stub
+ConnectionId::~ConnectionId()
+{
+    qosId = 0;
+    srcCEPId = 0;
+    dstCEPId = 0;
 }
 
-//QosCube* ConnectionId::getQosCube()
-//{
-//  return qosCube;
-//}
-//
-//void ConnectionId::setQosCube(QosCube* qosCube)
-//{
-//  this->qosCube = qosCube;
-//}
-
-ConnectionId *ConnectionId::dup() const{
-
+ConnectionId *ConnectionId::dup() const
+{
   ConnectionId* connId = new ConnectionId();
   connId->setDstCepId(this->dstCEPId);
   connId->setSrcCepId(this->srcCEPId);
   connId->setQoSId(this->qosId);
   return connId;
-
 }
 
 bool ConnectionId::operator<(const ConnectionId other) const
@@ -90,11 +88,13 @@ bool ConnectionId::operator<(const ConnectionId other) const
 
 bool ConnectionId::operator==(const ConnectionId other) const
 {
-    return ((qosId == other.qosId) && (dstCEPId == other.dstCEPId)
-            && (srcCEPId < other.srcCEPId));
+    return qosId == other.qosId
+           && dstCEPId == other.dstCEPId
+           && srcCEPId == other.srcCEPId;
 }
 
-ConnectionId& ConnectionId::swapCepIds() {
+ConnectionId& ConnectionId::swapCepIds()
+{
     int tmp = srcCEPId;
     srcCEPId = dstCEPId;
     dstCEPId = tmp;

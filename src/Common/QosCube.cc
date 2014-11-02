@@ -174,96 +174,7 @@ void QosCube::setQosId(unsigned short qoSId) {
 }
 
 std::ostream& operator <<(std::ostream& os, const QosCube& cube) {
-    if (cube.getQosId())
-        os << "QoSCube Id> " << cube.getQosId();
-    else
-        os << "QoS Parameters List>";
-
-    os << "\n   average BW = ";
-    if ( cube.getAvgBand() < 0)
-        os << STR_DONOTCARE;
-    else
-        os << cube.getAvgBand() << " bit/s";
-
-    os   << "\n   average SDU BW = ";
-    if (cube.getAvgSduBand() < 0)
-        os << STR_DONOTCARE;
-    else
-        os << cube.getAvgSduBand() << " SDU/s";
-
-    os << "\n   peak BW duration = ";
-    if (cube.getPeakBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
-        os << cube.getPeakBandDuration() << " bit/s";
-
-    os << "\n   peak SDU BW duration = ";
-    if ( cube.getPeakSduBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
-        os << cube.getPeakSduBandDuration() << " SDU/s";
-
-    os << "\n   burst period = ";
-    if ( cube.getBurstPeriod() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getBurstPeriod() << " usecs";
-
-    os << "\n   burst duration = ";
-    if ( cube.getBurstDuration() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getBurstDuration() << " usecs";
-
-    os << "\n   undetect. bit errors = ";
-    if ( cube.getUndetectedBitErr() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getUndetectedBitErr() << "%";
-
-    os << "\n   max SDU Size = ";
-    if ( cube.getMaxSduSize() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getMaxSduSize() << " B";
-
-    os << "\n   partial delivery = " << (cube.isPartialDelivery() ? STR_YES : STR_NO );
-
-    os << "\n   incomplete delivery = " << (cube.isIncompleteDelivery() ? STR_YES : STR_NO );
-
-    os << "\n   force order = " << (cube.isForceOrder() ? STR_YES : STR_NO );
-
-    os << "\n   max allowed gap = ";
-    if ( cube.getMaxAllowGap() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getMaxAllowGap() << " SDUs";
-
-    os << "\n   delay = ";
-    if ( cube.getDelay() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getDelay() << " usecs";
-
-    os << "\n   jitter = ";
-    if ( cube.getJitter() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getJitter() << " usecs";
-
-    os << "\n   cost-time = ";
-    if ( cube.getCostTime() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getCostTime() << " $/ms";
-
-    os << "\n   cost-bits = ";
-    if ( cube.getCostBits() < 0 )
-        os << STR_DONOTCARE;
-    else
-        os << cube.getCostBits() << " $/Mb";
-
-    return os;
+    return os << cube.info();
 }
 
 short QosCube::countFeasibilityScore(const QosCube templ) const {
@@ -339,4 +250,97 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
 
 bool QosCube::isDTCPNeeded()const {
   return isPartialDelivery() || isForceOrder() || isIncompleteDelivery();
+}
+std::string QosCube::info() const {
+    std::ostringstream os;
+
+    if (this->getQosId())
+        os << "QoSCube Id> " << this->getQosId();
+    else
+        os << "QoS Parameters List>";
+
+    os << "\n   average BW = ";
+    if ( this->getAvgBand() < 0)
+        os << STR_DONOTCARE;
+    else
+        os << this->getAvgBand() << " bit/s";
+
+    os   << "\n   average SDU BW = ";
+    if (this->getAvgSduBand() < 0)
+        os << STR_DONOTCARE;
+    else
+        os << this->getAvgSduBand() << " SDU/s";
+
+    os << "\n   peak BW duration = ";
+    if (this->getPeakBandDuration() < 0)
+        os << STR_DONOTCARE;
+    else
+        os << this->getPeakBandDuration() << " bit/s";
+
+    os << "\n   peak SDU BW duration = ";
+    if ( this->getPeakSduBandDuration() < 0)
+        os << STR_DONOTCARE;
+    else
+        os << this->getPeakSduBandDuration() << " SDU/s";
+
+    os << "\n   burst period = ";
+    if ( this->getBurstPeriod() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getBurstPeriod() << " usecs";
+
+    os << "\n   burst duration = ";
+    if ( this->getBurstDuration() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getBurstDuration() << " usecs";
+
+    os << "\n   undetect. bit errors = ";
+    if ( this->getUndetectedBitErr() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getUndetectedBitErr() << "%";
+
+    os << "\n   max SDU Size = ";
+    if ( this->getMaxSduSize() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getMaxSduSize() << " B";
+
+    os << "\n   partial delivery = " << (this->isPartialDelivery() ? STR_YES : STR_NO );
+
+    os << "\n   incomplete delivery = " << (this->isIncompleteDelivery() ? STR_YES : STR_NO );
+
+    os << "\n   force order = " << (this->isForceOrder() ? STR_YES : STR_NO );
+
+    os << "\n   max allowed gap = ";
+    if ( this->getMaxAllowGap() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getMaxAllowGap() << " SDUs";
+
+    os << "\n   delay = ";
+    if ( this->getDelay() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getDelay() << " usecs";
+
+    os << "\n   jitter = ";
+    if ( this->getJitter() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getJitter() << " usecs";
+
+    os << "\n   cost-time = ";
+    if ( this->getCostTime() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getCostTime() << " $/ms";
+
+    os << "\n   cost-bits = ";
+    if ( this->getCostBits() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getCostBits() << " $/Mb";
+    return os.str();
 }

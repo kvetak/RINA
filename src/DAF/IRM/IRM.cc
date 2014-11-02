@@ -124,22 +124,43 @@ bool IRM::createBindings(Flow* flow) {
     return status;
 }
 
-void IRM::receiveAllocationRequest(Flow* flow) {
+bool IRM::receiveAllocationRequestFromAe(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received Allocation Request" << endl;
 
     //Command target FA to allocate flow
-    bool status = ConTable->getFa(flow)->receiveAllocateRequest(flow);
+    FABase* fab = ConTable->getFa(flow);
+    bool status = false;
 
-    //If AllocationRequest NOT ended by creating connections
-    if (!status)
-       EV << "Flow not allocated!\n" << flow << endl;
+    if (fab) {
+        //signalizeAllocateRequest(fl);
+        status = fab->receiveAllocateRequest(flow);
+        //If AllocationRequest NOT ended by creating connections
+        if (!status)
+           EV << "Flow not allocated!\n" << flow << endl;
+    }
+    else
+        EV << "FA could not be found in ConnectionTable!" << endl;
+
+    return status;
 }
 
-void IRM::receiveDeallocationRequest(Flow* fl) {
+bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocationRequest" << endl;
-    signalizeDeallocateRequest(fl);
+
+    //Command target FA to allocate flow
+    FABase* fab = ConTable->getFa(flow);
+    bool status = false;
+
+    if (fab) {
+        //signalizeDeallocateRequest(fl);
+        status = fab->receiveDeallocateRequest(flow);
+    }
+    else
+        EV << "FA could not be found in ConnectionTable!" << endl;
+
+    return status;
 }
 
 void IRM::signalizeAllocateRequest(Flow* flow) {
@@ -154,15 +175,12 @@ void IRM::newFlow(Flow* flow) {
     ConTable->insertNew(flow);
 
     //Ask DA which IPC to use to reach dst App
-    DirectoryEntry* de = DifAllocator->resolveApn(flow->getDstApni().getApn());
-
-    if (de == NULL) {
-        EV << "DA does not know target application" << endl;
+    const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
         return;
     }
-
-    //TODO: Vesely - Now using first available APN to DIFMember mapping
-    Address addr = de->getSupportedDifs().front();
+    Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!DifAllocator->isDifLocal(addr.getDifName())) {
@@ -185,8 +203,50 @@ ConnectionTable* IRM::getConTable() const {
     return ConTable;
 }
 
-bool IRM::receiveAllocationResponsePositive(Flow* flow) {
+bool IRM::receiveAllocationResponsePositiveFromIpc(Flow* flow) {
     Enter_Method("allocationResponsePositive()");
     bool status = createBindings(flow);
     return status;
+}
+
+bool IRM::deleteBindings(Flow* flow) {
+    Enter_Method("deleteBindings()");
+    EV << "Attempts to delete bindings"<< endl;
+    //Retrieve IPC process with allocated flow and prepared bindings
+
+    ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
+    cModule* Ipc = cte->getIpc();
+    cModule* Ap = this->getParentModule();
+
+    //Decide portId
+    int portId = flow->getSrcPortId();
+
+    //  Retrieve IPC gates
+    std::ostringstream nam1;
+    nam1 << GATE_NORTHIO_ << portId;
+    cGate* g1i = Ipc->gateHalf(nam1.str().c_str(), cGate::INPUT);
+    cGate* g1o = Ipc->gateHalf(nam1.str().c_str(), cGate::OUTPUT);
+
+    //   Add AP gates
+    std::ostringstream nam2;
+    nam2 << GATE_SOUTHIO_ << portId;
+    cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+
+    //   Add IRM gates
+    cGate* g3i = this->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g3o = this->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+
+    //   Connect gates together
+    g1o->disconnect();
+    g2i->disconnect();
+    g3i->disconnect();
+
+    g3o->disconnect();
+    g2o->disconnect();
+    g1i->disconnect();
+
+    return !g1o->isConnected() && !g1i->isConnected()
+           && !g2o->isConnected() && !g2i->isConnected()
+           && !g3o->isConnected() && !g3i->isConnected();
 }

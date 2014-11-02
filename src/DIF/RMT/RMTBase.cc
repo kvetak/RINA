@@ -13,19 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTQMONITORPOLICY_H_
-#define __RINA_RMTQMONITORPOLICY_H_
+#include <RMTBase.h>
 
-#include <omnetpp.h>
-
-/**
- * TODO - Generated class
- */
-class RMTQMonitorPolicy : public cSimpleModule
+RMTBase::RMTBase()
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-};
+}
 
-#endif
+RMTBase::~RMTBase()
+{
+}

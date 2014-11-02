@@ -27,41 +27,53 @@
 
 #include <omnetpp.h>
 
-#include "APNamingInfo.h"
-#include "PDUForwardingTable.h"
+#include "RINASignals.h"
 #include "ModuleAccess.h"
-#include "PDU_m.h"
-#include "CDAPMessage_m.h"
-#include "Flow.h"
 #include "Address.h"
 #include "ExternConsts.h"
-
-//#include "RMTPortManager.h"
-//#include "RMTPort.h"
+#include "PDU_m.h"
+#include "CDAPMessage_m.h"
+#include "PDUForwardingTable.h"
+#include "RMTBase.h"
+#include "RMTListeners.h"
+#include "RMTSchedulingBase.h"
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
-typedef std::map<RMTPortId, cGate*> RmtPorts;
+typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
 
-class RMT : public cSimpleModule
+class RMT : public RMTBase
 {
   private:
     PDUForwardingTable* fwTable;
-    EfcpiMapping efcpiGates;
-    RmtPorts ports;
+    RMTQueueManager* queues;
 
     Address thisIpcAddr;
     bool relayOn;
     bool onWire;
 
-    void sendDown(PDU_Base* pdu);
-    void sendUp(PDU_Base* pdu);
+    EfcpiMapping efcpiOut;
+    EfcpiMapping efcpiIn;
+    EfcpiToQueue efcpiToQueue;
 
+    RMTSchedulingBase* schedPolicy;
+    unsigned int waitingMsgs;
 
-//    RMTPortManager* ports;
-//    void enqueueRelayPDU(PDU_Base* pdu);
-//    void enqueueMuxPDU(PDU_Base* pdu);
-//    void runRelay();
-//    void runMux();
+    void processMessage(cMessage* msg);
+    void efcpiToPort(PDU_Base* msg);
+    void efcpiToEfcpi(PDU_Base* msg);
+    void portToEfcpi(PDU_Base* msg);
+    void RIBToPort(CDAPMessage* msg);
+    void portToRIB(CDAPMessage* msg);
+    void portToPort(cMessage* msg);
+
+    void scheduleServiceEnd();
+
+    cGate* fwTableLookup(Address& destAddr, short pduQosId);
+
+    simsignal_t sigRMTNoConnID;
+    LisRMTPDURcvd* lisRMTMsgRcvd;
 
   public:
     RMT();
@@ -69,14 +81,19 @@ class RMT : public cSimpleModule
 
     void createEfcpiGate(unsigned int efcpiId);
     void deleteEfcpiGate(unsigned int efcpiId);
+    void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
+    void deleteEfcpiToQueueMapping(unsigned cepId);
 
-    void createSouthGate(std::string portId);
-    void deleteSouthGate(std::string portId);
-    void addRMTPort(RMTPortId portId, cGate* gate);
+    void setOnWire(bool status) { onWire = status; };
+    bool isOnWire() { return onWire; };
 
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };
     bool getRelayStatus() { return relayOn; };
+
+    RMTSchedulingBase* getSchedulingPolicy();
+    void setSchedulingPolicy(RMTSchedulingBase* policy);
+    void invokeSchedulingPolicy();
 
   protected:
     virtual void initialize();

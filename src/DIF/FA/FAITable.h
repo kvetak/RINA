@@ -31,10 +31,14 @@ class FAITable : public cSimpleModule
     std::string info() const;
     void insertNew(Flow* flow);
     void insert(const FAITableEntry& entry);
-    void remove();
-    FAITableEntry* findEntryByFlow(Flow* flow);
+    void removeByFlow(Flow* flow);
+    FAITableEntry* findEntryByFlow(const Flow* flow);
+    FAITableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
+    FAITableEntry* findEntryByDstAddressAndFwd(const APN& apname);
+    FAITableEntry* findEntryByDstNeighborAndFwd(const APN& apname);
+    FAITableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     FAITableEntry* findEntryByFai(FAIBase* fai);
-    void bindFaiToFlow(FAIBase* fai, Flow* flow);
+    void setFaiToFlow(FAIBase* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
     void changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status);
 

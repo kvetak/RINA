@@ -72,6 +72,20 @@ class LisFAICreResNega : public FAIListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisFAICreResPosiNminusOne : public FAIListeners
+{
+  public:
+    LisFAICreResPosiNminusOne(FAI* nfai) : FAIListeners(nfai){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisFAICreResNegaNminusOne : public FAIListeners
+{
+  public:
+    LisFAICreResNegaNminusOne(FAI* nfai) : FAIListeners(nfai){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 class LisFAIDelRes : public FAIListeners
 {
   public:

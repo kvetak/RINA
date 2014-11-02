@@ -15,29 +15,34 @@
 
 #include "APNamingInfo.h"
 
-APNamingInfo::APNamingInfo() : apinstance(""), aename(""), aeinstance("") {
+APNamingInfo::APNamingInfo() :
+    apn(APN()), apinstance(""),
+    aename(""), aeinstance("")
+{
 }
 
-APNamingInfo::APNamingInfo(APN napn) : apinstance(""), aename(""), aeinstance("") {
+APNamingInfo::APNamingInfo(APN napn) : apinstance(""), aename(""), aeinstance("")
+{
     this->apn = napn;
 }
 
 APNamingInfo::APNamingInfo(APN napn, std::string napinstance,
-        std::string naename, std::string naeinstance) {
-    this->apn = napn;
-    this->apinstance = napinstance;
-    this->aename = naename;
-    this->aeinstance = naeinstance;
+        std::string naename, std::string naeinstance) :
+        apn(napn), apinstance(napinstance),
+        aename(naename), aeinstance(naeinstance)
+{
 }
 
-
-APNamingInfo::~APNamingInfo() {
+APNamingInfo::~APNamingInfo()
+{
+    this->apn = APN();
     this->apinstance = "";
     this->aename = "";
     this->aeinstance = "";
 }
 
-std::string APNamingInfo::info() const{
+std::string APNamingInfo::info() const
+{
     std::ostringstream os;
     os << "AP: "<< apn;
     if (!apinstance.empty())
@@ -51,7 +56,8 @@ std::string APNamingInfo::info() const{
 }
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni) {
+std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni)
+{
     return os << apni.info();
 }
 

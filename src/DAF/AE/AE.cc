@@ -42,6 +42,12 @@ void AE::initSignalsAndListeners() {
     lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
     catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
 
+    //  DeallocationRequest from FAI
+    lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_DeallocateRequest, lisAEDeallReqFromFai);
+    lisAEDeallResFromFai = new LisAEDeallReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_DeallocateResponse, lisAEDeallResFromFai);
+
     lisAEAllResPosi = new LisAEAllResPosi(this);
     catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
 
@@ -63,7 +69,7 @@ void AE::initialize() {
 void AE::handleMessage(cMessage* msg) {
 }
 
-bool AE::createBinding(Flow& flow) {
+bool AE::createBindings(Flow& flow) {
     EV << this->getFullPath() << " created bindings and registered a new flow" << endl;
     //Create new gates
     cGate* gIrmIn;
@@ -163,7 +169,7 @@ void AE::insertFlow(Flow& flow) {
     Irm->newFlow(&flows.back());
 
     //Interconnect IRM and AE
-    bool status = createBinding(flow);
+    bool status = createBindings(flow);
     if (!status) {
         throw("Gate inconsistency during creation of a new flow!");
     }
@@ -201,7 +207,7 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
         insertFlow(*flow);
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
-        Irm->receiveAllocationResponsePositive(flow);
+        Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
         this->signalizeAllocateResponsePositive(flow);
     }
@@ -228,7 +234,7 @@ void AE::receiveAllocationResponseNegative(Flow* flow) {
 void AE::receiveAllocationResponsePositive(Flow* flow) {
     Enter_Method("receiveAllocationResponsePositive()");
     //Interconnect IRM and IPC
-    Irm->receiveAllocationResponsePositive(flow);
+    Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
     //Change allocation status
     ConTab->setStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
@@ -238,12 +244,12 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
 
 void AE::sendAllocationRequest(Flow* flow) {
     //TODO: Vesely - Substitute with signal
-    Irm->receiveAllocationRequest(flow);
+    Irm->receiveAllocationRequestFromAe(flow);
 }
 
 void AE::sendDeallocationRequest(Flow* flow) {
     //TODO: Vesely - Substitute with signal
-    Irm->receiveDeallocationRequest(flow);
+    Irm->receiveDeallocationRequestFromAe(flow);
 }
 
 void AE::signalizeAllocateResponseNegative(Flow* flow) {
@@ -266,6 +272,111 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
 
 void AE::processMRead(CDAPMessage* msg) {
 
+}
+
+void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
+    Enter_Method("receiveDeallocationRequestFromFai()");
+
+    bool status;
+    status = deleteBindings(*flow);
+    if (!status) {
+        EV << "deleteBindings() failed during DeallocateRequest processing!" << endl;
+        return;
+    }
+
+    status = Irm->deleteBindings(flow);
+    if (!status) {
+        EV << "IRM.deleteBindings() failed during DeallocateRequest processing!" << endl;
+        return;
+    }
+
+    //EV << "Statusak> " << status;
+}
+
+bool AE::deleteBindings(Flow& flow) {
+    EV << this->getFullPath() << " deleted bindings" << endl;
+
+    int handle = -1;
+    ConnectionTableEntry* cte = ConTab->findEntryByFlow(&flow);
+    if (cte && cte->getNorthGateIn())
+        handle = cte->getNorthGateIn()->getIndex();
+
+    //Disconnect gates
+    cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle);
+    cGate* gIrmOut = Irm->gateHalf(GATE_AEIO, cGate::OUTPUT, handle);
+
+    //Get AE gates
+    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::INPUT, handle);
+    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::OUTPUT, handle);;
+
+    //CDAPParent Module gates
+    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT, handle);
+    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, handle);
+
+    //CDAPSplitter gates
+    cModule* CdapSplit = Cdap->getSubmodule(MOD_CDAPSPLIT);
+    cGate* gSplitIn = CdapSplit->gateHalf(GATE_SOUTHIO, cGate::INPUT, handle);
+    cGate* gSplitOut = CdapSplit->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, handle);
+
+    cGate* gSplitCaceIn = CdapSplit->gateHalf(GATE_CACEIO, cGate::INPUT, handle);
+    cGate* gSplitCaceOut = CdapSplit->gateHalf(GATE_CACEIO, cGate::OUTPUT, handle);
+
+    cGate* gSplitAuthIn = CdapSplit->gateHalf(GATE_AUTHIO, cGate::INPUT, handle);
+    cGate* gSplitAuthOut = CdapSplit->gateHalf(GATE_AUTHIO, cGate::OUTPUT, handle);
+
+    cGate* gSplitCdapIn = CdapSplit->gateHalf(GATE_CDAPIO, cGate::INPUT, handle);
+    cGate* gSplitCdapOut = CdapSplit->gateHalf(GATE_CDAPIO, cGate::OUTPUT, handle);
+
+
+    //CACE Module gates
+    cModule* CdapCace = Cdap->getSubmodule(MOD_CDAPCACE);
+    cGate* gCaceIn = CdapCace->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
+    cGate* gCaceOut = CdapCace->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
+
+    //AUTH Module gates
+    cModule* CdapAuth = Cdap->getSubmodule(MOD_CDAPAUTH);
+    cGate* gAuthIn = CdapAuth->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
+    cGate* gAuthOut = CdapAuth->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
+
+    //CDAP Module gates
+    cModule* CdapCdap = Cdap->getSubmodule(MOD_CDAPCDAP);
+    cGate* gCdapIn = CdapCdap->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
+    cGate* gCdapOut = CdapCdap->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
+
+    //Disconnect gates
+    gIrmOut->disconnect();
+    gAeIn->disconnect();
+    gCdapParentIn->disconnect();
+    gSplitIn->disconnect();
+
+    gSplitOut->disconnect();
+    gCdapParentOut->disconnect();
+    gAeOut->disconnect();
+    gIrmIn->disconnect();
+
+    gSplitCaceOut->disconnect();
+    gCaceIn->disconnect();
+    gCaceOut->disconnect();
+    gSplitCaceIn->disconnect();
+
+    gSplitAuthOut->disconnect();
+    gAuthIn->disconnect();
+    gAuthOut->disconnect();
+    gSplitAuthIn->disconnect();
+
+    gSplitCdapOut->disconnect();
+    gCdapIn->disconnect();
+    gCdapOut->disconnect();
+    gSplitCdapIn->disconnect();
+
+    //Return true if all dynamically created gates are disconnected
+    return !gIrmIn->isConnected() && !gIrmOut->isConnected()
+            && !gAeIn->isConnected() && !gAeOut->isConnected()
+            && !gCdapParentIn->isConnected() && !gCdapParentOut->isConnected()
+            && !gSplitIn->isConnected() && !gSplitOut->isConnected()
+            && !gSplitCaceIn->isConnected() && !gSplitCaceOut->isConnected()
+            && !gSplitAuthIn->isConnected() && !gSplitAuthOut->isConnected()
+            && !gSplitCdapIn->isConnected() && !gSplitCdapOut->isConnected();
 }
 
 void AE::processMReadR(CDAPMessage* msg) {

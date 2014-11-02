@@ -24,9 +24,9 @@
 
 #include "RIBd.h"
 
-const char* MSG_CREREQFLO       = "Flow";
-const char* MSG_CRERESFLOPOSI   = "Flow+";
-const char* MSG_CRERESFLONEGA   = "Flow-";
+const char* MSG_FLO       = "Flow";
+const char* MSG_FLOPOSI   = "Flow+";
+const char* MSG_FLONEGA   = "Flow-";
 const char* CLS_FLOW            = "Flow";
 const int   VAL_DEFINSTANCE     = -1;
 const int   VAL_FLOWPOSI        = 1;
@@ -120,7 +120,7 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     Enter_Method("sendCreateRequestFlow()");
 
     //Prepare M_CREATE Flow
-    CDAP_M_Create* mcref = new CDAP_M_Create(MSG_CREREQFLO);
+    CDAP_M_Create* mcref = new CDAP_M_Create(MSG_FLO);
 
     //Prepare object
     std::ostringstream os;
@@ -134,7 +134,7 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     mcref->setObject(flowobj);
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getDstAddr());
+    mcref->setDstAddr(flow->getDstNeighbor());
 
     //TODO: Vesely - Work more on InvokeId
     mcref->setInvokeID(invokeIdCounter++);
@@ -153,11 +153,38 @@ void RIBd::processMCreate(CDAPMessage* msg) {
     //CreateRequest Flow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
-        EV << fl->info();
+        //EV << fl->info();
         fl->swapFlow();
-        EV << "===========\n" << fl->info();
+        //EV << "\n===========\n" << fl->info();
         signalizeCreateRequestFlow(fl);
     }
+}
+
+void RIBd::sendDeleteRequestFlow(Flow* flow) {
+    Enter_Method("sendDeleteRequestFlow()");
+
+    //Prepare M_CREATE Flow
+    CDAP_M_Delete* mdereqf = new CDAP_M_Delete(MSG_FLO);
+
+    //Prepare object
+    std::ostringstream os;
+    os << flow->getFlowName();
+    object_t flowobj;
+    flowobj.objectClass = flow->getClassName();
+    flowobj.objectName = os.str();
+    flowobj.objectVal = flow;
+    //TODO: Vesely - Assign appropriate values
+    flowobj.objectInstance = VAL_DEFINSTANCE;
+    mdereqf->setObject(flowobj);
+
+    //Append destination address for RMT "routing"
+    mdereqf->setDstAddr(flow->getDstAddr());
+
+    //TODO: Vesely - Work more on InvokeId
+    mdereqf->setInvokeID(invokeIdCounter++);
+
+    //Send it
+    signalizeSendData(mdereqf);
 }
 
 void RIBd::processMCreateR(CDAPMessage* msg) {
@@ -191,6 +218,15 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Create_R*>(msg)) {
         processMCreateR(msg);
     }
+    //M_DELETE_Request
+    else if (dynamic_cast<CDAP_M_Delete*>(msg)) {
+        processMDelete(msg);
+    }
+    //M_DELETE_Request
+    else if (dynamic_cast<CDAP_M_Delete_R*>(msg)) {
+        processMDeleteR(msg);
+    }
+
 
     delete msg;
 }
@@ -203,7 +239,10 @@ void RIBd::initSignalsAndListeners() {
     //Signals that this module is emitting
     sigRIBDSendData      = registerSignal(SIG_RIBD_DataSend);
     sigRIBDCreReqFlo     = registerSignal(SIG_RIBD_CreateRequestFlow);
+    sigRIBDDelReqFlo     = registerSignal(SIG_RIBD_DeleteRequestFlow);
+    sigRIBDDelResFlo     = registerSignal(SIG_RIBD_DeleteResponseFlow);
     sigRIBDAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigRIBDAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
     sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
@@ -215,6 +254,11 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDCreReq = new LisRIBDCreReq(this);
     catcher2->subscribe(SIG_FAI_CreateFlowRequest, lisRIBDCreReq);
 
+    lisRIBDDelReq = new LisRIBDDelReq(this);
+    catcher2->subscribe(SIG_FAI_DeleteFlowRequest, lisRIBDDelReq);
+    lisRIBDDelRes = new LisRIBDDelRes(this);
+    catcher2->subscribe(SIG_FAI_DeleteFlowResponse, lisRIBDDelRes);
+
     lisRIBDCreResNegaFromFa = new LisRIBDCreResNega(this);
     catcher2->subscribe(SIG_FA_CreateFlowResponseNegative, lisRIBDCreResNegaFromFa);
     lisRIBDCreResNega = new LisRIBDCreResNega(this);
@@ -222,6 +266,8 @@ void RIBd::initSignalsAndListeners() {
 
     lisRIBDCreResPosi = new LisRIBDCreResPosi(this);
     catcher2->subscribe(SIG_FAI_CreateFlowResponsePositive, lisRIBDCreResPosi);
+    lisRIBDCreResPosiForward = new LisRIBDCreResPosi(this);
+    catcher2->subscribe(SIG_FA_CreateFlowResponseForward, lisRIBDCreResPosiForward);
 
     lisRIBDRcvData = new LisRIBDRcvData(this);
     catcher1->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
@@ -229,21 +275,23 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDAllReqFromFai = new LisRIBDAllReqFromFai(this);
     catcher3->subscribe(SIG_FAI_AllocateRequest, lisRIBDAllReqFromFai);
 
+    lisRIBDCreFloPosi = new LisRIBDCreFloPosi(this);
+    catcher2->subscribe(SIG_RA_CreateFlowPositive, lisRIBDCreFloPosi);
+    lisRIBDCreFloNega = new LisRIBDCreFloNega(this);
+    catcher2->subscribe(SIG_RA_CreateFlowNegative, lisRIBDCreFloNega);
 }
 
-void RIBd::receiveAllocationRequestFromFAI(Flow* flow) {
+void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
     //Execute flow allocate
     signalizeCreateFlow(flow);
-    //TODO: Vesely - Return result
-    signalizeAllocateResponsePositive(flow);
 }
 
 void RIBd::sendCreateResponseNegative(Flow* flow) {
     Enter_Method("sendCreateResponseFlowNegative()");
 
     //Prepare M_CREATE_R Flow-
-    CDAP_M_Create_R* mcref = new CDAP_M_Create_R(MSG_CRERESFLONEGA);
+    CDAP_M_Create_R* mcref = new CDAP_M_Create_R(MSG_FLONEGA);
 
     //Prepare object
     std::ostringstream os;
@@ -264,7 +312,7 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getSrcAddr());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -274,7 +322,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     Enter_Method("sendCreateResponseFlowPositive()");
 
     //Prepare M_CREATE_R Flow+
-    CDAP_M_Create_R* mcref = new CDAP_M_Create_R(MSG_CRERESFLOPOSI);
+    CDAP_M_Create_R* mcref = new CDAP_M_Create_R(MSG_FLOPOSI);
 
     //Prepare object
     std::ostringstream os;
@@ -295,7 +343,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     //TODO: Vesely - Work more on InvokeId
 
     //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getSrcAddr());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -320,12 +368,12 @@ void RIBd::signalizeCreateRequestFlow(Flow* flow) {
 }
 
 void RIBd::signalizeCreateResponseFlowPositive(Flow* flow) {
-    EV << "Emits CreateRequestFlow signal for flow" << endl;
+    EV << "Emits CreateResponsetFlowPositive signal for flow" << endl;
     emit(sigRIBDCreResFloPosi, flow);
 }
 
 void RIBd::signalizeCreateResponseFlowNegative(Flow* flow) {
-    EV << "Emits CreateRequestFlow signal for flow" << endl;
+    EV << "Emits CreateResponsetFlowNegative signal for flow" << endl;
     emit(sigRIBDCreResFloNega, flow);
 }
 
@@ -334,3 +382,89 @@ void RIBd::signalizeCreateFlow(Flow* flow) {
     emit(sigRIBDCreFlow, flow);
 }
 
+void RIBd::processMDelete(CDAPMessage* msg) {
+    CDAP_M_Delete* msg1 = check_and_cast<CDAP_M_Delete*>(msg);
+
+    EV << "Received M_Delete";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //DeleteRequest Flow
+    if (dynamic_cast<Flow*>(object.objectVal)) {
+        Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
+        fl->swapFlow();
+        signalizeDeleteRequestFlow(fl);
+    }
+
+}
+
+void RIBd::signalizeDeleteRequestFlow(Flow* flow) {
+    EV << "Emits DeleteRequestFlow signal for flow" << endl;
+    emit(sigRIBDDelReqFlo, flow);
+}
+
+void RIBd::sendDeleteResponseFlow(Flow* flow) {
+    Enter_Method("sendDeleteResponseFlow()");
+
+    //Prepare M_CREATE_R Flow+
+    CDAP_M_Delete_R* mderesf = new CDAP_M_Delete_R(MSG_FLOPOSI);
+
+    //Prepare object
+    std::ostringstream os;
+    os << flow->getFlowName();
+    object_t flowobj;
+    flowobj.objectClass = flow->getClassName();
+    flowobj.objectName = os.str();
+    flowobj.objectVal = flow;
+    //TODO: Vesely - Assign appropriate values
+    flowobj.objectInstance = VAL_DEFINSTANCE;
+    mderesf->setObject(flowobj);
+
+    //Prepare result object
+    result_t resultobj;
+    resultobj.resultValue = R_SUCCESS;
+    mderesf->setResult(resultobj);
+
+    //TODO: Vesely - Work more on InvokeId
+
+    //Append destination address for RMT "routing"
+    mderesf->setDstAddr(flow->getDstAddr());
+
+    //Send it
+    signalizeSendData(mderesf);
+
+}
+
+void RIBd::signalizeDeleteResponseFlow(Flow* flow) {
+    EV << "Emits DeleteResponseFlow signal for flow" << endl;
+    emit(sigRIBDDelResFlo, flow);
+}
+
+void RIBd::receiveCreateFlowPositiveFromRa(Flow* flow) {
+    signalizeAllocateResponsePositive(flow);
+}
+
+void RIBd::receiveCreateFlowNegativeFromRa(Flow* flow) {
+    signalizeAllocateResponseNegative(flow);
+}
+
+void RIBd::signalizeAllocateResponseNegative(Flow* flow) {
+    EV << "Emits AllocateResponseNegative signal for flow" << endl;
+    emit(sigRIBDAllocResNega, flow);
+}
+
+void RIBd::processMDeleteR(CDAPMessage* msg) {
+    CDAP_M_Delete_R* msg1 = check_and_cast<CDAP_M_Delete_R*>(msg);
+
+    EV << "Received M_Delete_R";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //DeleteResponseFlow
+    if (dynamic_cast<Flow*>(object.objectVal)) {
+        Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
+        flow->swapFlow();
+        signalizeDeleteResponseFlow(flow);
+    }
+
+}

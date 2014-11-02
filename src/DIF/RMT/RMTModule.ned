@@ -17,7 +17,7 @@ package rina.DIF.RMT;
 
 module RMTModule
 {
-    @display("i=block/classifier;bgb=240,113");
+    @display("i=block/classifier;bgb=590,145");
     gates:
         inout southIo[];
         inout efcpIo[];
@@ -27,13 +27,11 @@ module RMTModule
         rmt: RMT {
             @display("p=55,55");
         }
-        rmtPortManager: RMTPortManager {
-            @display("p=147,55");
+        rmtQueueManager: RMTQueueManager {
+            @display("p=543,53");
         }
 
 
     connections allowunconnected:
-        //southIo++ <--> rmt.southIo++;        
         ribdIo <--> rmt.ribdIo;
-        //efcpIo <--> rmt.efcpIo;
 }

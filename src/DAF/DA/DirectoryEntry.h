@@ -55,19 +55,6 @@ class DirectoryEntry {
   private:
     APN Apn;
     Addresses SupportedDifs;
-/*
-    APNamingInfo apni;
-    Address addr;
-    std::string ipcPath;
-    FABase* FlowAlloc;
-*/
-
-/*
-    void setIpcPath(const std::string& ipcPath);
-    void setFlowAlloc(FABase* flowAlloc);
-    void setApni(const APNamingInfo& apni);
-    void setAddr(const Address& addr);
-*/
 
 };
 

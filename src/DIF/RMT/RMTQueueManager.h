@@ -13,35 +13,43 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTPORTMANAGER_H_
-#define __RINA_RMTPORTMANAGER_H_
+#ifndef __RINA_RMTQUEUEMANAGER_H_
+#define __RINA_RMTQUEUEMANAGER_H_
 
 #include <omnetpp.h>
 
-#include "RMTPort.h"
+#include "RMTQueue.h"
 
-typedef std::map<int, RMTPort*>  RMTPorts;
+typedef std::vector<RMTQueue*>  RMTQueues;
+typedef RMTQueues::iterator  RMTQueuesIter;
 
-class RMTPortManager : public cSimpleModule
+class RMTQueueManager : public cSimpleModule
 {
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    virtual void initialize() {};
+    virtual void handleMessage(cMessage *msg) {};
 
   public:
-    RMTPortManager();
-    virtual ~RMTPortManager();
+    RMTQueueManager();
+    virtual ~RMTQueueManager();
 
-    typedef RMTPorts::iterator iterator;
+    typedef RMTQueues::iterator iterator;
     iterator begin();
     iterator end();
 
-    RMTPort* getPort(int portId);
-    void addPort(int portId);
-    void removePort(int portId);
+    RMTQueue* addQueue(RMTQueue::queueType type);
+    void removeQueue(RMTQueue* queue);
+
+    RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
+
+    RMTQueue* getFirst(RMTQueue::queueType type);
+    RMTQueue* getLongest(RMTQueue::queueType type);
 
   private:
-    RMTPorts ports;
+    RMTQueues queues;
+
+    int qxpos, qypos; // module coordinates
+
 };
 
 #endif

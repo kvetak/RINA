@@ -31,7 +31,7 @@ void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj
 
     if (flow) {
        if (irm->getConTable()->findEntryByFlow(flow))
-           irm->receiveAllocationRequest(flow);
+           irm->receiveAllocationRequestFromAe(flow);
     }
     else
        EV << "IRMListener received unknown object!" << endl;
@@ -44,7 +44,7 @@ void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* o
 
     if (flow) {
        if (irm->getConTable()->findEntryByFlow(flow))
-           irm->receiveDeallocationRequest(flow);
+           irm->receiveDeallocationRequestFromAe(flow);
     }
     else
        EV << "IRMListener received unknown object!" << endl;

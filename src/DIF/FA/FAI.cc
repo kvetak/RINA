@@ -55,7 +55,7 @@ bool FAI::receiveAllocateRequest() {
     bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -63,7 +63,7 @@ bool FAI::receiveAllocateRequest() {
     status = this->createEFCP();
     if (!status) {
         EV << "createEFCP() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -71,13 +71,19 @@ bool FAI::receiveAllocateRequest() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
 
-    //Schedule M_Create(Flow)
-    this->signalizeCreateFlowRequest();
+    //EV << "!!!!!!" << FlowObject->info() << endl << FlowObject->getDstNeighbor() << endl;
+
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
+    status = raModule->bindFlowToLowerFlow(FlowObject);
+    //IF connected to wire then schedule M_Create(Flow)
+    if (status)
+        this->signalizeCreateFlowRequest();
 
     //Everything went fine
     return true;
@@ -108,6 +114,10 @@ bool FAI::receiveAllocateResponsePositive() {
         return false;
     }
 
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
+    raModule->bindFlowToLowerFlow(FlowObject);
+
     //Signalizes M_Create_R(flow)
     this->signalizeCreateFlowResponsePositive();
     return true;
@@ -132,28 +142,38 @@ bool FAI::receiveCreateRequest() {
     createNorthGates();
 
     //Pass AllocationRequest to AP or RMT
-    this->signalizeAllocationRequestFromFAI();
+    this->signalizeAllocationRequestFromFai();
 
     //Everything went fine
     return true;
 }
 
-void FAI::receiveDeallocateRequest() {
+bool FAI::receiveDeallocateRequest() {
     Enter_Method("receiveDeallocateRequest()");
+
     //deleteBindings
-    this->deleteBindings();
+    bool status = this->deleteBindings();
+
     //Signalize M_Delete(Flow)
     this->signalizeDeleteFlowRequest();
+
+    return status;
 }
 
 void FAI::receiveDeleteRequest() {
     Enter_Method("receiveDeleteRequest()");
+    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOC_PEND);
+
     //Notify application
-    //TODO: Vesely
+    signalizeDeallocateRequestFromFai();
+
     //DeleteBindings
     this->deleteBindings();
-    //Signalizes M_Delete(Flow)
+
+    //Signalizes M_Delete_R(Flow)
     this->signalizeDeleteFlowResponse();
+
+    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
 }
 
 bool FAI::receiveCreateResponseNegative(Flow* flow) {
@@ -196,7 +216,10 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
 }
 
 void FAI::receiveDeleteResponse() {
-    this->FaModule->deinstantiateFai(this->FlowObject);
+    //Notify application
+    signalizeDeallocateRequestFromFai();
+
+    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
 }
 
 void FAI::handleMessage(cMessage *msg) {
@@ -236,8 +259,6 @@ bool FAI::createBindings() {
     cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpNorth;
-    //FIXME: Vesely @Marek -> How come that I cannot replace this->getFlow()->getConId().getSrcCepId() with cepID???!!!!
-    //XXX:   Vesely @Marek -> 15.10.2014, stale tady ta sracka je :-) ... uklidit!
     nameEfcpNorth << GATE_APPIO_ << cepId;
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
@@ -265,8 +286,6 @@ bool FAI::createBindings() {
     gateRmtUpOut->connectTo(gateEfcpDownIn);
     gateEfcpDownOut->connectTo(gateRmtUpIn);
 
-    //FIXME: Vesely - IPC gate checks are failing. Why?
-    //return gateIpcDownIn->isConnected() && gateIpcDownOut->isConnected()
     return gateEfcpDownIn->isConnected() && gateEfcpDownOut->isConnected()
            && gateEfcpUpIn->isConnected() && gateEfcpUpOut->isConnected()
            && gateRmtUpIn->isConnected() && gateRmtUpOut->isConnected();
@@ -274,12 +293,11 @@ bool FAI::createBindings() {
 }
 
 bool FAI::deleteBindings() {
-    EV << this->getFullPath() << " attempts to delete bindings between EFCP, IPC and RMT" << endl;
+    EV << this->getFullPath() << " attempts to disconnect bindings between EFCP, IPC and RMT" << endl;
 
     std::ostringstream nameIpcDown;
     nameIpcDown << GATE_NORTHIO_ << portId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
-    IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
     cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
@@ -290,12 +308,12 @@ bool FAI::deleteBindings() {
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
 
     //IPCModule.northIo <- XX -> Efcp.fai
+    gateEfcpUpIn->disconnect();
     gateEfcpUpOut->disconnect();
     gateIpcDownOut->disconnect();
     gateIpcDownIn->disconnect();
-    gateEfcpUpIn->disconnect();
 
-    //Create bindings in RMT
+    //Delete bindings in RMT
     RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
 
     std::ostringstream nameRmtUp;
@@ -310,9 +328,11 @@ bool FAI::deleteBindings() {
 
     //Efcp.rmt <- XX -> Rmt.efcpIo
     gateRmtUpOut->disconnect();
+    gateRmtUpIn->disconnect();
     gateEfcpDownIn->disconnect();
     gateEfcpDownOut->disconnect();
-    gateRmtUpIn->disconnect();
+
+    rmtModule->deleteEfcpiGate(cepId);
 
     return true;
 }
@@ -326,9 +346,12 @@ bool FAI::invokeAllocateRetryPolicy() {
 }
 
 void FAI::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
     //Signals that module emits
     sigFAIAllocReq      = registerSignal(SIG_FAI_AllocateRequest);
+    sigFAIDeallocReq    = registerSignal(SIG_FAI_DeallocateRequest);
+    sigFAIDeallocRes    = registerSignal(SIG_FAI_DeallocateResponse);
     sigFAIAllocResPosi  = registerSignal(SIG_FAI_AllocateResponsePositive);
     sigFAIAllocResNega  = registerSignal(SIG_FAI_AllocateResponseNegative);
     sigFAICreReq        = registerSignal(SIG_FAI_CreateFlowRequest);
@@ -340,48 +363,58 @@ void FAI::initSignalsAndListeners() {
     //Signals that module processes
     //  AllocationRequest
     this->lisAllocReq       = new LisFAIAllocReq(this);
-    catcher->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
+    catcher3->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
     //  AllocationRespNegative
     this->lisAllocResNega   = new LisFAIAllocResNega(this);
-    catcher->subscribe(SIG_toFAI_AllocateResponseNegative, this->lisAllocResNega);
+    catcher3->subscribe(SIG_toFAI_AllocateResponseNegative, this->lisAllocResNega);
     //  AllocationRespPositive
     this->lisAllocResPosi   = new LisFAIAllocResPosi(this);
-    catcher->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
+    catcher3->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
 //    //  CreateFlowRequest
 //    this->lisCreReq         = new LisFAICreReq(this);
 //    catcher->subscribe(SIG_FAI_CreateFlowRequest, this->lisCreReq);
     //  CreateFlowResponseNegative
     this->lisCreResNega     = new LisFAICreResNega(this);
-    catcher->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);
     // CreateFlowResponsePositive
     this->lisCreResPosi     = new LisFAICreResPosi(this);
-    catcher->subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisCreResPosi);
-//    // CreateFlowDeleteRequest
-//    this->lisDelReq         = new LisFAIDelReq(this);
-//    catcher->subscribe(SIG_FAI_DeleteFlowRequest, this->lisDelReq);
-//    // CreateFlowDeleteResponse
-//    this->lisDelRes         = new LisFAIDelRes(this);
-//    catcher->subscribe(SIG_FAI_DeleteFlowResponse, this->lisDelRes);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisCreResPosi);
+
+    //  CreateFlowResponseNegative
+    lisCreResNegaNmO     = new LisFAICreResNegaNminusOne(this);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, lisCreResNegaNmO);
+    // CreateFlowResponsePositive
+    lisCreResPosiNmO     = new LisFAICreResPosiNminusOne(this);
+    catcher3->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResPosiNmO);
+
+    //DeleteRequestFlow
+    lisDelReq = new LisFAIDelReq(this);
+    catcher2->subscribe(SIG_RIBD_DeleteRequestFlow, lisDelReq);
+
+    //DeleteResponseFlow
+    lisDelRes = new LisFAIDelRes(this);
+    catcher2->subscribe(SIG_RIBD_DeleteResponseFlow, lisDelRes);
+
 }
 
 void FAI::signalizeCreateFlowRequest() {
-    emit(this->sigFAICreReq, this->FlowObject);
+    emit(this->sigFAICreReq, FlowObject);
 }
 
 void FAI::signalizeDeleteFlowResponse() {
-    emit(this->sigFAIDelReq, this->FlowObject);
+    emit(this->sigFAIDelRes, this->FlowObject);
 
 }
 
 void FAI::signalizeCreateFlowResponsePositive() {
-    emit(this->sigFAICreResPosi, this->FlowObject);
+    emit(this->sigFAICreResPosi, FlowObject);
 }
 
 void FAI::signalizeCreateFlowResponseNegative() {
-    emit(this->sigFAICreResNega, this->FlowObject);
+    emit(this->sigFAICreResNega, FlowObject);
 }
 
-void FAI::signalizeAllocationRequestFromFAI() {
+void FAI::signalizeAllocationRequestFromFai() {
     emit(sigFAIAllocReq, FlowObject);
 }
 
@@ -391,6 +424,14 @@ void FAI::signalizeDeleteFlowRequest() {
 
 void FAI::signalizeAllocateResponseNegative() {
     emit(this->sigFAIAllocResNega, this->FlowObject);
+}
+
+void FAI::signalizeDeallocateRequestFromFai() {
+    emit(this->sigFAIDeallocReq, this->FlowObject);
+}
+
+void FAI::signalizeDeallocateResponseFromFai() {
+    emit(this->sigFAIDeallocRes, this->FlowObject);
 }
 
 void FAI::signalizeAllocateResponsePositive() {
@@ -403,3 +444,13 @@ void FAI::createNorthGates() {
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
     IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
 }
+
+void FAI::receiveCreateFlowResponsePositiveFromNminusOne() {
+    //Schedule M_Create(Flow)
+    this->signalizeCreateFlowRequest();
+}
+
+void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {
+    this->signalizeAllocateResponseNegative();
+}
+

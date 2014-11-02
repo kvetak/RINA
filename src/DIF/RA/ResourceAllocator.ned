@@ -19,7 +19,6 @@ module ResourceAllocator
 {
     parameters:
         @display("i=block/segm;bgb=327,210");
-        string dstIpc = default("-1");
 
     submodules:
         pduForwardingTable: PDUForwardingTable {

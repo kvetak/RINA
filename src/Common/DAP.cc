@@ -24,7 +24,8 @@ DAP::DAP(std::string nam) : name(nam)
 }
 
 
-DAP::~DAP() {
+DAP::~DAP()
+{
     name = "";
 }
 

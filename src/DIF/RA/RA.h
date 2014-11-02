@@ -33,6 +33,8 @@
 #include "RABase.h"
 #include "RAListeners.h"
 
+#include "RMTPolicies/LongestQFirst.h"
+
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
@@ -53,7 +55,15 @@ extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
 
-class RA : public RABase {
+class RA : public RABase
+{
+  public:
+    virtual void createFlow(Flow *flow);
+    virtual void createFlowWithoutAllocate(Flow *flow);
+    virtual void removeFlow(Flow *flow);
+
+    virtual bool bindFlowToLowerFlow(Flow* flow);
+    virtual void bindFlowToMedium(Flow* flow);
 
   protected:
     virtual void initialize();
@@ -61,29 +71,31 @@ class RA : public RABase {
 
   private:
     DA* difAllocator;
+    RMT* rmt;
+    RMTQueueManager* rmtQM;
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
-    RMT* rmt;
+
     std::string processName;
-    std::list<Flow*> preparedFlows;
+
+    bool onWire;
 
     void initQoSCubes();
-    void initFlowAlloc();
     void setRmtMode();
 
-    virtual void createFlow(Flow *flow);
-    virtual void createFlowWithoutAllocate(Flow *flow);
-
-    void removeFlow();
-
-    void bindFlowToRMT(cModule* ipc, Flow *flow);
-    void bindMediumToRMT();
+    RMTQueue* bindLowerFlowToRmtQueue(cModule* ipc, FABase* fab, Flow* flow);
+    void bindMediumToRMTQueue();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);
 
     void initSignalsAndListeners();
 
+    simsignal_t sigRACreFloPosi;
+    simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
+
+    void signalizeCreateFlowPositiveToRibd(Flow* flow);
+    void signalizeCreateFlowNegativeToRibd(Flow* flow);
 
 };
     

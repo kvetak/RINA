@@ -35,13 +35,15 @@ class Flow : public cObject
     Flow(APNamingInfo src, APNamingInfo dst);
     virtual ~Flow();
 
-    //TODO: VV - Completely missing overloading of < and > operators
-
-    bool operator== (const Flow& other);
+    bool operator== (const Flow& other) const;
 
     virtual Flow* dup() const;
 
     std::string info() const;
+    std::string infoSource() const;
+    std::string infoDestination() const;
+    std::string infoOther() const;
+    std::string infoQoS() const;
 
     std::string getFlowName() const;
     Flow& swapFlow();
@@ -70,6 +72,12 @@ class Flow : public cObject
     const QosCube& getQosParameters() const;
     void setQosParameters(const QosCube& qosParameters);
 
+    const Address& getDstNeighbor() const;
+    void setDstNeighbor(const Address& dstNeighbor);
+    const Address& getSrcNeighbor() const;
+    void setSrcNeighbor(const Address& srcNeighbor);
+
+
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
     APNamingInfo srcApni;
@@ -78,6 +86,11 @@ class Flow : public cObject
     int dstPortId;
     Address srcAddr;
     Address dstAddr;
+
+    //TODO: Vesely - Pull neighbor addresses to child class
+    Address srcNeighbor;
+    Address dstNeighbor;
+
     ConnectionId conId;
     uint32_t createFlowRetries;
     uint32_t maxCreateFlowRetries;
@@ -90,6 +103,7 @@ class Flow : public cObject
     void swapCepIds();
     void swapApni();
 };
+
 
 //Free function
 std::ostream& operator<< (std::ostream& os, const Flow& fl);

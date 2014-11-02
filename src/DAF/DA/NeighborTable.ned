@@ -19,5 +19,6 @@ simple NeighborTable
 {
     parameters:
     	@display("i=block/table2");
-    	xml configData = default(xml("<NeighborTable></NeighborTable>"));
+    	xml daConfigData = default(xml("<DA><NeighborTable/></DA>")); 
+    	xml configData = default(daConfigData);
 }

@@ -99,6 +99,8 @@ class QosCube {
     bool isDTCPNeeded() const;
 
     short countFeasibilityScore(const QosCube templ) const;
+
+    std::string info() const;
 };
 
 //Free function

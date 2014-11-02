@@ -33,6 +33,7 @@
 #include "RINASignals.h"
 #include "EFCP.h"
 #include "ModuleAccess.h"
+#include "RABase.h"
 
 class FAI : public FAIBase  {
   public:
@@ -41,16 +42,20 @@ class FAI : public FAIBase  {
 
     std::string info() const;
 
-    bool receiveAllocateRequest();
-    bool processDegenerateDataTransfer();
-    bool receiveAllocateResponsePositive();
-    void receiveAllocateResponseNegative();
-    bool receiveCreateRequest();
-    bool receiveCreateResponsePositive(Flow* flow);
-    bool receiveCreateResponseNegative(Flow* flow);
-    void receiveDeallocateRequest();
-    void receiveDeleteRequest();
-    void receiveDeleteResponse();
+    virtual bool receiveAllocateRequest();
+    virtual bool processDegenerateDataTransfer();
+    virtual bool receiveAllocateResponsePositive();
+    virtual void receiveAllocateResponseNegative();
+    virtual bool receiveCreateRequest();
+    virtual bool receiveCreateResponsePositive(Flow* flow);
+    virtual bool receiveCreateResponseNegative(Flow* flow);
+    virtual bool receiveDeallocateRequest();
+    virtual void receiveDeleteRequest();
+    virtual void receiveDeleteResponse();
+
+    virtual void receiveCreateFlowResponsePositiveFromNminusOne();
+    virtual void receiveCreateFlowResponseNegativeFromNminusOne();
+
 
     void postInitialize(FABase* fa, Flow* fl, EFCP* efcp);
 
@@ -66,6 +71,8 @@ class FAI : public FAIBase  {
 
     //Signals
     simsignal_t sigFAIAllocReq;
+    simsignal_t sigFAIDeallocReq;
+    simsignal_t sigFAIDeallocRes;
     simsignal_t sigFAIAllocResPosi;
     simsignal_t sigFAIAllocResNega;
     simsignal_t sigFAICreReq;
@@ -82,6 +89,8 @@ class FAI : public FAIBase  {
     LisFAICreResPosi*    lisCreResPosi;
     LisFAIDelReq*        lisDelReq;
     LisFAIDelRes*        lisDelRes;
+    LisFAICreResPosiNminusOne* lisCreResPosiNmO;
+    LisFAICreResNegaNminusOne* lisCreResNegaNmO;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -107,7 +116,9 @@ class FAI : public FAIBase  {
     void signalizeCreateFlowResponseNegative();
     void signalizeDeleteFlowRequest();
     void signalizeDeleteFlowResponse();
-    void signalizeAllocationRequestFromFAI();
+    void signalizeAllocationRequestFromFai();
+    void signalizeDeallocateRequestFromFai();
+    void signalizeDeallocateResponseFromFai();
     void signalizeAllocateResponseNegative();
     void signalizeAllocateResponsePositive();
 

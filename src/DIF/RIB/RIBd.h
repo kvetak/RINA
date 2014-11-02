@@ -34,10 +34,10 @@
 #include "RINASignals.h"
 
 //Constants
-extern const char* MSG_CREREQFLO;
+extern const char* MSG_FLO;
 extern const char* CLS_FLOW;
-extern const char* MSG_CRERESFLOPOSI;
-extern const char* MSG_CRERESFLONEGA;
+extern const char* MSG_FLOPOSI;
+extern const char* MSG_FLONEGA;
 extern const int   VAL_DEFINSTANCE;
 extern const int   VAL_FLOWPOSI;
 extern const int   VAL_FLOWNEGA;
@@ -50,8 +50,12 @@ class RIBd : public RIBdBase {
     virtual void sendCreateRequestFlow(Flow* flow);
     virtual void sendCreateResponseNegative(Flow* flow);
     virtual void sendCreateResponsePostive(Flow* flow);
+    virtual void sendDeleteRequestFlow(Flow* flow);
+    virtual void sendDeleteResponseFlow(Flow* flow);
     virtual void receiveData(CDAPMessage* cimsg);
-    virtual void receiveAllocationRequestFromFAI(Flow* flow);
+    virtual void receiveAllocationRequestFromFai(Flow* flow);
+    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
+    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
 
   protected:
     virtual void initialize();
@@ -63,9 +67,12 @@ class RIBd : public RIBdBase {
     //Signals
     simsignal_t sigRIBDSendData;
     simsignal_t sigRIBDCreReqFlo;
+    simsignal_t sigRIBDDelReqFlo;
+    simsignal_t sigRIBDDelResFlo;
     simsignal_t sigRIBDCreResFloPosi;
     simsignal_t sigRIBDCreResFloNega;
     simsignal_t sigRIBDAllocResPosi;
+    simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
 
     //Listeners
@@ -76,16 +83,26 @@ class RIBd : public RIBdBase {
     LisRIBDCreResNega*          lisRIBDCreResNega;
     LisRIBDCreResNega*          lisRIBDCreResNegaFromFa;
     LisRIBDCreResPosi*          lisRIBDCreResPosi;
+    LisRIBDCreResPosi*          lisRIBDCreResPosiForward;
+    LisRIBDDelReq*              lisRIBDDelReq;
+    LisRIBDDelRes*              lisRIBDDelRes;
+    LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
+    LisRIBDCreFloNega*          lisRIBDCreFloNega;
 
     void signalizeSendData(CDAPMessage* msg);
     void signalizeCreateRequestFlow(Flow* flow);
+    void signalizeDeleteRequestFlow(Flow* flow);
+    void signalizeDeleteResponseFlow(Flow* flow);
     void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlow(Flow* flow);
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative(Flow* flow);
 
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);
+    void processMDelete(CDAPMessage* msg);
+    void processMDeleteR(CDAPMessage* msg);
 
   private:
     int invokeIdCounter;

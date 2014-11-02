@@ -73,7 +73,6 @@ void Directory::parseConfig(cXMLElement* config) {
         return;
     }
 
-
     cXMLElementList apnlist = mainTag->getChildrenByTagName(ELEM_APN);
     for (cXMLElementList::const_iterator it = apnlist.begin(); it != apnlist.end(); ++it) {
         cXMLElement* m = *it;

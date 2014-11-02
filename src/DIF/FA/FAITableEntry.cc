@@ -41,13 +41,17 @@ FAITableEntry::~FAITableEntry() {
 
 std::string FAITableEntry::info() const {
     std::ostringstream os;
-    os << "status: " << this->getAllocateStatusString() <<
-          "\tcreated: " << this->getTimeCreated() << "\tlastActive: " << this->getTimeLastActive() << endl;
-    if ( this->getFlow() )
-        os << *(this->getFlow()) << endl;
-        //os << this->getFlow()->getQosParameters();
+    os << "STATUS: " << this->getAllocateStatusString() << endl;
     if ( this->getFai() )
-        os << *(this->getFai()) << endl;
+        os << "FAI> " << *(this->getFai()) << endl;
+    if ( this->getCFlow() ) {
+        os << this->getCFlow()->infoSource() << endl;
+        os << this->getCFlow()->infoDestination() << endl;
+        os << this->getCFlow()->infoOther() << endl;
+        os << this->getCFlow()->infoQoS() << endl;
+    }
+    os << "Created at: " << this->getTimeCreated()
+       << "\tLast active at: " << this->getTimeLastActive() << endl;
     return os.str();
 }
 
@@ -76,6 +80,9 @@ std::string FAITableEntry::getAllocateStatusString() const {
         case ALLOC_ERR:     return "allocation error";
         case DEALLOC_PEND:  return "deallocation pending";
         case DEALLOCATED:   return "deallocated";
+        case DEINST_PEND:   return "deinstantiation pending";
+        case DEINSTANTIATED:return "deinstantiated";
+        case FORWARDED:     return "allocation forwarded";
         default:            return "UNKNOWN";
     }
 //    static std::string AllocateStatusStrings[] = {"Pending", "Allocation Positive", "Allocation Negative"};
@@ -94,6 +101,21 @@ void FAITableEntry::setFai(FAIBase* nfai) {
     this->fai = nfai;
 }
 
-const Flow* FAITableEntry::getFlow() const {
+const Flow* FAITableEntry::getCFlow() const {
+    return flow;
+}
+
+bool FAITableEntry::operator ==(const FAITableEntry& other) const {
+    return this->fai == other.fai
+            && this->flow == other.flow
+            && this->allocStatus == other.allocStatus
+            && this->timeCreated == other.timeCreated;
+}
+
+FAITableEntry::AllocateStatus FAITableEntry::getAllocateStatus() const {
+    return allocStatus;
+}
+
+Flow* FAITableEntry::getFlow() {
     return flow;
 }

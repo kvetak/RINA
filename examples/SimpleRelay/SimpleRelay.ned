@@ -13,16 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RMTSchedulingPolicy.h"
+package rina.examples.SimpleRelay;
+import rina.CS.Host1AP;
+import rina.CS.InteriorRouter2Int;
 
-Define_Module(RMTSchedulingPolicy);
 
-void RMTSchedulingPolicy::initialize()
+network SimpleRelay
 {
-    // TODO - Generated method body
-}
-
-void RMTSchedulingPolicy::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+    @display("bgb=368,202");
+    submodules:
+        host1: Host1AP {
+            @display("p=70,101");
+        }
+        interiorRouter: InteriorRouter2Int {
+            @display("p=180,101");
+        }
+        host2: Host1AP {
+            @display("p=290,101");
+        }
+    connections allowunconnected:
+        host1.medium <--> interiorRouter.medium++;
+        host2.medium <--> interiorRouter.medium++;
 }

@@ -25,13 +25,14 @@ import rina.DIF.RA.ResourceAllocator;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RMTModule;
 
-
 module IPCProcess
 {
     parameters:
         @display("bgb=457,307;i=misc/square,#FF8000,50");
         string ipcAddress;
         string difName;
+        string apName = default(ipcAddress + "_" + difName);
+        bool routing = default(false);
         //int    rank;        
     gates:
         inout southIo[];

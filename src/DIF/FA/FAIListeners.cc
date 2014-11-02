@@ -46,7 +46,7 @@ void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
-    if (fai->getFlow() == fl)
+    if (*(fai->getFlow()) == *fl)
         fai->receiveAllocateRequest();
 }
 
@@ -65,8 +65,11 @@ void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
     if (flow) {
         //Only FAI with same CepId and PortId process this call
         if (fai->getFlow()->getSrcPortId() == flow->getSrcPortId()
-                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() )
+                && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() ) {
+            //EV << "A!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateResponsePositive(flow);
+        }
+
     }
     else
         EV << "FAIListener received unknown object!" << endl;
@@ -90,12 +93,59 @@ void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
 
 void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "DeleteResponse initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
-    fai->receiveDeleteResponse();
+    EV << "DeleteResponse initiated by " << src->getFullPath()
+       << " and processed by " << fai->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (*(fai->getFlow()) == *flow)
+            fai->receiveDeleteResponse();
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+
 }
 
 void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "DeleteRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
-    fai->receiveDeleteRequest();
+    Flow* fl = dynamic_cast<Flow*>(obj);
+//    EV << fl->info() << endl << "=================="<< endl << fai->getFlow()->info();
+//    EV << "srcAPNI = " << (fai->getFlow()->getSrcApni() == fl->getSrcApni()) << endl
+//        << "dstAPNI = " << (fai->getFlow()->getDstApni() == fl->getDstApni()) << endl
+//        << "srcPortId = " << (fai->getFlow()->getSrcPortId() == fl->getSrcPortId()) << endl
+//        << "dstPortId = " << (fai->getFlow()->getDstPortId() == fl->getDstPortId()) << endl
+//        << "srcAddr = " << (fai->getFlow()->getSrcAddr() == fl->getSrcAddr()) << endl
+//        << "dstAddr = " << (fai->getFlow()->getDstAddr() == fl->getDstAddr()) << endl;
+//    EV << "Vysledek> " << (fai->getFlow() == fl) << endl;
+    if (*(fai->getFlow()) == *fl)
+        fai->receiveDeleteRequest();
+}
+
+void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "CreateResponsePositiveNminusOne initiated by " << src->getFullPath()
+       << " and processed by " << fai->getFullPath() << endl;
+
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() ) {
+            //EV << "B!!!!!!!!!!!!!!IN" << endl;
+            fai->receiveCreateFlowResponsePositiveFromNminusOne();
+        }
+
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+}
+
+void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() )
+            fai->receiveCreateFlowResponseNegativeFromNminusOne();
+    }
+    else
+        EV << "FAIListener received unknown object!" << endl;
+
 }

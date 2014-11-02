@@ -13,16 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RMTQMonitorPolicy.h"
+package rina.DIF.RMT;
 
-Define_Module(RMTQMonitorPolicy);
-
-void RMTQMonitorPolicy::initialize()
+simple RMTQueue
 {
-    // TODO - Generated method body
-}
-
-void RMTQMonitorPolicy::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+    @display("i=block/queue;is=vs");
+    gates:
+        input inputGate;
+        output outputGate;        
 }

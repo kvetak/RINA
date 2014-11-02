@@ -18,36 +18,114 @@
 #ifndef CONNECTIONID_H_
 #define CONNECTIONID_H_
 
+//Standard libraries
 #include <cobject.h>
 #include <string>
+
+//RINASim libraries
 #include "QosCube.h"
 
 //Consts
 extern const unsigned short VAL_RESERVEDQOSID;
 extern const int VAL_UNDEF_CEPID;
 
+/**
+ * @brief Connection identifier as defined in specifications
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented 2014-10-28
+ */
 class ConnectionId: public cObject {
   public:
-    ConnectionId();
-    virtual ~ConnectionId();
-    unsigned int getDstCepId() const;
-    void setDstCepId(unsigned int destCepId);
-    unsigned short getQoSId() const;
-    void setQoSId(unsigned short qoSId);
-    unsigned int getSrcCepId() const;
-    void setSrcCepId(unsigned int srcCepId);
 
+    /**
+     * @brief Constructor of blank ConnectionId
+     */
+    ConnectionId();
+
+    /**
+     * @brief Destructor assigning undefined values
+     */
+    virtual ~ConnectionId();
+
+    /**
+     * @brief Getter of destination Connection-Endpoint identifier
+     * @return Returns destination CEP-id
+     */
+    int getDstCepId() const;
+
+    /**
+     * @brief Setter of destination Connection-Endpoint identifier
+     * @param destCepId A new destination CEP-id value
+     */
+    void setDstCepId(int destCepId);
+
+    /**
+     * @brief Getter of selected QoS-cube identifier
+     * @return Returns QoS-cube identifier
+     */
+    unsigned short getQoSId() const;
+
+    /**
+     * @brief Setter of selected QoS-cube identifier
+     * @param qoSId A new QoS-cube id value
+     */
+    void setQoSId(unsigned short qoSId);
+
+    /**
+     * @brief Getter of source Connection-Endpoint identifier
+     * @return Returns source CEP-id
+     */
+    int getSrcCepId() const;
+
+    /**
+     * @brief Setter of source Connection-Endpoint identifier
+     * @param srcCepId A new source CEP-id value
+     */
+    void setSrcCepId(int srcCepId);
+
+    /**
+     * @brief Less operator overload
+     * @param other ConnectionId for comparison
+     * @return True if this QosId, dstCEPid, srcCEPid are lesser than others.
+     *         Otherwise returns false
+     */
     bool operator<(const ConnectionId other) const;
+
+    /**
+     * @brief Equal operator overload
+     * @param other ConnectionId for comparison
+     * @return True if this QosId, dstCEPid, srcCEPid are equal with others.
+     *         Otherwise returns false
+     */
     bool operator==(const ConnectionId other) const;
 
+    /**
+     * @brief Duplicate overload creates exact copy of ConnectionId
+     * @return Pointer to a copy
+     */
     virtual ConnectionId *dup() const;
 
+    /**
+     * @brief Exchanges source and destination CEP identifiers
+     * @return Pointer to this object
+     */
     ConnectionId& swapCepIds();
 
-  private:
-    unsigned int qosId;
-    unsigned int srcCEPId;
-    unsigned int dstCEPId;
+  protected:
+    /**
+     * @brief QoS-cube identifier
+     */
+    unsigned short qosId;
+
+    /**
+     * @brief Source Connection-Endpoint identifier
+     */
+    int srcCEPId;
+
+    /**
+     * @brief Destination Connection-Endpoint identifier
+     */
+    int dstCEPId;
 
 };
 

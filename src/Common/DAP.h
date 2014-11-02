@@ -19,24 +19,69 @@
 #include <string>
 #include <sstream>
 
+/**
+ * @brief Distributed Application Process name a.k.a. DAP class
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2014-10-28
+ */
 class DAP {
   public:
+    /**
+     * @brief Constructor creating unspecified DAP
+     */
     DAP();
+
+    /**
+     * @brief Constructor creating DAP of given name
+     * @param nam Represents DAP string name
+     */
     DAP(std::string nam);
+
+    /**
+     * @brief Destructor assigning empty string to name
+     */
     virtual ~DAP();
 
+    /**
+     * @brief Equal operator overloading
+     * @param other DAP for comparison
+     * @return True if DAPs string names are equal, otherwise returns false.
+     */
     bool operator== (const DAP& other) const;
 
+    /**
+     * @brief Info text output suitable for << string streams and  WATCH
+     * @return DAP string name
+     */
     std::string info() const;
 
+    /**
+     * @brief Gets DAP string name representation
+     * @return DAP string
+     */
     const std::string& getName() const;
+
+    /**
+     * @brief Sets DAP string representation to a new value
+     * @param name A new DAP string value
+     */
     void setName(const std::string& name);
 
-  private:
+  protected:
+    /**
+     * @brief Attribute holding DAP name
+     * DAP is basically wrapper around string.
+     */
     std::string name;
 };
 
 //Free function
+/**
+ * << operator overload that feeds ostream DAP string representation.
+ * @param os Resulting ostream
+ * @param dap APNList class that is being converted to string
+ * @return Infotext representing DAP
+ */
 std::ostream& operator<< (std::ostream& os, const DAP& dap);
 
 

@@ -13,16 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "MaxQPolicy.h"
+package rina.DIF.RMT;
 
-Define_Module(MaxQPolicy);
-
-void MaxQPolicy::initialize()
+//
+// TODO auto-generated module
+//
+simple RMTQueueManager
 {
-    // TODO - Generated method body
-}
-
-void MaxQPolicy::handleMessage(cMessage *msg)
-{
-    // TODO - Generated method body
+    @display("i=block/mac");
 }

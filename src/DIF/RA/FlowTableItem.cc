@@ -15,8 +15,8 @@
 
 #include <FlowTableItem.h>
 
-FlowTableItem::FlowTableItem(Flow* flow, FABase* fa)
-:   flow(flow), fa(fa)
+FlowTableItem::FlowTableItem(Flow* flow, FABase* fa, RMTQueue* inQ, RMTQueue* outQ, std::string gateName)
+:   flow(flow), fa(fa), rmtInputQueue(inQ), rmtOutputQueue(outQ), gateName(gateName)
 {
 }
 
@@ -35,6 +35,14 @@ std::string FlowTableItem::info() const {
     {
         os << "FA path: " << fa->getFullPath() << "\n";
     }
+    if (rmtOutputQueue != NULL)
+    {
+        os << "output RMT queue: " << rmtOutputQueue->getName() << "\n";
+    }
+    if (rmtInputQueue != NULL)
+    {
+        os << "input RMT queue: " << rmtInputQueue->getName();
+    }
     return os.str();
 }
 
@@ -42,3 +50,43 @@ std::string FlowTableItem::info() const {
 std::ostream& operator <<(std::ostream& os, const FlowTableItem& cte) {
     return os << cte.info();
 }
+
+Flow* FlowTableItem::getFlow() const
+{
+    return flow;
+}
+
+
+FABase* FlowTableItem::getFaBase() const
+{
+    return fa;
+}
+
+
+RMTQueue* FlowTableItem::getRmtInputQueue() const
+{
+    return rmtInputQueue;
+}
+
+void FlowTableItem::setRmtInputQueue(RMTQueue* queue)
+{
+    this->rmtInputQueue = queue;
+}
+
+RMTQueue* FlowTableItem::getRmtOutputQueue() const
+{
+    return rmtOutputQueue;
+}
+
+void FlowTableItem::setRmtOutputQueue(RMTQueue* queue)
+{
+    this->rmtOutputQueue = queue;
+}
+
+std::string FlowTableItem::getGateName() const
+{
+    return gateName;
+}
+
+
+

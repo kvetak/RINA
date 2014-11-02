@@ -28,16 +28,18 @@ class FABase : public cSimpleModule {
     virtual ~FABase();
 
     virtual bool receiveAllocateRequest(Flow* flow) = 0;
-    //virtual void receiveAllocateResponsePositive(Flow* flow) = 0;
-    //virtual void receiveAllocateResponseNegative(Flow* flow) = 0;
-    virtual void receiveCreateFlowRequest(Flow* flow) = 0;
-    virtual void receiveDeallocateRequest(Flow* flow) = 0;
+    virtual void receiveCreateFlowPositive(Flow* flow) = 0;
+    virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow) = 0;
+    virtual bool receiveCreateFlowRequestFromRibd(Flow* flow) = 0;
+    virtual bool receiveDeallocateRequest(Flow* flow) = 0;
     virtual void deinstantiateFai(Flow* flow) = 0;
     virtual bool invokeNewFlowRequestPolicy(Flow* flow) = 0;
 
-    FAITable* getFaiTable() const;
+    virtual bool setOriginalAddresses(Flow* flow) = 0;
+    virtual bool setNeighborAddresses(Flow* flow) = 0;
 
-    //FAITable* getFaiTable() const;
+    FAITable* getFaiTable() const;
+    const Address& getMyAddress() const;
 
   protected:
     FAITable* FaiTable;
@@ -48,7 +50,6 @@ class FABase : public cSimpleModule {
     virtual void handleMessage(cMessage *msg) = 0;
 
     void initMyAddress();
-
 
 };
 

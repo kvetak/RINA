@@ -13,46 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_RMTPORT_H_
-#define __RINA_RMTPORT_H_
+#ifndef RMTSCHEDULINGBASE_H_
+#define RMTSCHEDULINGBASE_H_
 
 #include <omnetpp.h>
 
+#include "RMTQueueManager.h"
 #include "RMTQueue.h"
 
-// representation of a (N-1)-port & its corresponding queues
-class RMTPort
+class RMTSchedulingBase
 {
   public:
-    RMTPort();
-    virtual ~RMTPort();
-
-    // connection with a EFCP instance
-    void setOutGate(cGate* val);
-    cGate* getOutGate();
-
-    // output queue write supression
-    bool outboundState();
-    void suspendOutbound();
-    void resumeOutbound();
-
-    int getIncomingLength();
-    int getOutgoingLength();
-
-    void addIncomingPDU(PDU_Base* pdu);
-    void addOutgoingPDU(PDU_Base* pdu);
-
-    PDU_Base* popIncomingPDU();
-    PDU_Base* popOutgoingPDU();
-
-  private:
-    RMTQueue inQ;
-    RMTQueue outQ;
-
-    cGate* outGate;
-    cGate* inboundGate;
-
-    bool outboundActive;
+    RMTSchedulingBase();
+    virtual ~RMTSchedulingBase();
+    std::string getName() { return name; };
+    virtual void run(RMTQueueManager* queues) = 0;
+  protected:
+    std::string name;
 };
 
-#endif
+#endif /* RMTSCHEDULINGBASE_H_ */

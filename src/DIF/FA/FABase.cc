@@ -34,3 +34,7 @@ void FABase::initMyAddress() {
     MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
     EV << "SrcAddress that this FA will use is " << MyAddress << endl;
 }
+
+const Address& FABase::getMyAddress() const {
+    return MyAddress;
+}

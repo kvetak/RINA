@@ -13,6 +13,8 @@ const char* SIG_AE_DataSend                     = "AE-DataSend";
 
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
+const char* SIG_RIBD_DeleteRequestFlow          = "RIBd-DeleteRequestFlow";
+const char* SIG_RIBD_DeleteResponseFlow         = "RIBd-DeleteResponseFlow";
 const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
 const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
 const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
@@ -30,6 +32,7 @@ const char* SIG_AERIBD_AllocateResponseNegative = "AEorRIBd-AllocateResponseNega
 const char* SIG_FA_CreateFlowResponseNegative   = "FA-CreateFlowResponseNegative";
 const char* SIG_FA_CreateFlowResponsePositive   = "FA-CreateFlowResponsePositive";
 const char* SIG_FA_CreateFlowRequestForward     = "FA-CreateFlowRequestForward";
+const char* SIG_FA_CreateFlowResponseForward    = "FA-CreateFlowResponseForward";
 const char* SIG_FA_AllocateResponsePositive     = "FA-AllocateResponsePositive";
 const char* SIG_FA_AllocateResponseNegative     = "FA-AllocateResponseNegative";
 
@@ -37,6 +40,8 @@ const char* SIG_toFAI_AllocateRequest           = "toFAI-AllocateRequest";
 const char* SIG_toFAI_AllocateResponsePositive  = "toFAI-AllocateResponsePositive";
 const char* SIG_toFAI_AllocateResponseNegative  = "toFAI-AllocateResponseNegative";
 const char* SIG_FAI_AllocateRequest             = "FAI-AllocateRequest";
+const char* SIG_FAI_DeallocateRequest           = "FAI-DeallocateRequest";
+const char* SIG_FAI_DeallocateResponse          = "FAI-DeallocateResponse";
 const char* SIG_FAI_AllocateResponsePositive    = "FAI-AllocateResponsePositive";
 const char* SIG_FAI_AllocateResponseNegative    = "FAI-AllocateResponseNegative";
 const char* SIG_FAI_CreateFlowRequest           = "FAI-CreateFlowRequest";
@@ -51,8 +56,14 @@ const char* SIG_RA_AllocateResponsePositive     = "RA-AllocateResponsePositive";
 const char* SIG_RA_AllocateResponseNegative     = "RA-AllocateResponseNegative";
 const char* SIG_RA_FlowAllocated                = "RA-FlowAllocated";
 const char* SIG_RA_FlowDeallocated              = "RA-FlowDeallocated";
+const char* SIG_RA_CreateFlowPositive           = "RA-CreateFlowPositive";
+const char* SIG_RA_CreateFlowNegative           = "RA-CreateFlowNegative";
 
 const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";
 const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
+
+const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
+const char* SIG_RMT_MessageReceived             = "RMT-MessageReceived";
+

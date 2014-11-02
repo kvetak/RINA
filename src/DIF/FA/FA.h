@@ -54,28 +54,34 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
-    virtual void receiveDeallocateRequest(Flow* flow);
-    virtual void receiveCreateFlowRequest(Flow* flow);
+    virtual void receiveCreateFlowPositive(Flow* flow);
+    virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
+    virtual bool receiveDeallocateRequest(Flow* flow);
+    virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
 
     virtual void deinstantiateFai(Flow* flow);
+
+    virtual bool setOriginalAddresses(Flow* flow);
+    virtual bool setNeighborAddresses(Flow* flow);
+
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
     //Signals
     //simsignal_t sigFAIAllocReq;
-    simsignal_t sigFAAllocResNega;
-    simsignal_t sigFAAllocResPosi;
+    //simsignal_t sigFAAllocResNega;
+    //simsignal_t sigFAAllocResPosi;
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
-    simsignal_t sigFACreResPosi;
+    //simsignal_t sigFACreResPosi;
+    simsignal_t sigFACreResPosiFwd;
 
     //Listeners
-    LisFAAllocReq* lisAllocReq;
-    LisFADeallocReq* lisDeallocReq;
-    LisFACreReq*  lisCreReq;
-    //LisFACreRes* lisCreRes;
-    //LisFADelReq*  lisDelReq;
-    //LisFADelRes* lisDelRes;
+    LisFAAllocReq*      lisAllocReq;
+    LisFACreFloPosi*    lisCreFloPosi;
+    LisFADeallocReq*    lisDeallocReq;
+    LisFACreReq*        lisCreReq;
+    LisFACreRes*        lisCreResFloPosi;
 
   protected:
     //SimpleModule overloads
@@ -97,6 +103,13 @@ class FA : public FABase
     //void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
+    void signalizeCreateFlowResponsePositiveForward(Flow* flow);
+
+    const Address getAddressFromDa(const APN& apn, bool useNeighbor);
+
+    bool changeDstAddresses(Flow* flow, bool useNeighbor);
+    bool changeSrcAddress(Flow* flow, bool useNeighbor);
+
 };
 
 #endif /* FLOWALLOCATOR_H_ */
