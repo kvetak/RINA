@@ -15,7 +15,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file FA.cpp
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Apr 29, 2014
  * @brief

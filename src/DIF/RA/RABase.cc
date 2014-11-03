@@ -34,3 +34,11 @@ std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
         os << *it;
     return os;
 }
+
+const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
+    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
+        if (it->getQosId() == qosId)
+            return &(*it);
+    }
+    return NULL;
+}

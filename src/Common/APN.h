@@ -91,11 +91,13 @@ typedef std::list<APN> APNList;
 
 /**
  * @brief APNList constant iterator
+ * @typedef ApnCItem
  */
 typedef APNList::const_iterator ApnCItem;
 
 /**
  * @brief APNList iterator
+ * @typedef ApnItem
  */
 typedef APNList::iterator ApnItem;
 
