@@ -35,6 +35,19 @@ void DTP::initGates()
   southO = this->gateHalf(GATE_DTP_SOUTHIO, cGate::OUTPUT);
 }
 
+const QosCube& DTP::getQosCube() const
+{
+  return qosCube;
+}
+
+void DTP::setQosCube(const QosCube& qosCube)
+{
+  this->qosCube = qosCube;
+  if(qosCube.isForceOrder()){
+    state.setRxPresent(true);
+  }
+}
+
 void DTP::initialize(int step)
 {
 
@@ -123,7 +136,7 @@ void DTP::handleMessage(cMessage *msg)
  * This method fills header fields in given @param pdu
  * @param pdu
  */
-void DTP::setPDUHeader(DataTransferPDU* pdu)
+void DTP::setPDUHeader(PDU* pdu)
 {
   pdu->setConnId(this->flow->getConId());
   pdu->setSrcAddr(this->flow->getSrcAddr());
@@ -238,6 +251,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
 //    send(pdu->getMUserData(), northO);
   }
+
+  //TODO A! Handle ControlPDU
 
   //TODO not sure about this scheduling
   schedule(rcvrInactivityTimer);
@@ -1198,8 +1213,10 @@ void DTP::runRcvrAckPolicy(unsigned int seqNum)
     //Update LeftWindowEdge removing allowed gaps;
 
 
+    //TODO A! Fill PDU header fields (APN, Address, ...
     //send an Ack/FlowControlPDU
     AckOnlyPDU* ackPDU = new AckOnlyPDU();
+    setPDUHeader(ackPDU);
     ackPDU->setControlSeqNum(dtcp->getNextCtrlSeqNum());
     ackPDU->setAckNackSeqNum(seqNum);
 

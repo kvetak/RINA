@@ -65,6 +65,8 @@ class RA : public RABase
     virtual bool bindFlowToLowerFlow(Flow* flow);
     virtual void bindFlowToMedium(Flow* flow);
 
+    QosCube getQosCubeById(unsigned short qosId);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

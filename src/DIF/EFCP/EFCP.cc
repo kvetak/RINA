@@ -39,6 +39,7 @@ EFCP::~EFCP() {
 void EFCP::initialize(int step){
 //  if(step == 3){
     this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
+    resourceAllocator = ModuleAccess<RA>(MOD_RA).get();
 //  }
 }
 
@@ -70,16 +71,19 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
     //TODO A!: Add tmpEFCPEntry to efcpTable
   }
 
+  QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
 
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
   dtpModule->setFlow(flow);
+  dtpModule->setQosCube(qosCube);
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
 
-  //2. If necessary create DTCP module
 
-  if((flow->getQosParameters()).isDTCPNeeded()){
+
+  //2. If necessary create DTCP module
+  if(qosCube.isDTCPNeeded()){
       efcpi->setDtcp(this->createDTCP(efcpiModule));
   }else{
     efcpi->setDtcp(NULL);

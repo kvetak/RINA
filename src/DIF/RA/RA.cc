@@ -606,3 +606,16 @@ void RA::signalizeCreateFlowNegativeToRibd(Flow* flow) {
     EV << "Emits CreateFlowNegative signal for flow" << endl;
     emit(sigRACreFloNega, flow);
 }
+
+QosCube RA::getQosCubeById(unsigned short qosId)
+{
+  for(std::list<QosCube>::iterator it = QosCubes.begin(); it != QosCubes.end(); ++it){
+    if((*it).getQosId() == qosId){
+      return (*it);
+    }
+  }
+  QosCube empty;
+  empty.setQosId(0);
+  return empty;
+
+}

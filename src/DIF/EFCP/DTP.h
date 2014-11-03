@@ -30,6 +30,8 @@
 #include "SDU.h"
 #include "RMT.h"
 
+#include "RA.h"
+
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
@@ -45,6 +47,8 @@ class DTP : public cSimpleModule
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
     Flow* flow;
+
+    QosCube qosCube;
 
 
     /* Various queues */
@@ -167,7 +171,7 @@ class DTP : public cSimpleModule
     void schedule(DTPTimers* timer, double time =0.0);
 
     void handleSDUs(CDAPMessage* cdap);
-    void setPDUHeader(DataTransferPDU* pdu);
+    void setPDUHeader(PDU* pdu);
     void initGates();
     void delimitFromRMT(DataTransferPDU* pdu);
 
@@ -181,8 +185,8 @@ class DTP : public cSimpleModule
 
     void setFlow(Flow* flow);
     void setDTCP(DTCP* dtcp);
-
-
+    const QosCube& getQosCube() const;
+    void setQosCube(const QosCube& qosCube);
 
   protected:
     virtual void handleMessage(cMessage *msg);
