@@ -21,7 +21,7 @@ cplusplus {{
 message PDU;
 
 message ControlPDU extends PDU{
-    unsigned int controlSeqNum;
+//    unsigned int controlSeqNum;
 }
 
 message FlowControlPDU extends ControlPDU {

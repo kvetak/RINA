@@ -66,7 +66,11 @@ public:
 
     void updateRcvRtWinEdge(DTPState* dtpState);
 
-    unsigned int getNextCtrlSeqNum();
+    unsigned int getNextSndCtrlSeqNum();
+
+    unsigned int getLastCtrlSeqNumRcv();
+
+    void setLastCtrlSeqnumRec(unsigned int ctrlSeqNum);
 
 protected:
     virtual void handleMessage(cMessage *msg);

@@ -44,7 +44,7 @@ class DTCPState : public cObject
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
     //retransmissionQ
 
-    unsigned int controlSeqNum; //sequence number for ControlPDUs
+//    unsigned int controlSeqNum; //sequence number for ControlPDUs
 
 
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
@@ -67,7 +67,7 @@ class DTCPState : public cObject
     void setSndCredit(unsigned int sndCredit);
     unsigned int getRcvRtWinEdge() const;
     void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
-    unsigned int getNextCtrlSeqNum();
+//    unsigned int getNextCtrlSeqNum();
 
 };
 

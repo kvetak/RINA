@@ -174,6 +174,7 @@ class DTP : public cSimpleModule
     void setPDUHeader(PDU* pdu);
     void initGates();
     void delimitFromRMT(DataTransferPDU* pdu);
+    void commonRcvControl(ControlPDU* pdu);
 
   public:
     DTP();

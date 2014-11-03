@@ -27,7 +27,9 @@
 
 FlowControl::FlowControl()
 {
-  // TODO Auto-generated constructor stub
+
+
+  dupFC = 0;
 
 }
 
@@ -46,3 +48,7 @@ FlowControl::~FlowControl()
   // TODO Auto-generated destructor stub
 }
 
+void FlowControl::incDupFC()
+{
+  dupFC++;
+}

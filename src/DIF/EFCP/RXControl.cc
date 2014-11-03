@@ -27,7 +27,8 @@
 
 RXControl::RXControl()
 {
-  // TODO Auto-generated constructor stub
+  nextSenderControlSeqNum = 1;
+  dupAcks = 0;
 
 }
 
@@ -39,4 +40,21 @@ RXControl::~RXControl()
 unsigned int RXControl::getRightWinEdge(){
 
   return rightWinEdge;
+}
+
+unsigned int RXControl::getNextSndCtrlSeqNum()
+{
+  return nextSenderControlSeqNum++;
+}
+
+unsigned int RXControl::getLastCtrlSeqNumRcv(){
+  return lastControlSeqNumRcv;
+}
+
+void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
+  lastControlSeqNumRcv = ctrlSeqNum;
+}
+void RXControl::incDupAcks()
+{
+  dupAcks++;
 }

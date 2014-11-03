@@ -64,12 +64,15 @@ class FlowControl : public cSimpleModule
 
     /* Not found in specs but needed */
     unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
+    unsigned int dupFC; //duplicate Flow Control PDUs
 
   public:
     FlowControl();
     virtual ~FlowControl();
     unsigned int getSendRightWindowEdge() const;
     void setSendRightWindowEdge(unsigned int sendRightWindowEdge);
+
+    void incDupFC();
 };
 
 #endif /* FLOWCONTROL_H_ */

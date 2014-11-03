@@ -238,6 +238,31 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
   }
 }
 
+void DTP::commonRcvControl(ControlPDU* pdu)
+{
+  if (pdu->getSeqNum() < dtcp->getLastCtrlSeqNumRcv())/* Duplicate ControlPDU */
+  {
+    if ((pdu->getType() & PDU_ACK_BIT) == PDU_ACK_BIT)
+    {
+      dtcp->rxControl->incDupAcks();
+    }
+    if ((pdu->getType() & PDU_FC_BIT) == PDU_FC_BIT)
+    {
+      dtcp->flowControl->incDupFC();
+    }
+    delete pdu;
+  }
+  else if (pdu->getSeqNum() > dtcp->getLastCtrlSeqNumRcv() + 1)/* Out of order */
+  {
+    /* LostControlPDU Policy */
+    //TODO A! Send Control Ack and empty TransferPDU
+  }
+  else
+  {
+    dtcp->setLastCtrlSeqnumRec(pdu->getSeqNum());
+  }
+}
+
 void DTP::handleMsgFromRmtnew(PDU* msg){
   //TODO A1 Not sure about canceling rcvrInactivTimer
   cancelEvent(rcvrInactivityTimer);
@@ -247,14 +272,30 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
     handleDataTransferPDUFromRmtnew(pdu);
 
-    /* TODO A! Move to separate method (probably delimitFromRMT or so)*/
 
-//    send(pdu->getMUserData(), northO);
+  }else if (dynamic_cast<ControlPDU*>(msg))
+  {
+    ControlPDU* pdu = (ControlPDU*) msg;
+
+
+
+    /* TODO B1 Make it prettier ;) */
+    if((pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)) == (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)){
+      commonRcvControl(pdu);
+
+      //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
+      if ((pdu->getType() & PDU_ACK_BIT) == PDU_ACK_BIT){
+        /* Policy SenderAck with default: */
+
+      }
+
+    }
+
   }
 
-  //TODO A! Handle ControlPDU
 
-  //TODO not sure about this scheduling
+
+  //TODO A1 not sure about this scheduling
   schedule(rcvrInactivityTimer);
 }
 
@@ -1217,7 +1258,7 @@ void DTP::runRcvrAckPolicy(unsigned int seqNum)
     //send an Ack/FlowControlPDU
     AckOnlyPDU* ackPDU = new AckOnlyPDU();
     setPDUHeader(ackPDU);
-    ackPDU->setControlSeqNum(dtcp->getNextCtrlSeqNum());
+    ackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
     ackPDU->setAckNackSeqNum(seqNum);
 
     send(ackPDU, southO);

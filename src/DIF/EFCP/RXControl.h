@@ -39,10 +39,11 @@ class RXControl : public cSimpleModule
     unsigned int lastRightWinEdgeSent; //The sequence number of the last Right Window Edge Sent in a Control PDU. (This should be the same as RightWindowEdge.)
     //rxQ  //retransmissionQueue  - The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
     unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
-    unsigned int lastRcvControlSeqNum; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
+    unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
     unsigned int sendLeftWinEdge; // This state variable contains the Sequence Number of the lowest sequence number expected to be Acked. This should be the Sequence Number of the first PDU on the RetransmissionQ.
     unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgement that will be tried before declaring an error.
     unsigned int rcvLeftWinEdge; // This state variable contains the Sequence Number of the lowest sequence number expected to be Acked. This should be the Sequence Number of the first PDU on the RetransmissionQ.
+    unsigned int dupAcks;
     /* Nota Bene: DTCP PDU Retransmission: Note that there is no retransmission queue
     for DTCP Control PDUs, when a lost control PDU is detected a new one is generated
     with the current information. */
@@ -52,6 +53,11 @@ class RXControl : public cSimpleModule
     virtual ~RXControl();
 
    unsigned int getRightWinEdge();
+
+   unsigned int getNextSndCtrlSeqNum();
+   unsigned int getLastCtrlSeqNumRcv();
+   void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
+   void incDupAcks();
 };
 
 #endif /* RXCONTROL_H_ */

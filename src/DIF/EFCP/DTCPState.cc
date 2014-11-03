@@ -36,7 +36,6 @@ DTCPState::DTCPState()
   rcvRightWinEdgeSent = 0;
   sndRightWinEdge = sndCredit;
 
-  controlSeqNum = 1;
 
 
 
@@ -141,6 +140,6 @@ void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
 }
 
 
-unsigned int DTCPState::getNextCtrlSeqNum(){
-  return controlSeqNum++;
-}
+//unsigned int DTCPState::getNextCtrlSeqNum(){
+//  return controlSeqNum++;
+//}

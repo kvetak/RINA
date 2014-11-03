@@ -135,6 +135,8 @@ public:
     void setSetDrfFlag(bool setDrfFlag);
     unsigned int getRtt() const;
     void setRtt(unsigned int rtt);
+
+    unsigned int getLastCtrlSeqNumRcv();
 };
 
 #endif /* DTPSTATE_H_ */

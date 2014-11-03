@@ -82,6 +82,14 @@ void DTCP::sendAckPDU(){
 
 }
 
-unsigned int DTCP::getNextCtrlSeqNum(){
-  return dtcpState->getNextCtrlSeqNum();
+unsigned int DTCP::getNextSndCtrlSeqNum(){
+  return rxControl->getNextSndCtrlSeqNum();
+}
+
+unsigned int DTCP::getLastCtrlSeqNumRcv(){
+  return rxControl->getLastCtrlSeqNumRcv();
+}
+
+void DTCP::setLastCtrlSeqnumRec(unsigned int ctrlSeqNum){
+  rxControl->setLastCtrlSeqNumRcv(ctrlSeqNum);
 }

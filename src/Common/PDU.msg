@@ -50,10 +50,15 @@ enum PDUType{
         NACK_FLOW_PDU 			= 0x880D;
         SELECT_ACK_FLOW_PDU 	= 0x880E;
         SELECT_NACK_FLOW_PDU 	= 0x880F;
-        
-        
-        
+
 }
+
+enum PDUTypeBits{
+    	PDU_ACK_BIT		= 0x04;
+    	PDU_NACK_BIT	= 0x05;
+    	PDU_FC_BIT		= 0x08;
+}
+
 //TODO A1
 enum FLAGS{
 }
