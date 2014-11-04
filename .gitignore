@@ -1,8 +1,4 @@
 /out
-/.cproject
-/.oppbuildspec
-/Makefile
-/Makefile.vc
 src/rina
 /doc/
 /doxy.cfg
