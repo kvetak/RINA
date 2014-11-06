@@ -25,8 +25,8 @@ message ControlPDU extends PDU{
 }
 
 message FlowControlPDU extends ControlPDU {
-    
-	
+    unsigned int newRightWinEdge;
+	unsigned int newRate;
     unsigned int rateLen;
     unsigned int timeUnit;
     unsigned int myLeftWinEdge;
@@ -69,7 +69,7 @@ message FlowControlOnlyPDU extends FlowControlPDU{
 
 message SelectiveNAckFlow extends FlowControlPDU{
     unsigned int newLeftWinEdge;
-    unsigned int newRightWinEdge;
+    
     
     unsigned int nackListLen;
     unsigned int nackList [];

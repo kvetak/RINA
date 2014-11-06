@@ -78,7 +78,7 @@ void DTP::handleMessage(cMessage *msg)
     switch(timer->getType()){
       case(DTP_RX_EXPIRY_TIMER):{
         handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
-        schedule(timer);
+
 
         break;
       }
@@ -279,15 +279,52 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
 
 
-    /* TODO B1 Make it prettier ;) */
+    /* TODO B3 Make it prettier ;) */
     if((pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)) == (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)){
       commonRcvControl(pdu);
 
       //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
-      if ((pdu->getType() & PDU_ACK_BIT) == PDU_ACK_BIT){
+      if ((pdu->getType() & PDU_NACK_BIT) == PDU_ACK_BIT){
+        AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
         /* Policy SenderAck with default: */
+        std::vector<RxExpiryTimer*>::iterator it;
+        for (it = rxQ.begin(); it != rxQ.end();)
+        {
+          //FIXME B1 "including any gaps less than allowable Gap and"
+          if(((*it)->getPdu())->getSeqNum() <= ackPdu->getAckNackSeqNum()){
+            delete (*it)->getPdu();
+            cancelEvent((*it));
+            delete (*it);
+            it = rxQ.erase(it);
+          }
+        }
+        //Update LeftWindowEdge accordingly
+        state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
+        //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
+
+      }else if ((pdu->getType() & PDU_NACK_BIT) == PDU_NACK_BIT){
+
+        NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
+
+        std::vector<RxExpiryTimer*>::iterator it;
+        for (it = rxQ.begin(); it != rxQ.end(); ++it)
+        {
+          //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+          if(((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum()){
+            handleDTPRxExpiryTimer((*it));
+          }
+        }
+
 
       }
+      /* End of Ack/Nack */
+
+      if ((pdu->getType() & PDU_FC_BIT) == PDU_FC_BIT){
+        FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
+        dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
+        dtcp->setSndRate(flowPdu->getNewRate());
+      }
+
 
     }
 
@@ -295,8 +332,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
 
 
-  //TODO A1 not sure about this scheduling
-  schedule(rcvrInactivityTimer);
+  //TODO A1 not sure about this scheduling; yeah it will be deleted
+//  schedule(rcvrInactivityTimer);
 }
 
 void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
@@ -458,7 +495,10 @@ void DTP::handleSDUs(CDAPMessage* cdap)
  */
 void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
 {
+  /* Canceling event is not needed for usual timer expiration but for direct calling this method */
+  cancelEvent(timer);
   runRxTimerExpiryPolicy(timer);
+  schedule(timer);
 }
 
 void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
@@ -883,7 +923,8 @@ void DTP::trySendGenPDUs()
         rxExpTimer->setPdu((*it)->dup());
 
         rxQ.push_back(rxExpTimer);
-        scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+
+        schedule(rxExpTimer);
         //TODO A! Where do I get destAddr? Probably from FlowAllocator
         sendPDUToRMT((*it));
 //        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
@@ -1302,7 +1343,8 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
   }
   else
   {
-    sendToRMT(pdu);
+//    sendToRMT(pdu);
+    send(pdu->dup(),southO);
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
 
@@ -1458,6 +1500,7 @@ void DTP::clearRxQ()
   for (it = rxQ.begin(); it != rxQ.end();)
   {
     delete (*it)->getPdu();
+    cancelEvent((*it));
     delete (*it);
     it = rxQ.erase(it);
   }
@@ -1480,6 +1523,7 @@ void DTP::schedule(DTPTimers *timer, double time)
   {
     case (DTP_RX_EXPIRY_TIMER): {
       //TODO A! Expiry Timer time interval
+      scheduleAt(simTime() + getRxTime(), timer); //TODO A! simTime() + something. Find the SOMETHING!
       break;
     }
     case (DTP_SENDER_INACTIVITY_TIMER): {

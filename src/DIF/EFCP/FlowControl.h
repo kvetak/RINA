@@ -71,6 +71,7 @@ class FlowControl : public cSimpleModule
     virtual ~FlowControl();
     unsigned int getSendRightWindowEdge() const;
     void setSendRightWindowEdge(unsigned int sendRightWindowEdge);
+    void setSendingRate(unsigned int sendingRate);
 
     void incDupFC();
 };

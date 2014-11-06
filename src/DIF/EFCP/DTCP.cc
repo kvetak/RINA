@@ -93,3 +93,15 @@ unsigned int DTCP::getLastCtrlSeqNumRcv(){
 void DTCP::setLastCtrlSeqnumRec(unsigned int ctrlSeqNum){
   rxControl->setLastCtrlSeqNumRcv(ctrlSeqNum);
 }
+
+void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
+{
+  flowControl->setSendRightWindowEdge(sndRtWinEdge);
+}
+
+void DTCP::setSndRate(unsigned int sendingRate)
+{
+  flowControl->setSendingRate(sendingRate);
+}
+
+

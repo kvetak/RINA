@@ -52,3 +52,8 @@ void FlowControl::incDupFC()
 {
   dupFC++;
 }
+
+void FlowControl::setSendingRate(unsigned int sendingRate)
+{
+  this->sendingRate = sendingRate;
+}

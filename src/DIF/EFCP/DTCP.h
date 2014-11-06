@@ -72,6 +72,9 @@ public:
 
     void setLastCtrlSeqnumRec(unsigned int ctrlSeqNum);
 
+    void setSndRtWinEdge(unsigned int sndRtWinEdge);
+    void setSndRate(unsigned int sendingRate);
+
 protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize();
