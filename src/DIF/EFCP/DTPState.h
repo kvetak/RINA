@@ -77,6 +77,9 @@ private:
     /* Not in specs */
     unsigned int dropDup; //number of dropped duplicates (this variable is not mentioned in specs)
 
+    /* Not defined in specs, but refered to */
+    unsigned int lastSeqNumSent;
+
     /* Moved from DTCP-SV */
     bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     unsigned int rtt;
@@ -137,6 +140,8 @@ public:
     void setRtt(unsigned int rtt);
 
     unsigned int getLastCtrlSeqNumRcv();
+    unsigned int getLastSeqNumSent() const;
+    void setLastSeqNumSent(unsigned int lastSeqNumSent);
 };
 
 #endif /* DTPSTATE_H_ */

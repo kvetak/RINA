@@ -35,9 +35,7 @@ dtcpState = new DTCPState();
 rxControl = new RXControl();
 }
 
-unsigned int DTCP::getFlowControlRightWinEdge(){
-  return flowControl->getSendRightWindowEdge();
-}
+
 
 
 void DTCP::schedule(DTCPTimers* timer){
@@ -97,6 +95,11 @@ void DTCP::setLastCtrlSeqnumRec(unsigned int ctrlSeqNum){
 void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
 {
   flowControl->setSendRightWindowEdge(sndRtWinEdge);
+}
+
+unsigned int DTCP::getSndRtWinEdge()
+{
+  flowControl->getSendRightWindowEdge();
 }
 
 void DTCP::setSndRate(unsigned int sendingRate)

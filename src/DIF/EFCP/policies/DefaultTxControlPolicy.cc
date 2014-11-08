@@ -45,7 +45,7 @@ void DefaultTxControlPolicy::run(cObject *dtpT)
      And Set the ClosedWindow flag appropriately. */
     std::vector<PDU*>::iterator it;
     for (it = dtp->generatedPDUs.begin();
-        it != dtp->generatedPDUs.end() || (*it)->getSeqNum() <= dtp->dtcp->getFlowControlRightWinEdge();)
+        it != dtp->generatedPDUs.end() || (*it)->getSeqNum() <= dtp->dtcp->getSndRtWinEdge();)
     {
       dtp->postablePDUs.push_back((*it));
       dtp->generatedPDUs.erase(it);

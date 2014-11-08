@@ -155,7 +155,8 @@ void DTP::handleMsgFromDelimiting(Data* msg)
   setPDUHeader(pdu);
   pdu->setSeqNum(this->state.getNextSeqNumToSend());
 
-  send(pdu, southO);
+//  send(pdu, southO);
+  sendToRMT(pdu);
 
 }
 
@@ -321,8 +322,33 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
       if ((pdu->getType() & PDU_FC_BIT) == PDU_FC_BIT){
         FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
+
+        //Update RightWindowEdge and SendingRate.
         dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
         dtcp->setSndRate(flowPdu->getNewRate());
+
+        //TODO A1 Maybe change it to closedWindowQ.size()
+        if(state.getClosedWinQueLen() != 0 && state.getSenderLeftWinEdge() < dtcp->getSndRtWinEdge()){
+          //After updating Window edges, we can send some PDUs from closedWindow Queue
+
+          std::vector<PDU*>::iterator it;
+          for(it = closedWindowQ.begin(); it != closedWindowQ.end();){
+            if((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()){
+//              send((*it), southO);
+              sendToRMT((*it));
+              it = closedWindowQ.erase(it);
+
+            }else{
+              ++it;
+            }
+          }
+
+          state.setClosedWinQueLen(closedWindowQ.size());
+          if(state.getClosedWinQueLen() == 0 && state.getLastSeqNumSent() < dtcp->getSndRtWinEdge()){
+            state.setClosedWindow(false);
+          }
+
+        }
       }
 
 
@@ -860,7 +886,7 @@ void DTP::trySendGenPDUs()
       {
         if (state.isWinBased())
         {
-          if ((*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge())
+          if ((*it)->getSeqNum() <= dtcp->getSndRtWinEdge())
           {
             /* The Window is Open. */
             runTxControlPolicy();
@@ -1169,11 +1195,7 @@ void DTP::getSDUFromQ(SDU *sdu)
   }
 }
 
-unsigned int DTP::getFlowControlRightWinEdge()
-{
 
-  return dtcp->getFlowControlRightWinEdge();
-}
 
 /*
  * We assume that this policy is used only under flowControl, it doesn't check presence
@@ -1188,7 +1210,7 @@ void DTP::runTxControlPolicy()
      And Set the ClosedWindow flag appropriately. */
     std::vector<PDU*>::iterator it;
     for (it = generatedPDUs.begin();
-        it != generatedPDUs.end() || (*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge();)
+        it != generatedPDUs.end() || (*it)->getSeqNum() <= dtcp->getSndRtWinEdge();)
     {
       postablePDUs.push_back((*it));
       it = generatedPDUs.erase(it);
@@ -1302,7 +1324,8 @@ void DTP::runRcvrAckPolicy(unsigned int seqNum)
     ackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
     ackPDU->setAckNackSeqNum(seqNum);
 
-    send(ackPDU, southO);
+//    send(ackPDU, southO);
+    sendToRMT(ackPDU);
 
     //TODO A1 Add handling for A-timer != 0
     //stop any A-Timers asscociated with this PDU and earlier ones.
@@ -1343,8 +1366,8 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
   }
   else
   {
-//    sendToRMT(pdu);
-    send(pdu->dup(),southO);
+    sendToRMT(pdu->dup());
+//    send(pdu->dup(),southO);
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
 
@@ -1422,6 +1445,15 @@ void DTP::sendToRMT(PDU* pdu)
 {
   //TODO A! change to send using omnet messages
 //  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
+  if(pdu->getType() == DATA_TRANSFER_PDU){
+    state.setLastSeqNumSent(pdu->getSeqNum());
+  }else{
+    //This should be controlPDU so do not have increment LastSeqNumSent
+
+  }
+
+  send(pdu,southO);
+
 }
 
 unsigned int DTP::getRxTime()

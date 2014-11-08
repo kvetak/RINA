@@ -229,3 +229,13 @@ void DTPState::setSetDrfFlag(bool setDrfFlag)
 {
   setDRFFlag = setDrfFlag;
 }
+
+unsigned int DTPState::getLastSeqNumSent() const
+{
+  return lastSeqNumSent;
+}
+
+void DTPState::setLastSeqNumSent(unsigned int lastSeqNumSent)
+{
+  this->lastSeqNumSent = lastSeqNumSent;
+}

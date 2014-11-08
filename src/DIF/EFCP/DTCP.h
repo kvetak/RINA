@@ -57,8 +57,6 @@ class DTCP: public cSimpleModule {
 
 public:
 
-
-    unsigned int getFlowControlRightWinEdge();
     DTCP();
     virtual ~DTCP();
 
@@ -72,7 +70,10 @@ public:
 
     void setLastCtrlSeqnumRec(unsigned int ctrlSeqNum);
 
+
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
+    unsigned int getSndRtWinEdge();
+
     void setSndRate(unsigned int sendingRate);
 
 protected:
