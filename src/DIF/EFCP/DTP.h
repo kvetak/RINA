@@ -112,8 +112,8 @@ class DTP : public cSimpleModule
     void generatePDUs();
     void generatePDUsnew();
 
-    void trySendGenPDUs();
-    void trySendGenPDUsnew();
+    void trySendGenPDUs(std::vector<PDU*>* pduQ);
+
 
 
 
@@ -136,7 +136,7 @@ class DTP : public cSimpleModule
     TxControlPolicy *txControlPolicy;
 
     /* Policy-related methods */
-    void runTxControlPolicy();
+    void runTxControlPolicy(std::vector<PDU*>* pduQ);
     void runFlowControlOverrunPolicy();
     void runNoRateSlowDownPolicy();
     void runNoOverrideDefaultPeakPolicy();
