@@ -166,7 +166,7 @@ void DTP::handleMsgFromDelimitingnew(SDU* sdu){
 
   generatePDUsnew();
 
-  this->trySendGenPDUs();
+  this->trySendGenPDUs(&generatedPDUs);
 
   schedule(senderInactivityTimer);
 }
@@ -323,6 +323,12 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
         dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
         dtcp->setSndRate(flowPdu->getNewRate());
+
+        if(state.getClosedWinQueLen() > 0){
+          /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
+          state.setClosedWindow(false);
+          trySendGenPDUs(&closedWindowQ);
+        }
       }
 
 
@@ -481,7 +487,7 @@ void DTP::handleSDUs(CDAPMessage* cdap)
   this->generatePDUs();
 
   /* Iterate over generated PDUs and decide if we can send them */
-  this->trySendGenPDUs();
+  this->trySendGenPDUs(&generatedPDUs);
 
   //  /* iterate over postablePDUs */
   //  this->sendPostablePDUsToRMT();
@@ -545,7 +551,7 @@ bool DTP::write(int portId, unsigned char* buffer, int len)
   this->generatePDUs();
 
   /* Iterate over generated PDUs and decide if we can send them */
-  this->trySendGenPDUs();
+  this->trySendGenPDUs(&generatedPDUs);
 
 //  /* iterate over postablePDUs */
 //  this->sendPostablePDUsToRMT();
@@ -845,7 +851,7 @@ void DTP::generatePDUsnew()
 /**
  *
  */
-void DTP::trySendGenPDUs()
+void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
 {
 
   if (state.isDtcpPresent())
@@ -856,25 +862,30 @@ void DTP::trySendGenPDUs()
     if (state.isWinBased() || state.isRateBased())
     {
       std::vector<PDU*>::iterator it;
-      for (it = generatedPDUs.begin(); it != generatedPDUs.end(); it = generatedPDUs.begin())
+      for (it = pduQ->begin(); it != pduQ->end(); it = pduQ->begin())
       {
         if (state.isWinBased())
         {
           if ((*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge())
           {
             /* The Window is Open. */
-            runTxControlPolicy();
+            runTxControlPolicy(pduQ);
             /* Watchout because the current 'it' could be freed */
           }
           else
           {
             /* The Window is Closed */
             state.setClosedWindow(true);
+
+            if(pduQ == &closedWindowQ){
+              break;
+            }
+
             if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
             {
               /* Put PDU on the closedWindowQueue */
               closedWindowQ.push_back((*it));
-              generatedPDUs.erase(it);
+              pduQ->erase(it);
             }
             else
             {
@@ -896,13 +907,16 @@ void DTP::trySendGenPDUs()
           }
         }// end of RateBased
 
-        if (state.isClosedWindow() ^ state.isRateFullfilled())
-        {
-          runReconcileFlowControlPolicy();
-        }
+
       }//end of for
+
+      // It makes better sense to have it after the for
+      if (state.isClosedWindow() ^ state.isRateFullfilled())
+      {
+        runReconcileFlowControlPolicy();
+      }
+
     }else{
-      //TODO A1 This should probably put ALL generatedPDUs to postablePDUs
       std::vector<PDU*>::iterator it;
       for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
       {
@@ -925,9 +939,8 @@ void DTP::trySendGenPDUs()
         rxQ.push_back(rxExpTimer);
 
         schedule(rxExpTimer);
-        //TODO A! Where do I get destAddr? Probably from FlowAllocator
+
         sendPDUToRMT((*it));
-//        rmt->fromDTPToRMT(new APN(), connId.getQoSId(), (*it));
 
         it = postablePDUs.erase(it);
       }
@@ -939,9 +952,6 @@ void DTP::trySendGenPDUs()
       std::vector<PDU*>::iterator it;
       for (it = postablePDUs.begin(); it != postablePDUs.end();)
       {
-        //TODO A! Where do I get destAddr? Probably from FlowAllocator
-        //TODO A! change to send using omnet messages
-//        rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
         sendPDUToRMT((*it));
         it = postablePDUs.erase(it);
       }
@@ -955,12 +965,6 @@ void DTP::trySendGenPDUs()
     std::vector<PDU*>::iterator it;
     for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
     {
-      //TODO A! Where do I get destAddr? Probably from FlowAllocator
-
-      //TODO A! change to send using omnet messages
-//      rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), (*it));
-//      rmt->fromDTPToRMT(apn, 1, (*it));
-
       sendPDUToRMT((*it));
       it = generatedPDUs.erase(it);
     }
@@ -969,9 +973,6 @@ void DTP::trySendGenPDUs()
 }
 
 
-void DTP::trySendGenPDUsnew(){
-
-}
 
 
 
@@ -1179,7 +1180,7 @@ unsigned int DTP::getFlowControlRightWinEdge()
  * We assume that this policy is used only under flowControl, it doesn't check presence
  * of flowControl object - it might be NULL
  */
-void DTP::runTxControlPolicy()
+void DTP::runTxControlPolicy(std::vector<PDU*>* pduQ)
 {
   /* Default */
   if (this->txControlPolicy == NULL)
@@ -1187,11 +1188,11 @@ void DTP::runTxControlPolicy()
     /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
      And Set the ClosedWindow flag appropriately. */
     std::vector<PDU*>::iterator it;
-    for (it = generatedPDUs.begin();
-        it != generatedPDUs.end() || (*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge();)
+    for (it = pduQ->begin();
+        it != pduQ->end() || (*it)->getSeqNum() <= dtcp->getFlowControlRightWinEdge();)
     {
       postablePDUs.push_back((*it));
-      it = generatedPDUs.erase(it);
+      it = pduQ->erase(it);
 
     }
 
@@ -1202,6 +1203,7 @@ void DTP::runTxControlPolicy()
   }
   else
   {
+    //TODO A! Change to unified policy style
     txControlPolicy->run((cObject *) this);
   }
 
@@ -1343,8 +1345,9 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
   }
   else
   {
-//    sendToRMT(pdu);
-    send(pdu->dup(),southO);
+
+    sendPDUToRMT(pdu->dup());
+//    send(pdu->dup(),southO);
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
 
