@@ -34,6 +34,7 @@ module InteriorRouter3Int
         }
         relayIpc: IPCProcess {
             @display("p=135,53;i=,#FFB000");
+            relay = true;
         }
         difAllocator: DIFAllocator {
             @display("p=227,53");

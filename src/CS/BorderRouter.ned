@@ -36,6 +36,7 @@ module BorderRouter
         }
         ipcProcess0: IPCProcess {
             @display("p=139,39;i=,#FFB000");
+            relay = true;
         }
     connections:
         //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;

@@ -114,7 +114,7 @@ void RA::setRmtMode()
 //        }
     }
 
-    if (hostModule->par("routing").boolValue() == true)
+    if (hostModule->par("relay").boolValue() == true)
     {
         rmt->enableRelay();
     }
