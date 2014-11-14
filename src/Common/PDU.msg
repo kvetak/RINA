@@ -54,8 +54,9 @@ enum PDUType{
 }
 
 enum PDUTypeBits{
+    	PDU_NACK_BIT	= 0x01;
+    	PDU_SEL_BIT		= 0x02;
     	PDU_ACK_BIT		= 0x04;
-    	PDU_NACK_BIT	= 0x05;
     	PDU_FC_BIT		= 0x08;
 }
 

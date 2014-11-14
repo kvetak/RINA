@@ -278,13 +278,48 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
     ControlPDU* pdu = (ControlPDU*) msg;
 
 
+    if(pdu->getType() & PDU_SEL_BIT)
+    {
+      /*
+        SELECT_ACK_PDU        = 0x8806;
+        SELECT_NACK_PDU       = 0x8807;
+        SELECT_ACK_FLOW_PDU   = 0x880E;
+        SELECT_NACK_FLOW_PDU  = 0x880F;
+      */
 
+      commonRcvControl(pdu);
+
+      //TODO A1 RTT estimator
+      if (pdu->getType() & PDU_NACK_BIT ){
+        SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
+
+      }else if (pdu->getType() & PDU_ACK_BIT){
+        SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
+      }
+
+    }else
     /* TODO B3 Make it prettier ;) */
-    if((pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)) == (PDU_ACK_BIT | PDU_NACK_BIT | PDU_FC_BIT)){
+    if(pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
+    {
+      // TODO A! commonRcvControl will probably be first step in handling of all controlPDUs
       commonRcvControl(pdu);
 
       //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
-      if ((pdu->getType() & PDU_NACK_BIT) == PDU_ACK_BIT){
+      if (pdu->getType() & PDU_NACK_BIT ){
+
+        NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
+
+        std::vector<RxExpiryTimer*>::iterator it;
+        for (it = rxQ.begin(); it != rxQ.end(); ++it)
+        {
+          //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+          if(((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum()){
+            handleDTPRxExpiryTimer((*it));
+          }
+        }
+
+
+      }else if (pdu->getType() & PDU_ACK_BIT){
         AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
         /* Policy SenderAck with default: */
         std::vector<RxExpiryTimer*>::iterator it;
@@ -302,40 +337,28 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
         //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
 
-      }else if ((pdu->getType() & PDU_NACK_BIT) == PDU_NACK_BIT){
-
-        NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
-
-        std::vector<RxExpiryTimer*>::iterator it;
-        for (it = rxQ.begin(); it != rxQ.end(); ++it)
-        {
-          //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-          if(((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum()){
-            handleDTPRxExpiryTimer((*it));
-          }
-        }
-
-
       }
       /* End of Ack/Nack */
 
-      if ((pdu->getType() & PDU_FC_BIT) == PDU_FC_BIT){
-        FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
-
-        //Update RightWindowEdge and SendingRate.
-        dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
-        dtcp->setSndRate(flowPdu->getNewRate());
-
-
-        if(state.getClosedWinQueLen() > 0){
-          /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
-          state.setClosedWindow(false);
-          trySendGenPDUs(&closedWindowQ);
-        }
-      }
-
 
     }
+
+    if ((pdu->getType() & PDU_FC_BIT)){
+      FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
+
+      //Update RightWindowEdge and SendingRate.
+      dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
+      dtcp->setSndRate(flowPdu->getNewRate());
+
+
+      if(state.getClosedWinQueLen() > 0){
+        /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
+        state.setClosedWindow(false);
+        trySendGenPDUs(&closedWindowQ);
+      }
+    }
+
+
 
   }
 
