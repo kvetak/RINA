@@ -53,6 +53,8 @@ void RMT::initialize()
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
+
+    setSchedulingPolicy(ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get());
 }
 
 /**

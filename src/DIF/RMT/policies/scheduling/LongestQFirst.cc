@@ -13,18 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <LongestQFirst.h>
+#include "LongestQFirst.h"
 
-LongestQFirst::LongestQFirst()
+Define_Module(LongestQFirst);
+
+void LongestQFirst::initialize()
 {
-    name = "LongestQFirst";
 }
 
-LongestQFirst::~LongestQFirst()
+void LongestQFirst::handleMessage(cMessage *msg)
 {
-
 }
-
 
 void LongestQFirst::run(RMTQueueManager* queues)
 {

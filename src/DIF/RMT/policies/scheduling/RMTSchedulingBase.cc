@@ -13,23 +13,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTSCHEDULINGBASE_H_
-#define RMTSCHEDULINGBASE_H_
+#include <RMTSchedulingBase.h>
 
-#include <omnetpp.h>
+Define_Module(RMTSchedulingBase);
 
-#include "RMTQueueManager.h"
-#include "RMTQueue.h"
-
-class RMTSchedulingBase
+RMTSchedulingBase::RMTSchedulingBase()
 {
-  public:
-    RMTSchedulingBase();
-    virtual ~RMTSchedulingBase();
-    std::string getName() { return name; };
-    virtual void run(RMTQueueManager* queues) = 0;
-  protected:
-    std::string name;
-};
+}
 
-#endif /* RMTSCHEDULINGBASE_H_ */
+RMTSchedulingBase::~RMTSchedulingBase()
+{
+}
+
+void RMTSchedulingBase::initialize()
+{
+
+}
+
+void RMTSchedulingBase::handleMessage(cMessage *msg)
+{
+
+}
+
+void RMTSchedulingBase::run(RMTQueueManager* queues)
+{
+    EV << "!!!!!!! this is basePolicy(), so I'm not doing anything" << endl;
+}

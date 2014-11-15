@@ -13,32 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.DIF.RMT.policies.scheduling.IntRMTSchedulingPolicy;
+package rina.DIF.RMT.policies.scheduling;
 
-package rina.DIF.RMT;
 
-module RMTModule
+simple LongestQFirst like IntRMTSchedulingPolicy
 {
     parameters:
-        @display("i=block/classifier;bgb=590,145");
-        string schedPolicy = default("LongestQFirst");
-
-    gates:
-        inout southIo[];
-        inout efcpIo[];
-        inout ribdIo;
-
-    submodules:
-        rmt: RMT {
-            @display("p=55,55");
-        }
-        rmtQueueManager: RMTQueueManager {
-            @display("p=535,49");
-        }
-        schedulingPolicy: <schedPolicy> like IntRMTSchedulingPolicy {
-            @display("p=135,55;is=s");
-        }
-
-    connections allowunconnected:
-        ribdIo <--> rmt.ribdIo;
+        string policyName = "longest queue first";
+        @display("i=block/socket");
 }

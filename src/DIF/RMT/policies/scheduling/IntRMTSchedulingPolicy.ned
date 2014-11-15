@@ -13,17 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef LONGESTQFIRST_H_
-#define LONGESTQFIRST_H_
+package rina.DIF.RMT.policies.scheduling;
 
-#include "RMTSchedulingBase.h"
-
-class LongestQFirst : public RMTSchedulingBase
+moduleinterface IntRMTSchedulingPolicy
 {
-  public:
-    LongestQFirst();
-    virtual ~LongestQFirst();
-    virtual void run(RMTQueueManager* queues);
-};
-
-#endif /* LONGESTQFIRST_H_ */
+    parameters:
+        @display("i=block/socket");
+        @class(RMTSchedulingPolicy);
+        string policyName;
+}

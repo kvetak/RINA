@@ -13,15 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RMTSchedulingBase.h>
+package rina.DIF.RMT.policies.scheduling;
 
-RMTSchedulingBase::RMTSchedulingBase()
+simple RMTSchedulingBase like IntRMTSchedulingPolicy
 {
-    name = "base";
+    parameters:
+    	@display("i=block/socket");
+    	string policyName = default("base");
 }
-
-RMTSchedulingBase::~RMTSchedulingBase()
-{
-}
-
-

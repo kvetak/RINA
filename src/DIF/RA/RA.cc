@@ -118,8 +118,6 @@ void RA::setRmtMode()
     {
         rmt->enableRelay();
     }
-
-    rmt->setSchedulingPolicy(new LongestQFirst);
 }
 
 

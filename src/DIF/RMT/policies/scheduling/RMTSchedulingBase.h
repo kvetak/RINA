@@ -13,32 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.DIF.RMT.policies.scheduling.IntRMTSchedulingPolicy;
+#ifndef RMTSCHEDULINGBASE_H_
+#define RMTSCHEDULINGBASE_H_
 
-package rina.DIF.RMT;
+#include <omnetpp.h>
 
-module RMTModule
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
+
+class RMTSchedulingBase : public cSimpleModule
 {
-    parameters:
-        @display("i=block/classifier;bgb=590,145");
-        string schedPolicy = default("LongestQFirst");
+  public:
+    RMTSchedulingBase();
+    virtual ~RMTSchedulingBase();
+    virtual void run(RMTQueueManager* queues);
 
-    gates:
-        inout southIo[];
-        inout efcpIo[];
-        inout ribdIo;
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
 
-    submodules:
-        rmt: RMT {
-            @display("p=55,55");
-        }
-        rmtQueueManager: RMTQueueManager {
-            @display("p=535,49");
-        }
-        schedulingPolicy: <schedPolicy> like IntRMTSchedulingPolicy {
-            @display("p=135,55;is=s");
-        }
-
-    connections allowunconnected:
-        ribdIo <--> rmt.ribdIo;
-}
+#endif /* RMTSCHEDULINGBASE_H_ */
