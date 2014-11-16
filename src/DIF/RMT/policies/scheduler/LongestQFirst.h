@@ -13,30 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTLISTENERS_H_
-#define RMTLISTENERS_H_
+#ifndef __RINA_LONGESTQFIRST_H_
+#define __RINA_LONGESTQFIRST_H_
 
 #include <omnetpp.h>
-#include "RMTBase.h"
 
-class RMTListeners : public cListener
+#include "RMTSchedulingBase.h"
+
+class LongestQFirst : public RMTSchedulingBase
 {
   public:
-    RMTListeners(RMTBase* rmt);
-    virtual ~RMTListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj)
-    {
-        EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
-    }
-  protected:
-    RMTBase* rmt;
+    virtual void run(RMTQueueManager* queues);
 };
 
-class LisRMTPDURcvd : public RMTListeners
-{
-  public:
-    LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
-};
-
-#endif /* RMTLISTENERS_H_ */
+#endif

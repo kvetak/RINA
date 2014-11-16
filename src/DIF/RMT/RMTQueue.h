@@ -54,11 +54,12 @@ class RMTQueue : public cSimpleModule
     void setRmtAccessGate(cGate* gate);
 
     void releasePDU();
+    void dropLast();
 
     std::string info() const;
 
   private:
-    std::queue<cMessage*> queue;
+    std::deque<cMessage*> queue;
     const char* difName;
     short qosId;
     int maxQLength;

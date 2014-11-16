@@ -13,29 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RMTSchedulingBase.h>
+package rina.DIF.RMT.policies.maxqueue;
 
-Define_Module(RMTSchedulingBase);
-
-RMTSchedulingBase::RMTSchedulingBase()
+simple RMTMaxQBase like IntRMTMaxQPolicy
 {
-}
-
-RMTSchedulingBase::~RMTSchedulingBase()
-{
-}
-
-void RMTSchedulingBase::initialize()
-{
-
-}
-
-void RMTSchedulingBase::handleMessage(cMessage *msg)
-{
-
-}
-
-void RMTSchedulingBase::run(RMTQueueManager* queues)
-{
-    EV << "!!!!!!! this is basePolicy(), so I'm not doing anything" << endl;
+    parameters:
+    	@display("i=block/socket");
+    	string policyName = default("base");
 }

@@ -13,12 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT.policies.scheduling;
+package rina.DIF.RMT.policies.maxqueue;
 
-moduleinterface IntRMTSchedulingPolicy
+moduleinterface IntRMTMaxQPolicy
 {
     parameters:
         @display("i=block/socket");
-        @class(RMTSchedulingPolicy);
         string policyName;
 }

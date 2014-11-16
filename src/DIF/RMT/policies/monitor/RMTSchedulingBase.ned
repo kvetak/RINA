@@ -13,30 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTLISTENERS_H_
-#define RMTLISTENERS_H_
+package rina.DIF.RMT.policies.monitor;
 
-#include <omnetpp.h>
-#include "RMTBase.h"
-
-class RMTListeners : public cListener
+simple RMTQMonitorBase like IntRMTQMonitorPolicy
 {
-  public:
-    RMTListeners(RMTBase* rmt);
-    virtual ~RMTListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj)
-    {
-        EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
-    }
-  protected:
-    RMTBase* rmt;
-};
-
-class LisRMTPDURcvd : public RMTListeners
-{
-  public:
-    LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
-};
-
-#endif /* RMTLISTENERS_H_ */
+    parameters:
+    	@display("i=block/socket");
+    	string policyName = default("base");
+}

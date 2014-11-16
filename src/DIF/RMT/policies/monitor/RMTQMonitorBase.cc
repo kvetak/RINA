@@ -13,30 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTLISTENERS_H_
-#define RMTLISTENERS_H_
+#include <RMTQMonitorBase.h>
 
-#include <omnetpp.h>
-#include "RMTBase.h"
+Define_Module(RMTQMonitorBase);
 
-class RMTListeners : public cListener
+RMTQMonitorBase::RMTQMonitorBase()
 {
-  public:
-    RMTListeners(RMTBase* rmt);
-    virtual ~RMTListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj)
-    {
-        EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
-    }
-  protected:
-    RMTBase* rmt;
-};
+}
 
-class LisRMTPDURcvd : public RMTListeners
+RMTQMonitorBase::~RMTQMonitorBase()
 {
-  public:
-    LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
-};
+}
 
-#endif /* RMTLISTENERS_H_ */
+void RMTQMonitorBase::initialize()
+{
+
+}
+
+void RMTQMonitorBase::handleMessage(cMessage *msg)
+{
+
+}
+
+void RMTQMonitorBase::run(RMTQueue* queue)
+{
+    EV << queue->getFullName()
+       << " monitor: length " << queue->getLength()
+       << "; maxlength " << queue->getMaxLength()
+       << "; threshold " << queue->getThreshLength() << endl;
+}

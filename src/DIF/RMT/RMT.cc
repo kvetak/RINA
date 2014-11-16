@@ -54,27 +54,8 @@ void RMT::initialize()
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
 
-    setSchedulingPolicy(ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get());
-}
-
-/**
- * Returns the current scheduling policy.
- *
- *@return pointer to current policy class
- */
-RMTSchedulingBase* RMT::getSchedulingPolicy()
-{
-    return schedPolicy;
-}
-
-/**
- * Changes the current scheduling policy.
- *
- * @param policy pointer to the new policy class
- */
-void RMT::setSchedulingPolicy(RMTSchedulingBase* policy)
-{
-    schedPolicy = policy;
+    schedPolicy = ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get();
+    qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
 }
 
 /**
@@ -91,9 +72,11 @@ void RMT::scheduleServiceEnd()
  * If servicing takes place right now, the wait counter is increased instead.
  *
  */
-void RMT::invokeSchedulingPolicy()
+void RMT::invokeSchedulingPolicy(cObject* obj)
 {
     Enter_Method("invokeSchedulingPolicy()");
+
+    qMonPolicy->run(dynamic_cast<RMTQueue*>(obj));
 
     if (!waitingMsgs)
     {

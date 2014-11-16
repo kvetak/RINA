@@ -13,12 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT.policies.scheduling;
+#ifndef RMTMAXQBASE_H_
+#define RMTMAXQBASE_H_
 
+#include <omnetpp.h>
 
-simple LongestQFirst like IntRMTSchedulingPolicy
+#include "RMTQueue.h"
+
+class RMTMaxQBase : public cSimpleModule
 {
-    parameters:
-        string policyName = "longest queue first";
-        @display("i=block/socket");
-}
+  public:
+    RMTMaxQBase();
+    virtual ~RMTMaxQBase();
+    virtual void run(RMTQueue* queue);
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif /* RMTMAXQBASE_H_ */

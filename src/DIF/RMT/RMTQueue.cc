@@ -70,13 +70,13 @@ void RMTQueue::handleMessage(cMessage *msg)
     else
     {
         enqueuePDU(msg);
-        emit(sigRMTPDURcvd, true);
+        emit(sigRMTPDURcvd, this);
     }
 }
 
 void RMTQueue::enqueuePDU(cMessage* pdu)
 {
-    queue.push(pdu);
+    queue.push_back(pdu);
 }
 
 void RMTQueue::releasePDU(void)
@@ -84,9 +84,14 @@ void RMTQueue::releasePDU(void)
     if (this->getLength() > 0)
     {
         cMessage* pdu = queue.front();
-        queue.pop();
+        queue.pop_front();
         send(pdu, outputGate);
     }
+}
+
+void RMTQueue::dropLast()
+{
+    queue.pop_back();
 }
 
 std::string RMTQueue::getDifName()

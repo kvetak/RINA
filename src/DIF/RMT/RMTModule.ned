@@ -13,7 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.DIF.RMT.policies.scheduling.IntRMTSchedulingPolicy;
+import rina.DIF.RMT.policies.scheduler.IntRMTSchedulingPolicy;
+import rina.DIF.RMT.policies.monitor.IntRMTQMonitorPolicy;
+import rina.DIF.RMT.policies.maxqueue.IntRMTMaxQPolicy;
 
 package rina.DIF.RMT;
 
@@ -21,7 +23,9 @@ module RMTModule
 {
     parameters:
         @display("i=block/classifier;bgb=590,145");
-        string schedPolicy = default("LongestQFirst");
+        string schedPolicyName = default("LongestQFirst");
+        string qMonitorPolicyName = default("SimpleMonitor");
+        string maxQPolicyName = default("Taildrop");
 
     gates:
         inout southIo[];
@@ -35,9 +39,15 @@ module RMTModule
         rmtQueueManager: RMTQueueManager {
             @display("p=535,49");
         }
-        schedulingPolicy: <schedPolicy> like IntRMTSchedulingPolicy {
-            @display("p=135,55;is=s");
+        schedulingPolicy: <schedPolicyName> like IntRMTSchedulingPolicy {
+            @display("p=165,55;is=s");
         }
+        queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
+        	@display("p=270,55;is=s");
+        }
+        maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
+        	@display("p=375,55;is=s");
+        }          
 
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;

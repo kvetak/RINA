@@ -24,7 +24,7 @@ RMTListeners::~RMTListeners()
     rmt = NULL;
 }
 
-void LisRMTPDURcvd::receiveSignal(cComponent* src, simsignal_t id, bool b)
+void LisRMTPDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokeSchedulingPolicy();
+    rmt->invokeSchedulingPolicy(obj);
 }
