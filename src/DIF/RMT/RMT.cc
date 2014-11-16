@@ -64,7 +64,8 @@ void RMT::initialize()
  */
 void RMT::scheduleServiceEnd()
 {
-    scheduleAt(simTime() + par("queueServiceTime"), new cMessage("queueServiceDone"));
+    scheduleAt(simTime() + getParentModule()->par("queueServiceTime").doubleValue() / 1000,
+               new cMessage("queueServiceDone"));
 }
 
 /**

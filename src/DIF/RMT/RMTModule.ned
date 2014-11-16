@@ -23,13 +23,14 @@ module RMTModule
 {
     parameters:
         @display("i=block/classifier;bgb=590,145");
+        
+        double queueServiceTime @unit(ms) = default(0.0ms);
+        
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
         string maxQPolicyName = default("Taildrop");
 
     gates:
-        inout southIo[];
-        inout efcpIo[];
         inout ribdIo;
 
     submodules:
