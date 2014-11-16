@@ -29,7 +29,6 @@ class RMTQueue : public cSimpleModule
 
   public:
     RMTQueue();
-    RMTQueue(int MaxQLength, int threshQLength);
     virtual ~RMTQueue();
 
     enum queueType { INPUT = 'I', OUTPUT = 'O'};
@@ -55,6 +54,7 @@ class RMTQueue : public cSimpleModule
 
     void releasePDU();
     void dropLast();
+    void redrawGUI();
 
     std::string info() const;
 

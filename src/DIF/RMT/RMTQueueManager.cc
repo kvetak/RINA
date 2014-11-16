@@ -81,6 +81,8 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
         module->getOutputGate()->connectTo(rmtIn);
     }
 
+    module->redrawGUI();
+
     module->setType(type);
     queues.push_back(module);
     return module;
