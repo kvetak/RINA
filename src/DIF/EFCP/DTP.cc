@@ -24,7 +24,17 @@ DTP::DTP()
 }
 DTP::~DTP()
 {
-  // TODO Auto-generated destructor stub
+  std::vector<RxExpiryTimer*>::iterator it;
+  for (it = rxQ.begin(); it != rxQ.end();)
+  {
+    delete (*it)->getPdu();
+    delete (*it);
+    it = rxQ.erase(it);
+  }
+
+  cancelAndDelete(senderInactivityTimer);
+  cancelAndDelete(rcvrInactivityTimer);
+
 }
 
 void DTP::initGates()
@@ -197,7 +207,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
     }
     else
     {
-      for (std::vector<PDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+      for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
       {
         if ((*it)->getSeqNum() == pdu->getSeqNum()){
           //Not sure if this case could ever happen
@@ -213,26 +223,31 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
   }
 
 
-  for (std::vector<PDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
+  for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
   {
     /* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
     unsigned int delimitFlags = (*it)->getUserDataField()->getSduDelimitFlags();
-    if((delimitFlags & SDU_NO_LENGTH) == SDU_NO_LENGTH){
+    if((delimitFlags & SDU_NO_LENGTH) == SDU_NO_LENGTH){ //TODO A1 Uninitialized value
 //      if(delimitFlags & SDU_)
     }else{
       if((delimitFlags & SDU_L_COMP_SDU) == SDU_L_COMP_SDU){
         /* PDU contain ZERO or more complete SDUs */
         /*  TODO PUT this in separate method */
-        it = reassemblyPDUQ.erase(it);
+
         UserDataField* userData = (*it)->getUserDataField();
         SDU* sdu;
         while ((sdu = userData->getData()) != NULL)
         {
           //TODO Delimiting/de-fragmentation
-          take(sdu);
+//          take(sdu);
+          take(check_and_cast<cOwnedObject*>(sdu));
 
           send(sdu, northO);
         }
+//        delete userData;
+
+        delete (*it);
+        it = reassemblyPDUQ.erase(it);
       }
     }
   }
@@ -278,88 +293,178 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
     ControlPDU* pdu = (ControlPDU*) msg;
 
 
-    if(pdu->getType() & PDU_SEL_BIT)
+    if(dynamic_cast<ControlAckPDU*>(pdu)){
+      /* RcvrControlAck Policy with Default: */
+      //"adjust as necessary" :D great advice
+
+      //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
+
+      AckFlowPDU* ackFlowPdu = new AckFlowPDU();
+      setPDUHeader(ackFlowPdu);
+
+//      unsigned int newRightWinEdge;
+      /****************************************/
+      //TODO A! is this the correct variable??
+      /****************************************/
+      ackFlowPdu->setNewRightWinEdge(dtcp->getSndRtWinEdge());
+//        unsigned int newRate;
+      ackFlowPdu->setNewRate(dtcp->getSndRate());
+//          unsigned int timeUnit;
+      ackFlowPdu->setTimeUnit(dtcp->getSendingTimeUnit());
+//          unsigned int myLeftWinEdge;
+      ackFlowPdu->setMyLeftWinEdge(state.getRcvLeftWinEdge());
+//          unsigned int myRightWinEdge;
+      //TODO A1 Change it. Get value from dtcp flowControl rcvRightWindowEdge
+      // Also make sure the rcvRightWindowEdge is properly updated whenever rcvLeftWindowEdge gets updated
+      ackFlowPdu->setMyRightWinEdge( state.getRcvLeftWinEdge() + dtcp->getRcvCredit());
+//          unsigned int myRcvRate;
+      ackFlowPdu->setMyRcvRate(dtcp->getRcvRate());
+
+      //TODO A1 Send empty Transfer PDU with NextSeqNumToSend-1
+
+      DataTransferPDU* dataPdu = new DataTransferPDU();
+      setPDUHeader(dataPdu);
+      uint seqNum = state.getNextSeqNumToSend();
+      dataPdu->setSeqNum(seqNum - 1);
+      state.setNextSeqNumToSend(seqNum);
+
+      //dataPdu->setSeqNum(state.getLastSeqNumSent());
+
+      /* End default RcvrControlAck policy */
+    }
+    else
     {
-      /*
-        SELECT_ACK_PDU        = 0x8806;
-        SELECT_NACK_PDU       = 0x8807;
-        SELECT_ACK_FLOW_PDU   = 0x880E;
-        SELECT_NACK_FLOW_PDU  = 0x880F;
-      */
 
-      commonRcvControl(pdu);
+      if (pdu->getType() & PDU_SEL_BIT)
+      {
+        /*
+         SELECT_ACK_PDU        = 0x8806;
+         SELECT_NACK_PDU       = 0x8807;
+         SELECT_ACK_FLOW_PDU   = 0x880E;
+         SELECT_NACK_FLOW_PDU  = 0x880F;
+         */
 
-      //TODO A1 RTT estimator
-      if (pdu->getType() & PDU_NACK_BIT ){
-        SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
+        commonRcvControl(pdu);
 
-      }else if (pdu->getType() & PDU_ACK_BIT){
-        SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
-      }
-
-    }else
-    /* TODO B3 Make it prettier ;) */
-    if(pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
-    {
-      // TODO A! commonRcvControl will probably be first step in handling of all controlPDUs
-      commonRcvControl(pdu);
-
-      //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
-      if (pdu->getType() & PDU_NACK_BIT ){
-
-        NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
-
-        std::vector<RxExpiryTimer*>::iterator it;
-        for (it = rxQ.begin(); it != rxQ.end(); ++it)
+        //TODO A1 RTT estimator
+        if (pdu->getType() & PDU_NACK_BIT)
         {
-          //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-          if(((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum()){
-            handleDTPRxExpiryTimer((*it));
+          SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
+
+          for (uint i = 0; i < selNackPdu->getNackListLen(); i++)
+          {
+            uint startSeqNum = selNackPdu->getNackList(i * 2);
+            uint endSeqNum = selNackPdu->getNackList((i * 2) + 1);
+            std::vector<RxExpiryTimer*>::iterator it;
+            for (it = rxQ.begin(); it != rxQ.end(); ++it)
+            {
+              //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+              if (((*it)->getPdu())->getSeqNum() >= startSeqNum && ((*it)->getPdu())->getSeqNum() <= endSeqNum)
+              {
+                handleDTPRxExpiryTimer((*it));
+              }
+            }
+          }
+        }
+        else if (pdu->getType() & PDU_ACK_BIT)
+        {
+          SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
+
+          for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
+          {
+            uint startSeqNum = selAckPdu->getNackList(i * 2);
+            uint endSeqNum = selAckPdu->getNackList((i * 2) + 1);
+
+            std::vector<RxExpiryTimer*>::iterator it;
+            for (it = rxQ.begin(); it != rxQ.end();)
+            {
+              //FIXME B1 "including any gaps less than allowable Gap and"
+              if (((*it)->getPdu())->getSeqNum() >= startSeqNum && ((*it)->getPdu())->getSeqNum() <= endSeqNum)
+              {
+                /* This condition relies on sorted rxQ by seqNum */
+                if (state.getSenderLeftWinEdge() == (*it)->getPdu()->getSeqNum())
+                {
+                  state.setSenderLeftWinEdge((*it)->getPdu()->getSeqNum() + 1);
+                }
+
+                delete (*it)->getPdu();
+                cancelEvent((*it));
+                delete (*it);
+                it = rxQ.erase(it);
+              }
+            }
+            //SenderLWE is updated inside for loop
           }
         }
 
+      }
+      else
+      /* TODO B3 Make it prettier ;) */
+      if (pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
+      {
+        // TODO A! commonRcvControl will probably be first step in handling of all controlPDUs
+        commonRcvControl(pdu);
 
-      }else if (pdu->getType() & PDU_ACK_BIT){
-        AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
-        /* Policy SenderAck with default: */
-        std::vector<RxExpiryTimer*>::iterator it;
-        for (it = rxQ.begin(); it != rxQ.end();)
+        //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
+        if (pdu->getType() & PDU_NACK_BIT)
         {
-          //FIXME B1 "including any gaps less than allowable Gap and"
-          if(((*it)->getPdu())->getSeqNum() <= ackPdu->getAckNackSeqNum()){
-            delete (*it)->getPdu();
-            cancelEvent((*it));
-            delete (*it);
-            it = rxQ.erase(it);
+
+          NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
+
+          std::vector<RxExpiryTimer*>::iterator it;
+          for (it = rxQ.begin(); it != rxQ.end(); ++it)
+          {
+            //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+            if (((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum())
+            {
+              handleDTPRxExpiryTimer((*it));
+            }
           }
+
         }
-        //Update LeftWindowEdge accordingly
-        state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
-        //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
+        else if (pdu->getType() & PDU_ACK_BIT)
+        {
+          AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
+          /* Policy SenderAck with default: */
+          std::vector<RxExpiryTimer*>::iterator it;
+          for (it = rxQ.begin(); it != rxQ.end();)
+          {
+            //FIXME B1 "including any gaps less than allowable Gap and"
+            if (((*it)->getPdu())->getSeqNum() <= ackPdu->getAckNackSeqNum())
+            {
+              delete (*it)->getPdu();
+              cancelEvent((*it));
+              delete (*it);
+              it = rxQ.erase(it);
+            }
+          }
+          //Update LeftWindowEdge accordingly
+          state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
+          //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
+
+        }
+        /* End of Ack/Nack */
 
       }
-      /* End of Ack/Nack */
 
+      if ((pdu->getType() & PDU_FC_BIT))
+      {
+        FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
 
-    }
+        //Update RightWindowEdge and SendingRate.
+        dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
+        dtcp->setSndRate(flowPdu->getNewRate());
 
-    if ((pdu->getType() & PDU_FC_BIT)){
-      FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
-
-      //Update RightWindowEdge and SendingRate.
-      dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
-      dtcp->setSndRate(flowPdu->getNewRate());
-
-
-      if(state.getClosedWinQueLen() > 0){
-        /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
-        state.setClosedWindow(false);
-        trySendGenPDUs(&closedWindowQ);
+        if (state.getClosedWinQueLen() > 0)
+        {
+          /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
+          state.setClosedWindow(false);
+          trySendGenPDUs(&closedWindowQ);
+        }
       }
+
     }
-
-
-
+    delete pdu;
   }
 
 
@@ -877,7 +982,7 @@ void DTP::generatePDUsnew()
 /**
  *
  */
-void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
+void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 {
 
   if (state.isDtcpPresent())
@@ -887,7 +992,7 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
     //if flowControl present
     if (state.isWinBased() || state.isRateBased())
     {
-      std::vector<PDU*>::iterator it;
+      std::vector<DataTransferPDU*>::iterator it;
       for (it = pduQ->begin(); it != pduQ->end(); it = pduQ->begin())
       {
         if (state.isWinBased())
@@ -943,7 +1048,7 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
       }
 
     }else{
-      std::vector<PDU*>::iterator it;
+      std::vector<DataTransferPDU*>::iterator it;
       for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
       {
         postablePDUs.push_back((*it));
@@ -954,7 +1059,7 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
     /* Iterate over postablePDUs and give them to the RMT */
     if (state.isRxPresent())
     {
-      std::vector<PDU*>::iterator it;
+      std::vector<DataTransferPDU*>::iterator it;
       for (it = postablePDUs.begin(); it != postablePDUs.end();)
       {
         /* Put a copy of each PDU in the RetransmissionQueue */
@@ -966,7 +1071,9 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
 
         schedule(rxExpTimer);
 
-        sendPDUToRMT((*it));
+        //TODO A! just for testing, remove "->dup()" below and "delete (*it)".
+        sendToRMT((*it)->dup());
+        delete (*it);
 
         it = postablePDUs.erase(it);
       }
@@ -975,10 +1082,10 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
     {
       /*No Retransmission Control is present, but FlowControl */
       /* Post all postablePDUs to RMT */
-      std::vector<PDU*>::iterator it;
+      std::vector<DataTransferPDU*>::iterator it;
       for (it = postablePDUs.begin(); it != postablePDUs.end();)
       {
-        sendPDUToRMT((*it));
+        sendToRMT((*it));
         it = postablePDUs.erase(it);
       }
 
@@ -988,10 +1095,10 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
   {
     /* DTCP is not present */
     /* Post all generatedPDUs to RMT */
-    std::vector<PDU*>::iterator it;
+    std::vector<DataTransferPDU*>::iterator it;
     for (it = generatedPDUs.begin(); it != generatedPDUs.end();)
     {
-      sendPDUToRMT((*it));
+      sendToRMT((*it));
       it = generatedPDUs.erase(it);
     }
   }
@@ -1006,7 +1113,7 @@ void DTP::trySendGenPDUs(std::vector<PDU*>* pduQ)
 
 
 
-void DTP::fromRMT(PDU* pdu)
+void DTP::fromRMT(DataTransferPDU* pdu)
 {
 
   if (state.isFCPresent())
@@ -1156,10 +1263,10 @@ void DTP::fromRMT(PDU* pdu)
 //}
 
 
-void DTP::sendPDUToRMT(PDU* pdu){
-
-  send(pdu, southO);
-}
+//void DTP::sendPDUToRMT(PDU* pdu){
+//
+//  send(pdu, southO);
+//}
 
 /**
  * This method calls specified function to perform SDU protection.
@@ -1202,14 +1309,14 @@ void DTP::getSDUFromQ(SDU *sdu)
  * We assume that this policy is used only under flowControl, it doesn't check presence
  * of flowControl object - it might be NULL
  */
-void DTP::runTxControlPolicy(std::vector<PDU*>* pduQ)
+void DTP::runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ)
 {
   /* Default */
   if (this->txControlPolicy == NULL)
   {
     /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
      And Set the ClosedWindow flag appropriately. */
-    std::vector<PDU*>::iterator it;
+    std::vector<DataTransferPDU*>::iterator it;
     for (it = pduQ->begin();
         it != pduQ->end() || (*it)->getSeqNum() <= dtcp->getSndRtWinEdge();)
     {
@@ -1242,6 +1349,7 @@ void DTP::runFlowControlOverrunPolicy()
 
 void DTP::runNoRateSlowDownPolicy()
 {
+  //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
   /* Default */
   postablePDUs.push_back(generatedPDUs.front());
   generatedPDUs.erase(generatedPDUs.begin());
@@ -1368,7 +1476,7 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
   }
   else
   {
-    sendPDUToRMT(pdu->dup());
+    sendToRMT(pdu->dup());
 
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
@@ -1520,7 +1628,7 @@ void DTP::svUpdate(unsigned int seqNum)
 
 void DTP::flushReassemblyPDUQ()
 {
-  std::vector<PDU*>::iterator it;
+  std::vector<DataTransferPDU*>::iterator it;
   for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();)
   {
     delete (*it);
@@ -1542,7 +1650,7 @@ void DTP::clearRxQ()
 
 void DTP::clearClosedWindowQ()
 {
-  std::vector<PDU*>::iterator it;
+  std::vector<DataTransferPDU*>::iterator it;
   for (it = closedWindowQ.begin(); it != closedWindowQ.end();)
   {
     delete (*it);

@@ -54,11 +54,15 @@ class UserDataField: public cObject
     PDUData pduData;
     unsigned int size;
 
+    void copy(const UserDataField& other);
+
   public:
     UserDataField();
+    UserDataField(const UserDataField& other);
     virtual ~UserDataField();
     void addData(SDU* data);
     SDU* getData();
+    virtual UserDataField* dup() const {return new UserDataField(*this);}
 
     unsigned int getSize();
     unsigned int getSduDelimitFlags() const;

@@ -75,6 +75,14 @@ public:
     unsigned int getSndRtWinEdge();
 
     void setSndRate(unsigned int sendingRate);
+    uint getSndRate();
+
+    void setRcvRate(unsigned int rcvrRate);
+    uint getRcvRate();
+
+    uint getRcvCredit();
+
+    unsigned long getSendingTimeUnit();
 
 protected:
     virtual void handleMessage(cMessage *msg);

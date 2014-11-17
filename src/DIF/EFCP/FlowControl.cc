@@ -58,3 +58,27 @@ void FlowControl::setSendingRate(unsigned int sendingRate)
   this->sendingRate = sendingRate;
 }
 
+uint FlowControl::getSendingRate()
+{
+  return sendingRate;
+}
+
+void FlowControl::setRcvrRate(unsigned int rcvrRate)
+{
+  this->rcvrRate = rcvrRate;
+}
+
+uint FlowControl::getRcvrRate()
+{
+  return rcvrRate;
+}
+
+unsigned long FlowControl::getSendingTimeUnit() const
+{
+  return sendingTimeUnit;
+}
+
+void FlowControl::setSendingTimeUnit(unsigned long sendingTimeUnit)
+{
+  this->sendingTimeUnit = sendingTimeUnit;
+}

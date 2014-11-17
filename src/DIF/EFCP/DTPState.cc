@@ -34,6 +34,7 @@ void DTPState::initDefaults(){
   rateBased = false;
   incompDeliv = false;
   maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
+  maxFlowPDUSize = MAX_PDU_SIZE;
 
   //TODO A1
   rcvLeftWinEdge = 0;
@@ -120,8 +121,8 @@ void DTPState::incMaxSeqNumRcvd() {
 }
 
 /*
- * Return value of nextSeqNumToSend and increments it
- * @return nextSeqNumToSend value before incrementing
+ * Returns value of nextSeqNumToSend and increments it
+ * @return nextSeqNumToSend
  */
 unsigned int DTPState::getNextSeqNumToSend() {
 

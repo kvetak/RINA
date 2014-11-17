@@ -33,7 +33,10 @@ DataTransferPDU::DataTransferPDU(const char *name, int kind): DataTransferPDU_Ba
 
 }
 void DataTransferPDU::copy(const DataTransferPDU& other){
+  if(other.userDataField_var != NULL){
 
+    this->userDataField_var = other.userDataField_var->dup();
+  }
 }
 
 unsigned int DataTransferPDU::getSize(){
@@ -43,6 +46,8 @@ unsigned int DataTransferPDU::getSize(){
 
 DataTransferPDU::~DataTransferPDU()
 {
-  // TODO Auto-generated destructor stub
+  if(userDataField_var != NULL){
+    delete userDataField_var;
+  }
 }
 

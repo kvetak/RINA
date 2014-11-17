@@ -13,15 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+
 cplusplus {{
 #include "PDU.h"
+#include "UserDataField.h"
+
+typedef UserDataField* UserDataFieldPtr;
 }}
 packet PDU;
-
+class noncobject UserDataFieldPtr;
 //
 // TODO generated message class
 //
 packet DataTransferPDU extends PDU {
     @customize(true);
     type = DATA_TRANSFER_PDU;
+    UserDataFieldPtr userDataField = NULL;
 }

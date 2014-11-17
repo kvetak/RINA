@@ -36,8 +36,6 @@ class PDU : public PDU_Base
 {
   private:
     void copy(const PDU& other){};
-//      PDU();
-//      ~PDU();
 
     public:
       PDU(const char *name=NULL, int kind=0) : PDU_Base(name,kind) {}

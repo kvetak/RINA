@@ -73,6 +73,7 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
    * 3. Go through Data vector and send them to EFCPI
    */
 
+  CDAPMessage* cdapMsg = msg->dup();
   SDU* sdu = new SDU();
   sdu->addUserData(msg);
 
@@ -85,8 +86,10 @@ void Delimiting::handleMsgFromEfcpi(Data* msg){
   SDU* sdu = (SDU*) msg;
   std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
   CDAPMessage* cdap = msgVector.front();
-  take(check_and_cast<cOwnedObject*>(cdap) );
+  msgVector.erase(msgVector.begin());
+  take(check_and_cast<cOwnedObject*>(cdap));
   send(cdap, northO);
+  delete sdu;
 }
 
 Delimiting::~Delimiting()

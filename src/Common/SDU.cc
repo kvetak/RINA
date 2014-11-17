@@ -27,6 +27,19 @@ SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
 
 }
 
+SDU::SDU(const SDU& other): SDU_Base(other){
+  copy(other);
+}
+
+void SDU::copy(const SDU& other){
+  mUserDataType::const_iterator it;
+
+  for(it = other.mUserData_var.begin(); it != other.mUserData_var.end(); ++it){
+
+    mUserData_var.push_back((*it)->dup());
+  }
+}
+
 /*
  * This size returns size depending on @var dataType_var
  */
@@ -39,6 +52,8 @@ unsigned int SDU::getSize() const
   else if (dataType_var == SDU_FRAGMENT_TYPE)
   {
     return fSize_var;
+  }else{
+    return 0; //PANIC!
   }
 }
 /*
@@ -102,6 +117,7 @@ bool SDU::addUserData(CDAPMessage* msg){
     //TODO A1 check current SDU size
 
   this->mUserData_var.push_back(msg);
+  size_var += msg->getSize();
 
     return true;
 }
@@ -145,6 +161,13 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
 
 SDU::~SDU()
 {
-  // TODO Auto-generated destructor stub
+  std::vector<CDAPMessage*>::iterator it;
+  for(it = mUserData_var.begin(); it != mUserData_var.end();){
+    if((*it) != NULL){
+      delete (*it);
+    }
+    it = mUserData_var.erase(it);
+
+  }
 }
 

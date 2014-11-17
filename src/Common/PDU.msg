@@ -32,7 +32,7 @@ class noncobject APN;
 class noncobject ConnectionId;
 class noncobject cMessagePtr;
 class noncobject cObjectPtr;
-class noncobject UserDataFieldPtr;
+
 
 
 
@@ -81,7 +81,7 @@ message PDU {
 //    cObject userData; //unsigned char []? string?
     unsigned char userData[];
     cMessagePtr mUserData;
-    UserDataFieldPtr userDataField;
+    
     
     
 }

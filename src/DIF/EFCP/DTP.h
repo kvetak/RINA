@@ -55,12 +55,12 @@ class DTP : public cSimpleModule
     /* Output queues - from App to RMT */
     std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
-    std::vector<PDU*> generatedPDUs;
-    std::vector<PDU*> postablePDUs;
-    std::vector<PDU*> closedWindowQ;
+    std::vector<DataTransferPDU*> generatedPDUs;
+    std::vector<DataTransferPDU*> postablePDUs;
+    std::vector<DataTransferPDU*> closedWindowQ;
     std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
-    std::vector<PDU*> reassemblyPDUQ;
+    std::vector<DataTransferPDU*> reassemblyPDUQ;
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
@@ -112,7 +112,7 @@ class DTP : public cSimpleModule
     void generatePDUs();
     void generatePDUsnew();
 
-    void trySendGenPDUs(std::vector<PDU*>* pduQ);
+    void trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ);
 
 
 
@@ -120,9 +120,9 @@ class DTP : public cSimpleModule
 
 
 //    void sendPostablePDUsToRMT();
-    void sendPDUToRMT(PDU* pdu);
+//    void sendPDUToRMT(PDU* pdu);
 
-    void fromRMT(PDU* pdu);
+    void fromRMT(DataTransferPDU* pdu);
 
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
@@ -136,7 +136,7 @@ class DTP : public cSimpleModule
     TxControlPolicy *txControlPolicy;
 
     /* Policy-related methods */
-    void runTxControlPolicy(std::vector<PDU*>* pduQ);
+    void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
     void runFlowControlOverrunPolicy();
     void runNoRateSlowDownPolicy();
     void runNoOverrideDefaultPeakPolicy();

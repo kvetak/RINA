@@ -29,6 +29,8 @@ RXControl::RXControl()
 {
   nextSenderControlSeqNum = 1;
   dupAcks = 0;
+  lastControlSeqNumRcv = 0;
+  dataReXmitMax = 3;
 
 }
 

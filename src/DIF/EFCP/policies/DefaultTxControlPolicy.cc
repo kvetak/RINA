@@ -43,7 +43,7 @@ void DefaultTxControlPolicy::run(cObject *dtpT)
     DTP *dtp = static_cast<DTP *>( dtpT);
     /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
      And Set the ClosedWindow flag appropriately. */
-    std::vector<PDU*>::iterator it;
+    std::vector<DataTransferPDU*>::iterator it;
     for (it = dtp->generatedPDUs.begin();
         it != dtp->generatedPDUs.end() || (*it)->getSeqNum() <= dtp->dtcp->getSndRtWinEdge();)
     {

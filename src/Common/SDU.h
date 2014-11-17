@@ -27,20 +27,27 @@ class SDU : public SDU_Base
 {
 
   private:
-    unsigned char * userData; //depricated
+    unsigned char * userData; //Deprecated
 //    unsigned int size;
 //    unsigned int offset;
 //    std::vector<mCDAPMessage*> mUserData;
 
-    void copy(const SDU& other){};
+    void copy(const SDU& other);
 
 public:
 //  SDU();
   virtual ~SDU();
 
     SDU(const char *name=NULL, int kind=0);
-    SDU(const SDU& other) : SDU_Base(other) {copy(other);}
-    SDU& operator=(const SDU& other) {if (this==&other) return *this; SDU_Base::operator=(other); copy(other); return *this;}
+    SDU(const SDU& other); // : SDU_Base(other) {copy(other);}
+    SDU& operator=(const SDU& other)
+    {
+      if (this == &other)
+        return *this;
+      SDU_Base::operator=(other);
+      copy(other);
+      return *this;
+    }
     virtual SDU *dup() const {return new SDU(*this);}
     // ADD CODE HERE to redefine and implement pure virtual functions from SDU_Base
 

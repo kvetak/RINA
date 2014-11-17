@@ -28,7 +28,20 @@
 UserDataField::UserDataField()
 {
   size = 0;
+  sduDelimitFlags = 0;
 
+}
+
+UserDataField::UserDataField(const UserDataField& other){
+  sduDelimitFlags = other.sduDelimitFlags;
+  sduSeqNum = other.sduSeqNum;
+  size = other.size;
+  PDUData::const_iterator it;
+
+  for(it = other.pduData.begin(); it != other.pduData.end(); ++it){
+
+    pduData.push_back((*it)->dup());
+  }
 }
 /**
  *
@@ -74,6 +87,12 @@ unsigned int UserDataField::getSize(){
 
 UserDataField::~UserDataField()
 {
-  // TODO Auto-generated destructor stub
+  std::vector<SDU*>::iterator it;
+  for(it = pduData.begin(); it != pduData.end();){
+    delete (*it);
+    it = pduData.erase(it);
+
+  }
+
 }
 

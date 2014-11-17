@@ -35,9 +35,6 @@ dtcpState = new DTCPState();
 rxControl = new RXControl();
 }
 
-
-
-
 void DTCP::schedule(DTCPTimers* timer){
 
 }
@@ -105,6 +102,28 @@ unsigned int DTCP::getSndRtWinEdge()
 void DTCP::setSndRate(unsigned int sendingRate)
 {
   flowControl->setSendingRate(sendingRate);
+}
+uint DTCP::getSndRate(){
+  flowControl->getSendingRate();
+}
+
+void DTCP::setRcvRate(unsigned int rcvrRate)
+{
+  flowControl->setRcvrRate(rcvrRate);
+}
+uint DTCP::getRcvRate(){
+  flowControl->getRcvrRate();
+}
+
+uint DTCP::getRcvCredit()
+{
+  return dtcpState->getRcvCredit();
+}
+
+
+unsigned long DTCP::getSendingTimeUnit()
+{
+   return flowControl->getSendingTimeUnit();
 }
 
 

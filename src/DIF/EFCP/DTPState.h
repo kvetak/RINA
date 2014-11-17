@@ -28,6 +28,7 @@
 
 #include <cobject.h>
 #include <queue>
+#include "EFCP_defs.h"
 
 #define MAX_CLOSED_WIN_Q_LEN 20
 
