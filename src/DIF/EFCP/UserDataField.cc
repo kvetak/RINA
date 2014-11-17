@@ -39,8 +39,9 @@ UserDataField::UserDataField(const UserDataField& other){
   PDUData::const_iterator it;
 
   for(it = other.pduData.begin(); it != other.pduData.end(); ++it){
-
-    pduData.push_back((*it)->dup());
+    SDU* sdu = (*it)->dup();
+    take(sdu);
+    pduData.push_back(sdu);
   }
 }
 /**
@@ -49,6 +50,7 @@ UserDataField::UserDataField(const UserDataField& other){
  */
 void UserDataField::addData(SDU* data){
 
+  take(data);
   pduData.push_back(data);
   size += data->getSize();
   sduDelimitFlags |= data->getFragType();
@@ -68,6 +70,7 @@ SDU* UserDataField::getData(){
   SDU* tmp = pduData.front();
   pduData.erase(pduData.begin());
   size -= tmp->getSize();
+  drop(tmp);
   return tmp;
 }
 
@@ -89,6 +92,7 @@ UserDataField::~UserDataField()
 {
   std::vector<SDU*>::iterator it;
   for(it = pduData.begin(); it != pduData.end();){
+    drop(*it);
     delete (*it);
     it = pduData.erase(it);
 

@@ -46,7 +46,7 @@ typedef std::vector<SDU*> PDUData;
 /*
  *
  */
-class UserDataField: public cObject
+class UserDataField: public cOwnedObject
 {
   private:
     unsigned int sduDelimitFlags;

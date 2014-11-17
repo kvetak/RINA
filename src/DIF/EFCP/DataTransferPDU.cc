@@ -29,7 +29,7 @@ Register_Class(DataTransferPDU);
 
 DataTransferPDU::DataTransferPDU(const char *name, int kind): DataTransferPDU_Base(name,kind)
 {
-  // TODO Auto-generated constructor stub
+  userDataField_var = NULL;
 
 }
 void DataTransferPDU::copy(const DataTransferPDU& other){
@@ -51,3 +51,14 @@ DataTransferPDU::~DataTransferPDU()
   }
 }
 
+
+UserDataFieldPtr& DataTransferPDU::getUserDataField()
+{
+    return userDataField_var;
+}
+
+
+void DataTransferPDU::setUserDataField(const UserDataFieldPtr& userDataField)
+{
+    this->userDataField_var = userDataField;
+}

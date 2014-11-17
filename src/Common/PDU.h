@@ -44,9 +44,9 @@ class PDU : public PDU_Base
       virtual PDU *dup() const {return new PDU(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from PDU_Base
 
-      void addUserData(const unsigned char *userData, unsigned int size, bool *fragment);
+//      void addUserData(const unsigned char *userData, unsigned int size, bool *fragment);
 
-      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
+//      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
       unsigned int getHeaderSize();
 
 //      std::string info() const;

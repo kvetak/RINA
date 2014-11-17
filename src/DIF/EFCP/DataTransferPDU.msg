@@ -28,5 +28,5 @@ class noncobject UserDataFieldPtr;
 packet DataTransferPDU extends PDU {
     @customize(true);
     type = DATA_TRANSFER_PDU;
-    UserDataFieldPtr userDataField = NULL;
+    
 }

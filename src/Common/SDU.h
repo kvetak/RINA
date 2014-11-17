@@ -23,6 +23,7 @@
 #include "CDAPMessage_m.h"
 #include "SDU_m.h"
 
+typedef std::vector<CDAPMessage*> mUserDataType;
 class SDU : public SDU_Base
 {
 
@@ -30,7 +31,7 @@ class SDU : public SDU_Base
     unsigned char * userData; //Deprecated
 //    unsigned int size;
 //    unsigned int offset;
-//    std::vector<mCDAPMessage*> mUserData;
+    mUserDataType mUserData_var;
 
     void copy(const SDU& other);
 
@@ -60,6 +61,7 @@ public:
     void setUserData(unsigned char* userData, unsigned int size);
 
     bool addUserData(CDAPMessage* msg);
+    CDAPMessage* getUserData();
 
     std::vector<SDU*>fragment(unsigned int size);
     SDU* genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);

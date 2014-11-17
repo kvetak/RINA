@@ -73,8 +73,9 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
    * 3. Go through Data vector and send them to EFCPI
    */
 
-  CDAPMessage* cdapMsg = msg->dup();
+
   SDU* sdu = new SDU();
+
   sdu->addUserData(msg);
 
   //TODO A1 handle multiple gates -> change to cGate*
@@ -84,10 +85,10 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
 void Delimiting::handleMsgFromEfcpi(Data* msg){
 
   SDU* sdu = (SDU*) msg;
-  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
-  CDAPMessage* cdap = msgVector.front();
-  msgVector.erase(msgVector.begin());
-  take(check_and_cast<cOwnedObject*>(cdap));
+//  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
+  CDAPMessage* cdap = sdu->getUserData();
+  take(cdap);
+
   send(cdap, northO);
   delete sdu;
 }

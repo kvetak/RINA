@@ -28,7 +28,8 @@ DTP::~DTP()
   for (it = rxQ.begin(); it != rxQ.end();)
   {
     delete (*it)->getPdu();
-    delete (*it);
+    cancelAndDelete(*it);
+//    delete (*it);
     it = rxQ.erase(it);
   }
 
@@ -155,19 +156,19 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
-void DTP::handleMsgFromDelimiting(Data* msg)
-{
-
-  cancelEvent(senderInactivityTimer);
-
-  DataTransferPDU* pdu = new DataTransferPDU();
-  pdu->setMUserData(msg);
-  setPDUHeader(pdu);
-  pdu->setSeqNum(this->state.getNextSeqNumToSend());
-
-  send(pdu, southO);
-
-}
+//void DTP::handleMsgFromDelimiting(Data* msg)
+//{
+//
+//  cancelEvent(senderInactivityTimer);
+//
+//  DataTransferPDU* pdu = new DataTransferPDU();
+//  pdu->setMUserData(msg);
+//  setPDUHeader(pdu);
+//  pdu->setSeqNum(this->state.getNextSeqNumToSend());
+//
+//  send(pdu, southO);
+//
+//}
 
 void DTP::handleMsgFromDelimitingnew(SDU* sdu){
   cancelEvent(senderInactivityTimer);
@@ -181,17 +182,17 @@ void DTP::handleMsgFromDelimitingnew(SDU* sdu){
   schedule(senderInactivityTimer);
 }
 
-void DTP::handleMsgFromRmt(PDU* msg)
-{
-
-  if (dynamic_cast<DataTransferPDU*>(msg))
-  {
-    DataTransferPDU* pdu = (DataTransferPDU*) msg;
-    cMessage* sdu = pdu->getMUserData();
-    take(check_and_cast<cOwnedObject*>(sdu) );
-    send(pdu->getMUserData(), northO);
-  }
-}
+//void DTP::handleMsgFromRmt(PDU* msg)
+//{
+//
+//  if (dynamic_cast<DataTransferPDU*>(msg))
+//  {
+//    DataTransferPDU* pdu = (DataTransferPDU*) msg;
+//    cMessage* sdu = pdu->getMUserData();
+//    take(check_and_cast<cOwnedObject*>(sdu) );
+//    send(pdu->getMUserData(), northO);
+//  }
+//}
 
 void DTP::delimitFromRMT(DataTransferPDU* pdu)
 {
@@ -235,18 +236,20 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
         /*  TODO PUT this in separate method */
 
         UserDataField* userData = (*it)->getUserDataField();
+
         SDU* sdu;
         while ((sdu = userData->getData()) != NULL)
         {
           //TODO Delimiting/de-fragmentation
 //          take(sdu);
-          take(check_and_cast<cOwnedObject*>(sdu));
+          take(sdu);
 
           send(sdu, northO);
         }
 //        delete userData;
 
         delete (*it);
+
         it = reassemblyPDUQ.erase(it);
       }
     }
@@ -605,27 +608,27 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   //Fi
 }
 
-void DTP::handleSDUs(CDAPMessage* cdap)
-{
-
-  cancelEvent(senderInactivityTimer);
-
-//    this->delimit(buffer, len);
-//  delimit(cdap);
-
-  /* Now tae data from buffer are copied to SDUs so we can free the memory */
-//    free(buffer);
-  this->generatePDUs();
-
-  /* Iterate over generated PDUs and decide if we can send them */
-  this->trySendGenPDUs(&generatedPDUs);
-
-  //  /* iterate over postablePDUs */
-  //  this->sendPostablePDUsToRMT();
-
-  schedule(senderInactivityTimer);
-
-}
+//void DTP::handleSDUs(CDAPMessage* cdap)
+//{
+//
+//  cancelEvent(senderInactivityTimer);
+//
+////    this->delimit(buffer, len);
+////  delimit(cdap);
+//
+//  /* Now tae data from buffer are copied to SDUs so we can free the memory */
+////    free(buffer);
+//  this->generatePDUs();
+//
+//  /* Iterate over generated PDUs and decide if we can send them */
+//  this->trySendGenPDUs(&generatedPDUs);
+//
+//  //  /* iterate over postablePDUs */
+//  //  this->sendPostablePDUsToRMT();
+//
+//  schedule(senderInactivityTimer);
+//
+//}
 /**
  *
  * @param timer
@@ -670,26 +673,26 @@ void DTP::handleDTPATimer(ATimer* timer)
 //void DTP::handleDTPWindowTimer(WindowTimer* timer){
 //  sendAckPDU();
 //}
-bool DTP::write(int portId, unsigned char* buffer, int len)
-{
-
-  cancelEvent(senderInactivityTimer);
-
-  this->delimit(buffer, len);
-  /* Now the data from buffer are copied to SDUs so we can free the memory */
-  free(buffer);
-
-  this->generatePDUs();
-
-  /* Iterate over generated PDUs and decide if we can send them */
-  this->trySendGenPDUs(&generatedPDUs);
-
-//  /* iterate over postablePDUs */
-//  this->sendPostablePDUsToRMT();
-
-  schedule(senderInactivityTimer);
-  return true;
-}
+//bool DTP::write(int portId, unsigned char* buffer, int len)
+//{
+//
+//  cancelEvent(senderInactivityTimer);
+//
+//  this->delimit(buffer, len);
+//  /* Now the data from buffer are copied to SDUs so we can free the memory */
+//  free(buffer);
+//
+//  this->generatePDUs();
+//
+//  /* Iterate over generated PDUs and decide if we can send them */
+//  this->trySendGenPDUs(&generatedPDUs);
+//
+////  /* iterate over postablePDUs */
+////  this->sendPostablePDUsToRMT();
+//
+//  schedule(senderInactivityTimer);
+//  return true;
+//}
 
 unsigned int DTP::delimit(SDU* sdu)
 {
@@ -797,150 +800,150 @@ unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len)
 
 
 
-/**
- * This method takes all SDUs from sduQ and generates PDUs by filling appropriate header fields
- */
-void DTP::generatePDUs()
-{
-
-  DataTransferPDU* dataPDU = new DataTransferPDU();
-
-  dataPDU->setConnId((const ConnectionId) (*connId.dup()));
-  //setDestAddr... APN
-  //setSrcAddr ... APN
-
-  //invoke SDU protection so we don't have to bother with it afterwards
-  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it)
-  {
-    sduProtection(*it);
-  }
-
-  SDU *sdu = NULL;
-  DataTransferPDU* genPDU = dataPDU->dup();
-  bool fragment = false;
-  int delimitFlags = 0;
-  do
-  {
-    //This method fetches next SDU if current one has been put to some PDU(s) (offset = size)
-    this->getSDUFromQ(sdu);
-
-    unsigned int copySize = 0;
-    /* TODO We should take into account also SDUDelimiterFlags etc */
-    unsigned int pduAvailSize = state.getMaxFlowPduSize() - genPDU->getPduLen();
-    /* if the rest of the SDU is bigger than empty space in PDU then fill-up PDU */
-    copySize = (sdu->getRestSize() >= pduAvailSize) ? pduAvailSize : sdu->getRestSize();
-
-    if (genPDU->getPduLen() == PDU_HEADER_LEN)
-    {
-      //PDU is empty
-      //set noLength flag
-      delimitFlags |= 0x04;
-      if (sdu->getRestSize() > pduAvailSize)
-      {
-        //(rest of) SDU is bigger than PDU
-        //set noLength flag
-        delimitFlags |= 0x04;
-        if (sdu->getSize() > sdu->getRestSize())
-        {
-          //not first segment, something has been read from SDU
-          //and since it won't fit cannot be last
-          //this is middle segment
-          delimitFlags |= 0x00;
-        }
-        else
-        {
-          //this is first segment of next SDU
-          delimitFlags |= 0x01;
-        }
-      }
-      else
-      {
-        //(rest of) SDU is smaller than available space in PDU
-        if (sdu->getSize() > sdu->getRestSize())
-        {
-          //last fragment of previous SDU
-          delimitFlags |= 0x02;
-        }
-        else
-        {
-          //this is complete SDU
-          delimitFlags |= 0x03;
-        }
-      }
-
-    }
-    else
-    {
-      //clear noLength flag
-      delimitFlags &= 0xFB;
-
-      if (sdu->getRestSize() > pduAvailSize)
-      {
-        //(rest of) SDU won't fit into rest of PDU
-        if (sdu->getSize() > sdu->getRestSize())
-        {
-          //this is not first segment
-          if (copySize == sdu->getRestSize())
-          {
-            //this is last segment
-            delimitFlags |= 0x02;
-          }
-          else
-          {
-            //this is middle segment
-            //not permitted
-            throw cRuntimeError("This type of PDU delimiting is not permitted!");
-          }
-        }
-        else
-        {
-          //adding first segment
-          delimitFlags |= 0x01;
-        }
-      }
-      else
-      {
-        //(rest of) SDU will fit into rest of PDU
-        //complete sdu
-        if ((delimitFlags & 0x03) == 3)
-        {
-          //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
-          delimitFlags &= 0xFC;
-        }
-      }
-    }
-
-    //add whole SDU or fragment to PDU
-    genPDU->addUserData(sdu->getUserData(copySize), copySize, &fragment);
-//    fragment = true;
-
-    if (sdu->getRestSize() == 0)
-    {
-      delete sduQ.front();
-      sduQ.erase(sduQ.begin());
-    }
-
-    //if genPDU is full or SDU queue is empty, 'close' PDU and put it to generated PDUs and create new PDU
-    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize() || sduQ.empty())
-    {
-      //TODO A2 what else to do before sending?
-      //what about formating SDUDelimitersFlags in userData?
-      genPDU->putDelimitFlags(delimitFlags, fragment);
-
-      //put genPDU to generatedPDUs
-      generatedPDUs.push_back(genPDU);
-
-      if (!sduQ.empty())
-      {
-        genPDU = dataPDU->dup();
-        fragment = false;
-        //set DRF(false) -> not needed (false is default)
-        genPDU->setSeqNum(this->state.getNextSeqNumToSend());
-      }
-    }
-
-  } while (!sduQ.empty());
-}
+///**
+// * This method takes all SDUs from sduQ and generates PDUs by filling appropriate header fields
+// */
+//void DTP::generatePDUs()
+//{
+//
+//  DataTransferPDU* dataPDU = new DataTransferPDU();
+//
+//  dataPDU->setConnId((const ConnectionId) (*connId.dup()));
+//  //setDestAddr... APN
+//  //setSrcAddr ... APN
+//
+//  //invoke SDU protection so we don't have to bother with it afterwards
+//  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it)
+//  {
+//    sduProtection(*it);
+//  }
+//
+//  SDU *sdu = NULL;
+//  DataTransferPDU* genPDU = dataPDU->dup();
+//  bool fragment = false;
+//  int delimitFlags = 0;
+//  do
+//  {
+//    //This method fetches next SDU if current one has been put to some PDU(s) (offset = size)
+//    this->getSDUFromQ(sdu);
+//
+//    unsigned int copySize = 0;
+//    /* TODO We should take into account also SDUDelimiterFlags etc */
+//    unsigned int pduAvailSize = state.getMaxFlowPduSize() - genPDU->getPduLen();
+//    /* if the rest of the SDU is bigger than empty space in PDU then fill-up PDU */
+//    copySize = (sdu->getRestSize() >= pduAvailSize) ? pduAvailSize : sdu->getRestSize();
+//
+//    if (genPDU->getPduLen() == PDU_HEADER_LEN)
+//    {
+//      //PDU is empty
+//      //set noLength flag
+//      delimitFlags |= 0x04;
+//      if (sdu->getRestSize() > pduAvailSize)
+//      {
+//        //(rest of) SDU is bigger than PDU
+//        //set noLength flag
+//        delimitFlags |= 0x04;
+//        if (sdu->getSize() > sdu->getRestSize())
+//        {
+//          //not first segment, something has been read from SDU
+//          //and since it won't fit cannot be last
+//          //this is middle segment
+//          delimitFlags |= 0x00;
+//        }
+//        else
+//        {
+//          //this is first segment of next SDU
+//          delimitFlags |= 0x01;
+//        }
+//      }
+//      else
+//      {
+//        //(rest of) SDU is smaller than available space in PDU
+//        if (sdu->getSize() > sdu->getRestSize())
+//        {
+//          //last fragment of previous SDU
+//          delimitFlags |= 0x02;
+//        }
+//        else
+//        {
+//          //this is complete SDU
+//          delimitFlags |= 0x03;
+//        }
+//      }
+//
+//    }
+//    else
+//    {
+//      //clear noLength flag
+//      delimitFlags &= 0xFB;
+//
+//      if (sdu->getRestSize() > pduAvailSize)
+//      {
+//        //(rest of) SDU won't fit into rest of PDU
+//        if (sdu->getSize() > sdu->getRestSize())
+//        {
+//          //this is not first segment
+//          if (copySize == sdu->getRestSize())
+//          {
+//            //this is last segment
+//            delimitFlags |= 0x02;
+//          }
+//          else
+//          {
+//            //this is middle segment
+//            //not permitted
+//            throw cRuntimeError("This type of PDU delimiting is not permitted!");
+//          }
+//        }
+//        else
+//        {
+//          //adding first segment
+//          delimitFlags |= 0x01;
+//        }
+//      }
+//      else
+//      {
+//        //(rest of) SDU will fit into rest of PDU
+//        //complete sdu
+//        if ((delimitFlags & 0x03) == 3)
+//        {
+//          //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
+//          delimitFlags &= 0xFC;
+//        }
+//      }
+//    }
+//
+//    //add whole SDU or fragment to PDU
+//    genPDU->addUserData(sdu->getUserData(copySize), copySize, &fragment);
+////    fragment = true;
+//
+//    if (sdu->getRestSize() == 0)
+//    {
+//      delete sduQ.front();
+//      sduQ.erase(sduQ.begin());
+//    }
+//
+//    //if genPDU is full or SDU queue is empty, 'close' PDU and put it to generated PDUs and create new PDU
+//    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize() || sduQ.empty())
+//    {
+//      //TODO A2 what else to do before sending?
+//      //what about formating SDUDelimitersFlags in userData?
+//      genPDU->putDelimitFlags(delimitFlags, fragment);
+//
+//      //put genPDU to generatedPDUs
+//      generatedPDUs.push_back(genPDU);
+//
+//      if (!sduQ.empty())
+//      {
+//        genPDU = dataPDU->dup();
+//        fragment = false;
+//        //set DRF(false) -> not needed (false is default)
+//        genPDU->setSeqNum(this->state.getNextSeqNumToSend());
+//      }
+//    }
+//
+//  } while (!sduQ.empty());
+//}
 
 void DTP::generatePDUsnew()
 {
@@ -974,6 +977,7 @@ void DTP::generatePDUsnew()
 
   }
 
+  delete baseDataPDU;
 }
 
 
@@ -1113,133 +1117,133 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
 
 
-void DTP::fromRMT(DataTransferPDU* pdu)
-{
-
-  if (state.isFCPresent())
-  {
-    dtcp->resetWindowTimer();
-
-  }
-  // if PDU.DRF == true
-  if ((pdu->getFlags() & 0x80) == 0x80)
-  {
-    /* Case 1) DRF is set - either first PDU or new run */
-    //TODO A! Invoke delimiting delimitFromRMT()
-    delimitFromRMT(pdu, pdu->getUserDataArraySize());
-
-    //Flush the PDUReassemblyQueue
-    flushReassemblyPDUQ();
-
-    state.setMaxSeqNumRcvd(pdu->getSeqNum());
-    /* Initialize the other direction */
-    state.setSetDrfFlag(true);
-
-
-    runInitialSequenceNumberPolicy();
-
-    if (state.isDtcpPresent())
-    {
-      /* Update RxControl */
-      svUpdate(pdu->getSeqNum());
-    }
-
-  }
-  else
-
-  /* Not the start of a run */
-  if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
-  {
-    /* Case 2) A Real Duplicate */
-    //Discard PDU and increment counter of dropped duplicates PDU
-    delete pdu;
-    //TODO A1 increment counter of dropped duplicates PDU
-    state.incDropDup();
-
-    //TODO A! send an Ack/Flow Control PDU with current window values
-
-    return;
-  }
-
-  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
-  {
-    /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
-    //TODO A!
-    //if a duplicate among the gaps then // search reassemblyQ?
-    if (false)
-    {
-      /* Case 3) Duplicate Among gaps */
-
-      //Discard PDU and increment counter of dropped duplicates PDU
-      delete pdu;
-      //TODO A1 increment counter of dropped duplicates PDU
-      state.incDropDup();
-
-      //TODO A! send an Ack/Flow Control PDU with current window values
-      return;
-    }
-    else
-    {
-      /* Case 3) This goes in a gap */
-      /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
-      reassemblyPDUQ.push_back(pdu);
-      if (state.isDtcpPresent())
-      {
-        svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
-      }
-      else
-      {
-        state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
-        /* No A-Timer necessary, already running */
-      }
-      //TODO A1
-      delimitFromRMT(pdu, pdu->getUserDataArraySize());
-      return;
-    }
-  }
-  /* Case 4) */
-  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
-  {
-    state.incMaxSeqNumRcvd();
-    if (state.isDtcpPresent())
-    {
-      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-    }
-    else
-    {
-      state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
-      //TODO A! start A-Timer (for this PDU)
-    }
-    delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
-
-  }
-  else{
-
-    /* Case 5) it is out of order */
-    if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
-    {
-      if (state.isDtcpPresent())
-      {
-        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-      }
-      else
-      {
-        //LeftWindowEdge = MaxSeqNumRcvd;
-        //TODO A! start A-timer
-      }
-      delimitFromRMT(pdu, pdu->getUserDataArraySize());
-    }
-    schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
-  }
-  //TODO A1 DIF.integrity
-  /* If we are encrypting, we can't let PDU sequence numbers roll over */
-
-  //If DIF.Integrity and PDU.SeqNum > SequenceNumberRollOverThreshhold Then
-  ///* Security requires a new flow */
-  //RequestFAICreateNewConnection( PDU.FlowID )
-  //Fi
-
-}
+//void DTP::fromRMT(DataTransferPDU* pdu)
+//{
+//
+//  if (state.isFCPresent())
+//  {
+//    dtcp->resetWindowTimer();
+//
+//  }
+//  // if PDU.DRF == true
+//  if ((pdu->getFlags() & 0x80) == 0x80)
+//  {
+//    /* Case 1) DRF is set - either first PDU or new run */
+//    //TODO A! Invoke delimiting delimitFromRMT()
+//    delimitFromRMT(pdu, pdu->getUserDataArraySize());
+//
+//    //Flush the PDUReassemblyQueue
+//    flushReassemblyPDUQ();
+//
+//    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+//    /* Initialize the other direction */
+//    state.setSetDrfFlag(true);
+//
+//
+//    runInitialSequenceNumberPolicy();
+//
+//    if (state.isDtcpPresent())
+//    {
+//      /* Update RxControl */
+//      svUpdate(pdu->getSeqNum());
+//    }
+//
+//  }
+//  else
+//
+//  /* Not the start of a run */
+//  if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
+//  {
+//    /* Case 2) A Real Duplicate */
+//    //Discard PDU and increment counter of dropped duplicates PDU
+//    delete pdu;
+//    //TODO A1 increment counter of dropped duplicates PDU
+//    state.incDropDup();
+//
+//    //TODO A! send an Ack/Flow Control PDU with current window values
+//
+//    return;
+//  }
+//
+//  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+//  {
+//    /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
+//    //TODO A!
+//    //if a duplicate among the gaps then // search reassemblyQ?
+//    if (false)
+//    {
+//      /* Case 3) Duplicate Among gaps */
+//
+//      //Discard PDU and increment counter of dropped duplicates PDU
+//      delete pdu;
+//      //TODO A1 increment counter of dropped duplicates PDU
+//      state.incDropDup();
+//
+//      //TODO A! send an Ack/Flow Control PDU with current window values
+//      return;
+//    }
+//    else
+//    {
+//      /* Case 3) This goes in a gap */
+//      /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
+//      reassemblyPDUQ.push_back(pdu);
+//      if (state.isDtcpPresent())
+//      {
+//        svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
+//      }
+//      else
+//      {
+//        state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//        /* No A-Timer necessary, already running */
+//      }
+//      //TODO A1
+//      delimitFromRMT(pdu, pdu->getUserDataArraySize());
+//      return;
+//    }
+//  }
+//  /* Case 4) */
+//  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+//  {
+//    state.incMaxSeqNumRcvd();
+//    if (state.isDtcpPresent())
+//    {
+//      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//    }
+//    else
+//    {
+//      state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//      //TODO A! start A-Timer (for this PDU)
+//    }
+//    delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
+//
+//  }
+//  else{
+//
+//    /* Case 5) it is out of order */
+//    if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+//    {
+//      if (state.isDtcpPresent())
+//      {
+//        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//      }
+//      else
+//      {
+//        //LeftWindowEdge = MaxSeqNumRcvd;
+//        //TODO A! start A-timer
+//      }
+//      delimitFromRMT(pdu, pdu->getUserDataArraySize());
+//    }
+//    schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
+//  }
+//  //TODO A1 DIF.integrity
+//  /* If we are encrypting, we can't let PDU sequence numbers roll over */
+//
+//  //If DIF.Integrity and PDU.SeqNum > SequenceNumberRollOverThreshhold Then
+//  ///* Security requires a new flow */
+//  //RequestFAICreateNewConnection( PDU.FlowID )
+//  //Fi
+//
+//}
 
 ///*
 // * Iterate over postablePDUs and give them to RMT

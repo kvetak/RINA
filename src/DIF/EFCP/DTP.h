@@ -91,9 +91,9 @@ class DTP : public cSimpleModule
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
     void handleDTPATimer(ATimer* timer);
 
-    void handleMsgFromDelimiting(Data* msg);
+//    void handleMsgFromDelimiting(Data* msg);
     void handleMsgFromDelimitingnew(SDU* sdu);
-    void handleMsgFromRmt(PDU* msg);
+//    void handleMsgFromRmt(PDU* msg);
     void handleMsgFromRmtnew(PDU* msg);
     void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
 
@@ -109,7 +109,7 @@ class DTP : public cSimpleModule
 
 
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
-    void generatePDUs();
+//    void generatePDUs();
     void generatePDUsnew();
 
     void trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ);
@@ -122,7 +122,7 @@ class DTP : public cSimpleModule
 //    void sendPostablePDUsToRMT();
 //    void sendPDUToRMT(PDU* pdu);
 
-    void fromRMT(DataTransferPDU* pdu);
+//    void fromRMT(DataTransferPDU* pdu);
 
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
@@ -170,7 +170,7 @@ class DTP : public cSimpleModule
 
     void schedule(DTPTimers* timer, double time =0.0);
 
-    void handleSDUs(CDAPMessage* cdap);
+//    void handleSDUs(CDAPMessage* cdap);
     void setPDUHeader(PDU* pdu);
     void initGates();
     void delimitFromRMT(DataTransferPDU* pdu);
@@ -182,7 +182,7 @@ class DTP : public cSimpleModule
 
     bool read(int portId, unsigned char * buffer, int len);
     bool readImmediate(int portId, unsigned char* buffer, int len);
-    bool write(int portId, unsigned char *buffer, int len);
+//    bool write(int portId, unsigned char *buffer, int len);
 
     void setFlow(Flow* flow);
     void setDTCP(DTCP* dtcp);

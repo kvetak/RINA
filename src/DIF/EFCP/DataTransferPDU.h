@@ -34,6 +34,7 @@ class DataTransferPDU : public DataTransferPDU_Base
   {
     private:
       void copy(const DataTransferPDU& other);
+      UserDataFieldPtr userDataField_var;
 
     public:
       DataTransferPDU(const char *name=NULL, int kind=0);
@@ -44,6 +45,10 @@ class DataTransferPDU : public DataTransferPDU_Base
       ~DataTransferPDU();
 
       unsigned int getSize();
+
+      UserDataFieldPtr& getUserDataField();
+      void setUserDataField(const UserDataFieldPtr& userDataField);
+
   };
 
 #endif /* DATATRANSFERPDU_H_ */

@@ -35,8 +35,10 @@ void SDU::copy(const SDU& other){
   mUserDataType::const_iterator it;
 
   for(it = other.mUserData_var.begin(); it != other.mUserData_var.end(); ++it){
+    CDAPMessage *cdap = (*it)->dup();
+    take(cdap);
 
-    mUserData_var.push_back((*it)->dup());
+    mUserData_var.push_back(cdap);
   }
 }
 
@@ -115,11 +117,28 @@ bool SDU::addUserData(CDAPMessage* msg){
 //    }
 
     //TODO A1 check current SDU size
-
+  take(msg);
   this->mUserData_var.push_back(msg);
   size_var += msg->getSize();
 
-    return true;
+  return true;
+}
+
+CDAPMessage* SDU::getUserData(){
+
+  if (!mUserData_var.empty())
+  {
+    CDAPMessage* cdap;
+    cdap = mUserData_var.front();
+
+    mUserData_var.erase(mUserData_var.begin());
+    drop(cdap);
+    return cdap;
+  }
+  else
+  {
+    return NULL;
+  }
 }
 /**
  * Returns SDU Fragments vector of specified size
@@ -164,6 +183,7 @@ SDU::~SDU()
   std::vector<CDAPMessage*>::iterator it;
   for(it = mUserData_var.begin(); it != mUserData_var.end();){
     if((*it) != NULL){
+      drop((*it));
       delete (*it);
     }
     it = mUserData_var.erase(it);
