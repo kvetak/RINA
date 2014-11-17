@@ -77,6 +77,7 @@ void RMT::invokeSchedulingPolicy(cObject* obj)
 {
     Enter_Method("invokeSchedulingPolicy()");
 
+    // invoke monitor policy
     qMonPolicy->run(dynamic_cast<RMTQueue*>(obj));
 
     if (!waitingMsgs)

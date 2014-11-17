@@ -42,9 +42,18 @@ class RMTQueue : public cSimpleModule
     int getThreshLength();
     void setThreshLength(int value);
 
+    double getAverageLength() const;
+    void setAverageLength(double avr);
+
     int getLength() const;
     short getQosId();
-    std::string getDifName();
+
+    double getWeight() const;
+    simtime_t getQTime() const;
+
+    int getAqmCounter() const;
+    void setAqmCounter(int val);
+
 
     cGate* getOutputGate();
     cGate* getInputGate();
@@ -60,10 +69,16 @@ class RMTQueue : public cSimpleModule
 
   private:
     std::deque<cMessage*> queue;
-    const char* difName;
-    short qosId;
+
     int maxQLength;
     int thresholdQLength;
+
+    // AQM-related stuff
+    double averageLength;
+    double weight;
+    int aqmCounter;
+    simtime_t qTime;
+
     queueType type;
 
     cGate* rmtAccessGate;

@@ -13,12 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT.policies.maxqueue;
+package rina.DIF.RMT.policies.monitor;
 
 
-simple TailDrop like IntRMTMaxQPolicy 
+simple RED like IntRMTQMonitorPolicy 
 {
     parameters:
-        string policyName = "taildrop";
+        string policyName = "active queue management";
         @display("i=block/socket");
 }

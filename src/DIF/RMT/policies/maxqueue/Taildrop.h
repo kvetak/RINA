@@ -10,7 +10,7 @@
 
 #include "RMTQMonitorBase.h"
 
-class Taildrop : public RMTMaxQBase
+class TailDrop : public RMTMaxQBase
 {
   public:
     virtual void run(RMTQueue* queue);

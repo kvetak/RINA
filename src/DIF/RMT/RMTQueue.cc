@@ -36,6 +36,9 @@ void RMTQueue::initialize()
 
     maxQLength = getParentModule()->par("queueMaxThresh");
     thresholdQLength = getParentModule()->par("queueMinThresh");
+    averageLength = 0.0;
+    weight = 0;
+    aqmCounter = -1;
 }
 
 std::string RMTQueue::info() const
@@ -115,6 +118,11 @@ void RMTQueue::releasePDU(void)
         cMessage* pdu = queue.front();
         queue.pop_front();
         send(pdu, outputGate);
+
+        if (getLength() == 0)
+        {
+            qTime = simTime();
+        }
     }
     redrawGUI();
 }
@@ -124,15 +132,6 @@ void RMTQueue::dropLast()
     queue.pop_back();
 }
 
-std::string RMTQueue::getDifName()
-{
-    return difName;
-}
-
-short RMTQueue::getQosId()
-{
-    return qosId;
-}
 
 int RMTQueue::getLength() const
 {
@@ -143,6 +142,7 @@ int RMTQueue::getMaxLength()
 {
     return maxQLength;
 }
+
 
 void RMTQueue::setMaxLength(int val)
 {
@@ -158,6 +158,37 @@ void RMTQueue::setThreshLength(int val)
 {
     this->thresholdQLength = val;
 }
+
+double RMTQueue::getAverageLength() const
+{
+    return averageLength;
+}
+
+void RMTQueue::setAverageLength(double avr)
+{
+    averageLength = avr;
+}
+
+double RMTQueue::getWeight() const
+{
+    return weight;
+}
+
+simtime_t RMTQueue::getQTime() const
+{
+    return qTime;
+}
+
+int RMTQueue::getAqmCounter() const
+{
+    return aqmCounter;
+}
+
+void RMTQueue::setAqmCounter(int val)
+{
+    aqmCounter = val;
+}
+
 
 RMTQueue::queueType RMTQueue::getType()
 {

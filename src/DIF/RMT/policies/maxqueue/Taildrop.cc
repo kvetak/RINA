@@ -5,11 +5,11 @@
  *      Author: cloq
  */
 
-#include <Taildrop.h>
+#include <TailDrop.h>
 
-Define_Module(Taildrop);
+Define_Module(TailDrop);
 
-void Taildrop::run(RMTQueue* queue)
+void TailDrop::run(RMTQueue* queue)
 {
     EV << "queue " << queue->getName() << "is overflowing! dropping the last packet." << endl;
     queue->dropLast();
