@@ -18,12 +18,14 @@
 Define_Module(DTCP);
 
 DTCP::DTCP() {
-
+  rxControl = NULL;
 
 }
 
 DTCP::~DTCP() {
-    // TODO Auto-generated destructor stub
+    if(rxControl != NULL){
+      delete rxControl;
+    }
 }
 
 void DTCP::initialize(){

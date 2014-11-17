@@ -39,7 +39,7 @@ void DTPState::initDefaults(){
   //TODO A1
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
-  nextSeqNumToSend = 1;
+  nextSeqNumToSend = 0;
 
 
   //TODO B! Fix
@@ -118,6 +118,10 @@ void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
 
 void DTPState::incMaxSeqNumRcvd() {
   maxSeqNumRcvd++;
+}
+
+void DTPState::incRcvLeftWindowEdge() {
+  rcvLeftWinEdge++;
 }
 
 /*

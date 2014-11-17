@@ -24,6 +24,7 @@ DTP::DTP()
 }
 DTP::~DTP()
 {
+
   std::vector<RxExpiryTimer*>::iterator it;
   for (it = rxQ.begin(); it != rxQ.end();)
   {
@@ -32,6 +33,7 @@ DTP::~DTP()
 //    delete (*it);
     it = rxQ.erase(it);
   }
+
 
   cancelAndDelete(senderInactivityTimer);
   cancelAndDelete(rcvrInactivityTimer);
@@ -394,6 +396,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
                 cancelEvent((*it));
                 delete (*it);
                 it = rxQ.erase(it);
+              }else{
+                ++it;
               }
             }
             //SenderLWE is updated inside for loop
@@ -439,6 +443,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
               cancelEvent((*it));
               delete (*it);
               it = rxQ.erase(it);
+            }else{
+              ++it;
             }
           }
           //Update LeftWindowEdge accordingly
@@ -494,7 +500,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     //Flush the PDUReassemblyQueue
     flushReassemblyPDUQ();
 
-    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+//    state.setMaxSeqNumRcvd(pdu->getSeqNum());
     /* Initialize the other direction */
     state.setSetDrfFlag(true);
 
@@ -509,7 +515,10 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
   }
   else
+  {
 
+    //TODO A! Condition 'is less than' is not enough. It needs to be 'is less than or equal to'
+    //If seqNum is equal to receiver LWE it is still duplicate, right?
   /* Not the start of a run */
   if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
   {
@@ -523,8 +532,8 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
     return;
   }
-
-  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+//  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+  if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
   {
     /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
     //TODO A!
@@ -548,7 +557,8 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       reassemblyPDUQ.push_back(pdu);
       if (state.isDtcpPresent())
       {
-        svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
+        //svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
+        svUpdate(state.getRcvLeftWinEdge()); /* Update left edge, etc */
       }
       else
       {
@@ -562,16 +572,20 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     }
   }
   /* Case 4) This is in order */
-  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+//  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+  if (pdu->getSeqNum() == state.getRcvLeftWinEdge())
   {
-    state.incMaxSeqNumRcvd();
+//    state.incMaxSeqNumRcvd();
+
     if (state.isDtcpPresent())
     {
-      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+      svUpdate(pdu->getSeqNum()); /* Update Left Edge, etc. */
     }
     else
     {
-      state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+      //state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+      state.incRcvLeftWindowEdge();
       //TODO A! start A-Timer (for this PDU)
       //FIX: @Marek Why start A-timer when DTCP is not present?
     }
@@ -582,11 +596,13 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   else{
 
     /* Case 5) it is out of order */
-    if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+    //if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+    if (pdu->getSeqNum() > state.getRcvLeftWinEdge() + 1)
     {
       if (state.isDtcpPresent())
       {
-        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+        svUpdate(state.getRcvLeftWinEdge()); /* Update Left Edge, etc. */
       }
       else
       {
@@ -599,6 +615,8 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     }
     schedule(rcvrInactivityTimer); //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
   }
+
+
   //TODO A1 DIF.integrity
   /* If we are encrypting, we can't let PDU sequence numbers roll over */
 
@@ -606,6 +624,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   ///* Security requires a new flow */
   //RequestFAICreateNewConnection( PDU.FlowID )
   //Fi
+  }
 }
 
 //void DTP::handleSDUs(CDAPMessage* cdap)
@@ -1600,8 +1619,8 @@ void DTP::svUpdate(unsigned int seqNum)
 //  state.setRcvLeftWinEdge(seqNum);
 
   /* XXX Don't know where else to put */
-  if(state.getRcvLeftWinEdge() + 1 == seqNum){
-    state.setRcvLeftWinEdge(seqNum);
+  if(state.getRcvLeftWinEdge()  == seqNum){
+    state.incRcvLeftWindowEdge();
   }
 
 

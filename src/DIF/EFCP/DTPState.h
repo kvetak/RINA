@@ -114,6 +114,7 @@ public:
     unsigned int getMaxSeqNumRcvd() const;
     void setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd);
     void incMaxSeqNumRcvd();
+    void incRcvLeftWindowEdge();
     unsigned int getNextSeqNumToSend();
     void setNextSeqNumToSend(unsigned int nextSeqNumToSend);
     void incNextSeqNumToSend();
