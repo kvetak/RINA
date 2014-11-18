@@ -9,6 +9,24 @@
 
 Define_Module(RED);
 
+void RED::postQueueCreation(RMTQueue* queue)
+{
+    // TODO: fix variable initialization, these are just for demo purposes
+    qAvgLengths[queue] = 0.0;
+    qWeights[queue] = 0.5;
+    qProbabilities[queue] = 0.4;
+    qCounters[queue] = -1;
+}
+
+void RED::preQueueRemoval(RMTQueue* queue)
+{
+    qAvgLengths.erase(queue);
+    qWeights.erase(queue);
+    qProbabilities.erase(queue);
+    qCounters.erase(queue);
+}
+
+
 void RED::run(RMTQueue* queue)
 {
     maxQPolicy = ModuleAccess<RMTMaxQBase>("maxQueuePolicy").get();
@@ -16,11 +34,14 @@ void RED::run(RMTQueue* queue)
     int length = queue->getLength();
     int minThresh = queue->getThreshLength();
     int maxThresh = queue->getMaxLength();
-    double avr = queue->getAverageLength();
-    double wq = queue->getWeight();
-    double maxP = getParentModule()->par("dropProbability").doubleValue();
-    int count = queue->getAqmCounter();
+
+    double avr = qAvgLengths[queue];
+    double wq = qWeights[queue];
+    double maxP = qProbabilities[queue];
+    int count = qCounters[queue];
+
     simtime_t qTime = queue->getQTime();
+    const char* qname = queue->getFullName();
 
     if (length > 0)
     {
@@ -32,25 +53,31 @@ void RED::run(RMTQueue* queue)
         avr = pow(1 - wq, m) * avr;
     }
 
-    if (minThresh <= avr && avr < maxThresh)
+    qAvgLengths[queue] = avr;
+
+    if (length > maxThresh)
     {
-        queue->setAqmCounter(++count);
+        EV << "RED: Queue " << qname << " is full! Dropping the incoming message." << endl;
+        maxQPolicy->run(queue);
+        qCounters[queue] = 0;
+    }
+    else if (minThresh <= avr && avr < maxThresh)
+    {
+        qCounters[queue] += 1;
         const double pb = maxP * (avr - minThresh) / (maxThresh - minThresh);
         const double pa = pb / (1 - count * pb);
-        if (dblrand() < pa)
+        const double rand = dblrand();
+
+        if (rand < pa)
         {
+            EV << "RED: rand < pa (" << rand << " < " << pa << ")! Executing MaxQPolicy." << endl;
             maxQPolicy->run(queue);
-            queue->setAqmCounter(0);
+            qCounters[queue] = 0;
         }
-    }
-    else if (length > maxThresh || avr > maxThresh)
-    {
-        maxQPolicy->run(queue);
-        queue->setAqmCounter(0);
     }
     else
     {
-        queue->setAqmCounter(-1);
+        qCounters[queue] = -1;
     }
 }
 

@@ -19,6 +19,6 @@ package rina.DIF.RMT.policies.monitor;
 simple RED like IntRMTQMonitorPolicy 
 {
     parameters:
-        string policyName = "active queue management";
+        string policyName = "Random Early Detection";
         @display("i=block/socket");
 }

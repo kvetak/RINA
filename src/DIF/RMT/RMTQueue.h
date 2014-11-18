@@ -73,10 +73,6 @@ class RMTQueue : public cSimpleModule
     int maxQLength;
     int thresholdQLength;
 
-    // AQM-related stuff
-    double averageLength;
-    double weight;
-    int aqmCounter;
     simtime_t qTime;
 
     queueType type;

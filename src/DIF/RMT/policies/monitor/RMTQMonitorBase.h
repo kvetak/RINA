@@ -27,11 +27,16 @@ class RMTQMonitorBase : public cSimpleModule
   public:
     RMTQMonitorBase();
     virtual ~RMTQMonitorBase();
+
     virtual void run(RMTQueue* queue);
+
+    // optional event hooks
+    virtual void postQueueCreation(RMTQueue* queue);
+    virtual void preQueueRemoval(RMTQueue* queue);
 
   protected:
     virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    void handleMessage(cMessage *msg);
     RMTMaxQBase* maxQPolicy;
 };
 

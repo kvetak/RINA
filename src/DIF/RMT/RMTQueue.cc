@@ -34,11 +34,9 @@ void RMTQueue::initialize()
     inputGate = gate("inputGate");
     sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
 
-    maxQLength = getParentModule()->par("queueMaxThresh");
-    thresholdQLength = getParentModule()->par("queueMinThresh");
-    averageLength = 0.0;
-    weight = 0;
-    aqmCounter = -1;
+    maxQLength = getParentModule()->par("queueSize");
+    thresholdQLength = getParentModule()->par("queueThresh");
+    qTime = simTime();
 }
 
 std::string RMTQueue::info() const
@@ -130,6 +128,7 @@ void RMTQueue::releasePDU(void)
 void RMTQueue::dropLast()
 {
     queue.pop_back();
+    redrawGUI();
 }
 
 
@@ -159,36 +158,10 @@ void RMTQueue::setThreshLength(int val)
     this->thresholdQLength = val;
 }
 
-double RMTQueue::getAverageLength() const
-{
-    return averageLength;
-}
-
-void RMTQueue::setAverageLength(double avr)
-{
-    averageLength = avr;
-}
-
-double RMTQueue::getWeight() const
-{
-    return weight;
-}
-
 simtime_t RMTQueue::getQTime() const
 {
     return qTime;
 }
-
-int RMTQueue::getAqmCounter() const
-{
-    return aqmCounter;
-}
-
-void RMTQueue::setAqmCounter(int val)
-{
-    aqmCounter = val;
-}
-
 
 RMTQueue::queueType RMTQueue::getType()
 {

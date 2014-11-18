@@ -27,18 +27,20 @@ RMTQMonitorBase::~RMTQMonitorBase()
 
 void RMTQMonitorBase::initialize()
 {
-
 }
 
 void RMTQMonitorBase::handleMessage(cMessage *msg)
 {
+}
 
+void RMTQMonitorBase::postQueueCreation(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::preQueueRemoval(RMTQueue* queue)
+{
 }
 
 void RMTQMonitorBase::run(RMTQueue* queue)
 {
-    EV << queue->getFullName()
-       << " monitor: length " << queue->getLength()
-       << "; maxlength " << queue->getMaxLength()
-       << "; threshold " << queue->getThreshLength() << endl;
 }

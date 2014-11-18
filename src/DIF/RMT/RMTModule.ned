@@ -24,16 +24,14 @@ module RMTModule
     parameters:
         @display("i=block/classifier;bgb=590,145");
         
-        volatile string schedPolicyName = default("LongestQFirst");
-        volatile string qMonitorPolicyName = default("SimpleMonitor");
-        volatile string maxQPolicyName = default("TailDrop");        
+        string schedPolicyName = default("LongestQFirst");
+        string qMonitorPolicyName = default("SimpleMonitor");
+        string maxQPolicyName = default("TailDrop");        
         
         double queueServiceTime @unit(ms) = default(0.0ms);
         
         int queueSize = default(20);
-        int queueMinThresh = default(10);
-        int queueMaxThresh = default(queueSize);
-        double dropProbability = default(0.0);
+        int queueThresh = default(10);
         
         string queueColorBusy = default("#80FF80");
         string queueColorWarn = default("#FF8000");

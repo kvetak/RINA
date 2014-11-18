@@ -11,7 +11,7 @@ Define_Module(TailDrop);
 
 void TailDrop::run(RMTQueue* queue)
 {
-    EV << "queue " << queue->getName() << "is overflowing! dropping the last packet." << endl;
+    EV << "TailDrop: dropping packet for queue " << queue->getName() << "!" << endl;
     queue->dropLast();
 }
 
