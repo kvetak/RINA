@@ -131,6 +131,21 @@ void RMTQueue::dropLast()
     redrawGUI();
 }
 
+void RMTQueue::markCongestionOnLast()
+{
+    cMessage* msg = queue.back();
+
+    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    {
+        PDU_Base* pdu = (PDU_Base*) msg;
+        pdu->setFlags(pdu->getFlags() | 0x01);
+    }
+    else
+    {
+        EV << "The message isn't a PDU, cannot apply marking!" << endl;
+    }
+}
+
 
 int RMTQueue::getLength() const
 {

@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 #include <queue>
 
+#include "PDU_m.h"
 #include "RINASignals.h"
 
 class RMTQueue : public cSimpleModule
@@ -63,6 +64,8 @@ class RMTQueue : public cSimpleModule
 
     void releasePDU();
     void dropLast();
+    void markCongestionOnLast();
+
     void redrawGUI();
 
     std::string info() const;

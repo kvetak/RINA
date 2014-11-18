@@ -11,7 +11,7 @@ Define_Module(TailDrop);
 
 void TailDrop::run(RMTQueue* queue)
 {
-    EV << "TailDrop: dropping packet for queue " << queue->getName() << "!" << endl;
+    EV << "TailDrop: dropping message for queue " << queue->getName() << "!" << endl;
     queue->dropLast();
 }
 
