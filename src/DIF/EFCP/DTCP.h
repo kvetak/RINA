@@ -73,6 +73,8 @@ public:
 
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
     unsigned int getSndRtWinEdge();
+    void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
+    unsigned int getRcvRtWinEdge();
 
     void setSndRate(unsigned int sendingRate);
     uint getSndRate();

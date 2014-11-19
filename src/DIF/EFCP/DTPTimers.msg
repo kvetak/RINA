@@ -19,10 +19,10 @@
 // TODO generated message class
 //
 cplusplus {{
-#include "PDU.h"
-typedef PDU* PDU_p;
+#include "DataTransferPDU.h"
+typedef DataTransferPDU* DTPDU_p;
 }}
-class noncobject PDU_p;
+class noncobject DTPDU_p;
 
 enum DTPTimerType
 {
@@ -53,7 +53,7 @@ message RcvrInactivityTimer extends InactivityTimer{
 
 message RxExpiryTimer extends DTPTimers{
     type = DTP_RX_EXPIRY_TIMER;
-    PDU_p pdu = NULL;
+    DTPDU_p pdu = NULL;
     unsigned int expiryCount = 0;
 }
 
@@ -67,7 +67,7 @@ message SendingRateTimer extends DTPTimers{
 
 message ATimer extends DTPTimers{
  	type = DTP_A_TIMER;   
- 	PDU_p pdu = NULL;
+ 	DTPDU_p pdu = NULL;
 }
 
 

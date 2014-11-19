@@ -79,6 +79,8 @@ class FlowControl : public cSimpleModule
     void incDupFC();
     unsigned long getSendingTimeUnit() const;
     void setSendingTimeUnit(unsigned long sendingTimeUnit);
+    unsigned int getRcvRightWindowEdge() const;
+    void setRcvRightWindowEdge(unsigned int rcvRightWindowEdge);
 };
 
 #endif /* FLOWCONTROL_H_ */

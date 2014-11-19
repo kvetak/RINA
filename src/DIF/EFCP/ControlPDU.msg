@@ -21,6 +21,7 @@ cplusplus {{
 message PDU;
 
 message ControlPDU extends PDU{
+    type = -1;
 //    unsigned int controlSeqNum;
 }
 
@@ -35,7 +36,7 @@ message FlowControlPDU extends ControlPDU {
 
 message NAckPDU extends ControlPDU{
     unsigned int ackNackSeqNum;
-    type = -1;
+    
 }
 
 message AckOnlyPDU extends NAckPDU{

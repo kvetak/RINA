@@ -19,13 +19,20 @@ Define_Module(DTCP);
 
 DTCP::DTCP() {
   rxControl = NULL;
+  flowControl = NULL;
 
 }
 
-DTCP::~DTCP() {
-    if(rxControl != NULL){
-      delete rxControl;
-    }
+DTCP::~DTCP()
+{
+  if (rxControl != NULL)
+  {
+    delete rxControl;
+  }
+  if (flowControl != NULL)
+  {
+    delete flowControl;
+  }
 }
 
 void DTCP::initialize(){
@@ -35,6 +42,8 @@ dtcpState = new DTCPState();
 
 //TODO A2 based on DTCPState create appropriate components
 rxControl = new RXControl();
+
+flowControl = new FlowControl();
 }
 
 void DTCP::schedule(DTCPTimers* timer){
@@ -99,6 +108,16 @@ void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
 unsigned int DTCP::getSndRtWinEdge()
 {
   flowControl->getSendRightWindowEdge();
+}
+
+void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
+{
+  flowControl->setRcvRightWindowEdge(rcvRtWinEdge);
+}
+
+unsigned int DTCP::getRcvRtWinEdge()
+{
+  flowControl->getRcvRightWindowEdge();
 }
 
 void DTCP::setSndRate(unsigned int sendingRate)

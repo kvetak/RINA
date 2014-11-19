@@ -44,6 +44,8 @@ class DTP : public cSimpleModule
     /* Friend policies */
     friend class DefaultTxControlPolicy;
   private:
+
+    int deletePdu;
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
     Flow* flow;
@@ -174,7 +176,10 @@ class DTP : public cSimpleModule
     void setPDUHeader(PDU* pdu);
     void initGates();
     void delimitFromRMT(DataTransferPDU* pdu);
-    void commonRcvControl(ControlPDU* pdu);
+    bool commonRcvControl(ControlPDU* pdu);
+    void sendControlAckPDU();
+    void sendEmptyDTPDU();
+    void sendAckFlowPDU();
 
   public:
     DTP();

@@ -43,7 +43,7 @@ void DTPState::initDefaults(){
 
 
   //TODO B! Fix
-  rtt = 1;
+  rtt = 3;
 
 }
 

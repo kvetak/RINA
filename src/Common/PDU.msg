@@ -68,6 +68,7 @@ enum FLAGS{
 
 message PDU {
     @customize(true);
+    string displayString;
     unsigned int version = 1;
     Address srcAddr;
     Address dstAddr;

@@ -30,6 +30,7 @@ FlowControl::FlowControl()
 
 
   dupFC = 0;
+  rcvRightWindowEdge = 0;
 
 }
 
@@ -81,4 +82,14 @@ unsigned long FlowControl::getSendingTimeUnit() const
 void FlowControl::setSendingTimeUnit(unsigned long sendingTimeUnit)
 {
   this->sendingTimeUnit = sendingTimeUnit;
+}
+
+unsigned int FlowControl::getRcvRightWindowEdge() const
+{
+  return rcvRightWindowEdge;
+}
+
+void FlowControl::setRcvRightWindowEdge(unsigned int rcvRightWindowEdge)
+{
+  this->rcvRightWindowEdge = rcvRightWindowEdge;
 }
