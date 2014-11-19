@@ -33,17 +33,17 @@ module BorderRouter
             @display("p=223,160");
         }
         bottomIpc: IPCProcess {
-            @display("p=146,263;i=,#FF4000");
+            @display("p=146,280;i=,#FF4000");
         }
         relayIpc: IPCProcess {
             @display("p=146,39;i=,#FFB000");
             relay = true;
         }
         ipcProcess3: IPCProcess {
-            @display("p=146,160");
+            @display("p=146,192");
         }
         difAllocator: DIFAllocator {
-            @display("p=249,39");
+            @display("p=66,39");
         }
     connections:
         ipcProcess1.southIo++ <--> medium[0];

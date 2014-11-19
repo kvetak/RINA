@@ -37,7 +37,7 @@ module InteriorRouter2Int
             relay = true;
         }
         difAllocator: DIFAllocator {
-            @display("p=227,53");
+            @display("p=65,53");
         }
     connections:
         ipcProcess0.southIo++ <--> medium[0];
