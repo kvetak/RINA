@@ -40,11 +40,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="org.omnetpp.cdt.gnu.config.debug.665252091.105385437" name="FA.cc" rcbsApplicability="disable" resourcePath="src/DIF/FA/FA.cc" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.base.149555567.1024038220">
-						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.149555567.1024038220" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.149555567">
-							<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1975530007" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="examples"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>

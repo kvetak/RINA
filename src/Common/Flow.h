@@ -61,6 +61,11 @@ class Flow : public cObject
     bool operator== (const Flow& other) const;
 
     /**
+     * @brief Comparator taking into account src/dst addresses, src/dst APNIs, src-dst ConIds/PortIds
+     */
+    bool compare(const Flow& other) const;
+
+    /**
      * @brief Flow object duplication method that creates copy with
      * @return
      */

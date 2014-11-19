@@ -15,33 +15,42 @@
 
 package rina.CS;
 
+import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
 
 
 module BorderRouter
 {
-    @display("i=abstract/router;bgb=272,341");
+    @display("i=abstract/router;bgb=281,341");
     @node;
     gates:
-        inout medium[];
+        inout medium[3];
     submodules:
         ipcProcess1: IPCProcess {
             @display("p=66,160");
         }
         ipcProcess2: IPCProcess {
-            @display("p=206,157");
+            @display("p=223,160");
         }
-        ipcProcess3: IPCProcess {
-            @display("p=206,266;i=,#FF4000");
+        bottomIpc: IPCProcess {
+            @display("p=146,263;i=,#FF4000");
         }
-        ipcProcess0: IPCProcess {
-            @display("p=139,39;i=,#FFB000");
+        relayIpc: IPCProcess {
+            @display("p=146,39;i=,#FFB000");
             relay = true;
         }
+        ipcProcess3: IPCProcess {
+            @display("p=146,160");
+        }
+        difAllocator: DIFAllocator {
+            @display("p=249,39");
+        }
     connections:
-        //ipcProcess0.southIo++ <--> ipcProcess1.northIo++;
-        //ipcProcess0.southIo++ <--> ipcProcess2.northIo++;
-        //ipcProcess2.southIo++ <--> ipcProcess3.northIo++;
-        ipcProcess3.southIo++ <--> medium++;
-        ipcProcess1.southIo++ <--> medium++;
+        ipcProcess1.southIo++ <--> medium[0];
+        ipcProcess2.southIo++ <--> medium[1];
+        bottomIpc.southIo++ <--> medium[2];
+        relayIpc.southIo++ <--> ipcProcess1.northIo++;
+        relayIpc.southIo++ <--> ipcProcess2.northIo++;
+        relayIpc.southIo++ <--> ipcProcess3.northIo++;
+        ipcProcess3.southIo++ <--> bottomIpc.northIo++;
 }

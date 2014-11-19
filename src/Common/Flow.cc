@@ -227,6 +227,14 @@ std::string Flow::infoQoS() const {
     return os.str();
 }
 
+bool Flow::compare(const Flow& other) const {
+    return (srcApni == other.srcApni && dstApni == other.dstApni
+            && srcPortId == other.srcPortId && dstPortId == other.dstPortId
+            && srcAddr == other.srcAddr && dstAddr == other.dstAddr
+            && conId == other.conId
+            );
+}
+
 void Flow::swapApni() {
     APNamingInfo tmpapni = srcApni;
     srcApni = dstApni;
