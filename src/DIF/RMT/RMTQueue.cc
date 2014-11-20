@@ -25,7 +25,11 @@ RMTQueue::RMTQueue()
 
 RMTQueue::~RMTQueue()
 {
-
+    while (!queue.empty())
+    {
+        delete queue.front();
+        queue.pop_front();
+    }
 }
 
 void RMTQueue::initialize()
@@ -127,6 +131,7 @@ void RMTQueue::releasePDU(void)
 
 void RMTQueue::dropLast()
 {
+    delete queue.back();
     queue.pop_back();
     redrawGUI();
 }
