@@ -77,12 +77,12 @@ public:
     unsigned int getRcvRtWinEdge();
 
     void setSndRate(unsigned int sendingRate);
-    uint getSndRate();
+    unsigned int getSndRate();
 
     void setRcvRate(unsigned int rcvrRate);
-    uint getRcvRate();
+    unsigned int getRcvRate();
 
-    uint getRcvCredit();
+    unsigned int getRcvCredit();
 
     unsigned long getSendingTimeUnit();
 

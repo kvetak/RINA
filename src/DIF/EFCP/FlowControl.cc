@@ -59,7 +59,7 @@ void FlowControl::setSendingRate(unsigned int sendingRate)
   this->sendingRate = sendingRate;
 }
 
-uint FlowControl::getSendingRate()
+unsigned int FlowControl::getSendingRate()
 {
   return sendingRate;
 }
@@ -69,7 +69,7 @@ void FlowControl::setRcvrRate(unsigned int rcvrRate)
   this->rcvrRate = rcvrRate;
 }
 
-uint FlowControl::getRcvrRate()
+unsigned int FlowControl::getRcvrRate()
 {
   return rcvrRate;
 }

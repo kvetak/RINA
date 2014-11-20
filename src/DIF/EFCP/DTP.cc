@@ -237,7 +237,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
     //TODO B1 add support for out of order SDU delivery
     // neg implication
-    uint seqNum = (*it)->getSeqNum();
+    unsigned int seqNum = (*it)->getSeqNum();
     if((qosCube.isForceOrder() && ! (seqNum < state.getRcvLeftWinEdge()))){
       return;
     }
@@ -374,7 +374,7 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
       DataTransferPDU* dataPdu = new DataTransferPDU();
       setPDUHeader(dataPdu);
-      uint seqNum = state.getNextSeqNumToSend();
+      unsigned int seqNum = state.getNextSeqNumToSend();
       dataPdu->setSeqNum(seqNum - 1);
       state.setNextSeqNumToSend(seqNum);
       UserDataField* userData = new UserDataField();
@@ -409,10 +409,10 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         {
           SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
 
-          for (uint i = 0; i < selNackPdu->getNackListLen(); i++)
+          for (unsigned int i = 0; i < selNackPdu->getNackListLen(); i++)
           {
-            uint startSeqNum = selNackPdu->getNackList(i * 2);
-            uint endSeqNum = selNackPdu->getNackList((i * 2) + 1);
+            unsigned int startSeqNum = selNackPdu->getNackList(i * 2);
+            unsigned int endSeqNum = selNackPdu->getNackList((i * 2) + 1);
             std::vector<RxExpiryTimer*>::iterator it;
             for (it = rxQ.begin(); it != rxQ.end(); ++it)
             {
@@ -430,8 +430,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
           for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
           {
-            uint startSeqNum = selAckPdu->getNackList(i * 2);
-            uint endSeqNum = selAckPdu->getNackList((i * 2) + 1);
+            unsigned int startSeqNum = selAckPdu->getNackList(i * 2);
+            unsigned int endSeqNum = selAckPdu->getNackList((i * 2) + 1);
 
             std::vector<RxExpiryTimer*>::iterator it;
             for (it = rxQ.begin(); it != rxQ.end();)
@@ -1666,7 +1666,7 @@ void DTP::sendEmptyDTPDU()
   //TODO A! Send Transfer PDU With Zero length
   DataTransferPDU* dataPdu = new DataTransferPDU();
   setPDUHeader(dataPdu);
-  uint seqNum = state.getNextSeqNumToSend();
+  unsigned int seqNum = state.getNextSeqNumToSend();
   dataPdu->setSeqNum(seqNum);
   UserDataField* userData = new UserDataField();
   dataPdu->setUserDataField(userData);

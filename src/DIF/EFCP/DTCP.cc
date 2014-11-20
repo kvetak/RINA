@@ -124,7 +124,7 @@ void DTCP::setSndRate(unsigned int sendingRate)
 {
   flowControl->setSendingRate(sendingRate);
 }
-uint DTCP::getSndRate(){
+unsigned int DTCP::getSndRate(){
   flowControl->getSendingRate();
 }
 
@@ -132,11 +132,11 @@ void DTCP::setRcvRate(unsigned int rcvrRate)
 {
   flowControl->setRcvrRate(rcvrRate);
 }
-uint DTCP::getRcvRate(){
+unsigned int DTCP::getRcvRate(){
   flowControl->getRcvrRate();
 }
 
-uint DTCP::getRcvCredit()
+unsigned int DTCP::getRcvCredit()
 {
   return dtcpState->getRcvCredit();
 }
