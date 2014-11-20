@@ -15,7 +15,7 @@
 
 #include "Flow.h"
 
-const int VAL_UNDEF_PORTADDR = -1;
+const int VAL_UNDEFINED = -1;
 const int VAL_MAXHOPCOUNT = 16;
 const int VAL_MAXCREATERETRIES = 3;
 
@@ -23,7 +23,7 @@ Register_Class(Flow);
 
 Flow::Flow() :
     srcApni(APNamingInfo()), dstApni(APNamingInfo()),
-    srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
+    srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
     srcAddr(Address()), dstAddr(Address()),
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
@@ -32,7 +32,7 @@ Flow::Flow() :
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcApni(src), dstApni(dst),
-        srcPortId(VAL_UNDEF_PORTADDR), dstPortId(VAL_UNDEF_PORTADDR),
+        srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
         srcAddr(Address()), dstAddr(Address()),
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
@@ -43,23 +43,26 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
 Flow::~Flow() {
     this->srcApni = APNamingInfo();
     this->dstApni = APNamingInfo();
-    this->srcPortId = VAL_UNDEF_PORTADDR;
-    this->dstPortId = VAL_UNDEF_PORTADDR;
+    this->srcPortId = VAL_UNDEFINED;
+    this->dstPortId = VAL_UNDEFINED;
     this->srcAddr = Address();
     this->dstAddr = Address();
-    this->createFlowRetries = 0;
-    this->maxCreateFlowRetries = 0;
-    this->hopCount = 0;
+    this->createFlowRetries = VAL_UNDEFINED;
+    this->maxCreateFlowRetries = VAL_UNDEFINED;
+    this->hopCount = VAL_UNDEFINED;
     srcNeighbor = Address();
     dstNeighbor = Address();
 }
 
-//Free function
 bool Flow::operator ==(const Flow& other) const {
-    return (srcApni == other.srcApni && dstApni == other.dstApni &&
-            srcPortId == other.srcPortId && dstPortId == other.dstPortId &&
-            srcAddr == other.srcAddr && dstAddr == other.dstAddr &&
-            conId == other.conId);
+    return (srcApni == other.srcApni && dstApni == other.dstApni
+            && srcPortId == other.srcPortId && dstPortId == other.dstPortId
+            && srcAddr == other.srcAddr && dstAddr == other.dstAddr
+            && conId == other.conId
+            && createFlowRetries == other.createFlowRetries && maxCreateFlowRetries == other.maxCreateFlowRetries
+            && hopCount == other.hopCount
+            && srcNeighbor == other.srcNeighbor && dstNeighbor == other.dstNeighbor
+            );
 }
 
 const ConnectionId& Flow::getConId() const {
@@ -159,7 +162,8 @@ Flow* Flow::dup() const {
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
     flow->setQosParameters(this->getQosParameters());
-
+    flow->setSrcNeighbor(this->getSrcNeighbor());
+    flow->setDstNeighbor(this->getDstNeighbor());
     return flow;
 }
 
@@ -221,6 +225,14 @@ std::string Flow::infoQoS() const {
     os << "Chosen RA's QoS cube>" << conId.getQoSId();
     //os << qosParameters.info();
     return os.str();
+}
+
+bool Flow::compare(const Flow& other) const {
+    return (srcApni == other.srcApni && dstApni == other.dstApni
+            && srcPortId == other.srcPortId && dstPortId == other.dstPortId
+            && srcAddr == other.srcAddr && dstAddr == other.dstAddr
+            && conId == other.conId
+            );
 }
 
 void Flow::swapApni() {

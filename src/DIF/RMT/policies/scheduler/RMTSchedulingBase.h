@@ -13,32 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RABase.h>
+#ifndef RMTSCHEDULINGBASE_H_
+#define RMTSCHEDULINGBASE_H_
 
-RABase::RABase() {
-    // TODO Auto-generated constructor stub
+#include <omnetpp.h>
 
-}
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
 
-RABase::~RABase() {
-    // TODO Auto-generated destructor stub
+class RMTSchedulingBase : public cSimpleModule
+{
+  public:
+    RMTSchedulingBase();
+    virtual ~RMTSchedulingBase();
+    virtual void run(RMTQueueManager* queues);
 
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
 
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
-}
-
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
-    return os;
-}
-
-const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
-            return &(*it);
-    }
-    return NULL;
-}
+#endif /* RMTSCHEDULINGBASE_H_ */

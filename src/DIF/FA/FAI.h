@@ -15,11 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file FAI.h
- * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
- * @date Apr 30, 2014
- * @brief
- * @detail
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2014-11-19
+ * @brief FlowAllocatorInstance class
  */
 #ifndef FAI_H_
 #define FAI_H_

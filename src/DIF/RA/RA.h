@@ -33,8 +33,6 @@
 #include "RABase.h"
 #include "RAListeners.h"
 
-#include "RMTPolicies/LongestQFirst.h"
-
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;

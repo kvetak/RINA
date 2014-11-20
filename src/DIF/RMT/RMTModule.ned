@@ -13,14 +13,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+import rina.DIF.RMT.policies.scheduler.IntRMTSchedulingPolicy;
+import rina.DIF.RMT.policies.monitor.IntRMTQMonitorPolicy;
+import rina.DIF.RMT.policies.maxqueue.IntRMTMaxQPolicy;
+
 package rina.DIF.RMT;
 
 module RMTModule
 {
-    @display("i=block/classifier;bgb=590,145");
+    parameters:
+        @display("i=block/classifier;bgb=590,145");
+        
+        string schedPolicyName = default("LongestQFirst");
+        string qMonitorPolicyName = default("SimpleMonitor");
+        string maxQPolicyName = default("TailDrop");        
+        
+        double queueServiceTime @unit(ms) = default(0.0ms);
+        
+        int queueSize = default(20);
+        int queueThresh = default(10);
+        
+        string queueColorBusy = default("#80FF80");
+        string queueColorWarn = default("#FF8000");
+        string queueColorFull = default("#800000");               
+
     gates:
-        inout southIo[];
-        inout efcpIo[];
         inout ribdIo;
 
     submodules:
@@ -28,9 +45,17 @@ module RMTModule
             @display("p=55,55");
         }
         rmtQueueManager: RMTQueueManager {
-            @display("p=543,53");
+            @display("p=535,49");
         }
-
+        schedulingPolicy: <schedPolicyName> like IntRMTSchedulingPolicy {
+            @display("p=165,55;is=s");
+        }
+        queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
+        	@display("p=270,55;is=s");
+        }
+        maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
+        	@display("p=375,55;is=s");
+        }          
 
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;

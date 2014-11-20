@@ -38,6 +38,7 @@ class RABase : public cSimpleModule
     virtual void bindFlowToMedium(Flow* flow) = 0;
 
     const QosCubeSet& getQosCubes() const;
+    const QosCube* getQosCubeById(unsigned short qosId) const;
 
   protected:
     //SimpleModule overloads

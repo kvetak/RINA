@@ -17,8 +17,7 @@ package rina.DIF.RMT;
 
 simple RMT
 {    
-    parameters:
-		double queueServiceTime = default(0.0);
+    parameters:		
 		@display("i=block/classifier");    
 		
     gates:

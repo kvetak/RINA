@@ -35,9 +35,7 @@ class RMTBase : public cSimpleModule
     virtual void enableRelay() = 0;
     virtual void disableRelay() = 0;
     virtual bool getRelayStatus() = 0;
-    virtual RMTSchedulingBase* getSchedulingPolicy() = 0;
-    virtual void setSchedulingPolicy(RMTSchedulingBase* policy) = 0;
-    virtual void invokeSchedulingPolicy() = 0;
+    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
 
   protected:
     virtual void initialize() = 0;

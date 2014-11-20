@@ -13,32 +13,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RABase.h>
+#ifndef RMTQMONITORBASE_H_
+#define RMTQMONITORBASE_H_
 
-RABase::RABase() {
-    // TODO Auto-generated constructor stub
+#include <omnetpp.h>
 
-}
+#include "RMTQueue.h"
+#include "RMTMaxQBase.h"
+#include "ModuleAccess.h"
 
-RABase::~RABase() {
-    // TODO Auto-generated destructor stub
+class RMTQMonitorBase : public cSimpleModule
+{
+  public:
+    RMTQMonitorBase();
+    virtual ~RMTQMonitorBase();
 
-}
+    virtual void run(RMTQueue* queue);
 
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
-}
+    // optional event hooks
+    virtual void postQueueCreation(RMTQueue* queue);
+    virtual void preQueueRemoval(RMTQueue* queue);
 
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
-    return os;
-}
+  protected:
+    virtual void initialize();
+    void handleMessage(cMessage *msg);
+    RMTMaxQBase* maxQPolicy;
+};
 
-const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
-            return &(*it);
-    }
-    return NULL;
-}
+#endif /* RMTQMONITORBASE_H_ */

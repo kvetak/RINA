@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
+#include "RMTQMonitorBase.h"
 
 typedef std::vector<RMTQueue*>  RMTQueues;
 typedef RMTQueues::iterator  RMTQueuesIter;
@@ -26,7 +27,7 @@ typedef RMTQueues::iterator  RMTQueuesIter;
 class RMTQueueManager : public cSimpleModule
 {
   protected:
-    virtual void initialize() {};
+    virtual void initialize();
     virtual void handleMessage(cMessage *msg) {};
 
   public:
@@ -48,6 +49,7 @@ class RMTQueueManager : public cSimpleModule
   private:
     RMTQueues queues;
 
+    RMTQMonitorBase* qMonPolicy;
     int qxpos, qypos; // module coordinates
 
 };

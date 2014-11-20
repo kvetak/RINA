@@ -29,6 +29,11 @@ RMTQueueManager::~RMTQueueManager()
 
 }
 
+void RMTQueueManager::initialize()
+{
+    qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
+}
+
 
 RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
 {
@@ -81,6 +86,10 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
         module->getOutputGate()->connectTo(rmtIn);
     }
 
+    module->redrawGUI();
+
+    qMonPolicy->postQueueCreation(module);
+
     module->setType(type);
     queues.push_back(module);
     return module;
@@ -116,6 +125,8 @@ void RMTQueueManager::removeQueue(RMTQueue* queue)
             ++i;
         }
     }
+
+    qMonPolicy->preQueueRemoval(queue);
 
     queue->deleteModule();
 }

@@ -13,17 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef LONGESTQFIRST_H_
-#define LONGESTQFIRST_H_
+package rina.DIF.RMT.policies.monitor;
 
-#include "RMTSchedulingBase.h"
 
-class LongestQFirst : public RMTSchedulingBase
+simple SimpleMonitor like IntRMTQMonitorPolicy 
 {
-  public:
-    LongestQFirst();
-    virtual ~LongestQFirst();
-    virtual void run(RMTQueueManager* queues);
-};
-
-#endif /* LONGESTQFIRST_H_ */
+    parameters:
+        string policyName = "simple monitor";
+        @display("i=block/socket");
+}

@@ -37,6 +37,7 @@
 #include "RMTBase.h"
 #include "RMTListeners.h"
 #include "RMTSchedulingBase.h"
+#include "RMTQMonitorBase.h"
 #include "RMTQueueManager.h"
 #include "RMTQueue.h"
 
@@ -57,6 +58,7 @@ class RMT : public RMTBase
     EfcpiMapping efcpiIn;
     EfcpiToQueue efcpiToQueue;
 
+    RMTQMonitorBase* qMonPolicy;
     RMTSchedulingBase* schedPolicy;
     unsigned int waitingMsgs;
 
@@ -91,9 +93,7 @@ class RMT : public RMTBase
     void disableRelay() { relayOn = false; };
     bool getRelayStatus() { return relayOn; };
 
-    RMTSchedulingBase* getSchedulingPolicy();
-    void setSchedulingPolicy(RMTSchedulingBase* policy);
-    void invokeSchedulingPolicy();
+    void invokeSchedulingPolicy(cObject* obj);
 
   protected:
     virtual void initialize();

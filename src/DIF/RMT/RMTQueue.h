@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 #include <queue>
 
+#include "PDU_m.h"
 #include "RINASignals.h"
 
 class RMTQueue : public cSimpleModule
@@ -29,7 +30,6 @@ class RMTQueue : public cSimpleModule
 
   public:
     RMTQueue();
-    RMTQueue(int MaxQLength, int threshQLength);
     virtual ~RMTQueue();
 
     enum queueType { INPUT = 'I', OUTPUT = 'O'};
@@ -43,9 +43,18 @@ class RMTQueue : public cSimpleModule
     int getThreshLength();
     void setThreshLength(int value);
 
+    double getAverageLength() const;
+    void setAverageLength(double avr);
+
     int getLength() const;
     short getQosId();
-    std::string getDifName();
+
+    double getWeight() const;
+    simtime_t getQTime() const;
+
+    int getAqmCounter() const;
+    void setAqmCounter(int val);
+
 
     cGate* getOutputGate();
     cGate* getInputGate();
@@ -54,15 +63,21 @@ class RMTQueue : public cSimpleModule
     void setRmtAccessGate(cGate* gate);
 
     void releasePDU();
+    void dropLast();
+    void markCongestionOnLast();
+
+    void redrawGUI();
 
     std::string info() const;
 
   private:
-    std::queue<cMessage*> queue;
-    const char* difName;
-    short qosId;
+    std::deque<cMessage*> queue;
+
     int maxQLength;
     int thresholdQLength;
+
+    simtime_t qTime;
+
     queueType type;
 
     cGate* rmtAccessGate;

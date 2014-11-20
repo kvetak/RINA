@@ -24,7 +24,7 @@ class RMTListeners : public cListener
   public:
     RMTListeners(RMTBase* rmt);
     virtual ~RMTListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b)
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj)
     {
         EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
     }
@@ -36,7 +36,7 @@ class LisRMTPDURcvd : public RMTListeners
 {
   public:
     LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, bool b);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 
 #endif /* RMTLISTENERS_H_ */

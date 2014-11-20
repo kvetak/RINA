@@ -13,32 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RABase.h>
+#include <RMTQMonitorBase.h>
 
-RABase::RABase() {
-    // TODO Auto-generated constructor stub
+Define_Module(RMTQMonitorBase);
 
+RMTQMonitorBase::RMTQMonitorBase()
+{
 }
 
-RABase::~RABase() {
-    // TODO Auto-generated destructor stub
-
+RMTQMonitorBase::~RMTQMonitorBase()
+{
 }
 
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
+void RMTQMonitorBase::initialize()
+{
 }
 
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
-    return os;
+void RMTQMonitorBase::handleMessage(cMessage *msg)
+{
 }
 
-const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
-            return &(*it);
-    }
-    return NULL;
+void RMTQMonitorBase::postQueueCreation(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::preQueueRemoval(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::run(RMTQueue* queue)
+{
 }

@@ -17,19 +17,9 @@
 
 Define_Module(RMTQueue);
 
-const int MAXLENGTH = 50;
-const int THRESHLENGTH = 30;
 
 RMTQueue::RMTQueue()
 {
-    this->maxQLength = MAXLENGTH;
-    this->thresholdQLength = THRESHLENGTH;
-}
-
-RMTQueue::RMTQueue(int MaxQLength, int threshQLength)
-{
-    this->maxQLength = MaxQLength;
-    this->thresholdQLength = threshQLength;
 }
 
 
@@ -43,6 +33,10 @@ void RMTQueue::initialize()
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
     sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
+
+    maxQLength = getParentModule()->par("queueSize");
+    thresholdQLength = getParentModule()->par("queueThresh");
+    qTime = simTime();
 }
 
 std::string RMTQueue::info() const
@@ -61,6 +55,41 @@ std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
     return os << cte.info();
 }
 
+void RMTQueue::redrawGUI()
+{
+    if (!ev.isGUI())
+    {
+        return;
+    }
+
+    int len = getLength();
+    cDisplayString& disp = getDisplayString();
+
+    // change color to reflect queue saturation
+    if (len == 0)
+    {
+        disp.setTagArg("i", 1, "");
+    }
+    else if (len < thresholdQLength)
+    {
+        disp.setTagArg("i", 1, getParentModule()->par("queueColorBusy").stringValue());
+    }
+    else if (len < maxQLength)
+    {
+        disp.setTagArg("i", 1, getParentModule()->par("queueColorWarn").stringValue());
+    }
+    else
+    {
+        disp.setTagArg("i", 1, getParentModule()->par("queueColorFull").stringValue());
+    }
+
+    // print current saturation in numbers
+    std::ostringstream desc;
+    desc << " " << len << "/" << maxQLength;
+    disp.setTagArg("t", 1, "r");
+    disp.setTagArg("t", 0, desc.str().c_str());
+}
+
 void RMTQueue::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
@@ -70,13 +99,14 @@ void RMTQueue::handleMessage(cMessage *msg)
     else
     {
         enqueuePDU(msg);
-        emit(sigRMTPDURcvd, true);
+        emit(sigRMTPDURcvd, this);
     }
 }
 
 void RMTQueue::enqueuePDU(cMessage* pdu)
 {
-    queue.push(pdu);
+    queue.push_back(pdu);
+    redrawGUI();
 }
 
 void RMTQueue::releasePDU(void)
@@ -84,20 +114,38 @@ void RMTQueue::releasePDU(void)
     if (this->getLength() > 0)
     {
         cMessage* pdu = queue.front();
-        queue.pop();
+        queue.pop_front();
         send(pdu, outputGate);
+
+        if (getLength() == 0)
+        {
+            qTime = simTime();
+        }
+    }
+    redrawGUI();
+}
+
+void RMTQueue::dropLast()
+{
+    queue.pop_back();
+    redrawGUI();
+}
+
+void RMTQueue::markCongestionOnLast()
+{
+    cMessage* msg = queue.back();
+
+    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    {
+        PDU_Base* pdu = (PDU_Base*) msg;
+        pdu->setFlags(pdu->getFlags() | 0x01);
+    }
+    else
+    {
+        EV << "The message isn't a PDU, cannot apply marking!" << endl;
     }
 }
 
-std::string RMTQueue::getDifName()
-{
-    return difName;
-}
-
-short RMTQueue::getQosId()
-{
-    return qosId;
-}
 
 int RMTQueue::getLength() const
 {
@@ -108,6 +156,7 @@ int RMTQueue::getMaxLength()
 {
     return maxQLength;
 }
+
 
 void RMTQueue::setMaxLength(int val)
 {
@@ -122,6 +171,11 @@ int RMTQueue::getThreshLength()
 void RMTQueue::setThreshLength(int val)
 {
     this->thresholdQLength = val;
+}
+
+simtime_t RMTQueue::getQTime() const
+{
+    return qTime;
 }
 
 RMTQueue::queueType RMTQueue::getType()

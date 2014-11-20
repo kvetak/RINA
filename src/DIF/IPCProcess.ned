@@ -32,7 +32,7 @@ module IPCProcess
         string ipcAddress;
         string difName;
         string apName = default(ipcAddress + "_" + difName);
-        bool routing = default(false);
+        bool relay = default(false);
         //int    rank;        
     gates:
         inout southIo[];

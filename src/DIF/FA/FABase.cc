@@ -33,6 +33,12 @@ void FABase::initMyAddress() {
     cModule* ipc = this->getParentModule()->getParentModule();
     MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
     EV << "SrcAddress that this FA will use is " << MyAddress << endl;
+
+    std::ostringstream description;
+    description << "address: " << MyAddress.getIpcAddress()
+                << "\ndif: " << MyAddress.getDifName();
+    ipc->getDisplayString().setTagArg("t", 0, description.str().c_str());
+    ipc->getDisplayString().setTagArg("t", 1, "r");
 }
 
 const Address& FABase::getMyAddress() const {

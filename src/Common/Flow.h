@@ -24,19 +24,51 @@
 #include "ConnectionId.h"
 #include "Address.h"
 
-extern const int VAL_UNDEF_PORTADDR;
+extern const int VAL_UNDEFINED;
 extern const int VAL_MAXHOPCOUNT;
 extern const int VAL_MAXCREATERETRIES;
 
+/**
+ * @brief Class representing flow object with attributes from specs
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2014-10-28
+ */
 class Flow : public cObject
 {
   public:
+    /**
+     * @brief Constructor for the flow with undefined values
+     */
     Flow();
+
+    /**
+     * @brief Default constructor for flow between two applications
+     * @param src Source application naming info
+     * @param dst Destination application naming info
+     */
     Flow(APNamingInfo src, APNamingInfo dst);
+
+    /**
+     * @brief Destructor assigning default uninitialized values
+     */
     virtual ~Flow();
 
+    /**
+     * @brief Equal operator overloading
+     * @param other Flow for comparison
+     * @return True if all atributes from this and other flow are equal
+     */
     bool operator== (const Flow& other) const;
 
+    /**
+     * @brief Comparator taking into account src/dst addresses, src/dst APNIs, src-dst ConIds/PortIds
+     */
+    bool compare(const Flow& other) const;
+
+    /**
+     * @brief Flow object duplication method that creates copy with
+     * @return
+     */
     virtual Flow* dup() const;
 
     std::string info() const;

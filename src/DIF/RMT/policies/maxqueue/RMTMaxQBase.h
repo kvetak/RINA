@@ -13,23 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTSCHEDULINGBASE_H_
-#define RMTSCHEDULINGBASE_H_
+#ifndef RMTMAXQBASE_H_
+#define RMTMAXQBASE_H_
 
 #include <omnetpp.h>
 
-#include "RMTQueueManager.h"
 #include "RMTQueue.h"
 
-class RMTSchedulingBase
+class RMTMaxQBase : public cSimpleModule
 {
   public:
-    RMTSchedulingBase();
-    virtual ~RMTSchedulingBase();
-    std::string getName() { return name; };
-    virtual void run(RMTQueueManager* queues) = 0;
+    RMTMaxQBase();
+    virtual ~RMTMaxQBase();
+    virtual void run(RMTQueue* queue);
+
   protected:
-    std::string name;
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 };
 
-#endif /* RMTSCHEDULINGBASE_H_ */
+#endif /* RMTMAXQBASE_H_ */

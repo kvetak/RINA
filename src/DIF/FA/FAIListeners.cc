@@ -46,7 +46,7 @@ void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
-    if (*(fai->getFlow()) == *fl)
+    if ( fai->getFlow()->compare(*fl) )
         fai->receiveAllocateRequest();
 }
 
@@ -97,7 +97,7 @@ void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,
        << " and processed by " << fai->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (*(fai->getFlow()) == *flow)
+        if ( fai->getFlow()->compare(*flow) )
             fai->receiveDeleteResponse();
     }
     else
@@ -117,7 +117,7 @@ void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
 //        << "srcAddr = " << (fai->getFlow()->getSrcAddr() == fl->getSrcAddr()) << endl
 //        << "dstAddr = " << (fai->getFlow()->getDstAddr() == fl->getDstAddr()) << endl;
 //    EV << "Vysledek> " << (fai->getFlow() == fl) << endl;
-    if (*(fai->getFlow()) == *fl)
+    if ( fai->getFlow()->compare(*fl) )
         fai->receiveDeleteRequest();
 }
 

@@ -13,24 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <LongestQFirst.h>
+package rina.DIF.RMT.policies.maxqueue;
 
-LongestQFirst::LongestQFirst()
+moduleinterface IntRMTMaxQPolicy
 {
-    name = "LongestQFirst";
-}
-
-LongestQFirst::~LongestQFirst()
-{
-
-}
-
-
-void LongestQFirst::run(RMTQueueManager* queues)
-{
-    RMTQueue* outQ = queues->getLongest(RMTQueue::OUTPUT);
-    RMTQueue* inQ = queues->getLongest(RMTQueue::INPUT);
-
-    if (outQ != NULL) outQ->releasePDU();
-    if (inQ != NULL) inQ->releasePDU();
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }

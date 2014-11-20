@@ -13,32 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RABase.h>
+#include <RMTMaxQBase.h>
 
-RABase::RABase() {
-    // TODO Auto-generated constructor stub
+Define_Module(RMTMaxQBase);
+
+RMTMaxQBase::RMTMaxQBase()
+{
+}
+
+RMTMaxQBase::~RMTMaxQBase()
+{
+}
+
+void RMTMaxQBase::initialize()
+{
 
 }
 
-RABase::~RABase() {
-    // TODO Auto-generated destructor stub
+void RMTMaxQBase::handleMessage(cMessage *msg)
+{
 
 }
 
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
-}
-
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
-    return os;
-}
-
-const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
-            return &(*it);
-    }
-    return NULL;
+void RMTMaxQBase::run(RMTQueue* queue)
+{
+    EV << queue->getFullName()
+       << " monitor: length " << queue->getLength()
+       << "; maxlength " << queue->getMaxLength()
+       << "; threshold " << queue->getThreshLength() << endl;
 }

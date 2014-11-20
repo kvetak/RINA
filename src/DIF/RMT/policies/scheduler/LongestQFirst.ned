@@ -13,32 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RABase.h>
+package rina.DIF.RMT.policies.scheduler;
 
-RABase::RABase() {
-    // TODO Auto-generated constructor stub
 
-}
-
-RABase::~RABase() {
-    // TODO Auto-generated destructor stub
-
-}
-
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
-}
-
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
-    return os;
-}
-
-const QosCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
-            return &(*it);
-    }
-    return NULL;
+simple LongestQFirst like IntRMTSchedulingPolicy
+{
+    parameters:
+        string policyName = "longest queue first";
+        @display("i=block/socket");
 }

@@ -13,15 +13,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RMTSchedulingBase.h>
+#include "LongestQFirst.h"
 
-RMTSchedulingBase::RMTSchedulingBase()
+Define_Module(LongestQFirst);
+
+void LongestQFirst::run(RMTQueueManager* queues)
 {
-    name = "base";
+    RMTQueue* outQ = queues->getLongest(RMTQueue::OUTPUT);
+    RMTQueue* inQ = queues->getLongest(RMTQueue::INPUT);
+
+    if (outQ != NULL) outQ->releasePDU();
+    if (inQ != NULL) inQ->releasePDU();
 }
-
-RMTSchedulingBase::~RMTSchedulingBase()
-{
-}
-
-
