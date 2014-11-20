@@ -62,6 +62,11 @@ void DTP::setQosCube(const QosCube& qosCube)
   }
 }
 
+void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
+{
+  this->pduDroppingEnabled = pduDroppingEnabled;
+}
+
 void DTP::initialize(int step)
 {
 
@@ -228,11 +233,20 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
 
   for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
-  {
-    /* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
+  {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
+
+    //TODO B1 add support for out of order SDU delivery
+    // neg implication
+    uint seqNum = (*it)->getSeqNum();
+    if((qosCube.isForceOrder() && ! (seqNum < state.getRcvLeftWinEdge()))){
+      return;
+    }
+
+
     unsigned int delimitFlags = (*it)->getUserDataField()->getSduDelimitFlags();
     if((delimitFlags & SDU_NO_LENGTH) == SDU_NO_LENGTH){
 //      if(delimitFlags & SDU_)
+      EV << getFullPath() << ": unhandled condition in delimiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
     }else{
       if((delimitFlags & SDU_L_COMP_SDU) == SDU_L_COMP_SDU){
         /* PDU contain ZERO or more complete SDUs */
@@ -241,6 +255,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
         UserDataField* userData = (*it)->getUserDataField();
 
         SDU* sdu;
+        if(userData != NULL){
         while ((sdu = userData->getData()) != NULL)
         {
           //TODO Delimiting/de-fragmentation
@@ -248,6 +263,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
           take(sdu);
 
           send(sdu, northO);
+        }
         }
 //        delete userData;
 
@@ -335,12 +351,18 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 //      TODO: unsigned int lastCtrlSeqNumRcv;
 
 //      unsigned int sndLtWinEdge;
+      if(state.getNextSeqNumToSend() < ctrlAckPDU->getSndLtWinEdge()){
       state.setNextSeqNumToSend(ctrlAckPDU->getSndLtWinEdge());
+      }
 //      unsigned int sndRtWinEdge;
+
       dtcp->setSndRtWinEdge(ctrlAckPDU->getSndRtWinEdge());
 //      unsigned int myLtWinEdge;
+      if(state.getRcvLeftWinEdge() < ctrlAckPDU->getMyLtWinEdge()){
       state.setRcvLeftWinEdge(ctrlAckPDU->getMyLtWinEdge());
+      }
 //      unsigned int myRtWinEdge;
+      //TODO verify this
       dtcp->setRcvRtWinEdge(ctrlAckPDU->getMyRtWinEdge());
 //      unsigned int myRcvRate;
       //TODO handle RcvRate
@@ -355,6 +377,10 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
       uint seqNum = state.getNextSeqNumToSend();
       dataPdu->setSeqNum(seqNum - 1);
       state.setNextSeqNumToSend(seqNum);
+      UserDataField* userData = new UserDataField();
+      dataPdu->setUserDataField(userData);
+
+      sendToRMT(dataPdu);
 
       //dataPdu->setSeqNum(state.getLastSeqNumSent());
 
@@ -462,6 +488,7 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         else if (pdu->getType() & PDU_ACK_BIT)
         {
           AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
+          EV << getFullPath() <<": PDU number: " << ackPdu->getAckNackSeqNum() <<" Acked"<<endl;
           /* Policy SenderAck with default: */
           std::vector<RxExpiryTimer*>::iterator it;
           for (it = rxQ.begin(); it != rxQ.end();)
@@ -469,16 +496,23 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
             //FIXME B1 "including any gaps less than allowable Gap and"
             if (((*it)->getPdu())->getSeqNum() <= ackPdu->getAckNackSeqNum())
             {
+              EV << getFullPath() <<": PDU number: " << (*it)->getPdu()->getSeqNum() <<" deleted from RX_Q" << endl;
               delete (*it)->getPdu();
               cancelEvent((*it));
               delete (*it);
               it = rxQ.erase(it);
+
             }else{
               ++it;
             }
           }
           //Update LeftWindowEdge accordingly
-          state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
+          //TODO A1 set it to lowest seqNum on RX queue
+          if(!rxQ.empty()){
+            state.setSenderLeftWinEdge(rxQ.front()->getPdu()->getSeqNum());
+          }else{
+            state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
+          }
           //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
 
         }
@@ -514,19 +548,23 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
 void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
-  if(((deletePdu++ + 1) % 3) == 0){
-
+  if (pduDroppingEnabled)
+  {
+    if (((deletePdu++ + 1) % 5) == 0)
+    {
       std::ostringstream out;
-      out  << "Dropping PDU number " << pdu->getSeqNum();
+      out << "Dropping PDU number " << pdu->getSeqNum();
 
       bubble(out.str().c_str());
+      EV << this->getFullPath() << "; " << out.str().c_str() << " in time: " << simTime() << endl;
       delete pdu;
 
       return;
 
-
+    }
   }
 
+  EV << getFullPath() <<": PDU number: " << pdu->getSeqNum() <<" received" << endl;
   //Canceling  rcvrInactivityTimer should stay here. In the specs the canceling is only for DataTransferPDUs
   cancelEvent(rcvrInactivityTimer);
   if (state.isFCPresent())
@@ -540,11 +578,13 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     /* Case 1) DRF is set - either first PDU or new run */
     //TODO A! Invoke delimiting delimitFromRMT()
 //    delimitFromRMT(pdu, pdu->getUserDataArraySize());
-    delimitFromRMT(pdu);
+    //TODO A! uncomment below
+//    delimitFromRMT(pdu);
 
     //Flush the PDUReassemblyQueue
     flushReassemblyPDUQ();
 
+    delimitFromRMT(pdu);
 //    state.setMaxSeqNumRcvd(pdu->getSeqNum());
     /* Initialize the other direction */
     state.setSetDrfFlag(true);
@@ -557,6 +597,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       /* Update RxControl */
       svUpdate(pdu->getSeqNum());
     }
+
 
   }
   else
@@ -584,7 +625,16 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
     //TODO A!
     //if a duplicate among the gaps then // search reassemblyQ?
-    if (false)
+    bool dup = false;
+    std::vector<RxExpiryTimer*>::iterator it;
+    for (it = rxQ.begin(); it != rxQ.end(); ++it)
+    {
+     if((*it)->getPdu()->getSeqNum() == pdu->getSeqNum()){
+       dup = true;
+       break;
+     }
+    }
+    if (dup)
     {
       /* Case 3) Duplicate Among gaps */
 
@@ -594,6 +644,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       state.incDropDup();
 
       //TODO A! send an Ack/Flow Control PDU with current window values
+      sendAckFlowPDU();
       return;
     }
     else
@@ -605,7 +656,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       if (state.isDtcpPresent())
       {
         //svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
-        svUpdate(state.getRcvLeftWinEdge()); /* Update left edge, etc */
+        svUpdate(state.getRcvLeftWinEdge() - 1); /* Update left edge, etc */
       }
       else
       {
@@ -704,7 +755,7 @@ void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
   /* Canceling event is not needed for usual timer expiration but for direct calling this method */
   cancelEvent(timer);
   runRxTimerExpiryPolicy(timer);
-  schedule(timer);
+
 }
 
 void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
@@ -864,7 +915,18 @@ unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len)
   return counter;
 }
 
-
+bool DTP::setDRFInPDU(bool override)
+{
+  if (state.isSetDrfFlag() || override)
+  {
+    state.setSetDrfFlag(false);
+          return true;
+  }
+  else
+  {
+          return false;
+  }
+}
 
 ///**
 // * This method takes all SDUs from sduQ and generates PDUs by filling appropriate header fields
@@ -1026,6 +1088,10 @@ void DTP::generatePDUsnew()
   {
     DataTransferPDU* genPDU = baseDataPDU->dup();
     genPDU->setSeqNum(state.getNextSeqNumToSend());
+
+
+
+    genPDU->setFlags(genPDU->getFlags() | setDRFInPDU(state.isSetDrfFlag()));
 
     UserDataField* userData = new UserDataField();
 
@@ -1503,6 +1569,7 @@ void DTP::runRcvrAckPolicy(unsigned int seqNum)
     setPDUHeader(ackPDU);
     ackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
     ackPDU->setAckNackSeqNum(seqNum);
+    EV << getFullPath() <<": Sending Ack for PDU number: " << seqNum;
 
 //    send(ackPDU, southO);
     sendToRMT(ackPDU);
@@ -1543,6 +1610,21 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
   if (timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1)
   {
     //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
+    std::vector<RxExpiryTimer*>::iterator it;
+    for (it = rxQ.begin(); it != rxQ.end();)
+    {
+      if (timer == *it)
+      {
+        delete (*it)->getPdu();
+        cancelEvent((*it));
+        delete (*it);
+        rxQ.erase(it);
+        return;
+      }
+    }
+
+
+
   }
   else
   {
@@ -1553,11 +1635,12 @@ void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
     out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
 
     bubble(out.str().c_str());
-
+    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
     sendToRMT(dup);
 
     timer->setExpiryCount(timer->getExpiryCount() + 1);
   }
+  schedule(timer);
 
 }
 
@@ -1572,6 +1655,9 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSndRtWinEdge(dtcp->getRcvRtWinEdge());
   ctrlAckPdu->setMyLtWinEdge(state.getSenderLeftWinEdge());
   ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
+  //TODO A1 rate?
+
+  sendToRMT(ctrlAckPdu);
 }
 
 void DTP::sendEmptyDTPDU()
@@ -1585,6 +1671,10 @@ void DTP::sendEmptyDTPDU()
   UserDataField* userData = new UserDataField();
   dataPdu->setUserDataField(userData);
 
+  RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
+  rxExpTimer->setPdu(dataPdu->dup());
+  rxQ.push_back(rxExpTimer);
+  schedule(rxExpTimer);
 
   sendToRMT(dataPdu);
 }
@@ -1668,6 +1758,7 @@ void DTP::sendToRMT(PDU* pdu)
 //  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
   if(pdu->getType() == DATA_TRANSFER_PDU){
     state.setLastSeqNumSent(pdu->getSeqNum());
+    EV << getFullPath() <<": PDU number: " << pdu->getSeqNum() <<" sent" << endl;
   }else{
     //This should be controlPDU so do not have to increment LastSeqNumSent
 
@@ -1677,7 +1768,7 @@ void DTP::sendToRMT(PDU* pdu)
 
 }
 
-unsigned int DTP::getRxTime()
+double DTP::getRxTime()
 {
   //TODO A! 2MPL + A + epsilon
   //This might be job for a policy, presumably RTT estimator policy?
@@ -1685,7 +1776,7 @@ unsigned int DTP::getRxTime()
    * A == ?
    * epsilon ?
    */
-  return state.getRtt() - 2;
+  return state.getRtt() - 3.5;
 }
 
 unsigned int DTP::getAllowableGap()
@@ -1705,10 +1796,20 @@ void DTP::svUpdate(unsigned int seqNum)
 
 //  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
-
+//  uint ackSeqNum = state.getRcvLeftWinEdge();
   /* XXX Don't know where else to put */
   if(state.getRcvLeftWinEdge()  == seqNum){
     state.incRcvLeftWindowEdge();
+    std::vector<RxExpiryTimer*>::iterator it;
+    for (it = rxQ.begin(); it != rxQ.end(); ++it)
+    {
+      if((*it)->getPdu()->getSeqNum() == state.getRcvLeftWinEdge()){
+        state.incRcvLeftWindowEdge();
+      }else{
+        break;
+      }
+    }
+//    ackSeqNum = seqNum;
   }
 
 
@@ -1727,7 +1828,7 @@ void DTP::svUpdate(unsigned int seqNum)
 
   if (state.isRxPresent())
   {
-    runRcvrAckPolicy(seqNum);
+    runRcvrAckPolicy(state.getRcvLeftWinEdge() - 1);
   }
 
   if (state.isFCPresent() && !state.isRxPresent())

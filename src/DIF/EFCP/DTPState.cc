@@ -28,6 +28,8 @@ void DTPState::initDefaults(){
   closedWinQueLen = 0;
   dropDup = 0;
 
+  setDRFFlag = true;
+
   //TODO A1 load it from flow->qosparameters
   dtcpPresent = true;
   winBased = false;
@@ -43,7 +45,7 @@ void DTPState::initDefaults(){
 
 
   //TODO B! Fix
-  rtt = 3;
+  rtt = 4;
 
 }
 

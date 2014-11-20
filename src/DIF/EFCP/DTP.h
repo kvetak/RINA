@@ -46,6 +46,8 @@ class DTP : public cSimpleModule
   private:
 
     int deletePdu;
+    bool pduDroppingEnabled;
+
     DTPState state; //state of this data-transfer
     DTCP* dtcp;
     Flow* flow;
@@ -158,7 +160,7 @@ class DTP : public cSimpleModule
     unsigned int getFlowControlRightWinEdge();
 
     /* This method SHOULD return amount of time to wait before retransmission attempt */
-    unsigned int getRxTime();
+    double getRxTime();
 
     unsigned int getAllowableGap();
 
@@ -180,6 +182,7 @@ class DTP : public cSimpleModule
     void sendControlAckPDU();
     void sendEmptyDTPDU();
     void sendAckFlowPDU();
+    bool setDRFInPDU(bool override);
 
   public:
     DTP();
@@ -193,6 +196,7 @@ class DTP : public cSimpleModule
     void setDTCP(DTCP* dtcp);
     const QosCube& getQosCube() const;
     void setQosCube(const QosCube& qosCube);
+    void setPduDroppingEnabled(bool pduDroppingEnabled);
 
   protected:
     virtual void handleMessage(cMessage *msg);

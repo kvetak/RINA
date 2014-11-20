@@ -18,6 +18,7 @@ package rina.DIF.EFCP;
 simple EFCP
 {
     parameters:
+        bool pduDroppingEnabled = default(false)
 
         @display("i=block/fork");
         
