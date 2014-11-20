@@ -36,6 +36,7 @@ void DataTransferPDU::copy(const DataTransferPDU& other){
   if(other.userDataField_var != NULL){
 
     this->userDataField_var = other.userDataField_var->dup();
+    take(userDataField_var);
   }
 }
 
@@ -47,6 +48,7 @@ unsigned int DataTransferPDU::getSize(){
 DataTransferPDU::~DataTransferPDU()
 {
   if(userDataField_var != NULL){
+    drop(userDataField_var);
     delete userDataField_var;
   }
 }
@@ -60,5 +62,6 @@ UserDataFieldPtr& DataTransferPDU::getUserDataField()
 
 void DataTransferPDU::setUserDataField(const UserDataFieldPtr& userDataField)
 {
+    take(userDataField);
     this->userDataField_var = userDataField;
 }

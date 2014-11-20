@@ -129,7 +129,7 @@ EFCPTableEntry* EFCPTable::getEntryByDelimit(Delimiting* delimit){
 void EFCPTable::insertEntry(EFCPTableEntry* entry){
 //  Enter_Method("insertEntry(EFCPTableEntry* entry)");
 
-  this->efcpTable.empty();
+//  this->efcpTable.empty();
   this->efcpTable.push_back(entry);
 
 

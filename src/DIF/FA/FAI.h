@@ -102,7 +102,7 @@ class FAI : public FAIBase  {
 
     void initSignalsAndListeners();
 
-    bool createEFCP();
+    bool createEFCPI();
     void createNorthGates();
     bool createBindings();
     bool deleteBindings();

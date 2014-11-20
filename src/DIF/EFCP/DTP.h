@@ -35,7 +35,7 @@
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
-#define DEFAULT_INIT_SEQUENCE_NUMBER 1
+#define DEFAULT_INIT_SEQUENCE_NUMBER 0
 //#include "FA.h" //or FlowAllocatorFactory
 
 
@@ -197,6 +197,8 @@ class DTP : public cSimpleModule
     const QosCube& getQosCube() const;
     void setQosCube(const QosCube& qosCube);
     void setPduDroppingEnabled(bool pduDroppingEnabled);
+
+    void flushAllQueuesAndPrepareToDie();
 
   protected:
     virtual void handleMessage(cMessage *msg);

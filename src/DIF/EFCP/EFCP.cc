@@ -52,8 +52,10 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
   cModule* efcpModule = this->getParentModule();
 
+  std::ostringstream name;
+  name << MOD_EFCPI << flow->getConId().getSrcCepId();
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-  cModule* efcpiModule = moduleType->create(MOD_EFCPI, efcpModule);
+  cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -69,6 +71,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
     tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
 
     //TODO A!: Add tmpEFCPEntry to efcpTable
+    efcpTable->insertEntry(tmpEfcpEntry);
+    tmpEfcpEntry->setFlow(flow);
   }
 
   QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
@@ -91,10 +95,6 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   }
   //Put created EFCP instance to EFCP Table Entry
   tmpEfcpEntry->addEFCPI(efcpi);
-
- //TODO A! if it already exists in efcpTable?
- //insert triplet (DTP,DTCP,Delimiting) to efcpTable
-  efcpTable->insertEntry(tmpEfcpEntry);
 
 
   /* Connect EFCPi module with delimiting */
@@ -176,5 +176,25 @@ Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
 
     return delimit;
 }
+/**
+ *
+ * @param flow
+ * @return
+ */
+bool EFCP::deleteEFCPI(Flow* flow)
+{
+  EFCPTableEntry* entry;
+  if((entry = efcpTable->getEntryByFlow(flow)) == NULL){
 
+    EV << getFullPath() << ": failed to found EFCPTableEntry by Flow to deallocate EFCPI" << endl;
+    return false;
+  }
+
+  entry->flushDTPs();
+
+
+  return true;
+
+
+}
 

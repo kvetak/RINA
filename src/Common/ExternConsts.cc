@@ -33,7 +33,7 @@ const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCDAP        = "cdap";
 const char* MOD_EFCPTABLE       = "efcpTable";
 const char* MOD_DTCP            = "dtcp";
-const char* MOD_EFCPI           = "efcpi";
+const char* MOD_EFCPI           = "efcpi_";
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";

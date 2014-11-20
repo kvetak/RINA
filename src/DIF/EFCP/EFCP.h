@@ -83,6 +83,8 @@ private:
     Delimiting* createDelimiting(cModule* efcpi);
     DTCP* createDTCP(cModule* efcpi);
 
+
+
 //    DTP dtp; //required part of the EFCP
 //    DTStateVector dtStateV; //data-transfer state vector
 //    DTCP* dtcp; //optional part of the EFCP
@@ -102,6 +104,8 @@ public:
 
 
     EFCPInstance* createEFCPI(Flow* flow, int cepId);
+    bool deleteEFCPI(Flow *flow);
+
 
 };
 

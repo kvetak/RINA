@@ -39,7 +39,7 @@ class DataTransferPDU : public DataTransferPDU_Base
     public:
       DataTransferPDU(const char *name=NULL, int kind=0);
       DataTransferPDU(const DataTransferPDU& other) : DataTransferPDU_Base(other) {copy(other);}
-      DataTransferPDU& operator=(const DataTransferPDU& other) {if (this==&other) return *this; DataTransferPDU_Base::operator=(other); copy(other); return *this;}
+//      DataTransferPDU& operator=(const DataTransferPDU& other) {if (this==&other) return *this; DataTransferPDU_Base::operator=(other); copy(other); return *this;}
       virtual DataTransferPDU *dup() const {return new DataTransferPDU(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from DataTransferPDU_Base
       ~DataTransferPDU();
