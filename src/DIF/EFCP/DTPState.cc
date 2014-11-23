@@ -42,6 +42,7 @@ void DTPState::initDefaults(){
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 0;
+  senderLeftWinEdge = 0;
 
 
   //TODO B! Fix
@@ -133,6 +134,11 @@ void DTPState::incRcvLeftWindowEdge() {
 unsigned int DTPState::getNextSeqNumToSend() {
 
     return nextSeqNumToSend++;
+}
+
+unsigned int DTPState::getNextSeqNumToSendWithoutIncrement() {
+
+    return nextSeqNumToSend;
 }
 
 void DTPState::setNextSeqNumToSend(unsigned int nextSeqNumToSend) {

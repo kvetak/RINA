@@ -184,6 +184,8 @@ class DTP : public cSimpleModule
     void sendAckFlowPDU();
     bool setDRFInPDU(bool override);
 
+    void redrawGUI();
+
   public:
     DTP();
     virtual ~DTP();

@@ -107,7 +107,9 @@ void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
 
 unsigned int DTCP::getSndRtWinEdge()
 {
-  flowControl->getSendRightWindowEdge();
+  if(flowControl != NULL){
+  return flowControl->getSendRightWindowEdge();
+  }
 }
 
 void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)

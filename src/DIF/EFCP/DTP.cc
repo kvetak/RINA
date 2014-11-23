@@ -104,6 +104,52 @@ void DTP::flushAllQueuesAndPrepareToDie()
 
 }
 
+void DTP::redrawGUI()
+{
+  if (!ev.isGUI())
+  {
+      return;
+  }
+
+  cDisplayString& disp = getDisplayString();
+  disp.setTagArg("t", 1, "r");
+  std::ostringstream desc;
+  desc << "nextSeqNum: " << state.getNextSeqNumToSendWithoutIncrement() <<"\n";
+  desc << "sLWE: " << state.getSenderLeftWinEdge() <<"\n";
+  desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
+  desc << "rLWE: " << state.getRcvLeftWinEdge() <<"\n";
+  desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
+  if(rxQ.empty()){
+    desc << "rxQ: empty"<< "\n";
+  }
+  else
+  {
+    desc << "rxQ: ";
+    std::vector<RxExpiryTimer*>::iterator it;
+    for (it = rxQ.begin(); it != rxQ.end(); ++it)
+    {
+      desc << (*it)->getPdu()->getSeqNum() << " | ";
+    }
+    desc << "\n";
+  }
+
+  if(reassemblyPDUQ.empty()){
+      desc << "reassemblyQ: empty"<< "\n";
+    }
+    else
+    {
+      desc << "reassemblyQ: ";
+      std::vector<DataTransferPDU*>::iterator it;
+      for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+      {
+        desc << (*it)->getSeqNum() << " | ";
+      }
+      desc << "\n";
+    }
+  disp.setTagArg("t", 0, desc.str().c_str());
+
+}
+
 void DTP::initialize(int step)
 {
 
@@ -113,6 +159,7 @@ void DTP::initialize(int step)
   senderInactivityTimer = new SenderInactivityTimer();
   rcvrInactivityTimer = new RcvrInactivityTimer();
 
+//  redrawGUI();
 
 }
 
@@ -186,6 +233,7 @@ void DTP::handleMessage(cMessage *msg)
     }
   }
 
+  redrawGUI();
 }
 
 /**
@@ -266,7 +314,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
             break;
           }else if(it == --reassemblyPDUQ.end()){
             //'it' is last element
-            reassemblyPDUQ.insert(it, pdu);
+            reassemblyPDUQ.insert(it + 1 , pdu);
             break;
           }
         }
@@ -627,8 +675,9 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
   }
   // if PDU.DRF == true
-  if (pdu->getFlags() & ECN_FLAG)
+  if (pdu->getFlags() & DRF_FLAG)
   {
+    bubble("Received PDU with DRF set");
     /* Case 1) DRF is set - either first PDU or new run */
     //TODO A! Invoke delimiting delimitFromRMT()
 
@@ -638,8 +687,9 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     flushReassemblyPDUQ();
 
 //    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+    //XXX Setting DRF would create infinity loop of setting DRF for every PDU, right?
     /* Initialize the other direction */
-    state.setSetDrfFlag(true);
+//    state.setSetDrfFlag(true);
 
     /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
     state.setRcvLeftWinEdge(pdu->getSeqNum());
@@ -649,7 +699,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     if (state.isDtcpPresent())
     {
       /* Update RxControl */
-      //TODO A3 Mark this change in specifications.
+      //TODO A3 Mark this change in specifications. Edit: This is probably wrong
       //Clearing RxQ
       clearRxQ();
       svUpdate(pdu->getSeqNum());
@@ -666,6 +716,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   /* Not the start of a run */
   if (pdu->getSeqNum() < state.getRcvLeftWinEdge())
   {
+    bubble("Dropping duplicate PDU");
     EV << getFullPath() <<":Duplicated PDU number: " << pdu->getSeqNum() <<" received - DROPPING!" << endl;
     /* Case 2) A Real Duplicate */
     //Discard PDU and increment counter of dropped duplicates PDU
@@ -1153,7 +1204,7 @@ void DTP::generatePDUsnew()
 
     /* Set DRF flag in PDU */
     if(setDRFInPDU(false)){
-      genPDU->setFlags(genPDU->getFlags() | ECN_FLAG);
+      genPDU->setFlags(genPDU->getFlags() | DRF_FLAG);
     }
 
 
@@ -1726,7 +1777,7 @@ void DTP::sendEmptyDTPDU()
   dataPdu->setSeqNum(seqNum);
 
   if(setDRFInPDU(false)){
-    dataPdu->setFlags(dataPdu->getFlags() | ECN_FLAG);
+    dataPdu->setFlags(dataPdu->getFlags() | DRF_FLAG);
   }
   UserDataField* userData = new UserDataField();
   dataPdu->setUserDataField(userData);
@@ -1741,7 +1792,7 @@ void DTP::sendEmptyDTPDU()
 
 void DTP::runRcvrInactivityTimerPolicy()
 {
-
+  bubble("RcvrInactivityTimerPolicy()");
   /* Default */
   state.setSetDrfFlag(true);
   if (runInitialSequenceNumberPolicy())
@@ -1768,6 +1819,7 @@ void DTP::runRcvrInactivityTimerPolicy()
 
 void DTP::runSenderInactivityTimerPolicy()
 {
+  bubble("SenderInactivityTimerPolicy()");
 //TODO A! Move SenderInactivityTimer, DRF to DT-SV
   /* Default */
   state.setSetDrfFlag(true);

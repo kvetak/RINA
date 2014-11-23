@@ -116,6 +116,7 @@ public:
     void incMaxSeqNumRcvd();
     void incRcvLeftWindowEdge();
     unsigned int getNextSeqNumToSend();
+    unsigned int getNextSeqNumToSendWithoutIncrement();
     void setNextSeqNumToSend(unsigned int nextSeqNumToSend);
     void incNextSeqNumToSend();
     bool isPartDeliv() const;
