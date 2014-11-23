@@ -83,7 +83,7 @@ private:
 
     /* Moved from DTCP-SV */
     bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
-    unsigned int rtt;
+    double rtt;
 
     //moved to DTP.h
 //    queue<unsigned char *> sduQ; //SDUs generated from delimiting
@@ -139,8 +139,8 @@ public:
     void setWinBased(bool winBased);
     bool isSetDrfFlag() const;
     void setSetDrfFlag(bool setDrfFlag);
-    unsigned int getRtt() const;
-    void setRtt(unsigned int rtt);
+    double getRtt() const;
+    void setRtt(double rtt);
 
     unsigned int getLastCtrlSeqNumRcv();
     unsigned int getLastSeqNumSent() const;

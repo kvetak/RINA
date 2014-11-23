@@ -185,6 +185,7 @@ class DTP : public cSimpleModule
     bool setDRFInPDU(bool override);
 
     void redrawGUI();
+    void addPDUToReassemblyQ(DataTransferPDU* pdu);
 
   public:
     DTP();

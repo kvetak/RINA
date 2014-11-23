@@ -41,12 +41,12 @@ void DTPState::initDefaults(){
   //TODO A1
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
-  nextSeqNumToSend = 0;
+  nextSeqNumToSend = 1;
   senderLeftWinEdge = 0;
 
 
   //TODO B! Fix
-  rtt = 4;
+  rtt = 1;
 
 }
 
@@ -227,15 +227,16 @@ bool DTPState::isSetDrfFlag() const
   return setDRFFlag;
 }
 
-unsigned int DTPState::getRtt() const
+double DTPState::getRtt() const
 {
   //TODO B1 RTT estimator policy
   return rtt;
 }
 
-void DTPState::setRtt(unsigned int rtt)
+void DTPState::setRtt(double rtt)
 {
-  this->rtt = rtt;
+  this->rtt = (this->rtt + rtt)/2;
+//  this->rtt = rtt;
 }
 
 void DTPState::setSetDrfFlag(bool setDrfFlag)

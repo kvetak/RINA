@@ -55,6 +55,7 @@ message RxExpiryTimer extends DTPTimers{
     type = DTP_RX_EXPIRY_TIMER;
     DTPDU_p pdu = NULL;
     unsigned int expiryCount = 0;
+    double sent = 0;
 }
 
 //message WindowTimer extends DTPTimers{
