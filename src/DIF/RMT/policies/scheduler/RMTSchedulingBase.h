@@ -29,8 +29,8 @@ class RMTSchedulingBase : public cSimpleModule
     virtual void run(RMTQueueManager* queues);
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    void initialize();
+    void handleMessage(cMessage *msg);
 };
 
 #endif /* RMTSCHEDULINGBASE_H_ */

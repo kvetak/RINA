@@ -19,5 +19,4 @@ moduleinterface IntRMTQMonitorPolicy
 {
     parameters:
         @display("i=block/socket");
-        string policyName;
 }

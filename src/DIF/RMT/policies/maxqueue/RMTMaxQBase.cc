@@ -17,6 +17,7 @@
 
 Define_Module(RMTMaxQBase);
 
+
 RMTMaxQBase::RMTMaxQBase()
 {
 }
@@ -27,7 +28,18 @@ RMTMaxQBase::~RMTMaxQBase()
 
 void RMTMaxQBase::initialize()
 {
+    qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
 
+    // display active policy name
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("t", 1, "t");
+    disp.setTagArg("t", 0, getClassName());
+
+    onPolicyInit();
+}
+
+void RMTMaxQBase::onPolicyInit()
+{
 }
 
 void RMTMaxQBase::handleMessage(cMessage *msg)
@@ -35,10 +47,7 @@ void RMTMaxQBase::handleMessage(cMessage *msg)
 
 }
 
-void RMTMaxQBase::run(RMTQueue* queue)
+bool RMTMaxQBase::run(RMTQueue* queue)
 {
-    EV << queue->getFullName()
-       << " monitor: length " << queue->getLength()
-       << "; maxlength " << queue->getMaxLength()
-       << "; threshold " << queue->getThreshLength() << endl;
+    return false;
 }

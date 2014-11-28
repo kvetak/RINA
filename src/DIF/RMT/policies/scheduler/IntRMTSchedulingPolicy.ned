@@ -19,5 +19,4 @@ moduleinterface IntRMTSchedulingPolicy
 {
     parameters:
         @display("i=block/socket");
-        string policyName;
 }

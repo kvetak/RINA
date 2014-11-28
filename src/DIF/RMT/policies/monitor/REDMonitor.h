@@ -13,23 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <ECNMarker.h>
+#ifndef REDMONITOR_H_
+#define REDMONITOR_H_
 
-Define_Module(ECNMarker);
+#include "RMTQMonitorBase.h"
 
-bool ECNMarker::run(RMTQueue* queue)
+typedef std::map<RMTQueue*, double> REDParamMap;
+
+class REDMonitor : public RMTQMonitorBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        queue->dropLast();
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+  friend class REDDropper;
 
+  public:
+    virtual void run(RMTQueue* queue);
+    void postQueueCreation(RMTQueue* queue);
+    void preQueueRemoval(RMTQueue* queue);
+
+  private:
+    REDParamMap qAvgLengths;
+    REDParamMap qWeights;
+    REDParamMap qCounters;
+};
+
+#endif /* REDMONITOR_H_ */

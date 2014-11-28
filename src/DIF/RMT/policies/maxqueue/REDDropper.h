@@ -13,12 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT.policies.monitor;
+#ifndef __RINA_REDDROPPER_H_
+#define __RINA_REDDROPPER_H_
 
+#include <omnetpp.h>
 
-simple RED like IntRMTQMonitorPolicy 
+#include "RMTMaxQBase.h"
+#include "REDMonitor.h"
+
+class REDDropper : public RMTMaxQBase
 {
-    parameters:
-        string policyName = "Random Early Detection";
-        @display("i=block/socket");
-}
+  public:
+    virtual bool run(RMTQueue* queue);
+  private:
+    void onPolicyInit();
+    bool dropOrMark(RMTQueue* queue);
+    REDMonitor* monitor;
+};
+
+#endif

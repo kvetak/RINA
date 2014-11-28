@@ -19,17 +19,23 @@
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
+#include "RMTQMonitorBase.h"
 
 class RMTMaxQBase : public cSimpleModule
 {
   public:
     RMTMaxQBase();
     virtual ~RMTMaxQBase();
-    virtual void run(RMTQueue* queue);
+    virtual bool run(RMTQueue* queue);
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    void initialize();
+    void handleMessage(cMessage *msg);
+
+    RMTQMonitorBase* qMonPolicy;
+
+    // optional event hooks
+    virtual void onPolicyInit();
 };
 
 #endif /* RMTMAXQBASE_H_ */

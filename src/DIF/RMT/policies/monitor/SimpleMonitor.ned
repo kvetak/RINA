@@ -19,6 +19,5 @@ package rina.DIF.RMT.policies.monitor;
 simple SimpleMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
-        string policyName = "simple monitor";
         @display("i=block/socket");
 }

@@ -19,6 +19,5 @@ package rina.DIF.RMT.policies.scheduler;
 simple LongestQFirst like IntRMTSchedulingPolicy
 {
     parameters:
-        string policyName = "longest queue first";
         @display("i=block/socket");
 }

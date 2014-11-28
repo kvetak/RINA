@@ -19,5 +19,4 @@ moduleinterface IntRMTMaxQPolicy
 {
     parameters:
         @display("i=block/socket");
-        string policyName;
 }

@@ -41,17 +41,20 @@ void RMTQueue::initialize()
     maxQLength = getParentModule()->par("queueSize");
     thresholdQLength = getParentModule()->par("queueThresh");
     qTime = simTime();
+
+
 }
 
 std::string RMTQueue::info() const
 {
-    std::ostringstream os;
-
-    os << "name: " << this->getFullName()
-       << "; type: " << this->type
-       << "; saturation: " << getLength() << "/" << this->maxQLength;
-
-    return os.str();
+//    std::ostringstream os;
+//
+//    os << "name: " << this->getFullName()
+//       << "; type: " << ((this->type == INPUT) ? "input" : "output")
+//       << "; saturation: " << getLength() << "/" << this->maxQLength;
+//
+//    return os.str();
+    return this->getFullName();
 }
 
 std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)

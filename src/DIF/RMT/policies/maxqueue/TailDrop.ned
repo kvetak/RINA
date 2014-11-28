@@ -19,6 +19,5 @@ package rina.DIF.RMT.policies.maxqueue;
 simple TailDrop like IntRMTMaxQPolicy 
 {
     parameters:
-        string policyName = "taildrop";
         @display("i=block/socket");
 }

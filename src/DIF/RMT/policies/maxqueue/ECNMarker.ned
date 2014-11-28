@@ -19,6 +19,5 @@ package rina.DIF.RMT.policies.maxqueue;
 simple ECNMarker like IntRMTMaxQPolicy 
 {
     parameters:
-        string policyName = "Explicit Congestion Notification marker";
         @display("i=block/socket");
 }

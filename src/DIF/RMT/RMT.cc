@@ -55,6 +55,7 @@ void RMT::initialize()
     getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
 
     schedPolicy = ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get();
+    maxQPolicy = ModuleAccess<RMTMaxQBase>("maxQueuePolicy").get();
     qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
 }
 
@@ -77,8 +78,26 @@ void RMT::invokeSchedulingPolicy(cObject* obj)
 {
     Enter_Method("invokeSchedulingPolicy()");
 
+    RMTQueue* queue = dynamic_cast<RMTQueue*>(obj);
+
+    if (queue == NULL)
+    {
+        EV << "!!!! invalid schedulingPolicy call! Ignoring it." << endl;
+        return;
+    }
+
     // invoke monitor policy
-    qMonPolicy->run(dynamic_cast<RMTQueue*>(obj));
+    qMonPolicy->run(queue);
+
+    // invoke maxQueue policy if applicable
+    if (queue->getLength() >= queue->getThreshLength())
+    {
+        // abort if the PDU was dropped
+        if (maxQPolicy->run(queue))
+        {
+            return;
+        }
+    }
 
     if (!waitingMsgs)
     {

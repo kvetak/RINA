@@ -27,6 +27,16 @@
 
 #include <omnetpp.h>
 
+#include "RMTBase.h"
+#include "RMTListeners.h"
+
+#include "RMTQueueManager.h"
+#include "RMTQueue.h"
+
+#include "RMTSchedulingBase.h"
+#include "RMTQMonitorBase.h"
+#include "RMTMaxQBase.h"
+
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 #include "Address.h"
@@ -34,12 +44,6 @@
 #include "PDU_m.h"
 #include "CDAPMessage_m.h"
 #include "PDUForwardingTable.h"
-#include "RMTBase.h"
-#include "RMTListeners.h"
-#include "RMTSchedulingBase.h"
-#include "RMTQMonitorBase.h"
-#include "RMTQueueManager.h"
-#include "RMTQueue.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
 typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
@@ -59,6 +63,7 @@ class RMT : public RMTBase
     EfcpiToQueue efcpiToQueue;
 
     RMTQMonitorBase* qMonPolicy;
+    RMTMaxQBase* maxQPolicy;
     RMTSchedulingBase* schedPolicy;
     unsigned int waitingMsgs;
 
