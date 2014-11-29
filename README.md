@@ -9,14 +9,14 @@ RINA Simulator
 
 
 	/examples					... scenarios testing RINA stack
-		/Routing
-		/SimpleRelay			... Two exchanging CS through interior router 
-		/SingleCS				... Single computing system with two applications
-		/SmallNetwork			... Communiaction accross small network
-		/TwoCSs					... Two directly connected CSs
-	/src						... source codes folder
+		/AllNodes				... communication across all types of devices
+		/SimpleRelay			... two CSs exchanging data through an interior router 
+		/SingleCS				... single computing system with two applications
+		/SmallNetwork			... communication across a small network
+		/TwoCSs					... two directly connected CSs
+	/src						... source codes' folder
 		/Common					... shared basic classes
-		/CS						... computation system simulation nodes
-		/DAF					... DIF components
-		/DIF 					... DAF components
+		/CS						... computing system simulation nodes
+		/DAF					... DAF components
+		/DIF 					... DIF components
 	
