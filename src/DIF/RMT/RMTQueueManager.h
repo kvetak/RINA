@@ -19,10 +19,8 @@
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
+#include "RMTPort.h"
 #include "RMTQMonitorBase.h"
-
-typedef std::vector<RMTQueue*>  RMTQueues;
-typedef RMTQueues::iterator  RMTQueuesIter;
 
 class RMTQueueManager : public cSimpleModule
 {
@@ -38,7 +36,7 @@ class RMTQueueManager : public cSimpleModule
     iterator begin();
     iterator end();
 
-    RMTQueue* addQueue(RMTQueue::queueType type);
+    RMTQueue* addQueue(RMTQueue::queueType type, RMTPort* port = NULL, unsigned short qosId = 0);
     void removeQueue(RMTQueue* queue);
 
     RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
@@ -50,7 +48,7 @@ class RMTQueueManager : public cSimpleModule
     RMTQueues queues;
 
     RMTQMonitorBase* qMonPolicy;
-    int qxpos, qypos; // module coordinates
+    std::map<RMTPort*, unsigned int> portQueueCount;
 
 };
 

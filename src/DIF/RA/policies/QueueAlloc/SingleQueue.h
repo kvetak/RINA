@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,28 +15,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTBASE_H_
-#define RMTBASE_H_
+#ifndef __RINA_SINGLEQUEUE_H_
+#define __RINA_SINGLEQUEUE_H_
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
-#include "RMTQueue.h"
+#include "QueueAllocBase.h"
+#include "RMTQueueManager.h"
 
-class RMTBase : public cSimpleModule
+class SingleQueue : public QueueAllocBase
 {
   public:
-    RMTBase();
-    virtual ~RMTBase();
-
-    virtual bool isOnWire() = 0;
-    virtual bool getRelayStatus() = 0;
-    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
-
-  protected:
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
-
+    void createQueues(RMTPort* port, RMTQueues& result);
 };
 
-#endif /* RMTBASE_H_ */
+#endif

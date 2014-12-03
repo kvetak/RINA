@@ -42,7 +42,7 @@ class RABase : public cSimpleModule
 
   protected:
     //SimpleModule overloads
-    virtual void initialize() = 0;
+    virtual void initialize(int stage) = 0;
     virtual void handleMessage(cMessage *msg) = 0;
 
     QosCubeSet QosCubes;

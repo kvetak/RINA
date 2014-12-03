@@ -50,6 +50,9 @@ typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
 
 class RMT : public RMTBase
 {
+  friend class RA;
+  friend class FAI;
+
   private:
     PDUForwardingTable* fwTable;
     RMTQueueManager* queues;
@@ -75,28 +78,29 @@ class RMT : public RMTBase
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    void scheduleServiceEnd();
-
     cGate* fwTableLookup(Address& destAddr, short pduQosId);
+    void scheduleServiceEnd();
 
     simsignal_t sigRMTNoConnID;
     LisRMTPDURcvd* lisRMTMsgRcvd;
+
+    // management methods for Resource Allocator
+    void setOnWire(bool status) { onWire = status; };
+    void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
+    void deleteEfcpiToQueueMapping(unsigned cepId);
+    void enableRelay() { relayOn = true; };
+    void disableRelay() { relayOn = false; };
+
+    // management methods for FAIs
+    void createEfcpiGate(unsigned int efcpiId);
+    void deleteEfcpiGate(unsigned int efcpiId);
 
   public:
     RMT();
     virtual ~RMT();
 
-    void createEfcpiGate(unsigned int efcpiId);
-    void deleteEfcpiGate(unsigned int efcpiId);
-    void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
-    void deleteEfcpiToQueueMapping(unsigned cepId);
-
-    void setOnWire(bool status) { onWire = status; };
-    bool isOnWire() { return onWire; };
-
-    void enableRelay() { relayOn = true; };
-    void disableRelay() { relayOn = false; };
     bool getRelayStatus() { return relayOn; };
+    bool isOnWire() { return onWire; };
 
     void invokeSchedulingPolicy(cObject* obj);
 

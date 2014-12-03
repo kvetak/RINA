@@ -20,6 +20,7 @@ Define_Module(RMTQueue);
 
 RMTQueue::RMTQueue()
 {
+    qosId = 0;
 }
 
 
@@ -41,8 +42,7 @@ void RMTQueue::initialize()
     maxQLength = getParentModule()->par("queueSize");
     thresholdQLength = getParentModule()->par("queueThresh");
     qTime = simTime();
-
-
+    redrawGUI();
 }
 
 std::string RMTQueue::info() const
@@ -93,7 +93,7 @@ void RMTQueue::redrawGUI()
     // print current saturation in numbers
     std::ostringstream desc;
     desc << " " << len << "/" << maxQLength;
-    disp.setTagArg("t", 1, "r");
+    disp.setTagArg("t", 1, "l");
     disp.setTagArg("t", 0, desc.str().c_str());
 }
 
@@ -194,6 +194,16 @@ RMTQueue::queueType RMTQueue::getType()
 void RMTQueue::setType(RMTQueue::queueType type)
 {
     this->type = type;
+}
+
+unsigned short RMTQueue::getQosId()
+{
+    return qosId;
+}
+
+void RMTQueue::setQosId(unsigned short qosId)
+{
+    this->qosId = qosId;
 }
 
 cGate* RMTQueue::getRmtAccessGate()

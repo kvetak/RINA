@@ -20,11 +20,11 @@
 
 #include "Flow.h"
 #include "FABase.h"
-#include "RMTQueue.h"
+#include "RMTPort.h"
 
 class FlowTableItem {
   public:
-    FlowTableItem(Flow* flow, FABase* fa, RMTQueue* inQ, RMTQueue* outQ, std::string gateName);
+    FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
     virtual ~FlowTableItem();
 
     std::string info() const;
@@ -33,15 +33,14 @@ class FlowTableItem {
     FABase* getFaBase() const;
     RMTQueue* getRmtInputQueue() const;
     void setRmtInputQueue(RMTQueue* queue);
-    RMTQueue* getRmtOutputQueue() const;
-    void setRmtOutputQueue(RMTQueue* queue);
+    RMTQueues& getRmtOutputQueues() const;
+    void addRmtOutputQueue(RMTQueue* queue);
     std::string getGateName() const;
 
   private:
     Flow* flow;
     FABase* fa;
-    RMTQueue* rmtInputQueue;
-    RMTQueue* rmtOutputQueue;
+    RMTPort* rmtPort;
     std::string gateName;
 };
 

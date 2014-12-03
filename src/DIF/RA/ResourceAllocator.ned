@@ -15,22 +15,29 @@
 
 package rina.DIF.RA;
 
+import rina.DIF.RA.policies.QueueAlloc.IntQueueAlloc;
+
+
 module ResourceAllocator
 {
     parameters:
-        @display("i=block/segm;bgb=327,210");
+        @display("i=block/segm;bgb=299,274");
+        string queueAllocPolicyName = default("SingleQueue");
 
     submodules:
-        pduForwardingTable: PDUForwardingTable {
-            @display("p=218,132");
-        }
         ra: RA {
-            @display("p=71,55");
+            @display("p=70,60");
         }
         pduFwdTabGenerator: PDUFwdTabGenerator {
-            @display("p=218,55");
+            @display("p=70,130");
+        }
+        pduForwardingTable: PDUForwardingTable {
+            @display("p=70,200");
         }
         flowTable: FlowTable {
-            @display("p=71,132");
+            @display("p=150,60");
+        }
+        queueAllocPolicy: <queueAllocPolicyName> like IntQueueAlloc {
+            @display("p=230,60");
         }
 }

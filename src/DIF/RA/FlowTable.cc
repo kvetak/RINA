@@ -24,7 +24,6 @@ void FlowTable::initialize()
 
 void FlowTable::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
 }
 
 void FlowTable::insert(const FlowTableItem* entry)
@@ -32,9 +31,9 @@ void FlowTable::insert(const FlowTableItem* entry)
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa, RMTQueue* inQ, RMTQueue* outQ, std::string gateName)
+void FlowTable::insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa, inQ, outQ, gateName);
+    FlowTableItem entry = FlowTableItem(flow, fa, port, gateName);
     flows.push_back(entry);
 }
 

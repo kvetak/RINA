@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,28 +15,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTBASE_H_
-#define RMTBASE_H_
+#ifndef QUEUEALLOCBASE_H_
+#define QUEUEALLOCBASE_H_
 
 #include <omnetpp.h>
+#include "RABase.h"
+#include "QosCube.h"
+#include "RMTQueueManager.h"
+#include "RMTPort.h"
 
-#include "RMTSchedulingBase.h"
-#include "RMTQueue.h"
-
-class RMTBase : public cSimpleModule
+/*
+ *
+ */
+class QueueAllocBase : public cSimpleModule
 {
   public:
-    RMTBase();
-    virtual ~RMTBase();
-
-    virtual bool isOnWire() = 0;
-    virtual bool getRelayStatus() = 0;
-    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
+    QueueAllocBase();
+    virtual ~QueueAllocBase();
+    virtual void createQueues(RMTPort* port, RMTQueues& result);
 
   protected:
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
+    void initialize();
+    void handleMessage(cMessage *msg);
 
+    RMTQueueManager* rmtQM;
+    QosCubeSet qosCubes;
 };
 
-#endif /* RMTBASE_H_ */
+#endif /* QUEUEALLOCBASE_H_ */

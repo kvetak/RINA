@@ -20,6 +20,7 @@
 #include <queue>
 
 #include "PDU_m.h"
+#include "QoSCube.h"
 #include "RINASignals.h"
 
 class RMTQueue : public cSimpleModule
@@ -39,34 +40,21 @@ class RMTQueue : public cSimpleModule
 
     int getMaxLength();
     void setMaxLength(int value);
-
     int getThreshLength();
     void setThreshLength(int value);
-
-    double getAverageLength() const;
-    void setAverageLength(double avr);
-
     int getLength() const;
-    short getQosId();
-
-    double getWeight() const;
+    unsigned short getQosId();
+    void setQosId(unsigned short qosId);
     simtime_t getQTime() const;
-
-    int getAqmCounter() const;
-    void setAqmCounter(int val);
-
 
     cGate* getOutputGate();
     cGate* getInputGate();
-
     cGate* getRmtAccessGate();
     void setRmtAccessGate(cGate* gate);
 
     void releasePDU();
     void dropLast();
     void markCongestionOnLast();
-
-    void redrawGUI();
 
     std::string info() const;
 
@@ -77,8 +65,8 @@ class RMTQueue : public cSimpleModule
     int thresholdQLength;
 
     simtime_t qTime;
-
     queueType type;
+    unsigned short qosId;
 
     cGate* rmtAccessGate;
     cGate* outputGate;
@@ -87,8 +75,12 @@ class RMTQueue : public cSimpleModule
     simsignal_t sigRMTPDURcvd;
 
     void enqueuePDU(cMessage* pdu);
+    void redrawGUI();
 
 };
+
+typedef std::vector<RMTQueue*>  RMTQueues;
+typedef RMTQueues::iterator  RMTQueuesIter;
 
 std::ostream& operator<< (std::ostream& os, const RMTQueue& cte);
 

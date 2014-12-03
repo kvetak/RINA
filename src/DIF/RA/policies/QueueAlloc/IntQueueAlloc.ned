@@ -13,28 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTBASE_H_
-#define RMTBASE_H_
+package rina.DIF.RA.policies.QueueAlloc;
 
-#include <omnetpp.h>
-
-#include "RMTSchedulingBase.h"
-#include "RMTQueue.h"
-
-class RMTBase : public cSimpleModule
+moduleinterface IntQueueAlloc
 {
-  public:
-    RMTBase();
-    virtual ~RMTBase();
-
-    virtual bool isOnWire() = 0;
-    virtual bool getRelayStatus() = 0;
-    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
-
-  protected:
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
-
-};
-
-#endif /* RMTBASE_H_ */
+    parameters:
+        @display("i=block/socket");
+}

@@ -22,20 +22,20 @@ package rina.DIF.RMT;
 module RMTModule
 {
     parameters:
-        @display("i=block/classifier;bgb=590,145");
-        
+        @display("i=block/classifier;bgb=590,275");
+
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
-        string maxQPolicyName = default("TailDrop");        
-        
+        string maxQPolicyName = default("TailDrop");
+
         double queueServiceTime @unit(ms) = default(0.0ms);
-        
+
         int queueSize = default(20);
         int queueThresh = default(10);
-        
+
         string queueColorBusy = default("#80FF80");
         string queueColorWarn = default("#FF8000");
-        string queueColorFull = default("#800000");               
+        string queueColorFull = default("#800000");
 
     gates:
         inout ribdIo;
@@ -51,12 +51,11 @@ module RMTModule
             @display("p=165,55;is=s");
         }
         queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
-        	@display("p=270,55;is=s");
+            @display("p=270,55;is=s");
         }
         maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
-        	@display("p=375,55;is=s");
-        }          
-
+            @display("p=375,55;is=s");
+        }
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;
 }

@@ -30,8 +30,10 @@
 #include "DA.h"
 #include "FABase.h"
 #include "RMT.h"
+#include "RMTPort.h"
 #include "RABase.h"
 #include "RAListeners.h"
+#include "QueueAllocBase.h"
 
 //Consts
 extern const char* PAR_QOSDATA;
@@ -64,15 +66,19 @@ class RA : public RABase
     virtual void bindFlowToMedium(Flow* flow);
 
   protected:
-    virtual void initialize();
+    virtual void initialize(int stage);
+    int numInitStages() const { return 2; };
     virtual void handleMessage(cMessage *msg);
 
   private:
     DA* difAllocator;
+    cModule* thisIpc;
+    cModule* rmtModule;
     RMT* rmt;
     RMTQueueManager* rmtQM;
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
+    QueueAllocBase* qAllocPolicy;
 
     std::string processName;
 
@@ -81,8 +87,8 @@ class RA : public RABase
     void initQoSCubes();
     void setRmtMode();
 
-    RMTQueue* bindLowerFlowToRmtQueue(cModule* ipc, FABase* fab, Flow* flow);
-    void bindMediumToRMTQueue();
+    RMTPort* bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
+    void bindMediumToRMT();
 
     std::string normalizePortId(std::string ipcName, int flowPortId);
 
@@ -91,6 +97,9 @@ class RA : public RABase
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
+
+    // TODO: purge this crap and think of something smarter
+    unsigned int portXCoord, portYCoord;
 
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);

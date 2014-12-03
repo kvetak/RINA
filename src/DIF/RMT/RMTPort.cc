@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,28 +15,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef RMTBASE_H_
-#define RMTBASE_H_
+#include "RMTPort.h"
 
-#include <omnetpp.h>
+Define_Module(RMTPort);
 
-#include "RMTSchedulingBase.h"
-#include "RMTQueue.h"
-
-class RMTBase : public cSimpleModule
+void RMTPort::initialize()
 {
-  public:
-    RMTBase();
-    virtual ~RMTBase();
+    // TODO - Generated method body
+}
 
-    virtual bool isOnWire() = 0;
-    virtual bool getRelayStatus() = 0;
-    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
-
-  protected:
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
-
-};
-
-#endif /* RMTBASE_H_ */
+void RMTPort::handleMessage(cMessage *msg)
+{
+    if (msg->getArrivalGate() == fromIpc)
+    {
+        send(msg, toQueue);
+    }
+    else if (fromQueue.count(msg->getArrivalGate()))
+    {
+        send(msg, toIpc);
+    }
+}

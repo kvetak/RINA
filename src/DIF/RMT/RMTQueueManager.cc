@@ -20,8 +20,6 @@ Define_Module(RMTQueueManager);
 RMTQueueManager::RMTQueueManager()
 {
     WATCH_PTRVECTOR(queues);
-    qypos = 120;
-    qxpos = 45;
 }
 
 RMTQueueManager::~RMTQueueManager()
@@ -35,17 +33,14 @@ void RMTQueueManager::initialize()
 }
 
 
-RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
+RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, unsigned short qosId)
 {
     // find factory object
     cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
 
-    // instantiate a new object
-    std::ostringstream queueName;
-
     // generate a name
+    std::ostringstream queueName;
     const char* strType = (type == RMTQueue::INPUT ? "in" : "out");
-
     for (int i = 0; ; i++)
     {
         queueName << strType << i;
@@ -65,12 +60,21 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
     RMTQueue* module = dynamic_cast<RMTQueue*>(module_f);
 
     // modify the position a little
-    std::ostringstream istr;
-    istr << "p=" << qxpos << "," << qypos << ";i=block/queue;is=vs";
 
-    cDisplayString& dispStr = module->getDisplayString();
-    dispStr.parse(istr.str().c_str());
-    qxpos = qxpos + 45;
+
+    cDisplayString& disp = module->getDisplayString();
+
+    if (port != NULL)
+    {
+        disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
+    }
+    else
+    {
+        disp.setTagArg("p", 0, 30);
+    }
+
+    disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
+    portQueueCount[port] += 1;
 
     // connect to RMT submodule
     cModule* rmt = getParentModule()->getModuleByPath(".rmt");
@@ -86,12 +90,11 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type)
         module->getOutputGate()->connectTo(rmtIn);
     }
 
-    module->redrawGUI();
-
-    qMonPolicy->postQueueCreation(module);
-
     module->setType(type);
+    module->setQosId(qosId);
+    qMonPolicy->postQueueCreation(module);
     queues.push_back(module);
+
     return module;
 }
 
@@ -146,7 +149,7 @@ RMTQueue* RMTQueueManager::getFirst(RMTQueue::queueType type)
 
 RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType type)
 {
-    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
+    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
         if (!opp_strcmp(a->getName(), queueName) && (a->getType() == type))

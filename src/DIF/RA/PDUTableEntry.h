@@ -27,7 +27,7 @@
 
 #include <omnetpp.h>
 #include "ConnectionTable.h"
-#include "RMTQueue.h"
+#include "RMTPort.h"
 
 typedef std::pair<cModule*, int> RMTPortId;
 
