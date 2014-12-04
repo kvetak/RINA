@@ -267,6 +267,71 @@ void RA::handleMessage(cMessage *msg)
 }
 
 /**
+ * Connects each queue from given RMTQueue vector to given port.
+ *
+ * @param queues list of queues to be bound to the port
+ * @param RMT port
+ */
+void RA::bindQueuesToPort(RMTQueues& queues, RMTPort* port)
+{
+    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
+    {
+        RMTQueue* q = *it;
+
+        if (q->getType() == RMTQueue::INPUT)
+        {
+            cGate* toInputQueue = port->addGate(q->getFullName(), cGate::OUTPUT, false);
+            toInputQueue->connectTo(q->getInputGate());
+            port->setInputQueue(q, toInputQueue);
+        }
+        else
+        {
+            cGate* fromOutputQueue = port->addGate(q->getFullName(), cGate::INPUT, false);
+            q->getOutputGate()->connectTo(fromOutputQueue);
+            port->addOutputQueue(q, fromOutputQueue);
+        }
+    }
+}
+
+/**
+ * Convenience function for interconnecting two modules.
+ * TODO: convert this into a global utility method so others can use it
+ *
+ * @param m1 first module
+ * @param m2 second module
+ * @param n1 first module gate name
+ * @param n2 second module gate name
+ */
+void RA::interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2)
+{
+    if (!m1->hasGate(n1.c_str()))
+    {
+        m1->addGate(n1.c_str(), cGate::INOUT, false);
+    }
+    cGate* m1In = m1->gateHalf(n1.c_str(), cGate::INPUT);
+    cGate* m1Out = m1->gateHalf(n1.c_str(), cGate::OUTPUT);
+
+    if (!m2->hasGate(n2.c_str()))
+    {
+        m2->addGate(n2.c_str(), cGate::INOUT, false);
+    }
+    cGate* m2In = m2->gateHalf(n2.c_str(), cGate::INPUT);
+    cGate* m2Out = m2->gateHalf(n2.c_str(), cGate::OUTPUT);
+
+    if (m2->getParentModule() == m1)
+    {
+        m1In->connectTo(m2In);
+        m2Out->connectTo(m1Out);
+    }
+    else
+    {
+        m1Out->connectTo(m2In);
+        m2Out->connectTo(m1In);
+    }
+}
+
+
+/**
  * Connects the medium defined in NED to the RMT module.
  * Used only for the bottom IPC process in a processing system.
  */
@@ -285,7 +350,6 @@ void RA::bindMediumToRMT()
     cGate* rmtModuleIn = rmtModule->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
     cGate* rmtModuleOut = rmtModule->gateHalf(rmtGate.str().c_str(), cGate::OUTPUT);
 
-    // interconnect rmtModule and bottom of IPC
     rmtModuleOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtModuleIn);
 
@@ -298,41 +362,14 @@ void RA::bindMediumToRMT()
     portDisp.setTagArg("p", 1, 220);
 
     // connect the port to the bottom
-    port->addGate("PHY", cGate::INOUT, false);
-    cGate* portIn = port->gateHalf("PHY", cGate::INPUT);
-    cGate* portOut = port->gateHalf("PHY", cGate::OUTPUT);
-    rmtModuleIn->connectTo(portIn);
-    portOut->connectTo(rmtModuleOut);
-    port->fromIpc = portIn;
-    port->toIpc = portOut;
+    interconnectModules(rmtModule, port, rmtGate.str(), std::string("southIo"));
 
     // create queues (by currently active policy)
     RMTQueues queues;
     qAllocPolicy->createQueues(port, queues);
 
     // interconnect each queue with RMTPort
-    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
-    {
-        RMTQueue* q = *it;
-
-        if (q->getType() == RMTQueue::INPUT)
-        {
-            cGate* toInputQueue = port->addGate(q->getFullName(), cGate::OUTPUT, false);
-            toInputQueue->connectTo(q->getInputGate());
-
-            port->toQueue = toInputQueue;
-            port->inputQueue = q;
-        }
-        else
-        {
-            cGate* fromOutputQueue = port->addGate(q->getFullName(), cGate::INPUT, false);
-            q->getOutputGate()->connectTo(fromOutputQueue);
-
-            port->fromQueue.insert(fromOutputQueue);
-            port->outputQueues.push_back(q);
-        }
-    }
-
+    bindQueuesToPort(queues, port);
 }
 
 /**
@@ -342,43 +379,23 @@ void RA::bindMediumToRMT()
  * @param flow the (N-1)-flow
  * @return output gate for the (N-1)-flow
  */
-RMTPort* RA::bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow)
+RMTPort* RA::bindLowerFlowToRMT(cModule* bottomIpc, FABase* fab, Flow* flow)
 {
     EV << "attempting to bind an (N-1)-flow to RMT..." << endl;
     int portId = flow->getSrcPortId();
 
     // expand the given portId so it's unambiguous within this IPC
-    std::string combinedPortId = normalizePortId(ipc->getFullName(), portId);
+    std::string combinedPortId = normalizePortId(bottomIpc->getFullName(), portId);
 
-    //// binding begins at the bottom by interconnecting both IPCs
-    // get (N-1)-IPC north gates
-    std::ostringstream bottomIpcGate;
+    //// binding begins at the bottom and goes up:
+    // pick gate names
+    std::ostringstream bottomIpcGate, thisIpcGate;
     bottomIpcGate << GATE_NORTHIO_ << portId;
-    cGate* bottomIpcIn = ipc->gateHalf(bottomIpcGate.str().c_str(), cGate::INPUT);
-    cGate* bottomIpcOut = ipc->gateHalf(bottomIpcGate.str().c_str(), cGate::OUTPUT);
+    thisIpcGate << GATE_SOUTHIO_ << combinedPortId;
 
-    // create a border south gate for this IPC
-    std::ostringstream thisIpcGate_ostr;
-    thisIpcGate_ostr << GATE_SOUTHIO_ << combinedPortId;
-    std::string thisIpcGate = thisIpcGate_ostr.str();
-
-    thisIpc->addGate(thisIpcGate.c_str(), cGate::INOUT, false);
-    cGate* thisIpcIn = thisIpc->gateHalf(thisIpcGate.c_str(), cGate::INPUT);
-    cGate* thisIpcOut = thisIpc->gateHalf(thisIpcGate.c_str(), cGate::OUTPUT);
-
-    // interconnect IPCs
-    bottomIpcOut->connectTo(thisIpcIn);
-    thisIpcOut->connectTo(bottomIpcIn);
-
-    //// connect bottom of this IPC to rmtModule
-    // create rmtModule gates
-    rmtModule->addGate(thisIpcGate.c_str(), cGate::INOUT, false);
-    cGate* rmtModuleIn = rmtModule->gateHalf(thisIpcGate.c_str(), cGate::INPUT);
-    cGate* rmtModuleOut = rmtModule->gateHalf(thisIpcGate.c_str(), cGate::OUTPUT);
-
-    // interconnect rmtModule and bottom of IPC
-    rmtModuleOut->connectTo(thisIpcOut);
-    thisIpcIn->connectTo(rmtModuleIn);
+    // interconnect bottom IPC <-> this IPC <-> compound RMT module
+    interconnectModules(bottomIpc, thisIpc, bottomIpcGate.str(), thisIpcGate.str());
+    interconnectModules(thisIpc, rmtModule, thisIpcGate.str(), thisIpcGate.str());
 
     //// create new data path for the (N-1)-flow inside the RMT blackbox
     // create a RMTPort instance (pretty much a representation of an (N-1)-port)
@@ -391,44 +408,17 @@ RMTPort* RA::bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow)
     portXCoord += 80;
 
     // connect the port to the bottom
-    port->addGate(thisIpcGate.c_str(), cGate::INOUT, false);
-    cGate* portIn = port->gateHalf(thisIpcGate.c_str(), cGate::INPUT);
-    cGate* portOut = port->gateHalf(thisIpcGate.c_str(), cGate::OUTPUT);
-    rmtModuleIn->connectTo(portIn);
-    portOut->connectTo(rmtModuleOut);
+    interconnectModules(rmtModule, port, thisIpcGate.str(), std::string("southIo"));
 
-    port->fromIpc = portIn;
-    port->toIpc = portOut;
-
-    // create queues (by currently active policy)
+    // create queues (by invoking currently active QueueAlloc policy)
     RMTQueues queues;
     qAllocPolicy->createQueues(port, queues);
 
     // interconnect each queue with RMTPort
-    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
-    {
-        RMTQueue* q = *it;
-
-        if (q->getType() == RMTQueue::INPUT)
-        {
-            cGate* toInputQueue = port->addGate(q->getFullName(), cGate::OUTPUT, false);
-            toInputQueue->connectTo(q->getInputGate());
-
-            port->toQueue = toInputQueue;
-            port->inputQueue = q;
-        }
-        else
-        {
-            cGate* fromOutputQueue = port->addGate(q->getFullName(), cGate::INPUT, false);
-            q->getOutputGate()->connectTo(fromOutputQueue);
-
-            port->fromQueue.insert(fromOutputQueue);
-            port->outputQueues.push_back(q);
-        }
-    }
+    bindQueuesToPort(queues, port);
 
     // finally, update the flow table
-    flTable->insert(flow, fab, port, thisIpcGate);
+    flTable->insert(flow, fab, port, thisIpcGate.str().c_str());
 
     return port;
 }
@@ -488,7 +478,7 @@ void RA::createFlow(Flow *flow)
         // we're ready to go!
         // update the PDU forwarding table
         fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                        flow->getConId().getQoSId(), port->outputQueues.front());
+                        flow->getConId().getQoSId(), port);
     }
     else
     {
@@ -530,7 +520,7 @@ void RA::createFlowWithoutAllocate(Flow* flow)
     // we're ready to go!
     // update the PDU forwarding table
     fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                            flow->getConId().getQoSId(), port->outputQueues.front());
+                            flow->getConId().getQoSId(), port);
 
     // add other accessible applications into forwarding table
     const APNList* remoteApps = difAllocator->findNeigborApns(flow->getDstApni().getApn());
@@ -539,7 +529,7 @@ void RA::createFlowWithoutAllocate(Flow* flow)
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
         {
             Address addr = Address(it->getName());
-            fwTable->insert(addr, flow->getConId().getQoSId(), port->outputQueues.front());
+            fwTable->insert(addr, flow->getConId().getQoSId(), port);
         }
     }
 
@@ -644,7 +634,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {
-            fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtOutputQueues().front());
+            fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtPort());
         }
     }
 

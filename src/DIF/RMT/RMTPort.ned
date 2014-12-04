@@ -19,5 +19,8 @@ package rina.DIF.RMT;
 
 simple RMTPort
 {
-    @display("i=block/square;is=s");
+    parameters:
+    	@display("i=block/square;is=s");
+	gates:
+    	inout southIo;
 }

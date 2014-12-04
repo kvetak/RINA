@@ -89,6 +89,8 @@ class RA : public RABase
 
     RMTPort* bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
     void bindMediumToRMT();
+    void bindQueuesToPort(RMTQueues& queues, RMTPort* port);
+    void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
 
     std::string normalizePortId(std::string ipcName, int flowPortId);
 

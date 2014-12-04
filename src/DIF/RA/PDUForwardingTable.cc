@@ -50,7 +50,7 @@ void PDUForwardingTable::printAll()
 //
 //    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
 //    {
-//        PDUTableEntry a = *it;
+//        PDUForwardingTableEntry a = *it;
 //        EV << this->getFullPath() << " destination: " << a.getDestAddr()
 //                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
 //    }
@@ -63,15 +63,15 @@ void PDUForwardingTable::printAll()
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTQueue* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
+RMTPort* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
 {
-    for(PDUFwIter it = fwTable.begin(); it != fwTable.end(); ++it )
+    for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
-        PDUTableEntry a = *it;
+        PDUForwardingTableEntry a = *it;
         // can't compare DIF names at this moment
         if ((a.getDestAddr().getApname() == destAddr.getApname()) && ((a.getQosId() == QoSid) || QoSid == -1))
         {
-            return a.getQueueId();
+            return a.getPort();
         }
     }
     return NULL;
@@ -82,7 +82,7 @@ RMTQueue* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
 *
 * @param entry table entry to be inserted
 */
-void PDUForwardingTable::insert(const PDUTableEntry* entry)
+void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 {
     Enter_Method("insert()");
     fwTable.push_back(*entry);
@@ -94,10 +94,10 @@ void PDUForwardingTable::insert(const PDUTableEntry* entry)
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(Address destAddr, int qosId, RMTQueue* queue)
+void PDUForwardingTable::insert(Address destAddr, int qosId, RMTPort* port)
 {
     Enter_Method("insert()");
-    PDUTableEntry entry = PDUTableEntry(destAddr, qosId, queue);
+    PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
     fwTable.push_back(entry);
 }
 
@@ -106,12 +106,12 @@ void PDUForwardingTable::insert(Address destAddr, int qosId, RMTQueue* queue)
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(RMTQueue* portId)
+void PDUForwardingTable::remove(RMTPort* port)
 {
-    PDUFwIter i = fwTable.begin();
+    PDUFwdTableIter i = fwTable.begin();
     while (i != fwTable.end())
     {
-        if (i->getQueueId() == portId)
+        if (i->getPort() == port)
         {
             i = fwTable.erase(i);
         }

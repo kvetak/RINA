@@ -14,69 +14,54 @@
 // 
 
 /**
- * @file PDUTableEntry.cc
+ * @file PDUForwardingTableEntry.cc
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
  * @brief A class representing a single item of the forwarding table.
  * @detail
  */
 
-#include "PDUTableEntry.h"
+#include "PDUForwardingTableEntry.h"
 
-PDUTableEntry::PDUTableEntry()
+PDUForwardingTableEntry::PDUForwardingTableEntry()
 {
 }
 
-PDUTableEntry::PDUTableEntry(Address& destaddr, int qosid, RMTQueue* queue)
-:  destAddr(destaddr), qosId(qosid), rmtQueue(queue)
+PDUForwardingTableEntry::PDUForwardingTableEntry(Address& destaddr, int qosid, RMTPort* port)
+:  destAddr(destaddr), qosId(qosid), rmtPort(port)
 {
 }
 
-PDUTableEntry::~PDUTableEntry()
+PDUForwardingTableEntry::~PDUForwardingTableEntry()
 {
 }
 
-std::string PDUTableEntry::info() const
+std::string PDUForwardingTableEntry::info() const
 {
     std::ostringstream os;
 
     os << "dest: " << destAddr << endl
        << "qos-id: " << qosId << endl
-       << "output queue: " << rmtQueue->getFullName();
+       << "RMT port: " << rmtPort->getFullName();
 
     return os.str();
 }
 
-std::ostream& operator <<(std::ostream& os, const PDUTableEntry& cte)
+std::ostream& operator <<(std::ostream& os, const PDUForwardingTableEntry& cte)
 {
     return os << cte.info();
 }
 
-Address& PDUTableEntry::getDestAddr()
+const Address& PDUForwardingTableEntry::getDestAddr() const
 {
     return destAddr;
 }
 
-int PDUTableEntry::getQosId()
+int PDUForwardingTableEntry::getQosId() const
 {
     return qosId;
 }
 
-RMTQueue* PDUTableEntry::getQueueId()
+RMTPort* PDUForwardingTableEntry::getPort() const
 {
-    return rmtQueue;
-}
-
-void PDUTableEntry::setDestAddr(Address& destaddr)
-{
-    this->destAddr = destaddr;
-}
-
-void PDUTableEntry::setQosId(int qosid)
-{
-    this->qosId = qosid;
-}
-
-void PDUTableEntry::setPortId(RMTQueue* portid)
-{
-    this->rmtQueue = portid;
+    return rmtPort;
 }

@@ -24,17 +24,28 @@
 class RMTPort : public cSimpleModule
 {
   public:
-    cGate* toQueue;
-    std::set<cGate*> fromQueue;
-    cGate* fromIpc;
-    cGate* toIpc;
-    RMTQueues outputQueues;
-    RMTQueue* inputQueue;
+    RMTQueue* getInputQueue() const;
+    void setInputQueue(RMTQueue* queue, cGate* portGate);
+
+    const RMTQueues& getOutputQueues() const;
+    void addOutputQueue(RMTQueue* queue, cGate* portGate);
+
+    cGate* getSouthInputGate() const;
+    cGate* getSouthOutputGate() const;
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
+  private:
+    cGate* northOutputGate;
+    std::set<cGate*> northInputGates;
+    cGate* southInputGate;
+    cGate* southOutputGate;
+    RMTQueues outputQueues;
+    RMTQueue* inputQueue;
 };
+
+typedef std::vector<RMTPort*> RMTPorts;
 
 #endif

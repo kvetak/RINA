@@ -14,48 +14,38 @@
 // 
 
 /**
- * @file PDUTableEntry.h
+ * @file PDUForwardingTableEntry.h
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
  * @brief A class representing a single item of the forwarding table.
  * @detail
  */
 
-#ifndef __RINA_PDUTABLEENTRY_H_
-#define __RINA_PDUTABLEENTRY_H_
-
-#include <iostream>
+#ifndef __RINA_PDUForwardingTableEntry_H_
+#define __RINA_PDUForwardingTableEntry_H_
 
 #include <omnetpp.h>
-#include "ConnectionTable.h"
 #include "RMTPort.h"
 
-typedef std::pair<cModule*, int> RMTPortId;
-
-class PDUTableEntry
+class PDUForwardingTableEntry
 {
-  private:
-    Address destAddr;
-    int qosId;
-    RMTQueue* rmtQueue;
-
   public:
-    PDUTableEntry();
-    PDUTableEntry(Address& destaddr, int qosid, RMTQueue* queue);
-    virtual ~PDUTableEntry();
+    PDUForwardingTableEntry();
+    PDUForwardingTableEntry(Address& destaddr, int qosid, RMTPort* port);
+    virtual ~PDUForwardingTableEntry();
 
     std::string info() const;
 
-    Address& getDestAddr();
-    int getQosId();
-    RMTQueue* getQueueId();
+    const Address& getDestAddr() const;
+    int getQosId() const;
+    RMTPort* getPort() const;
 
-    void setDestAddr(Address& destaddr);
-    void setQosId(int qosid);
-    void setPortId(RMTQueue* portId);
-
+  private:
+    Address destAddr;
+    int qosId;
+    RMTPort* rmtPort;
 };
 
-std::ostream& operator<< (std::ostream& os, const PDUTableEntry& cte);
+std::ostream& operator<< (std::ostream& os, const PDUForwardingTableEntry& cte);
 
 #endif
 

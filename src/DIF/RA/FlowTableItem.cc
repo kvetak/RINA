@@ -62,26 +62,23 @@ FABase* FlowTableItem::getFaBase() const
     return fa;
 }
 
+RMTPort* FlowTableItem::getRmtPort() const
+{
+    return rmtPort;
+}
+
 
 RMTQueue* FlowTableItem::getRmtInputQueue() const
 {
-    return rmtPort->inputQueue;
+    return rmtPort->getInputQueue();
 }
 
-void FlowTableItem::setRmtInputQueue(RMTQueue* queue)
+
+const RMTQueues& FlowTableItem::getRmtOutputQueues() const
 {
-    rmtPort->inputQueue = queue;
+    return rmtPort->getOutputQueues();
 }
 
-RMTQueues& FlowTableItem::getRmtOutputQueues() const
-{
-    return rmtPort->outputQueues;
-}
-
-void FlowTableItem::addRmtOutputQueue(RMTQueue* queue)
-{
-    rmtPort->outputQueues.push_back(queue);
-}
 
 std::string FlowTableItem::getGateName() const
 {

@@ -21,17 +21,50 @@ Define_Module(RMTPort);
 
 void RMTPort::initialize()
 {
-    // TODO - Generated method body
+    southInputGate = gateHalf("southIo", cGate::INPUT);
+    southOutputGate = gateHalf("southIo", cGate::OUTPUT);
 }
 
 void RMTPort::handleMessage(cMessage *msg)
 {
-    if (msg->getArrivalGate() == fromIpc)
+    if (msg->getArrivalGate() == southInputGate)
     {
-        send(msg, toQueue);
+        send(msg, northOutputGate);
     }
-    else if (fromQueue.count(msg->getArrivalGate()))
+    else if (northInputGates.count(msg->getArrivalGate()))
     {
-        send(msg, toIpc);
+        send(msg, southOutputGate);
     }
+}
+
+RMTQueue* RMTPort::getInputQueue() const
+{
+    return inputQueue;
+}
+
+void RMTPort::setInputQueue(RMTQueue* queue, cGate* portGate)
+{
+    inputQueue = queue;
+    northOutputGate = portGate;
+}
+
+const RMTQueues& RMTPort::getOutputQueues() const
+{
+    return outputQueues;
+}
+
+void RMTPort::addOutputQueue(RMTQueue* queue, cGate* portGate)
+{
+    northInputGates.insert(portGate);
+    outputQueues.push_back(queue);
+}
+
+cGate* RMTPort::getSouthInputGate() const
+{
+    return southInputGate;
+}
+
+cGate* RMTPort::getSouthOutputGate() const
+{
+    return southOutputGate;
 }

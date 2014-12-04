@@ -24,32 +24,29 @@
 #define __RINA_PDUFORWARDINGTABLE_H_
 
 #include <omnetpp.h>
-#include "ConnectionId.h"
+#include "PDUForwardingTableEntry.h"
+#include "RMTPort.h"
 
-#include "PDUForwardingTable.h"
-#include "PDUTableEntry.h"
-#include "RMTQueue.h"
-
-typedef std::list<PDUTableEntry> PDUFwTable;
-typedef PDUFwTable::iterator PDUFwIter;
+typedef std::list<PDUForwardingTableEntry> PDUFwdTable;
+typedef PDUFwdTable::iterator PDUFwdTableIter;
 
 class PDUForwardingTable : public cSimpleModule
 {
+  public:
+    PDUForwardingTable();
+
+    void insert(const PDUForwardingTableEntry* entry);
+    void insert(Address destAddr, int qosId, RMTPort* port);
+    RMTPort* lookup(Address& destAddr, int QoSid);
+    void remove(RMTPort *portId);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
-    PDUFwTable fwTable;
+    PDUFwdTable fwTable;
     void printAll();
-
-  public:
-    PDUForwardingTable();
-
-    void insert(const PDUTableEntry* entry);
-    void insert(Address destAddr, int qosId, RMTQueue* queue);
-    RMTQueue* lookup(Address& destAddr, int QoSid);
-    void remove(RMTQueue *portId);
 };
 
 #endif

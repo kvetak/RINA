@@ -28,16 +28,14 @@
 
 #include "PDUForwardingTable.h"
 #include "ModuleAccess.h"
-#include "ConnectionId.h"
-#include "RMT.h"
-
 
 class PDUFwdTabGenerator : public cSimpleModule
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
   public:
+
+  protected:
+    void initialize();
+    void handleMessage(cMessage *msg);
 
   private:
     PDUForwardingTable* fwTable;

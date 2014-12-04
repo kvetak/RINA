@@ -31,10 +31,9 @@ class FlowTableItem {
 
     Flow* getFlow() const;
     FABase* getFaBase() const;
+    RMTPort* getRmtPort() const;
     RMTQueue* getRmtInputQueue() const;
-    void setRmtInputQueue(RMTQueue* queue);
-    RMTQueues& getRmtOutputQueues() const;
-    void addRmtOutputQueue(RMTQueue* queue);
+    const RMTQueues& getRmtOutputQueues() const;
     std::string getGateName() const;
 
   private:

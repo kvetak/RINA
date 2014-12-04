@@ -205,7 +205,10 @@ void RMT::deleteEfcpiToQueueMapping(unsigned cepId)
 cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
 {
     cGate* outGate = NULL;
-    RMTQueue* outQueue = fwTable->lookup(destAddr, qosId);
+    RMTPort* outPort = fwTable->lookup(destAddr, qosId);
+
+    // FIXME
+    RMTQueue* outQueue = outPort->getOutputQueues().front();
 
     if (outQueue != NULL)
     {
