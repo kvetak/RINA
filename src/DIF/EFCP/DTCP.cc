@@ -35,6 +35,7 @@ DTCP::~DTCP()
   }
 }
 
+
 void DTCP::initialize(){
   // TODO Auto-generated constructor stub
 dtcpState = new DTCPState();
@@ -150,3 +151,12 @@ unsigned long DTCP::getSendingTimeUnit()
 }
 
 
+bool DTCP::isSendingRateFullfilled() const
+{
+  return flowControl->isSendingRateFullfilled();
+}
+
+void DTCP::setSendingRateFullfilled(bool rateFullfilled)
+{
+  flowControl->setSendingRateFullfilled(rateFullfilled);
+}

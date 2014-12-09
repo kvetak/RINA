@@ -60,7 +60,7 @@ private:
     bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
     bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
 
-    bool rateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
+
 
     unsigned int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
 

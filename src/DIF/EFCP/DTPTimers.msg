@@ -62,9 +62,9 @@ message RxExpiryTimer extends DTPTimers{
 //    type = DTP_WINDOW_TIMER;
 //}
 
-message SendingRateTimer extends DTPTimers{
-	type = DTP_SENDING_RATE_TIMER;   
-}
+//message SendingRateTimer extends DTPTimers{
+//	type = DTP_SENDING_RATE_TIMER;   
+//}
 
 message ATimer extends DTPTimers{
  	type = DTP_A_TIMER;   

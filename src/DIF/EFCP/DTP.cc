@@ -186,11 +186,11 @@ void DTP::handleMessage(cMessage *msg)
         break;
       }
 
-      case(DTP_SENDING_RATE_TIMER):{
-        handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
-        schedule(timer);
-        break;
-      }
+//      case(DTP_SENDING_RATE_TIMER):{
+//        handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
+//        schedule(timer);
+//        break;
+//      }
 
       case(DTP_RCVR_INACTIVITY_TIMER):{
         handleDTPRcvrInactivityTimer(static_cast<RcvrInactivityTimer*>(timer));
@@ -404,7 +404,6 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   else if (pdu->getSeqNum() > dtcp->getLastCtrlSeqNumRcv() + 1)/* Out of order */
   {
     /* LostControlPDU Policy */
-
     sendControlAckPDU();
     sendEmptyDTPDU();
     dtcp->setLastCtrlSeqnumRec(pdu->getSeqNum());
@@ -901,13 +900,13 @@ void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
 
 }
 
-void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
-{
-  //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
-  dtcp->flowControl->pdusSentInTimeUnit = 0;
-  state.setRateFullfilled(false);
-
-}
+//void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
+//{
+//  //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
+//  dtcp->flowControl->pdusSentInTimeUnit = 0;
+//  state.setRateFullfilled(false);
+//
+//}
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)
 {
@@ -1326,7 +1325,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       }//end of for
 
       // It makes better sense to have it after the for
-      if (state.isClosedWindow() ^ state.isRateFullfilled())
+      if (state.isClosedWindow() ^  dtcp->isSendingRateFullfilled())
       {
         runReconcileFlowControlPolicy();
       }
@@ -1643,7 +1642,8 @@ void DTP::runNoRateSlowDownPolicy()
 void DTP::runNoOverrideDefaultPeakPolicy()
 {
   /*Default */
-  state.setRateFullfilled(true);
+//  state.setRateFullfilled(true);
+  dtcp->setSendingRateFullfilled(true);
   if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
   {
     closedWindowQ.push_back(generatedPDUs.front());
@@ -2043,13 +2043,13 @@ void DTP::schedule(DTPTimers *timer, double time)
     }
     case (DTP_SENDER_INACTIVITY_TIMER): {
       //TODO A! 3(MPL+R+A)
-      scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
+      scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
 //      scheduleAt(simTime() + 10, timer);
       break;
     }
     case (DTP_RCVR_INACTIVITY_TIMER): {
       //TODO A!
-      scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
+      scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
       break;
     }
     case (DTP_SENDING_RATE_TIMER): {

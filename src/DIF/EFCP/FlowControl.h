@@ -28,6 +28,7 @@
 
 #include <csimplemodule.h>
 #include "ControlPDU_m.h"
+#include "FCTimers_m.h"
 
 /*
  *
@@ -62,9 +63,20 @@ class FlowControl : public cSimpleModule
     unsigned int rcvBuffersThreshold; //The number of free buffers at which flow control does not advance the Right Window Edge.
     unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
+
+    bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
+
     /* Not found in specs but needed */
     unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
     unsigned int dupFC; //duplicate Flow Control PDUs
+
+
+
+    /* FC Timers */
+    FCSendingRateTimer* sendingRateTimer;
+
+    void schedule(FCTimers* timer, double time = 0.0);
+    void handleSendingRateTimer(FCSendingRateTimer* sendingRateTimer);
 
   public:
     FlowControl();
@@ -81,6 +93,11 @@ class FlowControl : public cSimpleModule
     void setSendingTimeUnit(unsigned long sendingTimeUnit);
     unsigned int getRcvRightWindowEdge() const;
     void setRcvRightWindowEdge(unsigned int rcvRightWindowEdge);
+    bool isSendingRateFullfilled() const;
+    void setSendingRateFullfilled(bool rateFullfilled);
+
+  protected:
+    virtual void handleMessage(cMessage *msg);
 };
 
 #endif /* FLOWCONTROL_H_ */

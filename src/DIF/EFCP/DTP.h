@@ -69,8 +69,10 @@ class DTP : public cSimpleModule
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
+
+    /**************** Moved rateFulfilled to FC together with sendingRatetimer **************************/
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */
-    SendingRateTimer* sendingRateTimer;
+//    SendingRateTimer* sendingRateTimer;
 
 //    WindowTimer* windowTimer;
 
@@ -89,7 +91,7 @@ class DTP : public cSimpleModule
 
     /* Handle messages and timer */
     void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
-    void handleDTPSendingRateTimer(SendingRateTimer* timer);
+//    void handleDTPSendingRateTimer(SendingRateTimer* timer);
 //    void handleDTPWindowTimer(WindowTimer* timer);
     void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);

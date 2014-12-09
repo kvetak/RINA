@@ -86,6 +86,10 @@ public:
 
     unsigned long getSendingTimeUnit();
 
+    bool isSendingRateFullfilled() const;
+    void setSendingRateFullfilled(bool rateFullfilled);
+
+
 protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize();

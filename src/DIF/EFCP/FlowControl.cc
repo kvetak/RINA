@@ -25,9 +25,13 @@
 
 #include <FlowControl.h>
 
+
 FlowControl::FlowControl()
 {
 
+  sendingRateTimer = new FCSendingRateTimer();
+
+  schedule(sendingRateTimer);
 
   dupFC = 0;
   rcvRightWindowEdge = 0;
@@ -92,4 +96,53 @@ unsigned int FlowControl::getRcvRightWindowEdge() const
 void FlowControl::setRcvRightWindowEdge(unsigned int rcvRightWindowEdge)
 {
   this->rcvRightWindowEdge = rcvRightWindowEdge;
+}
+
+
+void FlowControl::schedule(FCTimers* timer, double time)
+{
+  switch (timer->getType())
+  {
+    case (FC_SENDING_RATE_TIMER): {
+      time = 0;
+      scheduleAt(simTime() + timeUnit / 1000, timer);
+      break;
+    }
+  }
+}
+
+bool FlowControl::isSendingRateFullfilled() const
+{
+  return sendingRateFullfilled;
+}
+
+void FlowControl::setSendingRateFullfilled(bool rateFullfilled)
+{
+  this->sendingRateFullfilled = rateFullfilled;
+}
+
+void FlowControl::handleSendingRateTimer(FCSendingRateTimer* fcTimer)
+{
+  pdusSentInTimeUnit = 0;
+  setSendingRateFullfilled(false);
+  schedule(fcTimer);
+}
+
+void FlowControl::handleMessage(cMessage *msg){
+  if(msg->isSelfMessage()){
+    FCTimers* fcTimer = static_cast<FCTimers*>(msg);
+    switch(fcTimer->getType()){
+      case(FC_SENDING_RATE_TIMER):{
+        handleSendingRateTimer((FCSendingRateTimer*)fcTimer);
+        break;
+      }
+
+
+
+    }
+
+  }else{
+
+    //PANIC!
+  }
 }
