@@ -29,6 +29,8 @@
 #include <csimplemodule.h>
 #include "ControlPDU_m.h"
 #include "FCTimers_m.h"
+#include "DTP.h"
+#include "DTCP.h"
 
 /*
  *
@@ -74,6 +76,7 @@ class FlowControl : public cSimpleModule
 
     /* FC Timers */
     FCSendingRateTimer* sendingRateTimer;
+//    FCWindowTimer* sendingWindowTimer;
 
     void schedule(FCTimers* timer, double time = 0.0);
     void handleSendingRateTimer(FCSendingRateTimer* sendingRateTimer);

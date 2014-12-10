@@ -20,6 +20,7 @@
 enum FCTimerType
 {
   FC_SENDING_RATE_TIMER = 1;
+//  FC_WINDOW_TIMER = 2;
   
 }
 
@@ -30,4 +31,7 @@ message FCTimers {
 message FCSendingRateTimer extends FCTimers{
   type = FC_SENDING_RATE_TIMER;
 }
+//message FCWindowTimer extends FCTimers{
+//  type = FC_WINDOW_TIMER;
+//}
 

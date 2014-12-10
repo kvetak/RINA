@@ -21,6 +21,8 @@ DTCP::DTCP() {
   rxControl = NULL;
   flowControl = NULL;
 
+
+
 }
 
 DTCP::~DTCP()
@@ -35,21 +37,42 @@ DTCP::~DTCP()
   }
 }
 
+void DTCP::setDTP(DTP* dtp)
+{
+  this->dtp = dtp;
+}
 
 void DTCP::initialize(){
-  // TODO Auto-generated constructor stub
+//TODO A1 Fill it with appropriate values
 dtcpState = new DTCPState();
 
 
-//TODO A2 based on DTCPState create appropriate components
+//TODO A2 based on DTPState create appropriate components
 rxControl = new RXControl();
 
 flowControl = new FlowControl();
+
+if(dtp->state.isWinBased()){
+  windowTimer = new WindowTimer();
+  schedule(windowTimer);
+}
 }
 
-void DTCP::schedule(DTCPTimers* timer){
+void DTCP::schedule(DTCPTimers* timer, double time){
+
+  switch (timer->getType())
+  {
+    case (DTCP_WINDOW_TIMER): {
+      time = 0;
+      // TODO B1 Make #define for "3"
+      scheduleAt(simTime() + (1 / flowControl->getSendingRate()) + 3, timer);
+      break;
+    }
+  }
 
 }
+
+
 
 void DTCP::resetWindowTimer(){
   cancelEvent(windowTimer);
@@ -80,12 +103,7 @@ void DTCP::handleMessage(cMessage *msg){
 
 void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
-  sendAckPDU();
-}
-
-
-
-void DTCP::sendAckPDU(){
+  dtp->sendControlAckPDU();
 
 }
 

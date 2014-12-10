@@ -51,7 +51,7 @@ message NAck extends NAckPDU{
 }
 
 message NAckFlow extends FlowControlPDU{
-    
+    unsigned int ackNackSeqNum;
 }
 
 message AckFlowPDU extends NAckFlow{

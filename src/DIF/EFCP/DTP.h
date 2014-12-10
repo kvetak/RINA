@@ -38,11 +38,14 @@
 #define DEFAULT_INIT_SEQUENCE_NUMBER 0
 //#include "FA.h" //or FlowAllocatorFactory
 
+class DTCP;
 
 class DTP : public cSimpleModule
 {
+    //TODO A1 Remove friend class policies;
     /* Friend policies */
     friend class DefaultTxControlPolicy;
+    friend class DTCP;
   private:
 
     int deletePdu;
@@ -188,6 +191,8 @@ class DTP : public cSimpleModule
 
     void redrawGUI();
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
+    void sendFCOnlyPDU();
+    void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
 
   public:
     DTP();

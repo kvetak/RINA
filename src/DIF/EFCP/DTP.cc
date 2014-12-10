@@ -416,32 +416,69 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   return true;
 }
 
-void DTP::sendAckFlowPDU()
+void DTP::sendFCOnlyPDU()
 {
+  //TODO A1 send FC
+  FlowControlOnlyPDU* fcOnlyPdu = new FlowControlOnlyPDU();
 
-  //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
-  AckFlowPDU* ackFlowPdu = new AckFlowPDU();
-  setPDUHeader(ackFlowPdu);
-  ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+  setPDUHeader(fcOnlyPdu);
+
+  fcOnlyPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+
+  fillFlowControlPDU(fcOnlyPdu);
+
+  sendToRMT(fcOnlyPdu);
+}
+
+void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
+{
   //      unsigned int newRightWinEdge;
   /****************************************/
   //TODO A! is this the correct variable??
   /****************************************/
-  ackFlowPdu->setNewRightWinEdge(dtcp->getSndRtWinEdge());
+  flowControlPdu->setNewRightWinEdge(dtcp->getSndRtWinEdge());
   //        unsigned int newRate;
-  ackFlowPdu->setNewRate(dtcp->getSndRate());
+  flowControlPdu->setNewRate(dtcp->getSndRate());
   //          unsigned int timeUnit;
-  ackFlowPdu->setTimeUnit(dtcp->getSendingTimeUnit());
+  flowControlPdu->setTimeUnit(dtcp->getSendingTimeUnit());
   //          unsigned int myLeftWinEdge;
-  ackFlowPdu->setMyLeftWinEdge(state.getRcvLeftWinEdge());
+  flowControlPdu->setMyLeftWinEdge(state.getRcvLeftWinEdge());
   //          unsigned int myRightWinEdge;
   //TODO A1 Change it. Get value from dtcp flowControl rcvRightWindowEdge
   // Also make sure the rcvRightWindowEdge is properly updated whenever rcvLeftWindowEdge gets updated
-  ackFlowPdu->setMyRightWinEdge(state.getRcvLeftWinEdge() + dtcp->getRcvCredit());
+  flowControlPdu->setMyRightWinEdge(state.getRcvLeftWinEdge() + dtcp->getRcvCredit());
   //          unsigned int myRcvRate;
-  ackFlowPdu->setMyRcvRate(dtcp->getRcvRate());
+  flowControlPdu->setMyRcvRate(dtcp->getRcvRate());
+}
 
-  sendToRMT(ackFlowPdu);
+void DTP::sendAckFlowPDU()
+{
+
+  //TODO A1
+  //if flowControl in use -> flowC
+
+  if(state.isFCPresent() && state.isRxPresent()){
+    //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
+      AckFlowPDU* ackFlowPdu = new AckFlowPDU();
+      setPDUHeader(ackFlowPdu);
+      ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+
+      //TODO A2 verify it and update handling of ackFlowPdu
+      ackFlowPdu->setAckNackSeqNum(state.getRcvLeftWinEdge() - 1);
+
+      //      unsigned int newRightWinEdge;
+      /****************************************/
+      //TODO A! is this the correct variable??
+      /****************************************/
+    fillFlowControlPDU(ackFlowPdu);
+      sendToRMT(ackFlowPdu);
+  }else if(state.isFCPresent()){
+    //TODO A1 send FC
+
+    sendFCOnlyPDU();
+  }
+
+
 }
 
 void DTP::handleMsgFromRmtnew(PDU* msg){
@@ -759,8 +796,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
     {
       /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
-      //TODO A!
-      //if a duplicate among the gaps then // search reassemblyQ?
+
       bool dup = false;
       std::vector<DataTransferPDU*>::iterator it;
       for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
@@ -1447,8 +1483,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 //  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
 //  {
 //    /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
-//    //TODO A!
-//    //if a duplicate among the gaps then // search reassemblyQ?
+
 //    if (false)
 //    {
 //      /* Case 3) Duplicate Among gaps */
@@ -1738,6 +1773,7 @@ void DTP::runReceivingFlowControlPolicy()
   {
     //TODO A!
     //Send FlowControl PDU /* Already updated the window and not sending Ack */
+    sendFCOnlyPDU();
   }
 }
 
@@ -2052,11 +2088,11 @@ void DTP::schedule(DTPTimers *timer, double time)
       scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
       break;
     }
-    case (DTP_SENDING_RATE_TIMER): {
-
-      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000), timer);
-      break;
-    }
+//    case (DTP_SENDING_RATE_TIMER): {
+//
+//      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000), timer);
+//      break;
+//    }
   }
 
 }
@@ -2068,6 +2104,7 @@ void DTP::setFlow(Flow* flow)
 
 void DTP::setDTCP(DTCP* dtcp){
   this->dtcp = dtcp;
+  dtcp->setDTP(this);
 }
 
 

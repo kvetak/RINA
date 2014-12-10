@@ -50,7 +50,9 @@ void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
 
 FlowControl::~FlowControl()
 {
-  // TODO Auto-generated destructor stub
+
+
+  cancelAndDelete(sendingRateTimer);
 }
 
 void FlowControl::incDupFC()
@@ -136,6 +138,9 @@ void FlowControl::handleMessage(cMessage *msg){
         handleSendingRateTimer((FCSendingRateTimer*)fcTimer);
         break;
       }
+//      case(FC_WINDOW_TIMER):{
+//
+//      }
 
 
 
