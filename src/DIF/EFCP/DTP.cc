@@ -432,6 +432,7 @@ void DTP::sendFCOnlyPDU()
 
 void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 {
+
   //      unsigned int newRightWinEdge;
   /****************************************/
   //TODO A! is this the correct variable??
@@ -451,31 +452,32 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
   flowControlPdu->setMyRcvRate(dtcp->getRcvRate());
 }
 
-void DTP::sendAckFlowPDU()
+void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 {
 
   //TODO A1
   //if flowControl in use -> flowC
+  if(!seqNumValid){
+    seqNum = state.getRcvLeftWinEdge() - 1;
+  }
 
   if(state.isFCPresent() && state.isRxPresent()){
     //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
-      AckFlowPDU* ackFlowPdu = new AckFlowPDU();
-      setPDUHeader(ackFlowPdu);
-      ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+    AckFlowPDU* ackFlowPdu = new AckFlowPDU();
+    setPDUHeader(ackFlowPdu);
+    ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
 
-      //TODO A2 verify it and update handling of ackFlowPdu
-      ackFlowPdu->setAckNackSeqNum(state.getRcvLeftWinEdge() - 1);
+    //TODO A2 verify it and update handling of ackFlowPdu
+    ackFlowPdu->setAckNackSeqNum(state.getRcvLeftWinEdge() - 1);
 
-      //      unsigned int newRightWinEdge;
-      /****************************************/
-      //TODO A! is this the correct variable??
-      /****************************************/
     fillFlowControlPDU(ackFlowPdu);
-      sendToRMT(ackFlowPdu);
+    sendToRMT(ackFlowPdu);
   }else if(state.isFCPresent()){
     //TODO A1 send FC
 
     sendFCOnlyPDU();
+  }else if(state.isRxPresent()){
+    sendAckOnlyPDU(seqNum);
   }
 
 
@@ -1735,6 +1737,21 @@ void DTP::runRateReductionPolicy()
   /* End Default */
 }
 
+void DTP::sendAckOnlyPDU(unsigned int seqNum)
+{
+  //TODO A2 How to remove allowed gaps?
+  //Update LeftWindowEdge removing allowed gaps;
+  //TODO A2 check what exactly should be send -> Ack or FlowControl or AckFlowControl (if both present)
+  //send an Ack/FlowControlPDU
+  AckOnlyPDU* ackPDU = new AckOnlyPDU();
+  setPDUHeader(ackPDU);
+  ackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+  ackPDU->setAckNackSeqNum(seqNum);
+  EV << getFullPath() << ": Sending Ack for PDU number: " << seqNum << endl;
+  //    send(ackPDU, southO);
+  sendToRMT(ackPDU);
+}
+
 /* TODO A! either add argument to this policy (PDU* pdu) or variable currentPDU to DTP class */
 void DTP::runRcvrAckPolicy(unsigned int seqNum)
 {
@@ -1746,23 +1763,17 @@ void DTP::runRcvrAckPolicy(unsigned int seqNum)
     //Update LeftWindowEdge removing allowed gaps;
 
 
-
+    //TODO A2 check what exactly should be send -> Ack or FlowControl or AckFlowControl (if both present)
     //send an Ack/FlowControlPDU
-    AckOnlyPDU* ackPDU = new AckOnlyPDU();
-    setPDUHeader(ackPDU);
-    ackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
-    ackPDU->setAckNackSeqNum(seqNum);
-    EV << getFullPath() <<": Sending Ack for PDU number: " << seqNum << endl;
-
-//    send(ackPDU, southO);
-    sendToRMT(ackPDU);
-
+//    sendAckOnlyPDU(seqNum);
+    sendAckFlowPDU(seqNum, true);
     //TODO A1 Add handling for A-timer != 0
     //stop any A-Timers asscociated with this PDU and earlier ones.
 
   }
   else
   {
+    //TODO A2
     //set A-timer for this PDU
   }
 }
@@ -2012,10 +2023,11 @@ void DTP::svUpdate(unsigned int seqNum)
       runRcvrFlowControlPolicy();
     }
 
-    if (state.isRateBased())
-    {
-      runRateReductionPolicy();
-    }
+    /* Commented due to change in specs */
+//    if (state.isRateBased())
+//    {
+//      runRateReductionPolicy();
+//    }
   }
 
   if (state.isRxPresent())

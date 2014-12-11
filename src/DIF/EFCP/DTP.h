@@ -186,13 +186,14 @@ class DTP : public cSimpleModule
     bool commonRcvControl(ControlPDU* pdu);
     void sendControlAckPDU();
     void sendEmptyDTPDU();
-    void sendAckFlowPDU();
+    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
     bool setDRFInPDU(bool override);
 
     void redrawGUI();
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
     void sendFCOnlyPDU();
     void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
+    void sendAckOnlyPDU(unsigned int seqNum);
 
   public:
     DTP();
