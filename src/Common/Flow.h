@@ -101,8 +101,8 @@ class Flow : public cObject
     void setDstAddr(const Address& dstAddr);
     const Address& getSrcAddr() const;
     void setSrcAddr(const Address& srcAddr);
-    const QosCube& getQosParameters() const;
-    void setQosParameters(const QosCube& qosParameters);
+    const QoSCube& getQosParameters() const;
+    void setQosParameters(const QoSCube& qosParameters);
 
     const Address& getDstNeighbor() const;
     void setDstNeighbor(const Address& dstNeighbor);
@@ -128,7 +128,7 @@ class Flow : public cObject
     uint32_t maxCreateFlowRetries;
     uint32_t hopCount;
 
-    QosCube qosParameters;
+    QoSCube qosParameters;
 
     void swapPortIds();
     void swapAddresses();

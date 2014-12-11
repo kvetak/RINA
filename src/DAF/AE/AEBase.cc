@@ -99,11 +99,11 @@ void AEBase::initialize()
     initQoSRequiremets();
 }
 
-const QosCube& AEBase::getQoSRequirements() const {
+const QoSCube& AEBase::getQoSRequirements() const {
     return QoSRequirements;
 }
 
-void AEBase::setQoSRequirements(const QosCube& qoSRequirements) {
+void AEBase::setQoSRequirements(const QoSCube& qoSRequirements) {
     QoSRequirements = qoSRequirements;
 }
 
@@ -133,7 +133,7 @@ void AEBase::initQoSRequiremets() {
     }
 
     //Create QoS cube according to parameters
-    QosCube cube;
+    QoSCube cube;
 
     int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
     int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)

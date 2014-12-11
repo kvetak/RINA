@@ -34,7 +34,7 @@ extern const char* STR_DONOTCARE;
 extern const char* STR_YES;
 extern const char* STR_NO;
 
-class QosCube {
+class QoSCube {
 
   private:
     unsigned short qoSId;
@@ -59,8 +59,8 @@ class QosCube {
     //Policy-Default-Parameters: List;
 
   public:
-    QosCube();
-    virtual ~QosCube();
+    QoSCube();
+    virtual ~QoSCube();
     int getAvgBand() const;
     void setAvgBand(int avgBand);
     int getAvgSduBand() const;
@@ -96,12 +96,12 @@ class QosCube {
     int getCostTime() const;
     void setCostTime(int costTime);
 
-    short countFeasibilityScore(const QosCube templ) const;
+    short countFeasibilityScore(const QoSCube templ) const;
 
     std::string info() const;
 };
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const QosCube& cube);
+std::ostream& operator<< (std::ostream& os, const QoSCube& cube);
 
 #endif /* QOSCUBE_H_ */

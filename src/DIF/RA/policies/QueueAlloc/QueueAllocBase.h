@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,7 @@
 
 #include <omnetpp.h>
 #include "RABase.h"
-#include "QosCube.h"
+#include "QoSCube.h"
 #include "RMTQueueManager.h"
 #include "RMTPort.h"
 

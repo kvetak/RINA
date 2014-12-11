@@ -137,7 +137,7 @@ void RA::initQoSCubes()
             continue;
         }
 
-        QosCube cube;
+        QoSCube cube;
         cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
         //Following data types should be same as in QosCubes.h
         int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
