@@ -249,7 +249,7 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
 
 
 bool QosCube::isDTCPNeeded()const {
-  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery();
+  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand <= 0;
 }
 std::string QosCube::info() const {
     std::ostringstream os;
