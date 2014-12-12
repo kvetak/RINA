@@ -116,21 +116,27 @@ void DTP::redrawGUI()
   std::ostringstream desc;
   desc << "nextSeqNum: " << state.getNextSeqNumToSendWithoutIncrement() <<"\n";
   desc << "sLWE: " << state.getSenderLeftWinEdge() <<"\n";
-  desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
-  desc << "rLWE: " << state.getRcvLeftWinEdge() <<"\n";
-  desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
-  if(rxQ.empty()){
-    desc << "rxQ: empty"<< "\n";
+  if(state.isDtcpPresent() && state.isFCPresent()){
+    desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
-  else
-  {
-    desc << "rxQ: ";
-    std::vector<RxExpiryTimer*>::iterator it;
-    for (it = rxQ.begin(); it != rxQ.end(); ++it)
+  desc << "rLWE: " << state.getRcvLeftWinEdge() <<"\n";
+  if(state.isDtcpPresent() && state.isFCPresent()){
+    desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
+
+    if (rxQ.empty())
     {
-      desc << (*it)->getPdu()->getSeqNum() << " | ";
+      desc << "rxQ: empty" << "\n";
     }
-    desc << "\n";
+    else
+    {
+      desc << "rxQ: ";
+      std::vector<RxExpiryTimer*>::iterator it;
+      for (it = rxQ.begin(); it != rxQ.end(); ++it)
+      {
+        desc << (*it)->getPdu()->getSeqNum() << " | ";
+      }
+      desc << "\n";
+    }
   }
 
   if(reassemblyPDUQ.empty()){
@@ -2090,14 +2096,29 @@ void DTP::schedule(DTPTimers *timer, double time)
       break;
     }
     case (DTP_SENDER_INACTIVITY_TIMER): {
+
+      //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
+
       //TODO A! 3(MPL+R+A)
-      scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
+      unsigned int rxCount = 1;
+      if(state.isRxPresent()){
+        rxCount = dtcp->rxControl->dataReXmitMax;
+
+
+      scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
+      }
 //      scheduleAt(simTime() + 10, timer);
       break;
     }
     case (DTP_RCVR_INACTIVITY_TIMER): {
-      //TODO A!
-      scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * dtcp->rxControl->dataReXmitMax)) + 0 , timer);
+
+      //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
+      unsigned int rxCount = 1;
+      if(state.isRxPresent()){
+        rxCount = dtcp->rxControl->dataReXmitMax;
+        //TODO A!
+        scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
+      }
       break;
     }
 //    case (DTP_SENDING_RATE_TIMER): {
@@ -2116,7 +2137,9 @@ void DTP::setFlow(Flow* flow)
 
 void DTP::setDTCP(DTCP* dtcp){
   this->dtcp = dtcp;
-  dtcp->setDTP(this);
+  if(dtcp!= NULL){
+    dtcp->setDTP(this);
+  }
 }
 
 
