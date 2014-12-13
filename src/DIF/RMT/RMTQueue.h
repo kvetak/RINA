@@ -56,6 +56,7 @@ class RMTQueue : public cSimpleModule
     void dropLast();
     void markCongestionOnLast();
 
+    bool isBounded();
     std::string info() const;
 
   private:
@@ -66,11 +67,12 @@ class RMTQueue : public cSimpleModule
 
     simtime_t qTime;
     queueType type;
-    unsigned short qosId;
 
     cGate* rmtAccessGate;
     cGate* outputGate;
     cGate* inputGate;
+
+    unsigned short qosId;
 
     simsignal_t sigRMTPDURcvd;
 

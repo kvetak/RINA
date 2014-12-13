@@ -20,7 +20,6 @@ Define_Module(RMTQueue);
 
 RMTQueue::RMTQueue()
 {
-    qosId = 0;
 }
 
 
@@ -60,6 +59,11 @@ std::string RMTQueue::info() const
 std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
 {
     return os << cte.info();
+}
+
+bool RMTQueue::isBounded()
+{
+    return outputGate->isConnected();
 }
 
 void RMTQueue::redrawGUI()

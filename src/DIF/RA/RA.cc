@@ -266,6 +266,22 @@ void RA::handleMessage(cMessage *msg)
 {
 }
 
+void RA::bindQueueToPort(RMTQueue* queue, RMTPort* port)
+{
+    if (queue->getType() == RMTQueue::INPUT)
+    {
+        cGate* toInputQueue = port->addGate(queue->getFullName(), cGate::OUTPUT, false);
+        toInputQueue->connectTo(queue->getInputGate());
+        port->setInputQueue(queue, toInputQueue);
+    }
+    else
+    {
+        cGate* fromOutputQueue = port->addGate(queue->getFullName(), cGate::INPUT, false);
+        queue->getOutputGate()->connectTo(fromOutputQueue);
+        port->addOutputQueue(queue, fromOutputQueue);
+    }
+}
+
 /**
  * Connects each queue from given RMTQueue vector to given port.
  *
@@ -277,19 +293,7 @@ void RA::bindQueuesToPort(RMTQueues& queues, RMTPort* port)
     for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* q = *it;
-
-        if (q->getType() == RMTQueue::INPUT)
-        {
-            cGate* toInputQueue = port->addGate(q->getFullName(), cGate::OUTPUT, false);
-            toInputQueue->connectTo(q->getInputGate());
-            port->setInputQueue(q, toInputQueue);
-        }
-        else
-        {
-            cGate* fromOutputQueue = port->addGate(q->getFullName(), cGate::INPUT, false);
-            q->getOutputGate()->connectTo(fromOutputQueue);
-            port->addOutputQueue(q, fromOutputQueue);
-        }
+        bindQueueToPort(q, port);
     }
 }
 
@@ -578,8 +582,13 @@ void RA::bindFlowToMedium(Flow* flow)
 {
     EV << "binding a flow to the medium" << endl;
 
-    RMTQueue* outQueue = rmtQM->getFirst(RMTQueue::OUTPUT);
-    rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), outQueue);
+    RMTPort* port = (RMTPort*)(rmtModule->getSubmodule("PHY"));
+    RMTQueue* queue = qAllocPolicy->getSuitableQueue(port, flow->getConnectionId().getQoSId());
+    if (!queue->isBounded())
+    {
+        bindQueueToPort(queue, port);
+    }
+    rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), queue);
 }
 
 /**
@@ -600,6 +609,7 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
 
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     std::string dstAddr = flow->getDstAddr().getApname().getName();
+    int srcCepId = flow->getConId().getSrcCepId();
     unsigned short qosId = flow->getConId().getQoSId();
 
     // see if any appropriate (N-1)-flow already exists
@@ -629,8 +639,12 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     }
     else
     {
-        rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(),
-                                    targetFlow->getRmtOutputQueues().front());
+        RMTQueue* queue = qAllocPolicy->getSuitableQueue(targetFlow->getRmtPort(), qosId);
+        if (!queue->isBounded())
+        {
+            bindQueueToPort(queue, targetFlow->getRmtPort());
+        }
+        rmt->addEfcpiToQueueMapping(srcCepId, queue);
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {

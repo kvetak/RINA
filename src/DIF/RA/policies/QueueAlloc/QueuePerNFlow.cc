@@ -15,18 +15,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#include <QueuePerNFlow.h>
 
-#include <omnetpp.h>
+Define_Module(QueuePerNFlow);
 
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+void QueuePerNFlow::createQueues(RMTPort* port, RMTQueues& result)
 {
-  public:
-    void createQueues(RMTPort* port, RMTQueues& result);
-    RMTQueue* getSuitableQueue(RMTPort* port, short qosId);
-};
+    result.push_back(rmtQM->addQueue(RMTQueue::INPUT, port));
+    result.push_back(rmtQM->addQueue(RMTQueue::OUTPUT, port));
+}
 
-#endif
+RMTQueue* QueuePerNFlow::getSuitableQueue(RMTPort* port, short qosId)
+{
+    return rmtQM->addQueue(RMTQueue::OUTPUT, port);
+}
+

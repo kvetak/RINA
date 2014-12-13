@@ -1,5 +1,5 @@
 //
-// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -33,13 +33,14 @@ class QueueAllocBase : public cSimpleModule
     QueueAllocBase();
     virtual ~QueueAllocBase();
     virtual void createQueues(RMTPort* port, RMTQueues& result);
+    virtual RMTQueue* getSuitableQueue(RMTPort* port, short qosId);
 
   protected:
     void initialize();
     void handleMessage(cMessage *msg);
 
+    RABase* ra;
     RMTQueueManager* rmtQM;
-    QosCubeSet qosCubes;
 };
 
 #endif /* QUEUEALLOCBASE_H_ */

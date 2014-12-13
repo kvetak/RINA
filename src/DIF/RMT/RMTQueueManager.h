@@ -40,6 +40,7 @@ class RMTQueueManager : public cSimpleModule
     void removeQueue(RMTQueue* queue);
 
     RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
+    RMTQueue* lookup(short qosId, RMTQueue::queueType type);
 
     RMTQueue* getFirst(RMTQueue::queueType type);
     RMTQueue* getLongest(RMTQueue::queueType type);

@@ -60,8 +60,6 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, uns
     RMTQueue* module = dynamic_cast<RMTQueue*>(module_f);
 
     // modify the position a little
-
-
     cDisplayString& disp = module->getDisplayString();
 
     if (port != NULL)
@@ -160,6 +158,19 @@ RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType typ
     return NULL;
 }
 
+RMTQueue* RMTQueueManager::lookup(short qosId, RMTQueue::queueType type)
+{
+    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
+    {
+        RMTQueue* a = *it;
+        if (qosId == a->getQosId())
+        {
+            return a;
+        }
+    }
+    return NULL;
+}
+
 RMTQueue* RMTQueueManager::getLongest(RMTQueue::queueType type)
 {
     int longest = 0;
@@ -187,3 +198,4 @@ RMTQueueManager::iterator RMTQueueManager::end()
 {
     return this->queues.end();
 }
+
