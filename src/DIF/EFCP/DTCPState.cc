@@ -35,6 +35,8 @@ DTCPState::DTCPState()
   rcvRtWinEdge = rcvCredit;
   rcvRightWinEdgeSent = 0;
   sndRightWinEdge = sndCredit;
+  nextSenderControlSeqNum = 1;
+  lastControlSeqNumRcv = 0;
 
 
 
@@ -143,3 +145,13 @@ void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
 //unsigned int DTCPState::getNextCtrlSeqNum(){
 //  return controlSeqNum++;
 //}
+unsigned int DTCPState::getNextSndCtrlSeqNum()
+{
+  return nextSenderControlSeqNum++;
+}
+unsigned int DTCPState::getLastCtrlSeqNumRcv(){
+  return lastControlSeqNumRcv;
+}
+void DTCPState::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
+  lastControlSeqNumRcv = ctrlSeqNum;
+}

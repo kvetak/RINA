@@ -35,7 +35,7 @@
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
-#define DEFAULT_INIT_SEQUENCE_NUMBER 0
+#define DEFAULT_INIT_SEQUENCE_NUMBER 1
 //#include "FA.h" //or FlowAllocatorFactory
 
 class DTCP;

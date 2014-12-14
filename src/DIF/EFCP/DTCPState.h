@@ -45,6 +45,9 @@ class DTCPState : public cObject
     //retransmissionQ
 
 //    unsigned int controlSeqNum; //sequence number for ControlPDUs
+    /* Moved from RX */
+    unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
+    unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
 
 
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
@@ -68,6 +71,10 @@ class DTCPState : public cObject
     unsigned int getRcvRtWinEdge() const;
     void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
 //    unsigned int getNextCtrlSeqNum();
+    unsigned int getNextSndCtrlSeqNum();
+    unsigned int getLastCtrlSeqNumRcv();
+    void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
+
 
 };
 

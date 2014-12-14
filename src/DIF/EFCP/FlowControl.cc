@@ -25,28 +25,39 @@
 
 #include <FlowControl.h>
 
+void FlowControl::initialize()
+{
+  Enter_Method("FlowControl::initialize()");
+//  sendingRateTimer = new FCSendingRateTimer();
+//  schedule(sendingRateTimer);
+}
 
 FlowControl::FlowControl()
 {
 
-  sendingRateTimer = new FCSendingRateTimer();
 
-  schedule(sendingRateTimer);
+  sendingRateTimer = NULL;
+
 
   dupFC = 0;
-  rcvRightWindowEdge = 0;
+  rcvRightWindowEdge = 2;
+  sendingRateFullfilled = false;
+
+  // FIXME A! get it from qoscube
+  timeUnit = 1000;
+  sendingRate = 2;
 
 }
 
-unsigned int FlowControl::getSendRightWindowEdge() const
-{
-  return sendRightWindowEdge;
-}
-
-void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
-{
-  this->sendRightWindowEdge = sendRightWindowEdge;
-}
+//unsigned int FlowControl::getSendRightWindowEdge() const
+//{
+//  return sendRightWindowEdge;
+//}
+//
+//void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
+//{
+//  this->sendRightWindowEdge = sendRightWindowEdge;
+//}
 
 FlowControl::~FlowControl()
 {
