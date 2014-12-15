@@ -27,9 +27,9 @@
 
 RXControl::RXControl()
 {
-  nextSenderControlSeqNum = 1;
+//  nextSenderControlSeqNum = 1;
   dupAcks = 0;
-  lastControlSeqNumRcv = 0;
+//  lastControlSeqNumRcv = 0;
   dataReXmitMax = 3;
 
 }
@@ -44,18 +44,18 @@ unsigned int RXControl::getRightWinEdge(){
   return rightWinEdge;
 }
 
-unsigned int RXControl::getNextSndCtrlSeqNum()
-{
-  return nextSenderControlSeqNum++;
-}
+//unsigned int RXControl::getNextSndCtrlSeqNum()
+//{
+//  return nextSenderControlSeqNum++;
+//}
 
-unsigned int RXControl::getLastCtrlSeqNumRcv(){
-  return lastControlSeqNumRcv;
-}
+//unsigned int RXControl::getLastCtrlSeqNumRcv(){
+//  return lastControlSeqNumRcv;
+//}
 
-void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
-  lastControlSeqNumRcv = ctrlSeqNum;
-}
+//void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
+//  lastControlSeqNumRcv = ctrlSeqNum;
+//}
 void RXControl::incDupAcks()
 {
   dupAcks++;

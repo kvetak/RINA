@@ -25,28 +25,45 @@
 
 #include <FlowControl.h>
 
+void FlowControl::initialize()
+{
+  Enter_Method("FlowControl::initialize()");
+//  sendingRateTimer = new FCSendingRateTimer();
+//  schedule(sendingRateTimer);
+}
+
 FlowControl::FlowControl()
 {
 
 
+  sendingRateTimer = NULL;
+
+
   dupFC = 0;
-  rcvRightWindowEdge = 0;
+  rcvRightWindowEdge = 2;
+  sendingRateFullfilled = false;
+
+  // FIXME A! get it from qoscube
+  timeUnit = 1000;
+  sendingRate = 2;
 
 }
 
-unsigned int FlowControl::getSendRightWindowEdge() const
-{
-  return sendRightWindowEdge;
-}
-
-void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
-{
-  this->sendRightWindowEdge = sendRightWindowEdge;
-}
+//unsigned int FlowControl::getSendRightWindowEdge() const
+//{
+//  return sendRightWindowEdge;
+//}
+//
+//void FlowControl::setSendRightWindowEdge(unsigned int sendRightWindowEdge)
+//{
+//  this->sendRightWindowEdge = sendRightWindowEdge;
+//}
 
 FlowControl::~FlowControl()
 {
-  // TODO Auto-generated destructor stub
+
+
+  cancelAndDelete(sendingRateTimer);
 }
 
 void FlowControl::incDupFC()
@@ -92,4 +109,56 @@ unsigned int FlowControl::getRcvRightWindowEdge() const
 void FlowControl::setRcvRightWindowEdge(unsigned int rcvRightWindowEdge)
 {
   this->rcvRightWindowEdge = rcvRightWindowEdge;
+}
+
+
+void FlowControl::schedule(FCTimers* timer, double time)
+{
+  switch (timer->getType())
+  {
+    case (FC_SENDING_RATE_TIMER): {
+      time = 0;
+      scheduleAt(simTime() + timeUnit / 1000, timer);
+      break;
+    }
+  }
+}
+
+bool FlowControl::isSendingRateFullfilled() const
+{
+  return sendingRateFullfilled;
+}
+
+void FlowControl::setSendingRateFullfilled(bool rateFullfilled)
+{
+  this->sendingRateFullfilled = rateFullfilled;
+}
+
+void FlowControl::handleSendingRateTimer(FCSendingRateTimer* fcTimer)
+{
+  pdusSentInTimeUnit = 0;
+  setSendingRateFullfilled(false);
+  schedule(fcTimer);
+}
+
+void FlowControl::handleMessage(cMessage *msg){
+  if(msg->isSelfMessage()){
+    FCTimers* fcTimer = static_cast<FCTimers*>(msg);
+    switch(fcTimer->getType()){
+      case(FC_SENDING_RATE_TIMER):{
+        handleSendingRateTimer((FCSendingRateTimer*)fcTimer);
+        break;
+      }
+//      case(FC_WINDOW_TIMER):{
+//
+//      }
+
+
+
+    }
+
+  }else{
+
+    //PANIC!
+  }
 }

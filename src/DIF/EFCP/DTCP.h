@@ -31,13 +31,19 @@
 #include "RXControl.h"
 #include "DTCPState.h"
 #include "DTPState.h"
+#include "DTP.h"
+#include "EFCP_defs.h"
 #include "ControlPDU_m.h"
 #include "DTCPTimers_m.h"
+
+class DTP;
+class FlowControl;
 
 class DTCP: public cSimpleModule {
     friend class DTP;
   private:
 
+    DTP* dtp;
     DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
@@ -50,7 +56,7 @@ class DTCP: public cSimpleModule {
 
 
 
-    void schedule(DTCPTimers *timer);
+    void schedule(DTCPTimers *timer, double time = 0.0);
     void resetWindowTimer();
 
     void sendAckPDU();
@@ -59,6 +65,9 @@ public:
 
     DTCP();
     virtual ~DTCP();
+
+    void setDTP(DTP* dtp);
+
 
     void handleWindowTimer(WindowTimer* timer);
 
@@ -86,9 +95,13 @@ public:
 
     unsigned long getSendingTimeUnit();
 
+    bool isSendingRateFullfilled() const;
+    void setSendingRateFullfilled(bool rateFullfilled);
+
+
 protected:
     virtual void handleMessage(cMessage *msg);
-    virtual void initialize();
+    virtual void initialize(int step);
 };
 
 #endif /* DTCP_H_ */

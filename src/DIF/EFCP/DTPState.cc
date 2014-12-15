@@ -46,7 +46,7 @@ void DTPState::initDefaults(){
 
 
   //TODO B! Fix
-  rtt = 1;
+  rtt = 0.5;
 
 }
 
@@ -166,13 +166,13 @@ void DTPState::setRateBased(bool rateBased) {
     this->rateBased = rateBased;
 }
 
-bool DTPState::isRateFullfilled() const {
-    return rateFullfilled;
-}
-
-void DTPState::setRateFullfilled(bool rateFullfilled) {
-    this->rateFullfilled = rateFullfilled;
-}
+//bool DTPState::isRateFullfilled() const {
+//    return rateFullfilled;
+//}
+//
+//void DTPState::setRateFullfilled(bool rateFullfilled) {
+//    this->rateFullfilled = rateFullfilled;
+//}
 
 unsigned int DTPState::getRcvLeftWinEdge() const {
     return rcvLeftWinEdge;

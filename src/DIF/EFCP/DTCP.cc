@@ -21,6 +21,8 @@ DTCP::DTCP() {
   rxControl = NULL;
   flowControl = NULL;
 
+
+
 }
 
 DTCP::~DTCP()
@@ -35,22 +37,57 @@ DTCP::~DTCP()
   }
 }
 
-void DTCP::initialize(){
-  // TODO Auto-generated constructor stub
-dtcpState = new DTCPState();
-
-
-//TODO A2 based on DTCPState create appropriate components
-rxControl = new RXControl();
-
-flowControl = new FlowControl();
+void DTCP::setDTP(DTP* dtp)
+{
+  this->dtp = dtp;
 }
 
-void DTCP::schedule(DTCPTimers* timer){
+void DTCP::initialize(int step)
+{
+  Enter_Method("initialize");
+  dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+
+//TODO A1 Fill it with appropriate values
+  dtcpState = new DTCPState();
+
+//TODO A2 based on DTPState create appropriate components
+  if (dtp->state.isRxPresent())
+  {
+    rxControl = new RXControl();
+  }
+
+  if (dtp->state.isFCPresent())
+  {
+    flowControl = new FlowControl();
+    flowControl->initialize();
+    if (dtp->state.isWinBased())
+    {
+      windowTimer = new WindowTimer();
+      schedule(windowTimer);
+    }
+  }
+
 
 }
+
+void DTCP::schedule(DTCPTimers* timer, double time){
+
+  switch (timer->getType())
+  {
+    case (DTCP_WINDOW_TIMER): {
+      time = 0;
+      // TODO B1 Make #define for "3"
+      scheduleAt(simTime() + (1 / flowControl->getSendingRate()) + 3, timer);
+      break;
+    }
+  }
+
+}
+
+
 
 void DTCP::resetWindowTimer(){
+  Enter_Method_Silent();
   cancelEvent(windowTimer);
       schedule(windowTimer);
 }
@@ -79,37 +116,38 @@ void DTCP::handleMessage(cMessage *msg){
 
 void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
-  sendAckPDU();
-}
-
-
-
-void DTCP::sendAckPDU(){
+  //TODO A1 Uncomment
+//  dtp->sendControlAckPDU();
 
 }
 
 unsigned int DTCP::getNextSndCtrlSeqNum(){
-  return rxControl->getNextSndCtrlSeqNum();
+//  return rxControl->getNextSndCtrlSeqNum();
+  return dtcpState->getNextSndCtrlSeqNum();
 }
 
 unsigned int DTCP::getLastCtrlSeqNumRcv(){
-  return rxControl->getLastCtrlSeqNumRcv();
+//  return rxControl->getLastCtrlSeqNumRcv();
+  return dtcpState->getLastCtrlSeqNumRcv();
 }
 
 void DTCP::setLastCtrlSeqnumRec(unsigned int ctrlSeqNum){
-  rxControl->setLastCtrlSeqNumRcv(ctrlSeqNum);
+//  rxControl->setLastCtrlSeqNumRcv(ctrlSeqNum);
+  dtcpState->setLastCtrlSeqNumRcv(ctrlSeqNum);
 }
 
 void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
 {
-  flowControl->setSendRightWindowEdge(sndRtWinEdge);
+//  flowControl->setSendRightWindowEdge(sndRtWinEdge);
+  dtcpState->setSenderRightWinEdge(sndRtWinEdge);
 }
 
 unsigned int DTCP::getSndRtWinEdge()
 {
-  if(flowControl != NULL){
-  return flowControl->getSendRightWindowEdge();
-  }
+
+//  return flowControl->getSendRightWindowEdge();
+  return dtcpState->getSenderRightWinEdge();
+
 }
 
 void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
@@ -119,7 +157,7 @@ void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 
 unsigned int DTCP::getRcvRtWinEdge()
 {
-  flowControl->getRcvRightWindowEdge();
+  return flowControl->getRcvRightWindowEdge();
 }
 
 void DTCP::setSndRate(unsigned int sendingRate)
@@ -127,7 +165,7 @@ void DTCP::setSndRate(unsigned int sendingRate)
   flowControl->setSendingRate(sendingRate);
 }
 unsigned int DTCP::getSndRate(){
-  flowControl->getSendingRate();
+  return flowControl->getSendingRate();
 }
 
 void DTCP::setRcvRate(unsigned int rcvrRate)
@@ -135,7 +173,7 @@ void DTCP::setRcvRate(unsigned int rcvrRate)
   flowControl->setRcvrRate(rcvrRate);
 }
 unsigned int DTCP::getRcvRate(){
-  flowControl->getRcvrRate();
+  return flowControl->getRcvrRate();
 }
 
 unsigned int DTCP::getRcvCredit()
@@ -150,3 +188,12 @@ unsigned long DTCP::getSendingTimeUnit()
 }
 
 
+bool DTCP::isSendingRateFullfilled() const
+{
+  return flowControl->isSendingRateFullfilled();
+}
+
+void DTCP::setSendingRateFullfilled(bool rateFullfilled)
+{
+  flowControl->setSendingRateFullfilled(rateFullfilled);
+}

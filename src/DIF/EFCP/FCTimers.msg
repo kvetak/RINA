@@ -20,13 +20,18 @@
 enum FCTimerType
 {
   FC_SENDING_RATE_TIMER = 1;
+//  FC_WINDOW_TIMER = 2;
   
 }
 
 message FCTimers {
     int type enum(FCTimerType);
-    string anotherField;
-    double arrayField1[];
-    double arrayField2[10];
 }
+
+message FCSendingRateTimer extends FCTimers{
+  type = FC_SENDING_RATE_TIMER;
+}
+//message FCWindowTimer extends FCTimers{
+//  type = FC_WINDOW_TIMER;
+//}
 

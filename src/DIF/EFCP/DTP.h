@@ -35,14 +35,17 @@
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
-#define DEFAULT_INIT_SEQUENCE_NUMBER 0
+#define DEFAULT_INIT_SEQUENCE_NUMBER 1
 //#include "FA.h" //or FlowAllocatorFactory
 
+class DTCP;
 
 class DTP : public cSimpleModule
 {
+    //TODO A1 Remove friend class policies;
     /* Friend policies */
     friend class DefaultTxControlPolicy;
+    friend class DTCP;
   private:
 
     int deletePdu;
@@ -69,8 +72,10 @@ class DTP : public cSimpleModule
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
+
+    /**************** Moved rateFulfilled to FC together with sendingRatetimer **************************/
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */
-    SendingRateTimer* sendingRateTimer;
+//    SendingRateTimer* sendingRateTimer;
 
 //    WindowTimer* windowTimer;
 
@@ -89,7 +94,7 @@ class DTP : public cSimpleModule
 
     /* Handle messages and timer */
     void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
-    void handleDTPSendingRateTimer(SendingRateTimer* timer);
+//    void handleDTPSendingRateTimer(SendingRateTimer* timer);
 //    void handleDTPWindowTimer(WindowTimer* timer);
     void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
     void handleDTPSenderInactivityTimer(SenderInactivityTimer* timer);
@@ -181,11 +186,14 @@ class DTP : public cSimpleModule
     bool commonRcvControl(ControlPDU* pdu);
     void sendControlAckPDU();
     void sendEmptyDTPDU();
-    void sendAckFlowPDU();
+    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
     bool setDRFInPDU(bool override);
 
     void redrawGUI();
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
+    void sendFCOnlyPDU();
+    void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
+    void sendAckOnlyPDU(unsigned int seqNum);
 
   public:
     DTP();
