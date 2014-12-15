@@ -22,6 +22,7 @@ extern const char* SIG_RIBD_DeleteResponseFlow;
 extern const char* SIG_RIBD_CreateFlow;
 extern const char* SIG_RIBD_CreateFlowResponseNegative;
 extern const char* SIG_RIBD_CreateFlowResponsePositive;
+extern const char* SIG_RIBD_ForwardingUpdateReceived;
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
@@ -74,5 +75,8 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 //RMT
 extern const char* SIG_RMT_NoConnId;
 extern const char* SIG_RMT_MessageReceived;
+
+// PDUFTG
+extern const char* SIG_PDUFTG_FwdInfoUpdate;
 
 #endif /* RINASIGNALS_H_ */

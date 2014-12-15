@@ -35,6 +35,9 @@
 #include "RAListeners.h"
 #include "QueueAllocBase.h"
 
+/* Forwarding and routing stuff... */
+#include "PDUFwdTabGenerator.h"
+
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
@@ -79,6 +82,9 @@ class RA : public RABase
     PDUForwardingTable* fwTable;
     FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
+
+    /* Forwarding and routing stuff... */
+    PDUFwdTabGenerator * fwdtg;
 
     std::string processName;
 

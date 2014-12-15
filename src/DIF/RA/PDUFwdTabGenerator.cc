@@ -15,23 +15,311 @@
 
 /**
  * @file PDUFwdTabGenerator.cc
- * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
+ * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz), Kewin Rausch(kewin.rausch@create-net.org)
  * @brief PDU forwarding (routing) table generator.
  * @detail Responds to various events happening inside the IPC process
  *         by adding, removing and editing entries in the forwarding table.
  */
 
+/* HOWTO Read: Procedures are sorted by name. */
+
 #include "PDUFwdTabGenerator.h"
+#include "StaticRoutingPolicy.h"
+#include "DistanceVectorPolicy.h"
 
 Define_Module(PDUFwdTabGenerator);
 
+PDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
+{
+    return fwTable;
+}
+
+Address * PDUFwdTabGenerator::getIpcAddress()
+{
+    return &ipcAddr;
+}
+
+NeighborState * PDUFwdTabGenerator::getNeighborhoodState()
+{
+    return &neiState;
+}
+
+NetworkState * PDUFwdTabGenerator::getNetworkState()
+{
+    return &netState;
+}
+
+void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
+{
+    if(fwdPolicy)
+    {
+        /* Let the policy decide what to do here. */
+        fwdPolicy->mergeForwardingInfo(info);
+    }
+    else
+    {
+        EV << "PDUFTG Error: no forwarding policy selected! I don't know what to do... :S\n";
+    }
+}
+
+void PDUFwdTabGenerator::handleMessage(cMessage * msg)
+{
+    if(msg->isSelfMessage())
+    {
+        switch(msg->getKind())
+        {
+        case PDUFTG_SELFMSG_FSUPDATE:
+
+            if(fwdPolicy)
+            {
+                /* Stop condition. */
+                if(fwdPolicy->getUpdateTimeout() == 0)
+                {
+                    break;
+                }
+
+                std::list<FSUpdateInfo *> * l = (std::list<FSUpdateInfo *> *)fwdPolicy->getNetworkState();
+
+                if(l != NULL)
+                {
+                    for(std::list<FSUpdateInfo *>::iterator i = l->begin(); i != l->end(); ++i)
+                    {
+                        FSUpdateInfo * info = (*i);
+
+                        /* Finally send the update. */
+                        signalForwardingInfoUpdate(info);
+                    }
+                }
+
+                scheduleAt(
+                    simTime() + fwdPolicy->getUpdateTimeout(),
+                    new cMessage("UpdateRequested", PDUFTG_SELFMSG_FSUPDATE));
+            }
+
+
+            break;
+        default:
+            break;
+        }
+
+        delete msg;
+    }
+}
 
 void PDUFwdTabGenerator::initialize()
 {
-    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    /* IPCProcess module. */
+    cModule * ipcModule = getParentModule()->getParentModule();
+    /* Forwarding update wake up message, */
+
+    fwdPolicy = new StaticRoutingPolicy(this);
+    //fwdPolicy = new DistanceVectorPolicy(this);
+    //fwdPolicy->setUpdateTimeout(30);
+
+    fwTable   = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    flTable   = ModuleAccess<FlowTable>("flowTable").get();
+    ipcAddr   = Address(ipcModule->par("ipcAddress").stringValue(), ipcModule->par("difName").stringValue());
+
+    /* Initializes the input/output of the module. */
+    initializeSignalsAndListeners();
+
+    /* Start the forwarding update timer routine. */
+    scheduleAt(
+        simTime() + fwdPolicy->getUpdateTimeout(),
+        new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
 }
 
-void PDUFwdTabGenerator::handleMessage(cMessage *msg)
+void PDUFwdTabGenerator::initializeSignalsAndListeners()
 {
+    cModule* catcher1 = this->getParentModule()->getParentModule();
+
+    /* Signal emitters; there will be part of our outputs. */
+    sigPDUFTGFwdInfoUpdate = registerSignal(SIG_PDUFTG_FwdInfoUpdate);
+
+    /* Signal receivers; there will be part of our inputs. */
+    lisInfoRecv = new LisPDUFTGFwdInfoRecv(this);
+    catcher1->subscribe(SIG_RIBD_ForwardingUpdateReceived, lisInfoRecv);
 }
 
+void PDUFwdTabGenerator::insertFlowInfo(Address addr, short unsigned int qos, RMTPort * port)
+{
+    /* Now insert the network flow state so they'll be available for neighbors.
+     */
+    insertNetInfo(addr, qos, port, 1);
+
+    /* Insert what you consider a neighbor.
+     */
+    insertNeighbor(addr, qos, port);
+
+    // Is a policy defined?
+    if(fwdPolicy)
+    {
+        fwdPolicy->insertNewFlow(addr, qos, port);
+    }
+    // What to do if no policy has been set?
+    else
+    {
+        EV << "PDUFTG Error: no forwarding policy selected! I don't know what to do... :S\n";
+    }
+}
+
+void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPort * p)
+{
+    //EV << "INSN " << addr << " this ipc " << ipcAddr;
+
+    /* As for network informations, we're interested only on IPC located on
+     * our same layer. We must not know of N+1 or N-1 IPCs.
+     */
+    if(addr.getDifName() == ipcAddr.getDifName())
+    {
+        neiState.push_back(new PDUForwardingTableEntry(addr, qos, p));
+    }
+}
+
+void PDUFwdTabGenerator::insertNetInfo(Address dest, short unsigned int qos, RMTPort * port, unsigned int metric)
+{
+    /* Filter the flows created through RA; we're interested in the information about our
+     * DIF, not on the ones of the others(N+1 or N-1).
+     */
+    if(dest.getDifName() == ipcAddr.getDifName())
+    {
+        FSInfo * i = netInfoExists(ipcAddr, dest, qos);
+
+        // Not already existing in our Flow list.
+        if(!i)
+        {
+            i = new FSInfo(
+                /* From... */
+                ipcAddr,
+                /* ... to ... */
+                dest,
+                /* ... with QoS ... */
+                qos,
+                /* ... and metric. */
+                metric);
+
+            /* Just push it in the list. */
+            netState.push_back(i);
+        }
+    }
+}
+
+std::string PDUFwdTabGenerator::neiInfo()
+{
+    std::stringstream os;
+
+    os << "NEIINFO NeiState counts: " << neiState.size() << "\n";
+
+    for(EIter it = neiState.begin(); it != neiState.end(); ++it )
+    {
+        PDUForwardingTableEntry * e = (*it);
+
+        os << "NEIINFO Neighbor " << e->getDestAddr() << endl;
+
+        os << "\n";
+    }
+
+    return os.str();
+}
+
+std::string PDUFwdTabGenerator::netInfo()
+{
+    std::stringstream os;
+
+    os << "NETINFO NetState counts: " << netState.size() << "\n";
+
+    for(NIter it = netState.begin(); it != netState.end(); ++it )
+    {
+        FSInfo * fsi = (*it);
+        FlowTableItem * p = flTable->lookup(fsi->getDestination().getApname().getName(), fsi->getQoSID());
+
+        os << "NETINFO [From: " << fsi->getSource() << " to: " << fsi->getDestination() << " qos: " << fsi->getQoSID() << " hops: " << fsi->getMetric();
+
+        if(p)
+        {
+            RMTQueue* o = p->getRmtPort()->getOutputQueues().front();
+
+            os << " through port " << o->info() << " (is neighbor)";
+        }
+
+        os << "]\n";
+    }
+
+    return os.str();
+}
+
+PDUForwardingTableEntry * PDUFwdTabGenerator::neighborExists(Address addr)
+{
+    for(EIter it = neiState.begin(); it != neiState.end(); ++it )
+    {
+        PDUForwardingTableEntry * e = (*it);
+
+        if(e->getDestAddr() == addr)
+        {
+            return e;
+        }
+    }
+
+    return NULL;
+}
+
+FSInfo * PDUFwdTabGenerator::netInfoExists(Address src, Address dest, short unsigned int qos)
+{
+    for(NIter it = netState.begin(); it != netState.end(); ++it )
+    {
+        FSInfo * fsi = (*it);
+
+        // Equal condition; same source reach same destination with same qos constrain.
+        if(fsi->getSource() == src && fsi->getDestination() == dest && fsi->getQoSID() == qos)
+        {
+            return fsi;
+        }
+    }
+
+    return NULL;
+}
+
+void PDUFwdTabGenerator::publishPolicy(PDUFTGPolicy * p)
+{
+    unpublishPolicy();
+
+    fwdPolicy = p;
+    /* Recomputes the policy according to the new policy. */
+    fwdPolicy->computeForwardingTable();
+}
+
+void PDUFwdTabGenerator::unpublishPolicy()
+{
+    /* Clean the forwarding table; we'll regenerate it during the apply of a new policy. */
+    fwTable->clean();
+
+    // Release the resources.
+    delete fwdPolicy;
+    fwdPolicy = NULL;
+}
+
+void PDUFwdTabGenerator::removeNeiInfo(Address addr)
+{
+    for(EIter it = neiState.begin(); it != neiState.end(); ++it )
+    {
+        PDUForwardingTableEntry * e = (*it);
+
+        if(e->getDestAddr() == addr)
+        {
+            neiState.erase(it);
+        }
+    }
+}
+
+void PDUFwdTabGenerator::removeNetInfo(FSInfo * info)
+{
+    netState.remove(info);
+}
+
+void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
+{
+    EV << getFullPath() << " Signal an update to " << info->getDestination() << "\n";
+
+    /* Emit the signal. RIBd shall be there to listen... */
+    emit(sigPDUFTGFwdInfoUpdate, info);
+}

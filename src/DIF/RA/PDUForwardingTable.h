@@ -35,10 +35,11 @@ class PDUForwardingTable : public cSimpleModule
   public:
     PDUForwardingTable();
 
+    void clean();
     void insert(const PDUForwardingTableEntry* entry);
     void insert(Address destAddr, int qosId, RMTPort* port);
     RMTPort* lookup(Address& destAddr, int QoSid);
-    void remove(RMTPort *portId);
+    void remove(Address destAddr, int qosId);
 
   protected:
     virtual void initialize();

@@ -56,6 +56,8 @@ class RIBd : public RIBdBase {
     virtual void receiveAllocationRequestFromFai(Flow* flow);
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
+    /* Handles information coming from PDUFTG module. */
+    virtual void receiveForwardingInfoUpdateFromPDUFTG(FSUpdateInfo * flow);
 
   protected:
     virtual void initialize();
@@ -75,6 +77,9 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
 
+    /* Emit update received signal. */
+    simsignal_t sigRIBDFwdUpdateRecv;
+
     //Listeners
     LisRIBDRcvData*             lisRIBDRcvData;
     LisRIBDCreReq*              lisRIBDCreReq;
@@ -88,6 +93,9 @@ class RIBd : public RIBdBase {
     LisRIBDDelRes*              lisRIBDDelRes;
     LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
+
+    /* Listen for PDUFTG update messages. */
+    LisRIBDFwdInfoUpdate*       lisRIBDFwdInfoUpdate;
 
     void signalizeSendData(CDAPMessage* msg);
     void signalizeCreateRequestFlow(Flow* flow);
@@ -103,6 +111,7 @@ class RIBd : public RIBdBase {
     void processMCreateR(CDAPMessage* msg);
     void processMDelete(CDAPMessage* msg);
     void processMDeleteR(CDAPMessage* msg);
+    void processMWrite(CDAPMessage* msg);
 
   private:
     int invokeIdCounter;

@@ -22,6 +22,7 @@
 #include "ExternConsts.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
+#include "FSUpdateInfo.h"
 
 class RIBdBase : public cSimpleModule {
   public:
@@ -37,6 +38,8 @@ class RIBdBase : public cSimpleModule {
     virtual void receiveAllocationRequestFromFai(Flow* flow) = 0;
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow) = 0;
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow) = 0;
+    /* Handles information coming from PDUFTG module. */
+    virtual void receiveForwardingInfoUpdateFromPDUFTG(FSUpdateInfo * flow) = 0;
 
     const Address& getMyAddress() const;
 

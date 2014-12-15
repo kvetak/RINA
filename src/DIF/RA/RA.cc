@@ -64,6 +64,8 @@ void RA::initialize(int stage)
     rmt = (RMT*) thisIpc->getModuleByPath(".rmt.rmt");
     rmtQM = (RMTQueueManager*) thisIpc->getModuleByPath(".rmt.rmtQueueManager");
 
+    /* Get access to the forwarding and routing functionalities... */
+    fwdtg = ModuleAccess<PDUFwdTabGenerator>("pduFwdTabGenerator").get();
 
     // initialize attributes
     std::ostringstream os;
@@ -477,12 +479,17 @@ void RA::createFlow(Flow *flow)
         RMTPort* port = bindLowerFlowToRMT(targetIpc, fab, flow);
         // we're ready to go!
         // update the PDU forwarding table
-        fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                        flow->getConId().getQoSId(), port);
+        //fwTable->insert(Address(flow->getDstApni().getApn().getName()),
+        //                flow->getConId().getQoSId(), port);
+
+        fwdtg->insertFlowInfo(
+            Address(flow->getDstApni().getApn().getName()),
+            flow->getConId().getQoSId(),
+            port);
     }
     else
     {
-       EV << "Flow not allocated!" << endl;
+        EV << "Flow not allocated!" << endl;
     }
 }
 
@@ -519,8 +526,13 @@ void RA::createFlowWithoutAllocate(Flow* flow)
     RMTPort* port = bindLowerFlowToRMT(targetIpc, fab, flow);
     // we're ready to go!
     // update the PDU forwarding table
-    fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                            flow->getConId().getQoSId(), port);
+    //fwTable->insert(Address(flow->getDstApni().getApn().getName()),
+    //                        flow->getConId().getQoSId(), port);
+
+    fwdtg->insertFlowInfo(
+        Address(flow->getDstApni().getApn().getName()),
+        flow->getConId().getQoSId(),
+        port);
 
     // add other accessible applications into forwarding table
     const APNList* remoteApps = difAllocator->findNeigborApns(flow->getDstApni().getApn());
@@ -529,7 +541,9 @@ void RA::createFlowWithoutAllocate(Flow* flow)
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
         {
             Address addr = Address(it->getName());
-            fwTable->insert(addr, flow->getConId().getQoSId(), port);
+            //fwTable->insert(addr, flow->getConId().getQoSId(), port);
+
+            fwdtg->insertFlowInfo(addr, flow->getConId().getQoSId(), port);
         }
     }
 
@@ -634,7 +648,8 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {
-            fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtPort());
+            fwdtg->insertFlowInfo(Address(dstAddr), qosId, targetFlow->getRmtPort());
+            //fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtPort());
         }
     }
 

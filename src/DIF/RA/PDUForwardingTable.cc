@@ -46,14 +46,14 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 */
 void PDUForwardingTable::printAll()
 {
-//    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
-//
-//    for(PDUFwTable::iterator it = this->FwTable.begin(); it!= FwTable.end(); ++it)
-//    {
-//        PDUForwardingTableEntry a = *it;
-//        EV << this->getFullPath() << " destination: " << a.getDestAddr()
-//                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPortId() << endl;
-//    }
+    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
+
+    for(PDUFwdTable::iterator it = fwTable.begin(); it!= fwTable.end(); ++it)
+    {
+        PDUForwardingTableEntry a = *it;
+        EV << this->getFullPath() << " destination: " << a.getDestAddr()
+                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPort() << endl;
+    }
 }
 
 /**
@@ -99,6 +99,8 @@ void PDUForwardingTable::insert(Address destAddr, int qosId, RMTPort* port)
     Enter_Method("insert()");
     PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
     fwTable.push_back(entry);
+
+    printAll();
 }
 
 /**
@@ -106,12 +108,13 @@ void PDUForwardingTable::insert(Address destAddr, int qosId, RMTPort* port)
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(RMTPort* port)
+void PDUForwardingTable::remove(Address destAddr, int qosId)
 {
     PDUFwdTableIter i = fwTable.begin();
+
     while (i != fwTable.end())
     {
-        if (i->getPort() == port)
+        if (i->getDestAddr() == destAddr && i->getQosId() == qosId)
         {
             i = fwTable.erase(i);
         }
@@ -122,4 +125,8 @@ void PDUForwardingTable::remove(RMTPort* port)
     }
 }
 
-
+void PDUForwardingTable::clean()
+{
+    /* TODO: Tomas: How to handle memory here? */
+    fwTable.clear();
+}
