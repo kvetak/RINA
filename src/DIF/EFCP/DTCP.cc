@@ -107,9 +107,9 @@ void DTCP::setSndRtWinEdge(unsigned int sndRtWinEdge)
 
 unsigned int DTCP::getSndRtWinEdge()
 {
-//  if(flowControl != NULL){
+  if(flowControl != NULL){
   return flowControl->getSendRightWindowEdge();
-//  }
+  }
 }
 
 void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
@@ -119,7 +119,7 @@ void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 
 unsigned int DTCP::getRcvRtWinEdge()
 {
-  return flowControl->getRcvRightWindowEdge();
+  flowControl->getRcvRightWindowEdge();
 }
 
 void DTCP::setSndRate(unsigned int sendingRate)
@@ -127,7 +127,7 @@ void DTCP::setSndRate(unsigned int sendingRate)
   flowControl->setSendingRate(sendingRate);
 }
 unsigned int DTCP::getSndRate(){
-  return flowControl->getSendingRate();
+  flowControl->getSendingRate();
 }
 
 void DTCP::setRcvRate(unsigned int rcvrRate)
@@ -135,7 +135,7 @@ void DTCP::setRcvRate(unsigned int rcvrRate)
   flowControl->setRcvrRate(rcvrRate);
 }
 unsigned int DTCP::getRcvRate(){
-  return flowControl->getRcvrRate();
+  flowControl->getRcvrRate();
 }
 
 unsigned int DTCP::getRcvCredit()
