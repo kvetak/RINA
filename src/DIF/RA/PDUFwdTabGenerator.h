@@ -36,9 +36,6 @@
 #include "PDUFTGPolicy.h"
 #include "FSUpdateInfo.h"
 
-#define PDUFTG_SELFMSG_FSINIT       0x01
-#define PDUFTG_SELFMSG_FSUPDATE     0x02
-
 typedef std::list<FSInfo *> NetworkState;
 typedef NetworkState::iterator NIter;
 
@@ -106,7 +103,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     PDUForwardingTable * getForwardingTable();
 
     /* Gets the address associated with this IPC. */
-    Address * getIpcAddress();
+    Address getIpcAddress();
 
     /*
      * Network state actions:

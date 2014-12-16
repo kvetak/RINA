@@ -26,7 +26,7 @@ Define_Module(PDUFTGPolicy);
 
 PDUFTGPolicy::PDUFTGPolicy()
 {
-
+    fwdtg = ModuleAccess<PDUFwdTabGenerator>("pduFwdTabGenerator").get();
 }
 
 PDUFTGPolicy::PDUFTGPolicy(PDUFwdTabGenerator * generator)

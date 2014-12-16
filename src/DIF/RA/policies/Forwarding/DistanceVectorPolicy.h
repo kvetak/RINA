@@ -22,6 +22,8 @@
 
 #include "PDUFTGPolicy.h"
 
+#define PDUFTG_SELFMSG_FSUPDATE     0x01
+
 /* This implements a basic distance-vector routing policy.
  * The metric used is in term of hops.
  */

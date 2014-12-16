@@ -34,9 +34,9 @@ PDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
     return fwTable;
 }
 
-Address * PDUFwdTabGenerator::getIpcAddress()
+Address PDUFwdTabGenerator::getIpcAddress()
 {
-    return &ipcAddr;
+    return ipcAddr;
 }
 
 NeighborState * PDUFwdTabGenerator::getNeighborhoodState()
@@ -64,46 +64,7 @@ void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
 
 void PDUFwdTabGenerator::handleMessage(cMessage * msg)
 {
-    if(msg->isSelfMessage())
-    {
-        switch(msg->getKind())
-        {
-        case PDUFTG_SELFMSG_FSUPDATE:
 
-            if(fwdPolicy)
-            {
-                /* Stop condition. */
-                if(fwdPolicy->getUpdateTimeout() == 0)
-                {
-                    break;
-                }
-
-                std::list<FSUpdateInfo *> * l = (std::list<FSUpdateInfo *> *)fwdPolicy->getNetworkState();
-
-                if(l != NULL)
-                {
-                    for(std::list<FSUpdateInfo *>::iterator i = l->begin(); i != l->end(); ++i)
-                    {
-                        FSUpdateInfo * info = (*i);
-
-                        /* Finally send the update. */
-                        signalForwardingInfoUpdate(info);
-                    }
-                }
-
-                scheduleAt(
-                    simTime() + fwdPolicy->getUpdateTimeout(),
-                    new cMessage("UpdateRequested", PDUFTG_SELFMSG_FSUPDATE));
-            }
-
-
-            break;
-        default:
-            break;
-        }
-
-        delete msg;
-    }
 }
 
 void PDUFwdTabGenerator::initialize()
@@ -112,9 +73,7 @@ void PDUFwdTabGenerator::initialize()
     cModule * ipcModule = getParentModule()->getParentModule();
     /* Forwarding update wake up message, */
 
-    fwdPolicy = new StaticRoutingPolicy(this);
-    //fwdPolicy = new DistanceVectorPolicy(this);
-    //fwdPolicy->setUpdateTimeout(30);
+    fwdPolicy = ModuleAccess<PDUFTGPolicy>("PDUFTGPolicy").get();
 
     fwTable   = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
     flTable   = ModuleAccess<FlowTable>("flowTable").get();
@@ -122,11 +81,6 @@ void PDUFwdTabGenerator::initialize()
 
     /* Initializes the input/output of the module. */
     initializeSignalsAndListeners();
-
-    /* Start the forwarding update timer routine. */
-    scheduleAt(
-        simTime() + fwdPolicy->getUpdateTimeout(),
-        new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
 }
 
 void PDUFwdTabGenerator::initializeSignalsAndListeners()

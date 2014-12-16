@@ -16,13 +16,14 @@
 package rina.DIF.RA;
 
 import rina.DIF.RA.policies.QueueAlloc.IntQueueAlloc;
-
+import rina.DIF.RA.policies.Forwarding.IntPDUFTGPolicy;
 
 module ResourceAllocator
 {
     parameters:
         @display("i=block/segm;bgb=299,274");
         string queueAllocPolicyName = default("SingleQueue");
+        string pduftgPolicyName = default("DistanceVectorPolicy");
 
     submodules:
         ra: RA {
@@ -39,5 +40,8 @@ module ResourceAllocator
         }
         queueAllocPolicy: <queueAllocPolicyName> like IntQueueAlloc {
             @display("p=230,60");
+        }
+        PDUFTGPolicy: <pduftgPolicyName> like IntPDUFTGPolicy {
+            @display("p=230,130");
         }
 }
