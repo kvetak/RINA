@@ -45,7 +45,6 @@ protected:
 
 public:
     PDUFTGPolicy();
-    PDUFTGPolicy(PDUFwdTabGenerator * generator);
     ~PDUFTGPolicy();
 
     /* Computes the initial state of the forwarding table.

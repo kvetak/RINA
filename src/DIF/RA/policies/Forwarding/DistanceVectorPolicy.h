@@ -42,7 +42,6 @@ protected:
 
 public:
     DistanceVectorPolicy();
-    DistanceVectorPolicy(PDUFwdTabGenerator * generator);
     ~DistanceVectorPolicy();
 
     /* Computes the initial state of the forwarding table.

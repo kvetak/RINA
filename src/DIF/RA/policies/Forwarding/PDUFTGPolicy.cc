@@ -26,13 +26,7 @@ Define_Module(PDUFTGPolicy);
 
 PDUFTGPolicy::PDUFTGPolicy()
 {
-    fwdtg = ModuleAccess<PDUFwdTabGenerator>("pduFwdTabGenerator").get();
-}
 
-PDUFTGPolicy::PDUFTGPolicy(PDUFwdTabGenerator * generator)
-{
-    /* Assign the generator this policy  */
-    fwdtg = generator;
 }
 
 PDUFTGPolicy::~PDUFTGPolicy()
@@ -66,6 +60,8 @@ void PDUFTGPolicy::handleMessage(cMessage *msg)
 
 void PDUFTGPolicy::initialize()
 {
+    fwdtg = ModuleAccess<PDUFwdTabGenerator>("pduFwdTabGenerator").get();
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");

@@ -30,12 +30,6 @@ DistanceVectorPolicy::DistanceVectorPolicy()
 
 }
 
-DistanceVectorPolicy::DistanceVectorPolicy(PDUFwdTabGenerator * generator) :
-    PDUFTGPolicy(generator)
-{
-
-}
-
 DistanceVectorPolicy::~DistanceVectorPolicy()
 {
     // Do nothing...
@@ -154,6 +148,7 @@ void DistanceVectorPolicy::initialize()
     /* Display active policy name. */
     PDUFTGPolicy::initialize();
 
+    /* Default timeout 30 seconds. */
     setUpdateTimeout(30);
 
     /* Start the forwarding update timer routine. */
