@@ -18,11 +18,6 @@
 package rina.DIF.EFCP;
 
 
-
-
-//
-// TODO auto-generated type
-//
 module EFCPI
 {
     @display("i=block/layer;bgb=517,232");

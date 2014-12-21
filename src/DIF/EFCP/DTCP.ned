@@ -23,4 +23,5 @@ package rina.DIF.EFCP;
 simple DTCP
 {
     @display("i=block/subqueue");
+    string ecnSetPolicy;
 }

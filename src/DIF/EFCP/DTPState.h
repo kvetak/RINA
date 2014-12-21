@@ -88,6 +88,9 @@ private:
     //moved to DTP.h
 //    queue<unsigned char *> sduQ; //SDUs generated from delimiting
 
+    /* new */
+    bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
+
 
 public:
     DTPState();
@@ -145,6 +148,8 @@ public:
     unsigned int getLastCtrlSeqNumRcv();
     unsigned int getLastSeqNumSent() const;
     void setLastSeqNumSent(unsigned int lastSeqNumSent);
+    bool isEcnSet() const;
+    void setEcnSet(bool ecnSet);
 };
 
 #endif /* DTPSTATE_H_ */

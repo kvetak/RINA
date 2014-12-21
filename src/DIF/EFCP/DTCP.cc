@@ -21,6 +21,7 @@ DTCP::DTCP() {
   rxControl = NULL;
   flowControl = NULL;
 
+  ecnSetPolicy = NULL;
 
 
 }
@@ -40,6 +41,11 @@ DTCP::~DTCP()
 void DTCP::setDTP(DTP* dtp)
 {
   this->dtp = dtp;
+}
+
+void DTCP::runECNSetPolicy(DTPState* dtpState)
+{
+  ecnSetPolicy->run(dtpState, dtcpState);
 }
 
 void DTCP::initialize(int step)
@@ -67,6 +73,20 @@ void DTCP::initialize(int step)
     }
   }
 
+
+  //TODO A1 Load list of policies
+  if(true){
+#define ECN_SET_POLICY_PREFIX "rina.DIF.EFCP.policies.ECNSet."
+#define ECN_SET_POLICY_NAME "ecnSetPolicy"
+    std::stringstream moduleName;
+    moduleName << ECN_SET_POLICY_PREFIX << par("ecnSetPolicy").stringValue();
+
+    cModuleType* ecnSetPolicyType = cModuleType::get(moduleName.str().c_str());
+    ecnSetPolicy = (DTCPECNSetPolicyBase*)ecnSetPolicyType->createScheduleInit(ECN_SET_POLICY_NAME, getParentModule());
+
+//    ecnSetPolicy = (DTCPECNSetPolicyBase*)(getParentModule()->getModuleByRelativePath("ecnSetPolicy"));
+
+  }
 
 }
 

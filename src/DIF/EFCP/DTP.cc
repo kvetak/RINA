@@ -770,6 +770,15 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   {
     dtcp->resetWindowTimer();
 
+    if(pdu->getFlags() & ECN_FLAG){
+      /* Run ECNSet Policy */
+      dtcp->runECNSetPolicy(&state);
+    }else{
+      //TODO A!
+      /* Run ECNClear Policy */
+    }
+
+
   }
   // if PDU.DRF == true
   if (pdu->getFlags() & DRF_FLAG)
@@ -1585,7 +1594,7 @@ void DTP::sendAckOnlyPDU(unsigned int seqNum)
 {
   //TODO A2 How to remove allowed gaps?
   //Update LeftWindowEdge removing allowed gaps;
-  s
+
   //send an Ack/FlowControlPDU
   AckOnlyPDU* ackPDU = new AckOnlyPDU();
   setPDUHeader(ackPDU);

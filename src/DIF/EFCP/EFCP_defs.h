@@ -34,6 +34,7 @@
 #define MAXSDUSIZE  1500 //made up
 #define MAX_PDU_SIZE  1500 //made up
 #define DRF_FLAG 0x80
+#define ECN_FLAG 0x01
 
 
 
