@@ -53,7 +53,7 @@ class FlowControl : public cSimpleModule
     unsigned int sendBuffersPercentFree; //The percent of buffers of MaxSDU size that are free for Writes.
     unsigned int sendBuffersThreshold; //The number of free buffers at which flow control blocks the user from doing any more Writes.
     unsigned int sendBufferPercentThreshold; //The percent of free buffers at which flow control blocks the user from doing any more Writes.
-    unsigned int rcvRightWindowEdge; //The absolute value of the credit on this flow.
+//    unsigned int rcvRightWindowEdge; //The absolute value of the credit on this flow.
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
     unsigned int pdusRcvdinTimeUnit; //This variable contains the number of PDUs received in this Time Unit. When PDUsRcvdinTimeUnit equals RcvrRate, the receiver is allowed to discard any PDUs received until a new time unit begins.
     unsigned int rcvBytesFree; //The number of bytes that this flow can assume it has available for incoming PDUs on this connection.

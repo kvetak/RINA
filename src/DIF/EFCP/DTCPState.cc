@@ -25,6 +25,12 @@
 
 #include <DTCPState.h>
 
+void DTCPState::initFC()
+{
+  rcvRtWinEdge = rcvCredit;
+  sndRtWinEdge = sndCredit;
+}
+
 DTCPState::DTCPState()
 {
 
@@ -32,16 +38,15 @@ DTCPState::DTCPState()
   rcvCredit = 10;
   sndCredit = 10; //TODO this variable should be set from the opposite side
   immediate = true;
-  rcvRtWinEdge = rcvCredit;
-  rcvRightWinEdgeSent = 0;
-  sndRightWinEdge = sndCredit;
+
+  rcvRtWinEdgeSent = 0;
+
   nextSenderControlSeqNum = 1;
   lastControlSeqNumRcv = 0;
 
 
 
-
-
+  initFC();
 
   //TODO B! Fix
 //  rtt = 10;
@@ -62,22 +67,22 @@ void DTCPState::setImmediate(bool immediate)
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
-  return rcvRightWinEdgeSent;
+  return rcvRtWinEdgeSent;
 }
 
-void DTCPState::setRcvrRightWinEdgeSent(unsigned int rcvRightWinEdgeSent)
+void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
-  this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
+  this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const
 {
-  return sndRightWinEdge;
+  return sndRtWinEdge;
 }
 
 void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
-  this->sndRightWinEdge = senderRightWinEdge;
+  this->sndRtWinEdge = senderRightWinEdge;
 }
 
 //bool DTCPState::isSetDrfFlag() const
@@ -136,9 +141,15 @@ void DTCPState::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
   this->rcvRtWinEdge = rcvRtWinEdge;
 }
 
+void DTCPState::incRcvRtWinEdge()
+{
+  rcvRtWinEdge++;
+}
+
 void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
 {
-  setRcvRtWinEdge(rcvLtWinEdge + getSndCredit());
+  setRcvRtWinEdge(rcvLtWinEdge + getRcvCredit());
+
 }
 
 
@@ -152,6 +163,7 @@ unsigned int DTCPState::getNextSndCtrlSeqNum()
 unsigned int DTCPState::getLastCtrlSeqNumRcv(){
   return lastControlSeqNumRcv;
 }
+
 void DTCPState::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
   lastControlSeqNumRcv = ctrlSeqNum;
 }

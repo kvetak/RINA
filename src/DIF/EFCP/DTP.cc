@@ -766,10 +766,16 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
     if(pdu->getFlags() & ECN_FLAG){
       /* Run ECNSet Policy */
-      dtcp->runECNSetPolicy(&state);
-    }else{
+      if(dtcp->runECNSetPolicy(&state)){
+        /* Default action */
+        state.setEcnSet(true);
+      }
+
       /* Run ECNClear Policy */
-      dtcp->runECNClearPolicy(&state);
+      if(dtcp->runECNClearPolicy(&state)){
+        /* Default action */
+        state.setEcnSet(false);
+      }
     }
 
   }
@@ -1257,10 +1263,7 @@ bool DTP::setDRFInPDU(bool override)
 
 void DTP::generatePDUsnew()
 {
-  std::ostringstream name;
-  name << "DataTransferPDU in time " << simTime()*1;
-
-  DataTransferPDU* baseDataPDU = new DataTransferPDU(name.str().c_str());
+  DataTransferPDU* baseDataPDU = new DataTransferPDU();
   setPDUHeader(baseDataPDU);
 
   //invoke SDU protection so we don't have to bother with it afterwards; EDIT: sduQ is not used anymore!!!
@@ -1556,7 +1559,7 @@ void DTP::runRcvrFlowControlPolicy()
   /* Default */ //FIXME A1 set value to these variables!
   if (dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold)
   {
-    dtcp->flowControl->rcvRightWindowEdge++;
+    dtcp->incRcvRtWinEdge();
   }
   else
   {
@@ -1843,14 +1846,11 @@ unsigned int DTP::getAllowableGap()
 
 void DTP::svUpdate(unsigned int seqNum)
 {
-
-//  //TODO A! Find out how svUpdate should treat leftWindowEdge (guessing the rcvLeftWinEdge)
 //  state.setRcvLeftWinEdge(seqNum);
 //  uint ackSeqNum = state.getRcvLeftWinEdge();
   /* XXX Don't know where else to put */
   if(state.getRcvLeftWinEdge()  == seqNum){
     state.incRcvLeftWindowEdge();
-
 
     std::vector<DataTransferPDU*>::iterator it;
     for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
@@ -1864,7 +1864,7 @@ void DTP::svUpdate(unsigned int seqNum)
         break;
       }
     }
-//    ackSeqNum = seqNum;
+
   }
 
 
@@ -1875,7 +1875,7 @@ void DTP::svUpdate(unsigned int seqNum)
       runRcvrFlowControlPolicy();
     }
 
-    /* Commented due to change in specs */ //TODO A1 Move it to its new place (see new specs)
+    /* Commented due to a change in specs */ //TODO A1 Move it to its new place (see new specs)
 //    if (state.isRateBased())
 //    {
 //      runRateReductionPolicy();

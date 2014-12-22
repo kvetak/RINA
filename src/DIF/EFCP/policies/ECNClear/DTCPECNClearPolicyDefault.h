@@ -36,7 +36,7 @@ class DTCPECNClearPolicyDefault : public DTCPECNClearPolicyBase
   public:
     DTCPECNClearPolicyDefault();
     virtual ~DTCPECNClearPolicyDefault();
-    virtual void run(DTPState* dtpState, DTCPState* dtcpState);
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 };
 
 #endif /* DTCPECNCLEARPOLICYDEFAULT_H_ */

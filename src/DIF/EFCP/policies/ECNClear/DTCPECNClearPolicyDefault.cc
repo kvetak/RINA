@@ -38,7 +38,8 @@ DTCPECNClearPolicyDefault::~DTCPECNClearPolicyDefault()
   // TODO Auto-generated destructor stub
 }
 
-void DTCPECNClearPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+bool DTCPECNClearPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
 {
   dtpState->setEcnSet(false);
+  return false;
 }

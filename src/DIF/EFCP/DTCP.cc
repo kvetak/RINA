@@ -43,14 +43,26 @@ void DTCP::setDTP(DTP* dtp)
   this->dtp = dtp;
 }
 
-void DTCP::runECNSetPolicy(DTPState* dtpState)
+bool DTCP::runECNSetPolicy(DTPState* dtpState)
 {
-  ecnSetPolicy->run(dtpState, dtcpState);
+  if(ecnSetPolicy != NULL){
+    return ecnSetPolicy->run(dtpState, dtcpState);
+  }
+  return false;
 }
 
-void DTCP::runECNClearPolicy(DTPState* dtpState)
+void DTCP::incRcvRtWinEdge()
 {
-  ecnClearPolicy->run(dtpState, dtcpState);
+  dtcpState->incRcvRtWinEdge();
+}
+
+bool DTCP::runECNClearPolicy(DTPState* dtpState)
+{
+  if(ecnClearPolicy != NULL){
+    return ecnClearPolicy->run(dtpState, dtcpState);
+  }
+  return false;
+
 }
 
 void DTCP::initialize(int step)
@@ -184,12 +196,15 @@ unsigned int DTCP::getSndRtWinEdge()
 
 void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 {
-  flowControl->setRcvRightWindowEdge(rcvRtWinEdge);
+
+  dtcpState->setRcvRtWinEdge(rcvRtWinEdge);
+
+
 }
 
 unsigned int DTCP::getRcvRtWinEdge()
 {
-  return flowControl->getRcvRightWindowEdge();
+  return dtcpState->getRcvRtWinEdge();
 }
 
 void DTCP::setSndRate(unsigned int sendingRate)

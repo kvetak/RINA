@@ -39,7 +39,7 @@ class DTCPECNSetPolicyBase : public cSimpleModule
   public:
     DTCPECNSetPolicyBase();
     virtual ~DTCPECNSetPolicyBase();
-    virtual void run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
   protected:
     virtual void initialize(){};

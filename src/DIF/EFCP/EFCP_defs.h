@@ -40,7 +40,7 @@
 #define ECN_SET_POLICY_NAME "ecnSetPolicy"
 
 #define ECN_CLEAR_POLICY_PREFIX "rina.DIF.EFCP.policies.ECNClear."
-#define ECN_CLEAR_POLICY_NAME "ecnSetPolicy"
+#define ECN_CLEAR_POLICY_NAME "ecnClearPolicy"
 
 
 

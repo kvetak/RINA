@@ -40,7 +40,7 @@ FlowControl::FlowControl()
 
 
   dupFC = 0;
-  rcvRightWindowEdge = 2;
+//  rcvRightWindowEdge = 2;
   sendingRateFullfilled = false;
 
   // FIXME A! get it from qoscube
@@ -101,15 +101,15 @@ void FlowControl::setSendingTimeUnit(unsigned long sendingTimeUnit)
   this->sendingTimeUnit = sendingTimeUnit;
 }
 
-unsigned int FlowControl::getRcvRightWindowEdge() const
-{
-  return rcvRightWindowEdge;
-}
-
-void FlowControl::setRcvRightWindowEdge(unsigned int rcvRightWindowEdge)
-{
-  this->rcvRightWindowEdge = rcvRightWindowEdge;
-}
+//unsigned int FlowControl::getRcvRightWindowEdge() const
+//{
+//  return rcvRightWindowEdge;
+//}
+//
+//void FlowControl::setRcvRightWindowEdge(unsigned int rcvRightWindowEdge)
+//{
+//  this->rcvRightWindowEdge = rcvRightWindowEdge;
+//}
 
 
 void FlowControl::schedule(FCTimers* timer, double time)

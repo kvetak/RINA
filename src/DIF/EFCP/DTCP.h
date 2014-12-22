@@ -105,9 +105,9 @@ public:
     bool isSendingRateFullfilled() const;
     void setSendingRateFullfilled(bool rateFullfilled);
 
-    void runECNSetPolicy(DTPState* dtpState);
-    void runECNClearPolicy(DTPState* dtpState);
-
+    bool runECNSetPolicy(DTPState* dtpState);
+    bool runECNClearPolicy(DTPState* dtpState);
+    void incRcvRtWinEdge();
 
 protected:
     virtual void handleMessage(cMessage *msg);
