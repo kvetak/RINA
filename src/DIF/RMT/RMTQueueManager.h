@@ -36,14 +36,15 @@ class RMTQueueManager : public cSimpleModule
     iterator begin();
     iterator end();
 
-    RMTQueue* addQueue(RMTQueue::queueType type, RMTPort* port = NULL, unsigned short qosId = 0);
+    RMTQueue* addQueue(RMTQueue::queueType type, RMTPort* port, unsigned short qosId = 0);
     void removeQueue(RMTQueue* queue);
 
     RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
     RMTQueue* lookup(short qosId, RMTQueue::queueType type);
 
-    RMTQueue* getFirst(RMTQueue::queueType type);
-    RMTQueue* getLongest(RMTQueue::queueType type);
+    RMTQueue* getFirst(RMTPort* port, RMTQueue::queueType type);
+    RMTQueue* getLongest(RMTPort* port, RMTQueue::queueType type);
+    std::map<RMTQueue*, RMTPort*> queueToPort;
 
   private:
     RMTQueues queues;

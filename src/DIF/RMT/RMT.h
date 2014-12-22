@@ -53,6 +53,20 @@ class RMT : public RMTBase
   friend class RA;
   friend class FAI;
 
+  public:
+    RMT();
+    virtual ~RMT();
+
+    bool getRelayStatus() { return relayOn; };
+    bool isOnWire() { return onWire; };
+
+    void invokeQueuePolicies(cObject* obj);
+    void finalizePortService(cObject* obj);
+
+  protected:
+    void initialize();
+    void handleMessage(cMessage *msg);
+
   private:
     PDUForwardingTable* fwTable;
     RMTQueueManager* queues;
@@ -63,12 +77,10 @@ class RMT : public RMTBase
 
     EfcpiMapping efcpiOut;
     EfcpiMapping efcpiIn;
-    EfcpiToQueue efcpiToQueue;
 
     RMTQMonitorBase* qMonPolicy;
     RMTMaxQBase* maxQPolicy;
     RMTSchedulingBase* schedPolicy;
-    unsigned int waitingMsgs;
 
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU_Base* msg);
@@ -79,35 +91,19 @@ class RMT : public RMTBase
     void portToPort(cMessage* msg);
 
     cGate* fwTableLookup(Address& destAddr, short pduQosId);
-    void scheduleServiceEnd();
 
     simsignal_t sigRMTNoConnID;
     LisRMTPDURcvd* lisRMTMsgRcvd;
+    LisRMTPDUSent* lisRMTMsgSent;
 
     // management methods for Resource Allocator
     void setOnWire(bool status) { onWire = status; };
-    void addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue);
-    void deleteEfcpiToQueueMapping(unsigned cepId);
     void enableRelay() { relayOn = true; };
     void disableRelay() { relayOn = false; };
 
     // management methods for FAIs
     void createEfcpiGate(unsigned int efcpiId);
     void deleteEfcpiGate(unsigned int efcpiId);
-
-  public:
-    RMT();
-    virtual ~RMT();
-
-    bool getRelayStatus() { return relayOn; };
-    bool isOnWire() { return onWire; };
-
-    void invokeSchedulingPolicy(cObject* obj);
-
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
 };
 
 #endif /* RMT_H_ */

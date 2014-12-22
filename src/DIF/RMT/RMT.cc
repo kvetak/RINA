@@ -27,19 +27,17 @@
 Define_Module(RMT);
 
 RMT::RMT()
+: relayOn(false), onWire(false)
 {
-    relayOn = false;
-    onWire = false;
-    waitingMsgs = 0;
 }
 
-RMT::~RMT() {}
+RMT::~RMT()
+{
+}
 
 
 void RMT::initialize()
 {
-    WATCH_PTRMAP(efcpiToQueue);
-
     fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
     queues = ModuleAccess<RMTQueueManager>("rmtQueueManager").get();
 
@@ -54,37 +52,26 @@ void RMT::initialize()
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
 
+    lisRMTMsgSent = new LisRMTPDUSent(this);
+    getParentModule()->subscribe(SIG_RMT_MessageSent, lisRMTMsgSent);
+
     schedPolicy = ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get();
     maxQPolicy = ModuleAccess<RMTMaxQBase>("maxQueuePolicy").get();
     qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
 }
 
-/**
- * Schedules an end-of-queue-service event.
- *
- */
-void RMT::scheduleServiceEnd()
-{
-    scheduleAt(simTime() + getParentModule()->par("queueServiceTime").doubleValue() / 1000,
-               new cMessage("queueServiceDone"));
-}
 
 /**
- * Tries to begin service of a message that has newly arrived into a queue.
- * If servicing takes place right now, the wait counter is increased instead.
+ * Invokes RMT policies related to queue processing. To be called when a message
+ * arrives into a queue.
  *
+ * @param obj RMT queue object
  */
-void RMT::invokeSchedulingPolicy(cObject* obj)
+void RMT::invokeQueuePolicies(cObject* obj)
 {
-    Enter_Method("invokeSchedulingPolicy()");
+    Enter_Method("invokeQueuePolicies()");
 
-    RMTQueue* queue = dynamic_cast<RMTQueue*>(obj);
-
-    if (queue == NULL)
-    {
-        EV << "!!!! invalid schedulingPolicy call! Ignoring it." << endl;
-        return;
-    }
+    RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
 
     // invoke monitor policy
     qMonPolicy->run(queue);
@@ -92,21 +79,26 @@ void RMT::invokeSchedulingPolicy(cObject* obj)
     // invoke maxQueue policy if applicable
     if (queue->getLength() >= queue->getThreshLength())
     {
-        // abort if the PDU was dropped
+        // if the PDU got dropped, finish it here
         if (maxQPolicy->run(queue))
         {
             return;
         }
     }
 
-    if (!waitingMsgs)
-    {
-        scheduleServiceEnd();
-    }
-    else
-    {
-        waitingMsgs++;
-    }
+    schedPolicy->processQueues(queues->queueToPort[queue], queue->getType());
+}
+
+/**
+ * Takes care of re-invocation of scheduling policy after a queue is popped.
+ *
+ * @param obj RMT queue object
+ */
+void RMT::finalizePortService(cObject* obj)
+{
+    Enter_Method("finalizeQueueService()");
+    RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+    schedPolicy->finalizeService(queues->queueToPort[queue], queue->getType());
 }
 
 /**
@@ -169,30 +161,8 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
     this->deleteGate(gateName_str.str().c_str());
     rmtModule->deleteGate(gateName_str.str().c_str());
 
-    deleteEfcpiToQueueMapping(efcpiId);
     efcpiOut.erase(efcpiId);
     efcpiIn.erase(efcpiId);
-}
-
-/**
- * Creates a direct mapping from an EFCPI input gate to a RMT queue.
- *
- * @param cepId EFCP ID
- * @param outQueue output RMT queue
- */
-void RMT::addEfcpiToQueueMapping(unsigned cepId, RMTQueue* outQueue)
-{
-    efcpiToQueue[efcpiIn[cepId]] = outQueue;
-}
-
-/**
- * Deletes a direct EFCPI->queue mapping.
- *
- * @param cepId EFCP ID
- */
-void RMT::deleteEfcpiToQueueMapping(unsigned cepId)
-{
-    efcpiToQueue.erase(efcpiIn[cepId]);
 }
 
 /**
@@ -204,10 +174,19 @@ void RMT::deleteEfcpiToQueueMapping(unsigned cepId)
  */
 cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
 {
+    RMTPort* outPort = NULL;
     cGate* outGate = NULL;
-    RMTPort* outPort = fwTable->lookup(destAddr, qosId);
 
-    // FIXME
+    if (onWire)
+    { // get the interface port
+        outPort = (RMTPort*) getParentModule()->getSubmodule("PHY");
+    }
+    else
+    { // get a suitable port from PDUFT
+        outPort = fwTable->lookup(destAddr, qosId);
+    }
+
+    // FIXME: replace with a proper policy call
     RMTQueue* outQueue = outPort->getOutputQueues().front();
 
     if (outQueue != NULL)
@@ -227,7 +206,8 @@ void RMT::efcpiToPort(PDU_Base* pdu)
 {
     cGate* outGate = NULL;
 
-    outGate = efcpiToQueue[pdu->getArrivalGate()]->getRmtAccessGate();
+    outGate = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
+
     if (outGate != NULL)
     {
         EV << this->getFullPath() << " passing a PDU to an output queue" << endl;
@@ -235,7 +215,7 @@ void RMT::efcpiToPort(PDU_Base* pdu)
     }
     else
     {
-        EV << this->getFullPath() << "efcpi->port-id mapping not present!" << endl;
+        EV << this->getFullPath() << " I can't reach any suitable (N-1)-flow!" << endl;
     }
 }
 
@@ -291,16 +271,7 @@ void RMT::portToRIB(CDAPMessage* cdap)
  */
 void RMT::RIBToPort(CDAPMessage* cdap)
 {
-    cGate* outGate = NULL;
-
-    if (!onWire)
-    {
-        outGate = fwTableLookup(cdap->getDstAddr(), -1);
-    }
-    else
-    {
-        outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
-    }
+    cGate* outGate = fwTableLookup(cdap->getDstAddr(), -1);
 
     if (outGate != NULL)
     {
@@ -333,17 +304,13 @@ void RMT::portToPort(cMessage* msg)
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
         qosId = -1;
     }
-
-    cGate* outGate = NULL;
-
-    if (onWire)
-    {
-        outGate = queues->getFirst(RMTQueue::OUTPUT)->getRmtAccessGate();
-    }
     else
     {
-        outGate = fwTableLookup(destAddr, qosId);
+        EV << "This message isn't supported by relaying application! Aborting." << endl;
+        return;
     }
+
+    cGate* outGate = fwTableLookup(destAddr, qosId);
 
     if (outGate != NULL)
     {
@@ -430,15 +397,7 @@ void RMT::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        if (!opp_strcmp(msg->getFullName(), "queueServiceDone"))
-        {
-            schedPolicy->run(queues);
-            if (waitingMsgs)
-            {
-                scheduleServiceEnd();
-                waitingMsgs--;
-            }
-        }
+        // ?
         delete msg;
     }
     else

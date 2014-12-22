@@ -29,7 +29,8 @@ class RMTBase : public cSimpleModule
 
     virtual bool isOnWire() = 0;
     virtual bool getRelayStatus() = 0;
-    virtual void invokeSchedulingPolicy(cObject* obj) = 0;
+    virtual void invokeQueuePolicies(cObject* obj) = 0;
+    virtual void finalizePortService(cObject* obj) = 0;
 
   protected:
     virtual void initialize() = 0;

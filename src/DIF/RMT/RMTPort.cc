@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright Â© 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -23,6 +23,7 @@ void RMTPort::initialize()
 {
     southInputGate = gateHalf("southIo", cGate::INPUT);
     southOutputGate = gateHalf("southIo", cGate::OUTPUT);
+    ready = true;
 }
 
 void RMTPort::handleMessage(cMessage *msg)
@@ -67,4 +68,70 @@ cGate* RMTPort::getSouthInputGate() const
 cGate* RMTPort::getSouthOutputGate() const
 {
     return southOutputGate;
+}
+
+RMTQueue* RMTPort::getFirstQueue(RMTQueue::queueType type)
+{
+    if (type == RMTQueue::INPUT)
+    {
+        return inputQueue;
+    }
+    else
+    {
+        for(RMTQueues::iterator it = outputQueues.begin(); it != outputQueues.end(); ++it )
+        {
+            RMTQueue* a = *it;
+            if (a->getType() == type)
+            {
+                return a;
+            }
+        }
+        return NULL;
+    }
+}
+
+RMTQueue* RMTPort::getLongestQueue(RMTQueue::queueType type)
+{
+    if (type == RMTQueue::INPUT)
+    {
+        return inputQueue;
+    }
+    else
+    {
+        int longest = 0;
+        RMTQueue* result = NULL;
+
+        for(RMTQueues::iterator it = outputQueues.begin(); it != outputQueues.end(); ++it)
+        {
+            RMTQueue* a = *it;
+            if (a->getLength() > longest)
+            {
+                longest = a->getLength();
+                result = a;
+            }
+        }
+        return result;
+    }
+}
+
+bool RMTPort::isReady()
+{
+    return ready;
+}
+
+void RMTPort::setReady()
+{
+    ready = true;
+    redrawGUI();
+}
+
+void RMTPort::setBusy()
+{
+    ready = false;
+    redrawGUI();
+}
+
+void RMTPort::redrawGUI()
+{
+    getDisplayString().setTagArg("i", 1, (isReady() ? "#FFFFFF" : "000000"));
 }

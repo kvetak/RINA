@@ -59,6 +59,8 @@ class RMTQueue : public cSimpleModule
     bool isBounded();
     std::string info() const;
 
+    void scheduleServiceEnd();
+
   private:
     std::deque<cMessage*> queue;
 
@@ -75,6 +77,7 @@ class RMTQueue : public cSimpleModule
     unsigned short qosId;
 
     simsignal_t sigRMTPDURcvd;
+    simsignal_t sigRMTPDUSent;
 
     void enqueuePDU(cMessage* pdu);
     void redrawGUI();

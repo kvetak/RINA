@@ -37,6 +37,7 @@ void RMTQueue::initialize()
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
     sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
+    sigRMTPDUSent = registerSignal(SIG_RMT_MessageSent);
 
     maxQLength = getParentModule()->par("queueSize");
     thresholdQLength = getParentModule()->par("queueThresh");
@@ -105,7 +106,10 @@ void RMTQueue::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        // wtf?
+        EV << "!!!! releasing PDU" << endl;
+        releasePDU();
+        emit(sigRMTPDUSent, this);
+        delete msg;
     }
     else
     {
@@ -134,6 +138,17 @@ void RMTQueue::releasePDU(void)
         }
     }
     redrawGUI();
+}
+
+/**
+ * Schedules an end-of-queue-service event.
+ *
+ */
+void RMTQueue::scheduleServiceEnd()
+{
+    Enter_Method("schedule");
+    scheduleAt(simTime() + getParentModule()->par("queueServiceTime").doubleValue() / 1000,
+               new cMessage("queueServiceDone"));
 }
 
 void RMTQueue::dropLast()

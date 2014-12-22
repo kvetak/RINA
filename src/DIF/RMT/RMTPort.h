@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright Â© 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -24,6 +24,10 @@
 class RMTPort : public cSimpleModule
 {
   public:
+    bool isReady();
+    void setReady();
+    void setBusy();
+
     RMTQueue* getInputQueue() const;
     void setInputQueue(RMTQueue* queue, cGate* portGate);
 
@@ -33,17 +37,24 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
+    RMTQueue* getFirstQueue(RMTQueue::queueType type);
+    RMTQueue* getLongestQueue(RMTQueue::queueType type);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
+    bool ready;
+
     cGate* northOutputGate;
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
     RMTQueues outputQueues;
     RMTQueue* inputQueue;
+
+    void redrawGUI();
 };
 
 typedef std::vector<RMTPort*> RMTPorts;

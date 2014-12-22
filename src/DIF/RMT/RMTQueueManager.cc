@@ -19,7 +19,6 @@ Define_Module(RMTQueueManager);
 
 RMTQueueManager::RMTQueueManager()
 {
-    WATCH_PTRVECTOR(queues);
 }
 
 RMTQueueManager::~RMTQueueManager()
@@ -30,6 +29,8 @@ RMTQueueManager::~RMTQueueManager()
 void RMTQueueManager::initialize()
 {
     qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
+    WATCH_PTRVECTOR(queues);
+    WATCH_PTRMAP(queueToPort);
 }
 
 
@@ -92,6 +93,7 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, uns
     module->setQosId(qosId);
     qMonPolicy->postQueueCreation(module);
     queues.push_back(module);
+    queueToPort[module] = port;
 
     return module;
 }
@@ -132,19 +134,6 @@ void RMTQueueManager::removeQueue(RMTQueue* queue)
     queue->deleteModule();
 }
 
-RMTQueue* RMTQueueManager::getFirst(RMTQueue::queueType type)
-{
-    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
-    {
-        RMTQueue* a = *it;
-        if (a->getType() == type)
-        {
-            return a;
-        }
-    }
-    return NULL;
-}
-
 RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType type)
 {
     for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
@@ -171,7 +160,20 @@ RMTQueue* RMTQueueManager::lookup(short qosId, RMTQueue::queueType type)
     return NULL;
 }
 
-RMTQueue* RMTQueueManager::getLongest(RMTQueue::queueType type)
+RMTQueue* RMTQueueManager::getFirst(RMTPort* port, RMTQueue::queueType type)
+{
+    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
+    {
+        RMTQueue* a = *it;
+        if (a->getType() == type)
+        {
+            return a;
+        }
+    }
+    return NULL;
+}
+
+RMTQueue* RMTQueueManager::getLongest(RMTPort* port, RMTQueue::queueType type)
 {
     int longest = 0;
     RMTQueue* result = NULL;

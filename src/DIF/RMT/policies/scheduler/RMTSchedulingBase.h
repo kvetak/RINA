@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 
 #include "RMTQueueManager.h"
+#include "RMTPort.h"
 #include "RMTQueue.h"
 
 class RMTSchedulingBase : public cSimpleModule
@@ -26,11 +27,16 @@ class RMTSchedulingBase : public cSimpleModule
   public:
     RMTSchedulingBase();
     virtual ~RMTSchedulingBase();
-    virtual void run(RMTQueueManager* queues);
+
+    void finalizeService(RMTPort* port, RMTQueue::queueType direction);
+    virtual void processQueues(RMTPort* port, RMTQueue::queueType direction);
 
   protected:
     void initialize();
     void handleMessage(cMessage *msg);
+
+    std::map<RMTPort*, unsigned int> waitingOnOutput;
+    std::map<RMTPort*, unsigned int> waitingOnInput;
 };
 
 #endif /* RMTSCHEDULINGBASE_H_ */

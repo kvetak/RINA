@@ -588,7 +588,6 @@ void RA::bindFlowToMedium(Flow* flow)
     {
         bindQueueToPort(queue, port);
     }
-    rmt->addEfcpiToQueueMapping(flow->getConnectionId().getSrcCepId(), queue);
 }
 
 /**
@@ -644,7 +643,6 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
         {
             bindQueueToPort(queue, targetFlow->getRmtPort());
         }
-        rmt->addEfcpiToQueueMapping(srcCepId, queue);
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {

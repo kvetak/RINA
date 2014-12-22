@@ -35,10 +35,30 @@ void RMTSchedulingBase::initialize()
 
 void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
-
 }
 
-void RMTSchedulingBase::run(RMTQueueManager* queues)
+void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueue::queueType direction)
 {
-    EV << getFullPath() << "!!!!!!! this is basePolicy(), so I'm not doing anything" << endl;
+    port->setReady();
+
+    if (direction == RMTQueue::OUTPUT)
+    {
+        if (waitingOnOutput[port] > 0)
+        {
+            waitingOnOutput[port] -= 1;
+            processQueues(port, RMTQueue::OUTPUT);
+        }
+    }
+    else
+    {
+        if (waitingOnInput[port] > 0)
+        {
+            waitingOnInput[port] -= 1;
+            processQueues(port, RMTQueue::INPUT);
+        }
+    }
+}
+
+void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueue::queueType direction)
+{
 }
