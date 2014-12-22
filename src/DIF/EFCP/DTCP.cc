@@ -81,15 +81,22 @@ void DTCP::initialize(int step)
 
   //TODO A1 Load list of policies
   if(true){
-#define ECN_SET_POLICY_PREFIX "rina.DIF.EFCP.policies.ECNSet."
-#define ECN_SET_POLICY_NAME "ecnSetPolicy"
+
     std::stringstream moduleName;
     moduleName << ECN_SET_POLICY_PREFIX << par("ecnSetPolicy").stringValue();
 
     cModuleType* ecnSetPolicyType = cModuleType::get(moduleName.str().c_str());
     ecnSetPolicy = (DTCPECNSetPolicyBase*)ecnSetPolicyType->createScheduleInit(ECN_SET_POLICY_NAME, getParentModule());
 
-//    ecnSetPolicy = (DTCPECNSetPolicyBase*)(getParentModule()->getModuleByRelativePath("ecnSetPolicy"));
+    moduleName.str("");
+    moduleName.clear();
+    moduleName << ECN_CLEAR_POLICY_PREFIX << par("ecnClearPolicy").stringValue();
+
+    cModuleType* ecnClearPolicyType = cModuleType::get(moduleName.str().c_str());
+    ecnClearPolicy = (DTCPECNClearPolicyBase*)ecnClearPolicyType->createScheduleInit(ECN_CLEAR_POLICY_NAME, getParentModule());
+
+
+
 
   }
 

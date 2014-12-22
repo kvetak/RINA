@@ -24,4 +24,5 @@ simple DTCP
 {
     @display("i=block/subqueue");
     string ecnSetPolicy;
+    string ecnClearPolicy;
 }
