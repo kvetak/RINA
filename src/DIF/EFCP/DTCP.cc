@@ -48,6 +48,11 @@ void DTCP::runECNSetPolicy(DTPState* dtpState)
   ecnSetPolicy->run(dtpState, dtcpState);
 }
 
+void DTCP::runECNClearPolicy(DTPState* dtpState)
+{
+  ecnClearPolicy->run(dtpState, dtcpState);
+}
+
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");

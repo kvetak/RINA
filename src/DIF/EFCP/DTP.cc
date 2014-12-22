@@ -758,12 +758,6 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
 
-
-  if (pdu->getSeqNum() == 0)
-  {
-    int i = 5;
-  }
-
   EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " received" << endl;
 
   if (state.isFCPresent())
@@ -774,10 +768,9 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       /* Run ECNSet Policy */
       dtcp->runECNSetPolicy(&state);
     }else{
-      //TODO A!
       /* Run ECNClear Policy */
+      dtcp->runECNClearPolicy(&state);
     }
-
 
   }
   // if PDU.DRF == true
@@ -835,7 +828,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 //  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
     if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
     {
-      /* Not a true duplicate. (Might be a duplicate amongst the gaps) */
+      /* Not a true duplicate. (Might be a duplicate among the gaps) */
 
       bool dup = false;
       std::vector<DataTransferPDU*>::iterator it;
@@ -1038,12 +1031,14 @@ unsigned int DTP::delimit(SDU* sdu)
     //S/DUFrag *frag = new SDUFrag
 
     SDU* tmp;
-    for (unsigned int i = 0; i * size < sdu->getSize(); i++)
+    unsigned int i;
+    for (i = 0; i * size < sdu->getSize(); i++)
     {
       tmp = sdu->genFragment(size, i, i * size);
       dataQ.push_back(tmp);
-      return i;
+
     }
+    return i;
   }
   else
   {
@@ -1811,21 +1806,15 @@ bool DTP::runSendingAckPolicy(ATimer* timer)
 
 void DTP::sendToRMT(PDU* pdu)
 {
-
-//  rmt->fromDTPToRMT(new APNamingInfo(), connId.getQoSId(), pdu);
   if(pdu->getType() == DATA_TRANSFER_PDU){
     state.setLastSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() <<": PDU number: " << pdu->getSeqNum() <<" sent in time: " << simTime() << endl;
-    if(pdu->getSeqNum() == 20){
-      int i = 4;
-    }
   }else{
     //This should be controlPDU so do not have to increment LastSeqNumSent
     EV << getFullPath() <<": Control PDU number: " << pdu->getSeqNum() <<" sent in time: " << simTime() << endl;
   }
 
   send(pdu,southO);
-
 }
 
 double DTP::getRxTime()
@@ -1848,6 +1837,7 @@ unsigned int DTP::getAllowableGap()
 
   //TODO A! find QoSCube
 //  return connId.getQosCube()->getMaxAllowGap();
+  this->qosCube.getMaxAllowGap();
   return 4;
 }
 

@@ -38,6 +38,7 @@
 
 /* Policies */
 #include "DTCPECNSetPolicyBase.h"
+#include "DTCPECNClearPolicyBase.h"
 
 class DTP;
 class FlowControl;
@@ -52,6 +53,7 @@ class DTCP: public cSimpleModule {
     RXControl* rxControl;
 
     DTCPECNSetPolicyBase* ecnSetPolicy;
+    DTCPECNClearPolicyBase* ecnClearPolicy;
 
 
 
@@ -104,6 +106,7 @@ public:
     void setSendingRateFullfilled(bool rateFullfilled);
 
     void runECNSetPolicy(DTPState* dtpState);
+    void runECNClearPolicy(DTPState* dtpState);
 
 
 protected:
