@@ -154,6 +154,8 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
     cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
     DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
+    dtcpModule->par("ecnSetPolicy").setStringValue("DTCPECNSetPolicyDefault");
+    dtcpModule->par("ecnClearPolicy").setStringValue("DTCPECNClearPolicyDefault");
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());

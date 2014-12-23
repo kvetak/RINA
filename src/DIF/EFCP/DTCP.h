@@ -36,6 +36,10 @@
 #include "ControlPDU_m.h"
 #include "DTCPTimers_m.h"
 
+/* Policies */
+#include "DTCPECNSetPolicyBase.h"
+#include "DTCPECNClearPolicyBase.h"
+
 class DTP;
 class FlowControl;
 
@@ -47,6 +51,9 @@ class DTCP: public cSimpleModule {
     DTCPState *dtcpState;
     FlowControl* flowControl;
     RXControl* rxControl;
+
+    DTCPECNSetPolicyBase* ecnSetPolicy;
+    DTCPECNClearPolicyBase* ecnClearPolicy;
 
 
 
@@ -98,10 +105,13 @@ public:
     bool isSendingRateFullfilled() const;
     void setSendingRateFullfilled(bool rateFullfilled);
 
+    bool runECNSetPolicy(DTPState* dtpState);
+    bool runECNClearPolicy(DTPState* dtpState);
+    void incRcvRtWinEdge();
 
 protected:
     virtual void handleMessage(cMessage *msg);
-    virtual void initialize();
+    virtual void initialize(int step);
 };
 
 #endif /* DTCP_H_ */

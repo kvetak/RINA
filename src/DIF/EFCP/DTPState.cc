@@ -253,3 +253,13 @@ void DTPState::setLastSeqNumSent(unsigned int lastSeqNumSent)
 {
   this->lastSeqNumSent = lastSeqNumSent;
 }
+
+bool DTPState::isEcnSet() const
+{
+  return ecnSet;
+}
+
+void DTPState::setEcnSet(bool ecnSet)
+{
+  this->ecnSet = ecnSet;
+}

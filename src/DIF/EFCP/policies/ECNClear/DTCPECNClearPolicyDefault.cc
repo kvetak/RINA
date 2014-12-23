@@ -16,47 +16,30 @@
 // 
 
 /*
- * @file RXControl.cc
+ * @file DefaultDTCPECNClearPolicy.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2014
+ * @date Dec 21, 2014
  * @brief
  * @detail
  */
 
-#include <RXControl.h>
+#include <DTCPECNClearPolicyDefault.h>
 
-RXControl::RXControl()
+Define_Module(DTCPECNClearPolicyDefault);
+
+DTCPECNClearPolicyDefault::DTCPECNClearPolicyDefault()
 {
-//  nextSenderControlSeqNum = 1;
-  dupAcks = 0;
-//  lastControlSeqNumRcv = 0;
-  dataReXmitMax = 3;
+  // TODO Auto-generated constructor stub
 
 }
 
-RXControl::~RXControl()
+DTCPECNClearPolicyDefault::~DTCPECNClearPolicyDefault()
 {
   // TODO Auto-generated destructor stub
 }
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
-
-//unsigned int RXControl::getNextSndCtrlSeqNum()
-//{
-//  return nextSenderControlSeqNum++;
-//}
-
-//unsigned int RXControl::getLastCtrlSeqNumRcv(){
-//  return lastControlSeqNumRcv;
-//}
-
-//void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
-//  lastControlSeqNumRcv = ctrlSeqNum;
-//}
-void RXControl::incDupAcks()
+bool DTCPECNClearPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
 {
-  dupAcks++;
+  dtpState->setEcnSet(false);
+  return false;
 }

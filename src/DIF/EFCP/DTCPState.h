@@ -36,18 +36,27 @@ class DTCPState : public cObject
   private:
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
-    unsigned int sndRightWinEdge;
-    unsigned int rcvRightWinEdgeSent;
-    unsigned int rcvRtWinEdge;
+    unsigned int sndRtWinEdge;
+    unsigned int rcvRtWinEdgeSent;
 //    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
     //retransmissionQ
 
 //    unsigned int controlSeqNum; //sequence number for ControlPDUs
+    /* Moved from RX */
+    unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
+    unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
+
+    /* Moved from FC */
 
 
-    void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
+    unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
+
+
+
+
+
   public:
     DTCPState();
     virtual ~DTCPState();
@@ -56,7 +65,7 @@ class DTCPState : public cObject
     bool isImmediate() const;
     void setImmediate(bool immediate);
     unsigned int getRcvrRightWinEdgeSent() const;
-    void setRcvrRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
+    void setRcvRtWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
     unsigned int getSenderRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
 //    bool isSetDrfFlag() const;
@@ -65,10 +74,16 @@ class DTCPState : public cObject
     void setRcvCredit(unsigned int rcvCredit);
     unsigned int getSndCredit() const;
     void setSndCredit(unsigned int sndCredit);
-    unsigned int getRcvRtWinEdge() const;
+
     void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
 //    unsigned int getNextCtrlSeqNum();
-
+    unsigned int getNextSndCtrlSeqNum();
+    unsigned int getLastCtrlSeqNumRcv();
+    void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
+    void incRcvRtWinEdge();
+    void initFC();
+    unsigned int getRcvRtWinEdge() const;
+    void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
 };
 
 #endif /* DTCPSTATE_H_ */

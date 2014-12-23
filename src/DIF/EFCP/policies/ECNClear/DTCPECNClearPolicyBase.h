@@ -16,47 +16,35 @@
 // 
 
 /*
- * @file RXControl.cc
+ * @file DTCPECNClearPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2014
+ * @date Dec 21, 2014
  * @brief
  * @detail
  */
 
-#include <RXControl.h>
+#ifndef DTCPECNCLEARPOLICYBASE_H_
+#define DTCPECNCLEARPOLICYBASE_H_
 
-RXControl::RXControl()
+#include <omnetpp.h>
+
+#include "DTPState.h"
+#include "DTCPState.h"
+
+/*
+ *
+ */
+class DTCPECNClearPolicyBase : public cSimpleModule
 {
-//  nextSenderControlSeqNum = 1;
-  dupAcks = 0;
-//  lastControlSeqNumRcv = 0;
-  dataReXmitMax = 3;
+  public:
+    DTCPECNClearPolicyBase();
+    virtual ~DTCPECNClearPolicyBase();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-}
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-RXControl::~RXControl()
-{
-  // TODO Auto-generated destructor stub
-}
+};
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
-
-//unsigned int RXControl::getNextSndCtrlSeqNum()
-//{
-//  return nextSenderControlSeqNum++;
-//}
-
-//unsigned int RXControl::getLastCtrlSeqNumRcv(){
-//  return lastControlSeqNumRcv;
-//}
-
-//void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
-//  lastControlSeqNumRcv = ctrlSeqNum;
-//}
-void RXControl::incDupAcks()
-{
-  dupAcks++;
-}
+#endif /* DTCPECNCLEARPOLICYBASE_H_ */
