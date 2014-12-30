@@ -331,7 +331,7 @@ void RA::bindMediumToRMT()
     rmtQM->addMgmtQueues(port);
 
     // create additional queues (if desired by the currently active policy)
-    //qAllocPolicy->onNM1PortInit(port);
+    qAllocPolicy->onNM1PortInit(port);
 }
 
 /**
@@ -368,10 +368,10 @@ RMTPort* RA::bindLowerFlowToRMT(cModule* bottomIpc, FABase* fab, Flow* flow)
 
 	// TODO: remove this temporary solution when we settle on method of management flow allocation
     // create extra queues for management purposes
-    //rmtQM->addMgmtQueues(port);
+    rmtQM->addMgmtQueues(port);
 
     // create initial queues (by invoking currently active QueueAlloc policy)
-    //qAllocPolicy->onNM1PortInit(port);
+    qAllocPolicy->onNM1PortInit(port);
 
     // finally, update the flow table
     flTable->insert(flow, fab, port, thisIpcGate.str().c_str());
