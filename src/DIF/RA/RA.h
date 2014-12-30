@@ -101,9 +101,6 @@ class RA : public RABase
     simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
 
-    // TODO: purge this crap and think of something smarter
-    unsigned int portXCoord, portYCoord;
-
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);
 

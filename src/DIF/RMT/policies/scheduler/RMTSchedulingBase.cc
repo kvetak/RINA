@@ -37,7 +37,7 @@ void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
 }
 
-void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueue::queueType direction)
+void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
 {
     port->setReady();
 
@@ -59,6 +59,6 @@ void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueue::queueType direc
     }
 }
 
-void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueue::queueType direction)
+void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueueType direction)
 {
 }

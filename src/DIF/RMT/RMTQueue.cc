@@ -19,9 +19,9 @@ Define_Module(RMTQueue);
 
 
 RMTQueue::RMTQueue()
+: id(0)
 {
 }
-
 
 RMTQueue::~RMTQueue()
 {
@@ -106,9 +106,11 @@ void RMTQueue::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        EV << "!!!! releasing PDU" << endl;
-        releasePDU();
-        emit(sigRMTPDUSent, this);
+        if (!opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
+        {
+            releasePDU();
+            emit(sigRMTPDUSent, this);
+        }
         delete msg;
     }
     else
@@ -144,11 +146,12 @@ void RMTQueue::releasePDU(void)
  * Schedules an end-of-queue-service event.
  *
  */
-void RMTQueue::scheduleServiceEnd()
+void RMTQueue::startTransmitting()
 {
-    Enter_Method("schedule");
-    scheduleAt(simTime() + getParentModule()->par("queueServiceTime").doubleValue() / 1000,
-               new cMessage("queueServiceDone"));
+    Enter_Method("startTransmitting()");
+
+    scheduleAt(simTime() + queuingTime, new cMessage("queueTransmitEnd"));
+    bubble("Releasing a PDU...");
 }
 
 void RMTQueue::dropLast()
@@ -205,24 +208,27 @@ simtime_t RMTQueue::getQTime() const
     return qTime;
 }
 
-RMTQueue::queueType RMTQueue::getType()
+RMTQueueType RMTQueue::getType()
 {
     return type;
 }
 
-void RMTQueue::setType(RMTQueue::queueType type)
+void RMTQueue::setType(queueType type)
 {
     this->type = type;
+    queuingTime = getParentModule()->
+            par(type == OUTPUT ? "TxQueuingTime" : "RxQueuingTime").
+            doubleValue() / 1000;
 }
 
-unsigned short RMTQueue::getQosId()
+int RMTQueue::getId() const
 {
-    return qosId;
+    return id;
 }
 
-void RMTQueue::setQosId(unsigned short qosId)
+void RMTQueue::setId(int queueId)
 {
-    this->qosId = qosId;
+    this->id = queueId;
 }
 
 cGate* RMTQueue::getRmtAccessGate()

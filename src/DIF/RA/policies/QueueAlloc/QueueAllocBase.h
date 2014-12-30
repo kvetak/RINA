@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -20,20 +20,26 @@
 
 #include <omnetpp.h>
 #include "RABase.h"
-#include "QoSCube.h"
 #include "RMTQueueManager.h"
 #include "RMTPort.h"
 
-/*
- *
- */
+#include "Flow.h"
+#include "ConnectionId.h"
+
 class QueueAllocBase : public cSimpleModule
 {
   public:
     QueueAllocBase();
     virtual ~QueueAllocBase();
-    virtual void createQueues(RMTPort* port, RMTQueues& result);
-    virtual RMTQueue* getSuitableQueue(RMTPort* port, short qosId);
+
+    // method selecting the proper available queue for specified flow identifiers
+    virtual RMTQueue* getSuitableOutputQueue(RMTPort* port, ConnectionId& connId);
+
+    // event hooks
+    virtual void onNM1PortInit(RMTPort* port);
+    virtual void onNM1PortRemoval(RMTPort* port);
+    virtual void onNFlowAlloc(RMTPort* port, Flow* flow);
+    virtual void onNFlowDealloc(RMTPort* port);
 
   protected:
     void initialize();

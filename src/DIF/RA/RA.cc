@@ -75,12 +75,6 @@ void RA::initialize(int stage)
     initQoSCubes();
 
     WATCH_LIST(this->QosCubes);
-
-    // TODO: purge this crap and think of something smarter
-    // port module coordinates
-    portXCoord = 80;
-    portYCoord = 220;
-
 }
 
 void RA::initSignalsAndListeners()
@@ -266,37 +260,6 @@ void RA::handleMessage(cMessage *msg)
 {
 }
 
-void RA::bindQueueToPort(RMTQueue* queue, RMTPort* port)
-{
-    if (queue->getType() == RMTQueue::INPUT)
-    {
-        cGate* toInputQueue = port->addGate(queue->getFullName(), cGate::OUTPUT, false);
-        toInputQueue->connectTo(queue->getInputGate());
-        port->setInputQueue(queue, toInputQueue);
-    }
-    else
-    {
-        cGate* fromOutputQueue = port->addGate(queue->getFullName(), cGate::INPUT, false);
-        queue->getOutputGate()->connectTo(fromOutputQueue);
-        port->addOutputQueue(queue, fromOutputQueue);
-    }
-}
-
-/**
- * Connects each queue from given RMTQueue vector to given port.
- *
- * @param queues list of queues to be bound to the port
- * @param RMT port
- */
-void RA::bindQueuesToPort(RMTQueues& queues, RMTPort* port)
-{
-    for(RMTQueues::iterator it = queues.begin(); it != queues.end(); ++it )
-    {
-        RMTQueue* q = *it;
-        bindQueueToPort(q, port);
-    }
-}
-
 /**
  * Convenience function for interconnecting two modules.
  * TODO: convert this into a global utility method so others can use it
@@ -358,22 +321,17 @@ void RA::bindMediumToRMT()
     thisIpcIn->connectTo(rmtModuleIn);
 
     // create a RMTPort instance for interface
-    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPort");
-    RMTPort* port = (RMTPort*)moduleType->createScheduleInit("PHY", rmtModule);
-    // modify the position a little
-    cDisplayString& portDisp = port->getDisplayString();
-    portDisp.setTagArg("p", 0, 80);
-    portDisp.setTagArg("p", 1, 220);
+    RMTPort* port = rmtQM->addPort("PHY");
 
     // connect the port to the bottom
     interconnectModules(rmtModule, port, rmtGate.str(), std::string("southIo"));
 
-    // create queues (by currently active policy)
-    RMTQueues queues;
-    qAllocPolicy->createQueues(port, queues);
+    // TODO: remove this temporary solution when we settle on method of management flow allocation
+    // create extra queues for management purposes
+    rmtQM->addMgmtQueues(port);
 
-    // interconnect each queue with RMTPort
-    bindQueuesToPort(queues, port);
+    // create additional queues (if desired by the currently active policy)
+    //qAllocPolicy->onNM1PortInit(port);
 }
 
 /**
@@ -403,23 +361,17 @@ RMTPort* RA::bindLowerFlowToRMT(cModule* bottomIpc, FABase* fab, Flow* flow)
 
     //// create new data path for the (N-1)-flow inside the RMT blackbox
     // create a RMTPort instance (pretty much a representation of an (N-1)-port)
-    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPort");
-    RMTPort* port = (RMTPort*)moduleType->createScheduleInit(combinedPortId.c_str(), rmtModule);
-    // modify the position a little
-    cDisplayString& portDisp = port->getDisplayString();
-    portDisp.setTagArg("p", 0, portXCoord);
-    portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 80;
+    RMTPort* port = rmtQM->addPort(combinedPortId.c_str());
 
     // connect the port to the bottom
     interconnectModules(rmtModule, port, thisIpcGate.str(), std::string("southIo"));
 
-    // create queues (by invoking currently active QueueAlloc policy)
-    RMTQueues queues;
-    qAllocPolicy->createQueues(port, queues);
+	// TODO: remove this temporary solution when we settle on method of management flow allocation
+    // create extra queues for management purposes
+    //rmtQM->addMgmtQueues(port);
 
-    // interconnect each queue with RMTPort
-    bindQueuesToPort(queues, port);
+    // create initial queues (by invoking currently active QueueAlloc policy)
+    //qAllocPolicy->onNM1PortInit(port);
 
     // finally, update the flow table
     flTable->insert(flow, fab, port, thisIpcGate.str().c_str());
@@ -583,11 +535,7 @@ void RA::bindFlowToMedium(Flow* flow)
     EV << "binding a flow to the medium" << endl;
 
     RMTPort* port = (RMTPort*)(rmtModule->getSubmodule("PHY"));
-    RMTQueue* queue = qAllocPolicy->getSuitableQueue(port, flow->getConnectionId().getQoSId());
-    if (!queue->isBounded())
-    {
-        bindQueueToPort(queue, port);
-    }
+    qAllocPolicy->onNFlowAlloc(port, flow);
 }
 
 /**
@@ -608,7 +556,6 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
 
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     std::string dstAddr = flow->getDstAddr().getApname().getName();
-    int srcCepId = flow->getConId().getSrcCepId();
     unsigned short qosId = flow->getConId().getQoSId();
 
     // see if any appropriate (N-1)-flow already exists
@@ -638,11 +585,8 @@ bool RA::bindFlowToLowerFlow(Flow* flow)
     }
     else
     {
-        RMTQueue* queue = qAllocPolicy->getSuitableQueue(targetFlow->getRmtPort(), qosId);
-        if (!queue->isBounded())
-        {
-            bindQueueToPort(queue, targetFlow->getRmtPort());
-        }
+        qAllocPolicy->onNFlowAlloc(targetFlow->getRmtPort(), flow);
+
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {

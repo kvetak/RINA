@@ -81,7 +81,7 @@ RMTQueue* RMTPort::getFirstQueue(RMTQueue::queueType type)
         for(RMTQueues::iterator it = outputQueues.begin(); it != outputQueues.end(); ++it )
         {
             RMTQueue* a = *it;
-            if (a->getType() == type)
+            if (a->getId() != -1)
             {
                 return a;
             }
@@ -133,5 +133,5 @@ void RMTPort::setBusy()
 
 void RMTPort::redrawGUI()
 {
-    getDisplayString().setTagArg("i", 1, (isReady() ? "#FFFFFF" : "000000"));
+    getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
 }

@@ -23,6 +23,7 @@
 #include "QoSCube.h"
 #include "RINASignals.h"
 
+
 class RMTQueue : public cSimpleModule
 {
   protected:
@@ -35,16 +36,16 @@ class RMTQueue : public cSimpleModule
 
     enum queueType { INPUT = 'I', OUTPUT = 'O'};
 
-    RMTQueue::queueType getType();
-    void setType(RMTQueue::queueType type);
+    queueType getType();
+    void setType(queueType type);
 
     int getMaxLength();
     void setMaxLength(int value);
     int getThreshLength();
     void setThreshLength(int value);
+    int getId() const;
+    void setId(int queueId);
     int getLength() const;
-    unsigned short getQosId();
-    void setQosId(unsigned short qosId);
     simtime_t getQTime() const;
 
     cGate* getOutputGate();
@@ -59,22 +60,27 @@ class RMTQueue : public cSimpleModule
     bool isBounded();
     std::string info() const;
 
-    void scheduleServiceEnd();
+    void startTransmitting();
 
   private:
     std::deque<cMessage*> queue;
+    queueType type;
+
+    // FIXME: the ID should be universal (its definition is a matter of policy)
+    // and immune against conn-id collisions (in case of "virtual circuit" policy
+    // applied inside relaying IPCs).
+    // Some sort of universal container should be here instead of an integer.
+    int id;
 
     int maxQLength;
     int thresholdQLength;
 
+    double queuingTime;
     simtime_t qTime;
-    queueType type;
 
     cGate* rmtAccessGate;
     cGate* outputGate;
     cGate* inputGate;
-
-    unsigned short qosId;
 
     simsignal_t sigRMTPDURcvd;
     simsignal_t sigRMTPDUSent;
@@ -83,6 +89,8 @@ class RMTQueue : public cSimpleModule
     void redrawGUI();
 
 };
+
+typedef RMTQueue::queueType RMTQueueType;
 
 typedef std::vector<RMTQueue*>  RMTQueues;
 typedef RMTQueues::iterator  RMTQueuesIter;

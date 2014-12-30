@@ -36,14 +36,14 @@ class RMTQueueManager : public cSimpleModule
     iterator begin();
     iterator end();
 
-    RMTQueue* addQueue(RMTQueue::queueType type, RMTPort* port, unsigned short qosId = 0);
+    RMTPort* addPort(const char* portName);
+    RMTQueue* addQueue(RMTQueueType type, RMTPort* port, int queueId = 0);
+    void addMgmtQueues(RMTPort* port);
     void removeQueue(RMTQueue* queue);
 
-    RMTQueue* lookup(const char* queueName, RMTQueue::queueType type);
-    RMTQueue* lookup(short qosId, RMTQueue::queueType type);
+    RMTQueue* lookup(const char* queueName, RMTQueueType type);
+    RMTQueue* lookup(int queueId, RMTQueueType type);
 
-    RMTQueue* getFirst(RMTPort* port, RMTQueue::queueType type);
-    RMTQueue* getLongest(RMTPort* port, RMTQueue::queueType type);
     std::map<RMTQueue*, RMTPort*> queueToPort;
 
   private:
@@ -51,6 +51,9 @@ class RMTQueueManager : public cSimpleModule
 
     RMTQMonitorBase* qMonPolicy;
     std::map<RMTPort*, unsigned int> portQueueCount;
+
+    // TODO: purge this crap and think of something smarter
+    unsigned int portXCoord, portYCoord;
 
 };
 

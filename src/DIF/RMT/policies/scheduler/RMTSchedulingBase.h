@@ -28,8 +28,8 @@ class RMTSchedulingBase : public cSimpleModule
     RMTSchedulingBase();
     virtual ~RMTSchedulingBase();
 
-    void finalizeService(RMTPort* port, RMTQueue::queueType direction);
-    virtual void processQueues(RMTPort* port, RMTQueue::queueType direction);
+    void finalizeService(RMTPort* port, RMTQueueType direction);
+    virtual void processQueues(RMTPort* port, RMTQueueType direction);
 
   protected:
     void initialize();

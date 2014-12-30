@@ -37,6 +37,8 @@
 #include "RMTQMonitorBase.h"
 #include "RMTMaxQBase.h"
 
+#include "QueueAllocBase.h"
+
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 #include "Address.h"
@@ -82,6 +84,8 @@ class RMT : public RMTBase
     RMTMaxQBase* maxQPolicy;
     RMTSchedulingBase* schedPolicy;
 
+    QueueAllocBase* qAllocPolicy;
+
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU_Base* msg);
     void efcpiToEfcpi(PDU_Base* msg);
@@ -90,7 +94,7 @@ class RMT : public RMTBase
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    cGate* fwTableLookup(Address& destAddr, short pduQosId);
+    RMTPort* fwTableLookup(Address& destAddr, short pduQosId);
 
     simsignal_t sigRMTNoConnID;
     LisRMTPDURcvd* lisRMTMsgRcvd;

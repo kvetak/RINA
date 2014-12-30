@@ -17,7 +17,7 @@
 
 Define_Module(LongestQFirst);
 
-void LongestQFirst::processQueues(RMTPort* port, RMTQueue::queueType direction)
+void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 {
     Enter_Method("processQueues()");
 
@@ -28,7 +28,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueue::queueType direction)
             port->setBusy();
 
             RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
-            outQ->scheduleServiceEnd();
+            outQ->startTransmitting();
         }
         else
         {
@@ -40,7 +40,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueue::queueType direction)
         if (!waitingOnInput[port])
         {
             RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
-            inQ->scheduleServiceEnd();
+            inQ->startTransmitting();
         }
         else
         {

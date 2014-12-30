@@ -28,7 +28,8 @@ module RMTModule
         string qMonitorPolicyName = default("SimpleMonitor");
         string maxQPolicyName = default("TailDrop");
 
-        double queueServiceTime @unit(ms) = default(0.0ms);
+        double TxQueuingTime @unit(ms) = default(0.0ms);
+        double RxQueuingTime @unit(ms) = default(0.0ms);
 
         int queueSize = default(20);
         int queueThresh = default(10);

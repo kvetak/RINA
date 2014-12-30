@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -42,11 +42,23 @@ void QueueAllocBase::handleMessage(cMessage *msg)
 {
 }
 
-void QueueAllocBase::createQueues(RMTPort* port, RMTQueues& result)
+RMTQueue* QueueAllocBase::getSuitableOutputQueue(RMTPort* port, ConnectionId& connId)
+{
+    return (RMTQueue*)NULL;
+}
+
+void QueueAllocBase::onNM1PortInit(RMTPort* port)
 {
 }
 
-RMTQueue* QueueAllocBase::getSuitableQueue(RMTPort* port, short qosId)
+void QueueAllocBase::onNM1PortRemoval(RMTPort* port)
 {
-    return (RMTQueue*)NULL;
+}
+
+void QueueAllocBase::onNFlowAlloc(RMTPort* port, Flow* flow)
+{
+}
+
+void QueueAllocBase::onNFlowDealloc(RMTPort* port)
+{
 }

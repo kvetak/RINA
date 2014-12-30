@@ -58,6 +58,8 @@ void RMT::initialize()
     schedPolicy = ModuleAccess<RMTSchedulingBase>("schedulingPolicy").get();
     maxQPolicy = ModuleAccess<RMTMaxQBase>("maxQueuePolicy").get();
     qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
+
+    qAllocPolicy = (QueueAllocBase*)(ipcModule->getModuleByPath(".resourceAllocator.queueAllocPolicy"));
 }
 
 
@@ -172,10 +174,9 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  * @param qosId qos-id
  * @return RMT gate leading to an output RMT queue
  */
-cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
+RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId)
 {
     RMTPort* outPort = NULL;
-    cGate* outGate = NULL;
 
     if (onWire)
     { // get the interface port
@@ -186,15 +187,7 @@ cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
         outPort = fwTable->lookup(destAddr, qosId);
     }
 
-    // FIXME: replace with a proper policy call
-    RMTQueue* outQueue = outPort->getOutputQueues().front();
-
-    if (outQueue != NULL)
-    {
-        outGate = outQueue->getRmtAccessGate();
-    }
-
-    return outGate;
+    return outPort;
 }
 
 /**
@@ -204,9 +197,17 @@ cGate* RMT::fwTableLookup(Address& destAddr, short qosId)
  */
 void RMT::efcpiToPort(PDU_Base* pdu)
 {
-    cGate* outGate = NULL;
+    RMTQueue* outQueue = NULL;
 
-    outGate = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
+    RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
+    outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, pdu->getConnId());
+
+
+    cGate* outGate = NULL;
+    if (outQueue != NULL)
+    {
+        outGate = outQueue->getRmtAccessGate();
+    }
 
     if (outGate != NULL)
     {
@@ -271,7 +272,14 @@ void RMT::portToRIB(CDAPMessage* cdap)
  */
 void RMT::RIBToPort(CDAPMessage* cdap)
 {
-    cGate* outGate = fwTableLookup(cdap->getDstAddr(), -1);
+    cGate* outGate = NULL;
+    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), -1);
+    RMTQueue* outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+
+    if (outQueue != NULL)
+    {
+        outGate = outQueue->getRmtAccessGate();
+    }
 
     if (outGate != NULL)
     {
@@ -292,17 +300,24 @@ void RMT::RIBToPort(CDAPMessage* cdap)
 void RMT::portToPort(cMessage* msg)
 {
     Address destAddr;
-    short qosId;
+    RMTPort* outPort = NULL;
+    RMTQueue* outQueue = NULL;
+
 
     if (dynamic_cast<PDU_Base*>(msg) != NULL)
     {
         destAddr = ((PDU_Base*)msg)->getDstAddr();
-        qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
+        short qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
+
+        outPort = fwTableLookup(destAddr, qosId);
+        outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, ((PDU_Base*)msg)->getConnId());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
-        qosId = -1;
+
+        outPort = fwTableLookup(((CDAPMessage*)msg)->getDstAddr(), -1);
+        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
     }
     else
     {
@@ -310,7 +325,12 @@ void RMT::portToPort(cMessage* msg)
         return;
     }
 
-    cGate* outGate = fwTableLookup(destAddr, qosId);
+    cGate* outGate = NULL;
+
+    if (outQueue != NULL)
+    {
+        outGate = outQueue->getRmtAccessGate();
+    }
 
     if (outGate != NULL)
     {

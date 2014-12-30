@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,20 +19,13 @@
 
 Define_Module(QueuePerNQoS);
 
-void QueuePerNQoS::createQueues(RMTPort* port, RMTQueues& result)
+RMTQueue* QueuePerNQoS::getSuitableOutputQueue(RMTPort* port, ConnectionId& connId)
 {
-    result.push_back(rmtQM->addQueue(RMTQueue::INPUT, port));
+    return rmtQM->lookup(connId.getQoSId(), RMTQueue::OUTPUT);
 }
 
-RMTQueue* QueuePerNQoS::getSuitableQueue(RMTPort* port, short qosId)
+void QueuePerNQoS::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
-    RMTQueue* queue = rmtQM->lookup(qosId, RMTQueue::OUTPUT);
-    if (queue == NULL)
-    {
-        return rmtQM->addQueue(RMTQueue::OUTPUT, port);
-    }
-    else
-    {
-        return queue;
-    }
+    rmtQM->addQueue(RMTQueue::OUTPUT, port, flow->getConnectionId().getQoSId());
+    rmtQM->addQueue(RMTQueue::INPUT, port, flow->getConnectionId().getQoSId());
 }

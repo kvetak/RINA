@@ -23,7 +23,7 @@
 class LongestQFirst : public RMTSchedulingBase
 {
   private:
-    virtual void processQueues(RMTPort* port, RMTQueue::queueType direction);
+    virtual void processQueues(RMTPort* port, RMTQueueType direction);
 };
 
 #endif
