@@ -43,8 +43,8 @@ class RMTQueue : public cSimpleModule
     void setMaxLength(int value);
     int getThreshLength();
     void setThreshLength(int value);
-    int getId() const;
-    void setId(int queueId);
+    int getQueueId() const;
+    void setQueueId(int queueId);
     int getLength() const;
     simtime_t getQTime() const;
 
@@ -70,7 +70,7 @@ class RMTQueue : public cSimpleModule
     // and immune against conn-id collisions (in case of "virtual circuit" policy
     // applied inside relaying IPCs).
     // Some sort of universal container should be here instead of an integer.
-    int id;
+    int queueId;
 
     int maxQLength;
     int thresholdQLength;

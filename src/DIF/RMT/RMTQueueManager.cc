@@ -59,11 +59,8 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, int
         }
     }
 
-    EV << "creating a new queue named " << queueName.str() << endl;
     cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
-    EV << "  attempting to instantiate module" << endl;
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), this->getParentModule());
-    EV << "  instantiation done" << endl;
     RMTQueue* module = dynamic_cast<RMTQueue*>(newModule);
 
     // modify the position a little
@@ -76,13 +73,11 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, int
     if (type == RMTQueue::OUTPUT)
     {
         // connect to RMT submodule
-        EV << "  binding output queue to RMT submodule" << endl;
         cGate* rmtOut = rmt->addGate(queueName.str().c_str(), cGate::OUTPUT, false);
         rmtOut->connectTo(module->getInputGate());
         module->setRmtAccessGate(rmtOut);
 
         // connect to port
-        EV << "  binding output queue to port" << endl;
         cGate* fromOutputQueue = port->addGate(module->getFullName(), cGate::INPUT, false);
         module->getOutputGate()->connectTo(fromOutputQueue);
         port->addOutputQueue(module, fromOutputQueue);
@@ -90,19 +85,17 @@ RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, int
     else if (type == RMTQueue::INPUT)
     {
         // connect to RMT submodule
-        EV << "  binding input queue to RMT submodule" << endl;
         cGate* rmtIn = rmt->addGate(queueName.str().c_str(), cGate::INPUT, false);
         module->getOutputGate()->connectTo(rmtIn);
 
         // connect to port
-        EV << "  binding output queue to port" << endl;
         cGate* toInputQueue = port->addGate(module->getFullName(), cGate::OUTPUT, false);
         toInputQueue->connectTo(module->getInputGate());
         port->setInputQueue(module, toInputQueue);
     }
 
     module->setType(type);
-    module->setId(queueId);
+    module->setQueueId(queueId);
     qMonPolicy->postQueueCreation(module);
     queues.push_back(module);
     queueToPort[module] = port;
