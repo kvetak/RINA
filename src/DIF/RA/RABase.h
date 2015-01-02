@@ -31,11 +31,11 @@ class RABase : public cSimpleModule
     RABase();
     virtual ~RABase();
 
-    virtual void createFlow(Flow *flow) = 0;
-    virtual void createFlowWithoutAllocate(Flow *flow) = 0;
-    virtual void removeFlow(Flow *flow) = 0;
-    virtual bool bindFlowToLowerFlow(Flow* flow) = 0;
-    virtual void bindFlowToMedium(Flow* flow) = 0;
+    virtual void createNM1Flow(Flow *flow) = 0;
+    virtual void createNM1FlowWithoutAllocate(Flow *flow) = 0;
+    virtual void postNFlowAllocation(Flow* flow) = 0;
+    virtual void removeNM1Flow(Flow *flow) = 0;
+    virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
 
     const QosCubeSet& getQosCubes() const;
     const QoSCube* getQosCubeById(unsigned short qosId) const;

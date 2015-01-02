@@ -35,9 +35,11 @@ class PDUForwardingTable : public cSimpleModule
   public:
     PDUForwardingTable();
 
+    void printAll();
     void insert(const PDUForwardingTableEntry* entry);
-    void insert(Address destAddr, int qosId, RMTPort* port);
-    RMTPort* lookup(Address& destAddr, int QoSid);
+    void insert(Address destAddr, unsigned short qosId, RMTPort* port);
+    RMTPort* lookup(Address& destAddr, unsigned short QoSid);
+    RMTPort* lookup(Address& destAddr);
     void remove(RMTPort *portId);
 
   protected:
@@ -46,7 +48,6 @@ class PDUForwardingTable : public cSimpleModule
 
   private:
     PDUFwdTable fwTable;
-    void printAll();
 };
 
 #endif

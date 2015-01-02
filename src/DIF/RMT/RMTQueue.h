@@ -43,8 +43,8 @@ class RMTQueue : public cSimpleModule
     void setMaxLength(int value);
     int getThreshLength();
     void setThreshLength(int value);
-    int getQueueId() const;
-    void setQueueId(int queueId);
+    const char* getQueueId() const;
+    void setQueueId(const char* queueId);
     int getLength() const;
     simtime_t getQTime() const;
 
@@ -66,11 +66,7 @@ class RMTQueue : public cSimpleModule
     std::deque<cMessage*> queue;
     queueType type;
 
-    // FIXME: the ID should be universal (its definition is a matter of policy)
-    // and immune against conn-id collisions (in case of "virtual circuit" policy
-    // applied inside relaying IPCs).
-    // Some sort of universal container should be here instead of an integer.
-    int queueId;
+    const char* queueId;
 
     int maxQLength;
     int thresholdQLength;

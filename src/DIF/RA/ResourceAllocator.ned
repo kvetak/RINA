@@ -34,7 +34,7 @@ module ResourceAllocator
         pduForwardingTable: PDUForwardingTable {
             @display("p=70,200");
         }
-        flowTable: FlowTable {
+        nm1FlowTable: NM1FlowTable {
             @display("p=150,60");
         }
         queueAllocPolicy: <queueAllocPolicyName> like IntQueueAlloc {

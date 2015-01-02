@@ -20,6 +20,8 @@
 
 #include <omnetpp.h>
 #include "RMTQueue.h"
+#include "Flow.h"
+#include "CDAPMessage_m.h"
 
 class RMTPort : public cSimpleModule
 {
@@ -28,8 +30,11 @@ class RMTPort : public cSimpleModule
     void setReady();
     void setBusy();
 
-    RMTQueue* getInputQueue() const;
-    void setInputQueue(RMTQueue* queue, cGate* portGate);
+    const Flow* getFlow() const { return flow; }
+    void setFlow(Flow* flow) { this->flow = flow; }
+
+    const RMTQueues& getInputQueues() const;
+    void addInputQueue(RMTQueue* queue, cGate* portGate);
 
     const RMTQueues& getOutputQueues() const;
     void addOutputQueue(RMTQueue* queue, cGate* portGate);
@@ -37,8 +42,10 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
-    RMTQueue* getFirstQueue(RMTQueue::queueType type);
-    RMTQueue* getLongestQueue(RMTQueue::queueType type);
+    RMTQueue* getManagementQueue(RMTQueueType type);
+    RMTQueue* getFirstQueue(RMTQueueType type);
+    RMTQueue* getLongestQueue(RMTQueueType type);
+    RMTQueue* getQueueById(RMTQueueType type, const char* queueId);
 
   protected:
     virtual void initialize();
@@ -46,13 +53,14 @@ class RMTPort : public cSimpleModule
 
   private:
     bool ready;
+    Flow* flow;
 
-    cGate* northOutputGate;
+    std::set<cGate*> northOutputGates;
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
     RMTQueues outputQueues;
-    RMTQueue* inputQueue;
+    RMTQueues inputQueues;
 
     void redrawGUI();
 };

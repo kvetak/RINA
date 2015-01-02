@@ -19,7 +19,7 @@ Define_Module(RMTQueue);
 
 
 RMTQueue::RMTQueue()
-: queueId(0)
+: queueId("")
 {
 }
 
@@ -221,12 +221,12 @@ void RMTQueue::setType(queueType type)
             doubleValue() / 1000;
 }
 
-int RMTQueue::getQueueId() const
+const char* RMTQueue::getQueueId() const
 {
     return queueId;
 }
 
-void RMTQueue::setQueueId(int queueId)
+void RMTQueue::setQueueId(const char* queueId)
 {
     this->queueId = queueId;
 }

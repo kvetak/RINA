@@ -27,7 +27,6 @@
 #include <omnetpp.h>
 
 #include "PDUForwardingTable.h"
-#include "ModuleAccess.h"
 
 class PDUFwdTabGenerator : public cSimpleModule
 {

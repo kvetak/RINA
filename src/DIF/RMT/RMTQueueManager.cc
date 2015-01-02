@@ -28,9 +28,11 @@ RMTQueueManager::~RMTQueueManager()
 
 void RMTQueueManager::initialize()
 {
-    qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
-    WATCH_PTRVECTOR(queues);
+    qMonPolicy = check_and_cast<RMTQMonitorBase*>
+        (getModuleByPath("^.queueMonitorPolicy"));
     WATCH_PTRMAP(queueToPort);
+
+    portCount = 0;
 
     // TODO: purge this crap and think of something smarter
     // port module coordinates
@@ -39,74 +41,69 @@ void RMTQueueManager::initialize()
 }
 
 
-RMTQueue* RMTQueueManager::addQueue(RMTQueue::queueType type, RMTPort* port, int queueId)
+RMTQueue* RMTQueueManager::addQueue(RMTQueueType type, RMTPort* port, const char* queueId)
 {
     // generate a name
     std::ostringstream queueName;
-    const char* strType = (type == RMTQueue::INPUT ? "in" : "out");
-    for (int i = 0; ; i++)
+    const char* strType = (type == RMTQueue::INPUT ? "i" : "o");
+    queueName << port->getFullName() << strType << queueId;
+
+    RMTQueue* queue = lookup(port, type, queueName.str().c_str());
+    if (queue)
     {
-        queueName << strType << i;
-        if (lookup(queueName.str().c_str(), type) != NULL)
-        {
-            queueName.str(std::string());
-            queueName.clear();
-            continue;
-        }
-        else
-        {
-            break;
-        }
+        EV << "addQueue(): Queue with this ID already exists!";
+        return queue;
     }
 
+    // instantiate a new module
     cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), this->getParentModule());
-    RMTQueue* module = dynamic_cast<RMTQueue*>(newModule);
+    queue = dynamic_cast<RMTQueue*>(newModule);
 
     // modify the position a little
-    cDisplayString& disp = module->getDisplayString();
+    cDisplayString& disp = queue->getDisplayString();
     disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
     disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
     portQueueCount[port] += 1;
 
-    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
+    // create bindings to other modules
+    cModule* rmt = getModuleByPath("^.rmt");
     if (type == RMTQueue::OUTPUT)
     {
         // connect to RMT submodule
         cGate* rmtOut = rmt->addGate(queueName.str().c_str(), cGate::OUTPUT, false);
-        rmtOut->connectTo(module->getInputGate());
-        module->setRmtAccessGate(rmtOut);
+        rmtOut->connectTo(queue->getInputGate());
+        queue->setRmtAccessGate(rmtOut);
 
         // connect to port
-        cGate* fromOutputQueue = port->addGate(module->getFullName(), cGate::INPUT, false);
-        module->getOutputGate()->connectTo(fromOutputQueue);
-        port->addOutputQueue(module, fromOutputQueue);
+        cGate* fromOutputQueue = port->addGate(queue->getFullName(), cGate::INPUT, false);
+        queue->getOutputGate()->connectTo(fromOutputQueue);
+        port->addOutputQueue(queue, fromOutputQueue);
     }
     else if (type == RMTQueue::INPUT)
     {
         // connect to RMT submodule
         cGate* rmtIn = rmt->addGate(queueName.str().c_str(), cGate::INPUT, false);
-        module->getOutputGate()->connectTo(rmtIn);
+        queue->getOutputGate()->connectTo(rmtIn);
 
         // connect to port
-        cGate* toInputQueue = port->addGate(module->getFullName(), cGate::OUTPUT, false);
-        toInputQueue->connectTo(module->getInputGate());
-        port->setInputQueue(module, toInputQueue);
+        cGate* toInputQueue = port->addGate(queue->getFullName(), cGate::OUTPUT, false);
+        toInputQueue->connectTo(queue->getInputGate());
+        port->addInputQueue(queue, toInputQueue);
     }
 
-    module->setType(type);
-    module->setQueueId(queueId);
-    qMonPolicy->postQueueCreation(module);
-    queues.push_back(module);
-    queueToPort[module] = port;
+    queue->setType(type);
+    queue->setQueueId(queueId);
+    qMonPolicy->postQueueCreation(queue);
+    queueToPort[queue] = port;
 
-    return module;
+    return queue;
 }
 
 void RMTQueueManager::addMgmtQueues(RMTPort* port)
 {
-    cModule* inQ = addQueue(RMTQueue::INPUT, port, -1);
-    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, -1);
+    cModule* inQ = addQueue(RMTQueue::INPUT, port, "M");
+    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, "M");
 
     cDisplayString& dispIn = inQ->getDisplayString();
     cDisplayString& dispOut = outQ->getDisplayString();
@@ -115,10 +112,17 @@ void RMTQueueManager::addMgmtQueues(RMTPort* port)
     dispOut.setTagArg("i2", 0, "status/execute");
 }
 
-RMTPort* RMTQueueManager::addPort(const char* portName)
+RMTPort* RMTQueueManager::addPort(Flow* flow)
 {
+    std::ostringstream portName;
+    portName << "p" << portCount;
+    portCount++;
+
     cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPort");
-    RMTPort* port = (RMTPort*)moduleType->createScheduleInit(portName, getParentModule());
+    RMTPort* port = (RMTPort*)moduleType->
+                    createScheduleInit(portName.str().c_str(), getParentModule());
+
+    port->setFlow(flow);
 
     // modify the position a little
     cDisplayString& portDisp = port->getDisplayString();
@@ -131,40 +135,41 @@ RMTPort* RMTQueueManager::addPort(const char* portName)
 
 void RMTQueueManager::removeQueue(RMTQueue* queue)
 {
-    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
-
-    if (queue->getType() == RMTQueue::OUTPUT)
-    {
-        queue->getRmtAccessGate()->disconnect();
-    }
-    else
-    {
-        queue->getOutputGate()->disconnect();
-    }
-
-    rmt->deleteGate(queue->getName());
-
-    // remove item from table
-    RMTQueuesIter i = queues.begin();
-    while (i != queues.end())
-    {
-        if (*i == queue)
-        {
-            i = queues.erase(i);
-        }
-        else
-        {
-            ++i;
-        }
-    }
-
-    qMonPolicy->preQueueRemoval(queue);
-
-    queue->deleteModule();
+//    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
+//
+//    if (queue->getType() == RMTQueue::OUTPUT)
+//    {
+//        queue->getRmtAccessGate()->disconnect();
+//    }
+//    else
+//    {
+//        queue->getOutputGate()->disconnect();
+//    }
+//
+//    rmt->deleteGate(queue->getName());
+//
+//    // remove item from table
+//    RMTQueuesIter i = queues.begin();
+//    while (i != queues.end())
+//    {
+//        if (*i == queue)
+//        {
+//            i = queues.erase(i);
+//        }
+//        else
+//        {
+//            ++i;
+//        }
+//    }
+//
+//    qMonPolicy->preQueueRemoval(queue);
+//
+//    queue->deleteModule();
 }
 
-RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType type)
+RMTQueue* RMTQueueManager::lookup(RMTPort* port, RMTQueueType type, const char* queueName)
 {
+    RMTQueues queues = port->getOutputQueues();
     for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
@@ -174,30 +179,5 @@ RMTQueue* RMTQueueManager::lookup(const char* queueName, RMTQueue::queueType typ
         }
     }
     return NULL;
-}
-
-RMTQueue* RMTQueueManager::lookup(int queueId, RMTQueue::queueType type)
-{
-    EV << "!!!!looking for queue with id " << queueId << endl;
-    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
-    {
-        RMTQueue* a = *it;
-        EV << a->getFullName() << " has ID " << a->getId() << endl;
-        if (queueId == a->getId())
-        {
-            return a;
-        }
-    }
-    return NULL;
-}
-
-RMTQueueManager::iterator RMTQueueManager::begin()
-{
-    return this->queues.begin();
-}
-
-RMTQueueManager::iterator RMTQueueManager::end()
-{
-    return this->queues.end();
 }
 

@@ -15,22 +15,51 @@
 
 #include <RAListeners.h>
 
-RAListeners::RAListeners(RABase* nra) : ra(nra) {
+RAListeners::RAListeners(RABase* nra) : ra(nra)
+{
 }
 
-RAListeners::~RAListeners() {
+RAListeners::~RAListeners()
+{
     ra = NULL;
-
 }
 
-void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "CreateFlow initiated by " << src->getFullPath()
-       << " and processed by " << ra->getFullPath() << endl;
+void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
-        ra->createFlowWithoutAllocate(flow);
+    {
+        ra->createNM1FlowWithoutAllocate(flow);
+    }
     else
+    {
         EV << "RAListener received unknown object!" << endl;
+    }
+}
 
+void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+    {
+        ra->postNFlowAllocation(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+
+}
+
+void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+    {
+        ra->postNFlowAllocation(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
 }

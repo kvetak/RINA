@@ -40,7 +40,6 @@
 #include "QueueAllocBase.h"
 
 #include "RINASignals.h"
-#include "ModuleAccess.h"
 #include "Address.h"
 #include "ExternConsts.h"
 #include "PDU_m.h"
@@ -94,7 +93,7 @@ class RMT : public RMTBase
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    RMTPort* fwTableLookup(Address& destAddr, short pduQosId);
+    RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
 
     simsignal_t sigRMTNoConnID;
     LisRMTPDURcvd* lisRMTMsgRcvd;

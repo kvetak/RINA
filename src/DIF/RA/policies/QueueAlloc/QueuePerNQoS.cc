@@ -19,13 +19,18 @@
 
 Define_Module(QueuePerNQoS);
 
-RMTQueue* QueuePerNQoS::getSuitableOutputQueue(RMTPort* port, ConnectionId& connId)
+
+RMTQueue* QueuePerNQoS::getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu)
 {
-    return rmtQM->lookup(connId.getQoSId(), RMTQueue::OUTPUT);
+    std::ostringstream id;
+    id << pdu->getConnId().getQoSId();
+    return port->getQueueById(RMTQueue::OUTPUT, id.str().c_str());
 }
 
 void QueuePerNQoS::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
-    rmtQM->addQueue(RMTQueue::OUTPUT, port, flow->getConnectionId().getQoSId());
-    rmtQM->addQueue(RMTQueue::INPUT, port, flow->getConnectionId().getQoSId());
+    std::ostringstream id;
+    id << flow->getConId().getQoSId();
+    rmtQM->addQueue(RMTQueue::OUTPUT, port, id.str().c_str());
+    rmtQM->addQueue(RMTQueue::INPUT, port, id.str().c_str());
 }

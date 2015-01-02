@@ -30,7 +30,10 @@ void RMTPort::handleMessage(cMessage *msg)
 {
     if (msg->getArrivalGate() == southInputGate)
     {
-        send(msg, northOutputGate);
+        if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+            send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+        else
+            send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
     }
     else if (northInputGates.count(msg->getArrivalGate()))
     {
@@ -38,16 +41,18 @@ void RMTPort::handleMessage(cMessage *msg)
     }
 }
 
-RMTQueue* RMTPort::getInputQueue() const
+
+const RMTQueues& RMTPort::getInputQueues() const
 {
-    return inputQueue;
+    return inputQueues;
 }
 
-void RMTPort::setInputQueue(RMTQueue* queue, cGate* portGate)
+void RMTPort::addInputQueue(RMTQueue* queue, cGate* portGate)
 {
-    inputQueue = queue;
-    northOutputGate = portGate;
+    northOutputGates.insert(portGate);
+    inputQueues.push_back(queue);
 }
+
 
 const RMTQueues& RMTPort::getOutputQueues() const
 {
@@ -70,48 +75,55 @@ cGate* RMTPort::getSouthOutputGate() const
     return southOutputGate;
 }
 
-RMTQueue* RMTPort::getFirstQueue(RMTQueue::queueType type)
+RMTQueue* RMTPort::getManagementQueue(RMTQueueType type)
 {
-    if (type == RMTQueue::INPUT)
-    {
-        return inputQueue;
-    }
-    else
-    {
-        for(RMTQueues::iterator it = outputQueues.begin(); it != outputQueues.end(); ++it )
-        {
-            RMTQueue* a = *it;
-            if (a->getId() != -1)
-            {
-                return a;
-            }
-        }
-        return NULL;
-    }
+    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+
+    return queueVect.front();
 }
 
-RMTQueue* RMTPort::getLongestQueue(RMTQueue::queueType type)
+RMTQueue* RMTPort::getFirstQueue(RMTQueueType type)
 {
-    if (type == RMTQueue::INPUT)
-    {
-        return inputQueue;
-    }
-    else
-    {
-        int longest = 0;
-        RMTQueue* result = NULL;
+    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
-        for(RMTQueues::iterator it = outputQueues.begin(); it != outputQueues.end(); ++it)
+    return queueVect.at(1);
+}
+
+RMTQueue* RMTPort::getLongestQueue(RMTQueueType type)
+{
+    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+
+    int longest = 0;
+    RMTQueue* result = NULL;
+
+    for(RMTQueuesIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    {
+        RMTQueue* q = *it;
+        if (q->getLength() > longest)
         {
-            RMTQueue* a = *it;
-            if (a->getLength() > longest)
-            {
-                longest = a->getLength();
-                result = a;
-            }
+            longest = q->getLength();
+            result = q;
         }
-        return result;
     }
+    return result;
+}
+
+RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId)
+{
+    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+    std::string fullId = std::string(getFullName()) + (type == RMTQueue::INPUT ? "i" : "o") + queueId;
+
+    for(RMTQueuesIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    {
+        RMTQueue* q = *it;
+
+        //EV << "comparing " << q->getFullName() << " and " << fullId.c_str() << endl;
+        if (!opp_strcmp(q->getFullName(), fullId.c_str()))
+        {
+            return q;
+        }
+    }
+    return NULL;
 }
 
 bool RMTPort::isReady()
@@ -135,3 +147,4 @@ void RMTPort::redrawGUI()
 {
     getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
 }
+

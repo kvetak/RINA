@@ -1,6 +1,4 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,18 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#ifndef __RINA_FLOWTABLE_H_
+#define __RINA_FLOWTABLE_H_
 
 #include <omnetpp.h>
 
-#include "QueueAllocBase.h"
+#include "NM1FlowTableItem.h"
 
-class SingleQueue : public QueueAllocBase
+typedef std::list<NM1FlowTableItem> FlTable;
+typedef FlTable::iterator FlTableIter;
+
+class NM1FlowTable : public cSimpleModule
 {
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
   public:
-    virtual void onNM1PortInit(RMTPort* port);
-    virtual RMTQueue* getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu);
+    void insert(const NM1FlowTableItem* entry);
+    void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
+    void remove(Flow* flow);
+    virtual NM1FlowTableItem* findFlowByDstApni(std::string addr, short qosId);
+    virtual NM1FlowTableItem* findFlowByDstAddr(std::string addr, short qosId);
+    virtual NM1FlowTableItem* lookup(Flow* flow);
+
+  private:
+    FlTable flows;
 };
 
 #endif

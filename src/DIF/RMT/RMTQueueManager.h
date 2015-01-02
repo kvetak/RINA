@@ -32,25 +32,20 @@ class RMTQueueManager : public cSimpleModule
     RMTQueueManager();
     virtual ~RMTQueueManager();
 
-    typedef RMTQueues::iterator iterator;
-    iterator begin();
-    iterator end();
-
-    RMTPort* addPort(const char* portName);
-    RMTQueue* addQueue(RMTQueueType type, RMTPort* port, int queueId = 0);
+    RMTPort* addPort(Flow* flow);
+    RMTQueue* addQueue(RMTQueueType type, RMTPort* port, const char* queueId = "0");
     void addMgmtQueues(RMTPort* port);
     void removeQueue(RMTQueue* queue);
 
-    RMTQueue* lookup(const char* queueName, RMTQueueType type);
-    RMTQueue* lookup(int queueId, RMTQueueType type);
+    RMTQueue* lookup(RMTPort* port, RMTQueueType type, const char* queueName);
 
     std::map<RMTQueue*, RMTPort*> queueToPort;
 
   private:
-    RMTQueues queues;
-
     RMTQMonitorBase* qMonPolicy;
     std::map<RMTPort*, unsigned int> portQueueCount;
+
+    unsigned int portCount;
 
     // TODO: purge this crap and think of something smarter
     unsigned int portXCoord, portYCoord;

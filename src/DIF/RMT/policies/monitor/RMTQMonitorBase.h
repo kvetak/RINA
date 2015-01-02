@@ -19,7 +19,6 @@
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
-#include "ModuleAccess.h"
 
 class RMTQMonitorBase : public cSimpleModule
 {

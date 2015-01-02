@@ -28,7 +28,8 @@ Define_Module(PDUFwdTabGenerator);
 
 void PDUFwdTabGenerator::initialize()
 {
-    fwTable = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    fwTable = check_and_cast<PDUForwardingTable*>
+        (getModuleByPath("^.pduForwardingTable"));
 }
 
 void PDUFwdTabGenerator::handleMessage(cMessage *msg)

@@ -13,31 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_FLOWTABLE_H_
-#define __RINA_FLOWTABLE_H_
+package rina.DIF.RA;
 
-#include <omnetpp.h>
-
-#include "FlowTableItem.h"
-
-typedef std::list<FlowTableItem> FlTable;
-typedef FlTable::iterator FlTableIter;
-
-class FlowTable : public cSimpleModule
+//
+// TODO auto-generated module
+//
+simple NM1FlowTable
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-  public:
-    void insert(const FlowTableItem* entry);
-    void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
-    void remove(Flow* flow);
-    virtual FlowTableItem* lookup(std::string addr, short qosId);
-    virtual FlowTableItem* lookup(Flow* flow);
-
-  private:
-    FlTable flows;
-};
-
-#endif
+    @display("i=block/table2");
+}

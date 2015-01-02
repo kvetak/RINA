@@ -224,7 +224,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         // bind this flow to a suitable (N-1)-flow
         RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-        status = raModule->bindFlowToLowerFlow(flow);
+        status = raModule->bindNFlowToNM1Flow(flow);
 
         //WAIT until allocation of N-1 flow is completed
     }

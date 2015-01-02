@@ -13,18 +13,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <FlowTableItem.h>
+#include <NM1FlowTableItem.h>
 
-FlowTableItem::FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
+NM1FlowTableItem::NM1FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
 :   flow(flow), fa(fa), rmtPort(port), gateName(gateName)
 {
 }
 
-FlowTableItem::~FlowTableItem() {
+NM1FlowTableItem::~NM1FlowTableItem() {
 
 }
 
-std::string FlowTableItem::info() const {
+std::string NM1FlowTableItem::info() const {
     std::ostringstream os;
 
     if (flow != NULL)
@@ -47,40 +47,40 @@ std::string FlowTableItem::info() const {
 }
 
 
-std::ostream& operator <<(std::ostream& os, const FlowTableItem& cte) {
+std::ostream& operator <<(std::ostream& os, const NM1FlowTableItem& cte) {
     return os << cte.info();
 }
 
-Flow* FlowTableItem::getFlow() const
+Flow* NM1FlowTableItem::getFlow() const
 {
     return flow;
 }
 
 
-FABase* FlowTableItem::getFaBase() const
+FABase* NM1FlowTableItem::getFaBase() const
 {
     return fa;
 }
 
-RMTPort* FlowTableItem::getRmtPort() const
+RMTPort* NM1FlowTableItem::getRmtPort() const
 {
     return rmtPort;
 }
 
 
-RMTQueue* FlowTableItem::getRmtInputQueue() const
+const RMTQueues& NM1FlowTableItem::getRmtInputQueues() const
 {
-    return rmtPort->getInputQueue();
+    return rmtPort->getInputQueues();
 }
 
 
-const RMTQueues& FlowTableItem::getRmtOutputQueues() const
+const RMTQueues& NM1FlowTableItem::getRmtOutputQueues() const
 {
     return rmtPort->getOutputQueues();
 }
 
 
-std::string FlowTableItem::getGateName() const
+std::string NM1FlowTableItem::getGateName() const
 {
     return gateName;
 }

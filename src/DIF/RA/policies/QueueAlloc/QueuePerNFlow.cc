@@ -19,13 +19,22 @@
 
 Define_Module(QueuePerNFlow);
 
-RMTQueue* QueuePerNFlow::getSuitableOutputQueue(RMTPort* port, ConnectionId& connId)
+
+RMTQueue* QueuePerNFlow::getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu)
 {
-    return rmtQM->lookup(connId.getSrcCepId(), RMTQueue::OUTPUT);
+    std::ostringstream id;
+    id << pdu->getSrcAddr().getIpcAddress().getName() << "_"
+       << pdu->getConnId().getSrcCepId();
+
+    return port->getQueueById(RMTQueue::OUTPUT, id.str().c_str());
 }
 
 void QueuePerNFlow::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
-    rmtQM->addQueue(RMTQueue::OUTPUT, port, flow->getConnectionId().getSrcCepId());
-    rmtQM->addQueue(RMTQueue::INPUT, port, flow->getConnectionId().getSrcCepId());
+    std::ostringstream id;
+    id << flow->getSrcAddr().getIpcAddress().getName() << "_"
+       << flow->getConId().getSrcCepId();
+
+    rmtQM->addQueue(RMTQueue::OUTPUT, port, id.str().c_str());
+    rmtQM->addQueue(RMTQueue::INPUT, port, id.str().c_str());
 }

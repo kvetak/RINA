@@ -26,7 +26,8 @@ PDUForwardingTableEntry::PDUForwardingTableEntry()
 {
 }
 
-PDUForwardingTableEntry::PDUForwardingTableEntry(Address& destaddr, int qosid, RMTPort* port)
+PDUForwardingTableEntry::PDUForwardingTableEntry
+    (Address& destaddr, unsigned short qosid, RMTPort* port)
 :  destAddr(destaddr), qosId(qosid), rmtPort(port)
 {
 }
@@ -56,7 +57,7 @@ const Address& PDUForwardingTableEntry::getDestAddr() const
     return destAddr;
 }
 
-int PDUForwardingTableEntry::getQosId() const
+unsigned short PDUForwardingTableEntry::getQosId() const
 {
     return qosId;
 }

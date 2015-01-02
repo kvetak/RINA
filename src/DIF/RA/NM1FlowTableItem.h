@@ -22,17 +22,18 @@
 #include "FABase.h"
 #include "RMTPort.h"
 
-class FlowTableItem {
+class NM1FlowTableItem
+{
   public:
-    FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
-    virtual ~FlowTableItem();
+    NM1FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
+    virtual ~NM1FlowTableItem();
 
     std::string info() const;
 
     Flow* getFlow() const;
     FABase* getFaBase() const;
     RMTPort* getRmtPort() const;
-    RMTQueue* getRmtInputQueue() const;
+    const RMTQueues& getRmtInputQueues() const;
     const RMTQueues& getRmtOutputQueues() const;
     std::string getGateName() const;
 
@@ -43,6 +44,6 @@ class FlowTableItem {
     std::string gateName;
 };
 
-std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);
+std::ostream& operator<< (std::ostream& os, const NM1FlowTableItem& cte);
 
 #endif /* FLOWTABLEITEM_H_ */

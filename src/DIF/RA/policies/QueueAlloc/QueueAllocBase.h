@@ -19,12 +19,11 @@
 #define QUEUEALLOCBASE_H_
 
 #include <omnetpp.h>
-#include "RABase.h"
 #include "RMTQueueManager.h"
 #include "RMTPort.h"
 
 #include "Flow.h"
-#include "ConnectionId.h"
+#include "PDU_m.h"
 
 class QueueAllocBase : public cSimpleModule
 {
@@ -32,8 +31,8 @@ class QueueAllocBase : public cSimpleModule
     QueueAllocBase();
     virtual ~QueueAllocBase();
 
-    // method selecting the proper available queue for specified flow identifiers
-    virtual RMTQueue* getSuitableOutputQueue(RMTPort* port, ConnectionId& connId);
+    // method selecting the proper available queue for a PDU
+    virtual RMTQueue* getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu);
 
     // event hooks
     virtual void onNM1PortInit(RMTPort* port);
@@ -45,7 +44,6 @@ class QueueAllocBase : public cSimpleModule
     void initialize();
     void handleMessage(cMessage *msg);
 
-    RABase* ra;
     RMTQueueManager* rmtQM;
 };
 

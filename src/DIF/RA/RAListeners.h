@@ -21,7 +21,8 @@
 //RINASim libraries
 #include "RABase.h"
 
-class RAListeners : public cListener {
+class RAListeners : public cListener
+{
   public:
     RAListeners(RABase* nra);
     virtual ~RAListeners();
@@ -32,9 +33,25 @@ class RAListeners : public cListener {
     RABase* ra;
 };
 
-class LisRACreFlow : public RAListeners {
+class LisRACreFlow : public RAListeners
+{
   public:
     LisRACreFlow(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRAAllocResPos : public RAListeners
+{
+  public:
+    LisRAAllocResPos(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+
+class LisRACreAllocResPos : public RAListeners
+{
+  public:
+    LisRACreAllocResPos(RABase* nra) : RAListeners(nra){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

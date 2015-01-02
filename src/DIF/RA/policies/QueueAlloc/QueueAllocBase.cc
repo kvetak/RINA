@@ -29,8 +29,8 @@ QueueAllocBase::~QueueAllocBase()
 
 void QueueAllocBase::initialize()
 {
-    rmtQM = (RMTQueueManager*) getParentModule()->getParentModule()->getModuleByPath(".rmt.rmtQueueManager");
-    ra = (RABase*)(getParentModule()->getSubmodule("ra"));
+    rmtQM = check_and_cast<RMTQueueManager*>
+        (getModuleByPath("^.^.rmt.rmtQueueManager"));
 
     // display active policy name
     cDisplayString& disp = getDisplayString();
@@ -42,7 +42,7 @@ void QueueAllocBase::handleMessage(cMessage *msg)
 {
 }
 
-RMTQueue* QueueAllocBase::getSuitableOutputQueue(RMTPort* port, ConnectionId& connId)
+RMTQueue* QueueAllocBase::getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu)
 {
     return (RMTQueue*)NULL;
 }

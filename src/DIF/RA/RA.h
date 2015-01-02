@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 #include "RINASignals.h"
 #include "PDUForwardingTable.h"
-#include "FlowTable.h"
+#include "NM1FlowTable.h"
 #include "DA.h"
 #include "FABase.h"
 #include "RMT.h"
@@ -58,12 +58,12 @@ extern const char* ELEM_COSTBITS;
 class RA : public RABase
 {
   public:
-    virtual void createFlow(Flow *flow);
-    virtual void createFlowWithoutAllocate(Flow *flow);
-    virtual void removeFlow(Flow *flow);
+    virtual void createNM1Flow(Flow *flow);
+    virtual void createNM1FlowWithoutAllocate(Flow *flow);
+    virtual void postNFlowAllocation(Flow* flow);
+    virtual void removeNM1Flow(Flow *flow);
 
-    virtual bool bindFlowToLowerFlow(Flow* flow);
-    virtual void bindFlowToMedium(Flow* flow);
+    virtual bool bindNFlowToNM1Flow(Flow* flow);
 
   protected:
     virtual void initialize(int stage);
@@ -77,17 +77,15 @@ class RA : public RABase
     RMT* rmt;
     RMTQueueManager* rmtQM;
     PDUForwardingTable* fwTable;
-    FlowTable* flTable;
+    NM1FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
 
     std::string processName;
 
-    bool onWire;
-
     void initQoSCubes();
     void setRmtMode();
 
-    RMTPort* bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
+    RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
     void bindMediumToRMT();
     void bindQueueToPort(RMTQueue* queue, RMTPort* port);
     void bindQueuesToPort(RMTQueues& queues, RMTPort* port);
@@ -100,6 +98,8 @@ class RA : public RABase
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
+    LisRAAllocResPos* lisRAAllocResPos;
+    LisRACreAllocResPos* lisRACreAllocResPos;
 
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);
