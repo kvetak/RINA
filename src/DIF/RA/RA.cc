@@ -99,7 +99,14 @@ void RA::initSignalsAndListeners()
     thisIpc->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
 }
 
-
+/**
+ * Sets up RMT's mode of operation by "layer" of this IPC process
+ *
+ * @param m1 first module
+ * @param m2 second module
+ * @param n1 first module gate name
+ * @param n2 second module gate name
+ */
 void RA::setRmtMode()
 {
     // identify the role of this IPC process in processing system
@@ -109,7 +116,7 @@ void RA::setRmtMode()
     {
         // we're on wire! this is the bottommost "interface" DIF
         rmt->setOnWire(true);
-        // let's connect RMT to the medium
+        // connect RMT to the medium
         bindMediumToRMT();
     }
     else if (bottomGate == "northIo$i")
@@ -118,12 +125,15 @@ void RA::setRmtMode()
     }
 
     if (thisIpc->par("relay").boolValue() == true)
-    {
+    { // this is an IPC process that uses PDU forwarding
         rmt->enableRelay();
     }
 }
 
-
+/**
+ * Initializes QoS cubes from given XML configuration directive.
+ *
+ */
 void RA::initQoSCubes()
 {
     cXMLElement* qosXml = NULL;
@@ -313,7 +323,9 @@ void RA::interconnectModules(cModule* m1, cModule* m2, std::string n1, std::stri
 
 /**
  * Connects the medium defined in NED to the RMT module.
- * Used only for the bottom IPC process in a processing system.
+ * Used only for bottom IPC processes in a computing systems.
+ *
+ * @return mock (N-1)-port for the interface
  */
 void RA::bindMediumToRMT()
 {
@@ -322,10 +334,9 @@ void RA::bindMediumToRMT()
     cGate* thisIpcOut = thisIpc->gateHalf("southIo$o", cGate::OUTPUT, 0);
 
     //// connect bottom of this IPC to rmtModule
-    // create an INOUT on the bottom of rmtModule
+    // create an INOUT gate on the bottom of rmtModule
     std::ostringstream rmtGate;
     rmtGate << GATE_SOUTHIO_ << "PHY";
-
     rmtModule->addGate(rmtGate.str().c_str(), cGate::INOUT, false);
     cGate* rmtModuleIn = rmtModule->gateHalf(rmtGate.str().c_str(), cGate::INPUT);
     cGate* rmtModuleOut = rmtModule->gateHalf(rmtGate.str().c_str(), cGate::OUTPUT);
@@ -333,59 +344,50 @@ void RA::bindMediumToRMT()
     rmtModuleOut->connectTo(thisIpcOut);
     thisIpcIn->connectTo(rmtModuleIn);
 
-    // create a RMTPort instance for interface
+    // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtQM->addPort(NULL);
-
     // connect the port to the bottom
     interconnectModules(rmtModule, port, rmtGate.str(), std::string("southIo"));
 
-    // TODO: remove this temporary solution when we settle on method of management flow allocation
     // create extra queues for management purposes
     rmtQM->addMgmtQueues(port);
-
-    // create additional queues (if desired by the currently active policy)
+    // apply queue allocation policy handler
     qAllocPolicy->onNM1PortInit(port);
 }
 
 /**
  * Connects the specified (N-1)-flow to the RMT.
  *
- * @param ipc IPC process containing the (N-1)-flow
+ * @param bottomIpc IPC process containing the (N-1)-flow
+ * @param fab the (N-1)-FA
  * @param flow the (N-1)-flow
- * @return output gate for the (N-1)-flow
+ * @return RMT port (handle) for the (N-1)-flow
  */
 RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIpc, FABase* fab, Flow* flow)
 {
-    EV << "attempting to bind an (N-1)-flow to RMT..." << endl;
+    // get (N-1)-port-id and expand it so it's unambiguous within this IPC
     int portId = flow->getSrcPortId();
-
-    // expand the given portId so it's unambiguous within this IPC
     std::string combinedPortId = normalizePortId(bottomIpc->getFullName(), portId);
 
-    //// binding begins at the bottom and goes up:
-    // pick gate names
+    // binding begins at the bottom and progresses upwards:
+    // 1) interconnect bottom IPC <-> this IPC <-> compound RMT module
     std::ostringstream bottomIpcGate, thisIpcGate;
     bottomIpcGate << GATE_NORTHIO_ << portId;
     thisIpcGate << GATE_SOUTHIO_ << combinedPortId;
-
-    // interconnect bottom IPC <-> this IPC <-> compound RMT module
     interconnectModules(bottomIpc, thisIpc, bottomIpcGate.str(), thisIpcGate.str());
     interconnectModules(thisIpc, rmtModule, thisIpcGate.str(), thisIpcGate.str());
 
-    //// create new data path for the (N-1)-flow inside the RMT blackbox
-    // create a RMTPort instance (pretty much a representation of an (N-1)-port)
+    // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtQM->addPort(flow);
-
-    // connect the port to the bottom
     interconnectModules(rmtModule, port, thisIpcGate.str(), std::string("southIo"));
 
-	// TODO: remove this temporary solution when we settle on method of management flow allocation
-    // create extra queues for management purposes
+    // 3) allocate queues
+    // create extra queues for management purposes (this will likely go away later)
     rmtQM->addMgmtQueues(port);
-
-    // create initial queues (by invoking currently active QueueAlloc policy)
+    // apply queue allocation policy handler
     qAllocPolicy->onNM1PortInit(port);    
-    // finally, update the flow table
+
+    // 4) update the flow table
     flTable->insert(flow, fab, port, thisIpcGate.str().c_str());
 
     return port;
@@ -407,13 +409,13 @@ std::string RA::normalizePortId(std::string ipcName, int flowPortId)
 }
 
 /**
- * Creates an (N-1)-flow (this is the mechanism behind Allocate() call).
+ * Invokes allocation of an (N-1)-flow (this is the mechanism behind Allocate() call).
  *
  * @param flow specified flow object
  */
 void RA::createNM1Flow(Flow *flow)
 {
-    Enter_Method("createFlow()");
+    Enter_Method("createNM1Flow()");
 
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
@@ -455,13 +457,14 @@ void RA::createNM1Flow(Flow *flow)
 }
 
 /**
- * Creates an (N-1)-flow (this is the mechanism behind response to an M_CREATE request).
+ * Handles allocation of an (N-1)-flow invoked by other IPC.
+ * (this is the mechanism behind response to an M_CREATE request from other IPC).
  *
  * @param flow specified flow object
  */
 void RA::createNM1FlowWithoutAllocate(Flow* flow)
 {
-    Enter_Method("createFlowWoAlloc()");
+    Enter_Method("createNM1FlowWoAlloc()");
 
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
@@ -501,26 +504,31 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     }
 
     signalizeCreateFlowPositiveToRibd(flow);
-    //qAllocPolicy->onNFlowAlloc(port, flow);
 }
 
+/**
+ * Event hook handler invoked after an (N)-flow is successfully established
+ *
+ * @param flow established (N)-flow
+ */
 void RA::postNFlowAllocation(Flow* flow)
 {
     Enter_Method("postNFlowAllocation()");
 
-    RMTPort* port = NULL;
+    // invoke QueueAlloc policy on relevant (N-1)-ports
     if (rmt->isOnWire())
     {
-        return;
+        qAllocPolicy->onNFlowAlloc(rmtQM->getInterfacePort(), flow);
     }
-
-    NM1FlowTableItem* item = flTable->findFlowByDstApni(
-            flow->getDstNeighbor().getApname().getName(),
-            flow->getConId().getQoSId());
-    if (item != NULL)
+    else
     {
-        port = item->getRmtPort();
-        qAllocPolicy->onNFlowAlloc(port, flow);
+        NM1FlowTableItem* item = flTable->findFlowByDstApni(
+                flow->getDstNeighbor().getApname().getName(),
+                flow->getConId().getQoSId());
+        if (item != NULL)
+        {
+            qAllocPolicy->onNFlowAlloc(item->getRmtPort(), flow);
+        }
     }
 }
 
@@ -531,76 +539,73 @@ void RA::postNFlowAllocation(Flow* flow)
  */
 void RA::removeNM1Flow(Flow *flow)
 {
-//    FlowTableItem* flowItem = flTable->lookup(flow);
-//    const char* gateName = flowItem->getGateName().c_str();
-//
-//    cGate* thisIpcIn = thisIpc->gateHalf(gateName, cGate::INPUT);
-//    cGate* thisIpcOut = thisIpc->gateHalf(gateName, cGate::OUTPUT);
-//
-//    cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
-//    cGate* rmtModuleOut = rmtModule->gateHalf(gateName, cGate::OUTPUT);
-//
-//    thisIpcIn->disconnect();
-//    thisIpcOut->disconnect();
-//    rmtModuleIn->disconnect();
-//    rmtModuleOut->disconnect();
-//    flowItem->getRmtOutputQueue()->getOutputGate()->disconnect();
-//
-//    rmtQM->removeQueue(flowItem->getRmtInputQueue());
-//    rmtQM->removeQueue(flowItem->getRmtOutputQueue());
-//
-//    flowItem->getFaBase()->receiveDeallocateRequest(flow);
-//    thisIpc->deleteGate(gateName);
-//    rmtModule->deleteGate(gateName);
-//
-//    fwTable->remove(flowItem->getRmtOutputQueue());
-//    flTable->remove(flow);
+    NM1FlowTableItem* flowItem = flTable->lookup(flow);
+
+    RMTPort* port = flowItem->getRmtPort();
+    const char* gateName = flowItem->getGateName().c_str();
+    cGate* thisIpcIn = thisIpc->gateHalf(gateName, cGate::INPUT);
+    cGate* thisIpcOut = thisIpc->gateHalf(gateName, cGate::OUTPUT);
+    cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
+    cGate* rmtModuleOut = rmtModule->gateHalf(gateName, cGate::OUTPUT);
+    cGate* portOut = port->getSouthOutputGate();
+
+    portOut->disconnect();
+    thisIpcIn->disconnect();
+    thisIpcOut->disconnect();
+    rmtModuleIn->disconnect();
+    rmtModuleOut->disconnect();
+
+    fwTable->remove(port);
+    rmtQM->removePort(flowItem->getRmtPort());
+    rmtModule->deleteGate(gateName);
+    flowItem->getFaBase()->receiveDeallocateRequest(flow);
+    thisIpc->deleteGate(gateName);
+
+    flTable->remove(flow);
 }
 
 /**
- * Creates a binding between a flow in this IPC and a suitable (N-1)-flow
+ * Assigns an (N)-flow to a suitable (N-1)-flow (and creates one if there isn't any)
  *
  * @param flow specified flow object
- * @return Returns TRUE if connected onWire else return FALSE
+ * @return true if this is a bottom IPC process (=>noop), otherwise false
  */
 bool RA::bindNFlowToNM1Flow(Flow* flow)
 {
-    //EV << "XXXXXXXXXXXXXX" << flow->info();
     Enter_Method("bindNFlowToNM1Flow()");
 
+    EV << "Commencing assignment of (N)-flow to an (N-1)-flow..." << endl;
+
     if (rmt->isOnWire())
-    {
-        qAllocPolicy->onNFlowAlloc((RMTPort*)rmtModule->getModuleByPath(".p0"), flow);
+    { // nothing to be done
         return true;
     }
 
-    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     std::string dstAddr = flow->getDstAddr().getApname().getName();
+    // immediate neighbor (e.g. an interior router)
+    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
     // see if any appropriate (N-1)-flow already exists
-    NM1FlowTableItem* curFlow = NULL;
-    curFlow = flTable->findFlowByDstApni(neighAddr, qosId);
+    NM1FlowTableItem* nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
 
-    if (curFlow == NULL)
-    { // we need to create a new (N-1)-flow to suit our needs
+    if (nm1FlowItem == NULL)
+    { // we need to allocate a new (N-1)-flow to suit our needs
         EV << "creating an (N-1)-flow (dst Addr " << neighAddr << ")" << endl;
 
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(neighAddr));
 
-        Flow *lowerFlow = new Flow(src, dst);
-        lowerFlow->setQosParameters(flow->getQosParameters());
-        createNM1Flow(lowerFlow);
+        Flow *nm1Flow = new Flow(src, dst);
+        nm1Flow->setQosParameters(flow->getQosParameters());
+        createNM1Flow(nm1Flow);
     }
 
-    EV << "binding a flow to an (N-1)-flow" << endl;
-
-    // add efcpi->rmtQueue mapping for direct multiplexing
-    NM1FlowTableItem* targetFlow = flTable->findFlowByDstApni(neighAddr, qosId);
-    if (targetFlow == NULL)
+    // repeat the lookup
+    nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
+    if (nm1FlowItem == NULL)
     {
-        EV << "!!! something went wrong! there isn't any suitable (N-1)-flow present for dst "
+        EV << "!!! Something went wrong! there isn't any suitable (N-1)-flow present for dst "
            << neighAddr << " so it won't be multiplexed further." << endl;
     }
     else
@@ -608,7 +613,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         // add another fwtable entry for direct srcApp->dstApp messages (if needed)
         if (neighAddr != dstAddr)
         {
-            fwTable->insert(Address(dstAddr), qosId, targetFlow->getRmtPort());
+            fwTable->insert(Address(dstAddr), qosId, nm1FlowItem->getRmtPort());
         }
     }
 
@@ -616,12 +621,12 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 }
 
 
-void RA::signalizeCreateFlowPositiveToRibd(Flow* flow) {
-    EV << "Emits CreateFlowPositive signal for flow" << endl;
+void RA::signalizeCreateFlowPositiveToRibd(Flow* flow)
+{
     emit(sigRACreFloPosi, flow);
 }
 
-void RA::signalizeCreateFlowNegativeToRibd(Flow* flow) {
-    EV << "Emits CreateFlowNegative signal for flow" << endl;
+void RA::signalizeCreateFlowNegativeToRibd(Flow* flow)
+{
     emit(sigRACreFloNega, flow);
 }

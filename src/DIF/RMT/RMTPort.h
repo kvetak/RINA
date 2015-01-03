@@ -30,8 +30,8 @@ class RMTPort : public cSimpleModule
     void setReady();
     void setBusy();
 
-    const Flow* getFlow() const { return flow; }
-    void setFlow(Flow* flow) { this->flow = flow; }
+    const Flow* getFlow() const;
+    void setFlow(Flow* flow);
 
     const RMTQueues& getInputQueues() const;
     void addInputQueue(RMTQueue* queue, cGate* portGate);

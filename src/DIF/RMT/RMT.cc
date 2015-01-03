@@ -41,7 +41,7 @@ void RMT::initialize()
     // get pointers to other components
     fwTable = check_and_cast<PDUForwardingTable*>
         (getModuleByPath("^.^.resourceAllocator.pduForwardingTable"));
-    queues = check_and_cast<RMTQueueManager*>
+    rmtQM = check_and_cast<RMTQueueManager*>
         (getModuleByPath("^.rmtQueueManager"));
 
     schedPolicy = check_and_cast<RMTSchedulingBase*>
@@ -96,7 +96,7 @@ void RMT::invokeQueuePolicies(cObject* obj)
         }
     }
 
-    schedPolicy->processQueues(queues->queueToPort[queue], queue->getType());
+    schedPolicy->processQueues(rmtQM->getQueueToPortMapping(queue), queue->getType());
 }
 
 /**
@@ -108,7 +108,7 @@ void RMT::finalizePortService(cObject* obj)
 {
     Enter_Method("finalizeQueueService()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
-    schedPolicy->finalizeService(queues->queueToPort[queue], queue->getType());
+    schedPolicy->finalizeService(rmtQM->getQueueToPortMapping(queue), queue->getType());
 }
 
 /**
@@ -188,7 +188,7 @@ RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
 
     if (onWire)
     { // get the interface port
-        outPort = check_and_cast<RMTPort*>(getModuleByPath("^.p0"));
+        outPort = rmtQM->getInterfacePort();
     }
     else
     { // get a suitable port from PDUFT

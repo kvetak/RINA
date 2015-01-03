@@ -33,6 +33,7 @@ void RMTQueueManager::initialize()
     WATCH_PTRMAP(queueToPort);
 
     portCount = 0;
+    interfacePort = NULL;
 
     // TODO: purge this crap and think of something smarter
     // port module coordinates
@@ -130,47 +131,41 @@ RMTPort* RMTQueueManager::addPort(Flow* flow)
     portDisp.setTagArg("p", 1, portYCoord);
     portXCoord += 90;
 
+    if (flow == NULL)
+    {
+        interfacePort = port;
+    }
+
     return port;
 }
 
 void RMTQueueManager::removeQueue(RMTQueue* queue)
 {
-//    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
-//
-//    if (queue->getType() == RMTQueue::OUTPUT)
-//    {
-//        queue->getRmtAccessGate()->disconnect();
-//    }
-//    else
-//    {
-//        queue->getOutputGate()->disconnect();
-//    }
-//
-//    rmt->deleteGate(queue->getName());
-//
-//    // remove item from table
-//    RMTQueuesIter i = queues.begin();
-//    while (i != queues.end())
-//    {
-//        if (*i == queue)
-//        {
-//            i = queues.erase(i);
-//        }
-//        else
-//        {
-//            ++i;
-//        }
-//    }
-//
-//    qMonPolicy->preQueueRemoval(queue);
-//
-//    queue->deleteModule();
+    if (queue->getType() == RMTQueue::OUTPUT)
+    {
+        queue->getRmtAccessGate()->disconnect();
+    }
+    queue->getOutputGate()->disconnect();
+
+    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
+    rmt->deleteGate(queue->getName());
+
+    qMonPolicy->preQueueRemoval(queue);
+    queue->deleteModule();
+}
+
+void RMTQueueManager::removeQueues(const RMTQueues& queues)
+{
+    for(RMTQueues::const_iterator it = queues.begin(); it != queues.end(); ++it )
+    {
+        removeQueue((RMTQueue*)*it);
+    }
 }
 
 RMTQueue* RMTQueueManager::lookup(RMTPort* port, RMTQueueType type, const char* queueName)
 {
     RMTQueues queues = port->getOutputQueues();
-    for(std::vector<RMTQueue*>::iterator it = queues.begin(); it != queues.end(); ++it )
+    for(RMTQueuesIter it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
         if (!opp_strcmp(a->getName(), queueName) && (a->getType() == type))
@@ -181,3 +176,20 @@ RMTQueue* RMTQueueManager::lookup(RMTPort* port, RMTQueueType type, const char* 
     return NULL;
 }
 
+void RMTQueueManager::removePort(RMTPort* port)
+{
+    removeQueues(port->getOutputQueues());
+    removeQueues(port->getInputQueues());
+
+    port->deleteModule();
+}
+
+RMTPort* RMTQueueManager::getQueueToPortMapping(RMTQueue* queue)
+{
+    return queueToPort[queue];
+}
+
+RMTPort* RMTQueueManager::getInterfacePort()
+{
+    return interfacePort;
+}

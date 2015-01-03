@@ -47,7 +47,6 @@
 #include "PDUForwardingTable.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
-typedef std::map<cGate*, RMTQueue*> EfcpiToQueue;
 
 class RMT : public RMTBase
 {
@@ -70,7 +69,7 @@ class RMT : public RMTBase
 
   private:
     PDUForwardingTable* fwTable;
-    RMTQueueManager* queues;
+    RMTQueueManager* rmtQM;
 
     Address thisIpcAddr;
     bool relayOn;

@@ -148,3 +148,27 @@ void RMTPort::redrawGUI()
     getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
 }
 
+const Flow* RMTPort::getFlow() const
+{
+    return flow;
+}
+
+void RMTPort::setFlow(Flow* flow)
+{
+    this->flow = flow;
+
+    // display address of the remote IPC on top of the module
+    if (flow != NULL)
+    {
+        // shitty temporary hack to strip the layer name off
+        const std::string& dstAppFull = flow->getDstApni().getApn().getName();
+        const std::string& dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
+        getDisplayString().setTagArg("t", 0, dstAppAddr.c_str());
+
+    }
+    else
+    {
+        getDisplayString().setTagArg("t", 0, "PHY");
+    }
+
+}

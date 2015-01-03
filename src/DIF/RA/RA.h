@@ -16,7 +16,7 @@
 /**
  * @file RA.h
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief
+ * @brief Monitoring and adjustment of IPC process operations
  * @detail
  */
 
@@ -62,7 +62,6 @@ class RA : public RABase
     virtual void createNM1FlowWithoutAllocate(Flow *flow);
     virtual void postNFlowAllocation(Flow* flow);
     virtual void removeNM1Flow(Flow *flow);
-
     virtual bool bindNFlowToNM1Flow(Flow* flow);
 
   protected:
@@ -79,21 +78,14 @@ class RA : public RABase
     PDUForwardingTable* fwTable;
     NM1FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
-
     std::string processName;
 
     void initQoSCubes();
     void setRmtMode();
-
-    RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
     void bindMediumToRMT();
-    void bindQueueToPort(RMTQueue* queue, RMTPort* port);
-    void bindQueuesToPort(RMTQueues& queues, RMTPort* port);
+    RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
     void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
-
     std::string normalizePortId(std::string ipcName, int flowPortId);
-
-    void initSignalsAndListeners();
 
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
@@ -101,6 +93,7 @@ class RA : public RABase
     LisRAAllocResPos* lisRAAllocResPos;
     LisRACreAllocResPos* lisRACreAllocResPos;
 
+    void initSignalsAndListeners();
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);
 
