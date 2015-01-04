@@ -55,8 +55,8 @@ void RMT::initialize()
 
     // set up some parameters
     cModule* ipcModule = getParentModule()->getParentModule();
-    thisIpcAddr = Address(ipcModule->par("ipcAddress").stringValue(),
-                          ipcModule->par("difName").stringValue());
+    thisIpcAddr = Address(ipcModule->par(PAR_IPCADDR).stringValue(),
+                          ipcModule->par(PAR_DIFNAME).stringValue());
 
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
@@ -215,7 +215,10 @@ void RMT::efcpiToPort(PDU_Base* pdu)
     RMTQueue* outQueue = NULL;
 
     RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
-    outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, pdu);
+    if (outPort != NULL)
+    {
+        outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, pdu);
+    }
 
     cGate* outGate = NULL;
     if (outQueue != NULL)
@@ -310,6 +313,9 @@ void RMT::RIBToPort(CDAPMessage* cdap)
     else
     {
         EV << "there isn't any suitable output queue available!" << endl;
+        EV << "PDU dstAddr = " << cdap->getDstAddr().getApname().getName()
+                   << ", qosId = 0";
+                fwTable->printAll();
     }
 }
 
@@ -331,13 +337,23 @@ void RMT::portToPort(cMessage* msg)
         short qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
 
         outPort = fwTableLookup(destAddr, qosId);
+        if (outPort == NULL)
+        {
+            EV << "PORT NOT FOUND" << endl;
+            return;
+        }
         outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, (PDU_Base*)msg);
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(((CDAPMessage*)msg)->getDstAddr(), 0, false);
+        outPort = fwTableLookup(destAddr, 0, false);
+        if (outPort == NULL)
+        {
+            EV << "PORT NOT FOUND" << endl;
+            return;
+        }
         outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
     }
     else

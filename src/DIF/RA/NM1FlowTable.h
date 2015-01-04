@@ -25,17 +25,17 @@ typedef FlTable::iterator FlTableIter;
 
 class NM1FlowTable : public cSimpleModule
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
   public:
     void insert(const NM1FlowTableItem* entry);
     void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
     void remove(Flow* flow);
-    virtual NM1FlowTableItem* findFlowByDstApni(std::string addr, short qosId);
-    virtual NM1FlowTableItem* findFlowByDstAddr(std::string addr, short qosId);
-    virtual NM1FlowTableItem* lookup(Flow* flow);
+    NM1FlowTableItem* findFlowByDstApni(std::string addr, unsigned short qosId);
+    NM1FlowTableItem* findFlowByDstAddr(std::string addr, unsigned short qosId);
+    NM1FlowTableItem* lookup(Flow* flow);
+
+  protected:
+      virtual void initialize();
+      virtual void handleMessage(cMessage *msg);
 
   private:
     FlTable flows;

@@ -28,6 +28,17 @@ class NM1FlowTableItem
     NM1FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
     virtual ~NM1FlowTableItem();
 
+    enum ConnectionStatus
+    {
+        CON_ERROR,
+        CON_NIL,
+        CON_FLOWPENDING,
+        CON_CONNECTPENDING,
+        CON_AUTHENTICATING,
+        CON_ESTABLISHED,
+        CON_RELEASING
+    };
+
     std::string info() const;
 
     Flow* getFlow() const;
@@ -36,12 +47,16 @@ class NM1FlowTableItem
     const RMTQueues& getRmtInputQueues() const;
     const RMTQueues& getRmtOutputQueues() const;
     std::string getGateName() const;
+    void setConnectionStatus(ConnectionStatus status);
+    ConnectionStatus getConnectionStatus();
+    std::string getConnectionStatusString() const;
 
   private:
     Flow* flow;
     FABase* fa;
     RMTPort* rmtPort;
     std::string gateName;
+    ConnectionStatus conStatus;
 };
 
 std::ostream& operator<< (std::ostream& os, const NM1FlowTableItem& cte);

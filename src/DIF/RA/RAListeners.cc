@@ -63,3 +63,16 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
         EV << "RAListener received unknown object!" << endl;
     }
 }
+
+void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+    {
+        ra->postNM1FlowAllocation(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+}

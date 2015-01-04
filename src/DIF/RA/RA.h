@@ -60,9 +60,12 @@ class RA : public RABase
   public:
     virtual void createNM1Flow(Flow *flow);
     virtual void createNM1FlowWithoutAllocate(Flow *flow);
-    virtual void postNFlowAllocation(Flow* flow);
     virtual void removeNM1Flow(Flow *flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
+
+    // event hook handlers
+    virtual void postNFlowAllocation(Flow* flow);
+    virtual void postNM1FlowAllocation(Flow* flow);
 
   protected:
     virtual void initialize(int stage);
@@ -79,8 +82,11 @@ class RA : public RABase
     NM1FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
     std::string processName;
+    std::list<Flow*> preparedFlows;
 
     void initQoSCubes();
+    void initSignalsAndListeners();
+    void initFlowAlloc();
     void setRmtMode();
     void bindMediumToRMT();
     RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
@@ -92,8 +98,8 @@ class RA : public RABase
     LisRACreFlow* lisRACreFlow;
     LisRAAllocResPos* lisRAAllocResPos;
     LisRACreAllocResPos* lisRACreAllocResPos;
+    LisRACreResPosi* lisRACreResPosi;
 
-    void initSignalsAndListeners();
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);
 

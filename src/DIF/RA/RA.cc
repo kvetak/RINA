@@ -50,6 +50,7 @@ void RA::initialize(int stage)
     {
         // determine and set RMT mode of operation
         setRmtMode();
+        initFlowAlloc();
         return;
     }
 
@@ -84,6 +85,19 @@ void RA::initialize(int stage)
     WATCH_LIST(this->QosCubes);
 }
 
+void RA::handleMessage(cMessage *msg)
+{
+    if (msg->isSelfMessage())
+    {
+        if (!opp_strcmp(msg->getName(), "RA-CreateFlow"))
+        {
+            createNM1Flow(preparedFlows.front());
+            preparedFlows.pop_front();
+            delete msg;
+        }
+    }
+}
+
 void RA::initSignalsAndListeners()
 {
     sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
@@ -97,6 +111,42 @@ void RA::initSignalsAndListeners()
 
     lisRACreFlow = new LisRACreFlow(this);
     thisIpc->subscribe(SIG_RIBD_CreateFlow, lisRACreFlow);
+
+    lisRACreResPosi = new LisRACreResPosi(this);
+    thisIpc->getParentModule()->
+            subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisRACreResPosi);
+}
+
+void RA::initFlowAlloc()
+{
+    cXMLElement* dirXml = par("flows").xmlValue();
+    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
+
+    for (cXMLElementList::const_iterator it = map.begin(); it != map.end(); ++it)
+    {
+        cXMLElement* m = *it;
+
+        const char* apn = m->getAttribute("apn");
+        unsigned short qosId = (unsigned short)atoi(m->getAttribute("qosCube"));
+
+        APNamingInfo src = APNamingInfo(APN(processName));
+        APNamingInfo dst = APNamingInfo(APN(apn));
+
+        const QoSCube* qosCube = getQosCubeById(qosId);
+        if (qosCube == NULL)
+        {
+            EV << "!!! Invalid QoS-id provided for flow with dst " << apn
+               << "! Allocation won't be initiated." << endl;
+            return;
+        }
+
+        Flow *fl = new Flow(src, dst);
+        fl->setQosParameters(*qosCube);
+
+        preparedFlows.push_back(fl);
+        cMessage* msg = new cMessage("RA-CreateFlow");
+        scheduleAt(simTime(), msg);
+    }
 }
 
 /**
@@ -279,9 +329,6 @@ void RA::initQoSCubes()
     }
 }
 
-void RA::handleMessage(cMessage *msg)
-{
-}
 
 /**
  * Convenience function for interconnecting two modules.
@@ -347,7 +394,7 @@ void RA::bindMediumToRMT()
     // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtQM->addPort(NULL);
     // connect the port to the bottom
-    interconnectModules(rmtModule, port, rmtGate.str(), std::string("southIo"));
+    interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
 
     // create extra queues for management purposes
     rmtQM->addMgmtQueues(port);
@@ -379,7 +426,7 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIpc, FABase* fab, Flow* flow)
 
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtQM->addPort(flow);
-    interconnectModules(rmtModule, port, thisIpcGate.str(), std::string("southIo"));
+    interconnectModules(rmtModule, port, thisIpcGate.str(), std::string(GATE_SOUTHIO));
 
     // 3) allocate queues
     // create extra queues for management purposes (this will likely go away later)
@@ -417,10 +464,12 @@ void RA::createNM1Flow(Flow *flow)
 {
     Enter_Method("createNM1Flow()");
 
+    const APN& dstApn = flow->getDstApni().getApn();
+
     //Ask DA which IPC to use to reach dst App
-    const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
+        EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
         return;
     }
     Address addr = *ad;
@@ -445,10 +494,9 @@ void RA::createNM1Flow(Flow *flow)
     {
         // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
-        // we're ready to go!
         // update the PDU forwarding table
-        fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                        flow->getConId().getQoSId(), port);
+        // FIXME: this
+        fwTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
     }
     else
     {
@@ -457,8 +505,8 @@ void RA::createNM1Flow(Flow *flow)
 }
 
 /**
- * Handles allocation of an (N-1)-flow invoked by other IPC.
- * (this is the mechanism behind response to an M_CREATE request from other IPC).
+ * Handles receiver-side allocation of an (N-1)-flow requested by other IPC.
+ * (this is the mechanism behind M_CREATE_R).
  *
  * @param flow specified flow object
  */
@@ -466,10 +514,13 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
 {
     Enter_Method("createNM1FlowWoAlloc()");
 
+    const APN& dstApn = flow->getDstApni().getApn();
+    unsigned short qosId = flow->getConId().getQoSId();
+
     //Ask DA which IPC to use to reach dst App
-    const Address* ad = difAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
+    const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
+        EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
         signalizeCreateFlowNegativeToRibd(flow);
         return;
     }
@@ -486,24 +537,27 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
     FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
 
-    // connect the new flow to the RMT
+    // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
     // update the PDU forwarding table
-    fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-                            flow->getConId().getQoSId(), port);
+    fwTable->insert(Address(dstApn.getName()), qosId, port);
 
     // add other accessible applications into forwarding table
-    const APNList* remoteApps = difAllocator->findNeigborApns(flow->getDstApni().getApn());
+    const APNList* remoteApps = difAllocator->findNeigborApns(dstApn);
     if (remoteApps)
     {
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
         {
             Address addr = Address(it->getName());
-            fwTable->insert(addr, flow->getConId().getQoSId(), port);
+            fwTable->insert(addr, qosId, port);
         }
     }
 
     signalizeCreateFlowPositiveToRibd(flow);
+
+    // mark this flow as connected
+    flTable->findFlowByDstApni(dstApn.getName(), qosId)->
+            setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
 }
 
 /**
@@ -522,9 +576,10 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
-        NM1FlowTableItem* item = flTable->findFlowByDstApni(
-                flow->getDstNeighbor().getApname().getName(),
-                flow->getConId().getQoSId());
+        const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
+        unsigned short qosId = flow->getConId().getQoSId();
+
+        NM1FlowTableItem* item = flTable->findFlowByDstApni(neighApn, qosId);
         if (item != NULL)
         {
             qAllocPolicy->onNFlowAlloc(item->getRmtPort(), flow);
@@ -533,13 +588,48 @@ void RA::postNFlowAllocation(Flow* flow)
 }
 
 /**
+ * Event hook handler invoked after an (N-1)-flow is successfully established
+ *
+ * @param flow established (N-1)-flow
+ */
+void RA::postNM1FlowAllocation(Flow* flow)
+{
+    Enter_Method("postNM1FlowAllocation()");
+
+    // TODO: move this to receiveSignal()
+    const APN& dstApn = flow->getDstApni().getApn();
+    unsigned short qosId = flow->getConId().getQoSId();
+
+
+    NM1FlowTableItem* item = flTable->findFlowByDstApni(dstApn.getName(), qosId);
+
+    if (item == NULL) return;
+
+    // add other accessible applications into the forwarding table
+    const APNList* remoteApps = difAllocator->findNeigborApns(dstApn);
+    if (remoteApps)
+    {
+        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
+        {
+            Address addr = Address(it->getName());
+            fwTable->insert(addr, qosId, item->getRmtPort());
+        }
+    }
+
+    // mark this flow as connected
+    item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+}
+
+/**
  * Removes specified (N-1)-flow and bindings (this is the mechanism behind Deallocate() call).
  *
  * @param flow specified flow object
  */
 void RA::removeNM1Flow(Flow *flow)
-{
+{ // TODO: part of this should be split into something like postNM1FlowDeallocation
+
     NM1FlowTableItem* flowItem = flTable->lookup(flow);
+    flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
 
     RMTPort* port = flowItem->getRmtPort();
     const char* gateName = flowItem->getGateName().c_str();
@@ -559,22 +649,20 @@ void RA::removeNM1Flow(Flow *flow)
     rmtQM->removePort(flowItem->getRmtPort());
     rmtModule->deleteGate(gateName);
     flowItem->getFaBase()->receiveDeallocateRequest(flow);
-    thisIpc->deleteGate(gateName);
 
+    thisIpc->deleteGate(gateName);
     flTable->remove(flow);
 }
 
 /**
- * Assigns an (N)-flow to a suitable (N-1)-flow (and creates one if there isn't any)
+ * Assigns a suitable (N-1)-flow to the (N)-flow (and creates one if there isn't any)
  *
  * @param flow specified flow object
- * @return true if this is a bottom IPC process (=>noop), otherwise false
+ * @return true if an interface or an (N-1)-flow is ready to serve, false otherwise
  */
 bool RA::bindNFlowToNM1Flow(Flow* flow)
 {
     Enter_Method("bindNFlowToNM1Flow()");
-
-    EV << "Commencing assignment of (N)-flow to an (N-1)-flow..." << endl;
 
     if (rmt->isOnWire())
     { // nothing to be done
@@ -591,33 +679,42 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
     if (nm1FlowItem == NULL)
     { // we need to allocate a new (N-1)-flow to suit our needs
-        EV << "creating an (N-1)-flow (dst Addr " << neighAddr << ")" << endl;
+        EV << getFullName()
+           << " allocating an (N-1)-flow (dstApp " << neighAddr << ")" << endl;
 
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(neighAddr));
 
         Flow *nm1Flow = new Flow(src, dst);
+        // FIXME: useless, appropriate QoS class has to be chosen by some algorithm
         nm1Flow->setQosParameters(flow->getQosParameters());
+        // initiate flow creation
         createNM1Flow(nm1Flow);
-    }
+        // repeat the lookup
+        nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
 
-    // repeat the lookup
-    nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
-    if (nm1FlowItem == NULL)
-    {
-        EV << "!!! Something went wrong! there isn't any suitable (N-1)-flow present for dst "
-           << neighAddr << " so it won't be multiplexed further." << endl;
-    }
-    else
-    {
-        // add another fwtable entry for direct srcApp->dstApp messages (if needed)
-        if (neighAddr != dstAddr)
+        if (nm1FlowItem == NULL)
         {
-            fwTable->insert(Address(dstAddr), qosId, nm1FlowItem->getRmtPort());
+            EV << "!!! not able to allocate (N-1)-flow for " << neighAddr << endl;
+            return false;
         }
     }
 
-    return false;
+    // add another fwtable entry for direct srcApp->dstApp messages (if needed)
+    // TODO: there must be a better place to put this
+    if (neighAddr != dstAddr)
+    {
+        fwTable->insert(Address(dstAddr), qosId, nm1FlowItem->getRmtPort());
+    }
+
+    if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 

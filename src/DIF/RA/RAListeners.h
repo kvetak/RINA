@@ -16,9 +16,8 @@
 #ifndef RALISTENERS_H_
 #define RALISTENERS_H_
 
-//Standard libraries
+
 #include <omnetpp.h>
-//RINASim libraries
 #include "RABase.h"
 
 class RAListeners : public cListener
@@ -52,6 +51,13 @@ class LisRACreAllocResPos : public RAListeners
 {
   public:
     LisRACreAllocResPos(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRACreResPosi : public RAListeners
+{
+  public:
+    LisRACreResPosi(RABase* nra) : RAListeners(nra){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

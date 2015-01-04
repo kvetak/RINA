@@ -16,7 +16,7 @@
 #include <NM1FlowTableItem.h>
 
 NM1FlowTableItem::NM1FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
-:   flow(flow), fa(fa), rmtPort(port), gateName(gateName)
+:   flow(flow), fa(fa), rmtPort(port), gateName(gateName), conStatus(CON_CONNECTPENDING)
 {
 }
 
@@ -27,25 +27,38 @@ NM1FlowTableItem::~NM1FlowTableItem() {
 std::string NM1FlowTableItem::info() const {
     std::ostringstream os;
 
-    if (flow != NULL)
-    {
-        os << flow->info() << endl;
-    }
-    if (fa != NULL)
-    {
-        os << "FA path: " << fa->getFullPath() << "\n";
-    }
-//    if (rmtOutputQueue != NULL)
-//    {
-//        os << "output RMT queue: " << rmtOutputQueue->getName() << "\n";
-//    }
-//    if (rmtInputQueue != NULL)
-//    {
-//        os << "input RMT queue: " << rmtInputQueue->getName();
-//    }
+
+    os << flow->info() << endl;
+    os << "FA path: " << fa->getFullPath() << endl;
+    os << "status: " << getConnectionStatusString() << endl;
+    os << "RMT port: " << rmtPort->getFullName() << endl;
+
     return os.str();
 }
 
+std::string NM1FlowTableItem::getConnectionStatusString() const {
+    switch(this->conStatus)
+    {
+        case CON_NIL:               return "NULL";
+        case CON_FLOWPENDING:       return "flowpending";
+        case CON_CONNECTPENDING:    return "connectpending";
+        case CON_AUTHENTICATING:    return "authenticating";
+        case CON_ESTABLISHED:       return "established";
+        case CON_RELEASING:         return "releasing";
+        case CON_ERROR:
+        default:                return "UNKNOWN";
+    }
+}
+
+
+NM1FlowTableItem::ConnectionStatus NM1FlowTableItem::getConnectionStatus()
+{
+    return this->conStatus;
+}
+
+void NM1FlowTableItem::setConnectionStatus(ConnectionStatus conStatus) {
+    this->conStatus = conStatus;
+}
 
 std::ostream& operator <<(std::ostream& os, const NM1FlowTableItem& cte) {
     return os << cte.info();

@@ -21,8 +21,8 @@ Define_Module(RMTPort);
 
 void RMTPort::initialize()
 {
-    southInputGate = gateHalf("southIo", cGate::INPUT);
-    southOutputGate = gateHalf("southIo", cGate::OUTPUT);
+    southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     ready = true;
 }
 
@@ -31,9 +31,13 @@ void RMTPort::handleMessage(cMessage *msg)
     if (msg->getArrivalGate() == southInputGate)
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+        { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+        }
         else
+        {
             send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+        }
     }
     else if (northInputGates.count(msg->getArrivalGate()))
     {

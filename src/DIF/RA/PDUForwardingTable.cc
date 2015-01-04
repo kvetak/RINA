@@ -111,8 +111,12 @@ void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
 {
     Enter_Method("insert()");
-    PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
-    fwTable.push_back(entry);
+    // multiple ports per item aren't supported at the moment
+    if (lookup(destAddr, qosId) == NULL)
+    {
+        PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
+        fwTable.push_back(entry);
+    }
 }
 
 /**

@@ -50,7 +50,7 @@ NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
     return NULL;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, short qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, unsigned short qosId)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
@@ -64,7 +64,7 @@ NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, short qosId)
     return NULL;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, short qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, unsigned short qosId)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
