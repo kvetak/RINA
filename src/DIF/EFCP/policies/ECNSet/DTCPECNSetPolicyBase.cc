@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/*
+/**
  * @file DTCPECNSetPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Dec 21, 2014

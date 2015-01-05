@@ -30,6 +30,8 @@
 #include <queue>
 #include "EFCP_defs.h"
 
+#include "PDU.h"
+
 #define MAX_CLOSED_WIN_Q_LEN 20
 
 typedef enum
@@ -46,6 +48,8 @@ typedef enum
 class DTPState : public cObject {
 
 private:
+    PDU* currentPDU;
+
     /* These parameters can set smaller values of the DTAE constants
      * for a given flow. These must have values less than or equal
      * those defined for the DIF. */
@@ -150,6 +154,8 @@ public:
     void setLastSeqNumSent(unsigned int lastSeqNumSent);
     bool isEcnSet() const;
     void setEcnSet(bool ecnSet);
+    const PDU* getCurrentPdu() const;
+    void setCurrentPdu(PDU* currentPdu);
 };
 
 #endif /* DTPSTATE_H_ */

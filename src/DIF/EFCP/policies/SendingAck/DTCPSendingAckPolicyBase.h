@@ -14,37 +14,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
 /**
- * @file DTCPECNSetPolicyBase.h
+ * @file DTCPSendingAckPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNSETPOLICYBASE_H_
-#define DTCPECNSETPOLICYBASE_H_
+#ifndef DTCPSENDINGACKPOLICYBASE_H_
+#define DTCPSENDINGACKPOLICYBASE_H_
 
 #include <omnetpp.h>
 
 #include "DTPState.h"
 #include "DTCPState.h"
+#include "DTPTimers_m.h"
 
 /*
  *
  */
-class DTCPECNSetPolicyBase : public cSimpleModule
+class DTCPSendingAckPolicyBase : public cSimpleModule
 {
   public:
-    DTCPECNSetPolicyBase();
-    virtual ~DTCPECNSetPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    DTCPSendingAckPolicyBase();
+    virtual ~DTCPSendingAckPolicyBase();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState, ATimer* timer) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
+      protected:
+        virtual void initialize(){};
+        virtual void handleMessage(cMessage* msg){};
 };
 
-#endif /* DTCPECNSETPOLICYBASE_H_ */
+#endif /* DTCPSENDINGACKPOLICYBASE_H_ */

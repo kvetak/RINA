@@ -29,6 +29,10 @@ void DTCPState::initFC()
 {
   rcvRtWinEdge = rcvCredit;
   sndRtWinEdge = sndCredit;
+
+  //TODO load from some config
+  rcvBuffersPercentFree = 100;
+  rcvBufferPercentThreshold = 75;
 }
 
 DTCPState::DTCPState()
@@ -43,6 +47,8 @@ DTCPState::DTCPState()
 
   nextSenderControlSeqNum = 1;
   lastControlSeqNumRcv = 0;
+
+
 
 
 
@@ -166,4 +172,24 @@ unsigned int DTCPState::getLastCtrlSeqNumRcv(){
 
 void DTCPState::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
   lastControlSeqNumRcv = ctrlSeqNum;
+}
+
+unsigned int DTCPState::getRcvBufferPercentThreshold() const
+{
+  return rcvBufferPercentThreshold;
+}
+
+void DTCPState::setRcvBufferPercentThreshold(unsigned int rcvBufferPercentThreshold)
+{
+  this->rcvBufferPercentThreshold = rcvBufferPercentThreshold;
+}
+
+unsigned int DTCPState::getRcvBuffersPercentFree() const
+{
+  return rcvBuffersPercentFree;
+}
+
+void DTCPState::setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree)
+{
+  this->rcvBuffersPercentFree = rcvBuffersPercentFree;
 }

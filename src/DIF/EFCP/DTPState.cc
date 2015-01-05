@@ -18,12 +18,15 @@
 #include "DTPState.h"
 
 DTPState::DTPState() {
-    // TODO Auto-generated constructor stub
+
 
   initDefaults();
 }
 
 void DTPState::initDefaults(){
+
+  currentPDU = NULL;
+
   closedWindow = false;
   closedWinQueLen = 0;
   dropDup = 0;
@@ -262,4 +265,14 @@ bool DTPState::isEcnSet() const
 void DTPState::setEcnSet(bool ecnSet)
 {
   this->ecnSet = ecnSet;
+}
+
+const PDU* DTPState::getCurrentPdu() const
+{
+  return currentPDU;
+}
+
+void DTPState::setCurrentPdu(PDU* currentPdu)
+{
+  currentPDU = currentPdu;
 }

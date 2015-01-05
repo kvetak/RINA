@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
 /**
- * @file DTCPECNSetPolicyBase.h
+ * @file DTCPLostControlPDUPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNSETPOLICYBASE_H_
-#define DTCPECNSETPOLICYBASE_H_
+#ifndef DTCPLOSTCONTROLPDUPOLICYBASE_H_
+#define DTCPLOSTCONTROLPDUPOLICYBASE_H_
 
 #include <omnetpp.h>
 
@@ -34,17 +33,16 @@
 /*
  *
  */
-class DTCPECNSetPolicyBase : public cSimpleModule
+class DTCPLostControlPDUPolicyBase : public cSimpleModule
 {
   public:
-    DTCPECNSetPolicyBase();
-    virtual ~DTCPECNSetPolicyBase();
+    DTCPLostControlPDUPolicyBase();
+    virtual ~DTCPLostControlPDUPolicyBase();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
   protected:
     virtual void initialize(){};
     virtual void handleMessage(cMessage* msg){};
-
 };
 
-#endif /* DTCPECNSETPOLICYBASE_H_ */
+#endif /* DTCPLOSTCONTROLPDUPOLICYBASE_H_ */

@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
 /**
- * @file DTCPECNSetPolicyBase.h
+ * @file DTCPRcvrControlAckPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNSETPOLICYBASE_H_
-#define DTCPECNSETPOLICYBASE_H_
+#ifndef DTCPRCVRCONTROLACKPOLICYBASE_H_
+#define DTCPRCVRCONTROLACKPOLICYBASE_H_
 
 #include <omnetpp.h>
 
@@ -34,11 +33,11 @@
 /*
  *
  */
-class DTCPECNSetPolicyBase : public cSimpleModule
+class DTCPRcvrControlAckPolicyBase : public cSimpleModule
 {
   public:
-    DTCPECNSetPolicyBase();
-    virtual ~DTCPECNSetPolicyBase();
+    DTCPRcvrControlAckPolicyBase();
+    virtual ~DTCPRcvrControlAckPolicyBase();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
   protected:
@@ -47,4 +46,4 @@ class DTCPECNSetPolicyBase : public cSimpleModule
 
 };
 
-#endif /* DTCPECNSETPOLICYBASE_H_ */
+#endif /* DTCPRCVRCONTROLACKPOLICYBASE_H_ */

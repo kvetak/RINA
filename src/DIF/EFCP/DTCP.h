@@ -39,6 +39,12 @@
 /* Policies */
 #include "DTCPECNSetPolicyBase.h"
 #include "DTCPECNClearPolicyBase.h"
+#include "DTCPRcvrFCPolicyBase.h"
+#include "DTCPRcvrAckPolicyBase.h"
+#include "DTCPReceivingFCPolicyBase.h"
+#include "DTCPSendingAckPolicyBase.h"
+#include "DTCPLostControlPDUPolicyBase.h"
+#include "DTCPRcvrControlAckPolicyBase.h"
 
 class DTP;
 class FlowControl;
@@ -55,12 +61,18 @@ class DTCP: public cSimpleModule {
     DTCPECNSetPolicyBase* ecnSetPolicy;
     DTCPECNClearPolicyBase* ecnClearPolicy;
 
+    DTCPRcvrFCPolicyBase* rcvrFCPolicy;
+
+    DTCPRcvrAckPolicyBase* rcvrAckPolicy;
+    DTCPReceivingFCPolicyBase* receivingFCPolicy;
+    DTCPSendingAckPolicyBase* sendingAckPolicy;
+    DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
+    DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
+
 
 
     /*Timers*/
     WindowTimer* windowTimer;
-
-
 
 
     void schedule(DTCPTimers *timer, double time = 0.0);
@@ -105,9 +117,17 @@ public:
     bool isSendingRateFullfilled() const;
     void setSendingRateFullfilled(bool rateFullfilled);
 
+    void incRcvRtWinEdge();
+
+    /* Run Policies */
     bool runECNSetPolicy(DTPState* dtpState);
     bool runECNClearPolicy(DTPState* dtpState);
-    void incRcvRtWinEdge();
+    bool runRcvrFCPolicy(DTPState* dtpState);
+    bool runRcvrAckPolicy(DTPState* dtpState);
+    bool runReceivingFCPolicy(DTPState* dtpState);
+    bool runSendingAckPolicy(DTPState* dtpState, ATimer* timer);
+    bool runLostControlPDUPolicy(DTPState* dtpState);
+    bool runRcvrControlAckPolicy(DTPState* dtpState);
 
 protected:
     virtual void handleMessage(cMessage *msg);

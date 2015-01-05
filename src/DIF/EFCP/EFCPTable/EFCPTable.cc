@@ -32,10 +32,6 @@ EFCPTable::EFCPTable()
 //  efcpTable.clear();
   // TODO Auto-generated constructor stub
 
-  if(this->isModule()){
-    int a = 5;
-  }
-
 }
 
 EFCPTable::~EFCPTable()

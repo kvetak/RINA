@@ -53,6 +53,8 @@ class DTCPState : public cObject
 
     unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
 
+    unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
+    unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
 
 
@@ -84,6 +86,10 @@ class DTCPState : public cObject
     void initFC();
     unsigned int getRcvRtWinEdge() const;
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
+    unsigned int getRcvBufferPercentThreshold() const;
+    void setRcvBufferPercentThreshold(unsigned int rcvBufferPercentThreshold);
+    unsigned int getRcvBuffersPercentFree() const;
+    void setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree);
 };
 
 #endif /* DTCPSTATE_H_ */

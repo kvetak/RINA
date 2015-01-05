@@ -14,37 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
 /**
- * @file DTCPECNSetPolicyBase.h
+ * @file DTCPReceivingFCPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNSETPOLICYBASE_H_
-#define DTCPECNSETPOLICYBASE_H_
+#include <ReceivingFlowControl/DTCPReceivingFCPolicyBase.h>
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPECNSetPolicyBase : public cSimpleModule
+DTCPReceivingFCPolicyBase::DTCPReceivingFCPolicyBase()
 {
-  public:
-    DTCPECNSetPolicyBase();
-    virtual ~DTCPECNSetPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+  // TODO Auto-generated constructor stub
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
+}
 
-};
+DTCPReceivingFCPolicyBase::~DTCPReceivingFCPolicyBase()
+{
+  // TODO Auto-generated destructor stub
+}
 
-#endif /* DTCPECNSETPOLICYBASE_H_ */

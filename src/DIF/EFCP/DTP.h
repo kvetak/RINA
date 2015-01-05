@@ -36,7 +36,7 @@
 
 #define DTP_MODULE_NAME "dtp"
 #define DEFAULT_INIT_SEQUENCE_NUMBER 1
-//#include "FA.h" //or FlowAllocatorFactory
+
 
 class DTCP;
 
@@ -88,8 +88,6 @@ class DTP : public cSimpleModule
     cGate* southI;
     cGate* southO;
 
-
-
     ConnectionId connId;
 
     /* Handle messages and timer */
@@ -107,7 +105,6 @@ class DTP : public cSimpleModule
     void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
 
     /* Send */
-
 
 
     /** Delimits content of buffer from application */
@@ -194,13 +191,14 @@ class DTP : public cSimpleModule
     void sendFCOnlyPDU();
     void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
     void sendAckOnlyPDU(unsigned int seqNum);
+    void resetSenderInactivTimer();
 
   public:
     DTP();
     virtual ~DTP();
 
-    bool read(int portId, unsigned char * buffer, int len);
-    bool readImmediate(int portId, unsigned char* buffer, int len);
+//    bool read(int portId, unsigned char * buffer, int len);
+//    bool readImmediate(int portId, unsigned char* buffer, int len);
 //    bool write(int portId, unsigned char *buffer, int len);
 
     void setFlow(Flow* flow);

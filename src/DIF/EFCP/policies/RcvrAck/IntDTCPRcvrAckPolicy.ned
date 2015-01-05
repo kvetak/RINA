@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,36 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/**
- * @file DTCPECNSetPolicyBase.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
- * @brief
- * @detail
- */
+package rina.DIF.EFCP.policies.RcvrAck;
 
-#ifndef DTCPECNSETPOLICYBASE_H_
-#define DTCPECNSETPOLICYBASE_H_
-
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPECNSetPolicyBase : public cSimpleModule
+moduleinterface IntDTCPRcvrAckPolicy
 {
-  public:
-    DTCPECNSetPolicyBase();
-    virtual ~DTCPECNSetPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
-};
-
-#endif /* DTCPECNSETPOLICYBASE_H_ */
+    parameters:
+        @display("i=block/socket");
+        string policyName;
+}

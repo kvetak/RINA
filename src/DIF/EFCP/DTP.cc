@@ -356,25 +356,9 @@ void DTP::addPDUToReassemblyQ(DataTransferPDU* pdu)
   }
 }
 
-//void DTP::handleMsgFromRmt(PDU* msg)
-//{
-//
-//  if (dynamic_cast<DataTransferPDU*>(msg))
-//  {
-//    DataTransferPDU* pdu = (DataTransferPDU*) msg;
-//    cMessage* sdu = pdu->getMUserData();
-//    take(check_and_cast<cOwnedObject*>(sdu) );
-//    send(pdu->getMUserData(), northO);
-//  }
-//}
 
 void DTP::delimitFromRMT(DataTransferPDU* pdu)
 {
-  /* Maybe it is good idea to split this method into two
-   * The first one would put PDU on reassemblyQ and
-   * the second one would create as many whole SDUs from reassemblyQ as possible */
-
-//  addPDUToReassemblyQ(pdu);
 
   for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
@@ -437,9 +421,7 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   else if (pdu->getSeqNum() > dtcp->getLastCtrlSeqNumRcv() + 1)/* Out of order */
   {
     /* LostControlPDU Policy */
-    sendControlAckPDU();
-    sendEmptyDTPDU();
-    dtcp->setLastCtrlSeqnumRec(pdu->getSeqNum());
+    dtcp->runLostControlPDUPolicy(&state);
   }
   else
   {
@@ -517,6 +499,8 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 
 void DTP::handleMsgFromRmtnew(PDU* msg){
 
+  state.setCurrentPdu(msg);
+
   if (dynamic_cast<DataTransferPDU*>(msg))
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
@@ -559,47 +543,7 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
     if(dynamic_cast<ControlAckPDU*>(pdu))
     {
-      //FIXME A! Until more information about "adjust as necessary" is available this part does nothing.
-//      /* RcvrControlAck Policy with Default: */
-//      //"adjust as necessary" :D great advice
-//      ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)pdu;
-////      TODO: unsigned int lastCtrlSeqNumRcv;
-//
-////      unsigned int sndLtWinEdge;
-////      if(state.getNextSeqNumToSend() < ctrlAckPDU->getSndLtWinEdge()){
-//      state.setNextSeqNumToSend(ctrlAckPDU->getSndLtWinEdge());
-////      }
-////      unsigned int sndRtWinEdge;
-//
-//      dtcp->setSndRtWinEdge(ctrlAckPDU->getSndRtWinEdge());
-////      unsigned int myLtWinEdge;
-////      if(state.getRcvLeftWinEdge() < ctrlAckPDU->getMyLtWinEdge()){
-//      state.setRcvLeftWinEdge(ctrlAckPDU->getMyLtWinEdge());
-////      }
-////      unsigned int myRtWinEdge;
-//      //TODO verify this
-//      dtcp->setRcvRtWinEdge(ctrlAckPDU->getMyRtWinEdge());
-////      unsigned int myRcvRate;
-//      //TODO handle RcvRate
-//
-//      //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
-//
-//      sendAckFlowPDU();
-//      //TODO A1 Send empty Transfer PDU with NextSeqNumToSend-1
-//
-//      DataTransferPDU* dataPdu = new DataTransferPDU();
-//      setPDUHeader(dataPdu);
-//      unsigned int seqNum = state.getNextSeqNumToSend();
-//      dataPdu->setSeqNum(seqNum - 1);
-//      state.setNextSeqNumToSend(seqNum);
-//      UserDataField* userData = new UserDataField();
-//      dataPdu->setUserDataField(userData);
-//
-//      sendToRMT(dataPdu);
-//
-//      //dataPdu->setSeqNum(state.getLastSeqNumSent());
-//
-//      /* End default RcvrControlAck policy */
+      dtcp->runRcvrControlAckPolicy(&state);
     }
     else
     {
@@ -753,6 +697,9 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
   //TODO A1 not sure about this scheduling; yeah it will be deleted
 //  schedule(rcvrInactivityTimer);
+
+
+  state.setCurrentPdu(NULL);
 }
 
 void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
@@ -994,11 +941,29 @@ void DTP::handleDTPSenderInactivityTimer(SenderInactivityTimer* timer)
 
 }
 
+void DTP::resetSenderInactivTimer()
+{
+
+  cancelEvent(senderInactivityTimer);
+  schedule(senderInactivityTimer);
+}
+
 void DTP::handleDTPATimer(ATimer* timer)
 {
 
   if(state.isDtcpPresent()){
-    runSendingAckPolicy(timer);
+//    runSendingAckPolicy(timer);
+    dtcp->runSendingAckPolicy(&state, timer);
+  }else{
+
+    //TODO A1
+    //Update LeftWindowEdge
+
+    //Invoke delimiting
+    delimitFromRMT(NULL);
+
+    //reset SenderInactivity timer
+    resetSenderInactivTimer();
   }
 }
 
@@ -1116,150 +1081,6 @@ bool DTP::setDRFInPDU(bool override)
   }
 }
 
-///**
-// * This method takes all SDUs from sduQ and generates PDUs by filling appropriate header fields
-// */
-//void DTP::generatePDUs()
-//{
-//
-//  DataTransferPDU* dataPDU = new DataTransferPDU();
-//
-//  dataPDU->setConnId((const ConnectionId) (*connId.dup()));
-//  //setDestAddr... APN
-//  //setSrcAddr ... APN
-//
-//  //invoke SDU protection so we don't have to bother with it afterwards
-//  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it)
-//  {
-//    sduProtection(*it);
-//  }
-//
-//  SDU *sdu = NULL;
-//  DataTransferPDU* genPDU = dataPDU->dup();
-//  bool fragment = false;
-//  int delimitFlags = 0;
-//  do
-//  {
-//    //This method fetches next SDU if current one has been put to some PDU(s) (offset = size)
-//    this->getSDUFromQ(sdu);
-//
-//    unsigned int copySize = 0;
-//    /* TODO We should take into account also SDUDelimiterFlags etc */
-//    unsigned int pduAvailSize = state.getMaxFlowPduSize() - genPDU->getPduLen();
-//    /* if the rest of the SDU is bigger than empty space in PDU then fill-up PDU */
-//    copySize = (sdu->getRestSize() >= pduAvailSize) ? pduAvailSize : sdu->getRestSize();
-//
-//    if (genPDU->getPduLen() == PDU_HEADER_LEN)
-//    {
-//      //PDU is empty
-//      //set noLength flag
-//      delimitFlags |= 0x04;
-//      if (sdu->getRestSize() > pduAvailSize)
-//      {
-//        //(rest of) SDU is bigger than PDU
-//        //set noLength flag
-//        delimitFlags |= 0x04;
-//        if (sdu->getSize() > sdu->getRestSize())
-//        {
-//          //not first segment, something has been read from SDU
-//          //and since it won't fit cannot be last
-//          //this is middle segment
-//          delimitFlags |= 0x00;
-//        }
-//        else
-//        {
-//          //this is first segment of next SDU
-//          delimitFlags |= 0x01;
-//        }
-//      }
-//      else
-//      {
-//        //(rest of) SDU is smaller than available space in PDU
-//        if (sdu->getSize() > sdu->getRestSize())
-//        {
-//          //last fragment of previous SDU
-//          delimitFlags |= 0x02;
-//        }
-//        else
-//        {
-//          //this is complete SDU
-//          delimitFlags |= 0x03;
-//        }
-//      }
-//
-//    }
-//    else
-//    {
-//      //clear noLength flag
-//      delimitFlags &= 0xFB;
-//
-//      if (sdu->getRestSize() > pduAvailSize)
-//      {
-//        //(rest of) SDU won't fit into rest of PDU
-//        if (sdu->getSize() > sdu->getRestSize())
-//        {
-//          //this is not first segment
-//          if (copySize == sdu->getRestSize())
-//          {
-//            //this is last segment
-//            delimitFlags |= 0x02;
-//          }
-//          else
-//          {
-//            //this is middle segment
-//            //not permitted
-//            throw cRuntimeError("This type of PDU delimiting is not permitted!");
-//          }
-//        }
-//        else
-//        {
-//          //adding first segment
-//          delimitFlags |= 0x01;
-//        }
-//      }
-//      else
-//      {
-//        //(rest of) SDU will fit into rest of PDU
-//        //complete sdu
-//        if ((delimitFlags & 0x03) == 3)
-//        {
-//          //since i'm adding complete SDU, this flag is possible only when adding complete SDU to one (or more)complete SDU
-//          delimitFlags &= 0xFC;
-//        }
-//      }
-//    }
-//
-//    //add whole SDU or fragment to PDU
-//    genPDU->addUserData(sdu->getUserData(copySize), copySize, &fragment);
-////    fragment = true;
-//
-//    if (sdu->getRestSize() == 0)
-//    {
-//      delete sduQ.front();
-//      sduQ.erase(sduQ.begin());
-//    }
-//
-//    //if genPDU is full or SDU queue is empty, 'close' PDU and put it to generated PDUs and create new PDU
-//    if (genPDU->getPduLen() >= this->state.getMaxFlowPduSize() || sduQ.empty())
-//    {
-//      //TODO A2 what else to do before sending?
-//      //what about formating SDUDelimitersFlags in userData?
-//      genPDU->putDelimitFlags(delimitFlags, fragment);
-//
-//      //put genPDU to generatedPDUs
-//      generatedPDUs.push_back(genPDU);
-//
-//      if (!sduQ.empty())
-//      {
-//        genPDU = dataPDU->dup();
-//        fragment = false;
-//        //set DRF(false) -> not needed (false is default)
-//        genPDU->setSeqNum(this->state.getNextSeqNumToSend());
-//      }
-//    }
-//
-//  } while (!sduQ.empty());
-//}
 
 void DTP::generatePDUsnew()
 {
@@ -1553,33 +1374,18 @@ bool DTP::runInitialSequenceNumberPolicy()
   return false;
 }
 
-void DTP::runRcvrFlowControlPolicy()
-{
-  /* This policy has to be the one to impose the condition to set WindowClosed to True */
-  /* Default */ //FIXME A1 set value to these variables!
-  if (dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold)
-  {
-    dtcp->incRcvRtWinEdge();
-  }
-  else
-  {
-    /* Buffers are getting low */
-    //Leave RightWindowEdge unchanged.
-  }
-  /* End default */
-}
 
 void DTP::runRateReductionPolicy()
 {
   /* Default */
-  if (dtcp->flowControl->rcvBuffersPercentFree <= dtcp->flowControl->rcvBufferPercentThreshold)
+  if (dtcp->dtcpState->getRcvBuffersPercentFree() <= dtcp->dtcpState->getRcvBufferPercentThreshold())
   {
     dtcp->flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
   }
   else
   {
     if (dtcp->flowControl->rcvrRate < dtcp->flowControl->configRcvrRate
-        && dtcp->flowControl->rcvBuffersPercentFree > dtcp->flowControl->rcvBufferPercentThreshold)
+        && dtcp->dtcpState->getRcvBuffersPercentFree() > dtcp->dtcpState->getRcvBufferPercentThreshold())
     {
       //set rate back to config rate
       dtcp->flowControl->rcvrRate = dtcp->flowControl->configRcvrRate;
@@ -1603,38 +1409,6 @@ void DTP::sendAckOnlyPDU(unsigned int seqNum)
   sendToRMT(ackPDU);
 }
 
-/* TODO A! either add argument to this policy (PDU* pdu) or variable currentPDU to DTP class */
-void DTP::runRcvrAckPolicy(unsigned int seqNum)
-{
-
-  /* Default */
-  if (dtcp->dtcpState->isImmediate())
-  {
-    //TODO A2 How to remove allowed gaps?
-    //Update LeftWindowEdge removing allowed gaps;
-
-    //send an Ack/FlowControlPDU
-    sendAckFlowPDU(seqNum, true);
-    //TODO A1 Add handling for A-timer != 0
-    //stop any A-Timers asscociated with this PDU and earlier ones.
-
-  }
-  else
-  {
-    //TODO A2
-    //set A-timer for this PDU
-  }
-}
-
-void DTP::runReceivingFlowControlPolicy()
-{
-  if (state.isWinBased())
-  {
-
-    //Send FlowControl PDU /* Already updated the window and not sending Ack */
-    sendFCOnlyPDU();
-  }
-}
 
 void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
 {
@@ -1712,10 +1486,10 @@ void DTP::sendEmptyDTPDU()
   dataPdu->setUserDataField(userData);
 
   if(state.isRxPresent()){
-  RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
-  rxExpTimer->setPdu(dataPdu->dup());
-  rxQ.push_back(rxExpTimer);
-  schedule(rxExpTimer);
+    RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
+    rxExpTimer->setPdu(dataPdu->dup());
+    rxQ.push_back(rxExpTimer);
+    schedule(rxExpTimer);
   }
 
   sendToRMT(dataPdu);
@@ -1781,31 +1555,7 @@ void DTP::runSenderInactivityTimerPolicy()
 
 }
 
-bool DTP::runSendingAckPolicy(ATimer* timer)
-{
-  /* Default */
-  //TODO A!
-  unsigned int gap = getAllowableGap();
-  unsigned int seqNum = timer->getPdu()->getSeqNum();
-  unsigned int leftWindowEdge = state.getRcvLeftWinEdge();
 
-
-//  if (leftWindowEdge + 1 == leftWindowEdge < seqNum && leftWindowEdge + gap > seqNum)
-//  {
-//    //this PDU is
-//
-//  }
-
-  //TODO A!
-  //Update LetWindowEdge
-
-  //Invoke Delimiting
-
-  //resetSenderInactivity
-
-  //TODO Why return false?
-  return false;
-}
 
 void DTP::sendToRMT(PDU* pdu)
 {
@@ -1872,7 +1622,11 @@ void DTP::svUpdate(unsigned int seqNum)
   {
     if (state.isWinBased())
     {
-      runRcvrFlowControlPolicy();
+//      runRcvrFlowControlPolicy();
+
+     dtcp->runRcvrFCPolicy(&state);
+
+
     }
 
     /* Commented due to a change in specs */ //TODO A1 Move it to its new place (see new specs)
@@ -1884,12 +1638,14 @@ void DTP::svUpdate(unsigned int seqNum)
 
   if (state.isRxPresent())
   {
-    runRcvrAckPolicy(state.getRcvLeftWinEdge() - 1);
+//    runRcvrAckPolicy(state.getRcvLeftWinEdge() - 1);
+    dtcp->runRcvrAckPolicy(&state);
   }
 
   if (state.isFCPresent() && !state.isRxPresent())
   {
-    runReceivingFlowControlPolicy();
+//    runReceivingFlowControlPolicy();
+    dtcp->runReceivingFCPolicy(&state);
   }
 
 }
@@ -1989,9 +1745,3 @@ void DTP::setDTCP(DTCP* dtcp){
   }
 }
 
-
-
-//
-//void DTP::setCepId(int cepId){
-//  this->cepId = cepId;
-//}
