@@ -86,7 +86,7 @@ void RMT::invokeQueuePolicies(cObject* obj)
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
 
     // invoke monitor policy
-    qMonPolicy->run(queue);
+    qMonPolicy->onMessageArrival(queue);
 
     // invoke maxQueue policy if applicable
     if (queue->getLength() >= queue->getThreshLength())
@@ -94,6 +94,7 @@ void RMT::invokeQueuePolicies(cObject* obj)
         // if the PDU got dropped, finish it here
         if (maxQPolicy->run(queue))
         {
+            qMonPolicy->onMessageDrop(queue);
             return;
         }
     }

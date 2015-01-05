@@ -21,21 +21,46 @@
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
 
+
+/**
+ * Noop base class for the RMT max queue policy.
+ * This policy decides what to do when a queue is overflowing its threshold.
+ */
 class RMTMaxQBase : public cSimpleModule
 {
   public:
-    RMTMaxQBase();
-    virtual ~RMTMaxQBase();
+
+    /**
+     * A hook method invoked when a queue length is greater or equal to its threshold.
+     *
+     * @param queue pointer to the queue
+     */
     virtual bool run(RMTQueue* queue);
 
   protected:
-    void initialize();
-    void handleMessage(cMessage *msg);
 
+    /**
+     * A hook method invoked after the initial setup of policy module.
+     */
+    virtual void onPolicyInit();
+
+    /**
+     * Handler for OMNeT++ module messages (probably not of much use here).
+     */
+    virtual void handleMessage(cMessage* msg);
+
+    /**
+     * Pointer to the monitoring policy module.
+     */
     RMTQMonitorBase* qMonPolicy;
 
-    // optional event hooks
-    virtual void onPolicyInit();
+  private:
+
+    /**
+     *  Module initialization routine setting up parameters for GUI.
+     *  Inherited policies should be using onPolicyInit() instead.
+     */
+    void initialize();
 };
 
 #endif /* RMTMAXQBASE_H_ */

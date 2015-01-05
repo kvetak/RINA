@@ -20,22 +20,60 @@
 
 #include "RMTQueue.h"
 
+/**
+ * Noop base class for the RMT monitoring policy.
+ * This policy responds to various events happening inside RMT, usually by
+ * modifying values used by the scheduling policy.
+ */
 class RMTQMonitorBase : public cSimpleModule
 {
   public:
-    RMTQMonitorBase();
-    virtual ~RMTQMonitorBase();
 
-    virtual void run(RMTQueue* queue);
+    /**
+     * A hook method invoked after a PDU arrives into a queue.
+     *
+     * @param queue pointer to the queue
+     */
+    virtual void onMessageArrival(RMTQueue* queue);
 
-    // optional event hooks
-    virtual void onPolicyInit();
+    /**
+     * A hook method invoked after a PDU gets dropped from a queue.
+     *
+     * @param queue pointer to the queue
+     */
+    virtual void onMessageDrop(RMTQueue* queue);
+
+    /**
+     * A hook method invoked after a queue is created.
+     *
+     * @param queue pointer to the queue
+     */
     virtual void postQueueCreation(RMTQueue* queue);
+
+    /**
+     * A hook method invoked before a queue is removed.
+     *
+     * @param queue pointer to the queue
+     */
     virtual void preQueueRemoval(RMTQueue* queue);
 
   protected:
-    void initialize();
-    void handleMessage(cMessage *msg);
+    /**
+     * A hook method invoked after the initial setup of policy module.
+     */
+    virtual void onPolicyInit();
+
+    /**
+     * Handler for OMNeT++ module messages (probably not of much use here).
+     */
+    virtual void handleMessage(cMessage* msg);
+
+  private:
+    /**
+     *  Module initialization routine setting up parameters for GUI.
+     *  Inherited policies should be using onPolicyInit() instead.
+     */
+    virtual void initialize();
 };
 
 #endif /* RMTQMONITORBASE_H_ */

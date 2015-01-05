@@ -18,14 +18,6 @@
 Define_Module(RMTMaxQBase);
 
 
-RMTMaxQBase::RMTMaxQBase()
-{
-}
-
-RMTMaxQBase::~RMTMaxQBase()
-{
-}
-
 void RMTMaxQBase::initialize()
 {
     qMonPolicy = check_and_cast<RMTQMonitorBase*>

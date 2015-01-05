@@ -25,7 +25,7 @@ class REDMonitor : public RMTQMonitorBase
   friend class REDDropper;
 
   public:
-    virtual void run(RMTQueue* queue);
+    virtual void onMessageArrival(RMTQueue* queue);
     void postQueueCreation(RMTQueue* queue);
     void preQueueRemoval(RMTQueue* queue);
 

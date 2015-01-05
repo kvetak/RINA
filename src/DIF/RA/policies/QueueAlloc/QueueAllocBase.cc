@@ -19,16 +19,9 @@
 
 Define_Module(QueueAllocBase);
 
-QueueAllocBase::QueueAllocBase()
-{
-}
-
-QueueAllocBase::~QueueAllocBase()
-{
-}
-
 void QueueAllocBase::initialize()
 {
+    // connect to other modules
     rmtQM = check_and_cast<RMTQueueManager*>
         (getModuleByPath("^.^.rmt.rmtQueueManager"));
     idGenerator = check_and_cast<QueueIDGenBase*>
@@ -46,11 +39,11 @@ void QueueAllocBase::handleMessage(cMessage *msg)
 {
 }
 
-void QueueAllocBase::onNM1PortInit(RMTPort* port)
+void QueueAllocBase::onPolicyInit()
 {
 }
 
-void QueueAllocBase::onNM1PortRemoval(RMTPort* port)
+void QueueAllocBase::onNM1PortInit(RMTPort* port)
 {
 }
 
@@ -58,6 +51,6 @@ void QueueAllocBase::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
 }
 
-void QueueAllocBase::onNFlowDealloc(RMTPort* port)
+void QueueAllocBase::onNFlowDealloc(RMTPort* port, Flow* flow)
 {
 }

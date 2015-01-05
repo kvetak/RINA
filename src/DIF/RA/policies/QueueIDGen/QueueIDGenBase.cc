@@ -19,14 +19,6 @@
 
 Define_Module(QueueIDGenBase);
 
-QueueIDGenBase::QueueIDGenBase()
-{
-}
-
-QueueIDGenBase::~QueueIDGenBase()
-{
-}
-
 void QueueIDGenBase::initialize()
 {
     // display active policy name

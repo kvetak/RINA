@@ -15,27 +15,48 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef QueueIDGenBase_H_
-#define QueueIDGenBase_H_
+#ifndef QUEUEIDGENBASE_H_
+#define QUEUEIDGENBASE_H_
 
 #include <omnetpp.h>
 
 #include "Flow.h"
 #include "PDU_m.h"
 
+/**
+ * Noop base class for the RA queue ID generator.
+ * This convenience class provides generation of queue IDs from given objects.
+ */
 class QueueIDGenBase : public cSimpleModule
 {
   public:
-    QueueIDGenBase();
-    virtual ~QueueIDGenBase();
-
-    // method selecting the proper available queue for a PDU
+    /**
+     * Generates queue ID for given PDU (this is usually invoked by RMT).
+     *
+     * @param pdu PDU
+     */
     virtual std::string generateID(PDU_Base* pdu);
+
+    /**
+     * Generates queue ID for given flow object (this is usually invoked by QueueAlloc policy).
+     *
+     * @param flow flow object
+     */
     virtual std::string generateID(Flow* flow);
 
   protected:
-    void initialize();
+    /**
+     * Handler for OMNeT++ module messages (probably not of much use here).
+     */
     void handleMessage(cMessage *msg);
+
+  private:
+    /**
+     *  Module initialization routine setting up parameters for GUI.
+     *  Inherited policies should be using onPolicyInit() instead.
+     */
+    void initialize();
+
 };
 
-#endif /* QueueIDGenBase_H_ */
+#endif /* QUEUEIDGENBASE_H_ */

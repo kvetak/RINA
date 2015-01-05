@@ -33,7 +33,7 @@ void REDMonitor::preQueueRemoval(RMTQueue* queue)
 }
 
 
-void REDMonitor::run(RMTQueue* queue)
+void REDMonitor::onMessageArrival(RMTQueue* queue)
 {
     int length = queue->getLength();
 
