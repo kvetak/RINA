@@ -1,6 +1,4 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+package rina.DIF.RA.policies.QueueIDGen;
 
-#include <omnetpp.h>
-
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+moduleinterface IntQueueIDGen
 {
-  public:
-    virtual void onNM1PortInit(RMTPort* port);
-};
-
-#endif
+    parameters:
+        @display("i=block/socket");
+}

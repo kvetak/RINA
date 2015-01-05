@@ -25,7 +25,6 @@
 class QueuePerNFlow : public QueueAllocBase
 {
   public:
-    virtual RMTQueue* getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu);
     virtual void onNFlowAlloc(RMTPort* port, Flow* flow);
 };
 

@@ -46,7 +46,7 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 */
 void PDUForwardingTable::printAll()
 {
-    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
+    EV << "Printing the whole forwarding table: " << endl;
 
     for(PDUFwdTable::iterator it = this->fwTable.begin(); it!= fwTable.end(); ++it)
     {

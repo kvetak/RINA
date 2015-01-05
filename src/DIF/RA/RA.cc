@@ -596,13 +596,11 @@ void RA::postNM1FlowAllocation(Flow* flow)
 {
     Enter_Method("postNM1FlowAllocation()");
 
-    // TODO: move this to receiveSignal()
     const APN& dstApn = flow->getDstApni().getApn();
     unsigned short qosId = flow->getConId().getQoSId();
 
-
+    // TODO: move this to receiveSignal()
     NM1FlowTableItem* item = flTable->findFlowByDstApni(dstApn.getName(), qosId);
-
     if (item == NULL) return;
 
     // add other accessible applications into the forwarding table

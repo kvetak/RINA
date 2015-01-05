@@ -15,17 +15,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+package rina.DIF.RA.policies.QueueIDGen;
 
-#include <omnetpp.h>
-
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+simple SingleID like IntQueueIDGen
 {
-  public:
-    virtual void onNM1PortInit(RMTPort* port);
-};
-
-#endif
+    parameters:
+        @display("i=block/socket");
+}

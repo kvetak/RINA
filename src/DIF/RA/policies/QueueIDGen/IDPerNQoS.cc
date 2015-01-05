@@ -15,17 +15,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#include "IDPerNQoS.h"
 
-#include <omnetpp.h>
+Define_Module(IDPerNQoS);
 
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+std::string IDPerNQoS::generateID(PDU_Base* pdu)
 {
-  public:
-    virtual void onNM1PortInit(RMTPort* port);
-};
-
-#endif
+    std::ostringstream id;
+    id << pdu->getConnId().getQoSId();
+    return id.str();
+}

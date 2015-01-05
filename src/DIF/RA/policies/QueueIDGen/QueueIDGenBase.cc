@@ -15,49 +15,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <QueueAlloc/QueueAllocBase.h>
+#include <QueueIDGen/QueueIDGenBase.h>
 
-Define_Module(QueueAllocBase);
+Define_Module(QueueIDGenBase);
 
-QueueAllocBase::QueueAllocBase()
+QueueIDGenBase::QueueIDGenBase()
 {
 }
 
-QueueAllocBase::~QueueAllocBase()
+QueueIDGenBase::~QueueIDGenBase()
 {
 }
 
-void QueueAllocBase::initialize()
+void QueueIDGenBase::initialize()
 {
-    rmtQM = check_and_cast<RMTQueueManager*>
-        (getModuleByPath("^.^.rmt.rmtQueueManager"));
-    idGenerator = check_and_cast<QueueIDGenBase*>
-        (getModuleByPath("^.queueIdGenerator"));
-    ra = check_and_cast<RABase*>
-        (getModuleByPath("^.ra"));
-
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
 }
 
-void QueueAllocBase::handleMessage(cMessage *msg)
+void QueueIDGenBase::handleMessage(cMessage *msg)
 {
 }
 
-void QueueAllocBase::onNM1PortInit(RMTPort* port)
+std::string QueueIDGenBase::generateID(PDU_Base* pdu)
 {
+    return std::string("");
 }
 
-void QueueAllocBase::onNM1PortRemoval(RMTPort* port)
+std::string QueueIDGenBase::generateID(Flow* flow)
 {
-}
-
-void QueueAllocBase::onNFlowAlloc(RMTPort* port, Flow* flow)
-{
-}
-
-void QueueAllocBase::onNFlowDealloc(RMTPort* port)
-{
+    return std::string("");
 }

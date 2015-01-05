@@ -83,6 +83,7 @@ class RMT : public RMTBase
     RMTSchedulingBase* schedPolicy;
 
     QueueAllocBase* qAllocPolicy;
+    QueueIDGenBase* queueIdGenerator;
 
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU_Base* msg);

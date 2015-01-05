@@ -20,17 +20,20 @@
 Define_Module(QueuePerNQoS);
 
 
-RMTQueue* QueuePerNQoS::getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu)
+void QueuePerNQoS::onNM1PortInit(RMTPort* port)
 {
-    std::ostringstream id;
-    id << pdu->getConnId().getQoSId();
-    return port->getQueueById(RMTQueue::OUTPUT, id.str().c_str());
-}
+    // get a list of QoS cubes
+    const QosCubeSet& cubes = ra->getQosCubes();
 
-void QueuePerNQoS::onNFlowAlloc(RMTPort* port, Flow* flow)
-{
-    std::ostringstream id;
-    id << flow->getConId().getQoSId();
-    rmtQM->addQueue(RMTQueue::OUTPUT, port, id.str().c_str());
-    rmtQM->addQueue(RMTQueue::INPUT, port, id.str().c_str());
+    // create a pair of queues for each available QoS cube
+    std::ostringstream idString;
+    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
+    {
+        idString << it->getQosId();
+        rmtQM->addQueue(RMTQueue::OUTPUT, port, idString.str().c_str());
+        rmtQM->addQueue(RMTQueue::INPUT, port, idString.str().c_str());
+        // clear the buffer
+        idString.str(std::string());
+        idString.clear();
+    }
 }

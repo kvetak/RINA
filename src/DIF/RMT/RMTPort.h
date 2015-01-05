@@ -22,6 +22,7 @@
 #include "RMTQueue.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
+#include "QueueIDGenBase.h"
 
 class RMTPort : public cSimpleModule
 {
@@ -54,6 +55,8 @@ class RMTPort : public cSimpleModule
   private:
     bool ready;
     Flow* flow;
+
+    QueueIDGenBase* queueIdGen;
 
     std::set<cGate*> northOutputGates;
     std::set<cGate*> northInputGates;

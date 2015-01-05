@@ -15,17 +15,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#ifndef QueueIDGenBase_H_
+#define QueueIDGenBase_H_
 
 #include <omnetpp.h>
 
-#include "QueueAllocBase.h"
+#include "Flow.h"
+#include "PDU_m.h"
 
-class SingleQueue : public QueueAllocBase
+class QueueIDGenBase : public cSimpleModule
 {
   public:
-    virtual void onNM1PortInit(RMTPort* port);
+    QueueIDGenBase();
+    virtual ~QueueIDGenBase();
+
+    // method selecting the proper available queue for a PDU
+    virtual std::string generateID(PDU_Base* pdu);
+    virtual std::string generateID(Flow* flow);
+
+  protected:
+    void initialize();
+    void handleMessage(cMessage *msg);
 };
 
-#endif
+#endif /* QueueIDGenBase_H_ */

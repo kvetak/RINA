@@ -15,17 +15,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#include "SingleID.h"
 
-#include <omnetpp.h>
+Define_Module(SingleID);
 
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+std::string SingleID::generateID(PDU_Base* pdu)
 {
-  public:
-    virtual void onNM1PortInit(RMTPort* port);
-};
+    return std::string("0");
+}
 
-#endif
+std::string SingleID::generateID(Flow* flow)
+{
+    return std::string("0");
+}

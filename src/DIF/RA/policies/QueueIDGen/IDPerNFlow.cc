@@ -15,17 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_SINGLEQUEUE_H_
-#define __RINA_SINGLEQUEUE_H_
+#include "IDPerNFlow.h"
 
-#include <omnetpp.h>
+Define_Module(IDPerNFlow);
 
-#include "QueueAllocBase.h"
-
-class SingleQueue : public QueueAllocBase
+std::string IDPerNFlow::generateID(PDU_Base* pdu)
 {
-  public:
-    virtual void onNM1PortInit(RMTPort* port);
-};
+    std::ostringstream id;
+    id << pdu->getSrcAddr().getIpcAddress().getName() << "_"
+       << pdu->getConnId().getSrcCepId();
 
-#endif
+    return id.str();
+}
+
+std::string IDPerNFlow::generateID(Flow* flow)
+{
+    std::ostringstream id;
+    id << flow->getSrcAddr().getIpcAddress().getName() << "_"
+       << flow->getConId().getSrcCepId();
+
+    return id.str();
+}

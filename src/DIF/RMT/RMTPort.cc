@@ -24,6 +24,9 @@ void RMTPort::initialize()
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     ready = true;
+
+    queueIdGen = check_and_cast<QueueIDGenBase*>
+            (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
 }
 
 void RMTPort::handleMessage(cMessage *msg)
@@ -34,10 +37,25 @@ void RMTPort::handleMessage(cMessage *msg)
         { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
         }
+        else if (dynamic_cast<PDU_Base*>(msg) != NULL)
+        { // still unsure about whether this'll be needed
+            RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
+                                             queueIdGen->generateID((PDU_Base*)msg).c_str());
+
+            if (inQueue != NULL)
+            {
+                send(msg, inQueue->getInputGate()->getPreviousGate());
+            }
+            else
+            {
+                EV << "no input queue with respective ID is available!";
+            }
+        }
         else
         {
-            send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+            EV << "this type of message isn't supported!" << endl;
         }
+
     }
     else if (northInputGates.count(msg->getArrivalGate()))
     {
@@ -115,14 +133,14 @@ RMTQueue* RMTPort::getLongestQueue(RMTQueueType type)
 RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId)
 {
     RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
-    std::string fullId = std::string(getFullName()) + (type == RMTQueue::INPUT ? "i" : "o") + queueId;
+
+    std::ostringstream fullId;
+    fullId << getFullName() << (type == RMTQueue::INPUT ? 'i' : 'o') << queueId;
 
     for(RMTQueuesIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
         RMTQueue* q = *it;
-
-        //EV << "comparing " << q->getFullName() << " and " << fullId.c_str() << endl;
-        if (!opp_strcmp(q->getFullName(), fullId.c_str()))
+        if (!opp_strcmp(q->getFullName(), fullId.str().c_str()))
         {
             return q;
         }

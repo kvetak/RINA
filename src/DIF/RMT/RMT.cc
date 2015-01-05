@@ -52,6 +52,8 @@ void RMT::initialize()
         (getModuleByPath("^.queueMonitorPolicy"));
     qAllocPolicy = check_and_cast<QueueAllocBase*>
         (getModuleByPath("^.^.resourceAllocator.queueAllocPolicy"));
+    queueIdGenerator = check_and_cast<QueueIDGenBase*>
+        (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
 
     // set up some parameters
     cModule* ipcModule = getParentModule()->getParentModule();
@@ -217,7 +219,8 @@ void RMT::efcpiToPort(PDU_Base* pdu)
     RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
     if (outPort != NULL)
     {
-        outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, pdu);
+        const std::string& id = queueIdGenerator->generateID(pdu);
+        outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
     }
 
     cGate* outGate = NULL;
@@ -342,7 +345,8 @@ void RMT::portToPort(cMessage* msg)
             EV << "PORT NOT FOUND" << endl;
             return;
         }
-        outQueue = qAllocPolicy->getSuitableOutputQueue(outPort, (PDU_Base*)msg);
+        outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
+                queueIdGenerator->generateID((PDU_Base*)msg).c_str());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {

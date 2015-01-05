@@ -24,8 +24,3 @@ void SingleQueue::onNM1PortInit(RMTPort* port)
     rmtQM->addQueue(RMTQueue::INPUT, port);
     rmtQM->addQueue(RMTQueue::OUTPUT, port);
 }
-
-RMTQueue* SingleQueue::getSuitableOutputQueue(RMTPort* port, PDU_Base* pdu)
-{
-    return port->getFirstQueue(RMTQueue::OUTPUT);
-}
