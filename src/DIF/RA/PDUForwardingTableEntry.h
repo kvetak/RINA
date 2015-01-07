@@ -30,18 +30,18 @@ class PDUForwardingTableEntry
 {
   public:
     PDUForwardingTableEntry();
-    PDUForwardingTableEntry(Address& destaddr, int qosid, RMTPort* port);
+    PDUForwardingTableEntry(Address& destaddr, unsigned short qosid, RMTPort* port);
     virtual ~PDUForwardingTableEntry();
 
     std::string info() const;
 
     const Address& getDestAddr() const;
-    int getQosId() const;
+    unsigned short getQosId() const;
     RMTPort* getPort() const;
 
   private:
     Address destAddr;
-    int qosId;
+    unsigned short qosId;
     RMTPort* rmtPort;
 };
 

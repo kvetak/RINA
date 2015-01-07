@@ -17,11 +17,34 @@
 
 Define_Module(LongestQFirst);
 
-void LongestQFirst::run(RMTQueueManager* queues)
+void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 {
-    RMTQueue* outQ = queues->getLongest(RMTQueue::OUTPUT);
-    RMTQueue* inQ = queues->getLongest(RMTQueue::INPUT);
+    Enter_Method("processQueues()");
 
-    if (outQ != NULL) outQ->releasePDU();
-    if (inQ != NULL) inQ->releasePDU();
+    if (direction == RMTQueue::OUTPUT)
+    {
+        if (port->isReady())
+        {
+            port->setBusy();
+
+            RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
+            outQ->startTransmitting();
+        }
+        else
+        {
+            waitingOnOutput[port] += 1;
+        }
+    }
+    else if (direction == RMTQueue::INPUT)
+    {
+        if (!waitingOnInput[port])
+        {
+            RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
+            inQ->startTransmitting();
+        }
+        else
+        {
+            waitingOnInput[port] += 1;
+        }
+    }
 }

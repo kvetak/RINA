@@ -19,10 +19,9 @@ Define_Module(RMTQueue);
 
 
 RMTQueue::RMTQueue()
+: queueId("")
 {
-    qosId = 0;
 }
-
 
 RMTQueue::~RMTQueue()
 {
@@ -38,6 +37,7 @@ void RMTQueue::initialize()
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
     sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
+    sigRMTPDUSent = registerSignal(SIG_RMT_MessageSent);
 
     maxQLength = getParentModule()->par("queueSize");
     thresholdQLength = getParentModule()->par("queueThresh");
@@ -60,6 +60,11 @@ std::string RMTQueue::info() const
 std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
 {
     return os << cte.info();
+}
+
+bool RMTQueue::isBounded()
+{
+    return outputGate->isConnected();
 }
 
 void RMTQueue::redrawGUI()
@@ -101,7 +106,12 @@ void RMTQueue::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        // wtf?
+        if (!opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
+        {
+            releasePDU();
+            emit(sigRMTPDUSent, this);
+        }
+        delete msg;
     }
     else
     {
@@ -130,6 +140,18 @@ void RMTQueue::releasePDU(void)
         }
     }
     redrawGUI();
+}
+
+/**
+ * Schedules an end-of-queue-service event.
+ *
+ */
+void RMTQueue::startTransmitting()
+{
+    Enter_Method("startTransmitting()");
+
+    scheduleAt(simTime() + queuingTime, new cMessage("queueTransmitEnd"));
+    bubble("Releasing a PDU...");
 }
 
 void RMTQueue::dropLast()
@@ -186,24 +208,27 @@ simtime_t RMTQueue::getQTime() const
     return qTime;
 }
 
-RMTQueue::queueType RMTQueue::getType()
+RMTQueueType RMTQueue::getType()
 {
     return type;
 }
 
-void RMTQueue::setType(RMTQueue::queueType type)
+void RMTQueue::setType(queueType type)
 {
     this->type = type;
+    queuingTime = getParentModule()->
+            par(type == OUTPUT ? "TxQueuingTime" : "RxQueuingTime").
+            doubleValue() / 1000;
 }
 
-unsigned short RMTQueue::getQosId()
+const char* RMTQueue::getQueueId() const
 {
-    return qosId;
+    return queueId;
 }
 
-void RMTQueue::setQosId(unsigned short qosId)
+void RMTQueue::setQueueId(const char* queueId)
 {
-    this->qosId = qosId;
+    this->queueId = queueId;
 }
 
 cGate* RMTQueue::getRmtAccessGate()

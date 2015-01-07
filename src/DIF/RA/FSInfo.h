@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #ifndef __RINA_FSINFO_H
 #define __RINA_FSINFO_H
@@ -23,30 +23,30 @@
 #include "Address.h"
 #include "RMTPort.h"
 
-/* Provides information about the state of a Flow.
- * This is actually a value container to use during data exchange.
- */
+// Provides information about the state of a Flow.
+// This is actually a value container to use during data exchange.
+//
 class FSInfo // Flow State Information
 {
 protected:
 
-    /* Address of the info destination.
-     * Usually a neighbor of the source.
-     */
+    // Address of the info destination.
+    // Usually a neighbor of the source.
+    //
     Address dstAddr;
 
-    /* Weight of this connection depending on the metric used during
-     * routing policy evaluation.
-     */
+    // Weight of this connection depending on the metric used during
+    // routing policy evaluation.
+    //
     unsigned int metricWeight;
 
-    /* QoSID associated to the flow from source to destination.
-     * For the moment this field is unused.
-     */
-    unsigned short int QoSID;
+    // QoSID associated to the flow from source to destination.
+    // For the moment this field is unused.
+    //
+    unsigned short QoSID;
 
-    /* Address of the info source.
-     */
+    // Address of the info source.
+    //
     Address srcAddr;
 
 public:
@@ -55,7 +55,7 @@ public:
     FSInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric);
     ~FSInfo();
 
-    /* Getters. */
+    // Getters.
 
     Address getDestination();
     unsigned int getMetric();
@@ -63,7 +63,7 @@ public:
     Address getSource();
 
 
-    /* Setters. */
+    // Setters.
 
     void setDestination(Address dest);
     void setMetric(unsigned int weight);

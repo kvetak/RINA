@@ -13,35 +13,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "FlowTable.h"
+#include "NM1FlowTable.h"
 
-Define_Module(FlowTable);
+Define_Module(NM1FlowTable);
 
-void FlowTable::initialize()
+void NM1FlowTable::initialize()
 {
     WATCH_LIST(flows);
 }
 
-void FlowTable::handleMessage(cMessage *msg)
+void NM1FlowTable::handleMessage(cMessage *msg)
 {
 }
 
-void FlowTable::insert(const FlowTableItem* entry)
+void NM1FlowTable::insert(const NM1FlowTableItem* entry)
 {
     flows.push_back(*entry);
 }
 
-void FlowTable::insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
+void NM1FlowTable::insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
 {
-    FlowTableItem entry = FlowTableItem(flow, fa, port, gateName);
+    NM1FlowTableItem entry = NM1FlowTableItem(flow, fa, port, gateName);
     flows.push_back(entry);
 }
 
-FlowTableItem* FlowTable::lookup(Flow* flow)
+NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
-        FlowTableItem a = *it;
+        NM1FlowTableItem a = *it;
         if (a.getFlow() == flow)
         {
             return &(*it);
@@ -50,11 +50,11 @@ FlowTableItem* FlowTable::lookup(Flow* flow)
     return NULL;
 }
 
-FlowTableItem* FlowTable::lookup(std::string addr, short qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, unsigned short qosId)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
-        FlowTableItem a = *it;
+        NM1FlowTableItem a = *it;
         if ((a.getFlow()->getDstApni().getApn().getName() == addr) &&
              a.getFlow()->getConId().getQoSId() == qosId)
         {
@@ -64,7 +64,21 @@ FlowTableItem* FlowTable::lookup(std::string addr, short qosId)
     return NULL;
 }
 
-void FlowTable::remove(Flow* flow)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, unsigned short qosId)
+{
+    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    {
+        NM1FlowTableItem a = *it;
+        if ((a.getFlow()->getDstAddr().getApname().getName() == addr) &&
+             a.getFlow()->getConId().getQoSId() == qosId)
+        {
+            return &(*it);
+        }
+    }
+    return NULL;
+}
+
+void NM1FlowTable::remove(Flow* flow)
 {
     FlTableIter i = flows.begin();
     while (i != flows.end())

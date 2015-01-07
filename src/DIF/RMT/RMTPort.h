@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright Â© 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -20,12 +20,22 @@
 
 #include <omnetpp.h>
 #include "RMTQueue.h"
+#include "Flow.h"
+#include "CDAPMessage_m.h"
+#include "QueueIDGenBase.h"
 
 class RMTPort : public cSimpleModule
 {
   public:
-    RMTQueue* getInputQueue() const;
-    void setInputQueue(RMTQueue* queue, cGate* portGate);
+    bool isReady();
+    void setReady();
+    void setBusy();
+
+    const Flow* getFlow() const;
+    void setFlow(Flow* flow);
+
+    const RMTQueues& getInputQueues() const;
+    void addInputQueue(RMTQueue* queue, cGate* portGate);
 
     const RMTQueues& getOutputQueues() const;
     void addOutputQueue(RMTQueue* queue, cGate* portGate);
@@ -33,17 +43,29 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
+    RMTQueue* getManagementQueue(RMTQueueType type);
+    RMTQueue* getFirstQueue(RMTQueueType type);
+    RMTQueue* getLongestQueue(RMTQueueType type);
+    RMTQueue* getQueueById(RMTQueueType type, const char* queueId);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
   private:
-    cGate* northOutputGate;
+    bool ready;
+    Flow* flow;
+
+    QueueIDGenBase* queueIdGen;
+
+    std::set<cGate*> northOutputGates;
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
     RMTQueues outputQueues;
-    RMTQueue* inputQueue;
+    RMTQueues inputQueues;
+
+    void redrawGUI();
 };
 
 typedef std::vector<RMTPort*> RMTPorts;

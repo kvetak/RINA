@@ -23,7 +23,7 @@
 #include <string>
 
 //RINASim libraries
-#include "QosCube.h"
+#include "QoSCube.h"
 
 //Consts
 extern const unsigned short VAL_RESERVEDQOSID;

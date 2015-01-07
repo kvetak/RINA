@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #ifndef __RINA_FSUPDATEINFO_H
 #define __RINA_FSUPDATEINFO_H
@@ -23,27 +23,27 @@
 #include "Address.h"
 #include "FSInfo.h"
 
-/* Provides information about an update of Flow state info.
- * Used during update forwarding information signal.
- */
+// Provides information about an update of Flow state info.
+// Used during update forwarding information signal.
+//
 class FSUpdateInfo :
         public cObject // Flow State Update Information
 {
 protected:
 
-    /* The address of the ipc which will receive such information.
-     */
+    // The address of the ipc which will receive such information.
+    //
     Address dstAddr;
 
-    /* The address of the ipc which will send such information.
-     */
+    // The address of the ipc which will send such information.
+    //
     Address srcAddr;
 
-    /* The transmitted information.
-     */
+    // The transmitted information.
+    //
     std::list<FSInfo *> * info;
 
-    /* Free info data. */
+    // Free info data.
     void disposeInfo();
 
 public:
@@ -52,16 +52,16 @@ public:
     FSUpdateInfo(Address from, Address to, std::list<FSInfo *> * info);
     ~FSUpdateInfo();
 
-    /* Getters. */
+    // Getters.
 
     Address getDestination();
     std::list<FSInfo *> *  getInfo();
     Address getSource();
 
-    /* Setters. */
+    // Setters.
 
     void setDestination(Address addr);
-    /* This will create a copy of the list instead of addressing the passed one. */
+    // This will create a copy of the list instead of addressing the passed one.
     void setInfo(std::list<FSInfo *> * info);
     void setSource(Address src);
 };

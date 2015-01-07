@@ -22,8 +22,8 @@
 
 class LongestQFirst : public RMTSchedulingBase
 {
-  public:
-    virtual void run(RMTQueueManager* queues);
+  private:
+    virtual void processQueues(RMTPort* port, RMTQueueType direction);
 };
 
 #endif

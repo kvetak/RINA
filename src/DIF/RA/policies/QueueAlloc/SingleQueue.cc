@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,8 +19,8 @@
 
 Define_Module(SingleQueue);
 
-void SingleQueue::createQueues(RMTPort* port, RMTQueues& result)
+void SingleQueue::onNM1PortInit(RMTPort* port)
 {
-    result.push_back(rmtQM->addQueue(RMTQueue::INPUT, port));
-    result.push_back(rmtQM->addQueue(RMTQueue::OUTPUT, port));
+    rmtQM->addQueue(RMTQueue::INPUT, port);
+    rmtQM->addQueue(RMTQueue::OUTPUT, port);
 }

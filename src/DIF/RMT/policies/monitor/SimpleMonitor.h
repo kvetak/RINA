@@ -21,7 +21,7 @@
 class SimpleMonitor : public RMTQMonitorBase
 {
   public:
-    virtual void run(RMTQueue* queue);
+    virtual void onMessageArrival(RMTQueue* queue);
 };
 
 #endif /* SIMPLEMONITOR_H_ */

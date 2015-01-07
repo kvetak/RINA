@@ -66,7 +66,7 @@ class AEBase : public cSimpleModule
     std::string srcAeName;
     std::string srcAeInstance;
 
-    QosCube QoSRequirements;
+    QoSCube QoSRequirements;
 
     //Getters/Setters
     const std::string& getSrcAeInstance() const;
@@ -79,8 +79,8 @@ class AEBase : public cSimpleModule
     void setSrcApName(const std::string& srcApName);
     void setApni(const APNamingInfo& apni);
     void setFlows(const Flows& flows);
-    const QosCube& getQoSRequirements() const;
-    void setQoSRequirements(const QosCube& qoSRequirements);
+    const QoSCube& getQoSRequirements() const;
+    void setQoSRequirements(const QoSCube& qoSRequirements);
 
     void initNamingInfo();
     void initQoSRequiremets();

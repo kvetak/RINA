@@ -75,6 +75,7 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 //RMT
 extern const char* SIG_RMT_NoConnId;
 extern const char* SIG_RMT_MessageReceived;
+extern const char* SIG_RMT_MessageSent;
 
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;

@@ -17,14 +17,6 @@
 
 Define_Module(RMTQMonitorBase);
 
-RMTQMonitorBase::RMTQMonitorBase()
-{
-}
-
-RMTQMonitorBase::~RMTQMonitorBase()
-{
-}
-
 void RMTQMonitorBase::initialize()
 {
     // display active policy name
@@ -51,6 +43,11 @@ void RMTQMonitorBase::preQueueRemoval(RMTQueue* queue)
 {
 }
 
-void RMTQMonitorBase::run(RMTQueue* queue)
+void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
 {
+}
+
+void RMTQMonitorBase::onMessageDrop(RMTQueue* queue)
+{
+
 }

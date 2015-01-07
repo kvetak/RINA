@@ -73,9 +73,9 @@ bool FAI::receiveAllocateRequest() {
     //EV << "!!!!!!" << FlowObject->info() << endl << FlowObject->getDstNeighbor() << endl;
 
     // bind this flow to a suitable (N-1)-flow
-    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-    status = raModule->bindFlowToLowerFlow(FlowObject);
-    //IF connected to wire then schedule M_Create(Flow)
+    RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
+    status = raModule->bindNFlowToNM1Flow(FlowObject);
+    //IF flow is already available then schedule M_Create(Flow)
     if (status)
         this->signalizeCreateFlowRequest();
 
@@ -109,8 +109,8 @@ bool FAI::receiveAllocateResponsePositive() {
     }
 
     // bind this flow to a suitable (N-1)-flow
-    RABase* raModule = (RABase*) getParentModule()->getParentModule()->getModuleByPath(".resourceAllocator.ra");
-    raModule->bindFlowToLowerFlow(FlowObject);
+    RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
+    raModule->bindNFlowToNM1Flow(FlowObject);
 
     //Signalizes M_Create_R(flow)
     this->signalizeCreateFlowResponsePositive();

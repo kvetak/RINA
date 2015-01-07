@@ -1,4 +1,6 @@
 //
+// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,31 +15,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_FLOWTABLE_H_
-#define __RINA_FLOWTABLE_H_
+#include "IDPerNQoS.h"
 
-#include <omnetpp.h>
+Define_Module(IDPerNQoS);
 
-#include "FlowTableItem.h"
-
-typedef std::list<FlowTableItem> FlTable;
-typedef FlTable::iterator FlTableIter;
-
-class FlowTable : public cSimpleModule
+std::string IDPerNQoS::generateID(PDU_Base* pdu)
 {
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-  public:
-    void insert(const FlowTableItem* entry);
-    void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
-    void remove(Flow* flow);
-    virtual FlowTableItem* lookup(std::string addr, short qosId);
-    virtual FlowTableItem* lookup(Flow* flow);
-
-  private:
-    FlTable flows;
-};
-
-#endif
+    std::ostringstream id;
+    id << pdu->getConnId().getQoSId();
+    return id.str();
+}

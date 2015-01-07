@@ -26,5 +26,10 @@ RMTListeners::~RMTListeners()
 
 void LisRMTPDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokeSchedulingPolicy(obj);
+    rmt->invokeQueuePolicies(obj);
+}
+
+void LisRMTPDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->finalizePortService(obj);
 }

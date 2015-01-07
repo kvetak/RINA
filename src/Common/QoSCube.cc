@@ -22,162 +22,162 @@
  * @brief
  * @detail
  */
-#include "QosCube.h"
+#include "QoSCube.h"
 
 const char* STR_DONOTCARE = "do-not-care";
 const char* STR_YES = "yes";
 const char* STR_NO = "no";
 
-QosCube::QosCube() {
+QoSCube::QoSCube() {
     // TODO Auto-generated constructor stub
 
 }
 
-int QosCube::getAvgBand() const {
+int QoSCube::getAvgBand() const {
     return avgBand;
 }
 
-void QosCube::setAvgBand(int avgBand) {
+void QoSCube::setAvgBand(int avgBand) {
     this->avgBand = avgBand;
 }
 
-int QosCube::getAvgSduBand() const {
+int QoSCube::getAvgSduBand() const {
     return avgSDUBand;
 }
 
-void QosCube::setAvgSduBand(int avgSduBand) {
+void QoSCube::setAvgSduBand(int avgSduBand) {
     avgSDUBand = avgSduBand;
 }
 
-int QosCube::getBurstDuration() const {
+int QoSCube::getBurstDuration() const {
     return burstDuration;
 }
 
-void QosCube::setBurstDuration(int burstDuration) {
+void QoSCube::setBurstDuration(int burstDuration) {
     this->burstDuration = burstDuration;
 }
 
-int QosCube::getBurstPeriod() const {
+int QoSCube::getBurstPeriod() const {
     return burstPeriod;
 }
 
-void QosCube::setBurstPeriod(int burstPeriod) {
+void QoSCube::setBurstPeriod(int burstPeriod) {
     this->burstPeriod = burstPeriod;
 }
 
-int QosCube::getDelay() const {
+int QoSCube::getDelay() const {
     return delay;
 }
 
-void QosCube::setDelay(int delay) {
+void QoSCube::setDelay(int delay) {
     this->delay = delay;
 }
 
-bool QosCube::isForceOrder() const {
+bool QoSCube::isForceOrder() const {
     return forceOrder;
 }
 
-void QosCube::setForceOrder(bool forceOrder) {
+void QoSCube::setForceOrder(bool forceOrder) {
     this->forceOrder = forceOrder;
 }
 
-bool QosCube::isIncompleteDelivery() const {
+bool QoSCube::isIncompleteDelivery() const {
     return incompleteDeliv;
 }
 
-void QosCube::setIncompleteDelivery(bool incompleteDeliv) {
+void QoSCube::setIncompleteDelivery(bool incompleteDeliv) {
     this->incompleteDeliv = incompleteDeliv;
 }
 
-int QosCube::getJitter() const {
+int QoSCube::getJitter() const {
     return jitter;
 }
 
-void QosCube::setJitter(int jitter) {
+void QoSCube::setJitter(int jitter) {
     this->jitter = jitter;
 }
 
-int QosCube::getMaxAllowGap() const {
+int QoSCube::getMaxAllowGap() const {
     return maxAllowGap;
 }
 
-void QosCube::setMaxAllowGap(int maxAllowGap) {
+void QoSCube::setMaxAllowGap(int maxAllowGap) {
     this->maxAllowGap = maxAllowGap;
 }
 
-int QosCube::getMaxSduSize() const {
+int QoSCube::getMaxSduSize() const {
     return maxSDUsize;
 }
 
-void QosCube::setMaxSduSize(int maxSdUsize) {
+void QoSCube::setMaxSduSize(int maxSdUsize) {
     maxSDUsize = maxSdUsize;
 }
 
-bool QosCube::isPartialDelivery() const {
+bool QoSCube::isPartialDelivery() const {
     return partDeliv;
 }
 
-void QosCube::setPartialDelivery(bool partDeliv) {
+void QoSCube::setPartialDelivery(bool partDeliv) {
     this->partDeliv = partDeliv;
 }
 
-int QosCube::getPeakBandDuration() const {
+int QoSCube::getPeakBandDuration() const {
     return peakBandDuration;
 }
 
-void QosCube::setPeakBandDuration(int peakBandDuration) {
+void QoSCube::setPeakBandDuration(int peakBandDuration) {
     this->peakBandDuration = peakBandDuration;
 }
 
-int QosCube::getPeakSduBandDuration() const {
+int QoSCube::getPeakSduBandDuration() const {
     return peakSDUBandDuration;
 }
 
-void QosCube::setPeakSduBandDuration(int peakSduBandDuration) {
+void QoSCube::setPeakSduBandDuration(int peakSduBandDuration) {
     peakSDUBandDuration = peakSduBandDuration;
 }
 
-double QosCube::getUndetectedBitErr() const {
+double QoSCube::getUndetectedBitErr() const {
     return undetectedBitErr;
 }
 
-void QosCube::setUndetectedBitErr(double undetectedBitErr) {
+void QoSCube::setUndetectedBitErr(double undetectedBitErr) {
     this->undetectedBitErr = undetectedBitErr;
 }
 
-QosCube::~QosCube() {
+QoSCube::~QoSCube() {
     // TODO Auto-generated destructor stub
 }
 
-unsigned short QosCube::getQosId() const {
+unsigned short QoSCube::getQosId() const {
     return qoSId;
 }
 
-int QosCube::getCostBits() const {
+int QoSCube::getCostBits() const {
     return costBits;
 }
 
-void QosCube::setCostBits(int costBits) {
+void QoSCube::setCostBits(int costBits) {
     this->costBits = costBits;
 }
 
-int QosCube::getCostTime() const {
+int QoSCube::getCostTime() const {
     return costTime;
 }
 
-void QosCube::setCostTime(int costTime) {
+void QoSCube::setCostTime(int costTime) {
     this->costTime = costTime;
 }
 
-void QosCube::setQosId(unsigned short qoSId) {
+void QoSCube::setQosId(unsigned short qoSId) {
     this->qoSId = qoSId;
 }
 
-std::ostream& operator <<(std::ostream& os, const QosCube& cube) {
+std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
     return os << cube.info();
 }
 
-short QosCube::countFeasibilityScore(const QosCube templ) const {
+short QoSCube::countFeasibilityScore(const QoSCube templ) const {
     short score = 0;
 
     /*
@@ -247,7 +247,7 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
     return score;
 }
 
-std::string QosCube::info() const {
+std::string QoSCube::info() const {
     std::ostringstream os;
 
     if (this->getQosId())

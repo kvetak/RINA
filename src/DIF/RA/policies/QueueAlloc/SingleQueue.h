@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -21,12 +21,11 @@
 #include <omnetpp.h>
 
 #include "QueueAllocBase.h"
-#include "RMTQueueManager.h"
 
 class SingleQueue : public QueueAllocBase
 {
   public:
-    void createQueues(RMTPort* port, RMTQueues& result);
+    virtual void onNM1PortInit(RMTPort* port);
 };
 
 #endif

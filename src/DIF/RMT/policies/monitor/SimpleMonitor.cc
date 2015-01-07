@@ -17,7 +17,7 @@
 
 Define_Module(SimpleMonitor);
 
-void SimpleMonitor::run(RMTQueue* queue)
+void SimpleMonitor::onMessageArrival(RMTQueue* queue)
 {
 }
 

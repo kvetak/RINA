@@ -16,7 +16,7 @@
 /**
  * @file RA.h
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief
+ * @brief Monitoring and adjustment of IPC process operations
  * @detail
  */
 
@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 #include "RINASignals.h"
 #include "PDUForwardingTable.h"
-#include "FlowTable.h"
+#include "NM1FlowTable.h"
 #include "DA.h"
 #include "FABase.h"
 #include "RMT.h"
@@ -61,12 +61,14 @@ extern const char* ELEM_COSTBITS;
 class RA : public RABase
 {
   public:
-    virtual void createFlow(Flow *flow);
-    virtual void createFlowWithoutAllocate(Flow *flow);
-    virtual void removeFlow(Flow *flow);
+    virtual void createNM1Flow(Flow *flow);
+    virtual void createNM1FlowWithoutAllocate(Flow *flow);
+    virtual void removeNM1Flow(Flow *flow);
+    virtual bool bindNFlowToNM1Flow(Flow* flow);
 
-    virtual bool bindFlowToLowerFlow(Flow* flow);
-    virtual void bindFlowToMedium(Flow* flow);
+    // event hook handlers
+    virtual void postNFlowAllocation(Flow* flow);
+    virtual void postNM1FlowAllocation(Flow* flow);
 
   protected:
     virtual void initialize(int stage);
@@ -80,38 +82,33 @@ class RA : public RABase
     RMT* rmt;
     RMTQueueManager* rmtQM;
     PDUForwardingTable* fwTable;
-    FlowTable* flTable;
+    NM1FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
 
-    /* Forwarding and routing stuff... */
+    // Forwarding and routing stuff...
     PDUFwdTabGenerator * fwdtg;
 
     std::string processName;
-
-    bool onWire;
+    std::list<Flow*> preparedFlows;
 
     void initQoSCubes();
-    void setRmtMode();
-
-    RMTPort* bindLowerFlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
-    void bindMediumToRMT();
-    void bindQueuesToPort(RMTQueues& queues, RMTPort* port);
-    void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
-
-    std::string normalizePortId(std::string ipcName, int flowPortId);
-
     void initSignalsAndListeners();
+    void initFlowAlloc();
+    void setRmtMode();
+    void bindMediumToRMT();
+    RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
+    void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
+    std::string normalizePortId(std::string ipcName, int flowPortId);
 
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
     LisRACreFlow* lisRACreFlow;
-
-    // TODO: purge this crap and think of something smarter
-    unsigned int portXCoord, portYCoord;
+    LisRAAllocResPos* lisRAAllocResPos;
+    LisRACreAllocResPos* lisRACreAllocResPos;
+    LisRACreResPosi* lisRACreResPosi;
 
     void signalizeCreateFlowPositiveToRibd(Flow* flow);
     void signalizeCreateFlowNegativeToRibd(Flow* flow);
-
 };
     
 

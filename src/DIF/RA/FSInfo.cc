@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #include "FSInfo.h"
 
@@ -22,7 +22,7 @@ FSInfo::FSInfo()
 
 }
 
-FSInfo::FSInfo(Address src, Address dst, short unsigned int QoSID, unsigned int metric)
+FSInfo::FSInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric)
 {
     setDestination(dst);
     setMetric(metric);
@@ -35,7 +35,7 @@ FSInfo::~FSInfo()
 
 }
 
-/* Getters. */
+// Getters.
 
 Address FSInfo::getDestination()
 {
@@ -57,7 +57,7 @@ Address FSInfo::getSource()
     return srcAddr;
 }
 
-/* Setters. */
+// Setters.
 
 void FSInfo::setDestination(Address dest)
 {
@@ -69,7 +69,7 @@ void FSInfo::setMetric(unsigned int weight)
     metricWeight = weight;
 }
 
-void FSInfo::setQoSID(short unsigned int id)
+void FSInfo::setQoSID(unsigned short id)
 {
     QoSID = id;
 }

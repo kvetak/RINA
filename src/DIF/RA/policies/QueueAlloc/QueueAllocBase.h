@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,27 +19,79 @@
 #define QUEUEALLOCBASE_H_
 
 #include <omnetpp.h>
-#include "RABase.h"
-#include "QosCube.h"
+#include "QueueIDGenBase.h"
 #include "RMTQueueManager.h"
 #include "RMTPort.h"
+#include "Flow.h"
+#include "RABase.h"
+#include "QoSCube.h"
 
-/*
- *
+/**
+ * Noop base class for the RA queue allocation policy
+ * The policy manages allocation and deallocation of RMT queues via hook methods.
  */
 class QueueAllocBase : public cSimpleModule
 {
   public:
-    QueueAllocBase();
-    virtual ~QueueAllocBase();
-    virtual void createQueues(RMTPort* port, RMTQueues& result);
+
+    /**
+     * A hook method invoked after the initial setup of policy module.
+     */
+    virtual void onPolicyInit();
+
+    /**
+     * A hook method invoked when a new (N-1)-port is initiated.
+     *
+     * @param port pointer to the port
+     */
+    virtual void onNM1PortInit(RMTPort* port);
+
+    /**
+     * A hook method invoked when a new (N)-flow is established.
+     *
+     * @param flow (N)-flow object
+     * @param port pointer to a port of the (N-1)-flow used by the flow's PDUs
+     */
+    virtual void onNFlowAlloc(RMTPort* port, Flow* flow);
+
+    /**
+     * A hook method invoked when an (N)-flow is deallocated.
+     *
+     * @param flow (N)-flow object
+     * @param port pointer to a port of the (N-1)-flow used by the flow's PDUs
+     */
+    virtual void onNFlowDealloc(RMTPort* port, Flow* flow);
 
   protected:
-    void initialize();
+    /**
+     * Handler for OMNeT++ module messages (probably not of much use here).
+     *
+     * @param msg message
+     */
     void handleMessage(cMessage *msg);
 
+    /**
+     * Pointer to a policy module used for generating queue IDs from flow and
+     * message objects.
+     */
+    QueueIDGenBase* idGenerator;
+
+    /**
+     * Pointer to a module providing API for (de)allocation of ports and queues.
+     */
     RMTQueueManager* rmtQM;
-    QosCubeSet qosCubes;
+
+    /**
+     * Pointer to the Resource Allocator module.
+     */
+    RABase* ra;
+
+  private:
+    /**
+     *  Module initialization routine setting up some parameters for GUI.
+     *  Inherited policies should be using onPolicyInit() instead.
+     */
+    void initialize();
 };
 
 #endif /* QUEUEALLOCBASE_H_ */

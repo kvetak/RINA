@@ -17,28 +17,47 @@
 
 Define_Module(RMTSchedulingBase);
 
-RMTSchedulingBase::RMTSchedulingBase()
-{
-}
-
-RMTSchedulingBase::~RMTSchedulingBase()
-{
-}
-
 void RMTSchedulingBase::initialize()
 {
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
+
+    onPolicyInit();
 }
 
 void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
+}
+
+void RMTSchedulingBase::onPolicyInit()
+{
 
 }
 
-void RMTSchedulingBase::run(RMTQueueManager* queues)
+void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
 {
-    EV << getFullPath() << "!!!!!!! this is basePolicy(), so I'm not doing anything" << endl;
+    port->setReady();
+
+    if (direction == RMTQueue::OUTPUT)
+    {
+        if (waitingOnOutput[port] > 0)
+        {
+            waitingOnOutput[port] -= 1;
+            processQueues(port, RMTQueue::OUTPUT);
+        }
+    }
+    else
+    {
+        if (waitingOnInput[port] > 0)
+        {
+            waitingOnInput[port] -= 1;
+            processQueues(port, RMTQueue::INPUT);
+        }
+    }
+}
+
+void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueueType direction)
+{
 }

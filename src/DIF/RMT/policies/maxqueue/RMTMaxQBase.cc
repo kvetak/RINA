@@ -18,17 +18,10 @@
 Define_Module(RMTMaxQBase);
 
 
-RMTMaxQBase::RMTMaxQBase()
-{
-}
-
-RMTMaxQBase::~RMTMaxQBase()
-{
-}
-
 void RMTMaxQBase::initialize()
 {
-    qMonPolicy = ModuleAccess<RMTQMonitorBase>("queueMonitorPolicy").get();
+    qMonPolicy = check_and_cast<RMTQMonitorBase*>
+        (getModuleByPath("^.queueMonitorPolicy"));
 
     // display active policy name
     cDisplayString& disp = getDisplayString();

@@ -23,6 +23,7 @@
 #include "QoSCube.h"
 #include "RINASignals.h"
 
+
 class RMTQueue : public cSimpleModule
 {
   protected:
@@ -35,16 +36,16 @@ class RMTQueue : public cSimpleModule
 
     enum queueType { INPUT = 'I', OUTPUT = 'O'};
 
-    RMTQueue::queueType getType();
-    void setType(RMTQueue::queueType type);
+    queueType getType();
+    void setType(queueType type);
 
     int getMaxLength();
     void setMaxLength(int value);
     int getThreshLength();
     void setThreshLength(int value);
+    const char* getQueueId() const;
+    void setQueueId(const char* queueId);
     int getLength() const;
-    unsigned short getQosId();
-    void setQosId(unsigned short qosId);
     simtime_t getQTime() const;
 
     cGate* getOutputGate();
@@ -56,28 +57,36 @@ class RMTQueue : public cSimpleModule
     void dropLast();
     void markCongestionOnLast();
 
+    bool isBounded();
     std::string info() const;
+
+    void startTransmitting();
 
   private:
     std::deque<cMessage*> queue;
+    queueType type;
+
+    const char* queueId;
 
     int maxQLength;
     int thresholdQLength;
 
+    double queuingTime;
     simtime_t qTime;
-    queueType type;
-    unsigned short qosId;
 
     cGate* rmtAccessGate;
     cGate* outputGate;
     cGate* inputGate;
 
     simsignal_t sigRMTPDURcvd;
+    simsignal_t sigRMTPDUSent;
 
     void enqueuePDU(cMessage* pdu);
     void redrawGUI();
 
 };
+
+typedef RMTQueue::queueType RMTQueueType;
 
 typedef std::vector<RMTQueue*>  RMTQueues;
 typedef RMTQueues::iterator  RMTQueuesIter;

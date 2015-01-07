@@ -13,12 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.DIF.RA.policies.QueueIDGen;
 
-//
-// TODO auto-generated module
-//
-simple FlowTable
+moduleinterface IntQueueIDGen
 {
-    @display("i=block/table2");
+    parameters:
+        @display("i=block/socket");
 }

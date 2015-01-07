@@ -13,36 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef FLOWTABLEITEM_H_
-#define FLOWTABLEITEM_H_
+#ifndef __RINA_FLOWTABLE_H_
+#define __RINA_FLOWTABLE_H_
 
 #include <omnetpp.h>
 
-#include "Flow.h"
-#include "FABase.h"
-#include "RMTPort.h"
+#include "NM1FlowTableItem.h"
 
-class FlowTableItem {
+typedef std::list<NM1FlowTableItem> FlTable;
+typedef FlTable::iterator FlTableIter;
+
+class NM1FlowTable : public cSimpleModule
+{
   public:
-    FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
-    virtual ~FlowTableItem();
+    void insert(const NM1FlowTableItem* entry);
+    void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
+    void remove(Flow* flow);
+    NM1FlowTableItem* findFlowByDstApni(std::string addr, unsigned short qosId);
+    NM1FlowTableItem* findFlowByDstAddr(std::string addr, unsigned short qosId);
+    NM1FlowTableItem* lookup(Flow* flow);
 
-    std::string info() const;
-
-    Flow* getFlow() const;
-    FABase* getFaBase() const;
-    RMTPort* getRmtPort() const;
-    RMTQueue* getRmtInputQueue() const;
-    const RMTQueues& getRmtOutputQueues() const;
-    std::string getGateName() const;
+  protected:
+      virtual void initialize();
+      virtual void handleMessage(cMessage *msg);
 
   private:
-    Flow* flow;
-    FABase* fa;
-    RMTPort* rmtPort;
-    std::string gateName;
+    FlTable flows;
 };
 
-std::ostream& operator<< (std::ostream& os, const FlowTableItem& cte);
-
-#endif /* FLOWTABLEITEM_H_ */
+#endif

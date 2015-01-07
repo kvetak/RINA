@@ -39,4 +39,11 @@ class LisRMTPDURcvd : public RMTListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 
+class LisRMTPDUSent : public RMTListeners
+{
+  public:
+    LisRMTPDUSent(RMTBase* rmt) : RMTListeners(rmt){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+};
+
 #endif /* RMTLISTENERS_H_ */

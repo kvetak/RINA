@@ -46,13 +46,15 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 */
 void PDUForwardingTable::printAll()
 {
-    EV << this->getFullPath() << " Printing the whole forwarding table: " << endl;
+    EV << "Printing the whole forwarding table: " << endl;
 
-    for(PDUFwdTable::iterator it = fwTable.begin(); it!= fwTable.end(); ++it)
+    for(PDUFwdTable::iterator it = this->fwTable.begin(); it!= fwTable.end(); ++it)
     {
         PDUForwardingTableEntry a = *it;
-        EV << this->getFullPath() << " destination: " << a.getDestAddr()
-                << "; QoS ID: " << a.getQosId() << "; port-id: " << a.getPort() << endl;
+        EV << this->getFullPath()
+           << " dstAddr: " << a.getDestAddr().getApname().getName()
+           << "; QoS ID: " << a.getQosId()
+           << "; port-id: " << a.getPort()->getFullName() << endl;
     }
 }
 
@@ -63,13 +65,25 @@ void PDUForwardingTable::printAll()
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTPort* PDUForwardingTable::lookup(Address& destAddr, int QoSid)
+RMTPort* PDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
 {
     for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
         PDUForwardingTableEntry a = *it;
-        // can't compare DIF names at this moment
-        if ((a.getDestAddr().getApname() == destAddr.getApname()) && ((a.getQosId() == QoSid) || QoSid == -1))
+        if ((a.getDestAddr().getApname() == destAddr.getApname()) && (a.getQosId() == QoSid))
+        {
+            return a.getPort();
+        }
+    }
+    return NULL;
+}
+
+RMTPort* PDUForwardingTable::lookup(Address& destAddr)
+{
+    for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
+    {
+        PDUForwardingTableEntry a = *it;
+        if (a.getDestAddr().getApname() == destAddr.getApname())
         {
             return a.getPort();
         }
@@ -94,13 +108,16 @@ void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(Address destAddr, int qosId, RMTPort* port)
+void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
 {
     Enter_Method("insert()");
-    PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
-    fwTable.push_back(entry);
 
-    printAll();
+    // multiple ports per item aren't supported at the moment
+    if (lookup(destAddr, qosId) == NULL)
+    {
+        PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
+        fwTable.push_back(entry);
+    }
 }
 
 /**
@@ -127,6 +144,6 @@ void PDUForwardingTable::remove(Address destAddr, int qosId)
 
 void PDUForwardingTable::clean()
 {
-    /* TODO: Tomas: How to handle memory here? */
+    /* Q: How to handle memory here? */
     fwTable.clear();
 }

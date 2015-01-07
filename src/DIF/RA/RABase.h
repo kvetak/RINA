@@ -19,10 +19,10 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "QosCube.h"
+#include "QoSCube.h"
 #include "Flow.h"
 
-typedef std::list<QosCube> QosCubeSet;
+typedef std::list<QoSCube> QosCubeSet;
 typedef QosCubeSet::const_iterator QCubeCItem;
 
 class RABase : public cSimpleModule
@@ -31,14 +31,15 @@ class RABase : public cSimpleModule
     RABase();
     virtual ~RABase();
 
-    virtual void createFlow(Flow *flow) = 0;
-    virtual void createFlowWithoutAllocate(Flow *flow) = 0;
-    virtual void removeFlow(Flow *flow) = 0;
-    virtual bool bindFlowToLowerFlow(Flow* flow) = 0;
-    virtual void bindFlowToMedium(Flow* flow) = 0;
+    virtual void createNM1Flow(Flow *flow) = 0;
+    virtual void createNM1FlowWithoutAllocate(Flow *flow) = 0;
+    virtual void postNFlowAllocation(Flow* flow) = 0;
+    virtual void postNM1FlowAllocation(Flow* flow) = 0;
+    virtual void removeNM1Flow(Flow *flow) = 0;
+    virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
 
     const QosCubeSet& getQosCubes() const;
-    const QosCube* getQosCubeById(unsigned short qosId) const;
+    const QoSCube* getQosCubeById(unsigned short qosId) const;
 
   protected:
     //SimpleModule overloads

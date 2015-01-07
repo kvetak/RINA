@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright ï¿½ 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,19 +19,15 @@
 
 Define_Module(QueueAllocBase);
 
-QueueAllocBase::QueueAllocBase()
-{
-}
-
-QueueAllocBase::~QueueAllocBase()
-{
-}
-
 void QueueAllocBase::initialize()
 {
-    rmtQM = (RMTQueueManager*) getParentModule()->getParentModule()->getModuleByPath(".rmt.rmtQueueManager");
-    RABase* ra = (RABase*)(getParentModule()->getSubmodule("ra"));
-    qosCubes = ra->getQosCubes();
+    // connect to other modules
+    rmtQM = check_and_cast<RMTQueueManager*>
+        (getModuleByPath("^.^.rmt.rmtQueueManager"));
+    idGenerator = check_and_cast<QueueIDGenBase*>
+        (getModuleByPath("^.queueIdGenerator"));
+    ra = check_and_cast<RABase*>
+        (getModuleByPath("^.ra"));
 
     // display active policy name
     cDisplayString& disp = getDisplayString();
@@ -43,6 +39,18 @@ void QueueAllocBase::handleMessage(cMessage *msg)
 {
 }
 
-void QueueAllocBase::createQueues(RMTPort* port, RMTQueues& result)
+void QueueAllocBase::onPolicyInit()
+{
+}
+
+void QueueAllocBase::onNM1PortInit(RMTPort* port)
+{
+}
+
+void QueueAllocBase::onNFlowAlloc(RMTPort* port, Flow* flow)
+{
+}
+
+void QueueAllocBase::onNFlowDealloc(RMTPort* port, Flow* flow)
 {
 }

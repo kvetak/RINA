@@ -167,10 +167,8 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
         return;
     }
 
-    Address ipcaddr = fwdtg->getIpcAddress();
-
     /* Assign a metric in the newly inserted flow... */
-    FSInfo * i = fwdtg->netInfoExists(ipcaddr, addr,qos);
+    FSInfo * i = fwdtg->netInfoExists(addr,qos);
     /* This flow has hop 1 because it's a neighbor. */
     i->setMetric(1);
 
@@ -190,7 +188,6 @@ void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
         FSInfo * eval = (*i);
         /* Info here are stored with us as source. */
         FSInfo * info = fwdtg->netInfoExists(
-            fwdtg->getIpcAddress(),
             eval->getDestination(),
             eval->getQoSID());
 
