@@ -58,14 +58,7 @@ void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
 
 void DTP::flushAllQueuesAndPrepareToDie()
 {
-  std::vector<RxExpiryTimer*>::iterator it;
-    for (it = rxQ.begin(); it != rxQ.end();)
-    {
-      delete (*it)->getPdu();
-      cancelAndDelete(*it);
-  //    delete (*it);
-      it = rxQ.erase(it);
-    }
+  clearRxQ();
 
     std::vector<DataTransferPDU*>::iterator itP;
     for (itP = reassemblyPDUQ.begin(); itP != reassemblyPDUQ.end();)
@@ -111,6 +104,8 @@ void DTP::redrawGUI()
       return;
   }
 
+  dtcp->redrawGUI();
+
   cDisplayString& disp = getDisplayString();
   disp.setTagArg("t", 1, "r");
   std::ostringstream desc;
@@ -124,20 +119,21 @@ void DTP::redrawGUI()
     desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
   }
   if(state.isDtcpPresent() && state.isRxPresent()){
-    if (rxQ.empty())
-    {
-      desc << "rxQ: empty" << "\n";
-    }
-    else
-    {
-      desc << "rxQ: ";
-      std::vector<RxExpiryTimer*>::iterator it;
-      for (it = rxQ.begin(); it != rxQ.end(); ++it)
-      {
-        desc << (*it)->getPdu()->getSeqNum() << " | ";
-      }
-      desc << "\n";
-    }
+
+//    if (rxQ.empty())
+//    {
+//      desc << "rxQ: empty" << "\n";
+//    }
+//    else
+//    {
+//      desc << "rxQ: ";
+//      std::vector<RxExpiryTimer*>::iterator it;
+//      for (it = rxQ.begin(); it != rxQ.end(); ++it)
+//      {
+//        desc << (*it)->getPdu()->getSeqNum() << " | ";
+//      }
+//      desc << "\n";
+//    }
   }
 
   if(reassemblyPDUQ.empty()){
@@ -212,12 +208,12 @@ void DTP::handleMessage(cMessage *msg)
     /* Timers */
     DTPTimers* timer = static_cast<DTPTimers*>(msg);
     switch(timer->getType()){
-      case(DTP_RX_EXPIRY_TIMER):{
-        handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
-
-
-        break;
-      }
+//      case(DTP_RX_EXPIRY_TIMER):{
+//        handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
+//
+//
+//        break;
+//      }
 
 //      case(DTP_SENDING_RATE_TIMER):{
 //        handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
@@ -566,47 +562,30 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
           {
             unsigned int startSeqNum = selNackPdu->getNackList(i * 2);
             unsigned int endSeqNum = selNackPdu->getNackList((i * 2) + 1);
-            std::vector<RxExpiryTimer*>::iterator it;
-            for (it = rxQ.begin(); it != rxQ.end(); ++it)
-            {
-              //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-              if (((*it)->getPdu())->getSeqNum() >= startSeqNum && ((*it)->getPdu())->getSeqNum() <= endSeqNum)
-              {
-                handleDTPRxExpiryTimer((*it));
-              }
-            }
+
+            dtcp->nackPDU(startSeqNum, endSeqNum);
+
           }
         }
         else if (pdu->getType() & PDU_ACK_BIT)
         {
           SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
-
+          unsigned int tempSLWE = 0;
           for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
           {
             unsigned int startSeqNum = selAckPdu->getNackList(i * 2);
             unsigned int endSeqNum = selAckPdu->getNackList((i * 2) + 1);
 
-            std::vector<RxExpiryTimer*>::iterator it;
-            for (it = rxQ.begin(); it != rxQ.end();)
-            {
-              //FIXME B1 "including any gaps less than allowable Gap and"
-              if (((*it)->getPdu())->getSeqNum() >= startSeqNum && ((*it)->getPdu())->getSeqNum() <= endSeqNum)
-              {
-                /* This condition relies on sorted rxQ by seqNum */
-                if (state.getSenderLeftWinEdge() == (*it)->getPdu()->getSeqNum())
-                {
-                  state.setSenderLeftWinEdge((*it)->getPdu()->getSeqNum() + 1);
-                }
+            tempSLWE = std::max(endSeqNum, tempSLWE);
 
-                delete (*it)->getPdu();
-                cancelEvent((*it));
-                delete (*it);
-                it = rxQ.erase(it);
-              }else{
-                ++it;
-              }
-            }
-            //SenderLWE is updated inside for loop
+            dtcp->ackPDU(startSeqNum, endSeqNum);
+
+            //TODO A!
+            // min = dtcp->getSmallestSeqNumFromRxQOrNextSeqNumToSend - 1
+            //state.setSenderLeftWinEdge(std::min(min, state.getSenderLeftWinEdge);
+
+            state.setSenderLeftWinEdge(tempSLWE);
+
           }
         }
 
@@ -618,51 +597,23 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
 
 
         //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
+
         if (pdu->getType() & PDU_NACK_BIT)
         {
 
           NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
 
-          std::vector<RxExpiryTimer*>::iterator it;
-          for (it = rxQ.begin(); it != rxQ.end(); ++it)
-          {
-            //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-            if (((*it)->getPdu())->getSeqNum() > nackPdu->getAckNackSeqNum())
-            {
-              handleDTPRxExpiryTimer((*it));
-            }
-          }
+          dtcp->nackPDU(nackPdu->getAckNackSeqNum());
 
         }
         else if (pdu->getType() & PDU_ACK_BIT)
         {
           AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
           EV << getFullPath() <<": PDU number: " << ackPdu->getAckNackSeqNum() <<" Acked"<<endl;
-          /* Policy SenderAck with default: */
-          std::vector<RxExpiryTimer*>::iterator it;
-          for (it = rxQ.begin(); it != rxQ.end();)
-          {
-            //FIXME B1 "including any gaps less than allowable Gap and"
-            if (((*it)->getPdu())->getSeqNum() <= ackPdu->getAckNackSeqNum())
-            {
-              state.setRtt(simTime().dbl() - (*it)->getSent());
-              EV << getFullPath() <<": PDU number: " << (*it)->getPdu()->getSeqNum() <<" deleted from RX_Q" << endl;
-              delete (*it)->getPdu();
-              cancelEvent((*it));
-              delete (*it);
-              it = rxQ.erase(it);
 
-            }else{
-              ++it;
-            }
-          }
-          //Update LeftWindowEdge accordingly
-          //TODO A1 set it to lowest seqNum on RX queue
-          if(!rxQ.empty()){
-            state.setSenderLeftWinEdge(rxQ.front()->getPdu()->getSeqNum());
-          }else{
-            state.setSenderLeftWinEdge(ackPdu->getAckNackSeqNum() + 1);
-          }
+          dtcp->runSenderAckPolicy(&state);
+
+
           //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
 
         }
@@ -912,13 +863,13 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
  *
  * @param timer
  */
-void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
-{
-  /* Canceling event is not needed for usual timer expiration but for direct calling this method */
-  cancelEvent(timer);
-  runRxTimerExpiryPolicy(timer);
-
-}
+//void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
+//{
+//  /* Canceling event is not needed for usual timer expiration but for direct calling this method */
+//  cancelEvent(timer);
+//  runRxTimerExpiryPolicy(timer);
+//
+//}
 
 //void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
 //{
@@ -1213,16 +1164,9 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       {
         /* Put a copy of each PDU in the RetransmissionQueue */
         //new rxTimerMessage
-        RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
-        rxExpTimer->setPdu((*it)->dup());
-
-        rxQ.push_back(rxExpTimer);
-
-        schedule(rxExpTimer);
-
+        dtcp->pushBackToRxQ((*it)->dup());
 
         sendToRMT((*it));
-
 
         it = postablePDUs.erase(it);
       }
@@ -1410,44 +1354,44 @@ void DTP::sendAckOnlyPDU(unsigned int seqNum)
 }
 
 
-void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
-{
-
-  DataTransferPDU* pdu = timer->getPdu();
-
-  if (timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1)
-  {
-    //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
-    std::vector<RxExpiryTimer*>::iterator it;
-    for (it = rxQ.begin(); it != rxQ.end();)
-    {
-      if (timer == *it)
-      {
-        delete (*it)->getPdu();
-        cancelEvent((*it));
-        delete (*it);
-        rxQ.erase(it);
-        return;
-      }
-    }
-  }
-  else
-  {
-
-    DataTransferPDU* dup = pdu->dup();
-    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-    std::ostringstream out;
-    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
-
-    bubble(out.str().c_str());
-    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-    sendToRMT(dup);
-
-    timer->setExpiryCount(timer->getExpiryCount() + 1);
-  }
-  schedule(timer);
-
-}
+//void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
+//{
+//
+//  DataTransferPDU* pdu = timer->getPdu();
+//
+//  if (timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1)
+//  {
+//    //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
+//    std::vector<RxExpiryTimer*>::iterator it;
+//    for (it = rxQ.begin(); it != rxQ.end();)
+//    {
+//      if (timer == *it)
+//      {
+//        delete (*it)->getPdu();
+//        cancelEvent((*it));
+//        delete (*it);
+//        rxQ.erase(it);
+//        return;
+//      }
+//    }
+//  }
+//  else
+//  {
+//
+//    DataTransferPDU* dup = pdu->dup();
+//    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+//    std::ostringstream out;
+//    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+//
+//    bubble(out.str().c_str());
+//    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+//    sendToRMT(dup);
+//
+//    timer->setExpiryCount(timer->getExpiryCount() + 1);
+//  }
+//  schedule(timer);
+//
+//}
 
 void DTP::sendControlAckPDU()
 {
@@ -1486,10 +1430,11 @@ void DTP::sendEmptyDTPDU()
   dataPdu->setUserDataField(userData);
 
   if(state.isRxPresent()){
-    RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
-    rxExpTimer->setPdu(dataPdu->dup());
-    rxQ.push_back(rxExpTimer);
-    schedule(rxExpTimer);
+//    RxExpiryTimer* rxExpTimer = new RxExpiryTimer("RxExpiryTimer");
+//    rxExpTimer->setPdu(dataPdu->dup());
+//    rxQ.push_back(rxExpTimer);
+//    schedule(rxExpTimer);
+    dtcp->pushBackToRxQ(dataPdu->dup());
   }
 
   sendToRMT(dataPdu);
@@ -1664,14 +1609,7 @@ void DTP::flushReassemblyPDUQ()
 
 void DTP::clearRxQ()
 {
-  std::vector<RxExpiryTimer*>::iterator it;
-  for (it = rxQ.begin(); it != rxQ.end();)
-  {
-    delete (*it)->getPdu();
-    cancelEvent((*it));
-    delete (*it);
-    it = rxQ.erase(it);
-  }
+  dtcp->clearRxQ();
 }
 
 void DTP::clearClosedWindowQ()
@@ -1690,14 +1628,14 @@ void DTP::schedule(DTPTimers *timer, double time)
 
   switch (timer->getType())
   {
-    case (DTP_RX_EXPIRY_TIMER): {
-      //TODO A! Expiry Timer time interval
-      RxExpiryTimer* rxExpTimer = (RxExpiryTimer*)timer;
-      rxExpTimer->setSent(simTime().dbl());
-      scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
-
-      break;
-    }
+//    case (DTP_RX_EXPIRY_TIMER): {
+//      //TODO A! Expiry Timer time interval
+//      RxExpiryTimer* rxExpTimer = (RxExpiryTimer*)timer;
+//      rxExpTimer->setSent(simTime().dbl());
+//      scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+//
+//      break;
+//    }
     case (DTP_SENDER_INACTIVITY_TIMER): {
 
       //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
@@ -1705,7 +1643,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       //TODO A! 3(MPL+R+A)
       unsigned int rxCount = 1;
       if(state.isRxPresent()){
-        rxCount = dtcp->rxControl->dataReXmitMax;
+        rxCount = dtcp->getDataReXmitMax();
 
 
       scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
@@ -1718,7 +1656,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
       unsigned int rxCount = 1;
       if(state.isRxPresent()){
-        rxCount = dtcp->rxControl->dataReXmitMax;
+        rxCount = dtcp->getDataReXmitMax();
         //TODO A!
         scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
       }

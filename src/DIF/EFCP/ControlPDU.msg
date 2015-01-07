@@ -25,7 +25,12 @@ message ControlPDU extends PDU{
 //    unsigned int controlSeqNum;
 }
 
-message FlowControlPDU extends ControlPDU {
+
+message NAckPDU extends ControlPDU{
+    unsigned int ackNackSeqNum;
+    
+}
+message FlowControlPDU extends NAckPDU {
     unsigned int newRightWinEdge;
 	unsigned int newRate;
     unsigned long timeUnit;
@@ -34,10 +39,7 @@ message FlowControlPDU extends ControlPDU {
     unsigned int myRcvRate;
 }
 
-message NAckPDU extends ControlPDU{
-    unsigned int ackNackSeqNum;
-    
-}
+
 
 message AckOnlyPDU extends NAckPDU{
     type = ACK_ONLY_PDU;
@@ -46,19 +48,12 @@ message AckOnlyPDU extends NAckPDU{
 message NackOnlyPDU extends NAckPDU{
     type = NACK_ONLY_PDU;
 }
-message NAck extends NAckPDU{
-    
-}
 
-message NAckFlow extends FlowControlPDU{
-    unsigned int ackNackSeqNum;
-}
-
-message AckFlowPDU extends NAckFlow{
+message AckFlowPDU extends FlowControlPDU{
     type = ACK_FLOW_PDU;
 }
 
-message NackFlowPDU extends NAckFlow{
+message NackFlowPDU extends FlowControlPDU{
     type = NACK_FLOW_PDU;
 }
 

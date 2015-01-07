@@ -27,11 +27,13 @@
 #define DTCPSTATE_H_
 
 #include <cobject.h>
+#include <omnetpp.h>
+#include <DTCPTimers_m.h>
 
 /*
  *
  */
-class DTCPState : public cObject
+class DTCPState : public cSimpleModule
 {
   private:
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
@@ -41,12 +43,14 @@ class DTCPState : public cObject
 //    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
-    //retransmissionQ
+
 
 //    unsigned int controlSeqNum; //sequence number for ControlPDUs
     /* Moved from RX */
     unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
     unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
+
+    unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgement that will be tried before declaring an error.
 
     /* Moved from FC */
 
@@ -56,6 +60,8 @@ class DTCPState : public cObject
     unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
     unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
+
+    std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
 
@@ -90,6 +96,19 @@ class DTCPState : public cObject
     void setRcvBufferPercentThreshold(unsigned int rcvBufferPercentThreshold);
     unsigned int getRcvBuffersPercentFree() const;
     void setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree);
+
+
+    void deleteRxTimer(unsigned int seqNum);
+    unsigned int getDataReXmitMax() const;
+    void setDataReXmitMax(unsigned int dataReXmitMax);
+
+    std::vector<DTCPRxExpiryTimer*>* getRxQ();
+    void pushBackToRxQ(DTCPRxExpiryTimer* timer);
+    void clearRxQ();
+
+    /* Maybe */
+    unsigned int getRxQLen();
+    DTCPRxExpiryTimer* getRxTimer(unsigned int index);
 };
 
 #endif /* DTCPSTATE_H_ */

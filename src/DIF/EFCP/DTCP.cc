@@ -27,9 +27,57 @@ DTCP::DTCP() {
   rcvrAckPolicy = NULL;
   receivingFCPolicy = NULL;
   sendingAckPolicy = NULL;
+  senderAckPolicy = NULL;
 
 
 }
+
+void DTCP::initialize(int step)
+{
+  Enter_Method("initialize");
+  dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+
+//TODO A1 Fill it with appropriate values
+  dtcpState = new DTCPState();
+
+//TODO A2 based on DTPState create appropriate components
+  if (dtp->state.isRxPresent())
+  {
+    rxControl = new RXControl();
+  }
+
+  if (dtp->state.isFCPresent())
+  {
+    flowControl = new FlowControl();
+    flowControl->initialize();
+    if (dtp->state.isWinBased())
+    {
+      windowTimer = new WindowTimer();
+      schedule(windowTimer);
+    }
+  }
+
+
+  //TODO A1 Load list of policies
+  if(true){
+
+    std::stringstream moduleName;
+    moduleName << ECN_SET_POLICY_PREFIX << par("ecnSetPolicy").stringValue();
+
+    cModuleType* ecnSetPolicyType = cModuleType::get(moduleName.str().c_str());
+    ecnSetPolicy = (DTCPECNSetPolicyBase*)ecnSetPolicyType->createScheduleInit(ECN_SET_POLICY_NAME, getParentModule());
+
+    moduleName.str("");
+    moduleName.clear();
+    moduleName << ECN_CLEAR_POLICY_PREFIX << par("ecnClearPolicy").stringValue();
+
+    cModuleType* ecnClearPolicyType = cModuleType::get(moduleName.str().c_str());
+    ecnClearPolicy = (DTCPECNClearPolicyBase*)ecnClearPolicyType->createScheduleInit(ECN_CLEAR_POLICY_NAME, getParentModule());
+
+  }
+
+}
+
 
 DTCP::~DTCP()
 {
@@ -75,7 +123,7 @@ bool DTCP::runECNClearPolicy(DTPState* dtpState)
 bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrFCPolicy");
-  if(rcvrFCPolicy != NULL || !rcvrFCPolicy->run(dtpState, dtcpState)){
+  if(rcvrFCPolicy == NULL || rcvrFCPolicy->run(dtpState, dtcpState)){
     /* Default */
 
     /* This policy has to be the one to impose the condition to set WindowClosed to True */
@@ -99,7 +147,7 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrAckPolicy");
-  if(rcvrAckPolicy != NULL || !rcvrAckPolicy->run(dtpState, dtcpState)){
+  if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
 
@@ -132,7 +180,7 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 {
   Enter_Method("ReceivingFCPolicy");
-  if(receivingFCPolicy != NULL || !receivingFCPolicy->run(dtpState, dtcpState)){
+  if(receivingFCPolicy == NULL || receivingFCPolicy->run(dtpState, dtcpState)){
     /* Default */
     if (dtpState->isWinBased())
     {
@@ -153,7 +201,7 @@ bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 {
   Enter_Method("SendingAckPolicy");
-  if(sendingAckPolicy != NULL || !sendingAckPolicy->run(dtpState, dtcpState, timer)){
+  if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
     /* Default */
     //TODO A!
     //Update LetWindowEdge
@@ -173,7 +221,7 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 {
   Enter_Method("LostControlPDUPolicy");
-  if(lostControlPDUPolicy != NULL || !lostControlPDUPolicy->run(dtpState, dtcpState)){
+  if(lostControlPDUPolicy == NULL || lostControlPDUPolicy->run(dtpState, dtcpState)){
     /* Default */
     dtp->sendControlAckPDU();
     dtp->sendEmptyDTPDU();
@@ -188,7 +236,7 @@ bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrControlAckPolicy");
-  if(rcvrControlAckPolicy != NULL || !rcvrControlAckPolicy->run(dtpState, dtcpState)){
+  if(rcvrControlAckPolicy == NULL || rcvrControlAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
     //      /* RcvrControlAck Policy with Default: */
@@ -238,54 +286,141 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
   return false;
 }
 
-
-void DTCP::initialize(int step)
+bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 {
-  Enter_Method("initialize");
-  dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+  Enter_Method("SenderAckPolicy");
+  if(senderAckPolicy == NULL || senderAckPolicy->run(dtpState, dtcpState)){
+    /* Default */
+    unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
+    ackPDU(seqNum);
+    //TODO A!
+    //updateLeftWindowEdge
+    if(!dtcpState->getRxQ()->empty()){
+        dtpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
+      }else{
+        dtpState->setSenderLeftWinEdge(seqNum + 1);
+      }
+    /* End default */
 
-//TODO A1 Fill it with appropriate values
-  dtcpState = new DTCPState();
+  }
+  return false;
+}
 
-//TODO A2 based on DTPState create appropriate components
-  if (dtp->state.isRxPresent())
-  {
-    rxControl = new RXControl();
+void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
+{
+
+  bool endTrue = false;
+  if(!endSeqNum){
+    endTrue = true;
   }
 
-  if (dtp->state.isFCPresent())
+  std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  unsigned int lastLen;
+  lastLen = rxQ->size();
+  for (unsigned int index = lastLen; index < rxQ->size(); )
   {
-    flowControl = new FlowControl();
-    flowControl->initialize();
-    if (dtp->state.isWinBased())
+    DTCPRxExpiryTimer* timer = rxQ->at(index);
+    unsigned int seqNum =(timer->getPdu())->getSeqNum();
+    //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+    if (seqNum >= startSeqNum && (seqNum <= endSeqNum || endTrue))
     {
-      windowTimer = new WindowTimer();
-      schedule(windowTimer);
+      handleDTCPRxExpiryTimer(timer);
+
+      /* Timer might get deleted so we do not want to increment index */
+      if(lastLen != rxQ->size()){
+        continue;
+      }
     }
+    index++;
+  }
+}
+
+
+void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
+{
+
+  bool endTrue = false;
+  if(!endSeqNum){
+    endTrue = true;
   }
 
 
-  //TODO A1 Load list of policies
-  if(true){
+  std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  unsigned int lastLen;
+  lastLen = rxQ->size();
+  for (unsigned int index = lastLen; index < rxQ->size(); )
+  {
+    DTCPRxExpiryTimer* timer = rxQ->at(index);
+    unsigned int seqNum =(timer->getPdu())->getSeqNum();
+    //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
+    if (seqNum >= startSeqNum && (seqNum <= endSeqNum || endTrue))
+    {
+      dtcpState->deleteRxTimer(seqNum);
 
-    std::stringstream moduleName;
-    moduleName << ECN_SET_POLICY_PREFIX << par("ecnSetPolicy").stringValue();
-
-    cModuleType* ecnSetPolicyType = cModuleType::get(moduleName.str().c_str());
-    ecnSetPolicy = (DTCPECNSetPolicyBase*)ecnSetPolicyType->createScheduleInit(ECN_SET_POLICY_NAME, getParentModule());
-
-    moduleName.str("");
-    moduleName.clear();
-    moduleName << ECN_CLEAR_POLICY_PREFIX << par("ecnClearPolicy").stringValue();
-
-    cModuleType* ecnClearPolicyType = cModuleType::get(moduleName.str().c_str());
-    ecnClearPolicy = (DTCPECNClearPolicyBase*)ecnClearPolicyType->createScheduleInit(ECN_CLEAR_POLICY_NAME, getParentModule());
+    }
+    index++;
+  }
+}
 
 
+/**
+ *
+ * @param timer
+ */
+void DTCP::handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer)
+{
+  /* Canceling event is not needed for usual timer expiration but for direct calling this method */
+  cancelEvent(timer);
+  runRxTimerExpiryPolicy(timer);
 
+}
 
+void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
+{
+
+  DataTransferPDU* pdu = timer->getPdu();
+
+  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
+  {
+    //TODO A1 Indicate an error "Unable to maintain the QoS for this connection"
+
+    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+  }
+  else
+  {
+
+    DataTransferPDU* dup = pdu->dup();
+    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+    std::ostringstream out;
+    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+
+    bubble(out.str().c_str());
+    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+    dtp->sendToRMT(dup);
+
+    timer->setExpiryCount(timer->getExpiryCount() + 1);
+    schedule(timer);
   }
 
+
+}
+
+void DTCP::pushBackToRxQ(DataTransferPDU* pdu)
+{
+  DTCPRxExpiryTimer* rxExpTimer = new DTCPRxExpiryTimer("DTCPRxExpiryTimer");
+  rxExpTimer->setPdu(pdu);
+  dtcpState->pushBackToRxQ(rxExpTimer);
+  schedule(rxExpTimer);
+}
+
+void DTCP::clearRxQ(){
+  dtcpState->clearRxQ();
+}
+
+unsigned int DTCP::getDataReXmitMax() const{
+  return dtcpState->getDataReXmitMax();
 }
 
 void DTCP::schedule(DTCPTimers* timer, double time){
@@ -296,6 +431,14 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       time = 0;
       // TODO B1 Make #define for "3"
       scheduleAt(simTime() + (1 / flowControl->getSendingRate()) + 3, timer);
+      break;
+    }
+    case (DTCP_RX_EXPIRY_TIMER): {
+      //TODO A! Expiry Timer time interval
+      DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
+      rxExpTimer->setSent(simTime().dbl());
+      scheduleAt(simTime() + dtp->getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+
       break;
     }
   }
@@ -417,4 +560,39 @@ bool DTCP::isSendingRateFullfilled() const
 void DTCP::setSendingRateFullfilled(bool rateFullfilled)
 {
   flowControl->setSendingRateFullfilled(rateFullfilled);
+}
+
+void DTCP::redrawGUI()
+{
+  if (!ev.isGUI())
+  {
+      return;
+  }
+
+  cDisplayString& disp = getDisplayString();
+  disp.setTagArg("t", 1, "r");
+  std::ostringstream desc;
+
+
+  std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+
+    if (rxQ->empty())
+    {
+      desc << "rxQ: empty" << "\n";
+    }
+    else
+    {
+      desc << "rxQ: ";
+      std::vector<DTCPRxExpiryTimer*>::iterator it;
+      for (it = rxQ->begin(); it != rxQ->end(); ++it)
+      {
+        desc << (*it)->getPdu()->getSeqNum() << " | ";
+      }
+      desc << "\n";
+    }
+
+
+
+  disp.setTagArg("t", 0, desc.str().c_str());
+
 }

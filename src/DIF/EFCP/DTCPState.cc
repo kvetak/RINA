@@ -24,7 +24,7 @@
  */
 
 #include <DTCPState.h>
-
+Define_Module(DTCPState);
 void DTCPState::initFC()
 {
   rcvRtWinEdge = rcvCredit;
@@ -48,6 +48,7 @@ DTCPState::DTCPState()
   nextSenderControlSeqNum = 1;
   lastControlSeqNumRcv = 0;
 
+  dataReXmitMax = 3;
 
 
 
@@ -192,4 +193,52 @@ unsigned int DTCPState::getRcvBuffersPercentFree() const
 void DTCPState::setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree)
 {
   this->rcvBuffersPercentFree = rcvBuffersPercentFree;
+}
+
+void DTCPState::deleteRxTimer(unsigned int seqNum)
+{
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  for (it = rxQ.begin(); it != rxQ.end();)
+  {
+    if (seqNum == (*it)->getPdu()->getSeqNum())
+    {
+      delete (*it)->getPdu();
+      cancelEvent((*it));
+      delete (*it);
+      rxQ.erase(it);
+      return;
+    }
+  }
+}
+
+unsigned int DTCPState::getDataReXmitMax() const
+{
+  return dataReXmitMax;
+}
+
+void DTCPState::setDataReXmitMax(unsigned int dataReXmitMax)
+{
+  this->dataReXmitMax = dataReXmitMax;
+}
+
+std::vector<DTCPRxExpiryTimer*>* DTCPState::getRxQ()
+{
+  return &rxQ;
+}
+
+void DTCPState::pushBackToRxQ(DTCPRxExpiryTimer* timer)
+{
+  rxQ.push_back(timer);
+}
+
+void DTCPState::clearRxQ()
+{
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  for (it = rxQ.begin(); it != rxQ.end();)
+  {
+    delete (*it)->getPdu();
+    cancelEvent((*it));
+    delete (*it);
+    it = rxQ.erase(it);
+  }
 }

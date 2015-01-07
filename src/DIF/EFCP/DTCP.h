@@ -45,6 +45,7 @@
 #include "DTCPSendingAckPolicyBase.h"
 #include "DTCPLostControlPDUPolicyBase.h"
 #include "DTCPRcvrControlAckPolicyBase.h"
+#include "DTCPSenderAckPolicyBase.h"
 
 class DTP;
 class FlowControl;
@@ -68,6 +69,7 @@ class DTCP: public cSimpleModule {
     DTCPSendingAckPolicyBase* sendingAckPolicy;
     DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
     DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
+    DTCPSenderAckPolicyBase* senderAckPolicy;
 
 
 
@@ -90,12 +92,12 @@ public:
 
     void handleWindowTimer(WindowTimer* timer);
 
+    void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
+
     void updateRcvRtWinEdge(DTPState* dtpState);
 
     unsigned int getNextSndCtrlSeqNum();
-
     unsigned int getLastCtrlSeqNumRcv();
-
     void setLastCtrlSeqnumRec(unsigned int ctrlSeqNum);
 
 
@@ -119,6 +121,13 @@ public:
 
     void incRcvRtWinEdge();
 
+    void nackPDU(unsigned int startSeqNum, unsigned int endSeqNum = 0);
+    void ackPDU(unsigned int startSeqNum, unsigned int endSeqNum = 0);
+
+    void pushBackToRxQ(DataTransferPDU* pdu);
+    void clearRxQ();
+    unsigned int getDataReXmitMax() const;
+
     /* Run Policies */
     bool runECNSetPolicy(DTPState* dtpState);
     bool runECNClearPolicy(DTPState* dtpState);
@@ -128,6 +137,13 @@ public:
     bool runSendingAckPolicy(DTPState* dtpState, ATimer* timer);
     bool runLostControlPDUPolicy(DTPState* dtpState);
     bool runRcvrControlAckPolicy(DTPState* dtpState);
+    bool runSenderAckPolicy(DTPState* dtpState);
+
+    //TODO policies
+    void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
+
+
+    void redrawGUI();
 
 protected:
     virtual void handleMessage(cMessage *msg);

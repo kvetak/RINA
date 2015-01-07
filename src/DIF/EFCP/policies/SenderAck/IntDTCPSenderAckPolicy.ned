@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,31 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-cplusplus {{
-#include "DataTransferPDU.h"
-typedef DataTransferPDU* DTPDU_p;
-}}
-class noncobject DTPDU_p;
+package rina.DIF.EFCP.policies.SenderAck;
 
-
-enum DTCPTimerType
+moduleinterface IntDTCPSenderAckPolicy
 {
-  DTCP_WINDOW_TIMER = 1;
-  DTCP_RX_EXPIRY_TIMER = 2;
-  
-}
-message DTCPTimers {
-	int type enum(DTCPTimerType);
-}
-
-message WindowTimer extends DTCPTimers{
-    type = DTCP_WINDOW_TIMER;
-}
-
-
-message DTCPRxExpiryTimer extends DTCPTimers{
-    type = DTCP_RX_EXPIRY_TIMER;
-    DTPDU_p pdu = NULL;
-    unsigned int expiryCount = 0;
-    double sent = 0;
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }

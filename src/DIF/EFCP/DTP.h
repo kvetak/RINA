@@ -65,7 +65,7 @@ class DTP : public cSimpleModule
     std::vector<DataTransferPDU*> generatedPDUs;
     std::vector<DataTransferPDU*> postablePDUs;
     std::vector<DataTransferPDU*> closedWindowQ;
-    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
+//    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
     std::vector<DataTransferPDU*> reassemblyPDUQ;
 
@@ -91,7 +91,7 @@ class DTP : public cSimpleModule
     ConnectionId connId;
 
     /* Handle messages and timer */
-    void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
+//    void handleDTPRxExpiryTimer(RxExpiryTimer* timer);
 //    void handleDTPSendingRateTimer(SendingRateTimer* timer);
 //    void handleDTPWindowTimer(WindowTimer* timer);
     void handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer);
@@ -152,7 +152,7 @@ class DTP : public cSimpleModule
     void runRateReductionPolicy();
     void runRcvrAckPolicy(unsigned int seqNum);
     void runReceivingFlowControlPolicy();
-    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
+//    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
     bool runSendingAckPolicy(ATimer* timer);

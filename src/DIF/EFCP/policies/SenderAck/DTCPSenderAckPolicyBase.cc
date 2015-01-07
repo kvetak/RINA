@@ -14,49 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
-/*
- * @file RXControl.cc
+/**
+ * @file DTCPSenderAckPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2014
+ * @date Jan 7, 2015
  * @brief
  * @detail
  */
 
-#include <RXControl.h>
+#include <SenderAck/DTCPSenderAckPolicyBase.h>
 
-RXControl::RXControl()
+DTCPSenderAckPolicyBase::DTCPSenderAckPolicyBase()
 {
-//  nextSenderControlSeqNum = 1;
-  dupAcks = 0;
-//  lastControlSeqNumRcv = 0;
-//  dataReXmitMax = 3;
+
 
 }
 
-RXControl::~RXControl()
+DTCPSenderAckPolicyBase::~DTCPSenderAckPolicyBase()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
-
-//unsigned int RXControl::getNextSndCtrlSeqNum()
-//{
-//  return nextSenderControlSeqNum++;
-//}
-
-//unsigned int RXControl::getLastCtrlSeqNumRcv(){
-//  return lastControlSeqNumRcv;
-//}
-
-//void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
-//  lastControlSeqNumRcv = ctrlSeqNum;
-//}
-void RXControl::incDupAcks()
-{
-  dupAcks++;
-}

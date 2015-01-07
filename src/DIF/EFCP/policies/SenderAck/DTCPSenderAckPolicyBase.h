@@ -14,49 +14,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
-/*
- * @file RXControl.cc
+/**
+ * @file DTCPSenderAckPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2014
+ * @date Jan 7, 2015
  * @brief
  * @detail
  */
 
-#include <RXControl.h>
+#ifndef DTCPSENDERACKPOLICYBASE_H_
+#define DTCPSENDERACKPOLICYBASE_H_
 
-RXControl::RXControl()
+#include <omnetpp.h>
+
+#include "DTPState.h"
+#include "DTCPState.h"
+
+/*
+ *
+ */
+class DTCPSenderAckPolicyBase : public cSimpleModule
 {
-//  nextSenderControlSeqNum = 1;
-  dupAcks = 0;
-//  lastControlSeqNumRcv = 0;
-//  dataReXmitMax = 3;
+  public:
+    DTCPSenderAckPolicyBase();
+    virtual ~DTCPSenderAckPolicyBase();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-}
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-RXControl::~RXControl()
-{
-  // TODO Auto-generated destructor stub
-}
+};
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
-
-//unsigned int RXControl::getNextSndCtrlSeqNum()
-//{
-//  return nextSenderControlSeqNum++;
-//}
-
-//unsigned int RXControl::getLastCtrlSeqNumRcv(){
-//  return lastControlSeqNumRcv;
-//}
-
-//void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
-//  lastControlSeqNumRcv = ctrlSeqNum;
-//}
-void RXControl::incDupAcks()
-{
-  dupAcks++;
-}
+#endif /* DTCPSENDERACKPOLICYBASE_H_ */

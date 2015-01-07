@@ -16,8 +16,7 @@
 // 
 
 //
-// TODO generated message class
-//
+
 cplusplus {{
 #include "DataTransferPDU.h"
 typedef DataTransferPDU* DTPDU_p;
@@ -28,7 +27,7 @@ enum DTPTimerType
 {
   DTP_SENDER_INACTIVITY_TIMER = 1;
   DTP_RCVR_INACTIVITY_TIMER = 2;   
-  DTP_RX_EXPIRY_TIMER = 3;
+//  DTP_RX_EXPIRY_TIMER = 3;
 //  DTP_WINDOW_TIMER = 4;
 //  DTP_SENDING_RATE_TIMER = 5;
   DTP_A_TIMER = 6;
@@ -51,12 +50,12 @@ message RcvrInactivityTimer extends InactivityTimer{
 }
 
 
-message RxExpiryTimer extends DTPTimers{
-    type = DTP_RX_EXPIRY_TIMER;
-    DTPDU_p pdu = NULL;
-    unsigned int expiryCount = 0;
-    double sent = 0;
-}
+//message RxExpiryTimer extends DTPTimers{
+//    type = DTP_RX_EXPIRY_TIMER;
+//    DTPDU_p pdu = NULL;
+//    unsigned int expiryCount = 0;
+//    double sent = 0;
+//}
 
 //message WindowTimer extends DTPTimers{
 //    type = DTP_WINDOW_TIMER;
