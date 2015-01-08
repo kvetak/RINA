@@ -53,8 +53,21 @@ void DTPState::initDefaults(){
 
 }
 
+void DTPState::clearPDUQ(std::vector<DataTransferPDU*>* pduQ)
+{
+  std::vector<DataTransferPDU*>::iterator itP;
+  for (itP = pduQ->begin(); itP != pduQ->end();)
+  {
+    delete (*itP);
+    //    delete (*it);
+    itP = pduQ->erase(itP);
+  }
+}
+
 DTPState::~DTPState() {
-    // TODO Auto-generated destructor stub
+
+
+  clearPDUQ(&closedWindowQ);
 }
 
 bool DTPState::isClosedWindow() const {
@@ -66,11 +79,7 @@ void DTPState::setClosedWindow(bool closedWindowQue) {
 }
 
 unsigned int DTPState::getClosedWinQueLen() const {
-    return closedWinQueLen;
-}
-
-void DTPState::setClosedWinQueLen(unsigned int closedWinQueLen) {
-    this->closedWinQueLen = closedWinQueLen;
+    return closedWindowQ.size();
 }
 
 bool DTPState::isDtcpPresent() const {
@@ -270,6 +279,11 @@ void DTPState::setEcnSet(bool ecnSet)
 const PDU* DTPState::getCurrentPdu() const
 {
   return currentPDU;
+}
+
+std::vector<DataTransferPDU*>* DTPState::getClosedWindowQ()
+{
+  return &closedWindowQ;
 }
 
 void DTPState::setCurrentPdu(PDU* currentPdu)

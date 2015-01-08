@@ -61,7 +61,7 @@ void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
 
 void DTP::flushAllQueuesAndPrepareToDie()
 {
-  clearRxQ();
+
 
     std::vector<DataTransferPDU*>::iterator itP;
     for (itP = reassemblyPDUQ.begin(); itP != reassemblyPDUQ.end();)
@@ -90,7 +90,6 @@ void DTP::flushAllQueuesAndPrepareToDie()
   //    delete (*it);
       itP = pduQ->erase(itP);
     }
-
 
     cancelAndDelete(senderInactivityTimer);
     senderInactivityTimer = NULL;
@@ -153,7 +152,7 @@ void DTP::redrawGUI()
       desc << "\n";
     }
   if(state.isDtcpPresent() && state.isWinBased()){
-    if (closedWindowQ.empty())
+    if (!state.getClosedWinQueLen())
     {
       desc << "closedWinQ: empty" << "\n";
     }
@@ -161,7 +160,9 @@ void DTP::redrawGUI()
     {
       desc << "closedWinQQ: ";
       std::vector<DataTransferPDU*>::iterator it;
-      for (it = closedWindowQ.begin(); it != closedWindowQ.end(); ++it)
+      std::vector<DataTransferPDU*>* pduQ;
+      pduQ = state.getClosedWindowQ();
+      for (it = pduQ->begin(); it != pduQ->end(); ++it)
       {
         desc << (*it)->getSeqNum() << " | ";
       }
@@ -424,7 +425,7 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   }
   else
   {
-    dtcp->setLastCtrlSeqnumRec(pdu->getSeqNum());
+    dtcp->setLastCtrlSeqnumRcvd(pdu->getSeqNum());
   }
 
   return true;
@@ -504,21 +505,21 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
 
+    /* This is here just for testing RX */
     if (pduDroppingEnabled)
     {
       if (((deletePdu++ + 1) % 5) == 0)
       {
         std::ostringstream out;
         out << "Dropping PDU number " << pdu->getSeqNum();
-
         bubble(out.str().c_str());
         EV << this->getFullPath() << "; " << out.str().c_str() << " in time: " << simTime() << endl;
         delete pdu;
-
         return;
-
       }
     }
+
+    /* End */
 
     cancelEvent(rcvrInactivityTimer);
     handleDataTransferPDUFromRmtnew(pdu);
@@ -531,8 +532,7 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
     ControlPDU* pdu = (ControlPDU*) msg;
     EV << getFullPath() <<": Control PDU number: " << pdu->getSeqNum() <<" received" << endl;
 
-    // TODO A! Ask if commonRcvControl should be run on All ControlPDUs
-    // TODO A! commonRcvControl will probably be first step in handling of all controlPDUs
+
     //Putting it before ControlAckPDU might be an issue
     if(!commonRcvControl(pdu)){
       //The Control PDU has been deleted because of duplicate
@@ -636,8 +636,8 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         {
           /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
           state.setClosedWindow(false);
-          trySendGenPDUs(&closedWindowQ);
-          state.setClosedWinQueLen(closedWindowQ.size());
+          trySendGenPDUs(state.getClosedWindowQ());
+
         }
       }
 
@@ -753,10 +753,10 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
         EV << getFullPath() << ":Duplicated PDU number: " << pdu->getSeqNum() << " received - DROPPING!" << endl;
         //Discard PDU and increment counter of dropped duplicates PDU
         delete pdu;
-        //TODO A1 increment counter of dropped duplicates PDU
+        //increment counter of dropped duplicates PDU
         state.incDropDup();
 
-        //TODO A! send an Ack/Flow Control PDU with current window values
+        //send an Ack/Flow Control PDU with current window values
         sendAckFlowPDU();
         return;
       }
@@ -764,7 +764,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       {
         /* Case 3) This goes in a gap */
         /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
-        //TODO it is already happening in delimitFromRMT right?
+
 //      reassemblyPDUQ.push_back(pdu);
         addPDUToReassemblyQ(pdu);
         if (state.isDtcpPresent())
@@ -841,38 +841,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
   }
 }
 
-//void DTP::handleSDUs(CDAPMessage* cdap)
-//{
-//
-//  cancelEvent(senderInactivityTimer);
-//
-////    this->delimit(buffer, len);
-////  delimit(cdap);
-//
-//  /* Now tae data from buffer are copied to SDUs so we can free the memory */
-////    free(buffer);
-//  this->generatePDUs();
-//
-//  /* Iterate over generated PDUs and decide if we can send them */
-//  this->trySendGenPDUs(&generatedPDUs);
-//
-//  //  /* iterate over postablePDUs */
-//  //  this->sendPostablePDUsToRMT();
-//
-//  schedule(senderInactivityTimer);
-//
-//}
-/**
- *
- * @param timer
- */
-//void DTP::handleDTPRxExpiryTimer(RxExpiryTimer* timer)
-//{
-//  /* Canceling event is not needed for usual timer expiration but for direct calling this method */
-//  cancelEvent(timer);
-//  runRxTimerExpiryPolicy(timer);
-//
-//}
+
 
 //void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
 //{
@@ -973,45 +942,6 @@ unsigned int DTP::delimit(SDU* sdu)
 
 }
 
-/**
- * Delimits @param len bytes of buffer into User-data parts and put them on generated PDU
- * @param buffer pointer to incoming data buffer
- * @param len size of incoming data
- * @return number of created SDUs
- */
-unsigned int DTP::delimit(unsigned char *buffer, unsigned int len)
-{
-
-  unsigned int offset = 0, size = 0, counter = 0;
-
-  do
-  {
-    if (len - offset > state.getMaxFlowSduSize())
-    {
-      size = state.getMaxFlowSduSize();
-    }
-    else
-    {
-      size = len;
-    }
-    SDU *sdu = new SDU();
-    sdu->setUserData(&buffer[offset], size);
-
-    sduQ.push_back(sdu);
-
-    offset += size;
-    counter++;
-
-  } while (offset < len);
-
-  //TODO A1 If len is zero then create empty SDU?
-//  if(len == 0){
-//    SDU sdu;
-//    sduQ.push(sdu);
-//    counter = 1;
-//  }
-  return counter;
-}
 
 unsigned int DTP::delimitFromRMT(PDU *pdu, unsigned int len)
 {
@@ -1109,21 +1039,25 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
             /* The Window is Closed */
             state.setClosedWindow(true);
 
-            if(pduQ == &closedWindowQ){
+          if(pduQ == state.getClosedWindowQ()){
               break;
             }
 
             if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
             {
               /* Put PDU on the closedWindowQueue */
-              closedWindowQ.push_back((*it));
+              state.getClosedWindowQ()->push_back((*it));
               generatedPDUs.erase(it);
-              state.setClosedWinQueLen(closedWindowQ.size());
+
 
             }
             else
             {
-              runFlowControlOverrunPolicy();
+              state.setCurrentPdu(*it);
+              generatedPDUs.erase(it);
+
+              dtcp->runFCOverrunPolicy(&state);
+
             }
           }
         }// end of Window based
@@ -1138,6 +1072,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
           {
             /* Exceeding Sending Rate */
             runNoOverrideDefaultPeakPolicy();
+            dtcp->runNoverrunPeakPolicy(&state);
           }
         }// end of RateBased
 
@@ -1215,31 +1150,6 @@ void DTP::sduProtection(SDU *sdu)
   //TODO A1
 
 }
-/**
- * This method
- * @para
- */
-
-void DTP::getSDUFromQ(SDU *sdu)
-{
-  if (sdu == NULL)
-  {
-    sdu = sduQ.front();
-    return;
-  }
-  else
-  {
-    if (sdu->getRestSize() > 0)
-    {
-      return;
-    }
-    else
-    {
-      sdu = sduQ.front();
-    }
-  }
-}
-
 
 
 /*
@@ -1279,7 +1189,6 @@ void DTP::runFlowControlOverrunPolicy()
 {
   /* Default */
   closedWindowQ.push_back(generatedPDUs.front());
-  state.setClosedWinQueLen(closedWindowQ.size());
   generatedPDUs.erase(generatedPDUs.begin());
 
   //TODO A1 How to block further Write API calls on this port-id
@@ -1294,6 +1203,8 @@ void DTP::runNoRateSlowDownPolicy()
   dtcp->flowControl->pdusSentInTimeUnit++;
 }
 
+
+//TODO A! Move to DTCP
 void DTP::runNoOverrideDefaultPeakPolicy()
 {
   /*Default */

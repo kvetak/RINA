@@ -30,6 +30,10 @@ DTCP::DTCP() {
   lostControlPDUPolicy = NULL;
   rcvrControlAckPolicy = NULL;
   senderAckPolicy = NULL;
+  fcOverrunPolicy = NULL;
+  noOverridePeakPolicy = NULL;
+
+
 
 
 }
@@ -80,6 +84,10 @@ void DTCP::initialize(int step)
 
 }
 
+void DTCP::flushAllQueuesAndPrepareToDie()
+{
+  clearRxQ();
+}
 
 DTCP::~DTCP()
 {
@@ -91,7 +99,7 @@ DTCP::~DTCP()
   {
     delete flowControl;
   }
-
+  flushAllQueuesAndPrepareToDie();
   delete dtcpState;
 }
 
@@ -229,7 +237,7 @@ bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
     /* Default */
     dtp->sendControlAckPDU();
     dtp->sendEmptyDTPDU();
-    setLastCtrlSeqnumRec(dtpState->getCurrentPdu()->getSeqNum());
+    setLastCtrlSeqnumRcvd(dtpState->getCurrentPdu()->getSeqNum());
 
     /* End default */
 
@@ -304,6 +312,33 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
       }else{
         dtpState->setSenderLeftWinEdge(seqNum + 1);
       }
+    /* End default */
+
+  }
+  return false;
+}
+
+
+bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
+{
+  Enter_Method("FCOverrunPolicy");
+  if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
+    /* Default */
+    dtpState->getClosedWindowQ()->push_back((DataTransferPDU*)dtpState->getCurrentPdu());
+    //TODO A2 Block further Write API calls on this port-id
+    // eg. -> Create new CDAP Message type and send it upwards
+    /* End default */
+
+  }
+  return false;
+}
+
+bool DTCP::runNoOverrunPeakPolicy(DTPState* dtpState)
+{
+  Enter_Method("NoOverrunPeakPolicy");
+  if(noOverrunPeakPolicy == NULL || noOverrunPeakPolicy->run(dtpState, dtcpState)){
+    /* Default */
+//TODO A!
     /* End default */
 
   }
@@ -496,7 +531,7 @@ unsigned int DTCP::getLastCtrlSeqNumRcv(){
   return dtcpState->getLastCtrlSeqNumRcv();
 }
 
-void DTCP::setLastCtrlSeqnumRec(unsigned int ctrlSeqNum){
+void DTCP::setLastCtrlSeqnumRcvd(unsigned int ctrlSeqNum){
 //  rxControl->setLastCtrlSeqNumRcv(ctrlSeqNum);
   dtcpState->setLastCtrlSeqNumRcv(ctrlSeqNum);
 }

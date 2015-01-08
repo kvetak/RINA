@@ -15,22 +15,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP;
-import rina.DIF.EFCP.DTP.DTP;
+package rina.DIF.EFCP.DTCP;
 
-
-module EFCPI
+//
+// TODO auto-generated type
+//
+simple DTCP
 {
-    @display("i=block/layer;bgb=517,232");
-    gates:
-        inout northIo; //to FAI
-        inout southIo; //to RMT
-    submodules:
-        dtp: DTP {
-            @display("p=148,116");
-        }
-    connections allowunconnected:
-        dtp.northIo <--> northIo;
-        dtp.southIo <--> southIo;
-
+    @display("i=block/subqueue");
+    string ecnSetPolicy;
+    string ecnClearPolicy;
 }

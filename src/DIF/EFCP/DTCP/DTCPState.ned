@@ -15,14 +15,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP;
+package rina.DIF.EFCP.DTCP;
 
 //
 // TODO auto-generated type
 //
-simple DTCP
+simple DTCPState
 {
     @display("i=block/subqueue");
-    string ecnSetPolicy;
-    string ecnClearPolicy;
+    
 }

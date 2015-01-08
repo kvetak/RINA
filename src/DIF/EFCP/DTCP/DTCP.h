@@ -46,6 +46,8 @@
 #include "DTCPLostControlPDUPolicyBase.h"
 #include "DTCPRcvrControlAckPolicyBase.h"
 #include "DTCPSenderAckPolicyBase.h"
+#include "DTCPFCOverrunPolicyBase.h"
+#include "DTCPNoOverridePeakPolicyBase.h"
 
 class DTP;
 class FlowControl;
@@ -70,7 +72,8 @@ class DTCP: public cSimpleModule {
     DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
     DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
     DTCPSenderAckPolicyBase* senderAckPolicy;
-
+    DTCPFCOverrunPolicyBase* fcOverrunPolicy;
+    DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
 
 
     /*Timers*/
@@ -81,6 +84,7 @@ class DTCP: public cSimpleModule {
     void resetWindowTimer();
 
     void sendAckPDU();
+    void flushAllQueuesAndPrepareToDie();
 
 public:
 
@@ -98,7 +102,7 @@ public:
 
     unsigned int getNextSndCtrlSeqNum();
     unsigned int getLastCtrlSeqNumRcv();
-    void setLastCtrlSeqnumRec(unsigned int ctrlSeqNum);
+    void setLastCtrlSeqnumRcvd(unsigned int ctrlSeqNum);
 
 
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
@@ -138,6 +142,8 @@ public:
     bool runLostControlPDUPolicy(DTPState* dtpState);
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
+    bool runFCOverrunPolicy(DTPState* dtpState);
+    bool runNoverrunPeakPolicy(DTPState* dtpState);
 
     //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);

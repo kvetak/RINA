@@ -64,7 +64,7 @@ class DTP : public cSimpleModule
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
     std::vector<DataTransferPDU*> generatedPDUs;
     std::vector<DataTransferPDU*> postablePDUs;
-    std::vector<DataTransferPDU*> closedWindowQ;
+//    std::vector<DataTransferPDU*> closedWindowQ;
 //    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
     std::vector<DataTransferPDU*> reassemblyPDUQ;
@@ -100,7 +100,6 @@ class DTP : public cSimpleModule
 
 //    void handleMsgFromDelimiting(Data* msg);
     void handleMsgFromDelimitingnew(SDU* sdu);
-//    void handleMsgFromRmt(PDU* msg);
     void handleMsgFromRmtnew(PDU* msg);
     void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
 
@@ -108,27 +107,16 @@ class DTP : public cSimpleModule
 
 
     /** Delimits content of buffer from application */
-    unsigned int delimit(unsigned char *buffer, unsigned int len);
     unsigned int delimit(SDU* sdu);
-
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
 
 
     /** Encapsulate all SDUs from sduQ into PDUs and put them in generated_PDU Queue */
-//    void generatePDUs();
     void generatePDUsnew();
 
     void trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ);
 
 
-
-
-
-
-//    void sendPostablePDUsToRMT();
-//    void sendPDUToRMT(PDU* pdu);
-
-//    void fromRMT(DataTransferPDU* pdu);
 
     /** This method does SDU protection eg CRC*/
     void sduProtection(SDU *sdu);
@@ -143,19 +131,14 @@ class DTP : public cSimpleModule
 
     /* Policy-related methods */
     void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
-    void runFlowControlOverrunPolicy();
     void runNoRateSlowDownPolicy();
     void runNoOverrideDefaultPeakPolicy();
     void runReconcileFlowControlPolicy();
     bool runInitialSequenceNumberPolicy();
-    void runRcvrFlowControlPolicy();
     void runRateReductionPolicy();
-    void runRcvrAckPolicy(unsigned int seqNum);
-    void runReceivingFlowControlPolicy();
 //    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
-    bool runSendingAckPolicy(ATimer* timer);
 
 
 

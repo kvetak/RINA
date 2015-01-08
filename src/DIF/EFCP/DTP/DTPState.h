@@ -28,7 +28,9 @@
 
 #include <cobject.h>
 #include <queue>
+#include <vector>
 #include "EFCP_defs.h"
+#include "DataTransferPDU.h"
 
 #include "PDU.h"
 
@@ -62,13 +64,12 @@ private:
     bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
     bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
     bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
+
     bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
-
-
-
-    unsigned int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
-
+//    unsigned int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
     unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
+    std::vector<DataTransferPDU*> closedWindowQ;
+
     bool partDeliv; /* Partial Delivery of SDUs is Allowed */
     bool incompDeliv; /* Delivery of Incomplete SDUs is Allowed */
     //queue<PDU,timer>rexmsnQ; //The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
@@ -95,6 +96,7 @@ private:
     /* new */
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
 
+    void clearPDUQ(std::vector<DataTransferPDU*>* pduQ);
 
 public:
     DTPState();
@@ -107,7 +109,6 @@ public:
     bool isClosedWindow() const;
     void setClosedWindow(bool closedWindow);
     unsigned int getClosedWinQueLen() const;
-    void setClosedWinQueLen(unsigned int closedWinQueLen);
     bool isDtcpPresent() const;
     void setDtcpPresent(bool dtcpPresent);
     bool isIncompDeliv() const;
@@ -156,6 +157,7 @@ public:
     void setEcnSet(bool ecnSet);
     const PDU* getCurrentPdu() const;
     void setCurrentPdu(PDU* currentPdu);
+    std::vector<DataTransferPDU*>* getClosedWindowQ();
 };
 
 #endif /* DTPSTATE_H_ */

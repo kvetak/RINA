@@ -152,7 +152,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
 DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
-    cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
+    cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
     DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
     dtcpModule->par("ecnSetPolicy").setStringValue("DTCPECNSetPolicyDefault");
     dtcpModule->par("ecnClearPolicy").setStringValue("DTCPECNClearPolicyDefault");

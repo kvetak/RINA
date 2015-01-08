@@ -38,6 +38,10 @@ extern const char* MOD_EFCPTABLE;
 extern const char* MOD_DTCP;
 extern const char* MOD_EFCPI;
 
+//Module type paths
+extern const char* MOD_DTP_PATH;
+extern const char* MOD_DTCP_PATH;
+
 //Module parameters
 extern const char* PAR_IPCADDR;
 extern const char* PAR_DIFNAME;
