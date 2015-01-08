@@ -81,7 +81,7 @@ class RA : public RABase
     cModule* rmtModule;
     RMT* rmt;
     RMTQueueManager* rmtQM;
-    PDUForwardingTable* fwTable;
+    //PDUForwardingTable* fwTable;
     NM1FlowTable* flTable;
     QueueAllocBase* qAllocPolicy;
 

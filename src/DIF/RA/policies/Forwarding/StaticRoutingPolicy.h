@@ -13,27 +13,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #ifndef __RINA_STATICROUTINGPOLICY_H
 #define __RINA_STATICROUTINGPOLICY_H
 
 #include <omnetpp.h>
 
+#include "DA.h"
 #include "PDUFTGPolicy.h"
 
-/* Static routing follows the operations already done by the first version of
- * rinasim, when no forwarding of information existed. It simply update the
- * Forwarding table during the flow creation.
- *
- * This policy does not apply any logic organization of the data received
- * because it assumes that everything has been already done in the definition
- * of the base data.
- */
+// Static routing follows the operations already done by the first version of
+// rinasim, when no forwarding of information existed. It simply update the
+// Forwarding table during the flow creation.
+//
+// This policy does not apply any logic organization of the data received
+// because it assumes that everything has been already done in the definition
+// of the base data.
+//
 class StaticRoutingPolicy :
         public PDUFTGPolicy
 {
 private:
+    DA * difA;
 
 protected:
     void initialize();
@@ -43,21 +45,21 @@ public:
     StaticRoutingPolicy();
     ~StaticRoutingPolicy();
 
-    /* Computes the initial state of the forwarding table.
-     */
+    // Computes the initial state of the forwarding table.
+    //
     void computeForwardingTable();
 
-    /* Insert a new flow which has been open locally to this IPC Process.
-     */
+    // Insert a new flow which has been open locally to this IPC Process.
+    //
     void insertNewFlow(Address addr, short unsigned int qos, RMTPort * port);
 
-    /* Merge an incoming information with the existing ones.
-     */
+    // Merge an incoming information with the existing ones.
+    //
     void mergeForwardingInfo(FSUpdateInfo * info);
 
-    /* Removes a local opened flow.
-     */
+    // Removes a local opened flow.
+    //
     void removeFlow(Address addr, short unsigned int qos);
 };
 
-#endif /* __RINA_STATICROUTINGPOLICY_H */
+#endif // __RINA_STATICROUTINGPOLICY_H

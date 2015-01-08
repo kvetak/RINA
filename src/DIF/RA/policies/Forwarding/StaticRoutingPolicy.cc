@@ -21,13 +21,13 @@
 
 Define_Module(StaticRoutingPolicy);
 
-/*
- * Class constructor/destructors stuff.
- */
+//
+// Class constructor/destructors stuff.
+//
 
 StaticRoutingPolicy::StaticRoutingPolicy()
 {
-
+    // Do nothing...
 }
 
 StaticRoutingPolicy::~StaticRoutingPolicy()
@@ -35,18 +35,12 @@ StaticRoutingPolicy::~StaticRoutingPolicy()
     // Do nothing...
 }
 
-/*
- * Class procedures sorted by name.
- */
+//
+// Class procedures sorted by name.
+//
 
 void StaticRoutingPolicy::computeForwardingTable()
 {
-    if(!fwdtg)
-    {
-        EV << "For Forwarding Table Generator selected in Static Routing Policy. Did you call empty constructor?\n";
-        return;
-    }
-
     NeighborState * m = fwdtg->getNeighborhoodState();
 
     for(EIter it = m->begin(); it != m->end(); ++it )
@@ -69,14 +63,40 @@ void StaticRoutingPolicy::initialize()
 {
     PDUFTGPolicy::initialize();
 
-    /* This avoid the start of update timeout. */
+    difA = check_and_cast<DA *>(
+        getModuleByPath("^.^.^.difAllocator.da"));
+
+    // This avoid the start of update timeout.
     updateT = 0;
 }
 
 void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
 {
-    /* Direct insert the entry into the forwarding table. */
+    // Direct insert the entry into the forwarding table.
     fwdtg->getForwardingTable()->insert(addr, qos, port);
+
+    //
+    // Imported from RA to clean the code from policy oriented procedures.
+    // This little loop make possible for static routing APs to communicate
+    // with each other, using resolution with DA magic procedures.
+    //
+
+    const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
+    NM1FlowTableItem * item = fwdtg->getNM1FlowTable()->findFlowByDstApni(
+        addr.getApname().getName(),
+        qos);
+
+    if (remoteApps)
+    {
+        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
+        {
+            Address addr = Address(it->getName());
+            fwdtg->getForwardingTable()->insert(
+                addr,
+                qos,
+                item->getRmtPort());
+        }
+    }
 }
 
 void StaticRoutingPolicy::mergeForwardingInfo(FSUpdateInfo * info)

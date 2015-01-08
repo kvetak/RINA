@@ -21,13 +21,26 @@
  *         by adding, removing and editing entries in the forwarding table.
  */
 
-/* HOWTO Read: Procedures are sorted by name. */
+// HOWTO Read: Procedures are sorted by name.
 
 #include "PDUFwdTabGenerator.h"
 #include "StaticRoutingPolicy.h"
 #include "DistanceVectorPolicy.h"
 
 Define_Module(PDUFwdTabGenerator);
+
+#ifdef PDUFTG_PRIVATE_DEBUG
+#include <iostream>
+#include <fstream>
+
+// Only one instance.
+std::ofstream pduftg_debug_file;
+#endif
+
+NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
+{
+    return flTable;
+}
 
 PDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
 {
@@ -49,11 +62,16 @@ NetworkState * PDUFwdTabGenerator::getNetworkState()
     return &netState;
 }
 
+void PDUFwdTabGenerator::finish()
+{
+
+}
+
 void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
 {
     if(fwdPolicy)
     {
-        /* Let the policy decide what to do here. */
+        // Let the policy decide what to do here.
         fwdPolicy->mergeForwardingInfo(info);
     }
     else
@@ -69,40 +87,54 @@ void PDUFwdTabGenerator::handleMessage(cMessage * msg)
 
 void PDUFwdTabGenerator::initialize()
 {
-    /* IPCProcess module. */
+    // IPCProcess module.
     cModule * ipcModule = getParentModule()->getParentModule();
-    /* Forwarding update wake up message, */
+    // Forwarding update wake up message./
 
-    fwdPolicy = ModuleAccess<PDUFTGPolicy>("PDUFTGPolicy").get();
+    //fwdPolicy = ModuleAccess<PDUFTGPolicy>("PDUFTGPolicy").get();
+    //fwTable   = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
+    //flTable   = ModuleAccess<NM1FlowTable>("nm1FlowTable").get();
 
-    fwTable   = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
-    flTable   = ModuleAccess<NM1FlowTable>("nm1FlowTable").get();
-    ipcAddr   = Address(ipcModule->par("ipcAddress").stringValue(), ipcModule->par("difName").stringValue());
+    fwdPolicy = check_and_cast<PDUFTGPolicy *>
+        (getModuleByPath("^.PDUFTGPolicy"));
+    fwTable   = check_and_cast<PDUForwardingTable *>
+        (getModuleByPath("^.pduForwardingTable"));
+    flTable   = check_and_cast<NM1FlowTable *>
+        (getModuleByPath("^.nm1FlowTable"));
 
-    /* Initializes the input/output of the module. */
+    ipcAddr   = Address(
+        ipcModule->par("ipcAddress").stringValue(),
+        ipcModule->par("difName").stringValue());
+
+    // Initializes the input/output of the module.
     initializeSignalsAndListeners();
+
+#ifdef PDUFTG_PRIVATE_DEBUG
+    if(!pduftg_debug_file.is_open())
+    {
+        pduftg_debug_file.open("pduftg.log");
+    }
+#endif
 }
 
 void PDUFwdTabGenerator::initializeSignalsAndListeners()
 {
     cModule* catcher1 = this->getParentModule()->getParentModule();
 
-    /* Signal emitters; there will be part of our outputs. */
+    // Signal emitters; there will be part of our outputs.
     sigPDUFTGFwdInfoUpdate = registerSignal(SIG_PDUFTG_FwdInfoUpdate);
 
-    /* Signal receivers; there will be part of our inputs. */
+    // Signal receivers; there will be part of our inputs.
     lisInfoRecv = new LisPDUFTGFwdInfoRecv(this);
     catcher1->subscribe(SIG_RIBD_ForwardingUpdateReceived, lisInfoRecv);
 }
 
 void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPort * port)
 {
-    /* Now insert the network flow state so they'll be available for neighbors.
-     */
+    // Now insert the network flow state so they'll be available for neighbors.
     insertNetInfo(addr, qos, port, 1);
 
-    /* Insert what you consider a neighbor.
-     */
+    // Insert what you consider a neighbor.
     insertNeighbor(addr, qos, port);
 
     // Is a policy defined?
@@ -121,9 +153,9 @@ void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPor
 {
     //EV << "INSN " << addr << " this ipc " << ipcAddr;
 
-    /* As for network informations, we're interested only on IPC located on
-     * our same layer. We must not know of N+1 or N-1 IPCs.
-     */
+    // As for network informations, we're interested only on IPC located on
+    // our same layer. We must not know of N+1 or N-1 IPCs.
+    //
     if(addr.getDifName() == ipcAddr.getDifName())
     {
         neiState.push_back(new PDUForwardingTableEntry(addr, qos, p));
@@ -132,9 +164,9 @@ void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPor
 
 void PDUFwdTabGenerator::insertNetInfo(Address dest, short unsigned int qos, RMTPort * port, unsigned int metric)
 {
-    /* Filter the flows created through RA; we're interested in the information about our
-     * DIF, not on the ones of the others(N+1 or N-1).
-     */
+    // Filter the flows created through RA; we're interested in the information about our
+    // DIF, not on the ones of the others(N+1 or N-1).
+    //
     if(dest.getDifName() == ipcAddr.getDifName())
     {
         FSInfo * i = netInfoExists(dest, qos);
@@ -143,16 +175,16 @@ void PDUFwdTabGenerator::insertNetInfo(Address dest, short unsigned int qos, RMT
         if(!i)
         {
             i = new FSInfo(
-                /* From... */
+                // From...
                 ipcAddr,
-                /* ... to ... */
+                // ... to ...
                 dest,
-                /* ... with QoS ... */
+                // ... with QoS ...
                 qos,
-                /* ... and metric. */
+                // ... and metric.
                 metric);
 
-            /* Just push it in the list. */
+            // Just push it in the list.
             netState.push_back(i);
         }
     }
@@ -172,6 +204,11 @@ std::string PDUFwdTabGenerator::neiInfo()
 
         os << "\n";
     }
+
+#ifdef PDUFTG_PRIVATE_DEBUG
+    pduftg_debug_file << os.rdbuf();
+    pduftg_debug_file.flush();
+#endif
 
     return os.str();
 }
@@ -198,6 +235,11 @@ std::string PDUFwdTabGenerator::netInfo()
 
         os << "]\n";
     }
+
+#ifdef PDUFTG_PRIVATE_DEBUG
+    pduftg_debug_file << os.rdbuf();
+    pduftg_debug_file.flush();
+#endif
 
     return os.str();
 }
@@ -238,13 +280,13 @@ void PDUFwdTabGenerator::publishPolicy(PDUFTGPolicy * p)
     unpublishPolicy();
 
     fwdPolicy = p;
-    /* Recomputes the policy according to the new policy. */
+    // Recomputes the policy according to the new policy.
     fwdPolicy->computeForwardingTable();
 }
 
 void PDUFwdTabGenerator::unpublishPolicy()
 {
-    /* Clean the forwarding table; we'll regenerate it during the apply of a new policy. */
+    // Clean the forwarding table; we'll regenerate it during the apply of a new policy.
     fwTable->clean();
 
     // Release the resources.
@@ -294,6 +336,6 @@ void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
 {
     EV << getFullPath() << " Signal an update to " << info->getDestination() << "\n";
 
-    /* Emit the signal. RIBd shall be there to listen... */
+    // Emit the signal. RIBd shall be there to listen...
     emit(sigPDUFTGFwdInfoUpdate, info);
 }

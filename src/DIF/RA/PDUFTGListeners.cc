@@ -26,4 +26,8 @@ void LisPDUFTGFwdInfoRecv::receiveSignal(cComponent *src, simsignal_t id, cObjec
     {
         EV << "ForwardingInfoUpdate received unknown object!" << endl;
     }
+
+    // Dispose of the event resource allocated.
+    // Ticket #19. Thank you gaixas1.
+    delete info;
 }

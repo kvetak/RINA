@@ -24,6 +24,10 @@
 #ifndef __RINA_PDUFWDTABGENERATOR_H_
 #define __RINA_PDUFWDTABGENERATOR_H_
 
+// Comment this directive to disable private debugging.
+// With private debugging all the output will be also redirected to a text file.
+#define PDUFTG_PRIVATE_DEBUG
+
 #include <omnetpp.h>
 
 #include "ModuleAccess.h"
@@ -48,6 +52,7 @@ typedef NeighborState::iterator EIter;
 class PDUFwdTabGenerator : public cSimpleModule
 {
   private:
+
     // Signal to notify forwarding info update occurs.
     //
     simsignal_t sigPDUFTGFwdInfoUpdate;
@@ -81,6 +86,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     Address ipcAddr;
 
   protected:
+    virtual void finish();
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
@@ -101,6 +107,9 @@ class PDUFwdTabGenerator : public cSimpleModule
 
     // Gets the managed instance of Forwarding table.
     PDUForwardingTable * getForwardingTable();
+
+    // Gets the managed instance of the N-1 flow table.
+    NM1FlowTable * getNM1FlowTable();
 
     // Gets the address associated with this IPC.
     Address getIpcAddress();

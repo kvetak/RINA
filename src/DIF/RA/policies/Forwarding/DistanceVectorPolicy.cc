@@ -250,7 +250,7 @@ FSUpdateInfo * DistanceVectorPolicy::prepareFSUpdate(Address destination)
     return ret;
 }
 
-void DistanceVectorPolicy::removeFlow(Address addr, short unsigned int qos)
+void DistanceVectorPolicy::removeFlow(Address addr, unsigned short qos)
 {
     //if(!fwdtg)
     //{

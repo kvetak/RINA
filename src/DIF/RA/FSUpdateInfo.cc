@@ -39,13 +39,16 @@ void FSUpdateInfo::disposeInfo()
     /* Removes any previously allocated info. */
     if(info)
     {
-        for(std::list<FSInfo *>::iterator it = info->begin(); it != info->end(); ++it)
-        {
-            FSInfo * i = (*it);
-
-            info->remove(i);
-            delete i;
-        }
+        // Removed to avoid iteration errors.
+        // Ticket #19; thank you gaixas1.
+        //
+        //for(std::list<FSInfo *>::iterator it = info->begin(); it != info->end(); ++it)
+        //{
+        //    FSInfo * i = (*it);
+        //
+        //    info->remove(i);
+        //    delete i;
+        //}
 
         delete info;
         info = NULL;
