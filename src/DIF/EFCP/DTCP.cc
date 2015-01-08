@@ -27,6 +27,8 @@ DTCP::DTCP() {
   rcvrAckPolicy = NULL;
   receivingFCPolicy = NULL;
   sendingAckPolicy = NULL;
+  lostControlPDUPolicy = NULL;
+  rcvrControlAckPolicy = NULL;
   senderAckPolicy = NULL;
 
 
@@ -89,6 +91,8 @@ DTCP::~DTCP()
   {
     delete flowControl;
   }
+
+  delete dtcpState;
 }
 
 void DTCP::setDTP(DTP* dtp)

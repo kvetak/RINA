@@ -27,6 +27,9 @@ DTP::~DTP()
 {
 
   flushAllQueuesAndPrepareToDie();
+  if(state.isDtcpPresent()){
+
+  }
 
 }
 
@@ -1504,6 +1507,8 @@ void DTP::runSenderInactivityTimerPolicy()
 
 void DTP::sendToRMT(PDU* pdu)
 {
+  Enter_Method("SendToRMT");
+  take(pdu);
   if(pdu->getType() == DATA_TRANSFER_PDU){
     state.setLastSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() <<": PDU number: " << pdu->getSeqNum() <<" sent in time: " << simTime() << endl;
