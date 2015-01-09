@@ -48,6 +48,7 @@ class PDU : public PDU_Base
 
 //      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
       unsigned int getHeaderSize();
+      unsigned int getSize();
 
 //      std::string info() const;
   };

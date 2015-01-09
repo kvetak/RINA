@@ -132,7 +132,6 @@ class DTP : public cSimpleModule
     /* Policy-related methods */
     void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
     void runNoRateSlowDownPolicy();
-    void runNoOverrideDefaultPeakPolicy();
     void runReconcileFlowControlPolicy();
     bool runInitialSequenceNumberPolicy();
     void runRateReductionPolicy();

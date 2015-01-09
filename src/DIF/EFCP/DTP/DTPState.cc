@@ -28,7 +28,7 @@ void DTPState::initDefaults(){
   currentPDU = NULL;
 
   closedWindow = false;
-  closedWinQueLen = 0;
+
   dropDup = 0;
 
   setDRFFlag = true;
@@ -64,10 +64,15 @@ void DTPState::clearPDUQ(std::vector<DataTransferPDU*>* pduQ)
   }
 }
 
+void DTPState::clearClosedWindowQ()
+{
+  clearPDUQ(&closedWindowQ);
+}
+
 DTPState::~DTPState() {
 
 
-  clearPDUQ(&closedWindowQ);
+  clearClosedWindowQ();
 }
 
 bool DTPState::isClosedWindow() const {
@@ -289,4 +294,10 @@ std::vector<DataTransferPDU*>* DTPState::getClosedWindowQ()
 void DTPState::setCurrentPdu(PDU* currentPdu)
 {
   currentPDU = currentPdu;
+}
+
+void DTPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
+//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+
+    closedWindowQ.push_back(pdu);
 }

@@ -66,7 +66,7 @@ class FlowControl : public cSimpleModule
 //    unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
 
-    bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
+//    bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
 
     /* Not found in specs but needed */
     unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
@@ -96,8 +96,6 @@ class FlowControl : public cSimpleModule
     void setSendingTimeUnit(unsigned long sendingTimeUnit);
     unsigned int getRcvRightWindowEdge() const;
     void setRcvRightWindowEdge(unsigned int rcvRightWindowEdge);
-    bool isSendingRateFullfilled() const;
-    void setSendingRateFullfilled(bool rateFullfilled);
 
   protected:
     virtual void handleMessage(cMessage *msg);

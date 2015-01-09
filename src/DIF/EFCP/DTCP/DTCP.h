@@ -143,7 +143,7 @@ public:
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
     bool runFCOverrunPolicy(DTPState* dtpState);
-    bool runNoverrunPeakPolicy(DTPState* dtpState);
+    bool runNoOverridePeakPolicy(DTPState* dtpState);
 
     //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);

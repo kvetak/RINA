@@ -324,7 +324,7 @@ bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
   Enter_Method("FCOverrunPolicy");
   if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
     /* Default */
-    dtpState->getClosedWindowQ()->push_back((DataTransferPDU*)dtpState->getCurrentPdu());
+    dtpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
     //TODO A2 Block further Write API calls on this port-id
     // eg. -> Create new CDAP Message type and send it upwards
     /* End default */
@@ -333,12 +333,18 @@ bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
   return false;
 }
 
-bool DTCP::runNoOverrunPeakPolicy(DTPState* dtpState)
+bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 {
-  Enter_Method("NoOverrunPeakPolicy");
-  if(noOverrunPeakPolicy == NULL || noOverrunPeakPolicy->run(dtpState, dtcpState)){
+  Enter_Method("NoOverridePeakPolicy");
+  if (noOverridePeakPolicy == NULL || noOverridePeakPolicy->run(dtpState, dtcpState))
+  {
     /* Default */
-//TODO A!
+    setSendingRateFullfilled(true);
+    if (dtpState->getClosedWinQueLen() < dtpState->getMaxClosedWinQueLen() - 1)
+    {
+      dtpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+
+    }
     /* End default */
 
   }
@@ -593,12 +599,12 @@ unsigned long DTCP::getSendingTimeUnit()
 
 bool DTCP::isSendingRateFullfilled() const
 {
-  return flowControl->isSendingRateFullfilled();
+  return dtcpState->isSendingRateFullfilled();
 }
 
 void DTCP::setSendingRateFullfilled(bool rateFullfilled)
 {
-  flowControl->setSendingRateFullfilled(rateFullfilled);
+  dtcpState->setSendingRateFullfilled(rateFullfilled);
 }
 
 void DTCP::redrawGUI()

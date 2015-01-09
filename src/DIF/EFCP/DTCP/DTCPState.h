@@ -60,7 +60,7 @@ class DTCPState : public cSimpleModule
     unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
     unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
-
+    bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
@@ -109,6 +109,8 @@ class DTCPState : public cSimpleModule
     /* Maybe */
     unsigned int getRxQLen();
     DTCPRxExpiryTimer* getRxTimer(unsigned int index);
+    bool isSendingRateFullfilled() const;
+    void setSendingRateFullfilled(bool sendingRateFullfilled);
 };
 
 #endif /* DTCPSTATE_H_ */

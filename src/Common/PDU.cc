@@ -105,8 +105,12 @@ Register_Class(PDU);
 //  userData_var = tmp;
 //}
 
-unsigned int getHeaderSize(){
+unsigned int PDU::getHeaderSize(){
   return PDU_HEADER_LEN;
+}
+
+unsigned int PDU::getSize(){
+    return getPduLen() + getHeaderSize();
 }
 
 //std::string PDU::info() const {

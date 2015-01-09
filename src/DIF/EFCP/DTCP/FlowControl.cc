@@ -41,7 +41,7 @@ FlowControl::FlowControl()
 
   dupFC = 0;
 //  rcvRightWindowEdge = 2;
-  sendingRateFullfilled = false;
+//  sendingRateFullfilled = false;
 
   // FIXME A! get it from qoscube
   timeUnit = 1000;
@@ -124,20 +124,13 @@ void FlowControl::schedule(FCTimers* timer, double time)
   }
 }
 
-bool FlowControl::isSendingRateFullfilled() const
-{
-  return sendingRateFullfilled;
-}
 
-void FlowControl::setSendingRateFullfilled(bool rateFullfilled)
-{
-  this->sendingRateFullfilled = rateFullfilled;
-}
 
 void FlowControl::handleSendingRateTimer(FCSendingRateTimer* fcTimer)
 {
   pdusSentInTimeUnit = 0;
-  setSendingRateFullfilled(false);
+  //TODO A2 Move the timer to DTCP?
+//  setSendingRateFullfilled(false);
   schedule(fcTimer);
 }
 

@@ -1071,8 +1071,8 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
           else
           {
             /* Exceeding Sending Rate */
-            runNoOverrideDefaultPeakPolicy();
-            dtcp->runNoverrunPeakPolicy(&state);
+
+            dtcp->runNoOverridePeakPolicy(&state);
           }
         }// end of RateBased
 
@@ -1185,15 +1185,6 @@ void DTP::runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ)
 
 }
 
-void DTP::runFlowControlOverrunPolicy()
-{
-  /* Default */
-  closedWindowQ.push_back(generatedPDUs.front());
-  generatedPDUs.erase(generatedPDUs.begin());
-
-  //TODO A1 How to block further Write API calls on this port-id
-}
-
 void DTP::runNoRateSlowDownPolicy()
 {
   //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
@@ -1201,21 +1192,6 @@ void DTP::runNoRateSlowDownPolicy()
   postablePDUs.push_back(generatedPDUs.front());
   generatedPDUs.erase(generatedPDUs.begin());
   dtcp->flowControl->pdusSentInTimeUnit++;
-}
-
-
-//TODO A! Move to DTCP
-void DTP::runNoOverrideDefaultPeakPolicy()
-{
-  /*Default */
-//  state.setRateFullfilled(true);
-  dtcp->setSendingRateFullfilled(true);
-  if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
-  {
-    closedWindowQ.push_back(generatedPDUs.front());
-    state.setClosedWinQueLen(closedWindowQ.size());
-    generatedPDUs.erase(generatedPDUs.begin());
-  }
 }
 
 void DTP::runReconcileFlowControlPolicy()
@@ -1402,7 +1378,8 @@ void DTP::runSenderInactivityTimerPolicy()
   clearRxQ();
 
   //Discard any PDUs on the ClosedWindowQueue
-  clearClosedWindowQ();
+  state.clearClosedWindowQ();
+
 
   //Send Control Ack PDU
   sendControlAckPDU();
@@ -1428,7 +1405,7 @@ void DTP::sendToRMT(PDU* pdu)
     EV << getFullPath() <<": Control PDU number: " << pdu->getSeqNum() <<" sent in time: " << simTime() << endl;
   }
 
-  send(pdu,southO);
+  send(pdu, southO);
 }
 
 double DTP::getRxTime()
@@ -1526,17 +1503,6 @@ void DTP::flushReassemblyPDUQ()
 void DTP::clearRxQ()
 {
   dtcp->clearRxQ();
-}
-
-void DTP::clearClosedWindowQ()
-{
-  std::vector<DataTransferPDU*>::iterator it;
-  for (it = closedWindowQ.begin(); it != closedWindowQ.end();)
-  {
-    delete (*it);
-    it = closedWindowQ.erase(it);
-  }
-  state.setClosedWinQueLen(closedWindowQ.size());
 }
 
 void DTP::schedule(DTPTimers *timer, double time)

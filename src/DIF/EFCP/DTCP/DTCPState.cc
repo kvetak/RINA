@@ -29,6 +29,7 @@ void DTCPState::initFC()
 {
   rcvRtWinEdge = rcvCredit;
   sndRtWinEdge = sndCredit;
+  sendingRateFullfilled = false;
 
   //TODO load from some config
   rcvBuffersPercentFree = 100;
@@ -241,4 +242,12 @@ void DTCPState::clearRxQ()
     delete (*it);
     it = rxQ.erase(it);
   }
+}
+
+bool DTCPState::isSendingRateFullfilled() const {
+    return sendingRateFullfilled;
+}
+
+void DTCPState::setSendingRateFullfilled(bool sendingRateFullfilled) {
+    this->sendingRateFullfilled = sendingRateFullfilled;
 }

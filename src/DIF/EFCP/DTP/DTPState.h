@@ -158,6 +158,8 @@ public:
     const PDU* getCurrentPdu() const;
     void setCurrentPdu(PDU* currentPdu);
     std::vector<DataTransferPDU*>* getClosedWindowQ();
+    void pushBackToClosedWinQ(DataTransferPDU* pdu);
+    void clearClosedWindowQ();
 };
 
 #endif /* DTPSTATE_H_ */
