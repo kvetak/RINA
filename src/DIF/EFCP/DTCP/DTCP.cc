@@ -21,8 +21,7 @@ DTCP::DTCP() {
   rxControl = NULL;
   flowControl = NULL;
 
-  ecnSetPolicy = NULL;
-  ecnClearPolicy = NULL;
+  ecnPolicy = NULL;
   rcvrFCPolicy = NULL;
   rcvrAckPolicy = NULL;
   receivingFCPolicy = NULL;
@@ -32,10 +31,34 @@ DTCP::DTCP() {
   senderAckPolicy = NULL;
   fcOverrunPolicy = NULL;
   noOverridePeakPolicy = NULL;
+  txControlPolicy = NULL;
+  noRateSlowDownPolicy = NULL;
+  reconcileFCPolicy = NULL;
+  rateReductionPolicy = NULL;
 
 
 
 
+}
+
+DTCPState* DTCP::getDTCPState() const
+{
+  return dtcpState;
+}
+
+unsigned int DTCP::getSendingRate() const
+{
+  return dtcpState->getSendingRate();
+}
+
+void DTCP::setSendingRate(unsigned int sendingRate)
+{
+  dtcpState->setSendingRate(sendingRate);
+}
+
+unsigned int DTCP::getRcvrRate() const
+{
+  return dtcpState->getRcvrRate();
 }
 
 void DTCP::initialize(int step)
@@ -68,17 +91,13 @@ void DTCP::initialize(int step)
   if(true){
 
     std::stringstream moduleName;
-    moduleName << ECN_SET_POLICY_PREFIX << par("ecnSetPolicy").stringValue();
+    moduleName << ECN_POLICY_PREFIX << par(ECN_POLICY_NAME).stringValue();
 
-    cModuleType* ecnSetPolicyType = cModuleType::get(moduleName.str().c_str());
-    ecnSetPolicy = (DTCPECNSetPolicyBase*)ecnSetPolicyType->createScheduleInit(ECN_SET_POLICY_NAME, getParentModule());
+    cModuleType* ecnPolicyType = cModuleType::get(moduleName.str().c_str());
+    ecnPolicy = (DTCPECNPolicyBase*)ecnPolicyType->createScheduleInit(ECN_POLICY_NAME, getParentModule());
 
     moduleName.str("");
     moduleName.clear();
-    moduleName << ECN_CLEAR_POLICY_PREFIX << par("ecnClearPolicy").stringValue();
-
-    cModuleType* ecnClearPolicyType = cModuleType::get(moduleName.str().c_str());
-    ecnClearPolicy = (DTCPECNClearPolicyBase*)ecnClearPolicyType->createScheduleInit(ECN_CLEAR_POLICY_NAME, getParentModule());
 
   }
 
@@ -108,11 +127,17 @@ void DTCP::setDTP(DTP* dtp)
   this->dtp = dtp;
 }
 
-bool DTCP::runECNSetPolicy(DTPState* dtpState)
+bool DTCP::runECNPolicy(DTPState* dtpState)
 {
   Enter_Method("ECNSetPolicy");
-  if(ecnSetPolicy != NULL){
-    return ecnSetPolicy->run(dtpState, dtcpState);
+  if(ecnPolicy == NULL || ecnPolicy->run(dtpState, dtcpState)){
+    /* Default */
+    if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
+      dtpState->setEcnSet(true);
+    }else{
+      dtpState->setEcnSet(false);
+    }
+    /* End default */
   }
   return false;
 }
@@ -122,15 +147,6 @@ void DTCP::incRcvRtWinEdge()
   dtcpState->incRcvRtWinEdge();
 }
 
-bool DTCP::runECNClearPolicy(DTPState* dtpState)
-{
-  Enter_Method("ECNClearPolicy");
-  if(ecnClearPolicy != NULL){
-    return ecnClearPolicy->run(dtpState, dtcpState);
-  }
-  return false;
-
-}
 
 bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 {
@@ -351,6 +367,96 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
   return false;
 }
 
+
+bool DTCP::runTxControlPolicy(DTPState* dtpState)
+{
+  Enter_Method("TxControlPolicy");
+  if (txControlPolicy == NULL || txControlPolicy->run(dtpState, dtcpState))
+  {
+    /* Default */
+    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
+     And Set the ClosedWindow flag appropriately. */
+    std::vector<DataTransferPDU*>::iterator it;
+    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
+    for (it = pduQ->begin();
+        it != pduQ->end() || (*it)->getSeqNum() <= dtp->dtcp->getSndRtWinEdge();)
+    {
+
+      dtpState->pushBackToPostablePDUQ((*it));
+      dtpState->getGeneratedPDUQ()->erase(it);
+
+    }
+
+    if (!dtpState->getGeneratedPDUQ()->empty())
+    {
+      dtp->state.setClosedWindow(true);
+    }
+    /* End default */
+
+  }
+  return false;
+}
+
+bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
+{
+  Enter_Method("NoRateSlowDownPolicy");
+  if (noRateSlowDownPolicy == NULL || noRateSlowDownPolicy->run(dtpState, dtcpState))
+  {
+    /* Default */
+    //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
+    /* Default */
+
+    dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
+    dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
+    incPdusSentInTimeUnit();
+    /* End default */
+
+  }
+  return false;
+}
+
+bool DTCP::runReconcileFCPolicy(DTPState* dtpState)
+{
+  Enter_Method("ReconcileFCPolicy");
+  if (reconcileFCPolicy == NULL || reconcileFCPolicy->run(dtpState, dtcpState))
+  {
+    /* Default */
+    /* Default is empty :)*/
+    /* End default */
+
+  }
+  return false;
+}
+
+bool DTCP::runRateReductionPolicy(DTPState* dtpState)
+{
+  Enter_Method("RateReductionPolicy");
+  if (rateReductionPolicy == NULL || rateReductionPolicy->run(dtpState, dtcpState))
+  {
+    /* Default */
+    if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
+    {
+//      flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
+      dtcpState->setRcvrRate(dtcpState->getRcvrRate() *0.9);
+
+    }
+    else
+    {
+      if (dtcpState->getRcvrRate() < dtcpState->getConfigRcvrRate()
+          && dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+      {
+        //set rate back to config rate
+        dtcpState->setRcvrRate(dtcpState->getConfigRcvrRate());
+      }
+    }
+    dtp->sendAckFlowPDU();
+    /* End default */
+
+  }
+  return false;
+}
+
+
 void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 {
 
@@ -475,7 +581,7 @@ void DTCP::schedule(DTCPTimers* timer, double time){
     case (DTCP_WINDOW_TIMER): {
       time = 0;
       // TODO B1 Make #define for "3"
-      scheduleAt(simTime() + (1 / flowControl->getSendingRate()) + 3, timer);
+      scheduleAt(simTime() + (1 / dtcpState->getSendingRate()) + 3, timer);
       break;
     }
     case (DTCP_RX_EXPIRY_TIMER): {
@@ -569,22 +675,6 @@ unsigned int DTCP::getRcvRtWinEdge()
   return dtcpState->getRcvRtWinEdge();
 }
 
-void DTCP::setSndRate(unsigned int sendingRate)
-{
-  flowControl->setSendingRate(sendingRate);
-}
-unsigned int DTCP::getSndRate(){
-  return flowControl->getSendingRate();
-}
-
-void DTCP::setRcvRate(unsigned int rcvrRate)
-{
-  flowControl->setRcvrRate(rcvrRate);
-}
-unsigned int DTCP::getRcvRate(){
-  return flowControl->getRcvrRate();
-}
-
 unsigned int DTCP::getRcvCredit()
 {
   return dtcpState->getRcvCredit();
@@ -605,6 +695,21 @@ bool DTCP::isSendingRateFullfilled() const
 void DTCP::setSendingRateFullfilled(bool rateFullfilled)
 {
   dtcpState->setSendingRateFullfilled(rateFullfilled);
+}
+
+unsigned int DTCP::getPdusSentInTimeUnit() const
+{
+  return dtcpState->getPdusSentInTimeUnit();
+}
+
+void DTCP::incPdusSentInTimeUnit()
+{
+  dtcpState->setPdusSentInTimeUnit(dtcpState->getPdusSentInTimeUnit() + 1);
+}
+
+void DTCP::setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit)
+{
+  dtcpState->setPdusSentInTimeUnit(pdusSentInTimeUnit);
 }
 
 void DTCP::redrawGUI()

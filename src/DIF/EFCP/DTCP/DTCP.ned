@@ -23,6 +23,19 @@ package rina.DIF.EFCP.DTCP;
 simple DTCP
 {
     @display("i=block/subqueue");
-    string ecnSetPolicy;
-    string ecnClearPolicy;
+    
+    string ecnPolicy = default("");
+    string rcvrFCPolicy = default("");
+    string rcvrAckPolicy = default("");
+    string receivingFCPolicy = default("");
+    string sendingAckPolicy = default("");
+    string lostControlPDUPolicy = default("");
+    string rcvrControlAckPolicy = default("");
+    string senderAckPolicy = default("");
+    string fcOverrunPolicy = default("");
+    string noOverridePeakPolicy = default("");
+    string txControlPolicy = default("");
+    string noRateSlowDownPolicy = default("");
+    string reconcileFCPolicy = default("");
+    string rateReductionPolicy = default("");
 }

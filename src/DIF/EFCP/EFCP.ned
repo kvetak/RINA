@@ -18,9 +18,27 @@ package rina.DIF.EFCP;
 simple EFCP
 {
     parameters:
-        bool pduDroppingEnabled = default(false)
-
         @display("i=block/fork");
+        bool pduDroppingEnabled = default(false);
+        
+        string ecnPolicy = default("");
+        string rcvrFCPolicy = default("");
+        string rcvrAckPolicy = default("");
+        string receivingFCPolicy = default("");
+        string sendingAckPolicy = default("");
+        string lostControlPDUPolicy = default("");
+        string rcvrControlAckPolicy = default("");
+        string senderAckPolicy = default("");
+        string fcOverrunPolicy = default("");
+        string noOverridePeakPolicy = default("");
+        string txControlPolicy = default("");
+        string noRateSlowDownPolicy = default("");
+        string reconcileFCPolicy = default("");
+        string rateReductionPolicy = default("");
+        
+        string rcvrInactivityPolicy = default("");
+  		string senderInactivityPolicy = default("");
+  		string initialSeqNumPolicy = default("");
         
 
         

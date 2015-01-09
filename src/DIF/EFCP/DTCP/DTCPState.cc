@@ -31,9 +31,13 @@ void DTCPState::initFC()
   sndRtWinEdge = sndCredit;
   sendingRateFullfilled = false;
 
-  //TODO load from some config
+  //TODO A1 load from some config
   rcvBuffersPercentFree = 100;
   rcvBufferPercentThreshold = 75;
+  sendingRate = 2;
+
+  configRcvrRate = 50;
+  rcvrRate = configRcvrRate;
 }
 
 DTCPState::DTCPState()
@@ -250,4 +254,44 @@ bool DTCPState::isSendingRateFullfilled() const {
 
 void DTCPState::setSendingRateFullfilled(bool sendingRateFullfilled) {
     this->sendingRateFullfilled = sendingRateFullfilled;
+}
+
+unsigned int DTCPState::getPdusSentInTimeUnit() const
+{
+  return pdusSentInTimeUnit;
+}
+
+void DTCPState::setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit)
+{
+  this->pdusSentInTimeUnit = pdusSentInTimeUnit;
+}
+
+unsigned int DTCPState::getSendingRate() const
+{
+  return sendingRate;
+}
+
+unsigned int DTCPState::getRcvrRate() const
+{
+  return rcvrRate;
+}
+
+unsigned int DTCPState::getConfigRcvrRate() const
+{
+  return configRcvrRate;
+}
+
+void DTCPState::setConfigRcvrRate(unsigned int configRcvrRate)
+{
+  this->configRcvrRate = configRcvrRate;
+}
+
+void DTCPState::setRcvrRate(unsigned int rcvrRate)
+{
+  this->rcvrRate = rcvrRate;
+}
+
+void DTCPState::setSendingRate(unsigned int sendingRate)
+{
+  this->sendingRate = sendingRate;
 }

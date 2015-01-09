@@ -37,8 +37,7 @@
 #include "DTCPTimers_m.h"
 
 /* Policies */
-#include "DTCPECNSetPolicyBase.h"
-#include "DTCPECNClearPolicyBase.h"
+#include "DTCPECNPolicyBase.h"
 #include "DTCPRcvrFCPolicyBase.h"
 #include "DTCPRcvrAckPolicyBase.h"
 #include "DTCPReceivingFCPolicyBase.h"
@@ -48,6 +47,10 @@
 #include "DTCPSenderAckPolicyBase.h"
 #include "DTCPFCOverrunPolicyBase.h"
 #include "DTCPNoOverridePeakPolicyBase.h"
+#include "DTCPTxControlPolicyBase.h"
+#include "DTCPNoRateSlowDownPolicyBase.h"
+#include "DTCPReconcileFCPolicyBase.h"
+#include "DTCPRateReductionPolicyBase.h"
 
 class DTP;
 class FlowControl;
@@ -61,11 +64,8 @@ class DTCP: public cSimpleModule {
     FlowControl* flowControl;
     RXControl* rxControl;
 
-    DTCPECNSetPolicyBase* ecnSetPolicy;
-    DTCPECNClearPolicyBase* ecnClearPolicy;
-
+    DTCPECNPolicyBase* ecnPolicy;
     DTCPRcvrFCPolicyBase* rcvrFCPolicy;
-
     DTCPRcvrAckPolicyBase* rcvrAckPolicy;
     DTCPReceivingFCPolicyBase* receivingFCPolicy;
     DTCPSendingAckPolicyBase* sendingAckPolicy;
@@ -74,6 +74,10 @@ class DTCP: public cSimpleModule {
     DTCPSenderAckPolicyBase* senderAckPolicy;
     DTCPFCOverrunPolicyBase* fcOverrunPolicy;
     DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
+    DTCPTxControlPolicyBase* txControlPolicy;
+    DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
+    DTCPReconcileFCPolicyBase* reconcileFCPolicy;
+    DTCPRateReductionPolicyBase* rateReductionPolicy;
 
 
     /*Timers*/
@@ -86,12 +90,15 @@ class DTCP: public cSimpleModule {
     void sendAckPDU();
     void flushAllQueuesAndPrepareToDie();
 
+
 public:
 
     DTCP();
     virtual ~DTCP();
 
     void setDTP(DTP* dtp);
+
+    DTCPState* getDTCPState() const;
 
 
     void handleWindowTimer(WindowTimer* timer);
@@ -113,9 +120,6 @@ public:
     void setSndRate(unsigned int sendingRate);
     unsigned int getSndRate();
 
-    void setRcvRate(unsigned int rcvrRate);
-    unsigned int getRcvRate();
-
     unsigned int getRcvCredit();
 
     unsigned long getSendingTimeUnit();
@@ -132,9 +136,18 @@ public:
     void clearRxQ();
     unsigned int getDataReXmitMax() const;
 
+    unsigned int getPdusSentInTimeUnit() const;
+    void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
+    void incPdusSentInTimeUnit();
+
+    unsigned int getSendingRate() const;
+    void setSendingRate(unsigned int sendingRate);
+
+    unsigned int getRcvrRate() const;
+
+
     /* Run Policies */
-    bool runECNSetPolicy(DTPState* dtpState);
-    bool runECNClearPolicy(DTPState* dtpState);
+    bool runECNPolicy(DTPState* dtpState);
     bool runRcvrFCPolicy(DTPState* dtpState);
     bool runRcvrAckPolicy(DTPState* dtpState);
     bool runReceivingFCPolicy(DTPState* dtpState);
@@ -144,6 +157,10 @@ public:
     bool runSenderAckPolicy(DTPState* dtpState);
     bool runFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
+    bool runTxControlPolicy(DTPState* dtpState);
+    bool runNoRateSlowDownPolicy(DTPState* dtpState);
+    bool runReconcileFCPolicy(DTPState* dtpState);
+    bool runRateReductionPolicy(DTPState* dtpState);
 
     //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);

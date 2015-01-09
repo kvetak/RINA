@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.policies.ECNSet;
+package rina.DIF.EFCP.policies.RcvrInactivity;
 
-moduleinterface IntDTCPECNSetPolicy
+moduleinterface IntDTCPRcvrInactivityPolicy
 {
     parameters:
         @display("i=block/socket");

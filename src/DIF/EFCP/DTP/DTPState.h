@@ -71,7 +71,9 @@ private:
     std::vector<DataTransferPDU*> closedWindowQ;
 
 
-    std::vector<DataTransferPDU*> reassemblyPDUQ;
+    PDUQ_t reassemblyPDUQ;
+    PDUQ_t generatedPDUs;
+    PDUQ_t postablePDUs;
 
 
     bool partDeliv; /* Partial Delivery of SDUs is Allowed */
@@ -101,7 +103,8 @@ private:
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
 
     void clearPDUQ(std::vector<DataTransferPDU*>* pduQ);
-
+    void clearGeneratedPDUQ();
+    void clearPostablePDUQ();
 
 public:
     DTPState();
@@ -169,6 +172,13 @@ public:
     void pushBackToReassemblyPDUQ(DataTransferPDU* pdu);
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
     void clearReassemblyPDUQ();
+
+    PDUQ_t* getGeneratedPDUQ();
+    void pushBackToGeneratedPDUQ(DataTransferPDU* pdu);
+
+    PDUQ_t* getPostablePDUQ();
+    void pushBackToPostablePDUQ(DataTransferPDU* pdu);
+
 
 };
 

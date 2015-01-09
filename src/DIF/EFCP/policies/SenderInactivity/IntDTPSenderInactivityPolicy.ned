@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,31 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-/*
- * @file DefaultDTCPECNSetPolicy.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
- * @brief
- * @detail
- */
+package rina.DIF.EFCP.policies.SenderInactivity;
 
-#include <DTCPECNSetPolicyDefault.h>
-
-Define_Module(DTCPECNSetPolicyDefault);
-
-DTCPECNSetPolicyDefault::DTCPECNSetPolicyDefault()
+moduleinterface IntDTPSenderInactivityPolicy
 {
-  // TODO Auto-generated constructor stub
-
-}
-
-DTCPECNSetPolicyDefault::~DTCPECNSetPolicyDefault()
-{
-  // TODO Auto-generated destructor stub
-}
-
-bool DTCPECNSetPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  dtpState->setEcnSet(true);
-  return false;
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }

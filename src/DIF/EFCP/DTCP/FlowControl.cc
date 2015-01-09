@@ -45,7 +45,7 @@ FlowControl::FlowControl()
 
   // FIXME A! get it from qoscube
   timeUnit = 1000;
-  sendingRate = 2;
+//  sendingRate = 2;
 
 }
 
@@ -71,25 +71,16 @@ void FlowControl::incDupFC()
   dupFC++;
 }
 
-void FlowControl::setSendingRate(unsigned int sendingRate)
-{
-  this->sendingRate = sendingRate;
-}
+//void FlowControl::setSendingRate(unsigned int sendingRate)
+//{
+//  this->sendingRate = sendingRate;
+//}
+//
+//unsigned int FlowControl::getSendingRate()
+//{
+//  return sendingRate;
+//}
 
-unsigned int FlowControl::getSendingRate()
-{
-  return sendingRate;
-}
-
-void FlowControl::setRcvrRate(unsigned int rcvrRate)
-{
-  this->rcvrRate = rcvrRate;
-}
-
-unsigned int FlowControl::getRcvrRate()
-{
-  return rcvrRate;
-}
 
 unsigned long FlowControl::getSendingTimeUnit() const
 {
@@ -128,7 +119,7 @@ void FlowControl::schedule(FCTimers* timer, double time)
 
 void FlowControl::handleSendingRateTimer(FCSendingRateTimer* fcTimer)
 {
-  pdusSentInTimeUnit = 0;
+//  pdusSentInTimeUnit = 0;
   //TODO A2 Move the timer to DTCP?
 //  setSendingRateFullfilled(false);
   schedule(fcTimer);

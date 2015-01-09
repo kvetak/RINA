@@ -22,8 +22,15 @@ package rina.DIF.EFCP.DTP;
 //
 simple DTP
 {
-    @display("i=block/layer");
+    
+    parameters:
+        @display("i=block/layer");
+        string rcvrInactivityPolicy = default("");
+        string senderInactivityPolicy = default("");
+        string initialSeqNumPolicy = default("");
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT
+        
+
 }

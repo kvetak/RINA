@@ -56,6 +56,17 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   name << MOD_EFCPI << flow->getConId().getSrcCepId();
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
   cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
+
+  QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
+  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
+  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
+  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
+  dtpModule->setFlow(flow);
+  dtpModule->setQosCube(qosCube);
+  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
+  dtpModule->finalizeParameters();
+
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -75,12 +86,9 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
     tmpEfcpEntry->setFlow(flow);
   }
 
-  QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
 
-  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
-  dtpModule->setFlow(flow);
-  dtpModule->setQosCube(qosCube);
-  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
+
+
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
@@ -154,8 +162,20 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
     cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
     DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
-    dtcpModule->par("ecnSetPolicy").setStringValue("DTCPECNSetPolicyDefault");
-    dtcpModule->par("ecnClearPolicy").setStringValue("DTCPECNClearPolicyDefault");
+    dtcpModule->par("ecnPolicy").setStringValue(par("ecnPolicy").stringValue());
+    dtcpModule->par("rcvrFCPolicy").setStringValue(par("rcvrFCPolicy").stringValue());
+    dtcpModule->par("rcvrAckPolicy").setStringValue(par("rcvrAckPolicy").stringValue());
+    dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
+    dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
+    dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
+    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("ecnPolicy").stringValue());
+    dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
+    dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
+    dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
+    dtcpModule->par("txControlPolicy").setStringValue(par("txControlPolicy").stringValue());
+    dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
+    dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
+    dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());

@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -14,27 +14,35 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
-/*
- * @file DTCPECNClearPolicyBase.cc
+/**
+ * @file DTCPTxControlPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <DTCPECNClearPolicyBase.h>
+#ifndef DTCPTXCONTROLPOLICYBASE_H_
+#define DTCPTXCONTROLPOLICYBASE_H_
 
+#include <omnetpp.h>
 
+#include "DTPState.h"
+#include "DTCPState.h"
 
-DTCPECNClearPolicyBase::DTCPECNClearPolicyBase()
+/*
+ *
+ */
+class DTCPTxControlPolicyBase : public cSimpleModule
 {
+  public:
+    DTCPTxControlPolicyBase();
+    virtual ~DTCPTxControlPolicyBase();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+};
 
-}
-
-DTCPECNClearPolicyBase::~DTCPECNClearPolicyBase()
-{
-
-}
-
+#endif /* DTCPTXCONTROLPOLICYBASE_H_ */

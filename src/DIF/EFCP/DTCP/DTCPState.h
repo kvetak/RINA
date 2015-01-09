@@ -53,14 +53,20 @@ class DTCPState : public cSimpleModule
     unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgement that will be tried before declaring an error.
 
     /* Moved from FC */
+    unsigned int sendingRate; // This variable contains the number of PDUs that may be sent in one Time Unit. The rate is defined such that the sender may send the specified number of PDUs in that unit of time. Thus, the rate will not necessarily generate a steady flow, but  may exhibit a bursty pattern.
 
-
+    unsigned int pdusSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
     unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
-
+    unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
     unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
     unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
     bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
+
+    /* Not found in specs but needed */
+    unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
+
+
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
@@ -111,6 +117,14 @@ class DTCPState : public cSimpleModule
     DTCPRxExpiryTimer* getRxTimer(unsigned int index);
     bool isSendingRateFullfilled() const;
     void setSendingRateFullfilled(bool sendingRateFullfilled);
+    unsigned int getPdusSentInTimeUnit() const;
+    void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
+    unsigned int getSendingRate() const;
+    void setSendingRate(unsigned int sendingRate);
+    unsigned int getRcvrRate() const;
+    void setRcvrRate(unsigned int rcvrRate);
+    unsigned int getConfigRcvrRate() const;
+    void setConfigRcvrRate(unsigned int configRcvrRate);
 };
 
 #endif /* DTCPSTATE_H_ */

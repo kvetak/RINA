@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -14,29 +14,24 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-
-/*
- * @file DTCPECNClearPolicyDefault.h
+/**
+ * @file DTCPReconcileFCPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Dec 21, 2014
+ * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNCLEARPOLICYDEFAULT_H_
-#define DTCPECNCLEARPOLICYDEFAULT_H_
+#include <DTCPReconcileFCPolicyBase.h>
 
-#include <csimplemodule.h>
-#include "DTCPECNClearPolicyBase.h"
-/*
- *
- */
-class DTCPECNClearPolicyDefault : public DTCPECNClearPolicyBase
+DTCPReconcileFCPolicyBase::DTCPReconcileFCPolicyBase()
 {
-  public:
-    DTCPECNClearPolicyDefault();
-    virtual ~DTCPECNClearPolicyDefault();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
-};
+  // TODO Auto-generated constructor stub
 
-#endif /* DTCPECNCLEARPOLICYDEFAULT_H_ */
+}
+
+DTCPReconcileFCPolicyBase::~DTCPReconcileFCPolicyBase()
+{
+  // TODO Auto-generated destructor stub
+}
+

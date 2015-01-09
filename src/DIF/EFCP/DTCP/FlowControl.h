@@ -42,8 +42,8 @@ class FlowControl : public cSimpleModule
   private:
     unsigned long timeUnit; //This field contains the unit of time in milliseconds over which the rate is computed.
 //    unsigned int sendRightWindowEdge; // The largest Sequence Number of a PDU that may be sent without the receiver discarding it.
-    unsigned int sendingRate; // This variable contains the number of PDUs that may be sent in one Time Unit. The rate is defined such that the sender may send the specified number of PDUs in that unit of time. Thus, the rate will not necessarily generate a steady flow, but  may exhibit a bursty pattern.
-    unsigned int pdusSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
+//    unsigned int sendingRate; // This variable contains the number of PDUs that may be sent in one Time Unit. The rate is defined such that the sender may send the specified number of PDUs in that unit of time. Thus, the rate will not necessarily generate a steady flow, but  may exhibit a bursty pattern.
+//    unsigned int pdusSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
     unsigned long sendingTimeUnit; //The time period used to measure the SendingRate (measured in milliseconds).
     unsigned int sendBytesFree; // The number of bytes that this flow can assume it has available for Writes.
     unsigned int sendBytesPercentFree; // The percent of bytes that are free for Writes.
@@ -54,7 +54,7 @@ class FlowControl : public cSimpleModule
     unsigned int sendBuffersThreshold; //The number of free buffers at which flow control blocks the user from doing any more Writes.
     unsigned int sendBufferPercentThreshold; //The percent of free buffers at which flow control blocks the user from doing any more Writes.
 //    unsigned int rcvRightWindowEdge; //The absolute value of the credit on this flow.
-    unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
+//    unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
     unsigned int pdusRcvdinTimeUnit; //This variable contains the number of PDUs received in this Time Unit. When PDUsRcvdinTimeUnit equals RcvrRate, the receiver is allowed to discard any PDUs received until a new time unit begins.
     unsigned int rcvBytesFree; //The number of bytes that this flow can assume it has available for incoming PDUs on this connection.
     unsigned int rcvBytesPercentFree; //The percent of bytes that are free for incoming PDUs on this connection.
@@ -69,7 +69,7 @@ class FlowControl : public cSimpleModule
 //    bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
 
     /* Not found in specs but needed */
-    unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
+//    unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
     unsigned int dupFC; //duplicate Flow Control PDUs
 
 
@@ -88,8 +88,7 @@ class FlowControl : public cSimpleModule
     void setSendRightWindowEdge(unsigned int sendRightWindowEdge);
     void setSendingRate(unsigned int sendingRate);
     unsigned int getSendingRate();
-    void setRcvrRate(unsigned int rcvrRate);
-    unsigned int getRcvrRate();
+
 
     void incDupFC();
     unsigned long getSendingTimeUnit() const;

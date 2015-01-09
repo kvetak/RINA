@@ -18,8 +18,6 @@
 
 #include <omnetpp.h>
 #include <vector>
-#include "TxControlPolicy.h"
-#include "DefaultTxControlPolicy.h"
 
 #include "DTPState.h"
 #include "DTPTimers_m.h"
@@ -32,6 +30,12 @@
 
 #include "RA.h"
 
+
+/* Policies */
+#include "DTPRcvrInactivityPolicyBase.h"
+#include "DTPSenderInactivityPolicyBase.h"
+#include "DTPInitialSeqNumPolicyBase.h"
+
 //#include "SDUs.h"
 
 #define DTP_MODULE_NAME "dtp"
@@ -42,9 +46,7 @@ class DTCP;
 
 class DTP : public cSimpleModule
 {
-    //TODO A1 Remove friend class policies;
-    /* Friend policies */
-    friend class DefaultTxControlPolicy;
+
     friend class DTCP;
   private:
 
@@ -57,13 +59,16 @@ class DTP : public cSimpleModule
 
     QosCube qosCube;
 
+    /* Policies */
+    DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;
+    DTPSenderInactivityPolicyBase* senderInactivityPolicy;
+    DTPInitialSeqNumPolicyBase* initialSeqNumPolicy;
 
     /* Various queues */
     /* Output queues - from App to RMT */
     std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
-    std::vector<DataTransferPDU*> generatedPDUs;
-    std::vector<DataTransferPDU*> postablePDUs;
+
 //    std::vector<DataTransferPDU*> closedWindowQ;
 //    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
@@ -127,14 +132,14 @@ class DTP : public cSimpleModule
     void setConnId(const ConnectionId& connId);
 
     /* Policies */
-    TxControlPolicy *txControlPolicy;
+
 
     /* Policy-related methods */
-    void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
-    void runNoRateSlowDownPolicy();
-    void runReconcileFlowControlPolicy();
-    bool runInitialSequenceNumberPolicy();
-    void runRateReductionPolicy();
+//    void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
+//    void runNoRateSlowDownPolicy();
+//    void runReconcileFlowControlPolicy();
+    bool runInitialSeqNumPolicy();
+//    void runRateReductionPolicy();
 //    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
@@ -174,6 +179,7 @@ class DTP : public cSimpleModule
     void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
     void sendAckOnlyPDU(unsigned int seqNum);
     void resetSenderInactivTimer();
+    void rcvrBufferStateChange();
 
   public:
     DTP();

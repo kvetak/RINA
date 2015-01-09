@@ -75,10 +75,22 @@ void DTPState::clearReassemblyPDUQ()
   clearPDUQ(&reassemblyPDUQ);
 }
 
+void DTPState::clearGeneratedPDUQ()
+{
+  clearPDUQ(&generatedPDUs);
+}
+
+void DTPState::clearPostablePDUQ()
+{
+  clearPDUQ(&postablePDUs);
+}
+
 DTPState::~DTPState() {
 
   clearReassemblyPDUQ();
   clearClosedWindowQ();
+  clearGeneratedPDUQ();
+  clearPostablePDUQ();
 }
 
 bool DTPState::isClosedWindow() const {
@@ -363,5 +375,24 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
    }
 }
 
+
+PDUQ_t* DTPState::getGeneratedPDUQ(){
+
+  return &generatedPDUs;
+}
+
+void DTPState::pushBackToGeneratedPDUQ(DataTransferPDU* pdu)
+{
+  generatedPDUs.push_back(pdu);
+}
+
+PDUQ_t* DTPState::getPostablePDUQ(){
+
+  return &postablePDUs;
+}
+
+void DTPState::pushBackToPostablePDUQ(DataTransferPDU* pdu){
+ postablePDUs.push_back(pdu);
+}
 
 
