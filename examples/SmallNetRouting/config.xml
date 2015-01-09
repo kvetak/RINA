@@ -4,7 +4,7 @@
         <IPC id="ipcProcess1">
             <RA>
                 <Flows>
-
+                    <Flow apn="106_Layer11" qosCube="1"/>                
                 </Flows>
             </RA>
         </IPC>
@@ -33,13 +33,13 @@
 					<DIF difName="Layer02" ipcAddress="2" />
 				</APN>
 				<APN apn="103_Layer11">
-					<DIF difName="Layer03" ipcAddress="3" />
+					<DIF difName="Layer05" ipcAddress="3" />
 				</APN>
 				<APN apn="104_Layer11">
-					<DIF difName="Layer04" ipcAddress="4" />
+					<DIF difName="Layer06" ipcAddress="4" />
 				</APN>
 				<APN apn="105_Layer11">
-					<DIF difName="Layer05" ipcAddress="5" />
+					<DIF difName="Layer07" ipcAddress="5" />
 				</APN>
 				
 				<APN apn="106_Layer11">
@@ -122,6 +122,22 @@
 					<DIF difName="Layer11" ipcAddress="105" />
 				</APN>
 
+				<APN apn="101_Layer11">
+					<DIF difName="Layer01" ipcAddress="1" />
+				</APN>
+				<APN apn="102_Layer11">
+					<DIF difName="Layer02" ipcAddress="2" />
+				</APN>
+				<APN apn="103_Layer11">
+					<DIF difName="Layer05" ipcAddress="3" />
+				</APN>
+				<APN apn="104_Layer11">
+					<DIF difName="Layer06" ipcAddress="4" />
+				</APN>
+				<APN apn="105_Layer11">
+					<DIF difName="Layer07" ipcAddress="5" />
+				</APN>
+				
 				<APN apn="106_Layer11">
 					<DIF difName="Layer01" ipcAddress="6" />
 					<DIF difName="Layer02" ipcAddress="7" />
@@ -136,7 +152,7 @@
 					<DIF difName="Layer04" ipcAddress="12" />
 					<DIF difName="Layer06" ipcAddress="13" />
 					<DIF difName="Layer07" ipcAddress="14" />
-				</APN>
+				</APN>	
 			</Directory>
 		</DA> 
 	</Router>
