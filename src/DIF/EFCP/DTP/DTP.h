@@ -67,7 +67,7 @@ class DTP : public cSimpleModule
 //    std::vector<DataTransferPDU*> closedWindowQ;
 //    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
     /* Input queues - from RMT to App */
-    std::vector<DataTransferPDU*> reassemblyPDUQ;
+//    std::vector<DataTransferPDU*> reassemblyPDUQ;
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;

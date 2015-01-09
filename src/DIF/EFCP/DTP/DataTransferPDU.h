@@ -51,4 +51,7 @@ class DataTransferPDU : public DataTransferPDU_Base
 
   };
 
+typedef std::vector<DataTransferPDU*> PDUQ_t;
+
 #endif /* DATATRANSFERPDU_H_ */
+

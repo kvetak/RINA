@@ -61,17 +61,8 @@ void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
 
 void DTP::flushAllQueuesAndPrepareToDie()
 {
-
-
-    std::vector<DataTransferPDU*>::iterator itP;
-    for (itP = reassemblyPDUQ.begin(); itP != reassemblyPDUQ.end();)
-    {
-      delete (*itP);
-  //    delete (*it);
-      itP = reassemblyPDUQ.erase(itP);
-    }
-
     std::vector<DataTransferPDU*>* pduQ;
+    std::vector<DataTransferPDU*>::iterator itP;
 
     pduQ = &generatedPDUs;
 
@@ -120,32 +111,19 @@ void DTP::redrawGUI()
   if(state.isDtcpPresent() && state.isFCPresent()){
     desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
   }
-  if(state.isDtcpPresent() && state.isRxPresent()){
 
-//    if (rxQ.empty())
-//    {
-//      desc << "rxQ: empty" << "\n";
-//    }
-//    else
-//    {
-//      desc << "rxQ: ";
-//      std::vector<RxExpiryTimer*>::iterator it;
-//      for (it = rxQ.begin(); it != rxQ.end(); ++it)
-//      {
-//        desc << (*it)->getPdu()->getSeqNum() << " | ";
-//      }
-//      desc << "\n";
-//    }
-  }
+  std::vector<DataTransferPDU*>::iterator it;
+  std::vector<DataTransferPDU*>* pduQ;
 
-  if(reassemblyPDUQ.empty()){
+  pduQ = state.getReassemblyPDUQ();
+  if(pduQ->empty()){
       desc << "reassemblyQ: empty"<< "\n";
     }
     else
     {
       desc << "reassemblyQ: ";
       std::vector<DataTransferPDU*>::iterator it;
-      for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+      for (it = pduQ->begin(); it != pduQ->end(); ++it)
       {
         desc << (*it)->getSeqNum() << " | ";
       }
@@ -212,19 +190,6 @@ void DTP::handleMessage(cMessage *msg)
     /* Timers */
     DTPTimers* timer = static_cast<DTPTimers*>(msg);
     switch(timer->getType()){
-//      case(DTP_RX_EXPIRY_TIMER):{
-//        handleDTPRxExpiryTimer(static_cast<RxExpiryTimer*>(timer));
-//
-//
-//        break;
-//      }
-
-//      case(DTP_SENDING_RATE_TIMER):{
-//        handleDTPSendingRateTimer(static_cast<SendingRateTimer*>(timer));
-//        schedule(timer);
-//        break;
-//      }
-
       case(DTP_RCVR_INACTIVITY_TIMER):{
         handleDTPRcvrInactivityTimer(static_cast<RcvrInactivityTimer*>(timer));
         break;
@@ -239,12 +204,6 @@ void DTP::handleMessage(cMessage *msg)
         handleDTPATimer(static_cast<ATimer*>(timer));
         break;
       }
-
-//      case(DTP_WINDOW_TIMER):{
-//        handleDTPWindowTimer(static_cast<WindowTimer*>(timer));
-//
-//        break;
-//      }
     }
   }
   else
@@ -282,20 +241,6 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
-//void DTP::handleMsgFromDelimiting(Data* msg)
-//{
-//
-//  cancelEvent(senderInactivityTimer);
-//
-//  DataTransferPDU* pdu = new DataTransferPDU();
-//  pdu->setMUserData(msg);
-//  setPDUHeader(pdu);
-//  pdu->setSeqNum(this->state.getNextSeqNumToSend());
-//
-//  send(pdu, southO);
-//
-//}
-
 void DTP::handleMsgFromDelimitingnew(SDU* sdu){
   cancelEvent(senderInactivityTimer);
 
@@ -310,57 +255,16 @@ void DTP::handleMsgFromDelimitingnew(SDU* sdu){
 
 void DTP::addPDUToReassemblyQ(DataTransferPDU* pdu)
 {
-  /* Maybe it is good idea to split this method into two
-   * The first one would put PDU on reassemblyQ and
-   * the second one would create as many whole SDUs from reassemblyQ as possible */
-  if (pdu != NULL)
-  {
-    if (reassemblyPDUQ.empty())
-    {
-      reassemblyPDUQ.push_back(pdu);
-    }
-    else
-    {
-      if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
-      {
-        reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
-      }
-      else
-      {
-        for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
-        {
-          if ((*it)->getSeqNum() == pdu->getSeqNum())
-          {
-            //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
-            //TODO A1 Throw Error.
-            bubble("Nooooooooooooooooooooooooooooooooooooooooooooooooo!");
-            state.incDropDup();
-            delete pdu;
-                        return;
-          }
-          else if ((*it)->getSeqNum() > pdu->getSeqNum())
-          {
-            /* Put the incoming PDU before one with bigger seqNum */
-            reassemblyPDUQ.insert(it, pdu);
-            break;
-          }
-          else if (it == --reassemblyPDUQ.end())
-          {
-            //'it' is last element
-            reassemblyPDUQ.insert(it + 1, pdu);
-            break;
-          }
-        }
-      }
-    }
-  }
+
+ state.addPDUToReassemblyQ(pdu);
 }
 
 
 void DTP::delimitFromRMT(DataTransferPDU* pdu)
 {
+  PDUQ_t* pduQ = state.getReassemblyPDUQ();
 
-  for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); )
+  for (PDUQ_t::iterator it = pduQ->begin(); it != pduQ->end(); )
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
 
     //TODO B1 add support for out of order SDU delivery
@@ -397,7 +301,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
         delete (*it);
 
-        it = reassemblyPDUQ.erase(it);
+        it = pduQ->erase(it);
       }
     }
   }
@@ -738,8 +642,9 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
 
       bool dup = false;
-      std::vector<DataTransferPDU*>::iterator it;
-      for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+      PDUQ_t::iterator it;
+      PDUQ_t* pduQ =  state.getReassemblyPDUQ();
+      for (it = pduQ->begin(); it != pduQ->end(); ++it)
       {
         if ((*it)->getSeqNum() == pdu->getSeqNum())
         {
@@ -840,16 +745,6 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     //Fi
   }
 }
-
-
-
-//void DTP::handleDTPSendingRateTimer(SendingRateTimer* timer)
-//{
-//  //TODO A! Every time SendingRate is reseted/updated this timer is reseted (or at least SHOULD be!)
-//  dtcp->flowControl->pdusSentInTimeUnit = 0;
-//  state.setRateFullfilled(false);
-//
-//}
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)
 {
@@ -1243,51 +1138,9 @@ void DTP::sendAckOnlyPDU(unsigned int seqNum)
   sendToRMT(ackPDU);
 }
 
-
-//void DTP::runRxTimerExpiryPolicy(RxExpiryTimer* timer)
-//{
-//
-//  DataTransferPDU* pdu = timer->getPdu();
-//
-//  if (timer->getExpiryCount() == dtcp->rxControl->dataReXmitMax + 1)
-//  {
-//    //TODO A! Indicate an error "Unable to maintain the QoS for this connection"
-//    std::vector<RxExpiryTimer*>::iterator it;
-//    for (it = rxQ.begin(); it != rxQ.end();)
-//    {
-//      if (timer == *it)
-//      {
-//        delete (*it)->getPdu();
-//        cancelEvent((*it));
-//        delete (*it);
-//        rxQ.erase(it);
-//        return;
-//      }
-//    }
-//  }
-//  else
-//  {
-//
-//    DataTransferPDU* dup = pdu->dup();
-//    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-//    std::ostringstream out;
-//    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
-//
-//    bubble(out.str().c_str());
-//    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-//    sendToRMT(dup);
-//
-//    timer->setExpiryCount(timer->getExpiryCount() + 1);
-//  }
-//  schedule(timer);
-//
-//}
-
 void DTP::sendControlAckPDU()
 {
   Enter_Method_Silent();
-
-//  return;
 
 
   ControlAckPDU* ctrlAckPdu = new ControlAckPDU();
@@ -1440,8 +1293,9 @@ void DTP::svUpdate(unsigned int seqNum)
   if(state.getRcvLeftWinEdge()  == seqNum){
     state.incRcvLeftWindowEdge();
 
-    std::vector<DataTransferPDU*>::iterator it;
-    for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+    PDUQ_t::iterator it;
+    PDUQ_t* pduQ = state.getReassemblyPDUQ();
+    for (it = pduQ->begin(); it != pduQ->end(); ++it)
     {
       if((*it)->getSeqNum() == state.getRcvLeftWinEdge()){
         state.incRcvLeftWindowEdge();
@@ -1490,12 +1344,9 @@ void DTP::svUpdate(unsigned int seqNum)
 
 void DTP::flushReassemblyPDUQ()
 {
-  std::vector<DataTransferPDU*>::iterator it;
-  for (it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end();)
-  {
-    delete (*it);
-    it = reassemblyPDUQ.erase(it);
-  }
+
+  state.clearReassemblyPDUQ();
+
 }
 
 
@@ -1510,14 +1361,7 @@ void DTP::schedule(DTPTimers *timer, double time)
 
   switch (timer->getType())
   {
-//    case (DTP_RX_EXPIRY_TIMER): {
-//      //TODO A! Expiry Timer time interval
-//      RxExpiryTimer* rxExpTimer = (RxExpiryTimer*)timer;
-//      rxExpTimer->setSent(simTime().dbl());
-//      scheduleAt(simTime() + getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
-//
-//      break;
-//    }
+
     case (DTP_SENDER_INACTIVITY_TIMER): {
 
       //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!

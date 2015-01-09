@@ -67,11 +67,17 @@ void DTPState::clearPDUQ(std::vector<DataTransferPDU*>* pduQ)
 void DTPState::clearClosedWindowQ()
 {
   clearPDUQ(&closedWindowQ);
+
+}
+
+void DTPState::clearReassemblyPDUQ()
+{
+  clearPDUQ(&reassemblyPDUQ);
 }
 
 DTPState::~DTPState() {
 
-
+  clearReassemblyPDUQ();
   clearClosedWindowQ();
 }
 
@@ -301,3 +307,61 @@ void DTPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
 
     closedWindowQ.push_back(pdu);
 }
+
+std::vector<DataTransferPDU*>* DTPState::getReassemblyPDUQ()
+{
+  return &reassemblyPDUQ;
+}
+
+void DTPState::pushBackToReassemblyPDUQ(DataTransferPDU* pdu)
+{
+//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+
+  reassemblyPDUQ.push_back(pdu);
+}
+
+void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
+{
+
+  if (pdu != NULL)
+   {
+     if (reassemblyPDUQ.empty())
+     {
+       reassemblyPDUQ.push_back(pdu);
+     }
+     else
+     {
+       if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
+       {
+         reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
+       }
+       else
+       {
+         for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+         {
+           if ((*it)->getSeqNum() == pdu->getSeqNum())
+           {
+             //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
+             //TODO A1 Throw Error.
+             exit(EXIT_FAILURE);
+           }
+           else if ((*it)->getSeqNum() > pdu->getSeqNum())
+           {
+             /* Put the incoming PDU before one with bigger seqNum */
+             reassemblyPDUQ.insert(it, pdu);
+             break;
+           }
+           else if (it == --reassemblyPDUQ.end())
+           {
+             //'it' is last element
+             reassemblyPDUQ.insert(it + 1, pdu);
+             break;
+           }
+         }
+       }
+     }
+   }
+}
+
+
+

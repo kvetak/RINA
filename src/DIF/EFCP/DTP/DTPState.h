@@ -70,6 +70,10 @@ private:
     unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
     std::vector<DataTransferPDU*> closedWindowQ;
 
+
+    std::vector<DataTransferPDU*> reassemblyPDUQ;
+
+
     bool partDeliv; /* Partial Delivery of SDUs is Allowed */
     bool incompDeliv; /* Delivery of Incomplete SDUs is Allowed */
     //queue<PDU,timer>rexmsnQ; //The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
@@ -97,6 +101,7 @@ private:
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
 
     void clearPDUQ(std::vector<DataTransferPDU*>* pduQ);
+
 
 public:
     DTPState();
@@ -160,6 +165,11 @@ public:
     std::vector<DataTransferPDU*>* getClosedWindowQ();
     void pushBackToClosedWinQ(DataTransferPDU* pdu);
     void clearClosedWindowQ();
+    std::vector<DataTransferPDU*>* getReassemblyPDUQ();
+    void pushBackToReassemblyPDUQ(DataTransferPDU* pdu);
+    void addPDUToReassemblyQ(DataTransferPDU* pdu);
+    void clearReassemblyPDUQ();
+
 };
 
 #endif /* DTPSTATE_H_ */
