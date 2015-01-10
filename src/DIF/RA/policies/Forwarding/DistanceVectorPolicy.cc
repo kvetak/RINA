@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #include "DistanceVectorPolicy.h"
 #include "PDUFwdTabGenerator.h"
@@ -21,9 +21,9 @@
 
 Define_Module(DistanceVectorPolicy);
 
-/*
- * Class constructor/destructors stuff.
- */
+//
+// Class constructor/destructors stuff.
+//
 
 DistanceVectorPolicy::DistanceVectorPolicy()
 {
@@ -35,9 +35,9 @@ DistanceVectorPolicy::~DistanceVectorPolicy()
     // Do nothing...
 }
 
-/*
- * Class procedures sorted by name.
- */
+//
+// Class procedures sorted by name.
+//
 
 void DistanceVectorPolicy::computeForwardingTable()
 {
@@ -49,11 +49,11 @@ void DistanceVectorPolicy::computeForwardingTable()
     NetworkState * netState = fwdtg->getNetworkState();
     NeighborState * neiState = fwdtg->getNeighborhoodState();
 
-    /* So, when we need to build up the forwarding table from scratch then
-     * we start from our neighbors alone.
-     */
+    // So, when we need to build up the forwarding table from scratch then
+    // we start from our neighbors alone.
+    //
 
-    /* Maintain only information about the neighborhood. */
+    // Maintain only information about the neighborhood.
     for(NIter it = netState->begin(); it != netState->end(); ++it )
     {
         bool rem = false;
@@ -63,13 +63,13 @@ void DistanceVectorPolicy::computeForwardingTable()
         {
             PDUForwardingTableEntry * e = (*et);
 
-            /* It's not a neighbor. */
+            // It's not a neighbor.
             if(!(e->getDestAddr() == i->getDestination()))
             {
                 rem = true;
                 break;
             }
-            /* It's a neighbor! Repopulate the forwarding table. */
+            // It's a neighbor! Repopulate the forwarding table.
             else
             {
                 fwdtg->getForwardingTable()->insert(e->getDestAddr(), e->getQosId(), e->getPort());
@@ -145,13 +145,13 @@ void DistanceVectorPolicy::handleMessage(cMessage *msg)
 
 void DistanceVectorPolicy::initialize()
 {
-    /* Display active policy name. */
+    // Display active policy name.
     PDUFTGPolicy::initialize();
 
-    /* Default timeout 30 seconds. */
+    // Default timeout 30 seconds.
     setUpdateTimeout(30);
 
-    /* Start the forwarding update timer routine. */
+    // Start the forwarding update timer routine.
     scheduleAt(
         simTime() + getUpdateTimeout(),
         new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
@@ -159,7 +159,7 @@ void DistanceVectorPolicy::initialize()
 
 void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
 {
-    /* Callable from other modules. */
+    // Callable from other modules.
     Enter_Method("insertNewFlow()");
 
     if(!fwdtg)
@@ -167,41 +167,44 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
         return;
     }
 
-    /* Assign a metric in the newly inserted flow... */
+    // Assign a metric in the newly inserted flow...
     FSInfo * i = fwdtg->netInfoExists(addr,qos);
-    /* This flow has hop 1 because it's a neighbor. */
+    // This flow has hop 1 because it's a neighbor.
     i->setMetric(1);
 
-    /* Add the entry in the table. */
+    // Add the entry in the table.
     fwdtg->getForwardingTable()->insert(addr, qos, port);
+
+    // Debug the actual state of the network.
+    pduftg_debug(fwdtg->netInfo());
 }
 
 void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
 {
     NetworkState * arrived = info->getInfo();
 
-    /* Scan the arrived informations. */
+    // Scan the arrived informations.
     for(NIter i = arrived->begin(); i != arrived->end(); ++i)
     {
         bool insert = false;
 
         FSInfo * eval = (*i);
-        /* Info here are stored with us as source. */
+        // Info here are stored with us as source.
         FSInfo * info = fwdtg->netInfoExists(
             eval->getDestination(),
             eval->getQoSID());
 
-        /* Do not consider info over yourself. */
+        // Do not consider info over yourself.
         if(eval->getDestination().getApname().getName() ==
             fwdtg->getIpcAddress().getApname().getName())
         {
             continue;
         }
 
-        /* We already have such information. */
+        // We already have such information.
         if(info)
         {
-            /* It's a better metric? */
+            // It's a better metric?
             if(eval->getMetric() + 1 < info->getMetric())
             {
                 fwdtg->getForwardingTable()->remove(info->getDestination(), info->getQoSID());
@@ -211,14 +214,14 @@ void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
             }
         }
         else
-        /* The info does not exists. */
+        // The info does not exists.
         {
             insert = true;
         }
 
         if(insert)
         {
-            /* It's a better metric; pass through this sender from now on... */
+            // It's a better metric; pass through this sender from now on...
             PDUForwardingTableEntry * en = fwdtg->neighborExists(eval->getSource());
 
             if(!en)
@@ -229,13 +232,14 @@ void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
 
             RMTPort * p = en->getPort();
 
-            /* Insert the entry into the tables. */
+            // Insert the entry into the tables.
             fwdtg->insertNetInfo(eval->getDestination(), eval->getQoSID(), p, eval->getMetric() + 1);
             fwdtg->getForwardingTable()->insert(eval->getDestination(), eval->getQoSID(), p);
         }
     }
 
-    EV << "Actual state of the network information table:\n" << fwdtg->netInfo();
+    // Debug the actual state of the network.
+    pduftg_debug(fwdtg->netInfo());
 }
 
 FSUpdateInfo * DistanceVectorPolicy::prepareFSUpdate(Address destination)

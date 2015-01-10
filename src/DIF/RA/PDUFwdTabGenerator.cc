@@ -27,15 +27,11 @@
 #include "StaticRoutingPolicy.h"
 #include "DistanceVectorPolicy.h"
 
-Define_Module(PDUFwdTabGenerator);
-
 #ifdef PDUFTG_PRIVATE_DEBUG
-#include <iostream>
-#include <fstream>
-
-// Only one instance.
 std::ofstream pduftg_debug_file;
 #endif
+
+Define_Module(PDUFwdTabGenerator);
 
 NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
 {
@@ -64,7 +60,10 @@ NetworkState * PDUFwdTabGenerator::getNetworkState()
 
 void PDUFwdTabGenerator::finish()
 {
-
+#ifdef PDUFTG_PRIVATE_DEBUG
+    pduftg_debug_file.flush();
+    pduftg_debug_file.close();
+#endif
 }
 
 void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
@@ -76,7 +75,7 @@ void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
     }
     else
     {
-        EV << "PDUFTG Error: no forwarding policy selected! I don't know what to do... :S\n";
+        pduftg_debug("PDUFTG Error: no forwarding policy selected! I don't know what to do...\n");
     }
 }
 
@@ -145,7 +144,7 @@ void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPor
     // What to do if no policy has been set?
     else
     {
-        EV << "PDUFTG Error: no forwarding policy selected! I don't know what to do... :S\n";
+        pduftg_debug("PDUFTG Error: no forwarding policy selected! I don't know what to do...\n");
     }
 }
 
@@ -205,11 +204,6 @@ std::string PDUFwdTabGenerator::neiInfo()
         os << "\n";
     }
 
-#ifdef PDUFTG_PRIVATE_DEBUG
-    pduftg_debug_file << os.rdbuf();
-    pduftg_debug_file.flush();
-#endif
-
     return os.str();
 }
 
@@ -235,11 +229,6 @@ std::string PDUFwdTabGenerator::netInfo()
 
         os << "]\n";
     }
-
-#ifdef PDUFTG_PRIVATE_DEBUG
-    pduftg_debug_file << os.rdbuf();
-    pduftg_debug_file.flush();
-#endif
 
     return os.str();
 }
@@ -334,7 +323,7 @@ void PDUFwdTabGenerator::removeNetInfo(FSInfo * info)
 
 void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
 {
-    EV << getFullPath() << " Signal an update to " << info->getDestination() << "\n";
+    pduftg_debug(" Signal an update to " << info->getDestination() << "\n");
 
     // Emit the signal. RIBd shall be there to listen...
     emit(sigPDUFTGFwdInfoUpdate, info);

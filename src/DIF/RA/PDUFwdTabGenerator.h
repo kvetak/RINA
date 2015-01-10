@@ -28,6 +28,23 @@
 // With private debugging all the output will be also redirected to a text file.
 #define PDUFTG_PRIVATE_DEBUG
 
+#ifdef PDUFTG_PRIVATE_DEBUG
+
+#include <iostream>
+#include <fstream>
+
+extern std::ofstream pduftg_debug_file;
+
+// Log a string as a debug information.
+#define pduftg_debug(x)         pduftg_debug_file << this->getFullName() << "> " << x;
+
+#else
+
+// Log a string as a debug information.
+#define pduftg_debug(x)         EV << x;
+
+#endif
+
 #include <omnetpp.h>
 
 #include "ModuleAccess.h"
@@ -124,7 +141,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     // Check if the info is already present into the owned one.
     FSInfo * netInfoExists(Address dest, unsigned short qos);
 
-    // Prints the actual network info we have.
+    // Returns the actual string formatted network info we have.
     std::string netInfo();
 
     // Removes a network state information.
@@ -140,7 +157,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     // Check if the neighbor desired exists.
     PDUForwardingTableEntry * neighborExists(Address src);
 
-    // Prints the actual neighbor state.
+    // Returns the actual string formatted neighbor state.
     std::string neiInfo();
 
     // Removes a neighbor.

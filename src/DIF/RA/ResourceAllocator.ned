@@ -24,7 +24,7 @@ module ResourceAllocator
     parameters:
         @display("i=block/segm;bgb=486,352");
         string queueAllocPolicyName = default("SingleQueue");
-        string pduftgPolicyName = default("DistanceVectorPolicy");
+        string pduftgPolicyName = default("StaticRoutingPolicy");
         string queueIdGenName = default("SingleID");
 
     submodules:

@@ -64,7 +64,7 @@
         <IPC id="ipcProcess1">
             <RA>
                 <Flows>
-
+					<Flow apn="106_Layer11" qosCube="1"/>
                 </Flows>
             </RA>
         </IPC>
@@ -73,7 +73,7 @@
         <IPC id="ipcProcess1">
             <RA>
                 <Flows>
-
+					<Flow apn="107_Layer11" qosCube="1"/>
                 </Flows>
             </RA>
         </IPC>
@@ -82,7 +82,7 @@
         <IPC id="ipcProcess1">
             <RA>
                 <Flows>
-
+					<Flow apn="108_Layer11" qosCube="1"/>
                 </Flows>
             </RA>
         </IPC>
@@ -100,7 +100,6 @@
 		<IPC id="relayIpc">
             <RA>
                 <Flows>
-
                 </Flows>
             </RA>
         </IPC>
@@ -160,7 +159,8 @@
 		<IPC id="relayIpc">
             <RA>
                 <Flows>
-
+					<Flow apn="106_Layer11" qosCube="1"/>
+					<Flow apn="108_Layer11" qosCube="1"/>                
                 </Flows>
             </RA>
         </IPC>  
@@ -169,7 +169,6 @@
 		<IPC id="relayIpc">
             <RA>
                 <Flows>
-
                 </Flows>
             </RA>
         </IPC>  
