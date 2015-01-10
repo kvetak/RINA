@@ -61,6 +61,19 @@ unsigned int DTCP::getRcvrRate() const
   return dtcpState->getRcvrRate();
 }
 
+void DTCP::createPolicyModule(cModule* policy, const char* prefix, const char* name)
+{
+  if (std::string(par(name).stringValue()).empty())
+  {
+    policy = NULL;
+  }else{
+  std::stringstream moduleName;
+  moduleName << prefix << par(name).stringValue();
+  cModuleType* policyType = cModuleType::get(moduleName.str().c_str());
+  policy = policyType->createScheduleInit(name, getParentModule());
+  }
+}
+
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");
@@ -88,18 +101,21 @@ void DTCP::initialize(int step)
 
 
   //TODO A1 Load list of policies
-  if(true){
+  createPolicyModule(ecnPolicy, ECN_POLICY_PREFIX, ECN_POLICY_NAME);
+  createPolicyModule(rcvrFCPolicy, RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
+  createPolicyModule(rcvrAckPolicy, RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
+  createPolicyModule(receivingFCPolicy, RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
+  createPolicyModule(sendingAckPolicy, SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
+  createPolicyModule(lostControlPDUPolicy, LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
+  createPolicyModule(rcvrControlAckPolicy, RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
+  createPolicyModule(senderAckPolicy, SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
+  createPolicyModule(fcOverrunPolicy, FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
+  createPolicyModule(noOverridePeakPolicy, NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
+  createPolicyModule(txControlPolicy, TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
+  createPolicyModule(noRateSlowDownPolicy, NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
+  createPolicyModule(reconcileFCPolicy, RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
+  createPolicyModule(rateReductionPolicy, RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
 
-    std::stringstream moduleName;
-    moduleName << ECN_POLICY_PREFIX << par(ECN_POLICY_NAME).stringValue();
-
-    cModuleType* ecnPolicyType = cModuleType::get(moduleName.str().c_str());
-    ecnPolicy = (DTCPECNPolicyBase*)ecnPolicyType->createScheduleInit(ECN_POLICY_NAME, getParentModule());
-
-    moduleName.str("");
-    moduleName.clear();
-
-  }
 
 }
 
@@ -340,7 +356,7 @@ bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
   Enter_Method("FCOverrunPolicy");
   if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
     /* Default */
-    dtpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
     //TODO A2 Block further Write API calls on this port-id
     // eg. -> Create new CDAP Message type and send it upwards
     /* End default */
@@ -356,9 +372,9 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
   {
     /* Default */
     setSendingRateFullfilled(true);
-    if (dtpState->getClosedWinQueLen() < dtpState->getMaxClosedWinQueLen() - 1)
+    if (dtcpState->getClosedWinQueLen() < dtcpState->getMaxClosedWinQueLen() - 1)
     {
-      dtpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+      dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
 
     }
     /* End default */
@@ -368,7 +384,7 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 }
 
 
-bool DTCP::runTxControlPolicy(DTPState* dtpState)
+bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 {
   Enter_Method("TxControlPolicy");
   if (txControlPolicy == NULL || txControlPolicy->run(dtpState, dtcpState))
@@ -377,19 +393,20 @@ bool DTCP::runTxControlPolicy(DTPState* dtpState)
     /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
      And Set the ClosedWindow flag appropriately. */
     std::vector<DataTransferPDU*>::iterator it;
-    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
+//    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
     for (it = pduQ->begin();
-        it != pduQ->end() || (*it)->getSeqNum() <= dtp->dtcp->getSndRtWinEdge();)
+        it != pduQ->end() && (*it)->getSeqNum() <= getSndRtWinEdge();)
     {
 
       dtpState->pushBackToPostablePDUQ((*it));
-      dtpState->getGeneratedPDUQ()->erase(it);
+//      dtpState->getGeneratedPDUQ()->erase(it);
+      it = pduQ->erase(it);
 
     }
 
-    if (!dtpState->getGeneratedPDUQ()->empty())
+    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen())
     {
-      dtp->state.setClosedWindow(true);
+      dtcpState->setClosedWindow(true);
     }
     /* End default */
 
@@ -629,7 +646,7 @@ void DTCP::handleMessage(cMessage *msg){
 void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
   //TODO A1 Uncomment
-//  dtp->sendControlAckPDU();
+  dtp->sendControlAckPDU();
 
 }
 
@@ -728,11 +745,11 @@ void DTCP::redrawGUI()
 
     if (rxQ->empty())
     {
-      desc << "rxQ: empty" << "\n";
+      desc << "pduQ: empty" << "\n";
     }
     else
     {
-      desc << "rxQ: ";
+      desc << "pduQ: ";
       std::vector<DTCPRxExpiryTimer*>::iterator it;
       for (it = rxQ->begin(); it != rxQ->end(); ++it)
       {
@@ -740,6 +757,24 @@ void DTCP::redrawGUI()
       }
       desc << "\n";
     }
+
+
+    if (!dtcpState->getClosedWinQueLen())
+        {
+          desc << "closedWinQ: empty" << "\n";
+        }
+        else
+        {
+          desc << "closedWinQ: ";
+          std::vector<DataTransferPDU*>::iterator it;
+          std::vector<DataTransferPDU*>* pduQ;
+          pduQ = dtcpState->getClosedWindowQ();
+          for (it = pduQ->begin(); it != pduQ->end(); ++it)
+          {
+            desc << (*it)->getSeqNum() << " | ";
+          }
+          desc << "\n";
+        }
 
 
 

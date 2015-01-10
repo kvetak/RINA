@@ -196,6 +196,7 @@ class DTP : public cSimpleModule
     void setPduDroppingEnabled(bool pduDroppingEnabled);
 
     void flushAllQueuesAndPrepareToDie();
+    void createPolicyModule(cModule* policy, const char* prefix, const char* name);
 
   protected:
     virtual void handleMessage(cMessage *msg);

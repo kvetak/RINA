@@ -28,6 +28,9 @@ DTP::DTP()
   senderInactivityPolicy = NULL;
   initialSeqNumPolicy = NULL;
 
+
+
+
 }
 DTP::~DTP()
 {
@@ -36,6 +39,53 @@ DTP::~DTP()
   if(state.isDtcpPresent()){
 
   }
+
+}
+
+void DTP::createPolicyModule(cModule* policy, const char* prefix, const char* name)
+{
+
+  if (std::string(par(name).stringValue()).empty())
+  {
+    policy = NULL;
+  }
+  else
+  {
+    std::stringstream moduleName;
+    moduleName << prefix << par(name).stringValue();
+    cModuleType* policyType = cModuleType::get(moduleName.str().c_str());
+    policy = policyType->createScheduleInit(name, getParentModule());
+  }
+}
+
+void DTP::initialize(int step)
+{
+
+  initGates();
+  state.initDefaults();
+
+  //FIXME A! Set it based on QoS parameters
+  state.setWinBased(true);
+  state.setRxPresent(false);
+
+  if(state.isDtcpPresent()){
+    senderInactivityTimer = new SenderInactivityTimer();
+    rcvrInactivityTimer = new RcvrInactivityTimer();
+  }else{
+    senderInactivityTimer = NULL;
+    rcvrInactivityTimer = NULL;
+  }
+  par(RCVR_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RCVR_INACTIVITY_POLICY_NAME).stringValue());
+  par(SENDER_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(SENDER_INACTIVITY_POLICY_NAME).stringValue());
+  par(INITIAL_SEQ_NUM_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(INITIAL_SEQ_NUM_POLICY_NAME).stringValue());
+
+
+  createPolicyModule(rcvrInactivityPolicy, RCVR_INACTIVITY_POLICY_PREFIX, RCVR_INACTIVITY_POLICY_NAME);
+  createPolicyModule(senderInactivityPolicy, SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
+  createPolicyModule(initialSeqNumPolicy, INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
+
+
+//  redrawGUI();
 
 }
 
@@ -115,49 +165,14 @@ void DTP::redrawGUI()
       desc << "\n";
     }
   if(state.isDtcpPresent() && state.isWinBased()){
-    if (!state.getClosedWinQueLen())
-    {
-      desc << "closedWinQ: empty" << "\n";
-    }
-    else
-    {
-      desc << "closedWinQQ: ";
-      std::vector<DataTransferPDU*>::iterator it;
-      std::vector<DataTransferPDU*>* pduQ;
-      pduQ = state.getClosedWindowQ();
-      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-      {
-        desc << (*it)->getSeqNum() << " | ";
-      }
-      desc << "\n";
-    }
+
   }
 
   disp.setTagArg("t", 0, desc.str().c_str());
 
 }
 
-void DTP::initialize(int step)
-{
 
-  initGates();
-  state.initDefaults();
-
-  //FIXME A! Set it based on QoS parameters
-  state.setWinBased(true);
-  state.setRxPresent(false);
-
-  if(state.isDtcpPresent()){
-    senderInactivityTimer = new SenderInactivityTimer();
-    rcvrInactivityTimer = new RcvrInactivityTimer();
-  }else{
-    senderInactivityTimer = NULL;
-    rcvrInactivityTimer = NULL;
-  }
-
-//  redrawGUI();
-
-}
 
 /**
  *
@@ -521,11 +536,11 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
         dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
         dtcp->setSendingRate(flowPdu->getNewRate());
 
-        if (state.getClosedWinQueLen() > 0)
+        if (dtcp->getDTCPState()->getClosedWinQueLen() > 0)
         {
           /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
-          state.setClosedWindow(false);
-          trySendGenPDUs(state.getClosedWindowQ());
+          dtcp->getDTCPState()->setClosedWindow(false);
+          trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
 
         }
       }
@@ -900,22 +915,22 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
           if ((*it)->getSeqNum() <= dtcp->getSndRtWinEdge())
           {
             /* The Window is Open. */
-            dtcp->runTxControlPolicy(&state);
+            dtcp->runTxControlPolicy(&state, pduQ);
             /* Watchout because the current 'it' could be freed */
           }
           else
           {
             /* The Window is Closed */
-            state.setClosedWindow(true);
+            dtcp->getDTCPState()->setClosedWindow(true);
 
-          if(pduQ == state.getClosedWindowQ()){
+          if(pduQ == dtcp->getDTCPState()->getClosedWindowQ()){
               break;
             }
 
-            if (state.getClosedWinQueLen() < state.getMaxClosedWinQueLen() - 1)
+            if (dtcp->getDTCPState()->getClosedWinQueLen() < dtcp->getDTCPState()->getMaxClosedWinQueLen() - 1)
             {
               /* Put PDU on the closedWindowQueue */
-              state.pushBackToClosedWinQ((*it));
+              dtcp->getDTCPState()->pushBackToClosedWinQ((*it));
               /* I know it is nasty to access it directly */
               state.getGeneratedPDUQ()->erase(it);
 
@@ -947,7 +962,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
         }// end of RateBased
 
 
-        if (state.isClosedWindow() ^  dtcp->isSendingRateFullfilled())
+        if (dtcp->getDTCPState()->isClosedWindow() ^  dtcp->isSendingRateFullfilled())
         {
           dtcp->runReconcileFCPolicy(&state);
         }
@@ -1144,7 +1159,7 @@ void DTP::runSenderInactivityTimerPolicy()
   clearRxQ();
 
   //Discard any PDUs on the ClosedWindowQueue
-  state.clearClosedWindowQ();
+  dtcp->getDTCPState()->clearClosedWindowQ();
 
 
   //Send Control Ack PDU

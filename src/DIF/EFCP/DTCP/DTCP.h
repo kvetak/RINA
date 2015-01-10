@@ -157,7 +157,7 @@ public:
     bool runSenderAckPolicy(DTPState* dtpState);
     bool runFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
-    bool runTxControlPolicy(DTPState* dtpState);
+    bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
     bool runNoRateSlowDownPolicy(DTPState* dtpState);
     bool runReconcileFCPolicy(DTPState* dtpState);
     bool runRateReductionPolicy(DTPState* dtpState);
@@ -167,6 +167,7 @@ public:
 
 
     void redrawGUI();
+    void createPolicyModule(cModule* policy, const char* prefix, const char* name);
 
 protected:
     virtual void handleMessage(cMessage *msg);

@@ -36,6 +36,7 @@ const char* MOD_DTCP            = "dtcp";
 const char* MOD_EFCPI           = "efcpi_";
 
 //Module type paths
+const char* MOD_EFCP_PATH        = "rina.DIF.EFCP";
 const char* MOD_DTP_PATH        = "rina.DIF.EFCP.DTP.DTP";
 const char* MOD_DTCP_PATH       = "rina.DIF.EFCP.DTCP.DTCP";
 

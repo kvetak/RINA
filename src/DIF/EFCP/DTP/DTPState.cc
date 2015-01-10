@@ -27,7 +27,7 @@ void DTPState::initDefaults(){
 
   currentPDU = NULL;
 
-  closedWindow = false;
+
 
   dropDup = 0;
 
@@ -38,7 +38,6 @@ void DTPState::initDefaults(){
   winBased = false;
   rateBased = false;
   incompDeliv = false;
-  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
   maxFlowPDUSize = MAX_PDU_SIZE;
 
   //TODO A1
@@ -64,11 +63,7 @@ void DTPState::clearPDUQ(std::vector<DataTransferPDU*>* pduQ)
   }
 }
 
-void DTPState::clearClosedWindowQ()
-{
-  clearPDUQ(&closedWindowQ);
 
-}
 
 void DTPState::clearReassemblyPDUQ()
 {
@@ -88,21 +83,8 @@ void DTPState::clearPostablePDUQ()
 DTPState::~DTPState() {
 
   clearReassemblyPDUQ();
-  clearClosedWindowQ();
   clearGeneratedPDUQ();
   clearPostablePDUQ();
-}
-
-bool DTPState::isClosedWindow() const {
-    return closedWindow;
-}
-
-void DTPState::setClosedWindow(bool closedWindowQue) {
-    this->closedWindow = closedWindowQue;
-}
-
-unsigned int DTPState::getClosedWinQueLen() const {
-    return closedWindowQ.size();
 }
 
 bool DTPState::isDtcpPresent() const {
@@ -119,14 +101,6 @@ bool DTPState::isIncompDeliv() const {
 
 void DTPState::setIncompDeliv(bool incompDeliv) {
     this->incompDeliv = incompDeliv;
-}
-
-unsigned int DTPState::getMaxClosedWinQueLen() const {
-    return maxClosedWinQueLen;
-}
-
-void DTPState::setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen) {
-    this->maxClosedWinQueLen = maxClosedWinQueLen;
 }
 
 unsigned int DTPState::getMaxFlowPduSize() const {
@@ -304,21 +278,12 @@ const PDU* DTPState::getCurrentPdu() const
   return currentPDU;
 }
 
-std::vector<DataTransferPDU*>* DTPState::getClosedWindowQ()
-{
-  return &closedWindowQ;
-}
-
 void DTPState::setCurrentPdu(PDU* currentPdu)
 {
   currentPDU = currentPdu;
 }
 
-void DTPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
-//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
-    closedWindowQ.push_back(pdu);
-}
 
 std::vector<DataTransferPDU*>* DTPState::getReassemblyPDUQ()
 {

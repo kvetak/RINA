@@ -30,6 +30,8 @@ void DTCPState::initFC()
   rcvRtWinEdge = rcvCredit;
   sndRtWinEdge = sndCredit;
   sendingRateFullfilled = false;
+  closedWindow = false;
+  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
 
   //TODO A1 load from some config
   rcvBuffersPercentFree = 100;
@@ -120,7 +122,8 @@ void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 
 DTCPState::~DTCPState()
 {
-  // TODO Auto-generated destructor stub
+  clearClosedWindowQ();
+  clearRxQ();
 }
 
 unsigned int DTCPState::getRcvCredit() const
@@ -236,17 +239,67 @@ void DTCPState::pushBackToRxQ(DTCPRxExpiryTimer* timer)
   rxQ.push_back(timer);
 }
 
-void DTCPState::clearRxQ()
+void DTCPState::clearPDUQ(PDUQ_t* pduQ)
 {
-  std::vector<DTCPRxExpiryTimer*>::iterator it;
-  for (it = rxQ.begin(); it != rxQ.end();)
+  PDUQ_t::iterator it;
+  for (it = pduQ->begin(); it != pduQ->end();)
   {
-    delete (*it)->getPdu();
-    cancelEvent((*it));
     delete (*it);
-    it = rxQ.erase(it);
+    it = pduQ->erase(it);
   }
 }
+
+void DTCPState::clearRxQ()
+{
+
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+    for (it = rxQ.begin(); it != rxQ.end();)
+    {
+      delete (*it)->getPdu();
+      cancelAndDelete((*it));
+      it = rxQ.erase(it);
+    }
+
+
+}
+
+
+void DTCPState::clearClosedWindowQ()
+{
+  clearPDUQ(&closedWindowQ);
+
+}
+
+void DTCPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
+//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+
+    closedWindowQ.push_back(pdu);
+}
+
+std::vector<DataTransferPDU*>* DTCPState::getClosedWindowQ()
+{
+  return &closedWindowQ;
+}
+bool DTCPState::isClosedWindow() const {
+    return closedWindow;
+}
+
+void DTCPState::setClosedWindow(bool closedWindowQue) {
+    this->closedWindow = closedWindowQue;
+}
+
+unsigned int DTCPState::getClosedWinQueLen() const {
+    return closedWindowQ.size();
+}
+
+unsigned int DTCPState::getMaxClosedWinQueLen() const {
+    return maxClosedWinQueLen;
+}
+
+void DTCPState::setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen) {
+    this->maxClosedWinQueLen = maxClosedWinQueLen;
+}
+
 
 bool DTCPState::isSendingRateFullfilled() const {
     return sendingRateFullfilled;

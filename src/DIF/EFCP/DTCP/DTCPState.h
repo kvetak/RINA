@@ -66,10 +66,13 @@ class DTCPState : public cSimpleModule
     /* Not found in specs but needed */
     unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
 
+    bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
+    unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
+    std::vector<DataTransferPDU*> closedWindowQ;
 
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
-
+    void clearPDUQ(PDUQ_t* pduQ);
 
   public:
     DTCPState();
@@ -111,6 +114,16 @@ class DTCPState : public cSimpleModule
     std::vector<DTCPRxExpiryTimer*>* getRxQ();
     void pushBackToRxQ(DTCPRxExpiryTimer* timer);
     void clearRxQ();
+
+    bool isClosedWindow() const;
+    void setClosedWindow(bool closedWindow);
+    unsigned int getClosedWinQueLen() const;
+    std::vector<DataTransferPDU*>* getClosedWindowQ();
+    void pushBackToClosedWinQ(DataTransferPDU* pdu);
+    void clearClosedWindowQ();
+
+    unsigned int getMaxClosedWinQueLen() const;
+    void setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen);
 
     /* Maybe */
     unsigned int getRxQLen();

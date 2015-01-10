@@ -57,16 +57,6 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
   cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
 
-  QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
-  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
-  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
-  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
-  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
-  dtpModule->setFlow(flow);
-  dtpModule->setQosCube(qosCube);
-  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
-  dtpModule->finalizeParameters();
-
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -86,9 +76,14 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
     tmpEfcpEntry->setFlow(flow);
   }
 
-
-
-
+  QosCube qosCube = resourceAllocator->getQosCubeById(flow->getConId().getQoSId());
+  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+//  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
+//  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
+//  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
+  dtpModule->setFlow(flow);
+  dtpModule->setQosCube(qosCube);
+  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);

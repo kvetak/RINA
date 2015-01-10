@@ -33,7 +33,7 @@
 /*
  *
  */
-class DTCPNoOverridePeakPolicyBase
+class DTCPNoOverridePeakPolicyBase : public cSimpleModule
 {
   public:
     DTCPNoOverridePeakPolicyBase();

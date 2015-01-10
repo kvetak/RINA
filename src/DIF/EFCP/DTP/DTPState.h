@@ -34,7 +34,7 @@
 
 #include "PDU.h"
 
-#define MAX_CLOSED_WIN_Q_LEN 20
+
 
 typedef enum
 {
@@ -65,10 +65,8 @@ private:
     bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
     bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
 
-    bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
-//    unsigned int closedWinQueLen; //The number of PDUs queued to send because the flow control window is shut.
-    unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
-    std::vector<DataTransferPDU*> closedWindowQ;
+    /* Move to DTCPState! */
+
 
 
     PDUQ_t reassemblyPDUQ;
@@ -114,15 +112,11 @@ public:
 
     void incDropDup(){dropDup++;}
     bool isFCPresent(){ return winBased || rateBased;}
-    bool isClosedWindow() const;
-    void setClosedWindow(bool closedWindow);
-    unsigned int getClosedWinQueLen() const;
+
     bool isDtcpPresent() const;
     void setDtcpPresent(bool dtcpPresent);
     bool isIncompDeliv() const;
     void setIncompDeliv(bool incompDeliv);
-    unsigned int getMaxClosedWinQueLen() const;
-    void setMaxClosedWinQueLen(unsigned int maxClosedWinQueLen);
     unsigned int getMaxFlowPduSize() const;
     void setMaxFlowPduSize(unsigned int maxFlowPduSize);
     unsigned int getMaxFlowSduSize() const;
@@ -165,9 +159,7 @@ public:
     void setEcnSet(bool ecnSet);
     const PDU* getCurrentPdu() const;
     void setCurrentPdu(PDU* currentPdu);
-    std::vector<DataTransferPDU*>* getClosedWindowQ();
-    void pushBackToClosedWinQ(DataTransferPDU* pdu);
-    void clearClosedWindowQ();
+
     std::vector<DataTransferPDU*>* getReassemblyPDUQ();
     void pushBackToReassemblyPDUQ(DataTransferPDU* pdu);
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
