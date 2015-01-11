@@ -25,6 +25,12 @@ void QueueIDGenBase::initialize()
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
+
+    onPolicyInit();
+}
+
+void QueueIDGenBase::onPolicyInit()
+{
 }
 
 void QueueIDGenBase::handleMessage(cMessage *msg)
@@ -40,3 +46,4 @@ std::string QueueIDGenBase::generateID(Flow* flow)
 {
     return std::string("");
 }
+

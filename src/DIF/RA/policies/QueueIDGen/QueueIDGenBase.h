@@ -30,6 +30,12 @@
 class QueueIDGenBase : public cSimpleModule
 {
   public:
+
+    /**
+     * A hook method invoked after the initial setup of policy module.
+     */
+    virtual void onPolicyInit();
+
     /**
      * Generates queue ID for given PDU (this is usually invoked by RMT).
      *

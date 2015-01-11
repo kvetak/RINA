@@ -33,6 +33,8 @@ void QueueAllocBase::initialize()
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
+
+    onPolicyInit();
 }
 
 void QueueAllocBase::handleMessage(cMessage *msg)
