@@ -19,6 +19,7 @@
 #include <omnetpp.h>
 
 #include "RMTQueue.h"
+#include "PDU_m.h"
 
 /**
  * Noop base class for the RMT monitoring policy.
@@ -37,11 +38,20 @@ class RMTQMonitorBase : public cSimpleModule
     virtual void onMessageArrival(RMTQueue* queue);
 
     /**
-     * A hook method invoked after a PDU gets dropped from a queue.
+     * A hook method invoked after a PDU gets released from a queue & sent.
      *
      * @param queue pointer to the queue
      */
-    virtual void onMessageDrop(RMTQueue* queue);
+    virtual void onMessageDeparture(RMTQueue* queue);
+
+    /**
+     * A hook method invoked after a PDU gets dropped from a queue.
+     * Note: the PDU object is discarded after invocation of this method.
+     *
+     * @param queue pointer to the queue
+     * @param pdu PDU being dropped
+     */
+    virtual void onMessageDrop(RMTQueue* queue, const cMessage* pdu);
 
     /**
      * A hook method invoked after a queue is created.
@@ -58,6 +68,7 @@ class RMTQMonitorBase : public cSimpleModule
     virtual void preQueueRemoval(RMTQueue* queue);
 
   protected:
+
     /**
      * A hook method invoked after the initial setup of policy module.
      */
@@ -69,6 +80,7 @@ class RMTQMonitorBase : public cSimpleModule
     virtual void handleMessage(cMessage* msg);
 
   private:
+
     /**
      *  Module initialization routine setting up parameters for GUI.
      *  Inherited policies should be using onPolicyInit() instead.

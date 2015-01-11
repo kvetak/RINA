@@ -35,6 +35,18 @@ void RMTQMonitorBase::onPolicyInit()
 {
 }
 
+void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cMessage* pdu)
+{
+}
+
 void RMTQMonitorBase::postQueueCreation(RMTQueue* queue)
 {
 }
@@ -43,11 +55,4 @@ void RMTQMonitorBase::preQueueRemoval(RMTQueue* queue)
 {
 }
 
-void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
-{
-}
 
-void RMTQMonitorBase::onMessageDrop(RMTQueue* queue)
-{
-
-}

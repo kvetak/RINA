@@ -23,10 +23,16 @@ void RMTPort::initialize()
 {
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
-    ready = true;
+    ready = false;
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
+
+    redrawGUI();
+
+    sigRMTPortPDURcvd = registerSignal(SIG_RMT_PortPDURcvd);
+    sigRMTPortPDUSent = registerSignal(SIG_RMT_PortPDUSent);
+    sigRMTPortReadyToServe = registerSignal(SIG_RMT_PortReadyToServe);
 }
 
 void RMTPort::handleMessage(cMessage *msg)
@@ -56,10 +62,14 @@ void RMTPort::handleMessage(cMessage *msg)
             EV << "this type of message isn't supported!" << endl;
         }
 
+        emit(sigRMTPortPDURcvd, this);
     }
     else if (northInputGates.count(msg->getArrivalGate()))
     {
         send(msg, southOutputGate);
+        emit(sigRMTPortPDUSent, this);
+        setReady();
+        emit(sigRMTPortReadyToServe, this);
     }
 }
 

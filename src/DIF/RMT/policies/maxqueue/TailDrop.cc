@@ -22,7 +22,6 @@ bool TailDrop::run(RMTQueue* queue)
     if (queue->getLength() >= queue->getMaxLength())
     {
         EV << "TailDrop: dropping message for queue " << queue->getName() << "!" << endl;
-        queue->dropLast();
         return true;
     }
     else

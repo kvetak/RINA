@@ -22,7 +22,6 @@ bool ECNMarker::run(RMTQueue* queue)
     if (queue->getLength() >= queue->getMaxLength())
     {
         EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        queue->dropLast();
         return true;
     }
     else

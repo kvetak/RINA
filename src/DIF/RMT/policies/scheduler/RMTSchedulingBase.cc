@@ -38,12 +38,11 @@ void RMTSchedulingBase::onPolicyInit()
 
 void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
 {
-    port->setReady();
-
     if (direction == RMTQueue::OUTPUT)
     {
         if (waitingOnOutput[port] > 0)
         {
+            port->setBusy();
             waitingOnOutput[port] -= 1;
             processQueues(port, RMTQueue::OUTPUT);
         }

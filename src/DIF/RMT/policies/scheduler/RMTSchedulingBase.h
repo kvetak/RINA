@@ -30,6 +30,7 @@
 class RMTSchedulingBase : public cSimpleModule
 {
   public:
+
     /**
      * A hook method invoked after some queue has data to send.
      *
@@ -60,8 +61,6 @@ class RMTSchedulingBase : public cSimpleModule
      * Handler for OMNeT++ module messages (probably not of much use here).
      */
     void handleMessage(cMessage *msg);
-
-
 
     /**
      * Counts of PDUs waiting in output queues.

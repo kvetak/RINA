@@ -67,7 +67,7 @@ void RMT::initialize()
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
 
-    // listen for a signal indicating that a new message has left a queue
+    // listen for a signal indicating that a new message has left a port
     lisRMTMsgSent = new LisRMTPDUSent(this);
     getParentModule()->subscribe(SIG_RMT_MessageSent, lisRMTMsgSent);
 }
@@ -79,9 +79,9 @@ void RMT::initialize()
  *
  * @param obj RMT queue object
  */
-void RMT::invokeQueuePolicies(cObject* obj)
+void RMT::invokeQueueArrivalPolicies(cObject* obj)
 {
-    Enter_Method("invokeQueuePolicies()");
+    Enter_Method("invokeQueueArrivalPolicies()");
 
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
 
@@ -91,14 +91,17 @@ void RMT::invokeQueuePolicies(cObject* obj)
     // invoke maxQueue policy if applicable
     if (queue->getLength() >= queue->getThreshLength())
     {
-        // if the PDU got dropped, finish it here
+        // if the PDU has to be dropped, finish it here
         if (maxQPolicy->run(queue))
         {
-            qMonPolicy->onMessageDrop(queue);
+            const cMessage* dropped = queue->dropLast();
+            qMonPolicy->onMessageDrop(queue, dropped);
+            delete dropped;
             return;
         }
     }
 
+    // finally, invoke the scheduling policy
     schedPolicy->processQueues(rmtQM->getQueueToPortMapping(queue), queue->getType());
 }
 
@@ -107,10 +110,11 @@ void RMT::invokeQueuePolicies(cObject* obj)
  *
  * @param obj RMT queue object
  */
-void RMT::finalizePortService(cObject* obj)
+void RMT::invokeQueueDeparturePolicies(cObject* obj)
 {
-    Enter_Method("finalizeQueueService()");
+    Enter_Method("invokeQueueDeparturePolicies()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+    qMonPolicy->onMessageDeparture(queue);
     schedPolicy->finalizeService(rmtQM->getQueueToPortMapping(queue), queue->getType());
 }
 
@@ -179,11 +183,11 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
 }
 
 /**
- * Wrapper around forwarding table lookup returning the target output gate itself.
+ * A wrapper for forwarding table lookup.
  *
  * @param destAddr destination address
  * @param qosId qos-id
- * @return RMT gate leading to an output RMT queue
+ * @return output port
  */
 RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
 {

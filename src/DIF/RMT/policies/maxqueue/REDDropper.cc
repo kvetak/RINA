@@ -44,7 +44,6 @@ bool REDDropper::dropOrMark(RMTQueue* queue)
     else
     {
         EV << "REDDropper: executing tail drop in " << queue->getFullName() << endl;
-        queue->dropLast();
         return true;
     }
 }

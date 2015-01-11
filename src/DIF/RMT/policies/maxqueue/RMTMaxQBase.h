@@ -32,8 +32,10 @@ class RMTMaxQBase : public cSimpleModule
 
     /**
      * A hook method invoked when a queue length is greater or equal to its threshold.
+     * Makes a decision about whether to drop the arrived PDU.
      *
      * @param queue pointer to the queue
+     * @return true if the PDU should be dropped, false otherwise
      */
     virtual bool run(RMTQueue* queue);
 

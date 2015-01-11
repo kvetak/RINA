@@ -150,12 +150,7 @@ void RA::initFlowAlloc()
 }
 
 /**
- * Sets up RMT's mode of operation by "layer" of this IPC process
- *
- * @param m1 first module
- * @param m2 second module
- * @param n1 first module gate name
- * @param n2 second module gate name
+ * Sets up RMT's mode of operation by "recursion level" of this IPC process
  */
 void RA::setRmtMode()
 {
@@ -371,8 +366,6 @@ void RA::interconnectModules(cModule* m1, cModule* m2, std::string n1, std::stri
 /**
  * Connects the medium defined in NED to the RMT module.
  * Used only for bottom IPC processes in a computing systems.
- *
- * @return mock (N-1)-port for the interface
  */
 void RA::bindMediumToRMT()
 {
@@ -393,6 +386,7 @@ void RA::bindMediumToRMT()
 
     // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtQM->addPort(NULL);
+    port->setReady();
     // connect the port to the bottom
     interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
 
@@ -495,8 +489,9 @@ void RA::createNM1Flow(Flow *flow)
         // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
         // update the PDU forwarding table
-        // FIXME: this
         fwTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
+        // TODO: remove this when management isn't piggy-backed anymore
+        port->setReady();
     }
     else
     {
@@ -558,6 +553,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flTable->findFlowByDstApni(dstApn.getName(), qosId)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+    port->setReady();
 }
 
 /**
@@ -616,6 +612,7 @@ void RA::postNM1FlowAllocation(Flow* flow)
 
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+    item->getRmtPort()->setReady();
 }
 
 /**

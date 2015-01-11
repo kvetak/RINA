@@ -60,8 +60,8 @@ class RMT : public RMTBase
     bool getRelayStatus() { return relayOn; };
     bool isOnWire() { return onWire; };
 
-    void invokeQueuePolicies(cObject* obj);
-    void finalizePortService(cObject* obj);
+    void invokeQueueArrivalPolicies(cObject* obj);
+    void invokeQueueDeparturePolicies(cObject* obj);
 
   protected:
     void initialize();

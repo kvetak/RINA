@@ -36,7 +36,9 @@ void RMTQueue::initialize()
 {
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
+    // message retrieval signal handler
     sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
+    // message departure signal handler
     sigRMTPDUSent = registerSignal(SIG_RMT_MessageSent);
 
     maxQLength = getParentModule()->par("queueSize");
@@ -47,14 +49,13 @@ void RMTQueue::initialize()
 
 std::string RMTQueue::info() const
 {
-//    std::ostringstream os;
-//
-//    os << "name: " << this->getFullName()
-//       << "; type: " << ((this->type == INPUT) ? "input" : "output")
-//       << "; saturation: " << getLength() << "/" << this->maxQLength;
-//
-//    return os.str();
-    return this->getFullName();
+    std::ostringstream os;
+
+    os << "name: " << this->getFullName()
+       << "; type: " << ((this->type == INPUT) ? "input" : "output")
+       << "; saturation: " << getLength() << "/" << this->maxQLength;
+
+    return os.str();
 }
 
 std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
@@ -62,10 +63,6 @@ std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
     return os << cte.info();
 }
 
-bool RMTQueue::isBounded()
-{
-    return outputGate->isConnected();
-}
 
 void RMTQueue::redrawGUI()
 {
@@ -109,20 +106,19 @@ void RMTQueue::handleMessage(cMessage *msg)
         if (!opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
         {
             releasePDU();
-            emit(sigRMTPDUSent, this);
         }
         delete msg;
     }
     else
     {
         enqueuePDU(msg);
-        emit(sigRMTPDURcvd, this);
     }
 }
 
 void RMTQueue::enqueuePDU(cMessage* pdu)
 {
     queue.push_back(pdu);
+    emit(sigRMTPDURcvd, this);
     redrawGUI();
 }
 
@@ -139,6 +135,8 @@ void RMTQueue::releasePDU(void)
             qTime = simTime();
         }
     }
+
+    emit(sigRMTPDUSent, this);
     redrawGUI();
 }
 
@@ -154,11 +152,13 @@ void RMTQueue::startTransmitting()
     bubble("Releasing a PDU...");
 }
 
-void RMTQueue::dropLast()
+cMessage* RMTQueue::dropLast()
 {
-    delete queue.back();
+    cMessage* dropped = queue.back();
+    bubble("Dropping a PDU...");
     queue.pop_back();
     redrawGUI();
+    return dropped;
 }
 
 void RMTQueue::markCongestionOnLast()
@@ -182,7 +182,7 @@ int RMTQueue::getLength() const
     return queue.size();
 }
 
-int RMTQueue::getMaxLength()
+int RMTQueue::getMaxLength() const
 {
     return maxQLength;
 }
@@ -193,7 +193,7 @@ void RMTQueue::setMaxLength(int val)
     this->maxQLength = val;
 }
 
-int RMTQueue::getThreshLength()
+int RMTQueue::getThreshLength() const
 {
     return thresholdQLength;
 }
@@ -208,7 +208,7 @@ simtime_t RMTQueue::getQTime() const
     return qTime;
 }
 
-RMTQueueType RMTQueue::getType()
+RMTQueueType RMTQueue::getType() const
 {
     return type;
 }
@@ -231,7 +231,7 @@ void RMTQueue::setQueueId(const char* queueId)
     this->queueId = queueId;
 }
 
-cGate* RMTQueue::getRmtAccessGate()
+cGate* RMTQueue::getRmtAccessGate() const
 {
     return rmtAccessGate;
 }
@@ -241,13 +241,74 @@ void RMTQueue::setRmtAccessGate(cGate* gate)
     rmtAccessGate = gate;
 }
 
-cGate* RMTQueue::getOutputGate()
+cGate* RMTQueue::getOutputGate() const
 {
     return outputGate;
 }
 
-cGate* RMTQueue::getInputGate()
+cGate* RMTQueue::getInputGate() const
 {
     return inputGate;
 }
 
+unsigned int RMTQueue::getFirstPDUPayloadLength()
+{
+    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+
+    if (pdu != NULL)
+    {
+        // TODO: waiting for Marcel to implement this
+        // return pdu->getSize();
+    }
+    {
+        EV << "The first message isn't a data PDU!" << endl;
+    }
+
+    return 0;
+}
+
+unsigned int RMTQueue::getLastPDUPayloadLength()
+{
+    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+
+    if (pdu != NULL)
+    {
+        // TODO: waiting for Marcel to implement this
+        // return pdu->getSize();
+    }
+    {
+        EV << "The last message isn't a data PDU!" << endl;
+    }
+
+    return 0;
+}
+
+unsigned short RMTQueue::getFirstPDUQoSID()
+{
+    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+
+    if (pdu != NULL)
+    {
+        return pdu->getConnId().getQoSId();
+    }
+    {
+        EV << "The first message isn't a data PDU!" << endl;
+    }
+
+    return 0;
+}
+
+unsigned short RMTQueue::getLastPDUQoSID()
+{
+    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+
+    if (pdu != NULL)
+    {
+        return pdu->getConnId().getQoSId();
+    }
+    {
+        EV << "The last message isn't a data PDU!" << endl;
+    }
+
+    return 0;
+}

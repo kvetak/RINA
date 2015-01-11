@@ -75,5 +75,8 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 extern const char* SIG_RMT_NoConnId;
 extern const char* SIG_RMT_MessageReceived;
 extern const char* SIG_RMT_MessageSent;
+extern const char* SIG_RMT_PortPDURcvd;
+extern const char* SIG_RMT_PortPDUSent;
+extern const char* SIG_RMT_PortReadyToServe;
 
 #endif /* RINASIGNALS_H_ */
