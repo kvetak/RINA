@@ -52,6 +52,7 @@ extern const char* ELEM_DELAY;
 extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
+extern const char* ELEM_ATIME;
 
 class RA : public RABase
 {

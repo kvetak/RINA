@@ -94,8 +94,8 @@ void DTCP::initialize(int step)
     flowControl->initialize();
     if (dtp->state.isWinBased())
     {
-      windowTimer = new WindowTimer();
-      schedule(windowTimer);
+//      windowTimer = new WindowTimer();
+//      schedule(windowTimer);
     }
   }
 
@@ -145,7 +145,7 @@ void DTCP::setDTP(DTP* dtp)
 
 bool DTCP::runECNPolicy(DTPState* dtpState)
 {
-  Enter_Method("ECNSetPolicy");
+  Enter_Method("ECNPolicy");
   if(ecnPolicy == NULL || ecnPolicy->run(dtpState, dtcpState)){
     /* Default */
     if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
@@ -645,7 +645,6 @@ void DTCP::handleMessage(cMessage *msg){
 
 void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
-  //TODO A1 Uncomment
   dtp->sendControlAckPDU();
 
 }

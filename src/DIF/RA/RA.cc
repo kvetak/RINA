@@ -43,6 +43,7 @@ const char* ELEM_DELAY               = "Delay";
 const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
 
 void RA::initialize()
 {
@@ -160,6 +161,7 @@ void RA::initQoSCubes()
         int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
         int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
         int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
+        double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
 
         cXMLElementList attrs = m->getChildren();
         for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
@@ -237,7 +239,11 @@ void RA::initQoSCubes()
                 costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
                 if (costbits < 0)
                     costbits = VAL_QOSPARDONOTCARE;
-            }
+            }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
+              aTime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+              if (aTime < 0)
+                  aTime = VAL_QOSPARDONOTCARE;
+          }
         }
 
         cube.setAvgBand(avgBand);
@@ -256,6 +262,7 @@ void RA::initQoSCubes()
         cube.setJitter(jitter);
         cube.setCostBits(costbits);
         cube.setCostTime(costtime);
+        cube.setATime(aTime);
 
         QosCubes.push_back(cube);
     }

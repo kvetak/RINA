@@ -149,7 +149,8 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>						
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
 		</QosCube>
 		<QosCube id="2">
 			<AverageBandwidth>12000000</AverageBandwidth>
@@ -167,7 +168,8 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>						
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
 		</QosCube>		
 	</QoSCubesSet>
 </Configuration>

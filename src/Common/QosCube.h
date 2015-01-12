@@ -55,6 +55,8 @@ class QosCube {
     int costTime;               //measured in $/ms
     int costBits;               //measured in $/Mb
 
+    double aTime;               //A-Timer in ms
+
     std::vector<Policy*> policyList;
     //Policy-Default-Parameters: List;
 
@@ -95,6 +97,8 @@ class QosCube {
     void setCostBits(int costBits);
     int getCostTime() const;
     void setCostTime(int costTime);
+    double getATime() const;
+    void setATime(double aTime);
 
     bool isDTCPNeeded() const;
 

@@ -248,7 +248,7 @@ void DTP::handleMsgFromDelimitingnew(SDU* sdu){
 
   generatePDUsnew();
 
-  this->trySendGenPDUs(state.getGeneratedPDUQ());
+  trySendGenPDUs(state.getGeneratedPDUQ());
 
   schedule(senderInactivityTimer);
 }
@@ -567,7 +567,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
   if (state.isFCPresent())
   {
-    dtcp->resetWindowTimer();
+//    dtcp->resetWindowTimer();
 
     /* Run ECN policy */
     dtcp->runECNPolicy(&state);
@@ -775,30 +775,6 @@ void DTP::handleDTPATimer(ATimer* timer)
   }
 }
 
-//void DTP::handleDTPWindowTimer(WindowTimer* timer){
-//  sendAckPDU();
-//}
-//bool DTP::write(int portId, unsigned char* buffer, int len)
-//{
-//
-//  cancelEvent(senderInactivityTimer);
-//
-//  this->delimit(buffer, len);
-//  /* Now the data from buffer are copied to SDUs so we can free the memory */
-//  free(buffer);
-//
-//  this->generatePDUs();
-//
-//  /* Iterate over generated PDUs and decide if we can send them */
-//  this->trySendGenPDUs(&generatedPDUs);
-//
-////  /* iterate over postablePDUs */
-////  this->sendPostablePDUsToRMT();
-//
-//  schedule(senderInactivityTimer);
-//  return true;
-//}
-
 unsigned int DTP::delimit(SDU* sdu)
 {
 
@@ -1005,9 +981,12 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       PDUQ_t* pduQ = state.getPostablePDUQ();
       for (it = pduQ->begin(); it != pduQ->end();)
       {
+
         sendToRMT((*it));
         it = pduQ->erase(it);
       }
+      //TODO Report change in specs
+      state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
 
     }
   }
@@ -1022,6 +1001,8 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       sendToRMT((*it));
       it = pduQ->erase(it);
     }
+    //TODO Report change in specs
+    state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
   }
 
 }
@@ -1198,7 +1179,7 @@ double DTP::getRxTime()
    * A == ?
    * epsilon ?
    */
-  return state.getRtt() + 0.1;
+  return MPL_TIME + qosCube.getATime()/1000;
 }
 
 unsigned int DTP::getAllowableGap()
@@ -1305,7 +1286,7 @@ void DTP::schedule(DTPTimers *timer, double time)
         rxCount = dtcp->getDataReXmitMax();
 
 
-      scheduleAt(simTime() + 3 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
+      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount)) + 0 , timer);
       }
 //      scheduleAt(simTime() + 10, timer);
       break;
@@ -1317,7 +1298,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       if(state.isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
         //TODO A!
-        scheduleAt(simTime() + 2 * (state.getRtt() + (state.getRtt() * rxCount)) + 0 , timer);
+        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount)) + 0 , timer);
       }
       break;
     }

@@ -169,6 +169,14 @@ void QosCube::setCostTime(int costTime) {
     this->costTime = costTime;
 }
 
+double QosCube::getATime() const {
+    return aTime;
+}
+
+void QosCube::setATime(double aTime) {
+    this->aTime = aTime;
+}
+
 void QosCube::setQosId(unsigned short qoSId) {
     this->qoSId = qoSId;
 }
@@ -241,8 +249,12 @@ short QosCube::countFeasibilityScore(const QosCube templ) const {
     if (getCostTime() != VAL_QOSPARDONOTCARE)
         (getCostTime() <= templ.getCostTime()) ? score++ : score--;
 
+    if (getATime() != VAL_QOSPARDONOTCARE)
+            (getATime() <= templ.getATime()) ? score++ : score--;
+
     if (getCostBits() != VAL_QOSPARDONOTCARE)
         (getCostBits() <= templ.getCostBits()) ? score++ : score--;
+
 
     return score;
 }
@@ -342,5 +354,13 @@ std::string QosCube::info() const {
         os << STR_DONOTCARE;
     else
         os << this->getCostBits() << " $/Mb";
+
+    os << "\n   A-Time = ";
+    if ( this->getATime() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getATime() << "ms";
+
+
     return os.str();
 }
