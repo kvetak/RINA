@@ -23,11 +23,13 @@ extern const char* MOD_FLOWALLOC;
 extern const char* MOD_FA;
 extern const char* MOD_CONNTABLE;
 extern const char* MOD_DA;
+extern const char* MOD_DIFALLOC;
 extern const char* MOD_EFCP;
 extern const char* MOD_FAITABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
 extern const char* MOD_IRM;
+extern const char* MOD_IPCRESMANAGER;
 extern const char* MOD_CDAP;
 extern const char* MOD_CDAPMSGLOG;
 extern const char* MOD_CDAPSPLIT;
@@ -48,6 +50,7 @@ extern const char* PAR_CONFIGDATA;
 
 //Gate names
 extern const char* GATE_SOUTHIO;
+extern const char* GATE_NORTHIO;
 extern const char* GATE_NORTHIO_;
 extern const char* GATE_SOUTHIO_;
 extern const char* GATE_EFCPIO_;

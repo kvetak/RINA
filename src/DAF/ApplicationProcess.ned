@@ -25,22 +25,15 @@ import rina.DAF.IRM.IRM;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RMT;
 
-
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=330,251;i=misc/node,yellow,30");
+        @display("bgb=174,180;i=misc/node,yellow,30");
         string apName = default("App");
         string apInstance = default("0");
     gates:
-        //inout test;        
+        inout southIo[];
     submodules:
-        irm: IRM {
-            @display("p=89,180");
-        }
-        connectionTable: ConnectionTable {
-            @display("p=241,180");
-        }
         applicationEntity: ApplicationEntity {
             @display("p=89,60");
         }

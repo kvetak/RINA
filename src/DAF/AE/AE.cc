@@ -17,10 +17,14 @@
 
 Define_Module(AE);
 
-AE::AE()  {
+AE::AE() :
+        Irm(NULL), Cdap(NULL)
+{
 }
 
 AE::~AE() {
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AE::initSignalsAndListeners() {
@@ -76,6 +80,16 @@ bool AE::createBindings(Flow& flow) {
     cGate* gIrmOut;
     Irm->getOrCreateFirstUnconnectedGatePair(GATE_AEIO, false, true, *&gIrmIn, *&gIrmOut);
 
+    cModule* IrmMod = Irm->getParentModule();
+    cGate* gIrmModIn;
+    cGate* gIrmModOut;
+    IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
+
+    cModule* ApMon = this->getParentModule()->getParentModule();
+    cGate* gApIn;
+    cGate* gApOut;
+    ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
+
     //Get AE gates
     cGate* gAeIn;
     cGate* gAeOut;
@@ -120,15 +134,17 @@ bool AE::createBindings(Flow& flow) {
     CdapCdap->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCdapIn, *&gCdapOut);
 
     //Connect gates together
-    gIrmOut->connectTo(gAeIn);
+    gIrmOut->connectTo(gIrmModOut);
+    gIrmModOut->connectTo(gApIn);
+    gApIn->connectTo(gAeIn);
     gAeIn->connectTo(gCdapParentIn);
     gCdapParentIn->connectTo(gSplitIn);
 
-
     gSplitOut->connectTo(gCdapParentOut);
     gCdapParentOut->connectTo(gAeOut);
-    gAeOut->connectTo(gIrmIn);
-
+    gAeOut->connectTo(gApOut);
+    gApOut->connectTo(gIrmModIn);
+    gIrmModIn->connectTo(gIrmIn);
 
     gSplitCaceOut->connectTo(gCaceIn);
     gCaceOut->connectTo(gSplitCaceIn);
@@ -141,7 +157,7 @@ bool AE::createBindings(Flow& flow) {
 
 
     //Set north-half of the routing in ConnectionTable
-    ConTab->setNorthGates(&flow, gIrmIn, gIrmOut);
+    Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
     //Return true if all dynamically created gates have same index
     return gIrmIn->getIndex() == gAeIn->getIndex()
@@ -153,12 +169,11 @@ bool AE::createBindings(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = ModuleAccess<IRM>(MOD_IRM).get();
-    ConTab = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
+    Irm = dynamic_cast<IRM*>(this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM));
     Cdap = this->getParentModule()->getSubmodule(MOD_CDAP);
 
-    if (!Irm || !ConTab || !Cdap)
-        error("Pointers to Irm or ConnectionTable or Cdap is not initialized!");
+    if (!Irm || !Cdap)
+        error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
 }
 
 void AE::insertFlow(Flow& flow) {
@@ -228,7 +243,7 @@ void AE::signalizeAllocateResponsePositive(Flow* flow) {
 void AE::receiveAllocationResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocationResponseNegative()");
     //Change allocation status
-    ConTab->setStatus(flow, ConnectionTableEntry::CON_ERROR);
+    Irm->changeStatus(flow, ConnectionTableEntry::CON_ERROR);
 }
 
 void AE::receiveAllocationResponsePositive(Flow* flow) {
@@ -237,9 +252,7 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
     //Change allocation status
-    ConTab->setStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
-
-    //TODO: Vesely - Work with return value?
+    Irm->changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {
@@ -258,9 +271,9 @@ void AE::signalizeAllocateResponseNegative(Flow* flow) {
 
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
-    ConnectionTableEntry* cte = ConTab->findEntryByFlow(flow);
-    if (cte && cte->getNorthGateIn()) {
-        msg->setHandle(cte->getNorthGateIn()->getIndex());
+    int handle = Irm->getGateHandle(flow);
+    if (handle != VAL_UNDEF_HANDLE) {
+        msg->setHandle(handle);
         //Pass Data to CDAP
         signalizeSendData(msg);
     }
@@ -296,10 +309,9 @@ void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
 bool AE::deleteBindings(Flow& flow) {
     EV << this->getFullPath() << " deleted bindings" << endl;
 
-    int handle = -1;
-    ConnectionTableEntry* cte = ConTab->findEntryByFlow(&flow);
-    if (cte && cte->getNorthGateIn())
-        handle = cte->getNorthGateIn()->getIndex();
+    int handle = Irm->getGateHandle(&flow);
+    if (handle == VAL_UNDEF_HANDLE)
+        error("Delete gates before flow allocation is impossible!");
 
     //Disconnect gates
     cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle);

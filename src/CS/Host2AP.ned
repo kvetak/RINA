@@ -14,7 +14,7 @@
 // 
 
 //
-// <h1>Host with 2 Application Processes</h1> 
+// <h1>Host with two Application Processes</h1> 
 //
 // This models simulates host node that has two different rank DIFs:
 //  * 1x (N)-DIF <i>ipcProcess1</i> is used by AP for communication 

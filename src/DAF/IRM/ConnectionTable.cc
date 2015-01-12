@@ -20,14 +20,6 @@ Define_Module(ConnectionTable);
 void ConnectionTable::initialize()
 {
     WATCH_LIST(ConTable);
-    //Insert info to the ConnectionTable
-
-    //Scan all AEs in DAP and add them to table
-//    for (cModule::SubmoduleIterator i(this->getParentModule()); !i.end(); i++) {
-//        cModule *submodp = i();
-//        if (dynamic_cast<AEBase*>(submodp))
-//            insertNewAe(dynamic_cast<AEBase*>(submodp));
-//    }
 }
 
 std::string ConnectionTable::info() const {

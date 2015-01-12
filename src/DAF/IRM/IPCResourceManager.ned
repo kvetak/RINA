@@ -13,24 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.simulations.FA.Signals;
+package rina.DAF.IRM;
 
-import rina.CS.Host1AP;
-
-
-//
-// TODO Auto-generated network
-//
-network Signals
+module IPCResourceManager
 {
-    @display("bgb=433,167");
+    parameters:
+    	@display("i=misc/node2,#0080C0;bgb=286,182");
+ 
+ 	gates:
+ 	    //Dynamically created
+		inout northIo[];
+		//inout southIo_;
+		        
     submodules:
-        host2: Host1AP {
-            @display("p=285,77");
+        irm: IRM {
+            @display("p=82,83");
         }
-        host1: Host1AP {
-            @display("p=105,77");
+        connectionTable: ConnectionTable {
+            @display("p=197,83");
         }
-    connections:
-        host1.medium <--> host2.medium;
+   	
+    connections allowunconnected:
 }

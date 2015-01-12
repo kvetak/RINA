@@ -16,6 +16,8 @@
 
 #include "IRM.h"
 
+const int VAL_UNDEF_HANDLE = -1;
+
 Define_Module(IRM);
 
 IRM::IRM() {
@@ -25,8 +27,10 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = ModuleAccess<ConnectionTable>(MOD_CONNTABLE).get();
-    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
+    ConTable = dynamic_cast<ConnectionTable*>(this->getParentModule()->getSubmodule(MOD_CONNTABLE));
+    if (!ConTable)
+            error("ConTab is NULL!");
+    DifAllocator = dynamic_cast<DA*>(this->getParentModule()->getParentModule()->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
 }
 
 void IRM::initialize() {
@@ -78,7 +82,7 @@ bool IRM::createBindings(Flow* flow) {
     //    return false;
     //}
     cModule* Ipc = cte->getIpc();
-    cModule* Ap = this->getParentModule();
+    cModule* IrmMod = this->getParentModule();
 
     //Decide portId
     int portId = flow->getSrcPortId();
@@ -100,9 +104,9 @@ bool IRM::createBindings(Flow* flow) {
     //   Add AP gates
     std::ostringstream nam2;
     nam2 << GATE_SOUTHIO_ << portId;
-    Ap->addGate(nam2.str().c_str(), cGate::INOUT, false);
-    cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
-    cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+    IrmMod->addGate(nam2.str().c_str(), cGate::INOUT, false);
+    cGate* g2i = IrmMod->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g2o = IrmMod->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
     //   Add IRM gates
     this->addGate(nam2.str().c_str(), cGate::INOUT, false);
@@ -249,4 +253,17 @@ bool IRM::deleteBindings(Flow* flow) {
     return !g1o->isConnected() && !g1i->isConnected()
            && !g2o->isConnected() && !g2i->isConnected()
            && !g3o->isConnected() && !g3i->isConnected();
+}
+
+void IRM::changeStatus(Flow* flow,ConnectionTableEntry::ConnectionStatus status) {
+    ConTable->setStatus(flow, status);
+}
+
+int IRM::getGateHandle(Flow* flow) const {
+    ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
+    return ( cte && cte->getNorthGateIn() ) ? cte->getNorthGateIn()->getIndex() : VAL_UNDEF_HANDLE;
+}
+
+void IRM::setNorthGates(Flow* flow, cGate* nIn, cGate* nOut) {
+    ConTable->setNorthGates(flow, nIn, nOut);
 }

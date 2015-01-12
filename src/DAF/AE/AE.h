@@ -48,7 +48,6 @@ class AE : public AEBase
 
   protected:
     IRM* Irm;
-    ConnectionTable* ConTab;
     cModule* Cdap;
 
     virtual void initialize();

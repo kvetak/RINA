@@ -14,7 +14,7 @@
 // 
 
 //
-// <h1>Host with 1 Application Process</h1> 
+// <h1>Host with one Application Process</h1> 
 //
 // This models simulates host node that has two different rank DIFs:
 //  * 1x (N)-DIF <i>ipcProcess1</i> is used by AP for communication 
@@ -32,13 +32,14 @@ package rina.CS;
 import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
+import rina.DAF.IRM.IPCResourceManager;
 import rina.DIF.IPCProcess;
 
 
 module Host1AP
 {
     parameters:
-        @display("i=device/pc;bgb=255,271");
+        @display("i=device/pc;bgb=255,410");
         @node;
         //int numOfDIFs = 1;
         //int numOfAPs = 1;
@@ -57,15 +58,18 @@ module Host1AP
         }
 
         ipcProcess0: IPCProcess {
-            @display("p=133,212");
+            @display("p=133,323");
 			//numOfAPs = numOfAPs;
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=133,130");
+            @display("p=133,241");
 			//numOfAPs = numOfAPs;
         }
 
+        ipcResourceManager: IPCResourceManager {
+            @display("p=133,141");
+        }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;
         ipcProcess0.northIo++ <--> ipcProcess1.southIo++;

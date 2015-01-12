@@ -27,6 +27,8 @@
 #include "FABase.h"
 #include "ExternConsts.h"
 
+extern const int VAL_UNDEF_HANDLE;
+
 class IRM : public cSimpleModule   {
   public:
     IRM();
@@ -38,6 +40,9 @@ class IRM : public cSimpleModule   {
     bool receiveAllocationResponsePositiveFromIpc(Flow* flow);
 
     void newFlow(Flow* flow);
+    void changeStatus(Flow* flow, ConnectionTableEntry::ConnectionStatus status);
+    int getGateHandle(Flow* flow) const;
+    void setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);
 
     ConnectionTable* getConTable() const;
     bool deleteBindings(Flow* flow);

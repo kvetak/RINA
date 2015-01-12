@@ -20,17 +20,20 @@ const char* MOD_FLOWALLOC       = "flowAllocator";
 const char* MOD_FA              = "fa";
 const char* MOD_CONNTABLE       = "connectionTable";
 const char* MOD_DA              = "da";
+const char* MOD_DIFALLOC        = "difAllocator";
 const char* MOD_FAITABLE        = "faiTable";
 const char* MOD_EFCP            = "efcp";
 const char* MOD_RESALLOC        = "resourceAllocator";
 const char* MOD_RA              = "ra";
 const char* MOD_IRM             = "irm";
+const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
 const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
 const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
 const char* MOD_CDAPSPLIT       = "cdapSplitter";
 const char* MOD_CDAPCACE        = "cace";
 const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCDAP        = "cdap";
+
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
@@ -45,6 +48,7 @@ const char* PAR_CONFIGDATA      = "configData";
 
 //Gate names
 const char* GATE_SOUTHIO        = "southIo";
+const char* GATE_NORTHIO        = "northIo";
 const char* GATE_NORTHIO_       = "northIo_";
 const char* GATE_SOUTHIO_       = "southIo_";
 const char* GATE_EFCPIO_        = "efcpIo_";
