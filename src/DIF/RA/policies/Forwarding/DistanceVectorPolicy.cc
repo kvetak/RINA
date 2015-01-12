@@ -176,7 +176,8 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
     fwdtg->getForwardingTable()->insert(addr, qos, port);
 
     // Debug the actual state of the network.
-    pduftg_debug(fwdtg->netInfo());
+    pduftg_debug(fwdtg->getIpcAddress().info() << "> " <<
+        fwdtg->netInfo());
 }
 
 void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
@@ -239,7 +240,8 @@ void DistanceVectorPolicy::mergeForwardingInfo(FSUpdateInfo * info)
     }
 
     // Debug the actual state of the network.
-    pduftg_debug(fwdtg->netInfo());
+    pduftg_debug(fwdtg->getIpcAddress().info() << "> " <<
+        fwdtg->netInfo());
 }
 
 FSUpdateInfo * DistanceVectorPolicy::prepareFSUpdate(Address destination)
@@ -256,8 +258,5 @@ FSUpdateInfo * DistanceVectorPolicy::prepareFSUpdate(Address destination)
 
 void DistanceVectorPolicy::removeFlow(Address addr, unsigned short qos)
 {
-    //if(!fwdtg)
-    //{
-    //    return;
-    //}
+    pduftg_debug(fwdtg->getIpcAddress().info() << "> Removing policy action not implemented.");
 }

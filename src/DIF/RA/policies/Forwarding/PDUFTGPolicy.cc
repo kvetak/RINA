@@ -62,7 +62,7 @@ void PDUFTGPolicy::initialize()
 {
     fwdtg = ModuleAccess<PDUFwdTabGenerator>("pduFwdTabGenerator").get();
 
-    // display active policy name
+    // Display active policy name.
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
@@ -78,7 +78,7 @@ void PDUFTGPolicy::mergeForwardingInfo(FSUpdateInfo * info)
     // Do nothing...
 }
 
-void PDUFTGPolicy::removeFlow(Address addr, short unsigned int qos)
+void PDUFTGPolicy::removeFlow(Address addr, unsigned short qos)
 {
     // Do nothing...
 }

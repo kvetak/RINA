@@ -33,6 +33,14 @@ std::ofstream pduftg_debug_file;
 
 Define_Module(PDUFwdTabGenerator);
 
+void PDUFwdTabGenerator::finish()
+{
+#ifdef PDUFTG_PRIVATE_DEBUG
+    pduftg_debug_file.flush();
+    pduftg_debug_file.close();
+#endif
+}
+
 NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
 {
     return flTable;
@@ -58,14 +66,6 @@ NetworkState * PDUFwdTabGenerator::getNetworkState()
     return &netState;
 }
 
-void PDUFwdTabGenerator::finish()
-{
-#ifdef PDUFTG_PRIVATE_DEBUG
-    pduftg_debug_file.flush();
-    pduftg_debug_file.close();
-#endif
-}
-
 void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
 {
     if(fwdPolicy)
@@ -75,7 +75,14 @@ void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
     }
     else
     {
-        pduftg_debug("PDUFTG Error: no forwarding policy selected! I don't know what to do...\n");
+        pduftg_debug(ipcAddr.info() <<
+            "> PDUFTG Error: no forwarding policy selected!\n");
+    }
+
+    // Show the status of the forwarding table?
+    if(showNetState)
+    {
+        nstm->getDisplayString().setTagArg("t", 0, prepareFriendlyNetState().c_str());
     }
 }
 
@@ -88,11 +95,6 @@ void PDUFwdTabGenerator::initialize()
 {
     // IPCProcess module.
     cModule * ipcModule = getParentModule()->getParentModule();
-    // Forwarding update wake up message./
-
-    //fwdPolicy = ModuleAccess<PDUFTGPolicy>("PDUFTGPolicy").get();
-    //fwTable   = ModuleAccess<PDUForwardingTable>("pduForwardingTable").get();
-    //flTable   = ModuleAccess<NM1FlowTable>("nm1FlowTable").get();
 
     fwdPolicy = check_and_cast<PDUFTGPolicy *>
         (getModuleByPath("^.PDUFTGPolicy"));
@@ -104,6 +106,18 @@ void PDUFwdTabGenerator::initialize()
     ipcAddr   = Address(
         ipcModule->par("ipcAddress").stringValue(),
         ipcModule->par("difName").stringValue());
+
+    // Will show the fwd table in the simulation?
+    showNetState = par("netStateVisible").boolValue();
+    // Where will the report be seen?
+    nstm = check_and_cast<cModule *>
+        (getModuleByPath(par("netStateMod").stringValue()));
+
+    if(showNetState)
+    {
+        // Put the report on the left.
+        nstm->getDisplayString().setTagArg("t", 1, "l");
+    }
 
     // Initializes the input/output of the module.
     initializeSignalsAndListeners();
@@ -144,7 +158,14 @@ void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPor
     // What to do if no policy has been set?
     else
     {
-        pduftg_debug("PDUFTG Error: no forwarding policy selected! I don't know what to do...\n");
+        pduftg_debug(ipcAddr.info() <<
+            "> PDUFTG Error: no forwarding policy selected!\n");
+    }
+
+    // Show the status of the forwarding table?
+    if(showNetState)
+    {
+        nstm->getDisplayString().setTagArg("t", 0, prepareFriendlyNetState().c_str());
     }
 }
 
@@ -193,13 +214,13 @@ std::string PDUFwdTabGenerator::neiInfo()
 {
     std::stringstream os;
 
-    os << "NEIINFO NeiState counts: " << neiState.size() << "\n";
+    os << "Neighbors counts: " << neiState.size() << "\n";
 
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
         PDUForwardingTableEntry * e = (*it);
 
-        os << "NEIINFO Neighbor " << e->getDestAddr() << endl;
+        os << "Neighbor " << e->getDestAddr() << endl;
 
         os << "\n";
     }
@@ -211,14 +232,14 @@ std::string PDUFwdTabGenerator::netInfo()
 {
     std::stringstream os;
 
-    os << "NETINFO NetState counts: " << netState.size() << "\n";
+    os << "Network state counts: " << netState.size() << "\n";
 
     for(NIter it = netState.begin(); it != netState.end(); ++it )
     {
         FSInfo * fsi = (*it);
         NM1FlowTableItem * p = flTable->findFlowByDstApni(fsi->getDestination().getApname().getName(), fsi->getQoSID());
 
-        os << "NETINFO [From: " << fsi->getSource() << " to: " << fsi->getDestination() << " qos: " << fsi->getQoSID() << " hops: " << fsi->getMetric();
+        os << "[From: " << fsi->getSource() << " to: " << fsi->getDestination() << " qos: " << fsi->getQoSID() << " hops: " << fsi->getMetric();
 
         if(p)
         {
@@ -273,6 +294,20 @@ void PDUFwdTabGenerator::publishPolicy(PDUFTGPolicy * p)
     fwdPolicy->computeForwardingTable();
 }
 
+std::string PDUFwdTabGenerator::prepareFriendlyNetState()
+{
+    std::stringstream os;
+
+    for(NIter it = netState.begin(); it != netState.end(); ++it )
+    {
+        FSInfo * fsi = (*it);
+
+        os << fsi->getDestination() << ", " << fsi->getMetric() << endl;
+    }
+
+    return os.str();
+}
+
 void PDUFwdTabGenerator::unpublishPolicy()
 {
     // Clean the forwarding table; we'll regenerate it during the apply of a new policy.
@@ -323,7 +358,8 @@ void PDUFwdTabGenerator::removeNetInfo(FSInfo * info)
 
 void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
 {
-    pduftg_debug(" Signal an update to " << info->getDestination() << "\n");
+    pduftg_debug(ipcAddr.info() <<
+        "> Signal an update to " << info->getDestination() << "\n");
 
     // Emit the signal. RIBd shall be there to listen...
     emit(sigPDUFTGFwdInfoUpdate, info);

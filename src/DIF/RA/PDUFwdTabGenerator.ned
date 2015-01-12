@@ -21,4 +21,10 @@ package rina.DIF.RA;
 simple PDUFwdTabGenerator
 {
     @display("i=block/network2");
+    
+    // The target module where you want to see the network state report. 
+    // The default is the IPC which contains the PDUFTG.
+    string netStateMod = default("^.^.");
+    // Want to show a visual report during simulation?
+    bool netStateVisible = default(false);
 }

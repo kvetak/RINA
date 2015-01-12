@@ -16,37 +16,38 @@
 package rina.examples.SmallNetRouting;
 
 import rina.CS.*;
+import rina.DAF.IRM.ConnectionTable;
+
 
 network SmallNetRouting
 {
-    @display("bgb=586,372");
-    
+    @display("bgb=975,618");
+
     submodules:
         host1: Host1AP {
-            @display("p=92,83");
+            @display("p=136,103");
         }
         host2: Host1AP {
-            @display("p=92,252");
+            @display("p=136,482");
         }
         host3: Host1AP {
-            @display("p=275,83");
+            @display("p=479,103");
         }
         host4: Host1AP {
-            @display("p=473,83");
+            @display("p=851,103");
         }
         host5: Host1AP {
-            @display("p=473,252");
+            @display("p=851,482");
         }
         router1: InteriorRouter3Int {
-            @display("p=166,165");
+            @display("p=255,296");
         }
         router2: InteriorRouter3Int {
-            @display("p=275,165");
+            @display("p=479,296");
         }
         router3: InteriorRouter3Int {
-            @display("p=388,165");
+            @display("p=703,296");
         }
-
     connections:
         router1.medium[0] <--> host1.medium;
         router1.medium[1] <--> host2.medium;

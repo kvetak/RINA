@@ -62,7 +62,7 @@ public:
 
     /* Insert a new flow which has been open locally to this IPC Process.
      */
-    virtual void insertNewFlow(Address addr, short unsigned int qos, RMTPort * port);
+    virtual void insertNewFlow(Address addr, unsigned short qos, RMTPort * port);
 
     /* Merge an incoming information with the existing ones.
      */
@@ -70,7 +70,7 @@ public:
 
     /* Removes a local opened flow.
      */
-    virtual void removeFlow(Address addr, short unsigned int qos);
+    virtual void removeFlow(Address addr, unsigned short qos);
 
     /* Set a new timeout between an update message and another.
      */

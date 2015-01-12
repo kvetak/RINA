@@ -24,15 +24,15 @@
 
 #define PDUFTG_SELFMSG_FSUPDATE     0x01
 
-/* This implements a basic distance-vector routing policy.
- * The metric used is in term of hops.
- */
+// This implements a basic distance-vector routing policy.
+// The metric used is in term of hops.
+//
 class DistanceVectorPolicy :
         public PDUFTGPolicy
 {
 private:
 
-    /* Just prepare an update fo a destination host. */
+    // Just prepare an update fo a destination host.
     FSUpdateInfo * prepareFSUpdate(Address destination);
 
 protected:
@@ -44,26 +44,26 @@ public:
     DistanceVectorPolicy();
     ~DistanceVectorPolicy();
 
-    /* Computes the initial state of the forwarding table.
-     */
+    // Computes the initial state of the forwarding table.
+    //
     void computeForwardingTable();
 
-    /* Gets a filtered network state that will be used to inform neighbors.
-     * There will be one info per neighbor.
-     */
+    // Gets a filtered network state that will be used to inform neighbors.
+    // There will be one info per neighbor.
+    //
     virtual std::list<FSUpdateInfo *> * getNetworkState();
 
-    /* Insert a new flow which has been open locally to this IPC Process.
-     */
+    // Insert a new flow which has been open locally to this IPC Process.
+    //
     void insertNewFlow(Address addr, short unsigned int qos, RMTPort * port);
 
-    /* Merge an incoming information with the existing ones.
-     */
+    // Merge an incoming information with the existing ones.
+    //
     void mergeForwardingInfo(FSUpdateInfo * info);
 
-    /* Removes a local opened flow.
-     */
+    // Removes a local opened flow.
+    //
     virtual void removeFlow(Address addr, short unsigned int qos);
 };
 
-#endif /* __RINA_DISTANCEVECTORPOLICY_H */
+#endif // __RINA_DISTANCEVECTORPOLICY_H

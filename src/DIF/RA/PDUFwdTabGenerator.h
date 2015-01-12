@@ -25,7 +25,7 @@
 #define __RINA_PDUFWDTABGENERATOR_H_
 
 // Comment this directive to disable private debugging.
-// With private debugging all the output will be also redirected to a text file.
+// With private debugging all the output will be redirected to a text file.
 #define PDUFTG_PRIVATE_DEBUG
 
 #ifdef PDUFTG_PRIVATE_DEBUG
@@ -36,7 +36,7 @@
 extern std::ofstream pduftg_debug_file;
 
 // Log a string as a debug information.
-#define pduftg_debug(x)         pduftg_debug_file << this->getFullName() << "> " << x;
+#define pduftg_debug(x)         pduftg_debug_file << x;
 
 #else
 
@@ -44,6 +44,12 @@ extern std::ofstream pduftg_debug_file;
 #define pduftg_debug(x)         EV << x;
 
 #endif
+
+// Gets the display string instance of the module which holds the IPC Process.
+#define PDUFG_HOST_DISPLAY_STRING   (  \
+    getParentModule()->                 \
+    getParentModule()->                 \
+    getParentModule()->getDisplayString())
 
 #include <omnetpp.h>
 
@@ -95,12 +101,25 @@ class PDUFwdTabGenerator : public cSimpleModule
     PDUForwardingTable* fwTable;
 
     // This table will allow us to get the right queue starting from the flow information.
+    //
     NM1FlowTable * flTable;
 
     // The IP Address. We will use this to filter flow informations and collect
     // only those of the same DIF.
     //
     Address ipcAddr;
+
+    // Will the network state be visible at upper levels?
+    //
+    bool showNetState;
+
+    // The module where the report will be posted on.
+    //
+    cModule * nstm;
+
+    // Gets a user friendly formatted network state report.
+    //
+    std::string prepareFriendlyNetState();
 
   protected:
     virtual void finish();
