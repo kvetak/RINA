@@ -22,6 +22,8 @@
 #include "RMTPort.h"
 #include "RMTQMonitorBase.h"
 
+class RMTQMonitorBase; /* FIXME: circular dependency */
+
 class RMTQueueManager : public cSimpleModule
 {
   protected:

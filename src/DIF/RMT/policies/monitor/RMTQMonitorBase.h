@@ -17,9 +17,11 @@
 #define RMTQMONITORBASE_H_
 
 #include <omnetpp.h>
-
+#include "RMTSchedulingBase.h"
 #include "RMTQueue.h"
 #include "PDU_m.h"
+
+class RMTSchedulingBase; /* FIXME: circular dependency */
 
 /**
  * Noop base class for the RMT monitoring policy.
@@ -78,6 +80,11 @@ class RMTQMonitorBase : public cSimpleModule
      * Handler for OMNeT++ module messages (probably not of much use here).
      */
     virtual void handleMessage(cMessage* msg);
+
+    /**
+     * Pointer to a scheduling policy module.
+     */
+    RMTSchedulingBase* schedPolicy;
 
   private:
 

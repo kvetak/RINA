@@ -18,9 +18,6 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
-#include "RMTQueue.h"
-
 class RMTBase : public cSimpleModule
 {
   public:

@@ -17,7 +17,6 @@
 #define ECNMARKER_H_
 
 #include "RMTMaxQBase.h"
-#include "RMTQMonitorBase.h"
 
 class ECNMarker : public RMTMaxQBase
 {

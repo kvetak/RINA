@@ -18,17 +18,20 @@
 
 #include <omnetpp.h>
 
-#include "RMTQueueManager.h"
 #include "RMTPort.h"
 #include "RMTQueue.h"
+#include "RMTQueueManager.h"
 
 /**
- * Noop class for the RMT scheduling policy.
+ * Noop base class for the RMT scheduling policy.
  * This policy is invoked each time some queue has data to send and uses some
  * algorithm to make a decision about which queues should be handled first.
  */
 class RMTSchedulingBase : public cSimpleModule
 {
+
+  friend class RMTQMonitorBase; /* For access to scheduling policy variables. */
+
   public:
 
     /**

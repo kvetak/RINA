@@ -24,6 +24,9 @@ void RMTQMonitorBase::initialize()
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
 
+    schedPolicy = check_and_cast<RMTSchedulingBase*>
+        (getModuleByPath("^.schedulingPolicy"));
+
     onPolicyInit();
 }
 
