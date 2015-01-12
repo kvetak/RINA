@@ -50,7 +50,7 @@ class DAP {
     bool operator== (const DAP& other) const;
 
     /**
-     * @brief Info text output suitable for << string streams and  WATCH
+     * @brief Info text output suitable for << string streams and WATCH
      * @return DAP string name
      */
     std::string info() const;

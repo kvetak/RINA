@@ -27,10 +27,15 @@
 const char* STR_DONOTCARE = "do-not-care";
 const char* STR_YES = "yes";
 const char* STR_NO = "no";
+const int   VAL_DEFQOS = 0;
 
-QoSCube::QoSCube() {
-    // TODO Auto-generated constructor stub
-
+QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
+        avgBand(VAL_DEFQOS), avgSDUBand(VAL_DEFQOS), peakBandDuration(VAL_DEFQOS), peakSDUBandDuration(VAL_DEFQOS),
+        burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
+        partDeliv(false), incompleteDeliv(false), forceOrder(false),
+        maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
+        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS)
+{
 }
 
 int QoSCube::getAvgBand() const {
@@ -146,26 +151,43 @@ void QoSCube::setUndetectedBitErr(double undetectedBitErr) {
 }
 
 QoSCube::~QoSCube() {
-    // TODO Auto-generated destructor stub
+    qoSId = VAL_DEFQOS;
+
+    avgBand = VAL_DEFQOS;
+    avgSDUBand = VAL_DEFQOS;             //Average SDU bandwidth (measured in SDUs/sec)
+    peakBandDuration = VAL_DEFQOS;       //Peak bandwidth-duration (measured in bits/sec);
+    peakSDUBandDuration = VAL_DEFQOS;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    burstPeriod = VAL_DEFQOS;            //Burst period measured in useconds
+    burstDuration = VAL_DEFQOS;          //Burst duration, measured in useconds fraction of Burst Period
+    undetectedBitErr = VAL_DEFQOS;    //Undetected bit error rate measured as a probability
+    maxSDUsize = VAL_DEFQOS;             //MaxSDUSize measured in bytes
+    partDeliv = false;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    incompleteDeliv = false;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    forceOrder = false;            //Must SDUs be delivered in-order bits
+    maxAllowGap = VAL_DEFQOS;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    delay = VAL_DEFQOS;                  //Delay in usecs
+    jitter = VAL_DEFQOS;                 //Jitter in usecs
+    costTime = VAL_DEFQOS;               //measured in $/ms
+    costBits = VAL_DEFQOS;               //measured in $/Mb
 }
 
 unsigned short QoSCube::getQosId() const {
     return qoSId;
 }
 
-int QoSCube::getCostBits() const {
+double QoSCube::getCostBits() const {
     return costBits;
 }
 
-void QoSCube::setCostBits(int costBits) {
+void QoSCube::setCostBits(double costBits) {
     this->costBits = costBits;
 }
 
-int QoSCube::getCostTime() const {
+double QoSCube::getCostTime() const {
     return costTime;
 }
 
-void QoSCube::setCostTime(int costTime) {
+void QoSCube::setCostTime(double costTime) {
     this->costTime = costTime;
 }
 
@@ -177,7 +199,7 @@ std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
     return os << cube.info();
 }
 
-short QoSCube::countFeasibilityScore(const QoSCube templ) const {
+short QoSCube::countFeasibilityScore(const QoSCube other) const {
     short score = 0;
 
     /*
@@ -200,49 +222,49 @@ short QoSCube::countFeasibilityScore(const QoSCube templ) const {
     */
 
     if (getAvgBand() != VAL_QOSPARDONOTCARE)
-        (getAvgBand() <= templ.getAvgBand()) ? score++ : score--;
+        (getAvgBand() <= other.getAvgBand()) ? score++ : score--;
 
     if (getAvgSduBand() != VAL_QOSPARDONOTCARE)
-        (getAvgSduBand() <= templ.getAvgSduBand()) ? score++ : score--;
+        (getAvgSduBand() <= other.getAvgSduBand()) ? score++ : score--;
 
     if (getPeakBandDuration() != VAL_QOSPARDONOTCARE)
-        (getPeakBandDuration() <= templ.getPeakBandDuration()) ? score++ : score--;
+        (getPeakBandDuration() <= other.getPeakBandDuration()) ? score++ : score--;
 
     if (getPeakSduBandDuration() != VAL_QOSPARDONOTCARE)
-        (getPeakSduBandDuration() <= templ.getPeakSduBandDuration()) ? score++ : score--;
+        (getPeakSduBandDuration() <= other.getPeakSduBandDuration()) ? score++ : score--;
 
     if (getBurstPeriod() != VAL_QOSPARDONOTCARE)
-        (getBurstPeriod() <= templ.getBurstPeriod()) ? score++ : score--;
+        (getBurstPeriod() <= other.getBurstPeriod()) ? score++ : score--;
 
     if (getBurstDuration() != VAL_QOSPARDONOTCARE)
-        (getBurstDuration() <= templ.getBurstDuration()) ? score++ : score--;
+        (getBurstDuration() <= other.getBurstDuration()) ? score++ : score--;
 
     if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
-        (getUndetectedBitErr() <= templ.getUndetectedBitErr()) ? score++ : score--;
+        (getUndetectedBitErr() <= other.getUndetectedBitErr()) ? score++ : score--;
 
     if (getMaxSduSize() != VAL_QOSPARDONOTCARE)
-        (getMaxSduSize() <= templ.getMaxSduSize()) ? score++ : score--;
+        (getMaxSduSize() <= other.getMaxSduSize()) ? score++ : score--;
 
-    (isPartialDelivery() == templ.isPartialDelivery()) ? score++ : score--;
+    (isPartialDelivery() == other.isPartialDelivery()) ? score++ : score--;
 
-    (isIncompleteDelivery() == templ.isIncompleteDelivery()) ? score++ : score--;
+    (isIncompleteDelivery() == other.isIncompleteDelivery()) ? score++ : score--;
 
-    (isForceOrder() == templ.isForceOrder()) ? score++ : score--;
+    (isForceOrder() == other.isForceOrder()) ? score++ : score--;
 
     if (getMaxAllowGap() != VAL_QOSPARDONOTCARE)
-        (getMaxAllowGap() <= templ.getMaxAllowGap()) ? score++ : score--;
+        (getMaxAllowGap() <= other.getMaxAllowGap()) ? score++ : score--;
 
     if (getDelay() != VAL_QOSPARDONOTCARE)
-        (getDelay() <= templ.getDelay()) ? score++ : score--;
+        (getDelay() <= other.getDelay()) ? score++ : score--;
 
     if (getJitter() != VAL_QOSPARDONOTCARE)
-        (getJitter() <= templ.getJitter()) ? score++ : score--;
+        (getJitter() <= other.getJitter()) ? score++ : score--;
 
     if (getCostTime() != VAL_QOSPARDONOTCARE)
-        (getCostTime() <= templ.getCostTime()) ? score++ : score--;
+        (getCostTime() <= other.getCostTime()) ? score++ : score--;
 
     if (getCostBits() != VAL_QOSPARDONOTCARE)
-        (getCostBits() <= templ.getCostBits()) ? score++ : score--;
+        (getCostBits() <= other.getCostBits()) ? score++ : score--;
 
     return score;
 }

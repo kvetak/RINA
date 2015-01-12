@@ -13,11 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+//
+// <h1>BorderRouter simulation module</h1> 
+//
+// This models simulates border router node that has five different rank DIFs:
+//  * 1x (N+1)-DIF <i>relayIpc</i> is used as bridge between <i>ipcProccesses</i> for relaying
+//  * 3x (N)-DIF <i>ipcProcess1/2/3</i> 
+//  * 1x (N-1)-DIF <i>bottomIpc</i> 
+//
+// It also contains <i>DIFAllocator</i> module as NameSpaceManager interface
+//
+// @author Vladimir Vesely (ivesely@fit.vutbr.cz)
+// @date Last refactorized and documented on 2015-01-12
+
 package rina.CS;
 
 import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
-
 
 module BorderRouter
 {

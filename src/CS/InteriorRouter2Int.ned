@@ -13,6 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+//
+// <h1>Interior router simulation module with two interfaces</h1> 
+//
+// This models simulates interior router node that has three different rank DIFs:
+//  * 1x (N)-DIF <i>relayIpc</i> is used as bridge between <i>ipcProccesses</i> for relaying 
+//  * 2x (N-1)-DIF <i>ipcProccesses0/1</i> 
+//
+// It also contains <i>DIFAllocator</i> module as NameSpaceManager interface
+//
+// @author Vladimir Vesely (ivesely@fit.vutbr.cz), Tomas Hykel
+// @date Last refactorized and documented on 2015-01-12
+
+
 package rina.CS;
 
 import rina.DAF.DA.DIFAllocator;

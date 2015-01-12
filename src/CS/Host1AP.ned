@@ -13,6 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+//
+// <h1>Host with 1 Application Process</h1> 
+//
+// This models simulates host node that has two different rank DIFs:
+//  * 1x (N)-DIF <i>ipcProcess1</i> is used by AP for communication 
+//  * 1x (N-1)-DIF <i>ipcProcess0</i> underlaying DIF for <i>ipcProcess1</i>   
+//
+// It contains one AP called <i>applicationProcces1</i>
+// It also contains <i>DIFAllocator</i> module as NameSpaceManager interface
+//
+// @author Vladimir Vesely (ivesely@fit.vutbr.cz)
+// @date Last refactorized and documented on 2015-01-12
+
+
 package rina.CS;
 
 import rina.Common.Test;

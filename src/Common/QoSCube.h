@@ -26,82 +26,353 @@
 #ifndef QOSCUBE_H_
 #define QOSCUBE_H_
 
+//Standard libraries
+#include <vector>
+//RINASim libraries
 #include "Policy.h"
 #include "ExternConsts.h"
-#include <vector>
 
 extern const char* STR_DONOTCARE;
 extern const char* STR_YES;
 extern const char* STR_NO;
+extern const int   VAL_DEFQOS;
 
+/**
+ * @brief Class representing QoSCube with all its properties that is primarily used by FA, RMT and RA
+ * Specification sources are http://nes.fit.vutbr.cz/ivesely/pmwiki.php/RINA/EFCP#t2._QoS-Cube_Specfic_Parameters and http://nes.fit.vutbr.cz/ivesely/pmwiki.php/RINA/ServiceDefinition
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2015-01-12
+ */
 class QoSCube {
 
-  private:
+  protected:
+    /**
+     * @brief Attribute holding QoSCube identifier. Beaware, value 0 is reserved for Flow QoS demands!
+     */
     unsigned short qoSId;
+
+    /**
+     * @brief Attribute holding average bandwidth
+     */
     int avgBand ;               //Average bandwidth (measured at the application in bits/sec)
+
+    /**
+     * @brief Attribute holding average SDU bandwidth
+     */
     int avgSDUBand;             //Average SDU bandwidth (measured in SDUs/sec)
+
+    /**
+     * @brief Attribute holding peak bandwidth duration
+     */
     int peakBandDuration;       //Peak bandwidth-duration (measured in bits/sec);
+
+    /**
+     * @brief Attribute holding peak SDU bandwidth duration
+     */
     int peakSDUBandDuration;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+
+    /**
+     * @brief Attribute holding burst period in usecs
+     */
     int burstPeriod;            //Burst period measured in useconds
+
+    /**
+     * @brief Attribute holding burst durating as usec fraction of burst period
+     */
     int burstDuration;          //Burst duration, measured in useconds fraction of Burst Period
+
+    /**
+     * @brief Attribute holding probability of undetected bit error rate
+     */
     double undetectedBitErr;    //Undetected bit error rate measured as a probability
+
+    /**
+     * @brief Attribute holding maximum SDU size
+     */
     int maxSDUsize;             //MaxSDUSize measured in bytes
+
+    /**
+     * @brief Attribute holding partial delivery flag
+     */
     bool partDeliv;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+
+    /**
+     * @brief Attribute holding incomplete delivery flag
+     */
     bool incompleteDeliv;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+
+    /**
+     * @brief Attribute holding in-order delivery flag
+     */
     bool forceOrder;            //Must SDUs be delivered in-order bits
-    int maxAllowGap;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+
+    /**
+     * @brief Attribute holding maximum allowd gap in SDUs
+     */
+    int maxAllowGap;            //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+
+    /**
+     * @brief Attribute holding accepted delay
+     */
     int delay;                  //Delay in usecs
+
+    /**
+     * @brief Attribute holding accepted jitter
+     */
     int jitter;                 //Jitter in usecs
+
+    /**
+     * @brief Attribute holding connection's time price
+     */
     int costTime;               //measured in $/ms
+
+    /**
+     * @brief Attribute holding connection's transmission size price
+     */
     int costBits;               //measured in $/Mb
 
+    /**
+     * @brief Vector of bound default policies
+     */
     std::vector<Policy*> policyList;
-    //Policy-Default-Parameters: List;
-
   public:
+    /**
+     * @brief Constructor of QosCube with undefined values
+     */
     QoSCube();
+
+    /**
+     * @brief Destructor assigning default uninitialized values
+     */
     virtual ~QoSCube();
-    int getAvgBand() const;
-    void setAvgBand(int avgBand);
-    int getAvgSduBand() const;
-    void setAvgSduBand(int avgSduBand);
-    int getBurstDuration() const;
-    void setBurstDuration(int burstDuration);
-    int getBurstPeriod() const;
-    void setBurstPeriod(int burstPeriod);
-    int getDelay() const;
-    void setDelay(int delay);
-    bool isForceOrder() const;
-    void setForceOrder(bool forceOrder);
-    bool isIncompleteDelivery() const;
-    void setIncompleteDelivery(bool incompleteDeliv);
-    int getJitter() const;
-    void setJitter(int jitter);
-    int getMaxAllowGap() const;
-    void setMaxAllowGap(int maxAllowGap);
-    int getMaxSduSize() const;
-    void setMaxSduSize(int maxSdUsize);
-    bool isPartialDelivery() const;
-    void setPartialDelivery(bool partDeliv);
-    int getPeakBandDuration() const;
-    void setPeakBandDuration(int peakBandDuration);
-    int getPeakSduBandDuration() const;
-    void setPeakSduBandDuration(int peakSduBandDuration);
-    double getUndetectedBitErr() const;
-    void setUndetectedBitErr(double undetectedBitErr);
+
+    /**
+     * @brief Gets QoSCube identifier
+     * @return QoSCube identifier as unsigned number, where value 0 is reserved for AE's Flow QoS parameters
+     */
     unsigned short getQosId() const;
+
+    /**
+     * @brief Sets QoSCube identifier
+     * @param qoSId A new QoSCube identifier
+     */
     void setQosId(unsigned short qoSId);
-    int getCostBits() const;
-    void setCostBits(int costBits);
-    int getCostTime() const;
-    void setCostTime(int costTime);
 
-    short countFeasibilityScore(const QoSCube templ) const;
+    /**
+     * @brief Gets Average Bandwidth parameter
+     * @return Value measured at the application in bits/sec
+     */
+    int getAvgBand() const;
 
+    /**
+     * @brief Sets Average Bandwidth parameter
+     * @param avgBand A new value in bits/sec
+     */
+    void setAvgBand(int avgBand);
+
+    /**
+     * @brief Gets Average SDU Bandwidth parameter
+     * @return Value measured in SDUs/sec
+     */
+    int getAvgSduBand() const;
+
+    /**
+     * @brief Sets Average SDU Bandwidth  parameter
+     * @param avgSduBand A new value in SDUs/sec
+     */
+    void setAvgSduBand(int avgSduBand);
+
+    /**
+     * @brief Gets Peak Band Duration parameter
+     * @return Value measured in bits/sec
+     */
+    int getPeakBandDuration() const;
+
+    /**
+     * @brief Sets Peak Band Duration parameter
+     * @param peakBandDuration A new value measured in bits/sec
+     */
+    void setPeakBandDuration(int peakBandDuration);
+
+    /**
+     * @brief Gets Peak SDU Duration parameter
+     * @return Value measured in SDUs/sec
+     */
+    int getPeakSduBandDuration() const;
+
+    /**
+     * @brief Sets Peak SDU Duration parameter
+     * @param peakSduBandDuration A new value measured in SDUs/sec
+     */
+    void setPeakSduBandDuration(int peakSduBandDuration);
+
+    /**
+     * @brief Gets Burst Duration parameter
+     * @return Value measured in usecs
+     */
+    int getBurstDuration() const;
+
+    /**
+     * @brief Sets Burst Duration parameter
+     * @param burstDuration A new value in usecs
+     */
+    void setBurstDuration(int burstDuration);
+
+    /**
+     * @brief Gets Burst Period parameter
+     * @return Value measured as a fraction of Burst Period
+     */
+    int getBurstPeriod() const;
+
+    /**
+     * @brief Sets Burst Period parameter
+     * @param burstPeriod A new value measured as a fraction of Burst Period
+     */
+    void setBurstPeriod(int burstPeriod);
+
+    /**
+     * @brief Gets Maximum SDU Size parameter
+     * @return Value measured in bytes
+     */
+    int getMaxSduSize() const;
+
+    /**
+     * @brief Sets Maximum SDU Size parameter
+     * @param maxSdUsize A new value measured in bytes
+     */
+    void setMaxSduSize(int maxSdUsize);
+
+    /**
+     * @brief Gets Undetected Bit Error Rate parameter
+     * @return Value in range from 0.0 to 1.0 measured as a probability
+     */
+    double getUndetectedBitErr() const;
+
+    /**
+     * @brief Sets Undetected Bit Error Rate parameter
+     * @param undetectedBitErr A new value in range from 0.0 to 1.0 measured as a probability
+     */
+    void setUndetectedBitErr(double undetectedBitErr);
+
+    /**
+     * @brief Gets partial delivery flag
+     * @return Boolean flag value
+     */
+    bool isPartialDelivery() const;
+
+    /**
+     * @brief Sets partial delivery flag
+     * @param partDeliv A new partial delivery flag value
+     */
+    void setPartialDelivery(bool partDeliv);
+
+    /**
+     * @brief Gets incomplete delivery flag
+     * @return Boolean flag value
+     */
+    bool isIncompleteDelivery() const;
+
+    /**
+     * @brief Sets incomplete delivery flag
+     * @param incompleteDeliv A new incomplete delivery flag value
+     */
+    void setIncompleteDelivery(bool incompleteDeliv);
+
+    /**
+     * @brief Gets in-order delivery flag
+     * @return Boolean flag value
+     */
+    bool isForceOrder() const;
+
+    /**
+     * @brief Sets in-order delivery flag
+     * @param forceOrder A new in-order delivery flag value
+     */
+    void setForceOrder(bool forceOrder);
+
+    /**
+     * @brief Gets Maximum Allowable Gap in SDUs parameter
+     * @return Gap value measured in number of SDUs
+     */
+    int getMaxAllowGap() const;
+
+    /**
+     * @brief Sets Maximum Allowable Gap in SDUs parameter
+     * @param maxAllowGap A new gap value measured in number of SDUs
+     */
+    void setMaxAllowGap(int maxAllowGap);
+
+    /**
+     * @brief Gets Delay parameter
+     * @return Value measured in usecs
+     */
+    int getDelay() const;
+
+    /**
+     * @brief Sets Delay parameter
+     * @param delay A new value measured in usecs
+     */
+    void setDelay(int delay);
+
+    /**
+     * @brief Gets Jitter parameter
+     * @return Value measured in usecs
+     */
+    int getJitter() const;
+
+    /**
+     * @brief Sets Jitter parameter
+     * @param jitter A new value measured in usecs
+     */
+    void setJitter(int jitter);
+
+    /**
+     * @brief Gets Cost-time parameter
+     * @return Value measured in $/ms
+     */
+    double getCostTime() const;
+
+    /**
+     * @brief Sets Cost-time parameter
+     * @param costTime A new value measured in $/ms
+     */
+    void setCostTime(double costTime);
+
+    /**
+     * @brief Gets Cost-bits parameter
+     * @return Value measured in $/bit
+     */
+    double getCostBits() const;
+
+    /**
+     * @brief Sets Cost-bits parameter
+     * @param costBits A new value measured in $/bit
+     */
+    void setCostBits(double costBits);
+
+    /**
+     * @brief Simple QoSCube comparator measuring feasibility score of this and other QoSCubes
+     * If QoS parameter could be satisfied then increment +1 to score. If not then decrement -1.
+     * If parameter has do-not-care value then add nothing to the score.
+     * Function should be reimplemented to more sophisticated one in case of inheritance.
+     * @param templ
+     */
+    virtual short countFeasibilityScore(const QoSCube other) const;
+
+    /**
+     * @brief Prints QoSCube information as string
+     * @return String of QoSCube textual representation
+     */
     std::string info() const;
 };
 
 //Free function
+/**
+ * << operator overload that feeds ostream with QoSCube string representation
+ * @param os Resulting ostream
+ * @param cube QoSCube class that is being converted to string
+ * @return Infotext representing QoSCube
+ */
 std::ostream& operator<< (std::ostream& os, const QoSCube& cube);
 
 #endif /* QOSCUBE_H_ */
