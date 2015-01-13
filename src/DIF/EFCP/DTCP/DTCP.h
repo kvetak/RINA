@@ -1,0 +1,184 @@
+//
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//  
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public License
+// as published by the Free Software Foundation; either version 3
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program; if not, see <http://www.gnu.org/licenses/>.
+//
+/*
+ * DTCP.h
+ *
+ *  Created on: Apr 17, 2014
+ *      Author: Marcel Marek
+ */
+
+#ifndef DTCP_H_
+#define DTCP_H_
+
+#include <csimplemodule.h>
+
+#include "FlowControl.h"
+#include "RXControl.h"
+#include "DTCPState.h"
+#include "DTPState.h"
+#include "DTP.h"
+#include "EFCP_defs.h"
+#include "ControlPDU_m.h"
+#include "DTCPTimers_m.h"
+
+/* Policies */
+#include "DTCPECNPolicyBase.h"
+#include "DTCPRcvrFCPolicyBase.h"
+#include "DTCPRcvrAckPolicyBase.h"
+#include "DTCPReceivingFCPolicyBase.h"
+#include "DTCPSendingAckPolicyBase.h"
+#include "DTCPLostControlPDUPolicyBase.h"
+#include "DTCPRcvrControlAckPolicyBase.h"
+#include "DTCPSenderAckPolicyBase.h"
+#include "DTCPFCOverrunPolicyBase.h"
+#include "DTCPNoOverridePeakPolicyBase.h"
+#include "DTCPTxControlPolicyBase.h"
+#include "DTCPNoRateSlowDownPolicyBase.h"
+#include "DTCPReconcileFCPolicyBase.h"
+#include "DTCPRateReductionPolicyBase.h"
+
+class DTP;
+class FlowControl;
+
+class DTCP: public cSimpleModule {
+    friend class DTP;
+  private:
+
+    DTP* dtp;
+    DTCPState *dtcpState;
+    FlowControl* flowControl;
+    RXControl* rxControl;
+
+    DTCPECNPolicyBase* ecnPolicy;
+    DTCPRcvrFCPolicyBase* rcvrFCPolicy;
+    DTCPRcvrAckPolicyBase* rcvrAckPolicy;
+    DTCPReceivingFCPolicyBase* receivingFCPolicy;
+    DTCPSendingAckPolicyBase* sendingAckPolicy;
+    DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
+    DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
+    DTCPSenderAckPolicyBase* senderAckPolicy;
+    DTCPFCOverrunPolicyBase* fcOverrunPolicy;
+    DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
+    DTCPTxControlPolicyBase* txControlPolicy;
+    DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
+    DTCPReconcileFCPolicyBase* reconcileFCPolicy;
+    DTCPRateReductionPolicyBase* rateReductionPolicy;
+
+
+    /*Timers*/
+    WindowTimer* windowTimer;
+
+
+    void schedule(DTCPTimers *timer, double time = 0.0);
+    void resetWindowTimer();
+
+    void sendAckPDU();
+    void flushAllQueuesAndPrepareToDie();
+
+
+public:
+
+    DTCP();
+    virtual ~DTCP();
+
+    void setDTP(DTP* dtp);
+
+    DTCPState* getDTCPState() const;
+
+
+    void handleWindowTimer(WindowTimer* timer);
+
+    void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
+
+    void updateRcvRtWinEdge(DTPState* dtpState);
+
+    unsigned int getNextSndCtrlSeqNum();
+    unsigned int getLastCtrlSeqNumRcv();
+    void setLastCtrlSeqnumRcvd(unsigned int ctrlSeqNum);
+
+
+    void setSndRtWinEdge(unsigned int sndRtWinEdge);
+    unsigned int getSndRtWinEdge();
+    void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
+    unsigned int getRcvRtWinEdge();
+
+    void setSndRate(unsigned int sendingRate);
+    unsigned int getSndRate();
+
+    unsigned int getRcvCredit();
+
+    unsigned long getSendingTimeUnit();
+
+    bool isSendingRateFullfilled() const;
+    void setSendingRateFullfilled(bool rateFullfilled);
+
+    void incRcvRtWinEdge();
+
+    void nackPDU(unsigned int startSeqNum, unsigned int endSeqNum = 0);
+    void ackPDU(unsigned int startSeqNum, unsigned int endSeqNum = 0);
+
+    void pushBackToRxQ(DataTransferPDU* pdu);
+    void clearRxQ();
+    unsigned int getDataReXmitMax() const;
+
+    unsigned int getPdusSentInTimeUnit() const;
+    void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
+    void incPdusSentInTimeUnit();
+
+    unsigned int getSendingRate() const;
+    void setSendingRate(unsigned int sendingRate);
+
+    unsigned int getRcvrRate() const;
+
+    void incDupAcks();
+    unsigned int getDupAcks() const;
+
+    void incDupFC();
+    unsigned int getDupFC() const;
+
+    /* Run Policies */
+    bool runECNPolicy(DTPState* dtpState);
+    bool runRcvrFCPolicy(DTPState* dtpState);
+    bool runRcvrAckPolicy(DTPState* dtpState);
+    bool runReceivingFCPolicy(DTPState* dtpState);
+    bool runSendingAckPolicy(DTPState* dtpState, ATimer* timer);
+    bool runLostControlPDUPolicy(DTPState* dtpState);
+    bool runRcvrControlAckPolicy(DTPState* dtpState);
+    bool runSenderAckPolicy(DTPState* dtpState);
+    bool runFCOverrunPolicy(DTPState* dtpState);
+    bool runNoOverridePeakPolicy(DTPState* dtpState);
+    bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
+    bool runNoRateSlowDownPolicy(DTPState* dtpState);
+    bool runReconcileFCPolicy(DTPState* dtpState);
+    bool runRateReductionPolicy(DTPState* dtpState);
+
+    //TODO policies
+    void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
+
+
+
+
+    void redrawGUI();
+    void createPolicyModule(cModule* policy, const char* prefix, const char* name);
+
+protected:
+    virtual void handleMessage(cMessage *msg);
+    virtual void initialize(int step);
+};
+
+#endif /* DTCP_H_ */

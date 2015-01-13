@@ -20,21 +20,20 @@ cplusplus {{
 #include "Address.h"
 #include "APN.h"
 #include "ConnectionId.h"
-typedef cMessage* cMessagePtr;
-typedef cObject* cObjectPtr;
+//#include "UserDataField.h"
+
+//typedef cMessage* cMessagePtr;
+//typedef cObject* cObjectPtr;
+//typedef UserDataField* UserDataFieldPtr;
 
 }}
 class noncobject Address;
 class noncobject APN;
 class noncobject ConnectionId;
-class noncobject cMessagePtr;
-class noncobject cObjectPtr;
+//class noncobject cMessagePtr;
+//class noncobject cObjectPtr;
 
-//cplusplus {{
-//   #include "cobject.h"
-//}}
-//
-//class noncobject cObject;
+
 
 
 
@@ -51,23 +50,25 @@ enum PDUType{
         NACK_FLOW_PDU 			= 0x880D;
         SELECT_ACK_FLOW_PDU 	= 0x880E;
         SELECT_NACK_FLOW_PDU 	= 0x880F;
-        
-        
-        
+
 }
+
+enum PDUTypeBits{
+    	PDU_NACK_BIT	= 0x01;
+    	PDU_SEL_BIT		= 0x02;
+    	PDU_ACK_BIT		= 0x04;
+    	PDU_FC_BIT		= 0x08;
+}
+
 //TODO A1
 enum FLAGS{
 }
 
 
 
-//class noncobject OtherType;
-
-//
-// TODO generated message class
-
 message PDU {
     @customize(true);
+    string displayString;
     unsigned int version = 1;
     Address srcAddr;
     Address dstAddr;
@@ -79,8 +80,9 @@ message PDU {
     unsigned int pduLen = PDU_HEADER_LEN;
     unsigned int seqNum;
 //    cObject userData; //unsigned char []? string?
-    unsigned char userData[];
-    cMessagePtr mUserData;
+//    unsigned char userData[];
+//    cMessagePtr mUserData;
+    
     
     
 }

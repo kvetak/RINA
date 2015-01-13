@@ -33,6 +33,7 @@ const char* PAR_DELAY               = "delay";
 const char* PAR_JITTER              = "jitter";
 const char* PAR_COSTTIME            = "costTime";
 const char* PAR_COSTBITS            = "costBits";
+const char* PAR_ATIME               = "aTime";
 
 const APNamingInfo& AEBase::getApni() const {
     return apni;
@@ -124,7 +125,9 @@ void AEBase::initQoSRequiremets() {
            hasPar(PAR_DELAY) &&
            hasPar(PAR_JITTER) &&
            hasPar(PAR_COSTTIME) &&
-           hasPar(PAR_COSTBITS)
+           hasPar(PAR_COSTBITS) &&
+           hasPar(PAR_ATIME)
+
           )
        ) {
         std::ostringstream ss;
@@ -151,6 +154,7 @@ void AEBase::initQoSRequiremets() {
     int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
     int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
     int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
+    double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
 
     avgBand = par(PAR_AVGBW);
     if (avgBand < 0)
@@ -194,6 +198,9 @@ void AEBase::initQoSRequiremets() {
     costbits = par(PAR_COSTBITS);
     if (costbits < 0)
         costbits = VAL_QOSPARDONOTCARE;
+    aTime = par(PAR_ATIME);
+    if (aTime < 0)
+        aTime = VAL_QOSPARDONOTCARE;
 
     cube.setQosId(0);
     cube.setAvgBand(avgBand);
@@ -212,6 +219,7 @@ void AEBase::initQoSRequiremets() {
     cube.setJitter(jitter);
     cube.setCostBits(costbits);
     cube.setCostTime(costtime);
+    cube.setATime(aTime);
 
     this->setQoSRequirements(cube);
 

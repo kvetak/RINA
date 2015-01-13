@@ -21,15 +21,50 @@
  */
 #include <SDU.h>
 
-//SDU::SDU()
-//{
-//  this->offset = this->size = 0;
-//
-//}
+SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
+{
+   fSeqNum_var = seqNum_var = fOffset_var = fSize_var = this->offset_var = this->size_var = 0;
 
+}
+
+SDU::SDU(const SDU& other): SDU_Base(other){
+  copy(other);
+}
+
+void SDU::copy(const SDU& other){
+  mUserDataType::const_iterator it;
+
+  for(it = other.mUserData_var.begin(); it != other.mUserData_var.end(); ++it){
+    CDAPMessage *cdap = (*it)->dup();
+    take(cdap);
+
+    mUserData_var.push_back(cdap);
+  }
+}
+
+/*
+ * This size returns size depending on @var dataType_var
+ */
 unsigned int SDU::getSize() const
 {
+  if (dataType_var == SDU_TYPE)
+  {
+    return size_var;
+  }
+  else if (dataType_var == SDU_FRAGMENT_TYPE)
+  {
+    return fSize_var;
+  }else{
+    return 0; //PANIC!
+  }
+}
+/*
+ * This method returns the absolute size of the SDU.
+ */
+unsigned int SDU::getAbsoluteSize() const
+{
   return size_var;
+
 }
 
 unsigned int SDU::getRestSize()const
@@ -82,14 +117,77 @@ bool SDU::addUserData(CDAPMessage* msg){
 //    }
 
     //TODO A1 check current SDU size
-
+  take(msg);
   this->mUserData_var.push_back(msg);
+  size_var += msg->getSize();
 
-    return true;
+  return true;
+}
+
+CDAPMessage* SDU::getUserData(){
+
+  if (!mUserData_var.empty())
+  {
+    CDAPMessage* cdap;
+    cdap = mUserData_var.front();
+
+    mUserData_var.erase(mUserData_var.begin());
+    drop(cdap);
+    return cdap;
+  }
+  else
+  {
+    return NULL;
+  }
+}
+/**
+ * Returns SDU Fragments vector of specified size
+ *
+ */
+std::vector<SDU*> SDU::fragment(unsigned int size){
+
+  std::vector<SDU*> frags;
+  SDU* tmp;
+  for(unsigned int i = 0; i* size < this->size_var; i++){
+    tmp = this->genFragment(size, i, i*size);
+    frags.push_back(tmp);
+  }
+
+  return frags;
+}
+
+SDU* SDU::genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset){
+  SDU* tmp = this->dup();
+  tmp = new SDU(*this);
+  tmp->setFragment(size, fSeqNum, fOffset);
+  return tmp;
+
+}
+
+void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOffset){
+  fSize_var = fSize;
+  fSeqNum_var = fSeqNum;
+  fOffset_var = fOffset;
+  dataType_var = SDU_FRAGMENT_TYPE;
+  if(fSeqNum == 0){
+    fragType_var = SDU_FRAG_FIRST;
+  }else if(fSize + fOffset == this->size_var){
+    fragType_var = SDU_FRAG_LAST;
+  }else{
+    fragType_var = SDU_FRAG_MIDDLE;
+  }
 }
 
 SDU::~SDU()
 {
-  // TODO Auto-generated destructor stub
+  std::vector<CDAPMessage*>::iterator it;
+  for(it = mUserData_var.begin(); it != mUserData_var.end();){
+    if((*it) != NULL){
+      drop((*it));
+      delete (*it);
+    }
+    it = mUserData_var.erase(it);
+
+  }
 }
 

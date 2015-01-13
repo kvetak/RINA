@@ -22,8 +22,8 @@
 #include "QoSCube.h"
 #include "Flow.h"
 
-typedef std::list<QoSCube> QosCubeSet;
-typedef QosCubeSet::const_iterator QCubeCItem;
+typedef std::list<QoSCube> QoSCubeSet;
+typedef QoSCubeSet::const_iterator QCubeCItem;
 
 class RABase : public cSimpleModule
 {
@@ -38,18 +38,18 @@ class RABase : public cSimpleModule
     virtual void removeNM1Flow(Flow *flow) = 0;
     virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
 
-    const QosCubeSet& getQosCubes() const;
-    const QoSCube* getQosCubeById(unsigned short qosId) const;
+    const QoSCubeSet& getQoSCubes() const;
+    const QoSCube* getQoSCubeById(unsigned short qosId) const;
 
   protected:
     //SimpleModule overloads
     virtual void initialize(int stage) = 0;
     virtual void handleMessage(cMessage *msg) = 0;
 
-    QosCubeSet QosCubes;
+    QoSCubeSet QoSCubes;
 };
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const QosCubeSet& cubes);
+std::ostream& operator<< (std::ostream& os, const QoSCubeSet& cubes);
 
 #endif /* RABASE_H_ */

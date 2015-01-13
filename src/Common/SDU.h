@@ -23,28 +23,37 @@
 #include "CDAPMessage_m.h"
 #include "SDU_m.h"
 
+typedef std::vector<CDAPMessage*> mUserDataType;
 class SDU : public SDU_Base
 {
 
   private:
-    unsigned char * userData; //depricated
+    unsigned char * userData; //Deprecated
 //    unsigned int size;
 //    unsigned int offset;
-//    std::vector<mCDAPMessage*> mUserData;
+    mUserDataType mUserData_var;
 
-    void copy(const SDU& other){};
+    void copy(const SDU& other);
 
 public:
 //  SDU();
   virtual ~SDU();
 
-    SDU(const char *name=NULL, int kind=0) : SDU_Base(name,kind) {this->offset_var = this->size_var = 0;}
-    SDU(const SDU& other) : SDU_Base(other) {copy(other);}
-    SDU& operator=(const SDU& other) {if (this==&other) return *this; SDU_Base::operator=(other); copy(other); return *this;}
+    SDU(const char *name=NULL, int kind=0);
+    SDU(const SDU& other); // : SDU_Base(other) {copy(other);}
+    SDU& operator=(const SDU& other)
+    {
+      if (this == &other)
+        return *this;
+      SDU_Base::operator=(other);
+      copy(other);
+      return *this;
+    }
     virtual SDU *dup() const {return new SDU(*this);}
     // ADD CODE HERE to redefine and implement pure virtual functions from SDU_Base
 
     unsigned int getSize() const;
+    unsigned int getAbsoluteSize() const;
     unsigned int getRestSize() const;
     void setSize(unsigned int size);
     unsigned char* getUserData() const;
@@ -52,6 +61,11 @@ public:
     void setUserData(unsigned char* userData, unsigned int size);
 
     bool addUserData(CDAPMessage* msg);
+    CDAPMessage* getUserData();
+
+    std::vector<SDU*>fragment(unsigned int size);
+    SDU* genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);
+    void setFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);
 
 
 };

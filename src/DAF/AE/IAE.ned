@@ -40,4 +40,5 @@ moduleinterface IAE
         int jitter @unit(us); //Jitter in usecs
         int costTime; //measured in $/ms
         int costBits; //measured in $/Mb
+        double aTime; //measured in ms
 }

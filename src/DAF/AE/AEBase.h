@@ -44,6 +44,7 @@ extern const char* PAR_DELAY;
 extern const char* PAR_JITTER;
 extern const char* PAR_COSTTIME;
 extern const char* PAR_COSTBITS;
+extern const char* PAR_ATIME;
 
 class AEBase : public cSimpleModule
 {

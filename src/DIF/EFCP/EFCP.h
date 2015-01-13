@@ -33,7 +33,7 @@
 #include "Flow.h"
 #include "EFCPTable.h"
 #include "ExternConsts.h"
-
+#include "RA.h"
 
 //#include "EFCPInstance.h"
 //#include "Delimiting.h"
@@ -78,9 +78,12 @@ private:
 
 
     EFCPTable* efcpTable;
+    RA* resourceAllocator;
 
     Delimiting* createDelimiting(cModule* efcpi);
     DTCP* createDTCP(cModule* efcpi);
+
+
 
 //    DTP dtp; //required part of the EFCP
 //    DTStateVector dtStateV; //data-transfer state vector
@@ -101,6 +104,8 @@ public:
 
 
     EFCPInstance* createEFCPI(Flow* flow, int cepId);
+    bool deleteEFCPI(Flow *flow);
+
 
 };
 

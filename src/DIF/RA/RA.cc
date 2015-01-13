@@ -25,7 +25,7 @@
 Define_Module(RA);
 
 const char* PAR_QOSDATA              = "qoscubesData";
-const char* ELEM_QOSCUBE             = "QosCube";
+const char* ELEM_QOSCUBE             = "QoSCube";
 const char* ATTR_ID                  = "id";
 const char* ELEM_AVGBW               = "AverageBandwidth";
 const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
@@ -43,6 +43,7 @@ const char* ELEM_DELAY               = "Delay";
 const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
 
 void RA::initialize(int stage)
 {
@@ -82,7 +83,7 @@ void RA::initialize(int stage)
     initSignalsAndListeners();
     initQoSCubes();
 
-    WATCH_LIST(this->QosCubes);
+    WATCH_LIST(this->QoSCubes);
 }
 
 void RA::handleMessage(cMessage *msg)
@@ -132,7 +133,7 @@ void RA::initFlowAlloc()
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(apn));
 
-        const QoSCube* qosCube = getQosCubeById(qosId);
+        const QoSCube* qosCube = getQoSCubeById(qosId);
         if (qosCube == NULL)
         {
             EV << "!!! Invalid QoS-id provided for flow with dst " << apn
@@ -201,7 +202,7 @@ void RA::initQoSCubes()
 
         QoSCube cube;
         cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
-        //Following data types should be same as in QosCubes.h
+        //Following data types should be same as in QoSCubes.h
         int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
         int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
         int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
@@ -218,6 +219,7 @@ void RA::initQoSCubes()
         int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
         int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
         int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
+        double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
 
         cXMLElementList attrs = m->getChildren();
         for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
@@ -295,7 +297,11 @@ void RA::initQoSCubes()
                 costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
                 if (costbits < 0)
                     costbits = VAL_QOSPARDONOTCARE;
-            }
+            }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
+              aTime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+              if (aTime < 0)
+                  aTime = VAL_QOSPARDONOTCARE;
+          }
         }
 
         cube.setAvgBand(avgBand);
@@ -314,10 +320,11 @@ void RA::initQoSCubes()
         cube.setJitter(jitter);
         cube.setCostBits(costbits);
         cube.setCostTime(costtime);
+        cube.setATime(aTime);
 
-        QosCubes.push_back(cube);
+        QoSCubes.push_back(cube);
     }
-    if (!QosCubes.size()) {
+    if (!QoSCubes.size()) {
         std::ostringstream os;
         os << this->getFullPath() << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!" << endl;
         error(os.str().c_str());

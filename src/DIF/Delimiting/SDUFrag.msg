@@ -24,6 +24,5 @@ message SDU;
 message SDUFrag extends SDU {
     @customize(true);
     dataType = SDU_FRAGMENT_TYPE;
-    unsigned int fSize;
-    unsigned int fOffset;
+
 }

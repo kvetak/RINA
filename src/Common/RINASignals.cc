@@ -23,6 +23,8 @@ const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
+const char* SIG_IRM_AllocateResponsePositive    = "IRM-AllocateResponsePositive";
+const char* SIG_IRM_AllocateResponseNegative    = "IRM-AllocateResponseNegative";
 
 const char* SIG_AERIBD_AllocateResponsePositive = "AEorRIBd-AllocateResponsePositive";
 const char* SIG_AERIBD_AllocateResponseNegative = "AEorRIBd-AllocateResponseNegative";
