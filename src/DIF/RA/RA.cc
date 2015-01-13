@@ -493,6 +493,16 @@ void RA::createNM1Flow(Flow *flow)
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
+
+        // Start  TOREMOVE; only for demo purposes.
+        //
+        std::stringstream s;
+        s <<  "Could not resolve " << dstApn;
+        const char * msg = s.str().c_str();
+        fwdtg->reportBubbleInfo(msg);
+        //
+        // End TOREMOVE.
+
         EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
         return;
     }
@@ -571,6 +581,16 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
+
+        // Start  TOREMOVE; only for demo purposes.
+        //
+        std::stringstream s;
+        s <<  "Could not resolve " << dstApn;
+        const char * msg = s.str().c_str();
+        fwdtg->reportBubbleInfo(msg);
+        //
+        // End TOREMOVE.
+
         EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
         signalizeCreateFlowNegativeToRibd(flow);
         return;

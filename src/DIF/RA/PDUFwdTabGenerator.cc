@@ -383,6 +383,11 @@ void PDUFwdTabGenerator::removeNetInfo(FSInfo * info)
     netState.remove(info);
 }
 
+void PDUFwdTabGenerator::reportBubbleInfo(const char * message)
+{
+    nstm->bubble(message);
+}
+
 void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
 {
     pduftg_debug(ipcAddr.info() <<

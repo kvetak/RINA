@@ -210,6 +210,13 @@ class PDUFwdTabGenerator : public cSimpleModule
 
     // Handle an incoming update message.
     void handleUpdateMessage(FSUpdateInfo * info);
+
+    //
+    // Debug only
+    //
+
+    // Bubble out a message on the selected network state report module.
+    void reportBubbleInfo(const char * message);
 };
 
 #endif /* __RINA_PDUFWDTABGENERATOR_H_ */
