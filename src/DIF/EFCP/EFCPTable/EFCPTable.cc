@@ -32,10 +32,6 @@ EFCPTable::EFCPTable()
 //  efcpTable.clear();
   // TODO Auto-generated constructor stub
 
-  if(this->isModule()){
-    int a = 5;
-  }
-
 }
 
 EFCPTable::~EFCPTable()
@@ -71,8 +67,7 @@ std::string EFCPTable::info() const {
  * @return
  */
 EFCPTableEntry* EFCPTable::getEntryByFlow(Flow* flow){
-  //TODO A! remove
-//  return NULL;
+
   for(TEFCPTable::iterator it = this->efcpTable.begin(); it != efcpTable.end(); ++it){
 
 
@@ -129,7 +124,7 @@ EFCPTableEntry* EFCPTable::getEntryByDelimit(Delimiting* delimit){
 void EFCPTable::insertEntry(EFCPTableEntry* entry){
 //  Enter_Method("insertEntry(EFCPTableEntry* entry)");
 
-  this->efcpTable.empty();
+//  this->efcpTable.empty();
   this->efcpTable.push_back(entry);
 
 

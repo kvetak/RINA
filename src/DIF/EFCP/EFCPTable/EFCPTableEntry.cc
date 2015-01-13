@@ -71,3 +71,11 @@ void EFCPTableEntry::setFlow(Flow* flow)
 {
   this->flow = flow;
 }
+
+bool EFCPTableEntry::flushDTPs()
+{
+  std::vector<EFCPInstance*>::iterator it;
+  for(it = efcpiTab.begin(); it != efcpiTab.end(); ++it){
+    (*it)->getDtp()->flushAllQueuesAndPrepareToDie();
+  }
+}

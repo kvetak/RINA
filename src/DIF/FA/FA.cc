@@ -264,8 +264,8 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
     }
 
     //TODO: Compare QoS Parameters with available QoS cubes
-    QosCubeSet cubes = ResourceAllocator->getQosCubes();
-    //EV << ResourceAllocator->getQosCubes();
+    QoSCubeSet cubes = ResourceAllocator->getQoSCubes();
+    //EV << ResourceAllocator->getQoSCubes();
 
     unsigned short qosid = 0;
     short score = 0;

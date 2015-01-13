@@ -25,18 +25,18 @@ RABase::~RABase() {
 
 }
 
-const QosCubeSet& RABase::getQosCubes() const {
-    return QosCubes;
+const QoSCubeSet& RABase::getQoSCubes() const {
+    return QoSCubes;
 }
 
-std::ostream& operator <<(std::ostream& os, const QosCubeSet& cubes) {
+std::ostream& operator <<(std::ostream& os, const QoSCubeSet& cubes) {
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
         os << *it;
     return os;
 }
 
-const QoSCube* RABase::getQosCubeById(unsigned short qosId) const {
-    for (QCubeCItem it = QosCubes.begin(); it != QosCubes.end(); ++it) {
+const QoSCube* RABase::getQoSCubeById(unsigned short qosId) const {
+    for (QCubeCItem it = QoSCubes.begin(); it != QoSCubes.end(); ++it) {
         if (it->getQosId() == qosId)
             return &(*it);
     }

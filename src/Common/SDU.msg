@@ -20,16 +20,28 @@ cplusplus {{
 #include "Data.h"
 typedef std::vector<CDAPMessage*> mUserDataType;
 }}
+
 message Data;
-//message mCDAPMessage;
 class noncobject mUserDataType;
 
-//
-// TODO generated message class
-//
+enum FragmentType{
+    	SDU_FRAG_FIRST 		= 0x01;
+    	SDU_FRAG_MIDDLE		= 0x00;
+    	SDU_FRAG_LAST		= 0x02;
+}
+
 message SDU extends Data {
     @customize(true);
-    unsigned int size;
-    unsigned int offset;
-    mUserDataType mUserData;
+    unsigned int size = 0;
+    unsigned int offset = 0;
+    
+    
+    unsigned int fSize = 0;
+    unsigned int fOffset = 0;
+    
+    unsigned int seqNum = 0;
+    unsigned int fSeqNum = 0;
+    
+    int fragType enum(FragmentType) = 0	;
+    
 }

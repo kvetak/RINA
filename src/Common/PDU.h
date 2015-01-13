@@ -36,8 +36,6 @@ class PDU : public PDU_Base
 {
   private:
     void copy(const PDU& other){};
-//      PDU();
-//      ~PDU();
 
     public:
       PDU(const char *name=NULL, int kind=0) : PDU_Base(name,kind) {}
@@ -46,11 +44,16 @@ class PDU : public PDU_Base
       virtual PDU *dup() const {return new PDU(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from PDU_Base
 
-      void addUserData(const unsigned char *userData, unsigned int size, bool *fragment);
+//      void addUserData(const unsigned char *userData, unsigned int size, bool *fragment);
 
-      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
+//      void putDelimitFlags(int delimitFlags, bool fragment, int sduSeqNum = -1);
       unsigned int getHeaderSize();
+      unsigned int getSize();
+
+//      std::string info() const;
   };
+
+//std::ostream& operator << (std::ostream& os, const PDU& pdu);
 
 
 #endif /* PDU_H_ */

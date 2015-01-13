@@ -34,6 +34,13 @@ extern const char* MOD_CDAPSPLIT;
 extern const char* MOD_CDAPCACE;
 extern const char* MOD_CDAPAUTH;
 extern const char* MOD_CDAPCDAP;
+extern const char* MOD_EFCPTABLE;
+extern const char* MOD_DTCP;
+extern const char* MOD_EFCPI;
+
+//Module type paths
+extern const char* MOD_DTP_PATH;
+extern const char* MOD_DTCP_PATH;
 
 //Module parameters
 extern const char* PAR_IPCADDR;
@@ -46,6 +53,7 @@ extern const char* PAR_AENAME;
 extern const char* PAR_AEINSTANCE;
 extern const char* PAR_CONFIGDATA;
 
+//TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names
 extern const char* GATE_SOUTHIO;
 extern const char* GATE_NORTHIO_;
@@ -60,6 +68,10 @@ extern const char* GATE_SPLITIO;
 extern const char* GATE_CACEIO;
 extern const char* GATE_AUTHIO;
 extern const char* GATE_CDAPIO;
+extern const char* GATE_DTP_NORTHIO;
+extern const char* GATE_DTP_SOUTHIO;
+extern const char* GATE_EFCPI_NORTHIO;
+extern const char* GATE_EFCPI_SOUTHIO;
 
 //XML attributes and elements
 extern const char* ELEM_APN;

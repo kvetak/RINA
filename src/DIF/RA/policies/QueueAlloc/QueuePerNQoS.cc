@@ -23,7 +23,7 @@ Define_Module(QueuePerNQoS);
 void QueuePerNQoS::onNM1PortInit(RMTPort* port)
 {
     // get a list of QoS cubes
-    const QosCubeSet& cubes = ra->getQosCubes();
+    const QoSCubeSet& cubes = ra->getQoSCubes();
 
     // create a pair of queues for each available QoS cube
     std::ostringstream idString;

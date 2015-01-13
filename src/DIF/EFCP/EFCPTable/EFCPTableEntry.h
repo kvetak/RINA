@@ -56,6 +56,7 @@ class EFCPTableEntry
     void setDelimit(Delimiting* delimit);
     void setFlow(Flow* flow);
     void addEFCPI(EFCPInstance* efcpi);
+    bool flushDTPs();
 };
 
 #endif /* EFCPTABLEENTRY_H_ */

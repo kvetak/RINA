@@ -40,6 +40,7 @@ simple AE like IAE
         int jitter @unit(us)					= default(-1us); //Jitter in usecs
         int costTime							= default(-1); //measured in $/ms
         int costBits							= default(-1); //measured in $/Mb
+        double aTime							= default(-1); //measured in ms
 
 //        int averageBandwidth @unit(bps) 		= default(maxSDUsize*8*averageSDUBandwidth); //bits/s
 //        int averageSDUBandwidth 				= default(1000); //SDU/s

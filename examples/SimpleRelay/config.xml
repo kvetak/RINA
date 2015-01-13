@@ -89,7 +89,7 @@
 	</Router>
 	
 	<QoSCubesSet>
-		<QosCube id="1">
+		<QoSCube id="1">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
@@ -105,9 +105,10 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>						
-		</QosCube>
-		<QosCube id="2">
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QoSCube>
+		<QoSCube id="2">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
@@ -123,7 +124,8 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>						
-		</QosCube>		
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>

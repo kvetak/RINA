@@ -32,14 +32,27 @@ Delimiting::Delimiting()
 
 }
 
+void Delimiting::initialize(int step){
+
+
+}
+
+void Delimiting::initGates(){
+  northI = this->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
+  northO = this->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
+
+  southI = this->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, 0);
+  southO = this->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, 0);
+}
+
 
 void Delimiting::handleMessage(cMessage* msg){
   if(msg->isSelfMessage()){
     //self-message
   }else{
-    if(msg->arrivedOn("efcpModuleIo$i")){
+    if(msg->arrivedOn(northI->getId())){
       processMsgFromFAI((CDAPMessage*)(msg));
-    }else if(msg->arrivedOn("efcpiIo$i")){
+    }else if(msg->arrivedOn(southI->getId())){
       handleMsgFromEfcpi((Data*)(msg));
     }else{
       //A2 panic!
@@ -60,20 +73,24 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
    * 3. Go through Data vector and send them to EFCPI
    */
 
+
   SDU* sdu = new SDU();
+
   sdu->addUserData(msg);
 
   //TODO A1 handle multiple gates -> change to cGate*
-  send(sdu, "efcpiIo$o", 0);
+  send(sdu, southO);
 }
 
 void Delimiting::handleMsgFromEfcpi(Data* msg){
 
   SDU* sdu = (SDU*) msg;
-  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
-  CDAPMessage* cdap = msgVector.front();
-  take(check_and_cast<cOwnedObject*>(cdap) );
-  send(cdap, "efcpModuleIo$o");
+//  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
+  CDAPMessage* cdap = sdu->getUserData();
+  take(cdap);
+
+  send(cdap, northO);
+  delete sdu;
 }
 
 Delimiting::~Delimiting()

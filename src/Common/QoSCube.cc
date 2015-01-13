@@ -190,6 +190,13 @@ double QoSCube::getCostTime() const {
 void QoSCube::setCostTime(double costTime) {
     this->costTime = costTime;
 }
+double QoSCube::getATime() const {
+    return aTime;
+}
+
+void QoSCube::setATime(double aTime) {
+    this->aTime = aTime;
+}
 
 void QoSCube::setQosId(unsigned short qoSId) {
     this->qoSId = qoSId;
@@ -266,7 +273,14 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
     if (getCostBits() != VAL_QOSPARDONOTCARE)
         (getCostBits() <= other.getCostBits()) ? score++ : score--;
 
+    if (getATime() != VAL_QOSPARDONOTCARE)
+            (getATime() <= other.getATime()) ? score++ : score--;
+
     return score;
+}
+
+bool QoSCube::isDTCPNeeded()const {
+  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
 }
 
 std::string QoSCube::info() const {
@@ -360,5 +374,13 @@ std::string QoSCube::info() const {
         os << STR_DONOTCARE;
     else
         os << this->getCostBits() << " $/Mb";
+
+    os << "\n   A-Time = ";
+    if ( this->getATime() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getATime() << "ms";
+
+
     return os.str();
 }

@@ -25,7 +25,7 @@ enum DataType{
 
 message Data {
     @customize(true);  // see the generated C++ header for more info
-    unsigned int dataType;
+    int dataType enum(DataType);
     
 //    abstract int anotherField;Register_Class(Data);
 }

@@ -38,7 +38,8 @@ EFCP::~EFCP() {
 
 void EFCP::initialize(int step){
 //  if(step == 3){
-    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule("efcpTable");
+    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
+    resourceAllocator = ModuleAccess<RA>(MOD_RA).get();
 //  }
 }
 
@@ -51,8 +52,11 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
   cModule* efcpModule = this->getParentModule();
 
+  std::ostringstream name;
+  name << MOD_EFCPI << flow->getConId().getSrcCepId();
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
-  cModule* efcpiModule = moduleType->create("efcpi", efcpModule);
+  cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
+
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
 
@@ -68,43 +72,51 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
     tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
 
     //TODO A!: Add tmpEFCPEntry to efcpTable
+    efcpTable->insertEntry(tmpEfcpEntry);
+    tmpEfcpEntry->setFlow(flow);
   }
 
-
+  const QoSCube* qosCube = resourceAllocator->getQoSCubeById(flow->getConId().getQoSId());
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+//  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
+//  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
+//  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
   dtpModule->setFlow(flow);
-  dtpModule->setCepId(cepId);
+  dtpModule->setQoSCube(qosCube);
+  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
 
+
+
   //2. If necessary create DTCP module
-  //TODO how to determine DTCP module is needed
-  if(true){
+  if(qosCube->isDTCPNeeded()){
       efcpi->setDtcp(this->createDTCP(efcpiModule));
+  }else{
+    efcpi->setDtcp(NULL);
   }
   //Put created EFCP instance to EFCP Table Entry
   tmpEfcpEntry->addEFCPI(efcpi);
 
- //TODO A! if it already exists in efcpTable?
- //insert triplet (DTP,DTCP,Delimiting) to efcpTable
-  efcpTable->insertEntry(tmpEfcpEntry);
-
 
   /* Connect EFCPi module with delimiting */
-  int size = tmpEfcpEntry->getDelimit()->gateSize("efcpiIo");
-  tmpEfcpEntry->getDelimit()->setGateSize("efcpiIo", size + 1);
+  int size = tmpEfcpEntry->getDelimit()->gateSize(GATE_DELIMIT_SOUTHIO);
+  tmpEfcpEntry->getDelimit()->setGateSize(GATE_DELIMIT_SOUTHIO, size + 1);
+
+  tmpEfcpEntry->getDelimit()->initGates();
 
 
-  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::INPUT, size);
-  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpiIo", cGate::OUTPUT, size);
 
-  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::INPUT);
-  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf("efcpModuleIo", cGate::OUTPUT);
+  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
+  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, size);
+
+  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
+  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
 
 
-  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::INPUT);
-  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string("delToEfcpiIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
+  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::OUTPUT);
 
   delToEfcpiO->connectTo(efcpiToDelI);
   efcpiToDelO->connectTo(delToEfcpiI);
@@ -113,6 +125,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
   gateName_str << GATE_APPIO_ << cepId;
+
 
 
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
@@ -131,8 +144,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   cGate* efcpToEfcpiI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToEfcpiO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
-  cGate* efcpiToRmtI = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::INPUT);
-  cGate* efcpiToRmtO = efcpiModule->gateHalf(std::string("rmtIo").c_str(), cGate::OUTPUT);
+  cGate* efcpiToRmtI = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::INPUT);
+  cGate* efcpiToRmtO = efcpiModule->gateHalf(GATE_EFCPI_SOUTHIO, cGate::OUTPUT);
 
   efcpiToRmtO->connectTo(efcpToEfcpiO);
   efcpToEfcpiI->connectTo(efcpiToRmtI);
@@ -142,8 +155,22 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
 DTCP* EFCP::createDTCP(cModule* efcpiModule)
 {
-    cModuleType* dtcpType = cModuleType::get("rina.DIF.EFCP.DTCP");
-    DTCP* dtcpModule = (DTCP*) dtcpType->create("dtcp", efcpiModule);
+    cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
+    DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
+    dtcpModule->par("ecnPolicy").setStringValue(par("ecnPolicy").stringValue());
+    dtcpModule->par("rcvrFCPolicy").setStringValue(par("rcvrFCPolicy").stringValue());
+    dtcpModule->par("rcvrAckPolicy").setStringValue(par("rcvrAckPolicy").stringValue());
+    dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
+    dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
+    dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
+    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("ecnPolicy").stringValue());
+    dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
+    dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
+    dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
+    dtcpModule->par("txControlPolicy").setStringValue(par("txControlPolicy").stringValue());
+    dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
+    dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
+    dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
@@ -166,5 +193,25 @@ Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
 
     return delimit;
 }
+/**
+ *
+ * @param flow
+ * @return
+ */
+bool EFCP::deleteEFCPI(Flow* flow)
+{
+  EFCPTableEntry* entry;
+  if((entry = efcpTable->getEntryByFlow(flow)) == NULL){
 
+    EV << getFullPath() << ": failed to found EFCPTableEntry by Flow to deallocate EFCPI" << endl;
+    return false;
+  }
+
+  entry->flushDTPs();
+
+
+  return true;
+
+
+}
 

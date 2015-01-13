@@ -54,7 +54,7 @@ bool FAI::receiveAllocateRequest() {
         return false;
     }
 
-    status = this->createEFCP();
+    status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
         FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
@@ -91,7 +91,7 @@ bool FAI::receiveAllocateResponsePositive() {
     Enter_Method("receiveAllocateResponsePositive()");
 
     //Instantiate EFCPi
-    bool status = this->createEFCP();
+    bool status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
         //Schedule negative M_Create_R(Flow)
@@ -231,7 +231,7 @@ std::ostream& operator<< (std::ostream& os, const FAI& fai) {
     return os << fai.info();
 }
 
-bool FAI::createEFCP() {
+bool FAI::createEFCPI() {
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
     EFCPInstance* efcpi = efcp->createEFCPI(this->getFlow(), cepId);
     return efcpi ? true : false;
@@ -300,6 +300,9 @@ bool FAI::deleteBindings() {
     cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
+
+    //Flush All messages in EFCPI
+    efcp->deleteEFCPI(this->getFlow());
 
     //IPCModule.northIo <- XX -> Efcp.fai
     gateEfcpUpIn->disconnect();

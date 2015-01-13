@@ -132,12 +132,17 @@ class QoSCube {
     int costBits;               //measured in $/Mb
 
     /**
+     * @brief Attribute holding A-Timer size in ms
+     */
+    double aTime;               //A-Timer in ms
+
+    /**
      * @brief Vector of bound default policies
      */
     std::vector<Policy*> policyList;
   public:
     /**
-     * @brief Constructor of QosCube with undefined values
+     * @brief Constructor of QoSCube with undefined values
      */
     QoSCube();
 
@@ -349,6 +354,23 @@ class QoSCube {
      * @param costBits A new value measured in $/bit
      */
     void setCostBits(double costBits);
+
+    /**
+     * @brief Gets A-Timer parameter
+     * @return Value measured in ms
+     */
+    double getATime() const;
+
+    /**
+     * @brief Sets A-Timer parameter
+     * @param aTime A new value measured in ms
+     */
+    void setATime(double aTime);
+    /**
+     * @brief Returns true if DTCP module is needed in order to support this QoScube
+     * @return
+     */
+    bool isDTCPNeeded() const;
 
     /**
      * @brief Simple QoSCube comparator measuring feasibility score of this and other QoSCubes
