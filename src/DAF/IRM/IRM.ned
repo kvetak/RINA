@@ -21,8 +21,8 @@ simple IRM
         @display("i=block/cogwheel");
         @signal[IRM-AllocateRequest](type=Flow?);
         @signal[IRM-DeallocateRequest](type=Flow?);
-        @signal[IRM-AllocateResponsePositive](type=Flow?);
-        @signal[IRM-AllocateResponseNegative](type=Flow?);   
+        //@signal[IRM-AllocateResponsePositive](type=Flow?);
+        //@signal[IRM-AllocateResponseNegative](type=Flow?);   
     gates:
         inout aeIo[];  
 }

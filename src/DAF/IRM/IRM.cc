@@ -220,7 +220,7 @@ bool IRM::deleteBindings(Flow* flow) {
 
     ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
     cModule* Ipc = cte->getIpc();
-    cModule* Ap = this->getParentModule();
+    cModule* IrmMod = this->getParentModule();
 
     //Decide portId
     int portId = flow->getSrcPortId();
@@ -234,8 +234,8 @@ bool IRM::deleteBindings(Flow* flow) {
     //   Add AP gates
     std::ostringstream nam2;
     nam2 << GATE_SOUTHIO_ << portId;
-    cGate* g2i = Ap->gateHalf(nam2.str().c_str(), cGate::INPUT);
-    cGate* g2o = Ap->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
+    cGate* g2i = IrmMod->gateHalf(nam2.str().c_str(), cGate::INPUT);
+    cGate* g2o = IrmMod->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
     //   Add IRM gates
     cGate* g3i = this->gateHalf(nam2.str().c_str(), cGate::INPUT);

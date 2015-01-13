@@ -18,13 +18,13 @@ package rina.DAF.IRM;
 module IPCResourceManager
 {
     parameters:
-    	@display("i=misc/node2,#0080C0;bgb=286,182");
- 
- 	gates:
- 	    //Dynamically created
-		inout northIo[];
+        @display("i=misc/node2,#0080C0;bgb=281,170");
+
+    gates:
+        //Dynamically created
+        inout northIo[];
 		//inout southIo_;
-		        
+
     submodules:
         irm: IRM {
             @display("p=82,83");
@@ -32,6 +32,6 @@ module IPCResourceManager
         connectionTable: ConnectionTable {
             @display("p=197,83");
         }
-   	
+
     connections allowunconnected:
 }

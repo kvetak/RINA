@@ -161,6 +161,8 @@ bool AE::createBindings(Flow& flow) {
 
     //Return true if all dynamically created gates have same index
     return gIrmIn->getIndex() == gAeIn->getIndex()
+           && gIrmIn->getIndex() == gIrmModIn->getIndex()
+           && gIrmIn->getIndex() == gApIn->getIndex()
            && gIrmIn->getIndex() == gCdapParentIn->getIndex()
            && gIrmIn->getIndex() == gSplitIn->getIndex()
            && gIrmIn->getIndex() == gSplitCaceIn->getIndex()
@@ -317,9 +319,17 @@ bool AE::deleteBindings(Flow& flow) {
     cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle);
     cGate* gIrmOut = Irm->gateHalf(GATE_AEIO, cGate::OUTPUT, handle);
 
+    cModule* IrmMod = Irm->getParentModule();
+    cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle);
+    cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle);
+
+    cModule* ApMon = this->getParentModule()->getParentModule();
+    cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle);
+    cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle);
+
     //Get AE gates
     cGate* gAeIn = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::INPUT, handle);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::OUTPUT, handle);;
+    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::OUTPUT, handle);
 
     //CDAPParent Module gates
     cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT, handle);
@@ -357,6 +367,8 @@ bool AE::deleteBindings(Flow& flow) {
 
     //Disconnect gates
     gIrmOut->disconnect();
+    gIrmModOut->disconnect();
+    gApIn->disconnect();
     gAeIn->disconnect();
     gCdapParentIn->disconnect();
     gSplitIn->disconnect();
@@ -364,6 +376,8 @@ bool AE::deleteBindings(Flow& flow) {
     gSplitOut->disconnect();
     gCdapParentOut->disconnect();
     gAeOut->disconnect();
+    gApOut->disconnect();
+    gIrmModIn->disconnect();
     gIrmIn->disconnect();
 
     gSplitCaceOut->disconnect();
