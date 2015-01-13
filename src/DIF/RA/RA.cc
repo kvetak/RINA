@@ -470,6 +470,26 @@ void RA::createNM1Flow(Flow *flow)
 
     const APN& dstApn = flow->getDstApni().getApn();
 
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUForwardingTableEntry * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(e)
+    {
+        NM1FlowTableItem * fi = flTable->findFlowByDstAddr(
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
+
+        if(fi)
+        {
+            return;
+        }
+    }
+    //
+    // End flow exists check.
+    //
+
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
@@ -527,7 +547,28 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     const APN& dstApn = flow->getDstApni().getApn();
     unsigned short qosId = flow->getConId().getQoSId();
 
-    //Ask DA which IPC to use to reach dst App
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUForwardingTableEntry * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(e)
+    {
+        NM1FlowTableItem * fi = flTable->findFlowByDstAddr(
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
+
+        if(fi)
+        {
+            return;
+        }
+    }
+    //
+    // End flow exists check.
+    //
+
+
+    // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
         EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
@@ -668,8 +709,21 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     unsigned short qosId = flow->getConId().getQoSId();
 
+    NM1FlowTableItem* nm1FlowItem;
+
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUForwardingTableEntry * te =
+        fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(te)
+    {
+        neighAddr = te->getDestAddr().getApname().getName();
+    }
+
     // see if any appropriate (N-1)-flow already exists
-    NM1FlowTableItem* nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
+    nm1FlowItem = flTable->findFlowByDstApni(neighAddr, qosId);
 
     if (nm1FlowItem == NULL)
     { // we need to allocate a new (N-1)-flow to suit our needs

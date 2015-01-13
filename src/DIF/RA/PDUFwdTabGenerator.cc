@@ -41,11 +41,6 @@ void PDUFwdTabGenerator::finish()
 #endif
 }
 
-NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
-{
-    return flTable;
-}
-
 PDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
 {
     return fwTable;
@@ -64,6 +59,37 @@ NeighborState * PDUFwdTabGenerator::getNeighborhoodState()
 NetworkState * PDUFwdTabGenerator::getNetworkState()
 {
     return &netState;
+}
+
+PDUForwardingTableEntry * PDUFwdTabGenerator::getNextNeighbor(Address destination, unsigned short qos)
+{
+    RMTPort * p = getForwardingTable()->lookup(destination, qos);
+
+    if(p)
+    {
+        for(EIter it = neiState.begin(); it != neiState.end(); ++it )
+        {
+            PDUForwardingTableEntry * e = (*it);
+
+            // Found the port used for the forwarding table; so it's the next neighbor.
+            if(!strcmp(p->info().c_str(), e->getPort()->info().c_str()))
+            {
+                return e;
+            }
+        }
+    }
+    else
+    {
+        pduftg_debug(ipcAddr.info() <<
+            "Neighbor to reach " << destination << " cannot be found.\n");
+    }
+
+    return NULL;
+}
+
+NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
+{
+    return flTable;
 }
 
 void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
@@ -115,8 +141,9 @@ void PDUFwdTabGenerator::initialize()
 
     if(showNetState)
     {
-        // Put the report on the left.
-        nstm->getDisplayString().setTagArg("t", 1, "l");
+        // Put the report on the desired position.
+        nstm->getDisplayString().setTagArg(
+            "t", 1, par("netStateAlign").stringValue());
     }
 
     // Initializes the input/output of the module.

@@ -45,12 +45,6 @@ extern std::ofstream pduftg_debug_file;
 
 #endif
 
-// Gets the display string instance of the module which holds the IPC Process.
-#define PDUFG_HOST_DISPLAY_STRING   (  \
-    getParentModule()->                 \
-    getParentModule()->                 \
-    getParentModule()->getDisplayString())
-
 #include <omnetpp.h>
 
 #include "ModuleAccess.h"
@@ -135,20 +129,23 @@ class PDUFwdTabGenerator : public cSimpleModule
     // Getters:
     //
 
+    // Gets the managed instance of Forwarding table.
+    PDUForwardingTable * getForwardingTable();
+
+    // Gets the address associated with this IPC.
+    Address getIpcAddress();
+
     // Gets the map of the current mapped neighbors.
     NeighborState * getNeighborhoodState();
 
     // Gets the actual network state known by us.
     NetworkState * getNetworkState();
 
-    // Gets the managed instance of Forwarding table.
-    PDUForwardingTable * getForwardingTable();
+    // Find the next known neighbor to reach the destination.
+    PDUForwardingTableEntry * getNextNeighbor(Address destination, unsigned short qos);
 
     // Gets the managed instance of the N-1 flow table.
     NM1FlowTable * getNM1FlowTable();
-
-    // Gets the address associated with this IPC.
-    Address getIpcAddress();
 
     //
     // Network state actions:
