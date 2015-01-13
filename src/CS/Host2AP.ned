@@ -32,12 +32,13 @@ package rina.CS;
 import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
+import rina.DAF.IRM.IPCResourceManager;
 import rina.DIF.IPCProcess;
 
 module Host2AP
 {
     parameters:
-        @display("i=device/pc;bgb=340,271");
+        @display("i=device/pc;bgb=340,422");
         @node;
 
     gates:
@@ -57,13 +58,16 @@ module Host2AP
         }
 
         ipcProcess0: IPCProcess {
-            @display("p=170,212");
+            @display("p=170,342");
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=170,130");
+            @display("p=170,260");
         }
 
+        ipcResourceManager: IPCResourceManager {
+            @display("p=170,168");
+        }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;
         ipcProcess1.southIo++ <--> ipcProcess0.northIo++;
