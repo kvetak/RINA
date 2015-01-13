@@ -48,7 +48,7 @@ void DTPState::initDefaults(){
 
 
   //TODO B! Fix
-  rtt = 5;
+  rtt = 3;
 
 }
 
@@ -320,7 +320,7 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
            {
              //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
              //TODO A1 Throw Error.
-             exit(EXIT_FAILURE);
+             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULT not ever happen");
            }
            else if ((*it)->getSeqNum() > pdu->getSeqNum())
            {
@@ -360,4 +360,7 @@ void DTPState::pushBackToPostablePDUQ(DataTransferPDU* pdu){
  postablePDUs.push_back(pdu);
 }
 
-
+unsigned int DTPState::getDropDup() const
+{
+  return dropDup;
+}

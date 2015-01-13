@@ -478,9 +478,10 @@ void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 {
   Enter_Method_Silent();
 
-  bool endTrue = false;
+  bool startTrue = false;
   if(!endSeqNum){
-    endTrue = true;
+    startTrue = true;
+    endSeqNum = startSeqNum;
   }
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
@@ -492,7 +493,7 @@ void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if (seqNum >= startSeqNum && (seqNum <= endSeqNum || endTrue))
+    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum )
     {
       handleDTCPRxExpiryTimer(timer);
 
@@ -509,9 +510,10 @@ void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 {
   Enter_Method_Silent();
-  bool endTrue = false;
+  bool startTrue = false;
   if(!endSeqNum){
-    endTrue = true;
+    startTrue = true;
+    endSeqNum = startSeqNum;
   }
 
 
@@ -524,9 +526,10 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if (seqNum >= startSeqNum && (seqNum <= endSeqNum || endTrue))
+    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum )
     {
       dtcpState->deleteRxTimer(seqNum);
+
       continue;
 
     }
@@ -557,7 +560,7 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
     //TODO A1 Indicate an error "Unable to maintain the QoS for this connection"
 
     dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
-    exit(EXIT_FAILURE);
+    throw cRuntimeError("Unable to maintain the QoS for this connection");
   }
   else
   {
@@ -756,41 +759,63 @@ void DTCP::redrawGUI()
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
 
-    if (rxQ->empty())
+  if (rxQ->empty())
+  {
+    desc << "RxQ: empty" << "\n";
+  }
+  else
+  {
+    desc << "RxQ: ";
+    std::vector<DTCPRxExpiryTimer*>::iterator it;
+    for (it = rxQ->begin(); it != rxQ->end(); ++it)
     {
-      desc << "RxQ: empty" << "\n";
+      desc << (*it)->getPdu()->getSeqNum() << " | ";
     }
-    else
+    desc << "\n";
+  }
+
+  if (!dtcpState->getClosedWinQueLen())
+  {
+    desc << "closedWinQ: empty" << "\n";
+  }
+  else
+  {
+    desc << "closedWinQ: ";
+    std::vector<DataTransferPDU*>::iterator it;
+    std::vector<DataTransferPDU*>* pduQ;
+    pduQ = dtcpState->getClosedWindowQ();
+    for (it = pduQ->begin(); it != pduQ->end(); ++it)
     {
-      desc << "RxQ: ";
-      std::vector<DTCPRxExpiryTimer*>::iterator it;
-      for (it = rxQ->begin(); it != rxQ->end(); ++it)
-      {
-        desc << (*it)->getPdu()->getSeqNum() << " | ";
-      }
-      desc << "\n";
+      desc << (*it)->getSeqNum() << " | ";
     }
+    desc << "\n";
+  }
 
 
-    if (!dtcpState->getClosedWinQueLen())
-        {
-          desc << "closedWinQ: empty" << "\n";
-        }
-        else
-        {
-          desc << "closedWinQ: ";
-          std::vector<DataTransferPDU*>::iterator it;
-          std::vector<DataTransferPDU*>* pduQ;
-          pduQ = dtcpState->getClosedWindowQ();
-          for (it = pduQ->begin(); it != pduQ->end(); ++it)
-          {
-            desc << (*it)->getSeqNum() << " | ";
-          }
-          desc << "\n";
-        }
-
+  desc << "dup Acks: " << getDupAcks() << "\n";
 
 
   disp.setTagArg("t", 0, desc.str().c_str());
 
+}
+
+void DTCP::incDupAcks()
+{
+  dtcpState->incDupAcks();
+}
+
+unsigned int DTCP::getDupAcks() const
+{
+  return dtcpState->getDupAcks();
+}
+
+
+void DTCP::incDupFC()
+{
+  dtcpState->incDupFC();
+}
+
+unsigned int DTCP::getDupFC() const
+{
+  return dtcpState->getDupFC();
 }

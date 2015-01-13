@@ -70,7 +70,7 @@ class FlowControl : public cSimpleModule
 
     /* Not found in specs but needed */
 //    unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
-    unsigned int dupFC; //duplicate Flow Control PDUs
+//    unsigned int dupFC; //duplicate Flow Control PDUs
 
 
 
@@ -90,7 +90,7 @@ class FlowControl : public cSimpleModule
     unsigned int getSendingRate();
 
 
-    void incDupFC();
+//    void incDupFC();
     unsigned long getSendingTimeUnit() const;
     void setSendingTimeUnit(unsigned long sendingTimeUnit);
     unsigned int getRcvRightWindowEdge() const;

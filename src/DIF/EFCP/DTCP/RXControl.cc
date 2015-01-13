@@ -28,7 +28,7 @@
 RXControl::RXControl()
 {
 //  nextSenderControlSeqNum = 1;
-  dupAcks = 0;
+//  dupAcks = 0;
 //  lastControlSeqNumRcv = 0;
 //  dataReXmitMax = 3;
 
@@ -56,7 +56,7 @@ unsigned int RXControl::getRightWinEdge(){
 //void RXControl::setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum){
 //  lastControlSeqNumRcv = ctrlSeqNum;
 //}
-void RXControl::incDupAcks()
-{
-  dupAcks++;
-}
+//void RXControl::incDupAcks()
+//{
+//  dupAcks++;
+//}

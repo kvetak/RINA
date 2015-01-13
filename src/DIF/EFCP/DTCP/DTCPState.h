@@ -63,9 +63,11 @@ class DTCPState : public cSimpleModule
 
     bool sendingRateFullfilled; //This Boolean indicates that with rate-based flow control all the PDUs that can be sent during this time period have been sent.
 
+
+    unsigned int dupAcks;
     /* Not found in specs but needed */
     unsigned int configRcvrRate; //contains the initial and desired rcvrRate - or at least that's how I understand ConfigRate variable from RateReduction Policy
-
+    unsigned int dupFC; //duplicate Flow Control PDUs
     bool closedWindow; /*!< This Boolean indicates whether or not the flow control window is closed.*/
     unsigned int maxClosedWinQueLen; /*!<an Integer that the number PDUs that can be put on the ClosedWindowQueue before something must be done.*/
     std::vector<DataTransferPDU*> closedWindowQ;
@@ -138,6 +140,11 @@ class DTCPState : public cSimpleModule
     void setRcvrRate(unsigned int rcvrRate);
     unsigned int getConfigRcvrRate() const;
     void setConfigRcvrRate(unsigned int configRcvrRate);
+
+    void incDupAcks();
+    unsigned int getDupAcks() const;
+    void incDupFC();
+    unsigned int getDupFC() const;
 };
 
 #endif /* DTCPSTATE_H_ */

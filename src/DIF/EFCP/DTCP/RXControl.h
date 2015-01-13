@@ -46,7 +46,7 @@ class RXControl : public cSimpleModule
     unsigned int sendLeftWinEdge; // This state variable contains the Sequence Number of the lowest sequence number expected to be Acked. This should be the Sequence Number of the first PDU on the RetransmissionQ.
 //    unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgement that will be tried before declaring an error.
     unsigned int rcvLeftWinEdge; // This state variable contains the Sequence Number of the lowest sequence number expected to be Acked. This should be the Sequence Number of the first PDU on the RetransmissionQ.
-    unsigned int dupAcks;
+//    unsigned int dupAcks;
     /* Nota Bene: DTCP PDU Retransmission: Note that there is no retransmission queue
     for DTCP Control PDUs, when a lost control PDU is detected a new one is generated
     with the current information. */
@@ -60,7 +60,7 @@ class RXControl : public cSimpleModule
 //   unsigned int getNextSndCtrlSeqNum();
 //   unsigned int getLastCtrlSeqNumRcv();
 //   void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
-   void incDupAcks();
+//   void incDupAcks();
 };
 
 #endif /* RXCONTROL_H_ */

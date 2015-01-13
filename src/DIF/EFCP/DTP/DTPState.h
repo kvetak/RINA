@@ -111,6 +111,8 @@ public:
     void initDefaults();
 
     void incDropDup(){dropDup++;}
+    unsigned int getDropDup() const;
+
     bool isFCPresent(){ return winBased || rateBased;}
 
     bool isDtcpPresent() const;
@@ -170,7 +172,6 @@ public:
 
     PDUQ_t* getPostablePDUQ();
     void pushBackToPostablePDUQ(DataTransferPDU* pdu);
-
 
 };
 

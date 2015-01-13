@@ -39,7 +39,7 @@ FlowControl::FlowControl()
   sendingRateTimer = NULL;
 
 
-  dupFC = 0;
+//  dupFC = 0;
 //  rcvRightWindowEdge = 2;
 //  sendingRateFullfilled = false;
 
@@ -66,10 +66,10 @@ FlowControl::~FlowControl()
   cancelAndDelete(sendingRateTimer);
 }
 
-void FlowControl::incDupFC()
-{
-  dupFC++;
-}
+//void FlowControl::incDupFC()
+//{
+//  dupFC++;
+//}
 
 //void FlowControl::setSendingRate(unsigned int sendingRate)
 //{

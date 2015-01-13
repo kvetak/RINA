@@ -32,6 +32,8 @@ void DTCPState::initFC()
   sendingRateFullfilled = false;
   closedWindow = false;
   maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
+  dupAcks = 0;
+  dupFC = 0;
 
   //TODO A1 load from some config
   rcvBuffersPercentFree = 100;
@@ -352,4 +354,24 @@ void DTCPState::setRcvrRate(unsigned int rcvrRate)
 void DTCPState::setSendingRate(unsigned int sendingRate)
 {
   this->sendingRate = sendingRate;
+}
+
+unsigned int DTCPState::getDupAcks() const
+{
+  return dupAcks;
+}
+
+void DTCPState::incDupAcks()
+{
+  dupAcks++;
+}
+
+void DTCPState::incDupFC()
+{
+  dupFC++;
+}
+
+unsigned int DTCPState::getDupFC() const
+{
+  return dupFC;
 }

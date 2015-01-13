@@ -145,6 +145,11 @@ public:
 
     unsigned int getRcvrRate() const;
 
+    void incDupAcks();
+    unsigned int getDupAcks() const;
+
+    void incDupFC();
+    unsigned int getDupFC() const;
 
     /* Run Policies */
     bool runECNPolicy(DTPState* dtpState);
@@ -164,6 +169,8 @@ public:
 
     //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
+
+
 
 
     void redrawGUI();

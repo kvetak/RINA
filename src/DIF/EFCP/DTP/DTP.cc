@@ -173,6 +173,8 @@ void DTP::redrawGUI()
 
   }
 
+  desc << "droppedPDU: " << state.getDropDup();
+
   disp.setTagArg("t", 0, desc.str().c_str());
 
 }
@@ -319,11 +321,11 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   {
     if ((pdu->getType() & PDU_ACK_BIT) == PDU_ACK_BIT)
     {
-      dtcp->rxControl->incDupAcks();
+      dtcp->incDupAcks();
     }
     if ((pdu->getType() & PDU_FC_BIT) == PDU_FC_BIT)
     {
-      dtcp->flowControl->incDupFC();
+      dtcp->incDupFC();
     }
     delete pdu;
     return false;
