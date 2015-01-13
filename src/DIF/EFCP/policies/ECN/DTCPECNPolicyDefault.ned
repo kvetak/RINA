@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,32 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file DTCPECNPolicyDefault.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
- * @detail
- */
 
-#include <ECN/DTCPECNPolicyDefault.h>
-Register_Class(DTCPECNPolicyDefault);
-DTCPECNPolicyDefault::DTCPECNPolicyDefault()
+package rina.DIF.EFCP.policies.ECN;
+
+//
+// TODO auto-generated module
+//
+simple DTCPECNPolicyDefault
 {
-
-}
-
-DTCPECNPolicyDefault::~DTCPECNPolicyDefault()
-{
-
-}
-
-bool DTCPECNPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
-    dtpState->setEcnSet(true);
-  }else{
-    dtpState->setEcnSet(false);
-  }
-  return false;
+    parameters:
+        string policyName = "ECN Default";
+        @display("i=block/socket");
 }

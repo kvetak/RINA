@@ -163,7 +163,7 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
     dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
     dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
     dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
-    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("ecnPolicy").stringValue());
+    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("rcvrControlAckPolicy").stringValue());
     dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
     dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
     dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
