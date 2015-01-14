@@ -26,7 +26,7 @@
 
 // Comment this directive to disable private debugging.
 // With private debugging all the output will be redirected to a text file.
-#define PDUFTG_PRIVATE_DEBUG
+//#define PDUFTG_PRIVATE_DEBUG
 
 #ifdef PDUFTG_PRIVATE_DEBUG
 

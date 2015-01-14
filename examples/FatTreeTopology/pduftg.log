@@ -1,0 +1,470 @@
+TOR1(DC)Neighbor to reach  cannot be found.
+TOR1(DC)> Network state counts: 1
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+TOR1(DC)Neighbor to reach  cannot be found.
+TOR1(DC)> Network state counts: 2
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+TOR2(DC)Neighbor to reach  cannot be found.
+TOR2(DC)> Network state counts: 1
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+TOR2(DC)Neighbor to reach  cannot be found.
+TOR2(DC)> Network state counts: 2
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+S1(DC)Neighbor to reach  cannot be found.
+S1(DC)> Network state counts: 1
+[From: S1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+S2(DC)Neighbor to reach  cannot be found.
+S2(DC)> Network state counts: 1
+[From: S2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+S3(DC)Neighbor to reach  cannot be found.
+S3(DC)> Network state counts: 1
+[From: S3(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+S4(DC)Neighbor to reach  cannot be found.
+S4(DC)> Network state counts: 1
+[From: S4(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+AS1(DC)Neighbor to reach 2(A1T1) cannot be found.
+AS1(DC)> Network state counts: 1
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+AS2(DC)Neighbor to reach 2(A2T1) cannot be found.
+AS2(DC)> Network state counts: 1
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+AS1(DC)Neighbor to reach 2(A1T2) cannot be found.
+AS1(DC)> Network state counts: 2
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+AS2(DC)Neighbor to reach 2(A2T2) cannot be found.
+AS2(DC)> Network state counts: 2
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+TOR1(DC)Neighbor to reach 2(T1S1) cannot be found.
+TOR1(DC)> Network state counts: 3
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+TOR1(DC)Neighbor to reach 2(T1S2) cannot be found.
+TOR1(DC)> Network state counts: 4
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+TOR2(DC)Neighbor to reach 2(T2S3) cannot be found.
+TOR2(DC)> Network state counts: 3
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+TOR2(DC)Neighbor to reach 2(T2S4) cannot be found.
+TOR2(DC)> Network state counts: 4
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+AS1(DC)> Signal an update to TOR1(DC)
+AS1(DC)> Signal an update to TOR2(DC)
+AS2(DC)> Signal an update to TOR1(DC)
+AS2(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Signal an update to AS1(DC)
+TOR1(DC)> Signal an update to AS2(DC)
+TOR1(DC)> Signal an update to S1(DC)
+TOR1(DC)> Signal an update to S2(DC)
+TOR2(DC)> Signal an update to AS1(DC)
+TOR2(DC)> Signal an update to AS2(DC)
+TOR2(DC)> Signal an update to S3(DC)
+TOR2(DC)> Signal an update to S4(DC)
+S1(DC)> Signal an update to TOR1(DC)
+S2(DC)> Signal an update to TOR1(DC)
+S3(DC)> Signal an update to TOR2(DC)
+S4(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Network state counts: 5
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+TOR2(DC)> Network state counts: 5
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+TOR1(DC)> Network state counts: 5
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+TOR2(DC)> Network state counts: 5
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+AS1(DC)> Network state counts: 5
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 5
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+S1(DC)> Network state counts: 4
+[From: S1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S1(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S1(DC) to: S2(DC) qos: 1 hops: 2]
+S2(DC)> Network state counts: 4
+[From: S2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S2(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S2(DC) to: S1(DC) qos: 1 hops: 2]
+AS1(DC)> Network state counts: 7
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S4(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 7
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S4(DC) qos: 1 hops: 2]
+S3(DC)> Network state counts: 4
+[From: S3(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S3(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S3(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S3(DC) to: S4(DC) qos: 1 hops: 2]
+S4(DC)> Network state counts: 4
+[From: S4(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S4(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S4(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S4(DC) to: S3(DC) qos: 1 hops: 2]
+TOR1(DC)> Network state counts: 5
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+TOR1(DC)> Network state counts: 5
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+TOR2(DC)> Network state counts: 5
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+TOR2(DC)> Network state counts: 5
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+AS1(DC)> Signal an update to TOR1(DC)
+AS1(DC)> Signal an update to TOR2(DC)
+AS2(DC)> Signal an update to TOR1(DC)
+AS2(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Signal an update to AS1(DC)
+TOR1(DC)> Signal an update to AS2(DC)
+TOR1(DC)> Signal an update to S1(DC)
+TOR1(DC)> Signal an update to S2(DC)
+TOR2(DC)> Signal an update to AS1(DC)
+TOR2(DC)> Signal an update to AS2(DC)
+TOR2(DC)> Signal an update to S3(DC)
+TOR2(DC)> Signal an update to S4(DC)
+S1(DC)> Signal an update to TOR1(DC)
+S2(DC)> Signal an update to TOR1(DC)
+S3(DC)> Signal an update to TOR2(DC)
+S4(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+AS1(DC)> Network state counts: 7
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S4(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 7
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S4(DC) qos: 1 hops: 2]
+S1(DC)> Network state counts: 5
+[From: S1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S1(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: S1(DC) to: TOR2(DC) qos: 1 hops: 3]
+S2(DC)> Network state counts: 5
+[From: S2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S2(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: S2(DC) to: TOR2(DC) qos: 1 hops: 3]
+AS1(DC)> Network state counts: 7
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S4(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 7
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S4(DC) qos: 1 hops: 2]
+S3(DC)> Network state counts: 5
+[From: S3(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S3(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S3(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S3(DC) to: S4(DC) qos: 1 hops: 2]
+[From: S3(DC) to: TOR1(DC) qos: 1 hops: 3]
+S4(DC)> Network state counts: 5
+[From: S4(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S4(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S4(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S4(DC) to: S3(DC) qos: 1 hops: 2]
+[From: S4(DC) to: TOR1(DC) qos: 1 hops: 3]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+AS1(DC)> Signal an update to TOR1(DC)
+AS1(DC)> Signal an update to TOR2(DC)
+AS2(DC)> Signal an update to TOR1(DC)
+AS2(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Signal an update to AS1(DC)
+TOR1(DC)> Signal an update to AS2(DC)
+TOR1(DC)> Signal an update to S1(DC)
+TOR1(DC)> Signal an update to S2(DC)
+TOR2(DC)> Signal an update to AS1(DC)
+TOR2(DC)> Signal an update to AS2(DC)
+TOR2(DC)> Signal an update to S3(DC)
+TOR2(DC)> Signal an update to S4(DC)
+S1(DC)> Signal an update to TOR1(DC)
+S2(DC)> Signal an update to TOR1(DC)
+S3(DC)> Signal an update to TOR2(DC)
+S4(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+AS1(DC)> Network state counts: 7
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S4(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 7
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S4(DC) qos: 1 hops: 2]
+S1(DC)> Network state counts: 7
+[From: S1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S1(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: S1(DC) to: TOR2(DC) qos: 1 hops: 3]
+[From: S1(DC) to: S3(DC) qos: 1 hops: 4]
+[From: S1(DC) to: S4(DC) qos: 1 hops: 4]
+S2(DC)> Network state counts: 7
+[From: S2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S2(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: S2(DC) to: TOR2(DC) qos: 1 hops: 3]
+[From: S2(DC) to: S3(DC) qos: 1 hops: 4]
+[From: S2(DC) to: S4(DC) qos: 1 hops: 4]
+AS1(DC)> Network state counts: 7
+[From: AS1(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS1(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS1(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS1(DC) to: S4(DC) qos: 1 hops: 2]
+AS2(DC)> Network state counts: 7
+[From: AS2(DC) to: TOR1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: AS2(DC) to: TOR2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: AS2(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S1(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S2(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S3(DC) qos: 1 hops: 2]
+[From: AS2(DC) to: S4(DC) qos: 1 hops: 2]
+S3(DC)> Network state counts: 7
+[From: S3(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S3(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S3(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S3(DC) to: S4(DC) qos: 1 hops: 2]
+[From: S3(DC) to: TOR1(DC) qos: 1 hops: 3]
+[From: S3(DC) to: S1(DC) qos: 1 hops: 4]
+[From: S3(DC) to: S2(DC) qos: 1 hops: 4]
+S4(DC)> Network state counts: 7
+[From: S4(DC) to: TOR2(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: S4(DC) to: AS1(DC) qos: 1 hops: 2]
+[From: S4(DC) to: AS2(DC) qos: 1 hops: 2]
+[From: S4(DC) to: S3(DC) qos: 1 hops: 2]
+[From: S4(DC) to: TOR1(DC) qos: 1 hops: 3]
+[From: S4(DC) to: S1(DC) qos: 1 hops: 4]
+[From: S4(DC) to: S2(DC) qos: 1 hops: 4]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR1(DC)> Network state counts: 7
+[From: TOR1(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR1(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR1(DC) to: S1(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR1(DC) to: S2(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR1(DC) to: TOR2(DC) qos: 1 hops: 2]
+[From: TOR1(DC) to: S3(DC) qos: 1 hops: 3]
+[From: TOR1(DC) to: S4(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+TOR2(DC)> Network state counts: 7
+[From: TOR2(DC) to: AS1(DC) qos: 1 hops: 1 through port p0oM (is neighbor)]
+[From: TOR2(DC) to: AS2(DC) qos: 1 hops: 1 through port p1oM (is neighbor)]
+[From: TOR2(DC) to: S3(DC) qos: 1 hops: 1 through port p2oM (is neighbor)]
+[From: TOR2(DC) to: S4(DC) qos: 1 hops: 1 through port p3oM (is neighbor)]
+[From: TOR2(DC) to: TOR1(DC) qos: 1 hops: 2]
+[From: TOR2(DC) to: S1(DC) qos: 1 hops: 3]
+[From: TOR2(DC) to: S2(DC) qos: 1 hops: 3]
+AS1(DC)> Signal an update to TOR1(DC)
+AS1(DC)> Signal an update to TOR2(DC)
+AS2(DC)> Signal an update to TOR1(DC)
+AS2(DC)> Signal an update to TOR2(DC)
+TOR1(DC)> Signal an update to AS1(DC)
+TOR1(DC)> Signal an update to AS2(DC)
+TOR1(DC)> Signal an update to S1(DC)
+TOR1(DC)> Signal an update to S2(DC)
+TOR2(DC)> Signal an update to AS1(DC)
+TOR2(DC)> Signal an update to AS2(DC)
+TOR2(DC)> Signal an update to S3(DC)
+TOR2(DC)> Signal an update to S4(DC)
+S1(DC)> Signal an update to TOR1(DC)
+S2(DC)> Signal an update to TOR1(DC)
+S3(DC)> Signal an update to TOR2(DC)
+S4(DC)> Signal an update to TOR2(DC)
