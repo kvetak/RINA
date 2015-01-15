@@ -28,4 +28,7 @@ simple AEPing extends AE like IAE
         int stopAt  @unit(s) = default(0s);
         int pingAt  @unit(s) = default(0s);
         int rate 			 = default(1);    
+        
+        int size    @unit(B) = default(512B);
+        
 }

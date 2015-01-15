@@ -25,6 +25,7 @@ const char* PAR_START           = "startAt";
 const char* PAR_STOP            = "stopAt";
 const char* PAR_PING            = "pingAt";
 const char* PAR_RATE            = "rate";
+const char* PAR_SIZE            = "size";
 const char* PAR_DSTAPNAME       = "dstApName";
 const char* PAR_DSTAPINSTANCE   = "dstApInstance";
 const char* PAR_DSTAENAME       = "dstAeName";
@@ -76,6 +77,7 @@ void AEPing::initialize()
     stopAt  = simTime() + par(PAR_STOP);
     pingAt  = simTime() + par(PAR_PING);
     rate    = par(PAR_RATE);
+    size    = par(PAR_SIZE);
 
     //Destination for flow
     dstApName     = this->par(PAR_DSTAPNAME).stringValue();
@@ -130,6 +132,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)(&myPath);
         ping->setObject(obj);
+        ping->setSize(size);
 
         //Send message
         sendData(&flows.back(), ping);
