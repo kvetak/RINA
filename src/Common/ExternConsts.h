@@ -54,6 +54,7 @@ extern const char* PAR_APINSTANCE;
 extern const char* PAR_AENAME;
 extern const char* PAR_AEINSTANCE;
 extern const char* PAR_CONFIGDATA;
+extern const char* PAR_CREREQTIMEOUT;
 
 //TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names

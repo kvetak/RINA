@@ -53,6 +53,7 @@ const char* PAR_APINSTANCE      = "apInstance";
 const char* PAR_AENAME          = "aeName";
 const char* PAR_AEINSTANCE      = "aeInstance";
 const char* PAR_CONFIGDATA      = "configData";
+const char* PAR_CREREQTIMEOUT   = "createRequestTimeout";
 
 //Gate names
 const char* GATE_SOUTHIO        = "southIo";

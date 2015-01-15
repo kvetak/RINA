@@ -35,9 +35,6 @@
 
 //Constants
 extern const char* TIM_CREREQ;
-extern const char* PAR_PORTID;
-extern const char* PAR_CEPID;
-extern const char* PAR_CREREQTIMEOUT;
 
 class FAI : public FAIBase  {
   public:
@@ -52,7 +49,7 @@ class FAI : public FAIBase  {
     virtual void receiveAllocateResponseNegative();
     virtual bool receiveCreateRequest();
     virtual bool receiveCreateResponsePositive(Flow* flow);
-    virtual bool receiveCreateResponseNegative(Flow* flow);
+    virtual bool receiveCreateResponseNegative();
     virtual bool receiveDeallocateRequest();
     virtual void receiveDeleteRequest();
     virtual void receiveDeleteResponse();

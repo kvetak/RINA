@@ -85,7 +85,7 @@ void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
         //Only FAI with same CepId and PortId process this call
         if (fai->getFlow()->getSrcPortId() == flow->getSrcPortId()
                 && fai->getFlow()->getConId().getSrcCepId() == flow->getConId().getSrcCepId() )
-        fai->receiveCreateResponseNegative(flow);
+        fai->receiveCreateResponseNegative();
     }
     else
         EV << "FAIListener received unknown object!" << endl;

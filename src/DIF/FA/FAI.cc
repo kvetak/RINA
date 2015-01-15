@@ -18,10 +18,6 @@
 #include "FAI.h"
 
 const char*     TIM_CREREQ          = "CreateRequestTimer";
-const char*     PAR_PORTID          = "portId";
-const char*     PAR_CEPID           = "cepId";
-const char*     PAR_CREREQTIMEOUT   = "createRequestTimeout";
-
 
 Define_Module(FAI);
 
@@ -88,7 +84,6 @@ bool FAI::receiveAllocateRequest() {
     //IF flow is already available then schedule M_Create(Flow)
     if (status) {
         this->signalizeCreateFlowRequest();
-        scheduleAt(simTime() + creReqTimeout, creReqTimer);
     }
     //Everything went fine
     return true;
@@ -181,7 +176,7 @@ void FAI::receiveDeleteRequest() {
     FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
 }
 
-bool FAI::receiveCreateResponseNegative(Flow* flow) {
+bool FAI::receiveCreateResponseNegative() {
     Enter_Method("receiveCreResNegative()");
 
     //invokeAllocateRetryPolicy
@@ -204,7 +199,9 @@ bool FAI::receiveCreateResponseNegative(Flow* flow) {
 bool FAI::receiveCreateResponsePositive(Flow* flow) {
     Enter_Method("receiveCreResPositive()");
     //XXX: Vesely - D-Base-2011-015.pdf, p.9
-    //              Create bindings. WTF? Bindings should be already created!
+    //              Create bindings. WTF? Bindings should be already created!''
+
+    cancelEvent(creReqTimer);
 
     //Change dstCep-Id and dstPortId according to new information
     FlowObject->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
@@ -231,9 +228,9 @@ void FAI::handleMessage(cMessage *msg) {
     //CreateRequest was not delivered in time
     if ( !strcmp(msg->getName(), TIM_CREREQ) ) {
         //Increment and resend
-        FlowObject->setCreateFlowRetries(FlowObject->getCreateFlowRetries() + 1);
-        signalizeCreateFlowRequest();
-        scheduleAt(simTime() + creReqTimeout, creReqTimer);
+        bool status = receiveCreateResponseNegative();
+        if (status)
+            signalizeCreateFlowRequest();
     }
 
 }
@@ -354,6 +351,7 @@ bool FAI::deleteBindings() {
 
 bool FAI::invokeAllocateRetryPolicy() {
     //Increase CreateFlowRetries
+    cancelEvent(creReqTimer);
     //int hops = this->getFlow()->getCreateFlowRetries();
     this->getFlow()->setCreateFlowRetries( this->getFlow()->getCreateFlowRetries() + 1 );
     //Compare whether the limit is reached
@@ -413,6 +411,9 @@ void FAI::initSignalsAndListeners() {
 }
 
 void FAI::signalizeCreateFlowRequest() {
+    //Start timer
+    scheduleAt(simTime() + creReqTimeout, creReqTimer);
+    //Signalize RIBd to send M_CREATE(flow)
     emit(this->sigFAICreReq, FlowObject);
 }
 

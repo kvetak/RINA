@@ -301,6 +301,7 @@ FAI* FA::createFAI(Flow* flow) {
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
     module->par(PAR_PORTID) = portId;
     module->par(PAR_CEPID) = cepId;
+    module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
     module->finalizeParameters();
     module->buildInside();
 
