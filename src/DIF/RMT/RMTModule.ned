@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -22,7 +24,7 @@ package rina.DIF.RMT;
 module RMTModule
 {
     parameters:
-        @display("i=block/classifier;bgb=590,275");
+        @display("i=block/classifier;bgb=645,275");
 
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
@@ -31,8 +33,8 @@ module RMTModule
         double TxQueuingTime @unit(ms) = default(0.0ms);
         double RxQueuingTime @unit(ms) = default(0.0ms);
 
-        int queueSize = default(20);
-        int queueThresh = default(10);
+        int defaultMaxQLength = default(20);
+        int defaultThreshQLength = default(10);
 
         string queueColorBusy = default("#80FF80");
         string queueColorWarn = default("#FF8000");
@@ -45,17 +47,17 @@ module RMTModule
         rmt: RMT {
             @display("p=55,55");
         }
-        rmtQueueManager: RMTQueueManager {
-            @display("p=535,49");
-        }
         schedulingPolicy: <schedPolicyName> like IntRMTSchedulingPolicy {
-            @display("p=165,55;is=s");
+            @display("p=200,55;is=s");
         }
         queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
-            @display("p=270,55;is=s");
+            @display("p=310,55;is=s");
         }
         maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
-            @display("p=375,55;is=s");
+            @display("p=420,55;is=s");
+        }
+        rmtModuleAllocator: RMTModuleAllocator {
+            @display("p=575,55");
         }
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;

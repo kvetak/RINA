@@ -107,28 +107,28 @@ cGate* RMTPort::getSouthOutputGate() const
     return southOutputGate;
 }
 
-RMTQueue* RMTPort::getManagementQueue(RMTQueueType type)
+RMTQueue* RMTPort::getManagementQueue(RMTQueueType type) const
 {
-    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     return queueVect.front();
 }
 
-RMTQueue* RMTPort::getFirstQueue(RMTQueueType type)
+RMTQueue* RMTPort::getFirstQueue(RMTQueueType type) const
 {
-    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     return queueVect.at(1);
 }
 
-RMTQueue* RMTPort::getLongestQueue(RMTQueueType type)
+RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const
 {
-    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     int longest = 0;
     RMTQueue* result = NULL;
 
-    for(RMTQueuesIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
         RMTQueue* q = *it;
         if (q->getLength() > longest)
@@ -140,14 +140,14 @@ RMTQueue* RMTPort::getLongestQueue(RMTQueueType type)
     return result;
 }
 
-RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId)
+RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId) const
 {
-    RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     std::ostringstream fullId;
     fullId << getFullName() << (type == RMTQueue::INPUT ? 'i' : 'o') << queueId;
 
-    for(RMTQueuesIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
         RMTQueue* q = *it;
         if (!opp_strcmp(q->getFullName(), fullId.str().c_str()))
@@ -177,6 +177,11 @@ void RMTPort::setBusy()
 
 void RMTPort::redrawGUI()
 {
+    if (!ev.isGUI())
+    {
+        return;
+    }
+
     getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
 }
 

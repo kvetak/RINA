@@ -1,5 +1,5 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -22,8 +22,8 @@ Define_Module(QueueAllocBase);
 void QueueAllocBase::initialize()
 {
     // connect to other modules
-    rmtQM = check_and_cast<RMTQueueManager*>
-        (getModuleByPath("^.^.rmt.rmtQueueManager"));
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.^.rmt.rmtModuleAllocator"));
     idGenerator = check_and_cast<QueueIDGenBase*>
         (getModuleByPath("^.queueIdGenerator"));
     ra = check_and_cast<RABase*>

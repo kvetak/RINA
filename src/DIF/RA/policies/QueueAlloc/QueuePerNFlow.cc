@@ -1,5 +1,5 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -21,8 +21,8 @@ Define_Module(QueuePerNFlow);
 
 void QueuePerNFlow::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
-    rmtQM->addQueue(RMTQueue::OUTPUT, port, idGenerator->generateID(flow).c_str());
+    rmtAllocator->addQueue(RMTQueue::OUTPUT, port, idGenerator->generateID(flow).c_str());
     flow->swapFlow();
-    rmtQM->addQueue(RMTQueue::INPUT, port, idGenerator->generateID(flow).c_str());
+    rmtAllocator->addQueue(RMTQueue::INPUT, port, idGenerator->generateID(flow).c_str());
     flow->swapFlow();
 }

@@ -43,7 +43,7 @@ module IPCProcess
             @display("p=167,50");
         }
         rmt: RMTModule {
-            @display("p=79,249");
+            @display("p=79,249;i=block/dispatch");
         }
         ribDaemon: RIBDaemon {
             @display("p=238,147");
