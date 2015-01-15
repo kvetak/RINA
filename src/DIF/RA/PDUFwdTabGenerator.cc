@@ -171,11 +171,7 @@ void PDUFwdTabGenerator::initializeSignalsAndListeners()
 
 void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPort * port)
 {
-    // Now insert the network flow state so they'll be available for neighbors.
-    insertNetInfo(addr, qos, port, 1);
 
-    // Insert what you consider a neighbor.
-    insertNeighbor(addr, qos, port);
 
     // Is a policy defined?
     if(fwdPolicy)

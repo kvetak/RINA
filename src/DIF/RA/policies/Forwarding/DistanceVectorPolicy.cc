@@ -167,6 +167,12 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
         return;
     }
 
+    // Now insert the network flow state so they'll be available for neighbors.
+    fwdtg->insertNetInfo(addr, qos, port, 1);
+
+    // Insert what you consider a neighbor.
+    fwdtg->insertNeighbor(addr, qos, port);
+
     // Assign a metric in the newly inserted flow...
     FSInfo * i = fwdtg->netInfoExists(addr,qos);
     // This flow has hop 1 because it's a neighbor.
