@@ -29,6 +29,7 @@ extern const char* PAR_START;
 extern const char* PAR_STOP;
 extern const char* PAR_PING;
 extern const char* PAR_RATE;
+extern const char* PAR_SIZE;
 extern const char* PAR_DSTAPNAME;
 extern const char* PAR_DSTAPINSTANCE;
 extern const char* PAR_DSTAENAME;
@@ -58,6 +59,7 @@ class AEPing : public AE
     simtime_t stopAt;
     simtime_t pingAt;
     int rate;
+    unsigned int size;
 
     void prepareAllocateRequest();
     void preparePing();
