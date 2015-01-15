@@ -17,6 +17,12 @@
 
 #include "FAI.h"
 
+const char*     TIM_CREREQ          = "CreateRequestTimer";
+const char*     PAR_PORTID          = "portId";
+const char*     PAR_CEPID           = "cepId";
+const char*     PAR_CREREQTIMEOUT   = "createRequestTimeout";
+
+
 Define_Module(FAI);
 
 FAI::FAI() : FAIBase() {
@@ -28,9 +34,13 @@ FAI::~FAI() {
 }
 
 void FAI::initialize() {
-    this->portId = par("portId");
-    this->cepId  = par("cepId");
-    this->initSignalsAndListeners();
+    portId = par(PAR_PORTID);
+    cepId  = par(PAR_CEPID);
+
+    creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
+    creReqTimer = new cMessage(TIM_CREREQ);
+
+    initSignalsAndListeners();
 
 //    this->efcp = (EFCP*)(getParentModule()->getParentModule()->getSubmodule("efcp"));
 }
@@ -76,9 +86,10 @@ bool FAI::receiveAllocateRequest() {
     RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
     status = raModule->bindNFlowToNM1Flow(FlowObject);
     //IF flow is already available then schedule M_Create(Flow)
-    if (status)
+    if (status) {
         this->signalizeCreateFlowRequest();
-
+        scheduleAt(simTime() + creReqTimeout, creReqTimer);
+    }
     //Everything went fine
     return true;
 }
@@ -217,6 +228,13 @@ void FAI::receiveDeleteResponse() {
 }
 
 void FAI::handleMessage(cMessage *msg) {
+    //CreateRequest was not delivered in time
+    if ( !strcmp(msg->getName(), TIM_CREREQ) ) {
+        //Increment and resend
+        FlowObject->setCreateFlowRetries(FlowObject->getCreateFlowRetries() + 1);
+        signalizeCreateFlowRequest();
+        scheduleAt(simTime() + creReqTimeout, creReqTimer);
+    }
 
 }
 

@@ -30,5 +30,7 @@ simple FAI
     	@signal[FAI-DeleteFlowResponse](type=Flow?);
     	
     	int portId = default(-1);
-    	int cepId = default(-1);      	  	
+    	int cepId = default(-1);   
+    	
+    	double createRequestTimeout @unit(s) = default(1s);   	  	
 }

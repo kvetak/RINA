@@ -33,6 +33,12 @@
 #include "ModuleAccess.h"
 #include "RABase.h"
 
+//Constants
+extern const char* TIM_CREREQ;
+extern const char* PAR_PORTID;
+extern const char* PAR_CEPID;
+extern const char* PAR_CREREQTIMEOUT;
+
 class FAI : public FAIBase  {
   public:
     FAI();
@@ -64,6 +70,9 @@ class FAI : public FAIBase  {
   protected:
     int portId;
     int cepId;
+
+    cMessage* creReqTimer;
+    double creReqTimeout;
 
     FABase* FaModule;
 
