@@ -27,24 +27,21 @@
 
 #include <omnetpp.h>
 
+#include "RINASignals.h"
+#include "ExternConsts.h"
+#include "Address.h"
+#include "PDU_m.h"
+#include "CDAPMessage_m.h"
+
+#include "PDUForwardingTable.h"
+#include "QueueAllocBase.h"
+
 #include "RMTBase.h"
 #include "RMTListeners.h"
-
-#include "RMTQueueManager.h"
-#include "RMTQueue.h"
-
+#include "RMTModuleAllocator.h"
 #include "RMTSchedulingBase.h"
 #include "RMTQMonitorBase.h"
 #include "RMTMaxQBase.h"
-
-#include "QueueAllocBase.h"
-
-#include "RINASignals.h"
-#include "Address.h"
-#include "ExternConsts.h"
-#include "PDU_m.h"
-#include "CDAPMessage_m.h"
-#include "PDUForwardingTable.h"
 
 typedef std::map<int, cGate*> EfcpiMapping;
 
@@ -57,19 +54,19 @@ class RMT : public RMTBase
     RMT();
     virtual ~RMT();
 
-    bool getRelayStatus() { return relayOn; };
-    bool isOnWire() { return onWire; };
+    virtual bool getRelayStatus() { return relayOn; };
+    virtual bool isOnWire() { return onWire; };
 
-    void invokeQueueArrivalPolicies(cObject* obj);
-    void invokeQueueDeparturePolicies(cObject* obj);
+    virtual void invokeQueueArrivalPolicies(cObject* obj);
+    virtual void invokeQueueDeparturePolicies(cObject* obj);
 
   protected:
-    void initialize();
-    void handleMessage(cMessage *msg);
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
   private:
     PDUForwardingTable* fwTable;
-    RMTQueueManager* rmtQM;
+    RMTModuleAllocator* rmtAllocator;
 
     Address thisIpcAddr;
     bool relayOn;

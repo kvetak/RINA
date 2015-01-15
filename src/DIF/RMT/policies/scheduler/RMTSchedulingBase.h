@@ -20,7 +20,6 @@
 
 #include "RMTPort.h"
 #include "RMTQueue.h"
-#include "RMTQueueManager.h"
 
 /**
  * Noop base class for the RMT scheduling policy.

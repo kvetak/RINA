@@ -1,5 +1,5 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,6 @@
 class IDPerNFlow : public QueueIDGenBase
 {
   public:
-    // method selecting the proper available queue for a PDU
     virtual std::string generateID(PDU_Base* pdu);
     virtual std::string generateID(Flow* flow);
 };

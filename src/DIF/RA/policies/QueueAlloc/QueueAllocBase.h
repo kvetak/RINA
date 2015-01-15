@@ -1,5 +1,5 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,12 +19,11 @@
 #define QUEUEALLOCBASE_H_
 
 #include <omnetpp.h>
-#include "QueueIDGenBase.h"
-#include "RMTQueueManager.h"
-#include "RMTPort.h"
 #include "Flow.h"
+#include "RMTModuleAllocator.h"
+#include "RMTPort.h"
 #include "RABase.h"
-#include "QoSCube.h"
+#include "QueueIDGenBase.h"
 
 /**
  * Noop base class for the RA queue allocation policy
@@ -79,7 +78,7 @@ class QueueAllocBase : public cSimpleModule
     /**
      * Pointer to a module providing API for (de)allocation of ports and queues.
      */
-    RMTQueueManager* rmtQM;
+    RMTModuleAllocator* rmtAllocator;
 
     /**
      * Pointer to the Resource Allocator module.

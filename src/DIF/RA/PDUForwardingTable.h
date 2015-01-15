@@ -25,7 +25,6 @@
 
 #include <omnetpp.h>
 #include "PDUForwardingTableEntry.h"
-#include "RMTPort.h"
 
 typedef std::list<PDUForwardingTableEntry> PDUFwdTable;
 typedef PDUFwdTable::iterator PDUFwdTableIter;

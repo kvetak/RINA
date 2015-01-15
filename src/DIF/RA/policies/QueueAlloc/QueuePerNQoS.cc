@@ -1,5 +1,5 @@
 //
-// Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ void QueuePerNQoS::onNM1PortInit(RMTPort* port)
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
     {
         idString << it->getQosId();
-        rmtQM->addQueue(RMTQueue::OUTPUT, port, idString.str().c_str());
-        rmtQM->addQueue(RMTQueue::INPUT, port, idString.str().c_str());
+        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, idString.str().c_str());
+        rmtAllocator->addQueue(RMTQueue::INPUT, port, idString.str().c_str());
         // clear the buffer
         idString.str(std::string());
         idString.clear();

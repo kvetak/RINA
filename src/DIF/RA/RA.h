@@ -25,14 +25,15 @@
 
 #include <omnetpp.h>
 #include "RINASignals.h"
-#include "PDUForwardingTable.h"
-#include "NM1FlowTable.h"
 #include "DA.h"
 #include "FABase.h"
 #include "RMT.h"
 #include "RMTPort.h"
+
 #include "RABase.h"
 #include "RAListeners.h"
+#include "PDUForwardingTable.h"
+#include "NM1FlowTable.h"
 #include "QueueAllocBase.h"
 
 //Consts
@@ -75,12 +76,12 @@ class RA : public RABase
 
   private:
     DA* difAllocator;
-    cModule* thisIpc;
+    cModule* thisIPC;
     cModule* rmtModule;
     RMT* rmt;
-    RMTQueueManager* rmtQM;
-    PDUForwardingTable* fwTable;
-    NM1FlowTable* flTable;
+    RMTModuleAllocator* rmtAllocator;
+    PDUForwardingTable* fwdTable;
+    NM1FlowTable* flowTable;
     QueueAllocBase* qAllocPolicy;
     std::string processName;
     std::list<Flow*> preparedFlows;
@@ -88,11 +89,11 @@ class RA : public RABase
     void initQoSCubes();
     void initSignalsAndListeners();
     void initFlowAlloc();
-    void setRmtMode();
+    void setRMTMode();
     void bindMediumToRMT();
     RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
     void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
-    std::string normalizePortId(std::string ipcName, int flowPortId);
+    std::string normalizePortID(std::string ipcName, int flowPortID);
 
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
@@ -101,8 +102,8 @@ class RA : public RABase
     LisRACreAllocResPos* lisRACreAllocResPos;
     LisRACreResPosi* lisRACreResPosi;
 
-    void signalizeCreateFlowPositiveToRibd(Flow* flow);
-    void signalizeCreateFlowNegativeToRibd(Flow* flow);
+    void signalizeCreateFlowPositiveToRIBd(Flow* flow);
+    void signalizeCreateFlowNegativeToRIBd(Flow* flow);
 
 };
     

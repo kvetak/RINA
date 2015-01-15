@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -19,9 +21,8 @@
 #include <omnetpp.h>
 #include <queue>
 
-#include "PDU_m.h"
-#include "QoSCube.h"
 #include "RINASignals.h"
+#include "PDU_m.h"
 
 
 class RMTQueue : public cSimpleModule
@@ -29,7 +30,7 @@ class RMTQueue : public cSimpleModule
   /* tight coupling for management purposes */
   friend class RMT;
   friend class RMTPort;
-  friend class RMTQueueManager;
+  friend class RMTModuleAllocator;
 
   public:
     RMTQueue();
@@ -189,6 +190,7 @@ class RMTQueue : public cSimpleModule
 typedef RMTQueue::queueType RMTQueueType;
 typedef std::vector<RMTQueue*>  RMTQueues;
 typedef RMTQueues::iterator  RMTQueuesIter;
+typedef RMTQueues::const_iterator  RMTQueuesConstIter;
 
 std::ostream& operator<< (std::ostream& os, const RMTQueue& cte);
 

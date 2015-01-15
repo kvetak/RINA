@@ -19,7 +19,6 @@ Define_Module(LongestQFirst);
 
 void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 {
-    Enter_Method("processQueues()");
 
     if (direction == RMTQueue::OUTPUT)
     {

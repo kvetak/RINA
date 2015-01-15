@@ -41,8 +41,8 @@ void RMT::initialize()
     // get pointers to other components
     fwTable = check_and_cast<PDUForwardingTable*>
         (getModuleByPath("^.^.resourceAllocator.pduForwardingTable"));
-    rmtQM = check_and_cast<RMTQueueManager*>
-        (getModuleByPath("^.rmtQueueManager"));
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.rmtModuleAllocator"));
 
     schedPolicy = check_and_cast<RMTSchedulingBase*>
         (getModuleByPath("^.schedulingPolicy"));
@@ -65,11 +65,11 @@ void RMT::initialize()
 
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
-    getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
+    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTMsgRcvd);
 
     // listen for a signal indicating that a new message has left a port
     lisRMTMsgSent = new LisRMTPDUSent(this);
-    getParentModule()->subscribe(SIG_RMT_MessageSent, lisRMTMsgSent);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTMsgSent);
 }
 
 
@@ -102,7 +102,7 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
     }
 
     // finally, invoke the scheduling policy
-    schedPolicy->processQueues(rmtQM->getQueueToPortMapping(queue), queue->getType());
+    schedPolicy->processQueues(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
 }
 
 /**
@@ -115,7 +115,7 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     Enter_Method("invokeQueueDeparturePolicies()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     qMonPolicy->onMessageDeparture(queue);
-    schedPolicy->finalizeService(rmtQM->getQueueToPortMapping(queue), queue->getType());
+    schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
 }
 
 /**
@@ -195,7 +195,7 @@ RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
 
     if (onWire)
     { // get the interface port
-        outPort = rmtQM->getInterfacePort();
+        outPort = rmtAllocator->getInterfacePort();
     }
     else
     { // get a suitable port from PDUFT

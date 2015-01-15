@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -37,12 +39,12 @@ void RMTQueue::initialize()
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
     // message retrieval signal handler
-    sigRMTPDURcvd = registerSignal(SIG_RMT_MessageReceived);
+    sigRMTPDURcvd = registerSignal(SIG_RMT_QueuePDURcvd);
     // message departure signal handler
-    sigRMTPDUSent = registerSignal(SIG_RMT_MessageSent);
+    sigRMTPDUSent = registerSignal(SIG_RMT_QueuePDUSent);
 
-    maxQLength = getParentModule()->par("queueSize");
-    thresholdQLength = getParentModule()->par("queueThresh");
+    maxQLength = getParentModule()->par("defaultMaxQLength");
+    thresholdQLength = getParentModule()->par("defaultThreshQLength");
     qTime = simTime();
     redrawGUI();
 }

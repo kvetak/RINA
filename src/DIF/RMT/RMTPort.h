@@ -20,16 +20,16 @@
 
 #include <omnetpp.h>
 #include "RINASignals.h"
-#include "RMTQueue.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
+#include "RMTQueue.h"
 #include "QueueIDGenBase.h"
 
 class RMTPort : public cSimpleModule
 {
     /* tight coupling for management purposes */
     friend class RA;
-    friend class RMTQueueManager;
+    friend class RMTModuleAllocator;
 
   public:
 
@@ -65,7 +65,7 @@ class RMTPort : public cSimpleModule
      * @param type direction of data
      * @return management queue
      */
-    RMTQueue* getManagementQueue(RMTQueueType type);
+    RMTQueue* getManagementQueue(RMTQueueType type) const;
 
     /**
      * Returns the first queue available on this port.
@@ -74,7 +74,7 @@ class RMTPort : public cSimpleModule
      * @param type direction of data
      * @return queue
      */
-    RMTQueue* getFirstQueue(RMTQueueType type);
+    RMTQueue* getFirstQueue(RMTQueueType type) const;
 
     /**
      * Returns the longest queue attached to this port.
@@ -82,7 +82,7 @@ class RMTPort : public cSimpleModule
      * @param type direction of data
      * @return queue
      */
-    RMTQueue* getLongestQueue(RMTQueueType type);
+    RMTQueue* getLongestQueue(RMTQueueType type) const;
 
     /**
      * Returns the queue that matches given ID.
@@ -91,7 +91,7 @@ class RMTPort : public cSimpleModule
      * @param queueId queue ID
      * @return queue
      */
-    RMTQueue* getQueueById(RMTQueueType type, const char* queueId);
+    RMTQueue* getQueueById(RMTQueueType type, const char* queueId) const;
 
     /**
      * Returns a list of available input queues.

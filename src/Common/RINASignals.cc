@@ -65,8 +65,8 @@ const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
 
 const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
-const char* SIG_RMT_MessageReceived             = "RMT-MessageReceived";
-const char* SIG_RMT_MessageSent                 = "RMT-MessageSent";
+const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
+const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortPDURcvd                 = "RMT-PortPDURcvd";
 const char* SIG_RMT_PortPDUSent                 = "RMT-PortPDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";

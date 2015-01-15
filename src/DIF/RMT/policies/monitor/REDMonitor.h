@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -26,8 +28,8 @@ class REDMonitor : public RMTQMonitorBase
 
   public:
     virtual void onMessageArrival(RMTQueue* queue);
-    void postQueueCreation(RMTQueue* queue);
-    void preQueueRemoval(RMTQueue* queue);
+    virtual void postQueueCreation(RMTQueue* queue);
+    virtual void preQueueRemoval(RMTQueue* queue);
 
   private:
     REDParamMap qAvgLengths;
