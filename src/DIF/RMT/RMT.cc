@@ -65,11 +65,11 @@ void RMT::initialize()
 
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTMsgRcvd = new LisRMTPDURcvd(this);
-    getParentModule()->subscribe(SIG_RMT_MessageReceived, lisRMTMsgRcvd);
+    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTMsgRcvd);
 
     // listen for a signal indicating that a new message has left a port
     lisRMTMsgSent = new LisRMTPDUSent(this);
-    getParentModule()->subscribe(SIG_RMT_MessageSent, lisRMTMsgSent);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTMsgSent);
 }
 
 
