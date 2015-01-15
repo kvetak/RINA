@@ -32,7 +32,7 @@ module EFCPModule
             @display("p=175,44");
         }
         efcp: EFCP {
-            @display("p=52,44");
+            @display("p=52,44;i=block/circle");
         }
 
 

@@ -80,7 +80,14 @@ void DTCP::initialize(int step)
   dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
 //TODO A1 Fill it with appropriate values
-  dtcpState = new DTCPState();
+//  dtcpState = new DTCPState();
+  cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
+
+  dtcpState = (DTCPState*)dtcpStateType->create("dtcpState", this->getParentModule());
+  dtcpState->finalizeParameters();
+  dtcpState->buildInside();
+  dtcpState->scheduleStart(simTime());
+  dtcpState->callInitialize();
 
 //TODO A2 based on DTPState create appropriate components
   if (dtp->state.isRxPresent())
@@ -135,7 +142,10 @@ DTCP::~DTCP()
     delete flowControl;
   }
   flushAllQueuesAndPrepareToDie();
-  delete dtcpState;
+//  if(dtcpState!=NULL){
+//    delete dtcpState;
+//  }
+
 }
 
 void DTCP::setDTP(DTP* dtp)

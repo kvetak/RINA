@@ -68,7 +68,7 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
 
   /*
    * 1. Create new SDU and put msg to this new SDU.
-   * 2. Check if SDU.size < (MAXPDUSIZE - header)
+   * 2. Check if SDU.size < (MAXSDUSIZE - header)
    *  2a partition it creating multiple SDUFrag and put them into some vector
    * 3. Go through Data vector and send them to EFCPI
    */
