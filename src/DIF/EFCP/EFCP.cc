@@ -182,6 +182,8 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
 
 
 Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
+
+    //TODO A! Incorporate some differentiators into Delimiting module name to support multiple instances of Delimiting to exist.
     //0. Create Delimiting module within EFCPModule
     cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
 
