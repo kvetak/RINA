@@ -57,7 +57,7 @@ void RA::initialize(int stage)
 
     // retrieve pointers to other modules
     thisIPC = this->getParentModule()->getParentModule();
-    rmtModule = thisIPC->getSubmodule("rmt");
+    rmtModule = thisIPC->getSubmodule("relayAndMux");
 
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));
@@ -66,9 +66,9 @@ void RA::initialize(int stage)
     flowTable = check_and_cast<NM1FlowTable*>
         (getModuleByPath("^.nm1FlowTable"));
     rmt = check_and_cast<RMT*>
-        (getModuleByPath("^.^.rmt.rmt"));
+        (getModuleByPath("^.^.relayAndMux.rmt"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.rmt.rmtModuleAllocator"));
+        (getModuleByPath("^.^.relayAndMux.rmtModuleAllocator"));
 
     // retrieve pointers to policies
     qAllocPolicy = check_and_cast<QueueAllocBase*>

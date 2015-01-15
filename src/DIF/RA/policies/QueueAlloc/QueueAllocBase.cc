@@ -23,7 +23,7 @@ void QueueAllocBase::initialize()
 {
     // connect to other modules
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.rmt.rmtModuleAllocator"));
+        (getModuleByPath("^.^.relayAndMux.rmtModuleAllocator"));
     idGenerator = check_and_cast<QueueIDGenBase*>
         (getModuleByPath("^.queueIdGenerator"));
     ra = check_and_cast<RABase*>

@@ -21,7 +21,7 @@ import rina.DIF.RMT.policies.maxqueue.IntRMTMaxQPolicy;
 
 package rina.DIF.RMT;
 
-module RMTModule
+module RelayAndMux
 {
     parameters:
         @display("i=block/classifier;bgb=645,275");

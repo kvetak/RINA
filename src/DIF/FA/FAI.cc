@@ -263,7 +263,7 @@ bool FAI::createBindings() {
     gateIpcDownIn->connectTo(gateEfcpUpIn);
 
     //Create bindings in RMT
-    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
+    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".relayAndMux.rmt");
     rmtModule->createEfcpiGate(cepId);
 
     std::ostringstream nameRmtUp;
@@ -311,7 +311,7 @@ bool FAI::deleteBindings() {
     gateIpcDownIn->disconnect();
 
     //Delete bindings in RMT
-    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".rmt.rmt");
+    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".relayAndMux.rmt");
 
     std::ostringstream nameRmtUp;
     nameRmtUp << GATE_EFCPIO_ << this->getFlow()->getConId().getSrcCepId();
