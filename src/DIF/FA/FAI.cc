@@ -27,6 +27,7 @@ FAI::FAI() : FAIBase() {
 FAI::~FAI() {
     this->FaModule = NULL;
     this->FlowObject = NULL;
+    cancelAndDelete(creReqTimer);
 }
 
 void FAI::initialize() {
@@ -229,8 +230,8 @@ void FAI::handleMessage(cMessage *msg) {
     if ( !strcmp(msg->getName(), TIM_CREREQ) ) {
         //Increment and resend
         bool status = receiveCreateResponseNegative();
-        if (status)
-            signalizeCreateFlowRequest();
+        if (!status)
+            EV << "CreateRequest retries reached its maximum!" << endl;
     }
 
 }
@@ -412,8 +413,6 @@ void FAI::initSignalsAndListeners() {
 
 void FAI::signalizeCreateFlowRequest() {
     //Start timer
-    if (creReqTimer->isScheduled())
-        cancelEvent(creReqTimer);
     scheduleAt(simTime() + creReqTimeout, creReqTimer);
     //Signalize RIBd to send M_CREATE(flow)
     emit(this->sigFAICreReq, FlowObject);
