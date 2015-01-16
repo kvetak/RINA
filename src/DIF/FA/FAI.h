@@ -68,6 +68,7 @@ class FAI : public FAIBase  {
     int portId;
     int cepId;
 
+    //TODO: Vesely - What about timeouts for M_DELETE and other control messages?
     cMessage* creReqTimer;
     double creReqTimeout;
 

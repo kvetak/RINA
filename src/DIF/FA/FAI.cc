@@ -412,6 +412,8 @@ void FAI::initSignalsAndListeners() {
 
 void FAI::signalizeCreateFlowRequest() {
     //Start timer
+    if (creReqTimer->isScheduled())
+        cancelEvent(creReqTimer);
     scheduleAt(simTime() + creReqTimeout, creReqTimer);
     //Signalize RIBd to send M_CREATE(flow)
     emit(this->sigFAICreReq, FlowObject);
