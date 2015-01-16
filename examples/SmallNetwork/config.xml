@@ -1,13 +1,6 @@
 <?xml version="1.0"?>
 <Configuration>
 	<Host id="host1">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="106_Layer11" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>	
 		<DA>
 			<Directory>
 				<APN apn="App1">
@@ -67,13 +60,6 @@
 	</Host>
 
 	<Host id="host5">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="108_Layer11" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>   	
 		<DA>
 			<NeighborTable>
 				<APN apn="101_Layer11">
@@ -125,14 +111,6 @@
 		</DA>	
 	</Router>
 	<Router id="router2">
-	    <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="106_Layer11" qosCube="1"/>
-                    <Flow apn="108_Layer11" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>   
 		<DA>
 			<NeighborTable>
 				<APN apn="105_Layer11">
