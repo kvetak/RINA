@@ -57,7 +57,7 @@ class RIBd : public RIBdBase {
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
     /* Handles information coming from PDUFTG module. */
-    virtual void receiveForwardingInfoUpdateFromPDUFTG(FSUpdateInfo * flow);
+    virtual void receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * update);
 
   protected:
     virtual void initialize();

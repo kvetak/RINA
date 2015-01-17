@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
 #ifndef __RINA_PDUFTGPOLICY_H
 #define __RINA_PDUFTGPOLICY_H
@@ -22,22 +22,19 @@
 
 #include "Flow.h"
 #include "RMTPort.h"
-#include "FSUpdateInfo.h"
+#include "PDUFTGUpdate.h"
 
-/* Forwarding declaration. */
+// Forwarding declaration.
 class PDUFwdTabGenerator;
 
-/* Provides a base class for every policy used in the PDUFTG module.
- */
+// Provides a base class for every policy used in the PDUFTG module.
+//
 class PDUFTGPolicy :
         public cSimpleModule
 {
 private:
 
 protected:
-    /* msec between updates. */
-    unsigned int updateT = 0;
-
     PDUFwdTabGenerator * fwdtg;
 
     void handleMessage(cMessage *msg);
@@ -47,34 +44,25 @@ public:
     PDUFTGPolicy();
     ~PDUFTGPolicy();
 
-    /* Computes the initial state of the forwarding table.
-     */
+    // Computes the initial state of the forwarding table.
+    //
     virtual void computeForwardingTable();
 
-    /* Gets a filtered network state that will be used to inform neighbors.
-     * There will be one info per neighbor.
-     */
-    virtual std::list<FSUpdateInfo *> * getNetworkState();
+    // Evaluated in term of policy defined flow if a flow exists.
+    //
+    virtual PDUFTGInfo * flowExists(Address addr, unsigned short qos);
 
-    /* Gets the update timeout.
-     */
-    unsigned int getUpdateTimeout();
-
-    /* Insert a new flow which has been open locally to this IPC Process.
-     */
+    // Insert a new flow which has been open locally to this IPC Process.
+    //
     virtual void insertNewFlow(Address addr, unsigned short qos, RMTPort * port);
 
-    /* Merge an incoming information with the existing ones.
-     */
-    virtual void mergeForwardingInfo(FSUpdateInfo * info);
+    // Merge an incoming information with the existing ones.
+    //
+    virtual void mergeForwardingInfo(PDUFTGUpdate * info);
 
-    /* Removes a local opened flow.
-     */
+    // Removes a local opened flow.
+    //
     virtual void removeFlow(Address addr, unsigned short qos);
-
-    /* Set a new timeout between an update message and another.
-     */
-    void setUpdateTimeout(unsigned int time);
 };
 
-#endif /* __PDUFTGPOLICY_H */
+#endif // __PDUFTGPOLICY_H

@@ -26,7 +26,7 @@
 
 // Comment this directive to disable private debugging.
 // With private debugging all the output will be redirected to a text file.
-// #define PDUFTG_PRIVATE_DEBUG
+//#define PDUFTG_PRIVATE_DEBUG
 
 #ifdef PDUFTG_PRIVATE_DEBUG
 
@@ -55,9 +55,9 @@ extern std::ofstream pduftg_debug_file;
 #include "PDUForwardingTable.h"
 #include "PDUFTGListeners.h"
 #include "PDUFTGPolicy.h"
-#include "FSUpdateInfo.h"
+#include "PDUFTGUpdate.h"
 
-typedef std::list<FSInfo *> NetworkState;
+typedef std::list<PDUFTGInfo *> NetworkState;
 typedef NetworkState::iterator NIter;
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
@@ -148,20 +148,13 @@ class PDUFwdTabGenerator : public cSimpleModule
     NM1FlowTable * getNM1FlowTable();
 
     //
-    // Network state actions:
+    // No network state actions.
+    // Actions are defined on data, and data can be policy defined. So procedure to handle
+    // such data should be shipped with the policy itself.
     //
-
-    // Insert a network state information.
-    void insertNetInfo(Address dest, unsigned short qos, RMTPort * port, unsigned int metric);
-
-    // Check if the info is already present into the owned one.
-    FSInfo * netInfoExists(Address dest, unsigned short qos);
 
     // Returns the actual string formatted network info we have.
     std::string netInfo();
-
-    // Removes a network state information.
-    void removeNetInfo(FSInfo * info);
 
     //
     // Neighbors state actions:
@@ -206,10 +199,10 @@ class PDUFwdTabGenerator : public cSimpleModule
     // Signal to whoever listen for SIG_PDUFTG_FwdInfoUpdate event that an update
     // information must be handled.
     //
-    void signalForwardingInfoUpdate(FSUpdateInfo * info);
+    void signalForwardingInfoUpdate(PDUFTGUpdate * info);
 
     // Handle an incoming update message.
-    void handleUpdateMessage(FSUpdateInfo * info);
+    void handleUpdateMessage(PDUFTGUpdate * info);
 
     //
     // Debug only

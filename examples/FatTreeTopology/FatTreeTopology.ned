@@ -29,29 +29,29 @@ network FatTreeTopology
     submodules:
 
         AS1: InteriorRouter2Int {
-            @display("p=267,132");
+            @display("p=267,96");
         }
         AS2: InteriorRouter2Int {
-            @display("p=667,132");
+            @display("p=667,96");
         }
         TOR1: InteriorRouter4Int {
-            @display("p=267,304");
+            @display("p=267,268");
         }
         TOR2: InteriorRouter4Int {
-            @display("p=667,304");
+            @display("p=667,268");
         }
 
         Server1: Host1AP {
-            @display("p=185,477");
+            @display("p=185,441");
         }
         Server2: Host1AP {
-            @display("p=349,477");
+            @display("p=349,441");
         }
         Server3: Host1AP {
-            @display("p=585,477");
+            @display("p=585,441");
         }
         Server4: Host1AP {
-            @display("p=749,477");
+            @display("p=749,441");
         }
 
     connections:

@@ -43,14 +43,9 @@ void PDUFTGPolicy::computeForwardingTable()
     // Do nothing...
 }
 
-std::list<FSUpdateInfo *> * PDUFTGPolicy::getNetworkState()
+PDUFTGInfo * PDUFTGPolicy::flowExists(Address addr, unsigned short qos)
 {
-    return NULL;
-}
-
-unsigned int PDUFTGPolicy::getUpdateTimeout()
-{
-    return updateT;
+    return false;
 }
 
 void PDUFTGPolicy::handleMessage(cMessage *msg)
@@ -73,7 +68,7 @@ void PDUFTGPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort *
     // Do nothing...
 }
 
-void PDUFTGPolicy::mergeForwardingInfo(FSUpdateInfo * info)
+void PDUFTGPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 {
     // Do nothing...
 }
@@ -81,9 +76,4 @@ void PDUFTGPolicy::mergeForwardingInfo(FSUpdateInfo * info)
 void PDUFTGPolicy::removeFlow(Address addr, unsigned short qos)
 {
     // Do nothing...
-}
-
-void PDUFTGPolicy::setUpdateTimeout(unsigned int msec)
-{
-    updateT = msec;
 }

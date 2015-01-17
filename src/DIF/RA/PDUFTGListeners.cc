@@ -16,7 +16,7 @@ void LisPDUFTGFwdInfoRecv::receiveSignal(cComponent *src, simsignal_t id, cObjec
     EV << "ForwardingInfoUpdate initiated by " << src->getFullPath()
        << " and processed by " << fwdtg->getFullPath() << endl;
 
-    FSUpdateInfo * info = dynamic_cast<FSUpdateInfo *>(obj);
+    PDUFTGUpdate * info = dynamic_cast<PDUFTGUpdate *>(obj);
 
     if (info)
     {

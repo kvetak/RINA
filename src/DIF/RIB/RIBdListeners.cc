@@ -135,7 +135,7 @@ void LisRIBDFwdInfoUpdate::receiveSignal(
     EV << "LisRIBDFwdInfoUpdate initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
 
-    FSUpdateInfo * info = dynamic_cast<FSUpdateInfo *>(obj);
+    PDUFTGUpdate * info = dynamic_cast<PDUFTGUpdate *>(obj);
 
     if (info)
     {

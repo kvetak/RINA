@@ -15,60 +15,54 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#ifndef __RINA_FSINFO_H
-#define __RINA_FSINFO_H
+#ifndef __RINA_PDUFTGUPDATE_H
+#define __RINA_PDUFTGUPDATE_H
 
-//Standard libraries
 #include <omnetpp.h>
-#include "Address.h"
-#include "RMTPort.h"
 
-// Provides information about the state of a Flow.
-// This is actually a value container to use during data exchange.
+#include "Address.h"
+#include "PDUFTGInfo.h"
+
+// Updates exchanged by the PDUFTG modules.
 //
-class FSInfo // Flow State Information
+class PDUFTGUpdate :
+        public cObject
 {
 protected:
 
-    // Address of the info destination.
-    // Usually a neighbor of the source.
+    // The address of the ipc which will receive such information.
     //
     Address dstAddr;
 
-    // Weight of this connection depending on the metric used during
-    // routing policy evaluation.
-    //
-    unsigned int metricWeight;
-
-    // QoSID associated to the flow from source to destination.
-    // For the moment this field is unused.
-    //
-    unsigned short QoSID;
-
-    // Address of the info source.
+    // The address of the ipc which will send such information.
     //
     Address srcAddr;
 
+    // The transmitted information.
+    //
+    std::list<PDUFTGInfo *> * info;
+
+    // Free info data.
+    void disposeInfo();
+
 public:
 
-    FSInfo();
-    FSInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric);
-    ~FSInfo();
+    PDUFTGUpdate();
+    PDUFTGUpdate(Address from, Address to, std::list<PDUFTGInfo *> * info);
+    ~PDUFTGUpdate();
 
     // Getters.
 
     Address getDestination();
-    unsigned int getMetric();
-    short unsigned int getQoSID();
+    std::list<PDUFTGInfo *> *  getInfo();
     Address getSource();
-
 
     // Setters.
 
-    void setDestination(Address dest);
-    void setMetric(unsigned int weight);
-    void setQoSID(unsigned short id);
+    void setDestination(Address addr);
+    // This will create a copy of the list instead of addressing the passed one.
+    void setInfo(std::list<PDUFTGInfo *> * info);
     void setSource(Address src);
 };
 
-#endif // __RINA_FSINFO_H
+#endif // __RINA_PDUFTGUPDATE_H

@@ -13,45 +13,41 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#ifndef __RINA_DISTANCEVECTORPOLICY_H
-#define __RINA_DISTANCEVECTORPOLICY_H
+#ifndef __RINA_STATICROUTINGPOLICY_H
+#define __RINA_STATICROUTINGPOLICY_H
 
 #include <omnetpp.h>
 
+#include "DA.h"
 #include "PDUFTGPolicy.h"
 
-#define PDUFTG_SELFMSG_FSUPDATE     0x01
-
-// This implements a basic distance-vector routing policy.
-// The metric used is in term of hops.
+// Static routing follows the operations already done by the first version of
+// rinasim, when no forwarding of information existed. It simply update the
+// Forwarding table during the flow creation.
 //
-class DistanceVectorPolicy :
+// This policy does not apply any logic organization of the data received
+// because it assumes that everything has been already done in the definition
+// of the base data.
+//
+class StaticRoutingPolicy :
         public PDUFTGPolicy
 {
 private:
-
-    // Just prepare an update fo a destination host.
-    FSUpdateInfo * prepareFSUpdate(Address destination);
+    DA * difA;
 
 protected:
-
-    void handleMessage(cMessage *msg);
     void initialize();
+    void handleMessage(cMessage *msg);
 
 public:
-    DistanceVectorPolicy();
-    ~DistanceVectorPolicy();
+    StaticRoutingPolicy();
+    ~StaticRoutingPolicy();
 
     // Computes the initial state of the forwarding table.
     //
     void computeForwardingTable();
-
-    // Gets a filtered network state that will be used to inform neighbors.
-    // There will be one info per neighbor.
-    //
-    virtual std::list<FSUpdateInfo *> * getNetworkState();
 
     // Insert a new flow which has been open locally to this IPC Process.
     //
@@ -59,11 +55,11 @@ public:
 
     // Merge an incoming information with the existing ones.
     //
-    void mergeForwardingInfo(FSUpdateInfo * info);
+    void mergeForwardingInfo(PDUFTGUpdate * info);
 
     // Removes a local opened flow.
     //
-    virtual void removeFlow(Address addr, short unsigned int qos);
+    void removeFlow(Address addr, short unsigned int qos);
 };
 
-#endif // __RINA_DISTANCEVECTORPOLICY_H
+#endif // __RINA_STATICROUTINGPOLICY_H

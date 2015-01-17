@@ -15,14 +15,14 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#include "FSInfo.h"
+#include "PDUFTGInfo.h"
 
-FSInfo::FSInfo()
+PDUFTGInfo::PDUFTGInfo()
 {
 
 }
 
-FSInfo::FSInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric)
+PDUFTGInfo::PDUFTGInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric)
 {
     setDestination(dst);
     setMetric(metric);
@@ -30,51 +30,58 @@ FSInfo::FSInfo(Address src, Address dst, unsigned short QoSID, unsigned int metr
     setSource(src);
 }
 
-FSInfo::~FSInfo()
+PDUFTGInfo::~PDUFTGInfo()
 {
 
 }
 
 // Getters.
 
-Address FSInfo::getDestination()
+Address PDUFTGInfo::getDestination()
 {
     return dstAddr;
 }
 
-unsigned int FSInfo::getMetric()
+unsigned int PDUFTGInfo::getMetric()
 {
     return metricWeight;
 }
 
-short unsigned int FSInfo::getQoSID()
+short unsigned int PDUFTGInfo::getQoSID()
 {
     return QoSID;
 }
 
-Address FSInfo::getSource()
+Address PDUFTGInfo::getSource()
 {
     return srcAddr;
 }
 
 // Setters.
 
-void FSInfo::setDestination(Address dest)
+void PDUFTGInfo::setDestination(Address dest)
 {
     dstAddr = dest;
 }
 
-void FSInfo::setMetric(unsigned int weight)
+void PDUFTGInfo::setMetric(unsigned int weight)
 {
     metricWeight = weight;
 }
 
-void FSInfo::setQoSID(unsigned short id)
+void PDUFTGInfo::setQoSID(unsigned short id)
 {
     QoSID = id;
 }
 
-void FSInfo::setSource(Address src)
+void PDUFTGInfo::setSource(Address src)
 {
     srcAddr = src;
+}
+
+bool PDUFTGInfo::operator == (const PDUFTGInfo& info) const
+{
+    return srcAddr == info.srcAddr &&
+        dstAddr == info.dstAddr &&
+        QoSID == info.QoSID;
 }

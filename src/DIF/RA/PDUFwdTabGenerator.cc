@@ -92,7 +92,7 @@ NM1FlowTable * PDUFwdTabGenerator::getNM1FlowTable()
     return flTable;
 }
 
-void PDUFwdTabGenerator::handleUpdateMessage(FSUpdateInfo * info)
+void PDUFwdTabGenerator::handleUpdateMessage(PDUFTGUpdate * info)
 {
     if(fwdPolicy)
     {
@@ -171,8 +171,6 @@ void PDUFwdTabGenerator::initializeSignalsAndListeners()
 
 void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPort * port)
 {
-
-
     // Is a policy defined?
     if(fwdPolicy)
     {
@@ -194,8 +192,6 @@ void PDUFwdTabGenerator::insertFlowInfo(Address addr, unsigned short qos, RMTPor
 
 void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPort * p)
 {
-    //EV << "INSN " << addr << " this ipc " << ipcAddr;
-
     // As for network informations, we're interested only on IPC located on
     // our same layer. We must not know of N+1 or N-1 IPCs.
     //
@@ -205,33 +201,33 @@ void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPor
     }
 }
 
-void PDUFwdTabGenerator::insertNetInfo(Address dest, short unsigned int qos, RMTPort * port, unsigned int metric)
-{
-    // Filter the flows created through RA; we're interested in the information about our
-    // DIF, not on the ones of the others(N+1 or N-1).
-    //
-    if(dest.getDifName() == ipcAddr.getDifName())
-    {
-        FSInfo * i = netInfoExists(dest, qos);
-
-        // Not already existing in our Flow list.
-        if(!i)
-        {
-            i = new FSInfo(
-                // From...
-                ipcAddr,
-                // ... to ...
-                dest,
-                // ... with QoS ...
-                qos,
-                // ... and metric.
-                metric);
-
-            // Just push it in the list.
-            netState.push_back(i);
-        }
-    }
-}
+//void PDUFwdTabGenerator::insertNetInfo(Address dest, short unsigned int qos, RMTPort * port, unsigned int metric)
+//{
+//    // Filter the flows created through RA; we're interested in the information about our
+//    // DIF, not on the ones of the others(N+1 or N-1).
+//    //
+//    if(dest.getDifName() == ipcAddr.getDifName())
+//    {
+//        PDUFTGInfo * i = netInfoExists(dest, qos);
+//
+//        // Not already existing in our Flow list.
+//        if(!i)
+//        {
+//            i = new PDUFTGInfo(
+//                // From...
+//                ipcAddr,
+//                // ... to ...
+//                dest,
+//                // ... with QoS ...
+//                qos,
+//                // ... and metric.
+//                metric);
+//
+//            // Just push it in the list.
+//            netState.push_back(i);
+//        }
+//    }
+//}
 
 std::string PDUFwdTabGenerator::neiInfo()
 {
@@ -259,7 +255,7 @@ std::string PDUFwdTabGenerator::netInfo()
 
     for(NIter it = netState.begin(); it != netState.end(); ++it )
     {
-        FSInfo * fsi = (*it);
+        PDUFTGInfo * fsi = (*it);
         NM1FlowTableItem * p = flTable->findFlowByDstApni(fsi->getDestination().getApname().getName(), fsi->getQoSID());
 
         os << "[From: " << fsi->getSource() << " to: " << fsi->getDestination() << " qos: " << fsi->getQoSID() << " hops: " << fsi->getMetric();
@@ -292,21 +288,21 @@ PDUForwardingTableEntry * PDUFwdTabGenerator::neighborExists(Address addr)
     return NULL;
 }
 
-FSInfo * PDUFwdTabGenerator::netInfoExists(Address dest, unsigned short qos)
-{
-    for(NIter it = netState.begin(); it != netState.end(); ++it )
-    {
-        FSInfo * fsi = (*it);
-
-        // Equal condition; same source reach same destination with same qos constrain.
-        if(fsi->getDestination() == dest && fsi->getQoSID() == qos)
-        {
-            return fsi;
-        }
-    }
-
-    return NULL;
-}
+//PDUFTGInfo * PDUFwdTabGenerator::netInfoExists(Address dest, unsigned short qos)
+//{
+//    for(NIter it = netState.begin(); it != netState.end(); ++it )
+//    {
+//        PDUFTGInfo * fsi = (*it);
+//
+//        // Equal condition; same source reach same destination with same qos constrain.
+//        if(fsi->getDestination() == dest && fsi->getQoSID() == qos)
+//        {
+//            return fsi;
+//        }
+//    }
+//
+//    return NULL;
+//}
 
 void PDUFwdTabGenerator::publishPolicy(PDUFTGPolicy * p)
 {
@@ -323,7 +319,7 @@ std::string PDUFwdTabGenerator::prepareFriendlyNetState()
 
     for(NIter it = netState.begin(); it != netState.end(); ++it )
     {
-        FSInfo * fsi = (*it);
+        PDUFTGInfo * fsi = (*it);
 
         os << fsi->getDestination() << ", " << fsi->getMetric() << endl;
     }
@@ -354,7 +350,7 @@ void PDUFwdTabGenerator::removeFlowInfo(RMTPort * port)
 
             // Remove the entries previously registered.
             removeNeiInfo(e->getDestAddr());
-            removeNetInfo(netInfoExists(e->getDestAddr(), e->getQosId()));
+//            removeNetInfo(netInfoExists(e->getDestAddr(), e->getQosId()));
 
             return;
         }
@@ -374,17 +370,20 @@ void PDUFwdTabGenerator::removeNeiInfo(Address addr)
     }
 }
 
-void PDUFwdTabGenerator::removeNetInfo(FSInfo * info)
-{
-    netState.remove(info);
-}
+//void PDUFwdTabGenerator::removeNetInfo(PDUFTGInfo * info)
+//{
+//    netState.remove(info);
+//}
 
 void PDUFwdTabGenerator::reportBubbleInfo(const char * message)
 {
-    nstm->bubble(message);
+    if(showNetState && nstm)
+    {
+        nstm->bubble(message);
+    }
 }
 
-void PDUFwdTabGenerator::signalForwardingInfoUpdate(FSUpdateInfo * info)
+void PDUFwdTabGenerator::signalForwardingInfoUpdate(PDUFTGUpdate * info)
 {
     pduftg_debug(ipcAddr.info() <<
         "> Signal an update to " << info->getDestination() << "\n");

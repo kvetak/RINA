@@ -13,41 +13,50 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-// Author: Kewin Rausch (kewin.rausch@create-net.org)
+/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
 
-#ifndef __RINA_STATICROUTINGPOLICY_H
-#define __RINA_STATICROUTINGPOLICY_H
+#ifndef __RINA_DISTANCEVECTORPOLICY_H
+#define __RINA_DISTANCEVECTORPOLICY_H
 
 #include <omnetpp.h>
 
-#include "DA.h"
 #include "PDUFTGPolicy.h"
 
-// Static routing follows the operations already done by the first version of
-// rinasim, when no forwarding of information existed. It simply update the
-// Forwarding table during the flow creation.
+#define PDUFTG_SELFMSG_FSUPDATE     0x01
+
+// This implements a basic distance-vector routing policy.
+// The metric used is in term of hops.
 //
-// This policy does not apply any logic organization of the data received
-// because it assumes that everything has been already done in the definition
-// of the base data.
-//
-class StaticRoutingPolicy :
+class DistanceVectorPolicy :
         public PDUFTGPolicy
 {
 private:
-    DA * difA;
+    /* msec between updates. */
+    unsigned int updateT = 0;
+
+    // Just prepare an update fo a destination host.
+    PDUFTGUpdate * prepareFSUpdate(Address destination);
 
 protected:
-    void initialize();
+
     void handleMessage(cMessage *msg);
+    void initialize();
 
 public:
-    StaticRoutingPolicy();
-    ~StaticRoutingPolicy();
+    DistanceVectorPolicy();
+    ~DistanceVectorPolicy();
 
     // Computes the initial state of the forwarding table.
     //
     void computeForwardingTable();
+
+    // Evaluated in term of policy defined flow if a flow exists.
+    //
+    virtual PDUFTGInfo * flowExists(Address addr, unsigned short qos);
+
+    /* Get the update timer actual tick value.
+     */
+    unsigned int getUpdateTimeout();
 
     // Insert a new flow which has been open locally to this IPC Process.
     //
@@ -55,11 +64,15 @@ public:
 
     // Merge an incoming information with the existing ones.
     //
-    void mergeForwardingInfo(FSUpdateInfo * info);
+    void mergeForwardingInfo(PDUFTGUpdate * info);
 
     // Removes a local opened flow.
     //
-    void removeFlow(Address addr, short unsigned int qos);
+    virtual void removeFlow(Address addr, short unsigned int qos);
+
+    /* Set a new timeout between an update message and another, in seconds.
+     */
+    void setUpdateTimeout(unsigned int sec);
 };
 
-#endif // __RINA_STATICROUTINGPOLICY_H
+#endif // __RINA_DISTANCEVECTORPOLICY_H

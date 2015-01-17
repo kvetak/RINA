@@ -15,41 +15,30 @@
 
 /* Author: Kewin Rausch (kewin.rausch@create-net.org) */
 
-#include "FSUpdateInfo.h"
+#include "PDUFTGUpdate.h"
 
-FSUpdateInfo::FSUpdateInfo()
+PDUFTGUpdate::PDUFTGUpdate()
 {
 
 }
 
-FSUpdateInfo::FSUpdateInfo(Address from, Address to, std::list<FSInfo *> * info)
+PDUFTGUpdate::PDUFTGUpdate(Address from, Address to, std::list<PDUFTGInfo *> * info)
 {
     setSource(from);
     setDestination(to);
     setInfo(info);
 }
 
-FSUpdateInfo::~FSUpdateInfo()
+PDUFTGUpdate::~PDUFTGUpdate()
 {
     disposeInfo();
 }
 
-void FSUpdateInfo::disposeInfo()
+void PDUFTGUpdate::disposeInfo()
 {
     /* Removes any previously allocated info. */
     if(info)
     {
-        // Removed to avoid iteration errors.
-        // Ticket #19; thank you gaixas1.
-        //
-        //for(std::list<FSInfo *>::iterator it = info->begin(); it != info->end(); ++it)
-        //{
-        //    FSInfo * i = (*it);
-        //
-        //    info->remove(i);
-        //    delete i;
-        //}
-
         delete info;
         info = NULL;
     }
@@ -57,38 +46,38 @@ void FSUpdateInfo::disposeInfo()
 
 /* Getters. */
 
-Address FSUpdateInfo::getDestination()
+Address PDUFTGUpdate::getDestination()
 {
     return dstAddr;
 }
 
-std::list<FSInfo *> *  FSUpdateInfo::getInfo()
+std::list<PDUFTGInfo *> *  PDUFTGUpdate::getInfo()
 {
     return info;
 }
 
-Address FSUpdateInfo::getSource()
+Address PDUFTGUpdate::getSource()
 {
     return srcAddr;
 }
 
 /* Setters. */
 
-void FSUpdateInfo::setDestination(Address addr)
+void PDUFTGUpdate::setDestination(Address addr)
 {
     dstAddr = addr;
 }
 
-void FSUpdateInfo::setInfo(std::list<FSInfo *> *  info)
+void PDUFTGUpdate::setInfo(std::list<PDUFTGInfo *> *  info)
 {
-    this->info = new std::list<FSInfo *>();
+    this->info = new std::list<PDUFTGInfo *>();
 
-    for(std::list<FSInfo *>::iterator it = info->begin(); it != info->end(); ++it)
+    for(std::list<PDUFTGInfo *>::iterator it = info->begin(); it != info->end(); ++it)
     {
-        FSInfo * i = (*it);
+        PDUFTGInfo * i = (*it);
 
         this->info->push_back(
-            new FSInfo(
+            new PDUFTGInfo(
                 i->getSource(),
                 i->getDestination(),
                 i->getQoSID(),
@@ -96,7 +85,7 @@ void FSUpdateInfo::setInfo(std::list<FSInfo *> *  info)
     }
 }
 
-void FSUpdateInfo::setSource(Address addr)
+void PDUFTGUpdate::setSource(Address addr)
 {
     srcAddr = addr;
 }

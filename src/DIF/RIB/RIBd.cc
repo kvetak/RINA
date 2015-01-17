@@ -486,16 +486,16 @@ void RIBd::processMWrite(CDAPMessage* msg)
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //CreateRequest Flow
-    if (dynamic_cast<FSUpdateInfo *>(object.objectVal))
+    if (dynamic_cast<PDUFTGUpdate *>(object.objectVal))
     {
-        FSUpdateInfo * update = (check_and_cast<FSUpdateInfo *>(object.objectVal));
+        PDUFTGUpdate * update = (check_and_cast<PDUFTGUpdate *>(object.objectVal));
 
         /* Signal that an update obj has been received. */
         emit(sigRIBDFwdUpdateRecv, update);
     }
 }
 
-void RIBd::receiveForwardingInfoUpdateFromPDUFTG(FSUpdateInfo * info)
+void RIBd::receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * info)
 {
     EV << getFullPath() << " Forwarding update to send to " << info->getDestination();
 

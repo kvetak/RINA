@@ -17,7 +17,7 @@
 
 #include "StaticRoutingPolicy.h"
 #include "PDUFwdTabGenerator.h"
-#include "FSUpdateInfo.h"
+#include "PDUFTGUpdate.h"
 
 Define_Module(StaticRoutingPolicy);
 
@@ -65,9 +65,6 @@ void StaticRoutingPolicy::initialize()
 
     difA = check_and_cast<DA *>(
         getModuleByPath("^.^.^.difAllocator.da"));
-
-    // This avoid the start of update timeout.
-    updateT = 0;
 }
 
 void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
@@ -99,7 +96,7 @@ void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RM
     }
 }
 
-void StaticRoutingPolicy::mergeForwardingInfo(FSUpdateInfo * info)
+void StaticRoutingPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 {
     // Do nothing...
 }
