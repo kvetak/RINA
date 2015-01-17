@@ -63,7 +63,7 @@ void DistanceVectorPolicy::computeForwardingTable()
 
         for(EIter et = neiState->begin(); et != neiState->end(); ++et )
         {
-            PDUForwardingTableEntry * e = (*et);
+            PDUFTGNeighbor * e = (*et);
 
             // It's not a neighbor.
             if(!(e->getDestAddr() == i->getDestination()))
@@ -127,7 +127,7 @@ void DistanceVectorPolicy::handleMessage(cMessage *msg)
 
             for(EIter it = n->begin(); it != n->end(); ++it)
             {
-                PDUForwardingTableEntry * info = (*it);
+                PDUFTGNeighbor * info = (*it);
 
                 // Finally send the update.
                 fwdtg->signalForwardingInfoUpdate(
@@ -251,7 +251,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
         if(insert)
         {
             // It's a better metric; pass through this sender from now on...
-            PDUForwardingTableEntry * en = fwdtg->neighborExists(eval->getSource());
+            PDUFTGNeighbor * en = fwdtg->neighborExists(eval->getSource());
 
             if(!en)
             {

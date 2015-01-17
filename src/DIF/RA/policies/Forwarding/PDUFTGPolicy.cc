@@ -45,7 +45,7 @@ void PDUFTGPolicy::computeForwardingTable()
 
 PDUFTGInfo * PDUFTGPolicy::flowExists(Address addr, unsigned short qos)
 {
-    return false;
+    return NULL;
 }
 
 void PDUFTGPolicy::handleMessage(cMessage *msg)

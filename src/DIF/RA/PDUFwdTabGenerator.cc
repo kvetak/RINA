@@ -61,7 +61,7 @@ NetworkState * PDUFwdTabGenerator::getNetworkState()
     return &netState;
 }
 
-PDUForwardingTableEntry * PDUFwdTabGenerator::getNextNeighbor(Address destination, unsigned short qos)
+PDUFTGNeighbor * PDUFwdTabGenerator::getNextNeighbor(Address destination, unsigned short qos)
 {
     RMTPort * p = getForwardingTable()->lookup(destination, qos);
 
@@ -69,7 +69,7 @@ PDUForwardingTableEntry * PDUFwdTabGenerator::getNextNeighbor(Address destinatio
     {
         for(EIter it = neiState.begin(); it != neiState.end(); ++it )
         {
-            PDUForwardingTableEntry * e = (*it);
+            PDUFTGNeighbor * e = (*it);
 
             // Found the port used for the forwarding table; so it's the next neighbor.
             if(!strcmp(p->info().c_str(), e->getPort()->info().c_str()))
@@ -197,7 +197,7 @@ void PDUFwdTabGenerator::insertNeighbor(Address addr, short unsigned qos, RMTPor
     //
     if(addr.getDifName() == ipcAddr.getDifName())
     {
-        neiState.push_back(new PDUForwardingTableEntry(addr, qos, p));
+        neiState.push_back(new PDUFTGNeighbor(addr, qos, p));
     }
 }
 
@@ -237,7 +237,7 @@ std::string PDUFwdTabGenerator::neiInfo()
 
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
-        PDUForwardingTableEntry * e = (*it);
+        PDUFTGNeighbor * e = (*it);
 
         os << "Neighbor " << e->getDestAddr() << endl;
 
@@ -273,11 +273,11 @@ std::string PDUFwdTabGenerator::netInfo()
     return os.str();
 }
 
-PDUForwardingTableEntry * PDUFwdTabGenerator::neighborExists(Address addr)
+PDUFTGNeighbor * PDUFwdTabGenerator::neighborExists(Address addr)
 {
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
-        PDUForwardingTableEntry * e = (*it);
+        PDUFTGNeighbor * e = (*it);
 
         if(e->getDestAddr() == addr)
         {
@@ -341,7 +341,7 @@ void PDUFwdTabGenerator::removeFlowInfo(RMTPort * port)
 {
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
-        PDUForwardingTableEntry * e = (*it);
+        PDUFTGNeighbor * e = (*it);
 
         if(port == e->getPort())
         {
@@ -361,7 +361,7 @@ void PDUFwdTabGenerator::removeNeiInfo(Address addr)
 {
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
-        PDUForwardingTableEntry * e = (*it);
+        PDUFTGNeighbor * e = (*it);
 
         if(e->getDestAddr() == addr)
         {

@@ -45,7 +45,7 @@ void StaticRoutingPolicy::computeForwardingTable()
 
     for(EIter it = m->begin(); it != m->end(); ++it )
     {
-        PDUForwardingTableEntry * e = (*it);
+        PDUFTGNeighbor * e = (*it);
 
         fwdtg->getForwardingTable()->insert(
             e->getDestAddr(),

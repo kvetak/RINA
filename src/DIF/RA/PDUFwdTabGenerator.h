@@ -56,12 +56,13 @@ extern std::ofstream pduftg_debug_file;
 #include "PDUFTGListeners.h"
 #include "PDUFTGPolicy.h"
 #include "PDUFTGUpdate.h"
+#include "PDUFTGNeighbor.h"
 
 typedef std::list<PDUFTGInfo *> NetworkState;
 typedef NetworkState::iterator NIter;
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
-typedef std::list<PDUForwardingTableEntry *> NeighborState;
+typedef std::list<PDUFTGNeighbor *> NeighborState;
 typedef NeighborState::iterator EIter;
 
 // Generator of the forwarding informations.
@@ -142,7 +143,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     NetworkState * getNetworkState();
 
     // Find the next known neighbor to reach the destination.
-    PDUForwardingTableEntry * getNextNeighbor(Address destination, unsigned short qos);
+    PDUFTGNeighbor * getNextNeighbor(Address destination, unsigned short qos);
 
     // Gets the managed instance of the N-1 flow table.
     NM1FlowTable * getNM1FlowTable();
@@ -164,7 +165,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     void insertNeighbor(Address addr, unsigned short qos, RMTPort * p);
 
     // Check if the neighbor desired exists.
-    PDUForwardingTableEntry * neighborExists(Address src);
+    PDUFTGNeighbor * neighborExists(Address src);
 
     // Returns the actual string formatted neighbor state.
     std::string neiInfo();
