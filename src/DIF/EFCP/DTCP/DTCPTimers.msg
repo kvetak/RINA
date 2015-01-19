@@ -24,7 +24,7 @@ enum DTCPTimerType
 {
   DTCP_WINDOW_TIMER = 1;
   DTCP_RX_EXPIRY_TIMER = 2;
-  
+  DTCP_SENDING_RATE_TIMER = 3;
 }
 message DTCPTimers {
 	int type enum(DTCPTimerType);
@@ -40,4 +40,8 @@ message DTCPRxExpiryTimer extends DTCPTimers{
     DTPDU_p pdu = NULL;
     unsigned int expiryCount = 0;
     double sent = 0;
+}
+
+message DTCPSendingRateTimer extends DTCPTimers{
+  type = DTCP_SENDING_RATE_TIMER;
 }

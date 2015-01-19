@@ -42,7 +42,7 @@ void DTPState::initDefaults(){
 
   //TODO A1
   rcvLeftWinEdge = 0;
-  maxSeqNumRcvd = 0;
+//  maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
   senderLeftWinEdge = 0;
 
@@ -119,18 +119,18 @@ void DTPState::setMaxFlowSduSize(unsigned int maxFlowSduSize) {
     maxFlowSDUSize = maxFlowSduSize;
 }
 
-unsigned int DTPState::getMaxSeqNumRcvd() const {
-    return maxSeqNumRcvd;
-}
-
-void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
-
-    this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
-}
-
-void DTPState::incMaxSeqNumRcvd() {
-  maxSeqNumRcvd++;
-}
+//unsigned int DTPState::getMaxSeqNumRcvd() const {
+//    return maxSeqNumRcvd;
+//}
+//
+//void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
+//
+//    this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
+//}
+//
+//void DTPState::incMaxSeqNumRcvd() {
+//  maxSeqNumRcvd++;
+//}
 
 void DTPState::incRcvLeftWindowEdge() {
   rcvLeftWinEdge++;

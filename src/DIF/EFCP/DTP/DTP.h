@@ -24,7 +24,7 @@
 #include "DTCP.h"
 //#include "PDU.h"
 #include "DataTransferPDU.h"
-//#include "ControlPDU_m.h"
+#include "ControlPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
 

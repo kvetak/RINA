@@ -678,7 +678,8 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
         }
         else
         {
-          state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//          state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+          state.setRcvLeftWinEdge(pdu->getSeqNum());
           /* No A-Timer necessary, already running */
         }
 
@@ -775,7 +776,8 @@ void DTP::handleDTPATimer(ATimer* timer)
   }else{
 
     //TODO A1
-    //Update LeftWindowEdge
+    //Update RcvLeftWindowEdge
+
 
     //Invoke delimiting
     delimitFromRMT(NULL);

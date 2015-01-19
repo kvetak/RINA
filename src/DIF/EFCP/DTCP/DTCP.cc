@@ -19,7 +19,7 @@ Define_Module(DTCP);
 
 DTCP::DTCP() {
   rxControl = NULL;
-  flowControl = NULL;
+//  flowControl = NULL;
 
   ecnPolicy = NULL;
   rcvrFCPolicy = NULL;
@@ -97,8 +97,9 @@ void DTCP::initialize(int step)
 
   if (dtp->state.isFCPresent())
   {
-    flowControl = new FlowControl();
-    flowControl->initialize();
+//    flowControl = new FlowControl();
+//    flowControl->initialize();
+
     if (dtp->state.isWinBased())
     {
 //      windowTimer = new WindowTimer();
@@ -137,10 +138,10 @@ DTCP::~DTCP()
   {
     delete rxControl;
   }
-  if (flowControl != NULL)
-  {
-    delete flowControl;
-  }
+//  if (flowControl != NULL)
+//  {
+//    delete flowControl;
+//  }
   flushAllQueuesAndPrepareToDie();
 //  if(dtcpState!=NULL){
 //    delete dtcpState;
@@ -529,8 +530,7 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
   std::vector<DTCPRxExpiryTimer*>::iterator it;
-  unsigned int lastLen;
-  lastLen = rxQ->size();
+
   for (unsigned int index = 0; index < rxQ->size(); )
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
@@ -541,7 +541,6 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
       dtcpState->deleteRxTimer(seqNum);
 
       continue;
-
     }
     index++;
   }
@@ -626,7 +625,10 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
       rxExpTimer->setSent(simTime().dbl());
       scheduleAt(simTime() + dtp->getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
-
+      break;
+    }
+    case(DTCP_SENDING_RATE_TIMER):{
+      scheduleAt(simTime() + dtcpState->getTimeUnit() / 1000, timer);
       break;
     }
   }
@@ -660,6 +662,10 @@ void DTCP::handleMessage(cMessage *msg){
         handleDTCPRxExpiryTimer(static_cast<DTCPRxExpiryTimer*>(timer));
         break;
       }
+      case(DTCP_SENDING_RATE_TIMER):{
+        handleSendingRateTimer((DTCPSendingRateTimer*)timer);
+        break;
+      }
 
     }
   }else{
@@ -673,6 +679,14 @@ void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
   dtp->sendControlAckPDU();
 
+}
+
+void DTCP::handleSendingRateTimer(DTCPSendingRateTimer* timer)
+{
+//  pdusSentInTimeUnit = 0;
+  //TODO A2 Move the timer to DTCP?
+//  setSendingRateFullfilled(false);
+  schedule(timer);
 }
 
 unsigned int DTCP::getNextSndCtrlSeqNum(){
@@ -725,7 +739,7 @@ unsigned int DTCP::getRcvCredit()
 
 unsigned long DTCP::getSendingTimeUnit()
 {
-   return flowControl->getSendingTimeUnit();
+   return dtcpState->getSendingTimeUnit();
 }
 
 

@@ -36,6 +36,8 @@ void DTCPState::initFC()
   dupFC = 0;
 
   //TODO A1 load from some config
+  timeUnit = 1000;
+  sendingTimeUnit = 1000;
   rcvBuffersPercentFree = 100;
   rcvBufferPercentThreshold = 75;
   sendingRate = 2;
@@ -371,7 +373,22 @@ void DTCPState::incDupFC()
   dupFC++;
 }
 
+unsigned long DTCPState::getTimeUnit() const
+{
+  return timeUnit;
+}
+
 unsigned int DTCPState::getDupFC() const
 {
   return dupFC;
+}
+
+unsigned long DTCPState::getSendingTimeUnit() const
+{
+  return sendingTimeUnit;
+}
+
+void DTCPState::setSendingTimeUnit(unsigned long sendingTimeUnit)
+{
+  this->sendingTimeUnit = sendingTimeUnit;
 }

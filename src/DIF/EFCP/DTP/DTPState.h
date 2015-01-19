@@ -79,7 +79,7 @@ private:
     //queue<PDU,timer>rexmsnQ; //The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
     //queue<PDU> closedWinQ; //The queue of PDUs ready to be sent once the window opens.
     unsigned int rcvLeftWinEdge;
-    unsigned int maxSeqNumRcvd;
+//    unsigned int maxSeqNumRcvd;
     unsigned int senderLeftWinEdge;
     unsigned int nextSeqNumToSend;
     //queue<PDU,seqNum> pduReassemblyQ
@@ -123,9 +123,9 @@ public:
     void setMaxFlowPduSize(unsigned int maxFlowPduSize);
     unsigned int getMaxFlowSduSize() const;
     void setMaxFlowSduSize(unsigned int maxFlowSduSize);
-    unsigned int getMaxSeqNumRcvd() const;
-    void setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd);
-    void incMaxSeqNumRcvd();
+//    unsigned int getMaxSeqNumRcvd() const;
+//    void setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd);
+//    void incMaxSeqNumRcvd();
     void incRcvLeftWindowEdge();
     unsigned int getNextSeqNumToSend();
     unsigned int getNextSeqNumToSendWithoutIncrement();
