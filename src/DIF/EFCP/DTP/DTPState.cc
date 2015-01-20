@@ -119,18 +119,18 @@ void DTPState::setMaxFlowSduSize(unsigned int maxFlowSduSize) {
     maxFlowSDUSize = maxFlowSduSize;
 }
 
-//unsigned int DTPState::getMaxSeqNumRcvd() const {
-//    return maxSeqNumRcvd;
-//}
-//
-//void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
-//
-//    this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
-//}
-//
-//void DTPState::incMaxSeqNumRcvd() {
-//  maxSeqNumRcvd++;
-//}
+unsigned int DTPState::getMaxSeqNumRcvd() const {
+    return maxSeqNumRcvd;
+}
+
+void DTPState::setMaxSeqNumRcvd(unsigned int maxSeqNumRcvd) {
+
+    this->maxSeqNumRcvd = (this->maxSeqNumRcvd > maxSeqNumRcvd) ? this->maxSeqNumRcvd : maxSeqNumRcvd;
+}
+
+void DTPState::incMaxSeqNumRcvd() {
+  maxSeqNumRcvd++;
+}
 
 void DTPState::incRcvLeftWindowEdge() {
   rcvLeftWinEdge++;
@@ -320,7 +320,7 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
            {
              //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
              //TODO A1 Throw Error.
-             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULT not ever happen");
+             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
            }
            else if ((*it)->getSeqNum() > pdu->getSeqNum())
            {

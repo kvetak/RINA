@@ -105,8 +105,8 @@ class DTP : public cSimpleModule
 
 //    void handleMsgFromDelimiting(Data* msg);
     void handleMsgFromDelimitingnew(SDU* sdu);
-    void handleMsgFromRmtnew(PDU* msg);
-    void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
+    void handleMsgFromRMT(PDU* msg);
+    void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
     /* Send */
 
@@ -197,6 +197,7 @@ class DTP : public cSimpleModule
 
     void flushAllQueuesAndPrepareToDie();
     void createPolicyModule(cModule* policy, const char* prefix, const char* name);
+    void startATimer(unsigned int seqNum);
 
   protected:
     virtual void handleMessage(cMessage *msg);

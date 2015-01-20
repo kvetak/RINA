@@ -199,7 +199,7 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
   return false;
 }
 
-bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
+bool DTCP::runRcvrAckPolicy(DTPState* dtpState, unsigned int seqNum)
 {
   Enter_Method("RcvrAckPolicy");
   if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
@@ -207,7 +207,7 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 
 
     //TODO A3 Which one?
-    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
+//    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
 //    unsigned int seqNum = dtpState->getCurrentPdu()->getSeqNum();
     if (dtcpState->isImmediate())
     {
@@ -219,12 +219,14 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 
       //TODO A1 Add handling for A-timer != 0
       //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
+      //XXX How could there be any A-Timer when isImmediate returned true?
 
     }
     else
     {
       //TODO A2
       //set A-timer for this PDU
+      dtp->startATimer(seqNum);
     }
 
     /* End default */

@@ -153,7 +153,7 @@ public:
     /* Run Policies */
     bool runECNPolicy(DTPState* dtpState);
     bool runRcvrFCPolicy(DTPState* dtpState);
-    bool runRcvrAckPolicy(DTPState* dtpState);
+    bool runRcvrAckPolicy(DTPState* dtpState, unsigned int seqNum);
     bool runReceivingFCPolicy(DTPState* dtpState);
     bool runSendingAckPolicy(DTPState* dtpState, ATimer* timer);
     bool runLostControlPDUPolicy(DTPState* dtpState);

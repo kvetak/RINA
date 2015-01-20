@@ -148,6 +148,7 @@ void DTP::redrawGUI()
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state.getRcvLeftWinEdge() <<"\n";
+  desc << "maxSeqNumRcvd: " << state.getMaxSeqNumRcvd() <<"\n";
   if(state.isDtcpPresent() && state.isFCPresent()){
     desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
   }
@@ -228,7 +229,7 @@ void DTP::handleMessage(cMessage *msg)
     else if (msg->arrivedOn(southI->getId()))
     {
 //      handleMsgFromRmt((PDU*) msg);
-      handleMsgFromRmtnew((PDU*) msg);
+      handleMsgFromRMT((PDU*) msg);
     }
   }
 
@@ -296,14 +297,14 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
         SDU* sdu;
         if(userData != NULL){
-        while ((sdu = userData->getData()) != NULL)
-        {
+          while ((sdu = userData->getData()) != NULL)
+          {
           //TODO Delimiting/de-fragmentation
 //          take(sdu);
-          take(sdu);
+            take(sdu);
 
-          send(sdu, northO);
-        }
+            send(sdu, northO);
+          }
         }
 //        delete userData;
 
@@ -317,7 +318,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
 bool DTP::commonRcvControl(ControlPDU* pdu)
 {
-  if (pdu->getSeqNum() < dtcp->getLastCtrlSeqNumRcv())/* Duplicate ControlPDU */
+  if (pdu->getSeqNum() <= dtcp->getLastCtrlSeqNumRcv())/* Duplicate ControlPDU */
   {
     if ((pdu->getType() & PDU_ACK_BIT) == PDU_ACK_BIT)
     {
@@ -410,7 +411,7 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 
 }
 
-void DTP::handleMsgFromRmtnew(PDU* msg){
+void DTP::handleMsgFromRMT(PDU* msg){
 
   state.setCurrentPdu(msg);
 
@@ -436,7 +437,7 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
     /* End */
 
     cancelEvent(rcvrInactivityTimer);
-    handleDataTransferPDUFromRmtnew(pdu);
+    handleDataTransferPDUFromRMT(pdu);
     schedule(rcvrInactivityTimer);
 
 
@@ -570,7 +571,15 @@ void DTP::handleMsgFromRmtnew(PDU* msg){
   state.setCurrentPdu(NULL);
 }
 
-void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
+void DTP::startATimer(unsigned int seqNum)
+{
+  Enter_Method_Silent();
+  ATimer* aTimer = new ATimer();
+  aTimer->setSeqNum(seqNum);
+  schedule(aTimer);
+}
+
+void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
 
   EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " received" << endl;
@@ -594,7 +603,7 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     //Flush the PDUReassemblyQueue
     flushReassemblyPDUQ();
 
-//    state.setMaxSeqNumRcvd(pdu->getSeqNum());
+    state.setMaxSeqNumRcvd(pdu->getSeqNum());
 
     //Put PDU on ReassemblyQ
     addPDUToReassemblyQ(pdu);
@@ -602,8 +611,10 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
     //XXX Setting DRF would create infinity loop of setting DRF for every PDU, right?
     /* Initialize the other direction */
 //    state.setSetDrfFlag(true);
+
+    //TODO A! check if this is needed to uncomment
     /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
-    state.setRcvLeftWinEdge(pdu->getSeqNum());
+//    state.setRcvLeftWinEdge(pdu->getSeqNum() + 1);
 
     //XXX WHY???
 //    runInitialSequenceNumberPolicy();
@@ -635,8 +646,8 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
 
       return;
     }
-//  if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
-    if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
+    if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+//    if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
 
@@ -673,13 +684,13 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
         addPDUToReassemblyQ(pdu);
         if (state.isDtcpPresent())
         {
-          //svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
-          svUpdate(state.getRcvLeftWinEdge() - 1); /* Update left edge, etc */
+          svUpdate(state.getMaxSeqNumRcvd()); /* Update left edge, etc */
+//          svUpdate(state.getRcvLeftWinEdge() - 1); /* Update left edge, etc */
         }
         else
         {
-//          state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
-          state.setRcvLeftWinEdge(pdu->getSeqNum());
+          state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//          state.setRcvLeftWinEdge(pdu->getSeqNum());
           /* No A-Timer necessary, already running */
         }
 
@@ -688,27 +699,27 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       }
     }
     /* Case 4) This is in order */
-//  if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
-    if (pdu->getSeqNum() == state.getRcvLeftWinEdge())
+    if (pdu->getSeqNum() == state.getMaxSeqNumRcvd() + 1)
+//    if (pdu->getSeqNum() == state.getRcvLeftWinEdge())
     {
-//    state.incMaxSeqNumRcvd();
+    state.incMaxSeqNumRcvd();
       //XXX This is not mentioned in the specs. IMHO this is the most important part ;)
       addPDUToReassemblyQ(pdu);
 
       if (state.isDtcpPresent())
       {
-//      svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-        svUpdate(pdu->getSeqNum()); /* Update Left Edge, etc. */
+        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//        svUpdate(pdu->getSeqNum()); /* Update Left Edge, etc. */
       }
       else
       {
-        //state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
-        state.incRcvLeftWindowEdge();
+        state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//        state.incRcvLeftWindowEdge();
         //TODO A! start A-Timer (for this PDU)
-        //FIX: @Marek Why start A-timer when DTCP is not present?
+
       }
-//    delimitFromRMT(pdu, pdu->getUserDataArraySize()); /* Create as many whole SDUs as possible */
-      delimitFromRMT(NULL);
+
+      delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
 
     }
     else
@@ -717,18 +728,23 @@ void DTP::handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu){
       //This assumption needs to be verified with somebody (John, Michael, Leo, Miguel, ...?)
 
       /* Case 5) it is out of order */
-      //if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
-      if (pdu->getSeqNum() > state.getRcvLeftWinEdge() + 1)
+      if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
+//      if (pdu->getSeqNum() > state.getRcvLeftWinEdge() + 1)
       {
+        //TODO A! Mention it to others
+        /* NOT IN SPECS */
+        state.setMaxSeqNumRcvd(pdu->getSeqNum());
         if (state.isDtcpPresent())
         {
-//        svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-          svUpdate(state.getRcvLeftWinEdge()); /* Update Left Edge, etc. */
+          svUpdate(state.getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//          svUpdate(state.getRcvLeftWinEdge()); /* Update Left Edge, etc. */
         }
         else
         {
-          //LeftWindowEdge = MaxSeqNumRcvd;
-          //TODO A! start A-timer
+//          state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
+//          state.setMaxSeqNumRcvd(pdu->getSeqNum());
+
+          startATimer(state.getMaxSeqNumRcvd());
         }
 
         delimitFromRMT(pdu);
@@ -1258,7 +1274,7 @@ void DTP::svUpdate(unsigned int seqNum)
   if (state.isRxPresent())
   {
 //    runRcvrAckPolicy(state.getRcvLeftWinEdge() - 1);
-    dtcp->runRcvrAckPolicy(&state);
+    dtcp->runRcvrAckPolicy(&state, seqNum);
   }
 
   if (state.isFCPresent() && !state.isRxPresent())
@@ -1313,6 +1329,11 @@ void DTP::schedule(DTPTimers *timer, double time)
         //TODO A!
         scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount)) + 0 , timer);
       }
+      break;
+    }
+    case (DTP_A_TIMER):{
+      //TODO A2 Tune it up.
+      scheduleAt(simTime() + qosCube->getATime() , timer);
       break;
     }
 //    case (DTP_SENDING_RATE_TIMER): {

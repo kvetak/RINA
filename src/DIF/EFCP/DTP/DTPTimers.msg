@@ -68,6 +68,7 @@ message RcvrInactivityTimer extends InactivityTimer{
 message ATimer extends DTPTimers{
  	type = DTP_A_TIMER;   
  	DTPDU_p pdu = NULL;
+ 	unsigned int seqNum;
 }
 
 
