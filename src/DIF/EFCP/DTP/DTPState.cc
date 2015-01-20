@@ -42,13 +42,13 @@ void DTPState::initDefaults(){
 
   //TODO A1
   rcvLeftWinEdge = 0;
-//  maxSeqNumRcvd = 0;
+  maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
   senderLeftWinEdge = 0;
 
 
   //TODO B! Fix
-  rtt = 3;
+  rtt = 2;
 
 }
 

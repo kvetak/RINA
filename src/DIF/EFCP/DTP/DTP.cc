@@ -614,7 +614,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
     //TODO A! check if this is needed to uncomment
     /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
-//    state.setRcvLeftWinEdge(pdu->getSeqNum() + 1);
+    state.setRcvLeftWinEdge(pdu->getSeqNum() + 1);
 
     //XXX WHY???
 //    runInitialSequenceNumberPolicy();
@@ -646,7 +646,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
       return;
     }
-    if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+    if (state.getRcvLeftWinEdge() <= pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
 //    if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
@@ -1238,8 +1238,6 @@ void DTP::svUpdate(unsigned int seqNum)
 //  state.setRcvLeftWinEdge(seqNum);
 //  uint ackSeqNum = state.getRcvLeftWinEdge();
   /* XXX Don't know where else to put */
-  if(state.getRcvLeftWinEdge()  == seqNum){
-    state.incRcvLeftWindowEdge();
 
     PDUQ_t::iterator it;
     PDUQ_t* pduQ = state.getReassemblyPDUQ();
@@ -1255,7 +1253,7 @@ void DTP::svUpdate(unsigned int seqNum)
       }
     }
 
-  }
+
 
 
   if (state.isFCPresent())
