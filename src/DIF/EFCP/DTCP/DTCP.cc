@@ -199,20 +199,48 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
   return false;
 }
 
-bool DTCP::runRcvrAckPolicy(DTPState* dtpState, unsigned int seqNum)
+bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrAckPolicy");
   if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
 
-    //TODO A3 Which one?
-//    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
-//    unsigned int seqNum = dtpState->getCurrentPdu()->getSeqNum();
+
+    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
+
+    if(dtpState->getRcvLeftWinEdge() == 0){
+      seqNum = 0;
+    }
+
     if (dtcpState->isImmediate())
     {
       //TODO A2 How to remove allowed gaps?
       //Update LeftWindowEdge removing allowed gaps;
+      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+
+      PDUQ_t::iterator it;
+      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+      {
+        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+          dtpState->incRcvLeftWindowEdge();
+
+        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+          continue;
+        }else {
+          if(pduQ->size() == 1 || it == pduQ->begin()){
+            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+            }
+          }else{
+            (*(it-1))->getSDUGap((*it));
+          }
+          break;
+        }
+      }
+
+
 
       //send an Ack/FlowControlPDU
       dtp->sendAckFlowPDU(seqNum, true);
@@ -224,7 +252,6 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState, unsigned int seqNum)
     }
     else
     {
-      //TODO A2
       //set A-timer for this PDU
       dtp->startATimer(seqNum);
     }

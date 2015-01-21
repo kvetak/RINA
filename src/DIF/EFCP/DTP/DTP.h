@@ -57,7 +57,7 @@ class DTP : public cSimpleModule
     DTCP* dtcp;
     Flow* flow;
 
-    const QoSCube *qosCube;
+//    const QoSCube *qosCube;
 
     /* Policies */
     DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;

@@ -28,7 +28,7 @@ Define_Module(Delimiting);
 
 Delimiting::Delimiting()
 {
-  // TODO Auto-generated constructor stub
+ seqNum = 1;
 
 }
 
@@ -77,6 +77,7 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
   SDU* sdu = new SDU();
 
   sdu->addUserData(msg);
+  sdu->setSeqNum(seqNum);
 
   //TODO A1 handle multiple gates -> change to cGate*
   send(sdu, southO);

@@ -65,3 +65,19 @@ void DataTransferPDU::setUserDataField(const UserDataFieldPtr& userDataField)
     take(userDataField);
     this->userDataField_var = userDataField;
 }
+
+//TODO B1 This obviously needs more work.
+int DataTransferPDU::getSDUGap(const DataTransferPDU* other)
+{
+  if(! userDataField_var->getSduDelimitFlags() & SDU_SEQ_NUM_PRESENT){
+    return -1;
+  }else{
+
+    return other->userDataField_var->getSduSeqNum() - userDataField_var->getSduSeqNum();
+  }
+}
+
+unsigned int DataTransferPDU::getSDUSeqNum() const
+{
+  return userDataField_var->getSduSeqNum();
+}

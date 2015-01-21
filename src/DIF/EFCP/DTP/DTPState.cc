@@ -40,15 +40,19 @@ void DTPState::initDefaults(){
   incompDeliv = false;
   maxFlowPDUSize = MAX_PDU_SIZE;
 
+  lastSDUDelivered = 0;
+
   //TODO A1
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
   senderLeftWinEdge = 0;
 
+  qoSCube = NULL;
 
   //TODO B! Fix
-  rtt = 2;
+  rtt = 3;
+
 
 }
 
@@ -363,4 +367,24 @@ void DTPState::pushBackToPostablePDUQ(DataTransferPDU* pdu){
 unsigned int DTPState::getDropDup() const
 {
   return dropDup;
+}
+
+const QoSCube* DTPState::getQoSCube() const
+{
+  return qoSCube;
+}
+
+unsigned int DTPState::getLastSduDelivered() const
+{
+  return lastSDUDelivered;
+}
+
+void DTPState::setLastSduDelivered(unsigned int lastSduDelivered)
+{
+  lastSDUDelivered = lastSduDelivered;
+}
+
+void DTPState::setQoSCube(const QoSCube*& qoSCube)
+{
+  this->qoSCube = qoSCube;
 }

@@ -73,15 +73,15 @@ private:
     PDUQ_t generatedPDUs;
     PDUQ_t postablePDUs;
 
+    const QoSCube* qoSCube;
 
     bool partDeliv; /* Partial Delivery of SDUs is Allowed */
     bool incompDeliv; /* Delivery of Incomplete SDUs is Allowed */
-    //queue<PDU,timer>rexmsnQ; //The queue of PDUs that have been handed off to the RMT but not yet acknowledged.
-    //queue<PDU> closedWinQ; //The queue of PDUs ready to be sent once the window opens.
     unsigned int rcvLeftWinEdge;
     unsigned int maxSeqNumRcvd;
     unsigned int senderLeftWinEdge;
     unsigned int nextSeqNumToSend;
+    unsigned int lastSDUDelivered;
     //queue<PDU,seqNum> pduReassemblyQ
 
     /* Not in specs */
@@ -94,8 +94,7 @@ private:
     bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     double rtt;
 
-    //moved to DTP.h
-//    queue<unsigned char *> sduQ; //SDUs generated from delimiting
+
 
     /* new */
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
@@ -172,7 +171,10 @@ public:
 
     PDUQ_t* getPostablePDUQ();
     void pushBackToPostablePDUQ(DataTransferPDU* pdu);
-
+    const QoSCube* getQoSCube() const;
+    void setQoSCube(const QoSCube*& qoSCube);
+    unsigned int getLastSduDelivered() const;
+    void setLastSduDelivered(unsigned int lastSduDelivered);
 };
 
 #endif /* DTPSTATE_H_ */

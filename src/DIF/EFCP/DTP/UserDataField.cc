@@ -57,6 +57,7 @@ void UserDataField::addData(SDU* data){
 
   //TOOD A2 Handle all delimitFlags (eg noLength)
   if(data->getDataType() == SDU_TYPE || (data->getDataType() == SDU_FRAGMENT_TYPE && data->getFragType() == SDU_FRAG_FIRST)){
+    //TODO B1 SduSeqNum is the first SDU/fragment in userDataField, so it should be set only once.
     sduSeqNum = data->getSeqNum();
     sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
   }
@@ -67,7 +68,9 @@ SDU* UserDataField::getData(){
   if(pduData.empty()){
     return NULL;
   }
+  //TODO B1 What if it is SDU fragment? (fragType_var != 0)
   SDU* tmp = pduData.front();
+  tmp->getFragType();
   pduData.erase(pduData.begin());
   size -= tmp->getSize();
   drop(tmp);
@@ -77,6 +80,11 @@ SDU* UserDataField::getData(){
 unsigned int UserDataField::getSduDelimitFlags() const
 {
   return sduDelimitFlags;
+}
+
+unsigned int UserDataField::getSduSeqNum() const
+{
+  return sduSeqNum;
 }
 
 void UserDataField::setSduDelimitFlags(unsigned int sduDelimitFlags)

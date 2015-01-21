@@ -46,6 +46,8 @@ class Delimiting : public cSimpleModule
     cGate* southI;
     cGate* southO;
 
+    unsigned int seqNum;
+
     void processMsgFromFAI(CDAPMessage* msg);
     void handleMsgFromEfcpi(Data* msg);
   public:

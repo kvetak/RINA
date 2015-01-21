@@ -100,12 +100,13 @@ void DTP::initGates()
 
 const QoSCube* DTP::getQoSCube() const
 {
-  return qosCube;
+  return state.getQoSCube();
 }
 
 void DTP::setQoSCube(const QoSCube* qosCube)
 {
-  this->qosCube = qosCube;
+  //TODO A2 Make copy
+  state.setQoSCube(qosCube);
   if(qosCube->isForceOrder()){
     state.setRxPresent(true);
   }
@@ -279,7 +280,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
     //TODO B1 add support for out of order SDU delivery
     // negative implication
     unsigned int seqNum = (*it)->getSeqNum();
-    if((qosCube->isForceOrder() && ! (seqNum < state.getRcvLeftWinEdge()))){
+    if((getQoSCube()->isForceOrder() && ! (seqNum < state.getRcvLeftWinEdge()))){
       return;
     }
 
@@ -302,6 +303,9 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
           //TODO Delimiting/de-fragmentation
 //          take(sdu);
             take(sdu);
+
+            //XXX We assume that every SDU is numbered.
+            state.setLastSduDelivered(sdu->getSeqNum());
 
             send(sdu, northO);
           }
@@ -733,6 +737,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       {
         //TODO A! Mention it to others
         /* NOT IN SPECS */
+        addPDUToReassemblyQ(pdu);
+
         state.setMaxSeqNumRcvd(pdu->getSeqNum());
         if (state.isDtcpPresent())
         {
@@ -793,6 +799,12 @@ void DTP::handleDTPATimer(ATimer* timer)
 
     //TODO A1
     //Update RcvLeftWindowEdge
+
+    if(state.getRcvLeftWinEdge() > timer->getSeqNum()){
+      throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+    }else{
+      state.setRcvLeftWinEdge(timer->getSeqNum());
+    }
 
 
     //Invoke delimiting
@@ -1066,8 +1078,6 @@ bool DTP::runInitialSeqNumPolicy()
 
 void DTP::sendAckOnlyPDU(unsigned int seqNum)
 {
-  //TODO A2 How to remove allowed gaps?
-  //Update LeftWindowEdge removing allowed gaps;
 
   //send an Ack/FlowControlPDU
   AckOnlyPDU* ackPDU = new AckOnlyPDU();
@@ -1094,6 +1104,7 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setMyLtWinEdge(state.getSenderLeftWinEdge());
   ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
   //TODO A1 rate?
+  ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());
 
   sendToRMT(ctrlAckPdu);
 }
@@ -1208,7 +1219,7 @@ double DTP::getRxTime()
    * A == ?
    * epsilon ?
    */
-  return state.getRtt() + qosCube->getATime()/1000;
+  return state.getRtt() + getQoSCube()->getATime()/1000;
 }
 
 unsigned int DTP::getAllowableGap()
@@ -1220,7 +1231,7 @@ unsigned int DTP::getAllowableGap()
 
   //TODO A! find QoSCube
 //  return connId.getQoSCube()->getMaxAllowGap();
-  this->qosCube->getMaxAllowGap();
+  getQoSCube()->getMaxAllowGap();
   return 4;
 }
 
@@ -1272,7 +1283,7 @@ void DTP::svUpdate(unsigned int seqNum)
   if (state.isRxPresent())
   {
 //    runRcvrAckPolicy(state.getRcvLeftWinEdge() - 1);
-    dtcp->runRcvrAckPolicy(&state, seqNum);
+    dtcp->runRcvrAckPolicy(&state);
   }
 
   if (state.isFCPresent() && !state.isRxPresent())
@@ -1331,7 +1342,7 @@ void DTP::schedule(DTPTimers *timer, double time)
     }
     case (DTP_A_TIMER):{
       //TODO A2 Tune it up.
-      scheduleAt(simTime() + qosCube->getATime() , timer);
+      scheduleAt(simTime() + getQoSCube()->getATime() , timer);
       break;
     }
 //    case (DTP_SENDING_RATE_TIMER): {
