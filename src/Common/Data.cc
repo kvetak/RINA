@@ -28,12 +28,12 @@ Register_Class(Data);
 
 //Data::Data()
 //{
-//    // TODO Auto-generated constructor stub
+
 //
 //}
 //
 //Data::~Data()
 //{
-//    // TODO Auto-generated destructor stub
+
 //}
 

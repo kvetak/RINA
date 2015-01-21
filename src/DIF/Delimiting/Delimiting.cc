@@ -96,6 +96,6 @@ void Delimiting::handleMsgFromEfcpi(Data* msg){
 
 Delimiting::~Delimiting()
 {
-  // TODO Auto-generated destructor stub
+
 }
 

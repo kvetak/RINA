@@ -150,6 +150,10 @@ public:
     void incDupFC();
     unsigned int getDupFC() const;
 
+    unsigned int getSenderLeftWinEdge() const;
+    void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
+    void updateSenderLWE(unsigned int seqNum);
+
     /* Run Policies */
     bool runECNPolicy(DTPState* dtpState);
     bool runRcvrFCPolicy(DTPState* dtpState);

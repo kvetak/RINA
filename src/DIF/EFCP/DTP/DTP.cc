@@ -144,7 +144,7 @@ void DTP::redrawGUI()
   disp.setTagArg("t", 1, "r");
   std::ostringstream desc;
   desc << "nextSeqNum: " << state.getNextSeqNumToSendWithoutIncrement() <<"\n";
-  desc << "sLWE: " << state.getSenderLeftWinEdge() <<"\n";
+  desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
   if(state.isDtcpPresent() && state.isFCPresent()){
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
@@ -502,11 +502,12 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
             dtcp->ackPDU(startSeqNum, endSeqNum);
 
-            //TODO A!
             // min = dtcp->getSmallestSeqNumFromRxQOrNextSeqNumToSend - 1
             //state.setSenderLeftWinEdge(std::min(min, state.getSenderLeftWinEdge);
 
-            state.setSenderLeftWinEdge(tempSLWE);
+//            state.setSenderLeftWinEdge(tempSLWE);
+            //TODO B2 O'really? Shouldn't it always be nextSeqNum -1?
+            dtcp->updateSenderLWE(tempSLWE);
 
           }
         }
@@ -1026,8 +1027,9 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
         sendToRMT((*it));
         it = pduQ->erase(it);
       }
-      //TODO Report change in specs
-      state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
+      //TODO A4 Report change in specs
+//      state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
+      dtcp->updateSenderLWE(state.getNextSeqNumToSendWithoutIncrement());
 
     }
   }
@@ -1042,8 +1044,8 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       sendToRMT((*it));
       it = pduQ->erase(it);
     }
-    //TODO Report change in specs
-    state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
+//    TODO A4 Report change in specs -> O'really?
+//    state.setSenderLeftWinEdge(state.getNextSeqNumToSendWithoutIncrement());
   }
 
 }
@@ -1102,7 +1104,7 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSndLtWinEdge(state.getRcvLeftWinEdge());
   //TODO A! Fix it to the form of getRcvRightWindowEdge
   ctrlAckPdu->setSndRtWinEdge(dtcp->getRcvRtWinEdge());
-  ctrlAckPdu->setMyLtWinEdge(state.getSenderLeftWinEdge());
+  ctrlAckPdu->setMyLtWinEdge(dtcp->getSenderLeftWinEdge());
   ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
   //TODO A1 rate?
   ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());

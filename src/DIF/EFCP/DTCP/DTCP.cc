@@ -74,6 +74,16 @@ void DTCP::createPolicyModule(cModule* policy, const char* prefix, const char* n
   }
 }
 
+unsigned int DTCP::getSenderLeftWinEdge() const
+{
+  return dtcpState->getSenderLeftWinEdge();
+}
+
+void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
+{
+  dtcpState->setSenderLeftWinEdge(senderLeftWinEdge);
+}
+
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");
@@ -285,8 +295,9 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
   Enter_Method("SendingAckPolicy");
   if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
     /* Default */
-    //TODO A!
+
     //Update RcvLetWindowEdge
+    dtpState->updateRcvLWE(timer->getSeqNum());
 
     //Invoke Delimiting
     dtp->delimitFromRMT(NULL);
@@ -378,9 +389,9 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     //TODO A!
     //update SendLeftWindowEdge
     if(!dtcpState->getRxQ()->empty()){
-        dtpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
+        dtcpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
       }else{
-        dtpState->setSenderLeftWinEdge(seqNum + 1);
+        dtcpState->setSenderLeftWinEdge(seqNum + 1);
       }
     /* End default */
 
@@ -869,4 +880,9 @@ void DTCP::incDupFC()
 unsigned int DTCP::getDupFC() const
 {
   return dtcpState->getDupFC();
+}
+
+void DTCP::updateSenderLWE(unsigned int seqNum)
+{
+  dtcpState->updateSndLWE(seqNum);
 }

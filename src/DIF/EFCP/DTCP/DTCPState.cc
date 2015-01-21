@@ -24,7 +24,9 @@
  */
 
 #include <DTCPState.h>
+
 Define_Module(DTCPState);
+
 void DTCPState::initFC()
 {
   rcvRtWinEdge = rcvCredit;
@@ -44,6 +46,8 @@ void DTCPState::initFC()
 
   configRcvrRate = 50;
   rcvrRate = configRcvrRate;
+
+
 }
 
 DTCPState::DTCPState()
@@ -61,8 +65,7 @@ DTCPState::DTCPState()
 
   dataReXmitMax = 3;
 
-
-
+  senderLeftWinEdge = 0;
 
   initFC();
 
@@ -91,6 +94,14 @@ unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
   this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
+}
+
+unsigned int DTCPState::getSenderLeftWinEdge() const {
+    return senderLeftWinEdge;
+}
+
+void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
+    this->senderLeftWinEdge = senderLeftWinEdge;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const
@@ -391,4 +402,13 @@ unsigned long DTCPState::getSendingTimeUnit() const
 void DTCPState::setSendingTimeUnit(unsigned long sendingTimeUnit)
 {
   this->sendingTimeUnit = sendingTimeUnit;
+}
+
+void DTCPState::updateSndLWE(unsigned int seqNum)
+{
+  if(!getRxQ()->empty()){
+      setSenderLeftWinEdge(getRxQ()->front()->getPdu()->getSeqNum());
+    }else{
+      setSenderLeftWinEdge(seqNum);
+    }
 }

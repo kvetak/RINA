@@ -79,7 +79,7 @@ private:
     bool incompDeliv; /* Delivery of Incomplete SDUs is Allowed */
     unsigned int rcvLeftWinEdge;
     unsigned int maxSeqNumRcvd;
-    unsigned int senderLeftWinEdge;
+
     unsigned int nextSeqNumToSend;
     unsigned int lastSDUDelivered;
     //queue<PDU,seqNum> pduReassemblyQ
@@ -140,8 +140,6 @@ public:
     void setRcvLeftWinEdge(unsigned int rcvLeftWinEdge);
     bool isRxPresent() const;
     void setRxPresent(bool rxPresent);
-    unsigned int getSenderLeftWinEdge() const;
-    void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
     unsigned int getSeqNumRollOverThresh() const;
     void setSeqNumRollOverThresh(unsigned int seqNumRollOverThresh);
     int getState() const;
@@ -177,6 +175,7 @@ public:
     void setLastSduDelivered(unsigned int lastSduDelivered);
 
     void updateRcvLWE(unsigned int seqNum);
+    void updateSndLWE();
 };
 
 #endif /* DTPSTATE_H_ */

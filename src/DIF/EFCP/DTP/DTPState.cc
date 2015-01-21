@@ -46,7 +46,7 @@ void DTPState::initDefaults(){
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-  senderLeftWinEdge = 0;
+
 
   qoSCube = NULL;
 
@@ -201,14 +201,6 @@ bool DTPState::isRxPresent() const {
 
 void DTPState::setRxPresent(bool rexmsnPresent) {
     this->rxPresent = rexmsnPresent;
-}
-
-unsigned int DTPState::getSenderLeftWinEdge() const {
-    return senderLeftWinEdge;
-}
-
-void DTPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
-    this->senderLeftWinEdge = senderLeftWinEdge;
 }
 
 unsigned int DTPState::getSeqNumRollOverThresh() const {
@@ -391,28 +383,58 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
-  //TODO A2 How to remove allowed gaps?
+  //TODO A3
   //Update LeftWindowEdge removing allowed gaps;
-  unsigned int sduGap =  qoSCube->getMaxAllowGap();
+  unsigned int sduGap = qoSCube->getMaxAllowGap();
 
-  PDUQ_t::iterator it;
-  PDUQ_t* pduQ = &reassemblyPDUQ;
-  for (it = pduQ->begin(); it != pduQ->end(); ++it)
+  if (isDtcpPresent())
   {
-    if((*it)->getSeqNum() == getRcvLeftWinEdge()){
-      incRcvLeftWindowEdge();
+    PDUQ_t::iterator it;
+    PDUQ_t* pduQ = &reassemblyPDUQ;
+    for (it = pduQ->begin(); it != pduQ->end(); ++it)
+    {
+      if ((*it)->getSeqNum() == getRcvLeftWinEdge())
+      {
+        incRcvLeftWindowEdge();
 
-    }else if((*it)->getSeqNum() < getRcvLeftWinEdge()){
-      continue;
-    }else {
-      if(pduQ->size() == 1 || it == pduQ->begin()){
-        if((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap){
-          setRcvLeftWinEdge((*it)->getSeqNum());
-        }
-      }else{
-        (*(it-1))->getSDUGap((*it));
       }
-      break;
+      else if ((*it)->getSeqNum() < getRcvLeftWinEdge())
+      {
+        continue;
+      }
+      else
+      {
+        if (pduQ->size() == 1 || it == pduQ->begin())
+        {
+          if ((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap)
+          {
+            setRcvLeftWinEdge((*it)->getSeqNum());
+          }
+        }
+        else
+        {
+          (*(it - 1))->getSDUGap((*it));
+        }
+        break;
+      }
     }
   }
+  else
+  {
+    setRcvLeftWinEdge(std::max(getRcvLeftWinEdge(), seqNum));
+//    if(state.getRcvLeftWinEdge() > timer->getSeqNum()){
+//         throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+//       }else{
+//         state.setRcvLeftWinEdge(timer->getSeqNum());
+//       }
+  }
+
+
+
+  if(getRcvLeftWinEdge() < seqNum){
+    //TODO B1 Is it correct?
+    //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
+  }
 }
+
+
