@@ -15,7 +15,7 @@
 
 package rina.policies.DIF.RA.QueueAlloc;
 
-moduleinterface IntQueueAlloc
+moduleinterface IntRAQueueAlloc
 {
     parameters:
         @display("i=block/socket");

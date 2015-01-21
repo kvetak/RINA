@@ -15,7 +15,7 @@
 
 package rina.policies.DIF.RA.QueueIDGen;
 
-moduleinterface IntQueueIDGen
+moduleinterface IntRAQueueIDGen
 {
     parameters:
         @display("i=block/socket");

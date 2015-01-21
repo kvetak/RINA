@@ -15,11 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RA.QueueIDGen.IntQueueIDGen;
+import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 
 package rina.policies.DIF.RA.QueueIDGen.IDPerNFlow;
 
-simple IDPerNFlow like IntQueueIDGen
+simple IDPerNFlow like IntRAQueueIDGen
 {
     parameters:
         @display("i=block/socket");
