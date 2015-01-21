@@ -223,30 +223,32 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 
     if (dtcpState->isImmediate())
     {
-      //TODO A2 How to remove allowed gaps?
+
       //Update LeftWindowEdge removing allowed gaps;
-      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
-
-      PDUQ_t::iterator it;
-      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
-      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-      {
-        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
-          dtpState->incRcvLeftWindowEdge();
-
-        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
-          continue;
-        }else {
-          if(pduQ->size() == 1 || it == pduQ->begin()){
-            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
-              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
-            }
-          }else{
-            (*(it-1))->getSDUGap((*it));
-          }
-          break;
-        }
-      }
+      dtpState->updateRcvLWE(seqNum);
+//
+//      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+//
+//      PDUQ_t::iterator it;
+//      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+//      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+//      {
+//        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+//          dtpState->incRcvLeftWindowEdge();
+//
+//        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+//          continue;
+//        }else {
+//          if(pduQ->size() == 1 || it == pduQ->begin()){
+//            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+//              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+//            }
+//          }else{
+//            (*(it-1))->getSDUGap((*it));
+//          }
+//          break;
+//        }
+//      }
 
 
 
@@ -388,11 +390,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     ackPDU(seqNum);
     //TODO A!
     //update SendLeftWindowEdge
-    if(!dtcpState->getRxQ()->empty()){
-        dtcpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
-      }else{
-        dtcpState->setSenderLeftWinEdge(seqNum + 1);
-      }
+    dtcpState->updateSndLWE(seqNum + 1);
     /* End default */
 
   }
