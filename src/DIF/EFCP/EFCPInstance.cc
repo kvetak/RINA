@@ -28,7 +28,7 @@ EFCPInstance::EFCPInstance()
 {
 
 // this->dtp
-  // TODO Auto-generated constructor stub
+
 
 }
 
@@ -57,6 +57,6 @@ void EFCPInstance::setDtp(DTP* dtp)
 
 EFCPInstance::~EFCPInstance()
 {
-  // TODO Auto-generated destructor stub
+
 }
 

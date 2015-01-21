@@ -26,12 +26,12 @@
 
 SDUFrag::SDUFrag()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 SDUFrag::~SDUFrag()
 {
-  // TODO Auto-generated destructor stub
+
 }
 

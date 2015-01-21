@@ -26,12 +26,12 @@
 
 DTCPReconcileFCPolicyBase::DTCPReconcileFCPolicyBase()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 DTCPReconcileFCPolicyBase::~DTCPReconcileFCPolicyBase()
 {
-  // TODO Auto-generated destructor stub
+
 }
 

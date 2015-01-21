@@ -351,7 +351,7 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
 void DTP::sendFCOnlyPDU()
 {
   Enter_Method_Silent();
-  //TODO A1 send FC
+
   FlowControlOnlyPDU* fcOnlyPdu = new FlowControlOnlyPDU();
 
   setPDUHeader(fcOnlyPdu);
@@ -394,7 +394,7 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
   }
 
   if(state.isFCPresent() && state.isRxPresent()){
-    //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
+    // Send Ack/Flow Control PDU with LWE and RWE
     AckFlowPDU* ackFlowPdu = new AckFlowPDU();
     setPDUHeader(ackFlowPdu);
     ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
@@ -405,7 +405,7 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
     fillFlowControlPDU(ackFlowPdu);
     sendToRMT(ackFlowPdu);
   }else if(state.isFCPresent()){
-    //TODO A1 send FC
+    // send FC
 
     sendFCOnlyPDU();
   }else if(state.isRxPresent()){
@@ -719,7 +719,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       {
         state.setRcvLeftWinEdge(state.getMaxSeqNumRcvd());
 //        state.incRcvLeftWindowEdge();
-        //TODO A! start A-Timer (for this PDU)
+        //start A-Timer (for this PDU)
+        startATimer(pdu->getSeqNum());
 
       }
 
@@ -1112,8 +1113,8 @@ void DTP::sendControlAckPDU()
 void DTP::sendEmptyDTPDU()
 {
   Enter_Method_Silent();
-  //TODO RcvRates
-  //TODO A! Send Transfer PDU With Zero length
+
+  //Send Transfer PDU With Zero length
   DataTransferPDU* dataPdu = new DataTransferPDU();
   setPDUHeader(dataPdu);
   unsigned int seqNum = state.getNextSeqNumToSend();
@@ -1224,13 +1225,7 @@ double DTP::getRxTime()
 
 unsigned int DTP::getAllowableGap()
 {
-  //TODO A! This is placeholder for calling QoSCube::getAllowableGapSize
-  /*This method is used as a middle-man so when location of QoSCube changes,
-   * I will have to change it only in one place.
-   */
 
-  //TODO A! find QoSCube
-//  return connId.getQoSCube()->getMaxAllowGap();
   getQoSCube()->getMaxAllowGap();
   return 4;
 }

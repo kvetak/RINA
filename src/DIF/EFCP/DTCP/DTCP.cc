@@ -345,10 +345,10 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
     ////      unsigned int myRcvRate;
     //      //TODO handle RcvRate
     //
-    //      //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
+    //      // Send Ack/Flow Control PDU with LWE and RWE
     //
     //      sendAckFlowPDU();
-    //      //TODO A1 Send empty Transfer PDU with NextSeqNumToSend-1
+    //      // Send empty Transfer PDU with NextSeqNumToSend-1
     //
     //      DataTransferPDU* dataPdu = new DataTransferPDU();
     //      setPDUHeader(dataPdu);
@@ -712,9 +712,9 @@ void DTCP::handleWindowTimer(WindowTimer* timer){
 
 void DTCP::handleSendingRateTimer(DTCPSendingRateTimer* timer)
 {
-//  pdusSentInTimeUnit = 0;
-  //TODO A2 Move the timer to DTCP?
-//  setSendingRateFullfilled(false);
+  dtcpState->setPdusSentInTimeUnit(0);
+
+  dtcpState->setSendingRateFullfilled(false);
   schedule(timer);
 }
 

@@ -26,13 +26,13 @@
 
 EFCPTableEntry::EFCPTableEntry()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 EFCPTableEntry::~EFCPTableEntry()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 
