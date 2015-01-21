@@ -24,5 +24,4 @@ void Test::initialize()
 
 void Test::handleMessage(cMessage *msg)
 {
-
 }

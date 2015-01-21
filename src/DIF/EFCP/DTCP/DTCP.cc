@@ -255,7 +255,7 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
       //send an Ack/FlowControlPDU
       dtp->sendAckFlowPDU(seqNum, true);
 
-      //TODO A1 Add handling for A-timer != 0
+
       //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
       //XXX How could there be any A-Timer when isImmediate returned true?
 
@@ -388,7 +388,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     /* Default */
     unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     ackPDU(seqNum);
-    //TODO A!
+
     //update SendLeftWindowEdge
     dtcpState->updateSndLWE(seqNum + 1);
     /* End default */

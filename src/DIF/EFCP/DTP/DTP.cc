@@ -617,11 +617,11 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     /* Initialize the other direction */
 //    state.setSetDrfFlag(true);
 
-    //TODO A! check if this is needed to uncomment
+    //s check if this is needed to uncomment
     /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
     state.setRcvLeftWinEdge(pdu->getSeqNum() + 1);
 
-    //XXX WHY???
+    // WHY??? -> Then don't.
 //    runInitialSequenceNumberPolicy();
 
     if (state.isDtcpPresent())
@@ -1102,7 +1102,6 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
   ctrlAckPdu->setLastCtrlSeqNumRcv(dtcp->getLastCtrlSeqNumRcv());
   ctrlAckPdu->setSndLtWinEdge(state.getRcvLeftWinEdge());
-  //TODO A! Fix it to the form of getRcvRightWindowEdge
   ctrlAckPdu->setSndRtWinEdge(dtcp->getRcvRtWinEdge());
   ctrlAckPdu->setMyLtWinEdge(dtcp->getSenderLeftWinEdge());
   ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
@@ -1174,7 +1173,7 @@ void DTP::runSenderInactivityTimerPolicy()
   Enter_Method("SenderInactivityPolicy");
    if (senderInactivityPolicy == NULL || senderInactivityPolicy->run(&state, dtcp->getDTCPState()))
    {
-//TODO A! Move SenderInactivityTimer, DRF to DT-SV
+
   /* Default */
   state.setSetDrfFlag(true);
   runInitialSeqNumPolicy();

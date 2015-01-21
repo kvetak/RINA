@@ -27,7 +27,6 @@
 DTCPReconcileFCPolicyBase::DTCPReconcileFCPolicyBase()
 {
 
-
 }
 
 DTCPReconcileFCPolicyBase::~DTCPReconcileFCPolicyBase()

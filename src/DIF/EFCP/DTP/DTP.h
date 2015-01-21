@@ -69,11 +69,8 @@ class DTP : public cSimpleModule
     std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
-//    std::vector<DataTransferPDU*> closedWindowQ;
-//    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
-    /* Input queues - from RMT to App */
-//    std::vector<DataTransferPDU*> reassemblyPDUQ;
 
+    // TODO A1 Move them to State-Vector
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
