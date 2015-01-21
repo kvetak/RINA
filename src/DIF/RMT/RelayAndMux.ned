@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.DIF.RMT.policies.scheduler.IntRMTSchedulingPolicy;
-import rina.DIF.RMT.policies.monitor.IntRMTQMonitorPolicy;
-import rina.DIF.RMT.policies.maxqueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
 package rina.DIF.RMT;
 

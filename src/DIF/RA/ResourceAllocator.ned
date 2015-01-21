@@ -15,8 +15,8 @@
 
 package rina.DIF.RA;
 
-import rina.DIF.RA.policies.QueueAlloc.IntQueueAlloc;
-import rina.DIF.RA.policies.QueueIDGen.IntQueueIDGen;
+import rina.policies.DIF.RA.QueueAlloc.IntQueueAlloc;
+import rina.policies.DIF.RA.QueueIDGen.IntQueueIDGen;
 
 
 module ResourceAllocator
