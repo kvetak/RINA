@@ -175,6 +175,8 @@ public:
     void setQoSCube(const QoSCube*& qoSCube);
     unsigned int getLastSduDelivered() const;
     void setLastSduDelivered(unsigned int lastSduDelivered);
+
+    void updateRcvLWE(unsigned int seqNum);
 };
 
 #endif /* DTPSTATE_H_ */

@@ -388,3 +388,31 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 {
   this->qoSCube = qoSCube;
 }
+
+void DTPState::updateRcvLWE(unsigned int seqNum)
+{
+  //TODO A2 How to remove allowed gaps?
+  //Update LeftWindowEdge removing allowed gaps;
+  unsigned int sduGap =  qoSCube->getMaxAllowGap();
+
+  PDUQ_t::iterator it;
+  PDUQ_t* pduQ = &reassemblyPDUQ;
+  for (it = pduQ->begin(); it != pduQ->end(); ++it)
+  {
+    if((*it)->getSeqNum() == getRcvLeftWinEdge()){
+      incRcvLeftWindowEdge();
+
+    }else if((*it)->getSeqNum() < getRcvLeftWinEdge()){
+      continue;
+    }else {
+      if(pduQ->size() == 1 || it == pduQ->begin()){
+        if((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap){
+          setRcvLeftWinEdge((*it)->getSeqNum());
+        }
+      }else{
+        (*(it-1))->getSDUGap((*it));
+      }
+      break;
+    }
+  }
+}

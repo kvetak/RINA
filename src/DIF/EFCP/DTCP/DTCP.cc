@@ -205,8 +205,6 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
   if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
-
-
     unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
 
     if(dtpState->getRcvLeftWinEdge() == 0){
@@ -288,7 +286,7 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
   if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
     /* Default */
     //TODO A!
-    //Update LetWindowEdge
+    //Update RcvLetWindowEdge
 
     //Invoke Delimiting
     dtp->delimitFromRMT(NULL);
@@ -378,7 +376,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     ackPDU(seqNum);
     //TODO A!
-    //updateLeftWindowEdge
+    //update SendLeftWindowEdge
     if(!dtcpState->getRxQ()->empty()){
         dtpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
       }else{
