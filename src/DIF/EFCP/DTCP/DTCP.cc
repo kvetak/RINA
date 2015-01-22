@@ -192,10 +192,10 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
     /* Default */
 
     /* This policy has to be the one to impose the condition to set WindowClosed to True */
-    /* Default */ //FIXME A1 set value to these variables!
+    /* Default */
+    //TODO A2 Where else are these variables updated?
     if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
     {
-
       incRcvRtWinEdge();
     }
     else
@@ -223,37 +223,39 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 
     if (dtcpState->isImmediate())
     {
-      //TODO A2 How to remove allowed gaps?
+
       //Update LeftWindowEdge removing allowed gaps;
-      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
 
-      PDUQ_t::iterator it;
-      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
-      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-      {
-        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
-          dtpState->incRcvLeftWindowEdge();
-
-        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
-          continue;
-        }else {
-          if(pduQ->size() == 1 || it == pduQ->begin()){
-            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
-              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
-            }
-          }else{
-            (*(it-1))->getSDUGap((*it));
-          }
-          break;
-        }
-      }
+      dtpState->updateRcvLWE(seqNum);
+//      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+//
+//      PDUQ_t::iterator it;
+//      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+//      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+//      {
+//        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+//          dtpState->incRcvLeftWindowEdge();
+//
+//        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+//          continue;
+//        }else {
+//          if(pduQ->size() == 1 || it == pduQ->begin()){
+//            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+//              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+//            }
+//          }else{
+//            (*(it-1))->getSDUGap((*it));
+//          }
+//          break;
+//        }
+//      }
 
 
 
       //send an Ack/FlowControlPDU
       dtp->sendAckFlowPDU(seqNum, true);
 
-      //TODO A1 Add handling for A-timer != 0
+
       //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
       //XXX How could there be any A-Timer when isImmediate returned true?
 
@@ -386,13 +388,15 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     /* Default */
     unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     ackPDU(seqNum);
-    //TODO A!
+
     //update SendLeftWindowEdge
-    if(!dtcpState->getRxQ()->empty()){
-        dtcpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
-      }else{
-        dtcpState->setSenderLeftWinEdge(seqNum + 1);
-      }
+
+    dtcpState->updateSndLWE(seqNum);
+//    if(!dtcpState->getRxQ()->empty()){
+//        dtcpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
+//      }else{
+//        dtcpState->setSenderLeftWinEdge(seqNum + 1);
+//      }
     /* End default */
 
   }
@@ -573,8 +577,9 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
+    unsigned int gap = dtp->state.getQoSCube()->getMaxAllowGap();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum )
+    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
     {
       dtcpState->deleteRxTimer(seqNum);
 

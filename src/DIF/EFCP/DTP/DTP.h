@@ -180,6 +180,7 @@ class DTP : public cSimpleModule
     void sendAckOnlyPDU(unsigned int seqNum);
     void resetSenderInactivTimer();
     void rcvrBufferStateChange();
+    bool isDuplicate(unsigned int seqNum);
 
   public:
     DTP();

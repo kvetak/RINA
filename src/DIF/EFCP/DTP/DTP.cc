@@ -367,12 +367,9 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 {
 
   //      unsigned int newRightWinEdge;
-  /****************************************/
-  //TODO A! is this the correct variable??
-  /****************************************/
-  flowControlPdu->setNewRightWinEdge(state.getRcvLeftWinEdge() + dtcp->getRcvCredit());
+  flowControlPdu->setNewRightWinEdge(dtcp->getRcvRtWinEdge());
   //        unsigned int newRate;
-  flowControlPdu->setNewRate(dtcp->getSendingRate());
+  flowControlPdu->setNewRate(dtcp->getRcvrRate());
   //          unsigned int timeUnit;
   flowControlPdu->setTimeUnit(dtcp->getSendingTimeUnit());
   //          unsigned int myLeftWinEdge;
@@ -382,7 +379,7 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
   // Also make sure the rcvRightWindowEdge is properly updated whenever rcvLeftWindowEdge gets updated
   flowControlPdu->setMyRightWinEdge(dtcp->getSndRtWinEdge());
   //          unsigned int myRcvRate;
-  flowControlPdu->setMyRcvRate(dtcp->getRcvrRate());
+  flowControlPdu->setMyRcvRate(dtcp->getSendingRate());
 }
 
 void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
@@ -399,7 +396,6 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
     setPDUHeader(ackFlowPdu);
     ackFlowPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
 
-    //TODO A2 verify it and update handling of ackFlowPdu
     ackFlowPdu->setAckNackSeqNum(state.getRcvLeftWinEdge() - 1);
 
     fillFlowControlPDU(ackFlowPdu);
@@ -507,14 +503,14 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
 //            state.setSenderLeftWinEdge(tempSLWE);
             //TODO B2 O'really? Shouldn't it always be nextSeqNum -1?
-            dtcp->updateSenderLWE(tempSLWE);
+            dtcp->updateSenderLWE(tempSLWE + 1);
 
           }
         }
 
       }
       else
-      /* TODO B3 Make it prettier ;) */
+
       if (pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
       {
 
@@ -536,9 +532,6 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
           dtcp->runSenderAckPolicy(&state);
 
-
-          //TODO A! What about senderRightWindowEdge? it should be updated to 'sndLWE+sndCredit'
-
         }
         /* End of Ack/Nack */
 
@@ -557,14 +550,14 @@ void DTP::handleMsgFromRMT(PDU* msg){
           /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
           dtcp->getDTCPState()->setClosedWindow(false);
           trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
-
         }
       }
 
     }
     delete pdu;
   }else{
-    EV << getFullPath() << "Unhandeled PDU!!!!!!"<<endl;
+
+    throw cRuntimeError("Unexptected PDU Type");
   }
 
 
@@ -582,6 +575,23 @@ void DTP::startATimer(unsigned int seqNum)
   ATimer* aTimer = new ATimer();
   aTimer->setSeqNum(seqNum);
   schedule(aTimer);
+}
+
+bool DTP::isDuplicate(unsigned int seqNum)
+{
+  /* Not a true duplicate. (Might be a duplicate among the gaps) */
+  bool dup = false;
+  PDUQ_t::iterator it;
+  PDUQ_t* pduQ = state.getReassemblyPDUQ();
+  for (it = pduQ->begin(); it != pduQ->end(); ++it)
+  {
+    if ((*it)->getSeqNum() == seqNum)
+    {
+      dup = true;
+      break;
+    }
+  }
+  return dup;
 }
 
 void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
@@ -656,18 +666,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
 
-      bool dup = false;
-      PDUQ_t::iterator it;
-      PDUQ_t* pduQ =  state.getReassemblyPDUQ();
-      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-      {
-        if ((*it)->getSeqNum() == pdu->getSeqNum())
-        {
-          dup = true;
-          break;
-        }
-      }
-      if (dup)
+
+      if (isDuplicate(pdu->getSeqNum()))
       {
         /* Case 3) Duplicate Among gaps */
         EV << getFullPath() << ":Duplicated PDU number: " << pdu->getSeqNum() << " received - DROPPING!" << endl;
@@ -1106,7 +1106,7 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSndRtWinEdge(dtcp->getRcvRtWinEdge());
   ctrlAckPdu->setMyLtWinEdge(dtcp->getSenderLeftWinEdge());
   ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
-  //TODO A1 rate?
+
   ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());
 
   sendToRMT(ctrlAckPdu);
@@ -1247,21 +1247,24 @@ void DTP::svUpdate(unsigned int seqNum)
 //  uint ackSeqNum = state.getRcvLeftWinEdge();
   /* XXX Don't know where else to put */
 
-    PDUQ_t::iterator it;
-    PDUQ_t* pduQ = state.getReassemblyPDUQ();
-    for (it = pduQ->begin(); it != pduQ->end(); ++it)
-    {
-      if((*it)->getSeqNum() == state.getRcvLeftWinEdge()){
-        state.incRcvLeftWindowEdge();
+//    PDUQ_t::iterator it;
+//    PDUQ_t* pduQ = state.getReassemblyPDUQ();
+//    for (it = pduQ->begin(); it != pduQ->end(); ++it)
+//    {
+//      if((*it)->getSeqNum() == state.getRcvLeftWinEdge()){
+//        state.incRcvLeftWindowEdge();
+//
+//      }else if((*it)->getSeqNum() < state.getRcvLeftWinEdge()){
+//        continue;
+//      }else {
+//        break;
+//      }
+//    }
 
-      }else if((*it)->getSeqNum() < state.getRcvLeftWinEdge()){
-        continue;
-      }else {
-        break;
-      }
-    }
-
-
+  // TODO A1 Get approval for this change
+  //update RcvLeftWindoEdge
+  // if there is FC, but no RX then updateRcvLWE would not be called, right?
+    state.updateRcvLWE(seqNum);
 
 
   if (state.isFCPresent())

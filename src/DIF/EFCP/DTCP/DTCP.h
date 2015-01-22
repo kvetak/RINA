@@ -116,9 +116,6 @@ public:
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
     unsigned int getRcvRtWinEdge();
 
-    void setSndRate(unsigned int sendingRate);
-    unsigned int getSndRate();
-
     unsigned int getRcvCredit();
 
     unsigned long getSendingTimeUnit();
