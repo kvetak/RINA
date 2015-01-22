@@ -68,8 +68,11 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   EFCPTableEntry* tmpEfcpEntry;
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
     tmpEfcpEntry = new EFCPTableEntry();
+
+
+
    //Flow is not in EFCPTable -> create delimiting
-    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
+    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, flow->getSrcPortId()));
 
     //Add tmpEFCPEntry to efcpTable
     efcpTable->insertEntry(tmpEfcpEntry);
@@ -181,13 +184,15 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
 }
 
 
-Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
+Delimiting* EFCP::createDelimiting(cModule* efcpiModule, int portId){
 
-    //TODO A! Incorporate some differentiators into Delimiting module name to support multiple instances of Delimiting to exist.
+
+    std::ostringstream name;
+    name << DELIMITING_MODULE_NAME << "_" << portId;
     //0. Create Delimiting module within EFCPModule
     cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
 
-    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this->getParentModule());
+    Delimiting* delimit = (Delimiting*)delimitType->create(name.str().c_str(), this->getParentModule());
     delimit->finalizeParameters();
     delimit->buildInside();
     delimit->scheduleStart(simTime());

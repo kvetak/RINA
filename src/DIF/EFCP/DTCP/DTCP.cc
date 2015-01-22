@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -600,9 +602,9 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 
   if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
   {
-    //TODO A1 Indicate an error "Unable to maintain the QoS for this connection"
-
     dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+    // Notify User Flow that we were unable to maintain the QoS for this connection
+    dtp->notifyAboutUnableMaintain();
     throw cRuntimeError("Unable to maintain the QoS for this connection");
   }
   else
@@ -655,10 +657,10 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       break;
     }
     case (DTCP_RX_EXPIRY_TIMER): {
-      //TODO A! Expiry Timer time interval
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
       rxExpTimer->setSent(simTime().dbl());
-      scheduleAt(simTime() + dtp->getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+      //TODO B1 (RTT + A + epsilon)
+      scheduleAt(simTime() + dtp->state.getRtt() + dtp->state.getQoSCube()->getATime()/1000, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

@@ -79,6 +79,7 @@ packet PDU {
     int flags = 0; //8bits
     unsigned int pduLen = PDU_HEADER_LEN;
     unsigned int seqNum;
+    byteLength = 10;
 //    cObject userData; //unsigned char []? string?
 //    unsigned char userData[];
 //    cMessagePtr mUserData;

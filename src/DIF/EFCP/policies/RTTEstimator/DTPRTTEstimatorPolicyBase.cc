@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,19 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-//
-// TODO generated message class
-//
+/*
+ * @file DTPRTTEstimatorPolicyBase.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jan 22, 2015
+ * @brief
+ * @detail
+ */
 
-enum DataType{
-    	SDU_COMPLETE_TYPE		= 1;
-    	SDU_FRAGMENT_TYPE		= 2;
+#include <RTTEstimator/DTPRTTEstimatorPolicyBase.h>
+
+DTPRTTEstimatorPolicyBase::DTPRTTEstimatorPolicyBase()
+{
+
+
 }
 
+DTPRTTEstimatorPolicyBase::~DTPRTTEstimatorPolicyBase()
+{
 
-message Data {
-    @customize(true);  // see the generated C++ header for more info
-    int dataType enum(DataType);
-    
-//    abstract int anotherField;Register_Class(Data);
 }
+

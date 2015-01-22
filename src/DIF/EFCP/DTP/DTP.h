@@ -35,6 +35,7 @@
 #include "DTPRcvrInactivityPolicyBase.h"
 #include "DTPSenderInactivityPolicyBase.h"
 #include "DTPInitialSeqNumPolicyBase.h"
+#include "DTPRTTEstimatorPolicyBase.h"
 
 //#include "SDUs.h"
 
@@ -63,6 +64,7 @@ class DTP : public cSimpleModule
     DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;
     DTPSenderInactivityPolicyBase* senderInactivityPolicy;
     DTPInitialSeqNumPolicyBase* initialSeqNumPolicy;
+    DTPRTTEstimatorPolicyBase* rttEstimatorPolicy;
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -70,7 +72,7 @@ class DTP : public cSimpleModule
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
 
-    // TODO A1 Move them to State-Vector
+
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
@@ -140,6 +142,7 @@ class DTP : public cSimpleModule
 //    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
+    void runRTTEstimatorPolicy();
 
 
 
@@ -178,6 +181,8 @@ class DTP : public cSimpleModule
     void resetSenderInactivTimer();
     void rcvrBufferStateChange();
     bool isDuplicate(unsigned int seqNum);
+    void notifyAboutInactivity();
+    void notifyAboutUnableMaintain();
 
   public:
     DTP();

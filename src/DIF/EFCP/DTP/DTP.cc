@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -27,6 +29,7 @@ DTP::DTP()
   rcvrInactivityPolicy = NULL;
   senderInactivityPolicy = NULL;
   initialSeqNumPolicy = NULL;
+  rttEstimatorPolicy = NULL;
 
 
 
@@ -58,6 +61,36 @@ void DTP::createPolicyModule(cModule* policy, const char* prefix, const char* na
   }
 }
 
+void DTP::runRTTEstimatorPolicy()
+{
+  Enter_Method("RTTEstimatorPolicy");
+  if (rttEstimatorPolicy == NULL || rttEstimatorPolicy->run(&state, dtcp->getDTCPState()))
+  {
+
+    /* Default */
+    ControlPDU* pdu = (ControlPDU*) state.getCurrentPdu();
+    if (pdu->getType() & PDU_SEL_BIT){
+
+    }else{
+      if (pdu->getType() & PDU_ACK_BIT)
+      {
+        unsigned int seqNum = ((AckOnlyPDU*)pdu)->getAckNackSeqNum();
+        std::vector<DTCPRxExpiryTimer*>* pduQ = dtcp->getDTCPState()->getRxQ();
+        std::vector<DTCPRxExpiryTimer*>::iterator it;
+        for(it = pduQ->begin(); it != pduQ->end(); ++it){
+          if((*it)->getPdu()->getSeqNum() == seqNum){
+            state.setRtt((state.getRtt() + (simTime() - (*it)->getSent())).dbl());
+          }
+        }
+
+      }
+    }
+
+    /* End Default */
+  }
+
+}
+
 void DTP::initialize(int step)
 {
 
@@ -79,12 +112,13 @@ void DTP::initialize(int step)
   par(RCVR_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RCVR_INACTIVITY_POLICY_NAME).stringValue());
   par(SENDER_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(SENDER_INACTIVITY_POLICY_NAME).stringValue());
   par(INITIAL_SEQ_NUM_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(INITIAL_SEQ_NUM_POLICY_NAME).stringValue());
+  par(RTT_ESTIMATOR_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RTT_ESTIMATOR_POLICY_NAME).stringValue());
 
 
   createPolicyModule(rcvrInactivityPolicy, RCVR_INACTIVITY_POLICY_PREFIX, RCVR_INACTIVITY_POLICY_NAME);
   createPolicyModule(senderInactivityPolicy, SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
   createPolicyModule(initialSeqNumPolicy, INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
-
+  createPolicyModule(rttEstimatorPolicy, RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
 
 //  redrawGUI();
 
@@ -300,8 +334,9 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
         if(userData != NULL){
           while ((sdu = userData->getData()) != NULL)
           {
+            (*it)->updatePacketSize();
           //TODO Delimiting/de-fragmentation
-//          take(sdu);
+
             take(sdu);
 
             //XXX We assume that every SDU is numbered.
@@ -471,7 +506,9 @@ void DTP::handleMsgFromRMT(PDU* msg){
          SELECT_NACK_FLOW_PDU  = 0x880F;
          */
 
-        //TODO A1 RTT estimator
+        //RTT estimator
+        runRTTEstimatorPolicy();
+
         if (pdu->getType() & PDU_NACK_BIT)
         {
           SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
@@ -515,7 +552,8 @@ void DTP::handleMsgFromRMT(PDU* msg){
       {
 
 
-        //TODO A1 Retrieve the Time of this Ack - RTT estimator policy
+        //Retrieve the Time of this Ack - RTT estimator policy
+        runRTTEstimatorPolicy();
 
         if (pdu->getType() & PDU_NACK_BIT)
         {
@@ -527,6 +565,7 @@ void DTP::handleMsgFromRMT(PDU* msg){
         }
         else if (pdu->getType() & PDU_ACK_BIT)
         {
+
           AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
           EV << getFullPath() <<": PDU number: " << ackPdu->getAckNackSeqNum() <<" Acked"<<endl;
 
@@ -661,7 +700,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
       return;
     }
-    if (state.getRcvLeftWinEdge() <= pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
+    if (state.getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state.getMaxSeqNumRcvd())
 //    if (state.getRcvLeftWinEdge() < pdu->getSeqNum())
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
@@ -730,14 +769,11 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     }
     else
     {
-      //XXX After removing the MaxSeqNumRcvd, this case no longer makes sense.
-      //This assumption needs to be verified with somebody (John, Michael, Leo, Miguel, ...?)
-
       /* Case 5) it is out of order */
       if (pdu->getSeqNum() > state.getMaxSeqNumRcvd() + 1)
 //      if (pdu->getSeqNum() > state.getRcvLeftWinEdge() + 1)
       {
-        //TODO A! Mention it to others
+        //TODO A! Mention it to others - confirmation pending
         /* NOT IN SPECS */
         addPDUToReassemblyQ(pdu);
 
@@ -1138,6 +1174,26 @@ void DTP::sendEmptyDTPDU()
   sendToRMT(dataPdu);
 }
 
+void DTP::notifyAboutUnableMaintain()
+{
+  // Notify User Flow that we were unable to maintain the QoS for this connection
+  CDAPMessage* inactivMsg = new CDAP_M_Unable_Maintain;
+  SDU* sdu = new SDU();
+  sdu->addUserData(inactivMsg);
+  send(sdu, northO);
+}
+
+void DTP::notifyAboutInactivity()
+{
+  // Notify User Flow there has been no activity for awhile.
+  CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
+  SDU* sdu = new SDU();
+  sdu->addUserData(inactivMsg);
+  send(sdu, northO);
+
+
+}
+
 void DTP::runRcvrInactivityTimerPolicy()
 {
   Enter_Method("RcvrInactivityPolicy");
@@ -1164,7 +1220,8 @@ void DTP::runRcvrInactivityTimerPolicy()
     //Send Transfer PDU With Zero length
     sendEmptyDTPDU();
 
-    //TODO A! Notify User Flow there has been no activity for awhile.
+    // Notify User Flow there has been no activity for awhile.
+    notifyAboutInactivity();
   }
 }
 
@@ -1191,12 +1248,11 @@ void DTP::runSenderInactivityTimerPolicy()
   //Send Transfer PDU With Zero length
   sendEmptyDTPDU();
 
-  //TODO A! Notify User Flow there has been no activity for awhile.
+  // Notify User Flow there has been no activity for awhile.
+  notifyAboutInactivity();
    }
 
 }
-
-
 
 void DTP::sendToRMT(PDU* pdu)
 {
@@ -1311,12 +1367,17 @@ void DTP::schedule(DTPTimers *timer, double time)
       if(state.isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
         //TODO A!
-        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount)) + 0 , timer);
+        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount)) + state.getQoSCube()->getATime()/1000 , timer);
       }
       break;
     }
     case (DTP_A_TIMER):{
-      //TODO A2 Tune it up.
+      //TODO B1 Tune it up.
+      /* The timer should be set to a quantity near A – (RTT/2 + ta + ),
+       * where RTT is the estimated Round Trip Time, ta is the time to
+       * generate and send an Ack/Flow PDU, and  is the standard deviation
+       * of these estimates.
+       */
       scheduleAt(simTime() + getQoSCube()->getATime() , timer);
       break;
     }

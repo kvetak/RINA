@@ -80,7 +80,7 @@ private:
     EFCPTable* efcpTable;
     RA* resourceAllocator;
 
-    Delimiting* createDelimiting(cModule* efcpi);
+    Delimiting* createDelimiting(cModule* efcpi, int portId);
     DTCP* createDTCP(cModule* efcpi);
 
 

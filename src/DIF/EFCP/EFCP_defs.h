@@ -90,6 +90,9 @@
 #define INITIAL_SEQ_NUM_POLICY_PREFIX "rina.DIF.EFCP.policies.InitialSeqNum."
 #define INITIAL_SEQ_NUM_POLICY_NAME "initialSeqNumPolicy"
 
+#define RTT_ESTIMATOR_POLICY_PREFIX "rina.DIF.EFCP.policies.RTTEstimator."
+#define RTT_ESTIMATOR_POLICY_NAME "rttEstimatorPolicy"
+
 
 
 #endif /* EFCP_H_ */

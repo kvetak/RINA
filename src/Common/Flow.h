@@ -315,12 +315,12 @@ class Flow : public cObject
     int dstPortId;
 
     /**
-     * @brief Attribute holding source address (initatior of communcation)
+     * @brief Attribute holding source address (initiator of communication)
      */
     Address srcAddr;
 
     /**
-     * @brief Attribute holding destination address (end-host for communcation)
+     * @brief Attribute holding destination address (end-host for communication)
      */
     Address dstAddr;
 

@@ -39,6 +39,7 @@ simple EFCP
         string rcvrInactivityPolicy = default("");
   		string senderInactivityPolicy = default("");
   		string initialSeqNumPolicy = default("");
+  		string rttEstimatorPolicy = default("");
         
 
         

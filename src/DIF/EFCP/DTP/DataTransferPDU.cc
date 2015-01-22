@@ -59,11 +59,16 @@ UserDataFieldPtr& DataTransferPDU::getUserDataField()
     return userDataField_var;
 }
 
+void DataTransferPDU::updatePacketSize()
+{
+  setByteLength(userDataField_var->getSize() + PDU_HEADER_LEN);
+}
 
 void DataTransferPDU::setUserDataField(const UserDataFieldPtr& userDataField)
 {
     take(userDataField);
     this->userDataField_var = userDataField;
+  updatePacketSize();
 }
 
 //TODO B1 This obviously needs more work.
