@@ -223,9 +223,7 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 
     if (dtcpState->isImmediate())
     {
-
       //Update LeftWindowEdge removing allowed gaps;
-
       dtpState->updateRcvLWE(seqNum);
 //      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
 //
@@ -249,8 +247,6 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 //          break;
 //        }
 //      }
-
-
 
       //send an Ack/FlowControlPDU
       dtp->sendAckFlowPDU(seqNum, true);
@@ -390,13 +386,8 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     ackPDU(seqNum);
 
     //update SendLeftWindowEdge
-
-    dtcpState->updateSndLWE(seqNum);
-//    if(!dtcpState->getRxQ()->empty()){
-//        dtcpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
-//      }else{
-//        dtcpState->setSenderLeftWinEdge(seqNum + 1);
-//      }
+    dtcpState->updateSndLWE(seqNum + 1);
+    
     /* End default */
 
   }

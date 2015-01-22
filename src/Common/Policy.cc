@@ -25,7 +25,6 @@
 
 Policy::Policy() {
 
-
 }
 
 Policy::~Policy() {

@@ -315,7 +315,7 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
            if ((*it)->getSeqNum() == pdu->getSeqNum())
            {
              //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
-             //TODO A1 Throw Error.
+             //Throw Error.
              throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
            }
            else if ((*it)->getSeqNum() > pdu->getSeqNum())

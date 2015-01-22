@@ -36,7 +36,6 @@ RXControl::RXControl()
 
 RXControl::~RXControl()
 {
-
 }
 
 unsigned int RXControl::getRightWinEdge(){
