@@ -27,7 +27,7 @@
 
 #include <csimplemodule.h>
 
-#include "RXControl.h"
+//#include "RXControl.h"
 #include "DTCPState.h"
 #include "DTPState.h"
 #include "DTP.h"
@@ -60,7 +60,7 @@ class DTCP: public cSimpleModule {
     DTP* dtp;
     DTCPState *dtcpState;
 //    FlowControl* flowControl;
-    RXControl* rxControl;
+//    RXControl* rxControl;
 
     DTCPECNPolicyBase* ecnPolicy;
     DTCPRcvrFCPolicyBase* rcvrFCPolicy;

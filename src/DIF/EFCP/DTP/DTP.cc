@@ -1215,12 +1215,9 @@ void DTP::sendToRMT(PDU* pdu)
 
 double DTP::getRxTime()
 {
-  //TODO A! 2MPL + A + epsilon
-  //This might be job for a policy, presumably RTT estimator policy?
-  /* 2MPL == RTT
-   * A == ?
-   * epsilon ?
-   */
+  //TODO A2 Epsilon
+  // RTT + A + epsilon
+
   return state.getRtt() + getQoSCube()->getATime()/1000;
 }
 
@@ -1246,20 +1243,6 @@ void DTP::svUpdate(unsigned int seqNum)
 //  uint ackSeqNum = state.getRcvLeftWinEdge();
   /* XXX Don't know where else to put */
 
-//    PDUQ_t::iterator it;
-//    PDUQ_t* pduQ = state.getReassemblyPDUQ();
-//    for (it = pduQ->begin(); it != pduQ->end(); ++it)
-//    {
-//      if((*it)->getSeqNum() == state.getRcvLeftWinEdge()){
-//        state.incRcvLeftWindowEdge();
-//
-//      }else if((*it)->getSeqNum() < state.getRcvLeftWinEdge()){
-//        continue;
-//      }else {
-//        break;
-//      }
-//    }
-
   // TODO A1 Get approval for this change
   //update RcvLeftWindoEdge
   // if there is FC, but no RX then updateRcvLWE would not be called, right?
@@ -1273,10 +1256,7 @@ void DTP::svUpdate(unsigned int seqNum)
 //      runRcvrFlowControlPolicy();
 
      dtcp->runRcvrFCPolicy(&state);
-
-
     }
-
   }
 
   if (state.isRxPresent())
@@ -1295,12 +1275,8 @@ void DTP::svUpdate(unsigned int seqNum)
 
 void DTP::flushReassemblyPDUQ()
 {
-
   state.clearReassemblyPDUQ();
-
 }
-
-
 
 void DTP::clearRxQ()
 {
@@ -1323,7 +1299,7 @@ void DTP::schedule(DTPTimers *timer, double time)
         rxCount = dtcp->getDataReXmitMax();
 
 
-      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount)) + 0 , timer);
+      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount)) + state.getQoSCube()->getATime()/1000 , timer);
       }
 //      scheduleAt(simTime() + 10, timer);
       break;
@@ -1344,13 +1320,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       scheduleAt(simTime() + getQoSCube()->getATime() , timer);
       break;
     }
-//    case (DTP_SENDING_RATE_TIMER): {
-//
-//      scheduleAt(simTime() + (dtcp->flowControl->timeUnit * 1000), timer);
-//      break;
-//    }
   }
-
 }
 
 void DTP::setFlow(Flow* flow)

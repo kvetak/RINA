@@ -18,7 +18,7 @@
 Define_Module(DTCP);
 
 DTCP::DTCP() {
-  rxControl = NULL;
+//  rxControl = NULL;
 //  flowControl = NULL;
 
   ecnPolicy = NULL;
@@ -102,7 +102,7 @@ void DTCP::initialize(int step)
 //TODO A2 based on DTPState create appropriate components
   if (dtp->state.isRxPresent())
   {
-    rxControl = new RXControl();
+//    rxControl = new RXControl();
   }
 
   if (dtp->state.isFCPresent())
@@ -144,10 +144,10 @@ void DTCP::flushAllQueuesAndPrepareToDie()
 
 DTCP::~DTCP()
 {
-  if (rxControl != NULL)
-  {
-    delete rxControl;
-  }
+//  if (rxControl != NULL)
+//  {
+//    delete rxControl;
+//  }
 //  if (flowControl != NULL)
 //  {
 //    delete flowControl;

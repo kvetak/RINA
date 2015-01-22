@@ -38,10 +38,10 @@ RXControl::~RXControl()
 {
 }
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
+//unsigned int RXControl::getRightWinEdge(){
+//
+//  return rightWinEdge;
+//}
 
 //unsigned int RXControl::getNextSndCtrlSeqNum()
 //{
