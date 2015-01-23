@@ -22,7 +22,7 @@
 #include <queue>
 
 #include "RINASignals.h"
-#include "PDU.h"
+#include "PDU_m.h"
 
 
 class RMTQueue : public cSimpleModule
@@ -152,10 +152,10 @@ class RMTQueue : public cSimpleModule
 
   protected:
     virtual void initialize();
-    virtual void handleMessage(cMessage* msg);
+    virtual void handleMessage(cMessage *msg);
 
   private:
-    std::deque<cPacket*> queue;
+    std::deque<cMessage*> queue;
     queueType type;
 
     const char* queueId;
@@ -172,9 +172,9 @@ class RMTQueue : public cSimpleModule
 
     void setType(queueType type);
 
-    void enqueuePDU(cPacket* pdu);
+    void enqueuePDU(cMessage* pdu);
     void releasePDU();
-    cPacket* dropLast();
+    cMessage* dropLast();
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;

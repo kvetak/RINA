@@ -21,7 +21,7 @@
 #include <omnetpp.h>
 #include "RMTSchedulingBase.h"
 #include "RMTQueue.h"
-#include "PDU.h"
+#include "PDU_m.h"
 
 class RMTSchedulingBase; /* FIXME: circular dependency */
 

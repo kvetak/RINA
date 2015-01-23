@@ -30,7 +30,6 @@ class RMTBase : public cSimpleModule
     virtual bool getRelayStatus() = 0;
     virtual void invokeQueueArrivalPolicies(cObject* obj) = 0;
     virtual void invokeQueueDeparturePolicies(cObject* obj) = 0;
-    virtual void invokePortReadyPolicies(cObject* obj) = 0;
 
   protected:
     virtual void initialize() = 0;

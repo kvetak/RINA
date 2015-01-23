@@ -24,7 +24,7 @@
 class IDPerNFlow : public QueueIDGenBase
 {
   public:
-    virtual std::string generateID(PDU* pdu);
+    virtual std::string generateID(PDU_Base* pdu);
     virtual std::string generateID(Flow* flow);
 };
 

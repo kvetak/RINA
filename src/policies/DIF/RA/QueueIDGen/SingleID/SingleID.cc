@@ -19,7 +19,7 @@
 
 Define_Module(SingleID);
 
-std::string SingleID::generateID(PDU* pdu)
+std::string SingleID::generateID(PDU_Base* pdu)
 {
     return std::string("0");
 }
