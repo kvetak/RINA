@@ -22,7 +22,7 @@
 #include <queue>
 
 #include "RINASignals.h"
-#include "PDU_m.h"
+#include "PDU.h"
 
 
 class RMTQueue : public cSimpleModule

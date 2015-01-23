@@ -19,7 +19,7 @@
 
 Define_Module(IDPerNFlow);
 
-std::string IDPerNFlow::generateID(PDU_Base* pdu)
+std::string IDPerNFlow::generateID(PDU* pdu)
 {
     std::ostringstream id;
     id << pdu->getSrcAddr().getIpcAddress().getName() << "_"

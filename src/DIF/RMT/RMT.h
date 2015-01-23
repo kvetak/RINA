@@ -30,7 +30,7 @@
 #include "RINASignals.h"
 #include "ExternConsts.h"
 #include "Address.h"
-#include "PDU_m.h"
+#include "PDU.h"
 #include "CDAPMessage_m.h"
 
 #include "PDUForwardingTable.h"
@@ -84,9 +84,9 @@ class RMT : public RMTBase
     QueueIDGenBase* queueIdGenerator;
 
     void processMessage(cMessage* msg);
-    void efcpiToPort(PDU_Base* msg);
-    void efcpiToEfcpi(PDU_Base* msg);
-    void portToEfcpi(PDU_Base* msg);
+    void efcpiToPort(PDU* msg);
+    void efcpiToEfcpi(PDU* msg);
+    void portToEfcpi(PDU* msg);
     void RIBToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);

@@ -55,10 +55,10 @@ void RMTPort::handleMessage(cMessage* msg)
         { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
         }
-        else if (dynamic_cast<PDU_Base*>(msg) != NULL)
+        else if (dynamic_cast<PDU*>(msg) != NULL)
         { // still unsure about whether this'll be needed
             RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateID((PDU_Base*)msg).c_str());
+                                             queueIdGen->generateID((PDU*)msg).c_str());
 
             if (inQueue != NULL)
             {

@@ -21,7 +21,7 @@
 #include <omnetpp.h>
 
 #include "Flow.h"
-#include "PDU_m.h"
+#include "PDU.h"
 
 /**
  * Noop base class for the RA queue ID generator.
@@ -41,7 +41,7 @@ class QueueIDGenBase : public cSimpleModule
      *
      * @param pdu PDU
      */
-    virtual std::string generateID(PDU_Base* pdu);
+    virtual std::string generateID(PDU* pdu);
 
     /**
      * Generates queue ID for given flow object (this is usually invoked by QueueAlloc policy).

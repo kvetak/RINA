@@ -168,9 +168,9 @@ void RMTQueue::markCongestionOnLast()
 {
     cPacket* msg = queue.back();
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     {
-        PDU_Base* pdu = (PDU_Base*) msg;
+        PDU* pdu = (PDU*) msg;
         pdu->setFlags(pdu->getFlags() | 0x01);
     }
     else
@@ -256,12 +256,11 @@ cGate* RMTQueue::getInputGate() const
 
 unsigned int RMTQueue::getFirstPDUPayloadLength()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+    PDU* pdu = dynamic_cast<PDU*>(queue.front());
 
     if (pdu != NULL)
     {
-        // TODO: waiting for Marcel to implement this
-        // return pdu->getSize();
+        return pdu->getSize();
     }
     {
         EV << "The first message isn't a data PDU!" << endl;
@@ -272,12 +271,11 @@ unsigned int RMTQueue::getFirstPDUPayloadLength()
 
 unsigned int RMTQueue::getLastPDUPayloadLength()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+    PDU* pdu = dynamic_cast<PDU*>(queue.back());
 
     if (pdu != NULL)
     {
-        // TODO: waiting for Marcel to implement this
-        //return pdu->getSize();
+        return pdu->getSize();
     }
     {
         EV << "The last message isn't a data PDU!" << endl;
@@ -288,7 +286,7 @@ unsigned int RMTQueue::getLastPDUPayloadLength()
 
 unsigned short RMTQueue::getFirstPDUQoSID()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+    PDU* pdu = dynamic_cast<PDU*>(queue.front());
 
     if (pdu != NULL)
     {
@@ -303,7 +301,7 @@ unsigned short RMTQueue::getFirstPDUQoSID()
 
 unsigned short RMTQueue::getLastPDUQoSID()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+    PDU* pdu = dynamic_cast<PDU*>(queue.back());
 
     if (pdu != NULL)
     {

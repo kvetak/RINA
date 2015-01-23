@@ -228,7 +228,7 @@ RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
  *
  * @param pdu PDU to be passed
  */
-void RMT::efcpiToPort(PDU_Base* pdu)
+void RMT::efcpiToPort(PDU* pdu)
 {
     RMTQueue* outQueue = NULL;
 
@@ -264,7 +264,7 @@ void RMT::efcpiToPort(PDU_Base* pdu)
  *
  * @param pdu PDU to be passed
  */
-void RMT::portToEfcpi(PDU_Base* pdu)
+void RMT::portToEfcpi(PDU* pdu)
 {
     unsigned cepId = pdu->getConnId().getDstCepId();
     cGate* efcpiGate = efcpiOut[cepId];
@@ -288,7 +288,7 @@ void RMT::portToEfcpi(PDU_Base* pdu)
  *
  * @param pdu PDU to be passed
  */
-void RMT::efcpiToEfcpi(PDU_Base* pdu)
+void RMT::efcpiToEfcpi(PDU* pdu)
 {
     portToEfcpi(pdu);
 }
@@ -350,10 +350,10 @@ void RMT::portToPort(cMessage* msg)
     RMTQueue* outQueue = NULL;
 
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     {
-        destAddr = ((PDU_Base*)msg)->getDstAddr();
-        short qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
+        destAddr = ((PDU*)msg)->getDstAddr();
+        short qosId = ((PDU*)msg)->getConnId().getQoSId();
 
         outPort = fwTableLookup(destAddr, qosId);
         if (outPort == NULL)
@@ -362,7 +362,7 @@ void RMT::portToPort(cMessage* msg)
             return;
         }
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateID((PDU_Base*)msg).c_str());
+                queueIdGenerator->generateID((PDU*)msg).c_str());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {
@@ -412,9 +412,9 @@ void RMT::processMessage(cMessage* msg)
 {
     std::string gate = msg->getArrivalGate()->getName();
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     { // PDU arrival
-        PDU_Base* pdu = (PDU_Base*) msg;
+        PDU* pdu = (PDU*) msg;
 
         if (gate.substr(0, 1) == "p")
         {
