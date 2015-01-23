@@ -64,12 +64,16 @@ void RMT::initialize()
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
 
     // listen for a signal indicating that a new message has arrived into a queue
-    lisRMTMsgRcvd = new LisRMTPDURcvd(this);
-    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTMsgRcvd);
+    lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTQueuePDURcvd);
 
-    // listen for a signal indicating that a new message has left a port
-    lisRMTMsgSent = new LisRMTPDUSent(this);
-    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTMsgSent);
+    // listen for a signal indicating that a message has left a queue
+    lisRMTQueuePDUSent = new LisRMTQueuePDUSent(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTQueuePDUSent);
+
+    // listen for a signal indicating that a port is ready to serve
+    lisRMTPortReady = new LisRMTPortReady(this);
+    getParentModule()->subscribe(SIG_RMT_PortReadyToServe, lisRMTPortReady);
 }
 
 
@@ -115,7 +119,14 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     Enter_Method("invokeQueueDeparturePolicies()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     qMonPolicy->onMessageDeparture(queue);
-    schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
+    //schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
+}
+
+void RMT::invokePortReadyPolicies(cObject* obj)
+{
+    Enter_Method("invokePortReadyPolicies()");
+    RMTPort* port = check_and_cast<RMTPort*>(obj);
+    schedPolicy->finalizeService(port, RMTQueue::OUTPUT);
 }
 
 /**

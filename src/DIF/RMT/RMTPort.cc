@@ -35,9 +35,21 @@ void RMTPort::initialize()
     sigRMTPortReadyToServe = registerSignal(SIG_RMT_PortReadyToServe);
 }
 
-void RMTPort::handleMessage(cMessage *msg)
+void RMTPort::postInitialize()
 {
-    if (msg->getArrivalGate() == southInputGate)
+    // this will be NULL if this IPC doesn't use a channel
+    outputChannel = southOutputGate->findTransmissionChannel();
+    EV << "!!!!!!!!!!!!!!!!!! " << outputChannel << endl;
+}
+
+void RMTPort::handleMessage(cMessage* msg)
+{
+    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "portTransmitEnd"))
+    {
+        setReady();
+        delete msg;
+    }
+    else if (msg->getArrivalGate() == southInputGate) // bottom-up
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
         { // this will go away when we figure out management flow pre-allocation
@@ -64,12 +76,33 @@ void RMTPort::handleMessage(cMessage *msg)
 
         emit(sigRMTPortPDURcvd, this);
     }
-    else if (northInputGates.count(msg->getArrivalGate()))
+    else if (northInputGates.count(msg->getArrivalGate())) // top-down
     {
-        send(msg, southOutputGate);
-        emit(sigRMTPortPDUSent, this);
-        setReady();
-        emit(sigRMTPortReadyToServe, this);
+        cPacket* packet = NULL;
+        if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
+        {
+            packet->setByteLength(sizeof(msg)); // FIXME: temporary workaround
+
+            setBusy();
+            send(packet, southOutputGate);
+            emit(sigRMTPortPDUSent, this);
+
+            if (outputChannel != NULL)
+            {
+                EV << "!!!!! transmission start: " << simTime() << "; transmission end: "
+                   << outputChannel->getTransmissionFinishTime() << endl;
+
+                scheduleAt(outputChannel->getTransmissionFinishTime(), new cMessage("portTransmitEnd"));
+            }
+            else
+            {
+                setReady();
+            }
+        }
+        else
+        {
+            EV << "this type of message isn't supported!" << endl;
+        }
     }
 }
 
@@ -166,6 +199,7 @@ bool RMTPort::isReady()
 void RMTPort::setReady()
 {
     ready = true;
+    emit(sigRMTPortReadyToServe, this);
     redrawGUI();
 }
 

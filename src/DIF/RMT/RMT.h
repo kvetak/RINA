@@ -59,6 +59,7 @@ class RMT : public RMTBase
 
     virtual void invokeQueueArrivalPolicies(cObject* obj);
     virtual void invokeQueueDeparturePolicies(cObject* obj);
+    virtual void invokePortReadyPolicies(cObject* obj);
 
   protected:
     virtual void initialize();
@@ -93,8 +94,9 @@ class RMT : public RMTBase
     RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
 
     simsignal_t sigRMTNoConnID;
-    LisRMTPDURcvd* lisRMTMsgRcvd;
-    LisRMTPDUSent* lisRMTMsgSent;
+    LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
+    LisRMTQueuePDUSent* lisRMTQueuePDUSent;
+    LisRMTPortReady* lisRMTPortReady;
 
     // management methods for Resource Allocator
     void setOnWire(bool status) { onWire = status; };

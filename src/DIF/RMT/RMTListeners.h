@@ -34,18 +34,26 @@ class RMTListeners : public cListener
     RMTBase* rmt;
 };
 
-class LisRMTPDURcvd : public RMTListeners
+class LisRMTQueuePDURcvd : public RMTListeners
 {
   public:
-    LisRMTPDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
+    LisRMTQueuePDURcvd(RMTBase* rmt) : RMTListeners(rmt){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 
-class LisRMTPDUSent : public RMTListeners
+class LisRMTQueuePDUSent : public RMTListeners
 {
   public:
-    LisRMTPDUSent(RMTBase* rmt) : RMTListeners(rmt){};
+    LisRMTQueuePDUSent(RMTBase* rmt) : RMTListeners(rmt){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
+
+class LisRMTPortReady : public RMTListeners
+{
+  public:
+    LisRMTPortReady(RMTBase* rmt) : RMTListeners(rmt){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+};
+
 
 #endif /* RMTLISTENERS_H_ */

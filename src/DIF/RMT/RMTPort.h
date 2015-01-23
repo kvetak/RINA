@@ -109,7 +109,7 @@ class RMTPort : public cSimpleModule
 
   protected:
     virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    virtual void handleMessage(cMessage* msg);
 
   private:
     bool ready;
@@ -121,9 +121,12 @@ class RMTPort : public cSimpleModule
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
+    cChannel* outputChannel;
+
     RMTQueues outputQueues;
     RMTQueues inputQueues;
 
+    void postInitialize();
     void setFlow(Flow* flow);
     void addInputQueue(RMTQueue* queue, cGate* portGate);
     void addOutputQueue(RMTQueue* queue, cGate* portGate);

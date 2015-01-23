@@ -396,6 +396,8 @@ void RA::bindMediumToRMT()
     port->setReady();
     // connect the port to the bottom
     interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
+    // finalize initial port parameters
+    port->postInitialize();
 
     // create extra queues for management purposes
     rmtAllocator->addMgmtQueues(port);
@@ -428,6 +430,8 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtAllocator->addPort(flow);
     interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
+    // finalize initial port parameters
+    port->postInitialize();
 
     // 3) allocate queues
     // create extra queues for management purposes (this will likely go away later)

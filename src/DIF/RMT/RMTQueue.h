@@ -152,10 +152,10 @@ class RMTQueue : public cSimpleModule
 
   protected:
     virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    virtual void handleMessage(cMessage* msg);
 
   private:
-    std::deque<cMessage*> queue;
+    std::deque<cPacket*> queue;
     queueType type;
 
     const char* queueId;
@@ -172,9 +172,9 @@ class RMTQueue : public cSimpleModule
 
     void setType(queueType type);
 
-    void enqueuePDU(cMessage* pdu);
+    void enqueuePDU(cPacket* pdu);
     void releasePDU();
-    cMessage* dropLast();
+    cPacket* dropLast();
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;
