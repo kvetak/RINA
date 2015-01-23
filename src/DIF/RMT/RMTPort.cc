@@ -21,42 +21,41 @@ Define_Module(RMTPort);
 
 void RMTPort::initialize()
 {
+    ready = false; // port should get activated by RA
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
-    ready = false;
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
 
-    redrawGUI();
-
     sigRMTPortPDURcvd = registerSignal(SIG_RMT_PortPDURcvd);
     sigRMTPortPDUSent = registerSignal(SIG_RMT_PortPDUSent);
-    sigRMTPortReadyToServe = registerSignal(SIG_RMT_PortReadyToServe);
+    sigRMTPortReady = registerSignal(SIG_RMT_PortReadyToServe);
 }
 
 void RMTPort::postInitialize()
 {
     // this will be NULL if this IPC doesn't use a channel
     outputChannel = southOutputGate->findTransmissionChannel();
-    EV << "!!!!!!!!!!!!!!!!!! " << outputChannel << endl;
 }
 
 void RMTPort::handleMessage(cMessage* msg)
 {
     if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "portTransmitEnd"))
-    {
+    { // a PDU transmit procedure has just finished
         setReady();
+        emit(sigRMTPortPDUSent, this);
         delete msg;
     }
-    else if (msg->getArrivalGate() == southInputGate) // bottom-up
+    else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
         { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
         }
         else if (dynamic_cast<PDU*>(msg) != NULL)
-        { // still unsure about whether this'll be needed
+        {
+            // get a proper queue for this message
             RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
                                              queueIdGen->generateID((PDU*)msg).c_str());
 
@@ -76,27 +75,38 @@ void RMTPort::handleMessage(cMessage* msg)
 
         emit(sigRMTPortPDURcvd, this);
     }
-    else if (northInputGates.count(msg->getArrivalGate())) // top-down
+    else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
     {
         cPacket* packet = NULL;
         if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
         {
-            packet->setByteLength(sizeof(msg)); // FIXME: temporary workaround
+            // TODO: remove this when packet sizes are correctly set at their creation
+            packet->setByteLength(sizeof(packet));
 
             setBusy();
+            // start the transmission
             send(packet, southOutputGate);
-            emit(sigRMTPortPDUSent, this);
 
+            // determine when should the port be ready to serve again
             if (outputChannel != NULL)
-            {
-                EV << "!!!!! transmission start: " << simTime() << "; transmission end: "
-                   << outputChannel->getTransmissionFinishTime() << endl;
+            { // we're using a channel, likely with some sort of data rate/delay
+                simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
 
-                scheduleAt(outputChannel->getTransmissionFinishTime(), new cMessage("portTransmitEnd"));
+                EV << "!!!!!!!!! transmit start: " << simTime() << "; transmit end: " << transmitEnd << endl;
+                if (transmitEnd > simTime())
+                {
+                    scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
+                }
+                else
+                {
+                    setReady();
+                    emit(sigRMTPortPDUSent, this);
+                }
             }
             else
-            {
+            { // there isn't any delay or rate control in place
                 setReady();
+                emit(sigRMTPortPDUSent, this);
             }
         }
         else
@@ -199,7 +209,7 @@ bool RMTPort::isReady()
 void RMTPort::setReady()
 {
     ready = true;
-    emit(sigRMTPortReadyToServe, this);
+    emit(sigRMTPortReady, this);
     redrawGUI();
 }
 

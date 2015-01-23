@@ -137,7 +137,7 @@ class RMTPort : public cSimpleModule
 
     simsignal_t sigRMTPortPDURcvd;
     simsignal_t sigRMTPortPDUSent;
-    simsignal_t sigRMTPortReadyToServe;
+    simsignal_t sigRMTPortReady;
 };
 
 typedef std::vector<RMTPort*> RMTPorts;
