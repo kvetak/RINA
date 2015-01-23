@@ -35,12 +35,15 @@ const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCDAP        = "cdap";
 const char* MOD_EFCPTABLE       = "efcpTable";
 const char* MOD_DTCP            = "dtcp";
+const char* MOD_DTP_STATE       = "dtpState";
+const char* MOD_DTCP_STATE      = "dtcpState";
 const char* MOD_EFCPI           = "efcpi_";
 
 
 //Module type paths
 const char* MOD_EFCP_PATH        = "rina.DIF.EFCP";
 const char* MOD_DTP_PATH        = "rina.DIF.EFCP.DTP.DTP";
+const char* MOD_DTP_STATE_PATH  = "rina.DIF.EFCP.DTP.DTPState";
 const char* MOD_DTCP_PATH       = "rina.DIF.EFCP.DTCP.DTCP";
 
 //Module parameters

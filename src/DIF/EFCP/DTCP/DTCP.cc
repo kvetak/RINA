@@ -89,30 +89,30 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");
+  if(step == 1){
   dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
-//TODO A1 Fill it with appropriate values
-//  dtcpState = new DTCPState();
+  //  dtcpState = new DTCPState();
   cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
 
-  dtcpState = (DTCPState*)dtcpStateType->create("dtcpState", this->getParentModule());
+  dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
   dtcpState->finalizeParameters();
   dtcpState->buildInside();
   dtcpState->scheduleStart(simTime());
-  dtcpState->callInitialize();
+//  dtcpState->callInitialize();
 
 //TODO A2 based on DTPState create appropriate components
-  if (dtp->state.isRxPresent())
+  if (dtp->state->isRxPresent())
   {
 //    rxControl = new RXControl();
   }
 
-  if (dtp->state.isFCPresent())
+  if (dtp->state->isFCPresent())
   {
 //    flowControl = new FlowControl();
 //    flowControl->initialize();
 
-    if (dtp->state.isWinBased())
+    if (dtp->state->isWinBased())
     {
 //      windowTimer = new WindowTimer();
 //      schedule(windowTimer);
@@ -136,7 +136,7 @@ void DTCP::initialize(int step)
   createPolicyModule(reconcileFCPolicy, RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
   createPolicyModule(rateReductionPolicy, RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
 
-
+  }
 }
 
 void DTCP::flushAllQueuesAndPrepareToDie()
@@ -338,15 +338,15 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
     ////      TODO: unsigned int lastCtrlSeqNumRcv;
     //
     ////      unsigned int sndLtWinEdge;
-    ////      if(state.getNextSeqNumToSend() < ctrlAckPDU->getSndLtWinEdge()){
-    //      state.setNextSeqNumToSend(ctrlAckPDU->getSndLtWinEdge());
+    ////      if(state->getNextSeqNumToSend() < ctrlAckPDU->getSndLtWinEdge()){
+    //      state->setNextSeqNumToSend(ctrlAckPDU->getSndLtWinEdge());
     ////      }
     ////      unsigned int sndRtWinEdge;
     //
     //      dtcp->setSndRtWinEdge(ctrlAckPDU->getSndRtWinEdge());
     ////      unsigned int myLtWinEdge;
-    ////      if(state.getRcvLeftWinEdge() < ctrlAckPDU->getMyLtWinEdge()){
-    //      state.setRcvLeftWinEdge(ctrlAckPDU->getMyLtWinEdge());
+    ////      if(state->getRcvLeftWinEdge() < ctrlAckPDU->getMyLtWinEdge()){
+    //      state->setRcvLeftWinEdge(ctrlAckPDU->getMyLtWinEdge());
     ////      }
     ////      unsigned int myRtWinEdge;
     //      //TODO verify this
@@ -361,15 +361,15 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
     //
     //      DataTransferPDU* dataPdu = new DataTransferPDU();
     //      setPDUHeader(dataPdu);
-    //      unsigned int seqNum = state.getNextSeqNumToSend();
+    //      unsigned int seqNum = state->getNextSeqNumToSend();
     //      dataPdu->setSeqNum(seqNum - 1);
-    //      state.setNextSeqNumToSend(seqNum);
+    //      state->setNextSeqNumToSend(seqNum);
     //      UserDataField* userData = new UserDataField();
     //      dataPdu->setUserDataField(userData);
     //
     //      sendToRMT(dataPdu);
     //
-    //      //dataPdu->setSeqNum(state.getLastSeqNumSent());
+    //      //dataPdu->setSeqNum(state->getLastSeqNumSent());
     //
     //      /* End default RcvrControlAck policy */
 
@@ -570,7 +570,7 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
-    unsigned int gap = dtp->state.getQoSCube()->getMaxAllowGap();
+    unsigned int gap = dtp->state->getQoSCube()->getMaxAllowGap();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
     if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
     {
@@ -660,7 +660,7 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
       rxExpTimer->setSent(simTime().dbl());
       //TODO B1 (RTT + A + epsilon)
-      scheduleAt(simTime() + dtp->state.getRtt() + dtp->state.getQoSCube()->getATime()/1000, rxExpTimer);
+      scheduleAt(simTime() + dtp->state->getRtt() + dtp->state->getQoSCube()->getATime()/1000, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

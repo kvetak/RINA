@@ -33,6 +33,7 @@
 #include "Flow.h"
 #include "EFCPTable.h"
 #include "ExternConsts.h"
+#include "EFCP_defs.h"
 #include "RA.h"
 
 //#include "EFCPInstance.h"

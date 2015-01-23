@@ -54,7 +54,7 @@ class DTP : public cSimpleModule
     int deletePdu;
     bool pduDroppingEnabled;
 
-    DTPState state; //state of this data-transfer
+    DTPState* state; //state of this data-transfer
     DTCP* dtcp;
     Flow* flow;
 
@@ -205,6 +205,7 @@ class DTP : public cSimpleModule
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
+    int numInitStages() const { return 2;};
 
 };
 

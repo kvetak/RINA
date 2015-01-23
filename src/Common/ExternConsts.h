@@ -38,10 +38,13 @@ extern const char* MOD_CDAPAUTH;
 extern const char* MOD_CDAPCDAP;
 extern const char* MOD_EFCPTABLE;
 extern const char* MOD_DTCP;
+extern const char* MOD_DTP_STATE;
+extern const char* MOD_DTCP_STATE;
 extern const char* MOD_EFCPI;
 
 //Module type paths
 extern const char* MOD_DTP_PATH;
+extern const char* MOD_DTP_STATE_PATH;
 extern const char* MOD_DTCP_PATH;
 
 //Module parameters

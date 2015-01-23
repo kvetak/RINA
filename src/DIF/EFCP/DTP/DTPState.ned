@@ -15,27 +15,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.DTCP;
+package rina.DIF.EFCP.DTP;
 
-//
-// TODO auto-generated type
-//
-simple DTCPState
+
+simple DTPState
 {
     @display("i=block/subqueue");
     
-    int initialSenderCredit = default(10);
-    int rcvCredit = default(10);
-    double aTime @unit(ms)= default(0ms);
-    int nextSenderControlSeqNum = default(1);
-    int dataReXmitMax = default(3);
+    int maxSDUSize @unit(B) = default(1500B);
+    int maxPDUSize @unit(B) = default(1500B);
     
-    int maxClosedWinQueLen = default(10);
+    bool rxPresent = default(true);
+    bool winBased = default(true);
+    bool rateBased = default(false);
     
-    int timeUnit @unit(ms) = default(1000ms); 
-    int sendingTimeUnit @unit(ms) = default(1000ms);
-    int rcvBufferPercentThreshold  = default(75); 
+    double rtt @unit(s) = default(3s);
     
-    int initialSendingRate  = default(1); // measured in PDU/timeUnit
-    int configRcvrRate = default(1); // measured in PDU/timeUnit
 }

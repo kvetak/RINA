@@ -26,7 +26,6 @@
 #ifndef DTCPSTATE_H_
 #define DTCPSTATE_H_
 
-#include <cobject.h>
 #include <omnetpp.h>
 #include <DTCPTimers_m.h>
 
@@ -98,8 +97,6 @@ class DTCPState : public cSimpleModule
     std::vector<DataTransferPDU*> closedWindowQ;
 
     std::vector<DTCPRxExpiryTimer*> rxQ;
-
-
 
 
 
@@ -182,6 +179,11 @@ class DTCPState : public cSimpleModule
 
     void updateSndLWE(unsigned int seqNum);
 
+  protected:
+    virtual void handleMessage(cMessage *msg);
+    virtual void initialize(int step);
+    int numInitStages() const { return 3;};
+    void initFromQoS(const QoSCube* qosCube);
 
 };
 

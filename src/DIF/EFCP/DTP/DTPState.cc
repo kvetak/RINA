@@ -17,11 +17,37 @@
 
 #include "DTPState.h"
 
+Define_Module(DTPState);
+
 DTPState::DTPState() {
 
 
   initDefaults();
 }
+
+void DTPState::initialize(int step)
+{
+  if(step == 0){
+    maxFlowSDUSize = par("maxSDUSize");
+    maxFlowPDUSize = par("maxPDUSize");
+
+    rtt = par("rtt");
+
+    winBased = par("winBased");
+    rateBased = par("rateBased");
+
+    rxPresent = par("rxPresent");
+
+    if(rxPresent || winBased || rateBased){
+      dtcpPresent =  true;
+      //TODO A! create DTCP module here?
+    }
+
+
+  }
+
+}
+
 
 void DTPState::initDefaults(){
 
@@ -34,11 +60,12 @@ void DTPState::initDefaults(){
   setDRFFlag = true;
 
   //TODO A1 load it from flow->qosparameters
-  dtcpPresent = true;
+  dtcpPresent = false;
   winBased = false;
   rateBased = false;
   incompDeliv = false;
-  maxFlowPDUSize = MAX_PDU_SIZE;
+
+//  maxFlowPDUSize = MAX_PDU_SIZE;
 
   lastSDUDelivered = 0;
 
@@ -51,7 +78,7 @@ void DTPState::initDefaults(){
   qoSCube = NULL;
 
   //TODO B! Fix
-  rtt = 3;
+
 
 
 }
@@ -435,6 +462,10 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
     //TODO B1 Is it correct?
     //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
   }
+}
+
+void DTPState::handleMessage(cMessage* msg)
+{
 }
 
 
