@@ -13,20 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+// Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-//
-// TODO auto-generated module
-//
-simple PDUFwdTabGenerator
+package rina.DIF.RA.policies.Forwarding;
+
+moduleinterface IntPDUFTGPolicy
 {
-    @display("i=block/network2");
-    
-    // The target module where you want to see the network state report. 
-    // The default is the IPC which contains the PDUFTG.
-    string netStateMod = default("^.^.");
-    // Where you want to align the report? l-left, t-top, r-right
-    string netStateAlign = default("l");
-    // Want to show a visual report during simulation?
-    bool netStateVisible = default(false);
+    parameters:
+        @display("i=block/socket");
 }

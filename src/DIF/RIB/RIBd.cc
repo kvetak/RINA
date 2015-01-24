@@ -24,9 +24,9 @@
 
 #include "RIBd.h"
 
-const char* MSG_FLO       = "Flow";
-const char* MSG_FLOPOSI   = "Flow+";
-const char* MSG_FLONEGA   = "Flow-";
+const char* MSG_FLO             = "Flow";
+const char* MSG_FLOPOSI         = "Flow+";
+const char* MSG_FLONEGA         = "Flow-";
 const char* CLS_FLOW            = "Flow";
 const int   VAL_DEFINSTANCE     = -1;
 const int   VAL_FLOWPOSI        = 1;
@@ -34,6 +34,7 @@ const int   VAL_FLOWNEGA        = 0;
 const char* VAL_FLREQ           = "Request  ";
 const char* VAL_FLREQPOSI       = "Response+  ";
 const char* VAL_FLREQNEGA       = "Response-  ";
+const char* MSG_FWDUPDATE       = "FwdUpdate";
 
 Define_Module(RIBd);
 
@@ -226,7 +227,10 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Delete_R*>(msg)) {
         processMDeleteR(msg);
     }
-
+    //M_WRITE_Request
+    else if (dynamic_cast<CDAP_M_Write*>(msg)) {
+        processMWrite(msg);
+    }
 
     delete msg;
 }
@@ -246,6 +250,7 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
+    sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
 
     //Signals that this module is processing
 
@@ -279,6 +284,9 @@ void RIBd::initSignalsAndListeners() {
     catcher2->subscribe(SIG_RA_CreateFlowPositive, lisRIBDCreFloPosi);
     lisRIBDCreFloNega = new LisRIBDCreFloNega(this);
     catcher2->subscribe(SIG_RA_CreateFlowNegative, lisRIBDCreFloNega);
+
+    lisRIBDFwdInfoUpdate = new LisRIBDFwdInfoUpdate(this);
+    catcher2->subscribe(SIG_PDUFTG_FwdInfoUpdate, lisRIBDFwdInfoUpdate);
 }
 
 void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
@@ -467,4 +475,53 @@ void RIBd::processMDeleteR(CDAPMessage* msg) {
         signalizeDeleteResponseFlow(flow);
     }
 
+}
+
+void RIBd::processMWrite(CDAPMessage* msg)
+{
+    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
+
+    EV << "Received M_Write";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //CreateRequest Flow
+    if (dynamic_cast<PDUFTGUpdate *>(object.objectVal))
+    {
+        PDUFTGUpdate * update = (check_and_cast<PDUFTGUpdate *>(object.objectVal));
+
+        /* Signal that an update obj has been received. */
+        emit(sigRIBDFwdUpdateRecv, update);
+    }
+}
+
+void RIBd::receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * info)
+{
+    EV << getFullPath() << " Forwarding update to send to " << info->getDestination();
+
+    /* Emits the CDAP message. */
+
+    CDAP_M_Write * cdapm = new CDAP_M_Write(MSG_FWDUPDATE);
+    std::ostringstream os;
+    object_t flowobj;
+
+    /* Prepare the object to send. */
+
+    os << "FwdUpdateTo" << info->getDestination();
+
+    flowobj.objectClass = info->getClassName();
+    flowobj.objectName  = os.str();
+    flowobj.objectVal   = info;
+    //TODO: Vesely - Assign appropriate values
+    flowobj.objectInstance = VAL_DEFINSTANCE;
+
+    cdapm->setObject(flowobj);
+
+    //TODO: Vesely - Work more on InvokeId
+
+    /* This message will be sent to... */
+    cdapm->setDstAddr(info->getDestination());
+
+    /* Finally order to send the data... */
+    signalizeSendData(cdapm);
 }

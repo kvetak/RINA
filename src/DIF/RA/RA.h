@@ -36,6 +36,9 @@
 #include "NM1FlowTable.h"
 #include "QueueAllocBase.h"
 
+/* Forwarding and routing stuff... */
+#include "PDUFwdTabGenerator.h"
+
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
@@ -80,9 +83,13 @@ class RA : public RABase
     cModule* rmtModule;
     RMT* rmt;
     RMTModuleAllocator* rmtAllocator;
-    PDUForwardingTable* fwdTable;
+    //PDUForwardingTable* fwdTable;
     NM1FlowTable* flowTable;
     QueueAllocBase* qAllocPolicy;
+
+    // Forwarding and routing stuff...
+    PDUFwdTabGenerator * fwdtg;
+
     std::string processName;
     std::list<Flow*> preparedFlows;
 

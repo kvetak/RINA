@@ -111,6 +111,7 @@ void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
 {
     Enter_Method("insert()");
+
     // multiple ports per item aren't supported at the moment
     if (lookup(destAddr, qosId) == NULL)
     {
@@ -124,12 +125,13 @@ void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort*
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(RMTPort* port)
+void PDUForwardingTable::remove(Address destAddr, int qosId)
 {
     PDUFwdTableIter i = fwTable.begin();
+
     while (i != fwTable.end())
     {
-        if (i->getPort() == port)
+        if (i->getDestAddr() == destAddr && i->getQosId() == qosId)
         {
             i = fwTable.erase(i);
         }
@@ -140,4 +142,8 @@ void PDUForwardingTable::remove(RMTPort* port)
     }
 }
 
-
+void PDUForwardingTable::clean()
+{
+    /* Q: How to handle memory here? */
+    fwTable.clear();
+}

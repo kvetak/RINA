@@ -57,7 +57,7 @@ const Address& PDUForwardingTableEntry::getDestAddr() const
     return destAddr;
 }
 
-unsigned short PDUForwardingTableEntry::getQosId() const
+short unsigned int PDUForwardingTableEntry::getQosId() const
 {
     return qosId;
 }

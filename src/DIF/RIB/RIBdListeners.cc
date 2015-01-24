@@ -128,3 +128,21 @@ void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         EV << "RIBdListener received unknown object!" << endl;
 
 }
+
+void LisRIBDFwdInfoUpdate::receiveSignal(
+        cComponent* src, simsignal_t id, cObject* obj)
+{
+    EV << "LisRIBDFwdInfoUpdate initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+
+    PDUFTGUpdate * info = dynamic_cast<PDUFTGUpdate *>(obj);
+
+    if (info)
+    {
+        ribd->receiveForwardingInfoUpdateFromPDUFTG(info);
+    }
+    else
+    {
+        EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
+    }
+}

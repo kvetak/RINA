@@ -25,7 +25,7 @@ class RIBdListeners : public cListener {
   public:
     RIBdListeners(RIBdBase* nribd);
     virtual ~RIBdListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
         EV << "Signal to RIBd initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -83,6 +83,14 @@ class LisRIBDCreFloNega: public RIBdListeners {
 class LisRIBDCreFloPosi: public RIBdListeners {
   public:
     LisRIBDCreFloPosi(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+/* Listen for Forwarding info updates from PDUFTG and handle them. */
+class LisRIBDFwdInfoUpdate: public RIBdListeners
+{
+  public:
+    LisRIBDFwdInfoUpdate(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

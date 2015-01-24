@@ -17,6 +17,7 @@ package rina.DIF.RA;
 
 import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
+import rina.DIF.RA.policies.Forwarding.IntPDUFTGPolicy;
 
 
 module ResourceAllocator
@@ -24,6 +25,7 @@ module ResourceAllocator
     parameters:
         @display("i=block/segm;bgb=486,352");
         string queueAllocPolicyName = default("SingleQueue");
+        string pduftgPolicyName = default("StaticRoutingPolicy");
         string queueIdGenName = default("SingleID");
 
     submodules:
@@ -45,5 +47,8 @@ module ResourceAllocator
         }
         queueIdGenerator: <queueIdGenName> like IntRAQueueIDGen {
             @display("p=180,163");
+        }
+        PDUFTGPolicy: <pduftgPolicyName> like IntPDUFTGPolicy {
+            @display("p=300,163");
         }
 }

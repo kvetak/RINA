@@ -59,10 +59,14 @@ void RA::initialize(int stage)
     thisIPC = this->getParentModule()->getParentModule();
     rmtModule = thisIPC->getSubmodule("relayAndMux");
 
+    // Get access to the forwarding and routing functionalities...
+    fwdtg = check_and_cast<PDUFwdTabGenerator *>
+        (getModuleByPath("^.pduFwdTabGenerator"));
+
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));
-    fwdTable = check_and_cast<PDUForwardingTable*>
-        (getModuleByPath("^.pduForwardingTable"));
+    //fwdTable = check_and_cast<PDUForwardingTable*>
+    //    (getModuleByPath("^.pduForwardingTable"));
     flowTable = check_and_cast<NM1FlowTable*>
         (getModuleByPath("^.nm1FlowTable"));
     rmt = check_and_cast<RMT*>
@@ -467,6 +471,26 @@ void RA::createNM1Flow(Flow *flow)
 
     const APN& dstApn = flow->getDstApni().getApn();
 
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(e)
+    {
+        NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
+
+        if(fi)
+        {
+            return;
+        }
+    }
+    //
+    // End flow exists check.
+    //
+
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == NULL) {
@@ -496,9 +520,17 @@ void RA::createNM1Flow(Flow *flow)
         // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
         // update the PDU forwarding table
-        fwdTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
+        //fwdTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
         // TODO: remove this when management isn't piggy-backed anymore
         port->setReady();
+
+        //fwTable->insert(Address(flow->getDstApni().getApn().getName()),
+        //                flow->getConId().getQoSId(), port);
+
+        fwdtg->insertFlowInfo(
+            Address(flow->getDstApni().getApn().getName()),
+            flow->getConId().getQoSId(),
+            port);
     }
     else
     {
@@ -519,7 +551,28 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     const APN& dstAPN = flow->getDstApni().getApn();
     unsigned short qosID = flow->getConId().getQoSId();
 
-    //Ask DA which IPC to use to reach dst App
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(e)
+    {
+        NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
+
+        if(fi)
+        {
+            return;
+        }
+    }
+    //
+    // End flow exists check.
+    //
+
+
+    // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
     if (ad == NULL) {
         EV << "DifAllocator returned NULL for resolving " << dstAPN << endl;
@@ -542,6 +595,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
     // update the PDU forwarding table
+/*
     fwdTable->insert(Address(dstAPN.getName()), qosID, port);
 
     // add other accessible applications into forwarding table
@@ -554,6 +608,11 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
             fwdTable->insert(addr, qosID, port);
         }
     }
+*/
+    fwdtg->insertFlowInfo(
+        Address(flow->getDstApni().getApn().getName()),
+        flow->getConId().getQoSId(),
+        port);
 
     signalizeCreateFlowPositiveToRIBd(flow);
 
@@ -605,7 +664,7 @@ void RA::postNM1FlowAllocation(Flow* flow)
     // TODO: move this to receiveSignal()
     NM1FlowTableItem* item = flowTable->findFlowByDstApni(dstApn.getName(), qosId);
     if (item == NULL) return;
-
+/*
     // add other accessible applications into the forwarding table
     const APNList* remoteApps = difAllocator->findNeigborApns(dstApn);
     if (remoteApps)
@@ -616,7 +675,7 @@ void RA::postNM1FlowAllocation(Flow* flow)
             fwdTable->insert(addr, qosId, item->getRmtPort());
         }
     }
-
+*/
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
     item->getRmtPort()->setReady();
@@ -647,7 +706,8 @@ void RA::removeNM1Flow(Flow *flow)
     rmtModuleIn->disconnect();
     rmtModuleOut->disconnect();
 
-    fwdTable->remove(port);
+    fwdtg->removeFlowInfo(flowItem->getRmtPort());
+//    fwdTable->remove(port);
     rmtAllocator->removePort(flowItem->getRmtPort());
     rmtModule->deleteGate(gateName);
     flowItem->getFaBase()->receiveDeallocateRequest(flow);
@@ -675,6 +735,17 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     // immediate neighbor (e.g. an interior router)
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     unsigned short qosID = flow->getConId().getQoSId();
+
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUFTGNeighbor * te =
+        fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(te)
+    {
+        neighAddr = te->getDestAddr().getApname().getName();
+    }
 
     // see if any appropriate (N-1)-flow already exists
     NM1FlowTableItem* nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
@@ -706,7 +777,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     // TODO: there must be a better place to put this
     if (neighAddr != dstAddr)
     {
-        fwdTable->insert(Address(dstAddr), qosID, nm1FlowItem->getRmtPort());
+//        fwdTable->insert(Address(dstAddr), qosID, nm1FlowItem->getRmtPort());
     }
 
     if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
