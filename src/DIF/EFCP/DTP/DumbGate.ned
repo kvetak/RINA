@@ -17,18 +17,13 @@
 
 package rina.DIF.EFCP.DTP;
 
-
-simple DTPState
+//
+// TODO auto-generated module
+//
+simple DumbGate
 {
-    @display("i=block/subqueue");
-    
-    int maxSDUSize @unit(B) = default(1500B);
-    int maxPDUSize @unit(B) = default(1500B);
-    
-    bool rxPresent = default(true);
-    bool winBased = default(true);
-    bool rateBased = default(false);
-    
-    double rtt @unit(s) = default(1s);
-    
+    @display("i=block/process");
+    gates:
+        inout northIo;
+        inout southIo;
 }

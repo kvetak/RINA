@@ -17,6 +17,7 @@
 
 package rina.DIF.EFCP;
 import rina.DIF.EFCP.DTP.DTP;
+import rina.DIF.EFCP.DTP.DumbGate;
 
 
 module EFCPI
@@ -27,10 +28,20 @@ module EFCPI
         inout southIo; //to RMT
     submodules:
         dtp: DTP {
-            @display("p=148,116");
+            @display("p=41,112");
+        }
+        northG: DumbGate {
+            @display("p=41,29;is=vs");
+        }
+        southG: DumbGate {
+            @display("p=41,201;is=vs");
         }
     connections allowunconnected:
-        dtp.northIo <--> northIo;
-        dtp.southIo <--> southIo;
+        northG.northIo <--> northIo;
+        dtp.northIo <--> northG.southIo;
+//        
+        dtp.southIo <--> southG.northIo;
+        southG.southIo <--> southIo;
+
 
 }

@@ -28,6 +28,11 @@ DTPState::DTPState() {
 void DTPState::initialize(int step)
 {
   if(step == 0){
+
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("p", 0, 240);
+    disp.setTagArg("p", 1, 50);
+
     maxFlowSDUSize = par("maxSDUSize");
     maxFlowPDUSize = par("maxPDUSize");
 
@@ -52,34 +57,19 @@ void DTPState::initialize(int step)
 void DTPState::initDefaults(){
 
   currentPDU = NULL;
-
-
-
   dropDup = 0;
-
   setDRFFlag = true;
-
-  //TODO A1 load it from flow->qosparameters
   dtcpPresent = false;
   winBased = false;
   rateBased = false;
   incompDeliv = false;
 
-//  maxFlowPDUSize = MAX_PDU_SIZE;
 
   lastSDUDelivered = 0;
-
-  //TODO A1
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-
-
   qoSCube = NULL;
-
-  //TODO B! Fix
-
-
 
 }
 

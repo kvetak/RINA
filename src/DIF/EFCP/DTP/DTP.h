@@ -103,7 +103,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromDelimitingnew(SDU* sdu);
+    void handleMsgFromDelimiting(SDU* sdu);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -183,6 +183,8 @@ class DTP : public cSimpleModule
     bool isDuplicate(unsigned int seqNum);
     void notifyAboutInactivity();
     void notifyAboutUnableMaintain();
+    void notifyStopSending();
+    void notifyStartSending();
 
   public:
     DTP();

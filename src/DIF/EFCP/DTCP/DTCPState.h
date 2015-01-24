@@ -125,6 +125,7 @@ class DTCPState : public cSimpleModule
     void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
 //    unsigned int getNextCtrlSeqNum();
     unsigned int getNextSndCtrlSeqNum();
+    unsigned int getNextSndCtrlSeqNumNoInc();
     unsigned int getLastCtrlSeqNumRcv();
     void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
     void incRcvRtWinEdge();

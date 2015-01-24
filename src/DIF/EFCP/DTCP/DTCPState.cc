@@ -181,6 +181,12 @@ unsigned int DTCPState::getNextSndCtrlSeqNum()
 {
   return nextSenderControlSeqNum++;
 }
+
+unsigned int DTCPState::getNextSndCtrlSeqNumNoInc()
+{
+  return nextSenderControlSeqNum;
+}
+
 unsigned int DTCPState::getLastCtrlSeqNumRcv(){
   return lastControlSeqNumRcv;
 }

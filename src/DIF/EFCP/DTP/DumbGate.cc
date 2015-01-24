@@ -15,20 +15,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.DTP;
+#include "DumbGate.h"
 
+Define_Module(DumbGate);
 
-simple DTPState
+void DumbGate::initialize()
 {
-    @display("i=block/subqueue");
-    
-    int maxSDUSize @unit(B) = default(1500B);
-    int maxPDUSize @unit(B) = default(1500B);
-    
-    bool rxPresent = default(true);
-    bool winBased = default(true);
-    bool rateBased = default(false);
-    
-    double rtt @unit(s) = default(1s);
-    
+
+}
+
+void DumbGate::handleMessage(cMessage *msg)
+{
+
+  if(msg->arrivedOn("southIo$i")){
+    send(msg,"northIo$o");
+  }else{
+    send(msg,"southIo$o");
+  }
 }

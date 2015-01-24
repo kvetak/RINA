@@ -15,20 +15,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.DTP;
+#ifndef __RINA_DUMBGATE_H_
+#define __RINA_DUMBGATE_H_
 
+#include <omnetpp.h>
 
-simple DTPState
+/**
+ * TODO - Generated class
+ */
+class DumbGate : public cSimpleModule
 {
-    @display("i=block/subqueue");
-    
-    int maxSDUSize @unit(B) = default(1500B);
-    int maxPDUSize @unit(B) = default(1500B);
-    
-    bool rxPresent = default(true);
-    bool winBased = default(true);
-    bool rateBased = default(false);
-    
-    double rtt @unit(s) = default(1s);
-    
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif

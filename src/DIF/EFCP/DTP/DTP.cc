@@ -84,7 +84,10 @@ void DTP::runRTTEstimatorPolicy()
         std::vector<DTCPRxExpiryTimer*>::iterator it;
         for(it = pduQ->begin(); it != pduQ->end(); ++it){
           if((*it)->getPdu()->getSeqNum() == seqNum){
-            state->setRtt((state->getRtt() + (simTime() - (*it)->getSent())).dbl());
+            double now = simTime().dbl();
+            double sent = (*it)->getSent();
+
+            state->setRtt(now - sent);
           }
         }
 
@@ -113,12 +116,6 @@ void DTP::initialize(int step)
 
   }
 
-//  state->initDefaults();
-
-
-  //FIXME A! Set it based on QoS parameters
-//  state->setWinBased(true);
-//  state->setRxPresent(false);
 if(step==1){
   if(state->isDtcpPresent()){
     senderInactivityTimer = new SenderInactivityTimer();
@@ -139,7 +136,7 @@ if(step==1){
   createPolicyModule(initialSeqNumPolicy, INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
   createPolicyModule(rttEstimatorPolicy, RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
 
-//  redrawGUI();
+
 
 }
 
@@ -228,7 +225,8 @@ void DTP::redrawGUI()
 
   }
 
-  desc << "droppedPDU: " << state->getDropDup();
+  desc << "droppedPDU: " << state->getDropDup() <<"\n";
+  desc << "rtt: " << state->getRtt() << "\n";
 
   disp.setTagArg("t", 0, desc.str().c_str());
 
@@ -277,12 +275,11 @@ void DTP::handleMessage(cMessage *msg)
       //handle SDUs
 //          handleSDUs((CDAPMessage*) msg);
 //      handleMsgFromDelimiting((Data*) msg);
-      handleMsgFromDelimitingnew((SDU*) msg);
+      handleMsgFromDelimiting((SDU*) msg);
 
     }
     else if (msg->arrivedOn(southI->getId()))
     {
-//      handleMsgFromRmt((PDU*) msg);
       handleMsgFromRMT((PDU*) msg);
     }
   }
@@ -303,7 +300,7 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
-void DTP::handleMsgFromDelimitingnew(SDU* sdu){
+void DTP::handleMsgFromDelimiting(SDU* sdu){
   cancelEvent(senderInactivityTimer);
 
   delimit(sdu);
@@ -724,8 +721,6 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 //    if (state->getRcvLeftWinEdge() < pdu->getSeqNum())
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
-
-
       if (isDuplicate(pdu->getSeqNum()))
       {
         /* Case 3) Duplicate Among gaps */
@@ -1070,6 +1065,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
         it = pduQ->erase(it);
       }
+
     }
     else
     {
@@ -1083,11 +1079,13 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
         sendToRMT((*it));
         it = pduQ->erase(it);
       }
-      //TODO A4 Report change in specs
-//      state->setSenderLeftWinEdge(state->getNextSeqNumToSendWithoutIncrement());
-      dtcp->updateSenderLWE(state->getNextSeqNumToSendWithoutIncrement());
 
     }
+
+    //TODO A4 Report change in specs
+          //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
+          //but if this is the first PDU we send, we have to update it here
+          dtcp->updateSenderLWE(state->getNextSeqNumToSendWithoutIncrement());
   }
   else
   {
@@ -1157,10 +1155,11 @@ void DTP::sendControlAckPDU()
   setPDUHeader(ctrlAckPdu);
   ctrlAckPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
   ctrlAckPdu->setLastCtrlSeqNumRcv(dtcp->getLastCtrlSeqNumRcv());
-  ctrlAckPdu->setSndLtWinEdge(state->getRcvLeftWinEdge());
-  ctrlAckPdu->setSndRtWinEdge(dtcp->getRcvRtWinEdge());
-  ctrlAckPdu->setMyLtWinEdge(dtcp->getSenderLeftWinEdge());
-  ctrlAckPdu->setMyRtWinEdge(dtcp->getSndRtWinEdge());
+
+  ctrlAckPdu->setSndLtWinEdge(dtcp->getSenderLeftWinEdge());
+  ctrlAckPdu->setSndRtWinEdge(dtcp->getSndRtWinEdge());
+  ctrlAckPdu->setMyLtWinEdge(state->getRcvLeftWinEdge());
+  ctrlAckPdu->setMyRtWinEdge(dtcp->getRcvRtWinEdge());
 
   ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());
 
@@ -1196,21 +1195,49 @@ void DTP::sendEmptyDTPDU()
 
 void DTP::notifyAboutUnableMaintain()
 {
+  //FIX A2 - activate when CDAP Splitter is ready
+  return;
   // Notify User Flow that we were unable to maintain the QoS for this connection
-  CDAPMessage* inactivMsg = new CDAP_M_Unable_Maintain;
+  CDAPMessage* uMaintainMsg = new CDAP_M_Unable_Maintain;
   SDU* sdu = new SDU();
-  sdu->addUserData(inactivMsg);
+  sdu->addUserData(uMaintainMsg);
   send(sdu, northO);
+}
+
+
+//TODO A! Find a spot to call this method
+void DTP::notifyStartSending()
+{
+  //FIX A2 - activate when CDAP Splitter is ready
+      return;
+  // Notify User Flow there has been no activity for awhile.
+  CDAPMessage* cdapMsg = new CDAP_M_START_SENDING();
+  SDU* sdu = new SDU();
+  sdu->addUserData(cdapMsg);
+  send(sdu, northO);
+}
+
+void DTP::notifyStopSending()
+{
+  //FIX A2 - activate when CDAP Splitter is ready
+    return;
+  // Notify User Flow to Stop sending due to closed window and full closedWindowQ.
+  CDAPMessage* cdapMsg = new CDAP_M_STOP_SENDING();
+  SDU* sdu = new SDU();
+  sdu->addUserData(cdapMsg);
+  send(sdu, northO);
+
 }
 
 void DTP::notifyAboutInactivity()
 {
+  //FIX A2 - activate when CDAP Splitter is ready
+  return;
   // Notify User Flow there has been no activity for awhile.
   CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
   SDU* sdu = new SDU();
   sdu->addUserData(inactivMsg);
   send(sdu, northO);
-
 
 }
 
@@ -1223,8 +1250,8 @@ void DTP::runRcvrInactivityTimerPolicy()
     //XXX Why reset my sending direction when I am not receiving anything?
     // I can still be sending load of PDUs
     /* Default */
-    state->setSetDrfFlag(true);
-    runInitialSeqNumPolicy();
+//    state->setSetDrfFlag(true);
+//    runInitialSeqNumPolicy();
 
     //Discard any PDUs on the PDUretransmissionQueue
 //    clearRxQ();
@@ -1254,6 +1281,8 @@ void DTP::runSenderInactivityTimerPolicy()
   /* Default */
   state->setSetDrfFlag(true);
   runInitialSeqNumPolicy();
+
+  dtcp->getDTCPState()->updateSndLWE(state->getNextSeqNumToSendWithoutIncrement());
 
   //Discard any PDUs on the PDUretransmissionQueue
   clearRxQ();
@@ -1367,27 +1396,24 @@ void DTP::schedule(DTPTimers *timer, double time)
 
     case (DTP_SENDER_INACTIVITY_TIMER): {
 
-      //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
-
-      //TODO A! 3(MPL+R+A)
+      //3(MPL+R+A)
       unsigned int rxCount = 1;
       if(state->isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
 
 
-      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount)) + state->getQoSCube()->getATime()/1000 , timer);
+      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000) , timer);
       }
-//      scheduleAt(simTime() + 10, timer);
       break;
     }
     case (DTP_RCVR_INACTIVITY_TIMER): {
 
-      //TODO A1 Why schedule inactivity timer when there is not RxControl? -> Don't!
+
       unsigned int rxCount = 1;
       if(state->isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
-        //TODO A!
-        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount)) + state->getQoSCube()->getATime()/1000 , timer);
+
+        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
       }
       break;
     }
