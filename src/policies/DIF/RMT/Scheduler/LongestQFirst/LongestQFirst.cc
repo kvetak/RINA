@@ -36,8 +36,10 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
     }
     else if (direction == RMTQueue::INPUT)
     {
-        if (!waitingOnInput[port])
+        if (inputBusy[port] != true)
         {
+            inputBusy[port] = true;
+
             RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
             inQ->startTransmitting();
         }

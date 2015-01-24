@@ -49,6 +49,8 @@ void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
     }
     else
     {
+        inputBusy[port] = false;
+
         if (waitingOnInput[port] > 0)
         {
             waitingOnInput[port] -= 1;
