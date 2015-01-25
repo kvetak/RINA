@@ -81,10 +81,6 @@ void RMTPort::handleMessage(cMessage* msg)
         cPacket* packet = NULL;
         if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
         {
-            // TODO: remove this when packet sizes are correctly set at their creation
-            packet->setByteLength(sizeof(packet));
-
-            //setBusy();
             // start the transmission
             send(packet, southOutputGate);
 
