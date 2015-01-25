@@ -24,7 +24,7 @@
 class IDPerNQoS : public QueueIDGenBase
 {
   public:
-    virtual std::string generateID(PDU_Base* pdu);
+    virtual std::string generateID(PDU* pdu);
 };
 
 #endif /* IDPerNQoS_H_ */

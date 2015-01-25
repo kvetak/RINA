@@ -74,6 +74,9 @@ class RMTSchedulingBase : public cSimpleModule
      */
     std::map<RMTPort*, unsigned int> waitingOnInput;
 
+    // temporary
+    std::map<RMTPort*, bool> inputBusy;
+
   private:
 
     /**
