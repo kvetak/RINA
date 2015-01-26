@@ -156,7 +156,7 @@ void DistanceVectorPolicy::initialize()
     PDUFTGPolicy::initialize();
 
     // Default timeout 30 seconds.
-    setUpdateTimeout(30);
+    setUpdateTimeout(par("updateTimeout"));
 
     // Start the forwarding update timer routine.
     scheduleAt(

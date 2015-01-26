@@ -21,4 +21,7 @@ simple DistanceVectorPolicy like rina.DIF.RA.policies.Forwarding.IntPDUFTGPolicy
 {
     parameters:
         @display("i=block/socket");
+        
+        // Set the update message dispatching timeout.
+        int updateTimeout = default(30);
 }

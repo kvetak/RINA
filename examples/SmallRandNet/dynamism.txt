@@ -1,0 +1,14 @@
+[Config DistanceVector]
+
+**.H*.ipcProcess1.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.H?.ipcProcess1.resourceAllocator.pduFwdTabGenerator.netStateVisible = true
+**.H?.ipcProcess1.resourceAllocator.pduFwdTabGenerator.netStateMod 	= "^.^.^"
+
+**.R*.relayIpc.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+
+**.H?.AP[0].applicationEntity.iae.dstApName	= "App0Host!"
+**.H?.AP[0].applicationEntity.iae.dstAeName = "Ping"
+**.H?.AP[0].applicationEntity.iae.startAt 	= 210s
+**.H?.AP[0].applicationEntity.iae.pingAt 	= 211s
+**.H?.AP[0].applicationEntity.iae.rate 		= 5
+**.H?.AP[0].applicationEntity.iae.stopAt 	= 216s
