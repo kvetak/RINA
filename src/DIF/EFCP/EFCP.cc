@@ -26,14 +26,14 @@
 Define_Module(EFCP);
 
 EFCP::EFCP() {
-    // TODO Auto-generated constructor stub
+
 
 
 
 }
 
 EFCP::~EFCP() {
-    // TODO Auto-generated destructor stub
+
 }
 
 void EFCP::initialize(int step){
@@ -71,7 +71,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
    //Flow is not in EFCPTable -> create delimiting
     tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
 
-    //TODO A!: Add tmpEFCPEntry to efcpTable
+    //Add tmpEFCPEntry to efcpTable
     efcpTable->insertEntry(tmpEfcpEntry);
     tmpEfcpEntry->setFlow(flow);
   }

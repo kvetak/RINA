@@ -30,13 +30,13 @@ EFCPTable::EFCPTable()
 {
 
 //  efcpTable.clear();
-  // TODO Auto-generated constructor stub
+
 
 }
 
 EFCPTable::~EFCPTable()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 void EFCPTable::handleMessage(cMessage* msg){

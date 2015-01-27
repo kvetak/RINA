@@ -66,7 +66,7 @@ enum FLAGS{
 
 
 
-message PDU {
+packet PDU {
     @customize(true);
     string displayString;
     unsigned int version = 1;

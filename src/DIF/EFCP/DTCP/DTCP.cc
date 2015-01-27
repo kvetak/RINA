@@ -18,8 +18,8 @@
 Define_Module(DTCP);
 
 DTCP::DTCP() {
-  rxControl = NULL;
-  flowControl = NULL;
+//  rxControl = NULL;
+//  flowControl = NULL;
 
   ecnPolicy = NULL;
   rcvrFCPolicy = NULL;
@@ -74,6 +74,16 @@ void DTCP::createPolicyModule(cModule* policy, const char* prefix, const char* n
   }
 }
 
+unsigned int DTCP::getSenderLeftWinEdge() const
+{
+  return dtcpState->getSenderLeftWinEdge();
+}
+
+void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
+{
+  dtcpState->setSenderLeftWinEdge(senderLeftWinEdge);
+}
+
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");
@@ -92,13 +102,14 @@ void DTCP::initialize(int step)
 //TODO A2 based on DTPState create appropriate components
   if (dtp->state.isRxPresent())
   {
-    rxControl = new RXControl();
+//    rxControl = new RXControl();
   }
 
   if (dtp->state.isFCPresent())
   {
-    flowControl = new FlowControl();
-    flowControl->initialize();
+//    flowControl = new FlowControl();
+//    flowControl->initialize();
+
     if (dtp->state.isWinBased())
     {
 //      windowTimer = new WindowTimer();
@@ -133,14 +144,14 @@ void DTCP::flushAllQueuesAndPrepareToDie()
 
 DTCP::~DTCP()
 {
-  if (rxControl != NULL)
-  {
-    delete rxControl;
-  }
-  if (flowControl != NULL)
-  {
-    delete flowControl;
-  }
+//  if (rxControl != NULL)
+//  {
+//    delete rxControl;
+//  }
+//  if (flowControl != NULL)
+//  {
+//    delete flowControl;
+//  }
   flushAllQueuesAndPrepareToDie();
 //  if(dtcpState!=NULL){
 //    delete dtcpState;
@@ -181,7 +192,8 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
     /* Default */
 
     /* This policy has to be the one to impose the condition to set WindowClosed to True */
-    /* Default */ //FIXME A1 set value to these variables!
+    /* Default */
+    //TODO A2 Where else are these variables updated?
     if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
     {
 
@@ -204,26 +216,51 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
   if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
-
-    //TODO A3 Which one?
     unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
-//    unsigned int seqNum = dtpState->getCurrentPdu()->getSeqNum();
+
+    if(dtpState->getRcvLeftWinEdge() == 0){
+      seqNum = 0;
+    }
+
     if (dtcpState->isImmediate())
     {
-      //TODO A2 How to remove allowed gaps?
       //Update LeftWindowEdge removing allowed gaps;
+      dtpState->updateRcvLWE(seqNum);
+//      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+//
+//      PDUQ_t::iterator it;
+//      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+//      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+//      {
+//        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+//          dtpState->incRcvLeftWindowEdge();
+//
+//        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+//          continue;
+//        }else {
+//          if(pduQ->size() == 1 || it == pduQ->begin()){
+//            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+//              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+//            }
+//          }else{
+//            (*(it-1))->getSDUGap((*it));
+//          }
+//          break;
+//        }
+//      }
 
       //send an Ack/FlowControlPDU
       dtp->sendAckFlowPDU(seqNum, true);
 
-      //TODO A1 Add handling for A-timer != 0
+
       //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
+      //XXX How could there be any A-Timer when isImmediate returned true?
 
     }
     else
     {
-      //TODO A2
       //set A-timer for this PDU
+      dtp->startATimer(seqNum);
     }
 
     /* End default */
@@ -257,8 +294,9 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
   Enter_Method("SendingAckPolicy");
   if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
     /* Default */
-    //TODO A!
-    //Update LetWindowEdge
+
+    //Update RcvLetWindowEdge
+    dtpState->updateRcvLWE(timer->getSeqNum());
 
     //Invoke Delimiting
     dtp->delimitFromRMT(NULL);
@@ -315,10 +353,10 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
     ////      unsigned int myRcvRate;
     //      //TODO handle RcvRate
     //
-    //      //TODO A1 Send Ack/Flow Control PDU with LWE and RWE
+    //      // Send Ack/Flow Control PDU with LWE and RWE
     //
     //      sendAckFlowPDU();
-    //      //TODO A1 Send empty Transfer PDU with NextSeqNumToSend-1
+    //      // Send empty Transfer PDU with NextSeqNumToSend-1
     //
     //      DataTransferPDU* dataPdu = new DataTransferPDU();
     //      setPDUHeader(dataPdu);
@@ -347,14 +385,10 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     /* Default */
     unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     ackPDU(seqNum);
-    //TODO A!
-    //updateLeftWindowEdge
-    if(!dtcpState->getRxQ()->empty()){
-        dtpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
-      }else{
-        dtpState->setSenderLeftWinEdge(seqNum + 1);
-        dtpState->setSetDrfFlag(true);
-      }
+
+    //update SendLeftWindowEdge
+    dtcpState->updateSndLWE(seqNum + 1);
+    
     /* End default */
 
   }
@@ -530,19 +564,18 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
   std::vector<DTCPRxExpiryTimer*>::iterator it;
-  unsigned int lastLen;
-  lastLen = rxQ->size();
+
   for (unsigned int index = 0; index < rxQ->size(); )
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
+    unsigned int gap = dtp->state.getQoSCube()->getMaxAllowGap();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum )
+    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
     {
       dtcpState->deleteRxTimer(seqNum);
 
       continue;
-
     }
     index++;
   }
@@ -627,7 +660,10 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
       rxExpTimer->setSent(simTime().dbl());
       scheduleAt(simTime() + dtp->getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
-
+      break;
+    }
+    case(DTCP_SENDING_RATE_TIMER):{
+      scheduleAt(simTime() + dtcpState->getTimeUnit() / 1000, timer);
       break;
     }
   }
@@ -661,6 +697,10 @@ void DTCP::handleMessage(cMessage *msg){
         handleDTCPRxExpiryTimer(static_cast<DTCPRxExpiryTimer*>(timer));
         break;
       }
+      case(DTCP_SENDING_RATE_TIMER):{
+        handleSendingRateTimer((DTCPSendingRateTimer*)timer);
+        break;
+      }
 
     }
   }else{
@@ -674,6 +714,14 @@ void DTCP::handleWindowTimer(WindowTimer* timer){
   resetWindowTimer();
   dtp->sendControlAckPDU();
 
+}
+
+void DTCP::handleSendingRateTimer(DTCPSendingRateTimer* timer)
+{
+  dtcpState->setPdusSentInTimeUnit(0);
+
+  dtcpState->setSendingRateFullfilled(false);
+  schedule(timer);
 }
 
 unsigned int DTCP::getNextSndCtrlSeqNum(){
@@ -726,7 +774,7 @@ unsigned int DTCP::getRcvCredit()
 
 unsigned long DTCP::getSendingTimeUnit()
 {
-   return flowControl->getSendingTimeUnit();
+   return dtcpState->getSendingTimeUnit();
 }
 
 
@@ -829,4 +877,9 @@ void DTCP::incDupFC()
 unsigned int DTCP::getDupFC() const
 {
   return dtcpState->getDupFC();
+}
+
+void DTCP::updateSenderLWE(unsigned int seqNum)
+{
+  dtcpState->updateSndLWE(seqNum);
 }

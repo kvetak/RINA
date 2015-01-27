@@ -24,7 +24,9 @@
  */
 
 #include <DTCPState.h>
+
 Define_Module(DTCPState);
+
 void DTCPState::initFC()
 {
   rcvRtWinEdge = rcvCredit;
@@ -36,12 +38,16 @@ void DTCPState::initFC()
   dupFC = 0;
 
   //TODO A1 load from some config
+  timeUnit = 1000;
+  sendingTimeUnit = 1000;
   rcvBuffersPercentFree = 100;
   rcvBufferPercentThreshold = 75;
   sendingRate = 2;
 
   configRcvrRate = 50;
   rcvrRate = configRcvrRate;
+
+
 }
 
 DTCPState::DTCPState()
@@ -59,8 +65,7 @@ DTCPState::DTCPState()
 
   dataReXmitMax = 3;
 
-
-
+  senderLeftWinEdge = 0;
 
   initFC();
 
@@ -89,6 +94,14 @@ unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
   this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
+}
+
+unsigned int DTCPState::getSenderLeftWinEdge() const {
+    return senderLeftWinEdge;
+}
+
+void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
+    this->senderLeftWinEdge = senderLeftWinEdge;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const
@@ -371,7 +384,31 @@ void DTCPState::incDupFC()
   dupFC++;
 }
 
+unsigned long DTCPState::getTimeUnit() const
+{
+  return timeUnit;
+}
+
 unsigned int DTCPState::getDupFC() const
 {
   return dupFC;
+}
+
+unsigned long DTCPState::getSendingTimeUnit() const
+{
+  return sendingTimeUnit;
+}
+
+void DTCPState::setSendingTimeUnit(unsigned long sendingTimeUnit)
+{
+  this->sendingTimeUnit = sendingTimeUnit;
+}
+
+void DTCPState::updateSndLWE(unsigned int seqNum)
+{
+  if(!getRxQ()->empty()){
+      setSenderLeftWinEdge(getRxQ()->front()->getPdu()->getSeqNum());
+    }else{
+      setSenderLeftWinEdge(seqNum);
+    }
 }

@@ -101,23 +101,24 @@ void RMTQueue::redrawGUI()
     disp.setTagArg("t", 0, desc.str().c_str());
 }
 
-void RMTQueue::handleMessage(cMessage *msg)
+void RMTQueue::handleMessage(cMessage* msg)
 {
-    if (msg->isSelfMessage())
+    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
     {
-        if (!opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
-        {
-            releasePDU();
-        }
+        releasePDU();
         delete msg;
+    }
+    else if (dynamic_cast<cPacket*>(msg) != NULL)
+    {
+        enqueuePDU((cPacket*)msg);
     }
     else
     {
-        enqueuePDU(msg);
+        EV << "handleMessage(): unsupported message type!" << endl;
     }
 }
 
-void RMTQueue::enqueuePDU(cMessage* pdu)
+void RMTQueue::enqueuePDU(cPacket* pdu)
 {
     queue.push_back(pdu);
     emit(sigRMTPDURcvd, this);
@@ -128,7 +129,7 @@ void RMTQueue::releasePDU(void)
 {
     if (this->getLength() > 0)
     {
-        cMessage* pdu = queue.front();
+        cPacket* pdu = queue.front();
         queue.pop_front();
         send(pdu, outputGate);
 
@@ -154,9 +155,9 @@ void RMTQueue::startTransmitting()
     bubble("Releasing a PDU...");
 }
 
-cMessage* RMTQueue::dropLast()
+cPacket* RMTQueue::dropLast()
 {
-    cMessage* dropped = queue.back();
+    cPacket* dropped = queue.back();
     bubble("Dropping a PDU...");
     queue.pop_back();
     redrawGUI();
@@ -165,11 +166,11 @@ cMessage* RMTQueue::dropLast()
 
 void RMTQueue::markCongestionOnLast()
 {
-    cMessage* msg = queue.back();
+    cPacket* msg = queue.back();
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     {
-        PDU_Base* pdu = (PDU_Base*) msg;
+        PDU* pdu = (PDU*) msg;
         pdu->setFlags(pdu->getFlags() | 0x01);
     }
     else
@@ -255,12 +256,11 @@ cGate* RMTQueue::getInputGate() const
 
 unsigned int RMTQueue::getFirstPDUPayloadLength()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+    PDU* pdu = dynamic_cast<PDU*>(queue.front());
 
     if (pdu != NULL)
     {
-        // TODO: waiting for Marcel to implement this
-        // return pdu->getSize();
+        return pdu->getSize();
     }
     {
         EV << "The first message isn't a data PDU!" << endl;
@@ -271,12 +271,11 @@ unsigned int RMTQueue::getFirstPDUPayloadLength()
 
 unsigned int RMTQueue::getLastPDUPayloadLength()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+    PDU* pdu = dynamic_cast<PDU*>(queue.back());
 
     if (pdu != NULL)
     {
-        // TODO: waiting for Marcel to implement this
-        // return pdu->getSize();
+        return pdu->getSize();
     }
     {
         EV << "The last message isn't a data PDU!" << endl;
@@ -287,7 +286,7 @@ unsigned int RMTQueue::getLastPDUPayloadLength()
 
 unsigned short RMTQueue::getFirstPDUQoSID()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.front());
+    PDU* pdu = dynamic_cast<PDU*>(queue.front());
 
     if (pdu != NULL)
     {
@@ -302,7 +301,7 @@ unsigned short RMTQueue::getFirstPDUQoSID()
 
 unsigned short RMTQueue::getLastPDUQoSID()
 {
-    PDU_Base* pdu = dynamic_cast<PDU_Base*>(queue.back());
+    PDU* pdu = dynamic_cast<PDU*>(queue.back());
 
     if (pdu != NULL)
     {

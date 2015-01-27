@@ -19,10 +19,9 @@ Define_Module(Test);
 
 void Test::initialize()
 {
-    // TODO - Generated method body
+
 }
 
 void Test::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
 }

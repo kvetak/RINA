@@ -119,14 +119,4 @@ unsigned int PDU::getSize(){
 //  return os.str();
 //}
 
-//PDU::PDU()
-//{
-//  // TODO Auto-generated constructor stub
-//
-//}
-//
-//PDU::~PDU()
-//{
-//  // TODO Auto-generated destructor stub
-//}
 

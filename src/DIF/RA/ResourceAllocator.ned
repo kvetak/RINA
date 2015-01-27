@@ -15,8 +15,8 @@
 
 package rina.DIF.RA;
 
-import rina.DIF.RA.policies.QueueAlloc.IntQueueAlloc;
-import rina.DIF.RA.policies.QueueIDGen.IntQueueIDGen;
+import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
+import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 
 
 module ResourceAllocator
@@ -40,10 +40,10 @@ module ResourceAllocator
             @display("p=420,60");
         }
 
-        queueAllocPolicy: <queueAllocPolicyName> like IntQueueAlloc {
+        queueAllocPolicy: <queueAllocPolicyName> like IntRAQueueAlloc {
             @display("p=60,163");
         }
-        queueIdGenerator: <queueIdGenName> like IntQueueIDGen {
+        queueIdGenerator: <queueIdGenName> like IntRAQueueIDGen {
             @display("p=180,163");
         }
 }

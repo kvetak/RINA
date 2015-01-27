@@ -21,32 +21,44 @@ Define_Module(RMTPort);
 
 void RMTPort::initialize()
 {
+    ready = false; // port should get activated by RA
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
-    ready = false;
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
 
-    redrawGUI();
-
     sigRMTPortPDURcvd = registerSignal(SIG_RMT_PortPDURcvd);
     sigRMTPortPDUSent = registerSignal(SIG_RMT_PortPDUSent);
-    sigRMTPortReadyToServe = registerSignal(SIG_RMT_PortReadyToServe);
+    sigRMTPortReady = registerSignal(SIG_RMT_PortReadyToServe);
 }
 
-void RMTPort::handleMessage(cMessage *msg)
+void RMTPort::postInitialize()
 {
-    if (msg->getArrivalGate() == southInputGate)
+    // this will be NULL if this IPC doesn't use a channel
+    outputChannel = southOutputGate->findTransmissionChannel();
+}
+
+void RMTPort::handleMessage(cMessage* msg)
+{
+    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "portTransmitEnd"))
+    { // a PDU transmit procedure has just been finished
+        setReady();
+        //emit(sigRMTPortPDUSent, this);
+        emit(sigRMTPortReady, this);
+        delete msg;
+    }
+    else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
         { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
         }
-        else if (dynamic_cast<PDU_Base*>(msg) != NULL)
-        { // still unsure about whether this'll be needed
+        else if (dynamic_cast<PDU*>(msg) != NULL)
+        {
+            // get a proper queue for this message
             RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateID((PDU_Base*)msg).c_str());
+                                             queueIdGen->generateID((PDU*)msg).c_str());
 
             if (inQueue != NULL)
             {
@@ -54,7 +66,7 @@ void RMTPort::handleMessage(cMessage *msg)
             }
             else
             {
-                EV << "no input queue with respective ID is available!";
+                EV << "no input queue with such ID is available!";
             }
         }
         else
@@ -64,12 +76,41 @@ void RMTPort::handleMessage(cMessage *msg)
 
         emit(sigRMTPortPDURcvd, this);
     }
-    else if (northInputGates.count(msg->getArrivalGate()))
+    else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
     {
-        send(msg, southOutputGate);
-        emit(sigRMTPortPDUSent, this);
-        setReady();
-        emit(sigRMTPortReadyToServe, this);
+        cPacket* packet = NULL;
+        if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
+        {
+            // start the transmission
+            send(packet, southOutputGate);
+
+            // determine when should the port be ready to serve again
+            if (outputChannel != NULL)
+            { // we're using a channel, likely with some sort of data rate/delay
+                simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
+//                EV << "!!!!!!!!! transmit start: " << simTime()
+//                   << "; transmit end: " << transmitEnd << endl;
+                if (transmitEnd > simTime())
+                { // transmit requires some simulation time
+                    scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
+                }
+                else
+                {
+                    setReady();
+                    emit(sigRMTPortPDUSent, this);
+                }
+            }
+            else
+            { // there isn't any delay or rate control in place
+                setReady();
+                //emit(sigRMTPortPDUSent, this);
+                emit(sigRMTPortReady, this);
+            }
+        }
+        else
+        {
+            EV << "this type of message isn't supported!" << endl;
+        }
     }
 }
 
@@ -166,6 +207,7 @@ bool RMTPort::isReady()
 void RMTPort::setReady()
 {
     ready = true;
+    emit(sigRMTPortReady, this);
     redrawGUI();
 }
 

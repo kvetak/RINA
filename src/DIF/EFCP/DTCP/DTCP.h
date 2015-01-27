@@ -27,8 +27,7 @@
 
 #include <csimplemodule.h>
 
-#include "FlowControl.h"
-#include "RXControl.h"
+//#include "RXControl.h"
 #include "DTCPState.h"
 #include "DTPState.h"
 #include "DTP.h"
@@ -53,7 +52,6 @@
 #include "DTCPRateReductionPolicyBase.h"
 
 class DTP;
-class FlowControl;
 
 class DTCP: public cSimpleModule {
     friend class DTP;
@@ -61,8 +59,8 @@ class DTCP: public cSimpleModule {
 
     DTP* dtp;
     DTCPState *dtcpState;
-    FlowControl* flowControl;
-    RXControl* rxControl;
+//    FlowControl* flowControl;
+//    RXControl* rxControl;
 
     DTCPECNPolicyBase* ecnPolicy;
     DTCPRcvrFCPolicyBase* rcvrFCPolicy;
@@ -82,7 +80,7 @@ class DTCP: public cSimpleModule {
 
     /*Timers*/
     WindowTimer* windowTimer;
-
+    DTCPSendingRateTimer sendingRateTimer;
 
     void schedule(DTCPTimers *timer, double time = 0.0);
     void resetWindowTimer();
@@ -90,6 +88,7 @@ class DTCP: public cSimpleModule {
     void sendAckPDU();
     void flushAllQueuesAndPrepareToDie();
 
+    void handleSendingRateTimer(DTCPSendingRateTimer* timer);
 
 public:
 
@@ -102,8 +101,8 @@ public:
 
 
     void handleWindowTimer(WindowTimer* timer);
-
     void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
+
 
     void updateRcvRtWinEdge(DTPState* dtpState);
 
@@ -116,9 +115,6 @@ public:
     unsigned int getSndRtWinEdge();
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
     unsigned int getRcvRtWinEdge();
-
-    void setSndRate(unsigned int sendingRate);
-    unsigned int getSndRate();
 
     unsigned int getRcvCredit();
 
@@ -150,6 +146,10 @@ public:
 
     void incDupFC();
     unsigned int getDupFC() const;
+
+    unsigned int getSenderLeftWinEdge() const;
+    void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
+    void updateSenderLWE(unsigned int seqNum);
 
     /* Run Policies */
     bool runECNPolicy(DTPState* dtpState);

@@ -38,6 +38,7 @@ class DTCPState : public cSimpleModule
   private:
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
+    unsigned int senderLeftWinEdge;
     unsigned int sndRtWinEdge;
     unsigned int rcvRtWinEdgeSent;
 //    unsigned int rtt;
@@ -50,14 +51,38 @@ class DTCPState : public cSimpleModule
     unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
     unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
 
-    unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgement that will be tried before declaring an error.
+    unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgment that will be tried before declaring an error.
 
     /* Moved from FC */
+    unsigned long timeUnit; //This field contains the unit of time in milliseconds over which the rate is computed.
     unsigned int sendingRate; // This variable contains the number of PDUs that may be sent in one Time Unit. The rate is defined such that the sender may send the specified number of PDUs in that unit of time. Thus, the rate will not necessarily generate a steady flow, but  may exhibit a bursty pattern.
 
     unsigned int pdusSentInTimeUnit; //This variable contains the number of PDUs sent in this Time Unit. When PDUsSentinTimeUnit equals SndrRate, the sender must wait for the beginning of a new time unit before additional PDUs may be sent.
+    unsigned long sendingTimeUnit; //The time period used to measure the SendingRate (measured in milliseconds).
+
+    /* Without getters/setters */
+    unsigned int sendBytesFree; // The number of bytes that this flow can assume it has available for Writes.
+    unsigned int sendBytesPercentFree; // The percent of bytes that are free for Writes.
+    unsigned int sendBytesThreshold; //The number of free bytes at which flow control blocks the user from doing any more Writes.
+    unsigned int sendBytesPercentThresh; //The percent of free bytes at which flow control blocks the user from doing any more Writes.
+    unsigned int sendBuffersFree; //The number of buffers of MaxSDU size that this flow can assume it has available for Writes.
+    unsigned int sendBuffersPercentFree; //The percent of buffers of MaxSDU size that are free for Writes.
+    unsigned int sendBuffersThreshold; //The number of free buffers at which flow control blocks the user from doing any more Writes.
+    unsigned int sendBufferPercentThreshold; //The percent of free buffers at which flow control blocks the user from doing any more Writes.
+    /* End without getters/setters */
+
     unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
+
+    /* Without getters/setters */
+    unsigned int pdusRcvdinTimeUnit; //This variable contains the number of PDUs received in this Time Unit. When PDUsRcvdinTimeUnit equals RcvrRate, the receiver is allowed to discard any PDUs received until a new time unit begins.
+    unsigned int rcvBytesFree; //The number of bytes that this flow can assume it has available for incoming PDUs on this connection.
+    unsigned int rcvBytesPercentFree; //The percent of bytes that are free for incoming PDUs on this connection.
+    unsigned int rcvBytesThreshold; //The number of free bytes at which flow control does not move the Right Window Edge.
+    unsigned int rcvBytesPercentThreshold; //The percent of free bytes at which flow control does not move the Right Window Edge.
+    unsigned int rcvBuffersFree; //The number of buffers of MaxPDU size that this flow can assume it has available for incoming PDUs
+    /* End without getters/setters */
+
     unsigned int rcvBuffersPercentFree; //The percent of buffers of MaxPDU size that are free.
     unsigned int rcvBufferPercentThreshold; //The percent of free buffers at which flow control does not advance the Right Window Edge.
 
@@ -74,6 +99,10 @@ class DTCPState : public cSimpleModule
 
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
+
+
+
+
     void clearPDUQ(PDUQ_t* pduQ);
 
   public:
@@ -87,6 +116,8 @@ class DTCPState : public cSimpleModule
     void setRcvRtWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
     unsigned int getSenderRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
+    unsigned int getSenderLeftWinEdge() const;
+    void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
 //    bool isSetDrfFlag() const;
 //    void setSetDrfFlag(bool setDrfFlag);
     unsigned int getRcvCredit() const;
@@ -134,6 +165,8 @@ class DTCPState : public cSimpleModule
     void setSendingRateFullfilled(bool sendingRateFullfilled);
     unsigned int getPdusSentInTimeUnit() const;
     void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
+    unsigned long getSendingTimeUnit() const;
+    void setSendingTimeUnit(unsigned long sendingTimeUnit);
     unsigned int getSendingRate() const;
     void setSendingRate(unsigned int sendingRate);
     unsigned int getRcvrRate() const;
@@ -145,6 +178,11 @@ class DTCPState : public cSimpleModule
     unsigned int getDupAcks() const;
     void incDupFC();
     unsigned int getDupFC() const;
+    unsigned long getTimeUnit() const;
+
+    void updateSndLWE(unsigned int seqNum);
+
+
 };
 
 #endif /* DTCPSTATE_H_ */

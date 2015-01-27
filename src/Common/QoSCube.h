@@ -94,12 +94,12 @@ class QoSCube {
     /**
      * @brief Attribute holding partial delivery flag
      */
-    bool partDeliv;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    bool partDeliv;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once? (SHOULD NOT be part of QoS cube see EFCPSpec)
 
     /**
      * @brief Attribute holding incomplete delivery flag
      */
-    bool incompleteDeliv;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    bool incompleteDeliv;       //Incomplete Delivery - Can SDUs with missing pieces be delivered? (SHOULD NOT be part of QoS cube see EFCPSpec)
 
     /**
      * @brief Attribute holding in-order delivery flag

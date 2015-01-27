@@ -26,12 +26,9 @@
 
 DTCPReceivingFCPolicyBase::DTCPReceivingFCPolicyBase()
 {
-  // TODO Auto-generated constructor stub
-
 }
 
 DTCPReceivingFCPolicyBase::~DTCPReceivingFCPolicyBase()
 {
-  // TODO Auto-generated destructor stub
 }
 

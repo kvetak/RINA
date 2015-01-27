@@ -36,13 +36,12 @@ RXControl::RXControl()
 
 RXControl::~RXControl()
 {
-  // TODO Auto-generated destructor stub
 }
 
-unsigned int RXControl::getRightWinEdge(){
-
-  return rightWinEdge;
-}
+//unsigned int RXControl::getRightWinEdge(){
+//
+//  return rightWinEdge;
+//}
 
 //unsigned int RXControl::getNextSndCtrlSeqNum()
 //{

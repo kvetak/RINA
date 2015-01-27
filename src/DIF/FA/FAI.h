@@ -33,6 +33,9 @@
 #include "ModuleAccess.h"
 #include "RABase.h"
 
+//Constants
+extern const char* TIM_CREREQ;
+
 class FAI : public FAIBase  {
   public:
     FAI();
@@ -46,7 +49,7 @@ class FAI : public FAIBase  {
     virtual void receiveAllocateResponseNegative();
     virtual bool receiveCreateRequest();
     virtual bool receiveCreateResponsePositive(Flow* flow);
-    virtual bool receiveCreateResponseNegative(Flow* flow);
+    virtual bool receiveCreateResponseNegative();
     virtual bool receiveDeallocateRequest();
     virtual void receiveDeleteRequest();
     virtual void receiveDeleteResponse();
@@ -64,6 +67,10 @@ class FAI : public FAIBase  {
   protected:
     int portId;
     int cepId;
+
+    //TODO: Vesely - What about timeouts for M_DELETE and other control messages?
+    cMessage* creReqTimer;
+    double creReqTimeout;
 
     FABase* FaModule;
 

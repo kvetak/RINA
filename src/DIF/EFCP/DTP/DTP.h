@@ -24,7 +24,7 @@
 #include "DTCP.h"
 //#include "PDU.h"
 #include "DataTransferPDU.h"
-//#include "ControlPDU_m.h"
+#include "ControlPDU_m.h"
 #include "SDU.h"
 #include "RMT.h"
 
@@ -57,7 +57,7 @@ class DTP : public cSimpleModule
     DTCP* dtcp;
     Flow* flow;
 
-    const QoSCube *qosCube;
+//    const QoSCube *qosCube;
 
     /* Policies */
     DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;
@@ -69,11 +69,8 @@ class DTP : public cSimpleModule
     std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
-//    std::vector<DataTransferPDU*> closedWindowQ;
-//    std::vector<RxExpiryTimer*> rxQ; //retransmissionQ //TODO A2 This variable should probably go into some other class
-    /* Input queues - from RMT to App */
-//    std::vector<DataTransferPDU*> reassemblyPDUQ;
 
+    // TODO A1 Move them to State-Vector
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
@@ -105,8 +102,8 @@ class DTP : public cSimpleModule
 
 //    void handleMsgFromDelimiting(Data* msg);
     void handleMsgFromDelimitingnew(SDU* sdu);
-    void handleMsgFromRmtnew(PDU* msg);
-    void handleDataTransferPDUFromRmtnew(DataTransferPDU* pdu);
+    void handleMsgFromRMT(PDU* msg);
+    void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
     /* Send */
 
@@ -180,6 +177,7 @@ class DTP : public cSimpleModule
     void sendAckOnlyPDU(unsigned int seqNum);
     void resetSenderInactivTimer();
     void rcvrBufferStateChange();
+    bool isDuplicate(unsigned int seqNum);
 
   public:
     DTP();
@@ -197,6 +195,7 @@ class DTP : public cSimpleModule
 
     void flushAllQueuesAndPrepareToDie();
     void createPolicyModule(cModule* policy, const char* prefix, const char* name);
+    void startATimer(unsigned int seqNum);
 
   protected:
     virtual void handleMessage(cMessage *msg);

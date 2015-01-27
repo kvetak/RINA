@@ -393,9 +393,11 @@ void RA::bindMediumToRMT()
 
     // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtAllocator->addPort(NULL);
-    port->setReady();
     // connect the port to the bottom
     interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
+    // finalize initial port parameters
+    port->postInitialize();
+    port->setReady();
 
     // create extra queues for management purposes
     rmtAllocator->addMgmtQueues(port);
@@ -428,6 +430,8 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtAllocator->addPort(flow);
     interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
+    // finalize initial port parameters
+    port->postInitialize();
 
     // 3) allocate queues
     // create extra queues for management purposes (this will likely go away later)
@@ -488,9 +492,7 @@ void RA::createNM1Flow(Flow *flow)
     //Command target FA to allocate flow
     bool status = fab->receiveAllocateRequest(flow);
 
-    //FIXME: Vesely - WAIT!
-
-    //If AllocationRequest ended by creating connections
+    //If AllocationRequest ended by creating connections between this IPC's modules
     if (status)
     {
         // connect the new flow to the RMT
@@ -498,6 +500,7 @@ void RA::createNM1Flow(Flow *flow)
         // update the PDU forwarding table
         fwdTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
         // TODO: remove this when management isn't piggy-backed anymore
+        // (port shouldn't be ready to send out data when the flow isn't yet allocated)
         port->setReady();
     }
     else

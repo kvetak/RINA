@@ -26,13 +26,13 @@
 
 EFCPTableEntry::EFCPTableEntry()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 EFCPTableEntry::~EFCPTableEntry()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 
@@ -78,4 +78,6 @@ bool EFCPTableEntry::flushDTPs()
   for(it = efcpiTab.begin(); it != efcpiTab.end(); ++it){
     (*it)->getDtp()->flushAllQueuesAndPrepareToDie();
   }
+  //TODO B2 return value based EFCPI deallocation status
+  return true;
 }

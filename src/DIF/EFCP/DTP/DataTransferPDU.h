@@ -49,6 +49,9 @@ class DataTransferPDU : public DataTransferPDU_Base
       UserDataFieldPtr& getUserDataField();
       void setUserDataField(const UserDataFieldPtr& userDataField);
 
+      int getSDUGap(const DataTransferPDU* other);
+      unsigned int getSDUSeqNum() const;
+
   };
 
 typedef std::vector<DataTransferPDU*> PDUQ_t;

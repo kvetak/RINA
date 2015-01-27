@@ -66,6 +66,14 @@
 		</DA>	
 	</Host>
 	<Router id="interiorRouter">
+        <IPC id="relayIpc">
+            <RA>
+                <Flows>
+                    <Flow apn="11_Layer11" qosCube="1"/>
+                    <Flow apn="22_Layer11" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>   	
 		<DA>
 			<Directory>
 				<APN apn="App1">
