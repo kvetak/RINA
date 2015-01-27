@@ -353,6 +353,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
         dtpState->setSenderLeftWinEdge(dtcpState->getRxQ()->front()->getPdu()->getSeqNum());
       }else{
         dtpState->setSenderLeftWinEdge(seqNum + 1);
+        dtpState->setSetDrfFlag(true);
       }
     /* End default */
 
