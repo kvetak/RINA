@@ -382,6 +382,7 @@ void RMT::portToPort(cMessage* msg)
         {
             EV << getFullPath()
                << ": no suitable output (N-1)-flow present for relay!" << endl;
+            return;
         }
         outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
     }
