@@ -29,6 +29,6 @@ simple DTPState
     bool winBased = default(true);
     bool rateBased = default(false);
     
-    double rtt @unit(s) = default(1s);
+    double rtt @unit(s) = default(2s);
     
 }

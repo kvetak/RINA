@@ -72,6 +72,8 @@ void DTP::runRTTEstimatorPolicy()
   if (rttEstimatorPolicy == NULL || rttEstimatorPolicy->run(state, dtcp->getDTCPState()))
   {
 
+    double newRtt;
+    double alpha = 0.5;
     /* Default */
     ControlPDU* pdu = (ControlPDU*) state->getCurrentPdu();
     if (pdu->getType() & PDU_SEL_BIT){
@@ -86,14 +88,15 @@ void DTP::runRTTEstimatorPolicy()
           if((*it)->getPdu()->getSeqNum() == seqNum){
             double now = simTime().dbl();
             double sent = (*it)->getSent();
+            newRtt = now - sent;
 
-            state->setRtt(now - sent);
           }
         }
 
       }
     }
-
+    double tmp = (alpha * state->getRtt()) + ((1 - alpha)* newRtt);
+    state->setRtt(tmp);
     /* End Default */
   }
 

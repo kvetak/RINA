@@ -40,6 +40,8 @@ simple EFCP
   		string senderInactivityPolicy = default("");
   		string initialSeqNumPolicy = default("");
   		string rttEstimatorPolicy = default("");
+  		
+  		double rtt @unit(s) = default(1s);
         
 
         
