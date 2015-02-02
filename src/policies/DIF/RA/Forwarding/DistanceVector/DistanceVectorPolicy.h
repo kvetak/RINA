@@ -32,7 +32,7 @@ class DistanceVectorPolicy :
 {
 private:
     /* msec between updates. */
-    unsigned int updateT = 0;
+    unsigned int updateT;
 
     // Just prepare an update fo a destination host.
     PDUFTGUpdate * prepareFSUpdate(Address destination);
