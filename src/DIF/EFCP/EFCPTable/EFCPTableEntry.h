@@ -51,7 +51,7 @@ class EFCPTableEntry
 
     std::string info() const;
     Delimiting* getDelimit() const;
-    const TEFCPITab* getEfcpiTab();
+    TEFCPITab* getEfcpiTab();
     const Flow* getFlow() const;
     void setDelimit(Delimiting* delimit);
     void setFlow(Flow* flow);

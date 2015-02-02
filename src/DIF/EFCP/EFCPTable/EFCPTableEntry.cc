@@ -52,7 +52,7 @@ void EFCPTableEntry::setDelimit(Delimiting* delimit)
   this->delimit = delimit;
 }
 
-const TEFCPITab* EFCPTableEntry::getEfcpiTab()
+TEFCPITab* EFCPTableEntry::getEfcpiTab()
 {
   return &efcpiTab;
 }

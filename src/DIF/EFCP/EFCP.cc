@@ -27,9 +27,6 @@ Define_Module(EFCP);
 
 EFCP::EFCP() {
 
-
-
-
 }
 
 EFCP::~EFCP() {
@@ -217,7 +214,14 @@ bool EFCP::deleteEFCPI(Flow* flow)
     return false;
   }
 
-  entry->flushDTPs();
+//  entry->flushDTPs();
+  delete entry->getDelimit();
+  for(;!entry->getEfcpiTab()->empty();){
+    delete entry->getEfcpiTab()->front()->getDtp();
+    delete entry->getEfcpiTab()->front()->getDtcp();
+    entry->getEfcpiTab()->erase(entry->getEfcpiTab()->begin());
+
+  }
 
 
   return true;

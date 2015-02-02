@@ -44,6 +44,7 @@ DTP::~DTP()
 {
 
   flushAllQueuesAndPrepareToDie();
+  delete state;
   if(state->isDtcpPresent()){
 
   }
@@ -180,6 +181,10 @@ void DTP::flushAllQueuesAndPrepareToDie()
     senderInactivityTimer = NULL;
     cancelAndDelete(rcvrInactivityTimer);
     rcvrInactivityTimer = NULL;
+
+//    if(state->isDtcpPresent()){
+//      delete dtcp;
+//    }
 
 
 }

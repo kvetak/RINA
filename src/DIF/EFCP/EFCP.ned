@@ -41,7 +41,7 @@ simple EFCP
   		string initialSeqNumPolicy = default("");
   		string rttEstimatorPolicy = default("");
   		
-  		double rtt @unit(s) = default(1s);
+  		double rtt @unit(s) = default(2s);
         
 
         

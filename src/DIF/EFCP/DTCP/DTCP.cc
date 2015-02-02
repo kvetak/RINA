@@ -146,6 +146,7 @@ void DTCP::initialize(int step)
 void DTCP::flushAllQueuesAndPrepareToDie()
 {
   clearRxQ();
+  delete dtcpState;
 }
 
 DTCP::~DTCP()
@@ -686,7 +687,9 @@ void DTCP::schedule(DTCPTimers* timer, double time){
         rxExpTimer->setSent(simTime().dbl());
       }
       //TODO B1 (RTT + A + epsilon)
-      scheduleAt(simTime() + dtp->state->getRtt() + dtp->state->getQoSCube()->getATime()/1000 + DTP_EPSILON, rxExpTimer);
+      double aTime = dtp->state->getQoSCube()->getATime();
+      double rtt = dtp->state->getRtt();
+      scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{
