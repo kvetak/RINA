@@ -833,7 +833,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //RequestFAICreateNewConnection( PDU.FlowID )
     //Fi
   }
-
+  //XXX hotfix
+delete pdu;
 }
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)
