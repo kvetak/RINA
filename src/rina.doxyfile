@@ -32,7 +32,7 @@ PROJECT_NAME = RINASim
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER = Q4&nbsp;2014
+PROJECT_NUMBER = January&nbsp;2015
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer
@@ -45,7 +45,7 @@ PROJECT_BRIEF = Documentation&nbsp;of&nbsp;framework&nbsp;for&nbsp;OMNeT++
 # exceed 55 pixels and the maximum width should not exceed 200 pixels.
 # Doxygen will copy the logo to the output directory.
 
-PROJECT_LOGO = C:\Users\Mordeth\Documents\GitHub\RINA\doc\pristine_logo.png
+PROJECT_LOGO = g:\Documents\GitHub\RINA\doc\pristine_logo.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
