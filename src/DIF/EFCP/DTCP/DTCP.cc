@@ -349,7 +349,8 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
     }
     //unsigned int sndLtWinEdge;
     if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
-      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
+      bubble("ControlAckPDU: Missing PDU on the receiver end.");
+//      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
     }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
       sendAck = true;
     }
@@ -365,7 +366,8 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
       ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
       updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
     }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
-      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
+      bubble("ControlAckPDU: Missing PDU on the sender's end.");
+//      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
     }
 
     //      unsigned int myRtWinEdge;

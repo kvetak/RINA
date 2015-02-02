@@ -857,7 +857,8 @@ void DTP::handleDTPATimer(ATimer* timer)
     //Update RcvLeftWindowEdge
 
     if(state->getRcvLeftWinEdge() > timer->getSeqNum()){
-      throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+      bubble("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+//      throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
     }else{
       state->setRcvLeftWinEdge(timer->getSeqNum());
     }
