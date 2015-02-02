@@ -43,6 +43,10 @@ enum opCode_t {
 	M_START_R = 15;
 	M_STOP = 16;
 	M_STOP_R = 17;
+	M_INACTIV = 18;
+	M_UNABLE_MAINTAIN = 19;
+	M_STOP_SENDING = 20;
+	M_START_SENDING = 21;
 }
 
 // Values for the flags field.
@@ -361,4 +365,52 @@ packet CDAP_M_Stop_R extends CDAPMessage {
 	result_t result;
 	object_t object;
 	int filter;			
+}
+
+//////////////////////////////////////////////////////
+// To inform app (socket) about inactivity //////////
+/////////////////////////////////////////////////////
+message CDAP_M_Inactiv extends CDAPMessage {
+    displayString = "b=15,15,oval,#FF0000,#FF0000,0";
+	unsigned char opCode enum(opCode_t) = M_INACTIV;
+//	int invokeID;	
+//	unsigned char flags enum(flagValues_t);
+//	int version;	
+//	result_t result;
+//	object_t object;
+//	int filter;			
+}
+
+
+
+//////////////////////////////////////////////////////
+// To inform app (socket) about that we were unable //
+// to maintain QoS parameters                       //
+//////////////////////////////////////////////////////
+message CDAP_M_Unable_Maintain extends CDAPMessage {
+    displayString = "b=15,15,oval,#FF0000,#FF0000,0";
+	unsigned char opCode enum(opCode_t) = M_UNABLE_MAINTAIN;
+//	int invokeID;	
+//	unsigned char flags enum(flagValues_t);
+//	int version;	
+//	result_t result;
+//	object_t object;
+//	int filter;			
+}
+
+
+//////////////////////////////////////////////////////
+// To inform app (socket) to STOP sending           //
+//////////////////////////////////////////////////////
+message CDAP_M_STOP_SENDING extends CDAPMessage {
+    displayString = "b=15,15,oval,#FF0000,#FF0000,0";
+	unsigned char opCode enum(opCode_t) = M_STOP_SENDING;
+}
+
+//////////////////////////////////////////////////////
+// To inform app (socket) to START sending again    //
+//////////////////////////////////////////////////////
+message CDAP_M_START_SENDING extends CDAPMessage {
+    displayString = "b=15,15,oval,#FF0000,#FF0000,0";
+	unsigned char opCode enum(opCode_t) = M_START_SENDING;
 }

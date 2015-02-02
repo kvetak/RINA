@@ -15,33 +15,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP;
-import rina.DIF.EFCP.DTP.DTP;
-import rina.DIF.EFCP.DTP.DumbGate;
+#ifndef __RINA_DUMBGATE_H_
+#define __RINA_DUMBGATE_H_
 
+#include <omnetpp.h>
 
-module EFCPI
+/**
+ * TODO - Generated class
+ */
+class DumbGate : public cSimpleModule
 {
-    @display("i=block/layer;bgb=517,232");
-    gates:
-        inout northIo; //to FAI
-        inout southIo; //to RMT
-    submodules:
-        dtp: DTP {
-            @display("p=41,112");
-        }
-        northG: DumbGate {
-            @display("p=41,29;is=vs");
-        }
-        southG: DumbGate {
-            @display("p=41,201;is=vs");
-        }
-    connections allowunconnected:
-        northG.northIo <--> northIo;
-        dtp.northIo <--> northG.southIo;
-//        
-        dtp.southIo <--> southG.northIo;
-        southG.southIo <--> southIo;
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+};
 
-
-}
+#endif

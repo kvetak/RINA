@@ -61,15 +61,18 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   efcpiModule->buildInside();
 
   efcpiModule->scheduleStart(simTime());
-  efcpiModule->callInitialize();
+
 
 
   //-1. Check for existing Delimiting module for this Flow
   EFCPTableEntry* tmpEfcpEntry;
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
     tmpEfcpEntry = new EFCPTableEntry();
+
+
+
    //Flow is not in EFCPTable -> create delimiting
-    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule));
+    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, flow->getSrcPortId()));
 
     //Add tmpEFCPEntry to efcpTable
     efcpTable->insertEntry(tmpEfcpEntry);
@@ -78,16 +81,17 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
   const QoSCube* qosCube = resourceAllocator->getQoSCubeById(flow->getConId().getQoSId());
   DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
-//  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
-//  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
-//  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
+  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
+  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
+  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
+  dtpModule->par("rttEstimatorPolicy").setStringValue(par("rttEstimatorPolicy").stringValue());
+  dtpModule->callInitialize(0);
   dtpModule->setFlow(flow);
   dtpModule->setQoSCube(qosCube);
   dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
-
 
 
   //2. If necessary create DTCP module
@@ -150,6 +154,8 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   efcpiToRmtO->connectTo(efcpToEfcpiO);
   efcpToEfcpiI->connectTo(efcpiToRmtI);
 
+  efcpiModule->callInitialize();
+
   return efcpi;
 }
 
@@ -174,20 +180,22 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
-    dtcpModule->callInitialize();
+//    dtcpModule->callInitialize();
 
 
     return dtcpModule;
 }
 
 
-Delimiting* EFCP::createDelimiting(cModule* efcpiModule){
+Delimiting* EFCP::createDelimiting(cModule* efcpiModule, int portId){
 
-    //TODO A! Incorporate some differentiators into Delimiting module name to support multiple instances of Delimiting to exist.
+
+    std::ostringstream name;
+    name << DELIMITING_MODULE_NAME << "_" << portId;
     //0. Create Delimiting module within EFCPModule
     cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
 
-    Delimiting* delimit = (Delimiting*)delimitType->create(DELIMITING_MODULE_NAME, this->getParentModule());
+    Delimiting* delimit = (Delimiting*)delimitType->create(name.str().c_str(), this->getParentModule());
     delimit->finalizeParameters();
     delimit->buildInside();
     delimit->scheduleStart(simTime());

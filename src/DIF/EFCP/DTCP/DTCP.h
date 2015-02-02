@@ -179,6 +179,7 @@ public:
 protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
+    int numInitStages() const { return 2;};
 };
 
 #endif /* DTCP_H_ */

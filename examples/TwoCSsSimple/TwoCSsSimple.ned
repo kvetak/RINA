@@ -13,23 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+package rina.examples.TwoCSsSimple;
 
 import ned.DatarateChannel;
-import rina.CS.Host1AP;
+import rina.CS.TestHost1AP;
 
 
-network TwoCSs
+network TwoCSsSimple
 {
     @display("bgb=325,196");
     submodules:
-        host1: Host1AP {
+        host1: TestHost1AP {
             @display("p=82,92");
         }
-        host2: Host1AP {
+        host2: TestHost1AP {
             @display("p=231,92");
         }
     connections allowunconnected:
-        host1.medium <--> host2.medium;
-//        host1.medium <--> DatarateChannel {delay = 0.5s; ber = 0; } <--> host2.medium;
+//        host1.medium <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 0.4s; ber = 0; } <--> host2.medium;
 }

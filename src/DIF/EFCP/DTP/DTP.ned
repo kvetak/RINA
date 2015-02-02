@@ -28,6 +28,7 @@ simple DTP
         string rcvrInactivityPolicy = default("");
         string senderInactivityPolicy = default("");
         string initialSeqNumPolicy = default("");
+        string rttEstimatorPolicy = default("");
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT

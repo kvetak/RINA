@@ -35,6 +35,7 @@
 #include "DTPRcvrInactivityPolicyBase.h"
 #include "DTPSenderInactivityPolicyBase.h"
 #include "DTPInitialSeqNumPolicyBase.h"
+#include "DTPRTTEstimatorPolicyBase.h"
 
 //#include "SDUs.h"
 
@@ -53,7 +54,7 @@ class DTP : public cSimpleModule
     int deletePdu;
     bool pduDroppingEnabled;
 
-    DTPState state; //state of this data-transfer
+    DTPState* state; //state of this data-transfer
     DTCP* dtcp;
     Flow* flow;
 
@@ -63,6 +64,7 @@ class DTP : public cSimpleModule
     DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;
     DTPSenderInactivityPolicyBase* senderInactivityPolicy;
     DTPInitialSeqNumPolicyBase* initialSeqNumPolicy;
+    DTPRTTEstimatorPolicyBase* rttEstimatorPolicy;
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -70,7 +72,7 @@ class DTP : public cSimpleModule
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
 
-    // TODO A1 Move them to State-Vector
+
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
@@ -101,7 +103,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromDelimitingnew(SDU* sdu);
+    void handleMsgFromDelimiting(SDU* sdu);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -140,6 +142,7 @@ class DTP : public cSimpleModule
 //    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
     void runSenderInactivityTimerPolicy();
+    void runRTTEstimatorPolicy();
 
 
 
@@ -178,6 +181,10 @@ class DTP : public cSimpleModule
     void resetSenderInactivTimer();
     void rcvrBufferStateChange();
     bool isDuplicate(unsigned int seqNum);
+    void notifyAboutInactivity();
+    void notifyAboutUnableMaintain();
+    void notifyStopSending();
+    void notifyStartSending();
 
   public:
     DTP();
@@ -200,6 +207,7 @@ class DTP : public cSimpleModule
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
+    int numInitStages() const { return 2;};
 
 };
 

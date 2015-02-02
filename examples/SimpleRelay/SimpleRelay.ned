@@ -14,6 +14,7 @@
 // 
 
 package rina.examples.SimpleRelay;
+import ned.DatarateChannel;
 import rina.CS.Host1AP;
 import rina.CS.InteriorRouter2Int;
 
@@ -32,6 +33,6 @@ network SimpleRelay
             @display("p=290,101");
         }
     connections allowunconnected:
-        host1.medium <--> interiorRouter.medium++;
-        host2.medium <--> interiorRouter.medium++;
+        host1.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
+        host2.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
 }

@@ -29,7 +29,6 @@ Define_Module(Delimiting);
 Delimiting::Delimiting()
 {
  seqNum = 1;
-
 }
 
 void Delimiting::initialize(int step){

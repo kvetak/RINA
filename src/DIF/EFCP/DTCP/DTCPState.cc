@@ -33,18 +33,18 @@ void DTCPState::initFC()
   sndRtWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
-  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
+//  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
   dupAcks = 0;
   dupFC = 0;
 
-  //TODO A1 load from some config
-  timeUnit = 1000;
-  sendingTimeUnit = 1000;
-  rcvBuffersPercentFree = 100;
-  rcvBufferPercentThreshold = 75;
-  sendingRate = 2;
 
-  configRcvrRate = 50;
+//  timeUnit = 1000;
+//  sendingTimeUnit = 1000;
+  rcvBuffersPercentFree = 100;
+//  rcvBufferPercentThreshold = 75;
+//  sendingRate = 2;
+
+//  configRcvrRate = 50;
   rcvrRate = configRcvrRate;
 
 
@@ -53,23 +53,14 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
-  //TODO B1
-  rcvCredit = 10;
-  sndCredit = 10; //TODO this variable should be set from the opposite side
+  rcvRtWinEdgeSent = 0;
+  lastControlSeqNumRcv = 0;
+  senderLeftWinEdge = 0;
   immediate = true;
 
-  rcvRtWinEdgeSent = 0;
 
-  nextSenderControlSeqNum = 1;
-  lastControlSeqNumRcv = 0;
 
-  dataReXmitMax = 3;
 
-  senderLeftWinEdge = 0;
-
-  initFC();
-
-  //TODO B! Fix
 //  rtt = 10;
 
 }
@@ -190,6 +181,12 @@ unsigned int DTCPState::getNextSndCtrlSeqNum()
 {
   return nextSenderControlSeqNum++;
 }
+
+unsigned int DTCPState::getNextSndCtrlSeqNumNoInc()
+{
+  return nextSenderControlSeqNum;
+}
+
 unsigned int DTCPState::getLastCtrlSeqNumRcv(){
   return lastControlSeqNumRcv;
 }
@@ -411,4 +408,34 @@ void DTCPState::updateSndLWE(unsigned int seqNum)
     }else{
       setSenderLeftWinEdge(seqNum);
     }
+}
+
+void DTCPState::handleMessage(cMessage* msg)
+{
+}
+
+void DTCPState::initialize(int step)
+{
+  if(step == 1){
+    if(par("aTime").doubleValue() != 0){
+      immediate = false;
+    }
+
+    rcvCredit = par("rcvCredit");
+    sndCredit = par("initialSenderCredit");
+    nextSenderControlSeqNum = par("nextSenderControlSeqNum");
+    dataReXmitMax = par("dataReXmitMax");
+
+
+    maxClosedWinQueLen = par("maxClosedWinQueLen");
+    timeUnit = par("timeUnit");
+    sendingTimeUnit = par("sendingTimeUnit");
+    rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
+    initFC();
+  }
+}
+
+void DTCPState::initFromQoS(const QoSCube* qosCube)
+{
+
 }

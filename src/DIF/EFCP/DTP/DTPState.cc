@@ -17,42 +17,59 @@
 
 #include "DTPState.h"
 
+Define_Module(DTPState);
+
 DTPState::DTPState() {
 
 
   initDefaults();
 }
 
+void DTPState::initialize(int step)
+{
+  if(step == 0){
+
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("p", 0, 240);
+    disp.setTagArg("p", 1, 50);
+
+    maxFlowSDUSize = par("maxSDUSize");
+    maxFlowPDUSize = par("maxPDUSize");
+
+    rtt = par("rtt");
+
+    winBased = par("winBased");
+    rateBased = par("rateBased");
+
+    rxPresent = par("rxPresent");
+
+    if(rxPresent || winBased || rateBased){
+      dtcpPresent =  true;
+      //TODO A! create DTCP module here?
+    }
+
+
+  }
+
+}
+
+
 void DTPState::initDefaults(){
 
   currentPDU = NULL;
-
-
-
   dropDup = 0;
-
   setDRFFlag = true;
-
-  //TODO A1 load it from flow->qosparameters
-  dtcpPresent = true;
+  dtcpPresent = false;
   winBased = false;
   rateBased = false;
   incompDeliv = false;
-  maxFlowPDUSize = MAX_PDU_SIZE;
+
 
   lastSDUDelivered = 0;
-
-  //TODO A1
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-
-
   qoSCube = NULL;
-
-  //TODO B! Fix
-  rtt = 3;
-
 
 }
 
@@ -240,8 +257,8 @@ double DTPState::getRtt() const
 
 void DTPState::setRtt(double rtt)
 {
-  this->rtt = (this->rtt + rtt)/2;
-//  this->rtt = rtt;
+//  this->rtt = (this->rtt + rtt)/2;
+  this->rtt = rtt;
 }
 
 void DTPState::setSetDrfFlag(bool setDrfFlag)
@@ -435,6 +452,10 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
     //TODO B1 Is it correct?
     //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
   }
+}
+
+void DTPState::handleMessage(cMessage* msg)
+{
 }
 
 

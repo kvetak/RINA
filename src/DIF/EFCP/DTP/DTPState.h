@@ -25,7 +25,7 @@
 #ifndef DTPSTATE_H_
 #define DTPSTATE_H_
 
-
+#include <omnetpp.h>
 #include <cobject.h>
 #include <queue>
 #include <vector>
@@ -47,7 +47,7 @@ typedef enum
 /*
  *
  */
-class DTPState : public cObject {
+class DTPState : public cSimpleModule {
 
 private:
     PDU* currentPDU;
@@ -176,6 +176,13 @@ public:
 
     void updateRcvLWE(unsigned int seqNum);
     void updateSndLWE();
+
+
+
+protected:
+  virtual void handleMessage(cMessage *msg);
+  virtual void initialize(int step);
+  int numInitStages() const { return 2;};
 };
 
 #endif /* DTPSTATE_H_ */

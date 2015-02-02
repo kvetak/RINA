@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,23 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+/*
+ * @file DTPRTTEstimatorPolicyBase.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jan 22, 2015
+ * @brief
+ * @detail
+ */
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
+#include <RTTEstimator/DTPRTTEstimatorPolicyBase.h>
 
-
-network TwoCSs
+DTPRTTEstimatorPolicyBase::DTPRTTEstimatorPolicyBase()
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-        host1.medium <--> host2.medium;
-//        host1.medium <--> DatarateChannel {delay = 0.5s; ber = 0; } <--> host2.medium;
+
+
 }
+
+DTPRTTEstimatorPolicyBase::~DTPRTTEstimatorPolicyBase()
+{
+
+}
+

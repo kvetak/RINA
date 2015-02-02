@@ -50,17 +50,27 @@ UserDataField::UserDataField(const UserDataField& other){
  */
 void UserDataField::addData(SDU* data){
 
+
+  if(pduData.empty()){
+    //sduSeqnum is set only for first SDU/fragment in UserDataField
+    sduSeqNum = data->getSeqNum();
+    sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
+  }
   take(data);
   pduData.push_back(data);
   size += data->getSize();
   sduDelimitFlags |= data->getFragType();
 
+
+
   //TOOD A2 Handle all delimitFlags (eg noLength)
-  if(data->getDataType() == SDU_TYPE || (data->getDataType() == SDU_FRAGMENT_TYPE && data->getFragType() == SDU_FRAG_FIRST)){
+ /* The code below is weird. Left it here for future decryption.
+  if(data->getDataType() == SDU_COMPLETE_TYPE || (data->getDataType() == SDU_FRAGMENT_TYPE && data->getFragType() == SDU_FRAG_FIRST)){
     //TODO B1 SduSeqNum is the first SDU/fragment in userDataField, so it should be set only once.
     sduSeqNum = data->getSeqNum();
     sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
   }
+  */
 }
 
 SDU* UserDataField::getData(){

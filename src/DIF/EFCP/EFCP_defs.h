@@ -36,7 +36,9 @@
 #define DRF_FLAG 0x80
 #define ECN_FLAG 0x01
 #define MAX_CLOSED_WIN_Q_LEN 20
-#define MPL_TIME 20
+#define MPL_TIME 4
+#define DTP_EPSILON 0.0001
+#define INITIAL_SENDER_CREDIT 10
 
 #define ECN_POLICY_PREFIX "rina.DIF.EFCP.policies.ECN."
 #define ECN_POLICY_NAME "ecnPolicy"
@@ -89,6 +91,9 @@
 
 #define INITIAL_SEQ_NUM_POLICY_PREFIX "rina.DIF.EFCP.policies.InitialSeqNum."
 #define INITIAL_SEQ_NUM_POLICY_NAME "initialSeqNumPolicy"
+
+#define RTT_ESTIMATOR_POLICY_PREFIX "rina.DIF.EFCP.policies.RTTEstimator."
+#define RTT_ESTIMATOR_POLICY_NAME "rttEstimatorPolicy"
 
 
 

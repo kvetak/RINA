@@ -15,33 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP;
-import rina.DIF.EFCP.DTP.DTP;
-import rina.DIF.EFCP.DTP.DumbGate;
+package rina.DIF.EFCP.DTP;
 
-
-module EFCPI
+//
+// TODO auto-generated module
+//
+simple DumbGate
 {
-    @display("i=block/layer;bgb=517,232");
+    @display("i=block/process");
     gates:
-        inout northIo; //to FAI
-        inout southIo; //to RMT
-    submodules:
-        dtp: DTP {
-            @display("p=41,112");
-        }
-        northG: DumbGate {
-            @display("p=41,29;is=vs");
-        }
-        southG: DumbGate {
-            @display("p=41,201;is=vs");
-        }
-    connections allowunconnected:
-        northG.northIo <--> northIo;
-        dtp.northIo <--> northG.southIo;
-//        
-        dtp.southIo <--> southG.northIo;
-        southG.southIo <--> southIo;
-
-
+        inout northIo;
+        inout southIo;
 }

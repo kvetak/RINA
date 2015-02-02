@@ -51,8 +51,11 @@ class DataTransferPDU : public DataTransferPDU_Base
 
       int getSDUGap(const DataTransferPDU* other);
       unsigned int getSDUSeqNum() const;
-
-  };
+      /**
+       * This method needs to be run when you change userDataField_var's size via direct pointer.
+       */
+    void updatePacketSize();
+};
 
 typedef std::vector<DataTransferPDU*> PDUQ_t;
 

@@ -26,7 +26,6 @@
 #ifndef DTCPSTATE_H_
 #define DTCPSTATE_H_
 
-#include <cobject.h>
 #include <omnetpp.h>
 #include <DTCPTimers_m.h>
 
@@ -101,8 +100,6 @@ class DTCPState : public cSimpleModule
 
 
 
-
-
     void clearPDUQ(PDUQ_t* pduQ);
 
   public:
@@ -128,6 +125,7 @@ class DTCPState : public cSimpleModule
     void updateRcvRtWinEdge(unsigned int rcvLtWinEdge);
 //    unsigned int getNextCtrlSeqNum();
     unsigned int getNextSndCtrlSeqNum();
+    unsigned int getNextSndCtrlSeqNumNoInc();
     unsigned int getLastCtrlSeqNumRcv();
     void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
     void incRcvRtWinEdge();
@@ -182,6 +180,11 @@ class DTCPState : public cSimpleModule
 
     void updateSndLWE(unsigned int seqNum);
 
+  protected:
+    virtual void handleMessage(cMessage *msg);
+    virtual void initialize(int step);
+    int numInitStages() const { return 3;};
+    void initFromQoS(const QoSCube* qosCube);
 
 };
 

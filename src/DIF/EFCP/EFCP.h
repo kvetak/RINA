@@ -33,6 +33,7 @@
 #include "Flow.h"
 #include "EFCPTable.h"
 #include "ExternConsts.h"
+#include "EFCP_defs.h"
 #include "RA.h"
 
 //#include "EFCPInstance.h"
@@ -80,7 +81,7 @@ private:
     EFCPTable* efcpTable;
     RA* resourceAllocator;
 
-    Delimiting* createDelimiting(cModule* efcpi);
+    Delimiting* createDelimiting(cModule* efcpi, int portId);
     DTCP* createDTCP(cModule* efcpi);
 
 

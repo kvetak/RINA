@@ -18,7 +18,7 @@
 //
 
 enum DataType{
-    	SDU_TYPE 				= 1;
+    	SDU_COMPLETE_TYPE		= 1;
     	SDU_FRAGMENT_TYPE		= 2;
 }
 

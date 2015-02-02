@@ -47,7 +47,7 @@ void SDU::copy(const SDU& other){
  */
 unsigned int SDU::getSize() const
 {
-  if (dataType_var == SDU_TYPE)
+  if (dataType_var == SDU_COMPLETE_TYPE)
   {
     return size_var;
   }

@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,23 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+package rina.DIF.EFCP.policies.RTTEstimator;
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
-
-
-network TwoCSs
+moduleinterface IntDTPRTTEstimatorPolicy
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-        host1.medium <--> host2.medium;
-//        host1.medium <--> DatarateChannel {delay = 0.5s; ber = 0; } <--> host2.medium;
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }

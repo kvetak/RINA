@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -87,30 +89,34 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
 void DTCP::initialize(int step)
 {
   Enter_Method("initialize");
+  if(step == 1){
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("p", 0, 340);
+    disp.setTagArg("p", 1, 140);
+
   dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
-//TODO A1 Fill it with appropriate values
-//  dtcpState = new DTCPState();
+  //  dtcpState = new DTCPState();
   cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
 
-  dtcpState = (DTCPState*)dtcpStateType->create("dtcpState", this->getParentModule());
+  dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
   dtcpState->finalizeParameters();
   dtcpState->buildInside();
   dtcpState->scheduleStart(simTime());
-  dtcpState->callInitialize();
+//  dtcpState->callInitialize();
 
 //TODO A2 based on DTPState create appropriate components
-  if (dtp->state.isRxPresent())
+  if (dtp->state->isRxPresent())
   {
 //    rxControl = new RXControl();
   }
 
-  if (dtp->state.isFCPresent())
+  if (dtp->state->isFCPresent())
   {
 //    flowControl = new FlowControl();
 //    flowControl->initialize();
 
-    if (dtp->state.isWinBased())
+    if (dtp->state->isWinBased())
     {
 //      windowTimer = new WindowTimer();
 //      schedule(windowTimer);
@@ -134,7 +140,7 @@ void DTCP::initialize(int step)
   createPolicyModule(reconcileFCPolicy, RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
   createPolicyModule(rateReductionPolicy, RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
 
-
+  }
 }
 
 void DTCP::flushAllQueuesAndPrepareToDie()
@@ -331,46 +337,61 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
   if(rcvrControlAckPolicy == NULL || rcvrControlAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
-    //      /* RcvrControlAck Policy with Default: */
-    //      //"adjust as necessary" :D great advice
-    //      ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)pdu;
-    ////      TODO: unsigned int lastCtrlSeqNumRcv;
-    //
-    ////      unsigned int sndLtWinEdge;
-    ////      if(state.getNextSeqNumToSend() < ctrlAckPDU->getSndLtWinEdge()){
-    //      state.setNextSeqNumToSend(ctrlAckPDU->getSndLtWinEdge());
-    ////      }
-    ////      unsigned int sndRtWinEdge;
-    //
-    //      dtcp->setSndRtWinEdge(ctrlAckPDU->getSndRtWinEdge());
-    ////      unsigned int myLtWinEdge;
-    ////      if(state.getRcvLeftWinEdge() < ctrlAckPDU->getMyLtWinEdge()){
-    //      state.setRcvLeftWinEdge(ctrlAckPDU->getMyLtWinEdge());
-    ////      }
-    ////      unsigned int myRtWinEdge;
-    //      //TODO verify this
-    //      dtcp->setRcvRtWinEdge(ctrlAckPDU->getMyRtWinEdge());
-    ////      unsigned int myRcvRate;
-    //      //TODO handle RcvRate
-    //
-    //      // Send Ack/Flow Control PDU with LWE and RWE
-    //
-    //      sendAckFlowPDU();
-    //      // Send empty Transfer PDU with NextSeqNumToSend-1
-    //
-    //      DataTransferPDU* dataPdu = new DataTransferPDU();
-    //      setPDUHeader(dataPdu);
-    //      unsigned int seqNum = state.getNextSeqNumToSend();
-    //      dataPdu->setSeqNum(seqNum - 1);
-    //      state.setNextSeqNumToSend(seqNum);
-    //      UserDataField* userData = new UserDataField();
-    //      dataPdu->setUserDataField(userData);
-    //
-    //      sendToRMT(dataPdu);
-    //
-    //      //dataPdu->setSeqNum(state.getLastSeqNumSent());
-    //
-    //      /* End default RcvrControlAck policy */
+    bool sendAck = false;
+    bool sendFC = true;
+    /* RcvrControlAck Policy with Default: */
+    //"adjust as necessary" :D great advice
+    ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
+    //      TODO: unsigned int lastCtrlSeqNumRcv;
+    if(dtcpState->getNextSndCtrlSeqNumNoInc() != ctrlAckPDU->getLastCtrlSeqNumRcv()){
+      // Does not necessary means an error.
+
+    }
+    //unsigned int sndLtWinEdge;
+    if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
+      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
+    }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
+      sendAck = true;
+    }
+
+    //unsigned int sndRtWinEdge;
+    if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
+      sendFC = true;
+    }
+
+    //unsigned int myLtWinEdge;
+    if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
+      //serves as an ack -> remove PDUs from RxQ
+      ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
+      updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
+    }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
+      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
+    }
+
+    //      unsigned int myRtWinEdge;
+    if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
+      dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
+    }
+
+    //unsigned int myRcvRate;
+    if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
+      dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
+    }
+
+    // Send Ack/Flow Control PDU with LWE and RWE
+    dtp->sendAckFlowPDU();
+
+    // Send empty Transfer PDU with NextSeqNumToSend-1
+    DataTransferPDU* dataPdu = new DataTransferPDU();
+    dtp->setPDUHeader(dataPdu);
+    unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
+    dataPdu->setSeqNum(seqNum);
+    UserDataField* userData = new UserDataField();
+
+    dataPdu->setUserDataField(userData);
+
+    dtp->sendToRMT(dataPdu);
+
 
     /* End default */
 
@@ -402,8 +423,9 @@ bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
   if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
     /* Default */
     dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-    //TODO A2 Block further Write API calls on this port-id
+    //Block further Write API calls on this port-id
     // eg. -> Create new CDAP Message type and send it upwards
+    dtp->notifyStopSending();
     /* End default */
 
   }
@@ -569,7 +591,7 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
-    unsigned int gap = dtp->state.getQoSCube()->getMaxAllowGap();
+    unsigned int gap = dtp->state->getQoSCube()->getMaxAllowGap();
     //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
     if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
     {
@@ -601,10 +623,11 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 
   if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
   {
-    //TODO A1 Indicate an error "Unable to maintain the QoS for this connection"
-
     dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
-    throw cRuntimeError("Unable to maintain the QoS for this connection");
+    // Notify User Flow that we were unable to maintain the QoS for this connection
+    dtp->notifyAboutUnableMaintain();
+//    throw cRuntimeError("Unable to maintain the QoS for this connection");
+    ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
   }
   else
   {
@@ -656,10 +679,12 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       break;
     }
     case (DTCP_RX_EXPIRY_TIMER): {
-      //TODO A! Expiry Timer time interval
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
-      rxExpTimer->setSent(simTime().dbl());
-      scheduleAt(simTime() + dtp->getRxTime(), rxExpTimer); //TODO A! simTime() + something. Find the SOMETHING!
+      if(rxExpTimer->getExpiryCount() == 0){
+        rxExpTimer->setSent(simTime().dbl());
+      }
+      //TODO B1 (RTT + A + epsilon)
+      scheduleAt(simTime() + dtp->state->getRtt() + dtp->state->getQoSCube()->getATime()/1000 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{
