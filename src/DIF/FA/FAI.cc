@@ -275,6 +275,9 @@ bool FAI::createBindings() {
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
 
     //IPCModule.northIo <--> Efcp.fai
+//    cChannelType* channelType = cChannelType::get("rina.DIF.EFCP.DTP.PushBackChannel");
+//    cChannel* channel = channelType->create("test");
+//    gateEfcpUpOut->connectTo(gateIpcDownOut, channel);
     gateEfcpUpOut->connectTo(gateIpcDownOut);
     gateIpcDownIn->connectTo(gateEfcpUpIn);
 
