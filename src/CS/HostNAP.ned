@@ -20,12 +20,13 @@ package rina.CS;
 import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
+import rina.DAF.IRM.IPCResourceManager;
 import rina.DIF.IPCProcess;
 
 module HostNAP
 {
     parameters:
-        @display("i=device/pc;bgb=341,320");
+        @display("i=device/pc;bgb=257,442");
         @node;
 
         int nofAP = default(1);
@@ -35,21 +36,24 @@ module HostNAP
 
     submodules:
         AP[nofAP]: ApplicationProcess {
-            @display("p=117,56");
+            @display("p=64,68");
         }
 
         difAllocator: DIFAllocator {
-            @display("p=266,168");
+            @display("p=195,68");
         }
 
         ipcProcess0: IPCProcess {
-            @display("p=117,250");
+            @display("p=117,358");
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=117,168");
+            @display("p=117,276");
         }
 
+        ipcResourceManager: IPCResourceManager {
+            @display("p=117,180");
+        }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;
         ipcProcess0.northIo++ <--> ipcProcess1.southIo++;
