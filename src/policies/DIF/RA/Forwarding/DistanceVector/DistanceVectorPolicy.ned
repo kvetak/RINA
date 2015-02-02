@@ -15,9 +15,11 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-package rina.DIF.RA.policies.Forwarding.DistanceVector;
+package rina.policies.DIF.RA.Forwarding.DistanceVector;
 
-simple DistanceVectorPolicy like rina.DIF.RA.policies.Forwarding.IntPDUFTGPolicy
+import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
+
+simple DistanceVectorPolicy like IntPDUFTGPolicy
 {
     parameters:
         @display("i=block/socket");

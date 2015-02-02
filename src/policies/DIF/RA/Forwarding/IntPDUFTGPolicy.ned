@@ -15,9 +15,9 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-package rina.DIF.RA.policies.Forwarding.StaticRouting;
+package rina.policies.DIF.RA.Forwarding;
 
-simple StaticRoutingPolicy like rina.DIF.RA.policies.Forwarding.IntPDUFTGPolicy
+moduleinterface IntPDUFTGPolicy
 {
     parameters:
         @display("i=block/socket");
