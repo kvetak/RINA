@@ -34,6 +34,7 @@ import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
 import rina.DAF.IRM.IPCResourceManager;
 import rina.DIF.IPCProcess;
+//import rina.DIF.EFCP.DTP.PushBackChannel;
 
 
 module Host1AP
@@ -72,5 +73,6 @@ module Host1AP
         }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;
+//        ipcProcess0.northIo++ <--> PushBackChannel <--> ipcProcess1.southIo++;
         ipcProcess0.northIo++ <--> ipcProcess1.southIo++;
 }
