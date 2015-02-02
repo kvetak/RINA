@@ -28,7 +28,7 @@ Define_Module(DistanceVectorPolicy);
 
 DistanceVectorPolicy::DistanceVectorPolicy()
 {
-
+    updateT = 0;
 }
 
 DistanceVectorPolicy::~DistanceVectorPolicy()
