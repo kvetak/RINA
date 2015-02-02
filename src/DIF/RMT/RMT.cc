@@ -64,12 +64,16 @@ void RMT::initialize()
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
 
     // listen for a signal indicating that a new message has arrived into a queue
-    lisRMTMsgRcvd = new LisRMTPDURcvd(this);
-    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTMsgRcvd);
+    lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTQueuePDURcvd);
 
-    // listen for a signal indicating that a new message has left a port
-    lisRMTMsgSent = new LisRMTPDUSent(this);
-    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTMsgSent);
+    // listen for a signal indicating that a message has left a queue
+    lisRMTQueuePDUSent = new LisRMTQueuePDUSent(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTQueuePDUSent);
+
+    // listen for a signal indicating that a port is ready to serve
+    lisRMTPortReady = new LisRMTPortReady(this);
+    getParentModule()->subscribe(SIG_RMT_PortReadyToServe, lisRMTPortReady);
 }
 
 
@@ -106,7 +110,7 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
 }
 
 /**
- * Takes care of re-invocation of scheduling policy after a queue is popped.
+ * Takes care of re-invocation of the scheduling policy after a queue is popped.
  *
  * @param obj RMT queue object
  */
@@ -115,7 +119,26 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     Enter_Method("invokeQueueDeparturePolicies()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     qMonPolicy->onMessageDeparture(queue);
-    schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
+
+    // if this is an incoming PDU, take care of scheduler reinvocation
+    // (the output direction depends on port readiness, so it's done elsewhere)
+    if (queue->getType() == RMTQueue::INPUT)
+    {
+        schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue),
+                                     queue->getType());
+    }
+}
+
+/**
+ * Takes care of re-invocation of the scheduling policy after a port becomes ready.
+ *
+ * @param obj RMT queue object
+ */
+void RMT::invokePortReadyPolicies(cObject* obj)
+{
+    Enter_Method("invokePortReadyPolicies()");
+    RMTPort* port = check_and_cast<RMTPort*>(obj);
+    schedPolicy->finalizeService(port, RMTQueue::OUTPUT);
 }
 
 /**
@@ -187,6 +210,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  *
  * @param destAddr destination address
  * @param qosId qos-id
+ * @param useQoS (to be removed) indicator of whether the QoS info should be used
  * @return output port
  */
 RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
@@ -217,7 +241,7 @@ RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
  *
  * @param pdu PDU to be passed
  */
-void RMT::efcpiToPort(PDU_Base* pdu)
+void RMT::efcpiToPort(PDU* pdu)
 {
     RMTQueue* outQueue = NULL;
 
@@ -236,15 +260,13 @@ void RMT::efcpiToPort(PDU_Base* pdu)
 
     if (outGate != NULL)
     {
-        EV << this->getFullPath() << " passing a PDU to an output queue" << endl;
         send(pdu, outGate);
     }
     else
     {
-        EV << this->getFullPath() << " I can't reach any suitable (N-1)-flow!" << endl;
+        EV << getFullPath() << ": could not send out a PDU coming from EFCPI!" << endl;
         EV << "PDU dstAddr = " << pdu->getDstAddr().getApname().getName()
-           << ", qosId = " << pdu->getConnId().getQoSId() << endl;
-        fwTable->printAll();
+           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl;
     }
 }
 
@@ -253,19 +275,19 @@ void RMT::efcpiToPort(PDU_Base* pdu)
  *
  * @param pdu PDU to be passed
  */
-void RMT::portToEfcpi(PDU_Base* pdu)
+void RMT::portToEfcpi(PDU* pdu)
 {
     unsigned cepId = pdu->getConnId().getDstCepId();
     cGate* efcpiGate = efcpiOut[cepId];
 
     if (efcpiGate != NULL)
     {
-        EV << this->getFullPath() << " passing a PDU upwards to EFCPI " << cepId << endl;
         send(pdu, efcpiGate);
     }
     else
     {
-        EV << this->getFullPath() << " EFCPI " << cepId << " isn't present on this system! Notifying other modules." << endl;
+        EV << this->getFullPath() << ": EFCPI " << cepId
+           << " isn't present on this system! Notifying other modules." << endl;
         emit(sigRMTNoConnID, pdu);
         //delete pdu;
     }
@@ -277,7 +299,7 @@ void RMT::portToEfcpi(PDU_Base* pdu)
  *
  * @param pdu PDU to be passed
  */
-void RMT::efcpiToEfcpi(PDU_Base* pdu)
+void RMT::efcpiToEfcpi(PDU* pdu)
 {
     portToEfcpi(pdu);
 }
@@ -289,7 +311,6 @@ void RMT::efcpiToEfcpi(PDU_Base* pdu)
  */
 void RMT::portToRIB(CDAPMessage* cdap)
 {
-
     send(cdap, "ribdIo$o");
 }
 
@@ -315,15 +336,13 @@ void RMT::RIBToPort(CDAPMessage* cdap)
 
     if (outGate != NULL)
     {
-        EV << this->getFullPath() << " passing a CDAP message to an output queue" << endl;
         send(cdap, outGate);
     }
     else
     {
-        EV << "there isn't any suitable output queue available!" << endl;
-        EV << "PDU dstAddr = " << cdap->getDstAddr().getApname().getName()
-                   << ", qosId = 0";
-                fwTable->printAll();
+        EV << getFullPath() << ": could not send out a CDAP message!" << endl;
+        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
+           << ", qosId = 0" << endl;
     }
 }
 
@@ -339,19 +358,20 @@ void RMT::portToPort(cMessage* msg)
     RMTQueue* outQueue = NULL;
 
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     {
-        destAddr = ((PDU_Base*)msg)->getDstAddr();
-        short qosId = ((PDU_Base*)msg)->getConnId().getQoSId();
+        destAddr = ((PDU*)msg)->getDstAddr();
+        short qosId = ((PDU*)msg)->getConnId().getQoSId();
 
         outPort = fwTableLookup(destAddr, qosId);
         if (outPort == NULL)
         {
-            EV << "PORT NOT FOUND" << endl;
+            EV << getFullPath()
+               << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateID((PDU_Base*)msg).c_str());
+                queueIdGenerator->generateID((PDU*)msg).c_str());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {
@@ -360,7 +380,8 @@ void RMT::portToPort(cMessage* msg)
         outPort = fwTableLookup(destAddr, 0, false);
         if (outPort == NULL)
         {
-            EV << "PORT NOT FOUND" << endl;
+            EV << getFullPath()
+               << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
         outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
@@ -380,12 +401,12 @@ void RMT::portToPort(cMessage* msg)
 
     if (outGate != NULL)
     {
-        EV << this->getFullPath() << " relaying a message" << endl;
         send(msg, outGate);
     }
     else
     {
-        EV << this->getFullPath() << " I can't reach any suitable (N-1)-flow! Seems like none is allocated." << endl;
+        EV << getFullPath()
+           << ": couldn't retrieve the proper queue for this message!" << endl;
     }
 
 }
@@ -401,12 +422,12 @@ void RMT::processMessage(cMessage* msg)
 {
     std::string gate = msg->getArrivalGate()->getName();
 
-    if (dynamic_cast<PDU_Base*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != NULL)
     { // PDU arrival
-        PDU_Base* pdu = (PDU_Base*) msg;
+        PDU* pdu = (PDU*) msg;
 
         if (gate.substr(0, 1) == "p")
-        {
+        { // from a port
             if (pdu->getDstAddr() == thisIpcAddr)
             {
                 portToEfcpi(pdu);
@@ -421,7 +442,7 @@ void RMT::processMessage(cMessage* msg)
             }
         }
         else if (gate.substr(0, 7) == GATE_EFCPIO_)
-        {
+        { // from an EFCPI
             if (pdu->getDstAddr() == thisIpcAddr)
             {
                 efcpiToEfcpi(pdu);
@@ -437,7 +458,7 @@ void RMT::processMessage(cMessage* msg)
         CDAPMessage* cdap = (CDAPMessage*) msg;
 
         if (gate.substr(0, 1) == "p")
-        {
+        { // from a port
             if (cdap->getDstAddr() == thisIpcAddr)
             {
                 portToRIB(cdap);
@@ -448,7 +469,7 @@ void RMT::processMessage(cMessage* msg)
             }
         }
         else
-        {
+        { // from the RIBd
             RIBToPort(cdap);
         }
     }

@@ -26,12 +26,17 @@ RMTListeners::~RMTListeners()
     rmt = NULL;
 }
 
-void LisRMTPDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     rmt->invokeQueueArrivalPolicies(obj);
 }
 
-void LisRMTPDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     rmt->invokeQueueDeparturePolicies(obj);
+}
+
+void LisRMTPortReady::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->invokePortReadyPolicies(obj);
 }

@@ -30,7 +30,7 @@
 #include "RINASignals.h"
 #include "ExternConsts.h"
 #include "Address.h"
-#include "PDU_m.h"
+#include "PDU.h"
 #include "CDAPMessage_m.h"
 
 #include "PDUForwardingTable.h"
@@ -59,6 +59,7 @@ class RMT : public RMTBase
 
     virtual void invokeQueueArrivalPolicies(cObject* obj);
     virtual void invokeQueueDeparturePolicies(cObject* obj);
+    virtual void invokePortReadyPolicies(cObject* obj);
 
   protected:
     virtual void initialize();
@@ -83,9 +84,9 @@ class RMT : public RMTBase
     QueueIDGenBase* queueIdGenerator;
 
     void processMessage(cMessage* msg);
-    void efcpiToPort(PDU_Base* msg);
-    void efcpiToEfcpi(PDU_Base* msg);
-    void portToEfcpi(PDU_Base* msg);
+    void efcpiToPort(PDU* msg);
+    void efcpiToEfcpi(PDU* msg);
+    void portToEfcpi(PDU* msg);
     void RIBToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
@@ -93,8 +94,9 @@ class RMT : public RMTBase
     RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
 
     simsignal_t sigRMTNoConnID;
-    LisRMTPDURcvd* lisRMTMsgRcvd;
-    LisRMTPDUSent* lisRMTMsgSent;
+    LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
+    LisRMTQueuePDUSent* lisRMTQueuePDUSent;
+    LisRMTPortReady* lisRMTPortReady;
 
     // management methods for Resource Allocator
     void setOnWire(bool status) { onWire = status; };

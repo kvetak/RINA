@@ -40,15 +40,16 @@ void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
 {
     if (direction == RMTQueue::OUTPUT)
     {
-        if (waitingOnOutput[port] > 0)
+        if (port->isReady() && (waitingOnOutput[port] > 0))
         {
-            port->setBusy();
             waitingOnOutput[port] -= 1;
             processQueues(port, RMTQueue::OUTPUT);
         }
     }
     else
     {
+        inputBusy[port] = false;
+
         if (waitingOnInput[port] > 0)
         {
             waitingOnInput[port] -= 1;
