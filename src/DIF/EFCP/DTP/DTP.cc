@@ -44,7 +44,7 @@ DTP::~DTP()
 {
 
   flushAllQueuesAndPrepareToDie();
-  delete state;
+//  delete state;
   if(state->isDtcpPresent()){
 
   }
@@ -705,6 +705,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     }
     delimitFromRMT(NULL);
 
+    //XXX!!!!
+    return;
   }
   else
   {
@@ -788,6 +790,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       }
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
+      //XXX!!!!
+          return;
 
     }
     else
@@ -815,6 +819,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         }
 
         delimitFromRMT(pdu);
+        //XXX!!!!
+            return;
       }
       //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
     }
@@ -827,6 +833,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //RequestFAICreateNewConnection( PDU.FlowID )
     //Fi
   }
+
 }
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)

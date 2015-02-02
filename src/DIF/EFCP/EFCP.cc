@@ -215,10 +215,10 @@ bool EFCP::deleteEFCPI(Flow* flow)
   }
 
 //  entry->flushDTPs();
-  delete entry->getDelimit();
+  entry->getDelimit()->deleteModule();
   for(;!entry->getEfcpiTab()->empty();){
-    delete entry->getEfcpiTab()->front()->getDtp();
-    delete entry->getEfcpiTab()->front()->getDtcp();
+    entry->getEfcpiTab()->front()->getDtp()->getParentModule()->deleteModule();
+//    delete entry->getEfcpiTab()->front()->getDtcp()->deleteModule();
     entry->getEfcpiTab()->erase(entry->getEfcpiTab()->begin());
 
   }

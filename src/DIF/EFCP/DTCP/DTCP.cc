@@ -146,7 +146,7 @@ void DTCP::initialize(int step)
 void DTCP::flushAllQueuesAndPrepareToDie()
 {
   clearRxQ();
-  delete dtcpState;
+//  delete dtcpState;
 }
 
 DTCP::~DTCP()
