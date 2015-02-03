@@ -258,7 +258,7 @@ void RMTPort::setFlow(Flow* flow)
 
 void RMTPort::blockOutput()
 {
-    EV << getFullPath() << ": blocking the port output." >> endl;
+    EV << getFullPath() << ": blocking the port output." << endl;
     blocked = true;
     if (ready)
     {
@@ -268,7 +268,7 @@ void RMTPort::blockOutput()
 
 void RMTPort::unblockOutput()
 {
-    EV << getFullPath() << ": unblocking the port output." >> endl;
+    EV << getFullPath() << ": unblocking the port output." << endl;
     blocked = false;
     setReady();
 }
