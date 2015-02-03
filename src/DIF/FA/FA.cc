@@ -27,6 +27,7 @@
 const int RANDOM_NUMBER_GENERATOR = 0;
 const int MAX_PORTID = 65535;
 const int MAX_CEPID  = 65535;
+const char* MOD_NEFFLOWREQPOLICY = "newFlowRequestPolicy";
 
 Define_Module(FA);
 
@@ -39,15 +40,11 @@ FA::~FA() {
 }
 
 void FA::initPointers() {
-//    EV << ( dynamic_cast<FAITable*>(getParentModule()->getSubmodule(MOD_FAITABLE))
-//          == ModuleAccess<FAITable>(MOD_FAITABLE).get() ) << endl;
-//
-//    EV << ( dynamic_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA))
-//          == ModuleAccess<RABase>(MOD_RA).get() ) << endl;
     FaiTable = ModuleAccess<FAITable>(MOD_FAITABLE).get();
     Efcp = (EFCP*) ((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
-    ResourceAllocator = ModuleAccess<RABase>(MOD_RA).get();
+
     DifAllocator = ModuleAccess<DA>(MOD_DA).get();
+    NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
 }
 
 void FA::initialize() {
@@ -254,35 +251,7 @@ bool FA::receiveDeallocateRequest(Flow* flow) {
 }
 
 bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
-    Enter_Method("invokeNewFlowRequest()");
-    //Is flow policy acceptable
-    std::string apname = flow->getSrcApni().getApn().getName();
-
-    //FIXME: Vesely - Simulate error and DTCP flag better
-    if ( apname.find("Err") != std::string::npos) {
-        return false;
-    }
-
-    //TODO: Compare QoS Parameters with available QoS cubes
-    QoSCubeSet cubes = ResourceAllocator->getQoSCubes();
-    //EV << ResourceAllocator->getQoSCubes();
-
-    unsigned short qosid = 0;
-    short score = 0;
-
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
-        short tmpscore = flow->getQosParameters().countFeasibilityScore(*it);
-//        EV << "QosID: " << it->getQosId()
-//           << " tmpscore: " << tmpscore
-//           << " score: " << score << endl
-//           << " qosid: " << qosid << endl;
-        if (score < tmpscore) {
-            score = tmpscore;
-            qosid = it->getQosId();
-        }
-    }
-    flow->getConnectionId().setQoSId(qosid);
-    return qosid ? true : false;
+    return NFloReqPolicy->run(*flow);
 }
 
 FAI* FA::createFAI(Flow* flow) {

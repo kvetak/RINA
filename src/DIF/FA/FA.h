@@ -38,14 +38,15 @@
 #include "ModuleAccess.h"
 #include "EFCP.h"
 #include "ExternConsts.h"
-#include "RABase.h"
 #include "DA.h"
+#include "NewFlowRequestBase.h"
 
 //Constants
 
 extern const int RANDOM_NUMBER_GENERATOR;
 extern const int MAX_PORTID;
 extern const int MAX_CEPID;
+extern const char* MOD_NEFFLOWREQPOLICY;
 
 class FA : public FABase
 {
@@ -92,8 +93,8 @@ class FA : public FABase
 
   private:
     EFCP* Efcp;
-    RABase* ResourceAllocator;
     DA* DifAllocator;
+    NewFlowRequestBase* NFloReqPolicy;
 
     bool isMalformedFlow(Flow* flow);
     FAI* createFAI(Flow* flow);
