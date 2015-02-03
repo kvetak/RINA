@@ -73,7 +73,7 @@ void DTP::runRTTEstimatorPolicy()
   if (rttEstimatorPolicy == NULL || rttEstimatorPolicy->run(state, dtcp->getDTCPState()))
   {
 
-    double newRtt;
+    double newRtt = state->getRtt();
     double alpha = 0.5;
     /* Default */
     ControlPDU* pdu = (ControlPDU*) state->getCurrentPdu();
@@ -85,19 +85,31 @@ void DTP::runRTTEstimatorPolicy()
         unsigned int seqNum = ((AckOnlyPDU*)pdu)->getAckNackSeqNum();
         std::vector<DTCPRxExpiryTimer*>* pduQ = dtcp->getDTCPState()->getRxQ();
         std::vector<DTCPRxExpiryTimer*>::iterator it;
+        bool foundAck = false;
         for(it = pduQ->begin(); it != pduQ->end(); ++it){
           if((*it)->getPdu()->getSeqNum() == seqNum){
+              foundAck = true;
             double now = simTime().dbl();
             double sent = (*it)->getSent();
             newRtt = now - sent;
 
+            newRtt = floor(newRtt * 1000000000);
+            newRtt = newRtt/ 1000000000;
+
           }
         }
+        if(!foundAck){
+
+            EV << "RTTEstimator: Did not found PDU on RxQ to compare times." << endl;
+            return;
+        }
+
+      }else{
 
       }
     }
-    double tmp = (alpha * state->getRtt()) + ((1 - alpha)* newRtt);
-    state->setRtt(tmp);
+    unsigned int tmp = floor((alpha * state->getRtt()) + ((1 - alpha)* newRtt) * 1000000000);
+    state->setRtt((double)tmp/1000000000);
     /* End Default */
   }
 
@@ -1430,7 +1442,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       if(state->isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
 
-        scheduleAt(simTime() + 2 * (MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
+        scheduleAt(simTime() + 2 *(MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
       }
       break;
     }
