@@ -110,6 +110,7 @@ void DTP::runRTTEstimatorPolicy()
     }
     unsigned int tmp = floor((alpha * state->getRtt()) + ((1 - alpha)* newRtt) * 1000000000);
     state->setRtt((double)tmp/1000000000);
+    EV << "Current RTT: " << state->getRtt() << endl;
     /* End Default */
   }
 
