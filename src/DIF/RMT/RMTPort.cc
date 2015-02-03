@@ -22,7 +22,7 @@ Define_Module(RMTPort);
 void RMTPort::initialize()
 {
     ready = false; // port should get activated by RA
-    blocked = true;
+    blocked = false;
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
