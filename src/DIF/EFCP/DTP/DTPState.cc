@@ -37,6 +37,10 @@ void DTPState::initialize(int step)
     maxFlowPDUSize = par("maxPDUSize");
 
     rtt = par("rtt");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rtt")){
+      rtt = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rtt");
+
+    }
 
     winBased = par("winBased");
     rateBased = par("rateBased");
