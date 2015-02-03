@@ -32,10 +32,13 @@
 #include "EFCP.h"
 #include "ModuleAccess.h"
 #include "RABase.h"
+#include "AllocateRetryBase.h"
+
 //#include "PushBackChannel.h"
 
 //Constants
 extern const char* TIM_CREREQ;
+extern const char* MOD_ALLOCRETRYPOLICY;
 
 class FAI : public FAIBase  {
   public:
@@ -68,6 +71,7 @@ class FAI : public FAIBase  {
   protected:
     int portId;
     int cepId;
+    AllocateRetryBase* AllocRetryPolicy;
 
     //TODO: Vesely - What about timeouts for M_DELETE and other control messages?
     cMessage* creReqTimer;

@@ -18,6 +18,7 @@
 #include "FAI.h"
 
 const char*     TIM_CREREQ          = "CreateRequestTimer";
+const char*     MOD_ALLOCRETRYPOLICY= "allocateRetryPolicy";
 
 Define_Module(FAI);
 
@@ -36,6 +37,8 @@ void FAI::initialize() {
 
     creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
     creReqTimer = new cMessage(TIM_CREREQ);
+
+    AllocRetryPolicy = check_and_cast<AllocateRetryBase*>(getParentModule()->getSubmodule(MOD_ALLOCRETRYPOLICY));
 
     initSignalsAndListeners();
 
@@ -233,7 +236,6 @@ void FAI::handleMessage(cMessage *msg) {
         if (!status)
             EV << "CreateRequest retries reached its maximum!" << endl;
     }
-
 }
 
 std::string FAI::info() const {
@@ -356,10 +358,7 @@ bool FAI::deleteBindings() {
 bool FAI::invokeAllocateRetryPolicy() {
     //Increase CreateFlowRetries
     cancelEvent(creReqTimer);
-    //int hops = this->getFlow()->getCreateFlowRetries();
-    this->getFlow()->setCreateFlowRetries( this->getFlow()->getCreateFlowRetries() + 1 );
-    //Compare whether the limit is reached
-    return ( this->getFlow()->getCreateFlowRetries() <= this->getFlow()->getMaxCreateFlowRetries() );
+    return AllocRetryPolicy->run(*getFlow());
 }
 
 void FAI::initSignalsAndListeners() {
