@@ -47,10 +47,7 @@ void DTPState::initialize(int step)
       dtcpPresent =  true;
       //TODO A! create DTCP module here?
     }
-
-
   }
-
 }
 
 
@@ -70,6 +67,10 @@ void DTPState::initDefaults(){
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
   qoSCube = NULL;
+
+  seqNumRollOverThresh = INT_MAX - 1;
+  lastSeqNumSent = 0;
+  ecnSet = false;
 
 }
 
