@@ -29,4 +29,3 @@ RINA Simulator
 		/policies				... all programable RINA policies
 			/DAF				... policies related to DAF components
 			/DIF 				... policies related to DIF components
-
