@@ -76,3 +76,30 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
         EV << "RAListener received unknown object!" << endl;
     }
 }
+
+void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+    {
+        ra->blockNM1Port(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+}
+
+void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+    {
+        ra->unblockNM1Port(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+}
+
