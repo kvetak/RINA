@@ -62,6 +62,7 @@ class UserDataField: public cOwnedObject
     unsigned int getSduDelimitFlags() const;
     void setSduDelimitFlags(unsigned int sduDelimitFlags);
     unsigned int getSduSeqNum() const;
+    void setSduSeqNum(unsigned int sduSeqNum);
 };
 
 #endif /* USERDATAFIELD_H_ */

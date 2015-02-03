@@ -47,6 +47,8 @@ void DTCPState::initFC()
 //  configRcvrRate = 50;
   rcvrRate = configRcvrRate;
 
+  sendingRate = 0;
+  rcvrRate = 0;
 
 }
 

@@ -1206,6 +1206,8 @@ void DTP::sendEmptyDTPDU()
   unsigned int seqNum = state->getNextSeqNumToSend();
   dataPdu->setSeqNum(seqNum);
 
+
+
   if(setDRFInPDU(false)){
     dataPdu->setFlags(dataPdu->getFlags() | DRF_FLAG);
   }

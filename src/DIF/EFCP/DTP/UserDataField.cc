@@ -29,6 +29,7 @@ UserDataField::UserDataField()
 {
   size = 0;
   sduDelimitFlags = 0;
+  sduSeqNum = 0;
 
 }
 
@@ -118,3 +119,6 @@ UserDataField::~UserDataField()
 
 }
 
+void UserDataField::setSduSeqNum(unsigned int sduSeqNum) {
+    this->sduSeqNum = sduSeqNum;
+}
