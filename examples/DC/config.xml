@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<Configuration>
+    <Node id="CR0">
+        <IPC id="DCIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="1_DCDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="AS1">
+        <IPC id="DCIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="2_DCDIF" qosCube="1"/>
+                    <Flow apn="3_DCDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="AS2">
+        <IPC id="DCIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="4_DCDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="TOR3">
+        <IPC id="DCIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="5_DCDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="TOR4">
+        <IPC id="DCIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="6_DCDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="SRV5">
+        <IPC id="TenantIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="7_TenantDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="SRV6">
+        <IPC id="TenantIPC">
+            <RA>
+                <Flows>
+                    <Flow apn="8_TenantDIF" qosCube="1"/>
+                </Flows>
+            </RA>
+        </IPC>
+    </Node>
+    <Node id="all">
+        <DA>
+            <Directory>
+                <APN apn="0_TentantDIF">
+                    <DIF difName="DCIPC" ipcAddress="0"/>
+                </APN>
+                <APN apn="0_DCDIF">
+                    <DIF difName="Shim0To1" ipcAddress="0"/>
+                </APN>
+                <APN apn="1_DCDIF">
+                    <DIF difName="Shim0To1" ipcAddress="1"/>
+                    <DIF difName="Shim1To2" ipcAddress="1"/>
+                    <DIF difName="Shim1To3" ipcAddress="1"/>
+                </APN>
+                <APN apn="2_DCDIF">
+                    <DIF difName="Shim1To2" ipcAddress="2"/>
+                    <DIF difName="Shim2To4" ipcAddress="2"/>
+                </APN>
+                <APN apn="3_DCDIF">
+                    <DIF difName="Shim1To3" ipcAddress="3"/>
+                    <DIF difName="Shim3To5" ipcAddress="3"/>
+                </APN>
+                <APN apn="4_DCDIF">
+                    <DIF difName="Shim2To4" ipcAddress="4"/>
+                    <DIF difName="Shim4To6" ipcAddress="4"/>
+                </APN>
+                <APN apn="5_DCDIF">
+                    <DIF difName="Shim3To5" ipcAddress="5"/>
+                </APN>
+                <APN apn="6_DCDIF">
+                    <DIF difName="Shim4To6" ipcAddress="6"/>
+                </APN>
+                <APN apn="5_TentantDIF">
+                    <DIF difName="DCIPC" ipcAddress="5"/>
+                    <DIF difName="Shim5To7" ipcAddress="5"/>
+                </APN>
+                <APN apn="7_TenantDIF">
+                    <DIF difName="Shim5To7" ipcAddress="7"/>
+                </APN>
+                <APN apn="App0VM7">
+                    <DIF difName="TenantDIF" ipcAddress="7"/>
+                </APN>
+                <APN apn="6_TentantDIF">
+                    <DIF difName="DCIPC" ipcAddress="6"/>
+                    <DIF difName="Shim6To8" ipcAddress="6"/>
+                </APN>
+                <APN apn="8_TenantDIF">
+                    <DIF difName="Shim6To8" ipcAddress="8"/>
+                </APN>
+                <APN apn="App0VM8">
+                    <DIF difName="TenantDIF" ipcAddress="8"/>
+                </APN>
+            </Directory>
+        </DA>
+    </Node>	<QoSCubesSet>
+        <QosCube id="1">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>0</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+        <QosCube id="2">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>1</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+    </QoSCubesSet>
+</Configuration>

@@ -28,11 +28,12 @@ import rina.Common.Test;
 import rina.DAF.ApplicationProcess;
 import rina.DAF.DA.DIFAllocator;
 import rina.DIF.IPCProcess;
+import rina.DAF.IRM.IPCResourceManager;
 
 module DC_VM
 {
     parameters:
-        @display("i=device/terminal;bgb=214,299");
+        @display("i=device/terminal;bgb=214,348");
         @node;
 
     gates:
@@ -47,12 +48,16 @@ module DC_VM
             @display("p=156,43;i=,grey");
         }
 
+        ipcResourceManager: IPCResourceManager {
+            @display("p=110,121");
+        }
+
         TenantIPC: IPCProcess {
-            @display("p=110,155;i=,#0080FF");
+            @display("p=110,211;i=,#0080FF");
         }
 
         ShimIPC: IPCProcess {
-            @display("p=110,237;i=,#800000");
+            @display("p=110,293;i=,#800000");
         }
 
     connections allowunconnected:
