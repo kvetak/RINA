@@ -51,14 +51,13 @@ void DTPState::initialize(int step)
       rtt = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rtt");
 
     }
-<<<<<<< HEAD
+
     mpl = par("mpl");
     if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("mpl")){
       mpl = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("mpl");
 
     }
-=======
->>>>>>> refs/heads/efcp
+
 
     winBased = par("winBased");
     rateBased = par("rateBased");
