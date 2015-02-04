@@ -804,6 +804,8 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
 void RA::blockNM1Port(Flow* flow)
 {
+    Enter_Method("blockNM1Port()");
+
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
     {
@@ -817,6 +819,8 @@ void RA::blockNM1Port(Flow* flow)
 
 void RA::unblockNM1Port(Flow* flow)
 {
+    Enter_Method("unblockNM1Port()");
+
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
     {
