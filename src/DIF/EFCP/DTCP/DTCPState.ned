@@ -24,8 +24,8 @@ simple DTCPState
 {
     @display("i=block/subqueue");
     
-    int initialSenderCredit = default(3);
-    int rcvCredit = default(3);
+    int initialSenderCredit = default(10);
+    int rcvCredit = default(10);
     double aTime @unit(ms)= default(0ms);
     int nextSenderControlSeqNum = default(1);
     int dataReXmitMax = default(3);
