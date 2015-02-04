@@ -1434,7 +1434,7 @@ void DTP::schedule(DTPTimers *timer, double time)
         rxCount = dtcp->getDataReXmitMax();
 
 
-      scheduleAt(simTime() + 3 * (MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000) , timer);
+      scheduleAt(simTime() + 3 * (state->getMPL() + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000) , timer);
       }
       break;
     }
@@ -1445,7 +1445,7 @@ void DTP::schedule(DTPTimers *timer, double time)
       if(state->isRxPresent()){
         rxCount = dtcp->getDataReXmitMax();
 
-        scheduleAt(simTime() + 2 *(MPL_TIME + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
+        scheduleAt(simTime() + 2 *(state->getMPL() + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
       }
       break;
     }
