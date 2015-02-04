@@ -108,12 +108,19 @@ void DTP::runRTTEstimatorPolicy()
 
       }
     }
-    unsigned int tmp = floor((alpha * state->getRtt()) + ((1 - alpha)* newRtt) * 1000000000);
+    double tmp = floor(((alpha * state->getRtt()) + ((1 - alpha)* newRtt)) * 1000000000);
     state->setRtt((double)tmp/1000000000);
     EV << "Current RTT: " << state->getRtt() << endl;
     /* End Default */
   }
 
+}
+
+void DTP::initSignalsAndListeners()
+{
+  //Signals that this module is emmiting
+  sigEFCPStahpSending = registerSignal(SIG_EFCP_StahpSending);
+  sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
 }
 
 void DTP::initialize(int step)
@@ -131,17 +138,20 @@ void DTP::initialize(int step)
 
     }
 
-  }
 
-if(step==1){
-  if(state->isDtcpPresent()){
-    senderInactivityTimer = new SenderInactivityTimer();
-    rcvrInactivityTimer = new RcvrInactivityTimer();
-  }else{
-    senderInactivityTimer = NULL;
-    rcvrInactivityTimer = NULL;
+
+  }else if(step == 1){
+
+    initSignalsAndListeners();
+
+    if(state->isDtcpPresent()){
+      senderInactivityTimer = new SenderInactivityTimer();
+      rcvrInactivityTimer = new RcvrInactivityTimer();
+    }else{
+      senderInactivityTimer = NULL;
+      rcvrInactivityTimer = NULL;
+    }
   }
-}
 //  par(RCVR_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RCVR_INACTIVITY_POLICY_NAME).stringValue());
 //  par(SENDER_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(SENDER_INACTIVITY_POLICY_NAME).stringValue());
 //  par(INITIAL_SEQ_NUM_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(INITIAL_SEQ_NUM_POLICY_NAME).stringValue());
@@ -1251,13 +1261,14 @@ void DTP::notifyStartSending()
 
 void DTP::notifyStopSending()
 {
-  //FIX A2 - activate when CDAP Splitter is ready
-    return;
+
   // Notify User Flow to Stop sending due to closed window and full closedWindowQ.
-  CDAPMessage* cdapMsg = new CDAP_M_STOP_SENDING();
-  SDU* sdu = new SDU();
-  sdu->addUserData(cdapMsg);
-  send(sdu, northO);
+//  CDAPMessage* cdapMsg = new CDAP_M_STOP_SENDING();
+//  SDU* sdu = new SDU();
+//  sdu->addUserData(cdapMsg);
+//  send(sdu, northO);
+
+  emit(sigEFCPStahpSending, flow);
 
 }
 

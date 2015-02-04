@@ -120,6 +120,14 @@ void RA::initSignalsAndListeners()
     lisRACreResPosi = new LisRACreResPosi(this);
     thisIPC->getParentModule()->
             subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisRACreResPosi);
+
+    lisEFCPStopSending = new LisEFCPStopSending(this);
+    thisIPC->getParentModule()->
+            subscribe(SIG_EFCP_StahpSending, this->lisEFCPStopSending);
+
+    lisEFCPStartSending = new LisEFCPStartSending(this);
+    thisIPC->getParentModule()->
+            subscribe(SIG_EFCP_StartSending, this->lisEFCPStartSending);
 }
 
 void RA::initFlowAlloc()
@@ -793,6 +801,36 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     }
 }
 
+
+void RA::blockNM1Port(Flow* flow)
+{
+    Enter_Method("blockNM1Port()");
+
+    NM1FlowTableItem* item = flowTable->lookup(flow);
+    if (item == NULL)
+    {
+//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
+//           << " ignoring pushback request." << endl;
+        return;
+    }
+
+    item->getRmtPort()->blockOutput();
+}
+
+void RA::unblockNM1Port(Flow* flow)
+{
+    Enter_Method("unblockNM1Port()");
+
+    NM1FlowTableItem* item = flowTable->lookup(flow);
+    if (item == NULL)
+    {
+//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
+//           << " ignoring port unblock request." << endl;
+        return;
+    }
+
+    item->getRmtPort()->unblockOutput();
+}
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
 {

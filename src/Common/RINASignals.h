@@ -83,4 +83,7 @@ extern const char* SIG_RMT_PortReadyToServe;
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;
 
+//EFCP (DTP+DTCP)
+extern const char* SIG_EFCP_StahpSending;
+extern const char* SIG_EFCP_StartSending;
 #endif /* RINASIGNALS_H_ */
