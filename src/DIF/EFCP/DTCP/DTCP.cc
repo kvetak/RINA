@@ -644,6 +644,8 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
     EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
     dtp->sendToRMT(dup);
 
+    dtcpState->incRxSent();
+
     timer->setExpiryCount(timer->getExpiryCount() + 1);
     schedule(timer);
   }
@@ -862,6 +864,7 @@ void DTCP::redrawGUI()
     }
     desc << "\n";
   }
+  desc << "rxSent: " << dtcpState->getRxSent() <<endl;
 
   if (!dtcpState->getClosedWinQueLen())
   {
@@ -907,6 +910,11 @@ void DTCP::incDupFC()
 unsigned int DTCP::getDupFC() const
 {
   return dtcpState->getDupFC();
+}
+
+bool DTCP::isClosedWinQClosed()
+{
+  return dtcpState->isClosedWinQClosed();
 }
 
 void DTCP::updateSenderLWE(unsigned int seqNum)

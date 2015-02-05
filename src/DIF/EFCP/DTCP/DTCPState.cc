@@ -52,21 +52,24 @@ void DTCPState::initFC()
 
 }
 
+
 DTCPState::DTCPState()
 {
 
   rcvRtWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
   senderLeftWinEdge = 0;
+
+  //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
   immediate = true;
 
-
-
-
-//  rtt = 10;
-
+  rxSent = 0;
 }
 
+void DTCPState::incRxSent()
+{
+  rxSent++;
+}
 
 
 bool DTCPState::isImmediate() const
@@ -106,27 +109,6 @@ void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
   this->sndRtWinEdge = senderRightWinEdge;
 }
-
-//bool DTCPState::isSetDrfFlag() const
-//{
-//  return setDRFFlag;
-//}
-//
-//void DTCPState::setSetDrfFlag(bool setDrfFlag)
-//{
-//  setDRFFlag = setDrfFlag;
-//}
-
-//unsigned int DTCPState::getRtt() const
-//{
-//  //TODO B1 RTT estimator policy
-//  return rtt;
-//}
-
-//void DTCPState::setRtt(unsigned int rtt)
-//{
-//  this->rtt = rtt;
-//}
 
 DTCPState::~DTCPState()
 {
@@ -172,13 +154,8 @@ void DTCPState::incRcvRtWinEdge()
 void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
 {
   setRcvRtWinEdge(rcvLtWinEdge + getRcvCredit());
-
 }
 
-
-//unsigned int DTCPState::getNextCtrlSeqNum(){
-//  return controlSeqNum++;
-//}
 unsigned int DTCPState::getNextSndCtrlSeqNum()
 {
   return nextSenderControlSeqNum++;
@@ -277,19 +254,15 @@ void DTCPState::clearRxQ()
       cancelAndDelete((*it));
       it = rxQ.erase(it);
     }
-
-
 }
-
 
 void DTCPState::clearClosedWindowQ()
 {
   clearPDUQ(&closedWindowQ);
-
 }
 
 void DTCPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
-//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+//TODO A3 Check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
   take(pdu);
     closedWindowQ.push_back(pdu);
@@ -299,7 +272,20 @@ std::vector<DataTransferPDU*>* DTCPState::getClosedWindowQ()
 {
   return &closedWindowQ;
 }
+
+bool DTCPState::isClosedWinQClosed() const
+{
+  if (closedWindowQ.size() >= maxClosedWinQueLen)
+  {
+        return true;
+  }else
+  {
+    return true;
+  }
+}
+
 bool DTCPState::isClosedWindow() const {
+
     return closedWindow;
 }
 
@@ -435,6 +421,11 @@ void DTCPState::initialize(int step)
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
     initFC();
   }
+}
+
+unsigned int DTCPState::getRxSent() const
+{
+  return rxSent;
 }
 
 void DTCPState::initFromQoS(const QoSCube* qosCube)

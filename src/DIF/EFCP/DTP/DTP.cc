@@ -572,6 +572,8 @@ void DTP::handleMsgFromRMT(PDU* msg){
         }
         else if (pdu->getType() & PDU_ACK_BIT)
         {
+
+          //TODO B1 Shoudn't this be a policy?
           SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
           unsigned int tempSLWE = 0;
           for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
@@ -637,6 +639,14 @@ void DTP::handleMsgFromRMT(PDU* msg){
           /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
           dtcp->getDTCPState()->setClosedWindow(false);
           trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
+
+          //TODO A4 Verify and update specs
+          if(state->isWinBased()){
+            if(!dtcp->isClosedWinQClosed()){
+              notifyStartSending();
+            }
+
+          }
         }
       }
 
@@ -1080,6 +1090,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
 
 
+
     }else{
       /* FlowControl is not present */
       std::vector<DataTransferPDU*>::iterator it;
@@ -1250,13 +1261,15 @@ void DTP::notifyAboutUnableMaintain()
 //TODO A! Find a spot to call this method
 void DTP::notifyStartSending()
 {
-  //FIX A2 - activate when CDAP Splitter is ready
-      return;
-  // Notify User Flow there has been no activity for awhile.
-  CDAPMessage* cdapMsg = new CDAP_M_START_SENDING();
-  SDU* sdu = new SDU();
-  sdu->addUserData(cdapMsg);
-  send(sdu, northO);
+//  //FIX A2 - activate when CDAP Splitter is ready
+//      return;
+//  // Notify User Flow there has been no activity for awhile.
+//  CDAPMessage* cdapMsg = new CDAP_M_START_SENDING();
+//  SDU* sdu = new SDU();
+//  sdu->addUserData(cdapMsg);
+//  send(sdu, northO);
+
+  emit(sigEFCPStartSending, flow);
 }
 
 void DTP::notifyStopSending()
