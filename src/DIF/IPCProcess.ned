@@ -50,7 +50,7 @@ module IPCProcess
         }
 
         efcp: EFCPModule {
-            @display("p=79,108");
+            @display("p=79,50");
         }
         resourceAllocator: ResourceAllocator {
             @display("p=390,195");

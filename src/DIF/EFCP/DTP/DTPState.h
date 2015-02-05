@@ -93,6 +93,7 @@ private:
     /* Moved from DTCP-SV */
     bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     double rtt;
+    double mpl;
 
 
 
@@ -176,8 +177,8 @@ public:
 
     void updateRcvLWE(unsigned int seqNum);
     void updateSndLWE();
-
-
+    double getMPL() const;
+    void setMpl(double mpl);
 
 protected:
   virtual void handleMessage(cMessage *msg);

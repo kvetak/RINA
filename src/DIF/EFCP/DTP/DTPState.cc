@@ -25,6 +25,16 @@ DTPState::DTPState() {
   initDefaults();
 }
 
+double DTPState::getMPL() const
+{
+  return mpl;
+}
+
+void DTPState::setMpl(double mpl)
+{
+  this->mpl = mpl;
+}
+
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -41,6 +51,13 @@ void DTPState::initialize(int step)
       rtt = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rtt");
 
     }
+
+    mpl = par("mpl");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("mpl")){
+      mpl = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("mpl");
+
+    }
+
 
     winBased = par("winBased");
     rateBased = par("rateBased");
