@@ -25,6 +25,9 @@ void RMTMaxQBase::initialize()
     qMonPolicy = check_and_cast<RMTQMonitorBase*>
         (getModuleByPath("^.queueMonitorPolicy"));
 
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.rmtModuleAllocator"));
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
