@@ -1042,7 +1042,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
             /* The Window is Closed */
             dtcp->getDTCPState()->setClosedWindow(true);
 
-          if(pduQ == dtcp->getDTCPState()->getClosedWindowQ()){
+            if(pduQ == dtcp->getDTCPState()->getClosedWindowQ()){
               break;
             }
 

@@ -280,7 +280,7 @@ bool DTCPState::isClosedWinQClosed() const
         return true;
   }else
   {
-    return true;
+    return false;
   }
 }
 

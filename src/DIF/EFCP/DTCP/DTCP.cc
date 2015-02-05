@@ -427,7 +427,6 @@ bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
     /* Default */
     dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
     //Block further Write API calls on this port-id
-    // eg. -> Create new CDAP Message type and send it upwards
     dtp->notifyStopSending();
     /* End default */
 
