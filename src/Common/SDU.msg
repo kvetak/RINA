@@ -43,5 +43,5 @@ message SDU extends Data {
     unsigned int fSeqNum = 0;
     
     int fragType enum(FragmentType) = 0	;
-    
+    schedulingPriority = -1;
 }

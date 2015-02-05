@@ -135,7 +135,8 @@ packet CDAPMessage {
     string displayString;
     unsigned int size;
     int handle;
-    Address dstAddr;  
+    Address dstAddr;
+    schedulingPriority = -1;
 }
 
 //////////////////////////////////////////////
