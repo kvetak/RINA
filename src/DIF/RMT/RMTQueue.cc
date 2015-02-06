@@ -103,12 +103,7 @@ void RMTQueue::redrawGUI()
 
 void RMTQueue::handleMessage(cMessage* msg)
 {
-    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "queueTransmitEnd"))
-    {
-        releasePDU();
-        delete msg;
-    }
-    else if (dynamic_cast<cPacket*>(msg) != NULL)
+    if (dynamic_cast<cPacket*>(msg) != NULL)
     {
         enqueuePDU((cPacket*)msg);
     }
@@ -127,6 +122,8 @@ void RMTQueue::enqueuePDU(cPacket* pdu)
 
 void RMTQueue::releasePDU(void)
 {
+    Enter_Method("releasePDU()");
+
     if (this->getLength() > 0)
     {
         cPacket* pdu = queue.front();
@@ -137,22 +134,11 @@ void RMTQueue::releasePDU(void)
         {
             qTime = simTime();
         }
+
+        emit(sigRMTPDUSent, this);
+        bubble("Releasing a PDU...");
+        redrawGUI();
     }
-
-    emit(sigRMTPDUSent, this);
-    redrawGUI();
-}
-
-/**
- * Schedules an end-of-queue-service event.
- *
- */
-void RMTQueue::startTransmitting()
-{
-    Enter_Method("startTransmitting()");
-
-    scheduleAt(simTime() + queuingTime, new cMessage("queueTransmitEnd"));
-    bubble("Releasing a PDU...");
 }
 
 cPacket* RMTQueue::dropLast()
@@ -219,9 +205,6 @@ RMTQueueType RMTQueue::getType() const
 void RMTQueue::setType(queueType type)
 {
     this->type = type;
-    queuingTime = getParentModule()->
-            par(type == OUTPUT ? "TxQueuingTime" : "RxQueuingTime").
-            doubleValue() / 1000;
 }
 
 const char* RMTQueue::getQueueId() const

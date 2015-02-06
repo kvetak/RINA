@@ -30,9 +30,6 @@ module RelayAndMux
         string qMonitorPolicyName = default("SimpleMonitor");
         string maxQPolicyName = default("TailDrop");
 
-        double TxQueuingTime @unit(ms) = default(0.0ms);
-        double RxQueuingTime @unit(ms) = default(0.0ms);
-
         int defaultMaxQLength = default(20);
         int defaultThreshQLength = default(10);
 

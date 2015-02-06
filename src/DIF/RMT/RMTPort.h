@@ -125,6 +125,7 @@ class RMTPort : public cSimpleModule
     bool ready;
     bool blocked;
     Flow* flow;
+    double postServeDelay;
 
     QueueIDGenBase* queueIdGen;
 
@@ -144,6 +145,7 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
+    void setReadyDelayed();
     void redrawGUI();
 
     simsignal_t sigRMTPortPDURcvd;
