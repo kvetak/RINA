@@ -175,6 +175,7 @@ public:
 
     void redrawGUI();
     void createPolicyModule(cModule* policy, const char* prefix, const char* name);
+    bool isClosedWinQClosed();
 
 protected:
     virtual void handleMessage(cMessage *msg);

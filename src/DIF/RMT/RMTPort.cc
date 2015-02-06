@@ -25,6 +25,8 @@ void RMTPort::initialize()
     blocked = false;
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    postServeDelay = par("postServeDelay").doubleValue() / 1000;
+
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
@@ -42,11 +44,18 @@ void RMTPort::postInitialize()
 
 void RMTPort::handleMessage(cMessage* msg)
 {
-    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "portTransmitEnd"))
-    { // a PDU transmit procedure has just been finished
-        setReady();
-        //emit(sigRMTPortPDUSent, this);
-        emit(sigRMTPortReady, this);
+    if (msg->isSelfMessage())
+    {
+        if (!opp_strcmp(msg->getFullName(), "portTransmitEnd"))
+        { // a PDU transmit procedure has just been finished
+            //emit(sigRMTPortPDUSent, this);
+            setReadyDelayed();
+        }
+        else if (!opp_strcmp(msg->getFullName(), "readyToServe"))
+        {
+            setReady();
+            emit(sigRMTPortReady, this);
+        }
         delete msg;
     }
     else if (msg->getArrivalGate() == southInputGate) // incoming message
@@ -97,13 +106,13 @@ void RMTPort::handleMessage(cMessage* msg)
                 }
                 else
                 {
-                    setReady();
+                    setReadyDelayed();
                     emit(sigRMTPortPDUSent, this);
                 }
             }
             else
             { // there isn't any delay or rate control in place
-                setReady();
+                setReadyDelayed();
                 //emit(sigRMTPortPDUSent, this);
                 emit(sigRMTPortReady, this);
             }
@@ -211,8 +220,13 @@ void RMTPort::setReady()
     {
         ready = true;
         emit(sigRMTPortReady, this);
+        redrawGUI();
     }
-    redrawGUI();
+}
+
+void RMTPort::setReadyDelayed()
+{
+    scheduleAt(simTime() + postServeDelay, new cMessage("readyToServe"));
 }
 
 void RMTPort::setBusy()

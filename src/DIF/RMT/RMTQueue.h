@@ -134,11 +134,15 @@ class RMTQueue : public cSimpleModule
     unsigned short getLastPDUQoSID();
 
     /**
-     * Instructs the module to send out the first message in the queue.
-     * The time needed to send out a message is defined by a NED parameter
-     * (either "TxQueuingTime" or "RxQueuingTime").
+     * Sends out the first PDU in the queue.
      */
-    void startTransmitting();
+    void releasePDU();
+
+    /**
+     * DEPRECATED: use releasePDU() instead.
+     * Instructs the module to send out the first message in the queue.
+     */
+    void startTransmitting() { Enter_Method("startTransmitting()"); releasePDU(); };
 
     /**
      * Marks the last PDU in a queue with a congestion bit.
@@ -173,7 +177,6 @@ class RMTQueue : public cSimpleModule
     void setType(queueType type);
 
     void enqueuePDU(cPacket* pdu);
-    void releasePDU();
     cPacket* dropLast();
 
     cGate* getOutputGate() const;

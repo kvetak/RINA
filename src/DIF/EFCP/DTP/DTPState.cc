@@ -35,6 +35,16 @@ void DTPState::setMpl(double mpl)
   this->mpl = mpl;
 }
 
+bool DTPState::isBlockingPort() const
+{
+  return blockingPort;
+}
+
+void DTPState::setBlockingPort(bool blockingPort)
+{
+  this->blockingPort = blockingPort;
+}
+
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -92,6 +102,8 @@ void DTPState::initDefaults(){
   seqNumRollOverThresh = INT_MAX - 1;
   lastSeqNumSent = 0;
   ecnSet = false;
+
+  blockingPort = false;
 
 }
 

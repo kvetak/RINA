@@ -21,6 +21,8 @@ simple RMTPort
 {
     parameters:
     	@display("i=block/square;is=s");
+    	double postServeDelay @unit(ms) = default(0.0ms);
+        
 	gates:
     	inout southIo;
 }
