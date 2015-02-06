@@ -50,13 +50,13 @@ void RMTPort::handleMessage(cMessage* msg)
         { // a PDU transmit procedure has just been finished
             //emit(sigRMTPortPDUSent, this);
             setReadyDelayed();
-            delete msg;
         }
         else if (!opp_strcmp(msg->getFullName(), "readyToServe"))
         {
             setReady();
             emit(sigRMTPortReady, this);
         }
+        delete msg;
     }
     else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
