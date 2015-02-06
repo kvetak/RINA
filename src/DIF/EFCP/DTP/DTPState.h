@@ -99,6 +99,7 @@ private:
 
     /* new */
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
+    bool blockingPort;
 
     void clearPDUQ(std::vector<DataTransferPDU*>* pduQ);
     void clearGeneratedPDUQ();
@@ -179,6 +180,8 @@ public:
     void updateSndLWE();
     double getMPL() const;
     void setMpl(double mpl);
+    bool isBlockingPort() const;
+    void setBlockingPort(bool blockingPort);
 
 protected:
   virtual void handleMessage(cMessage *msg);

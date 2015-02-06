@@ -1269,7 +1269,10 @@ void DTP::notifyStartSending()
 //  sdu->addUserData(cdapMsg);
 //  send(sdu, northO);
 
-  emit(sigEFCPStartSending, flow);
+  if(state->isBlockingPort()){
+    emit(sigEFCPStartSending, flow);
+    state->setBlockingPort(false);
+  }
 }
 
 void DTP::notifyStopSending()
@@ -1281,7 +1284,10 @@ void DTP::notifyStopSending()
 //  sdu->addUserData(cdapMsg);
 //  send(sdu, northO);
 
-  emit(sigEFCPStahpSending, flow);
+  if(!state->isBlockingPort()){
+    emit(sigEFCPStahpSending, flow);
+    state->setBlockingPort(true);
+  }
 
 }
 
