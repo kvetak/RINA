@@ -73,3 +73,6 @@ const char* SIG_RMT_PortPDUSent                 = "RMT-PortPDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";
+
+const char* SIG_EFCP_StahpSending               = "EFCP-StahpSending";
+const char* SIG_EFCP_StartSending               = "EFCP-StartSending";

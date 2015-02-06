@@ -63,10 +63,12 @@ extern const char* ELEM_ATIME;
 class RA : public RABase
 {
   public:
-    virtual void createNM1Flow(Flow *flow);
-    virtual void createNM1FlowWithoutAllocate(Flow *flow);
-    virtual void removeNM1Flow(Flow *flow);
+    virtual void createNM1Flow(Flow* flow);
+    virtual void createNM1FlowWithoutAllocate(Flow* flow);
+    virtual void removeNM1Flow(Flow* flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
+    virtual void blockNM1Port(Flow* flow);
+    virtual void unblockNM1Port(Flow* flow);
 
     // event hook handlers
     virtual void postNFlowAllocation(Flow* flow);
@@ -108,6 +110,8 @@ class RA : public RABase
     LisRAAllocResPos* lisRAAllocResPos;
     LisRACreAllocResPos* lisRACreAllocResPos;
     LisRACreResPosi* lisRACreResPosi;
+    LisEFCPStopSending* lisEFCPStopSending;
+    LisEFCPStartSending* lisEFCPStartSending;
 
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);

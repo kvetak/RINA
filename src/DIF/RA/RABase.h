@@ -37,6 +37,9 @@ class RABase : public cSimpleModule
     virtual void postNM1FlowAllocation(Flow* flow) = 0;
     virtual void removeNM1Flow(Flow *flow) = 0;
     virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
+    virtual void blockNM1Port(Flow* flow) = 0;
+    virtual void unblockNM1Port(Flow* flow) = 0;
+
 
     const QoSCubeSet& getQoSCubes() const;
     const QoSCube* getQoSCubeById(unsigned short qosId) const;

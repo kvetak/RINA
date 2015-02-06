@@ -51,6 +51,16 @@ class RMTPort : public cSimpleModule
     void setBusy();
 
     /**
+     * Marks the port as blocked (e.g. when (N-1)-EFCPI isn't keeping up).
+     */
+    void blockOutput();
+
+    /**
+     * Unmarks the port as blocked (e.g. when (N-1)-EFCPI is keeping up again).
+     */
+    void unblockOutput();
+
+    /**
      * Returns the (N-1)-flow this port is assigned to.
      *
      * @return (N-1)-flow object
@@ -113,6 +123,7 @@ class RMTPort : public cSimpleModule
 
   private:
     bool ready;
+    bool blocked;
     Flow* flow;
 
     QueueIDGenBase* queueIdGen;

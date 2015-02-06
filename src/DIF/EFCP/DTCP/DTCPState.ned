@@ -30,7 +30,7 @@ simple DTCPState
     int nextSenderControlSeqNum = default(1);
     int dataReXmitMax = default(3);
     
-    int maxClosedWinQueLen = default(10);
+    int maxClosedWinQueLen = default(4);
     
     int timeUnit @unit(ms) = default(1000ms); 
     int sendingTimeUnit @unit(ms) = default(1000ms);
