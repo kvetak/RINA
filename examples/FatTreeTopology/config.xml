@@ -141,7 +141,7 @@
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>10</MaxAllowableGap>
+			<MaxAllowableGap>0</MaxAllowableGap>
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
@@ -160,7 +160,7 @@
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>1</ForceOrder>
-			<MaxAllowableGap>10</MaxAllowableGap>
+			<MaxAllowableGap>0</MaxAllowableGap>
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>

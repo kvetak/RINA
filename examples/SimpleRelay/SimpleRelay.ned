@@ -34,5 +34,5 @@ network SimpleRelay
         }
     connections allowunconnected:
         host1.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
-        host2.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
+        host2.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 5s; ber = 0; } <--> interiorRouter.medium++;
 }
