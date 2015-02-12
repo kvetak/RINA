@@ -256,7 +256,7 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
     sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
-    sigRIBDCongNotif     = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
+    sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
 
     //Signals that this module is processing
 
