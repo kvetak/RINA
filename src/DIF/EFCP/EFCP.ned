@@ -35,6 +35,7 @@ simple EFCP
         string noRateSlowDownPolicy = default("");
         string reconcileFCPolicy = default("");
         string rateReductionPolicy = default("");
+        string ecnSlowDownPolicy = default("");
         
         string rcvrInactivityPolicy = default("");
   		string senderInactivityPolicy = default("");

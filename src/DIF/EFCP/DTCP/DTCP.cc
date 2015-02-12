@@ -37,6 +37,7 @@ DTCP::DTCP() {
   noRateSlowDownPolicy = NULL;
   reconcileFCPolicy = NULL;
   rateReductionPolicy = NULL;
+  ecnSlowDownPolicy = NULL;
 
 
 
@@ -139,6 +140,7 @@ void DTCP::initialize(int step)
   createPolicyModule(noRateSlowDownPolicy, NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
   createPolicyModule(reconcileFCPolicy, RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
   createPolicyModule(rateReductionPolicy, RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
+  createPolicyModule(ecnSlowDownPolicy, ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
   }
 }

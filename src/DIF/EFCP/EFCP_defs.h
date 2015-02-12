@@ -94,6 +94,9 @@
 #define RTT_ESTIMATOR_POLICY_PREFIX "rina.DIF.EFCP.policies.RTTEstimator."
 #define RTT_ESTIMATOR_POLICY_NAME "rttEstimatorPolicy"
 
+#define ECN_SLOW_DOWN_POLICY_PREFIX "rina.DIF.EFCP.policies.ECNSlowDown."
+#define ECN_SLOW_DOWN_POLICY_NAME "ecnSlowDownPolicy"
+
 
 
 #endif /* EFCP_H_ */

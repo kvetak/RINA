@@ -38,4 +38,5 @@ simple DTCP
     string noRateSlowDownPolicy = default("");
     string reconcileFCPolicy = default("");
     string rateReductionPolicy = default("");
+    string ecnSlowDownPolicy = default("");
 }

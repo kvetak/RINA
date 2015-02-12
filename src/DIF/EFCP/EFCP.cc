@@ -179,6 +179,7 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
     dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
     dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
     dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
+    dtcpModule->par("ecnSlowDownPolicy").setStringValue(par("ecnSlowDownPolicy").stringValue());
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
