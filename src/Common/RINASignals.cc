@@ -19,6 +19,7 @@ const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
 const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
 const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
 const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived";
+const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 
@@ -66,7 +67,6 @@ const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";
 const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
-const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";

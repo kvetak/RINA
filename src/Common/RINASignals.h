@@ -23,6 +23,7 @@ extern const char* SIG_RIBD_CreateFlow;
 extern const char* SIG_RIBD_CreateFlowResponseNegative;
 extern const char* SIG_RIBD_CreateFlowResponsePositive;
 extern const char* SIG_RIBD_ForwardingUpdateReceived;
+extern const char* SIG_RIBD_CongestionNotification;
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
@@ -73,8 +74,6 @@ extern const char* SIG_RIB_CreateRequestFlow;
 extern const char* SIG_RIB_CreateResponseFlow;
 extern const char* SIG_RIB_DeleteRequestFlow;
 extern const char* SIG_RIB_DeleteResponseFlow;
-extern const char* SIG_RIB_SlowdownRequest;
-extern const char* SIG_RIBD_CongestionNotification;
 
 //RMT
 extern const char* SIG_RMT_NoConnId;
