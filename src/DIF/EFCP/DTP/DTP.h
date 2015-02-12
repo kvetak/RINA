@@ -144,7 +144,7 @@ class DTP : public cSimpleModule
     void runSenderInactivityTimerPolicy();
     void runRTTEstimatorPolicy();
 
-    void runCongestionNotificationPolicy();
+
 
 
 
@@ -205,6 +205,8 @@ class DTP : public cSimpleModule
     void flushAllQueuesAndPrepareToDie();
     void createPolicyModule(cModule* policy, const char* prefix, const char* name);
     void startATimer(unsigned int seqNum);
+
+    void runCongestionNotificationPolicy();
 
   protected:
     virtual void handleMessage(cMessage *msg);

@@ -863,5 +863,5 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
     int cepID = congInfo->getConnectionId().getDstCepId();
     EV << "executing slowdown on EFCPI " << cepID << endl;
-    emit(sigRASDReqFromRIB, cepID);
+    emit(sigRASDReqFromRIB, congInfo);
 }

@@ -41,7 +41,7 @@ void EFCP::initialize(int step){
 
 
     lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
-//    getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown);
+    getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
 
 }
 

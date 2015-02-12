@@ -492,7 +492,7 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
 
     //Prepare M_START ConDescr
     CDAP_M_Start* mstarcon = new CDAP_M_Start(MSG_CONGEST);
-    CongestionDescriptor* conDesc = new CongestionDescriptor(pdu->getConnId().getSrcCepId(), pdu->getConnId().getDstCepId(), pdu->getConnId().getQoSId());
+    CongestionDescriptor* conDesc = new CongestionDescriptor(pdu->getConnId().getDstCepId(), pdu->getConnId().getSrcCepId(), pdu->getConnId().getQoSId());
     //Prepare object
     std::ostringstream os;
     os << conDesc->getCongesDescrName();

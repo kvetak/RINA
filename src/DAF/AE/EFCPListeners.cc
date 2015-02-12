@@ -42,10 +42,16 @@ EFCPListeners::~EFCPListeners()
 void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
 
-//  CongestionDescriptor* cd = (ongestionDescriptor*) obj;
-//  efcpTable->getDTPByFlow(cd->getSrcCepId);
+  CongestionDescriptor* cd = (CongestionDescriptor*) obj;
+  DTP* dtp = efcpTable->getDTPBySrcCEP(cd->getConnectionId().getSrcCepId());
 
-  DTP* dtp;
+  if(dtp != NULL){
+    dtp->runCongestionNotificationPolicy();
+  }else{
+    //Error
+  }
+
+
 
 
 }
