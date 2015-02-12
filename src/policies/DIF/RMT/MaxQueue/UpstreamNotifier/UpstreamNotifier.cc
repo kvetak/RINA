@@ -5,47 +5,33 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
-#include <RMTMaxQBase.h>
+#include <UpstreamNotifier.h>
 
-Define_Module(RMTMaxQBase);
+Define_Module(UpstreamNotifier);
 
-
-void RMTMaxQBase::initialize()
+void UpstreamNotifier::onPolicyInit()
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
-
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
-
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
-    onPolicyInit();
+    // register slowdown signal for RA
+    sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
 }
 
-void RMTMaxQBase::onPolicyInit()
+bool UpstreamNotifier::run(RMTQueue* queue)
 {
-}
-
-void RMTMaxQBase::handleMessage(cMessage *msg)
-{
-
-}
-
-bool RMTMaxQBase::run(RMTQueue* queue)
-{
+    // invoke slowdown notification when the queue starts to overflow
+    if (queue->getLength() >= queue->getMaxLength())
+    {
+        emit(sigRMTSDReq, queue->getLastPDU());
+    }
     return false;
 }
+

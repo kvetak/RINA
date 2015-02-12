@@ -106,6 +106,13 @@ class RMTQueue : public cSimpleModule
     void setQueueId(const char* queueId);
 
     /**
+     * Returns a pointer to the last PDU in the queue.
+     *
+     * @return queue ID
+     */
+    const cPacket* getLastPDU() const;
+
+    /**
      * Returns the payload length of the first PDU in the queue.
      *
      * @return queue ID

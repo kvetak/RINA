@@ -32,8 +32,10 @@
 #include "ExternConsts.h"
 #include "RIBdListeners.h"
 #include "RINASignals.h"
+#include "PDU.h"
 
 //Constants
+extern const char* MSG_CONGEST;
 extern const char* MSG_FLO;
 extern const char* CLS_FLOW;
 extern const char* MSG_FLOPOSI;
@@ -59,6 +61,8 @@ class RIBd : public RIBdBase {
     /* Handles information coming from PDUFTG module. */
     virtual void receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * update);
 
+    virtual void sendCongestionNotification(PDU* pdu);
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -76,6 +80,7 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDAllocResPosi;
     simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
+    simsignal_t sigRIBDCongNotif;
 
     /* Emit update received signal. */
     simsignal_t sigRIBDFwdUpdateRecv;
@@ -93,6 +98,7 @@ class RIBd : public RIBdBase {
     LisRIBDDelRes*              lisRIBDDelRes;
     LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
+    LisRIBDCongesNotif*         lisRIBDCongNotif;
 
     /* Listen for PDUFTG update messages. */
     LisRIBDFwdInfoUpdate*       lisRIBDFwdInfoUpdate;
@@ -106,12 +112,15 @@ class RIBd : public RIBdBase {
     void signalizeCreateFlow(Flow* flow);
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative(Flow* flow);
+    void signalizeCongestionNotification(CongestionDescriptor* congDesc);
 
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);
     void processMDelete(CDAPMessage* msg);
     void processMDeleteR(CDAPMessage* msg);
     void processMWrite(CDAPMessage* msg);
+
+    void processMStart(CDAPMessage* msg);
 
   private:
     int invokeIdCounter;

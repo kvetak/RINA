@@ -78,7 +78,16 @@ bool REDDropper::run(RMTQueue* queue)
     {
         monitor->qCounters[queue] += 1;
         const double pb = maxP * (avr - minThresh) / (maxThresh - minThresh);
-        const double pa = pb / (1 - count * pb);
+        double pa;
+        if ((count * pb) < 1)
+        {
+            pa = pb / (1 - (count * pb));
+        }
+        else
+        {
+            pa = 1.0;
+        }
+
         const double rand = dblrand();
 
         if (rand < pa)

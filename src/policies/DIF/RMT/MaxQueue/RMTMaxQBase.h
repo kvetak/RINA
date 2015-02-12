@@ -22,6 +22,7 @@
 
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
+#include "RMTModuleAllocator.h"
 
 
 /**
@@ -57,6 +58,11 @@ class RMTMaxQBase : public cSimpleModule
      * Pointer to the monitoring policy module.
      */
     RMTQMonitorBase* qMonPolicy;
+
+    /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
 
   private:
 

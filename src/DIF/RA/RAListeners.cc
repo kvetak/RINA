@@ -15,6 +15,8 @@
 
 #include <RAListeners.h>
 
+#include "RMTQueue.h"
+
 RAListeners::RAListeners(RABase* nra) : ra(nra)
 {
 }
@@ -103,3 +105,28 @@ void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject
     }
 }
 
+void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    cPacket* pdu = dynamic_cast<cPacket*>(obj);
+    if (pdu)
+    {
+        ra->signalizeSlowdownRequestToRIBd(pdu);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+}
+
+void LisRIBCongNotif::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+//    cPacket* pdu = dynamic_cast<cPacket*>(obj);
+//    if (pdu)
+//    {
+        ra->signalizeSlowdownRequestToEFCP(obj);
+//    }
+//    else
+//    {
+//        EV << "RAListener received unknown object!" << endl;
+//    }
+}

@@ -15,37 +15,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RMTMaxQBase.h>
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-Define_Module(RMTMaxQBase);
+package rina.policies.DIF.RMT.MaxQueue.UpstreamNotifier;
 
-
-void RMTMaxQBase::initialize()
+simple UpstreamNotifier like IntRMTMaxQPolicy 
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
-
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
-
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
-    onPolicyInit();
-}
-
-void RMTMaxQBase::onPolicyInit()
-{
-}
-
-void RMTMaxQBase::handleMessage(cMessage *msg)
-{
-
-}
-
-bool RMTMaxQBase::run(RMTQueue* queue)
-{
-    return false;
+    parameters:
+        @display("i=block/socket");
 }

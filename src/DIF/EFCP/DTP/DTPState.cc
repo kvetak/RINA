@@ -291,6 +291,7 @@ double DTPState::getRtt() const
 
 void DTPState::setRtt(double rtt)
 {
+//  this->rtt = (this->rtt + rtt)/2;
   this->rtt = rtt;
 }
 

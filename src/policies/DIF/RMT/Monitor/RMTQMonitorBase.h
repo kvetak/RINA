@@ -20,10 +20,13 @@
 
 #include <omnetpp.h>
 #include "RMTSchedulingBase.h"
+#include "RMTModuleAllocator.h"
 #include "RMTQueue.h"
 #include "PDU.h"
 
-class RMTSchedulingBase; /* FIXME: circular dependency */
+/* FIXME: circular dependencies */
+class RMTSchedulingBase;
+class RMTModuleAllocator;
 
 /**
  * Noop base class for the RMT monitoring policy.
@@ -87,6 +90,11 @@ class RMTQMonitorBase : public cSimpleModule
      * Pointer to a scheduling policy module.
      */
     RMTSchedulingBase* schedPolicy;
+
+    /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
 
   private:
 

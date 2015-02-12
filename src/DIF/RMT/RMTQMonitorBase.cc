@@ -29,6 +29,9 @@ void RMTQMonitorBase::initialize()
     schedPolicy = check_and_cast<RMTSchedulingBase*>
         (getModuleByPath("^.schedulingPolicy"));
 
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.rmtModuleAllocator"));
+
     onPolicyInit();
 }
 

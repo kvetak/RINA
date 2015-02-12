@@ -107,6 +107,8 @@ void RA::initSignalsAndListeners()
 {
     sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
     sigRACreFloNega = registerSignal(SIG_RA_CreateFlowNegative);
+    sigRASDReqFromRMT = registerSignal(SIG_RA_InvokeSlowdown);
+    sigRASDReqFromRIB = registerSignal(SIG_RA_ExecuteSlowdown);
 
     lisRAAllocResPos = new LisRAAllocResPos(this);
     thisIPC->subscribe(SIG_FAI_AllocateResponsePositive, lisRAAllocResPos);
@@ -128,6 +130,12 @@ void RA::initSignalsAndListeners()
     lisEFCPStartSending = new LisEFCPStartSending(this);
     thisIPC->getParentModule()->
             subscribe(SIG_EFCP_StartSending, this->lisEFCPStartSending);
+
+    lisRMTSDReq = new LisRMTSlowdownRequest(this);
+    thisIPC->subscribe(SIG_RMT_SlowdownRequest, this->lisRMTSDReq);
+
+    lisRIBCongNotif = new LisRIBCongNotif(this);
+    thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
 }
 
 void RA::initFlowAlloc()
@@ -840,4 +848,20 @@ void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
 void RA::signalizeCreateFlowNegativeToRIBd(Flow* flow)
 {
     emit(sigRACreFloNega, flow);
+}
+
+void RA::signalizeSlowdownRequestToRIBd(cPacket* pdu)
+{
+    Enter_Method("signalizeSlowdownRequestToRIBd()");
+    emit(sigRASDReqFromRMT, pdu);
+}
+
+void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
+{
+    Enter_Method("signalizeSlowdownRequestToEFCP()");
+    // TODO: move this to the listener
+    CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
+    int cepID = congInfo->getConnectionId().getDstCepId();
+    EV << "executing slowdown on EFCPI " << cepID << endl;
+    emit(sigRASDReqFromRIB, cepID);
 }

@@ -252,6 +252,11 @@ unsigned int RMTQueue::getFirstPDUPayloadLength()
     return 0;
 }
 
+const cPacket* RMTQueue::getLastPDU() const
+{
+    return queue.back();
+}
+
 unsigned int RMTQueue::getLastPDUPayloadLength()
 {
     PDU* pdu = dynamic_cast<PDU*>(queue.back());
