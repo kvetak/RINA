@@ -129,3 +129,16 @@ void EFCPTable::insertEntry(EFCPTableEntry* entry){
 
 
 }
+
+DTP* EFCPTable::getDTPBySrcCEP(int srcCEP)
+{
+
+  for(TEFCPTable::iterator it = this->efcpTable.begin(); it!= efcpTable.end(); ++it){
+
+    if((*it)->getFlow()->getConId().getSrcCepId() == srcCEP){
+      //TODO B1 What to return in case of multiple EFCPi per Flow?
+      return (*it)->getEfcpiTab()->front()->getDtp();
+    }
+  }
+  return NULL;
+}

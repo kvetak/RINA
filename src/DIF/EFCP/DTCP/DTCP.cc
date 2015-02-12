@@ -543,6 +543,20 @@ bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 }
 
 
+bool DTCP::runECNSlowDownPolicy(DTPState* dtpState)
+{
+  Enter_Method("ECNSlowDownPolicy");
+  if (ecnSlowDownPolicy == NULL || ecnSlowDownPolicy->run(dtpState, dtcpState))
+  {
+    /* Default */
+
+    /* End default */
+
+  }
+  return false;
+}
+
+
 void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 {
   Enter_Method_Silent();
@@ -688,8 +702,8 @@ void DTCP::schedule(DTCPTimers* timer, double time){
         rxExpTimer->setSent(simTime().dbl());
       }
       //TODO B1 (RTT + A + epsilon)
-      double aTime = dtp->state->getQoSCube()->getATime();
-      double rtt = dtp->state->getRtt();
+//      double aTime = dtp->state->getQoSCube()->getATime();
+//      double rtt = dtp->state->getRtt();
       scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
       break;
     }

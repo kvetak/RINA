@@ -144,6 +144,8 @@ class DTP : public cSimpleModule
     void runSenderInactivityTimerPolicy();
     void runRTTEstimatorPolicy();
 
+    void runCongestionNotificationPolicy();
+
 
 
     unsigned int getFlowControlRightWinEdge();

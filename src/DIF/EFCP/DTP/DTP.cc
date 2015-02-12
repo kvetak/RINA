@@ -116,6 +116,11 @@ void DTP::runRTTEstimatorPolicy()
 
 }
 
+void DTP::runCongestionNotificationPolicy()
+{
+  dtcp->runECNSlowDownPolicy(state);
+}
+
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting

@@ -35,7 +35,7 @@
 #include "ExternConsts.h"
 #include "EFCP_defs.h"
 #include "RA.h"
-
+#include "EFCPListeners.h"
 //#include "EFCPInstance.h"
 //#include "Delimiting.h"
 
@@ -80,6 +80,10 @@ private:
 
     EFCPTable* efcpTable;
     RA* resourceAllocator;
+
+    /* Listeners */
+
+    LisEFCPCongestFromRA* lisEFCPCongestFromRA;
 
     Delimiting* createDelimiting(cModule* efcpi, int portId);
     DTCP* createDTCP(cModule* efcpi);

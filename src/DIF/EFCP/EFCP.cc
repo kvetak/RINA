@@ -35,9 +35,14 @@ EFCP::~EFCP() {
 
 void EFCP::initialize(int step){
 //  if(step == 3){
-    this->efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
+    efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
     resourceAllocator = ModuleAccess<RA>(MOD_RA).get();
 //  }
+
+
+    lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
+//    getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown);
+
 }
 
 

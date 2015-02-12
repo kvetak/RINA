@@ -50,6 +50,7 @@
 #include "DTCPNoRateSlowDownPolicyBase.h"
 #include "DTCPReconcileFCPolicyBase.h"
 #include "DTCPRateReductionPolicyBase.h"
+#include "DTCPECNSlowDownPolicyBase.h"
 
 class DTP;
 
@@ -76,6 +77,7 @@ class DTCP: public cSimpleModule {
     DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
     DTCPReconcileFCPolicyBase* reconcileFCPolicy;
     DTCPRateReductionPolicyBase* rateReductionPolicy;
+    DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
 
 
     /*Timers*/
@@ -166,6 +168,7 @@ public:
     bool runNoRateSlowDownPolicy(DTPState* dtpState);
     bool runReconcileFCPolicy(DTPState* dtpState);
     bool runRateReductionPolicy(DTPState* dtpState);
+    bool runECNSlowDownPolicy(DTPState* dtpState);
 
     //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
