@@ -104,36 +104,23 @@ bool IRM::createBindings(Flow* flow) {
     //   Add AP gates
     std::ostringstream nam2;
     nam2 << GATE_SOUTHIO_ << portId;
-    if(!IrmMod->hasGate(nam2.str().c_str())){
-      IrmMod->addGate(nam2.str().c_str(), cGate::INOUT, false);
-    }
+    IrmMod->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = IrmMod->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = IrmMod->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
-
     //   Add IRM gates
-    if(!this->hasGate(nam2.str().c_str())){
-      this->addGate(nam2.str().c_str(), cGate::INOUT, false);
-    }
+    this->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g3i = this->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g3o = this->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
     //TODO: Status check
 
     //   Connect gates together
-    if(!g1o->isConnected()){
-      g1o->connectTo(g2i);
-    }
-    if(!g2i->isConnected()){
-      g2i->connectTo(g3i);
-    }
+    g1o->connectTo(g2i);
+    g2i->connectTo(g3i);
 
-    if(!g3o->isConnected()){
-      g3o->connectTo(g2o);
-    }
-    if(!g2o->isConnected()){
-      g2o->connectTo(g1i);
-    }
+    g3o->connectTo(g2o);
+    g2o->connectTo(g1i);
 
     //Set south-half of the routing in ConnectionTable
     bool status = ConTable->setSouthGates(flow, g3i, g3o);
