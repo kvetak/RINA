@@ -28,6 +28,9 @@ void RMTMaxQBase::initialize()
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.rmtModuleAllocator"));
 
+    // register slowdown signal for RA
+    sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
@@ -48,4 +51,9 @@ void RMTMaxQBase::handleMessage(cMessage *msg)
 bool RMTMaxQBase::run(RMTQueue* queue)
 {
     return false;
+}
+
+void RMTMaxQBase::notifySenderOfCongestion(const cPacket* pdu)
+{
+    emit(sigRMTSDReq, pdu);
 }
