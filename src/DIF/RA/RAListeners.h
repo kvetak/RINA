@@ -75,5 +75,19 @@ class LisEFCPStartSending : public RAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisRMTSlowdownRequest : public RAListeners
+{
+  public:
+    LisRMTSlowdownRequest(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBCongNotif : public RAListeners
+{
+  public:
+    LisRIBCongNotif(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 
 #endif /* RALISTENERS_H_ */

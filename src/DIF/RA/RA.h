@@ -106,6 +106,9 @@ class RA : public RABase
 
     simsignal_t sigRACreFloPosi;
     simsignal_t sigRACreFloNega;
+    simsignal_t sigRASDReqFromRMT;
+    simsignal_t sigRASDReqFromRIB;
+
     LisRACreFlow* lisRACreFlow;
     LisRAAllocResPos* lisRAAllocResPos;
     LisRACreAllocResPos* lisRACreAllocResPos;
@@ -113,8 +116,13 @@ class RA : public RABase
     LisEFCPStopSending* lisEFCPStopSending;
     LisEFCPStartSending* lisEFCPStartSending;
 
+    LisRMTSlowdownRequest* lisRMTSDReq;
+    LisRIBCongNotif* lisRIBCongNotif;
+
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
+    void signalizeSlowdownRequestToRIBd(cPacket* pdu);
+    void signalizeSlowdownRequestToEFCP(cPacket* pdu);
 
 };
     

@@ -59,11 +59,14 @@ const char* SIG_RA_FlowAllocated                = "RA-FlowAllocated";
 const char* SIG_RA_FlowDeallocated              = "RA-FlowDeallocated";
 const char* SIG_RA_CreateFlowPositive           = "RA-CreateFlowPositive";
 const char* SIG_RA_CreateFlowNegative           = "RA-CreateFlowNegative";
+const char* SIG_RA_InvokeSlowdown               = "RA-InvokeSlowdown";
+const char* SIG_RA_ExecuteSlowdown              = "RA-ExecuteSlowdown";
 
 const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";
 const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
+const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
@@ -71,6 +74,7 @@ const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortPDURcvd                 = "RMT-PortPDURcvd";
 const char* SIG_RMT_PortPDUSent                 = "RMT-PortPDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
+const char* SIG_RMT_SlowdownRequest             = "RMT-SlowDownRequest";
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";
 
