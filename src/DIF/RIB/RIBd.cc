@@ -24,6 +24,7 @@
 
 #include "RIBd.h"
 
+const char* MSG_CONGEST         = "Congestion";
 const char* MSG_FLO             = "Flow";
 const char* MSG_FLOPOSI         = "Flow+";
 const char* MSG_FLONEGA         = "Flow-";
@@ -231,6 +232,10 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Write*>(msg)) {
         processMWrite(msg);
     }
+    //M_START
+    else if (dynamic_cast<CDAP_M_Start*>(msg)) {
+        processMStart(msg);
+    }
 
     delete msg;
 }
@@ -251,6 +256,7 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
     sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
+    sigRIBDCongNotif     = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
 
     //Signals that this module is processing
 
@@ -287,6 +293,10 @@ void RIBd::initSignalsAndListeners() {
 
     lisRIBDFwdInfoUpdate = new LisRIBDFwdInfoUpdate(this);
     catcher2->subscribe(SIG_PDUFTG_FwdInfoUpdate, lisRIBDFwdInfoUpdate);
+
+    lisRIBDCongNotif = new LisRIBDCongesNotif(this);
+    catcher2->subscribe(SIG_RA_InvokeSlowdown, lisRIBDCongNotif);
+
 }
 
 void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
@@ -477,6 +487,33 @@ void RIBd::processMDeleteR(CDAPMessage* msg) {
 
 }
 
+void RIBd::sendCongestionNotification(PDU* pdu) {
+    Enter_Method("sendCongestionNotification()");
+
+    //Prepare M_START ConDescr
+    CDAP_M_Start* mstarcon = new CDAP_M_Start(MSG_CONGEST);
+    CongestionDescriptor* conDesc = new CongestionDescriptor(pdu->getConnId().getSrcCepId(), pdu->getConnId().getDstCepId(), pdu->getConnId().getQoSId());
+    //Prepare object
+    std::ostringstream os;
+    os << conDesc->getCongesDescrName();
+    object_t condesobj;
+    condesobj.objectClass = conDesc->getClassName();
+    condesobj.objectName = os.str();
+    condesobj.objectVal = conDesc;
+    //TODO: Vesely - Assign appropriate values
+    condesobj.objectInstance = VAL_DEFINSTANCE;
+    mstarcon->setObject(condesobj);
+
+    //Append destination address for RMT "routing"
+    mstarcon->setDstAddr(pdu->getSrcAddr());
+
+    //TODO: Vesely - Work more on InvokeId
+    mstarcon->setInvokeID(invokeIdCounter++);
+
+    //Send it
+    signalizeSendData(mstarcon);
+}
+
 void RIBd::processMWrite(CDAPMessage* msg)
 {
     CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
@@ -524,4 +561,26 @@ void RIBd::receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * info)
 
     /* Finally order to send the data... */
     signalizeSendData(cdapm);
+}
+
+void RIBd::signalizeCongestionNotification(CongestionDescriptor* congDesc) {
+    EV << "Emits CongestionNotification" << endl;
+    emit(sigRIBDCongNotif, congDesc);
+}
+
+void RIBd::processMStart(CDAPMessage* msg) {
+    CDAP_M_Start* msg1 = check_and_cast<CDAP_M_Start*>(msg);
+
+    EV << "Received M_Start";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //CongestionNotification CongestDescr
+    if (dynamic_cast<CongestionDescriptor*>(object.objectVal)) {
+        CongestionDescriptor* congdesc = (check_and_cast<CongestionDescriptor*>(object.objectVal))->dup();
+        congdesc->getConnectionId().swapCepIds();
+        EV << "\n===========\n" << congdesc->getConnectionId().info();
+        signalizeCongestionNotification(congdesc);
+    }
+
 }

@@ -146,3 +146,15 @@ void LisRIBDFwdInfoUpdate::receiveSignal(
         EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
     }
 }
+
+void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "LisRIBDCongesNotif initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+
+    PDU* pdu = dynamic_cast<PDU*>(obj);
+    if (pdu)
+       ribd->sendCongestionNotification(pdu);
+    else
+       EV << "RIBdListener received unknown object!" << endl;
+}

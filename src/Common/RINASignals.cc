@@ -19,6 +19,7 @@ const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
 const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
 const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
 const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived";
+const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 
@@ -59,6 +60,7 @@ const char* SIG_RA_FlowAllocated                = "RA-FlowAllocated";
 const char* SIG_RA_FlowDeallocated              = "RA-FlowDeallocated";
 const char* SIG_RA_CreateFlowPositive           = "RA-CreateFlowPositive";
 const char* SIG_RA_CreateFlowNegative           = "RA-CreateFlowNegative";
+const char* SIG_RA_InvokeSlowdown               = "RA-InvokeSlowdown";
 
 const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";
