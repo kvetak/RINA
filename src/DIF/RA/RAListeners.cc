@@ -120,13 +120,13 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
 
 void LisRIBCongNotif::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    cPacket* pdu = dynamic_cast<cPacket*>(obj);
-    if (pdu)
-    {
-        ra->signalizeSlowdownRequestToEFCP(pdu);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
+//    cPacket* pdu = dynamic_cast<cPacket*>(obj);
+//    if (pdu)
+//    {
+        ra->signalizeSlowdownRequestToEFCP(obj);
+//    }
+//    else
+//    {
+//        EV << "RAListener received unknown object!" << endl;
+//    }
 }

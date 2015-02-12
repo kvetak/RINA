@@ -856,10 +856,11 @@ void RA::signalizeSlowdownRequestToRIBd(cPacket* pdu)
     emit(sigRASDReqFromRMT, pdu);
 }
 
-void RA::signalizeSlowdownRequestToEFCP(cPacket* pdu)
+void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
 {
     Enter_Method("signalizeSlowdownRequestToEFCP()");
-    CDAPMessage* cdap = check_and_cast<CDAPMessage*>(pdu);
-    // int cepID = cdap->get...
-    //emit(sigRASDReqFromRIB, cepID);
+    // TODO: move this to the listener
+    CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
+    int cepID = congInfo->getConnectionId().getSrcCepId();
+    emit(sigRASDReqFromRIB, cepID);
 }

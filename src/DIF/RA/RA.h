@@ -35,6 +35,7 @@
 #include "PDUForwardingTable.h"
 #include "NM1FlowTable.h"
 #include "QueueAllocBase.h"
+#include "CongestionDescriptor.h"
 
 /* Forwarding and routing stuff... */
 #include "PDUFwdTabGenerator.h"
@@ -122,7 +123,7 @@ class RA : public RABase
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
     void signalizeSlowdownRequestToRIBd(cPacket* pdu);
-    void signalizeSlowdownRequestToEFCP(cPacket* pdu);
+    void signalizeSlowdownRequestToEFCP(cObject* obj);
 
 };
     

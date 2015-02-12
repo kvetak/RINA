@@ -40,7 +40,7 @@ class RABase : public cSimpleModule
     virtual void blockNM1Port(Flow* flow) = 0;
     virtual void unblockNM1Port(Flow* flow) = 0;
     virtual void signalizeSlowdownRequestToRIBd(cPacket* pdu) = 0;
-    virtual void signalizeSlowdownRequestToEFCP(cPacket* pdu) = 0;
+    virtual void signalizeSlowdownRequestToEFCP(cObject* pdu) = 0;
 
 
     const QoSCubeSet& getQoSCubes() const;
