@@ -20,6 +20,7 @@
 
 #include <omnetpp.h>
 
+#include "RINASignals.h"
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
 #include "RMTModuleAllocator.h"
@@ -55,6 +56,11 @@ class RMTMaxQBase : public cSimpleModule
     virtual void handleMessage(cMessage* msg);
 
     /**
+     * Send CDAP congestion notification to the PDU sender via RIBd.
+     */
+    void notifySenderOfCongestion(const cPacket* pdu);
+
+    /**
      * Pointer to the monitoring policy module.
      */
     RMTQMonitorBase* qMonPolicy;
@@ -71,6 +77,11 @@ class RMTMaxQBase : public cSimpleModule
      *  Inherited policies should be using onPolicyInit() instead.
      */
     void initialize();
+
+    /**
+     * Congestion notifier.
+     */
+    simsignal_t sigRMTSDReq;
 };
 
 #endif /* RMTMAXQBASE_H_ */

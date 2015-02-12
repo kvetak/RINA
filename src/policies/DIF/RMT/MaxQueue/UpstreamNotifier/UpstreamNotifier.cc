@@ -21,16 +21,15 @@ Define_Module(UpstreamNotifier);
 
 void UpstreamNotifier::onPolicyInit()
 {
-    // register slowdown signal for RA
-    sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
+
 }
 
 bool UpstreamNotifier::run(RMTQueue* queue)
 {
-    // invoke slowdown notification when the queue starts to overflow
+    // send out congestion notification when the queue starts to overflow
     if (queue->getLength() >= queue->getMaxLength())
     {
-        emit(sigRMTSDReq, queue->getLastPDU());
+        notifySenderOfCongestion(queue->getLastPDU());
     }
     return false;
 }

@@ -25,9 +25,6 @@ class UpstreamNotifier : public RMTMaxQBase
   public:
     virtual bool run(RMTQueue* queue);
     virtual void onPolicyInit();
-
-  private:
-    simsignal_t sigRMTSDReq;
 };
 
 #endif /* UPSTREAMNOTIFIER_H_ */
