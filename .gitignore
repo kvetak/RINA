@@ -1,25 +1,37 @@
-/out
-src/rina
-/doc/
-/doxy.cfg
-.settings/
+# Compiled sources
 *_m.h
 *_m.cc
 *_sm.h
 *_sm.cc
 src/Makefile
 src/Makefile.vc
+
+# Doxygen documentation
+/doc/
+/doxy.cfg
 /doc/doxy/
 /doc/neddoc/
+
+# Ignore results
 /examples/*/results/
 /examples/*/*/results/
 /examples/*/*/*/results/
 /tests/*/work/
-*.pyc
-*.pcap
 *.sca
 *.vec
+
+# Misceleanous
+*.pyc
+*.pcap
+.settings/
+.tkenvrc
+.tkenvlog
+.cmdenv-log
+netanim-trace.txt
+gcc-debug
+
 # ignore binary files
+/out
 out/
 *.so
 *.dylib
@@ -34,12 +46,7 @@ sta*
 *.pdb
 *.idb
 *.manifest
-.tkenvrc
-.tkenvlog
-.cmdenv-log
-netanim-trace.txt
 *.out
-gcc-debug
 
 # ignore backup and temp files
 *.bak
