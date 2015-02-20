@@ -15,10 +15,16 @@
 
 #include "FAITable.h"
 
+//Statistic collextion
+const char* SIG_STAT_FT_SIZE             = "FT_FlowTableSize";
+
 Define_Module(FAITable);
 
 void FAITable::initialize()
 {
+    //Inits
+    initSignalsAndListeners();
+    //Watchers
     WATCH_LIST(FaiTable);
 }
 
@@ -87,6 +93,9 @@ void FAITable::handleMessage(cMessage *msg)
 
 void FAITable::insertNew(Flow* flow) {
     this->insert(FAITableEntry(flow));
+    updateDisplayString();
+    EV << "FT emits signal " << (long)FaiTable.size() << endl;
+    emit(sigStatFTSize, (long)FaiTable.size());
 }
 
 void FAITable::insert(const FAITableEntry& entry) {
@@ -141,3 +150,15 @@ void FAITable::setFaiToFlow(FAIBase* fai, Flow* flow) {
     fte->setFai(fai);
 }
 
+void FAITable::updateDisplayString() {
+    // display number of flows
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("t", 1, "t");
+    std::ostringstream os;
+    os << "records: " << FaiTable.size();
+    disp.setTagArg("t", 0, os.str().c_str());
+}
+
+void FAITable::initSignalsAndListeners() {
+    sigStatFTSize = registerSignal(SIG_STAT_FT_SIZE);
+}

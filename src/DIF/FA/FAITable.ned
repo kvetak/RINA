@@ -17,5 +17,8 @@ package rina.DIF.FA;
 
 simple FAITable
 {
-    @display("i=block/table2");
+    parameters:
+    	@display("i=block/table2");
+    	@signal[FT_FlowTableSize](type="long");
+    	@statistic[ft-size](title="FlowTable Size"; source=FT_FlowTableSize; record=vector);
 }

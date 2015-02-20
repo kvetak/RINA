@@ -17,13 +17,21 @@
 #include "IRM.h"
 
 const int VAL_UNDEF_HANDLE = -1;
+const char* SIG_STAT_IRM_UP = "IRM_PassUp";
+const char* SIG_STAT_IRM_DOWN = "IRM_PassDown";
 
 Define_Module(IRM);
 
 IRM::IRM() {
+    statPassUp = 0;
+    statPassDown = 0;
 }
 
 IRM::~IRM() {
+    ConTable = NULL;
+    DifAllocator = NULL;
+    statPassUp = 0;
+    statPassDown = 0;
 }
 
 void IRM::initPointers() {
@@ -41,13 +49,25 @@ void IRM::initialize() {
 void IRM::handleMessage(cMessage* msg) {
     if (!msg->isSelfMessage()) {
         //Find output gate based on input
-        cGate* g = ConTable->findOutputGate(msg->getArrivalGate());
+        bool isGoingUp = false;
+        cGate* g = ConTable->findOutputGate(msg->getArrivalGate(), isGoingUp);
         //Send out if gate exist
-        if (g)
+
+        if (g) {
+            if (isGoingUp) {
+                statPassUp++;
+                emit(sigStatIRMPassUp, true);
+            }
+            else {
+                statPassDown++;
+                emit(sigStatIRMPassDown, true);
+            }
             send(msg, g);
-        else {
-            EV << "Received message but destination gate is not in the ConnectionTable!" << endl;
         }
+        else
+            EV << "Received message but destination gate is not in the ConnectionTable!" << endl;
+
+        updateDisplayString();
     }
     //Process self-message
     else {
@@ -62,6 +82,8 @@ void IRM::initSignalsAndListeners() {
     //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
+    sigStatIRMPassUp      = registerSignal(SIG_STAT_IRM_UP);
+    sigStatIRMPassDown      = registerSignal(SIG_STAT_IRM_DOWN);
 
     //  Allocate Request from App
     this->lisAllocReq = new LisIRMAllocReq(this);
@@ -104,23 +126,30 @@ bool IRM::createBindings(Flow* flow) {
     //   Add AP gates
     std::ostringstream nam2;
     nam2 << GATE_SOUTHIO_ << portId;
-    IrmMod->addGate(nam2.str().c_str(), cGate::INOUT, false);
+    if (!IrmMod->hasGate(nam2.str().c_str()))
+        IrmMod->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g2i = IrmMod->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g2o = IrmMod->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
     //   Add IRM gates
-    this->addGate(nam2.str().c_str(), cGate::INOUT, false);
+    if (!this->hasGate(nam2.str().c_str()))
+        this->addGate(nam2.str().c_str(), cGate::INOUT, false);
     cGate* g3i = this->gateHalf(nam2.str().c_str(), cGate::INPUT);
     cGate* g3o = this->gateHalf(nam2.str().c_str(), cGate::OUTPUT);
 
     //TODO: Status check
 
     //   Connect gates together
-    g1o->connectTo(g2i);
-    g2i->connectTo(g3i);
+    if (!g1o->getNextGate())
+        g1o->connectTo(g2i);
+    if (!g2i->getNextGate())
+        g2i->connectTo(g3i);
 
-    g3o->connectTo(g2o);
-    g2o->connectTo(g1i);
+    if (!g3o->getNextGate())
+        g3o->connectTo(g2o);
+    if (!g2o->getNextGate())
+        g2o->connectTo(g1i);
+
 
     //Set south-half of the routing in ConnectionTable
     bool status = ConTable->setSouthGates(flow, g3i, g3o);
@@ -197,6 +226,14 @@ void IRM::newFlow(Flow* flow) {
 
     //Store info into ConnectionTable
     ConTable->setFa(flow, DifAllocator->findFaInsideIpc(targetIpc));
+}
+
+void IRM::updateDisplayString() {
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("t", 1, "t");
+    std::ostringstream os;
+    os << "up: " << statPassUp << endl << "down: " << statPassDown;
+    disp.setTagArg("t", 0, os.str().c_str());
 }
 
 void IRM::signalizeDeallocateRequest(Flow* flow) {

@@ -25,6 +25,9 @@ typedef std::list<FAITableEntry> TFAITable;
 typedef TFAITable::iterator TFTIter;
 typedef TFAITable::const_iterator TFTConstIter;
 
+//Statistic collextion
+extern const char* SIG_STAT_FT_SIZE;
+
 class FAITable : public cSimpleModule
 {
   public:
@@ -42,9 +45,14 @@ class FAITable : public cSimpleModule
     void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
     void changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status);
 
+    void updateDisplayString();
+
   protected:
     virtual void initialize();
+    void initSignalsAndListeners();
     virtual void handleMessage(cMessage *msg);
+
+    simsignal_t sigStatFTSize;
 
   private:
     TFAITable FaiTable;
