@@ -26,9 +26,7 @@ simple IRM
         @signal[IRM_PassDown](type=bool);
         @statistic[irm-up](title="msg passed up"; source=count(IRM_PassUp); record=last);
         @statistic[irm-down](title="msg passed down"; source=count(IRM_PassDown); record=last);
-        
-        //@signal[IRM-AllocateResponsePositive](type=Flow?);
-        //@signal[IRM-AllocateResponseNegative](type=Flow?);   
+  
     gates:
         inout aeIo[];  
 }

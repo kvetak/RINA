@@ -13,12 +13,12 @@ src/Makefile.vc
 /doc/neddoc/
 
 # Ignore results
-/examples/*/results/
-/examples/*/*/results/
-/examples/*/*/*/results/
-/tests/*/work/
-*.sca
-*.vec
+#/examples/*/results/
+#/examples/*/*/results/
+#/examples/*/*/*/results/
+#/tests/*/work/
+#*.sca
+#*.vec
 
 # Misceleanous
 *.pyc

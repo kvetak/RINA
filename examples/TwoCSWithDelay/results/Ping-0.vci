@@ -1,0 +1,34 @@
+file 1061 1424437525                                            
+version 2
+run Ping-0-20150220-14:04:52-7800
+attr configname Ping
+attr datetime 20150220-14:04:52
+attr experiment Ping
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network TwoCSWithDelay
+attr processid 7800
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 1  TwoCSWithDelay.host1.ipcProcess1.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 0  TwoCSWithDelay.host1.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 2  TwoCSWithDelay.host2.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 3  TwoCSWithDelay.host2.ipcProcess1.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+0	1006 10 1 1 10 10 1 1 1 1 1
+1	1016 10 1 1 10 10 1 1 1 1 1
+2	1026 16 11 11 10.0001 10.0001 1 1 1 1 1
+3	1042 19 51 51 10.0003008 10.0003008 1 1 1 1 1
