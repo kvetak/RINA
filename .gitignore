@@ -19,6 +19,7 @@ src/Makefile.vc
 #/tests/*/work/
 #*.sca
 #*.vec
+*.vci
 
 # Misceleanous
 *.pyc
@@ -47,6 +48,7 @@ sta*
 *.idb
 *.manifest
 *.out
+src/rina
 
 # ignore backup and temp files
 *.bak
