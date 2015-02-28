@@ -30,17 +30,19 @@ void RMTModuleAllocator::initialize()
 
     // TODO: purge this crap and think of something smarter
     // port module coordinates
-    portXCoord = 100;
-    portYCoord = 220;
+    portXCoord = 55;
+    portYCoord = 180;
 }
 
 
 RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const char* queueId)
 {
+    cModule* portWrapper = port->getParentModule();
+
     // generate a name
     std::ostringstream queueName;
-    const char* strType = (type == RMTQueue::INPUT ? "i" : "o");
-    queueName << port->getFullName() << strType << queueId;
+    const char* strType = (type == RMTQueue::INPUT ? "inQ_" : "outQ_");
+    queueName << strType << queueId;
 
     RMTQueue* queue = lookup(port, type, queueName.str().c_str());
     if (queue)
@@ -51,22 +53,27 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
 
     // instantiate a new module
     cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
-    cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), this->getParentModule());
+    cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), portWrapper);
     queue = dynamic_cast<RMTQueue*>(newModule);
 
     // modify the position a little
-    cDisplayString& disp = queue->getDisplayString();
-    disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
-    disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
-    portQueueCount[port] += 1;
+//    cDisplayString& disp = queue->getDisplayString();
+//    disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
+//    disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
+//    portQueueCount[port] += 1;
 
     // create bindings to other modules
     cModule* rmt = getModuleByPath("^.rmt");
+    std::ostringstream combinedQueueName;
+    combinedQueueName << portWrapper->getFullName() << queueName.str();
     if (type == RMTQueue::OUTPUT)
     {
         // connect to RMT submodule
-        cGate* rmtOut = rmt->addGate(queueName.str().c_str(), cGate::OUTPUT, false);
-        rmtOut->connectTo(queue->getInputGate());
+        cGate* rmtOut = rmt->addGate(combinedQueueName.str().c_str(), cGate::OUTPUT, false);
+        cGate* portBorder = portWrapper->addGate(queueName.str().c_str(), cGate::INPUT, false);
+        rmtOut->connectTo(portBorder);
+        portBorder->connectTo(queue->getInputGate());
+
         queue->setRmtAccessGate(rmtOut);
 
         // connect to port
@@ -77,8 +84,11 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     else if (type == RMTQueue::INPUT)
     {
         // connect to RMT submodule
-        cGate* rmtIn = rmt->addGate(queueName.str().c_str(), cGate::INPUT, false);
-        queue->getOutputGate()->connectTo(rmtIn);
+        cGate* rmtIn = rmt->addGate(combinedQueueName.str().c_str(), cGate::INPUT, false);
+        cGate* portBorder = portWrapper->addGate(queueName.str().c_str(), cGate::OUTPUT, false);
+
+        queue->getOutputGate()->connectTo(portBorder);
+        portBorder->connectTo(rmtIn);
 
         // connect to port
         cGate* toInputQueue = port->addGate(queue->getFullName(), cGate::OUTPUT, false);
@@ -112,17 +122,18 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     portName << "p" << portCount;
     portCount++;
 
-    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPort");
-    RMTPort* port = (RMTPort*)moduleType->
-                    createScheduleInit(portName.str().c_str(), getParentModule());
+    // initialize a wrapper with port inside it
+    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPortWrapper");
+    cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
+    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
 
     port->setFlow(flow);
 
     // modify the position a little
-    cDisplayString& portDisp = port->getDisplayString();
+    cDisplayString& portDisp = portWrapper->getDisplayString();
     portDisp.setTagArg("p", 0, portXCoord);
     portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 90;
+    portXCoord += 60;
 
     if (flow == NULL)
     {

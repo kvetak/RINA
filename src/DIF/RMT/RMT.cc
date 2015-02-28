@@ -319,7 +319,7 @@ void RMT::portToRIB(CDAPMessage* cdap)
  *
  * @param cdap CDAP message to be passed
  */
-void RMT::RIBToPort(CDAPMessage* cdap)
+void RMT::ribToPort(CDAPMessage* cdap)
 {
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
@@ -426,6 +426,7 @@ void RMT::processMessage(cMessage* msg)
     { // PDU arrival
         PDU* pdu = (PDU*) msg;
 
+        // TODO: replace with something less dumb
         if (gate.substr(0, 1) == "p")
         { // from a port
             if (pdu->getDstAddr() == thisIpcAddr)
@@ -470,7 +471,7 @@ void RMT::processMessage(cMessage* msg)
         }
         else
         { // from the RIBd
-            RIBToPort(cdap);
+            ribToPort(cdap);
         }
     }
     else

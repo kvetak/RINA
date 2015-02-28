@@ -24,7 +24,7 @@ package rina.DIF.RMT;
 module RelayAndMux
 {
     parameters:
-        @display("i=block/classifier;bgb=645,275");
+        @display("i=block/classifier;bgb=645,230");
 
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");

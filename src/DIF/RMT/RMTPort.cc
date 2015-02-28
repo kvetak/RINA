@@ -29,7 +29,7 @@ void RMTPort::initialize()
 
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
-            (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
+            (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
 
     sigRMTPortPDURcvd = registerSignal(SIG_RMT_PortPDURcvd);
     sigRMTPortPDUSent = registerSignal(SIG_RMT_PortPDUSent);
@@ -196,7 +196,7 @@ RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId) const
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     std::ostringstream fullId;
-    fullId << getFullName() << (type == RMTQueue::INPUT ? 'i' : 'o') << queueId;
+    fullId << (type == RMTQueue::INPUT ? "inQ_" : "outQ_") << queueId;
 
     for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
@@ -237,12 +237,10 @@ void RMTPort::setBusy()
 
 void RMTPort::redrawGUI()
 {
-    if (!ev.isGUI())
+    if (ev.isGUI())
     {
-        return;
+        getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
     }
-
-    getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
 }
 
 const Flow* RMTPort::getFlow() const
@@ -255,19 +253,21 @@ void RMTPort::setFlow(Flow* flow)
     this->flow = flow;
 
     // display address of the remote IPC on top of the module
-    if (flow != NULL)
+    if (ev.isGUI())
     {
-        // shitty temporary hack to strip the layer name off
-        const std::string& dstAppFull = flow->getDstApni().getApn().getName();
-        const std::string& dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
-        getDisplayString().setTagArg("t", 0, dstAppAddr.c_str());
-
+        if (flow != NULL)
+        {
+            // shitty temporary hack to strip the layer name off
+            const std::string& dstAppFull = flow->getDstApni().getApn().getName();
+            const std::string& dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
+            getParentModule()->getDisplayString().setTagArg("t", 0, dstAppAddr.c_str());
+        }
+        else
+        {
+            getParentModule()->getDisplayString().setTagArg("t", 0, "PHY");
+        }
+        redrawGUI();
     }
-    else
-    {
-        getDisplayString().setTagArg("t", 0, "PHY");
-    }
-
 }
 
 void RMTPort::blockOutput()

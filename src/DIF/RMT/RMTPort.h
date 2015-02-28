@@ -125,6 +125,7 @@ class RMTPort : public cSimpleModule
     bool ready;
     bool blocked;
     Flow* flow;
+    std::string dstDisplayString;
     double postServeDelay;
 
     QueueIDGenBase* queueIdGen;

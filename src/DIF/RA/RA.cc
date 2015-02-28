@@ -414,7 +414,7 @@ void RA::bindMediumToRMT()
     // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtAllocator->addPort(NULL);
     // connect the port to the bottom
-    interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
+    interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
     port->setReady();
@@ -449,7 +449,8 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtAllocator->addPort(flow);
-    interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
+    //interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
+    interconnectModules(rmtModule, port->getParentModule(), thisIPCGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
 

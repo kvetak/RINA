@@ -87,7 +87,7 @@ class RMT : public RMTBase
     void efcpiToPort(PDU* msg);
     void efcpiToEfcpi(PDU* msg);
     void portToEfcpi(PDU* msg);
-    void RIBToPort(CDAPMessage* msg);
+    void ribToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 

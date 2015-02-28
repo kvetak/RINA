@@ -43,8 +43,8 @@ void RMTQueue::initialize()
     // message departure signal handler
     sigRMTPDUSent = registerSignal(SIG_RMT_QueuePDUSent);
 
-    maxQLength = getParentModule()->par("defaultMaxQLength");
-    thresholdQLength = getParentModule()->par("defaultThreshQLength");
+    maxQLength = getParentModule()->getParentModule()->par("defaultMaxQLength");
+    thresholdQLength = getParentModule()->getParentModule()->par("defaultThreshQLength");
     qTime = simTime();
     redrawGUI();
 }
@@ -83,15 +83,15 @@ void RMTQueue::redrawGUI()
     }
     else if (len < thresholdQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorBusy").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorBusy").stringValue());
     }
     else if (len < maxQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorWarn").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorWarn").stringValue());
     }
     else
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorFull").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorFull").stringValue());
     }
 
     // print current saturation in numbers
