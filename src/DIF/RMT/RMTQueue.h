@@ -195,6 +195,7 @@ class RMTQueue : public cSimpleModule
 
     simsignal_t sigRMTPDURcvd;
     simsignal_t sigRMTPDUSent;
+    simsignal_t sigStatRMTQueueLength;
 };
 
 typedef RMTQueue::queueType RMTQueueType;

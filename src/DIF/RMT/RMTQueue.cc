@@ -17,6 +17,9 @@
 
 #include "RMTQueue.h"
 
+const char* SIG_STAT_RMTQUEUE_LENGTH = "RMTQueue_Length";
+const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";
+
 Define_Module(RMTQueue);
 
 
@@ -42,6 +45,8 @@ void RMTQueue::initialize()
     sigRMTPDURcvd = registerSignal(SIG_RMT_QueuePDURcvd);
     // message departure signal handler
     sigRMTPDUSent = registerSignal(SIG_RMT_QueuePDUSent);
+    // length for vector stats
+    sigStatRMTQueueLength = registerSignal(SIG_STAT_RMTQUEUE_LENGTH);
 
     maxQLength = getParentModule()->getParentModule()->par("defaultMaxQLength");
     thresholdQLength = getParentModule()->getParentModule()->par("defaultThreshQLength");
@@ -117,6 +122,7 @@ void RMTQueue::enqueuePDU(cPacket* pdu)
 {
     queue.push_back(pdu);
     emit(sigRMTPDURcvd, this);
+    emit(sigStatRMTQueueLength, getLength());
     redrawGUI();
 }
 
@@ -136,6 +142,7 @@ void RMTQueue::releasePDU(void)
         }
 
         emit(sigRMTPDUSent, this);
+        emit(sigStatRMTQueueLength, getLength());
         bubble("Releasing a PDU...");
         redrawGUI();
     }

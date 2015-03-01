@@ -26,6 +26,7 @@
 
 Define_Module(RMT);
 
+
 RMT::RMT()
 : relayOn(false), onWire(false)
 {
@@ -289,7 +290,7 @@ void RMT::portToEfcpi(PDU* pdu)
         EV << this->getFullPath() << ": EFCPI " << cepId
            << " isn't present on this system! Notifying other modules." << endl;
         emit(sigRMTNoConnID, pdu);
-        //delete pdu;
+        delete pdu;
     }
 
 }

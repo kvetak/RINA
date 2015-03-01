@@ -17,6 +17,9 @@
 
 #include "RMTPort.h"
 
+const char* SIG_STAT_RMTPORT_UP = "RMTPort_PassUp";
+const char* SIG_STAT_RMTPORT_DOWN = "RMTPort_PassDown";
+
 Define_Module(RMTPort);
 
 void RMTPort::initialize()
@@ -27,12 +30,11 @@ void RMTPort::initialize()
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     postServeDelay = par("postServeDelay").doubleValue() / 1000;
 
-
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
 
-    sigRMTPortPDURcvd = registerSignal(SIG_RMT_PortPDURcvd);
-    sigRMTPortPDUSent = registerSignal(SIG_RMT_PortPDUSent);
+    sigStatRMTPortUp = registerSignal(SIG_STAT_RMTPORT_UP);
+    sigStatRMTPortDown = registerSignal(SIG_STAT_RMTPORT_DOWN);
     sigRMTPortReady = registerSignal(SIG_RMT_PortReadyToServe);
 }
 
@@ -48,7 +50,7 @@ void RMTPort::handleMessage(cMessage* msg)
     {
         if (!opp_strcmp(msg->getFullName(), "portTransmitEnd"))
         { // a PDU transmit procedure has just been finished
-            //emit(sigRMTPortPDUSent, this);
+            emit(sigStatRMTPortDown, true);
             setReadyDelayed();
         }
         else if (!opp_strcmp(msg->getFullName(), "readyToServe"))
@@ -63,6 +65,7 @@ void RMTPort::handleMessage(cMessage* msg)
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
         { // this will go away when we figure out management flow pre-allocation
             send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+            emit(sigStatRMTPortUp, true);
         }
         else if (dynamic_cast<PDU*>(msg) != NULL)
         {
@@ -73,6 +76,7 @@ void RMTPort::handleMessage(cMessage* msg)
             if (inQueue != NULL)
             {
                 send(msg, inQueue->getInputGate()->getPreviousGate());
+                emit(sigStatRMTPortUp, true);
             }
             else
             {
@@ -83,8 +87,6 @@ void RMTPort::handleMessage(cMessage* msg)
         {
             EV << "this type of message isn't supported!" << endl;
         }
-
-        emit(sigRMTPortPDURcvd, this);
     }
     else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
     {
@@ -107,13 +109,13 @@ void RMTPort::handleMessage(cMessage* msg)
                 else
                 {
                     setReadyDelayed();
-                    emit(sigRMTPortPDUSent, this);
+                    emit(sigStatRMTPortDown, true);
                 }
             }
             else
             { // there isn't any delay or rate control in place
                 setReadyDelayed();
-                //emit(sigRMTPortPDUSent, this);
+                emit(sigStatRMTPortDown, true);
                 emit(sigRMTPortReady, this);
             }
         }

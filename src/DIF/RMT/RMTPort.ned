@@ -21,7 +21,12 @@ simple RMTPort
 {
     parameters:
     	@display("i=block/square;is=s");
-    	double postServeDelay @unit(ms) = default(0.0ms);
+    	@signal[RMTPort_PassUp](type=bool);
+        @signal[RMTPort_PassDown](type=bool);
+        @statistic[rmtport-up](title="msg passed up"; source=count(RMTPort_PassUp); record=last;);
+        @statistic[rmtport-down](title="msg passed down"; source=count(RMTPort_PassDown); record=last);
+        
+        double postServeDelay @unit(ms) = default(0.0ms);
         
 	gates:
     	inout southIo;

@@ -149,9 +149,9 @@ class RMTPort : public cSimpleModule
     void setReadyDelayed();
     void redrawGUI();
 
-    simsignal_t sigRMTPortPDURcvd;
-    simsignal_t sigRMTPortPDUSent;
     simsignal_t sigRMTPortReady;
+    simsignal_t sigStatRMTPortUp;
+    simsignal_t sigStatRMTPortDown;
 };
 
 typedef std::vector<RMTPort*> RMTPorts;
