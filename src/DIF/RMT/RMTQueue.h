@@ -106,50 +106,31 @@ class RMTQueue : public cSimpleModule
     void setQueueId(const char* queueId);
 
     /**
+     * Returns a pointer to the first PDU in the queue.
+     *
+     * @return PDU
+     */
+    const cPacket* getFirstPDU() const;
+
+    /**
      * Returns a pointer to the last PDU in the queue.
      *
-     * @return queue ID
+     * @return PDU
      */
     const cPacket* getLastPDU() const;
 
     /**
-     * Returns the payload length of the first PDU in the queue.
-     *
-     * @return queue ID
+     * Iterators.
      */
-    unsigned int getFirstPDUPayloadLength();
-
-    /**
-     * Returns the payload length of the last PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned int getLastPDUPayloadLength();
-
-    /**
-     * Returns the qos-id of the first PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned short getFirstPDUQoSID();
-
-    /**
-     * Returns the qos-id of the last PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned short getLastPDUQoSID();
+    typedef std::deque<cPacket*>::iterator iterator;
+    typedef std::deque<cPacket*>::const_iterator const_iterator;
+    iterator begin() { return queue.begin(); }
+    iterator end() { return queue.end(); }
 
     /**
      * Sends out the first PDU in the queue.
      */
     void releasePDU();
-
-    /**
-     * DEPRECATED: use releasePDU() instead.
-     * Instructs the module to send out the first message in the queue.
-     */
-    void startTransmitting() { Enter_Method("startTransmitting()"); releasePDU(); };
 
     /**
      * Marks the last PDU in a queue with a congestion bit.

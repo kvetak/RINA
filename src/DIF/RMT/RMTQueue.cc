@@ -244,67 +244,12 @@ cGate* RMTQueue::getInputGate() const
     return inputGate;
 }
 
-unsigned int RMTQueue::getFirstPDUPayloadLength()
+const cPacket* RMTQueue::getFirstPDU() const
 {
-    PDU* pdu = dynamic_cast<PDU*>(queue.front());
-
-    if (pdu != NULL)
-    {
-        return pdu->getSize();
-    }
-    {
-        EV << "The first message isn't a data PDU!" << endl;
-    }
-
-    return 0;
+    return queue.front();
 }
 
 const cPacket* RMTQueue::getLastPDU() const
 {
     return queue.back();
-}
-
-unsigned int RMTQueue::getLastPDUPayloadLength()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.back());
-
-    if (pdu != NULL)
-    {
-        return pdu->getSize();
-    }
-    {
-        EV << "The last message isn't a data PDU!" << endl;
-    }
-
-    return 0;
-}
-
-unsigned short RMTQueue::getFirstPDUQoSID()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.front());
-
-    if (pdu != NULL)
-    {
-        return pdu->getConnId().getQoSId();
-    }
-    {
-        EV << "The first message isn't a data PDU!" << endl;
-    }
-
-    return 0;
-}
-
-unsigned short RMTQueue::getLastPDUQoSID()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.back());
-
-    if (pdu != NULL)
-    {
-        return pdu->getConnId().getQoSId();
-    }
-    {
-        EV << "The last message isn't a data PDU!" << endl;
-    }
-
-    return 0;
 }

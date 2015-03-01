@@ -27,7 +27,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
             port->setBusy();
 
             RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
-            outQ->startTransmitting();
+            outQ->releasePDU();
         }
         else
         {
@@ -41,7 +41,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
             inputBusy[port] = true;
 
             RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
-            inQ->startTransmitting();
+            inQ->releasePDU();
         }
         else
         {
