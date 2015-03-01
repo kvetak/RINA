@@ -51,7 +51,7 @@ void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
 {
 }
 
-void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cMessage* pdu)
+void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cPacket* pdu)
 {
 }
 

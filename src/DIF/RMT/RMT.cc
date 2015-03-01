@@ -99,7 +99,7 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
         // if the PDU has to be dropped, finish it here
         if (maxQPolicy->run(queue))
         {
-            const cMessage* dropped = queue->dropLast();
+            const cPacket* dropped = queue->dropLast();
             qMonPolicy->onMessageDrop(queue, dropped);
             delete dropped;
             return;

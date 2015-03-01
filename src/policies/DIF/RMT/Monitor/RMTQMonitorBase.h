@@ -58,7 +58,7 @@ class RMTQMonitorBase : public cSimpleModule
      * @param queue pointer to the queue
      * @param pdu PDU being dropped
      */
-    virtual void onMessageDrop(RMTQueue* queue, const cMessage* pdu);
+    virtual void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
 
     /**
      * A hook method invoked after a queue is created.
