@@ -75,6 +75,23 @@ void RMT::initialize()
 }
 
 
+void RMT::finish()
+{
+    size_t pduCount = invalidPDUs.size();
+    if (pduCount)
+    {
+        EV << "This RMT still contains " << pduCount << " unprocessed PDUs!" << endl;
+
+        while (!invalidPDUs.empty())
+        {
+            EV << invalidPDUs.front()->getClassName() << " received at "
+               << invalidPDUs.front()->getArrivalTime() << endl;
+            delete invalidPDUs.front();
+            invalidPDUs.pop_front();
+        }
+    }
+}
+
 /**
  * Invokes RMT policies related to queue processing. To be called when a message
  * arrives into a queue.
@@ -291,7 +308,7 @@ void RMT::portToEfcpi(PDU* pdu)
         EV << this->getFullPath() << ": EFCPI " << cepId
            << " isn't present on this system! Notifying other modules." << endl;
         emit(sigRMTNoConnID, pdu);
-        delete pdu;
+        invalidPDUs.push_back(pdu);
     }
 
 }
@@ -479,7 +496,7 @@ void RMT::processMessage(cMessage* msg)
     else
     {
         EV << this->getFullPath() << " message type not supported" << endl;
-        delete msg;
+        invalidPDUs.push_back(msg);
     }
 }
 
@@ -488,7 +505,7 @@ void RMT::handleMessage(cMessage *msg)
     if (msg->isSelfMessage())
     {
         // ?
-        delete msg;
+        invalidPDUs.push_back(msg);
     }
     else
     {

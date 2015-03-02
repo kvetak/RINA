@@ -67,8 +67,6 @@ void RA::initialize(int stage)
 
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));
-    //fwdTable = check_and_cast<PDUForwardingTable*>
-    //    (getModuleByPath("^.pduForwardingTable"));
     flowTable = check_and_cast<NM1FlowTable*>
         (getModuleByPath("^.nm1FlowTable"));
     rmt = check_and_cast<RMT*>
@@ -457,7 +455,6 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtAllocator->addPort(flow);
-    //interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
     interconnectModules(rmtModule, port->getParentModule(), thisIPCGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
@@ -546,15 +543,11 @@ void RA::createNM1Flow(Flow *flow)
     {
         // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
-        // update the PDU forwarding table
-        //fwdTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
-        // TODO: remove this when management isn't piggy-backed anymore
+        // TODO: remove this when management isn't piggy-backed anymore!
         // (port shouldn't be ready to send out data when the flow isn't yet allocated)
         port->setReady();
 
-        //fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-        //                flow->getConId().getQoSId(), port);
-
+        // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
             Address(flow->getDstApni().getApn().getName()),
             flow->getConId().getQoSId(),
@@ -623,20 +616,6 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
     // update the PDU forwarding table
-/*
-    fwdTable->insert(Address(dstAPN.getName()), qosID, port);
-
-    // add other accessible applications into forwarding table
-    const APNList* remoteApps = difAllocator->findNeigborApns(dstAPN);
-    if (remoteApps)
-    {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
-        {
-            Address addr = Address(it->getName());
-            fwdTable->insert(addr, qosID, port);
-        }
-    }
-*/
     fwdtg->insertFlowInfo(
         Address(flow->getDstApni().getApn().getName()),
         flow->getConId().getQoSId(),
@@ -692,18 +671,6 @@ void RA::postNM1FlowAllocation(Flow* flow)
     // TODO: move this to receiveSignal()
     NM1FlowTableItem* item = flowTable->findFlowByDstApni(dstApn.getName(), qosId);
     if (item == NULL) return;
-/*
-    // add other accessible applications into the forwarding table
-    const APNList* remoteApps = difAllocator->findNeigborApns(dstApn);
-    if (remoteApps)
-    {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
-        {
-            Address addr = Address(it->getName());
-            fwdTable->insert(addr, qosId, item->getRmtPort());
-        }
-    }
-*/
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
     item->getRmtPort()->setReady();
@@ -735,7 +702,6 @@ void RA::removeNM1Flow(Flow *flow)
     rmtModuleOut->disconnect();
 
     fwdtg->removeFlowInfo(flowItem->getRmtPort());
-//    fwdTable->remove(port);
     rmtAllocator->removePort(flowItem->getRmtPort());
     rmtModule->deleteGate(gateName);
     flowItem->getFaBase()->receiveDeallocateRequest(flow);
@@ -799,13 +765,6 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
             EV << "!!! not able to allocate (N-1)-flow for " << neighAddr << endl;
             return false;
         }
-    }
-
-    // add another fwtable entry for direct srcApp->dstApp messages (if needed)
-    // TODO: there must be a better place to put this
-    if (neighAddr != dstAddr)
-    {
-//        fwdTable->insert(Address(dstAddr), qosID, nm1FlowItem->getRmtPort());
     }
 
     if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)

@@ -65,6 +65,7 @@ class RMT : public RMTBase
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual void finish();
 
   private:
     PDUForwardingTable* fwTable;
@@ -93,6 +94,7 @@ class RMT : public RMTBase
     void portToPort(cMessage* msg);
 
     RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
+    std::deque<cMessage*> invalidPDUs;
 
     simsignal_t sigRMTNoConnID;
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;

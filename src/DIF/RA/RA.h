@@ -90,7 +90,6 @@ class RA : public RABase
     cModule* rmtModule;
     RMT* rmt;
     RMTModuleAllocator* rmtAllocator;
-    //PDUForwardingTable* fwdTable;
     NM1FlowTable* flowTable;
     QueueAllocBase* qAllocPolicy;
 
@@ -126,9 +125,6 @@ class RA : public RABase
 
     LisRMTPortDrainDisable* lisRMTPortDrainDisable;
     LisRMTPortDrainEnable* lisRMTPortDrainEnable;
-
-
-
 
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
