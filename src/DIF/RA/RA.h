@@ -70,8 +70,10 @@ class RA : public RABase
     virtual void createNM1FlowWithoutAllocate(Flow* flow);
     virtual void removeNM1Flow(Flow* flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
-    virtual void blockNM1Port(Flow* flow);
-    virtual void unblockNM1Port(Flow* flow);
+    virtual void blockNM1PortOutput(Flow* flow);
+    virtual void unblockNM1PortOutput(Flow* flow);
+    virtual void blockNM1PortInput(cObject* obj);
+    virtual void unblockNM1PortInput(cObject* obj);
 
     // event hook handlers
     virtual void postNFlowAllocation(Flow* flow);
@@ -121,6 +123,12 @@ class RA : public RABase
 
     LisRMTSlowdownRequest* lisRMTSDReq;
     LisRIBCongNotif* lisRIBCongNotif;
+
+    LisRMTPortDrainDisable* lisRMTPortDrainDisable;
+    LisRMTPortDrainEnable* lisRMTPortDrainEnable;
+
+
+
 
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);

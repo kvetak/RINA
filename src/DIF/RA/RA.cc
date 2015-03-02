@@ -138,6 +138,12 @@ void RA::initSignalsAndListeners()
 
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
+
+    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
+    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
+
+    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
+    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
@@ -813,9 +819,9 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 }
 
 
-void RA::blockNM1Port(Flow* flow)
+void RA::blockNM1PortOutput(Flow* flow)
 {
-    Enter_Method("blockNM1Port()");
+    Enter_Method("blockNM1PortOutput()");
 
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
@@ -828,9 +834,9 @@ void RA::blockNM1Port(Flow* flow)
     item->getRmtPort()->blockOutput();
 }
 
-void RA::unblockNM1Port(Flow* flow)
+void RA::unblockNM1PortOutput(Flow* flow)
 {
-    Enter_Method("unblockNM1Port()");
+    Enter_Method("unblockNM1PortOutput()");
 
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
@@ -841,6 +847,46 @@ void RA::unblockNM1Port(Flow* flow)
     }
 
     item->getRmtPort()->unblockOutput();
+}
+
+void RA::blockNM1PortInput(cObject* obj)
+{
+    Enter_Method("blockNM1PortInput()");
+
+    PDU* pdu = dynamic_cast<PDU*>(obj);
+    if (pdu != NULL)
+    {
+        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+                pdu->getDstAddr().getApname().getName(),
+                pdu->getConnId().getQoSId());
+
+        if (flowItem != NULL)
+        {
+            flowItem->getRmtPort()->blockInput();
+        }
+    }
+}
+
+void RA::unblockNM1PortInput(cObject* obj)
+{
+    Enter_Method("unblockNM1PortInput()");
+
+    PDU* pdu = dynamic_cast<PDU*>(obj);
+    if (pdu != NULL)
+    {
+        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+                pdu->getDstAddr().getApname().getName(),
+                pdu->getConnId().getQoSId());
+
+        if (flowItem != NULL)
+        {
+            RMTPort* port = flowItem->getRmtPort();
+            // unblock!
+            port->unblockInput();
+            // resume processing of input queues
+            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
+        }
+    }
 }
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)

@@ -58,8 +58,38 @@ class RMTMaxQBase : public cSimpleModule
 
     /**
      * Send CDAP congestion notification to the PDU sender via RIBd.
+     *
+     * @param pdu pointer to PDU
      */
     void notifySenderOfCongestion(const cPacket* pdu);
+
+    /**
+     * Stops receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void disableSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Starts receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void enableSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Increases the rate of receiving data from PDU sender's arrival port at a faster rate.
+     *
+     * @param pointer to PDU
+     */
+    void slowDownSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Stops receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void speedUpSenderPortDrain(const cPacket* pdu);
 
     /**
      * Pointer to the monitoring policy module.
@@ -88,6 +118,26 @@ class RMTMaxQBase : public cSimpleModule
      * Congestion notifier.
      */
     simsignal_t sigRMTSDReq;
+
+    /**
+     * Signal used for disabling an incoming PDU's arrival port.
+     */
+    simsignal_t sigRMTPortDrainDisable;
+
+    /**
+     * Signal used for enabling an incoming PDU's arrival port.
+     */
+    simsignal_t sigRMTPortDrainEnable;
+
+    /**
+     * Signal used for speeding up an incoming PDU's arrival port drain rate.
+     */
+    simsignal_t sigRMTPortDrainSpeedUp;
+
+    /**
+     * Signal used for slowing down an incoming PDU's arrival port drain rate.
+     */
+    simsignal_t sigRMTPortDrainSlowDown;
 };
 
 #endif /* RMTMAXQBASE_H_ */

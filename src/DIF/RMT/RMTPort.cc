@@ -25,7 +25,7 @@ Define_Module(RMTPort);
 void RMTPort::initialize()
 {
     ready = false; // port should get activated by RA
-    blocked = false;
+    blockedOutput = false;
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     postServeDelay = par("postServeDelay").doubleValue() / 1000;
@@ -218,7 +218,7 @@ bool RMTPort::isReady()
 
 void RMTPort::setReady()
 {
-    if (blocked == false)
+    if (blockedOutput == false)
     {
         ready = true;
         emit(sigRMTPortReady, this);
@@ -275,7 +275,7 @@ void RMTPort::setFlow(Flow* flow)
 void RMTPort::blockOutput()
 {
     EV << getFullPath() << ": blocking the port output." << endl;
-    blocked = true;
+    blockedOutput = true;
     if (ready)
     {
         setBusy();
@@ -285,6 +285,16 @@ void RMTPort::blockOutput()
 void RMTPort::unblockOutput()
 {
     EV << getFullPath() << ": unblocking the port output." << endl;
-    blocked = false;
+    blockedOutput = false;
     setReady();
+}
+
+void RMTPort::blockInput()
+{
+    blockedInput = true;
+}
+
+void RMTPort::unblockInput()
+{
+    blockedInput = false;
 }

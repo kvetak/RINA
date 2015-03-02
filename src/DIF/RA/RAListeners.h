@@ -91,5 +91,20 @@ class LisRIBCongNotif : public RAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisRMTPortDrainDisable : public RAListeners
+{
+  public:
+    LisRMTPortDrainDisable(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRMTPortDrainEnable : public RAListeners
+{
+  public:
+    LisRMTPortDrainEnable(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+
 
 #endif /* RALISTENERS_H_ */

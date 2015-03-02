@@ -29,7 +29,15 @@ bool UpstreamNotifier::run(RMTQueue* queue)
     // send out congestion notification when the queue starts to overflow
     if (queue->getLength() >= queue->getMaxLength())
     {
-        notifySenderOfCongestion(queue->getLastPDU());
+        if (queue->getType() == RMTQueue::OUTPUT)
+        { // (N-1)-port output queues are filling up => stop accepting more PDUs
+            disableSenderPortDrain(queue->getLastPDU());
+        }
+        else if (queue->getType() == RMTQueue::INPUT)
+        { // (N-1)-port input buffers are filling up (on input from (N-1)-EFCPI)
+          // => send congestion notification to the sender
+            notifySenderOfCongestion(queue->getLastPDU());
+        }
     }
     return false;
 }

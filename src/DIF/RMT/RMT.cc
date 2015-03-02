@@ -122,8 +122,12 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     // (the output direction depends on port readiness, so it's done elsewhere)
     if (queue->getType() == RMTQueue::INPUT)
     {
-        schedPolicy->finalizeService(rmtAllocator->getQueueToPortMapping(queue),
-                                     queue->getType());
+        // input from this port could be blocked due to a congested output port
+        RMTPort* inputPort = rmtAllocator->getQueueToPortMapping(queue);
+        if (!inputPort->hasBlockedInput())
+        {
+            schedPolicy->finalizeService(inputPort, queue->getType());
+        }
     }
 }
 
