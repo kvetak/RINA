@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-//
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,55 +15,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RMTQMonitorBase.h>
+#include "AddressComparatorBase.h"
 
-Define_Module(RMTQMonitorBase);
+Define_Module(AddressComparatorBase);
 
-void RMTQMonitorBase::initialize()
+void AddressComparatorBase::initialize()
 {
+    cModule* ipcModule = getParentModule()->getParentModule();
+    thisIPCAddr = Address(ipcModule->par(PAR_IPCADDR).stringValue(),
+                          ipcModule->par(PAR_DIFNAME).stringValue());
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
 
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
-
-    schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getModuleByPath("^.schedulingPolicy"));
-
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
-
     onPolicyInit();
 }
 
-void RMTQMonitorBase::handleMessage(cMessage *msg)
+void AddressComparatorBase::onPolicyInit()
 {
 }
 
-void RMTQMonitorBase::onPolicyInit()
+bool AddressComparatorBase::matchesThisIPC(const Address& addr)
 {
+    return false;
 }
-
-void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
-{
-}
-
-void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
-{
-}
-
-void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cPacket* pdu)
-{
-}
-
-void RMTQMonitorBase::postQueueCreation(RMTQueue* queue)
-{
-}
-
-void RMTQMonitorBase::preQueueRemoval(RMTQueue* queue)
-{
-}
-
-

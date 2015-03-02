@@ -55,11 +55,8 @@ void RMT::initialize()
         (getModuleByPath("^.^.resourceAllocator.queueAllocPolicy"));
     queueIdGenerator = check_and_cast<QueueIDGenBase*>
         (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
-
-    // set up some parameters
-    cModule* ipcModule = getParentModule()->getParentModule();
-    thisIpcAddr = Address(ipcModule->par(PAR_IPCADDR).stringValue(),
-                          ipcModule->par(PAR_DIFNAME).stringValue());
+    addrComparator = check_and_cast<AddressComparatorBase*>
+        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
 
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
@@ -430,7 +427,7 @@ void RMT::processMessage(cMessage* msg)
         // TODO: replace with something less dumb
         if (gate.substr(0, 1) == "p")
         { // from a port
-            if (pdu->getDstAddr() == thisIpcAddr)
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
                 portToEfcpi(pdu);
             }
@@ -445,7 +442,7 @@ void RMT::processMessage(cMessage* msg)
         }
         else if (gate.substr(0, 7) == GATE_EFCPIO_)
         { // from an EFCPI
-            if (pdu->getDstAddr() == thisIpcAddr)
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
                 efcpiToEfcpi(pdu);
             }
@@ -461,7 +458,7 @@ void RMT::processMessage(cMessage* msg)
 
         if (gate.substr(0, 1) == "p")
         { // from a port
-            if (cdap->getDstAddr() == thisIpcAddr)
+            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
             {
                 portToRIB(cdap);
             }

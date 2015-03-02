@@ -25,6 +25,9 @@ void RMTMaxQBase::initialize()
     qMonPolicy = check_and_cast<RMTQMonitorBase*>
         (getModuleByPath("^.queueMonitorPolicy"));
 
+    addrComparator = check_and_cast<AddressComparatorBase*>
+            (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.rmtModuleAllocator"));
 

@@ -23,6 +23,7 @@
 #include "RINASignals.h"
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
+#include "AddressComparatorBase.h"
 #include "RMTModuleAllocator.h"
 
 
@@ -64,6 +65,11 @@ class RMTMaxQBase : public cSimpleModule
      * Pointer to the monitoring policy module.
      */
     RMTQMonitorBase* qMonPolicy;
+
+    /**
+     * Pointer to an address comparator module.
+     */
+    AddressComparatorBase* addrComparator;
 
     /**
      * Pointer to the RMT allocator module (also providing queue<->port mappings).

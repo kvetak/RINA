@@ -20,6 +20,7 @@
 
 #include <omnetpp.h>
 #include "RMTSchedulingBase.h"
+#include "AddressComparatorBase.h"
 #include "RMTModuleAllocator.h"
 #include "RMTQueue.h"
 #include "PDU.h"
@@ -87,14 +88,19 @@ class RMTQMonitorBase : public cSimpleModule
     virtual void handleMessage(cMessage* msg);
 
     /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
+
+    /**
      * Pointer to a scheduling policy module.
      */
     RMTSchedulingBase* schedPolicy;
 
     /**
-     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     * Pointer to an address comparator module.
      */
-    RMTModuleAllocator* rmtAllocator;
+    AddressComparatorBase* addrComparator;
 
   private:
 

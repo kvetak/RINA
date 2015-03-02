@@ -35,6 +35,7 @@
 
 #include "PDUForwardingTable.h"
 #include "QueueAllocBase.h"
+#include "AddressComparatorBase.h"
 
 #include "RMTBase.h"
 #include "RMTListeners.h"
@@ -69,7 +70,6 @@ class RMT : public RMTBase
     PDUForwardingTable* fwTable;
     RMTModuleAllocator* rmtAllocator;
 
-    Address thisIpcAddr;
     bool relayOn;
     bool onWire;
 
@@ -82,6 +82,7 @@ class RMT : public RMTBase
 
     QueueAllocBase* qAllocPolicy;
     QueueIDGenBase* queueIdGenerator;
+    AddressComparatorBase* addrComparator;
 
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU* msg);

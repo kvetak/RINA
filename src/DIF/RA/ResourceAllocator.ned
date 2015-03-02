@@ -19,6 +19,7 @@ package rina.DIF.RA;
 
 import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
+import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
 
 
@@ -29,6 +30,7 @@ module ResourceAllocator
         string queueAllocPolicyName = default("SingleQueue");
         string pduftgPolicyName = default("StaticRoutingPolicy");
         string queueIdGenName = default("SingleID");
+        string addrComparatorName = default("ExactMatch");
 
     submodules:
         pduForwardingTable: PDUForwardingTable {
@@ -52,5 +54,8 @@ module ResourceAllocator
         }
         PDUFTGPolicy: <pduftgPolicyName> like IntPDUFTGPolicy {
             @display("p=300,163");
+        }
+        addressComparator: <addrComparatorName> like IntAddressComparator {
+            @display("p=420,163");
         }
 }
