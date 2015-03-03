@@ -168,11 +168,11 @@ void RMTModuleAllocator::removeQueues(const RMTQueues& queues)
 
 RMTQueue* RMTModuleAllocator::lookup(RMTPort* port, RMTQueueType type, const char* queueName)
 {
-    RMTQueues queues = port->getOutputQueues();
+    RMTQueues queues = (type == RMTQueue::OUTPUT ? port->getOutputQueues() : port->getInputQueues());
     for(RMTQueuesIter it = queues.begin(); it != queues.end(); ++it )
     {
         RMTQueue* a = *it;
-        if (!opp_strcmp(a->getName(), queueName) && (a->getType() == type))
+        if (!opp_strcmp(a->getName(), queueName))
         {
             return a;
         }
