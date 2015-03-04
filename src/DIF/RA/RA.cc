@@ -816,7 +816,7 @@ void RA::blockNM1PortInput(cObject* obj)
     if (pdu != NULL)
     {
         NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getDstAddr().getApname().getName(),
+                pdu->getSrcAddr().getApname().getName(),
                 pdu->getConnId().getQoSId());
 
         if (flowItem != NULL)
@@ -834,7 +834,7 @@ void RA::unblockNM1PortInput(cObject* obj)
     if (pdu != NULL)
     {
         NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getDstAddr().getApname().getName(),
+                pdu->getSrcAddr().getApname().getName(),
                 pdu->getConnId().getQoSId());
 
         if (flowItem != NULL)

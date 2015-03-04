@@ -33,7 +33,7 @@ class RMTQueue : public cSimpleModule
   friend class RMTModuleAllocator;
 
   public:
-    RMTQueue();
+
     virtual ~RMTQueue();
 
     /**
@@ -144,6 +144,7 @@ class RMTQueue : public cSimpleModule
 
   protected:
     virtual void initialize();
+    virtual void finish();
     virtual void handleMessage(cMessage* msg);
 
   private:
@@ -155,7 +156,6 @@ class RMTQueue : public cSimpleModule
     int maxQLength;
     int thresholdQLength;
 
-    double queuingTime;
     simtime_t qTime;
 
     cGate* rmtAccessGate;

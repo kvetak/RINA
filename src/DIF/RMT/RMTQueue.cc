@@ -22,12 +22,6 @@ const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";
 
 Define_Module(RMTQueue);
 
-
-RMTQueue::RMTQueue()
-: queueId("")
-{
-}
-
 RMTQueue::~RMTQueue()
 {
     while (!queue.empty())
@@ -36,6 +30,22 @@ RMTQueue::~RMTQueue()
         queue.pop_front();
     }
 }
+
+void RMTQueue::finish()
+{
+    size_t pduCount = queue.size();
+    if (pduCount)
+    {
+        EV << "This queue still contains " << pduCount << " unprocessed PDUs!" << endl;
+
+        for (iterator it = begin(); it != end(); ++it)
+        {
+            cPacket* p = *it;
+            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
+        }
+    }
+}
+
 
 void RMTQueue::initialize()
 {
@@ -52,6 +62,10 @@ void RMTQueue::initialize()
     thresholdQLength = getParentModule()->getParentModule()->par("defaultThreshQLength");
     qTime = simTime();
     redrawGUI();
+
+    WATCH(thresholdQLength);
+    WATCH(maxQLength);
+    WATCH(qTime);
 }
 
 std::string RMTQueue::info() const
@@ -212,16 +226,6 @@ RMTQueueType RMTQueue::getType() const
 void RMTQueue::setType(queueType type)
 {
     this->type = type;
-}
-
-const char* RMTQueue::getQueueId() const
-{
-    return queueId;
-}
-
-void RMTQueue::setQueueId(const char* queueId)
-{
-    this->queueId = queueId;
 }
 
 cGate* RMTQueue::getRmtAccessGate() const

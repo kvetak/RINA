@@ -132,18 +132,40 @@ class RMTPort : public cSimpleModule
      */
     const RMTQueues& getOutputQueues() const;
 
+    /**
+     * Returns number of PDUs waiting to be read.
+     *
+     * @return PDUs count accross queues
+     */
+    unsigned long getWaitingOnInput() { return waitingOnInput; };
+
+    void addWaitingOnInput() { waitingOnInput++; };
+    void substractWaitingOnInput() { waitingOnInput--; };
+
+    /**
+     * Returns number of PDUs waiting to be written.
+     *
+     * @return PDUs count accross queues
+     */
+    unsigned long getWaitingOnOutput() { return waitingOnOutput; };
+
+    void addWaitingOnOutput() { waitingOnOutput++; };
+    void substractWaitingOnOutput() { waitingOnOutput--; }
+
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage* msg);
 
   private:
     bool ready;
-    bool blockedOutput;
     bool blockedInput;
-    Flow* flow;
-    std::string dstDisplayString;
+    bool blockedOutput;
+    unsigned long waitingOnInput;
+    unsigned long waitingOnOutput;
     double postServeDelay;
 
+    Flow* flow;
     QueueIDGenBase* queueIdGen;
 
     std::set<cGate*> northOutputGates;

@@ -52,7 +52,7 @@ class RMT : public RMTBase
   friend class FAI;
 
   public:
-    RMT();
+
     virtual ~RMT();
 
     virtual bool getRelayStatus() { return relayOn; };

@@ -23,7 +23,6 @@ void RMTModuleAllocator::initialize()
 {
     qMonPolicy = check_and_cast<RMTQMonitorBase*>
         (getModuleByPath("^.queueMonitorPolicy"));
-    WATCH_PTRMAP(queueToPort);
 
     portCount = 0;
     interfacePort = NULL;
@@ -32,6 +31,8 @@ void RMTModuleAllocator::initialize()
     // port module coordinates
     portXCoord = 55;
     portYCoord = 180;
+
+    WATCH(portCount);
 }
 
 
@@ -97,7 +98,6 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     }
 
     queue->setType(type);
-    queue->setQueueId(queueId);
     qMonPolicy->postQueueCreation(queue);
     queueToPort[queue] = port;
 

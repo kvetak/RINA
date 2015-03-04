@@ -31,7 +31,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
         }
         else
         {
-            waitingOnOutput[port] += 1;
+            port->addWaitingOnOutput();
         }
     }
     else if (direction == RMTQueue::INPUT)
@@ -45,7 +45,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
         }
         else
         {
-            waitingOnInput[port] += 1;
+            port->addWaitingOnInput();
         }
     }
 }

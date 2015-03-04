@@ -26,19 +26,21 @@
 
 Define_Module(RMT);
 
-
-RMT::RMT()
-: relayOn(false), onWire(false)
-{
-}
-
 RMT::~RMT()
 {
+    while (!invalidPDUs.empty())
+    {
+        delete invalidPDUs.front();
+        invalidPDUs.pop_front();
+    }
 }
 
 
 void RMT::initialize()
 {
+    relayOn = false;
+    onWire = false;
+
     // get pointers to other components
     fwTable = check_and_cast<PDUForwardingTable*>
         (getModuleByPath("^.^.resourceAllocator.pduForwardingTable"));
@@ -72,6 +74,9 @@ void RMT::initialize()
     // listen for a signal indicating that a port is ready to serve
     lisRMTPortReady = new LisRMTPortReady(this);
     getParentModule()->subscribe(SIG_RMT_PortReadyToServe, lisRMTPortReady);
+
+    WATCH(relayOn);
+    WATCH(onWire);
 }
 
 
@@ -82,12 +87,10 @@ void RMT::finish()
     {
         EV << "This RMT still contains " << pduCount << " unprocessed PDUs!" << endl;
 
-        while (!invalidPDUs.empty())
+        for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
         {
-            EV << invalidPDUs.front()->getClassName() << " received at "
-               << invalidPDUs.front()->getArrivalTime() << endl;
-            delete invalidPDUs.front();
-            invalidPDUs.pop_front();
+            cMessage* m = *it;
+            EV << m->getClassName() << " received at " << m->getArrivalTime() << endl;
         }
     }
 }
@@ -103,6 +106,7 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
     Enter_Method("invokeQueueArrivalPolicies()");
 
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
 
     // invoke monitor policy
     qMonPolicy->onMessageArrival(queue);
@@ -121,7 +125,14 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
     }
 
     // finally, invoke the scheduling policy
-    schedPolicy->processQueues(rmtAllocator->getQueueToPortMapping(queue), queue->getType());
+    if (!((queue->getType() == RMTQueue::INPUT) && (port->hasBlockedInput())))
+    {
+        schedPolicy->processQueues(port, queue->getType());
+    }
+    else
+    {
+        port->addWaitingOnInput();
+    }
 }
 
 /**

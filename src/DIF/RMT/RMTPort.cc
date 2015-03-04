@@ -26,6 +26,11 @@ void RMTPort::initialize()
 {
     ready = false; // port should get activated by RA
     blockedOutput = false;
+    blockedInput = false;
+
+    waitingOnInput = 0;
+    waitingOnOutput = 0;
+
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     postServeDelay = par("postServeDelay").doubleValue() / 1000;
@@ -36,6 +41,14 @@ void RMTPort::initialize()
     sigStatRMTPortUp = registerSignal(SIG_STAT_RMTPORT_UP);
     sigStatRMTPortDown = registerSignal(SIG_STAT_RMTPORT_DOWN);
     sigRMTPortReady = registerSignal(SIG_RMT_PortReadyToServe);
+
+    WATCH(ready);
+    WATCH(waitingOnInput);
+    WATCH(waitingOnOutput);
+    WATCH(blockedInput);
+    WATCH(blockedOutput);
+    WATCH(postServeDelay);
+    WATCH_PTR(flow);
 }
 
 void RMTPort::postInitialize()
@@ -291,10 +304,12 @@ void RMTPort::unblockOutput()
 
 void RMTPort::blockInput()
 {
+    EV << getFullPath() << ": blocking the port input." << endl;
     blockedInput = true;
 }
 
 void RMTPort::unblockInput()
 {
+    EV << getFullPath() << ": unblocking the port input." << endl;
     blockedInput = false;
 }

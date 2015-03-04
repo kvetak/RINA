@@ -26,19 +26,41 @@ void UpstreamNotifier::onPolicyInit()
 
 bool UpstreamNotifier::run(RMTQueue* queue)
 {
-    // send out congestion notification when the queue starts to overflow
+    // simple version:
+    // Send out the notification when an output (N-1)-port is overflowing.
+
     if (queue->getLength() >= queue->getMaxLength())
     {
         if (queue->getType() == RMTQueue::OUTPUT)
         { // (N-1)-port output queues are filling up => stop accepting more PDUs
-            disableSenderPortDrain(queue->getLastPDU());
-        }
-        else if (queue->getType() == RMTQueue::INPUT)
-        { // (N-1)-port input buffers are filling up (on input from (N-1)-EFCPI)
-          // => send congestion notification to the sender
             notifySenderOfCongestion(queue->getLastPDU());
         }
     }
+
+
+    // extended version:
+    // When an output buffer is overflowing, disable reading data from the input
+    // buffer sending data to it. When the input buffer starts to oveflow as well,
+    // send out the notification.
+
+//    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+//    if (queue->getLength() >= queue->getMaxLength())
+//    {
+//        if (queue->getType() == RMTQueue::OUTPUT)
+//        {
+//            disableSenderPortDrain(queue->getLastPDU());
+//        }
+//        else if (queue->getType() == RMTQueue::INPUT)
+//        {
+//            notifySenderOfCongestion(queue->getLastPDU());
+//        }
+//    }
+//    else if ((queue->getLength() == queue->getThreshLength()) &&
+//            port->hasBlockedInput())
+//    { // the output buffers are keeping up again, continue receiving on input
+//        port->unblockInput();
+//    }
+
     return false;
 }
 
