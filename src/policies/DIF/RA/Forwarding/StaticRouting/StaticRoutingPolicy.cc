@@ -47,7 +47,7 @@ void StaticRoutingPolicy::computeForwardingTable()
     {
         PDUFTGNeighbor * e = (*it);
 
-        fwdtg->getForwardingTable()->insert(
+        fwt->insert(
             e->getDestAddr(),
             e->getQosId(),
             e->getPort());
@@ -65,12 +65,18 @@ void StaticRoutingPolicy::initialize()
 
     difA = check_and_cast<DA *>(
         getModuleByPath("^.^.^.difAllocator.da"));
+
+    fwt = dynamic_cast<SimplePDUForwardingTable * >(fwdtg->getForwardingTable());
+    if(!fwt){
+        EV << "Invalid FWTable "<<fwdtg->getForwardingTable()->getFullName()<<" for StaticRoutingPolicy" << endl;
+        endSimulation();
+    }
 }
 
 void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
 {
     // Direct insert the entry into the forwarding table.
-    fwdtg->getForwardingTable()->insert(addr, qos, port);
+    fwt->insert(addr, qos, port);
 
     //
     // Imported from RA to clean the code from policy oriented procedures.
@@ -88,7 +94,7 @@ void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RM
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
         {
             Address addr = Address(it->getName());
-            fwdtg->getForwardingTable()->insert(
+            fwt->insert(
                 addr,
                 qos,
                 item->getRmtPort());
@@ -103,5 +109,5 @@ void StaticRoutingPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 
 void StaticRoutingPolicy::removeFlow(Address addr, short unsigned int qos)
 {
-    fwdtg->getForwardingTable()->remove(addr, qos);
+    fwt->remove(addr, qos);
 }

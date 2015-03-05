@@ -15,23 +15,23 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#include "DistanceVectorPolicy.h"
+#include "PrefDistanceVectorPolicy.h"
 #include "PDUFwdTabGenerator.h"
 #include "PDUFTGUpdate.h"
-#include "DVPInfo.h"
+#include "PDVPInfo.h"
 
-Define_Module(DistanceVectorPolicy);
+Define_Module(PrefDistanceVectorPolicy);
 
 //
 // Class constructor/destructors stuff.
 //
 
-DistanceVectorPolicy::DistanceVectorPolicy()
+PrefDistanceVectorPolicy::PrefDistanceVectorPolicy()
 {
     updateT = 0;
 }
 
-DistanceVectorPolicy::~DistanceVectorPolicy()
+PrefDistanceVectorPolicy::~PrefDistanceVectorPolicy()
 {
     // Do nothing...
 }
@@ -40,7 +40,7 @@ DistanceVectorPolicy::~DistanceVectorPolicy()
 // Class procedures sorted by name.
 //
 
-void DistanceVectorPolicy::computeForwardingTable()
+void PrefDistanceVectorPolicy::computeForwardingTable()
 {
     if(!fwdtg)
     {
@@ -59,7 +59,7 @@ void DistanceVectorPolicy::computeForwardingTable()
     {
         bool rem = false;
 
-        DVPInfo * i = (DVPInfo *)(*it);
+        PDVPInfo * i = (PDVPInfo *)(*it);
 
         for(EIter et = neiState->begin(); et != neiState->end(); ++et )
         {
@@ -74,7 +74,7 @@ void DistanceVectorPolicy::computeForwardingTable()
             // It's a neighbor! Repopulate the forwarding table.
             else
             {
-                fwt->insert(e->getDestAddr(), e->getQosId(), e->getPort());
+            //    fwt->insert(e->getDestAddr(), e->getQosId(), e->getPort());
             }
         }
 
@@ -86,11 +86,11 @@ void DistanceVectorPolicy::computeForwardingTable()
     }
 }
 
-PDUFTGInfo * DistanceVectorPolicy::flowExists(Address addr, unsigned short qos)
+PDUFTGInfo * PrefDistanceVectorPolicy::flowExists(Address addr, unsigned short qos)
 {
     for(NIter it = fwdtg->getNetworkState()->begin(); it != fwdtg->getNetworkState()->end(); ++it )
     {
-        DVPInfo * fsi = (DVPInfo * )(*it);
+        PDVPInfo * fsi = (PDVPInfo * )(*it);
 
         // Equal condition; same source reach same destination with same qos constrain.
         if(fsi->getDestination() == addr &&
@@ -103,12 +103,12 @@ PDUFTGInfo * DistanceVectorPolicy::flowExists(Address addr, unsigned short qos)
     return NULL;
 }
 
-unsigned int DistanceVectorPolicy::getUpdateTimeout()
+unsigned int PrefDistanceVectorPolicy::getUpdateTimeout()
 {
     return updateT;
 }
 
-void DistanceVectorPolicy::handleMessage(cMessage *msg)
+void PrefDistanceVectorPolicy::handleMessage(cMessage *msg)
 {
     NeighborState * n;
 
@@ -150,8 +150,18 @@ void DistanceVectorPolicy::handleMessage(cMessage *msg)
     }
 }
 
-void DistanceVectorPolicy::initialize()
+void PrefDistanceVectorPolicy::initialize()
 {
+    any = par("any").stdstringValue();
+    std::string del = par("delimiter").stdstringValue();
+    if(del.length() > 0 && del.at(0)!= ' '){
+        delimiter = del.at(0);
+    } else {
+        delimiter = '.';
+    }
+    thisIPCAddrParsed = split(fwdtg->getIpcAddress().getIpcAddress().getName(), delimiter);
+
+
     // Display active policy name.
     PDUFTGPolicy::initialize();
 
@@ -164,14 +174,14 @@ void DistanceVectorPolicy::initialize()
         new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
 
 
-    fwt = dynamic_cast<SimplePDUForwardingTable * >(fwdtg->getForwardingTable());
+    fwt = dynamic_cast<PrefixPDUForwardingTable * >(fwdtg->getForwardingTable());
     if(!fwt){
-        EV << "Invalid FWTable "<<fwdtg->getForwardingTable()->getFullName()<<" for DistanceVectorPolicy" << endl;
+        EV << "Invalid FWTable "<<fwdtg->getForwardingTable()->getFullName()<<" for PrefDistanceVectorPolicy" << endl;
         endSimulation();
     }
 }
 
-void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
+void PrefDistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
 {
     // Callable from other modules.
     Enter_Method("insertNewFlow()");
@@ -184,9 +194,9 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
     // We're interested in flows to element of my DIF.
     if(addr.getDifName() == fwdtg->getIpcAddress().getDifName())
     {
-        DVPInfo * flowInfo;
+        PDVPInfo * flowInfo;
 
-        flowInfo = (DVPInfo *)flowExists(addr, qos);
+        flowInfo = (PDVPInfo *)flowExists(addr, qos);
 
         // Flow present? Strange!!!
         if(flowInfo)
@@ -194,7 +204,7 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
             pduftg_debug("Flow for " << addr << " already present!");
         }
 
-        flowInfo = new DVPInfo(
+        flowInfo = new PDVPInfo(
             fwdtg->getIpcAddress(),
             addr,
             qos,
@@ -203,11 +213,12 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
         // Update the network state too.
         fwdtg->getNetworkState()->push_back(flowInfo);
 
+        Address nAddr = getNAddr(addr);
         // Insert what you consider a neighbor.
-        fwdtg->insertNeighbor(addr, qos, port);
+        fwdtg->insertNeighbor(nAddr, qos, port);
 
         // Add the entry in the table.
-        fwt->insert(addr, qos, port);
+        //fwt->insert(nAddr, qos, port);
 
         // Debug the actual state of the network.
         pduftg_debug(fwdtg->getIpcAddress().info() << "> " <<
@@ -215,7 +226,33 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
     }
 }
 
-void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
+
+Address PrefDistanceVectorPolicy::getNAddr(const Address &addr){
+    Address r = addr;
+    std::vector<std::string> addrParsed = split(addr.getIpcAddress().getName(), delimiter);
+
+    std::vector<std::string>::iterator itS = addrParsed.begin();
+    std::vector<std::string>::iterator itM = thisIPCAddrParsed.begin();
+
+    std::string nAddr = "";
+    char d[2] = {delimiter, 0};
+
+    while(itS != addrParsed.end() && itM != thisIPCAddrParsed.end()){
+        nAddr.append(*itM);
+        nAddr.append(d);
+        if(*itS != *itM){
+            break;
+        }
+        itS++;
+        itM++;
+    }
+    nAddr.append(any);
+
+    return Address(nAddr.c_str(), addr.getDifName().getName().c_str());
+
+}
+
+void PrefDistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 {
     NetworkState * arrived = info->getInfo();
 
@@ -224,9 +261,9 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
     {
         bool insert = false;
 
-        DVPInfo * eval = (DVPInfo *)(*i);
+        PDVPInfo * eval = (PDVPInfo *)(*i);
         // Info here are stored with us as source.
-        DVPInfo * info = (DVPInfo *)flowExists(
+        PDVPInfo * info = (PDVPInfo *)flowExists(
             eval->getDestination(),
             eval->getQoSID());
 
@@ -243,7 +280,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
             // It's a better metric?
             if(eval->getMetric() + 1 < info->getMetric())
             {
-                fwt->remove(info->getDestination(), info->getQoSID());
+             //   fwt->remove(info->getDestination(), info->getQoSID());
                 removeFlow(eval->getDestination(), eval->getQoSID());
 
                 insert = true;
@@ -267,7 +304,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
             }
 
             RMTPort * p = en->getPort();
-            DVPInfo * newi = new DVPInfo(
+            PDVPInfo * newi = new PDVPInfo(
                 fwdtg->getIpcAddress(),
                 eval->getDestination(),
                 eval->getQoSID(),
@@ -275,7 +312,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 
             // Insert the entry into the tables.
             fwdtg->getNetworkState()->push_back(newi);
-            fwt->insert(eval->getDestination(), eval->getQoSID(), p);
+     //       fwt->insert(eval->getDestination(), eval->getQoSID(), p);
         }
     }
 
@@ -284,7 +321,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
         fwdtg->netInfo());
 }
 
-PDUFTGUpdate * DistanceVectorPolicy::prepareFSUpdate(Address destination)
+PDUFTGUpdate * PrefDistanceVectorPolicy::prepareFSUpdate(Address destination)
 {
     PDUFTGUpdate * ret = new PDUFTGUpdate();
     Address a = fwdtg->getIpcAddress();
@@ -296,7 +333,7 @@ PDUFTGUpdate * DistanceVectorPolicy::prepareFSUpdate(Address destination)
     return ret;
 }
 
-void DistanceVectorPolicy::removeFlow(Address addr, unsigned short qos)
+void PrefDistanceVectorPolicy::removeFlow(Address addr, unsigned short qos)
 {
     // Select the info with your information evaluation procedure.
     PDUFTGInfo * netinfo = flowExists(addr, qos);
@@ -308,7 +345,24 @@ void DistanceVectorPolicy::removeFlow(Address addr, unsigned short qos)
 }
 
 
-void DistanceVectorPolicy::setUpdateTimeout(unsigned int sec)
+void PrefDistanceVectorPolicy::setUpdateTimeout(unsigned int sec)
 {
     updateT = sec;
+}
+
+
+
+std::vector<std::string> &PrefDistanceVectorPolicy::split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+std::vector<std::string> PrefDistanceVectorPolicy::split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
 }

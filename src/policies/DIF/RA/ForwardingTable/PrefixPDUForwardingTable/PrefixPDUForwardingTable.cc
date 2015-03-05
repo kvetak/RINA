@@ -16,28 +16,28 @@
 // 
 
 /**
- * @file PDUForwardingTable.cc
+ * @file PrefixPDUForwardingTable.cc
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
  * @brief PDU forwarding (routing) table used by RMT relay.
  * @detail
  */
 
-#include "PDUForwardingTable.h"
+#include "PrefixPDUForwardingTable.h"
 
-Define_Module(PDUForwardingTable);
+Define_Module(PrefixPDUForwardingTable);
 
-void PDUForwardingTable::initialize()
+void PrefixPDUForwardingTable::initialize()
 {
-    WATCH_LIST(fwTable);
+ //   WATCH_LIST(fwTable);
 }
 
-PDUForwardingTable::PDUForwardingTable()
+PrefixPDUForwardingTable::PrefixPDUForwardingTable()
 {
 
 }
 
 
-void PDUForwardingTable::handleMessage(cMessage *msg)
+void PrefixPDUForwardingTable::handleMessage(cMessage *msg)
 {
 
 }
@@ -46,18 +46,19 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 * Dumps the contents of the forwarding table to OMNeT++ output console.
 *
 */
-void PDUForwardingTable::printAll()
+void PrefixPDUForwardingTable::printAll()
 {
+    /*
     EV << "Printing the whole forwarding table: " << endl;
-
     for(PDUFwdTable::iterator it = this->fwTable.begin(); it!= fwTable.end(); ++it)
     {
-        PDUForwardingTableEntry a = *it;
+        PrefixPDUForwardingTableEntry a = *it;
         EV << this->getFullPath()
            << " dstAddr: " << a.getDestAddr().getApname().getName()
            << "; QoS ID: " << a.getQosId()
            << "; port-id: " << a.getPort()->getFullName() << endl;
     }
+    */
 }
 
 /**
@@ -67,67 +68,75 @@ void PDUForwardingTable::printAll()
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTPort* PDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
+RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
 {
+    /*
     for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
-        PDUForwardingTableEntry a = *it;
+        PrefixPDUForwardingTableEntry a = *it;
         if ((a.getDestAddr().getApname() == destAddr.getApname()) && (a.getQosId() == QoSid))
         {
             return a.getPort();
         }
     }
+    */
     return NULL;
 }
 
-RMTPort* PDUForwardingTable::lookup(Address& destAddr)
+RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr)
 {
+    /*
     for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
-        PDUForwardingTableEntry a = *it;
+        PrefixPDUForwardingTableEntry a = *it;
         if (a.getDestAddr().getApname() == destAddr.getApname())
         {
             return a.getPort();
         }
     }
+    */
     return NULL;
 }
+
 
 /**
 * Inserts a prepared forwarding table entry into the table.
 *
 * @param entry table entry to be inserted
 */
-void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
+/*
+void PrefixPDUForwardingTable::insert(const PrefixPDUForwardingTableEntry* entry)
 {
     Enter_Method("insert()");
     fwTable.push_back(*entry);
 }
-
+*/
 /**
 * Constructs a new forwarding table entry and adds it into the table.
 *
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
+/*
+void PrefixPDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
 {
     Enter_Method("insert()");
 
     // multiple ports per item aren't supported at the moment
     if (lookup(destAddr, qosId) == NULL)
     {
-        PDUForwardingTableEntry entry = PDUForwardingTableEntry(destAddr, qosId, port);
+        PrefixPDUForwardingTableEntry entry = PrefixPDUForwardingTableEntry(destAddr, qosId, port);
         fwTable.push_back(entry);
     }
 }
-
+*/
 /**
 * Removes entries with matching port-id from the forwarding table.
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(Address destAddr, int qosId)
+/*
+void PrefixPDUForwardingTable::remove(Address destAddr, int qosId)
 {
     PDUFwdTableIter i = fwTable.begin();
 
@@ -143,9 +152,9 @@ void PDUForwardingTable::remove(Address destAddr, int qosId)
         }
     }
 }
-
-void PDUForwardingTable::clean()
+*/
+void PrefixPDUForwardingTable::clean()
 {
     /* Q: How to handle memory here? */
-    fwTable.clear();
+    //fwTable.clear();
 }

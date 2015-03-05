@@ -16,25 +16,26 @@
 // 
 
 /**
- * @file PDUForwardingTable.h
+ * @file SimplePDUForwardingTable.h
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
  * @brief PDU forwarding (routing) table used by RMT relay.
  * @detail
  */
 
-#ifndef __RINA_PDUFORWARDINGTABLE_H_
-#define __RINA_PDUFORWARDINGTABLE_H_
+#ifndef __RINA_SimplePDUForwardingTable_H_
+#define __RINA_SimplePDUForwardingTable_H_
 
 #include <omnetpp.h>
+#include "PDUForwardingTable.h"
 #include "PDUForwardingTableEntry.h"
 
 typedef std::list<PDUForwardingTableEntry> PDUFwdTable;
 typedef PDUFwdTable::iterator PDUFwdTableIter;
 
-class PDUForwardingTable : public cSimpleModule
+class SimplePDUForwardingTable : public PDUForwardingTable
 {
   public:
-    PDUForwardingTable();
+    SimplePDUForwardingTable();
 
     void clean();
     void insert(const PDUForwardingTableEntry* entry);

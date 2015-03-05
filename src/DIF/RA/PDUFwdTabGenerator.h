@@ -54,11 +54,11 @@ extern std::ofstream pduftg_debug_file;
 #include "RMT.h"
 #include "RINASignals.h"
 #include "NM1FlowTable.h"
-#include "PDUForwardingTable.h"
 #include "PDUFTGListeners.h"
 #include "PDUFTGPolicy.h"
 #include "PDUFTGUpdate.h"
 #include "PDUFTGNeighbor.h"
+#include "PDUForwardingTable.h"
 
 typedef std::list<PDUFTGInfo *> NetworkState;
 typedef NetworkState::iterator NIter;

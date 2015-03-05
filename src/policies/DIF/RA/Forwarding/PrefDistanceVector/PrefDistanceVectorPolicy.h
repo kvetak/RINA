@@ -15,26 +15,26 @@
 
 /* Author: Kewin Rausch (kewin.rausch@create-net.org) */
 
-#ifndef __RINA_DISTANCEVECTORPOLICY_H
-#define __RINA_DISTANCEVECTORPOLICY_H
+#ifndef __RINA_PrefDistanceVectorPOLICY_H
+#define __RINA_PrefDistanceVectorPOLICY_H
 
 #include <omnetpp.h>
 
 #include "PDUFTGPolicy.h"
-#include "SimplePDUForwardingTable.h"
+#include "PrefixPDUForwardingTable.h"
 
 #define PDUFTG_SELFMSG_FSUPDATE     0x01
 
 // This implements a basic distance-vector routing policy.
 // The metric used is in term of hops.
 //
-class DistanceVectorPolicy :
+class PrefDistanceVectorPolicy :
         public PDUFTGPolicy
 {
 private:
     /* msec between updates. */
     unsigned int updateT;
-    SimplePDUForwardingTable * fwt;
+    PrefixPDUForwardingTable * fwt;
 
     // Just prepare an update fo a destination host.
     PDUFTGUpdate * prepareFSUpdate(Address destination);
@@ -44,9 +44,18 @@ protected:
     void handleMessage(cMessage *msg);
     void initialize();
 
+    std::vector<std::string> thisIPCAddrParsed;
+    std::string any;
+    char delimiter;
+
+    Address getNAddr(const Address &addr);
+
+    std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
+    std::vector<std::string> split(const std::string &s, char delim);
+
 public:
-    DistanceVectorPolicy();
-    ~DistanceVectorPolicy();
+    PrefDistanceVectorPolicy();
+    ~PrefDistanceVectorPolicy();
 
     // Computes the initial state of the forwarding table.
     //
@@ -77,4 +86,4 @@ public:
     void setUpdateTimeout(unsigned int sec);
 };
 
-#endif // __RINA_DISTANCEVECTORPOLICY_H
+#endif // __RINA_PrefDistanceVectorPOLICY_H

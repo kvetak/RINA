@@ -15,12 +15,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.policies.DIF.RA.ForwardingTable.PrefixPDUForwardingTable;
+
+import rina.policies.DIF.RA.ForwardingTable.PDUForwardingTable;
 
 //
 // TODO auto-generated module
 //
-simple PDUForwardingTable
+simple PrefixPDUForwardingTable like PDUForwardingTable
 {
     @display("i=block/table2");    
 }
