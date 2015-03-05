@@ -224,6 +224,11 @@ class DTP : public cSimpleModule
     simsignal_t sigEFCPStahpSending;
     simsignal_t sigEFCPStartSending;
 
+    //Statistic signals
+    simsignal_t sigStatDTPRTT;
+    simsignal_t sigStatDTPClosedWinQ;
+    simsignal_t sigStatDTPRxCount;
+
 };
 
 #endif /* DTP_H_ */
