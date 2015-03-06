@@ -10,6 +10,8 @@
 const char* SIG_AE_AllocateRequest              = "AE-AllocateRequest";
 const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
 const char* SIG_AE_DataSend                     = "AE-DataSend";
+const char* SIG_AE_ConnectionRequest            = "AE-ConnectionRequest";
+const char* SIG_AE_ReleaseRequest               = "AE-ReleaseRequest";
 
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
@@ -22,6 +24,13 @@ const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived
 const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
+
+const char* SIG_CACE_ConnectionResponsePositive = "CACE-ConnectionResponsePositive";
+const char* SIG_CACE_ConnectionResponseNegative = "CACE-ConnectionResponseNegative";
+const char* SIG_CACE_ReleaseResponse            = "CACE-ReleaseResponse";
+const char* SIG_CACE_AuthenticationRequest      = "CACE-AuthenticationRequest";
+
+const char* SIG_Auth_AuthenticationResponse     = "Auth-AuthenticationResponse";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";

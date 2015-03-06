@@ -51,6 +51,21 @@ void AEBase::setFlows(const Flows& flows) {
     this->flows = flows;
 }
 
+const int AEBase::getAuthType(){
+    return authType;
+}
+
+const std::string& AEBase::getAuthName() const {
+    return authName;
+}
+
+const std::string& AEBase::getAuthPassword() const {
+    return authPassword;
+}
+const std::string& AEBase::getAuthOther() const {
+    return authOther;
+}
+
 const std::string& AEBase::getSrcAeInstance() const {
     return srcAeInstance;
 }
@@ -81,6 +96,14 @@ const std::string& AEBase::getSrcApName() const {
 
 void AEBase::setSrcApName(const std::string& srcApName) {
     this->srcApName = srcApName;
+}
+
+void AEBase::changeConStatus(CDAPConnectionState conState){
+    this->connectionState = conState;
+}
+
+CDAPConnectionState AEBase::getConStatus(){
+    return this->connectionState;
 }
 
 void AEBase::initNamingInfo() {

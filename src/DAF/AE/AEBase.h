@@ -25,7 +25,6 @@
 
 typedef std::list<Flow> Flows;
 typedef Flows::iterator TFlowsIter;
-
 //Consts
 
 extern const char* PAR_AVGBW;
@@ -46,6 +45,11 @@ extern const char* PAR_COSTTIME;
 extern const char* PAR_COSTBITS;
 extern const char* PAR_ATIME;
 
+
+enum CDAPConnectionState {NIL,
+    FLOW_PENDING, CONNECTION_PENDING,
+    AUTHENTICATING, ESTABLISHED, RELEASING};
+
 class AEBase : public cSimpleModule
 {
   public:
@@ -58,6 +62,13 @@ class AEBase : public cSimpleModule
         return (apni == other.apni);
     }
 
+    const int getAuthType();
+    const std::string& getAuthName() const;
+    const std::string& getAuthPassword() const;
+    const std::string& getAuthOther() const;
+    void changeConStatus(CDAPConnectionState conState);
+    CDAPConnectionState getConStatus();
+
   protected:
     Flows flows;
     APNamingInfo apni;
@@ -67,7 +78,14 @@ class AEBase : public cSimpleModule
     std::string srcAeName;
     std::string srcAeInstance;
 
+    int authType;
+    std::string authName;
+    std::string authPassword;
+    std::string authOther;
+
     QoSCube QoSRequirements;
+
+    CDAPConnectionState connectionState;
 
     //Getters/Setters
     const std::string& getSrcAeInstance() const;

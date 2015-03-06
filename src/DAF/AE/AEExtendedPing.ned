@@ -13,33 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AUTH_H_
-#define __RINA_AUTH_H_
+package rina.DAF.AE;
 
-#include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
-
-
-/**
- * TODO - Generated class
- */
-class LisAuthValidate;
-class Auth : public cSimpleModule
+simple AEExtendedPing extends AE like IAE
 {
-public:
-    void validate(CDAPMessage *cmsg);
-  protected:
-    simsignal_t sigAuthRes;
-
-    LisAuthValidate* lisAuthValidate;
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-    void signalizeAuthResult(CDAPMessage *cmsg);
-};
-
-#endif
+    parameters:
+        @class(AEExtendedPing);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
+        
+        int startAt @unit(s) = default(0s);
+        int connectAt @unit(s) = default(0s);
+        int stopAt  @unit(s) = default(0s);
+        int pingAt  @unit(s) = default(0s);
+        int rate 			 = default(1);    
+        
+        int size    @unit(B) = default(512B);
+        
+}

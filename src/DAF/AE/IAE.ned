@@ -41,4 +41,10 @@ moduleinterface IAE
         int costTime; //measured in $/ms
         int costBits; //measured in $/Mb
         double aTime; //measured in ms
+        
+        //Authentication
+        int authType;
+        string authName;
+        string authPassword;
+        string authOther; //Other type of authentication different from name & password 
 }

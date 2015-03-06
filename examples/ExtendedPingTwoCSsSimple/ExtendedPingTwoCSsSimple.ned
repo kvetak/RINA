@@ -13,33 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AUTH_H_
-#define __RINA_AUTH_H_
+package rina.examples.ExtendedPingTwoCSsSimple;
 
-#include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+import ned.DatarateChannel;
+import rina.CS.TestHost1AP;
 
 
-/**
- * TODO - Generated class
- */
-class LisAuthValidate;
-class Auth : public cSimpleModule
+network ExtendedPingTwoCSsSimple
 {
-public:
-    void validate(CDAPMessage *cmsg);
-  protected:
-    simsignal_t sigAuthRes;
-
-    LisAuthValidate* lisAuthValidate;
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-    void signalizeAuthResult(CDAPMessage *cmsg);
-};
-
-#endif
+    @display("bgb=325,196");
+    submodules:
+        host1: TestHost1AP {
+            @display("p=82,92");
+        }
+        host2: TestHost1AP {
+            @display("p=231,92");
+        }
+    connections allowunconnected:
+//        host1.medium <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 0.4s; ber = 0; } <--> host2.medium;
+}

@@ -19,10 +19,49 @@ Define_Module(Auth);
 
 void Auth::initialize()
 {
-    // TODO - Generated method body
+    initSignalsAndListeners();
+}
+
+void Auth::initSignalsAndListeners() {
+    cModule* catcher = this->getParentModule()->getSubmodule(MOD_CDAPCACE);
+
+    //Signals emitted by this module
+    sigAuthRes = registerSignal(SIG_Auth_AuthenticationResponse);
+
+    //Signals that this module is processing
+    //authentication request from CACE module
+    lisAuthValidate = new LisAuthValidate(this);
+    catcher->subscribe(SIG_CACE_AuthenticationRequest, lisAuthValidate);
 }
 
 void Auth::handleMessage(cMessage *msg)
 {
     // TODO - Generated method body
+}
+
+void Auth::validate(CDAPMessage *cmsg) {
+    Enter_Method("validate()");
+    CDAP_M_Connect* cmsgC = check_and_cast<CDAP_M_Connect*>(cmsg);
+
+    CDAP_M_Connect_R* cmsgCR = new CDAP_M_Connect_R();
+    result_t result;
+
+    if (cmsgC->getAuth().authType == 0) {
+        result.resultReason = "success";
+        result.resultValue = 0;
+
+    }
+    else if (cmsgC->getAuth().authType == 1) {
+
+    }
+
+    cmsgCR->setResult(result);
+    cmsgCR->setAuth(cmsgC->getAuth());
+    cmsgCR->setHandle(cmsgC->getHandle());
+
+    signalizeAuthResult(cmsgCR);
+}
+
+void Auth::signalizeAuthResult(CDAPMessage *cmsg) {
+    emit(sigAuthRes, cmsg);
 }

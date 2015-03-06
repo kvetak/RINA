@@ -13,33 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AUTH_H_
-#define __RINA_AUTH_H_
-
-#include <omnetpp.h>
+#include <AuthListeners.h>
 #include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+#include "Auth.h"
 
-
-/**
- * TODO - Generated class
- */
-class LisAuthValidate;
-class Auth : public cSimpleModule
+AuthListeners::AuthListeners(Auth* nauth): auth(nauth)
 {
-public:
-    void validate(CDAPMessage *cmsg);
-  protected:
-    simsignal_t sigAuthRes;
+}
 
-    LisAuthValidate* lisAuthValidate;
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+AuthListeners::~AuthListeners() {
+    auth = NULL;
+}
 
-    void initSignalsAndListeners();
-    void signalizeAuthResult(CDAPMessage *cmsg);
-};
+void LisAuthValidate::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
+    CDAPMessage *authResult = dynamic_cast<CDAPMessage*>(obj);
+    if (authResult)
+        auth->validate(authResult);
+    else
+        EV << "Received not a CDAPMessage!" << endl;
+}
 
-#endif
+

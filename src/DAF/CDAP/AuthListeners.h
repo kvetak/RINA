@@ -13,33 +13,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AUTH_H_
-#define __RINA_AUTH_H_
+#ifndef AUTHLISTENERS_H_
+#define AUTHLISTENERS_H_
 
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+#include "Auth.h"
 
-
-/**
- * TODO - Generated class
- */
-class LisAuthValidate;
-class Auth : public cSimpleModule
-{
+class Auth;
+class AuthListeners : public cListener {
 public:
-    void validate(CDAPMessage *cmsg);
-  protected:
-    simsignal_t sigAuthRes;
-
-    LisAuthValidate* lisAuthValidate;
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void initSignalsAndListeners();
-    void signalizeAuthResult(CDAPMessage *cmsg);
+    AuthListeners(Auth* nauth);
+    virtual ~AuthListeners();
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj) {
+                   EV << "Signal to CACE initiated by " << src->getFullPath() << endl;
+            }
+protected:
+    Auth* auth;
 };
 
-#endif
+class LisAuthValidate: public AuthListeners {
+public:
+    LisAuthValidate(Auth* nauth): AuthListeners(nauth){};
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+
+};
+
+#endif /* AUTHLISTENERS_H_ */

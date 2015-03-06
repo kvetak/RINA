@@ -91,3 +91,21 @@ void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "AEListener received unknown object!" << endl;
 }
+
+
+void LisAEConResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    ae->changeConStatus(ESTABLISHED);
+}
+
+void LisAEConResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+
+}
+
+void LisAERelRes::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+
+    ae->changeConStatus(NIL);
+    //TODO: signalize that ae can close flow --> api call
+}

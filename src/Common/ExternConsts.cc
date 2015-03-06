@@ -25,6 +25,7 @@ const char* MOD_FAITABLE        = "faiTable";
 const char* MOD_EFCP            = "efcp";
 const char* MOD_RESALLOC        = "resourceAllocator";
 const char* MOD_RA              = "ra";
+const char* MOD_IAE             = "iae";
 const char* MOD_IRM             = "irm";
 const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
 const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
