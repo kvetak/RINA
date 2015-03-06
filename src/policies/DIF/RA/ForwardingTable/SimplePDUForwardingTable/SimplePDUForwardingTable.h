@@ -26,13 +26,13 @@
 #define __RINA_SimplePDUForwardingTable_H_
 
 #include <omnetpp.h>
-#include "PDUForwardingTable.h"
+#include "IntPDUForwardingTable.h"
 #include "PDUForwardingTableEntry.h"
 
 typedef std::list<PDUForwardingTableEntry> PDUFwdTable;
 typedef PDUFwdTable::iterator PDUFwdTableIter;
 
-class SimplePDUForwardingTable : public PDUForwardingTable
+class SimplePDUForwardingTable : public IntPDUForwardingTable
 {
   public:
     SimplePDUForwardingTable();

@@ -34,7 +34,7 @@
 
 #include "RABase.h"
 #include "RAListeners.h"
-#include "PDUForwardingTable.h"
+#include "IntPDUForwardingTable.h"
 #include "NM1FlowTable.h"
 #include "QueueAllocBase.h"
 #include "CongestionDescriptor.h"

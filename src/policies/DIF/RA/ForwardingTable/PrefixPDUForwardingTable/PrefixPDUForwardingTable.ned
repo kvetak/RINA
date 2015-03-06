@@ -17,12 +17,12 @@
 
 package rina.policies.DIF.RA.ForwardingTable.PrefixPDUForwardingTable;
 
-import rina.policies.DIF.RA.ForwardingTable.PDUForwardingTable;
+import rina.policies.DIF.RA.ForwardingTable.IntPDUForwardingTable;
 
 //
 // TODO auto-generated module
 //
-simple PrefixPDUForwardingTable like PDUForwardingTable
+simple PrefixPDUForwardingTable like IntPDUForwardingTable
 {
     @display("i=block/table2");    
 }

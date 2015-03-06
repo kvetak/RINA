@@ -33,7 +33,7 @@
 #include "PDU.h"
 #include "CDAPMessage_m.h"
 
-#include "PDUForwardingTable.h"
+#include "IntPDUForwardingTable.h"
 #include "QueueAllocBase.h"
 #include "AddressComparatorBase.h"
 
@@ -68,7 +68,7 @@ class RMT : public RMTBase
     virtual void finish();
 
   private:
-    PDUForwardingTable* fwTable;
+    IntPDUForwardingTable* fwTable;
     RMTModuleAllocator* rmtAllocator;
 
     bool relayOn;

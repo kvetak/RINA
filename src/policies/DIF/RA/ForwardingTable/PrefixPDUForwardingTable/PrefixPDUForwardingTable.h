@@ -17,8 +17,8 @@
 
 /**
  * @file PrefixPDUForwardingTable.h
- * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
- * @brief PDU forwarding (routing) table used by RMT relay.
+ * @author Sergio Leon (gaixas1@gmail.com)
+ * @brief PDU forwarding (routing) table used by RMT relay grouping by prefixes.
  * @detail
  */
 
@@ -26,9 +26,23 @@
 #define __RINA_PrefixPDUForwardingTable_H_
 
 #include <omnetpp.h>
-#include "PDUForwardingTable.h"
+#include "IntPDUForwardingTable.h"
 
-class PrefixPDUForwardingTable : public PDUForwardingTable
+#include <map>
+#include <set>
+#include <vector>
+#include <string>
+
+typedef std::set<unsigned short > QoSCollection;
+typedef QoSCollection::iterator QoSColIterator;
+
+typedef std::pair<std::string, unsigned short > addrQoS;
+typedef std::map<addrQoS, RMTPort*> PFwTable;
+typedef PFwTable::iterator PFwTabIterator;
+typedef std::pair<addrQoS, RMTPort*> PFwTabEntry;
+
+
+class PrefixPDUForwardingTable : public IntPDUForwardingTable
 {
   public:
     PrefixPDUForwardingTable();
@@ -37,16 +51,20 @@ class PrefixPDUForwardingTable : public PDUForwardingTable
     RMTPort* lookup(Address& destAddr, unsigned short QoSid);
     RMTPort* lookup(Address& destAddr);
     void printAll();
-    void remove(Address destAddr, int qosId);
+
+    void setDelimiter(char _delimiter);
+    void addEntry(std::string dstAddr, unsigned short QoSid, RMTPort* p);
+    void addEntryIfNot(std::string dstAddr, unsigned short QoSid, RMTPort* p);
+    void remove(std::string dstAddr, unsigned short QoSid);
+    void remove(std::string dstAddr);
 
   protected:
+    char delimiter;
+    PFwTable table;
+    QoSCollection qosCol;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-
-    std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
-    std::vector<std::string> split(const std::string &s, char delim);
-
-  private:
 };
 
 #endif

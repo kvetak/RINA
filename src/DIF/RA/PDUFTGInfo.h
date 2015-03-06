@@ -18,17 +18,14 @@
 #ifndef __RINA_PDUFTGINFO_H
 #define __RINA_PDUFTGINFO_H
 
-//Standard libraries
-#include <omnetpp.h>
 #include "Address.h"
-#include "RMTPort.h"
+
 
 // Provides a base for information exchanged during PDUFTG updates.
 //
-class PDUFTGInfo
-{
-protected:
+class PDUFTGInfo{
 
+protected:
     // Address of the info destination.
     // Usually a neighbor of the source.
     //
@@ -48,14 +45,12 @@ protected:
     //
     Address srcAddr;
 
-public:
-
+public :
     PDUFTGInfo();
     PDUFTGInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric);
     ~PDUFTGInfo();
 
     // Getters.
-
     Address getDestination();
     unsigned int getMetric();
     short unsigned int getQoSID();
@@ -63,14 +58,12 @@ public:
 
 
     // Setters.
-
     void setDestination(Address dest);
     void setMetric(unsigned int weight);
     void setQoSID(unsigned short id);
     void setSource(Address src);
 
     // Overloading of the == operator for element compare.
-    //
     bool operator == (const PDUFTGInfo& info) const;
 };
 

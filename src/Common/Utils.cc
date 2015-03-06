@@ -21,3 +21,17 @@ std::vector<std::string> split(const std::string &s, char delim) {
     split(s, delim, elems);
     return elems;
 }
+
+std::string join(const std::vector<std::string> &elems, const unsigned int n, const char delim) {
+    std::string s = "";
+    char d[2] = {delim, 0};
+
+    for(unsigned int i = 0; i < elems.size() && i<n; i++){
+        if(i>0){
+            s.append(d);
+        }
+        s.append(elems.at(i));
+    }
+
+    return s;
+}

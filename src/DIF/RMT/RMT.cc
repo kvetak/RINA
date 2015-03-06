@@ -42,7 +42,7 @@ void RMT::initialize()
     onWire = false;
 
     // get pointers to other components
-    fwTable = check_and_cast<PDUForwardingTable*>
+    fwTable = check_and_cast<IntPDUForwardingTable*>
         (getModuleByPath("^.^.resourceAllocator.pduForwardingTable"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.rmtModuleAllocator"));

@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,12 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-// Author: Kewin Rausch (kewin.rausch@create-net.org)
+#ifndef __RINA_PDUForwardingTable_H_
+#define __RINA_PDUForwardingTable_H_
 
-package rina.policies.DIF.RA.ForwardingTable;
+#include <omnetpp.h>
+#include "Address.h"
+#include "RMTPort.h"
 
-moduleinterface PDUForwardingTable
+class IntPDUForwardingTable : public cSimpleModule
 {
-    parameters:
-        @display("i=block/socket");
-}
+  public:
+    virtual void clean() = 0;
+    virtual RMTPort* lookup(Address& destAddr, unsigned short QoSid) = 0;
+    virtual RMTPort* lookup(Address& destAddr) = 0;
+    virtual void printAll() = 0;
+
+  protected:
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
+};
+
+#endif

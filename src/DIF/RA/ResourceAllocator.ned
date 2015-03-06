@@ -21,7 +21,7 @@ import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
-import rina.policies.DIF.RA.ForwardingTable.PDUForwardingTable;
+import rina.policies.DIF.RA.ForwardingTable.IntPDUForwardingTable;
 
 
 module ResourceAllocator
@@ -36,7 +36,7 @@ module ResourceAllocator
 
     submodules:
         
-        pduForwardingTable: <pduftType> like PDUForwardingTable {
+        pduForwardingTable: <pduftType> like IntPDUForwardingTable {
             @display("p=60,60");
         }
         pduFwdTabGenerator: PDUFwdTabGenerator {

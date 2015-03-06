@@ -23,23 +23,63 @@
  */
 
 #include "PrefixPDUForwardingTable.h"
+#include "Utils.h"
 
 Define_Module(PrefixPDUForwardingTable);
 
-void PrefixPDUForwardingTable::initialize()
-{
- //   WATCH_LIST(fwTable);
-}
 
 PrefixPDUForwardingTable::PrefixPDUForwardingTable()
 {
-
+    delimiter = '.';
 }
 
 
-void PrefixPDUForwardingTable::handleMessage(cMessage *msg)
-{
+void PrefixPDUForwardingTable::initialize(){}
+void PrefixPDUForwardingTable::handleMessage(cMessage *msg){}
 
+
+
+/**
+* Adds an entry to the forwarding table.
+*
+*/
+void PrefixPDUForwardingTable::addEntry(std::string dstAddr, unsigned short QoSid, RMTPort* p){
+    table[addrQoS(dstAddr, QoSid)] = p;
+    qosCol.insert(QoSid);
+}
+void PrefixPDUForwardingTable::addEntryIfNot(std::string dstAddr, unsigned short QoSid, RMTPort* p){
+    if(table[addrQoS(dstAddr, QoSid)] == NULL){
+        table[addrQoS(dstAddr, QoSid)] = p;
+        qosCol.insert(QoSid);
+    }
+}
+
+/**
+* Removes an entry of the forwarding table.
+*
+*/
+void PrefixPDUForwardingTable::remove(std::string dstAddr, unsigned short QoSid){
+    table.erase(addrQoS(dstAddr, QoSid));
+}
+
+
+/**
+* Removes an entry of the forwarding table, by address only.
+*
+*/
+void PrefixPDUForwardingTable::remove(std::string dstAddr){
+    for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){
+        table.erase(addrQoS(dstAddr, *it));
+    }
+}
+
+
+/**
+* Set the prefix delimiter to use
+*
+*/
+void PrefixPDUForwardingTable::setDelimiter(char _delimiter){
+    delimiter = _delimiter;
 }
 
 /**
@@ -48,17 +88,15 @@ void PrefixPDUForwardingTable::handleMessage(cMessage *msg)
 */
 void PrefixPDUForwardingTable::printAll()
 {
-    /*
     EV << "Printing the whole forwarding table: " << endl;
-    for(PDUFwdTable::iterator it = this->fwTable.begin(); it!= fwTable.end(); ++it)
+    for(PFwTabIterator it = table.begin(); it!= table.end(); ++it)
     {
-        PrefixPDUForwardingTableEntry a = *it;
+        addrQoS a = it->first;
         EV << this->getFullPath()
-           << " dstAddr: " << a.getDestAddr().getApname().getName()
-           << "; QoS ID: " << a.getQosId()
-           << "; port-id: " << a.getPort()->getFullName() << endl;
+           << " dstAddr: " << a.first
+           << "; QoS ID: " << a.second
+           << "; port-id: " << it->second->getFullName() << endl;
     }
-    */
 }
 
 /**
@@ -70,91 +108,59 @@ void PrefixPDUForwardingTable::printAll()
 */
 RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
 {
-    /*
-    for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
-    {
-        PrefixPDUForwardingTableEntry a = *it;
-        if ((a.getDestAddr().getApname() == destAddr.getApname()) && (a.getQosId() == QoSid))
-        {
-            return a.getPort();
+    std::string s = destAddr.getIpcAddress().getName();
+    addrQoS aq = addrQoS(s, QoSid);
+    PFwTabIterator query = table.find(aq);
+    if(query != table.end()){
+        return query->second;
+    }
+
+    std::vector<std::string> addrParsed = split(s, delimiter);
+
+    for(int i = addrParsed.size()-1; i>=0; i++){
+        aq.first = join(addrParsed, i, delimiter);
+        query = table.find(aq);
+        if(query != table.end()){
+            return query->second;
         }
     }
-    */
+
     return NULL;
 }
 
 RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr)
 {
-    /*
-    for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
-    {
-        PrefixPDUForwardingTableEntry a = *it;
-        if (a.getDestAddr().getApname() == destAddr.getApname())
-        {
-            return a.getPort();
+    std::string s = destAddr.getIpcAddress().getName();
+    addrQoS aq = addrQoS(s, 0);
+    PFwTabIterator query;
+    for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){
+        aq.second = *it;
+        query = table.find(aq);
+        if(query != table.end()){
+            return query->second;
         }
     }
-    */
+
+    std::vector<std::string> addrParsed = split(s, delimiter);
+
+    for(int i = addrParsed.size()-1; i>=0; i++){
+        aq.first = join(addrParsed, i, delimiter);
+
+        for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){
+            aq.second = *it;
+            query = table.find(aq);
+            if(query != table.end()){
+                return query->second;
+            }
+        }
+    }
+
     return NULL;
 }
 
 
-/**
-* Inserts a prepared forwarding table entry into the table.
-*
-* @param entry table entry to be inserted
-*/
-/*
-void PrefixPDUForwardingTable::insert(const PrefixPDUForwardingTableEntry* entry)
-{
-    Enter_Method("insert()");
-    fwTable.push_back(*entry);
-}
-*/
-/**
-* Constructs a new forwarding table entry and adds it into the table.
-*
-* @param destAddr destination IPC process address
-* @param qosId flow QoS ID
-*/
-/*
-void PrefixPDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
-{
-    Enter_Method("insert()");
-
-    // multiple ports per item aren't supported at the moment
-    if (lookup(destAddr, qosId) == NULL)
-    {
-        PrefixPDUForwardingTableEntry entry = PrefixPDUForwardingTableEntry(destAddr, qosId, port);
-        fwTable.push_back(entry);
-    }
-}
-*/
-/**
-* Removes entries with matching port-id from the forwarding table.
-*
-* @param portId target port-id
-*/
-/*
-void PrefixPDUForwardingTable::remove(Address destAddr, int qosId)
-{
-    PDUFwdTableIter i = fwTable.begin();
-
-    while (i != fwTable.end())
-    {
-        if (i->getDestAddr() == destAddr && i->getQosId() == qosId)
-        {
-            i = fwTable.erase(i);
-        }
-        else
-        {
-            ++i;
-        }
-    }
-}
-*/
 void PrefixPDUForwardingTable::clean()
 {
-    /* Q: How to handle memory here? */
-    //fwTable.clear();
+    table.clear();
+    qosCol.clear();
 }

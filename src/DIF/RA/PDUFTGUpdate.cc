@@ -50,16 +50,16 @@ Address PDUFTGUpdate::getDestination()
 {
     return dstAddr;
 }
+Address PDUFTGUpdate::getSource()
+{
+    return srcAddr;
+}
 
 std::list<PDUFTGInfo *> *  PDUFTGUpdate::getInfo()
 {
     return info;
 }
 
-Address PDUFTGUpdate::getSource()
-{
-    return srcAddr;
-}
 
 /* Setters. */
 

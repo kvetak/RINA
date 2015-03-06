@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-/* Author: Kewin Rausch (kewin.rausch@create-net.org) */
+/* Author: Sergio Leon (gaixas1@gmail.com) */
 
 #ifndef __RINA_PrefDistanceVectorPOLICY_H
 #define __RINA_PrefDistanceVectorPOLICY_H
@@ -22,6 +22,7 @@
 
 #include "PDUFTGPolicy.h"
 #include "PrefixPDUForwardingTable.h"
+#include "rtTab.h"
 
 #define PDUFTG_SELFMSG_FSUPDATE     0x01
 
@@ -31,27 +32,26 @@
 class PrefDistanceVectorPolicy :
         public PDUFTGPolicy
 {
-private:
+protected:
     /* msec between updates. */
     unsigned int updateT;
     PrefixPDUForwardingTable * fwt;
 
-    // Just prepare an update fo a destination host.
-    PDUFTGUpdate * prepareFSUpdate(Address destination);
-
-protected:
-
     void handleMessage(cMessage *msg);
     void initialize();
 
+    std::string thisIPCAddr;
     std::vector<std::string> thisIPCAddrParsed;
     std::string any;
     char delimiter;
 
-    Address getNAddr(const Address &addr);
+    rtTab table;
 
-    std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems);
-    std::vector<std::string> split(const std::string &s, char delim);
+    std::string getNAddr(const std::string &addr);
+    std::string getNAddr(const Address &addr);
+
+    // Just prepare an update fo a destination host.
+    PDUFTGUpdate * prepareFSUpdate(Address destination);
 
 public:
     PrefDistanceVectorPolicy();
@@ -64,6 +64,7 @@ public:
     // Evaluated in term of policy defined flow if a flow exists.
     //
     virtual PDUFTGInfo * flowExists(Address addr, unsigned short qos);
+    virtual PDUFTGInfo * flowExists(std::string addr, unsigned short qos);
 
     /* Get the update timer actual tick value.
      */
@@ -79,7 +80,8 @@ public:
 
     // Removes a local opened flow.
     //
-    virtual void removeFlow(Address addr, short unsigned int qos);
+    virtual void removeFlow(std::string addr, short unsigned int qos);
+    virtual void removeFlow(Address addr, unsigned short qos);
 
     /* Set a new timeout between an update message and another, in seconds.
      */
