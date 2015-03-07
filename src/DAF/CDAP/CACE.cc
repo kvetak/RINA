@@ -239,7 +239,7 @@ void CACE::processMRelease(CDAPMessage *cmsg){
 
 void CACE::processMReleaseR(CDAPMessage *cmsg){
     Enter_Method("processMRelease()");
-
+    //TODO:potentialy "after 2MPL+A invokes Deallocate"
     CDAP_M_Release_R* releaseResponse = new CDAP_M_Release_R("releaseResponse");
     result_t result;
     result.resultReason = "success";
