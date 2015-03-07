@@ -74,34 +74,44 @@ void CACE::treatAuthRes(CDAPMessage *cmsg) {
 
     take(cmsg);
 
-    if (cmsgCR->getResult().resultValue == 0) {
+    if (cmsgCR->getResult().resultValue == R_SUCCESS) {
         processMConnectResPosi(cmsgCR);
     }
     else {
         processMConnectResNega(cmsgCR);
     }
-
 }
 
 void CACE::CACEStateMachine(CDAPMessage *cmsg){
     //M_Connect
     if (dynamic_cast<CDAP_M_Connect*>(cmsg)) {
         if (ae->getConStatus() == CONNECTION_PENDING) {
-            //TODO: potentionalConnectionTimer
-            //TODO: validate M_Connect message
+            //TODO: potentialConnectionTimer
             CDAP_M_Connect* msgC = check_and_cast<CDAP_M_Connect*>(cmsg);
 
-            if (currentConRetries <= maxConRetries) {
-                changeConnectionState(AUTHENTICATING);
-                //emit signal to auth module
-                signalizeAuthenticationRequest(msgC);
+            //validate M_Connect message
+            if (msgC->getAbsSyntax() == GPB &&
+                    msgC->getOpCode() == M_CONNECT) {
+                //check connection retries
+                if (currentConRetries <= maxConRetries) {
+                    changeConnectionState(AUTHENTICATING);
+                    //emit signal to auth module
+                    signalizeAuthenticationRequest(msgC);
+                }
+                //unautorized number of retries
+                else {
+                    //TODO: probably immediate deallocation
+                    processMRelease();
+                }
+                currentConRetries++;
             }
+            //not valid M_Connect message
             else {
                 //TODO: probably immediate deallocation
                 processMRelease();
             }
-
         }
+        //message came in bad connection state
         else {
             //TODO: probably immediate deallocation
             processMRelease();
@@ -140,6 +150,10 @@ void CACE::CACEStateMachine(CDAPMessage *cmsg){
     else if (dynamic_cast<CDAP_M_Release_R*>(cmsg) != NULL){
         signalizeReleaseResponse(cmsg);
     }
+    else {
+        //TODO: probably immediate deallocation
+        processMRelease();
+    }
 }
 
 void CACE::processMConnect(CDAPMessage *cmsg){
@@ -161,6 +175,8 @@ void CACE::processMConnectResPosi(CDAPMessage *cmsg){
     take(cmsg);
     //set CDAPConnection state
     changeConnectionState(ESTABLISHED);
+
+    currentConRetries = 0;
 
     handle = cmsg->getHandle();
 
@@ -189,6 +205,9 @@ void CACE::processMRelease(){
     msg->setInvokeID(0);
     msg->setHandle(handle);
 
+    //set message type
+    msg->setOpCode(M_RELEASE);
+
     cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, msg->getHandle());
     send(msg, out);
 }
@@ -196,9 +215,11 @@ void CACE::processMRelease(){
 void CACE::processMRelease(CDAPMessage *cmsg){
     Enter_Method("processMRelease()");
 
-    take(check_and_cast<cOwnedObject*>(cmsg) );
+    take(check_and_cast<cOwnedObject*>(cmsg));
 
-    if (dynamic_cast<CDAP_M_Release*>(cmsg)->getInvokeID()) {
+    CDAP_M_Release* msg = dynamic_cast<CDAP_M_Release*>(cmsg);
+
+    if (msg->getInvokeID()) {
         //setCDAPConnection state
         changeConnectionState(RELEASING);
     }
@@ -207,6 +228,8 @@ void CACE::processMRelease(CDAPMessage *cmsg){
         changeConnectionState(NIL);
     }
 
+    //set message type
+    msg->setOpCode(M_RELEASE);
     //Send message
     cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
     send(cmsg, out);
@@ -223,6 +246,9 @@ void CACE::processMReleaseR(CDAPMessage *cmsg){
 
     releaseResponse->setResult(result);
     releaseResponse->setHandle(handle);
+
+    //set message type
+    releaseResponse->setOpCode(M_RELEASE_R);
 
     cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, releaseResponse->getHandle());
     send(releaseResponse, out);

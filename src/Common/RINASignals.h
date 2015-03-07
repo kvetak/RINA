@@ -28,7 +28,7 @@ extern const char* SIG_RIBD_ForwardingUpdateReceived;
 extern const char* SIG_RIBD_CongestionNotification;
 
 //CDAP
-extern const char* SIG_CDAP_DateReceive;\
+extern const char* SIG_CDAP_DateReceive;
 
 //CACE
 extern const char* SIG_CACE_ConnectionResponsePositive;

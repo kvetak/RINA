@@ -158,7 +158,8 @@ void AEExtendedPing::handleSelfMessage(cMessage *msg) {
         auth.authValue = aValue;
 
         connect->setAuth(auth);
-        //connect->setSize(size);
+        connect->setAbsSyntax(GPB);
+        connect->setOpCode(M_CONNECT);
 
         //Send message
         sendData(&flows.back(), connect);
