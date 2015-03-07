@@ -103,7 +103,6 @@ void CACE::CACEStateMachine(CDAPMessage *cmsg){
                     //TODO: probably immediate deallocation
                     processMRelease();
                 }
-                currentConRetries++;
             }
             //not valid M_Connect message
             else {
@@ -188,6 +187,8 @@ void CACE::processMConnectResNega(CDAPMessage *cmsg){
     Enter_Method("processMConnectResNega()");
 
     changeConnectionState(CONNECTION_PENDING);
+    //increment connection retries
+    currentConRetries++;
 
     take(cmsg);
 

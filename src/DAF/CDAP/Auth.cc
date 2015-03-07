@@ -79,6 +79,7 @@ void Auth::validate(CDAPMessage *cmsg) {
                 result.resultValue = R_FAIL;
             }
         }
+        //TODO: support for other options
     }
     //unexpected auth
     else {
