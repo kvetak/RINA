@@ -50,6 +50,9 @@ class PrefixPDUForwardingTable : public IntPDUForwardingTable
     void clean();
     RMTPort* lookup(Address& destAddr, unsigned short QoSid);
     RMTPort* lookup(Address& destAddr);
+    RMTPort* lookup(std::string& destAddr, unsigned short QoSid);
+    RMTPort* lookup(std::string& destAddr);
+
     void printAll();
 
     void setDelimiter(char _delimiter);

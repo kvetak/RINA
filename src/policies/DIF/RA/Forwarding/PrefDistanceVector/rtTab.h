@@ -8,9 +8,13 @@
 #ifndef RTTAB_H_
 #define RTTAB_H_
 
+#include <omnetpp.h>
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
+#include <iostream>
+#include <fstream>
 
 
 extern const int INF_METRIC;
@@ -20,8 +24,10 @@ struct rtEntry {
     int metric1;
     std::string nextHop2;
     int metric2;
+    bool share;
 
     rtEntry();
+    void setShare(bool _share);
     void setFirst(std::string nextHop, int metric);
     void setLast(std::string nextHop, int metric);
     void swap();
@@ -48,18 +54,28 @@ typedef updatesList::iterator updatesListIterator;
 
 class rtTab {
 public:
+    rtTab(std::string _im);
     rtTab();
     virtual ~rtTab();
+    void setIm(std::string _im);
 
-    bool addOrReplaceEntry(std::string addr, std::string nextHop, int metric, unsigned short qos);
+    void addQoS(unsigned short qos);
+
+    bool addOrReplaceEntry(std::string addr, std::string nextHop, int metric, unsigned short qos, bool shared);
     qosAddrList remove(std::string nextHop);
     qosAddrList remove(std::string nextHop, unsigned short qos);
 
     std::string getNextHop(std::string addr, unsigned short qos);
 
-    updatesList getUpdates(std::string next);
+    updatesList getUpdates(std::string next, bool all);
+
+
+    // Gets a user friendly formatted network state report.
+    //
+    std::string prepareFriendlyNetState();
 
 protected:
+    std::string im;
     std::map<unsigned short, rtTable> tables;
 };
 

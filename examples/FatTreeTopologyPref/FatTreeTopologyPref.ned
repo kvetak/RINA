@@ -29,16 +29,16 @@ network FatTreeTopologyPref
     types:
     submodules:
 
-        AS1: InteriorRouterNInt {
+        AS1: InteriorRouterMInt {
             @display("p=149,237");
         }
-        AS2: InteriorRouterNInt {
+        AS2: InteriorRouterMInt {
             @display("p=422,237");
         }
-        TOR1: InteriorRouterNInt {
+        TOR1: InteriorRouterMInt {
             @display("p=149,425");
         }
-        TOR2: InteriorRouterNInt {
+        TOR2: InteriorRouterMInt {
             @display("p=422,425");
         }
 
@@ -61,10 +61,10 @@ network FatTreeTopologyPref
         Server22: Host1AP {
             @display("p=422,598");
         }
-        AS3: InteriorRouterNInt {
+        AS3: InteriorRouterMInt {
             @display("p=660,237");
         }
-        AS4: InteriorRouterNInt {
+        AS4: InteriorRouterMInt {
             @display("p=933,237");
         }
         Server31: Host1AP {
@@ -86,17 +86,17 @@ network FatTreeTopologyPref
             @display("p=1015,598");
         }
 
-        TOR3: InteriorRouterNInt {
+        TOR3: InteriorRouterMInt {
             @display("p=660,425");
         }
-        TOR4: InteriorRouterNInt {
+        TOR4: InteriorRouterMInt {
             @display("p=933,425");
         }
 
-        AS5: InteriorRouterNInt {
+        AS5: InteriorRouterMInt {
             @display("p=420,67");
         }
-        AS6: InteriorRouterNInt {
+        AS6: InteriorRouterMInt {
             @display("p=658,67");
         }
     connections:

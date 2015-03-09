@@ -12,6 +12,7 @@ PrefPDUFTGUpdate::PrefPDUFTGUpdate() {}
 PrefPDUFTGUpdate::PrefPDUFTGUpdate(Address from, Address to){
     setSource(from);
     setDestination(to);
+    info = NULL;
 }
 
 PrefPDUFTGUpdate::~PrefPDUFTGUpdate() {}
@@ -19,6 +20,11 @@ PrefPDUFTGUpdate::~PrefPDUFTGUpdate() {}
 void PrefPDUFTGUpdate::setUpdates(updatesList list){
     entries = list;
 }
+
+void PrefPDUFTGUpdate::addEntry(unsigned short _qos, std::string _dst, int _metric){
+    entries.push_back(rtUpdate(_qos, _dst, _metric));
+}
+
 updatesListIterator PrefPDUFTGUpdate::entriesBegin(){
     return entries.begin();
 }

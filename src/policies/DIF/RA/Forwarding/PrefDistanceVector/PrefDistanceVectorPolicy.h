@@ -33,6 +33,16 @@ class PrefDistanceVectorPolicy :
         public PDUFTGPolicy
 {
 protected:
+
+    // Will the network state be visible at upper levels?
+    //
+    bool showNetState;
+
+    // The module where the report will be posted on.
+    //
+    cModule * nstm;
+
+
     /* msec between updates. */
     unsigned int updateT;
     PrefixPDUForwardingTable * fwt;
@@ -49,6 +59,9 @@ protected:
 
     std::string getNAddr(const std::string &addr);
     std::string getNAddr(const Address &addr);
+    bool im(const std::string &addr);
+    bool neighbour(const std::string &addr);
+
 
     // Just prepare an update fo a destination host.
     PDUFTGUpdate * prepareFSUpdate(Address destination);

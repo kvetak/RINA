@@ -25,4 +25,8 @@ simple PrefDistanceVectorPolicy like IntPDUFTGPolicy
         @display("i=block/socket");
         string delimiter = default(".");
         string any = default("*");
+        
+        bool netStateVisible = default(false);
+    	string netStateAlign = default("r");
+    	string netStateMod = default("^.^.");
 }

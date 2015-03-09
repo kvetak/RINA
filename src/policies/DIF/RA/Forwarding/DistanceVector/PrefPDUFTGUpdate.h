@@ -18,6 +18,7 @@ public:
     virtual ~PrefPDUFTGUpdate();
 
     void setUpdates(updatesList list);
+    void addEntry(unsigned short _qos, std::string _dst, int _metric);
 
     updatesListIterator entriesBegin();
     updatesListIterator entriesEnd();

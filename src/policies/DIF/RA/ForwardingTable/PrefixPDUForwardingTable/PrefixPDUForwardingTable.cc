@@ -117,7 +117,7 @@ RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr, unsigned short QoSi
 
     std::vector<std::string> addrParsed = split(s, delimiter);
 
-    for(int i = addrParsed.size()-1; i>=0; i++){
+    for(int i = addrParsed.size()-1; i>=0; i--){
         aq.first = join(addrParsed, i, delimiter);
         query = table.find(aq);
         if(query != table.end()){
@@ -143,7 +143,59 @@ RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr)
 
     std::vector<std::string> addrParsed = split(s, delimiter);
 
-    for(int i = addrParsed.size()-1; i>=0; i++){
+    for(int i = addrParsed.size()-1; i>=0; i--){
+        aq.first = join(addrParsed, i, delimiter);
+
+        for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){
+            aq.second = *it;
+            query = table.find(aq);
+            if(query != table.end()){
+                return query->second;
+            }
+        }
+    }
+
+    return NULL;
+}
+
+RMTPort* PrefixPDUForwardingTable::lookup(std::string& destAddr, unsigned short QoSid)
+{
+    std::string s = destAddr;
+    addrQoS aq = addrQoS(s, QoSid);
+    PFwTabIterator query = table.find(aq);
+    if(query != table.end()){
+        return query->second;
+    }
+
+    std::vector<std::string> addrParsed = split(s, delimiter);
+
+    for(int i = addrParsed.size()-1; i>=0; i--){
+        aq.first = join(addrParsed, i, delimiter);
+        query = table.find(aq);
+        if(query != table.end()){
+            return query->second;
+        }
+    }
+
+    return NULL;
+}
+
+RMTPort* PrefixPDUForwardingTable::lookup(std::string & destAddr)
+{
+    std::string s = destAddr;
+    addrQoS aq = addrQoS(s, 0);
+    PFwTabIterator query;
+    for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){
+        aq.second = *it;
+        query = table.find(aq);
+        if(query != table.end()){
+            return query->second;
+        }
+    }
+
+    std::vector<std::string> addrParsed = split(s, delimiter);
+
+    for(int i = addrParsed.size()-1; i>=0; i--){
         aq.first = join(addrParsed, i, delimiter);
 
         for(QoSColIterator it = qosCol.begin(); it != qosCol.end(); it++){

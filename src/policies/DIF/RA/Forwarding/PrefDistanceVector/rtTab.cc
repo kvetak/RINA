@@ -14,6 +14,11 @@ rtEntry::rtEntry(){
     metric1 = INF_METRIC;
     nextHop2 = "";
     metric2 = INF_METRIC;
+    share = false;
+}
+
+void rtEntry::setShare(bool _share){
+    share = _share;
 }
 
 void rtEntry::setFirst(std::string nextHop, int metric){
@@ -44,12 +49,25 @@ rtUpdate::rtUpdate(unsigned short _qos, std::string _dst, int _metric){
     metric = _metric;
 }
 
-rtTab::rtTab() {}
+rtTab::rtTab() {
+    im = "";
+}
+rtTab::rtTab(std::string _im) {
+    im = im;
+}
+void rtTab::setIm(std::string _im) {
+    im = im;
+}
+
+void rtTab::addQoS(unsigned short qos){
+    tables[qos];
+}
 
 rtTab::~rtTab() {}
 
-bool rtTab::addOrReplaceEntry(std::string addr, std::string nextHop, int metric, unsigned short qos){
+bool rtTab::addOrReplaceEntry(std::string addr, std::string nextHop, int metric, unsigned short qos, bool shared){
     rtEntry * entry = &tables[qos][addr];
+    entry->share = shared;
 
     if(entry->nextHop1 == nextHop){
         entry->metric1 = metric;
@@ -57,7 +75,7 @@ bool rtTab::addOrReplaceEntry(std::string addr, std::string nextHop, int metric,
         entry->setLast(nextHop, metric);
     }
 
-    if(entry->metric1 < entry->metric2){
+    if(entry->metric1 > entry->metric2){
         entry->swap();
         return true;
     }
@@ -109,13 +127,13 @@ qosAddrList rtTab::remove(std::string nextHop, unsigned short qos){
     return modified;
 }
 
-updatesList rtTab::getUpdates(std::string next){
-
+updatesList rtTab::getUpdates(std::string next, bool all){
     updatesList ret;
 
     for(std::map<unsigned short, rtTable>::iterator it = tables.begin(); it != tables.end(); it++){
+        ret.push_back(rtUpdate(it->first, im, 0));
         for(rtTabIterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
-            if(it2->first != next){
+            if((all || it2->second.share) && it2->first != next){
                 if(it2->second.nextHop1 == next) {
                     ret.push_back(rtUpdate(it->first, it2->first, it2->second.metric2));
                 } else {
@@ -126,3 +144,29 @@ updatesList rtTab::getUpdates(std::string next){
     }
     return ret;
 }
+
+
+std::string rtTab::prepareFriendlyNetState()
+{
+    std::stringstream os;
+
+    for(std::map<unsigned short, rtTable>::iterator it = tables.begin(); it != tables.end(); it++){
+        os << "Qos:" << it->first << endl;
+        for(rtTabIterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
+            if(it2->second.metric1<INF_METRIC && it2->second.nextHop1 != ""){
+                os << "  " << it2->first;
+                if(it2->second.share) {
+                    os<< "*";
+                }
+                os << " -> " << it2->second.nextHop1 << "("<<it2->second.metric1<<")";
+                if(it2->second.metric2<INF_METRIC && it2->second.nextHop2 != ""){
+                    os << " or " << it2->second.nextHop2 << "("<<it2->second.metric2<<")";
+                }
+                os << endl;
+            }
+        }
+    }
+
+    return os.str();
+}
+
