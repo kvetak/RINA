@@ -1,0 +1,1989 @@
+version 2
+run FatTreeTopology-0-20150309-13:08:12-16424
+attr configname FatTreeTopology
+attr datetime 20150309-13:08:12
+attr experiment FatTreeTopology
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network FatTreeTopologyPref
+attr processid 16424
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server11.ipcResourceManager.irm 	irm-down:last 	5
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server11.ipcResourceManager.irm 	irm-up:last 	5
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server12.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server12.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server21.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server21.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server23.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server23.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server13.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server13.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server22.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server22.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server31.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server31.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server32.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server32.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server33.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server33.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server41.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server41.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server42.ipcResourceManager.irm 	irm-down:last 	-nan
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server42.ipcResourceManager.irm 	irm-up:last 	-nan
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.Server43.ipcResourceManager.irm 	irm-down:last 	5
+attr source  count(IRM_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.Server43.ipcResourceManager.irm 	irm-up:last 	5
+attr source  count(IRM_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	43
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	43
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	21
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	21
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.port 	rmtport-down:last 	19
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.port 	rmtport-up:last 	19
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.port 	rmtport-down:last 	9
+attr source  count(RMTPort_PassDown)
+attr title  "msg passed down, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.port 	rmtport-up:last 	9
+attr ""  ""
+attr source  count(RMTPort_PassUp)
+attr title  "msg passed up, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.inQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.outQ_M 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.inQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
+scalar FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.outQ_0 	rmtqueue-drop:last 	-nan
+attr source  count(RMTQueue_Drop)
+attr title  "dropped PDUs, last"
