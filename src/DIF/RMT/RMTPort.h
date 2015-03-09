@@ -19,6 +19,8 @@
 #define __RINA_RMTPORT_H_
 
 #include <omnetpp.h>
+#include <algorithm>
+
 #include "RINASignals.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
@@ -164,11 +166,11 @@ class RMTPort : public cSimpleModule
     unsigned long waitingOnInput;
     unsigned long waitingOnOutput;
     double postServeDelay;
+    std::string dstAppAddr;
 
     Flow* flow;
     QueueIDGenBase* queueIdGen;
 
-    std::set<cGate*> northOutputGates;
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
@@ -179,13 +181,15 @@ class RMTPort : public cSimpleModule
 
     void postInitialize();
     void setFlow(Flow* flow);
-    void addInputQueue(RMTQueue* queue, cGate* portGate);
-    void addOutputQueue(RMTQueue* queue, cGate* portGate);
+    void registerInputQueue(RMTQueue* queue);
+    void registerOutputQueue(RMTQueue* queue);
+    void unregisterInputQueue(RMTQueue* queue);
+    void unregisterOutputQueue(RMTQueue* queue);
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
     void setReadyDelayed();
-    void redrawGUI();
+    void redrawGUI(bool redrawParent = false);
 
     simsignal_t sigRMTPortReady;
     simsignal_t sigStatRMTPortUp;

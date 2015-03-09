@@ -113,8 +113,6 @@ void RMTPort::handleMessage(cMessage* msg)
             if (outputChannel != NULL)
             { // we're using a channel, likely with some sort of data rate/delay
                 simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
-//                EV << "!!!!!!!!! transmit start: " << simTime()
-//                   << "; transmit end: " << transmitEnd << endl;
                 if (transmitEnd > simTime())
                 { // transmit requires some simulation time
                     scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
@@ -145,22 +143,34 @@ const RMTQueues& RMTPort::getInputQueues() const
     return inputQueues;
 }
 
-void RMTPort::addInputQueue(RMTQueue* queue, cGate* portGate)
-{
-    northOutputGates.insert(portGate);
-    inputQueues.push_back(queue);
-}
-
-
 const RMTQueues& RMTPort::getOutputQueues() const
 {
     return outputQueues;
 }
 
-void RMTPort::addOutputQueue(RMTQueue* queue, cGate* portGate)
+void RMTPort::registerInputQueue(RMTQueue* queue)
 {
-    northInputGates.insert(portGate);
+    inputQueues.push_back(queue);
+}
+
+
+void RMTPort::registerOutputQueue(RMTQueue* queue)
+{
+    northInputGates.insert(queue->getOutputGate()->getNextGate());
     outputQueues.push_back(queue);
+}
+
+void RMTPort::unregisterInputQueue(RMTQueue* queue)
+{
+    inputQueues.erase(std::remove(inputQueues.begin(), inputQueues.end(), queue),
+                      inputQueues.end());
+}
+
+void RMTPort::unregisterOutputQueue(RMTQueue* queue)
+{
+    northInputGates.erase(queue->getOutputGate()->getNextGate());
+    outputQueues.erase(std::remove(outputQueues.begin(), outputQueues.end(), queue),
+                       outputQueues.end());
 }
 
 cGate* RMTPort::getSouthInputGate() const
@@ -250,11 +260,30 @@ void RMTPort::setBusy()
     redrawGUI();
 }
 
-void RMTPort::redrawGUI()
+void RMTPort::redrawGUI(bool redrawParent)
 {
     if (ev.isGUI())
     {
         getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
+
+        if (redrawParent)
+        {
+            std::ostringstream ostr;
+            ostr << "dst app: " << dstAppAddr << endl;
+            if (blockedInput)
+            {
+                ostr << "input blocked" << endl;
+            }
+            if (blockedOutput)
+            {
+                ostr << "output blocked" << endl;
+            }
+
+            cDisplayString& dStr = getParentModule()->getDisplayString();
+
+            dStr.setTagArg("t", 0, ostr.str().c_str());
+            dStr.setTagArg("t", 1, "t");
+        }
     }
 }
 
@@ -274,14 +303,13 @@ void RMTPort::setFlow(Flow* flow)
         {
             // shitty temporary hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();
-            const std::string& dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
-            getParentModule()->getDisplayString().setTagArg("t", 0, dstAppAddr.c_str());
+            dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
         }
         else
         {
-            getParentModule()->getDisplayString().setTagArg("t", 0, "PHY");
+            dstAppAddr = "N/A (PHY)";
         }
-        redrawGUI();
+        redrawGUI(true);
     }
 }
 
@@ -293,6 +321,7 @@ void RMTPort::blockOutput()
     {
         setBusy();
     }
+    redrawGUI(true);
 }
 
 void RMTPort::unblockOutput()
@@ -300,16 +329,19 @@ void RMTPort::unblockOutput()
     EV << getFullPath() << ": unblocking the port output." << endl;
     blockedOutput = false;
     setReady();
+    redrawGUI(true);
 }
 
 void RMTPort::blockInput()
 {
     EV << getFullPath() << ": blocking the port input." << endl;
     blockedInput = true;
+    redrawGUI(true);
 }
 
 void RMTPort::unblockInput()
 {
     EV << getFullPath() << ": unblocking the port input." << endl;
     blockedInput = false;
+    redrawGUI(true);
 }

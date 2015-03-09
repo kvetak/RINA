@@ -285,7 +285,7 @@ void RMT::efcpiToPort(PDU* pdu)
     cGate* outGate = NULL;
     if (outQueue != NULL)
     {
-        outGate = outQueue->getRmtAccessGate();
+        outGate = outQueue->getRMTAccessGate();
     }
 
     if (outGate != NULL)
@@ -361,7 +361,7 @@ void RMT::ribToPort(CDAPMessage* cdap)
 
     if (outQueue != NULL)
     {
-        outGate = outQueue->getRmtAccessGate();
+        outGate = outQueue->getRMTAccessGate();
     }
 
     if (outGate != NULL)
@@ -426,7 +426,7 @@ void RMT::portToPort(cMessage* msg)
 
     if (outQueue != NULL)
     {
-        outGate = outQueue->getRmtAccessGate();
+        outGate = outQueue->getRMTAccessGate();
     }
 
     if (outGate != NULL)

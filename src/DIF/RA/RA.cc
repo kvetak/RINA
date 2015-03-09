@@ -651,7 +651,7 @@ void RA::postNFlowAllocation(Flow* flow)
         NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
         if (item != NULL)
         {
-            qAllocPolicy->onNFlowAlloc(item->getRmtPort(), flow);
+            qAllocPolicy->onNFlowAlloc(item->getRMTPort(), flow);
         }
     }
 }
@@ -673,7 +673,7 @@ void RA::postNM1FlowAllocation(Flow* flow)
     if (item == NULL) return;
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRmtPort()->setReady();
+    item->getRMTPort()->setReady();
 }
 
 /**
@@ -685,28 +685,31 @@ void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
     NM1FlowTableItem* flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != NULL);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
+    flowItem->getFABase()->receiveDeallocateRequest(flow);
 
-    RMTPort* port = flowItem->getRmtPort();
+    // disconnect and delete gates
+    RMTPort* port = flowItem->getRMTPort();
     const char* gateName = flowItem->getGateName().c_str();
     cGate* thisIpcIn = thisIPC->gateHalf(gateName, cGate::INPUT);
     cGate* thisIpcOut = thisIPC->gateHalf(gateName, cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
     cGate* rmtModuleOut = rmtModule->gateHalf(gateName, cGate::OUTPUT);
-    cGate* portOut = port->getSouthOutputGate();
+    cGate* portOut = port->getSouthOutputGate()->getNextGate();
 
     portOut->disconnect();
-    thisIpcIn->disconnect();
-    thisIpcOut->disconnect();
-    rmtModuleIn->disconnect();
     rmtModuleOut->disconnect();
+    thisIpcOut->disconnect();
+    thisIpcIn->disconnect();
+    rmtModuleIn->disconnect();
 
-    fwdtg->removeFlowInfo(flowItem->getRmtPort());
-    rmtAllocator->removePort(flowItem->getRmtPort());
     rmtModule->deleteGate(gateName);
-    flowItem->getFaBase()->receiveDeallocateRequest(flow);
-
     thisIPC->deleteGate(gateName);
+
+    // remove table entries
+    fwdtg->removeFlowInfo(flowItem->getRMTPort());
+    rmtAllocator->removePort(flowItem->getRMTPort());
     flowTable->remove(flow);
 }
 
@@ -790,7 +793,7 @@ void RA::blockNM1PortOutput(Flow* flow)
         return;
     }
 
-    item->getRmtPort()->blockOutput();
+    item->getRMTPort()->blockOutput();
 }
 
 void RA::unblockNM1PortOutput(Flow* flow)
@@ -805,7 +808,7 @@ void RA::unblockNM1PortOutput(Flow* flow)
         return;
     }
 
-    item->getRmtPort()->unblockOutput();
+    item->getRMTPort()->unblockOutput();
 }
 
 void RA::blockNM1PortInput(cObject* obj)
@@ -821,7 +824,7 @@ void RA::blockNM1PortInput(cObject* obj)
 
         if (flowItem != NULL)
         {
-            flowItem->getRmtPort()->blockInput();
+            flowItem->getRMTPort()->blockInput();
         }
     }
 }
@@ -839,7 +842,7 @@ void RA::unblockNM1PortInput(cObject* obj)
 
         if (flowItem != NULL)
         {
-            RMTPort* port = flowItem->getRmtPort();
+            RMTPort* port = flowItem->getRMTPort();
             // unblock!
             port->unblockInput();
             // resume processing of input queues

@@ -75,12 +75,13 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
         rmtOut->connectTo(portBorder);
         portBorder->connectTo(queue->getInputGate());
 
-        queue->setRmtAccessGate(rmtOut);
+        queue->setRMTAccessGate(rmtOut);
 
         // connect to port
         cGate* fromOutputQueue = port->addGate(queue->getFullName(), cGate::INPUT, false);
         queue->getOutputGate()->connectTo(fromOutputQueue);
-        port->addOutputQueue(queue, fromOutputQueue);
+
+        port->registerOutputQueue(queue);
     }
     else if (type == RMTQueue::INPUT)
     {
@@ -91,10 +92,13 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
         queue->getOutputGate()->connectTo(portBorder);
         portBorder->connectTo(rmtIn);
 
+        queue->setRMTAccessGate(rmtIn);
+
         // connect to port
         cGate* toInputQueue = port->addGate(queue->getFullName(), cGate::OUTPUT, false);
         toInputQueue->connectTo(queue->getInputGate());
-        port->addInputQueue(queue, toInputQueue);
+
+        port->registerInputQueue(queue);
     }
 
     queue->setType(type);
@@ -133,7 +137,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     cDisplayString& portDisp = portWrapper->getDisplayString();
     portDisp.setTagArg("p", 0, portXCoord);
     portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 60;
+    portXCoord += 80;
 
     if (flow == NULL)
     {
@@ -145,14 +149,30 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
 
 void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 {
+    cModule* rmt = getModuleByPath("^.rmt");
+    RMTPort* port = queueToPort[queue];
+    cGate* rmtGate = queue->getRMTAccessGate();
+    cGate* qOutputGate = queue->getOutputGate();
+    cGate* qInputGate = queue->getInputGate();
+
     if (queue->getType() == RMTQueue::OUTPUT)
     {
-        queue->getRmtAccessGate()->disconnect();
+        rmtGate->getNextGate()->disconnect();
+        rmtGate->disconnect();
+        qOutputGate->disconnect();
+        port->unregisterOutputQueue(queue);
     }
-    queue->getOutputGate()->disconnect();
+    else
+    {
+        qOutputGate->getNextGate()->disconnect();
+        qOutputGate->disconnect();
+        qInputGate->getPreviousGate()->disconnect();
+        port->unregisterInputQueue(queue);
+    }
 
-    cModule* rmt = getParentModule()->getModuleByPath(".rmt");
-    rmt->deleteGate(queue->getName());
+    rmt->deleteGate(rmtGate->getFullName());
+    port->deleteGate(queue->getFullName());
+    port->getParentModule()->deleteGate(queue->getFullName());
 
     qMonPolicy->preQueueRemoval(queue);
     queue->deleteModule();
@@ -185,7 +205,7 @@ void RMTModuleAllocator::removePort(RMTPort* port)
     removeQueues(port->getOutputQueues());
     removeQueues(port->getInputQueues());
 
-    port->deleteModule();
+    port->getParentModule()->deleteModule();
 }
 
 RMTPort* RMTModuleAllocator::getQueueToPortMapping(RMTQueue* queue)
