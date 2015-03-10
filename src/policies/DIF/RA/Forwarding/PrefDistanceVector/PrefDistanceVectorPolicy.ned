@@ -29,4 +29,5 @@ simple PrefDistanceVectorPolicy like IntPDUFTGPolicy
         bool netStateVisible = default(false);
     	string netStateAlign = default("r");
     	string netStateMod = default("^.^.");
+        bool showAtEnd = default(false);
 }

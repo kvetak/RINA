@@ -200,7 +200,6 @@ void PrefDistanceVectorPolicy::initialize()
         fwt->setDelimiter(delimiter);
     }
 
-
     // Will show the fwd table in the simulation?
     showNetState = par("netStateVisible").boolValue();
     // Where will the report be seen?
@@ -215,6 +214,15 @@ void PrefDistanceVectorPolicy::initialize()
     }
 
 
+}
+
+void PrefDistanceVectorPolicy::finish(){
+
+    if( par("showAtEnd").boolValue()){
+        EV << "Node " << fwdtg->getIpcAddress()<<endl;
+        EV << "Routing table:"<< endl;
+        EV << table.prepareFriendlyNetState() <<endl;
+    }
 }
 
 void PrefDistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)

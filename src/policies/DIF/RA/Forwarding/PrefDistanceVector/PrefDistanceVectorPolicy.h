@@ -50,6 +50,8 @@ protected:
     void handleMessage(cMessage *msg);
     void initialize();
 
+    void finish();
+
     std::string thisIPCAddr;
     std::vector<std::string> thisIPCAddrParsed;
     std::string any;
