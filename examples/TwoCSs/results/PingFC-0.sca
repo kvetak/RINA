@@ -1,14 +1,14 @@
 version 2
-run PingFC-0-20150301-04:28:33-6400
+run PingFC-0-20150311-19:08:19-26367
 attr configname PingFC
-attr datetime 20150301-04:28:33
+attr datetime 20150311-19:08:19
 attr experiment PingFC
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvars2 $repetition=0
 attr measurement ""
 attr network TwoCSs
-attr processid 6400
+attr processid 26367
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -22,18 +22,27 @@ scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	535
 attr ""  ""
 attr source  count(RMTPort_PassUp)
 attr title  "msg passed up, last"
-scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
+scalar TwoCSs.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-rx-count:last 	-nan
+attr source  DTP_RX_COUNT
+attr title  "Sum of all retransmissions, last"
+scalar TwoCSs.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-close-win-q:mean 	2.9737827715356
+attr source  DTP_CLOSED_WIN_Q
+attr title  "Closed-window Queue length, mean"
+scalar TwoCSs.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-rtt:mean 	6.0037453183034
+attr source  DTP_RTT
+attr title  "Estimated RTT, mean"
 scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	267
 attr source  count(RMTPort_PassDown)
 attr title  "msg passed down, last"
@@ -41,16 +50,16 @@ scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	267
 attr ""  ""
 attr source  count(RMTPort_PassUp)
 attr title  "msg passed up, last"
-scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host1.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
 scalar TwoCSs.host1.ipcResourceManager.irm 	irm-down:last 	100
@@ -66,18 +75,27 @@ scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.port 	rmtport-up:last 	535
 attr ""  ""
 attr source  count(RMTPort_PassUp)
 attr title  "msg passed up, last"
-scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
+scalar TwoCSs.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-rx-count:last 	-nan
+attr source  DTP_RX_COUNT
+attr title  "Sum of all retransmissions, last"
+scalar TwoCSs.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-close-win-q:mean 	2.4738154613466
+attr source  DTP_CLOSED_WIN_Q
+attr title  "Closed-window Queue length, mean"
+scalar TwoCSs.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-rtt:mean 	6.0037453183034
+attr source  DTP_RTT
+attr title  "Estimated RTT, mean"
 scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	267
 attr source  count(RMTPort_PassDown)
 attr title  "msg passed down, last"
@@ -85,16 +103,16 @@ scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.port 	rmtport-up:last 	267
 attr ""  ""
 attr source  count(RMTPort_PassUp)
 attr title  "msg passed up, last"
-scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.inQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.outQ_M 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.inQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	nan
+scalar TwoCSs.host2.ipcProcess1.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
 scalar TwoCSs.host2.ipcResourceManager.irm 	irm-down:last 	100

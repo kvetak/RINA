@@ -1,14 +1,14 @@
 version 2
-run Ping-0-20150306-00:35:04-12987
+run Ping-0-20150311-19:05:10-26308
 attr configname Ping
-attr datetime 20150306-00:35:04
+attr datetime 20150311-19:05:10
 attr experiment Ping
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvars2 $repetition=0
 attr measurement ""
 attr network TwoCSWithDelay
-attr processid 12987
+attr processid 26308
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -34,18 +34,15 @@ attr title  "dropped PDUs, last"
 scalar TwoCSWithDelay.host1.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_52416.dtp 	dtp-rx-count:last 	-nan
+scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-rx-count:last 	-nan
 attr source  DTP_RX_COUNT
 attr title  "Sum of all retransmissions, last"
-scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_52416.dtp 	dtp-close-win-q:mean 	0
+scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-close-win-q:mean 	0
 attr source  DTP_CLOSED_WIN_Q
 attr title  "Closed-window Queue length, mean"
-scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_52416.dtp 	dtp-rtt:mean 	0.087149721956522
+scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_57043.dtp 	dtp-rtt:mean 	0.087149721956522
 attr source  DTP_RTT
 attr title  "Estimated RTT, mean"
-scalar TwoCSWithDelay.host1.ipcProcess0.efcp.efcpi_52416.dtcp 	dtcp-rtt:mean 	-nan
-attr source  DTCP_CLOSED_WIN_Q
-attr title  "Closed-window Queue length, mean"
 scalar TwoCSWithDelay.host1.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	22
 attr source  count(RMTPort_PassDown)
 attr title  "msg passed down, last"
@@ -90,18 +87,15 @@ attr title  "dropped PDUs, last"
 scalar TwoCSWithDelay.host2.ipcProcess0.relayAndMux.p0.outQ_0 	rmtqueue-drop:last 	-nan
 attr source  count(RMTQueue_Drop)
 attr title  "dropped PDUs, last"
-scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_21243.dtp 	dtp-rx-count:last 	-nan
+scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-rx-count:last 	-nan
 attr source  DTP_RX_COUNT
 attr title  "Sum of all retransmissions, last"
-scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_21243.dtp 	dtp-close-win-q:mean 	0
+scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-close-win-q:mean 	0
 attr source  DTP_CLOSED_WIN_Q
 attr title  "Closed-window Queue length, mean"
-scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_21243.dtp 	dtp-rtt:mean 	0.087150469695652
+scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_55026.dtp 	dtp-rtt:mean 	0.087150469695652
 attr source  DTP_RTT
 attr title  "Estimated RTT, mean"
-scalar TwoCSWithDelay.host2.ipcProcess0.efcp.efcpi_21243.dtcp 	dtcp-rtt:mean 	-nan
-attr source  DTCP_CLOSED_WIN_Q
-attr title  "Closed-window Queue length, mean"
 scalar TwoCSWithDelay.host2.ipcProcess1.relayAndMux.p0.port 	rmtport-down:last 	22
 attr source  count(RMTPort_PassDown)
 attr title  "msg passed down, last"
