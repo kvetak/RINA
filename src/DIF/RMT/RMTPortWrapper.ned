@@ -17,13 +17,13 @@ package rina.DIF.RMT;
 
 module RMTPortWrapper
 {
-    @display("bgb=200,400;i=block/socket");
+    @display("bgb=200,269;i=block/socket");
     gates:
         inout southIo;
 
     submodules:
         port: RMTPort {
-            @display("p=100,325");
+            @display("p=100,229");
         }
     connections:
         port.southIo <--> southIo;
