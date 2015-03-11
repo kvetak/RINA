@@ -14,11 +14,10 @@ rtEntry::rtEntry(){
     metric1 = INF_METRIC;
     nextHop2 = "";
     metric2 = INF_METRIC;
-    share = false;
 }
 
-void rtEntry::setShare(bool _share){
-    share = _share;
+void rtEntry::setSize(bool _size){
+    size = _size;
 }
 
 void rtEntry::setFirst(std::string nextHop, int metric){
@@ -49,12 +48,15 @@ rtUpdate::rtUpdate(unsigned short _qos, std::string _dst, int _metric){
     metric = _metric;
 }
 
+
 rtTab::rtTab() {
     im = "";
 }
+
 rtTab::rtTab(std::string _im) {
-    im = im;
+    im = _im;
 }
+
 void rtTab::setIm(std::string _im) {
     im = im;
 }
@@ -65,10 +67,35 @@ void rtTab::addQoS(unsigned short qos){
 
 rtTab::~rtTab() {}
 
-bool rtTab::addOrReplaceEntry(std::string addr, std::string nextHop, int metric, unsigned short qos, bool shared){
-    rtEntry * entry = &tables[qos][addr];
-    entry->share = shared;
+bool addOrReplaceSon(std::string addr, std::string nextHop, int metric, unsigned short qos);
+bool addOrReplaceNeighbour(std::string addr, std::string nextHop, int metric, unsigned short qos);
+bool addOrReplaceRand(std::string addr, std::string nextHop, int metric, unsigned short qos);
+bool addOrReplaceParent(std::string nextHop, int metric, unsigned short qos);
 
+
+
+bool rtTab::addOrReplaceSon(std::string addr, std::string nextHop, int metric, unsigned short qos){
+    rtEntry * entry = &tables[qos].sons[addr];
+    return change(entry, nextHop, metric);
+}
+
+bool rtTab::addOrReplaceNeighbour(std::string addr, std::string nextHop, int metric, unsigned short qos){
+    rtEntry * entry = &tables[qos].neig[addr];
+    return change(entry, nextHop, metric);
+}
+
+bool rtTab::addOrReplaceRand(std::string addr, std::string nextHop, int metric, unsigned short qos, unsigned char prefSize){
+    rtEntry * entry = &tables[qos].rand[addr];
+    entry->size = prefSize;
+    return change(entry, nextHop, metric);
+}
+
+bool rtTab::addOrReplaceParent(std::string nextHop, int metric, unsigned short qos){
+    rtEntry * entry = &tables[qos].parent;
+    return change(entry, nextHop, metric);
+}
+
+bool rtTab::change(rtEntry * entry, std::string nextHop, int metric){
     if(entry->nextHop1 == nextHop){
         entry->metric1 = metric;
     } else if(entry->metric2 >= metric){
@@ -82,8 +109,8 @@ bool rtTab::addOrReplaceEntry(std::string addr, std::string nextHop, int metric,
     return false;
 }
 
-std::string rtTab::getNextHop(std::string addr, unsigned short qos){
-    rtTable * table = &tables[qos];
+std::string rtTab::getNextHopSon(std::string addr, unsigned short qos){
+    rtTable * table = &tables[qos].sons;
 
     rtTabIterator it = table->find(addr);
     if(it == table->end() || it->second.metric1 >= INF_METRIC){
@@ -92,55 +119,186 @@ std::string rtTab::getNextHop(std::string addr, unsigned short qos){
 
     return it->second.nextHop1;
 }
+std::string rtTab::getNextHopNeighbour(std::string addr, unsigned short qos){
+    rtTable * table = &tables[qos].neig;
 
-qosAddrList rtTab::remove(std::string nextHop){
-
-    qosAddrList modified;
-
-    for(std::map<unsigned short, rtTable>::iterator it = tables.begin(); it != tables.end(); it++){
-        for(rtTabIterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
-            if(it2->second.nextHop2 == nextHop) {
-                it2->second.setLast("", INF_METRIC);
-            } else if(it2->second.nextHop1 == nextHop) {
-                it2->second.setFirst("", INF_METRIC);
-                it2->second.swap();
-                modified.push_back(qosAddr(it->first, it2->first));
-            }
-        }
+    rtTabIterator it = table->find(addr);
+    if(it == table->end() || it->second.metric1 >= INF_METRIC){
+        return "";
     }
-    return modified;
+
+    return it->second.nextHop1;
+}
+std::string rtTab::getNextHopRand(std::string addr, unsigned short qos){
+    rtTable * table = &tables[qos].rand;
+
+    rtTabIterator it = table->find(addr);
+    if(it == table->end() || it->second.metric1 >= INF_METRIC){
+        return "";
+    }
+
+    return it->second.nextHop1;
+}
+std::string rtTab::getNextHopParent(unsigned short qos){
+    if(tables[qos].parent.metric1 >= INF_METRIC){
+        return "";
+    }
+    return tables[qos].parent.nextHop1;
 }
 
-qosAddrList rtTab::remove(std::string nextHop, unsigned short qos){
 
-    qosAddrList modified;
+AddrList rtTab::removeSons(std::string nextHop, unsigned short qos){
+    AddrList modified;
 
-    for(rtTabIterator it2 = tables[qos].begin(); it2 != tables[qos].end(); it2++){
+    for(rtTabIterator it2 = tables[qos].sons.begin(); it2 != tables[qos].sons.end(); it2++){
         if(it2->second.nextHop2 == nextHop) {
             it2->second.setLast("", INF_METRIC);
         } else if(it2->second.nextHop1 == nextHop) {
             it2->second.setFirst("", INF_METRIC);
             it2->second.swap();
-            modified.push_back(qosAddr(qos, it2->first));
+            modified.push_back(it2->first);
+        }
+    }
+    return modified;
+}
+AddrList rtTab::removeNeighbours(std::string nextHop, unsigned short qos){
+    AddrList modified;
+
+    for(rtTabIterator it2 = tables[qos].neig.begin(); it2 != tables[qos].neig.end(); it2++){
+        if(it2->second.nextHop2 == nextHop) {
+            it2->second.setLast("", INF_METRIC);
+        } else if(it2->second.nextHop1 == nextHop) {
+            it2->second.setFirst("", INF_METRIC);
+            it2->second.swap();
+            modified.push_back(it2->first);
+        }
+    }
+    return modified;
+}
+AddrList rtTab::removeRand(std::string nextHop, unsigned short qos){
+    AddrList modified;
+
+    for(rtTabIterator it2 = tables[qos].rand.begin(); it2 != tables[qos].rand.end(); it2++){
+        if(it2->second.nextHop2 == nextHop) {
+            it2->second.setLast("", INF_METRIC);
+        } else if(it2->second.nextHop1 == nextHop) {
+            it2->second.setFirst("", INF_METRIC);
+            it2->second.swap();
+            modified.push_back(it2->first);
         }
     }
     return modified;
 }
 
-updatesList rtTab::getUpdates(std::string next, bool all){
-    updatesList ret;
+AddrList rtTab::removeParent(std::string nextHop, unsigned short qos){
+    AddrList modified;
+    if(tables[qos].parent.nextHop2 == nextHop) {
+        tables[qos].parent.setLast("", INF_METRIC);
+    } else if(tables[qos].parent.nextHop1 == nextHop) {
+        tables[qos].parent.setFirst("", INF_METRIC);
+        tables[qos].parent.swap();
+        modified.push_back("");
+    }
+    return modified;
+}
 
-    for(std::map<unsigned short, rtTable>::iterator it = tables.begin(); it != tables.end(); it++){
-        ret.push_back(rtUpdate(it->first, im, 0));
-        for(rtTabIterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
-            if((all || it2->second.share) && it2->first != next){
-                if(it2->second.nextHop1 == next) {
-                    ret.push_back(rtUpdate(it->first, it2->first, it2->second.metric2));
+
+
+updatesList rtTab::getUpdatesSon(std::string next, unsigned short qos){
+    updatesList ret;
+    for(rtTabIterator it2 = tables[qos].sons.begin(); it2 != tables[qos].sons.end(); it2++){
+        if(it2->first != next){
+            if(it2->second.nextHop1 == next) {
+                if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
+                    ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));
                 } else {
-                    ret.push_back(rtUpdate(it->first, it2->first, it2->second.metric1));
+                    ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
                 }
+            } else if(it2->second.nextHop1 != "" && it2->second.metric1 < INF_METRIC) {
+                ret.push_back(rtUpdate(qos, it2->first, it2->second.metric1));
+            } else {
+                ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
             }
         }
+    }
+    return ret;
+}
+
+updatesList rtTab::getUpdatesNeighbour(std::string next, unsigned short qos){
+    updatesList ret;
+    ret.push_back(rtUpdate(qos, im, 0));
+
+    for(rtTabIterator it2 = tables[qos].neig.begin(); it2 != tables[qos].neig.end(); it2++){
+        if(it2->first != next){
+            if(it2->second.nextHop1 == next) {
+                if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
+                    ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));
+                } else {
+                    ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+                }
+            } else if(it2->second.nextHop1 != "" && it2->second.metric1 < INF_METRIC) {
+                ret.push_back(rtUpdate(qos, it2->first, it2->second.metric1));
+            } else {
+                ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+            }
+        }
+    }
+    return ret;
+}
+
+updatesList rtTab::getUpdatesRand(std::string next, unsigned short qos){
+    updatesList ret;
+
+    for(rtTabIterator it2 = tables[qos].rand.begin(); it2 != tables[qos].rand.end(); it2++){
+        if(it2->first != next && it2->first != ""){
+            if(it2->second.nextHop1 == next) {
+                if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
+                    ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));
+                } else {
+                    ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+                }
+            } else if(it2->second.nextHop1 != "" && it2->second.metric1 < INF_METRIC) {
+                ret.push_back(rtUpdate(qos, it2->first, it2->second.metric1));
+            } else {
+                ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+            }
+        }
+    }
+    return ret;
+}
+updatesList rtTab::getUpdatesRand(std::string next, unsigned short qos, unsigned char prefSize){
+    updatesList ret;
+    for(rtTabIterator it2 = tables[qos].rand.begin(); it2 != tables[qos].rand.end(); it2++){
+        if(it2->first != next && it2->second.size <= prefSize && it2->first != ""){
+            if(it2->second.nextHop1 == next) {
+                if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
+                    ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));
+                } else {
+                    ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+                }
+            } else if(it2->second.nextHop1 != "" && it2->second.metric1 < INF_METRIC) {
+                ret.push_back(rtUpdate(qos, it2->first, it2->second.metric1));
+            } else {
+                ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
+            }
+        }
+    }
+    return ret;
+}
+
+updatesList rtTab::getUpdatesParent(std::string next, unsigned short qos){
+    updatesList ret;
+    rtEntry * entry = &tables[qos].parent;
+    if(entry->nextHop1 == next) {
+        if(entry->nextHop2 != "" && entry->metric2 < INF_METRIC) {
+            ret.push_back(rtUpdate(qos, "", entry->metric2));
+        } else {
+            ret.push_back(rtUpdate(qos, "", INF_METRIC));
+        }
+    } else if(entry->nextHop1 != "" && entry->metric1 < INF_METRIC) {
+        ret.push_back(rtUpdate(qos, "", entry->metric1));
+    } else {
+        ret.push_back(rtUpdate(qos, "", INF_METRIC));
     }
     return ret;
 }
@@ -150,14 +308,40 @@ std::string rtTab::prepareFriendlyNetState()
 {
     std::stringstream os;
 
-    for(std::map<unsigned short, rtTable>::iterator it = tables.begin(); it != tables.end(); it++){
+    for(std::map<unsigned short, difRTab>::iterator it = tables.begin(); it != tables.end(); it++){
         os << "Qos:" << it->first << endl;
-        for(rtTabIterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
+
+        os << "  * -> " << it->second.parent.nextHop1 << "("<<it->second.parent.metric1<<")";
+        if(it->second.parent.metric2<INF_METRIC && it->second.parent.nextHop2 != ""){
+            os << " or " << it->second.parent.nextHop2 << "("<<it->second.parent.metric2<<")";
+        }
+        os << endl;
+
+
+        for(rtTabIterator it2 = it->second.neig.begin(); it2 != it->second.neig.end(); it2++){
+            if(it2->second.metric1<INF_METRIC && it2->second.nextHop1 != ""){
+                os << "  +" << it2->first << "*";
+                os << " -> " << it2->second.nextHop1 << "("<<it2->second.metric1<<")";
+                if(it2->second.metric2<INF_METRIC && it2->second.nextHop2 != ""){
+                    os << " or " << it2->second.nextHop2 << "("<<it2->second.metric2<<")";
+                }
+                os << endl;
+            }
+        }
+        for(rtTabIterator it2 = it->second.sons.begin(); it2 != it->second.sons.end(); it2++){
+            if(it2->second.metric1<INF_METRIC && it2->second.nextHop1 != ""){
+                os << "  -" << it2->first << "*";
+                os << " -> " << it2->second.nextHop1 << "("<<it2->second.metric1<<")";
+                if(it2->second.metric2<INF_METRIC && it2->second.nextHop2 != ""){
+                    os << " or " << it2->second.nextHop2 << "("<<it2->second.metric2<<")";
+                }
+                os << endl;
+            }
+        }
+        for(rtTabIterator it2 = it->second.rand.begin(); it2 != it->second.rand.end(); it2++){
+            os << "  /" << it2->first << "*";
             if(it2->second.metric1<INF_METRIC && it2->second.nextHop1 != ""){
                 os << "  " << it2->first;
-                if(it2->second.share) {
-                    os<< "*";
-                }
                 os << " -> " << it2->second.nextHop1 << "("<<it2->second.metric1<<")";
                 if(it2->second.metric2<INF_METRIC && it2->second.nextHop2 != ""){
                     os << " or " << it2->second.nextHop2 << "("<<it2->second.metric2<<")";
@@ -169,4 +353,3 @@ std::string rtTab::prepareFriendlyNetState()
 
     return os.str();
 }
-

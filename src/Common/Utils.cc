@@ -6,6 +6,7 @@
  */
 
 #include <Utils.h>
+#include <algorithm>
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
@@ -34,4 +35,11 @@ std::string join(const std::vector<std::string> &elems, const unsigned int n, co
     }
 
     return s;
+}
+
+bool isPrefix(std::string prefix, std::string s) {
+    if(prefix.size() > s.size()) {
+        return false;
+    }
+    return std::mismatch(prefix.begin(), prefix.end(), s.begin()).first == prefix.end();
 }

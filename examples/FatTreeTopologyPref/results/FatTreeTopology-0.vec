@@ -1,0 +1,6833 @@
+version 2
+run FatTreeTopology-0-20150311-14:33:02-21801
+attr configname FatTreeTopology
+attr datetime 20150311-14:33:02
+attr experiment FatTreeTopology
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network FatTreeTopologyPref
+attr processid 21801
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 2  FatTreeTopologyPref.AS1.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 6  FatTreeTopologyPref.AS2.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 8  FatTreeTopologyPref.TOR1.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 9  FatTreeTopologyPref.TOR1.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 14  FatTreeTopologyPref.TOR2.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 15  FatTreeTopologyPref.TOR2.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 20  FatTreeTopologyPref.Server11.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 22  FatTreeTopologyPref.Server12.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 24  FatTreeTopologyPref.Server21.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 26  FatTreeTopologyPref.Server23.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 28  FatTreeTopologyPref.Server13.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 30  FatTreeTopologyPref.Server22.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 34  FatTreeTopologyPref.AS3.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 38  FatTreeTopologyPref.AS4.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 40  FatTreeTopologyPref.Server31.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 42  FatTreeTopologyPref.Server32.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 44  FatTreeTopologyPref.Server33.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 46  FatTreeTopologyPref.Server41.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 48  FatTreeTopologyPref.Server42.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 50  FatTreeTopologyPref.Server43.ipcProcess0.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 52  FatTreeTopologyPref.TOR3.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 53  FatTreeTopologyPref.TOR3.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 58  FatTreeTopologyPref.TOR4.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 59  FatTreeTopologyPref.TOR4.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 66  FatTreeTopologyPref.AS5.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 81  FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 93  FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 97  FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 101  FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 117  FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 121  FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 137  FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 141  FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 145  FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 149  FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 153  FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 157  FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 169  FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 181  FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 185  FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 189  FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 193  FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 197  FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 201  FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 205  FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 209  FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 213  FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 229  FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 233  FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 257  FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 248  FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 260  FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 72  FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 84  FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 76  FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 88  FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 104  FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 108  FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 124  FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 132  FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 112  FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 128  FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 252  FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 264  FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 216  FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 220  FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 224  FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 236  FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 240  FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 244  FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 160  FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 172  FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 164  FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 176  FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 268  FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 64  FatTreeTopologyPref.AS5.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 68  FatTreeTopologyPref.AS6.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 0  FatTreeTopologyPref.AS1.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 4  FatTreeTopologyPref.AS2.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 1  FatTreeTopologyPref.AS1.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 5  FatTreeTopologyPref.AS2.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 10  FatTreeTopologyPref.TOR1.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 11  FatTreeTopologyPref.TOR1.ipcProcess[3].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 16  FatTreeTopologyPref.TOR2.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 18  FatTreeTopologyPref.TOR2.ipcProcess[4].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 12  FatTreeTopologyPref.TOR1.ipcProcess[4].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 17  FatTreeTopologyPref.TOR2.ipcProcess[3].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 65  FatTreeTopologyPref.AS5.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 69  FatTreeTopologyPref.AS6.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 54  FatTreeTopologyPref.TOR3.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 55  FatTreeTopologyPref.TOR3.ipcProcess[3].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 56  FatTreeTopologyPref.TOR3.ipcProcess[4].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 60  FatTreeTopologyPref.TOR4.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 61  FatTreeTopologyPref.TOR4.ipcProcess[3].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 62  FatTreeTopologyPref.TOR4.ipcProcess[4].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 32  FatTreeTopologyPref.AS3.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 36  FatTreeTopologyPref.AS4.ipcProcess[0].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 33  FatTreeTopologyPref.AS3.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 37  FatTreeTopologyPref.AS4.ipcProcess[1].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 70  FatTreeTopologyPref.AS6.ipcProcess[2].flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 249  FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 261  FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 73  FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 85  FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 77  FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 89  FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 105  FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 109  FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 125  FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 133  FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 113  FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 129  FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 253  FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 265  FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 217  FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 221  FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 225  FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 237  FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 241  FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 245  FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 161  FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 173  FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 165  FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 177  FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 269  FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 80  FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 92  FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 96  FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 100  FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 116  FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 120  FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 136  FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 140  FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 144  FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 148  FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 152  FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 156  FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 168  FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 180  FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 184  FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 188  FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 192  FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 196  FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 200  FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 204  FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 208  FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 212  FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 228  FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 232  FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 256  FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 273  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 381  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 389  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 83  FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 75  FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 79  FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 250  FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 98  FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 118  FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 251  FatTreeTopologyPref.AS5.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 99  FatTreeTopologyPref.TOR1.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 119  FatTreeTopologyPref.TOR2.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 372  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 280  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 288  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 82  FatTreeTopologyPref.AS1.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 74  FatTreeTopologyPref.AS1.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 78  FatTreeTopologyPref.AS1.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 277  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 385  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 393  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 95  FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 87  FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 91  FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 262  FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 102  FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 122  FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 263  FatTreeTopologyPref.AS6.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 103  FatTreeTopologyPref.TOR1.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 123  FatTreeTopologyPref.TOR2.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 376  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 284  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 292  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 94  FatTreeTopologyPref.AS2.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 86  FatTreeTopologyPref.AS2.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 90  FatTreeTopologyPref.AS2.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 281  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 285  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 397  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 401  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 413  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 107  FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 111  FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 115  FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 138  FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 142  FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 154  FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 139  FatTreeTopologyPref.Server11.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 143  FatTreeTopologyPref.Server12.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 155  FatTreeTopologyPref.Server13.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 296  FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 300  FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 312  FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 106  FatTreeTopologyPref.TOR1.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 110  FatTreeTopologyPref.TOR1.ipcProcess[3].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 114  FatTreeTopologyPref.TOR1.ipcProcess[4].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 289  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 293  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 405  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 409  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 417  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 127  FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 135  FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 131  FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 146  FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 150  FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 158  FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 147  FatTreeTopologyPref.Server21.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 151  FatTreeTopologyPref.Server23.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 159  FatTreeTopologyPref.Server22.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 304  FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 308  FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 316  FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 126  FatTreeTopologyPref.TOR2.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 134  FatTreeTopologyPref.TOR2.ipcProcess[4].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 130  FatTreeTopologyPref.TOR2.ipcProcess[3].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 297  FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 301  FatTreeTopologyPref.Server12.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 305  FatTreeTopologyPref.Server21.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 309  FatTreeTopologyPref.Server23.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 313  FatTreeTopologyPref.Server13.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 317  FatTreeTopologyPref.Server22.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 321  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 453  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 461  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 171  FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 163  FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 167  FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 254  FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 210  FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 230  FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 255  FatTreeTopologyPref.AS5.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 211  FatTreeTopologyPref.TOR3.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 231  FatTreeTopologyPref.TOR4.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 420  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 352  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 360  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 170  FatTreeTopologyPref.AS3.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 162  FatTreeTopologyPref.AS3.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 166  FatTreeTopologyPref.AS3.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 325  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 457  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 465  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 183  FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 175  FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 179  FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 266  FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 214  FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 234  FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 267  FatTreeTopologyPref.AS6.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 215  FatTreeTopologyPref.TOR3.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 235  FatTreeTopologyPref.TOR4.ipcProcess[1].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 424  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 356  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 364  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 182  FatTreeTopologyPref.AS4.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 174  FatTreeTopologyPref.AS4.ipcProcess[0].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 178  FatTreeTopologyPref.AS4.ipcProcess[1].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 329  FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 187  FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 218  FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 219  FatTreeTopologyPref.TOR3.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 428  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 186  FatTreeTopologyPref.Server31.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 333  FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 191  FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 222  FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 223  FatTreeTopologyPref.TOR3.ipcProcess[3].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 432  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 190  FatTreeTopologyPref.Server32.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 337  FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 195  FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 226  FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 227  FatTreeTopologyPref.TOR3.ipcProcess[4].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 436  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 194  FatTreeTopologyPref.Server33.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 341  FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 199  FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 238  FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 239  FatTreeTopologyPref.TOR4.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 440  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 198  FatTreeTopologyPref.Server41.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 345  FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 203  FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 242  FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 243  FatTreeTopologyPref.TOR4.ipcProcess[3].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 444  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 202  FatTreeTopologyPref.Server42.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 349  FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 207  FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 246  FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 247  FatTreeTopologyPref.TOR4.ipcProcess[4].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 448  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 206  FatTreeTopologyPref.Server43.ipcProcess0.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 353  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 357  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 429  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 433  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p3.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 437  FatTreeTopologyPref.TOR3.relayIpc.relayAndMux.p4.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 361  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 365  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 441  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 445  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p3.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 449  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 369  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 373  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 421  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 259  FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 270  FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 271  FatTreeTopologyPref.AS6.ipcProcess[2].relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 468  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 258  FatTreeTopologyPref.AS5.ipcProcess[2].relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 377  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p0.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 425  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p1.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 469  FatTreeTopologyPref.AS6.relayIpc.relayAndMux.p2.outQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 272  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 380  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 388  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 276  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 384  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 392  FatTreeTopologyPref.AS2.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 396  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 400  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p3.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 412  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p4.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 404  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 408  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p3.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 416  FatTreeTopologyPref.TOR2.relayIpc.relayAndMux.p4.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 320  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 452  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 460  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 324  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 456  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p1.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 464  FatTreeTopologyPref.AS4.relayIpc.relayAndMux.p2.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 328  FatTreeTopologyPref.Server31.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 332  FatTreeTopologyPref.Server32.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 336  FatTreeTopologyPref.Server33.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 340  FatTreeTopologyPref.Server41.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 344  FatTreeTopologyPref.Server42.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 348  FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 368  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p0.inQ_M  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 21  FatTreeTopologyPref.Server11.ipcProcess1.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 51  FatTreeTopologyPref.Server43.ipcProcess1.flowAllocator.faiTable  ft-size:vector  ETV
+attr source  FT_FlowTableSize
+attr title  "FlowTable Size, vector"
+vector 299  FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 398  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 283  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 382  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 275  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 374  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 423  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 322  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 463  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 362  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 451  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 350  FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 351  FatTreeTopologyPref.Server43.ipcProcess1.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 450  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p4.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 363  FatTreeTopologyPref.TOR4.relayIpc.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 462  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p2.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 323  FatTreeTopologyPref.AS3.relayIpc.relayAndMux.p0.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 422  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p2.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 375  FatTreeTopologyPref.AS5.relayIpc.relayAndMux.p1.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 274  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 383  FatTreeTopologyPref.AS1.relayIpc.relayAndMux.p1.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 282  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 399  FatTreeTopologyPref.TOR1.relayIpc.relayAndMux.p2.outQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+vector 298  FatTreeTopologyPref.Server11.ipcProcess1.relayAndMux.p0.inQ_0  rmtqueue-size:vector  ETV
+attr source  RMTQueue_Length
+attr title  "RMTQueue Size, vector"
+0	228	0	1
+1	230	0	1
+2	1	0	1
+4	229	0	1
+5	231	0	1
+6	2	0	1
+8	3	0	1
+9	4	0	1
+10	232	0	1
+11	233	0	1
+12	236	0	1
+14	5	0	1
+15	6	0	1
+16	234	0	1
+17	237	0	1
+18	235	0	1
+20	7	0	1
+21	7958	130	1
+22	8	0	1
+24	9	0	1
+26	10	0	1
+28	11	0	1
+30	12	0	1
+32	246	0	1
+33	248	0	1
+34	13	0	1
+36	247	0	1
+37	249	0	1
+38	14	0	1
+40	15	0	1
+42	16	0	1
+44	17	0	1
+46	18	0	1
+48	19	0	1
+50	20	0	1
+51	8128	130	1
+52	21	0	1
+53	22	0	1
+54	240	0	1
+55	241	0	1
+56	242	0	1
+58	23	0	1
+59	24	0	1
+60	243	0	1
+61	244	0	1
+62	245	0	1
+64	226	0	1
+65	238	0	1
+66	25	0	1
+68	227	0	1
+69	239	0	1
+70	250	0	1
+72	153	0	0
+72	153	0	0
+73	303	0	0
+73	303	0	0
+74	607	1	0
+74	607	1	0
+74	1630	1	0
+74	1630	1	0
+74	2379	2	0
+74	2379	2	0
+74	3105	3	0
+74	3105	3	0
+74	3821	3	0
+74	3821	3	0
+74	4919	63	0
+74	4919	63	0
+74	5598	63	0
+74	5598	63	0
+74	6691	123	0
+74	6691	123	0
+74	7370	123	0
+74	7370	123	0
+74	7999	130	0
+74	7999	130	0
+74	8287	130	0
+74	8287	130	0
+74	8385	140	0
+74	8385	140	0
+74	8686	140	0
+74	8686	140	0
+74	8871	140	0
+74	8871	140	0
+74	8971	140	0
+74	8971	140	0
+74	9166	141	0
+74	9166	141	0
+74	9467	141	0
+74	9467	141	0
+74	9652	141	0
+74	9652	141	0
+74	9752	141	0
+74	9752	141	0
+74	9947	142	0
+74	9947	142	0
+74	10248	142	0
+74	10248	142	0
+74	10433	142	0
+74	10433	142	0
+74	10533	142	0
+74	10533	142	0
+74	10728	143	0
+74	10728	143	0
+74	11029	143	0
+74	11029	143	0
+74	11214	143	0
+74	11214	143	0
+74	11314	143	0
+74	11314	143	0
+74	11509	144	0
+74	11509	144	0
+74	11810	144	0
+74	11810	144	0
+74	11995	144	0
+74	11995	144	0
+74	12095	144	0
+74	12095	144	0
+74	12749	183	0
+74	12749	183	0
+74	13428	183	0
+74	13428	183	0
+74	14057	200	0
+74	14057	200	0
+74	14345	200	0
+74	14345	200	0
+74	14902	243	0
+74	14902	243	0
+74	15581	243	0
+74	15581	243	0
+75	555	1	0
+75	555	1	0
+75	1638	1	0
+75	1638	1	0
+75	2327	2	0
+75	2327	2	0
+75	3145	3	0
+75	3145	3	0
+75	3717	3	1
+75	3804	3	0
+75	4867	63	0
+75	4867	63	0
+75	5606	63	0
+75	5606	63	0
+75	6639	123	0
+75	6639	123	0
+75	7378	123	0
+75	7378	123	0
+75	8007	130	0
+75	8007	130	0
+75	8270	130	0
+75	8270	130	0
+75	8393	140	0
+75	8393	140	0
+75	8669	140	0
+75	8669	140	0
+75	8851	140	1
+75	8852	140	0
+75	8979	140	0
+75	8979	140	0
+75	9174	141	0
+75	9174	141	0
+75	9450	141	0
+75	9450	141	0
+75	9632	141	1
+75	9633	141	0
+75	9760	141	0
+75	9760	141	0
+75	9955	142	0
+75	9955	142	0
+75	10231	142	0
+75	10231	142	0
+75	10413	142	1
+75	10414	142	0
+75	10541	142	0
+75	10541	142	0
+75	10736	143	0
+75	10736	143	0
+75	11012	143	0
+75	11012	143	0
+75	11194	143	1
+75	11195	143	0
+75	11322	143	0
+75	11322	143	0
+75	11517	144	0
+75	11517	144	0
+75	11793	144	0
+75	11793	144	0
+75	11975	144	1
+75	11976	144	0
+75	12103	144	0
+75	12103	144	0
+75	12697	183	0
+75	12697	183	0
+75	13436	183	0
+75	13436	183	0
+75	14065	200	0
+75	14065	200	0
+75	14328	200	0
+75	14328	200	0
+75	14850	243	0
+75	14850	243	0
+75	15589	243	0
+75	15589	243	0
+76	155	0	0
+76	155	0	0
+77	305	0	0
+77	305	0	0
+78	609	1	0
+78	609	1	0
+78	1653	1	0
+78	1653	1	0
+78	2381	2	0
+78	2381	2	0
+78	3266	3	0
+78	3266	3	0
+78	3858	3	0
+78	3858	3	0
+78	4921	63	0
+78	4921	63	0
+78	5621	63	0
+78	5621	63	0
+78	6693	123	0
+78	6693	123	0
+78	7393	123	0
+78	7393	123	0
+78	12751	183	0
+78	12751	183	0
+78	13451	183	0
+78	13451	183	0
+78	14904	243	0
+78	14904	243	0
+78	15604	243	0
+78	15604	243	0
+79	556	1	0
+79	556	1	0
+79	1661	1	0
+79	1661	1	0
+79	2328	2	0
+79	2328	2	0
+79	3306	3	0
+79	3306	3	0
+79	3718	3	1
+79	3841	3	0
+79	4868	63	0
+79	4868	63	0
+79	5629	63	0
+79	5629	63	0
+79	6640	123	0
+79	6640	123	0
+79	7401	123	0
+79	7401	123	0
+79	12698	183	0
+79	12698	183	0
+79	13459	183	0
+79	13459	183	0
+79	14851	243	0
+79	14851	243	0
+79	15612	243	0
+79	15612	243	0
+80	376	0	0
+80	376	0	0
+81	76	0	0
+81	76	0	0
+82	605	1	0
+82	605	1	0
+82	1607	1	0
+82	1607	1	0
+82	2377	2	0
+82	2377	2	0
+82	2946	2	0
+82	2946	2	0
+82	3735	3	0
+82	3735	3	0
+82	4752	62	0
+82	4752	62	0
+82	4917	63	0
+82	4917	63	0
+82	6524	122	0
+82	6524	122	0
+82	6689	123	0
+82	6689	123	0
+82	8041	130	0
+82	8041	130	0
+82	8245	130	0
+82	8245	130	0
+82	8427	140	0
+82	8427	140	0
+82	8644	140	0
+82	8644	140	0
+82	8824	140	0
+82	8824	140	0
+82	9013	140	0
+82	9013	140	0
+82	9208	141	0
+82	9208	141	0
+82	9425	141	0
+82	9425	141	0
+82	9605	141	0
+82	9605	141	0
+82	9794	141	0
+82	9794	141	0
+82	9989	142	0
+82	9989	142	0
+82	10206	142	0
+82	10206	142	0
+82	10386	142	0
+82	10386	142	0
+82	10575	142	0
+82	10575	142	0
+82	10770	143	0
+82	10770	143	0
+82	10987	143	0
+82	10987	143	0
+82	11167	143	0
+82	11167	143	0
+82	11356	143	0
+82	11356	143	0
+82	11551	144	0
+82	11551	144	0
+82	11768	144	0
+82	11768	144	0
+82	11948	144	0
+82	11948	144	0
+82	12137	144	0
+82	12137	144	0
+82	12582	182	0
+82	12582	182	0
+82	12747	183	0
+82	12747	183	0
+82	14099	200	0
+82	14099	200	0
+82	14303	200	0
+82	14303	200	0
+82	14735	242	0
+82	14735	242	0
+82	14900	243	0
+82	14900	243	0
+83	554	1	0
+83	554	1	0
+83	1615	1	0
+83	1615	1	0
+83	2326	2	0
+83	2326	2	0
+83	2954	2	0
+83	2954	2	0
+83	3716	3	0
+83	3716	3	0
+83	4777	62	0
+83	4777	62	0
+83	4866	63	0
+83	4866	63	0
+83	6549	122	0
+83	6549	122	0
+83	6638	123	0
+83	6638	123	0
+83	8024	130	0
+83	8024	130	0
+83	8253	130	0
+83	8253	130	0
+83	8410	140	0
+83	8410	140	0
+83	8652	140	0
+83	8652	140	0
+83	8832	140	1
+83	8837	140	0
+83	8996	140	0
+83	8996	140	0
+83	9191	141	0
+83	9191	141	0
+83	9433	141	0
+83	9433	141	0
+83	9613	141	1
+83	9618	141	0
+83	9777	141	0
+83	9777	141	0
+83	9972	142	0
+83	9972	142	0
+83	10214	142	0
+83	10214	142	0
+83	10394	142	1
+83	10399	142	0
+83	10558	142	0
+83	10558	142	0
+83	10753	143	0
+83	10753	143	0
+83	10995	143	0
+83	10995	143	0
+83	11175	143	1
+83	11180	143	0
+83	11339	143	0
+83	11339	143	0
+83	11534	144	0
+83	11534	144	0
+83	11776	144	0
+83	11776	144	0
+83	11956	144	1
+83	11961	144	0
+83	12120	144	0
+83	12120	144	0
+83	12607	182	0
+83	12607	182	0
+83	12696	183	0
+83	12696	183	0
+83	14082	200	0
+83	14082	200	0
+83	14311	200	0
+83	14311	200	0
+83	14760	242	0
+83	14760	242	0
+83	14849	243	0
+83	14849	243	0
+84	154	0	0
+84	154	0	0
+85	304	0	0
+85	304	0	0
+86	704	1	0
+86	704	1	0
+86	1705	1	0
+86	1705	1	0
+86	2476	2	0
+86	2476	2	0
+86	3106	3	0
+86	3106	3	0
+86	4601	62	0
+86	4601	62	0
+86	4994	63	0
+86	4994	63	0
+86	6373	122	0
+86	6373	122	0
+86	6766	123	0
+86	6766	123	0
+86	12431	182	0
+86	12431	182	0
+86	12824	183	0
+86	12824	183	0
+86	14584	242	0
+86	14584	242	0
+86	14977	243	0
+86	14977	243	0
+87	652	1	0
+87	652	1	0
+87	1713	1	0
+87	1713	1	0
+87	2424	2	0
+87	2424	2	0
+87	3147	3	0
+87	3147	3	0
+87	4549	62	0
+87	4549	62	0
+87	5026	63	0
+87	5026	63	0
+87	6321	122	0
+87	6321	122	0
+87	6798	123	0
+87	6798	123	0
+87	12379	182	0
+87	12379	182	0
+87	12856	183	0
+87	12856	183	0
+87	14532	242	0
+87	14532	242	0
+87	15009	243	0
+87	15009	243	0
+88	156	0	0
+88	156	0	0
+89	306	0	0
+89	306	0	0
+90	706	1	0
+90	706	1	0
+90	1728	1	0
+90	1728	1	0
+90	2478	2	0
+90	2478	2	0
+90	3267	3	0
+90	3267	3	0
+90	4603	62	0
+90	4603	62	0
+90	5133	63	0
+90	5133	63	0
+90	6375	122	0
+90	6375	122	0
+90	6905	123	0
+90	6905	123	0
+90	12433	182	0
+90	12433	182	0
+90	12963	183	0
+90	12963	183	0
+90	14586	242	0
+90	14586	242	0
+90	15116	243	0
+90	15116	243	0
+91	653	1	0
+91	653	1	0
+91	1736	1	0
+91	1736	1	0
+91	2425	2	0
+91	2425	2	0
+91	3308	3	0
+91	3308	3	0
+91	4550	62	0
+91	4550	62	0
+91	5165	63	0
+91	5165	63	0
+91	6322	122	0
+91	6322	122	0
+91	6937	123	0
+91	6937	123	0
+91	12380	182	0
+91	12380	182	0
+91	12995	183	0
+91	12995	183	0
+91	14533	242	0
+91	14533	242	0
+91	15148	243	0
+91	15148	243	0
+92	377	0	0
+92	377	0	0
+93	77	0	0
+93	77	0	0
+94	702	1	0
+94	702	1	0
+94	1682	1	0
+94	1682	1	0
+94	2474	2	0
+94	2474	2	0
+94	4451	61	0
+94	4451	61	0
+94	4599	62	0
+94	4599	62	0
+94	6223	121	0
+94	6223	121	0
+94	6371	122	0
+94	6371	122	0
+94	12281	181	0
+94	12281	181	0
+94	12429	182	0
+94	12429	182	0
+94	14434	241	0
+94	14434	241	0
+94	14582	242	0
+94	14582	242	0
+95	651	1	0
+95	651	1	0
+95	1690	1	0
+95	1690	1	0
+95	2423	2	0
+95	2423	2	0
+95	4475	61	0
+95	4475	61	0
+95	4548	62	0
+95	4548	62	0
+95	6247	121	0
+95	6247	121	0
+95	6320	122	0
+95	6320	122	0
+95	12305	181	0
+95	12305	181	0
+95	12378	182	0
+95	12378	182	0
+95	14458	241	0
+95	14458	241	0
+95	14531	242	0
+95	14531	242	0
+96	378	0	0
+96	378	0	0
+97	78	0	0
+97	78	0	0
+98	564	1	0
+98	564	1	0
+98	1644	1	0
+98	1644	1	0
+98	2336	2	0
+98	2336	2	0
+98	3175	3	0
+98	3175	3	0
+98	3807	3	0
+98	3807	3	0
+98	4876	63	0
+98	4876	63	0
+98	5612	63	0
+98	5612	63	0
+98	6648	123	0
+98	6648	123	0
+98	7384	123	0
+98	7384	123	0
+98	8013	130	0
+98	8013	130	0
+98	8273	130	0
+98	8273	130	0
+98	8399	140	0
+98	8399	140	0
+98	8672	140	0
+98	8672	140	0
+98	8855	140	0
+98	8855	140	0
+98	8985	140	0
+98	8985	140	0
+98	9180	141	0
+98	9180	141	0
+98	9453	141	0
+98	9453	141	0
+98	9636	141	0
+98	9636	141	0
+98	9766	141	0
+98	9766	141	0
+98	9961	142	0
+98	9961	142	0
+98	10234	142	0
+98	10234	142	0
+98	10417	142	0
+98	10417	142	0
+98	10547	142	0
+98	10547	142	0
+98	10742	143	0
+98	10742	143	0
+98	11015	143	0
+98	11015	143	0
+98	11198	143	0
+98	11198	143	0
+98	11328	143	0
+98	11328	143	0
+98	11523	144	0
+98	11523	144	0
+98	11796	144	0
+98	11796	144	0
+98	11979	144	0
+98	11979	144	0
+98	12109	144	0
+98	12109	144	0
+98	12706	183	0
+98	12706	183	0
+98	13442	183	0
+98	13442	183	0
+98	14071	200	0
+98	14071	200	0
+98	14331	200	0
+98	14331	200	0
+98	14859	243	0
+98	14859	243	0
+98	15595	243	0
+98	15595	243	0
+99	589	1	0
+99	589	1	0
+99	766	1	1
+99	1627	1	0
+99	2361	2	0
+99	2361	2	0
+99	3090	3	0
+99	3090	3	0
+99	3815	3	0
+99	3815	3	0
+99	4901	63	0
+99	4901	63	0
+99	4981	63	1
+99	5595	63	0
+99	6673	123	0
+99	6673	123	0
+99	6753	123	1
+99	7367	123	0
+99	7996	130	0
+99	7996	130	0
+99	8281	130	0
+99	8281	130	0
+99	8382	140	0
+99	8382	140	0
+99	8680	140	0
+99	8680	140	0
+99	8863	140	1
+99	8868	140	0
+99	8968	140	0
+99	8968	140	0
+99	9163	141	0
+99	9163	141	0
+99	9461	141	0
+99	9461	141	0
+99	9644	141	1
+99	9649	141	0
+99	9749	141	0
+99	9749	141	0
+99	9944	142	0
+99	9944	142	0
+99	10242	142	0
+99	10242	142	0
+99	10425	142	1
+99	10430	142	0
+99	10530	142	0
+99	10530	142	0
+99	10725	143	0
+99	10725	143	0
+99	11023	143	0
+99	11023	143	0
+99	11206	143	1
+99	11211	143	0
+99	11311	143	0
+99	11311	143	0
+99	11506	144	0
+99	11506	144	0
+99	11804	144	0
+99	11804	144	0
+99	11987	144	1
+99	11992	144	0
+99	12092	144	0
+99	12092	144	0
+99	12731	183	0
+99	12731	183	0
+99	12811	183	1
+99	13425	183	0
+99	14054	200	0
+99	14054	200	0
+99	14339	200	0
+99	14339	200	0
+99	14884	243	0
+99	14884	243	0
+99	14964	243	1
+99	15578	243	0
+100	379	0	0
+100	379	0	0
+101	79	0	0
+101	79	0	0
+102	661	1	0
+102	661	1	0
+102	1719	1	0
+102	1719	1	0
+102	2433	2	0
+102	2433	2	0
+102	3177	3	0
+102	3177	3	0
+102	4558	62	0
+102	4558	62	0
+102	5050	63	0
+102	5050	63	0
+102	6330	122	0
+102	6330	122	0
+102	6822	123	0
+102	6822	123	0
+102	12388	182	0
+102	12388	182	0
+102	12880	183	0
+102	12880	183	0
+102	14541	242	0
+102	14541	242	0
+102	15033	243	0
+102	15033	243	0
+103	686	1	0
+103	686	1	0
+103	767	1	1
+103	1702	1	0
+103	2458	2	0
+103	2458	2	0
+103	3091	3	0
+103	3091	3	0
+103	4583	62	0
+103	4583	62	0
+103	4982	63	0
+103	4982	63	0
+103	6355	122	0
+103	6355	122	0
+103	6754	123	0
+103	6754	123	0
+103	12413	182	0
+103	12413	182	0
+103	12812	183	0
+103	12812	183	0
+103	14566	242	0
+103	14566	242	0
+103	14965	243	0
+103	14965	243	0
+104	157	0	0
+104	157	0	0
+105	307	0	0
+105	307	0	0
+106	819	1	0
+106	819	1	0
+106	1759	1	0
+106	1759	1	0
+106	3179	3	0
+106	3179	3	0
+106	3973	4	0
+106	3973	4	0
+106	5052	63	0
+106	5052	63	0
+106	5767	64	0
+106	5767	64	0
+106	6824	123	0
+106	6824	123	0
+106	7539	124	0
+106	7539	124	0
+106	7971	130	0
+106	7971	130	0
+106	8315	130	0
+106	8315	130	0
+106	8357	140	0
+106	8357	140	0
+106	8714	140	0
+106	8714	140	0
+106	8918	140	0
+106	8918	140	0
+106	8943	140	0
+106	8943	140	0
+106	9138	141	0
+106	9138	141	0
+106	9495	141	0
+106	9495	141	0
+106	9699	141	0
+106	9699	141	0
+106	9724	141	0
+106	9724	141	0
+106	9919	142	0
+106	9919	142	0
+106	10276	142	0
+106	10276	142	0
+106	10480	142	0
+106	10480	142	0
+106	10505	142	0
+106	10505	142	0
+106	10700	143	0
+106	10700	143	0
+106	11057	143	0
+106	11057	143	0
+106	11261	143	0
+106	11261	143	0
+106	11286	143	0
+106	11286	143	0
+106	11481	144	0
+106	11481	144	0
+106	11838	144	0
+106	11838	144	0
+106	12042	144	0
+106	12042	144	0
+106	12067	144	0
+106	12067	144	0
+106	12882	183	0
+106	12882	183	0
+106	13597	184	0
+106	13597	184	0
+106	14029	200	0
+106	14029	200	0
+106	14373	200	0
+106	14373	200	0
+106	15035	243	0
+106	15035	243	0
+106	15750	244	0
+106	15750	244	0
+107	768	1	0
+107	768	1	0
+107	1767	1	0
+107	1767	1	0
+107	3092	3	0
+107	3092	3	0
+107	3981	4	0
+107	3981	4	0
+107	4983	63	0
+107	4983	63	0
+107	5775	64	0
+107	5775	64	0
+107	6755	123	0
+107	6755	123	0
+107	7547	124	0
+107	7547	124	0
+107	7979	130	0
+107	7979	130	0
+107	8298	130	0
+107	8298	130	0
+107	8365	140	0
+107	8365	140	0
+107	8697	140	0
+107	8697	140	0
+107	8882	140	1
+107	8883	140	0
+107	8951	140	0
+107	8951	140	0
+107	9146	141	0
+107	9146	141	0
+107	9478	141	0
+107	9478	141	0
+107	9663	141	1
+107	9664	141	0
+107	9732	141	0
+107	9732	141	0
+107	9927	142	0
+107	9927	142	0
+107	10259	142	0
+107	10259	142	0
+107	10444	142	1
+107	10445	142	0
+107	10513	142	0
+107	10513	142	0
+107	10708	143	0
+107	10708	143	0
+107	11040	143	0
+107	11040	143	0
+107	11225	143	1
+107	11226	143	0
+107	11294	143	0
+107	11294	143	0
+107	11489	144	0
+107	11489	144	0
+107	11821	144	0
+107	11821	144	0
+107	12006	144	1
+107	12007	144	0
+107	12075	144	0
+107	12075	144	0
+107	12813	183	0
+107	12813	183	0
+107	13605	184	0
+107	13605	184	0
+107	14037	200	0
+107	14037	200	0
+107	14356	200	0
+107	14356	200	0
+107	14966	243	0
+107	14966	243	0
+107	15758	244	0
+107	15758	244	0
+108	158	0	0
+108	158	0	0
+109	308	0	0
+109	308	0	0
+110	821	1	0
+110	821	1	0
+110	1782	1	0
+110	1782	1	0
+110	3181	3	0
+110	3181	3	0
+110	4006	4	0
+110	4006	4	0
+110	5054	63	0
+110	5054	63	0
+110	5800	64	0
+110	5800	64	0
+110	6826	123	0
+110	6826	123	0
+110	7572	124	0
+110	7572	124	0
+110	12884	183	0
+110	12884	183	0
+110	13630	184	0
+110	13630	184	0
+110	15037	243	0
+110	15037	243	0
+110	15783	244	0
+110	15783	244	0
+111	769	1	0
+111	769	1	0
+111	1790	1	0
+111	1790	1	0
+111	3093	3	0
+111	3093	3	0
+111	4014	4	0
+111	4014	4	0
+111	4984	63	0
+111	4984	63	0
+111	5808	64	0
+111	5808	64	0
+111	6756	123	0
+111	6756	123	0
+111	7580	124	0
+111	7580	124	0
+111	12814	183	0
+111	12814	183	0
+111	13638	184	0
+111	13638	184	0
+111	14967	243	0
+111	14967	243	0
+111	15791	244	0
+111	15791	244	0
+112	161	0	0
+112	161	0	0
+113	311	0	0
+113	311	0	0
+114	823	1	0
+114	823	1	0
+114	1805	1	0
+114	1805	1	0
+114	3183	3	0
+114	3183	3	0
+114	4039	4	0
+114	4039	4	0
+114	5056	63	0
+114	5056	63	0
+114	5899	64	0
+114	5899	64	0
+114	6828	123	0
+114	6828	123	0
+114	7671	124	0
+114	7671	124	0
+114	12886	183	0
+114	12886	183	0
+114	13729	184	0
+114	13729	184	0
+114	15039	243	0
+114	15039	243	0
+114	15882	244	0
+114	15882	244	0
+115	770	1	0
+115	770	1	0
+115	1813	1	0
+115	1813	1	0
+115	3094	3	0
+115	3094	3	0
+115	4047	4	0
+115	4047	4	0
+115	4985	63	0
+115	4985	63	0
+115	5907	64	0
+115	5907	64	0
+115	6757	123	0
+115	6757	123	0
+115	7679	124	0
+115	7679	124	0
+115	12815	183	0
+115	12815	183	0
+115	13737	184	0
+115	13737	184	0
+115	14968	243	0
+115	14968	243	0
+115	15890	244	0
+115	15890	244	0
+116	380	0	0
+116	380	0	0
+117	80	0	0
+117	80	0	0
+118	565	1	0
+118	565	1	0
+118	1667	1	0
+118	1667	1	0
+118	2337	2	0
+118	2337	2	0
+118	3336	3	0
+118	3336	3	0
+118	3844	3	0
+118	3844	3	0
+118	4877	63	0
+118	4877	63	0
+118	5635	63	0
+118	5635	63	0
+118	6649	123	0
+118	6649	123	0
+118	7407	123	0
+118	7407	123	0
+118	12707	183	0
+118	12707	183	0
+118	13465	183	0
+118	13465	183	0
+118	14860	243	0
+118	14860	243	0
+118	15618	243	0
+118	15618	243	0
+119	591	1	0
+119	591	1	0
+119	883	1	1
+119	1650	1	0
+119	2363	2	0
+119	2363	2	0
+119	3251	3	0
+119	3251	3	0
+119	3852	3	0
+119	3852	3	0
+119	4903	63	0
+119	4903	63	0
+119	5120	63	1
+119	5618	63	0
+119	6675	123	0
+119	6675	123	0
+119	6892	123	1
+119	7390	123	0
+119	12733	183	0
+119	12733	183	0
+119	12950	183	1
+119	13448	183	0
+119	14886	243	0
+119	14886	243	0
+119	15103	243	1
+119	15601	243	0
+120	381	0	0
+120	381	0	0
+121	81	0	0
+121	81	0	0
+122	662	1	0
+122	662	1	0
+122	1742	1	0
+122	1742	1	0
+122	2434	2	0
+122	2434	2	0
+122	3338	3	0
+122	3338	3	0
+122	4559	62	0
+122	4559	62	0
+122	5189	63	0
+122	5189	63	0
+122	6331	122	0
+122	6331	122	0
+122	6961	123	0
+122	6961	123	0
+122	12389	182	0
+122	12389	182	0
+122	13019	183	0
+122	13019	183	0
+122	14542	242	0
+122	14542	242	0
+122	15172	243	0
+122	15172	243	0
+123	688	1	0
+123	688	1	0
+123	884	1	1
+123	1725	1	0
+123	2460	2	0
+123	2460	2	0
+123	3252	3	0
+123	3252	3	0
+123	4585	62	0
+123	4585	62	0
+123	5121	63	0
+123	5121	63	0
+123	6357	122	0
+123	6357	122	0
+123	6893	123	0
+123	6893	123	0
+123	12415	182	0
+123	12415	182	0
+123	12951	183	0
+123	12951	183	0
+123	14568	242	0
+123	14568	242	0
+123	15104	243	0
+123	15104	243	0
+124	159	0	0
+124	159	0	0
+125	309	0	0
+125	309	0	0
+126	936	1	0
+126	936	1	0
+126	1836	1	0
+126	1836	1	0
+126	3340	3	0
+126	3340	3	0
+126	4072	4	0
+126	4072	4	0
+126	5191	63	0
+126	5191	63	0
+126	5833	64	0
+126	5833	64	0
+126	6963	123	0
+126	6963	123	0
+126	7605	124	0
+126	7605	124	0
+126	13021	183	0
+126	13021	183	0
+126	13663	184	0
+126	13663	184	0
+126	15174	243	0
+126	15174	243	0
+126	15816	244	0
+126	15816	244	0
+127	885	1	0
+127	885	1	0
+127	1844	1	0
+127	1844	1	0
+127	3253	3	0
+127	3253	3	0
+127	4080	4	0
+127	4080	4	0
+127	5122	63	0
+127	5122	63	0
+127	5841	64	0
+127	5841	64	0
+127	6894	123	0
+127	6894	123	0
+127	7613	124	0
+127	7613	124	0
+127	12952	183	0
+127	12952	183	0
+127	13671	184	0
+127	13671	184	0
+127	15105	243	0
+127	15105	243	0
+127	15824	244	0
+127	15824	244	0
+128	162	0	0
+128	162	0	0
+129	312	0	0
+129	312	0	0
+130	940	1	0
+130	940	1	0
+130	1882	1	0
+130	1882	1	0
+130	3344	3	0
+130	3344	3	0
+130	4138	4	0
+130	4138	4	0
+130	5195	63	0
+130	5195	63	0
+130	5932	64	0
+130	5932	64	0
+130	6967	123	0
+130	6967	123	0
+130	7704	124	0
+130	7704	124	0
+130	13025	183	0
+130	13025	183	0
+130	13762	184	0
+130	13762	184	0
+130	15178	243	0
+130	15178	243	0
+130	15915	244	0
+130	15915	244	0
+131	887	1	0
+131	887	1	0
+131	1890	1	0
+131	1890	1	0
+131	3255	3	0
+131	3255	3	0
+131	4146	4	0
+131	4146	4	0
+131	5124	63	0
+131	5124	63	0
+131	5940	64	0
+131	5940	64	0
+131	6896	123	0
+131	6896	123	0
+131	7712	124	0
+131	7712	124	0
+131	12954	183	0
+131	12954	183	0
+131	13770	184	0
+131	13770	184	0
+131	15107	243	0
+131	15107	243	0
+131	15923	244	0
+131	15923	244	0
+132	160	0	0
+132	160	0	0
+133	310	0	0
+133	310	0	0
+134	938	1	0
+134	938	1	0
+134	1859	1	0
+134	1859	1	0
+134	3342	3	0
+134	3342	3	0
+134	4105	4	0
+134	4105	4	0
+134	5193	63	0
+134	5193	63	0
+134	5866	64	0
+134	5866	64	0
+134	6965	123	0
+134	6965	123	0
+134	7638	124	0
+134	7638	124	0
+134	13023	183	0
+134	13023	183	0
+134	13696	184	0
+134	13696	184	0
+134	15176	243	0
+134	15176	243	0
+134	15849	244	0
+134	15849	244	0
+135	886	1	0
+135	886	1	0
+135	1867	1	0
+135	1867	1	0
+135	3254	3	0
+135	3254	3	0
+135	4113	4	0
+135	4113	4	0
+135	5123	63	0
+135	5123	63	0
+135	5874	64	0
+135	5874	64	0
+135	6895	123	0
+135	6895	123	0
+135	7646	124	0
+135	7646	124	0
+135	12953	183	0
+135	12953	183	0
+135	13704	184	0
+135	13704	184	0
+135	15106	243	0
+135	15106	243	0
+135	15857	244	0
+135	15857	244	0
+136	382	0	0
+136	382	0	0
+137	82	0	0
+137	82	0	0
+138	777	1	0
+138	777	1	0
+138	1773	1	0
+138	1773	1	0
+138	3107	3	0
+138	3107	3	0
+138	3987	4	0
+138	3987	4	0
+138	4995	63	0
+138	4995	63	0
+138	5781	64	0
+138	5781	64	0
+138	6767	123	0
+138	6767	123	0
+138	7553	124	0
+138	7553	124	0
+138	7985	130	0
+138	7985	130	0
+138	8301	130	0
+138	8301	130	0
+138	8371	140	0
+138	8371	140	0
+138	8700	140	0
+138	8700	140	0
+138	8886	140	0
+138	8886	140	0
+138	8957	140	0
+138	8957	140	0
+138	9152	141	0
+138	9152	141	0
+138	9481	141	0
+138	9481	141	0
+138	9667	141	0
+138	9667	141	0
+138	9738	141	0
+138	9738	141	0
+138	9933	142	0
+138	9933	142	0
+138	10262	142	0
+138	10262	142	0
+138	10448	142	0
+138	10448	142	0
+138	10519	142	0
+138	10519	142	0
+138	10714	143	0
+138	10714	143	0
+138	11043	143	0
+138	11043	143	0
+138	11229	143	0
+138	11229	143	0
+138	11300	143	0
+138	11300	143	0
+138	11495	144	0
+138	11495	144	0
+138	11824	144	0
+138	11824	144	0
+138	12010	144	0
+138	12010	144	0
+138	12081	144	0
+138	12081	144	0
+138	12825	183	0
+138	12825	183	0
+138	13611	184	0
+138	13611	184	0
+138	14043	200	0
+138	14043	200	0
+138	14359	200	0
+138	14359	200	0
+138	14978	243	0
+138	14978	243	0
+138	15764	244	0
+138	15764	244	0
+139	801	1	0
+139	801	1	0
+139	964	1	1
+139	1756	1	0
+139	3149	3	0
+139	3149	3	0
+139	3970	4	0
+139	3970	4	0
+139	5028	63	0
+139	5028	63	0
+139	5764	64	0
+139	5764	64	0
+139	6800	123	0
+139	6800	123	0
+139	7536	124	0
+139	7536	124	0
+139	7968	130	0
+139	7968	130	0
+139	8309	130	0
+139	8309	130	0
+139	8354	140	0
+139	8354	140	0
+139	8708	140	0
+139	8708	140	0
+139	8894	140	1
+139	8914	140	2
+139	8915	140	1
+139	8940	140	0
+139	9135	141	0
+139	9135	141	0
+139	9489	141	0
+139	9489	141	0
+139	9675	141	1
+139	9695	141	2
+139	9696	141	1
+139	9721	141	0
+139	9916	142	0
+139	9916	142	0
+139	10270	142	0
+139	10270	142	0
+139	10456	142	1
+139	10476	142	2
+139	10477	142	1
+139	10502	142	0
+139	10697	143	0
+139	10697	143	0
+139	11051	143	0
+139	11051	143	0
+139	11237	143	1
+139	11257	143	2
+139	11258	143	1
+139	11283	143	0
+139	11478	144	0
+139	11478	144	0
+139	11832	144	0
+139	11832	144	0
+139	12018	144	1
+139	12038	144	2
+139	12039	144	1
+139	12064	144	0
+139	12858	183	0
+139	12858	183	0
+139	13594	184	0
+139	13594	184	0
+139	14026	200	0
+139	14026	200	0
+139	14367	200	0
+139	14367	200	0
+139	15011	243	0
+139	15011	243	0
+139	15747	244	0
+139	15747	244	0
+140	383	0	0
+140	383	0	0
+141	83	0	0
+141	83	0	0
+142	778	1	0
+142	778	1	0
+142	1796	1	0
+142	1796	1	0
+142	3108	3	0
+142	3108	3	0
+142	4020	4	0
+142	4020	4	0
+142	4996	63	0
+142	4996	63	0
+142	5814	64	0
+142	5814	64	0
+142	6768	123	0
+142	6768	123	0
+142	7586	124	0
+142	7586	124	0
+142	12826	183	0
+142	12826	183	0
+142	13644	184	0
+142	13644	184	0
+142	14979	243	0
+142	14979	243	0
+142	15797	244	0
+142	15797	244	0
+143	803	1	0
+143	803	1	0
+143	975	1	1
+143	1779	1	0
+143	3151	3	0
+143	3151	3	0
+143	4003	4	0
+143	4003	4	0
+143	5030	63	0
+143	5030	63	0
+143	5797	64	0
+143	5797	64	0
+143	6802	123	0
+143	6802	123	0
+143	7569	124	0
+143	7569	124	0
+143	12860	183	0
+143	12860	183	0
+143	13627	184	0
+143	13627	184	0
+143	15013	243	0
+143	15013	243	0
+143	15780	244	0
+143	15780	244	0
+144	384	0	0
+144	384	0	0
+145	84	0	0
+145	84	0	0
+146	894	1	0
+146	894	1	0
+146	1850	1	0
+146	1850	1	0
+146	3268	3	0
+146	3268	3	0
+146	4086	4	0
+146	4086	4	0
+146	5134	63	0
+146	5134	63	0
+146	5847	64	0
+146	5847	64	0
+146	6906	123	0
+146	6906	123	0
+146	7619	124	0
+146	7619	124	0
+146	12964	183	0
+146	12964	183	0
+146	13677	184	0
+146	13677	184	0
+146	15117	243	0
+146	15117	243	0
+146	15830	244	0
+146	15830	244	0
+147	918	1	0
+147	918	1	0
+147	986	1	1
+147	1833	1	0
+147	3310	3	0
+147	3310	3	0
+147	4069	4	0
+147	4069	4	0
+147	5167	63	0
+147	5167	63	0
+147	5830	64	0
+147	5830	64	0
+147	6939	123	0
+147	6939	123	0
+147	7602	124	0
+147	7602	124	0
+147	12997	183	0
+147	12997	183	0
+147	13660	184	0
+147	13660	184	0
+147	15150	243	0
+147	15150	243	0
+147	15813	244	0
+147	15813	244	0
+148	385	0	0
+148	385	0	0
+149	85	0	0
+149	85	0	0
+150	895	1	0
+150	895	1	0
+150	1873	1	0
+150	1873	1	0
+150	3269	3	0
+150	3269	3	0
+150	4119	4	0
+150	4119	4	0
+150	5135	63	0
+150	5135	63	0
+150	5880	64	0
+150	5880	64	0
+150	6907	123	0
+150	6907	123	0
+150	7652	124	0
+150	7652	124	0
+150	12965	183	0
+150	12965	183	0
+150	13710	184	0
+150	13710	184	0
+150	15118	243	0
+150	15118	243	0
+150	15863	244	0
+150	15863	244	0
+151	920	1	0
+151	920	1	0
+151	997	1	1
+151	1856	1	0
+151	3312	3	0
+151	3312	3	0
+151	4102	4	0
+151	4102	4	0
+151	5169	63	0
+151	5169	63	0
+151	5863	64	0
+151	5863	64	0
+151	6941	123	0
+151	6941	123	0
+151	7635	124	0
+151	7635	124	0
+151	12999	183	0
+151	12999	183	0
+151	13693	184	0
+151	13693	184	0
+151	15152	243	0
+151	15152	243	0
+151	15846	244	0
+151	15846	244	0
+152	386	0	0
+152	386	0	0
+153	86	0	0
+153	86	0	0
+154	779	1	0
+154	779	1	0
+154	1819	1	0
+154	1819	1	0
+154	3109	3	0
+154	3109	3	0
+154	4053	4	0
+154	4053	4	0
+154	4997	63	0
+154	4997	63	0
+154	5913	64	0
+154	5913	64	0
+154	6769	123	0
+154	6769	123	0
+154	7685	124	0
+154	7685	124	0
+154	12827	183	0
+154	12827	183	0
+154	13743	184	0
+154	13743	184	0
+154	14980	243	0
+154	14980	243	0
+154	15896	244	0
+154	15896	244	0
+155	805	1	0
+155	805	1	0
+155	1008	1	1
+155	1802	1	0
+155	3153	3	0
+155	3153	3	0
+155	4036	4	0
+155	4036	4	0
+155	5032	63	0
+155	5032	63	0
+155	5896	64	0
+155	5896	64	0
+155	6804	123	0
+155	6804	123	0
+155	7668	124	0
+155	7668	124	0
+155	12862	183	0
+155	12862	183	0
+155	13726	184	0
+155	13726	184	0
+155	15015	243	0
+155	15015	243	0
+155	15879	244	0
+155	15879	244	0
+156	387	0	0
+156	387	0	0
+157	87	0	0
+157	87	0	0
+158	896	1	0
+158	896	1	0
+158	1896	1	0
+158	1896	1	0
+158	3270	3	0
+158	3270	3	0
+158	4152	4	0
+158	4152	4	0
+158	5136	63	0
+158	5136	63	0
+158	5946	64	0
+158	5946	64	0
+158	6908	123	0
+158	6908	123	0
+158	7718	124	0
+158	7718	124	0
+158	12966	183	0
+158	12966	183	0
+158	13776	184	0
+158	13776	184	0
+158	15119	243	0
+158	15119	243	0
+158	15929	244	0
+158	15929	244	0
+159	922	1	0
+159	922	1	0
+159	1019	1	1
+159	1879	1	0
+159	3314	3	0
+159	3314	3	0
+159	4135	4	0
+159	4135	4	0
+159	5171	63	0
+159	5171	63	0
+159	5929	64	0
+159	5929	64	0
+159	6943	123	0
+159	6943	123	0
+159	7701	124	0
+159	7701	124	0
+159	13001	183	0
+159	13001	183	0
+159	13759	184	0
+159	13759	184	0
+159	15154	243	0
+159	15154	243	0
+159	15912	244	0
+159	15912	244	0
+160	171	0	0
+160	171	0	0
+161	321	0	0
+161	321	0	0
+162	1101	1	0
+162	1101	1	0
+162	1940	1	0
+162	1940	1	0
+162	2573	2	0
+162	2573	2	0
+162	3427	3	0
+162	3427	3	0
+162	3895	3	0
+162	3895	3	0
+162	5294	63	0
+162	5294	63	0
+162	5677	63	0
+162	5677	63	0
+162	7066	123	0
+162	7066	123	0
+162	7449	123	0
+162	7449	123	0
+162	13124	183	0
+162	13124	183	0
+162	13507	183	0
+162	13507	183	0
+162	15277	243	0
+162	15277	243	0
+162	15660	243	0
+162	15660	243	0
+163	1049	1	0
+163	1049	1	0
+163	1948	1	0
+163	1948	1	0
+163	2521	2	0
+163	2521	2	0
+163	3467	3	0
+163	3467	3	0
+163	3770	3	1
+163	3878	3	0
+163	5242	63	0
+163	5242	63	0
+163	5685	63	0
+163	5685	63	0
+163	7014	123	0
+163	7014	123	0
+163	7457	123	0
+163	7457	123	0
+163	13072	183	0
+163	13072	183	0
+163	13515	183	0
+163	13515	183	0
+163	15225	243	0
+163	15225	243	0
+163	15668	243	0
+163	15668	243	0
+164	173	0	0
+164	173	0	0
+165	323	0	0
+165	323	0	0
+166	1103	1	0
+166	1103	1	0
+166	1963	1	0
+166	1963	1	0
+166	2575	2	0
+166	2575	2	0
+166	3588	3	0
+166	3588	3	0
+166	3932	3	0
+166	3932	3	0
+166	5296	63	0
+166	5296	63	0
+166	5700	63	0
+166	5700	63	0
+166	7068	123	0
+166	7068	123	0
+166	7472	123	0
+166	7472	123	0
+166	8097	130	0
+166	8097	130	0
+166	8189	130	0
+166	8189	130	0
+166	8483	140	0
+166	8483	140	0
+166	8588	140	0
+166	8588	140	0
+166	8762	140	0
+166	8762	140	0
+166	9069	140	0
+166	9069	140	0
+166	9264	141	0
+166	9264	141	0
+166	9369	141	0
+166	9369	141	0
+166	9543	141	0
+166	9543	141	0
+166	9850	141	0
+166	9850	141	0
+166	10045	142	0
+166	10045	142	0
+166	10150	142	0
+166	10150	142	0
+166	10324	142	0
+166	10324	142	0
+166	10631	142	0
+166	10631	142	0
+166	10826	143	0
+166	10826	143	0
+166	10931	143	0
+166	10931	143	0
+166	11105	143	0
+166	11105	143	0
+166	11412	143	0
+166	11412	143	0
+166	11607	144	0
+166	11607	144	0
+166	11712	144	0
+166	11712	144	0
+166	11886	144	0
+166	11886	144	0
+166	12193	144	0
+166	12193	144	0
+166	13126	183	0
+166	13126	183	0
+166	13530	183	0
+166	13530	183	0
+166	14155	200	0
+166	14155	200	0
+166	14247	200	0
+166	14247	200	0
+166	15279	243	0
+166	15279	243	0
+166	15683	243	0
+166	15683	243	0
+167	1050	1	0
+167	1050	1	0
+167	1971	1	0
+167	1971	1	0
+167	2522	2	0
+167	2522	2	0
+167	3628	3	0
+167	3628	3	0
+167	3771	3	1
+167	3915	3	0
+167	5243	63	0
+167	5243	63	0
+167	5708	63	0
+167	5708	63	0
+167	7015	123	0
+167	7015	123	0
+167	7480	123	0
+167	7480	123	0
+167	8080	130	0
+167	8080	130	0
+167	8197	130	0
+167	8197	130	0
+167	8466	140	0
+167	8466	140	0
+167	8596	140	0
+167	8596	140	0
+167	8770	140	1
+167	8775	140	0
+167	9052	140	0
+167	9052	140	0
+167	9247	141	0
+167	9247	141	0
+167	9377	141	0
+167	9377	141	0
+167	9551	141	1
+167	9556	141	0
+167	9833	141	0
+167	9833	141	0
+167	10028	142	0
+167	10028	142	0
+167	10158	142	0
+167	10158	142	0
+167	10332	142	1
+167	10337	142	0
+167	10614	142	0
+167	10614	142	0
+167	10809	143	0
+167	10809	143	0
+167	10939	143	0
+167	10939	143	0
+167	11113	143	1
+167	11118	143	0
+167	11395	143	0
+167	11395	143	0
+167	11590	144	0
+167	11590	144	0
+167	11720	144	0
+167	11720	144	0
+167	11894	144	1
+167	11899	144	0
+167	12176	144	0
+167	12176	144	0
+167	13073	183	0
+167	13073	183	0
+167	13538	183	0
+167	13538	183	0
+167	14138	200	0
+167	14138	200	0
+167	14255	200	0
+167	14255	200	0
+167	15226	243	0
+167	15226	243	0
+167	15691	243	0
+167	15691	243	0
+168	388	0	0
+168	388	0	0
+169	88	0	0
+169	88	0	0
+170	1099	1	0
+170	1099	1	0
+170	1917	1	0
+170	1917	1	0
+170	2571	2	0
+170	2571	2	0
+170	2986	2	0
+170	2986	2	0
+170	3788	3	0
+170	3788	3	0
+170	4753	62	0
+170	4753	62	0
+170	5292	63	0
+170	5292	63	0
+170	6525	122	0
+170	6525	122	0
+170	7064	123	0
+170	7064	123	0
+170	8055	130	0
+170	8055	130	0
+170	8231	130	0
+170	8231	130	0
+170	8441	140	0
+170	8441	140	0
+170	8630	140	0
+170	8630	140	0
+170	8809	140	0
+170	8809	140	0
+170	9027	140	0
+170	9027	140	0
+170	9222	141	0
+170	9222	141	0
+170	9411	141	0
+170	9411	141	0
+170	9590	141	0
+170	9590	141	0
+170	9808	141	0
+170	9808	141	0
+170	10003	142	0
+170	10003	142	0
+170	10192	142	0
+170	10192	142	0
+170	10371	142	0
+170	10371	142	0
+170	10589	142	0
+170	10589	142	0
+170	10784	143	0
+170	10784	143	0
+170	10973	143	0
+170	10973	143	0
+170	11152	143	0
+170	11152	143	0
+170	11370	143	0
+170	11370	143	0
+170	11565	144	0
+170	11565	144	0
+170	11754	144	0
+170	11754	144	0
+170	11933	144	0
+170	11933	144	0
+170	12151	144	0
+170	12151	144	0
+170	12583	182	0
+170	12583	182	0
+170	13122	183	0
+170	13122	183	0
+170	14113	200	0
+170	14113	200	0
+170	14289	200	0
+170	14289	200	0
+170	14736	242	0
+170	14736	242	0
+170	15275	243	0
+170	15275	243	0
+171	1048	1	0
+171	1048	1	0
+171	1925	1	0
+171	1925	1	0
+171	2520	2	0
+171	2520	2	0
+171	2994	2	0
+171	2994	2	0
+171	3769	3	0
+171	3769	3	0
+171	4779	62	0
+171	4779	62	0
+171	5241	63	0
+171	5241	63	0
+171	6551	122	0
+171	6551	122	0
+171	7013	123	0
+171	7013	123	0
+171	8063	130	0
+171	8063	130	0
+171	8214	130	0
+171	8214	130	0
+171	8449	140	0
+171	8449	140	0
+171	8613	140	0
+171	8613	140	0
+171	8789	140	1
+171	8790	140	0
+171	9035	140	0
+171	9035	140	0
+171	9230	141	0
+171	9230	141	0
+171	9394	141	0
+171	9394	141	0
+171	9570	141	1
+171	9571	141	0
+171	9816	141	0
+171	9816	141	0
+171	10011	142	0
+171	10011	142	0
+171	10175	142	0
+171	10175	142	0
+171	10351	142	1
+171	10352	142	0
+171	10597	142	0
+171	10597	142	0
+171	10792	143	0
+171	10792	143	0
+171	10956	143	0
+171	10956	143	0
+171	11132	143	1
+171	11133	143	0
+171	11378	143	0
+171	11378	143	0
+171	11573	144	0
+171	11573	144	0
+171	11737	144	0
+171	11737	144	0
+171	11913	144	1
+171	11914	144	0
+171	12159	144	0
+171	12159	144	0
+171	12609	182	0
+171	12609	182	0
+171	13071	183	0
+171	13071	183	0
+171	14121	200	0
+171	14121	200	0
+171	14272	200	0
+171	14272	200	0
+171	14762	242	0
+171	14762	242	0
+171	15224	243	0
+171	15224	243	0
+172	172	0	0
+172	172	0	0
+173	322	0	0
+173	322	0	0
+174	1198	1	0
+174	1198	1	0
+174	2015	1	0
+174	2015	1	0
+174	2670	2	0
+174	2670	2	0
+174	3428	3	0
+174	3428	3	0
+174	4698	62	0
+174	4698	62	0
+174	5369	63	0
+174	5369	63	0
+174	6470	122	0
+174	6470	122	0
+174	7141	123	0
+174	7141	123	0
+174	12528	182	0
+174	12528	182	0
+174	13199	183	0
+174	13199	183	0
+174	14681	242	0
+174	14681	242	0
+174	15352	243	0
+174	15352	243	0
+175	1146	1	0
+175	1146	1	0
+175	2023	1	0
+175	2023	1	0
+175	2618	2	0
+175	2618	2	0
+175	3469	3	0
+175	3469	3	0
+175	4646	62	0
+175	4646	62	0
+175	5401	63	0
+175	5401	63	0
+175	6418	122	0
+175	6418	122	0
+175	7173	123	0
+175	7173	123	0
+175	12476	182	0
+175	12476	182	0
+175	13231	183	0
+175	13231	183	0
+175	14629	242	0
+175	14629	242	0
+175	15384	243	0
+175	15384	243	0
+176	174	0	0
+176	174	0	0
+177	324	0	0
+177	324	0	0
+178	1200	1	0
+178	1200	1	0
+178	2038	1	0
+178	2038	1	0
+178	2672	2	0
+178	2672	2	0
+178	3589	3	0
+178	3589	3	0
+178	4700	62	0
+178	4700	62	0
+178	5508	63	0
+178	5508	63	0
+178	6472	122	0
+178	6472	122	0
+178	7280	123	0
+178	7280	123	0
+178	12530	182	0
+178	12530	182	0
+178	13338	183	0
+178	13338	183	0
+178	14683	242	0
+178	14683	242	0
+178	15491	243	0
+178	15491	243	0
+179	1147	1	0
+179	1147	1	0
+179	2046	1	0
+179	2046	1	0
+179	2619	2	0
+179	2619	2	0
+179	3630	3	0
+179	3630	3	0
+179	4647	62	0
+179	4647	62	0
+179	5540	63	0
+179	5540	63	0
+179	6419	122	0
+179	6419	122	0
+179	7312	123	0
+179	7312	123	0
+179	12477	182	0
+179	12477	182	0
+179	13370	183	0
+179	13370	183	0
+179	14630	242	0
+179	14630	242	0
+179	15523	243	0
+179	15523	243	0
+180	389	0	0
+180	389	0	0
+181	89	0	0
+181	89	0	0
+182	1196	1	0
+182	1196	1	0
+182	1992	1	0
+182	1992	1	0
+182	2668	2	0
+182	2668	2	0
+182	4452	61	0
+182	4452	61	0
+182	4696	62	0
+182	4696	62	0
+182	6224	121	0
+182	6224	121	0
+182	6468	122	0
+182	6468	122	0
+182	12282	181	0
+182	12282	181	0
+182	12526	182	0
+182	12526	182	0
+182	14435	241	0
+182	14435	241	0
+182	14679	242	0
+182	14679	242	0
+183	1145	1	0
+183	1145	1	0
+183	2000	1	0
+183	2000	1	0
+183	2617	2	0
+183	2617	2	0
+183	4477	61	0
+183	4477	61	0
+183	4645	62	0
+183	4645	62	0
+183	6249	121	0
+183	6249	121	0
+183	6417	122	0
+183	6417	122	0
+183	12307	181	0
+183	12307	181	0
+183	12475	182	0
+183	12475	182	0
+183	14460	241	0
+183	14460	241	0
+183	14628	242	0
+183	14628	242	0
+184	390	0	0
+184	390	0	0
+185	90	0	0
+185	90	0	0
+186	1241	1	0
+186	1241	1	0
+186	2063	1	0
+186	2063	1	0
+186	2713	2	0
+186	2713	2	0
+186	3429	3	0
+186	3429	3	0
+186	4185	4	0
+186	4185	4	0
+186	5370	63	0
+186	5370	63	0
+186	5979	64	0
+186	5979	64	0
+186	7142	123	0
+186	7142	123	0
+186	7751	124	0
+186	7751	124	0
+186	13200	183	0
+186	13200	183	0
+186	13809	184	0
+186	13809	184	0
+186	15353	243	0
+186	15353	243	0
+186	15962	244	0
+186	15962	244	0
+187	1224	1	0
+187	1224	1	0
+187	2071	1	0
+187	2071	1	0
+187	2696	2	0
+187	2696	2	0
+187	3471	3	0
+187	3471	3	0
+187	4168	4	0
+187	4168	4	0
+187	5403	63	0
+187	5403	63	0
+187	5962	64	0
+187	5962	64	0
+187	7175	123	0
+187	7175	123	0
+187	7734	124	0
+187	7734	124	0
+187	13233	183	0
+187	13233	183	0
+187	13792	184	0
+187	13792	184	0
+187	15386	243	0
+187	15386	243	0
+187	15945	244	0
+187	15945	244	0
+188	391	0	0
+188	391	0	0
+189	91	0	0
+189	91	0	0
+190	1274	1	0
+190	1274	1	0
+190	2088	1	0
+190	2088	1	0
+190	2746	2	0
+190	2746	2	0
+190	3430	3	0
+190	3430	3	0
+190	4218	4	0
+190	4218	4	0
+190	5371	63	0
+190	5371	63	0
+190	6012	64	0
+190	6012	64	0
+190	7143	123	0
+190	7143	123	0
+190	7784	124	0
+190	7784	124	0
+190	13201	183	0
+190	13201	183	0
+190	13842	184	0
+190	13842	184	0
+190	15354	243	0
+190	15354	243	0
+190	15995	244	0
+190	15995	244	0
+191	1257	1	0
+191	1257	1	0
+191	2096	1	0
+191	2096	1	0
+191	2729	2	0
+191	2729	2	0
+191	3473	3	0
+191	3473	3	0
+191	4201	4	0
+191	4201	4	0
+191	5405	63	0
+191	5405	63	0
+191	5995	64	0
+191	5995	64	0
+191	7177	123	0
+191	7177	123	0
+191	7767	124	0
+191	7767	124	0
+191	13235	183	0
+191	13235	183	0
+191	13825	184	0
+191	13825	184	0
+191	15388	243	0
+191	15388	243	0
+191	15978	244	0
+191	15978	244	0
+192	392	0	0
+192	392	0	0
+193	92	0	0
+193	92	0	0
+194	1307	1	0
+194	1307	1	0
+194	2113	1	0
+194	2113	1	0
+194	2779	2	0
+194	2779	2	0
+194	3431	3	0
+194	3431	3	0
+194	4251	4	0
+194	4251	4	0
+194	5372	63	0
+194	5372	63	0
+194	6045	64	0
+194	6045	64	0
+194	7144	123	0
+194	7144	123	0
+194	7817	124	0
+194	7817	124	0
+194	13202	183	0
+194	13202	183	0
+194	13875	184	0
+194	13875	184	0
+194	15355	243	0
+194	15355	243	0
+194	16028	244	0
+194	16028	244	0
+195	1290	1	0
+195	1290	1	0
+195	2121	1	0
+195	2121	1	0
+195	2762	2	0
+195	2762	2	0
+195	3475	3	0
+195	3475	3	0
+195	4234	4	0
+195	4234	4	0
+195	5407	63	0
+195	5407	63	0
+195	6028	64	0
+195	6028	64	0
+195	7179	123	0
+195	7179	123	0
+195	7800	124	0
+195	7800	124	0
+195	13237	183	0
+195	13237	183	0
+195	13858	184	0
+195	13858	184	0
+195	15390	243	0
+195	15390	243	0
+195	16011	244	0
+195	16011	244	0
+196	393	0	0
+196	393	0	0
+197	93	0	0
+197	93	0	0
+198	1340	1	0
+198	1340	1	0
+198	2138	1	0
+198	2138	1	0
+198	2812	2	0
+198	2812	2	0
+198	3590	3	0
+198	3590	3	0
+198	4284	4	0
+198	4284	4	0
+198	5509	63	0
+198	5509	63	0
+198	6078	64	0
+198	6078	64	0
+198	7281	123	0
+198	7281	123	0
+198	7850	124	0
+198	7850	124	0
+198	13339	183	0
+198	13339	183	0
+198	13908	184	0
+198	13908	184	0
+198	15492	243	0
+198	15492	243	0
+198	16061	244	0
+198	16061	244	0
+199	1323	1	0
+199	1323	1	0
+199	2146	1	0
+199	2146	1	0
+199	2795	2	0
+199	2795	2	0
+199	3632	3	0
+199	3632	3	0
+199	4267	4	0
+199	4267	4	0
+199	5542	63	0
+199	5542	63	0
+199	6061	64	0
+199	6061	64	0
+199	7314	123	0
+199	7314	123	0
+199	7833	124	0
+199	7833	124	0
+199	13372	183	0
+199	13372	183	0
+199	13891	184	0
+199	13891	184	0
+199	15525	243	0
+199	15525	243	0
+199	16044	244	0
+199	16044	244	0
+200	394	0	0
+200	394	0	0
+201	94	0	0
+201	94	0	0
+202	1373	1	0
+202	1373	1	0
+202	2163	1	0
+202	2163	1	0
+202	2845	2	0
+202	2845	2	0
+202	3591	3	0
+202	3591	3	0
+202	4317	4	0
+202	4317	4	0
+202	5510	63	0
+202	5510	63	0
+202	6111	64	0
+202	6111	64	0
+202	7282	123	0
+202	7282	123	0
+202	7883	124	0
+202	7883	124	0
+202	13340	183	0
+202	13340	183	0
+202	13941	184	0
+202	13941	184	0
+202	15493	243	0
+202	15493	243	0
+202	16094	244	0
+202	16094	244	0
+203	1356	1	0
+203	1356	1	0
+203	2171	1	0
+203	2171	1	0
+203	2828	2	0
+203	2828	2	0
+203	3634	3	0
+203	3634	3	0
+203	4300	4	0
+203	4300	4	0
+203	5544	63	0
+203	5544	63	0
+203	6094	64	0
+203	6094	64	0
+203	7316	123	0
+203	7316	123	0
+203	7866	124	0
+203	7866	124	0
+203	13374	183	0
+203	13374	183	0
+203	13924	184	0
+203	13924	184	0
+203	15527	243	0
+203	15527	243	0
+203	16077	244	0
+203	16077	244	0
+204	395	0	0
+204	395	0	0
+205	95	0	0
+205	95	0	0
+206	1406	1	0
+206	1406	1	0
+206	2188	1	0
+206	2188	1	0
+206	2878	2	0
+206	2878	2	0
+206	3592	3	0
+206	3592	3	0
+206	4350	4	0
+206	4350	4	0
+206	5511	63	0
+206	5511	63	0
+206	6144	64	0
+206	6144	64	0
+206	7283	123	0
+206	7283	123	0
+206	7916	124	0
+206	7916	124	0
+206	8111	130	0
+206	8111	130	0
+206	8175	130	0
+206	8175	130	0
+206	8497	140	0
+206	8497	140	0
+206	8574	140	0
+206	8574	140	0
+206	8747	140	0
+206	8747	140	0
+206	9083	140	0
+206	9083	140	0
+206	9278	141	0
+206	9278	141	0
+206	9355	141	0
+206	9355	141	0
+206	9528	141	0
+206	9528	141	0
+206	9864	141	0
+206	9864	141	0
+206	10059	142	0
+206	10059	142	0
+206	10136	142	0
+206	10136	142	0
+206	10309	142	0
+206	10309	142	0
+206	10645	142	0
+206	10645	142	0
+206	10840	143	0
+206	10840	143	0
+206	10917	143	0
+206	10917	143	0
+206	11090	143	0
+206	11090	143	0
+206	11426	143	0
+206	11426	143	0
+206	11621	144	0
+206	11621	144	0
+206	11698	144	0
+206	11698	144	0
+206	11871	144	0
+206	11871	144	0
+206	12207	144	0
+206	12207	144	0
+206	13341	183	0
+206	13341	183	0
+206	13974	184	0
+206	13974	184	0
+206	14169	200	0
+206	14169	200	0
+206	14233	200	0
+206	14233	200	0
+206	15494	243	0
+206	15494	243	0
+206	16127	244	0
+206	16127	244	0
+207	1389	1	0
+207	1389	1	0
+207	2196	1	0
+207	2196	1	0
+207	2861	2	0
+207	2861	2	0
+207	3636	3	0
+207	3636	3	0
+207	4333	4	0
+207	4333	4	0
+207	5546	63	0
+207	5546	63	0
+207	6127	64	0
+207	6127	64	0
+207	7318	123	0
+207	7318	123	0
+207	7899	124	0
+207	7899	124	0
+207	8119	130	0
+207	8119	130	0
+207	8140	130	1
+207	8158	130	0
+207	8505	140	0
+207	8505	140	0
+207	8535	140	1
+207	8557	140	0
+207	8727	140	1
+207	8728	140	0
+207	9091	140	0
+207	9091	140	0
+207	9286	141	0
+207	9286	141	0
+207	9316	141	1
+207	9338	141	0
+207	9508	141	1
+207	9509	141	0
+207	9872	141	0
+207	9872	141	0
+207	10067	142	0
+207	10067	142	0
+207	10097	142	1
+207	10119	142	0
+207	10289	142	1
+207	10290	142	0
+207	10653	142	0
+207	10653	142	0
+207	10848	143	0
+207	10848	143	0
+207	10878	143	1
+207	10900	143	0
+207	11070	143	1
+207	11071	143	0
+207	11434	143	0
+207	11434	143	0
+207	11629	144	0
+207	11629	144	0
+207	11659	144	1
+207	11681	144	0
+207	11851	144	1
+207	11852	144	0
+207	12215	144	0
+207	12215	144	0
+207	13376	183	0
+207	13376	183	0
+207	13957	184	0
+207	13957	184	0
+207	14177	200	0
+207	14177	200	0
+207	14198	200	1
+207	14216	200	0
+207	15529	243	0
+207	15529	243	0
+207	16110	244	0
+207	16110	244	0
+208	396	0	0
+208	396	0	0
+209	96	0	0
+209	96	0	0
+210	1058	1	0
+210	1058	1	0
+210	1954	1	0
+210	1954	1	0
+210	2530	2	0
+210	2530	2	0
+210	3497	3	0
+210	3497	3	0
+210	3881	3	0
+210	3881	3	0
+210	5251	63	0
+210	5251	63	0
+210	5691	63	0
+210	5691	63	0
+210	7023	123	0
+210	7023	123	0
+210	7463	123	0
+210	7463	123	0
+210	13081	183	0
+210	13081	183	0
+210	13521	183	0
+210	13521	183	0
+210	15234	243	0
+210	15234	243	0
+210	15674	243	0
+210	15674	243	0
+211	1083	1	0
+211	1083	1	0
+211	1458	1	1
+211	1937	1	0
+211	2555	2	0
+211	2555	2	0
+211	3412	3	0
+211	3412	3	0
+211	3889	3	0
+211	3889	3	0
+211	5276	63	0
+211	5276	63	0
+211	5356	63	1
+211	5674	63	0
+211	7048	123	0
+211	7048	123	0
+211	7128	123	1
+211	7446	123	0
+211	13106	183	0
+211	13106	183	0
+211	13186	183	1
+211	13504	183	0
+211	15259	243	0
+211	15259	243	0
+211	15339	243	1
+211	15657	243	0
+212	397	0	0
+212	397	0	0
+213	97	0	0
+213	97	0	0
+214	1155	1	0
+214	1155	1	0
+214	2029	1	0
+214	2029	1	0
+214	2627	2	0
+214	2627	2	0
+214	3499	3	0
+214	3499	3	0
+214	4655	62	0
+214	4655	62	0
+214	5425	63	0
+214	5425	63	0
+214	6427	122	0
+214	6427	122	0
+214	7197	123	0
+214	7197	123	0
+214	12485	182	0
+214	12485	182	0
+214	13255	183	0
+214	13255	183	0
+214	14638	242	0
+214	14638	242	0
+214	15408	243	0
+214	15408	243	0
+215	1180	1	0
+215	1180	1	0
+215	1459	1	1
+215	2012	1	0
+215	2652	2	0
+215	2652	2	0
+215	3413	3	0
+215	3413	3	0
+215	4680	62	0
+215	4680	62	0
+215	5357	63	0
+215	5357	63	0
+215	6452	122	0
+215	6452	122	0
+215	7129	123	0
+215	7129	123	0
+215	12510	182	0
+215	12510	182	0
+215	13187	183	0
+215	13187	183	0
+215	14663	242	0
+215	14663	242	0
+215	15340	243	0
+215	15340	243	0
+216	165	0	0
+216	165	0	0
+217	315	0	0
+217	315	0	0
+218	1227	1	0
+218	1227	1	0
+218	2077	1	0
+218	2077	1	0
+218	2699	2	0
+218	2699	2	0
+218	3501	3	0
+218	3501	3	0
+218	4171	4	0
+218	4171	4	0
+218	5427	63	0
+218	5427	63	0
+218	5965	64	0
+218	5965	64	0
+218	7199	123	0
+218	7199	123	0
+218	7737	124	0
+218	7737	124	0
+218	13257	183	0
+218	13257	183	0
+218	13795	184	0
+218	13795	184	0
+218	15410	243	0
+218	15410	243	0
+218	15948	244	0
+218	15948	244	0
+219	1235	1	0
+219	1235	1	0
+219	1460	1	1
+219	2060	1	0
+219	2707	2	0
+219	2707	2	0
+219	3414	3	0
+219	3414	3	0
+219	4179	4	0
+219	4179	4	0
+219	5358	63	0
+219	5358	63	0
+219	5973	64	0
+219	5973	64	0
+219	7130	123	0
+219	7130	123	0
+219	7745	124	0
+219	7745	124	0
+219	13188	183	0
+219	13188	183	0
+219	13803	184	0
+219	13803	184	0
+219	15341	243	0
+219	15341	243	0
+219	15956	244	0
+219	15956	244	0
+220	166	0	0
+220	166	0	0
+221	316	0	0
+221	316	0	0
+222	1260	1	0
+222	1260	1	0
+222	2102	1	0
+222	2102	1	0
+222	2732	2	0
+222	2732	2	0
+222	3503	3	0
+222	3503	3	0
+222	4204	4	0
+222	4204	4	0
+222	5429	63	0
+222	5429	63	0
+222	5998	64	0
+222	5998	64	0
+222	7201	123	0
+222	7201	123	0
+222	7770	124	0
+222	7770	124	0
+222	13259	183	0
+222	13259	183	0
+222	13828	184	0
+222	13828	184	0
+222	15412	243	0
+222	15412	243	0
+222	15981	244	0
+222	15981	244	0
+223	1268	1	0
+223	1268	1	0
+223	1461	1	1
+223	2085	1	0
+223	2740	2	0
+223	2740	2	0
+223	3415	3	0
+223	3415	3	0
+223	4212	4	0
+223	4212	4	0
+223	5359	63	0
+223	5359	63	0
+223	6006	64	0
+223	6006	64	0
+223	7131	123	0
+223	7131	123	0
+223	7778	124	0
+223	7778	124	0
+223	13189	183	0
+223	13189	183	0
+223	13836	184	0
+223	13836	184	0
+223	15342	243	0
+223	15342	243	0
+223	15989	244	0
+223	15989	244	0
+224	167	0	0
+224	167	0	0
+225	317	0	0
+225	317	0	0
+226	1293	1	0
+226	1293	1	0
+226	2127	1	0
+226	2127	1	0
+226	2765	2	0
+226	2765	2	0
+226	3505	3	0
+226	3505	3	0
+226	4237	4	0
+226	4237	4	0
+226	5431	63	0
+226	5431	63	0
+226	6031	64	0
+226	6031	64	0
+226	7203	123	0
+226	7203	123	0
+226	7803	124	0
+226	7803	124	0
+226	13261	183	0
+226	13261	183	0
+226	13861	184	0
+226	13861	184	0
+226	15414	243	0
+226	15414	243	0
+226	16014	244	0
+226	16014	244	0
+227	1301	1	0
+227	1301	1	0
+227	1462	1	1
+227	2110	1	0
+227	2773	2	0
+227	2773	2	0
+227	3416	3	0
+227	3416	3	0
+227	4245	4	0
+227	4245	4	0
+227	5360	63	0
+227	5360	63	0
+227	6039	64	0
+227	6039	64	0
+227	7132	123	0
+227	7132	123	0
+227	7811	124	0
+227	7811	124	0
+227	13190	183	0
+227	13190	183	0
+227	13869	184	0
+227	13869	184	0
+227	15343	243	0
+227	15343	243	0
+227	16022	244	0
+227	16022	244	0
+228	398	0	0
+228	398	0	0
+229	98	0	0
+229	98	0	0
+230	1059	1	0
+230	1059	1	0
+230	1977	1	0
+230	1977	1	0
+230	2531	2	0
+230	2531	2	0
+230	3658	3	0
+230	3658	3	0
+230	3918	3	0
+230	3918	3	0
+230	5252	63	0
+230	5252	63	0
+230	5714	63	0
+230	5714	63	0
+230	7024	123	0
+230	7024	123	0
+230	7486	123	0
+230	7486	123	0
+230	8083	130	0
+230	8083	130	0
+230	8203	130	0
+230	8203	130	0
+230	8469	140	0
+230	8469	140	0
+230	8602	140	0
+230	8602	140	0
+230	8778	140	0
+230	8778	140	0
+230	9055	140	0
+230	9055	140	0
+230	9250	141	0
+230	9250	141	0
+230	9383	141	0
+230	9383	141	0
+230	9559	141	0
+230	9559	141	0
+230	9836	141	0
+230	9836	141	0
+230	10031	142	0
+230	10031	142	0
+230	10164	142	0
+230	10164	142	0
+230	10340	142	0
+230	10340	142	0
+230	10617	142	0
+230	10617	142	0
+230	10812	143	0
+230	10812	143	0
+230	10945	143	0
+230	10945	143	0
+230	11121	143	0
+230	11121	143	0
+230	11398	143	0
+230	11398	143	0
+230	11593	144	0
+230	11593	144	0
+230	11726	144	0
+230	11726	144	0
+230	11902	144	0
+230	11902	144	0
+230	12179	144	0
+230	12179	144	0
+230	13082	183	0
+230	13082	183	0
+230	13544	183	0
+230	13544	183	0
+230	14141	200	0
+230	14141	200	0
+230	14261	200	0
+230	14261	200	0
+230	15235	243	0
+230	15235	243	0
+230	15697	243	0
+230	15697	243	0
+231	1085	1	0
+231	1085	1	0
+231	1509	1	1
+231	1960	1	0
+231	2557	2	0
+231	2557	2	0
+231	3573	3	0
+231	3573	3	0
+231	3926	3	0
+231	3926	3	0
+231	5278	63	0
+231	5278	63	0
+231	5495	63	1
+231	5697	63	0
+231	7050	123	0
+231	7050	123	0
+231	7267	123	1
+231	7469	123	0
+231	8091	130	0
+231	8091	130	0
+231	8186	130	0
+231	8186	130	0
+231	8477	140	0
+231	8477	140	0
+231	8585	140	0
+231	8585	140	0
+231	8758	140	1
+231	8759	140	0
+231	9063	140	0
+231	9063	140	0
+231	9258	141	0
+231	9258	141	0
+231	9366	141	0
+231	9366	141	0
+231	9539	141	1
+231	9540	141	0
+231	9844	141	0
+231	9844	141	0
+231	10039	142	0
+231	10039	142	0
+231	10147	142	0
+231	10147	142	0
+231	10320	142	1
+231	10321	142	0
+231	10625	142	0
+231	10625	142	0
+231	10820	143	0
+231	10820	143	0
+231	10928	143	0
+231	10928	143	0
+231	11101	143	1
+231	11102	143	0
+231	11406	143	0
+231	11406	143	0
+231	11601	144	0
+231	11601	144	0
+231	11709	144	0
+231	11709	144	0
+231	11882	144	1
+231	11883	144	0
+231	12187	144	0
+231	12187	144	0
+231	13108	183	0
+231	13108	183	0
+231	13325	183	1
+231	13527	183	0
+231	14149	200	0
+231	14149	200	0
+231	14244	200	0
+231	14244	200	0
+231	15261	243	0
+231	15261	243	0
+231	15478	243	1
+231	15680	243	0
+232	399	0	0
+232	399	0	0
+233	99	0	0
+233	99	0	0
+234	1156	1	0
+234	1156	1	0
+234	2052	1	0
+234	2052	1	0
+234	2628	2	0
+234	2628	2	0
+234	3660	3	0
+234	3660	3	0
+234	4656	62	0
+234	4656	62	0
+234	5564	63	0
+234	5564	63	0
+234	6428	122	0
+234	6428	122	0
+234	7336	123	0
+234	7336	123	0
+234	12486	182	0
+234	12486	182	0
+234	13394	183	0
+234	13394	183	0
+234	14639	242	0
+234	14639	242	0
+234	15547	243	0
+234	15547	243	0
+235	1182	1	0
+235	1182	1	0
+235	1510	1	1
+235	2035	1	0
+235	2654	2	0
+235	2654	2	0
+235	3574	3	0
+235	3574	3	0
+235	4682	62	0
+235	4682	62	0
+235	5496	63	0
+235	5496	63	0
+235	6454	122	0
+235	6454	122	0
+235	7268	123	0
+235	7268	123	0
+235	12512	182	0
+235	12512	182	0
+235	13326	183	0
+235	13326	183	0
+235	14665	242	0
+235	14665	242	0
+235	15479	243	0
+235	15479	243	0
+236	168	0	0
+236	168	0	0
+237	318	0	0
+237	318	0	0
+238	1326	1	0
+238	1326	1	0
+238	2152	1	0
+238	2152	1	0
+238	2798	2	0
+238	2798	2	0
+238	3662	3	0
+238	3662	3	0
+238	4270	4	0
+238	4270	4	0
+238	5566	63	0
+238	5566	63	0
+238	6064	64	0
+238	6064	64	0
+238	7338	123	0
+238	7338	123	0
+238	7836	124	0
+238	7836	124	0
+238	13396	183	0
+238	13396	183	0
+238	13894	184	0
+238	13894	184	0
+238	15549	243	0
+238	15549	243	0
+238	16047	244	0
+238	16047	244	0
+239	1334	1	0
+239	1334	1	0
+239	1511	1	1
+239	2135	1	0
+239	2806	2	0
+239	2806	2	0
+239	3575	3	0
+239	3575	3	0
+239	4278	4	0
+239	4278	4	0
+239	5497	63	0
+239	5497	63	0
+239	6072	64	0
+239	6072	64	0
+239	7269	123	0
+239	7269	123	0
+239	7844	124	0
+239	7844	124	0
+239	13327	183	0
+239	13327	183	0
+239	13902	184	0
+239	13902	184	0
+239	15480	243	0
+239	15480	243	0
+239	16055	244	0
+239	16055	244	0
+240	169	0	0
+240	169	0	0
+241	319	0	0
+241	319	0	0
+242	1359	1	0
+242	1359	1	0
+242	2177	1	0
+242	2177	1	0
+242	2831	2	0
+242	2831	2	0
+242	3664	3	0
+242	3664	3	0
+242	4303	4	0
+242	4303	4	0
+242	5568	63	0
+242	5568	63	0
+242	6097	64	0
+242	6097	64	0
+242	7340	123	0
+242	7340	123	0
+242	7869	124	0
+242	7869	124	0
+242	13398	183	0
+242	13398	183	0
+242	13927	184	0
+242	13927	184	0
+242	15551	243	0
+242	15551	243	0
+242	16080	244	0
+242	16080	244	0
+243	1367	1	0
+243	1367	1	0
+243	1512	1	1
+243	2160	1	0
+243	2839	2	0
+243	2839	2	0
+243	3576	3	0
+243	3576	3	0
+243	4311	4	0
+243	4311	4	0
+243	5498	63	0
+243	5498	63	0
+243	6105	64	0
+243	6105	64	0
+243	7270	123	0
+243	7270	123	0
+243	7877	124	0
+243	7877	124	0
+243	13328	183	0
+243	13328	183	0
+243	13935	184	0
+243	13935	184	0
+243	15481	243	0
+243	15481	243	0
+243	16088	244	0
+243	16088	244	0
+244	170	0	0
+244	170	0	0
+245	320	0	0
+245	320	0	0
+246	1392	1	0
+246	1392	1	0
+246	2202	1	0
+246	2202	1	0
+246	2864	2	0
+246	2864	2	0
+246	3666	3	0
+246	3666	3	0
+246	4336	4	0
+246	4336	4	0
+246	5570	63	0
+246	5570	63	0
+246	6130	64	0
+246	6130	64	0
+246	7342	123	0
+246	7342	123	0
+246	7902	124	0
+246	7902	124	0
+246	8125	130	0
+246	8125	130	0
+246	8161	130	0
+246	8161	130	0
+246	8511	140	0
+246	8511	140	0
+246	8560	140	0
+246	8560	140	0
+246	8731	140	0
+246	8731	140	0
+246	9097	140	0
+246	9097	140	0
+246	9292	141	0
+246	9292	141	0
+246	9341	141	0
+246	9341	141	0
+246	9512	141	0
+246	9512	141	0
+246	9878	141	0
+246	9878	141	0
+246	10073	142	0
+246	10073	142	0
+246	10122	142	0
+246	10122	142	0
+246	10293	142	0
+246	10293	142	0
+246	10659	142	0
+246	10659	142	0
+246	10854	143	0
+246	10854	143	0
+246	10903	143	0
+246	10903	143	0
+246	11074	143	0
+246	11074	143	0
+246	11440	143	0
+246	11440	143	0
+246	11635	144	0
+246	11635	144	0
+246	11684	144	0
+246	11684	144	0
+246	11855	144	0
+246	11855	144	0
+246	12221	144	0
+246	12221	144	0
+246	13400	183	0
+246	13400	183	0
+246	13960	184	0
+246	13960	184	0
+246	14183	200	0
+246	14183	200	0
+246	14219	200	0
+246	14219	200	0
+246	15553	243	0
+246	15553	243	0
+246	16113	244	0
+246	16113	244	0
+247	1400	1	0
+247	1400	1	0
+247	1513	1	1
+247	2185	1	0
+247	2872	2	0
+247	2872	2	0
+247	3577	3	0
+247	3577	3	0
+247	4344	4	0
+247	4344	4	0
+247	5499	63	0
+247	5499	63	0
+247	6138	64	0
+247	6138	64	0
+247	7271	123	0
+247	7271	123	0
+247	7910	124	0
+247	7910	124	0
+247	8108	130	0
+247	8108	130	0
+247	8169	130	0
+247	8169	130	0
+247	8494	140	0
+247	8494	140	0
+247	8568	140	0
+247	8568	140	0
+247	8739	140	1
+247	8744	140	0
+247	9080	140	0
+247	9080	140	0
+247	9275	141	0
+247	9275	141	0
+247	9349	141	0
+247	9349	141	0
+247	9520	141	1
+247	9525	141	0
+247	9861	141	0
+247	9861	141	0
+247	10056	142	0
+247	10056	142	0
+247	10130	142	0
+247	10130	142	0
+247	10301	142	1
+247	10306	142	0
+247	10642	142	0
+247	10642	142	0
+247	10837	143	0
+247	10837	143	0
+247	10911	143	0
+247	10911	143	0
+247	11082	143	1
+247	11087	143	0
+247	11423	143	0
+247	11423	143	0
+247	11618	144	0
+247	11618	144	0
+247	11692	144	0
+247	11692	144	0
+247	11863	144	1
+247	11868	144	0
+247	12204	144	0
+247	12204	144	0
+247	13329	183	0
+247	13329	183	0
+247	13968	184	0
+247	13968	184	0
+247	14166	200	0
+247	14166	200	0
+247	14227	200	0
+247	14227	200	0
+247	15482	243	0
+247	15482	243	0
+247	16121	244	0
+247	16121	244	0
+248	151	0	0
+248	151	0	0
+249	301	0	0
+249	301	0	0
+250	563	1	0
+250	563	1	0
+250	1621	1	0
+250	1621	1	0
+250	2335	2	0
+250	2335	2	0
+250	2960	2	0
+250	2960	2	0
+250	3721	3	0
+250	3721	3	0
+250	4795	62	0
+250	4795	62	0
+250	4875	63	0
+250	4875	63	0
+250	6567	122	0
+250	6567	122	0
+250	6647	123	0
+250	6647	123	0
+250	8027	130	0
+250	8027	130	0
+250	8259	130	0
+250	8259	130	0
+250	8413	140	0
+250	8413	140	0
+250	8658	140	0
+250	8658	140	0
+250	8840	140	0
+250	8840	140	0
+250	8999	140	0
+250	8999	140	0
+250	9194	141	0
+250	9194	141	0
+250	9439	141	0
+250	9439	141	0
+250	9621	141	0
+250	9621	141	0
+250	9780	141	0
+250	9780	141	0
+250	9975	142	0
+250	9975	142	0
+250	10220	142	0
+250	10220	142	0
+250	10402	142	0
+250	10402	142	0
+250	10561	142	0
+250	10561	142	0
+250	10756	143	0
+250	10756	143	0
+250	11001	143	0
+250	11001	143	0
+250	11183	143	0
+250	11183	143	0
+250	11342	143	0
+250	11342	143	0
+250	11537	144	0
+250	11537	144	0
+250	11782	144	0
+250	11782	144	0
+250	11964	144	0
+250	11964	144	0
+250	12123	144	0
+250	12123	144	0
+250	12625	182	0
+250	12625	182	0
+250	12705	183	0
+250	12705	183	0
+250	14085	200	0
+250	14085	200	0
+250	14317	200	0
+250	14317	200	0
+250	14778	242	0
+250	14778	242	0
+250	14858	243	0
+250	14858	243	0
+251	587	1	0
+251	587	1	0
+251	1543	1	1
+251	1604	1	0
+251	2359	2	0
+251	2359	2	0
+251	2913	2	1
+251	2943	2	0
+251	3729	3	0
+251	3729	3	0
+251	4743	62	0
+251	4743	62	0
+251	4899	63	0
+251	4899	63	0
+251	6515	122	0
+251	6515	122	0
+251	6671	123	0
+251	6671	123	0
+251	8035	130	0
+251	8035	130	0
+251	8242	130	0
+251	8242	130	0
+251	8421	140	0
+251	8421	140	0
+251	8641	140	0
+251	8641	140	0
+251	8820	140	1
+251	8821	140	0
+251	9007	140	0
+251	9007	140	0
+251	9202	141	0
+251	9202	141	0
+251	9422	141	0
+251	9422	141	0
+251	9601	141	1
+251	9602	141	0
+251	9788	141	0
+251	9788	141	0
+251	9983	142	0
+251	9983	142	0
+251	10203	142	0
+251	10203	142	0
+251	10382	142	1
+251	10383	142	0
+251	10569	142	0
+251	10569	142	0
+251	10764	143	0
+251	10764	143	0
+251	10984	143	0
+251	10984	143	0
+251	11163	143	1
+251	11164	143	0
+251	11350	143	0
+251	11350	143	0
+251	11545	144	0
+251	11545	144	0
+251	11765	144	0
+251	11765	144	0
+251	11944	144	1
+251	11945	144	0
+251	12131	144	0
+251	12131	144	0
+251	12573	182	0
+251	12573	182	0
+251	12729	183	0
+251	12729	183	0
+251	14093	200	0
+251	14093	200	0
+251	14300	200	0
+251	14300	200	0
+251	14726	242	0
+251	14726	242	0
+251	14882	243	0
+251	14882	243	0
+252	163	0	0
+252	163	0	0
+253	313	0	0
+253	313	0	0
+254	1057	1	0
+254	1057	1	0
+254	1931	1	0
+254	1931	1	0
+254	2529	2	0
+254	2529	2	0
+254	3000	2	0
+254	3000	2	0
+254	3774	3	0
+254	3774	3	0
+254	4797	62	0
+254	4797	62	0
+254	5250	63	0
+254	5250	63	0
+254	6569	122	0
+254	6569	122	0
+254	7022	123	0
+254	7022	123	0
+254	8069	130	0
+254	8069	130	0
+254	8217	130	0
+254	8217	130	0
+254	8455	140	0
+254	8455	140	0
+254	8616	140	0
+254	8616	140	0
+254	8793	140	0
+254	8793	140	0
+254	9041	140	0
+254	9041	140	0
+254	9236	141	0
+254	9236	141	0
+254	9397	141	0
+254	9397	141	0
+254	9574	141	0
+254	9574	141	0
+254	9822	141	0
+254	9822	141	0
+254	10017	142	0
+254	10017	142	0
+254	10178	142	0
+254	10178	142	0
+254	10355	142	0
+254	10355	142	0
+254	10603	142	0
+254	10603	142	0
+254	10798	143	0
+254	10798	143	0
+254	10959	143	0
+254	10959	143	0
+254	11136	143	0
+254	11136	143	0
+254	11384	143	0
+254	11384	143	0
+254	11579	144	0
+254	11579	144	0
+254	11740	144	0
+254	11740	144	0
+254	11917	144	0
+254	11917	144	0
+254	12165	144	0
+254	12165	144	0
+254	12627	182	0
+254	12627	182	0
+254	13080	183	0
+254	13080	183	0
+254	14127	200	0
+254	14127	200	0
+254	14275	200	0
+254	14275	200	0
+254	14780	242	0
+254	14780	242	0
+254	15233	243	0
+254	15233	243	0
+255	1081	1	0
+255	1081	1	0
+255	1544	1	1
+255	1914	1	0
+255	2553	2	0
+255	2553	2	0
+255	2914	2	1
+255	2983	2	0
+255	3782	3	0
+255	3782	3	0
+255	4744	62	0
+255	4744	62	0
+255	5274	63	0
+255	5274	63	0
+255	6516	122	0
+255	6516	122	0
+255	7046	123	0
+255	7046	123	0
+255	8052	130	0
+255	8052	130	0
+255	8225	130	0
+255	8225	130	0
+255	8438	140	0
+255	8438	140	0
+255	8624	140	0
+255	8624	140	0
+255	8801	140	1
+255	8806	140	0
+255	9024	140	0
+255	9024	140	0
+255	9219	141	0
+255	9219	141	0
+255	9405	141	0
+255	9405	141	0
+255	9582	141	1
+255	9587	141	0
+255	9805	141	0
+255	9805	141	0
+255	10000	142	0
+255	10000	142	0
+255	10186	142	0
+255	10186	142	0
+255	10363	142	1
+255	10368	142	0
+255	10586	142	0
+255	10586	142	0
+255	10781	143	0
+255	10781	143	0
+255	10967	143	0
+255	10967	143	0
+255	11144	143	1
+255	11149	143	0
+255	11367	143	0
+255	11367	143	0
+255	11562	144	0
+255	11562	144	0
+255	11748	144	0
+255	11748	144	0
+255	11925	144	1
+255	11930	144	0
+255	12148	144	0
+255	12148	144	0
+255	12574	182	0
+255	12574	182	0
+255	13104	183	0
+255	13104	183	0
+255	14110	200	0
+255	14110	200	0
+255	14283	200	0
+255	14283	200	0
+255	14727	242	0
+255	14727	242	0
+255	15257	243	0
+255	15257	243	0
+256	400	0	0
+256	400	0	0
+257	100	0	0
+257	100	0	0
+258	1561	1	0
+258	1561	1	0
+258	2225	1	0
+258	2225	1	0
+258	2931	2	0
+258	2931	2	0
+258	4453	61	0
+258	4453	61	0
+258	4793	62	0
+258	4793	62	0
+258	6225	121	0
+258	6225	121	0
+258	6565	122	0
+258	6565	122	0
+258	12283	181	0
+258	12283	181	0
+258	12623	182	0
+258	12623	182	0
+258	14436	241	0
+258	14436	241	0
+258	14776	242	0
+258	14776	242	0
+259	1542	1	0
+259	1542	1	0
+259	2233	1	0
+259	2233	1	0
+259	2912	2	0
+259	2912	2	0
+259	4479	61	0
+259	4479	61	0
+259	4742	62	0
+259	4742	62	0
+259	6251	121	0
+259	6251	121	0
+259	6514	122	0
+259	6514	122	0
+259	12309	181	0
+259	12309	181	0
+259	12572	182	0
+259	12572	182	0
+259	14462	241	0
+259	14462	241	0
+259	14725	242	0
+259	14725	242	0
+260	152	0	0
+260	152	0	0
+261	302	0	0
+261	302	0	0
+262	660	1	0
+262	660	1	0
+262	1696	1	0
+262	1696	1	0
+262	2432	2	0
+262	2432	2	0
+262	4493	61	0
+262	4493	61	0
+262	4557	62	0
+262	4557	62	0
+262	6265	121	0
+262	6265	121	0
+262	6329	122	0
+262	6329	122	0
+262	12323	181	0
+262	12323	181	0
+262	12387	182	0
+262	12387	182	0
+262	14476	241	0
+262	14476	241	0
+262	14540	242	0
+262	14540	242	0
+263	684	1	0
+263	684	1	0
+263	1595	1	1
+263	1679	1	0
+263	2456	2	0
+263	2456	2	0
+263	4442	61	0
+263	4442	61	0
+263	4581	62	0
+263	4581	62	0
+263	6214	121	0
+263	6214	121	0
+263	6353	122	0
+263	6353	122	0
+263	12272	181	0
+263	12272	181	0
+263	12411	182	0
+263	12411	182	0
+263	14425	241	0
+263	14425	241	0
+263	14564	242	0
+263	14564	242	0
+264	164	0	0
+264	164	0	0
+265	314	0	0
+265	314	0	0
+266	1154	1	0
+266	1154	1	0
+266	2006	1	0
+266	2006	1	0
+266	2626	2	0
+266	2626	2	0
+266	4495	61	0
+266	4495	61	0
+266	4654	62	0
+266	4654	62	0
+266	6267	121	0
+266	6267	121	0
+266	6426	122	0
+266	6426	122	0
+266	12325	181	0
+266	12325	181	0
+266	12484	182	0
+266	12484	182	0
+266	14478	241	0
+266	14478	241	0
+266	14637	242	0
+266	14637	242	0
+267	1178	1	0
+267	1178	1	0
+267	1596	1	1
+267	1989	1	0
+267	2650	2	0
+267	2650	2	0
+267	4443	61	0
+267	4443	61	0
+267	4678	62	0
+267	4678	62	0
+267	6215	121	0
+267	6215	121	0
+267	6450	122	0
+267	6450	122	0
+267	12273	181	0
+267	12273	181	0
+267	12508	182	0
+267	12508	182	0
+267	14426	241	0
+267	14426	241	0
+267	14661	242	0
+267	14661	242	0
+268	175	0	0
+268	175	0	0
+269	325	0	0
+269	325	0	0
+270	1547	1	0
+270	1547	1	0
+270	2239	1	0
+270	2239	1	0
+270	2917	2	0
+270	2917	2	0
+270	4497	61	0
+270	4497	61	0
+270	4751	62	0
+270	4751	62	0
+270	6269	121	0
+270	6269	121	0
+270	6523	122	0
+270	6523	122	0
+270	12327	181	0
+270	12327	181	0
+270	12581	182	0
+270	12581	182	0
+270	14480	241	0
+270	14480	241	0
+270	14734	242	0
+270	14734	242	0
+271	1555	1	0
+271	1555	1	0
+271	1597	1	1
+271	2222	1	0
+271	2925	2	0
+271	2925	2	0
+271	4444	61	0
+271	4444	61	0
+271	4775	62	0
+271	4775	62	0
+271	6216	121	0
+271	6216	121	0
+271	6547	122	0
+271	6547	122	0
+271	12274	181	0
+271	12274	181	0
+271	12605	182	0
+271	12605	182	0
+271	14427	241	0
+271	14427	241	0
+271	14758	242	0
+271	14758	242	0
+272	1618	1	0
+272	1618	1	0
+272	2957	2	0
+272	2957	2	0
+272	4784	62	0
+272	4784	62	0
+272	6556	122	0
+272	6556	122	0
+272	8256	130	0
+272	8256	130	0
+272	12614	182	0
+272	12614	182	0
+272	14314	200	0
+272	14314	200	0
+272	14767	242	0
+272	14767	242	0
+273	533	1	0
+273	533	1	0
+273	2305	2	0
+273	2305	2	0
+273	3695	3	0
+273	3695	3	0
+273	4845	63	0
+273	4845	63	0
+273	6617	123	0
+273	6617	123	0
+273	8014	130	0
+273	8014	130	0
+273	12675	183	0
+273	12675	183	0
+273	14072	200	0
+273	14072	200	0
+273	14828	243	0
+273	14828	243	0
+274	8655	140	0
+274	8655	140	0
+274	8834	140	0
+274	8834	140	0
+274	9436	141	0
+274	9436	141	0
+274	9615	141	0
+274	9615	141	0
+274	10217	142	0
+274	10217	142	0
+274	10396	142	0
+274	10396	142	0
+274	10998	143	0
+274	10998	143	0
+274	11177	143	0
+274	11177	143	0
+274	11779	144	0
+274	11779	144	0
+274	11958	144	0
+274	11958	144	0
+275	8400	140	0
+275	8400	140	0
+275	8986	140	0
+275	8986	140	0
+275	9181	141	0
+275	9181	141	0
+275	9767	141	0
+275	9767	141	0
+275	9962	142	0
+275	9962	142	0
+275	10548	142	0
+275	10548	142	0
+275	10743	143	0
+275	10743	143	0
+275	11329	143	0
+275	11329	143	0
+275	11524	144	0
+275	11524	144	0
+275	12110	144	0
+275	12110	144	0
+276	1693	1	0
+276	1693	1	0
+276	4482	61	0
+276	4482	61	0
+276	6254	121	0
+276	6254	121	0
+276	12312	181	0
+276	12312	181	0
+276	14465	241	0
+276	14465	241	0
+277	630	1	0
+277	630	1	0
+277	2402	2	0
+277	2402	2	0
+277	4527	62	0
+277	4527	62	0
+277	6299	122	0
+277	6299	122	0
+277	12357	182	0
+277	12357	182	0
+277	14510	242	0
+277	14510	242	0
+280	596	1	0
+280	596	1	0
+280	2368	2	0
+280	2368	2	0
+280	3818	3	0
+280	3818	3	0
+280	4908	63	0
+280	4908	63	0
+280	6680	123	0
+280	6680	123	0
+280	8284	130	0
+280	8284	130	0
+280	12738	183	0
+280	12738	183	0
+280	14342	200	0
+280	14342	200	0
+280	14891	243	0
+280	14891	243	0
+281	731	1	0
+281	731	1	0
+281	3055	3	0
+281	3055	3	0
+281	4946	63	0
+281	4946	63	0
+281	6718	123	0
+281	6718	123	0
+281	7986	130	0
+281	7986	130	0
+281	12776	183	0
+281	12776	183	0
+281	14044	200	0
+281	14044	200	0
+281	14929	243	0
+281	14929	243	0
+282	8683	140	0
+282	8683	140	0
+282	8865	140	0
+282	8865	140	0
+282	9464	141	0
+282	9464	141	0
+282	9646	141	0
+282	9646	141	0
+282	10245	142	0
+282	10245	142	0
+282	10427	142	0
+282	10427	142	0
+282	11026	143	0
+282	11026	143	0
+282	11208	143	0
+282	11208	143	0
+282	11807	144	0
+282	11807	144	0
+282	11989	144	0
+282	11989	144	0
+283	8372	140	0
+283	8372	140	0
+283	8958	140	0
+283	8958	140	0
+283	9153	141	0
+283	9153	141	0
+283	9739	141	0
+283	9739	141	0
+283	9934	142	0
+283	9934	142	0
+283	10520	142	0
+283	10520	142	0
+283	10715	143	0
+283	10715	143	0
+283	11301	143	0
+283	11301	143	0
+283	11496	144	0
+283	11496	144	0
+283	12082	144	0
+283	12082	144	0
+284	693	1	0
+284	693	1	0
+284	2465	2	0
+284	2465	2	0
+284	4590	62	0
+284	4590	62	0
+284	6362	122	0
+284	6362	122	0
+284	12420	182	0
+284	12420	182	0
+284	14573	242	0
+284	14573	242	0
+285	732	1	0
+285	732	1	0
+285	3056	3	0
+285	3056	3	0
+285	4947	63	0
+285	4947	63	0
+285	6719	123	0
+285	6719	123	0
+285	12777	183	0
+285	12777	183	0
+285	14930	243	0
+285	14930	243	0
+288	598	1	0
+288	598	1	0
+288	2370	2	0
+288	2370	2	0
+288	3855	3	0
+288	3855	3	0
+288	4910	63	0
+288	4910	63	0
+288	6682	123	0
+288	6682	123	0
+288	12740	183	0
+288	12740	183	0
+288	14893	243	0
+288	14893	243	0
+289	848	1	0
+289	848	1	0
+289	3216	3	0
+289	3216	3	0
+289	5085	63	0
+289	5085	63	0
+289	6857	123	0
+289	6857	123	0
+289	12915	183	0
+289	12915	183	0
+289	15068	243	0
+289	15068	243	0
+292	695	1	0
+292	695	1	0
+292	2467	2	0
+292	2467	2	0
+292	4592	62	0
+292	4592	62	0
+292	6364	122	0
+292	6364	122	0
+292	12422	182	0
+292	12422	182	0
+292	14575	242	0
+292	14575	242	0
+293	849	1	0
+293	849	1	0
+293	3217	3	0
+293	3217	3	0
+293	5086	63	0
+293	5086	63	0
+293	6858	123	0
+293	6858	123	0
+293	12916	183	0
+293	12916	183	0
+293	15069	243	0
+293	15069	243	0
+296	808	1	0
+296	808	1	0
+296	3160	3	0
+296	3160	3	0
+296	5037	63	0
+296	5037	63	0
+296	6809	123	0
+296	6809	123	0
+296	8312	130	0
+296	8312	130	0
+296	12867	183	0
+296	12867	183	0
+296	14370	200	0
+296	14370	200	0
+296	15020	243	0
+296	15020	243	0
+297	957	1	0
+297	957	1	0
+297	3963	4	0
+297	3963	4	0
+297	5757	64	0
+297	5757	64	0
+297	7529	124	0
+297	7529	124	0
+297	7961	130	0
+297	7961	130	0
+297	13587	184	0
+297	13587	184	0
+297	14019	200	0
+297	14019	200	0
+297	15740	244	0
+297	15740	244	0
+298	8711	140	0
+298	8711	140	0
+298	8896	140	0
+298	8896	140	0
+298	9492	141	0
+298	9492	141	0
+298	9677	141	0
+298	9677	141	0
+298	10273	142	0
+298	10273	142	0
+298	10458	142	0
+298	10458	142	0
+298	11054	143	0
+298	11054	143	0
+298	11239	143	0
+298	11239	143	0
+298	11835	144	0
+298	11835	144	0
+298	12020	144	0
+298	12020	144	0
+299	8347	140	0
+299	8347	140	0
+299	8904	140	0
+299	8904	140	0
+299	9128	141	0
+299	9128	141	0
+299	9685	141	0
+299	9685	141	0
+299	9909	142	0
+299	9909	142	0
+299	10466	142	0
+299	10466	142	0
+299	10690	143	0
+299	10690	143	0
+299	11247	143	0
+299	11247	143	0
+299	11471	144	0
+299	11471	144	0
+299	12028	144	0
+299	12028	144	0
+300	810	1	0
+300	810	1	0
+300	3162	3	0
+300	3162	3	0
+300	5039	63	0
+300	5039	63	0
+300	6811	123	0
+300	6811	123	0
+300	12869	183	0
+300	12869	183	0
+300	15022	243	0
+300	15022	243	0
+301	968	1	0
+301	968	1	0
+301	3996	4	0
+301	3996	4	0
+301	5790	64	0
+301	5790	64	0
+301	7562	124	0
+301	7562	124	0
+301	13620	184	0
+301	13620	184	0
+301	15773	244	0
+301	15773	244	0
+304	925	1	0
+304	925	1	0
+304	3321	3	0
+304	3321	3	0
+304	5176	63	0
+304	5176	63	0
+304	6948	123	0
+304	6948	123	0
+304	13006	183	0
+304	13006	183	0
+304	15159	243	0
+304	15159	243	0
+305	979	1	0
+305	979	1	0
+305	4062	4	0
+305	4062	4	0
+305	5823	64	0
+305	5823	64	0
+305	7595	124	0
+305	7595	124	0
+305	13653	184	0
+305	13653	184	0
+305	15806	244	0
+305	15806	244	0
+308	927	1	0
+308	927	1	0
+308	3323	3	0
+308	3323	3	0
+308	5178	63	0
+308	5178	63	0
+308	6950	123	0
+308	6950	123	0
+308	13008	183	0
+308	13008	183	0
+308	15161	243	0
+308	15161	243	0
+309	990	1	0
+309	990	1	0
+309	4095	4	0
+309	4095	4	0
+309	5856	64	0
+309	5856	64	0
+309	7628	124	0
+309	7628	124	0
+309	13686	184	0
+309	13686	184	0
+309	15839	244	0
+309	15839	244	0
+312	812	1	0
+312	812	1	0
+312	3164	3	0
+312	3164	3	0
+312	5041	63	0
+312	5041	63	0
+312	6813	123	0
+312	6813	123	0
+312	12871	183	0
+312	12871	183	0
+312	15024	243	0
+312	15024	243	0
+313	1001	1	0
+313	1001	1	0
+313	4029	4	0
+313	4029	4	0
+313	5889	64	0
+313	5889	64	0
+313	7661	124	0
+313	7661	124	0
+313	13719	184	0
+313	13719	184	0
+313	15872	244	0
+313	15872	244	0
+316	929	1	0
+316	929	1	0
+316	3325	3	0
+316	3325	3	0
+316	5180	63	0
+316	5180	63	0
+316	6952	123	0
+316	6952	123	0
+316	13010	183	0
+316	13010	183	0
+316	15163	243	0
+316	15163	243	0
+317	1012	1	0
+317	1012	1	0
+317	4128	4	0
+317	4128	4	0
+317	5922	64	0
+317	5922	64	0
+317	7694	124	0
+317	7694	124	0
+317	13752	184	0
+317	13752	184	0
+317	15905	244	0
+317	15905	244	0
+320	1928	1	0
+320	1928	1	0
+320	2997	2	0
+320	2997	2	0
+320	4786	62	0
+320	4786	62	0
+320	6558	122	0
+320	6558	122	0
+320	8066	130	0
+320	8066	130	0
+320	12616	182	0
+320	12616	182	0
+320	14124	200	0
+320	14124	200	0
+320	14769	242	0
+320	14769	242	0
+321	1027	1	0
+321	1027	1	0
+321	2499	2	0
+321	2499	2	0
+321	3748	3	0
+321	3748	3	0
+321	5220	63	0
+321	5220	63	0
+321	6992	123	0
+321	6992	123	0
+321	8204	130	0
+321	8204	130	0
+321	13050	183	0
+321	13050	183	0
+321	14262	200	0
+321	14262	200	0
+321	15203	243	0
+321	15203	243	0
+322	8452	140	0
+322	8452	140	0
+322	9038	140	0
+322	9038	140	0
+322	9233	141	0
+322	9233	141	0
+322	9819	141	0
+322	9819	141	0
+322	10014	142	0
+322	10014	142	0
+322	10600	142	0
+322	10600	142	0
+322	10795	143	0
+322	10795	143	0
+322	11381	143	0
+322	11381	143	0
+322	11576	144	0
+322	11576	144	0
+322	12162	144	0
+322	12162	144	0
+323	8603	140	0
+323	8603	140	0
+323	8774	140	1
+323	8782	140	0
+323	9384	141	0
+323	9384	141	0
+323	9555	141	1
+323	9563	141	0
+323	10165	142	0
+323	10165	142	0
+323	10336	142	1
+323	10344	142	0
+323	10946	143	0
+323	10946	143	0
+323	11117	143	1
+323	11125	143	0
+323	11727	144	0
+323	11727	144	0
+323	11898	144	1
+323	11906	144	0
+324	2003	1	0
+324	2003	1	0
+324	4484	61	0
+324	4484	61	0
+324	6256	121	0
+324	6256	121	0
+324	12314	181	0
+324	12314	181	0
+324	14467	241	0
+324	14467	241	0
+325	1124	1	0
+325	1124	1	0
+325	2596	2	0
+325	2596	2	0
+325	4624	62	0
+325	4624	62	0
+325	6396	122	0
+325	6396	122	0
+325	12454	182	0
+325	12454	182	0
+325	14607	242	0
+325	14607	242	0
+328	2074	1	0
+328	2074	1	0
+328	3482	3	0
+328	3482	3	0
+328	5412	63	0
+328	5412	63	0
+328	7184	123	0
+328	7184	123	0
+328	13242	183	0
+328	13242	183	0
+328	15395	243	0
+328	15395	243	0
+329	1217	1	0
+329	1217	1	0
+329	2689	2	0
+329	2689	2	0
+329	4161	4	0
+329	4161	4	0
+329	5955	64	0
+329	5955	64	0
+329	7727	124	0
+329	7727	124	0
+329	13785	184	0
+329	13785	184	0
+329	15938	244	0
+329	15938	244	0
+332	2099	1	0
+332	2099	1	0
+332	3484	3	0
+332	3484	3	0
+332	5414	63	0
+332	5414	63	0
+332	7186	123	0
+332	7186	123	0
+332	13244	183	0
+332	13244	183	0
+332	15397	243	0
+332	15397	243	0
+333	1250	1	0
+333	1250	1	0
+333	2722	2	0
+333	2722	2	0
+333	4194	4	0
+333	4194	4	0
+333	5988	64	0
+333	5988	64	0
+333	7760	124	0
+333	7760	124	0
+333	13818	184	0
+333	13818	184	0
+333	15971	244	0
+333	15971	244	0
+336	2124	1	0
+336	2124	1	0
+336	3486	3	0
+336	3486	3	0
+336	5416	63	0
+336	5416	63	0
+336	7188	123	0
+336	7188	123	0
+336	13246	183	0
+336	13246	183	0
+336	15399	243	0
+336	15399	243	0
+337	1283	1	0
+337	1283	1	0
+337	2755	2	0
+337	2755	2	0
+337	4227	4	0
+337	4227	4	0
+337	6021	64	0
+337	6021	64	0
+337	7793	124	0
+337	7793	124	0
+337	13851	184	0
+337	13851	184	0
+337	16004	244	0
+337	16004	244	0
+340	2149	1	0
+340	2149	1	0
+340	3643	3	0
+340	3643	3	0
+340	5551	63	0
+340	5551	63	0
+340	7323	123	0
+340	7323	123	0
+340	13381	183	0
+340	13381	183	0
+340	15534	243	0
+340	15534	243	0
+341	1316	1	0
+341	1316	1	0
+341	2788	2	0
+341	2788	2	0
+341	4260	4	0
+341	4260	4	0
+341	6054	64	0
+341	6054	64	0
+341	7826	124	0
+341	7826	124	0
+341	13884	184	0
+341	13884	184	0
+341	16037	244	0
+341	16037	244	0
+344	2174	1	0
+344	2174	1	0
+344	3645	3	0
+344	3645	3	0
+344	5553	63	0
+344	5553	63	0
+344	7325	123	0
+344	7325	123	0
+344	13383	183	0
+344	13383	183	0
+344	15536	243	0
+344	15536	243	0
+345	1349	1	0
+345	1349	1	0
+345	2821	2	0
+345	2821	2	0
+345	4293	4	0
+345	4293	4	0
+345	6087	64	0
+345	6087	64	0
+345	7859	124	0
+345	7859	124	0
+345	13917	184	0
+345	13917	184	0
+345	16070	244	0
+345	16070	244	0
+348	2199	1	0
+348	2199	1	0
+348	3647	3	0
+348	3647	3	0
+348	5555	63	0
+348	5555	63	0
+348	7327	123	0
+348	7327	123	0
+348	8122	130	0
+348	8122	130	0
+348	13385	183	0
+348	13385	183	0
+348	14180	200	0
+348	14180	200	0
+348	15538	243	0
+348	15538	243	0
+349	1382	1	0
+349	1382	1	0
+349	2854	2	0
+349	2854	2	0
+349	4326	4	0
+349	4326	4	0
+349	6120	64	0
+349	6120	64	0
+349	7892	124	0
+349	7892	124	0
+349	8133	130	0
+349	8133	130	0
+349	13950	184	0
+349	13950	184	0
+349	14191	200	0
+349	14191	200	0
+349	16103	244	0
+349	16103	244	0
+350	8508	140	0
+350	8508	140	0
+350	9094	140	0
+350	9094	140	0
+350	9289	141	0
+350	9289	141	0
+350	9875	141	0
+350	9875	141	0
+350	10070	142	0
+350	10070	142	0
+350	10656	142	0
+350	10656	142	0
+350	10851	143	0
+350	10851	143	0
+350	11437	143	0
+350	11437	143	0
+350	11632	144	0
+350	11632	144	0
+350	12218	144	0
+350	12218	144	0
+351	8521	140	0
+351	8521	140	0
+351	8539	140	1
+351	8720	140	0
+351	9302	141	0
+351	9302	141	0
+351	9320	141	1
+351	9501	141	0
+351	10083	142	0
+351	10083	142	0
+351	10101	142	1
+351	10282	142	0
+351	10864	143	0
+351	10864	143	0
+351	10882	143	1
+351	11063	143	0
+351	11645	144	0
+351	11645	144	0
+351	11663	144	1
+351	11844	144	0
+352	1090	1	0
+352	1090	1	0
+352	2562	2	0
+352	2562	2	0
+352	3892	3	0
+352	3892	3	0
+352	5283	63	0
+352	5283	63	0
+352	7055	123	0
+352	7055	123	0
+352	13113	183	0
+352	13113	183	0
+352	15266	243	0
+352	15266	243	0
+353	1423	1	0
+353	1423	1	0
+353	3377	3	0
+353	3377	3	0
+353	5321	63	0
+353	5321	63	0
+353	7093	123	0
+353	7093	123	0
+353	13151	183	0
+353	13151	183	0
+353	15304	243	0
+353	15304	243	0
+356	1187	1	0
+356	1187	1	0
+356	2659	2	0
+356	2659	2	0
+356	4687	62	0
+356	4687	62	0
+356	6459	122	0
+356	6459	122	0
+356	12517	182	0
+356	12517	182	0
+356	14670	242	0
+356	14670	242	0
+357	1424	1	0
+357	1424	1	0
+357	3378	3	0
+357	3378	3	0
+357	5322	63	0
+357	5322	63	0
+357	7094	123	0
+357	7094	123	0
+357	13152	183	0
+357	13152	183	0
+357	15305	243	0
+357	15305	243	0
+360	1092	1	0
+360	1092	1	0
+360	2564	2	0
+360	2564	2	0
+360	3929	3	0
+360	3929	3	0
+360	5285	63	0
+360	5285	63	0
+360	7057	123	0
+360	7057	123	0
+360	8094	130	0
+360	8094	130	0
+360	13115	183	0
+360	13115	183	0
+360	14152	200	0
+360	14152	200	0
+360	15268	243	0
+360	15268	243	0
+361	1474	1	0
+361	1474	1	0
+361	3538	3	0
+361	3538	3	0
+361	5460	63	0
+361	5460	63	0
+361	7232	123	0
+361	7232	123	0
+361	8176	130	0
+361	8176	130	0
+361	13290	183	0
+361	13290	183	0
+361	14234	200	0
+361	14234	200	0
+361	15443	243	0
+361	15443	243	0
+362	8480	140	0
+362	8480	140	0
+362	9066	140	0
+362	9066	140	0
+362	9261	141	0
+362	9261	141	0
+362	9847	141	0
+362	9847	141	0
+362	10042	142	0
+362	10042	142	0
+362	10628	142	0
+362	10628	142	0
+362	10823	143	0
+362	10823	143	0
+362	11409	143	0
+362	11409	143	0
+362	11604	144	0
+362	11604	144	0
+362	12190	144	0
+362	12190	144	0
+363	8575	140	0
+363	8575	140	0
+363	8743	140	1
+363	8751	140	0
+363	9356	141	0
+363	9356	141	0
+363	9524	141	1
+363	9532	141	0
+363	10137	142	0
+363	10137	142	0
+363	10305	142	1
+363	10313	142	0
+363	10918	143	0
+363	10918	143	0
+363	11086	143	1
+363	11094	143	0
+363	11699	144	0
+363	11699	144	0
+363	11867	144	1
+363	11875	144	0
+364	1189	1	0
+364	1189	1	0
+364	2661	2	0
+364	2661	2	0
+364	4689	62	0
+364	4689	62	0
+364	6461	122	0
+364	6461	122	0
+364	12519	182	0
+364	12519	182	0
+364	14672	242	0
+364	14672	242	0
+365	1475	1	0
+365	1475	1	0
+365	3539	3	0
+365	3539	3	0
+365	5461	63	0
+365	5461	63	0
+365	7233	123	0
+365	7233	123	0
+365	13291	183	0
+365	13291	183	0
+365	15444	243	0
+365	15444	243	0
+368	2236	1	0
+368	2236	1	0
+368	4486	61	0
+368	4486	61	0
+368	6258	121	0
+368	6258	121	0
+368	12316	181	0
+368	12316	181	0
+368	14469	241	0
+368	14469	241	0
+369	1521	1	0
+369	1521	1	0
+369	2891	2	0
+369	2891	2	0
+369	4721	62	0
+369	4721	62	0
+369	6493	122	0
+369	6493	122	0
+369	12551	182	0
+369	12551	182	0
+369	14704	242	0
+369	14704	242	0
+372	594	1	0
+372	594	1	0
+372	2366	2	0
+372	2366	2	0
+372	3732	3	0
+372	3732	3	0
+372	4906	63	0
+372	4906	63	0
+372	6678	123	0
+372	6678	123	0
+372	8038	130	0
+372	8038	130	0
+372	12736	183	0
+372	12736	183	0
+372	14096	200	0
+372	14096	200	0
+372	14889	243	0
+372	14889	243	0
+373	1522	1	0
+373	1522	1	0
+373	2892	2	0
+373	2892	2	0
+373	4722	62	0
+373	4722	62	0
+373	6494	122	0
+373	6494	122	0
+373	8232	130	0
+373	8232	130	0
+373	12552	182	0
+373	12552	182	0
+373	14290	200	0
+373	14290	200	0
+373	14705	242	0
+373	14705	242	0
+374	8424	140	0
+374	8424	140	0
+374	9010	140	0
+374	9010	140	0
+374	9205	141	0
+374	9205	141	0
+374	9791	141	0
+374	9791	141	0
+374	9986	142	0
+374	9986	142	0
+374	10572	142	0
+374	10572	142	0
+374	10767	143	0
+374	10767	143	0
+374	11353	143	0
+374	11353	143	0
+374	11548	144	0
+374	11548	144	0
+374	12134	144	0
+374	12134	144	0
+375	8631	140	0
+375	8631	140	0
+375	8805	140	1
+375	8813	140	0
+375	9412	141	0
+375	9412	141	0
+375	9586	141	1
+375	9594	141	0
+375	10193	142	0
+375	10193	142	0
+375	10367	142	1
+375	10375	142	0
+375	10974	143	0
+375	10974	143	0
+375	11148	143	1
+375	11156	143	0
+375	11755	144	0
+375	11755	144	0
+375	11929	144	1
+375	11937	144	0
+376	691	1	0
+376	691	1	0
+376	2463	2	0
+376	2463	2	0
+376	4588	62	0
+376	4588	62	0
+376	6360	122	0
+376	6360	122	0
+376	12418	182	0
+376	12418	182	0
+376	14571	242	0
+376	14571	242	0
+377	1574	1	0
+377	1574	1	0
+377	4421	61	0
+377	4421	61	0
+377	6193	121	0
+377	6193	121	0
+377	12251	181	0
+377	12251	181	0
+377	14404	241	0
+377	14404	241	0
+380	1641	1	0
+380	1641	1	0
+380	3156	3	0
+380	3156	3	0
+380	5609	63	0
+380	5609	63	0
+380	7381	123	0
+380	7381	123	0
+380	8010	130	0
+380	8010	130	0
+380	13439	183	0
+380	13439	183	0
+380	14068	200	0
+380	14068	200	0
+380	15592	243	0
+380	15592	243	0
+381	534	1	0
+381	534	1	0
+381	2306	2	0
+381	2306	2	0
+381	3696	3	0
+381	3696	3	0
+381	4846	63	0
+381	4846	63	0
+381	6618	123	0
+381	6618	123	0
+381	8260	130	0
+381	8260	130	0
+381	12676	183	0
+381	12676	183	0
+381	14318	200	0
+381	14318	200	0
+381	14829	243	0
+381	14829	243	0
+382	8396	140	0
+382	8396	140	0
+382	8982	140	0
+382	8982	140	0
+382	9177	141	0
+382	9177	141	0
+382	9763	141	0
+382	9763	141	0
+382	9958	142	0
+382	9958	142	0
+382	10544	142	0
+382	10544	142	0
+382	10739	143	0
+382	10739	143	0
+382	11325	143	0
+382	11325	143	0
+382	11520	144	0
+382	11520	144	0
+382	12106	144	0
+382	12106	144	0
+383	8659	140	0
+383	8659	140	0
+383	8836	140	1
+383	8844	140	0
+383	9440	141	0
+383	9440	141	0
+383	9617	141	1
+383	9625	141	0
+383	10221	142	0
+383	10221	142	0
+383	10398	142	1
+383	10406	142	0
+383	11002	143	0
+383	11002	143	0
+383	11179	143	1
+383	11187	143	0
+383	11783	144	0
+383	11783	144	0
+383	11960	144	1
+383	11968	144	0
+384	1716	1	0
+384	1716	1	0
+384	3158	3	0
+384	3158	3	0
+384	5035	63	0
+384	5035	63	0
+384	6807	123	0
+384	6807	123	0
+384	12865	183	0
+384	12865	183	0
+384	15018	243	0
+384	15018	243	0
+385	631	1	0
+385	631	1	0
+385	2403	2	0
+385	2403	2	0
+385	4528	62	0
+385	4528	62	0
+385	6300	122	0
+385	6300	122	0
+385	12358	182	0
+385	12358	182	0
+385	14511	242	0
+385	14511	242	0
+388	1664	1	0
+388	1664	1	0
+388	3317	3	0
+388	3317	3	0
+388	5632	63	0
+388	5632	63	0
+388	7404	123	0
+388	7404	123	0
+388	13462	183	0
+388	13462	183	0
+388	15615	243	0
+388	15615	243	0
+389	535	1	0
+389	535	1	0
+389	2307	2	0
+389	2307	2	0
+389	3697	3	0
+389	3697	3	0
+389	4847	63	0
+389	4847	63	0
+389	6619	123	0
+389	6619	123	0
+389	12677	183	0
+389	12677	183	0
+389	14830	243	0
+389	14830	243	0
+392	1739	1	0
+392	1739	1	0
+392	3319	3	0
+392	3319	3	0
+392	5174	63	0
+392	5174	63	0
+392	6946	123	0
+392	6946	123	0
+392	13004	183	0
+392	13004	183	0
+392	15157	243	0
+392	15157	243	0
+393	632	1	0
+393	632	1	0
+393	2404	2	0
+393	2404	2	0
+393	4529	62	0
+393	4529	62	0
+393	6301	122	0
+393	6301	122	0
+393	12359	182	0
+393	12359	182	0
+393	14512	242	0
+393	14512	242	0
+396	1770	1	0
+396	1770	1	0
+396	3984	4	0
+396	3984	4	0
+396	5778	64	0
+396	5778	64	0
+396	7550	124	0
+396	7550	124	0
+396	7982	130	0
+396	7982	130	0
+396	13608	184	0
+396	13608	184	0
+396	14040	200	0
+396	14040	200	0
+396	15761	244	0
+396	15761	244	0
+397	733	1	0
+397	733	1	0
+397	3057	3	0
+397	3057	3	0
+397	4948	63	0
+397	4948	63	0
+397	6720	123	0
+397	6720	123	0
+397	8288	130	0
+397	8288	130	0
+397	12778	183	0
+397	12778	183	0
+397	14346	200	0
+397	14346	200	0
+397	14931	243	0
+397	14931	243	0
+398	8368	140	0
+398	8368	140	0
+398	8954	140	0
+398	8954	140	0
+398	9149	141	0
+398	9149	141	0
+398	9735	141	0
+398	9735	141	0
+398	9930	142	0
+398	9930	142	0
+398	10516	142	0
+398	10516	142	0
+398	10711	143	0
+398	10711	143	0
+398	11297	143	0
+398	11297	143	0
+398	11492	144	0
+398	11492	144	0
+398	12078	144	0
+398	12078	144	0
+399	8687	140	0
+399	8687	140	0
+399	8867	140	1
+399	8875	140	0
+399	9468	141	0
+399	9468	141	0
+399	9648	141	1
+399	9656	141	0
+399	10249	142	0
+399	10249	142	0
+399	10429	142	1
+399	10437	142	0
+399	11030	143	0
+399	11030	143	0
+399	11210	143	1
+399	11218	143	0
+399	11811	144	0
+399	11811	144	0
+399	11991	144	1
+399	11999	144	0
+400	1793	1	0
+400	1793	1	0
+400	4017	4	0
+400	4017	4	0
+400	5811	64	0
+400	5811	64	0
+400	7583	124	0
+400	7583	124	0
+400	13641	184	0
+400	13641	184	0
+400	15794	244	0
+400	15794	244	0
+401	734	1	0
+401	734	1	0
+401	3058	3	0
+401	3058	3	0
+401	4949	63	0
+401	4949	63	0
+401	6721	123	0
+401	6721	123	0
+401	12779	183	0
+401	12779	183	0
+401	14932	243	0
+401	14932	243	0
+404	1847	1	0
+404	1847	1	0
+404	4083	4	0
+404	4083	4	0
+404	5844	64	0
+404	5844	64	0
+404	7616	124	0
+404	7616	124	0
+404	13674	184	0
+404	13674	184	0
+404	15827	244	0
+404	15827	244	0
+405	850	1	0
+405	850	1	0
+405	3218	3	0
+405	3218	3	0
+405	5087	63	0
+405	5087	63	0
+405	6859	123	0
+405	6859	123	0
+405	12917	183	0
+405	12917	183	0
+405	15070	243	0
+405	15070	243	0
+408	1870	1	0
+408	1870	1	0
+408	4116	4	0
+408	4116	4	0
+408	5877	64	0
+408	5877	64	0
+408	7649	124	0
+408	7649	124	0
+408	13707	184	0
+408	13707	184	0
+408	15860	244	0
+408	15860	244	0
+409	851	1	0
+409	851	1	0
+409	3219	3	0
+409	3219	3	0
+409	5088	63	0
+409	5088	63	0
+409	6860	123	0
+409	6860	123	0
+409	12918	183	0
+409	12918	183	0
+409	15071	243	0
+409	15071	243	0
+412	1816	1	0
+412	1816	1	0
+412	4050	4	0
+412	4050	4	0
+412	5910	64	0
+412	5910	64	0
+412	7682	124	0
+412	7682	124	0
+412	13740	184	0
+412	13740	184	0
+412	15893	244	0
+412	15893	244	0
+413	735	1	0
+413	735	1	0
+413	3059	3	0
+413	3059	3	0
+413	4950	63	0
+413	4950	63	0
+413	6722	123	0
+413	6722	123	0
+413	12780	183	0
+413	12780	183	0
+413	14933	243	0
+413	14933	243	0
+416	1893	1	0
+416	1893	1	0
+416	4149	4	0
+416	4149	4	0
+416	5943	64	0
+416	5943	64	0
+416	7715	124	0
+416	7715	124	0
+416	13773	184	0
+416	13773	184	0
+416	15926	244	0
+416	15926	244	0
+417	852	1	0
+417	852	1	0
+417	3220	3	0
+417	3220	3	0
+417	5089	63	0
+417	5089	63	0
+417	6861	123	0
+417	6861	123	0
+417	12919	183	0
+417	12919	183	0
+417	15072	243	0
+417	15072	243	0
+420	1088	1	0
+420	1088	1	0
+420	2560	2	0
+420	2560	2	0
+420	3785	3	0
+420	3785	3	0
+420	5281	63	0
+420	5281	63	0
+420	7053	123	0
+420	7053	123	0
+420	8228	130	0
+420	8228	130	0
+420	13111	183	0
+420	13111	183	0
+420	14286	200	0
+420	14286	200	0
+420	15264	243	0
+420	15264	243	0
+421	1523	1	0
+421	1523	1	0
+421	2893	2	0
+421	2893	2	0
+421	4723	62	0
+421	4723	62	0
+421	6495	122	0
+421	6495	122	0
+421	8042	130	0
+421	8042	130	0
+421	12553	182	0
+421	12553	182	0
+421	14100	200	0
+421	14100	200	0
+421	14706	242	0
+421	14706	242	0
+422	8627	140	0
+422	8627	140	0
+422	8803	140	0
+422	8803	140	0
+422	9408	141	0
+422	9408	141	0
+422	9584	141	0
+422	9584	141	0
+422	10189	142	0
+422	10189	142	0
+422	10365	142	0
+422	10365	142	0
+422	10970	143	0
+422	10970	143	0
+422	11146	143	0
+422	11146	143	0
+422	11751	144	0
+422	11751	144	0
+422	11927	144	0
+422	11927	144	0
+423	8428	140	0
+423	8428	140	0
+423	9014	140	0
+423	9014	140	0
+423	9209	141	0
+423	9209	141	0
+423	9795	141	0
+423	9795	141	0
+423	9990	142	0
+423	9990	142	0
+423	10576	142	0
+423	10576	142	0
+423	10771	143	0
+423	10771	143	0
+423	11357	143	0
+423	11357	143	0
+423	11552	144	0
+423	11552	144	0
+423	12138	144	0
+423	12138	144	0
+424	1185	1	0
+424	1185	1	0
+424	2657	2	0
+424	2657	2	0
+424	4685	62	0
+424	4685	62	0
+424	6457	122	0
+424	6457	122	0
+424	12515	182	0
+424	12515	182	0
+424	14668	242	0
+424	14668	242	0
+425	1575	1	0
+425	1575	1	0
+425	4422	61	0
+425	4422	61	0
+425	6194	121	0
+425	6194	121	0
+425	12252	181	0
+425	12252	181	0
+425	14405	241	0
+425	14405	241	0
+428	1238	1	0
+428	1238	1	0
+428	2710	2	0
+428	2710	2	0
+428	4182	4	0
+428	4182	4	0
+428	5976	64	0
+428	5976	64	0
+428	7748	124	0
+428	7748	124	0
+428	13806	184	0
+428	13806	184	0
+428	15959	244	0
+428	15959	244	0
+429	1425	1	0
+429	1425	1	0
+429	3379	3	0
+429	3379	3	0
+429	5323	63	0
+429	5323	63	0
+429	7095	123	0
+429	7095	123	0
+429	13153	183	0
+429	13153	183	0
+429	15306	243	0
+429	15306	243	0
+432	1271	1	0
+432	1271	1	0
+432	2743	2	0
+432	2743	2	0
+432	4215	4	0
+432	4215	4	0
+432	6009	64	0
+432	6009	64	0
+432	7781	124	0
+432	7781	124	0
+432	13839	184	0
+432	13839	184	0
+432	15992	244	0
+432	15992	244	0
+433	1426	1	0
+433	1426	1	0
+433	3380	3	0
+433	3380	3	0
+433	5324	63	0
+433	5324	63	0
+433	7096	123	0
+433	7096	123	0
+433	13154	183	0
+433	13154	183	0
+433	15307	243	0
+433	15307	243	0
+436	1304	1	0
+436	1304	1	0
+436	2776	2	0
+436	2776	2	0
+436	4248	4	0
+436	4248	4	0
+436	6042	64	0
+436	6042	64	0
+436	7814	124	0
+436	7814	124	0
+436	13872	184	0
+436	13872	184	0
+436	16025	244	0
+436	16025	244	0
+437	1427	1	0
+437	1427	1	0
+437	3381	3	0
+437	3381	3	0
+437	5325	63	0
+437	5325	63	0
+437	7097	123	0
+437	7097	123	0
+437	13155	183	0
+437	13155	183	0
+437	15308	243	0
+437	15308	243	0
+440	1337	1	0
+440	1337	1	0
+440	2809	2	0
+440	2809	2	0
+440	4281	4	0
+440	4281	4	0
+440	6075	64	0
+440	6075	64	0
+440	7847	124	0
+440	7847	124	0
+440	13905	184	0
+440	13905	184	0
+440	16058	244	0
+440	16058	244	0
+441	1476	1	0
+441	1476	1	0
+441	3540	3	0
+441	3540	3	0
+441	5462	63	0
+441	5462	63	0
+441	7234	123	0
+441	7234	123	0
+441	13292	183	0
+441	13292	183	0
+441	15445	243	0
+441	15445	243	0
+444	1370	1	0
+444	1370	1	0
+444	2842	2	0
+444	2842	2	0
+444	4314	4	0
+444	4314	4	0
+444	6108	64	0
+444	6108	64	0
+444	7880	124	0
+444	7880	124	0
+444	13938	184	0
+444	13938	184	0
+444	16091	244	0
+444	16091	244	0
+445	1477	1	0
+445	1477	1	0
+445	3541	3	0
+445	3541	3	0
+445	5463	63	0
+445	5463	63	0
+445	7235	123	0
+445	7235	123	0
+445	13293	183	0
+445	13293	183	0
+445	15446	243	0
+445	15446	243	0
+448	1403	1	0
+448	1403	1	0
+448	2875	2	0
+448	2875	2	0
+448	4347	4	0
+448	4347	4	0
+448	6141	64	0
+448	6141	64	0
+448	7913	124	0
+448	7913	124	0
+448	8172	130	0
+448	8172	130	0
+448	13971	184	0
+448	13971	184	0
+448	14230	200	0
+448	14230	200	0
+448	16124	244	0
+448	16124	244	0
+449	1478	1	0
+449	1478	1	0
+449	3542	3	0
+449	3542	3	0
+449	5464	63	0
+449	5464	63	0
+449	7236	123	0
+449	7236	123	0
+449	8098	130	0
+449	8098	130	0
+449	13294	183	0
+449	13294	183	0
+449	14156	200	0
+449	14156	200	0
+449	15447	243	0
+449	15447	243	0
+450	8571	140	0
+450	8571	140	0
+450	8741	140	0
+450	8741	140	0
+450	9352	141	0
+450	9352	141	0
+450	9522	141	0
+450	9522	141	0
+450	10133	142	0
+450	10133	142	0
+450	10303	142	0
+450	10303	142	0
+450	10914	143	0
+450	10914	143	0
+450	11084	143	0
+450	11084	143	0
+450	11695	144	0
+450	11695	144	0
+450	11865	144	0
+450	11865	144	0
+451	8484	140	0
+451	8484	140	0
+451	9070	140	0
+451	9070	140	0
+451	9265	141	0
+451	9265	141	0
+451	9851	141	0
+451	9851	141	0
+451	10046	142	0
+451	10046	142	0
+451	10632	142	0
+451	10632	142	0
+451	10827	143	0
+451	10827	143	0
+451	11413	143	0
+451	11413	143	0
+451	11608	144	0
+451	11608	144	0
+451	12194	144	0
+451	12194	144	0
+452	1951	1	0
+452	1951	1	0
+452	3478	3	0
+452	3478	3	0
+452	5688	63	0
+452	5688	63	0
+452	7460	123	0
+452	7460	123	0
+452	13518	183	0
+452	13518	183	0
+452	15671	243	0
+452	15671	243	0
+453	1028	1	0
+453	1028	1	0
+453	2500	2	0
+453	2500	2	0
+453	3749	3	0
+453	3749	3	0
+453	5221	63	0
+453	5221	63	0
+453	6993	123	0
+453	6993	123	0
+453	13051	183	0
+453	13051	183	0
+453	15204	243	0
+453	15204	243	0
+456	2026	1	0
+456	2026	1	0
+456	3480	3	0
+456	3480	3	0
+456	5410	63	0
+456	5410	63	0
+456	7182	123	0
+456	7182	123	0
+456	13240	183	0
+456	13240	183	0
+456	15393	243	0
+456	15393	243	0
+457	1125	1	0
+457	1125	1	0
+457	2597	2	0
+457	2597	2	0
+457	4625	62	0
+457	4625	62	0
+457	6397	122	0
+457	6397	122	0
+457	12455	182	0
+457	12455	182	0
+457	14608	242	0
+457	14608	242	0
+460	1974	1	0
+460	1974	1	0
+460	3639	3	0
+460	3639	3	0
+460	5711	63	0
+460	5711	63	0
+460	7483	123	0
+460	7483	123	0
+460	8200	130	0
+460	8200	130	0
+460	13541	183	0
+460	13541	183	0
+460	14258	200	0
+460	14258	200	0
+460	15694	243	0
+460	15694	243	0
+461	1029	1	0
+461	1029	1	0
+461	2501	2	0
+461	2501	2	0
+461	3750	3	0
+461	3750	3	0
+461	5222	63	0
+461	5222	63	0
+461	6994	123	0
+461	6994	123	0
+461	8070	130	0
+461	8070	130	0
+461	13052	183	0
+461	13052	183	0
+461	14128	200	0
+461	14128	200	0
+461	15205	243	0
+461	15205	243	0
+462	8599	140	0
+462	8599	140	0
+462	8772	140	0
+462	8772	140	0
+462	9380	141	0
+462	9380	141	0
+462	9553	141	0
+462	9553	141	0
+462	10161	142	0
+462	10161	142	0
+462	10334	142	0
+462	10334	142	0
+462	10942	143	0
+462	10942	143	0
+462	11115	143	0
+462	11115	143	0
+462	11723	144	0
+462	11723	144	0
+462	11896	144	0
+462	11896	144	0
+463	8456	140	0
+463	8456	140	0
+463	9042	140	0
+463	9042	140	0
+463	9237	141	0
+463	9237	141	0
+463	9823	141	0
+463	9823	141	0
+463	10018	142	0
+463	10018	142	0
+463	10604	142	0
+463	10604	142	0
+463	10799	143	0
+463	10799	143	0
+463	11385	143	0
+463	11385	143	0
+463	11580	144	0
+463	11580	144	0
+463	12166	144	0
+463	12166	144	0
+464	2049	1	0
+464	2049	1	0
+464	3641	3	0
+464	3641	3	0
+464	5549	63	0
+464	5549	63	0
+464	7321	123	0
+464	7321	123	0
+464	13379	183	0
+464	13379	183	0
+464	15532	243	0
+464	15532	243	0
+465	1126	1	0
+465	1126	1	0
+465	2598	2	0
+465	2598	2	0
+465	4626	62	0
+465	4626	62	0
+465	6398	122	0
+465	6398	122	0
+465	12456	182	0
+465	12456	182	0
+465	14609	242	0
+465	14609	242	0
+468	1558	1	0
+468	1558	1	0
+468	2928	2	0
+468	2928	2	0
+468	4782	62	0
+468	4782	62	0
+468	6554	122	0
+468	6554	122	0
+468	12612	182	0
+468	12612	182	0
+468	14765	242	0
+468	14765	242	0
+469	1576	1	0
+469	1576	1	0
+469	4423	61	0
+469	4423	61	0
+469	6195	121	0
+469	6195	121	0
+469	12253	181	0
+469	12253	181	0
+469	14406	241	0
+469	14406	241	0

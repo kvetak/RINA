@@ -15,16 +15,34 @@
 
 /* Author: Sergio Leon (gaixas1@gmail.com) */
 
-#ifndef __RINA_PrefDistanceVectorPOLICY_H
-#define __RINA_PrefDistanceVectorPOLICY_H
+#ifndef __RINA_PrefDistanceVectorPolicy_H
+#define __RINA_PrefDistanceVectorPolicy_H
 
 #include <omnetpp.h>
+#include <map>
+#include <set>
 
 #include "PDUFTGPolicy.h"
 #include "PrefixPDUForwardingTable.h"
 #include "rtTab.h"
 
+
 #define PDUFTG_SELFMSG_FSUPDATE     0x01
+#define PDUFTG_SELFMSG_FSUPDATEFORCE     0x02
+
+typedef std::pair<unsigned short, std::string> qosAddr;
+
+struct addrInfo{
+    bool parent;
+    bool son;
+    bool neighbour;
+    std::string addr;
+    std::string commonPrefix;
+    unsigned char prefSize;
+    std::string storedAddr;
+
+    addrInfo(std::string _addr);
+};
 
 // This implements a basic distance-vector routing policy.
 // The metric used is in term of hops.
@@ -45,28 +63,35 @@ protected:
 
     /* msec between updates. */
     unsigned int updateT;
+    unsigned int updateFT;
+    bool forcedUpdateProgramed;
+
     PrefixPDUForwardingTable * fwt;
 
     void handleMessage(cMessage *msg);
     void initialize();
 
     void finish();
+    void ForceUpdate();
 
     std::string thisIPCAddr;
+    std::string thisIPCAddrOPref;
     std::vector<std::string> thisIPCAddrParsed;
     std::string any;
     char delimiter;
 
+
+    addrInfo parseAddr(std::string addr);
+    std::map<std::string, std::set<unsigned short> > address2Qos;
+    std::map<qosAddr, RMTPort* > qosAddr2Port;
     rtTab table;
 
-    std::string getNAddr(const std::string &addr);
-    std::string getNAddr(const Address &addr);
-    bool im(const std::string &addr);
-    bool neighbour(const std::string &addr);
-
+    simtime_t lastUpdate;
 
     // Just prepare an update fo a destination host.
     PDUFTGUpdate * prepareFSUpdate(Address destination);
+
+    void replaceOrRemoveFwtEntry(std::string dst, std::string nextH, unsigned short qos);
 
 public:
     PrefDistanceVectorPolicy();
@@ -84,6 +109,7 @@ public:
     /* Get the update timer actual tick value.
      */
     unsigned int getUpdateTimeout();
+    unsigned int getForcedUpdateTimeout();
 
     // Insert a new flow which has been open locally to this IPC Process.
     //
@@ -101,6 +127,7 @@ public:
     /* Set a new timeout between an update message and another, in seconds.
      */
     void setUpdateTimeout(unsigned int sec);
+    void setForcedUpdateTimeout(unsigned int sec);
 };
 
-#endif // __RINA_PrefDistanceVectorPOLICY_H
+#endif // __RINA_PrefDistanceVectorPolicy_H

@@ -19,6 +19,7 @@ public:
 
     void setUpdates(updatesList list);
     void addEntry(unsigned short _qos, std::string _dst, int _metric);
+    void addEntries(updatesList list);
 
     updatesListIterator entriesBegin();
     updatesListIterator entriesEnd();

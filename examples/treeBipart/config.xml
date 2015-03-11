@@ -1,0 +1,730 @@
+<?xml version="1.0"?>
+<Configuration>
+  <Node id="N0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1_DC" qosCube="1"/>
+          <Flow apn="1_DC" qosCube="2"/>
+          <Flow apn="1_DC" qosCube="3"/>
+          <Flow apn="1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0_DC" qosCube="1"/>
+          <Flow apn="0_DC" qosCube="2"/>
+          <Flow apn="0_DC" qosCube="3"/>
+          <Flow apn="0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_0_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.0_DC" qosCube="1"/>
+          <Flow apn="0.0_DC" qosCube="2"/>
+          <Flow apn="0.0_DC" qosCube="3"/>
+          <Flow apn="0.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_0_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.0.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_0_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.0_DC" qosCube="1"/>
+          <Flow apn="0.0_DC" qosCube="2"/>
+          <Flow apn="0.0_DC" qosCube="3"/>
+          <Flow apn="0.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_0_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.0.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_0_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.0_DC" qosCube="1"/>
+          <Flow apn="0.0_DC" qosCube="2"/>
+          <Flow apn="0.0_DC" qosCube="3"/>
+          <Flow apn="0.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_0_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.0.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0_DC" qosCube="1"/>
+          <Flow apn="0_DC" qosCube="2"/>
+          <Flow apn="0_DC" qosCube="3"/>
+          <Flow apn="0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_1_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.1_DC" qosCube="1"/>
+          <Flow apn="0.1_DC" qosCube="2"/>
+          <Flow apn="0.1_DC" qosCube="3"/>
+          <Flow apn="0.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_1_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.1.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_1_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.1_DC" qosCube="1"/>
+          <Flow apn="0.1_DC" qosCube="2"/>
+          <Flow apn="0.1_DC" qosCube="3"/>
+          <Flow apn="0.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_1_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.1.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_1_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.1_DC" qosCube="1"/>
+          <Flow apn="0.1_DC" qosCube="2"/>
+          <Flow apn="0.1_DC" qosCube="3"/>
+          <Flow apn="0.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_1_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.1.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0_DC" qosCube="1"/>
+          <Flow apn="0_DC" qosCube="2"/>
+          <Flow apn="0_DC" qosCube="3"/>
+          <Flow apn="0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_2_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.2_DC" qosCube="1"/>
+          <Flow apn="0.2_DC" qosCube="2"/>
+          <Flow apn="0.2_DC" qosCube="3"/>
+          <Flow apn="0.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_2_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.2.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_2_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.2_DC" qosCube="1"/>
+          <Flow apn="0.2_DC" qosCube="2"/>
+          <Flow apn="0.2_DC" qosCube="3"/>
+          <Flow apn="0.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_2_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.2.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N0_2_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="0.2_DC" qosCube="1"/>
+          <Flow apn="0.2_DC" qosCube="2"/>
+          <Flow apn="0.2_DC" qosCube="3"/>
+          <Flow apn="0.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S0_2_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="0.2.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1_DC" qosCube="1"/>
+          <Flow apn="1_DC" qosCube="2"/>
+          <Flow apn="1_DC" qosCube="3"/>
+          <Flow apn="1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_0_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.0_DC" qosCube="1"/>
+          <Flow apn="1.0_DC" qosCube="2"/>
+          <Flow apn="1.0_DC" qosCube="3"/>
+          <Flow apn="1.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_0_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.0.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_0_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.0_DC" qosCube="1"/>
+          <Flow apn="1.0_DC" qosCube="2"/>
+          <Flow apn="1.0_DC" qosCube="3"/>
+          <Flow apn="1.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_0_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.0.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_0_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.0_DC" qosCube="1"/>
+          <Flow apn="1.0_DC" qosCube="2"/>
+          <Flow apn="1.0_DC" qosCube="3"/>
+          <Flow apn="1.0_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_0_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.0.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1_DC" qosCube="1"/>
+          <Flow apn="1_DC" qosCube="2"/>
+          <Flow apn="1_DC" qosCube="3"/>
+          <Flow apn="1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_1_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.1_DC" qosCube="1"/>
+          <Flow apn="1.1_DC" qosCube="2"/>
+          <Flow apn="1.1_DC" qosCube="3"/>
+          <Flow apn="1.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_1_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.1.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_1_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.1_DC" qosCube="1"/>
+          <Flow apn="1.1_DC" qosCube="2"/>
+          <Flow apn="1.1_DC" qosCube="3"/>
+          <Flow apn="1.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_1_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.1.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_1_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.1_DC" qosCube="1"/>
+          <Flow apn="1.1_DC" qosCube="2"/>
+          <Flow apn="1.1_DC" qosCube="3"/>
+          <Flow apn="1.1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_1_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.1.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1_DC" qosCube="1"/>
+          <Flow apn="1_DC" qosCube="2"/>
+          <Flow apn="1_DC" qosCube="3"/>
+          <Flow apn="1_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_2_0">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.2_DC" qosCube="1"/>
+          <Flow apn="1.2_DC" qosCube="2"/>
+          <Flow apn="1.2_DC" qosCube="3"/>
+          <Flow apn="1.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_2_0">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.2.0_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_2_1">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.2_DC" qosCube="1"/>
+          <Flow apn="1.2_DC" qosCube="2"/>
+          <Flow apn="1.2_DC" qosCube="3"/>
+          <Flow apn="1.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_2_1">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.2.1_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="N1_2_2">
+    <IPC id="relayIpc">
+      <RA>
+        <Flows>
+          <Flow apn="1.2_DC" qosCube="1"/>
+          <Flow apn="1.2_DC" qosCube="2"/>
+          <Flow apn="1.2_DC" qosCube="3"/>
+          <Flow apn="1.2_DC" qosCube="4"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+  <Node id="S1_2_2">
+    <IPC id="ipcProcess1">
+      <RA>
+        <Flows>
+          <Flow apn="1.2.2_DC" qosCube="1"/>
+        </Flows>
+      </RA>
+    </IPC>
+  </Node>
+
+  <DA>
+    <Directory>
+      <APN apn="0_DC">
+        <DIF difName="S" ipcAddress="A"/>
+        <DIF difName="S0_0" ipcAddress="A"/>
+        <DIF difName="S0_1" ipcAddress="A"/>
+        <DIF difName="S0_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.0_DC">
+        <DIF difName="S0_0" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.0.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.0.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.0.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.0.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.0.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.0.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.1_DC">
+        <DIF difName="S0_1" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.1.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.1.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.1.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.1.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.1.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.1.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.2_DC">
+        <DIF difName="S0_2" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.2.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.2.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.2.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.2.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="0.2.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="0.2.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1_DC">
+        <DIF difName="S" ipcAddress="B"/>
+        <DIF difName="S0_0" ipcAddress="A"/>
+        <DIF difName="S0_1" ipcAddress="A"/>
+        <DIF difName="S0_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.0_DC">
+        <DIF difName="S0_0" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.0.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.0.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.0.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.0.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.0.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.0.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.1_DC">
+        <DIF difName="S0_1" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.1.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.1.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.1.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.1.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.1.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.1.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.2_DC">
+        <DIF difName="S0_2" ipcAddress="B"/>
+        <DIF difName="S1_0" ipcAddress="A"/>
+        <DIF difName="S1_1" ipcAddress="A"/>
+        <DIF difName="S1_2" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.2.0_DC">
+        <DIF difName="S1_0" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.2.0.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.2.1_DC">
+        <DIF difName="S1_1" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.2.1.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+      <APN apn="1.2.2_DC">
+        <DIF difName="S1_2" ipcAddress="B"/>
+        <DIF difName="S2_app" ipcAddress="A"/>
+      </APN>
+      <APN apn="1.2.2.s_DC">
+        <DIF difName="S2_app" ipcAddress="B"/>
+      </APN>
+    </Directory>
+  </DA>
+<QoSCubesSet>
+		<QosCube id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000</Delay>
+			<Jitter>500</Jitter>
+			<CostTime>100</CostTime>
+			<CostBits>100</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>
+		<QosCube id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.5</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000</Delay>
+			<Jitter>500</Jitter>
+			<CostTime>50</CostTime>
+			<CostBits>50</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>		
+		<QosCube id="3">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>10000</Delay>
+			<Jitter>5000</Jitter>
+			<CostTime>50</CostTime>
+			<CostBits>50</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>		
+		<QosCube id="4">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.5</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>10000</Delay>
+			<Jitter>5000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>		
+	</QoSCubesSet>
+</Configuration>

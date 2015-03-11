@@ -25,4 +25,11 @@ std::vector<std::string> split(const std::string &s, char delim);
  */
 std::string join(const std::vector<std::string> &elems, const unsigned int n, const char delim);
 
+
+/*
+ * Check if the first value is a prefix of the second
+ *
+ */
+bool isPrefix(std::string prefix, std::string s);
+
 #endif /* UTILS_H_ */

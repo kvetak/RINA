@@ -25,6 +25,10 @@ void PrefPDUFTGUpdate::addEntry(unsigned short _qos, std::string _dst, int _metr
     entries.push_back(rtUpdate(_qos, _dst, _metric));
 }
 
+void PrefPDUFTGUpdate::addEntries(updatesList list){
+    entries.insert(entries.end(),list.begin(),  list.end());
+}
+
 updatesListIterator PrefPDUFTGUpdate::entriesBegin(){
     return entries.begin();
 }
