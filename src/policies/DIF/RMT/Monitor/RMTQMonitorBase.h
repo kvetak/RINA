@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -20,6 +20,7 @@
 
 #include <omnetpp.h>
 #include "RMTSchedulingBase.h"
+#include "AddressComparatorBase.h"
 #include "RMTModuleAllocator.h"
 #include "RMTQueue.h"
 #include "PDU.h"
@@ -58,7 +59,7 @@ class RMTQMonitorBase : public cSimpleModule
      * @param queue pointer to the queue
      * @param pdu PDU being dropped
      */
-    virtual void onMessageDrop(RMTQueue* queue, const cMessage* pdu);
+    virtual void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
 
     /**
      * A hook method invoked after a queue is created.
@@ -87,14 +88,19 @@ class RMTQMonitorBase : public cSimpleModule
     virtual void handleMessage(cMessage* msg);
 
     /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
+
+    /**
      * Pointer to a scheduling policy module.
      */
     RMTSchedulingBase* schedPolicy;
 
     /**
-     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     * Pointer to an address comparator module.
      */
-    RMTModuleAllocator* rmtAllocator;
+    AddressComparatorBase* addrComparator;
 
   private:
 

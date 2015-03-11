@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -24,7 +24,7 @@ package rina.DIF.RMT;
 module RelayAndMux
 {
     parameters:
-        @display("i=block/classifier;bgb=645,275");
+        @display("i=block/classifier;bgb=645,230");
 
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");

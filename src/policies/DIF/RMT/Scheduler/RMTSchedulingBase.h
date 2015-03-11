@@ -64,16 +64,6 @@ class RMTSchedulingBase : public cSimpleModule
      */
     void handleMessage(cMessage *msg);
 
-    /**
-     * Counts of PDUs waiting in output queues.
-     */
-    std::map<RMTPort*, unsigned int> waitingOnOutput;
-
-    /**
-     * Counts of PDUs waiting in input queues.
-     */
-    std::map<RMTPort*, unsigned int> waitingOnInput;
-
     // temporary
     std::map<RMTPort*, bool> inputBusy;
 

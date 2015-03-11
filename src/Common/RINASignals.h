@@ -77,12 +77,16 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 
 //RMT
 extern const char* SIG_RMT_NoConnId;
+extern const char* SIG_RMT_SlowdownRequest;
 extern const char* SIG_RMT_QueuePDURcvd;
 extern const char* SIG_RMT_QueuePDUSent;
 extern const char* SIG_RMT_PortPDURcvd;
 extern const char* SIG_RMT_PortPDUSent;
 extern const char* SIG_RMT_PortReadyToServe;
-extern const char* SIG_RMT_SlowdownRequest;
+extern const char* SIG_RMT_PortDrainDisable;
+extern const char* SIG_RMT_PortDrainEnable;
+extern const char* SIG_RMT_PortDrainSlowDown;
+extern const char* SIG_RMT_PortDrainSpeedUp;
 
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;
@@ -90,4 +94,7 @@ extern const char* SIG_PDUFTG_FwdInfoUpdate;
 //EFCP (DTP+DTCP)
 extern const char* SIG_EFCP_StahpSending;
 extern const char* SIG_EFCP_StartSending;
+
 #endif /* RINASIGNALS_H_ */
+
+

@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -17,13 +17,10 @@
 
 #include "RMTQueue.h"
 
+const char* SIG_STAT_RMTQUEUE_LENGTH = "RMTQueue_Length";
+const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";
+
 Define_Module(RMTQueue);
-
-
-RMTQueue::RMTQueue()
-: queueId("")
-{
-}
 
 RMTQueue::~RMTQueue()
 {
@@ -34,6 +31,22 @@ RMTQueue::~RMTQueue()
     }
 }
 
+void RMTQueue::finish()
+{
+    size_t pduCount = queue.size();
+    if (pduCount)
+    {
+        EV << "This queue still contains " << pduCount << " unprocessed PDUs!" << endl;
+
+        for (iterator it = begin(); it != end(); ++it)
+        {
+            cPacket* p = *it;
+            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
+        }
+    }
+}
+
+
 void RMTQueue::initialize()
 {
     outputGate = gate("outputGate");
@@ -42,11 +55,17 @@ void RMTQueue::initialize()
     sigRMTPDURcvd = registerSignal(SIG_RMT_QueuePDURcvd);
     // message departure signal handler
     sigRMTPDUSent = registerSignal(SIG_RMT_QueuePDUSent);
+    // length for vector stats
+    sigStatRMTQueueLength = registerSignal(SIG_STAT_RMTQUEUE_LENGTH);
 
-    maxQLength = getParentModule()->par("defaultMaxQLength");
-    thresholdQLength = getParentModule()->par("defaultThreshQLength");
+    maxQLength = getParentModule()->getParentModule()->par("defaultMaxQLength");
+    thresholdQLength = getParentModule()->getParentModule()->par("defaultThreshQLength");
     qTime = simTime();
     redrawGUI();
+
+    WATCH(thresholdQLength);
+    WATCH(maxQLength);
+    WATCH(qTime);
 }
 
 std::string RMTQueue::info() const
@@ -83,15 +102,15 @@ void RMTQueue::redrawGUI()
     }
     else if (len < thresholdQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorBusy").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorBusy").stringValue());
     }
     else if (len < maxQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorWarn").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorWarn").stringValue());
     }
     else
     {
-        disp.setTagArg("i", 1, getParentModule()->par("queueColorFull").stringValue());
+        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorFull").stringValue());
     }
 
     // print current saturation in numbers
@@ -117,6 +136,7 @@ void RMTQueue::enqueuePDU(cPacket* pdu)
 {
     queue.push_back(pdu);
     emit(sigRMTPDURcvd, this);
+    emit(sigStatRMTQueueLength, getLength());
     redrawGUI();
 }
 
@@ -136,6 +156,7 @@ void RMTQueue::releasePDU(void)
         }
 
         emit(sigRMTPDUSent, this);
+        emit(sigStatRMTQueueLength, getLength());
         bubble("Releasing a PDU...");
         redrawGUI();
     }
@@ -207,22 +228,12 @@ void RMTQueue::setType(queueType type)
     this->type = type;
 }
 
-const char* RMTQueue::getQueueId() const
-{
-    return queueId;
-}
-
-void RMTQueue::setQueueId(const char* queueId)
-{
-    this->queueId = queueId;
-}
-
-cGate* RMTQueue::getRmtAccessGate() const
+cGate* RMTQueue::getRMTAccessGate() const
 {
     return rmtAccessGate;
 }
 
-void RMTQueue::setRmtAccessGate(cGate* gate)
+void RMTQueue::setRMTAccessGate(cGate* gate)
 {
     rmtAccessGate = gate;
 }
@@ -237,67 +248,12 @@ cGate* RMTQueue::getInputGate() const
     return inputGate;
 }
 
-unsigned int RMTQueue::getFirstPDUPayloadLength()
+const cPacket* RMTQueue::getFirstPDU() const
 {
-    PDU* pdu = dynamic_cast<PDU*>(queue.front());
-
-    if (pdu != NULL)
-    {
-        return pdu->getSize();
-    }
-    {
-        EV << "The first message isn't a data PDU!" << endl;
-    }
-
-    return 0;
+    return queue.front();
 }
 
 const cPacket* RMTQueue::getLastPDU() const
 {
     return queue.back();
-}
-
-unsigned int RMTQueue::getLastPDUPayloadLength()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.back());
-
-    if (pdu != NULL)
-    {
-        return pdu->getSize();
-    }
-    {
-        EV << "The last message isn't a data PDU!" << endl;
-    }
-
-    return 0;
-}
-
-unsigned short RMTQueue::getFirstPDUQoSID()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.front());
-
-    if (pdu != NULL)
-    {
-        return pdu->getConnId().getQoSId();
-    }
-    {
-        EV << "The first message isn't a data PDU!" << endl;
-    }
-
-    return 0;
-}
-
-unsigned short RMTQueue::getLastPDUQoSID()
-{
-    PDU* pdu = dynamic_cast<PDU*>(queue.back());
-
-    if (pdu != NULL)
-    {
-        return pdu->getConnId().getQoSId();
-    }
-    {
-        EV << "The last message isn't a data PDU!" << endl;
-    }
-
-    return 0;
 }

@@ -27,7 +27,9 @@ Flow::Flow() :
     srcAddr(Address()), dstAddr(Address()),
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
-    createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT) {
+    createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT),
+    allocInvokeId(0), deallocInvokeId(0)
+{
 }
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
@@ -36,7 +38,8 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcAddr(Address()), dstAddr(Address()),
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
-        createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT)
+        createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT),
+        allocInvokeId(0), deallocInvokeId(0)
 {
 }
 
@@ -52,6 +55,8 @@ Flow::~Flow() {
     this->hopCount = VAL_UNDEFINED;
     srcNeighbor = Address();
     dstNeighbor = Address();
+    allocInvokeId = 0;
+    deallocInvokeId = 0;
 }
 
 bool Flow::operator ==(const Flow& other) const {
@@ -62,6 +67,7 @@ bool Flow::operator ==(const Flow& other) const {
             && createFlowRetries == other.createFlowRetries && maxCreateFlowRetries == other.maxCreateFlowRetries
             && hopCount == other.hopCount
             && srcNeighbor == other.srcNeighbor && dstNeighbor == other.dstNeighbor
+            //&& allocInvokeId == other.allocInvokeId && deallocInvokeId == other.deallocInvokeId
             );
 }
 
@@ -164,6 +170,8 @@ Flow* Flow::dup() const {
     flow->setQosParameters(this->getQosParameters());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());
+    flow->setAllocInvokeId(this->getAllocInvokeId());
+    flow->setDeallocInvokeId(this->getDeallocInvokeId());
     return flow;
 }
 
@@ -233,6 +241,30 @@ bool Flow::compare(const Flow& other) const {
             && srcAddr == other.srcAddr && dstAddr == other.dstAddr
             && conId == other.conId
             );
+}
+
+/*
+const long Flow::getPortCepId() const {
+    int ports = getSrcPortId() xor getDstPortId();
+    int ceps = conId.getSrcCepId() xor conId.getDstCepId();
+    return (long) ((ports << sizeof(int)) xor ceps);
+}
+*/
+
+long Flow::getAllocInvokeId() const{
+    return allocInvokeId;
+}
+
+void Flow::setAllocInvokeId(long allocInvokeId) {
+    this->allocInvokeId = allocInvokeId;
+}
+
+long Flow::getDeallocInvokeId() const {
+    return deallocInvokeId;
+}
+
+void Flow::setDeallocInvokeId(long deallocInvokeId) {
+    this->deallocInvokeId = deallocInvokeId;
 }
 
 void Flow::swapApni() {

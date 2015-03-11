@@ -37,7 +37,7 @@ class ConnectionTable : public cSimpleModule
 
     ConnectionTableEntry* findEntryByFlow(Flow* flow);
 
-    cGate* findOutputGate(cGate* input);
+    cGate* findOutputGate(cGate* input, bool& isGoingUp);
 
     bool setSouthGates(Flow* flow, cGate* sIn, cGate* sOut);
     bool setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);

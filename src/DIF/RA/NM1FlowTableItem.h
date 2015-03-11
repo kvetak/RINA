@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -42,10 +44,10 @@ class NM1FlowTableItem
     std::string info() const;
 
     Flow* getFlow() const;
-    FABase* getFaBase() const;
-    RMTPort* getRmtPort() const;
-    const RMTQueues& getRmtInputQueues() const;
-    const RMTQueues& getRmtOutputQueues() const;
+    FABase* getFABase() const;
+    RMTPort* getRMTPort() const;
+    const RMTQueues& getRMTInputQueues() const;
+    const RMTQueues& getRMTOutputQueues() const;
     std::string getGateName() const;
     void setConnectionStatus(ConnectionStatus status);
     ConnectionStatus getConnectionStatus();

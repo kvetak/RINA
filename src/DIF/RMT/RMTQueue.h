@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -33,7 +33,7 @@ class RMTQueue : public cSimpleModule
   friend class RMTModuleAllocator;
 
   public:
-    RMTQueue();
+
     virtual ~RMTQueue();
 
     /**
@@ -90,66 +90,47 @@ class RMTQueue : public cSimpleModule
      * @param value new threshold
      */
     void setThreshLength(int value);
+//
+//    /**
+//     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
+//     *
+//     * @return queue ID
+//     */
+//    const char* getQueueId() const;
+//
+//    /**
+//     * Sets the queue ID.
+//     *
+//     * @param queueId new queue ID
+//     */
+//    void setQueueId(const char* queueId);
 
     /**
-     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
+     * Returns a pointer to the first PDU in the queue.
      *
-     * @return queue ID
+     * @return PDU
      */
-    const char* getQueueId() const;
-
-    /**
-     * Sets the queue ID.
-     *
-     * @param queueId new queue ID
-     */
-    void setQueueId(const char* queueId);
+    const cPacket* getFirstPDU() const;
 
     /**
      * Returns a pointer to the last PDU in the queue.
      *
-     * @return queue ID
+     * @return PDU
      */
     const cPacket* getLastPDU() const;
 
     /**
-     * Returns the payload length of the first PDU in the queue.
-     *
-     * @return queue ID
+     * Iterators.
      */
-    unsigned int getFirstPDUPayloadLength();
-
-    /**
-     * Returns the payload length of the last PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned int getLastPDUPayloadLength();
-
-    /**
-     * Returns the qos-id of the first PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned short getFirstPDUQoSID();
-
-    /**
-     * Returns the qos-id of the last PDU in the queue.
-     *
-     * @return queue ID
-     */
-    unsigned short getLastPDUQoSID();
+    typedef std::deque<cPacket*>::iterator iterator;
+    typedef std::deque<cPacket*>::const_iterator const_iterator;
+    iterator begin() { return queue.begin(); }
+    iterator end() { return queue.end(); }
 
     /**
      * Sends out the first PDU in the queue.
      */
     void releasePDU();
-
-    /**
-     * DEPRECATED: use releasePDU() instead.
-     * Instructs the module to send out the first message in the queue.
-     */
-    void startTransmitting() { Enter_Method("startTransmitting()"); releasePDU(); };
 
     /**
      * Marks the last PDU in a queue with a congestion bit.
@@ -163,18 +144,16 @@ class RMTQueue : public cSimpleModule
 
   protected:
     virtual void initialize();
+    virtual void finish();
     virtual void handleMessage(cMessage* msg);
 
   private:
     std::deque<cPacket*> queue;
     queueType type;
 
-    const char* queueId;
-
     int maxQLength;
     int thresholdQLength;
 
-    double queuingTime;
     simtime_t qTime;
 
     cGate* rmtAccessGate;
@@ -188,13 +167,14 @@ class RMTQueue : public cSimpleModule
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;
-    cGate* getRmtAccessGate() const;
-    void setRmtAccessGate(cGate* gate);
+    cGate* getRMTAccessGate() const;
+    void setRMTAccessGate(cGate* gate);
 
     void redrawGUI();
 
     simsignal_t sigRMTPDURcvd;
     simsignal_t sigRMTPDUSent;
+    simsignal_t sigStatRMTQueueLength;
 };
 
 typedef RMTQueue::queueType RMTQueueType;

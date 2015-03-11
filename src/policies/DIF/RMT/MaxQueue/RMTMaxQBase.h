@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -20,8 +20,10 @@
 
 #include <omnetpp.h>
 
+#include "RINASignals.h"
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
+#include "AddressComparatorBase.h"
 #include "RMTModuleAllocator.h"
 
 
@@ -55,9 +57,49 @@ class RMTMaxQBase : public cSimpleModule
     virtual void handleMessage(cMessage* msg);
 
     /**
+     * Send CDAP congestion notification to the PDU sender via RIBd.
+     *
+     * @param pdu pointer to PDU
+     */
+    void notifySenderOfCongestion(const cPacket* pdu);
+
+    /**
+     * Stops receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void disableSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Starts receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void enableSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Increases the rate of receiving data from PDU sender's arrival port at a faster rate.
+     *
+     * @param pointer to PDU
+     */
+    void slowDownSenderPortDrain(const cPacket* pdu);
+
+    /**
+     * Stops receiving data from PDU sender's arrival port.
+     *
+     * @param pointer to PDU
+     */
+    void speedUpSenderPortDrain(const cPacket* pdu);
+
+    /**
      * Pointer to the monitoring policy module.
      */
     RMTQMonitorBase* qMonPolicy;
+
+    /**
+     * Pointer to an address comparator module.
+     */
+    AddressComparatorBase* addrComparator;
 
     /**
      * Pointer to the RMT allocator module (also providing queue<->port mappings).
@@ -71,6 +113,31 @@ class RMTMaxQBase : public cSimpleModule
      *  Inherited policies should be using onPolicyInit() instead.
      */
     void initialize();
+
+    /**
+     * Congestion notifier.
+     */
+    simsignal_t sigRMTSDReq;
+
+    /**
+     * Signal used for disabling an incoming PDU's arrival port.
+     */
+    simsignal_t sigRMTPortDrainDisable;
+
+    /**
+     * Signal used for enabling an incoming PDU's arrival port.
+     */
+    simsignal_t sigRMTPortDrainEnable;
+
+    /**
+     * Signal used for speeding up an incoming PDU's arrival port drain rate.
+     */
+    simsignal_t sigRMTPortDrainSpeedUp;
+
+    /**
+     * Signal used for slowing down an incoming PDU's arrival port drain rate.
+     */
+    simsignal_t sigRMTPortDrainSlowDown;
 };
 
 #endif /* RMTMAXQBASE_H_ */

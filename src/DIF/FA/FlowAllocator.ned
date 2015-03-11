@@ -9,24 +9,24 @@ module FlowAllocator
 {
     parameters:
         @display("i=block/fork;bgb=513,318");
-		string newFlowReqPolicyType = default("QoSCubeComparer");
-		string allocRetryPolicyType = default("LimitedRetries");
+        string newFlowReqPolicyType = default("QoSCubeComparer");
+        string allocRetryPolicyType = default("LimitedRetries");
     gates:
 
     submodules:
         fa: FA {
-            @display("p=67,49");
+            @display("p=68,65");
         }
 
         faiTable: FAITable {
-            @display("p=159,49");
+            @display("p=160,65");
         }
 
         newFlowRequestPolicy: <newFlowReqPolicyType> like INewFlowRequest {
-            @display("p=301,49");
+            @display("p=302,65");
         }
         allocateRetryPolicy: <allocRetryPolicyType> like IAllocateRetry {
-            @display("p=427,49");
+            @display("p=428,65");
         }
     connections:
 

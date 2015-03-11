@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -68,8 +70,10 @@ class RA : public RABase
     virtual void createNM1FlowWithoutAllocate(Flow* flow);
     virtual void removeNM1Flow(Flow* flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
-    virtual void blockNM1Port(Flow* flow);
-    virtual void unblockNM1Port(Flow* flow);
+    virtual void blockNM1PortOutput(Flow* flow);
+    virtual void unblockNM1PortOutput(Flow* flow);
+    virtual void blockNM1PortInput(cObject* obj);
+    virtual void unblockNM1PortInput(cObject* obj);
 
     // event hook handlers
     virtual void postNFlowAllocation(Flow* flow);
@@ -86,7 +90,6 @@ class RA : public RABase
     cModule* rmtModule;
     RMT* rmt;
     RMTModuleAllocator* rmtAllocator;
-    //PDUForwardingTable* fwdTable;
     NM1FlowTable* flowTable;
     QueueAllocBase* qAllocPolicy;
 
@@ -119,6 +122,9 @@ class RA : public RABase
 
     LisRMTSlowdownRequest* lisRMTSDReq;
     LisRIBCongNotif* lisRIBCongNotif;
+
+    LisRMTPortDrainDisable* lisRMTPortDrainDisable;
+    LisRMTPortDrainEnable* lisRMTPortDrainEnable;
 
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);

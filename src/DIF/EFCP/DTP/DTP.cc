@@ -17,6 +17,10 @@
 
 #include "DTP.h"
 
+
+const char * SIG_STAT_DTP_RTT = "DTP_RTT";
+const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
+const char * SIG_STAT_DTP_RX_SENT = "DTP_RX_SENT";
 Define_Module(DTP);
 
 DTP::DTP()
@@ -114,6 +118,8 @@ void DTP::runRTTEstimatorPolicy()
     /* End Default */
   }
 
+  emit(sigStatDTPRTT, state->getRtt());
+
 }
 
 void DTP::runCongestionNotificationPolicy()
@@ -126,6 +132,9 @@ void DTP::initSignalsAndListeners()
   //Signals that this module is emmiting
   sigEFCPStahpSending = registerSignal(SIG_EFCP_StahpSending);
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
+  sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
+  sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
+  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
 }
 
 void DTP::initialize(int step)
@@ -318,6 +327,11 @@ void DTP::handleMessage(cMessage *msg)
     {
       handleMsgFromRMT((PDU*) msg);
     }
+  }
+
+  if(state->isDtcpPresent()){
+      emit(sigStatDTPClosedWinQ, dtcp->dtcpState->getClosedWinQueLen());
+      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
   }
 
   redrawGUI();
@@ -1256,10 +1270,10 @@ void DTP::notifyAboutUnableMaintain()
   //FIX A2 - activate when CDAP Splitter is ready
   return;
   // Notify User Flow that we were unable to maintain the QoS for this connection
-  CDAPMessage* uMaintainMsg = new CDAP_M_Unable_Maintain;
-  SDU* sdu = new SDU();
-  sdu->addUserData(uMaintainMsg);
-  send(sdu, northO);
+  //CDAPMessage* uMaintainMsg = new CDAP_M_Unable_Maintain;
+  //SDU* sdu = new SDU();
+  //sdu->addUserData(uMaintainMsg);
+  //send(sdu, northO);
 }
 
 
@@ -1301,10 +1315,10 @@ void DTP::notifyAboutInactivity()
   //FIX A2 - activate when CDAP Splitter is ready
   return;
   // Notify User Flow there has been no activity for awhile.
-  CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
-  SDU* sdu = new SDU();
-  sdu->addUserData(inactivMsg);
-  send(sdu, northO);
+  //CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
+  //SDU* sdu = new SDU();
+  //sdu->addUserData(inactivMsg);
+  //send(sdu, northO);
 
 }
 

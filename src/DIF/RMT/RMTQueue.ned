@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,7 +19,12 @@ package rina.DIF.RMT;
 
 simple RMTQueue
 {
-    @display("i=block/queue;is=vs");
+    parameters:
+        @display("i=block/queue;is=vs");        
+        @signal[RMTQueue_Length](type="long");
+        @signal[RMTQueue_Drop](type=bool);
+        @statistic[rmtqueue-size](title="RMTQueue Size"; source=RMTQueue_Length; record=vector);
+        @statistic[rmtqueue-drop](title="dropped PDUs"; source=count(RMTQueue_Drop); record=last);
     gates:
         input inputGate;
         output outputGate;        

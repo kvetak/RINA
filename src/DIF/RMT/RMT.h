@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -35,6 +35,7 @@
 
 #include "PDUForwardingTable.h"
 #include "QueueAllocBase.h"
+#include "AddressComparatorBase.h"
 
 #include "RMTBase.h"
 #include "RMTListeners.h"
@@ -51,7 +52,7 @@ class RMT : public RMTBase
   friend class FAI;
 
   public:
-    RMT();
+
     virtual ~RMT();
 
     virtual bool getRelayStatus() { return relayOn; };
@@ -64,12 +65,12 @@ class RMT : public RMTBase
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual void finish();
 
   private:
     PDUForwardingTable* fwTable;
     RMTModuleAllocator* rmtAllocator;
 
-    Address thisIpcAddr;
     bool relayOn;
     bool onWire;
 
@@ -82,16 +83,18 @@ class RMT : public RMTBase
 
     QueueAllocBase* qAllocPolicy;
     QueueIDGenBase* queueIdGenerator;
+    AddressComparatorBase* addrComparator;
 
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU* msg);
     void efcpiToEfcpi(PDU* msg);
     void portToEfcpi(PDU* msg);
-    void RIBToPort(CDAPMessage* msg);
+    void ribToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
     RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
+    std::deque<cMessage*> invalidPDUs;
 
     simsignal_t sigRMTNoConnID;
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;

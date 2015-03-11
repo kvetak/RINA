@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -26,11 +26,14 @@ void RMTQMonitorBase::initialize()
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
 
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.rmtModuleAllocator"));
+
     schedPolicy = check_and_cast<RMTSchedulingBase*>
         (getModuleByPath("^.schedulingPolicy"));
 
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
+    addrComparator = check_and_cast<AddressComparatorBase*>
+        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
 
     onPolicyInit();
 }
@@ -51,7 +54,7 @@ void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
 {
 }
 
-void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cMessage* pdu)
+void RMTQMonitorBase::onMessageDrop(RMTQueue* queue, const cPacket* pdu)
 {
 }
 

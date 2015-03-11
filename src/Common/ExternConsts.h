@@ -58,6 +58,7 @@ extern const char* PAR_AENAME;
 extern const char* PAR_AEINSTANCE;
 extern const char* PAR_CONFIGDATA;
 extern const char* PAR_CREREQTIMEOUT;
+extern const char* PAR_CURINVOKEID;
 
 //TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names
@@ -85,8 +86,10 @@ extern const char* ELEM_APN;
 extern const char* ATTR_APN;
 
 //Values
-extern const int   VAL_QOSPARDONOTCARE;
-extern const bool  VAL_QOSPARDEFBOOL;
+extern const int    VAL_QOSPARDONOTCARE;
+extern const bool   VAL_QOSPARDEFBOOL;
+extern const int    UNINIT_INVOKEID;
+extern const int    DONTCARE_INVOKEID;
 
 
 class ExternConsts {

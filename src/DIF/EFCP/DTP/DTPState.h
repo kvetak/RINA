@@ -87,7 +87,7 @@ private:
     /* Not in specs */
     unsigned int dropDup; //number of dropped duplicates (this variable is not mentioned in specs)
 
-    /* Not defined in specs, but refered to */
+    /* Not defined in specs, but referred to */
     unsigned int lastSeqNumSent;
 
     /* Moved from DTCP-SV */

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scave:Analysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scave="http://www.omnetpp.org/omnetpp/scave">
+  <inputs>
+    <inputs name="/rina/examples/TwoCSs/results/*.vec"/>
+    <inputs name="/rina/examples/TwoCSs/results/*.sca"/>
+  </inputs>
+  <datasets>
+    <datasets name="port PDU traversal count">
+      <items xsi:type="scave:Add" filterPattern="module(*.port) AND name(*)"/>
+      <items xsi:type="scave:BarChart" name="PDU traversals">
+        <properties name="Legend.Display" value="true"/>
+      </items>
+    </datasets>
+    <datasets name="RMTQueue lengths">
+      <items xsi:type="scave:Add" filterPattern="module(*.relayAndMux.*) AND name(rmtqueue-size:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Group" name="RMT queue lengths over time">
+        <items xsi:type="scave:Apply" operation="winavg">
+          <params name="windowSize" value="10"/>
+        </items>
+        <items xsi:type="scave:LineChart" name="RMT queue lengths over time" lineNameFormat="">
+          <properties name="Legend.Display" value="true"/>
+          <properties name="Legend.Border" value="true"/>
+        </items>
+      </items>
+    </datasets>
+  </datasets>
+  <chartSheets>
+    <chartSheets name="default" charts="//@datasets/@datasets.0/@items.1 //@datasets/@datasets.1/@items.1/@items.1"/>
+  </chartSheets>
+</scave:Analysis>

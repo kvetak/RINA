@@ -96,12 +96,16 @@ bool ConnectionTable::setFa(Flow* flow, FABase* fa) {
         return false;
 }
 
-cGate* ConnectionTable::findOutputGate(cGate* input) {
+cGate* ConnectionTable::findOutputGate(cGate* input, bool& isGoingUp) {
     for(TCTIter it = ConTable.begin(); it != ConTable.end(); ++it) {
-        if ( it->getNorthGateIn() == input )
+        if ( it->getNorthGateIn() == input ) {
+            isGoingUp = false;
             return it->getSouthGateOut();
-        if ( it->getSouthGateIn() == input )
+        }
+        if ( it->getSouthGateIn() == input ) {
+            isGoingUp = true;
             return it->getNorthGateOut();
+        }
     }
     return NULL;
 }

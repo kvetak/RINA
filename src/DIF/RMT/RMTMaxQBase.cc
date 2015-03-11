@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -25,8 +25,19 @@ void RMTMaxQBase::initialize()
     qMonPolicy = check_and_cast<RMTQMonitorBase*>
         (getModuleByPath("^.queueMonitorPolicy"));
 
+    addrComparator = check_and_cast<AddressComparatorBase*>
+            (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.rmtModuleAllocator"));
+
+    // register slowdown signal for RA
+    sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
+    sigRMTPortDrainDisable = registerSignal(SIG_RMT_PortDrainDisable);
+    sigRMTPortDrainEnable = registerSignal(SIG_RMT_PortDrainEnable);
+    sigRMTPortDrainSpeedUp = registerSignal(SIG_RMT_PortDrainSpeedUp);
+    sigRMTPortDrainSlowDown = registerSignal(SIG_RMT_PortDrainSlowDown);
+
 
     // display active policy name
     cDisplayString& disp = getDisplayString();
@@ -48,4 +59,29 @@ void RMTMaxQBase::handleMessage(cMessage *msg)
 bool RMTMaxQBase::run(RMTQueue* queue)
 {
     return false;
+}
+
+void RMTMaxQBase::notifySenderOfCongestion(const cPacket* pdu)
+{
+    emit(sigRMTSDReq, pdu);
+}
+
+void RMTMaxQBase::disableSenderPortDrain(const cPacket* pdu)
+{
+    emit(sigRMTPortDrainDisable, pdu);
+}
+
+void RMTMaxQBase::enableSenderPortDrain(const cPacket* pdu)
+{
+    emit(sigRMTPortDrainEnable, pdu);
+}
+
+void RMTMaxQBase::slowDownSenderPortDrain(const cPacket* pdu)
+{
+    emit(sigRMTPortDrainSlowDown, pdu);
+}
+
+void RMTMaxQBase::speedUpSenderPortDrain(const cPacket* pdu)
+{
+    emit(sigRMTPortDrainSpeedUp, pdu);
 }

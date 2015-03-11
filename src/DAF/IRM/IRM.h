@@ -28,6 +28,8 @@
 #include "ExternConsts.h"
 
 extern const int VAL_UNDEF_HANDLE;
+extern const char* SIG_STAT_IRM_UP;
+extern const char* SIG_STAT_IRM_DOWN;
 
 class IRM : public cSimpleModule   {
   public:
@@ -52,7 +54,10 @@ class IRM : public cSimpleModule   {
     virtual void handleMessage(cMessage *msg);
     void initPointers();
 
-  private:
+    void updateDisplayString();
+    int statPassUp;
+    int statPassDown;
+    int statDiscarded;
 
     ConnectionTable* ConTable;
     DA* DifAllocator;
@@ -64,6 +69,9 @@ class IRM : public cSimpleModule   {
     //Signals
     simsignal_t sigIRMAllocReq;
     simsignal_t sigIRMDeallocReq;
+
+    simsignal_t sigStatIRMPassUp;
+    simsignal_t sigStatIRMPassDown;
 
     //Listeners
     LisIRMAllocReq* lisAllocReq;

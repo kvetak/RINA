@@ -15,72 +15,77 @@
 
 #include "CDAPMsgLogEntry.h"
 
-CDAPMsgLogEntry::CDAPMsgLogEntry() {
-    this->msgStatus = this->UNKNOWN;
-    this->opCode = "";
+CDAPMsgLogEntry::CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag) :
+        opCode(opc), invokeId(invoke), processedAt(simTime()), sndFlag(srflag)
+{
 }
 
 CDAPMsgLogEntry::~CDAPMsgLogEntry() {
-    this->msgStatus = this->UNKNOWN;
-    this->invokeId = UNINIT_INVOKEID;
-    this->requestedAt = 0;
-    this->respondedAt = 0;
+    opCode = 0;
+    invokeId = UNINIT_INVOKEID;
+    processedAt = 0;
+    sndFlag = false;
 }
 
 std::string CDAPMsgLogEntry::info() const {
     std::ostringstream os;
-    os << "" << this->getOpCode() << "status: " << this->getMessageStatusString()
-       << "requested at: " << this->requestedAt
-       << "\tresponded at:" << this->respondedAt << endl;
+    os << (sndFlag ? "Sent " : "Received " )
+       << getOpCodeString() << "(" << (int)opCode
+       << ")\ninvokeId: " << invokeId << endl
+       << "processed at: " << this->processedAt;
     return os.str();
-}
-
-std::string CDAPMsgLogEntry::getMessageStatusString() const {
-    switch(this->msgStatus)
-    {
-        case REQUESTED:   return "requested";
-        case RESPONDED:   return "responded";
-        case UNKNOWN:
-        default:                return "UNKNOWN";
-    }
 }
 
 std::ostream& operator <<(std::ostream& os, const CDAPMsgLogEntry& mle) {
     return os << mle.info();
 }
 
-int CDAPMsgLogEntry::getInvokeId() const {
+long CDAPMsgLogEntry::getInvokeId() const {
     return invokeId;
 }
 
-void CDAPMsgLogEntry::setInvokeId(int invokeId) {
+void CDAPMsgLogEntry::setInvokeId(long invokeId) {
     this->invokeId = invokeId;
 }
 
-void CDAPMsgLogEntry::setMsgStatus(CDAPMsgStatus msgStatus) {
-    this->msgStatus = msgStatus;
-}
-
-const std::string& CDAPMsgLogEntry::getOpCode() const {
+const unsigned char CDAPMsgLogEntry::getOpCode() const {
     return opCode;
 }
 
-void CDAPMsgLogEntry::setOpCode(const std::string& opCode) {
+void CDAPMsgLogEntry::setOpCode(const unsigned char opCode) {
     this->opCode = opCode;
 }
 
-const simtime_t& CDAPMsgLogEntry::getRequestedAt() const {
-    return requestedAt;
+const simtime_t& CDAPMsgLogEntry::getProcessedAt() const {
+    return processedAt;
 }
 
-void CDAPMsgLogEntry::setRequestedAt(const simtime_t& requestedAt) {
-    this->requestedAt = requestedAt;
+void CDAPMsgLogEntry::setProcessedAt(const simtime_t& requestedAt) {
+    this->processedAt = requestedAt;
 }
 
-const simtime_t& CDAPMsgLogEntry::getRespondedAt() const {
-    return respondedAt;
+std::string CDAPMsgLogEntry::getOpCodeString() const {
+    switch(this->opCode)
+    {
+        case 1:   return "M_CONNECT";
+        case 2:   return "M_CONNECT_R";
+        case 3:   return "M_RELEASE";
+        case 4:   return "M_RELEASE_R";
+        case 5:   return "M_CREATE";
+        case 6:   return "M_CREATE_R";
+        case 7:   return "M_DELETE";
+        case 8:   return "M_DELETE_R";
+        case 9:   return "M_READ";
+        case 10:   return "M_READ_R";
+        case 11:  return "M_CANCELREAD";
+        case 12:  return "M_CANCELREAD_R";
+        case 13:  return "M_WRITE";
+        case 14:  return "M_WRITE_R";
+        case 15:  return "M_START";
+        case 16:  return "M_START_R";
+        case 17:  return "M_STOP";
+        case 18:  return "M_STOP_R";
+        default:  return "UNKNOWN";
+    }
 }
 
-void CDAPMsgLogEntry::setRespondedAt(const simtime_t& respondedAt) {
-    this->respondedAt = respondedAt;
-}

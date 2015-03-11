@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -70,24 +72,24 @@ Flow* NM1FlowTableItem::getFlow() const
 }
 
 
-FABase* NM1FlowTableItem::getFaBase() const
+FABase* NM1FlowTableItem::getFABase() const
 {
     return fa;
 }
 
-RMTPort* NM1FlowTableItem::getRmtPort() const
+RMTPort* NM1FlowTableItem::getRMTPort() const
 {
     return rmtPort;
 }
 
 
-const RMTQueues& NM1FlowTableItem::getRmtInputQueues() const
+const RMTQueues& NM1FlowTableItem::getRMTInputQueues() const
 {
     return rmtPort->getInputQueues();
 }
 
 
-const RMTQueues& NM1FlowTableItem::getRmtOutputQueues() const
+const RMTQueues& NM1FlowTableItem::getRMTOutputQueues() const
 {
     return rmtPort->getOutputQueues();
 }

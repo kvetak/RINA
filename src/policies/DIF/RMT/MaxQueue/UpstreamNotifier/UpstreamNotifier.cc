@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -21,17 +21,45 @@ Define_Module(UpstreamNotifier);
 
 void UpstreamNotifier::onPolicyInit()
 {
-    // register slowdown signal for RA
-    sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
+
 }
 
 bool UpstreamNotifier::run(RMTQueue* queue)
 {
-    // invoke slowdown notification when the queue starts to overflow
+    // simple version:
+    // Send out the notification when an output (N-1)-port is overflowing.
+
     if (queue->getLength() >= queue->getMaxLength())
     {
-        emit(sigRMTSDReq, queue->getLastPDU());
+        if (queue->getType() == RMTQueue::OUTPUT)
+        { // (N-1)-port output queues are filling up => stop accepting more PDUs
+            notifySenderOfCongestion(queue->getLastPDU());
+        }
     }
+
+    // extended version:
+    // !!! CURRENTLY NOT WORKING, will be available in the next release.
+    // When an output buffer is overflowing, disable reading data from the input
+    // buffer sending data to it. When the input buffer starts to overflow as well,
+    // send out the notification.
+
+//    if (queue->getLength() >= queue->getMaxLength())
+//    {
+//        if (queue->getType() == RMTQueue::OUTPUT)
+//        {
+//            disableSenderPortDrain(queue->getLastPDU());
+//        }
+//        else if (queue->getType() == RMTQueue::INPUT)
+//        {
+//            notifySenderOfCongestion(queue->getLastPDU());
+//        }
+//    }
+//    else if ((queue->getLength() == queue->getThreshLength()) &&
+//            port->hasBlockedInput())
+//    { // the output buffers are keeping up again, continue receiving on input
+//        port->unblockInput();
+//    }
+
     return false;
 }
 

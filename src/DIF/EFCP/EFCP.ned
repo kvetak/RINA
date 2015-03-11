@@ -35,6 +35,7 @@ simple EFCP
         string noRateSlowDownPolicy = default("");
         string reconcileFCPolicy = default("");
         string rateReductionPolicy = default("");
+        string ecnSlowDownPolicy = default("");
         
         string rcvrInactivityPolicy = default("");
   		string senderInactivityPolicy = default("");
@@ -44,6 +45,9 @@ simple EFCP
   		double rtt @unit(s) = default(2s);
   		double mpl @unit(s) = default(50s);
         
+  		int rcvCredit = default(10);
+  		int initialSenderCredit = default(10);
+  		int maxClosedWinQueLen = default(4);
 
         
 }

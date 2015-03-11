@@ -22,20 +22,25 @@ package rina.DIF.EFCP.DTCP;
 //
 simple DTCP
 {
-    @display("i=block/subqueue");
-    
-    string ecnPolicy = default("");
-    string rcvrFCPolicy = default("");
-    string rcvrAckPolicy = default("");
-    string receivingFCPolicy = default("");
-    string sendingAckPolicy = default("");
-    string lostControlPDUPolicy = default("");
-    string rcvrControlAckPolicy = default("");
-    string senderAckPolicy = default("");
-    string fcOverrunPolicy = default("");
-    string noOverridePeakPolicy = default("");
-    string txControlPolicy = default("");
-    string noRateSlowDownPolicy = default("");
-    string reconcileFCPolicy = default("");
-    string rateReductionPolicy = default("");
+    parameters:
+        @display("i=block/subqueue");
+        
+        string ecnPolicy = default("");
+        string rcvrFCPolicy = default("");
+        string rcvrAckPolicy = default("");
+        string receivingFCPolicy = default("");
+        string sendingAckPolicy = default("");
+        string lostControlPDUPolicy = default("");
+        string rcvrControlAckPolicy = default("");
+        string senderAckPolicy = default("");
+        string fcOverrunPolicy = default("");
+        string noOverridePeakPolicy = default("");
+        string txControlPolicy = default("");
+        string noRateSlowDownPolicy = default("");
+        string reconcileFCPolicy = default("");
+        string rateReductionPolicy = default("");
+        string ecnSlowDownPolicy = default("");
+        
+//        @signal[DTCP_CLOSED_WIN_Q](type=double);
+//        @statistic[dtcp-rtt](title="Closed-window Queue length"; source=DTCP_CLOSED_WIN_Q; record=vector, mean);
 }

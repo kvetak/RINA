@@ -64,6 +64,7 @@ class RIBd : public RIBdBase {
     virtual void sendCongestionNotification(PDU* pdu);
 
   protected:
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
@@ -122,8 +123,6 @@ class RIBd : public RIBdBase {
 
     void processMStart(CDAPMessage* msg);
 
-  private:
-    int invokeIdCounter;
 };
 
 #endif /* RIBDAEMON_H_ */

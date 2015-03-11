@@ -21,22 +21,23 @@
 //RINASim libraries
 #include "AE.h"
 
-//Consts
-extern const char* TIM_START;
-extern const char* TIM_STOP;
-extern const char* MSG_PING;
-extern const char* PAR_START;
-extern const char* PAR_STOP;
-extern const char* PAR_PING;
-extern const char* PAR_RATE;
-extern const char* PAR_SIZE;
-extern const char* PAR_DSTAPNAME;
-extern const char* PAR_DSTAPINSTANCE;
-extern const char* PAR_DSTAENAME;
-extern const char* PAR_DSTAEINSTANCE;
-
 class AEPing : public AE
 {
+    //Consts
+    const char* TIM_START;
+    const char* TIM_STOP;
+    const char* MSG_PING;
+    const char* PAR_START;
+    const char* PAR_STOP;
+    const char* PAR_PING;
+    const char* PAR_RATE;
+    const char* PAR_SIZE;
+    const char* PAR_DSTAPNAME;
+    const char* PAR_DSTAPINSTANCE;
+    const char* PAR_DSTAENAME;
+    const char* PAR_DSTAEINSTANCE;
+    const char* VAL_MODULEPATH;
+
   public:
     AEPing();
     virtual ~AEPing();

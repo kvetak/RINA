@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -84,7 +86,7 @@ void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject*
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
     {
-        ra->blockNM1Port(flow);
+        ra->blockNM1PortOutput(flow);
     }
     else
     {
@@ -97,12 +99,22 @@ void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
     {
-        ra->unblockNM1Port(flow);
+        ra->unblockNM1PortOutput(flow);
     }
     else
     {
         EV << "RAListener received unknown object!" << endl;
     }
+}
+
+void LisRMTPortDrainDisable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    ra->blockNM1PortInput(obj);
+}
+
+void LisRMTPortDrainEnable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    ra->unblockNM1PortInput(obj);
 }
 
 void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -120,13 +132,6 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
 
 void LisRIBCongNotif::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-//    cPacket* pdu = dynamic_cast<cPacket*>(obj);
-//    if (pdu)
-//    {
-        ra->signalizeSlowdownRequestToEFCP(obj);
-//    }
-//    else
-//    {
-//        EV << "RAListener received unknown object!" << endl;
-//    }
+    ra->signalizeSlowdownRequestToEFCP(obj);
 }
+

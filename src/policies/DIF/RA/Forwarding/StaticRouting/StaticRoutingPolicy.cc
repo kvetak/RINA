@@ -91,7 +91,7 @@ void StaticRoutingPolicy::insertNewFlow(Address addr, short unsigned int qos, RM
             fwdtg->getForwardingTable()->insert(
                 addr,
                 qos,
-                item->getRmtPort());
+                item->getRMTPort());
         }
     }
 }

@@ -19,9 +19,10 @@ module CommonDistributedApplicationProtocol
 {
     parameters:
         @display("bgb=331,242;i=block/circle");
-
+        int currentInvokeId = (intuniform(0,65535)*1000);
     gates:
         inout southIo[];
+        
     submodules:
         cace: CACE {
             @display("p=63,59");
@@ -39,5 +40,6 @@ module CommonDistributedApplicationProtocol
         cdapMsgLog: CDAPMsgLog {
             @display("p=260,156");
         }
+        
     connections allowunconnected:
 }

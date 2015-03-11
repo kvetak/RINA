@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -19,6 +19,8 @@
 #define __RINA_RMTPORT_H_
 
 #include <omnetpp.h>
+#include <algorithm>
+
 #include "RINASignals.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
@@ -51,14 +53,29 @@ class RMTPort : public cSimpleModule
     void setBusy();
 
     /**
-     * Marks the port as blocked (e.g. when (N-1)-EFCPI isn't keeping up).
+     * Marks the port as blocked for sending (e.g. when (N-1)-EFCPI isn't keeping up).
      */
     void blockOutput();
 
     /**
-     * Unmarks the port as blocked (e.g. when (N-1)-EFCPI is keeping up again).
+     * Unmarks the port as blocked for sending (e.g. when (N-1)-EFCPI is keeping up again).
      */
     void unblockOutput();
+
+    /**
+     * Marks the port as blocked for reading (e.g. when other (N-1)-ports aren't keeping up).
+     */
+    void blockInput();
+
+    /**
+     * Unmarks the port as blocked for reading (e.g. when other (N-1)-ports are keeping up again).
+     */
+    void unblockInput();
+
+    /**
+     * Returns input block status.
+     */
+    bool hasBlockedInput() { return blockedInput; };
 
     /**
      * Returns the (N-1)-flow this port is assigned to.
@@ -117,19 +134,43 @@ class RMTPort : public cSimpleModule
      */
     const RMTQueues& getOutputQueues() const;
 
+    /**
+     * Returns number of PDUs waiting to be read.
+     *
+     * @return PDUs count accross queues
+     */
+    unsigned long getWaitingOnInput() { return waitingOnInput; };
+
+    void addWaitingOnInput() { waitingOnInput++; };
+    void substractWaitingOnInput() { waitingOnInput--; };
+
+    /**
+     * Returns number of PDUs waiting to be written.
+     *
+     * @return PDUs count accross queues
+     */
+    unsigned long getWaitingOnOutput() { return waitingOnOutput; };
+
+    void addWaitingOnOutput() { waitingOnOutput++; };
+    void substractWaitingOnOutput() { waitingOnOutput--; }
+
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage* msg);
 
   private:
     bool ready;
-    bool blocked;
-    Flow* flow;
+    bool blockedInput;
+    bool blockedOutput;
+    unsigned long waitingOnInput;
+    unsigned long waitingOnOutput;
     double postServeDelay;
+    std::string dstAppAddr;
 
+    Flow* flow;
     QueueIDGenBase* queueIdGen;
 
-    std::set<cGate*> northOutputGates;
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
@@ -140,17 +181,19 @@ class RMTPort : public cSimpleModule
 
     void postInitialize();
     void setFlow(Flow* flow);
-    void addInputQueue(RMTQueue* queue, cGate* portGate);
-    void addOutputQueue(RMTQueue* queue, cGate* portGate);
+    void registerInputQueue(RMTQueue* queue);
+    void registerOutputQueue(RMTQueue* queue);
+    void unregisterInputQueue(RMTQueue* queue);
+    void unregisterOutputQueue(RMTQueue* queue);
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
     void setReadyDelayed();
-    void redrawGUI();
+    void redrawGUI(bool redrawParent = false);
 
-    simsignal_t sigRMTPortPDURcvd;
-    simsignal_t sigRMTPortPDUSent;
     simsignal_t sigRMTPortReady;
+    simsignal_t sigStatRMTPortUp;
+    simsignal_t sigStatRMTPortDown;
 };
 
 typedef std::vector<RMTPort*> RMTPorts;

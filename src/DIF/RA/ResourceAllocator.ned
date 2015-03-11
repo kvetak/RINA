@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -17,6 +19,7 @@ package rina.DIF.RA;
 
 import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
+import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
 
 
@@ -27,6 +30,7 @@ module ResourceAllocator
         string queueAllocPolicyName = default("SingleQueue");
         string pduftgPolicyName = default("StaticRoutingPolicy");
         string queueIdGenName = default("SingleID");
+        string addrComparatorName = default("ExactMatch");
 
     submodules:
         pduForwardingTable: PDUForwardingTable {
@@ -50,5 +54,8 @@ module ResourceAllocator
         }
         PDUFTGPolicy: <pduftgPolicyName> like IntPDUFTGPolicy {
             @display("p=300,163");
+        }
+        addressComparator: <addrComparatorName> like IntAddressComparator {
+            @display("p=420,163");
         }
 }

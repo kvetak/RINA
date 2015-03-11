@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -65,8 +67,6 @@ void RA::initialize(int stage)
 
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));
-    //fwdTable = check_and_cast<PDUForwardingTable*>
-    //    (getModuleByPath("^.pduForwardingTable"));
     flowTable = check_and_cast<NM1FlowTable*>
         (getModuleByPath("^.nm1FlowTable"));
     rmt = check_and_cast<RMT*>
@@ -136,6 +136,12 @@ void RA::initSignalsAndListeners()
 
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
+
+    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
+    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
+
+    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
+    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
@@ -414,7 +420,7 @@ void RA::bindMediumToRMT()
     // create a mock "(N-1)-port" for interface
     RMTPort* port = rmtAllocator->addPort(NULL);
     // connect the port to the bottom
-    interconnectModules(rmtModule, port, rmtGate.str(), std::string(GATE_SOUTHIO));
+    interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
     port->setReady();
@@ -449,7 +455,7 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 2) attach a RMTPort instance (pretty much a representation of an (N-1)-port)
     RMTPort* port = rmtAllocator->addPort(flow);
-    interconnectModules(rmtModule, port, thisIPCGate.str(), std::string(GATE_SOUTHIO));
+    interconnectModules(rmtModule, port->getParentModule(), thisIPCGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
 
@@ -537,15 +543,11 @@ void RA::createNM1Flow(Flow *flow)
     {
         // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
-        // update the PDU forwarding table
-        //fwdTable->insert(Address(dstApn.getName()), flow->getConId().getQoSId(), port);
-        // TODO: remove this when management isn't piggy-backed anymore
+        // TODO: remove this when management isn't piggy-backed anymore!
         // (port shouldn't be ready to send out data when the flow isn't yet allocated)
         port->setReady();
 
-        //fwTable->insert(Address(flow->getDstApni().getApn().getName()),
-        //                flow->getConId().getQoSId(), port);
-
+        // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
             Address(flow->getDstApni().getApn().getName()),
             flow->getConId().getQoSId(),
@@ -614,20 +616,6 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
     // update the PDU forwarding table
-/*
-    fwdTable->insert(Address(dstAPN.getName()), qosID, port);
-
-    // add other accessible applications into forwarding table
-    const APNList* remoteApps = difAllocator->findNeigborApns(dstAPN);
-    if (remoteApps)
-    {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
-        {
-            Address addr = Address(it->getName());
-            fwdTable->insert(addr, qosID, port);
-        }
-    }
-*/
     fwdtg->insertFlowInfo(
         Address(flow->getDstApni().getApn().getName()),
         flow->getConId().getQoSId(),
@@ -663,7 +651,7 @@ void RA::postNFlowAllocation(Flow* flow)
         NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
         if (item != NULL)
         {
-            qAllocPolicy->onNFlowAlloc(item->getRmtPort(), flow);
+            qAllocPolicy->onNFlowAlloc(item->getRMTPort(), flow);
         }
     }
 }
@@ -683,21 +671,9 @@ void RA::postNM1FlowAllocation(Flow* flow)
     // TODO: move this to receiveSignal()
     NM1FlowTableItem* item = flowTable->findFlowByDstApni(dstApn.getName(), qosId);
     if (item == NULL) return;
-/*
-    // add other accessible applications into the forwarding table
-    const APNList* remoteApps = difAllocator->findNeigborApns(dstApn);
-    if (remoteApps)
-    {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it)
-        {
-            Address addr = Address(it->getName());
-            fwdTable->insert(addr, qosId, item->getRmtPort());
-        }
-    }
-*/
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRmtPort()->setReady();
+    item->getRMTPort()->setReady();
 }
 
 /**
@@ -709,29 +685,31 @@ void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
     NM1FlowTableItem* flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != NULL);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
+    flowItem->getFABase()->receiveDeallocateRequest(flow);
 
-    RMTPort* port = flowItem->getRmtPort();
+    // disconnect and delete gates
+    RMTPort* port = flowItem->getRMTPort();
     const char* gateName = flowItem->getGateName().c_str();
     cGate* thisIpcIn = thisIPC->gateHalf(gateName, cGate::INPUT);
     cGate* thisIpcOut = thisIPC->gateHalf(gateName, cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
     cGate* rmtModuleOut = rmtModule->gateHalf(gateName, cGate::OUTPUT);
-    cGate* portOut = port->getSouthOutputGate();
+    cGate* portOut = port->getSouthOutputGate()->getNextGate();
 
     portOut->disconnect();
-    thisIpcIn->disconnect();
-    thisIpcOut->disconnect();
-    rmtModuleIn->disconnect();
     rmtModuleOut->disconnect();
+    thisIpcOut->disconnect();
+    thisIpcIn->disconnect();
+    rmtModuleIn->disconnect();
 
-    fwdtg->removeFlowInfo(flowItem->getRmtPort());
-//    fwdTable->remove(port);
-    rmtAllocator->removePort(flowItem->getRmtPort());
     rmtModule->deleteGate(gateName);
-    flowItem->getFaBase()->receiveDeallocateRequest(flow);
-
     thisIPC->deleteGate(gateName);
+
+    // remove table entries
+    fwdtg->removeFlowInfo(flowItem->getRMTPort());
+    rmtAllocator->removePort(flowItem->getRMTPort());
     flowTable->remove(flow);
 }
 
@@ -792,13 +770,6 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         }
     }
 
-    // add another fwtable entry for direct srcApp->dstApp messages (if needed)
-    // TODO: there must be a better place to put this
-    if (neighAddr != dstAddr)
-    {
-//        fwdTable->insert(Address(dstAddr), qosID, nm1FlowItem->getRmtPort());
-    }
-
     if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
     {
         return true;
@@ -810,9 +781,9 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 }
 
 
-void RA::blockNM1Port(Flow* flow)
+void RA::blockNM1PortOutput(Flow* flow)
 {
-    Enter_Method("blockNM1Port()");
+    Enter_Method("blockNM1PortOutput()");
 
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
@@ -822,12 +793,12 @@ void RA::blockNM1Port(Flow* flow)
         return;
     }
 
-    item->getRmtPort()->blockOutput();
+    item->getRMTPort()->blockOutput();
 }
 
-void RA::unblockNM1Port(Flow* flow)
+void RA::unblockNM1PortOutput(Flow* flow)
 {
-    Enter_Method("unblockNM1Port()");
+    Enter_Method("unblockNM1PortOutput()");
 
     NM1FlowTableItem* item = flowTable->lookup(flow);
     if (item == NULL)
@@ -837,7 +808,47 @@ void RA::unblockNM1Port(Flow* flow)
         return;
     }
 
-    item->getRmtPort()->unblockOutput();
+    item->getRMTPort()->unblockOutput();
+}
+
+void RA::blockNM1PortInput(cObject* obj)
+{
+    Enter_Method("blockNM1PortInput()");
+
+    PDU* pdu = dynamic_cast<PDU*>(obj);
+    if (pdu != NULL)
+    {
+        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+                pdu->getSrcAddr().getApname().getName(),
+                pdu->getConnId().getQoSId());
+
+        if (flowItem != NULL)
+        {
+            flowItem->getRMTPort()->blockInput();
+        }
+    }
+}
+
+void RA::unblockNM1PortInput(cObject* obj)
+{
+    Enter_Method("unblockNM1PortInput()");
+
+    PDU* pdu = dynamic_cast<PDU*>(obj);
+    if (pdu != NULL)
+    {
+        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+                pdu->getSrcAddr().getApname().getName(),
+                pdu->getConnId().getQoSId());
+
+        if (flowItem != NULL)
+        {
+            RMTPort* port = flowItem->getRMTPort();
+            // unblock!
+            port->unblockInput();
+            // resume processing of input queues
+            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
+        }
+    }
 }
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
@@ -861,7 +872,5 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     Enter_Method("signalizeSlowdownRequestToEFCP()");
     // TODO: move this to the listener
     CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
-    int cepID = congInfo->getConnectionId().getDstCepId();
-    EV << "executing slowdown on EFCPI " << cepID << endl;
     emit(sigRASDReqFromRIB, congInfo);
 }
