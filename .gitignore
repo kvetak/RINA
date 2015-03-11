@@ -19,6 +19,7 @@ src/Makefile.vc
 *.sca
 *.vec
 *.vci
+.computed/
 
 # Misceleanous
 *.pyc
@@ -52,4 +53,3 @@ src/rina
 # ignore backup and temp files
 *.bak
 *~
-/.computed/
