@@ -28,6 +28,8 @@ FAI::FAI() : FAIBase() {
 FAI::~FAI() {
     this->FaModule = NULL;
     this->FlowObject = NULL;
+    portId = -1;
+    cepId = -1;
     cancelAndDelete(creReqTimer);
 }
 
@@ -55,11 +57,20 @@ void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
 
 bool FAI::receiveAllocateRequest() {
     Enter_Method("receiveAllocateRequest()");
+
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::ALLOC_PEND) {
+        EV << "Cannot allocate flow which is not in pending state" << endl;
+        return false;
+    }
+
     //Invoke NewFlowReqPolicy
     bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -67,7 +78,7 @@ bool FAI::receiveAllocateRequest() {
     status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -75,7 +86,7 @@ bool FAI::receiveAllocateRequest() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
-        FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -100,10 +111,19 @@ bool FAI::processDegenerateDataTransfer() {
 bool FAI::receiveAllocateResponsePositive() {
     Enter_Method("receiveAllocateResponsePositive()");
 
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::ALLOC_PEND) {
+        EV << "Cannot continue allocation of flow which is not in pending state" << endl;
+        return false;
+    }
+
     //Instantiate EFCPi
     bool status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         //Schedule negative M_Create_R(Flow)
         this->signalizeCreateFlowResponseNegative();
         return false;
@@ -113,6 +133,7 @@ bool FAI::receiveAllocateResponsePositive() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         //Schedule M_Create_R(Flow-)
         this->signalizeCreateFlowResponseNegative();
         return false;
@@ -122,22 +143,42 @@ bool FAI::receiveAllocateResponsePositive() {
     RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
     raModule->bindNFlowToNM1Flow(FlowObject);
 
+    ft->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
     //Signalizes M_Create_R(flow)
     this->signalizeCreateFlowResponsePositive();
     return true;
 }
 
 void FAI::receiveAllocateResponseNegative() {
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::ALLOC_PEND) {
+        EV << "Cannot continue allocation of flow which is not in pending state" << endl;
+        return;
+    }
+
+    ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
     this->signalizeCreateFlowResponseNegative();
 }
 
 bool FAI::receiveCreateRequest() {
     Enter_Method("receiveCreateRequest()");
+
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::ALLOC_PEND) {
+        EV << "Cannot allocate flow which is not in pending state" << endl;
+        return false;
+    }
+
     //Invoke NewFlowReqPolicy
     bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
         //Schedule negative M_Create_R(Flow)
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
         this->signalizeCreateFlowResponseNegative();
         return false;
     }
@@ -155,6 +196,14 @@ bool FAI::receiveCreateRequest() {
 bool FAI::receiveDeallocateRequest() {
     Enter_Method("receiveDeallocateRequest()");
 
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::DEALLOC_PEND) {
+        EV << "Cannot deallocate flow which is not in deallocate pending state" << endl;
+        return false;
+    }
+
     //deleteBindings
     bool status = this->deleteBindings();
 
@@ -164,9 +213,21 @@ bool FAI::receiveDeallocateRequest() {
     return status;
 }
 
-void FAI::receiveDeleteRequest() {
+void FAI::receiveDeleteRequest(Flow* flow) {
     Enter_Method("receiveDeleteRequest()");
-    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOC_PEND);
+
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::TRANSFER) {
+        EV << "Cannot deallocate flow which is not in transfer state" << endl;
+        return;
+    }
+
+    ft->changeAllocStatus(FlowObject, FAITableEntry::DEALLOC_PEND);
+
+    //Get deallocation invokeId from Request
+    FlowObject->setDeallocInvokeId(flow->getDeallocInvokeId());
 
     //Notify application
     signalizeDeallocateRequestFromFai();
@@ -177,7 +238,8 @@ void FAI::receiveDeleteRequest() {
     //Signalizes M_Delete_R(Flow)
     this->signalizeDeleteFlowResponse();
 
-    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
+    ft->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
+    fte->setTimeDeleted(simTime());
 }
 
 bool FAI::receiveCreateResponseNegative() {
@@ -202,7 +264,7 @@ bool FAI::receiveCreateResponseNegative() {
 
 bool FAI::receiveCreateResponsePositive(Flow* flow) {
     Enter_Method("receiveCreResPositive()");
-    //XXX: Vesely - D-Base-2011-015.pdf, p.9
+    //TODO: Vesely - D-Base-2011-015.pdf, p.9
     //              Create bindings. WTF? Bindings should be already created!''
 
     cancelEvent(creReqTimer);
@@ -212,7 +274,7 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     FlowObject->setDstPortId(flow->getDstPortId());
 
     //Change status
-    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_POSI);
+    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
 
     //Pass Allocate Response to AE or RIBd
     this->signalizeAllocateResponsePositive();
@@ -222,10 +284,21 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
 }
 
 void FAI::receiveDeleteResponse() {
+    Enter_Method("receiveDeleteResponse()");
+
+    //Check for proper FSM state
+    FAITable* ft = FaModule->getFaiTable();
+    FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
+    if (fte->getAllocateStatus() != FAITableEntry::DEALLOC_PEND) {
+        EV << "Cannot deallocate flow which is not in deallocatre pending state" << endl;
+        return;
+    }
+
     //Notify application
     signalizeDeallocateRequestFromFai();
 
-    FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
+    ft->changeAllocStatus(FlowObject, FAITableEntry::DEALLOCATED);
+    fte->setTimeDeleted(simTime());
 }
 
 void FAI::handleMessage(cMessage *msg) {

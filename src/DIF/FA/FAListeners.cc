@@ -72,7 +72,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "Received not a flow object!" << endl;
 }
-
+/*
 void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     EV << "CreateFlowResponsePositive initiated by " << src->getFullPath()
        << " and processed by " << fa->getFullPath() << endl;
@@ -87,6 +87,7 @@ void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
     else
         EV << "Received not a flow object!" << endl;
 }
+*/
 /*
 void LisFAAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {

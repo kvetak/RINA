@@ -55,6 +55,7 @@ class RIBdBase : public cSimpleModule {
     virtual void handleMessage(cMessage *msg) = 0;
 
     void initMyAddress();
+    long getNewInvokeId();
 
 };
 

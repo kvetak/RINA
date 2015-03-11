@@ -15,28 +15,31 @@
 
 #include "FAITableEntry.h"
 
-FAITableEntry::FAITableEntry() : fai(NULL), flow(NULL), allocStatus(this->UNKNOWN), timeCreated(0), timeLastActive(0) {
-
+FAITableEntry::FAITableEntry() :
+    fai(NULL), flow(NULL),
+    allocStatus(this->UNKNOWN),
+    timeCreated(0), timeDeleted(0)
+{
 }
 
 FAITableEntry::FAITableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN) {
     this->flow           = nflow;
     this->timeCreated    = simTime();
-    this->timeLastActive = simTime();
+    this->timeDeleted    = 0;
 }
-
+/*
 FAITableEntry::FAITableEntry(FAIBase* nfai): flow(NULL), allocStatus(this->UNKNOWN) {
     this->fai            = nfai;
     this->timeCreated    = simTime();
-    this->timeLastActive = simTime();
+    this->timeDeleted    = 0;
 }
-
+*/
 FAITableEntry::~FAITableEntry() {
     this->fai       = NULL;
     this->flow      = NULL;
     allocStatus     = this->UNKNOWN;
     timeCreated     = 0;
-    timeLastActive  = 0;
+    timeDeleted     = 0;
 }
 
 std::string FAITableEntry::info() const {
@@ -50,8 +53,8 @@ std::string FAITableEntry::info() const {
         os << this->getCFlow()->infoOther() << endl;
         os << this->getCFlow()->infoQoS() << endl;
     }
-    os << "Created at: " << this->getTimeCreated()
-       << "\tLast active at: " << this->getTimeLastActive() << endl;
+    os << "Created at: " << this->getTimeCreated() << ", invId: " << this->getCFlow()->getAllocInvokeId() << endl
+       << "Deleted at: " << this->getTimeDeleted() << ", invId: " << this->getCFlow()->getDeallocInvokeId() << endl;
     return os.str();
 }
 
@@ -67,15 +70,15 @@ const simtime_t& FAITableEntry::getTimeCreated() const {
 return timeCreated;
 }
 
-const simtime_t& FAITableEntry::getTimeLastActive() const {
-return timeLastActive;
+const simtime_t& FAITableEntry::getTimeDeleted() const {
+return timeDeleted;
 }
 
 std::string FAITableEntry::getAllocateStatusString() const {
     switch(this->allocStatus)
     {
         case ALLOC_PEND:    return "allocation pending";
-        case ALLOC_POSI:    return "allocation positive";
+        case TRANSFER:      return "allocation positive, transfer";
         case ALLOC_NEGA:    return "allocation negative";
         case ALLOC_ERR:     return "allocation error";
         case DEALLOC_PEND:  return "deallocation pending";
@@ -89,12 +92,12 @@ std::string FAITableEntry::getAllocateStatusString() const {
 //    return AllocateStatusStrings[];
 }
 
-void FAITableEntry::setAllocateStatus(AllocateStatus allocateStatus) {
+void FAITableEntry::setAllocateStatus(EAllocateStatus allocateStatus) {
     this->allocStatus = allocateStatus;
 }
 
-void FAITableEntry::setTimeLastActive(const simtime_t& timeLastActive) {
-    this->timeLastActive = timeLastActive;
+void FAITableEntry::setTimeDeleted(const simtime_t& timDel) {
+    this->timeDeleted = timDel;
 }
 
 void FAITableEntry::setFai(FAIBase* nfai) {
@@ -112,7 +115,7 @@ bool FAITableEntry::operator ==(const FAITableEntry& other) const {
             && this->timeCreated == other.timeCreated;
 }
 
-FAITableEntry::AllocateStatus FAITableEntry::getAllocateStatus() const {
+FAITableEntry::EAllocateStatus FAITableEntry::getAllocateStatus() const {
     return allocStatus;
 }
 

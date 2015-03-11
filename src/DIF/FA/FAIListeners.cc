@@ -49,13 +49,13 @@ void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
     if ( fai->getFlow()->compare(*fl) )
         fai->receiveAllocateRequest();
 }
-
+/*
 void LisFAICreReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     fai->receiveCreateRequest();
 }
-
+*/
 void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "CreateResponsePositive initiated by " << src->getFullPath()
@@ -118,7 +118,7 @@ void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
 //        << "dstAddr = " << (fai->getFlow()->getDstAddr() == fl->getDstAddr()) << endl;
 //    EV << "Vysledek> " << (fai->getFlow() == fl) << endl;
     if ( fai->getFlow()->compare(*fl) )
-        fai->receiveDeleteRequest();
+        fai->receiveDeleteRequest(fl);
 }
 
 void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,

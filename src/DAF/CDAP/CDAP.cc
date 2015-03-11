@@ -29,9 +29,10 @@ void CDAP::handleMessage(cMessage* msg)
         CDAPMessage* cmsg = check_and_cast<CDAPMessage*>(msg);
         cmsg->setHandle(cmsg->getArrivalGate()->getIndex());
         signalizeReceiveData(cmsg);
+        //delete cmsg;
     }
     //FIXME: Vesely - Proper disposing of object
-    //delete msg;
+    //cancelAndDelete(msg);
 }
 
 void CDAP::initSignalsAndListeners() {

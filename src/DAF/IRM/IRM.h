@@ -57,6 +57,7 @@ class IRM : public cSimpleModule   {
     void updateDisplayString();
     int statPassUp;
     int statPassDown;
+    int statDiscarded;
 
     ConnectionTable* ConTable;
     DA* DifAllocator;

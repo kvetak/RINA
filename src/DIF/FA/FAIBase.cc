@@ -20,6 +20,6 @@ FAIBase::FAIBase() : FlowObject(NULL)
 }
 
 FAIBase::~FAIBase() {
-    // TODO Auto-generated destructor stub
+    FlowObject = NULL;
 }
 

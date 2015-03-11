@@ -86,6 +86,15 @@ FAITableEntry* FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
     return NULL;
 }
 
+FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getAllocInvokeId() == invId)
+            return &(*it);
+    }
+    return NULL;
+}
+
 void FAITable::handleMessage(cMessage *msg)
 {
 
@@ -128,7 +137,7 @@ FAITableEntry* FAITable::findEntryByFai(FAIBase* fai) {
     return NULL;
 }
 
-void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status) {
+void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::EAllocateStatus status) {
     FAITableEntry* fte = findEntryByFlow(flow);
     if (fte) {
         fte->setAllocateStatus(status);
@@ -137,7 +146,7 @@ void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus statu
         EV << "findByFlow() returned NULL" << endl;
 }
 
-void FAITable::changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status) {
+void FAITable::changeAllocStatus(FAIBase* fai, FAITableEntry::EAllocateStatus status) {
     FAITableEntry* fte = findEntryByFai(fai);
     if (fte)
         fte->setAllocateStatus(status);

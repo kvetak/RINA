@@ -41,9 +41,10 @@ class FAITable : public cSimpleModule
     FAITableEntry* findEntryByDstNeighborAndFwd(const APN& apname);
     FAITableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     FAITableEntry* findEntryByFai(FAIBase* fai);
+    FAITableEntry* findEntryByInvokeId(long invId);
     void setFaiToFlow(FAIBase* fai, Flow* flow);
-    void changeAllocStatus(Flow* flow, FAITableEntry::AllocateStatus status);
-    void changeAllocStatus(FAIBase* fai, FAITableEntry::AllocateStatus status);
+    void changeAllocStatus(Flow* flow, FAITableEntry::EAllocateStatus status);
+    void changeAllocStatus(FAIBase* fai, FAITableEntry::EAllocateStatus status);
 
     void updateDisplayString();
 

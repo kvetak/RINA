@@ -24,13 +24,41 @@ void CDAPSplitter::initialize()
         error("Pointer to CDAPMsgLog is not initialized!");
 }
 
+CDAPSplitter::CDAPSplitter() {
+}
+
+CDAPSplitter::~CDAPSplitter() {
+    MsgLog = NULL;
+}
+
 void CDAPSplitter::handleMessage(cMessage *msg)
 {
+    //Process message
+    if (!dynamic_cast<CDAPMessage*>(msg)) {
+        EV << this->getFullPath() << " received unknown message" << endl;
+        delete msg;
+        return;
+    }
+
+
+    CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
+
+    //Check for unsolicited response
+    if (cdapmsg->getOpCode() % 2 == 0                               //is *_R message
+        && !MsgLog->findRequestByInvId(cdapmsg))     //does not have request with appropriate invokeId
+    {
+        EV << "Cannot send/received unsolicited CDAP response thus discarding message" <<  endl;
+        delete msg;
+        return;
+    }
+
     //Output gate pointer
     cGate* out;
 
     //Received from south gates
     if ( strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) != NULL ) {
+        MsgLog->insert(cdapmsg, false);
+
         //Pass it to the CACE module
         if (dynamic_cast<CDAP_M_Connect*>(msg) ||  dynamic_cast<CDAP_M_Connect_R*>(msg) ||
             dynamic_cast<CDAP_M_Release*>(msg) ||  dynamic_cast<CDAP_M_Release_R*>(msg) )
@@ -56,13 +84,11 @@ void CDAPSplitter::handleMessage(cMessage *msg)
     }
     //Received from north gates
     else if (strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) == NULL) {
+        MsgLog->insert(check_and_cast<CDAPMessage*>(msg), true);
+
         out = gateHalf(GATE_SOUTHIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
     }
-    //Unknown message
-    else {
-        EV << this->getFullPath() << " received unknown message" << endl;
-        delete msg;
-    }
+
 
     //Forward message
     send(msg, out);

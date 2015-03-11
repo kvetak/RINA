@@ -25,6 +25,7 @@ Define_Module(IRM);
 IRM::IRM() {
     statPassUp = 0;
     statPassDown = 0;
+    statDiscarded = 0;
 }
 
 IRM::~IRM() {
@@ -32,6 +33,7 @@ IRM::~IRM() {
     DifAllocator = NULL;
     statPassUp = 0;
     statPassDown = 0;
+    statDiscarded = 0;
 }
 
 void IRM::initPointers() {
@@ -64,8 +66,11 @@ void IRM::handleMessage(cMessage* msg) {
             }
             send(msg, g);
         }
-        else
+        else {
             EV << "Received message but destination gate is not in the ConnectionTable!" << endl;
+            statDiscarded++;
+            delete msg;
+        }
 
         updateDisplayString();
     }
@@ -232,7 +237,7 @@ void IRM::updateDisplayString() {
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     std::ostringstream os;
-    os << "up: " << statPassUp << endl << "down: " << statPassDown;
+    os << "up: " << statPassUp << endl << "down: " << statPassDown << endl << "discard: " << statDiscarded;
     disp.setTagArg("t", 0, os.str().c_str());
 }
 

@@ -32,8 +32,9 @@ class CDAPMsgLog : public cSimpleModule {
 
     std::string info() const;
 
-    void insert();
-    void remove();
+    void insert(CDAPMessage* cdapmsg, bool srflag);
+    CDAPMsgLogEntry* findByMessage(CDAPMessage* cdapmsg);
+    CDAPMsgLogEntry* findRequestByInvId(CDAPMessage* cdapmsg);
 
   protected:
     virtual void initialize();

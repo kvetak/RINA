@@ -46,8 +46,6 @@ void RIBd::initialize() {
     initCdapBindings();
     //Init MyAddress
     initMyAddress();
-
-    invokeIdCounter = 0;
 }
 
 void RIBd::handleMessage(cMessage *msg) {
@@ -138,8 +136,10 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     //Append destination address for RMT "routing"
     mcref->setDstAddr(flow->getDstNeighbor());
 
-    //TODO: Vesely - Work more on InvokeId
-    mcref->setInvokeID(invokeIdCounter++);
+    //Generate InvokeId
+    if (!flow->getAllocInvokeId())
+        flow->setAllocInvokeId(getNewInvokeId());
+    mcref->setInvokeID(flow->getAllocInvokeId());
 
     //Send it
     signalizeSendData(mcref);
@@ -182,8 +182,10 @@ void RIBd::sendDeleteRequestFlow(Flow* flow) {
     //Append destination address for RMT "routing"
     mdereqf->setDstAddr(flow->getDstAddr());
 
-    //TODO: Vesely - Work more on InvokeId
-    mdereqf->setInvokeID(invokeIdCounter++);
+    //Generate InvokeId
+    if (!flow->getDeallocInvokeId())
+        flow->setDeallocInvokeId(getNewInvokeId());
+    mdereqf->setInvokeID(flow->getDeallocInvokeId());
 
     //Send it
     signalizeSendData(mdereqf);
@@ -358,7 +360,8 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     resultobj.resultValue = R_SUCCESS;
     mcref->setResult(resultobj);
 
-    //TODO: Vesely - Work more on InvokeId
+    //Generate InvokeId
+    mcref->setInvokeID(flow->getAllocInvokeId());
 
     //Append destination address for RMT "routing"
     mcref->setDstAddr(flow->getDstAddr());
@@ -443,7 +446,8 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     resultobj.resultValue = R_SUCCESS;
     mderesf->setResult(resultobj);
 
-    //TODO: Vesely - Work more on InvokeId
+    //Generate InvokeId
+    mderesf->setInvokeID(flow->getDeallocInvokeId());
 
     //Append destination address for RMT "routing"
     mderesf->setDstAddr(flow->getDstAddr());
@@ -504,11 +508,11 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
     condesobj.objectInstance = VAL_DEFINSTANCE;
     mstarcon->setObject(condesobj);
 
+    //Generate InvokeId
+    mstarcon->setInvokeID(DONTCARE_INVOKEID);
+
     //Append destination address for RMT "routing"
     mstarcon->setDstAddr(pdu->getSrcAddr());
-
-    //TODO: Vesely - Work more on InvokeId
-    mstarcon->setInvokeID(invokeIdCounter++);
 
     //Send it
     signalizeSendData(mstarcon);

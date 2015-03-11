@@ -14,12 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Apr 29, 2014
- * @brief
- * @detail
- */
 
 #include "FA.h"
 
@@ -103,6 +97,9 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Insert new Flow into FAITable
     FaiTable->insertNew(flow);
 
+    //Change allocation status to pending
+    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+
     //Add source and destination address
     setOriginalAddresses(flow);
     setNeighborAddresses(flow);
@@ -172,11 +169,17 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
     //Is requested APP local?
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
+        //Check for duplicity
+        if (FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())) {
+            EV << "Duplicit M_CREATE received thus ignoring!" << endl;
+            return false;
+        }
+
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
         //Change neighbor addresses
         setNeighborAddresses(flow);
-        EV << "Processing M_Create(flow)" << endl;
+        EV << "Processing M_CREATE(flow)" << endl;
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
@@ -190,15 +193,10 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //Pass the CreateRequest to newly created FAI
         status = fai->receiveCreateRequest();
 
-        //If allocation was unsuccessful then return negative response
-        if (status)
-            FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_POSI);
-        else
-            FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_NEGA);
     }
     //...if not then forward CreateRequest Flow to next neighbor
     else {
-        EV << "Forwarding M_Create(flow)" << endl;
+        EV << "Forwarding M_CREATE(flow)" << endl;
 
         //Before that reverse SRC-DST information back
         flow->swapFlow();
@@ -223,12 +221,15 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
         status = raModule->bindNFlowToNM1Flow(flow);
 
-        EV << "status: " << status << endl;
-        if (status == true)
-        { // flow is already allocated
+        //EV << "status: " << status << endl;
+        if (status == true) {
+            // flow is already allocated
             receiveCreateFlowPositive(flow);
         }
         //else WAIT until allocation of N-1 flow is completed
+        else {
+            EV << "FA waits until N-1 IPC allocates auxilliary N-1 flow" << endl;
+        }
     }
     return status;
 }
@@ -236,16 +237,22 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 bool FA::receiveDeallocateRequest(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
-    //Pass the request to appropriate FAI
+
+    //Check flow in table
     FAITableEntry* fte = FaiTable->findEntryByFlow(flow);
     if (fte && fte->getFai()) {
+        //Pass the request to appropriate FAI
         FAIBase* fai = fte->getFai();
         FaiTable->changeAllocStatus(fai, FAITableEntry::DEALLOC_PEND);
+
         fai->receiveDeallocateRequest();
         return true;
     }
     else {
-        EV << "Flow or FAI not found in FAITable!" << endl;
+        if (!fte)
+            EV << "Flow or FAI not found in FAITable!" << endl;
+        else if (fte->getAllocateStatus() != FAITableEntry::TRANSFER)
+            EV << "Cannot deallocate flow which is not in tranfer phase!" << endl;
         return false;
     }
 }
@@ -342,8 +349,8 @@ void FA::initSignalsAndListeners() {
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
     //CreateResponseFlowPositive
-    lisCreResFloPosi = new LisFACreRes(this);
-    catcher2->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResFloPosi);
+    //lisCreResFloPosi = new LisFACreRes(this);
+    //catcher2->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResFloPosi);
 
 }
 
@@ -366,7 +373,7 @@ void FA::receiveCreateFlowPositive(Flow* flow) {
 
     this->signalizeCreateFlowRequestForward(tmpfl);
 }
-
+/*
 void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
     Enter_Method("createFlowResponseForward()");
 
@@ -382,7 +389,7 @@ void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
 
     signalizeCreateFlowResponsePositiveForward(tmpfl);
 }
-
+*/
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }

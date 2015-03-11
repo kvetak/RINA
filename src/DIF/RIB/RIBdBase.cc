@@ -35,3 +35,9 @@ void RIBdBase::initMyAddress() {
     MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
     EV << "SrcAddress that this RIBd will use is " << MyAddress << endl;
 }
+
+long RIBdBase::getNewInvokeId() {
+    long newinvoke = getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID).longValue() + 1;
+    getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID) = newinvoke;
+    return newinvoke;
+}

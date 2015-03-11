@@ -24,15 +24,16 @@
 
 class FAITableEntry {
   public:
-    enum AllocateStatus {UNKNOWN,
-        ALLOC_PEND, ALLOC_POSI, ALLOC_NEGA, ALLOC_ERR,
+    enum EAllocateStatus {UNKNOWN,
+        ALLOC_PEND, ALLOC_NEGA, ALLOC_ERR,
+        TRANSFER,
         FORWARDED,
         DEALLOC_PEND, DEALLOCATED,
         DEINST_PEND, DEINSTANTIATED};
 
     FAITableEntry();
     FAITableEntry(Flow* nflow);
-    FAITableEntry(FAIBase* nfai);
+    //FAITableEntry(FAIBase* nfai);
     virtual ~FAITableEntry();
 
     bool operator== (const FAITableEntry& other) const;
@@ -42,10 +43,10 @@ class FAITableEntry {
     std::string getAllocateStatusString() const;
     FAIBase* getFai() const;
     const simtime_t& getTimeCreated() const;
-    const simtime_t& getTimeLastActive() const;
-    void setTimeLastActive(const simtime_t& timeLastActive);
-    void setAllocateStatus(FAITableEntry::AllocateStatus allocateStatus);
-    FAITableEntry::AllocateStatus getAllocateStatus() const;
+    const simtime_t& getTimeDeleted() const;
+    void setTimeDeleted(const simtime_t& timDel);
+    void setAllocateStatus(FAITableEntry::EAllocateStatus allocateStatus);
+    FAITableEntry::EAllocateStatus getAllocateStatus() const;
     void setFai(FAIBase* nfai);
     const Flow* getCFlow() const;
     Flow* getFlow();
@@ -53,9 +54,9 @@ class FAITableEntry {
   private:
     FAIBase* fai;
     Flow* flow;
-    AllocateStatus allocStatus;
+    EAllocateStatus allocStatus;
     simtime_t timeCreated;
-    simtime_t timeLastActive;
+    simtime_t timeDeleted;
 };
 
 //Free function

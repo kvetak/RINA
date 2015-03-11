@@ -18,38 +18,37 @@
 
 //Standard libraries
 #include <omnetpp.h>
-
-const int UNINIT_INVOKEID = -1;
+//RINASim libraries
+#include "CDAPMessage_m.h"
+#include "ExternConsts.h"
 
 class CDAPMsgLogEntry {
   public:
-    enum CDAPMsgStatus {UNKNOWN, REQUESTED, RESPONDED};
+
 
     //(De)Constructor
-    CDAPMsgLogEntry();
+    CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag);
     virtual ~CDAPMsgLogEntry();
 
     std::string info() const;
-    std::string getMessageStatusString() const;
+    std::string getOpCodeString() const;
 
     //Getters and Setters
-    int getInvokeId() const;
-    void setInvokeId(int invokeId);
-    void setMsgStatus(CDAPMsgStatus msgStatus);
-    const std::string& getOpCode() const;
-    void setOpCode(const std::string& opCode);
-    const simtime_t& getRequestedAt() const;
-    void setRequestedAt(const simtime_t& requestedAt);
-    const simtime_t& getRespondedAt() const;
-    void setRespondedAt(const simtime_t& respondedAt);
+    long getInvokeId() const;
+    void setInvokeId(long invokeId);
+
+    const unsigned char getOpCode() const;
+    void setOpCode(const unsigned char opCode);
+
+    const simtime_t& getProcessedAt() const;
+    void setProcessedAt(const simtime_t& requestedAt);
 
   private:
     //FIXME: Vesely - Convert to enum
-    std::string opCode;
-    int invokeId;
-    CDAPMsgStatus msgStatus;
-    simtime_t requestedAt;
-    simtime_t respondedAt;
+    unsigned char opCode;
+    long invokeId;
+    simtime_t processedAt;
+    bool sndFlag;
 
 };
 
