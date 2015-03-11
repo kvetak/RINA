@@ -17,7 +17,6 @@
 #define SHA256_H_
 
 #include <cstring>
-#include <cstdio>
 #include <string>
 #include <cstdio>
 
