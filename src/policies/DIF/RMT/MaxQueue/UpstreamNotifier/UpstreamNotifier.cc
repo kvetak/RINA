@@ -37,13 +37,12 @@ bool UpstreamNotifier::run(RMTQueue* queue)
         }
     }
 
-
     // extended version:
+    // !!! CURRENTLY NOT WORKING, will be available in the next release.
     // When an output buffer is overflowing, disable reading data from the input
-    // buffer sending data to it. When the input buffer starts to oveflow as well,
+    // buffer sending data to it. When the input buffer starts to overflow as well,
     // send out the notification.
 
-//    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
 //    if (queue->getLength() >= queue->getMaxLength())
 //    {
 //        if (queue->getType() == RMTQueue::OUTPUT)
