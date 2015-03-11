@@ -17,6 +17,22 @@
 
 Define_Module(AEStream);
 
+AEStream::AEStream(){
+  //Consts
+      TIM_START           = "StartCommunication";
+      TIM_STOP            = "StopCommunication";
+      MSG_STDATA          = "DATA-";
+      PAR_START           = "startAt";
+      PAR_STOP            = "stopAt";
+      PAR_BEGIN           = "beginStreamAt";
+      PAR_END             = "endStreamAt";
+      PAR_INTERVAL        = "interval";
+      PAR_SIZE            = "size";
+      PAR_DSTAPNAME       = "dstApName";
+      PAR_DSTAPINSTANCE   = "dstApInstance";
+      PAR_DSTAENAME       = "dstAeName";
+      PAR_DSTAEINSTANCE   = "dstAeInstance";
+}
 
 
 void AEStream::initialize()

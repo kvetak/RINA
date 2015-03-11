@@ -18,6 +18,7 @@
 
 #include <cstring>
 #include <string>
+#include <cstdio>
 
 class SHA256 {
   public:

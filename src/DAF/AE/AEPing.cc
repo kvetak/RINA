@@ -18,6 +18,20 @@
 Define_Module(AEPing);
 
 AEPing::AEPing() {
+  //Consts
+  TIM_START           = "StartCommunication";
+  TIM_STOP            = "StopCommunication";
+  MSG_PING            = "PING-";
+  PAR_START           = "startAt";
+  PAR_STOP            = "stopAt";
+  PAR_PING            = "pingAt";
+  PAR_RATE            = "rate";
+  PAR_SIZE            = "size";
+  PAR_DSTAPNAME       = "dstApName";
+  PAR_DSTAPINSTANCE   = "dstApInstance";
+  PAR_DSTAENAME       = "dstAeName";
+  PAR_DSTAEINSTANCE   = "dstAeInstance";
+  VAL_MODULEPATH      = "getFullPath()";
 }
 
 AEPing::~AEPing() {

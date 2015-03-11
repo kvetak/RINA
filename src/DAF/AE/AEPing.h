@@ -24,19 +24,19 @@
 class AEPing : public AE
 {
     //Consts
-    const char* TIM_START           = "StartCommunication";
-    const char* TIM_STOP            = "StopCommunication";
-    const char* MSG_PING            = "PING-";
-    const char* PAR_START           = "startAt";
-    const char* PAR_STOP            = "stopAt";
-    const char* PAR_PING            = "pingAt";
-    const char* PAR_RATE            = "rate";
-    const char* PAR_SIZE            = "size";
-    const char* PAR_DSTAPNAME       = "dstApName";
-    const char* PAR_DSTAPINSTANCE   = "dstApInstance";
-    const char* PAR_DSTAENAME       = "dstAeName";
-    const char* PAR_DSTAEINSTANCE   = "dstAeInstance";
-    const char* VAL_MODULEPATH      = "getFullPath()";
+    const char* TIM_START;
+    const char* TIM_STOP;
+    const char* MSG_PING;
+    const char* PAR_START;
+    const char* PAR_STOP;
+    const char* PAR_PING;
+    const char* PAR_RATE;
+    const char* PAR_SIZE;
+    const char* PAR_DSTAPNAME;
+    const char* PAR_DSTAPINSTANCE;
+    const char* PAR_DSTAENAME;
+    const char* PAR_DSTAEINSTANCE;
+    const char* VAL_MODULEPATH;
 
   public:
     AEPing();

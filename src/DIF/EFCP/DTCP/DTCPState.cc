@@ -410,12 +410,22 @@ void DTCPState::initialize(int step)
     }
 
     rcvCredit = par("rcvCredit");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rcvCredit")){
+          rcvCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rcvCredit");
+    }
     sndCredit = par("initialSenderCredit");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("initialSenderCredit")){
+          sndCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("initialSenderCredit");
+    }
     nextSenderControlSeqNum = par("nextSenderControlSeqNum");
     dataReXmitMax = par("dataReXmitMax");
 
 
     maxClosedWinQueLen = par("maxClosedWinQueLen");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("maxClosedWinQueLen")){
+          maxClosedWinQueLen = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("maxClosedWinQueLen");
+
+    }
     timeUnit = par("timeUnit");
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");

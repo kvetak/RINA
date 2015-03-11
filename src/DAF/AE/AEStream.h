@@ -25,19 +25,22 @@
 class AEStream : public AE
 {
     //Consts
-    const char* TIM_START           = "StartCommunication";
-    const char* TIM_STOP            = "StopCommunication";
-    const char* MSG_STDATA          = "DATA-";
-    const char* PAR_START           = "startAt";
-    const char* PAR_STOP            = "stopAt";
-    const char* PAR_BEGIN           = "beginStreamAt";
-    const char* PAR_END             = "endStreamAt";
-    const char* PAR_INTERVAL        = "interval";
-    const char* PAR_SIZE            = "size";
-    const char* PAR_DSTAPNAME       = "dstApName";
-    const char* PAR_DSTAPINSTANCE   = "dstApInstance";
-    const char* PAR_DSTAENAME       = "dstAeName";
-    const char* PAR_DSTAEINSTANCE   = "dstAeInstance";
+    const char* TIM_START;
+    const char* TIM_STOP;
+    const char* MSG_STDATA;
+    const char* PAR_START;
+    const char* PAR_STOP;
+    const char* PAR_BEGIN;
+    const char* PAR_END;
+    const char* PAR_INTERVAL;
+    const char* PAR_SIZE;
+    const char* PAR_DSTAPNAME;
+    const char* PAR_DSTAPINSTANCE;
+    const char* PAR_DSTAENAME;
+    const char* PAR_DSTAEINSTANCE;
+
+  public:
+    AEStream();
 
   protected:
     std::string dstApName;
