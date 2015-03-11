@@ -264,7 +264,7 @@ std::string PDUFwdTabGenerator::netInfo()
 
         if(p)
         {
-            RMTQueue* o = p->getRmtPort()->getOutputQueues().front();
+            RMTQueue* o = p->getRMTPort()->getOutputQueues().front();
 
             os << " through port " << o->info() << " (is neighbor)";
         }

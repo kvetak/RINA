@@ -57,6 +57,7 @@ const char* PAR_AENAME          = "aeName";
 const char* PAR_AEINSTANCE      = "aeInstance";
 const char* PAR_CONFIGDATA      = "configData";
 const char* PAR_CREREQTIMEOUT   = "createRequestTimeout";
+const char* PAR_CURINVOKEID     = "currentInvokeId";
 
 //Gate names
 const char* GATE_SOUTHIO        = "southIo";
@@ -87,4 +88,5 @@ const char* ATTR_APN            = "apn";
 //TODO: Marek @Vesely - OK
 const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
-
+const int   UNINIT_INVOKEID     = -1;
+const int   DONTCARE_INVOKEID   = 0;

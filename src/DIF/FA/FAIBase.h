@@ -34,12 +34,11 @@ class FAIBase : public cSimpleModule {
     virtual bool receiveCreateResponsePositive(Flow* flow) = 0;
     virtual bool receiveCreateResponseNegative() = 0;
     virtual bool receiveDeallocateRequest() = 0;
-    virtual void receiveDeleteRequest() = 0;
+    virtual void receiveDeleteRequest(Flow* flow) = 0;
     virtual void receiveDeleteResponse() = 0;
 
     virtual void receiveCreateFlowResponsePositiveFromNminusOne() = 0;
     virtual void receiveCreateFlowResponseNegativeFromNminusOne() = 0;
-
 
     Flow* getFlow()  {
         return FlowObject;

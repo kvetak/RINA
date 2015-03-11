@@ -291,6 +291,34 @@ class Flow : public cObject
      */
     void setDstNeighbor(const Address& dstNeighbor);
 
+    //const long getPortCepId() const;
+
+    /**
+     * @brief Gets allocation InvokeId
+     * Used inside M_CREATE(_R)(flow) messages
+     * @return Read-only allocation InvokeId
+     */
+    long getAllocInvokeId() const;
+
+    /**
+     * @brief Sets allocation InvokeId
+     * @param allocInvokeId A new allocation InvokeId
+     */
+    void setAllocInvokeId(long allocInvokeId);
+
+    /**
+     * @brief Gets deallocation InvokeId
+     * Used inside M_DELETE(_R)(flow) messages
+     * @return Read-only allocation InvokeId
+     */
+    long getDeallocInvokeId() const;
+
+    /**
+     * @brief Sets deallocation InvokeId
+     * @param deallocInvokeId A new deallocation InvokeId
+     */
+    void setDeallocInvokeId(long deallocInvokeId);
+
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
 
@@ -360,6 +388,16 @@ class Flow : public cObject
     QoSCube qosParameters;
 
     /**
+     * @brief Attribute holding persistant InvokeId used for allocation
+     */
+    long allocInvokeId;
+
+    /**
+     * @brief Attribute holding persistant InvokeId used for deallocation
+     */
+    long deallocInvokeId;
+
+    /**
      * @brief Auxiliary function swapping source and destination PortIds
      */
     void swapPortIds();
@@ -378,6 +416,8 @@ class Flow : public cObject
      * @brief Auxiliary function swapping source and destinatio APNI
      */
     void swapApni();
+
+
 };
 
 

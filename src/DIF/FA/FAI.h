@@ -55,7 +55,7 @@ class FAI : public FAIBase  {
     virtual bool receiveCreateResponsePositive(Flow* flow);
     virtual bool receiveCreateResponseNegative();
     virtual bool receiveDeallocateRequest();
-    virtual void receiveDeleteRequest();
+    virtual void receiveDeleteRequest(Flow* flow);
     virtual void receiveDeleteResponse();
 
     virtual void receiveCreateFlowResponsePositiveFromNminusOne();
@@ -94,7 +94,7 @@ class FAI : public FAIBase  {
     LisFAIAllocReq*      lisAllocReq;
     LisFAIAllocResNega*  lisAllocResNega;
     LisFAIAllocResPosi*  lisAllocResPosi;
-    LisFAICreReq*        lisCreReq;
+    //LisFAICreReq*        lisCreReq;
     LisFAICreResNega*    lisCreResNega;
     LisFAICreResPosi*    lisCreResPosi;
     LisFAIDelReq*        lisDelReq;

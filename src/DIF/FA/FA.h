@@ -14,12 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+
 /**
- * @file FlowAllocator.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Apr 29, 2014
- * @brief
- * @detail
+ * @brief Class representing Flow allocator component
+ * @authors Vladimir Vesely (ivesely@fit.vutbr.cz)
+ * @date Last refactorized and documented on 2015-03-10
  */
 
 #ifndef FA_H_
@@ -56,7 +55,7 @@ class FA : public FABase
 
     virtual bool receiveAllocateRequest(Flow* flow);
     virtual void receiveCreateFlowPositive(Flow* flow);
-    virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
+    //virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
 
@@ -64,7 +63,6 @@ class FA : public FABase
 
     virtual bool setOriginalAddresses(Flow* flow);
     virtual bool setNeighborAddresses(Flow* flow);
-
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
@@ -82,7 +80,7 @@ class FA : public FABase
     LisFACreFloPosi*    lisCreFloPosi;
     LisFADeallocReq*    lisDeallocReq;
     LisFACreReq*        lisCreReq;
-    LisFACreRes*        lisCreResFloPosi;
+    //LisFACreRes*        lisCreResFloPosi;
 
   protected:
     //SimpleModule overloads

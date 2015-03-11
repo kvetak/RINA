@@ -1270,10 +1270,10 @@ void DTP::notifyAboutUnableMaintain()
   //FIX A2 - activate when CDAP Splitter is ready
   return;
   // Notify User Flow that we were unable to maintain the QoS for this connection
-  CDAPMessage* uMaintainMsg = new CDAP_M_Unable_Maintain;
-  SDU* sdu = new SDU();
-  sdu->addUserData(uMaintainMsg);
-  send(sdu, northO);
+  //CDAPMessage* uMaintainMsg = new CDAP_M_Unable_Maintain;
+  //SDU* sdu = new SDU();
+  //sdu->addUserData(uMaintainMsg);
+  //send(sdu, northO);
 }
 
 
@@ -1315,10 +1315,10 @@ void DTP::notifyAboutInactivity()
   //FIX A2 - activate when CDAP Splitter is ready
   return;
   // Notify User Flow there has been no activity for awhile.
-  CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
-  SDU* sdu = new SDU();
-  sdu->addUserData(inactivMsg);
-  send(sdu, northO);
+  //CDAPMessage* inactivMsg = new CDAP_M_Inactiv();
+  //SDU* sdu = new SDU();
+  //sdu->addUserData(inactivMsg);
+  //send(sdu, northO);
 
 }
 

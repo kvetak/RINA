@@ -90,20 +90,20 @@ class RMTQueue : public cSimpleModule
      * @param value new threshold
      */
     void setThreshLength(int value);
-
-    /**
-     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
-     *
-     * @return queue ID
-     */
-    const char* getQueueId() const;
-
-    /**
-     * Sets the queue ID.
-     *
-     * @param queueId new queue ID
-     */
-    void setQueueId(const char* queueId);
+//
+//    /**
+//     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
+//     *
+//     * @return queue ID
+//     */
+//    const char* getQueueId() const;
+//
+//    /**
+//     * Sets the queue ID.
+//     *
+//     * @param queueId new queue ID
+//     */
+//    void setQueueId(const char* queueId);
 
     /**
      * Returns a pointer to the first PDU in the queue.
@@ -151,8 +151,6 @@ class RMTQueue : public cSimpleModule
     std::deque<cPacket*> queue;
     queueType type;
 
-    const char* queueId;
-
     int maxQLength;
     int thresholdQLength;
 
@@ -169,8 +167,8 @@ class RMTQueue : public cSimpleModule
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;
-    cGate* getRmtAccessGate() const;
-    void setRmtAccessGate(cGate* gate);
+    cGate* getRMTAccessGate() const;
+    void setRMTAccessGate(cGate* gate);
 
     void redrawGUI();
 

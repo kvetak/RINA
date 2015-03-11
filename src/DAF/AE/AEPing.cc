@@ -17,21 +17,6 @@
 
 Define_Module(AEPing);
 
-//Consts
-const char* TIM_START           = "StartCommunication";
-const char* TIM_STOP            = "StopCommunication";
-const char* MSG_PING            = "PING-";
-const char* PAR_START           = "startAt";
-const char* PAR_STOP            = "stopAt";
-const char* PAR_PING            = "pingAt";
-const char* PAR_RATE            = "rate";
-const char* PAR_SIZE            = "size";
-const char* PAR_DSTAPNAME       = "dstApName";
-const char* PAR_DSTAPINSTANCE   = "dstApInstance";
-const char* PAR_DSTAENAME       = "dstAeName";
-const char* PAR_DSTAEINSTANCE   = "dstAeInstance";
-const char* VAL_MODULEPATH      = "getFullPath()";
-
 AEPing::AEPing() {
 }
 

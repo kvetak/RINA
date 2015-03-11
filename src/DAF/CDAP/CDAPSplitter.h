@@ -21,16 +21,18 @@
 //RINASim libraries
 #include "CDAPMessage_m.h"
 #include "CDAPMsgLog.h"
-#include "ExternConsts.h"
 
 class CDAPSplitter : public cSimpleModule
 {
+  public:
+    //(De)Constructor
+    CDAPSplitter();
+    virtual ~CDAPSplitter();
   protected:
     CDAPMsgLog* MsgLog;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-
 
 };
 

@@ -228,12 +228,12 @@ void RMTQueue::setType(queueType type)
     this->type = type;
 }
 
-cGate* RMTQueue::getRmtAccessGate() const
+cGate* RMTQueue::getRMTAccessGate() const
 {
     return rmtAccessGate;
 }
 
-void RMTQueue::setRmtAccessGate(cGate* gate)
+void RMTQueue::setRMTAccessGate(cGate* gate)
 {
     rmtAccessGate = gate;
 }

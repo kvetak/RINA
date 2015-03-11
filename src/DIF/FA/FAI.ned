@@ -32,5 +32,5 @@ simple FAI
     	int portId = default(-1);
     	int cepId = default(-1);   
     	
-    	double createRequestTimeout @unit(s) = default(1s);   	  	
+    	double createRequestTimeout @unit(s) = default(10s);   	  	
 }

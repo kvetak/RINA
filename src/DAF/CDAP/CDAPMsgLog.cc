@@ -27,13 +27,30 @@ CDAPMsgLog::~CDAPMsgLog() {
 
 }
 
-void CDAPMsgLog::insert() {
-}
-
-void CDAPMsgLog::remove() {
+void CDAPMsgLog::insert(CDAPMessage* cdapmsg, bool srflag) {
+    MsgLog.push_back(CDAPMsgLogEntry(cdapmsg->getOpCode(), cdapmsg->getInvokeID(), srflag));
 }
 
 void CDAPMsgLog::initialize() {
+    WATCH_LIST(MsgLog);
+}
+
+CDAPMsgLogEntry* CDAPMsgLog::findByMessage(CDAPMessage* cdapmsg) {
+    for (TMLIter it = MsgLog.begin(); it != MsgLog.end(); it++) {
+        if (it->getOpCode() == cdapmsg->getOpCode()
+            && it->getInvokeId() == cdapmsg->getInvokeID())
+            return &(*it);
+    }
+    return NULL;
+}
+
+CDAPMsgLogEntry* CDAPMsgLog::findRequestByInvId(CDAPMessage* cdapmsg) {
+    for (TMLIter it = MsgLog.begin(); it != MsgLog.end(); it++) {
+        if ( it->getOpCode() == cdapmsg->getOpCode() - 1
+            && it->getInvokeId() == cdapmsg->getInvokeID())
+            return &(*it);
+    }
+    return NULL;
 }
 
 void CDAPMsgLog::handleMessage(cMessage* msg) {

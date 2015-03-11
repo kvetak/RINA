@@ -13,15 +13,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.SimpleRelay;
+package rina.examples.SimpleRelayCongestion;
 import ned.DatarateChannel;
 import rina.CS.Host1AP;
 import rina.CS.InteriorRouter2Int;
 
-
-network SimpleRelay
+network SimpleRelayCongestion
 {
-    @display("bgb=368,202");
+    parameters:
+    	@display("bgb=368,202");
+    	
+    types:
+        channel FastChannel extends ned.DatarateChannel {
+            @defaultname(FChan);            
+            datarate = 100Mbps;
+            delay = 100us;
+            ber = 0;
+        }
+        channel SlowChannel extends ned.DatarateChannel {
+            @defaultname(SChan);
+            datarate = 100Mbps;
+            delay = 5s;
+            ber = 0;
+        }
+        	
     submodules:
         host1: Host1AP {
             @display("p=70,101");
@@ -31,8 +46,10 @@ network SimpleRelay
         }
         host2: Host1AP {
             @display("p=290,101");
-        }
-    connections allowunconnected:
-        host1.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
-        host2.medium  <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> interiorRouter.medium++;
+        }        
+
+        connections allowunconnected:
+        host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
+        host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
+
 }

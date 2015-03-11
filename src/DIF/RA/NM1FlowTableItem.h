@@ -44,10 +44,10 @@ class NM1FlowTableItem
     std::string info() const;
 
     Flow* getFlow() const;
-    FABase* getFaBase() const;
-    RMTPort* getRmtPort() const;
-    const RMTQueues& getRmtInputQueues() const;
-    const RMTQueues& getRmtOutputQueues() const;
+    FABase* getFABase() const;
+    RMTPort* getRMTPort() const;
+    const RMTQueues& getRMTInputQueues() const;
+    const RMTQueues& getRMTOutputQueues() const;
     std::string getGateName() const;
     void setConnectionStatus(ConnectionStatus status);
     ConnectionStatus getConnectionStatus();

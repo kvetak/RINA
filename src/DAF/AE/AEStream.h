@@ -13,44 +13,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AEPING_H_
-#define __RINA_AEPING_H_
+#ifndef __RINA_AESTREAM_H_
+#define __RINA_AESTREAM_H_
 
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
 #include "AE.h"
 
-class AEPing : public AE
+
+class AEStream : public AE
 {
     //Consts
     const char* TIM_START           = "StartCommunication";
     const char* TIM_STOP            = "StopCommunication";
-    const char* MSG_PING            = "PING-";
+    const char* MSG_STDATA          = "DATA-";
     const char* PAR_START           = "startAt";
     const char* PAR_STOP            = "stopAt";
-    const char* PAR_PING            = "pingAt";
-    const char* PAR_RATE            = "rate";
+    const char* PAR_BEGIN           = "beginStreamAt";
+    const char* PAR_END             = "endStreamAt";
+    const char* PAR_INTERVAL        = "interval";
     const char* PAR_SIZE            = "size";
     const char* PAR_DSTAPNAME       = "dstApName";
     const char* PAR_DSTAPINSTANCE   = "dstApInstance";
     const char* PAR_DSTAENAME       = "dstAeName";
     const char* PAR_DSTAEINSTANCE   = "dstAeInstance";
-    const char* VAL_MODULEPATH      = "getFullPath()";
-
-  public:
-    AEPing();
-    virtual ~AEPing();
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void handleSelfMessage(cMessage* msg);
-
-  private:
-    std::string myPath;
-
     std::string dstApName;
     std::string dstApInstance;
     std::string dstAeName;
@@ -58,17 +47,21 @@ class AEPing : public AE
 
     simtime_t startAt;
     simtime_t stopAt;
-    simtime_t pingAt;
-    int rate;
+    simtime_t beginStreamAt;
+    simtime_t endStreamAt;
+
     unsigned int size;
+    double interval;
+
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+    void handleSelfMessage(cMessage* msg);
 
     void prepareAllocateRequest();
-    void preparePing();
+    void prepareStreamData();
     void prepareDeallocateRequest();
 
     virtual void processMRead(CDAPMessage* msg);
-    virtual void processMReadR(CDAPMessage* msg);
-
 };
 
 #endif

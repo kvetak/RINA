@@ -13,33 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.CDAP;
+package rina.DAF.AE;
 
-module CommonDistributedApplicationProtocol
-{
+simple AEStream extends AE like IAE
+{ 
     parameters:
-        @display("bgb=331,242;i=block/circle");
-        int currentInvokeId = (intuniform(0,65535)*1000);
-    gates:
-        inout southIo[];
+        @class(AEStream);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
+                       
+        int 	startAt 		@unit(s) = default(0s);
+        int 	stopAt  		@unit(s) = default(0s);
+        int 	beginStreamAt  	@unit(s) = default(0s);
+        int 	endStreamAt  	@unit(s) = default(0s);
         
-    submodules:
-        cace: CACE {
-            @display("p=63,59");
-        }
-        auth: Auth {
-            @display("p=163,60");
-        }
-        cdap: CDAP {
-            @display("p=260,60");
-        }
-        cdapSplitter: CDAPSplitter {
-            @display("p=163,156");
-        }
-
-        cdapMsgLog: CDAPMsgLog {
-            @display("p=260,156");
-        }
-        
-    connections allowunconnected:
+        int 	size    		@unit(B) = default(1024B);        
+        double 	interval  		@unit(s) = default(100ms);        
+    
 }
