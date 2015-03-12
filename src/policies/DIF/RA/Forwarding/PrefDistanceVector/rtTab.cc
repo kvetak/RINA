@@ -6,6 +6,7 @@
  */
 
 #include <rtTab.h>
+#include "Utils.h"
 
 extern const int INF_METRIC = 32;
 
@@ -98,6 +99,8 @@ bool rtTab::addOrReplaceParent(std::string nextHop, int metric, unsigned short q
 bool rtTab::change(rtEntry * entry, std::string nextHop, int metric){
     if(entry->nextHop1 == nextHop){
         entry->metric1 = metric;
+    } else if(entry->nextHop2 == nextHop){
+        entry->metric2 = metric;
     } else if(entry->metric2 >= metric){
         entry->setLast(nextHop, metric);
     }
@@ -246,30 +249,10 @@ updatesList rtTab::getUpdatesNeighbour(std::string next, unsigned short qos){
     return ret;
 }
 
-updatesList rtTab::getUpdatesRand(std::string next, unsigned short qos){
-    updatesList ret;
-
-    for(rtTabIterator it2 = tables[qos].rand.begin(); it2 != tables[qos].rand.end(); it2++){
-        if(it2->first != next && it2->first != ""){
-            if(it2->second.nextHop1 == next) {
-                if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
-                    ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));
-                } else {
-                    ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
-                }
-            } else if(it2->second.nextHop1 != "" && it2->second.metric1 < INF_METRIC) {
-                ret.push_back(rtUpdate(qos, it2->first, it2->second.metric1));
-            } else {
-                ret.push_back(rtUpdate(qos, it2->first, INF_METRIC));
-            }
-        }
-    }
-    return ret;
-}
-updatesList rtTab::getUpdatesRand(std::string next, unsigned short qos, unsigned char prefSize){
+updatesList rtTab::getUpdatesRand(std::string next, std::string stored, unsigned short qos, unsigned char prefSize){
     updatesList ret;
     for(rtTabIterator it2 = tables[qos].rand.begin(); it2 != tables[qos].rand.end(); it2++){
-        if(it2->first != next && it2->second.size <= prefSize && it2->first != ""){
+        if(it2->first != next && it2->second.size <= prefSize && it2->first != "" && !isPrefix(stored, it2->first) && !isPrefix(it2->first, stored)){
             if(it2->second.nextHop1 == next) {
                 if(it2->second.nextHop2 != "" && it2->second.metric2 < INF_METRIC) {
                     ret.push_back(rtUpdate(qos, it2->first, it2->second.metric2));

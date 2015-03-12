@@ -458,17 +458,17 @@ PDUFTGUpdate * PrefDistanceVectorPolicy::prepareFSUpdate(Address destination)
         if(inA.son){
             ret->addEntry(qos, "", 0);
             ret->addEntries(table.getUpdatesSon(inA.addr, qos));
-            ret->addEntries(table.getUpdatesRand(inA.addr, qos));
+            ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         } else if(inA.parent){
             ret->addEntries(table.getUpdatesNeighbour(inA.addr, qos));
-            ret->addEntries(table.getUpdatesRand(inA.addr, qos));
+            ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         } else if(inA.neighbour){
             ret->addEntries(table.getUpdatesParent(inA.addr, qos));
             ret->addEntries(table.getUpdatesNeighbour(inA.addr, qos));
-            ret->addEntries(table.getUpdatesRand(inA.addr, qos));
+            ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         } else {
             ret->addEntry(qos, thisIPCAddr, 0);
-            ret->addEntries(table.getUpdatesRand(inA.addr, qos, inA.prefSize));
+            ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         }
     }
 
@@ -553,7 +553,7 @@ addrInfo PrefDistanceVectorPolicy::parseAddr(std::string addr){
 
     std::vector<std::string> addrParsed = split(addr, delimiter);
 
-    if(addrParsed.size() == thisIPCAddrParsed.size() - 1 && isPrefix(addr, thisIPCAddr)){
+    if(addr!= "" && addrParsed.size() == thisIPCAddrParsed.size() - 1 && isPrefix(addr, thisIPCAddr)){
         info.parent = true;
         info.commonPrefix = addr;
         return info;
@@ -569,7 +569,7 @@ addrInfo PrefDistanceVectorPolicy::parseAddr(std::string addr){
         return info;
     }
 
-    if(isPrefix(thisIPCAddrOPref, addr)){
+    if((thisIPCAddrOPref != addr) && isPrefix(thisIPCAddrOPref, addr)){
         info.neighbour = true;
         info.commonPrefix = thisIPCAddrOPref;
         info.storedAddr = join(addrParsed, thisIPCAddrParsed.size(), delimiter);
