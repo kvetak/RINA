@@ -50,7 +50,7 @@ void Delimiting::handleMessage(cMessage* msg){
     //self-message
   }else{
     if(msg->arrivedOn(northI->getId())){
-      processMsgFromFAI((CDAPMessage*)(msg));
+      processMsgFromFAI((cPacket*)(msg));
     }else if(msg->arrivedOn(southI->getId())){
       handleMsgFromEfcpi((Data*)(msg));
     }else{
@@ -63,7 +63,7 @@ void Delimiting::handleMessage(cMessage* msg){
 
 }
 
-void Delimiting::processMsgFromFAI(CDAPMessage* msg){
+void Delimiting::processMsgFromFAI(cPacket* msg){
 
   /*
    * 1. Create new SDU and put msg to this new SDU.
@@ -74,7 +74,7 @@ void Delimiting::processMsgFromFAI(CDAPMessage* msg){
 
 
   SDU* sdu = new SDU();
-
+  sdu->setDataType(SDU_COMPLETE_TYPE);
   sdu->addUserData(msg);
   sdu->setSeqNum(seqNum);
 
@@ -86,7 +86,7 @@ void Delimiting::handleMsgFromEfcpi(Data* msg){
 
   SDU* sdu = (SDU*) msg;
 //  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
-  CDAPMessage* cdap = sdu->getUserData();
+  cPacket* cdap = sdu->getUserData();
   take(cdap);
 
   send(cdap, northO);

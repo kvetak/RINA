@@ -16,9 +16,8 @@
 cplusplus {{
 
 #include <vector>
-#include "CDAPMessage_m.h"
 #include "Data.h"
-typedef std::vector<CDAPMessage*> mUserDataType;
+typedef std::vector<cPacket*> mUserDataType;
 }}
 
 message Data;
@@ -30,7 +29,7 @@ enum FragmentType{
     	SDU_FRAG_LAST		= 0x02;
 }
 
-message SDU extends Data {
+packet SDU extends Data {
     @customize(true);
     unsigned int size = 0;
     unsigned int offset = 0;

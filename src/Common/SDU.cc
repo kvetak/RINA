@@ -35,7 +35,7 @@ void SDU::copy(const SDU& other){
   mUserDataType::const_iterator it;
 
   for(it = other.mUserData_var.begin(); it != other.mUserData_var.end(); ++it){
-    CDAPMessage *cdap = (*it)->dup();
+    cPacket *cdap = (*it)->dup();
     take(cdap);
 
     mUserData_var.push_back(cdap);
@@ -110,7 +110,7 @@ void SDU::setUserData(unsigned char* userData, unsigned int size)
 //    this->userData = userData;
 }
 
-bool SDU::addUserData(CDAPMessage* msg){
+bool SDU::addUserData(cPacket* msg){
 
 //    if(msg->getSize() > MAXSDUSIZE){
 //        return false;
@@ -124,11 +124,11 @@ bool SDU::addUserData(CDAPMessage* msg){
   return true;
 }
 
-CDAPMessage* SDU::getUserData(){
+cPacket* SDU::getUserData(){
 
   if (!mUserData_var.empty())
   {
-    CDAPMessage* cdap;
+    cPacket* cdap;
     cdap = mUserData_var.front();
 
     mUserData_var.erase(mUserData_var.begin());
@@ -180,7 +180,7 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
 
 SDU::~SDU()
 {
-  std::vector<CDAPMessage*>::iterator it;
+  std::vector<cPacket*>::iterator it;
   for(it = mUserData_var.begin(); it != mUserData_var.end();){
     if((*it) != NULL){
       drop((*it));
