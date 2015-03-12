@@ -3,6 +3,8 @@ RINA Simulator
 
 ###Version progress
 
+* March 2015 version - Slowdown/Pushupnotif congestion control, basic statistics,
+					   flow lifecycle, AEStream/ExtendedPing
 * February 2015 version - After-Ghent release with FA policies
 * January 2015 version - Ghent meeting with EFCP, RMT, RA, PDUFTG and policies
 * November 2014 version - Brussels RV1 with AllNodes examples
@@ -12,15 +14,18 @@ RINA Simulator
 
 	/examples					... scenarios testing RINA stack
 		/AllNodes				... communication across all types of devices
-		/SimpleRelay			... two CSs exchanging data through an interior router 
-		/SingleCS				... single computing system with two applications
+		/BigRandNet				... big network for testing distance-vector routing
+		/ExtendedPingTwoCs		... CACE module testing scenario distance-vector routing		
+		/FatTreeTopology		... DC-like environment for testing distance-vector routing
+		/SimpleRelay			... two CSs exchanging data through an interior router
+		/SimpleRelayCongestion	... same scenario as above demonstrating congestion control
+		/SingleCS				... single computing system with two applications		
 		/SmallNetwork			... communication across a small network
+		/SmallNetworkRouting	... same as above for testing distance-vector routing
+		/SmallRandNetwork		... small randomly generated network
 		/TwoCSs					... two directly connected CSs
 		/TwoCSsSimple			... two directly connected CSs with only one IPC
 		/TwoCSsWithDelay		... delayed channel testing scenario
-		/SmallRandNet			... small randomly generated symmetric topology 
-		/BigRandNet				... big randomly generated symmetric topology
-		/FatTreeTopology		... scenario for testing D-V routing policy
 	/src						... source codes' folder
 		/Common					... shared basic classes
 		/CS						... computing system simulation nodes
@@ -29,3 +34,5 @@ RINA Simulator
 		/policies				... all programable RINA policies
 			/DAF				... policies related to DAF components
 			/DIF 				... policies related to DIF components
+
+
