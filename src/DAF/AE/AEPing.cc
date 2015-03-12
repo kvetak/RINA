@@ -98,6 +98,7 @@ void AEPing::initialize()
 
     //Watchers
     WATCH_LIST(flows);
+    WATCH(connectionState);
 }
 
 void AEPing::handleSelfMessage(cMessage *msg) {

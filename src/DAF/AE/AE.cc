@@ -84,6 +84,7 @@ void AE::initialize() {
     initSignalsAndListeners();
     //Watchers
     WATCH_LIST(flows);
+    WATCH(connectionState);
 }
 
 void AE::handleMessage(cMessage* msg) {
@@ -313,7 +314,10 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
             signalizeReleaseRequest(msg);
             changeConStatus(RELEASING);
         }
-        else if(getConStatus() == ESTABLISHED){
+        else if(getConStatus() == ESTABLISHED
+                //TODO: Vesely - Ugly hack to support old AE wo Establishment. Should be removed sooner or later
+                || getConStatus() == CONNECTION_PENDING
+                ){
             signalizeSendData(msg);
         }
     }

@@ -125,6 +125,7 @@ void AEExtendedPing::initialize()
 
     //Watchers
     WATCH_LIST(flows);
+    WATCH(connectionState);
 }
 
 void AEExtendedPing::handleSelfMessage(cMessage *msg) {
