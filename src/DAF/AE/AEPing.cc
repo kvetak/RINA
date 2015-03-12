@@ -132,7 +132,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)(&myPath);
         ping->setObject(obj);
-        ping->setSize(size);
+        ping->setByteLength(size);
 
         //Send message
         sendData(&flows.back(), ping);

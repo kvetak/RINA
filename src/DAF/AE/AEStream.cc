@@ -106,7 +106,7 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)("0123456789abcdef");
         data->setObject(obj);
-        data->setSize(size);
+        data->setByteLength(size);
 
         //Send message
         sendData(&flows.back(), data);

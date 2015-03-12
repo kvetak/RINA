@@ -119,7 +119,7 @@ bool SDU::addUserData(CDAPMessage* msg){
     //TODO A1 check current SDU size
   take(msg);
   this->mUserData_var.push_back(msg);
-  size_var += msg->getSize();
+  size_var += msg->getByteLength();
 
   return true;
 }
