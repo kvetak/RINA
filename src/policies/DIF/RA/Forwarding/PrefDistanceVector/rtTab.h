@@ -85,7 +85,7 @@ public:
     updatesList getUpdatesSon(std::string next, unsigned short qos);
     updatesList getUpdatesNeighbour(std::string next, unsigned short qos);
     updatesList getUpdatesRand(std::string next, std::string stored, unsigned short qos, unsigned char prefSize);
-    updatesList getUpdatesParent(std::string next, unsigned short qos);
+    updatesList getUpdatesParent(std::string next, std::string parent, unsigned short qos);
 
 
     // Gets a user friendly formatted network state report.

@@ -5,9 +5,6 @@
       <RA>
         <Flows>
           <Flow apn="1_DC" qosCube="1"/>
-          <Flow apn="1_DC" qosCube="2"/>
-          <Flow apn="1_DC" qosCube="3"/>
-          <Flow apn="1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -17,9 +14,6 @@
       <RA>
         <Flows>
           <Flow apn="0_DC" qosCube="1"/>
-          <Flow apn="0_DC" qosCube="2"/>
-          <Flow apn="0_DC" qosCube="3"/>
-          <Flow apn="0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -29,9 +23,6 @@
       <RA>
         <Flows>
           <Flow apn="0.0_DC" qosCube="1"/>
-          <Flow apn="0.0_DC" qosCube="2"/>
-          <Flow apn="0.0_DC" qosCube="3"/>
-          <Flow apn="0.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -50,9 +41,6 @@
       <RA>
         <Flows>
           <Flow apn="0.0_DC" qosCube="1"/>
-          <Flow apn="0.0_DC" qosCube="2"/>
-          <Flow apn="0.0_DC" qosCube="3"/>
-          <Flow apn="0.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -71,9 +59,6 @@
       <RA>
         <Flows>
           <Flow apn="0.0_DC" qosCube="1"/>
-          <Flow apn="0.0_DC" qosCube="2"/>
-          <Flow apn="0.0_DC" qosCube="3"/>
-          <Flow apn="0.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -92,9 +77,6 @@
       <RA>
         <Flows>
           <Flow apn="0_DC" qosCube="1"/>
-          <Flow apn="0_DC" qosCube="2"/>
-          <Flow apn="0_DC" qosCube="3"/>
-          <Flow apn="0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -104,9 +86,6 @@
       <RA>
         <Flows>
           <Flow apn="0.1_DC" qosCube="1"/>
-          <Flow apn="0.1_DC" qosCube="2"/>
-          <Flow apn="0.1_DC" qosCube="3"/>
-          <Flow apn="0.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -125,9 +104,6 @@
       <RA>
         <Flows>
           <Flow apn="0.1_DC" qosCube="1"/>
-          <Flow apn="0.1_DC" qosCube="2"/>
-          <Flow apn="0.1_DC" qosCube="3"/>
-          <Flow apn="0.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -146,9 +122,6 @@
       <RA>
         <Flows>
           <Flow apn="0.1_DC" qosCube="1"/>
-          <Flow apn="0.1_DC" qosCube="2"/>
-          <Flow apn="0.1_DC" qosCube="3"/>
-          <Flow apn="0.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -167,9 +140,6 @@
       <RA>
         <Flows>
           <Flow apn="0_DC" qosCube="1"/>
-          <Flow apn="0_DC" qosCube="2"/>
-          <Flow apn="0_DC" qosCube="3"/>
-          <Flow apn="0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -179,9 +149,6 @@
       <RA>
         <Flows>
           <Flow apn="0.2_DC" qosCube="1"/>
-          <Flow apn="0.2_DC" qosCube="2"/>
-          <Flow apn="0.2_DC" qosCube="3"/>
-          <Flow apn="0.2_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -200,9 +167,6 @@
       <RA>
         <Flows>
           <Flow apn="0.2_DC" qosCube="1"/>
-          <Flow apn="0.2_DC" qosCube="2"/>
-          <Flow apn="0.2_DC" qosCube="3"/>
-          <Flow apn="0.2_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -221,9 +185,6 @@
       <RA>
         <Flows>
           <Flow apn="0.2_DC" qosCube="1"/>
-          <Flow apn="0.2_DC" qosCube="2"/>
-          <Flow apn="0.2_DC" qosCube="3"/>
-          <Flow apn="0.2_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -250,9 +211,6 @@
       <RA>
         <Flows>
           <Flow apn="1_DC" qosCube="1"/>
-          <Flow apn="1_DC" qosCube="2"/>
-          <Flow apn="1_DC" qosCube="3"/>
-          <Flow apn="1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -262,9 +220,6 @@
       <RA>
         <Flows>
           <Flow apn="1.0_DC" qosCube="1"/>
-          <Flow apn="1.0_DC" qosCube="2"/>
-          <Flow apn="1.0_DC" qosCube="3"/>
-          <Flow apn="1.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -283,9 +238,6 @@
       <RA>
         <Flows>
           <Flow apn="1.0_DC" qosCube="1"/>
-          <Flow apn="1.0_DC" qosCube="2"/>
-          <Flow apn="1.0_DC" qosCube="3"/>
-          <Flow apn="1.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -304,9 +256,6 @@
       <RA>
         <Flows>
           <Flow apn="1.0_DC" qosCube="1"/>
-          <Flow apn="1.0_DC" qosCube="2"/>
-          <Flow apn="1.0_DC" qosCube="3"/>
-          <Flow apn="1.0_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -325,9 +274,6 @@
       <RA>
         <Flows>
           <Flow apn="1_DC" qosCube="1"/>
-          <Flow apn="1_DC" qosCube="2"/>
-          <Flow apn="1_DC" qosCube="3"/>
-          <Flow apn="1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -337,9 +283,6 @@
       <RA>
         <Flows>
           <Flow apn="1.1_DC" qosCube="1"/>
-          <Flow apn="1.1_DC" qosCube="2"/>
-          <Flow apn="1.1_DC" qosCube="3"/>
-          <Flow apn="1.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -358,9 +301,6 @@
       <RA>
         <Flows>
           <Flow apn="1.1_DC" qosCube="1"/>
-          <Flow apn="1.1_DC" qosCube="2"/>
-          <Flow apn="1.1_DC" qosCube="3"/>
-          <Flow apn="1.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -379,9 +319,6 @@
       <RA>
         <Flows>
           <Flow apn="1.1_DC" qosCube="1"/>
-          <Flow apn="1.1_DC" qosCube="2"/>
-          <Flow apn="1.1_DC" qosCube="3"/>
-          <Flow apn="1.1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -400,9 +337,6 @@
       <RA>
         <Flows>
           <Flow apn="1_DC" qosCube="1"/>
-          <Flow apn="1_DC" qosCube="2"/>
-          <Flow apn="1_DC" qosCube="3"/>
-          <Flow apn="1_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -412,9 +346,6 @@
       <RA>
         <Flows>
           <Flow apn="1.2_DC" qosCube="1"/>
-          <Flow apn="1.2_DC" qosCube="2"/>
-          <Flow apn="1.2_DC" qosCube="3"/>
-          <Flow apn="1.2_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -433,9 +364,6 @@
       <RA>
         <Flows>
           <Flow apn="1.2_DC" qosCube="1"/>
-          <Flow apn="1.2_DC" qosCube="2"/>
-          <Flow apn="1.2_DC" qosCube="3"/>
-          <Flow apn="1.2_DC" qosCube="4"/>
         </Flows>
       </RA>
     </IPC>
@@ -454,9 +382,7 @@
       <RA>
         <Flows>
           <Flow apn="1.2_DC" qosCube="1"/>
-          <Flow apn="1.2_DC" qosCube="2"/>
-          <Flow apn="1.2_DC" qosCube="3"/>
-          <Flow apn="1.2_DC" qosCube="4"/>
+          <Flow apn="1.2.1_DC" qosCube="1"/>
         </Flows>
       </RA>
     </IPC>
@@ -636,16 +562,18 @@
       <APN apn="1.2.1_DC">
         <DIF difName="S1_1" ipcAddress="B"/>
         <DIF difName="S2_app" ipcAddress="A"/>
+        <DIF difName="T" ipcAddress="A"/>
       </APN>
       <APN apn="1.2.1.s_DC">
         <DIF difName="S2_app" ipcAddress="B"/>
       </APN>
       <APN apn="1.2.2_DC">
         <DIF difName="S1_2" ipcAddress="B"/>
-        <DIF difName="S2_app" ipcAddress="A"/>
+        <DIF difName="S2_appb" ipcAddress="A"/>
+        <DIF difName="T" ipcAddress="B"/>
       </APN>
       <APN apn="1.2.2.s_DC">
-        <DIF difName="S2_app" ipcAddress="B"/>
+        <DIF difName="S2_appb" ipcAddress="B"/>
       </APN>
     </Directory>
   </DA>

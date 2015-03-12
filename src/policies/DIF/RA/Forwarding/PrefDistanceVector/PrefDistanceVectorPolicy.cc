@@ -384,8 +384,6 @@ void PrefDistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
     std::string src = info->getSource().getIpcAddress().getName();
     bool changes = false;
 
-   // EV << "At " << thisIPCAddr << " - Received update from "<< src<<endl;
-
     for(updatesListIterator it = update->entriesBegin(); it != update->entriesEnd(); it++){
         //EV << "At "<<fwdtg->getIpcAddress()<< ", I'm : "<<it->dst << " == " <<im(it->dst) << endl;
         if(it->dst == thisIPCAddr){
@@ -463,7 +461,7 @@ PDUFTGUpdate * PrefDistanceVectorPolicy::prepareFSUpdate(Address destination)
             ret->addEntries(table.getUpdatesNeighbour(inA.addr, qos));
             ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         } else if(inA.neighbour){
-            ret->addEntries(table.getUpdatesParent(inA.addr, qos));
+            ret->addEntries(table.getUpdatesParent(inA.addr, thisIPCAddrOPref, qos));
             ret->addEntries(table.getUpdatesNeighbour(inA.addr, qos));
             ret->addEntries(table.getUpdatesRand(inA.addr, inA.storedAddr, qos, inA.prefSize));
         } else {

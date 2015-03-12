@@ -269,19 +269,19 @@ updatesList rtTab::getUpdatesRand(std::string next, std::string stored, unsigned
     return ret;
 }
 
-updatesList rtTab::getUpdatesParent(std::string next, unsigned short qos){
+updatesList rtTab::getUpdatesParent(std::string next, std::string parent, unsigned short qos){
     updatesList ret;
     rtEntry * entry = &tables[qos].parent;
     if(entry->nextHop1 == next) {
         if(entry->nextHop2 != "" && entry->metric2 < INF_METRIC) {
-            ret.push_back(rtUpdate(qos, "", entry->metric2));
+            ret.push_back(rtUpdate(qos, parent, entry->metric2));
         } else {
-            ret.push_back(rtUpdate(qos, "", INF_METRIC));
+            ret.push_back(rtUpdate(qos, parent, INF_METRIC));
         }
     } else if(entry->nextHop1 != "" && entry->metric1 < INF_METRIC) {
-        ret.push_back(rtUpdate(qos, "", entry->metric1));
+        ret.push_back(rtUpdate(qos, parent, entry->metric1));
     } else {
-        ret.push_back(rtUpdate(qos, "", INF_METRIC));
+        ret.push_back(rtUpdate(qos, parent, INF_METRIC));
     }
     return ret;
 }
