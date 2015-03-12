@@ -133,7 +133,8 @@ struct object_t {
 //CDAP general messages
 //////////////////////////////////////////////
 packet CDAPMessage {
-    string displayString;    
+    string displayString;
+    unsigned int headerLength = 160; //in bits
     int handle;
     Address dstAddr;
     schedulingPriority = -1;
