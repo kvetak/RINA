@@ -373,7 +373,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
 void RIBd::signalizeSendData(CDAPMessage* msg) {
     //Setup handle which is for RIBd always 0
     msg->setHandle(0);
-    msg->setBitLength(msg->getBitLength() + msg->getHeaderLength());
+    msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
     emit(sigRIBDSendData, msg);
