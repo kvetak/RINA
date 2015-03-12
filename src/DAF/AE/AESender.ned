@@ -13,23 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+package rina.DAF.AE;
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
-
-
-network TwoCSs
+simple AESender extends AE like IAE
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 2000ms; ber = 0; datarate = 50Gbps; } <--> host2.medium;
+    parameters:
+        @class(AESender);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
+        
+        int startAt @unit(s) = default(0s);
+        int stopAt  @unit(s) = default(0s);
+        int sendAfter  @unit(s) = default(0s);
+        
+        double rate = default(1);  
+        double ratevar = default(0);    
+        
+        int size = default(1024);
+        int sizevar = default(0);
+        
 }

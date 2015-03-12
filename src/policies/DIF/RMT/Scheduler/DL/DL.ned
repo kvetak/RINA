@@ -13,23 +13,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
+package rina.policies.DIF.RMT.Scheduler.DL;
 
 
-network TwoCSs
+simple DL like IntRMTSchedulingPolicy
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 2000ms; ber = 0; datarate = 50Gbps; } <--> host2.medium;
+    parameters:
+        @display("i=block/socket");
 }

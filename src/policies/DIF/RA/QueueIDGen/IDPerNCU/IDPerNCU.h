@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,23 +15,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+#ifndef IDPerNCU_H_
+#define IDPerNCU_H_
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
+#include <omnetpp.h>
+#include <map>
+#include <string>
+
+#include "QueueIDGenBase.h"
 
 
-network TwoCSs
+class IDPerNCU : public QueueIDGenBase
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 2000ms; ber = 0; datarate = 50Gbps; } <--> host2.medium;
-}
+  public:
+    virtual void onPolicyInit();
+    virtual std::string generateID(PDU* pdu);
+  protected:
+    std::map<unsigned short, std::string> qos2CU;
+};
+
+#endif /* IDPerNQoS_H_ */

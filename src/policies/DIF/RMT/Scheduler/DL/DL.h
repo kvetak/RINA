@@ -13,23 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+#ifndef __RINA_DL_H_
+#define __RINA_DL_H_
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
+#include <omnetpp.h>
 
+#include "RMTSchedulingBase.h"
+#include "DLMonitor.h"
 
-network TwoCSs
+class DL : public RMTSchedulingBase
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 2000ms; ber = 0; datarate = 50Gbps; } <--> host2.medium;
-}
+public:
+    virtual void onPolicyInit();
+  private:
+    virtual void processQueues(RMTPort* port, RMTQueueType direction);
+  protected:
+    DLMonitor * monitor;
+};
+
+#endif

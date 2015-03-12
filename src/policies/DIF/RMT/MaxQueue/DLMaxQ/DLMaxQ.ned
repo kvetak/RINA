@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,23 +15,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.TwoCSs;
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-import ned.DatarateChannel;
-import rina.CS.Host1AP;
+package rina.policies.DIF.RMT.MaxQueue.DLMaxQ;
 
-
-network TwoCSs
+simple DLMaxQ like IntRMTMaxQPolicy 
 {
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 2000ms; ber = 0; datarate = 50Gbps; } <--> host2.medium;
+    parameters:
+        @display("i=block/socket");
 }
