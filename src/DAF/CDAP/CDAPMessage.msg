@@ -273,7 +273,7 @@ packet CDAP_M_Delete_R extends CDAPMessage {
 			
 	object_t object;
 	
-	int filter;
+	string filter;
 	
 	result_t result;			
 }
@@ -306,7 +306,7 @@ packet CDAP_M_Read_R extends CDAPMessage {
 			
 	object_t object;
 	
-	int filter;
+	string filter;
 	
 	result_t result;
 }
@@ -365,7 +365,7 @@ packet CDAP_M_Write_R extends CDAPMessage {
 			
 	object_t object;
 	
-	int filter;
+	string filter;
 	
 	result_t result;		
 }
@@ -398,7 +398,7 @@ packet CDAP_M_Start_R extends CDAPMessage {
 			
 	object_t object;
 	
-	int filter;
+	string filter;
 	
 	result_t result;		
 }
@@ -431,7 +431,7 @@ packet CDAP_M_Stop_R extends CDAPMessage {
 			
 	object_t object;
 	
-	int filter;
+	string filter;
 	
 	result_t result;
 }
