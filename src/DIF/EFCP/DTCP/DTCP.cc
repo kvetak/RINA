@@ -64,16 +64,16 @@ unsigned int DTCP::getRcvrRate() const
   return dtcpState->getRcvrRate();
 }
 
-void DTCP::createPolicyModule(cModule* policy, const char* prefix, const char* name)
+cModule* DTCP::createPolicyModule(const char* prefix, const char* name)
 {
   if (std::string(par(name).stringValue()).empty())
   {
-    policy = NULL;
+    return NULL;
   }else{
-  std::stringstream moduleName;
-  moduleName << prefix << par(name).stringValue();
-  cModuleType* policyType = cModuleType::get(moduleName.str().c_str());
-  policy = policyType->createScheduleInit(name, getParentModule());
+    std::stringstream moduleName;
+    moduleName << prefix << par(name).stringValue();
+    cModuleType* policyType = cModuleType::get(moduleName.str().c_str());
+    return policyType->createScheduleInit(name, getParentModule());
   }
 }
 
@@ -89,60 +89,60 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
 
 void DTCP::initialize(int step)
 {
-  Enter_Method("initialize");
-  if(step == 1){
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("p", 0, 340);
-    disp.setTagArg("p", 1, 140);
+    Enter_Method("initialize");
+    if(step == 1){
+        cDisplayString& disp = getDisplayString();
+        disp.setTagArg("p", 0, 340);
+        disp.setTagArg("p", 1, 140);
 
-  dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
-  //  dtcpState = new DTCPState();
-  cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
+        //  dtcpState = new DTCPState();
+        cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
 
-  dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
-  dtcpState->finalizeParameters();
-  dtcpState->buildInside();
-  dtcpState->scheduleStart(simTime());
-//  dtcpState->callInitialize();
+        dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
+        dtcpState->finalizeParameters();
+        dtcpState->buildInside();
+        dtcpState->scheduleStart(simTime());
+        //  dtcpState->callInitialize();
 
-//TODO A2 based on DTPState create appropriate components
-  if (dtp->state->isRxPresent())
-  {
-//    rxControl = new RXControl();
-  }
+        //TODO A2 based on DTPState create appropriate components
+        if (dtp->state->isRxPresent())
+        {
+            //    rxControl = new RXControl();
+        }
 
-  if (dtp->state->isFCPresent())
-  {
-//    flowControl = new FlowControl();
-//    flowControl->initialize();
+        if (dtp->state->isFCPresent())
+        {
+            //    flowControl = new FlowControl();
+            //    flowControl->initialize();
 
-    if (dtp->state->isWinBased())
-    {
-//      windowTimer = new WindowTimer();
-//      schedule(windowTimer);
+            if (dtp->state->isWinBased())
+            {
+                //      windowTimer = new WindowTimer();
+                //      schedule(windowTimer);
+            }
+        }
+
+
+        //TODO A1 Load list of policies
+        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
+        rcvrFCPolicy          = (DTCPRcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
+        rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
+        receivingFCPolicy     = (DTCPReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
+        sendingAckPolicy      = (DTCPSendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
+        lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
+        rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
+        senderAckPolicy       = (DTCPSenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
+        fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
+        noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
+        txControlPolicy       = (DTCPTxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
+        noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
+        reconcileFCPolicy     = (DTCPReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
+        rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
+  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+
     }
-  }
-
-
-  //TODO A1 Load list of policies
-  createPolicyModule(ecnPolicy, ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-  createPolicyModule(rcvrFCPolicy, RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
-  createPolicyModule(rcvrAckPolicy, RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
-  createPolicyModule(receivingFCPolicy, RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
-  createPolicyModule(sendingAckPolicy, SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
-  createPolicyModule(lostControlPDUPolicy, LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
-  createPolicyModule(rcvrControlAckPolicy, RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
-  createPolicyModule(senderAckPolicy, SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
-  createPolicyModule(fcOverrunPolicy, FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
-  createPolicyModule(noOverridePeakPolicy, NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
-  createPolicyModule(txControlPolicy, TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
-  createPolicyModule(noRateSlowDownPolicy, NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
-  createPolicyModule(reconcileFCPolicy, RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
-  createPolicyModule(rateReductionPolicy, RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
-  createPolicyModule(ecnSlowDownPolicy, ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
-
-  }
 }
 
 void DTCP::flushAllQueuesAndPrepareToDie()

@@ -55,19 +55,16 @@ DTP::~DTP()
 
 }
 
-void DTP::createPolicyModule(cModule* policy, const char* prefix, const char* name)
+cModule* DTP::createPolicyModule(const char* prefix, const char* name)
 {
-
   if (std::string(par(name).stringValue()).empty())
   {
-    policy = NULL;
-  }
-  else
-  {
+    return NULL;
+  }else{
     std::stringstream moduleName;
     moduleName << prefix << par(name).stringValue();
     cModuleType* policyType = cModuleType::get(moduleName.str().c_str());
-    policy = policyType->createScheduleInit(name, getParentModule());
+    return policyType->createScheduleInit(name, getParentModule());
   }
 }
 
@@ -172,10 +169,10 @@ void DTP::initialize(int step)
 //  par(RTT_ESTIMATOR_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RTT_ESTIMATOR_POLICY_NAME).stringValue());
 
 
-  createPolicyModule(rcvrInactivityPolicy, RCVR_INACTIVITY_POLICY_PREFIX, RCVR_INACTIVITY_POLICY_NAME);
-  createPolicyModule(senderInactivityPolicy, SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
-  createPolicyModule(initialSeqNumPolicy, INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
-  createPolicyModule(rttEstimatorPolicy, RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
+  rcvrInactivityPolicy    = (DTPRcvrInactivityPolicyBase*) createPolicyModule(RCVR_INACTIVITY_POLICY_PREFIX, RCVR_INACTIVITY_POLICY_NAME);
+  senderInactivityPolicy  = (DTPSenderInactivityPolicyBase*) createPolicyModule(SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
+  initialSeqNumPolicy     = (DTPInitialSeqNumPolicyBase*) createPolicyModule(INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
+  rttEstimatorPolicy      = (DTPRTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
 
 
 
