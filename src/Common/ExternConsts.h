@@ -28,6 +28,7 @@ extern const char* MOD_EFCP;
 extern const char* MOD_FAITABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
+extern const char* MOD_IAE;
 extern const char* MOD_IRM;
 extern const char* MOD_IPCRESMANAGER;
 extern const char* MOD_CDAP;

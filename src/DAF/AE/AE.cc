@@ -20,6 +20,7 @@ Define_Module(AE);
 AE::AE() :
         Irm(NULL), Cdap(NULL)
 {
+    connectionState = NIL;
 }
 
 AE::~AE() {
@@ -31,12 +32,16 @@ void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
     cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
 
+
     //Signals that this module is emitting
     sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
     sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
     sigAESendData      = registerSignal(SIG_AE_DataSend);
     sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
     sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
+    sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
+    sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
+
 
     //Signals that this module is processing
     lisAERcvData = new LisAEReceiveData(this);
@@ -57,6 +62,17 @@ void AE::initSignalsAndListeners() {
 
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
+
+    lisAEConResPosi = new LisAEConResPosi(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponsePositive, lisAEConResPosi);
+
+    lisAEConResNega = new LisAEConResNega(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponseNegative, lisAEConResNega);
+
+    lisAERelRes = new LisAERelRes(this);
+    catcher1->subscribe(SIG_CACE_ReleaseResponse, lisAERelRes);
+
+
 }
 
 void AE::initialize() {
@@ -226,6 +242,8 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
         //Interconnect IRM and IPC
         Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
+        //Change connection status
+        changeConStatus(CONNECTION_PENDING);
         this->signalizeAllocateResponsePositive(flow);
     }
     else {
@@ -246,6 +264,9 @@ void AE::receiveAllocationResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocationResponseNegative()");
     //Change allocation status
     Irm->changeStatus(flow, ConnectionTableEntry::CON_ERROR);
+
+    //Change connection status
+    changeConStatus(NIL);
 }
 
 void AE::receiveAllocationResponsePositive(Flow* flow) {
@@ -255,11 +276,17 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
 
     //Change allocation status
     Irm->changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
+
+    //Change connection status
+    changeConStatus(CONNECTION_PENDING);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {
     //TODO: Vesely - Substitute with signal
     Irm->receiveAllocationRequestFromAe(flow);
+
+    //Change connection status
+    changeConStatus(FLOW_PENDING);
 }
 
 void AE::sendDeallocationRequest(Flow* flow) {
@@ -277,7 +304,18 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
     if (handle != VAL_UNDEF_HANDLE) {
         msg->setHandle(handle);
         //Pass Data to CDAP
-        signalizeSendData(msg);
+        //Connection/Release or send data msg
+        if (dynamic_cast<CDAP_M_Connect*>(msg) != NULL &&
+                getConStatus() == CONNECTION_PENDING){
+            signalizeConnectionRequest(msg);
+        }
+        else if(dynamic_cast<CDAP_M_Release*>(msg) != NULL){
+            signalizeReleaseRequest(msg);
+            changeConStatus(RELEASING);
+        }
+        else if(getConStatus() == ESTABLISHED){
+            signalizeSendData(msg);
+        }
     }
     else {
         EV << "Sending data before flow is allocated!" << endl;
@@ -407,4 +445,12 @@ bool AE::deleteBindings(Flow& flow) {
 
 void AE::processMReadR(CDAPMessage* msg) {
 
+}
+
+void AE::signalizeConnectionRequest(CDAPMessage* msg){
+    emit(sigAEConReq, msg);
+}
+
+void AE::signalizeReleaseRequest(CDAPMessage* msg){
+    emit(sigAERelReq, msg);
 }

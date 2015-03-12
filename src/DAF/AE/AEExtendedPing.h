@@ -13,39 +13,51 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_AUTH_H_
-#define __RINA_AUTH_H_
+#ifndef __RINA_AEEXTENDEDPING_H_
+#define __RINA_AEEXTENDEDPING_H_
 
+//Standard libraries
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+//RINASim libraries
 #include "AE.h"
 
 
-/**
- * TODO - Generated class
- */
-class LisAuthValidate;
-class Auth : public cSimpleModule
+class AEExtendedPing : public AE
 {
-public:
-    void validate(CDAPMessage *cmsg);
+  public:
+    AEExtendedPing();
+    virtual ~AEExtendedPing();
+
   protected:
-    int authType;
-    std::string authName;
-    std::string authPassword;
-    std::string authOther;
-
-    simsignal_t sigAuthRes;
-
-    LisAuthValidate* lisAuthValidate;
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    void initSignalsAndListeners();
-    void initParameters();
-    void signalizeAuthResult(CDAPMessage *cmsg);
+
+    void handleSelfMessage(cMessage* msg);
+
+  private:
+    std::string myPath;
+
+    std::string dstApName;
+    std::string dstApInstance;
+    std::string dstAeName;
+    std::string dstAeInstance;
+
+    simtime_t startAt;
+    simtime_t stopAt;
+    simtime_t connectAt;
+    simtime_t pingAt;
+    int rate;
+    unsigned int size;
+
+    void prepareAllocateRequest();
+    void preparePing();
+    void prepareConnectionRequest();
+    void prepareDeallocateRequest();
+
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
+
 };
 
 #endif
+

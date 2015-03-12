@@ -91,3 +91,26 @@ void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "AEListener received unknown object!" << endl;
 }
+
+
+void LisAEConResPosi::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+
+    ae->changeConStatus(ESTABLISHED);
+    //TODO: signalize that result is available --> api call
+}
+
+void LisAEConResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+
+    ae->changeConStatus(CONNECTION_PENDING);
+    //TODO: signalize that result is available --> api call
+
+}
+
+void LisAERelRes::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+
+    ae->changeConStatus(NIL);
+    //TODO: signalize that ae can close flow, result is available --> api call
+}
