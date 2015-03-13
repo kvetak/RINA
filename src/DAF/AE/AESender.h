@@ -21,31 +21,31 @@
 //RINASim libraries
 #include "AE.h"
 
-//Consts
-extern const char* S_TIM_START;
-extern const char* S_TIM_COM;
-extern const char* S_TIM_STOP;
-
-extern const char* S_PAR_START;
-extern const char* S_PAR_STOP;
-extern const char* S_PAR_SEND;
-
-extern const char* S_PAR_DSTAPNAME;
-extern const char* S_PAR_DSTAPINSTANCE;
-extern const char* S_PAR_DSTAENAME;
-extern const char* S_PAR_DSTAEINSTANCE;
-
-extern const char* S_PAR_RATE;
-extern const char* S_PAR_RATE_VAR;
-extern const char* S_PAR_SIZE;
-extern const char* S_PAR_SIZE_VAR;
-
-extern const char* S_MSG_PING;
-extern const char* S_PAR_PING;
-extern const char* S_VAL_MODULEPATH;
-
 class AESender : public AE
 {
+    //Consts
+    const char* S_TIM_START;
+    const char* S_TIM_COM;
+    const char* S_TIM_STOP;
+
+    const char* S_PAR_START;
+    const char* S_PAR_STOP;
+    const char* S_PAR_SEND;
+
+    const char* S_PAR_DSTAPNAME;
+    const char* S_PAR_DSTAPINSTANCE;
+    const char* S_PAR_DSTAENAME;
+    const char* S_PAR_DSTAEINSTANCE;
+
+    const char* S_PAR_RATE;
+    const char* S_PAR_RATE_VAR;
+    const char* S_PAR_SIZE;
+    const char* S_PAR_SIZE_VAR;
+
+    const char* S_MSG_PING;
+    const char* S_PAR_PING;
+    const char* S_VAL_MODULEPATH;
+
   public:
     AESender();
     virtual ~AESender();

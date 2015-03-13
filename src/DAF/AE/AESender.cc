@@ -17,30 +17,29 @@
 
 Define_Module(AESender);
 
-//Consts
-const char* S_TIM_START           = "StartCommunication";
-const char* S_TIM_COM           = "MakeCommunication";
-const char* S_TIM_STOP            = "StopCommunication";
-
-const char* S_PAR_START           = "startAt";
-const char* S_PAR_STOP            = "stopAt";
-const char* S_PAR_SEND            = "sendAfter";
-
-const char* S_PAR_DSTAPNAME       = "dstApName";
-const char* S_PAR_DSTAPINSTANCE   = "dstApInstance";
-const char* S_PAR_DSTAENAME       = "dstAeName";
-const char* S_PAR_DSTAEINSTANCE   = "dstAeInstance";
-
-const char* S_PAR_RATE            = "rate";
-const char* S_PAR_RATE_VAR        = "ratevar";
-const char* S_PAR_SIZE            = "size";
-const char* S_PAR_SIZE_VAR        = "sizevar";
-
-const char* S_MSG_PING            = "PING-";
-const char* S_PAR_PING            = "pingAt";
-const char* S_VAL_MODULEPATH      = "getFullPath()";
 
 AESender::AESender() {
+    S_TIM_START           = "StartCommunication";
+    S_TIM_COM             = "MakeCommunication";
+    S_TIM_STOP            = "StopCommunication";
+
+    S_PAR_START           = "startAt";
+    S_PAR_STOP            = "stopAt";
+    S_PAR_SEND            = "sendAfter";
+
+    S_PAR_DSTAPNAME       = "dstApName";
+    S_PAR_DSTAPINSTANCE   = "dstApInstance";
+    S_PAR_DSTAENAME       = "dstAeName";
+    S_PAR_DSTAEINSTANCE   = "dstAeInstance";
+
+    S_PAR_RATE            = "rate";
+    S_PAR_RATE_VAR        = "ratevar";
+    S_PAR_SIZE            = "size";
+    S_PAR_SIZE_VAR        = "sizevar";
+
+    S_MSG_PING            = "PING-";
+    S_PAR_PING            = "pingAt";
+    S_VAL_MODULEPATH      = "getFullPath()";
 }
 
 AESender::~AESender() {
@@ -178,8 +177,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
             obj.objectVal = (cObject*)(&myPath);
             ping->setObject(obj);
 
-            ping->setSize(msgSize);
-            ping->setBitLength(msgSize);
+            ping->setByteLength(msgSize);
 
             //Send message
             sendData(&flows.back(), ping);
@@ -224,14 +222,12 @@ void AESender::processMRead(CDAPMessage* msg) {
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)(&myPath);
         pong->setObject(obj);
-        pong->setSize(msg->getSize());
-
-        pong->setBitLength(msg->getSize());
+        pong->setByteLength(msg->getByteLength());
 
         sendData(&flows.back(), pong);
 
         pingreceived++;
-        pingreceivedSize += msg->getSize();
+        pingreceivedSize += msg->getByteLength();
         simtime_t delay = simTime() - msg->getCreationTime();
         if(minDelay>delay){
             minDelay = delay;
@@ -261,7 +257,7 @@ void AESender::processMReadR(CDAPMessage* msg) {
         EV << os.str().c_str();
 
         received++;
-        receivedSize += msg->getSize();
+        receivedSize += msg->getByteLength();
         simtime_t delay = simTime() - msg->getCreationTime();
         if(minDelay>delay){
             minDelay = delay;
