@@ -23,7 +23,7 @@
 #include <set>
 
 #include "PDUFTGPolicy.h"
-#include "PrefixPDUForwardingTable.h"
+#include "IntPrefixPDUForwardingTable.h"
 #include "rtTab.h"
 
 
@@ -66,7 +66,7 @@ protected:
     unsigned int updateFT;
     bool forcedUpdateProgramed;
 
-    PrefixPDUForwardingTable * fwt;
+    IntPrefixPDUForwardingTable * fwt;
 
     void handleMessage(cMessage *msg);
     void initialize();

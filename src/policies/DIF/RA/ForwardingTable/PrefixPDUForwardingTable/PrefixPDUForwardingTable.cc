@@ -158,7 +158,7 @@ RMTPort* PrefixPDUForwardingTable::lookup(Address& destAddr)
     return NULL;
 }
 
-RMTPort* PrefixPDUForwardingTable::lookup(std::string& destAddr, unsigned short QoSid)
+RMTPort* PrefixPDUForwardingTable::lookup(const std::string& destAddr, const unsigned short &QoSid)
 {
     std::string s = destAddr;
     addrQoS aq = addrQoS(s, QoSid);
@@ -180,7 +180,7 @@ RMTPort* PrefixPDUForwardingTable::lookup(std::string& destAddr, unsigned short 
     return NULL;
 }
 
-RMTPort* PrefixPDUForwardingTable::lookup(std::string & destAddr)
+RMTPort* PrefixPDUForwardingTable::lookup(const std::string & destAddr)
 {
     std::string s = destAddr;
     addrQoS aq = addrQoS(s, 0);

@@ -254,7 +254,7 @@ void PrefDistanceVectorPolicy::initialize()
         new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
 
     // Set forwarding table
-    fwt = dynamic_cast<PrefixPDUForwardingTable * >(fwdtg->getForwardingTable());
+    fwt = dynamic_cast<IntPrefixPDUForwardingTable * >(fwdtg->getForwardingTable());
     if(!fwt){
         EV << "Invalid FWTable "<<fwdtg->getForwardingTable()->getFullName()<<" for PrefDistanceVectorPolicy" << endl;
         endSimulation();

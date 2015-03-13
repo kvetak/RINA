@@ -16,14 +16,14 @@
 // 
 
 /**
- * @file PrefixPDUForwardingTable.h
+ * @file ExtPrefixPDUForwardingTable.h
  * @author Sergio Leon (gaixas1@gmail.com)
  * @brief PDU forwarding (routing) table used by RMT relay grouping by prefixes.
  * @detail
  */
 
-#ifndef __RINA_PrefixPDUForwardingTable_H_
-#define __RINA_PrefixPDUForwardingTable_H_
+#ifndef __RINA_ExtPrefixPDUForwardingTable_H_
+#define __RINA_ExtPrefixPDUForwardingTable_H_
 
 #include <omnetpp.h>
 #include "IntPrefixPDUForwardingTable.h"
@@ -32,19 +32,26 @@
 #include <set>
 #include <string>
 
-typedef std::set<unsigned short > QoSCollection;
-typedef QoSCollection::iterator QoSColIterator;
 
-typedef std::pair<std::string, unsigned short > addrQoS;
-typedef std::map<addrQoS, RMTPort*> PFwTable;
-typedef PFwTable::iterator PFwTabIterator;
-typedef std::pair<addrQoS, RMTPort*> PFwTabEntry;
+typedef std::map<unsigned char, RMTPort*> type2Port;
+typedef type2Port::iterator type2PortIt;
+
+typedef std::map<std::string, type2Port> FWDTable;
+typedef FWDTable::iterator FWDTableIt;
+
+typedef std::vector<unsigned short> typeList;
+typedef typeList::iterator typeListIt;
+typedef typeList::const_iterator typeListCIt;
+typedef std::map<unsigned short, typeList> Type2List;
+typedef Type2List::iterator Type2ListIt;
 
 
-class PrefixPDUForwardingTable : public IntPrefixPDUForwardingTable
+
+
+class ExtPrefixPDUForwardingTable : public IntPrefixPDUForwardingTable
 {
   public:
-    PrefixPDUForwardingTable();
+    ExtPrefixPDUForwardingTable();
 
     void clean();
     RMTPort* lookup(Address& destAddr, unsigned short QoSid);
@@ -61,11 +68,16 @@ class PrefixPDUForwardingTable : public IntPrefixPDUForwardingTable
     void remove(std::string dstAddr);
 
   protected:
-    PFwTable table;
-    QoSCollection qosCol;
+    FWDTable table;
+    Type2List qos2Valid;
+    unsigned short beQoSId;
+
+    RMTPort * search(const std::string & pref, const unsigned short & QoSid, const typeList * accepted);
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    virtual void finish();
 };
 
 #endif
