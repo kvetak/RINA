@@ -29,7 +29,7 @@
 class DVPInfo :
         public PDUFTGInfo
 {
-private:
+protected:
     int dummy;
 
 public:
@@ -37,7 +37,11 @@ public:
     DVPInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric);
     ~DVPInfo();
 
+    // Getters.
     int getDummy();
+
+
+    // Setters.
     void setDummy(int d);
 };
 

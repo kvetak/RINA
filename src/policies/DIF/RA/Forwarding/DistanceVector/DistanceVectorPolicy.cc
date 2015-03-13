@@ -74,7 +74,7 @@ void DistanceVectorPolicy::computeForwardingTable()
             // It's a neighbor! Repopulate the forwarding table.
             else
             {
-                fwdtg->getForwardingTable()->insert(e->getDestAddr(), e->getQosId(), e->getPort());
+                fwt->insert(e->getDestAddr(), e->getQosId(), e->getPort());
             }
         }
 
@@ -162,6 +162,13 @@ void DistanceVectorPolicy::initialize()
     scheduleAt(
         simTime() + getUpdateTimeout(),
         new cMessage("FwdTimerInit", PDUFTG_SELFMSG_FSUPDATE));
+
+
+    fwt = dynamic_cast<SimplePDUForwardingTable * >(fwdtg->getForwardingTable());
+    if(!fwt){
+        EV << "Invalid FWTable "<<fwdtg->getForwardingTable()->getFullName()<<" for DistanceVectorPolicy" << endl;
+        endSimulation();
+    }
 }
 
 void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, RMTPort * port)
@@ -200,7 +207,7 @@ void DistanceVectorPolicy::insertNewFlow(Address addr, short unsigned int qos, R
         fwdtg->insertNeighbor(addr, qos, port);
 
         // Add the entry in the table.
-        fwdtg->getForwardingTable()->insert(addr, qos, port);
+        fwt->insert(addr, qos, port);
 
         // Debug the actual state of the network.
         pduftg_debug(fwdtg->getIpcAddress().info() << "> " <<
@@ -236,7 +243,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
             // It's a better metric?
             if(eval->getMetric() + 1 < info->getMetric())
             {
-                fwdtg->getForwardingTable()->remove(info->getDestination(), info->getQoSID());
+                fwt->remove(info->getDestination(), info->getQoSID());
                 removeFlow(eval->getDestination(), eval->getQoSID());
 
                 insert = true;
@@ -268,7 +275,7 @@ void DistanceVectorPolicy::mergeForwardingInfo(PDUFTGUpdate * info)
 
             // Insert the entry into the tables.
             fwdtg->getNetworkState()->push_back(newi);
-            fwdtg->getForwardingTable()->insert(eval->getDestination(), eval->getQoSID(), p);
+            fwt->insert(eval->getDestination(), eval->getQoSID(), p);
         }
     }
 

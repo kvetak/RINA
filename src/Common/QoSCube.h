@@ -382,6 +382,15 @@ class QoSCube {
     virtual short countFeasibilityScore(const QoSCube other) const;
 
     /**
+     * @brief Simple QoSCube comparator measuring if this is a feasibility QoSCube to other QoSCubes
+     * If any QoS parameter could not be satisfied then return false. If not return true.
+     * Function should be reimplemented to more sophisticated one in case of inheritance.
+     * @param templ
+     */
+    virtual bool isFeasibility(const QoSCube other) const;
+
+
+    /**
      * @brief Prints QoSCube information as string
      * @return String of QoSCube textual representation
      */
