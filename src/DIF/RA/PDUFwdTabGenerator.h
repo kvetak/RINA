@@ -54,11 +54,11 @@ extern std::ofstream pduftg_debug_file;
 #include "RMT.h"
 #include "RINASignals.h"
 #include "NM1FlowTable.h"
-#include "PDUForwardingTable.h"
 #include "PDUFTGListeners.h"
 #include "PDUFTGPolicy.h"
 #include "PDUFTGUpdate.h"
 #include "PDUFTGNeighbor.h"
+#include "IntPDUForwardingTable.h"
 
 typedef std::list<PDUFTGInfo *> NetworkState;
 typedef NetworkState::iterator NIter;
@@ -95,7 +95,7 @@ class PDUFwdTabGenerator : public cSimpleModule
 
     // PDU Forwarding table module pointer(filled during initialization).
     //
-    PDUForwardingTable* fwTable;
+    IntPDUForwardingTable* fwTable;
 
     // This table will allow us to get the right queue starting from the flow information.
     //
@@ -133,7 +133,7 @@ class PDUFwdTabGenerator : public cSimpleModule
     //
 
     // Gets the managed instance of Forwarding table.
-    PDUForwardingTable * getForwardingTable();
+    IntPDUForwardingTable * getForwardingTable();
 
     // Gets the address associated with this IPC.
     Address getIpcAddress();

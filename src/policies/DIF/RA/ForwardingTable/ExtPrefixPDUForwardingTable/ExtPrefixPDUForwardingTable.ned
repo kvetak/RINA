@@ -15,12 +15,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.policies.DIF.RA.ForwardingTable.ExtPrefixPDUForwardingTable;
+
+import rina.policies.DIF.RA.ForwardingTable.IntPDUForwardingTable;
 
 //
 // TODO auto-generated module
 //
-simple PDUForwardingTable
+simple ExtPrefixPDUForwardingTable like IntPDUForwardingTable
 {
-    @display("i=block/table2");    
+      parameters:
+    	@display("i=block/table2");  
+        int beQoSId = default(255);
+        xml qos2Valid = default(xml("<qos2Valid/>"));
+          
 }

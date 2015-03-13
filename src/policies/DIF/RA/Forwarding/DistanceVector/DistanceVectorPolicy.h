@@ -21,6 +21,7 @@
 #include <omnetpp.h>
 
 #include "PDUFTGPolicy.h"
+#include "SimplePDUForwardingTable.h"
 
 #define PDUFTG_SELFMSG_FSUPDATE     0x01
 
@@ -33,6 +34,7 @@ class DistanceVectorPolicy :
 private:
     /* msec between updates. */
     unsigned int updateT;
+    SimplePDUForwardingTable * fwt;
 
     // Just prepare an update fo a destination host.
     PDUFTGUpdate * prepareFSUpdate(Address destination);

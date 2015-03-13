@@ -16,28 +16,28 @@
 // 
 
 /**
- * @file PDUForwardingTable.cc
+ * @file SimplePDUForwardingTable.cc
  * @author Tomas Hykel (xhykel01@stud.fit.vutbr.cz)
  * @brief PDU forwarding (routing) table used by RMT relay.
  * @detail
  */
 
-#include "PDUForwardingTable.h"
+#include "SimplePDUForwardingTable.h"
 
-Define_Module(PDUForwardingTable);
+Define_Module(SimplePDUForwardingTable);
 
-void PDUForwardingTable::initialize()
+void SimplePDUForwardingTable::initialize()
 {
     WATCH_LIST(fwTable);
 }
 
-PDUForwardingTable::PDUForwardingTable()
+SimplePDUForwardingTable::SimplePDUForwardingTable()
 {
 
 }
 
 
-void PDUForwardingTable::handleMessage(cMessage *msg)
+void SimplePDUForwardingTable::handleMessage(cMessage *msg)
 {
 
 }
@@ -46,7 +46,7 @@ void PDUForwardingTable::handleMessage(cMessage *msg)
 * Dumps the contents of the forwarding table to OMNeT++ output console.
 *
 */
-void PDUForwardingTable::printAll()
+void SimplePDUForwardingTable::printAll()
 {
     EV << "Printing the whole forwarding table: " << endl;
 
@@ -67,7 +67,7 @@ void PDUForwardingTable::printAll()
 * @param QoSid QoS-id
 * @return port-id
 */
-RMTPort* PDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
+RMTPort* SimplePDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
 {
     for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
@@ -80,7 +80,7 @@ RMTPort* PDUForwardingTable::lookup(Address& destAddr, unsigned short QoSid)
     return NULL;
 }
 
-RMTPort* PDUForwardingTable::lookup(Address& destAddr)
+RMTPort* SimplePDUForwardingTable::lookup(Address& destAddr)
 {
     for(PDUFwdTableIter it = fwTable.begin(); it != fwTable.end(); ++it )
     {
@@ -98,7 +98,7 @@ RMTPort* PDUForwardingTable::lookup(Address& destAddr)
 *
 * @param entry table entry to be inserted
 */
-void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
+void SimplePDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 {
     Enter_Method("insert()");
     fwTable.push_back(*entry);
@@ -110,7 +110,7 @@ void PDUForwardingTable::insert(const PDUForwardingTableEntry* entry)
 * @param destAddr destination IPC process address
 * @param qosId flow QoS ID
 */
-void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
+void SimplePDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort* port)
 {
     Enter_Method("insert()");
 
@@ -127,7 +127,7 @@ void PDUForwardingTable::insert(Address destAddr, unsigned short qosId, RMTPort*
 *
 * @param portId target port-id
 */
-void PDUForwardingTable::remove(Address destAddr, int qosId)
+void SimplePDUForwardingTable::remove(Address destAddr, int qosId)
 {
     PDUFwdTableIter i = fwTable.begin();
 
@@ -144,7 +144,7 @@ void PDUForwardingTable::remove(Address destAddr, int qosId)
     }
 }
 
-void PDUForwardingTable::clean()
+void SimplePDUForwardingTable::clean()
 {
     /* Q: How to handle memory here? */
     fwTable.clear();

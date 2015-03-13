@@ -22,6 +22,7 @@
 
 #include "DA.h"
 #include "PDUFTGPolicy.h"
+#include "SimplePDUForwardingTable.h"
 
 // Static routing follows the operations already done by the first version of
 // rinasim, when no forwarding of information existed. It simply update the
@@ -36,6 +37,8 @@ class StaticRoutingPolicy :
 {
 private:
     DA * difA;
+    SimplePDUForwardingTable * fwt;
+
 
 protected:
     void initialize();

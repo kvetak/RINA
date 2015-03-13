@@ -43,7 +43,7 @@ void PDUFwdTabGenerator::finish()
 #endif
 }
 
-PDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
+IntPDUForwardingTable * PDUFwdTabGenerator::getForwardingTable()
 {
     return fwTable;
 }
@@ -126,7 +126,7 @@ void PDUFwdTabGenerator::initialize()
 
     fwdPolicy = check_and_cast<PDUFTGPolicy *>
         (getModuleByPath("^.PDUFTGPolicy"));
-    fwTable   = check_and_cast<PDUForwardingTable *>
+    fwTable   = check_and_cast<IntPDUForwardingTable *>
         (getModuleByPath("^.pduForwardingTable"));
     flTable   = check_and_cast<NM1FlowTable *>
         (getModuleByPath("^.nm1FlowTable"));
@@ -265,7 +265,6 @@ std::string PDUFwdTabGenerator::netInfo()
         if(p)
         {
             RMTQueue* o = p->getRMTPort()->getOutputQueues().front();
-
             os << " through port " << o->info() << " (is neighbor)";
         }
 

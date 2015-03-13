@@ -24,6 +24,7 @@
 #include "CDAPMessage_m.h"
 #include "PDUFTGUpdate.h"
 #include "CongestionDescriptor.h"
+#include "PDU.h"
 
 
 class RIBdBase : public cSimpleModule {

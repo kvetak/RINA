@@ -279,6 +279,61 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
     return score;
 }
 
+bool QoSCube::isFeasibility(const QoSCube other) const {
+    if (getAvgBand() != VAL_QOSPARDONOTCARE && getAvgBand() > other.getAvgBand())
+        return false;
+
+    if (getAvgSduBand() != VAL_QOSPARDONOTCARE && getAvgSduBand() > other.getAvgSduBand())
+        return false;
+
+    if (getPeakBandDuration() != VAL_QOSPARDONOTCARE && getPeakBandDuration() > other.getPeakBandDuration())
+        return false;
+
+    if (getPeakSduBandDuration() != VAL_QOSPARDONOTCARE && getPeakSduBandDuration() > other.getPeakSduBandDuration())
+        return false;
+
+    if (getBurstPeriod() != VAL_QOSPARDONOTCARE && getBurstPeriod() > other.getBurstPeriod())
+        return false;
+
+    if (getBurstDuration() != VAL_QOSPARDONOTCARE && getBurstDuration() > other.getBurstDuration())
+        return false;
+
+    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE && getUndetectedBitErr() > other.getUndetectedBitErr())
+        return false;
+
+    if (getMaxSduSize() != VAL_QOSPARDONOTCARE && getMaxSduSize() > other.getMaxSduSize())
+        return false;
+
+    if(!other.isPartialDelivery() && isPartialDelivery())
+        return false;
+
+    if(!other.isIncompleteDelivery() && isIncompleteDelivery())
+        return false;
+
+    if(!other.isForceOrder() && isForceOrder())
+        return false;
+
+    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE && getMaxAllowGap() > other.getMaxAllowGap())
+        return false;
+
+    if (getDelay() != VAL_QOSPARDONOTCARE && getDelay() > other.getDelay())
+        return false;
+
+    if (getJitter() != VAL_QOSPARDONOTCARE && getJitter() > other.getJitter())
+        return false;
+
+    if (getCostTime() != VAL_QOSPARDONOTCARE && getCostTime() > other.getCostTime())
+        return false;
+
+    if (getCostBits() != VAL_QOSPARDONOTCARE && getCostBits() > other.getCostBits())
+        return false;
+
+    if (getATime() != VAL_QOSPARDONOTCARE && getATime() > other.getATime())
+        return false;
+
+    return true;
+}
+
 bool QoSCube::isDTCPNeeded()const {
   return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
 }

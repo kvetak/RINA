@@ -17,20 +17,11 @@
 
 #include "DVPInfo.h"
 
-DVPInfo::DVPInfo()
-{
+DVPInfo::DVPInfo(){}
 
-}
+DVPInfo::DVPInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric):PDUFTGInfo(src,dst, QoSID,metric){}
 
-DVPInfo::DVPInfo(Address src, Address dst, unsigned short QoSID, unsigned int metric) :
-    PDUFTGInfo(src, dst, QoSID, metric)
-{
-}
-
-DVPInfo::~DVPInfo()
-{
-
-}
+DVPInfo::~DVPInfo(){}
 
 int DVPInfo::getDummy()
 {
