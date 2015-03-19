@@ -18,6 +18,7 @@
 import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
 import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
 package rina.DIF.RMT;
 
@@ -29,6 +30,7 @@ module RelayAndMux
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
         string maxQPolicyName = default("TailDrop");
+        string ForwardingPolicyName = default("SimpleTable");
 
         int defaultMaxQLength = default(20);
         int defaultThreshQLength = default(10);
@@ -51,6 +53,9 @@ module RelayAndMux
             @display("p=310,55;is=s");
         }
         maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
+            @display("p=420,55;is=s");
+        }
+        pduForwardingPolicy: <ForwardingPolicyName> like IntPDUForwarding {
             @display("p=420,55;is=s");
         }
         rmtModuleAllocator: RMTModuleAllocator {

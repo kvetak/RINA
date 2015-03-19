@@ -21,7 +21,7 @@ import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
-import rina.policies.DIF.RA.ForwardingTable.IntPDUForwardingTable;
+import rina.policies.DIF.RA.PDUFG.IntPDUFG;
 
 
 module ResourceAllocator
@@ -30,16 +30,12 @@ module ResourceAllocator
         @display("i=block/segm;bgb=486,352");
         string queueAllocPolicyName = default("SingleQueue");
         string pduftType = default("SimplePDUForwardingTable");
-        string pduftgPolicyName = default("StaticRoutingPolicy");
+        string pdufgPolicyName = default("StaticGenerator");
         string queueIdGenName = default("SingleID");
         string addrComparatorName = default("ExactMatch");
 
     submodules:
-        
-        pduForwardingTable: <pduftType> like IntPDUForwardingTable {
-            @display("p=60,60");
-        }
-        pduFwdTabGenerator: PDUFwdTabGenerator {
+        pduFwdGenerator: <pdufgPolicyName> like IntPDUFG  {
             @display("p=180,60");
         }
         ra: RA {
@@ -54,9 +50,6 @@ module ResourceAllocator
         }
         queueIdGenerator: <queueIdGenName> like IntRAQueueIDGen {
             @display("p=180,163");
-        }
-        PDUFTGPolicy: <pduftgPolicyName> like IntPDUFTGPolicy {
-            @display("p=300,163");
         }
         addressComparator: <addrComparatorName> like IntAddressComparator {
             @display("p=420,163");
