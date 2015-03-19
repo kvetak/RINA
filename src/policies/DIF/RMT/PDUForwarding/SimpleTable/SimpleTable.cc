@@ -43,16 +43,18 @@ string SimpleTable::toString(){
 
 //Insert/Remove an entry
 void SimpleTable::insert(const Address &addr, const unsigned short &qos, RMTPort * port){
-    EV << "Insert "<<addr << " , " << qos << " -> " << port->getFullPath()<<endl;
-    string dstAddr = addr.getIpcAddress().getName();
-    table[dstAddr][qos] = port;
+    insert(addr.getIpcAddress().getName(), qos, port);
 }
 void SimpleTable::remove(const Address &addr, const unsigned short &qos){
-    EV << "Remove "<<addr << " , " << qos <<endl;
-    string dstAddr = addr.getIpcAddress().getName();
-    table[dstAddr].erase(qos);
-    if(table[dstAddr].empty()){
-        table.erase(dstAddr);
+    remove(addr.getIpcAddress().getName(), qos);
+}
+void SimpleTable::insert(const string &addr, const unsigned short &qos, RMTPort * port){
+    table[addr][qos] = port;
+}
+void SimpleTable::remove(const string &addr, const unsigned short &qos){
+    table[addr].erase(qos);
+    if(table[addr].empty()){
+        table.erase(addr);
     }
 }
 

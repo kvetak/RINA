@@ -5,13 +5,13 @@ IntRouting::IntRouting(){
     SIG_RIBD_RoutingUpdateReceived = "Routing-UpdateReceived";
 }
 
-IntRouting::~ IntRouting(){
-    delete SIG_RIBD_RoutingUpdate;
-    delete SIG_RIBD_RoutingUpdateReceived;
+void IntRouting::finish(){
 
     cModule* catcher = this->getParentModule();
     catcher->unsubscribe(SIG_RIBD_RoutingUpdateReceived, listener);
     delete listener;
+   // delete SIG_RIBD_RoutingUpdate;
+   // delete SIG_RIBD_RoutingUpdateReceived;
 }
 
 void IntRouting::initialize(){

@@ -37,7 +37,7 @@ class IntRouting  : public cSimpleModule {
 public:
     //Constructor/Destructor
     IntRouting();
-    ~IntRouting();
+    virtual void finish();
 
     void receiveUpdate(const IntRoutingUpdate * update);
 

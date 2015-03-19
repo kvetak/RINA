@@ -25,6 +25,7 @@
 #include "PDUFTGUpdate.h"
 #include "CongestionDescriptor.h"
 #include "PDU.h"
+#include "IntRoutingUpdate.h"
 
 
 class RIBdBase : public cSimpleModule {
@@ -42,7 +43,7 @@ class RIBdBase : public cSimpleModule {
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow) = 0;
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow) = 0;
     /* Handles information coming from PDUFTG module. */
-    virtual void receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * flow) = 0;
+    virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * flow) = 0;
 
     virtual void sendCongestionNotification(PDU* pdu) = 0;
 

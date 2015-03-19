@@ -8,7 +8,7 @@
 #include <IntRoutingUpdate.h>
 
 IntRoutingUpdate::IntRoutingUpdate(){}
-IntRoutingUpdate::IntRoutingUpdate(Address addr){
+IntRoutingUpdate::IntRoutingUpdate(const Address &addr){
     dstAddr = addr;
 }
 

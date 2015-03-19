@@ -43,7 +43,9 @@ public:
     string toString();
 
     //Insert/Remove an entry
+    void insert(const std::string &addr, const unsigned short &qos, RMTPort * port);
     void insert(const Address &addr, const unsigned short &qos, RMTPort * port);
+    void remove(const std::string &addr, const unsigned short &qos);
     void remove(const Address &addr, const unsigned short &qos);
 
     void finish();

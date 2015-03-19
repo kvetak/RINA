@@ -87,10 +87,10 @@ class LisRIBDCreFloPosi: public RIBdListeners {
 };
 
 /* Listen for Forwarding info updates from PDUFTG and handle them. */
-class LisRIBDFwdInfoUpdate: public RIBdListeners
+class LisRIBDRoutingUpdate: public RIBdListeners
 {
   public:
-    LisRIBDFwdInfoUpdate(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    LisRIBDRoutingUpdate(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 

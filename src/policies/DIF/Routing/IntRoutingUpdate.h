@@ -17,7 +17,7 @@ protected:
 
 public:
     IntRoutingUpdate();
-    IntRoutingUpdate(Address addr);
+    IntRoutingUpdate(const Address &addr);
     ~IntRoutingUpdate();
 
     // Getters.
