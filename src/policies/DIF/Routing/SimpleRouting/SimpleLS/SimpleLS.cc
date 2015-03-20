@@ -66,7 +66,26 @@ void SimpleLS::scheduleUpdate(){
 
 //Get Changes
 entries2Next SimpleLS::getChanges(){
-    return getAll();
+    entries2Next ret;
+    for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
+        unsigned short qos = qosIt->first;
+        TreeNode t = constructTree(qosIt->second);
+        for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
+            ret[qosPaddr(qos, (*it)->addr)] = (*it)->addr;
+            addRecursive(ret, qos, (*it)->addr, *it);
+        }
+    }
+
+    entries2Next t = ret;
+
+    for(entries2NextIt tIt = table.begin(); tIt != table.end(); tIt++){
+        if (ret[tIt->first]  == tIt->second){
+            ret.erase(tIt->first);
+        }
+    }
+    table = t;
+
+    return ret;
 }
 
 entries2Next SimpleLS::getAll(){
@@ -81,7 +100,8 @@ entries2Next SimpleLS::getAll(){
         }
     }
 
-    return ret;
+    table = ret;
+    return table;
 }
 
 TreeNode SimpleLS::constructTree(linksSt &ls){

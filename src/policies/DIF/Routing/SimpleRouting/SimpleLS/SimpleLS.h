@@ -50,10 +50,12 @@ typedef neighMetric::iterator neighMetricIt;
 typedef qosNeighMetric::iterator qosNeighMetricIt;
 
 
+typedef std::set<unsigned short> qosSet;
 typedef std::set<std::string> addrSet;
 typedef std::vector<std::string> addrList;
 typedef std::map<unsigned short, addrSet> qos2addrSet;
 typedef std::pair<unsigned short, addrSet> qos2addrSetEntry;
+typedef qosSet::iterator qosSetIt;
 typedef addrSet::iterator addrSetIt;
 typedef qos2addrSet::iterator qos2addrSetIt;
 
@@ -170,6 +172,8 @@ private:
 
     bool scheduledUpdate;
     void scheduleUpdate();
+
+    entries2Next table;
 
 
     void printTreeNode(TreeNode *t, const std::string &next);
