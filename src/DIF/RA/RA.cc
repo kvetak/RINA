@@ -62,8 +62,9 @@ void RA::initialize(int stage)
     rmtModule = thisIPC->getSubmodule("relayAndMux");
 
     // Get access to the forwarding and routing functionalities...
-    fwdtg = check_and_cast<PDUFwdTabGenerator *>
-        (getModuleByPath("^.pduFwdTabGenerator"));
+    fwdtg = check_and_cast<IntPDUFG *>
+        (getModuleByPath("^.pduFwdGenerator"));
+
 
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));

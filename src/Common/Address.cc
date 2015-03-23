@@ -79,6 +79,17 @@ bool Address::operator ==(const Address& other) const
             && apname == other.apname;
 }
 
+bool Address::operator <(const Address& other) const
+{
+    if(!(ipcAddress == other.ipcAddress)){
+        return ipcAddress.getName() < other.ipcAddress.getName();
+    } else if(!(difName == other.difName)){
+        return difName.getName() < other.difName.getName();
+    } else {
+        return apname.getName() < other.apname.getName();
+    }
+}
+
 std::string Address::info() const
 {
     std::ostringstream os;

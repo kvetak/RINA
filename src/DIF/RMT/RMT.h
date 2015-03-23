@@ -33,7 +33,7 @@
 #include "PDU.h"
 #include "CDAPMessage_m.h"
 
-#include "IntPDUForwardingTable.h"
+#include "IntPDUForwarding.h"
 #include "QueueAllocBase.h"
 #include "AddressComparatorBase.h"
 
@@ -68,7 +68,7 @@ class RMT : public RMTBase
     virtual void finish();
 
   private:
-    IntPDUForwardingTable* fwTable;
+    IntPDUForwarding* fwd;
     RMTModuleAllocator* rmtAllocator;
 
     bool relayOn;
@@ -93,7 +93,8 @@ class RMT : public RMTBase
     void portToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
+    RMTPort* fwTableLookup(const Address& destAddr, const unsigned short &pduQosId);
+    RMTPort* fwTableLookup(const PDU * pdu);
     std::deque<cMessage*> invalidPDUs;
 
     simsignal_t sigRMTNoConnID;

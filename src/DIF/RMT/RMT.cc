@@ -42,8 +42,8 @@ void RMT::initialize()
     onWire = false;
 
     // get pointers to other components
-    fwTable = check_and_cast<IntPDUForwardingTable*>
-        (getModuleByPath("^.^.resourceAllocator.pduForwardingTable"));
+    fwd = check_and_cast<IntPDUForwarding*>
+        (getModuleByPath("^.pduForwardingPolicy"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.rmtModuleAllocator"));
 
@@ -241,30 +241,46 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  *
  * @param destAddr destination address
  * @param qosId qos-id
- * @param useQoS (to be removed) indicator of whether the QoS info should be used
  * @return output port
  */
-RMTPort* RMT::fwTableLookup(Address& destAddr, short qosId, bool useQoS)
+RMTPort* RMT::fwTableLookup(const Address& destAddr, const unsigned short &qosId)
 {
-    RMTPort* outPort = NULL;
-
     if (onWire)
     { // get the interface port
-        outPort = rmtAllocator->getInterfacePort();
+        return rmtAllocator->getInterfacePort();
     }
     else
-    { // get a suitable port from PDUFT
-        if (useQoS)
-        {
-            outPort = fwTable->lookup(destAddr, qosId);
-        }
-        else
-        {
-            outPort = fwTable->lookup(destAddr);
+    { // get a suitable ports from PDUF
+        std::vector<RMTPort*> ports = fwd->lookup(destAddr, qosId);
+        if(ports.size()>0){
+            return ports.front();
+        } else {
+            return NULL;
         }
     }
+}
 
-    return outPort;
+/**
+ * A wrapper for forwarding table lookup.
+ *
+ * @param pdu PDU to forward
+ * @return output port
+ */
+RMTPort* RMT::fwTableLookup(const PDU * pdu)
+{
+    if (onWire)
+    { // get the interface port
+        return rmtAllocator->getInterfacePort();
+    }
+    else
+    { // get a suitable ports from PDUF
+        std::vector<RMTPort*> ports = fwd->lookup(pdu);
+        if(ports.size()>0){
+            return ports.front();
+        } else {
+            return NULL;
+        }
+    }
 }
 
 /**
@@ -354,7 +370,7 @@ void RMT::ribToPort(CDAPMessage* cdap)
 {
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0, false);
+    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
     if (outPort != NULL)
     {
         outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
@@ -388,13 +404,10 @@ void RMT::portToPort(cMessage* msg)
     RMTPort* outPort = NULL;
     RMTQueue* outQueue = NULL;
 
-
-    if (dynamic_cast<PDU*>(msg) != NULL)
+    PDU* pdu = dynamic_cast<PDU*>(msg);
+    if (pdu != NULL)
     {
-        destAddr = ((PDU*)msg)->getDstAddr();
-        short qosId = ((PDU*)msg)->getConnId().getQoSId();
-
-        outPort = fwTableLookup(destAddr, qosId);
+        outPort = fwTableLookup(pdu);
         if (outPort == NULL)
         {
             EV << getFullPath()
@@ -408,7 +421,7 @@ void RMT::portToPort(cMessage* msg)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(destAddr, 0, false);
+        outPort = fwTableLookup(destAddr, 0);
         if (outPort == NULL)
         {
             EV << getFullPath()

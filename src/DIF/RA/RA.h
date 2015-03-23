@@ -34,13 +34,12 @@
 
 #include "RABase.h"
 #include "RAListeners.h"
-#include "IntPDUForwardingTable.h"
 #include "NM1FlowTable.h"
 #include "QueueAllocBase.h"
 #include "CongestionDescriptor.h"
 
 /* Forwarding and routing stuff... */
-#include "PDUFwdTabGenerator.h"
+#include "IntPDUFG.h"
 
 //Consts
 extern const char* PAR_QOSDATA;
@@ -94,7 +93,7 @@ class RA : public RABase
     QueueAllocBase* qAllocPolicy;
 
     // Forwarding and routing stuff...
-    PDUFwdTabGenerator * fwdtg;
+    IntPDUFG * fwdtg;
 
     std::string processName;
     std::list<Flow*> preparedFlows;
