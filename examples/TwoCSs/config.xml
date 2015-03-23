@@ -3,15 +3,13 @@
 	<Host id="host1">
 		<DA>
 			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer0" ipcAddress="1" />
+				<APN apn="App1">					
 					<DIF difName="Layer1" ipcAddress="11" />
 				</APN>
 				<APN apn="11_Layer1">
 					<DIF difName="Layer0" ipcAddress="1" />
 				</APN>					
 				<APN apn="App2">
-					<DIF difName="Layer0" ipcAddress="2" />
 					<DIF difName="Layer1" ipcAddress="22" />
 				</APN>
 				<APN apn="22_Layer1">
@@ -28,15 +26,13 @@
 	<Host id="host2">
 		<DA>
 			<Directory>
-				<APN apn="App1">
-					<DIF difName="Layer0" ipcAddress="1" />
+				<APN apn="App1">					
 					<DIF difName="Layer1" ipcAddress="11" />
 				</APN>
 				<APN apn="11_Layer1">
 					<DIF difName="Layer0" ipcAddress="1" />
 				</APN>		
 				<APN apn="App2">
-					<DIF difName="Layer0" ipcAddress="2" />
 					<DIF difName="Layer1" ipcAddress="22" />
 				</APN>
 				<APN apn="22_Layer1">
