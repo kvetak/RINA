@@ -45,7 +45,7 @@ void IntRouting::initialize(){
     listener = new LisRoutingRecv(this);
     catcher->subscribe(SIG_RIBD_RoutingUpdateReceived, listener);
 
-    onIni();
+    onPolicyInit();
 
 }
 

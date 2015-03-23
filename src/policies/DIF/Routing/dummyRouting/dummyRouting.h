@@ -25,7 +25,7 @@ public:
 
 protected:
     // Called after initialize
-    void onIni();
+    void onPolicyInit();
 };
 
 #endif /* dummyRouting_H_ */

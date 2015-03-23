@@ -73,7 +73,7 @@ void RA::initialize(int stage)
     rmt = check_and_cast<RMT*>
         (getModuleByPath("^.^.relayAndMux.rmt"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.relayAndMux.rmtModuleAllocator"));
+        (getModuleByPath("^.^.relayAndMux.allocator"));
 
     // retrieve pointers to policies
     qAllocPolicy = check_and_cast<QueueAllocBase*>

@@ -40,7 +40,7 @@ public:
 
 protected:
     // Called after initialize
-    virtual void onIni() = 0;
+    virtual void onPolicyInit() = 0;
 };
 
 #endif /* IntSimpleRouting_H_ */

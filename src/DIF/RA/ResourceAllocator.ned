@@ -27,7 +27,7 @@ import rina.policies.DIF.RA.PDUFG.IntPDUFG;
 module ResourceAllocator
 {
     parameters:
-        @display("i=block/segm;bgb=486,352");
+        @display("i=block/segm;bgb=470,352");
         string queueAllocPolicyName = default("SingleQueue");
         string pduftType = default("SimplePDUForwardingTable");
         string pdufgPolicyName = default("StaticGenerator");
@@ -35,23 +35,22 @@ module ResourceAllocator
         string addrComparatorName = default("ExactMatch");
 
     submodules:
-        pduFwdGenerator: <pdufgPolicyName> like IntPDUFG  {
-            @display("p=180,60");
-        }
         ra: RA {
-            @display("p=300,60");
+            @display("p=55,55");
         }
         nm1FlowTable: NM1FlowTable {
-            @display("p=420,60");
+            @display("p=175,55");
         }
-
+        pduFwdGenerator: <pdufgPolicyName> like IntPDUFG {
+            @display("p=55,150");
+        }
         queueAllocPolicy: <queueAllocPolicyName> like IntRAQueueAlloc {
-            @display("p=60,163");
+            @display("p=175,150");
         }
         queueIdGenerator: <queueIdGenName> like IntRAQueueIDGen {
-            @display("p=180,163");
+            @display("p=295,150");
         }
         addressComparator: <addrComparatorName> like IntAddressComparator {
-            @display("p=420,163");
+            @display("p=415,150");
         }
 }

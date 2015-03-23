@@ -85,7 +85,7 @@ public:
 
 protected:
     // Called after initialize
-    void onIni();
+    void onPolicyInit();
 
 private:
     unsigned short infMetric;

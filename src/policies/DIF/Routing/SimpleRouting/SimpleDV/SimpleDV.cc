@@ -143,7 +143,7 @@ bool SimpleDV::processUpdate(const IntRoutingUpdate * update){
 }
 
 // Called after initialize
-void SimpleDV::onIni(){
+void SimpleDV::onPolicyInit(){
     myAddr = par("myAddr").stdstringValue();
     if(myAddr == "") {
         myAddr = myAddress.getIpcAddress().getName();

@@ -45,7 +45,7 @@ public:
 
 protected:
     // Called after initialize
-    virtual void onIni();
+    virtual void onPolicyInit();
 
 private:
     DA * difA;

@@ -21,11 +21,6 @@ simple RA
 {
     parameters:
         @display("i=block/segm");
-        //TODO: Change signal types to objects
-        @signal[CreateRequestFlow](type="bool");
-        @signal[CreateResponseFlow](type="bool");
-        @signal[DeleteRequestFlow](type="bool");
-        @signal[DeleteResponseFlow](type="bool");
 
         xml qoscubesData = default(xml("<QoSCube/>"));
         xml flows = default(xml("<Flows/>"));

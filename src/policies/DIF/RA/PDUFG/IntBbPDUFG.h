@@ -28,7 +28,7 @@ public:
 protected:
     IntBbPDUForwarding * fwd;
     IntBbRouting * routing;
-    void onIni();
+    void onPolicyInit();
     virtual void onBIni() = 0;
 };
 

@@ -190,7 +190,7 @@ bool SimpleLS::processUpdate(const IntRoutingUpdate * update){
 }
 
 // Called after initialize
-void SimpleLS::onIni(){
+void SimpleLS::onPolicyInit(){
     myAddr = par("myAddr").stdstringValue();
     if(myAddr == "") {
         myAddr = myAddress.getIpcAddress().getName();

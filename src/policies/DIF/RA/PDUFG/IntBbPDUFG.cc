@@ -1,6 +1,6 @@
 #include "IntBbPDUFG.h"
 
-void IntBbPDUFG::onIni(){
+void IntBbPDUFG::onPolicyInit(){
 
     //Set Forwarding policy
     fwd = check_and_cast<IntBbPDUForwarding *>(getModuleByPath("^.pduForwardingPolicy"));

@@ -33,7 +33,7 @@ public:
     virtual IntRoutingInfo getAll() = 0;
 
 protected :
-    virtual void onIni();
+    virtual void onPolicyInit();
 };
 
 #endif /* INTBBROUTING_H_ */
