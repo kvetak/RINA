@@ -39,10 +39,10 @@ public:
     IntRouting();
     virtual void finish();
 
-    void receiveUpdate(const IntRoutingUpdate * update);
+    void receiveUpdate(IntRoutingUpdate * update);
 
     //Process a Routing Update, return true => inform FWDG of the update
-    virtual bool processUpdate(const IntRoutingUpdate * update) = 0;
+    virtual bool processUpdate(IntRoutingUpdate * update) = 0;
 
 
 protected:

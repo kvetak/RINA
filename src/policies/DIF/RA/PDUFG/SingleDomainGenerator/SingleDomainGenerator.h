@@ -13,28 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef SimpleGenerator_H_
-#define SimpleGenerator_H_
+#ifndef SingleDomainGenerator_H_
+#define SingleDomainGenerator_H_
 
 #include <IntPDUFG.h>
-#include <SimpleTable/SimpleTable.h>
-#include <SimpleRouting/IntSimpleRouting.h>
+#include <MiniTable/MiniTable.h>
+#include <DomainRouting/Routing.h>
 
 #include <map>
 #include <set>
 
-namespace SimpleGenerator {
+namespace SingleDomainGenerator {
 
 typedef std::set<RMTPort*> PortsSet;
-typedef std::map<unsigned short, PortsSet> Nentries;
-typedef std::map<std::string, Nentries> NTable;
+typedef std::map<std::string, PortsSet> NTable;
 
 typedef PortsSet::iterator PortsSetIt;
-typedef Nentries::iterator NentriesIt;
 typedef NTable::iterator NTableIt;
 
 
-class SimpleGenerator: public IntPDUFG {
+class SingleDomainGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
@@ -49,8 +47,8 @@ protected:
 
 private:
     DA * difA;
-    SimpleTable::SimpleTable * fwd;
-    IntSimpleRouting * rt;
+    MiniTable::MiniTable * fwd;
+    DMRnms::Routing * rt;
 
     NTable neighbours;
 };

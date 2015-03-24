@@ -13,28 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef SimpleGenerator_H_
-#define SimpleGenerator_H_
+#ifndef BiDomainGenerator_H_
+#define BiDomainGenerator_H_
 
 #include <IntPDUFG.h>
-#include <SimpleTable/SimpleTable.h>
-#include <SimpleRouting/IntSimpleRouting.h>
+#include <DomainTable/DomainTable.h>
+#include <DomainRouting/Routing.h>
 
 #include <map>
 #include <set>
 
-namespace SimpleGenerator {
+namespace BiDomainGenerator {
+
+
+struct pAddr {
+    std::string domain;
+    std::string addr;
+    pAddr (const std::string &_domain, const std::string &_addr)
+        : domain(_domain), addr(_addr) {}
+};
 
 typedef std::set<RMTPort*> PortsSet;
-typedef std::map<unsigned short, PortsSet> Nentries;
-typedef std::map<std::string, Nentries> NTable;
+typedef std::map<std::string, PortsSet> NTable;
 
 typedef PortsSet::iterator PortsSetIt;
-typedef Nentries::iterator NentriesIt;
 typedef NTable::iterator NTableIt;
 
 
-class SimpleGenerator: public IntPDUFG {
+class BiDomainGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
@@ -49,8 +55,12 @@ protected:
 
 private:
     DA * difA;
-    SimpleTable::SimpleTable * fwd;
-    IntSimpleRouting * rt;
+    DomainTable::DomainTable * fwd;
+    DMRnms::Routing * rt;
+
+    std::string myPrefix;
+    std::string mySufix;
+    pAddr parseAddr(const std::string &addr);
 
     NTable neighbours;
 };
