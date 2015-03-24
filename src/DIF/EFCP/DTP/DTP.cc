@@ -1104,9 +1104,6 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
       }//end of for
 
-
-
-
     }else{
       /* FlowControl is not present */
       std::vector<DataTransferPDU*>::iterator it;
@@ -1132,6 +1129,10 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
         it = pduQ->erase(it);
       }
+      //TODO A4 Report change in specs
+      //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
+      //but if this is the first PDU we send, we have to update it here
+      dtcp->updateSenderLWE(dtcp->getDTCPState()->getRxQ()->front()->getPdu()->getSeqNum());
 
     }
     else
@@ -1147,12 +1148,14 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
         it = pduQ->erase(it);
       }
 
+      //TODO A4 Report change in specs
+      //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
+      //but if RX is not used we have to update it here
+      dtcp->updateSenderLWE(state->getLastSeqNumSent());
+
     }
 
-    //TODO A4 Report change in specs
-          //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
-          //but if this is the first PDU we send, we have to update it here
-          dtcp->updateSenderLWE(state->getNextSeqNumToSendWithoutIncrement());
+
   }
   else
   {
