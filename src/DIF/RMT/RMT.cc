@@ -85,7 +85,7 @@ void RMT::finish()
     size_t pduCount = invalidPDUs.size();
     if (pduCount)
     {
-        EV << this->getFullPath() << endl;
+        EV << this->getFullPath()<< endl;
         EV << "This RMT still contains " << pduCount << " unprocessed PDUs!" << endl;
 
         for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
@@ -370,15 +370,17 @@ void RMT::ribToPort(CDAPMessage* cdap)
 {
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 42);
+    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
     if (outPort != NULL)
     {
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
     }
+
     if (outQueue != NULL)
     {
         outGate = outQueue->getRMTAccessGate();
     }
+
     if (outGate != NULL)
     {
         send(cdap, outGate);
@@ -386,8 +388,8 @@ void RMT::ribToPort(CDAPMessage* cdap)
     else
     {
         EV << getFullPath() << ": could not send out a CDAP message!" << endl;
-        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName() << endl;
-        EV << fwd->toString();
+        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
+           << ", qosId = 0" << endl;
     }
 }
 
@@ -419,14 +421,14 @@ void RMT::portToPort(cMessage* msg)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(destAddr, 42);
+        outPort = fwTableLookup(destAddr, 0);
         if (outPort == NULL)
         {
             EV << getFullPath()
                << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
     }
     else
     {

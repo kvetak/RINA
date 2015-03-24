@@ -19,10 +19,9 @@ vector<RMTPort * > SimpleTable::lookup(const Address &dst, const unsigned short 
     qos2Port * t = &table[dstAddr];
     if(t->find(qos) != t->end()){
         ret.push_back((*t)[qos]);
+    } else if (qos == 0 && t->size() > 0){
+        ret.push_back(t->begin()->second);
     }
-//    } else if (qos == 0 && t->size() > 0){
-//        ret.push_back(t->begin()->second);
-//    }
 
     return ret;
 }
@@ -31,17 +30,11 @@ vector<RMTPort * > SimpleTable::lookup(const Address &dst, const unsigned short 
 string SimpleTable::toString(){
     std::ostringstream os;
 
-    os << this->getClassName() << endl;
-    for(FWDTableIt tIt = table.begin(); tIt != table.end(); tIt++)
-    {
-        //os << "\t" <<tIt->first << endl;
-
-        for(qos2PortIt qIt = tIt->second.begin(); qIt != tIt->second.end(); qIt++)
-        {
-            //os << "\t\t->(" << qIt->first << " , "<<qIt->second->getFullPath()<<")" <<endl;
-
-            EV << "(" << tIt->first << ", " << qIt->first << ") => "
-               << qIt->second->getParentModule()->getFullName() << endl;
+    os << this->getName()<<endl;
+    for(FWDTableIt tIt = table.begin(); tIt != table.end(); tIt++){
+        os << "\t" <<tIt->first<<endl;
+        for(qos2PortIt qIt = tIt->second.begin(); qIt != tIt->second.end(); qIt++){
+            os << "\t\t->(" << qIt->first << " , "<<qIt->second->getFullPath()<<")" <<endl;
         }
     }
 
@@ -67,9 +60,7 @@ void SimpleTable::remove(const string &addr, const unsigned short &qos){
 
 
 // Called after initialize
-void SimpleTable::onPolicyInit()
-{
-}
+void SimpleTable::onPolicyInit(){}
 
 void SimpleTable::finish(){
  //   EV << toString() <<endl;
