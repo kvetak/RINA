@@ -75,30 +75,25 @@ void RMTPort::handleMessage(cMessage* msg)
     }
     else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
-        if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-        { // this will go away when we figure out management flow pre-allocation
-            send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
-            emit(sigStatRMTPortUp, true);
-        }
-        else if (dynamic_cast<PDU*>(msg) != NULL)
+        // get a proper queue for this message
+        RMTQueue* inQueue = NULL;
+        if (dynamic_cast<PDU*>(msg) != NULL)
         {
-            // get a proper queue for this message
-            RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateID((PDU*)msg).c_str());
-
-            if (inQueue != NULL)
-            {
-                send(msg, inQueue->getInputGate()->getPreviousGate());
-                emit(sigStatRMTPortUp, true);
-            }
-            else
-            {
-                EV << "no input queue with such ID is available!";
-            }
+            inQueue = getQueueById(RMTQueue::INPUT, queueIdGen->generateID((PDU*)msg).c_str());
         }
         else
         {
-            EV << "this type of message isn't supported!" << endl;
+            inQueue = getFirstQueue(RMTQueue::INPUT);
+        }
+
+        if (inQueue != NULL)
+        {
+            send(msg, inQueue->getInputGate()->getPreviousGate());
+            emit(sigStatRMTPortUp, true);
+        }
+        else
+        {
+            EV << "no suitable input queue available!";
         }
     }
     else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
@@ -153,7 +148,6 @@ void RMTPort::registerInputQueue(RMTQueue* queue)
     inputQueues.push_back(queue);
 }
 
-
 void RMTPort::registerOutputQueue(RMTQueue* queue)
 {
     northInputGates.insert(queue->getOutputGate()->getNextGate());
@@ -183,18 +177,11 @@ cGate* RMTPort::getSouthOutputGate() const
     return southOutputGate;
 }
 
-RMTQueue* RMTPort::getManagementQueue(RMTQueueType type) const
-{
-    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
-
-    return queueVect.front();
-}
-
 RMTQueue* RMTPort::getFirstQueue(RMTQueueType type) const
 {
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
-    return queueVect.at(1);
+    return queueVect.front();
 }
 
 RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const
@@ -283,6 +270,11 @@ void RMTPort::redrawGUI(bool redrawParent)
 
             dStr.setTagArg("t", 0, ostr.str().c_str());
             dStr.setTagArg("t", 1, "t");
+
+            if (flow && (flow->getConnectionId().getQoSId() == 42))
+            {
+                dStr.setTagArg("i", 0, "block/cogwheel");
+            }
         }
     }
 }

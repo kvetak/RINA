@@ -26,17 +26,8 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
         {
             port->setBusy();
 
-            // management PDU should have bigger priority for now
-            RMTQueue* outQ = port->getManagementQueue(RMTQueue::OUTPUT);
-            if (outQ->getLength() > 0)
-            {
-                outQ->releasePDU();
-            }
-            else
-            {
-                outQ = port->getLongestQueue(RMTQueue::OUTPUT);
-                outQ->releasePDU();
-            }
+            RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
+            outQ->releasePDU();
         }
         else
         {
@@ -49,16 +40,8 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
         {
             inputBusy[port] = true;
 
-            RMTQueue* inQ = port->getManagementQueue(RMTQueue::INPUT);
-            if (inQ->getLength() > 0)
-            {
-                inQ->releasePDU();
-            }
-            else
-            {
-                inQ = port->getLongestQueue(RMTQueue::INPUT);
-                inQ->releasePDU();
-            }
+            RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
+            inQ->releasePDU();
         }
         else
         {
