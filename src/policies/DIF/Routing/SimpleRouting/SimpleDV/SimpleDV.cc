@@ -41,7 +41,7 @@ void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const uns
     bool entryChangedDst = false;
 
     if(oldEntry->addr == dst){
-        if(oldEntry->metric == metric){
+        if(oldEntry->metric != metric){
             oldEntry->metric = metric;
         }
     } else if(oldEntry->metric >= metric){
@@ -102,7 +102,7 @@ entries2Next SimpleDV::getAll(){
 }
 
 //Process a Routing Update, return true => inform FWDG of the update
-bool SimpleDV::processUpdate(const IntRoutingUpdate * update){
+bool SimpleDV::processUpdate(IntRoutingUpdate * update){
     RoutingUpdate * up = check_and_cast<RoutingUpdate*>(update);
 
     std::string src = up->getSrc();

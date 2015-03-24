@@ -21,7 +21,7 @@
 class dummyRouting: public IntRouting {
 public:
     //Process a Routing Update, return true => inform FWDG of the update
-    bool processUpdate(const IntRoutingUpdate * update);
+    bool processUpdate(IntRoutingUpdate * update);
 
 protected:
     // Called after initialize

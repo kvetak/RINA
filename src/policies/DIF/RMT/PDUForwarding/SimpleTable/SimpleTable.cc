@@ -63,7 +63,7 @@ void SimpleTable::remove(const string &addr, const unsigned short &qos){
 void SimpleTable::onPolicyInit(){}
 
 void SimpleTable::finish(){
-    EV << toString() <<endl;
+ //   EV << toString() <<endl;
 }
 
 }

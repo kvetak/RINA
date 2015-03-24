@@ -54,7 +54,7 @@ void IntRouting::sendUpdate(IntRoutingUpdate * update) {
     emit(sigRoutingUpdate, update);
 }
 
-void IntRouting::receiveUpdate(const IntRoutingUpdate * update) {
+void IntRouting::receiveUpdate(IntRoutingUpdate * update) {
     if(processUpdate(update)) {
         fwdg->routingUpdated();
     }
