@@ -34,10 +34,10 @@ Register_Class(Routing);
     //Add/Remove a domain
     void Routing::addDomain(const std::string &domain, const std::string &addr, const ModuleAlgs &alg) {
         switch(alg) {
-        case ModuleAlgs::DV :
+        case DV :
             rModules[domain] = new DMRnmsDV::DV(this, myAddress, domain, addr);
             break;
-        case ModuleAlgs::LS :
+        case LS :
             rModules[domain] = new DMRnmsLS::LS(this, myAddress, domain, addr);
             break;
         }

@@ -110,15 +110,15 @@ void BiDomainGenerator::onPolicyInit(){
     fwd->addDomain("");
 
     if(alg0 == "LS"){
-        rt->addDomain("", myPrefix, DMRnms::ModuleAlgs::LS);
+        rt->addDomain("", myPrefix, DMRnms::LS);
     } else {
-        rt->addDomain("", myPrefix, DMRnms::ModuleAlgs::DV);
+        rt->addDomain("", myPrefix, DMRnms::DV);
     }
 
     if(alg1 == "LS"){
-        rt->addDomain(myPrefix, mySufix, DMRnms::ModuleAlgs::LS);
+        rt->addDomain(myPrefix, mySufix, DMRnms::LS);
     } else {
-        rt->addDomain(myPrefix, mySufix, DMRnms::ModuleAlgs::DV);
+        rt->addDomain(myPrefix, mySufix, DMRnms::DV);
     }
 
 

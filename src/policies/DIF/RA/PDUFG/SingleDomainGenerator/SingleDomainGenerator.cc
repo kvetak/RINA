@@ -80,9 +80,9 @@ void SingleDomainGenerator::onPolicyInit(){
     std::string alg = par("alg").stdstringValue();
 
     if(alg == "LS"){
-        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::ModuleAlgs::LS);
+        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
     } else {
-        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::ModuleAlgs::DV);
+        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
     }
 
 
