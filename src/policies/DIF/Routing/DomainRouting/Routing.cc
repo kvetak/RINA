@@ -111,7 +111,7 @@ Register_Class(Routing);
         return dmu;
     }
 
-    void Routing::onIni(){}
+    void Routing::onPolicyInit(){}
 
 
     void Routing::chScheduleAt(const std::string domain, const double & time, cMessage *msg){

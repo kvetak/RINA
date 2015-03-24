@@ -86,7 +86,7 @@ void BiDomainGenerator::routingUpdated(){
 }
 
 // Called after initialize
-void BiDomainGenerator::onIni(){
+void BiDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<DomainTable::DomainTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));

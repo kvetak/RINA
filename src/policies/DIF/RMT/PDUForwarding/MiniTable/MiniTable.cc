@@ -61,7 +61,7 @@ void MiniTable::clean(){
 
 
 // Called after initialize
-void MiniTable::onIni(){}
+void MiniTable::onPolicyInit(){}
 
 void MiniTable::finish(){
  //   EV << toString() <<endl;

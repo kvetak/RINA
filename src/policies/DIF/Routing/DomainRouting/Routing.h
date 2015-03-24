@@ -79,7 +79,7 @@ public:
 
 protected:
     // Called after initialize
-    void onIni();
+    void onPolicyInit();
     std::map<std::string, rModule*> rModules;
     std::set<std::string> changedModules;
 };

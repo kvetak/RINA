@@ -90,7 +90,7 @@ pAddr DomainTable::parseAddr(const string &addr){
 }
 
 // Called after initialize
-void DomainTable::onIni(){}
+void DomainTable::onPolicyInit(){}
 
 void DomainTable::finish(){
     EV << toString() <<endl;
