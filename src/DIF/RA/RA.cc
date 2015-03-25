@@ -95,10 +95,17 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        if (!opp_strcmp(msg->getName(), "RA-CreateFlow"))
+        if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            createNM1Flow(preparedFlows.front());
-            preparedFlows.pop_front();
+            std::list<Flow*>* flows = preparedFlows[simTime()];
+
+            while (!flows->empty())
+            {
+                createNM1Flow(flows->front());
+                flows->pop_front();
+            }
+
+            delete flows;
             delete msg;
         }
     }
@@ -155,7 +162,10 @@ void RA::initFlowAlloc()
         cXMLElement* m = *it;
 
         const char* apn = m->getAttribute("apn");
-        unsigned short qosId = (unsigned short)atoi(m->getAttribute("qosCube"));
+        unsigned short qosId = static_cast<unsigned short>(
+                atoi(m->getAttribute("qosCube")));
+        simtime_t time = static_cast<simtime_t>(
+                atoi(m->getAttribute("simTime")));
 
         APNamingInfo src = APNamingInfo(APN(processName));
         APNamingInfo dst = APNamingInfo(APN(apn));
@@ -168,12 +178,21 @@ void RA::initFlowAlloc()
             return;
         }
 
-        Flow *fl = new Flow(src, dst);
-        fl->setQosParameters(*qosCube);
+        Flow *flow = new Flow(src, dst);
+        flow->setQosParameters(*qosCube);
 
-        preparedFlows.push_back(fl);
-        cMessage* msg = new cMessage("RA-CreateFlow");
-        scheduleAt(simTime(), msg);
+        if (preparedFlows[time] == nullptr)
+        {
+            preparedFlows[time] = new std::list<Flow*>;
+            preparedFlows[time]->push_back(flow);
+
+            cMessage* msg = new cMessage("RA-CreateConnections");
+            scheduleAt(simTime() + time, msg);
+        }
+        else
+        {
+            preparedFlows[time]->push_back(flow);
+        }
     }
 }
 

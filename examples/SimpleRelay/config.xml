@@ -69,8 +69,8 @@
         <IPC id="relayIpc">
             <RA>
                 <Flows>
-                    <Flow apn="11_Layer11" qosCube="1"/>
-                    <Flow apn="22_Layer11" qosCube="1"/>
+                    <Flow apn="11_Layer11" qosCube="1" simTime="1"/>
+                    <Flow apn="22_Layer11" qosCube="1" simTime="2"/>
                 </Flows>
             </RA>
         </IPC>   	

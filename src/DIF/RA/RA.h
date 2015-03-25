@@ -96,7 +96,7 @@ class RA : public RABase
     IntPDUFG * fwdtg;
 
     std::string processName;
-    std::list<Flow*> preparedFlows;
+    std::map<simtime_t, std::list<Flow*>*> preparedFlows;
 
     void initQoSCubes();
     void initSignalsAndListeners();
