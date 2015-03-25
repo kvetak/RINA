@@ -34,7 +34,7 @@
  */
 class Address {
   public:
-
+    static const Address UNSPECIFIED_ADDRESS;
     /**
      * @brief Constructor of blank Address
      */

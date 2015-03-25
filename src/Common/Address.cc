@@ -15,6 +15,8 @@
 
 #include <Address.h>
 
+const Address Address::UNSPECIFIED_ADDRESS("");
+
 Address::Address() : ipcAddress(APN()), difName(""), apname(APN())
 {
 }

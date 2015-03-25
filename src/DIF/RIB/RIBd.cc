@@ -372,6 +372,12 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
 }
 
 void RIBd::signalizeSendData(CDAPMessage* msg) {
+    //Check dstAddress
+    if (msg->getDstAddr() == Address::UNSPECIFIED_ADDRESS) {
+        EV << "Destination address cannot be UNSPECIFIED!" << endl;
+        return;
+    }
+
     //Setup handle which is for RIBd always 0
     msg->setHandle(0);
     msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
