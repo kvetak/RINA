@@ -96,7 +96,7 @@
                 <APN apn="6_DCDIF">
                     <DIF difName="Shim4To6" ipcAddress="6"/>
                 </APN>
-                <APN apn="5_TentantDIF">
+                <APN apn="5_TenantDIF">
                     <DIF difName="DCIPC" ipcAddress="5"/>
                     <DIF difName="Shim5To7" ipcAddress="5"/>
                 </APN>
@@ -106,7 +106,7 @@
                 <APN apn="App0VM7">
                     <DIF difName="TenantDIF" ipcAddress="7"/>
                 </APN>
-                <APN apn="6_TentantDIF">
+                <APN apn="6_TenantDIF">
                     <DIF difName="DCIPC" ipcAddress="6"/>
                     <DIF difName="Shim6To8" ipcAddress="6"/>
                 </APN>
