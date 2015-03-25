@@ -181,7 +181,7 @@ void RA::initFlowAlloc()
         Flow *flow = new Flow(src, dst);
         flow->setQosParameters(*qosCube);
 
-        if (preparedFlows[time] == nullptr)
+        if (preparedFlows[time] == NULL)
         {
             preparedFlows[time] = new std::list<Flow*>;
             preparedFlows[time]->push_back(flow);
