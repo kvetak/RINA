@@ -19,11 +19,13 @@ src/Makefile.vc
 *.sca
 *.vec
 *.vci
+*.elog
 .computed/
 
 # Misceleanous
 *.pyc
 *.pcap
+*.log
 .settings/
 .tkenvrc
 .tkenvlog
@@ -49,6 +51,7 @@ sta*
 *.manifest
 *.out
 src/rina
+src/RINA
 
 # ignore backup and temp files
 *.bak
