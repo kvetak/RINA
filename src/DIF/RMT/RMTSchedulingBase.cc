@@ -19,6 +19,9 @@ Define_Module(RMTSchedulingBase);
 
 void RMTSchedulingBase::initialize()
 {
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.allocator"));
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
@@ -29,26 +32,20 @@ void RMTSchedulingBase::initialize()
 
 void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
-    if (msg->isSelfMessage() && !strncmp(msg->getFullName(), "processPort", 11))
-    {
-//        RMTPort* port = dynamic_cast<RMTPort*>(msg->getContextPointer());
-//        if (port != NULL)
-//        {
-//            RMTQueueType direction;
-//            if (!opp_strcmp(msg->getFullName(), "processPortInput"))
-//            {
-//                direction = RMTQueue::INPUT;
-//            }
-//            else if (!opp_strcmp(msg->getFullName(), "processPortOutput"))
-//            {
-//                direction = RMTQueue::OUTPUT;
-//            }
-//            else
-//            {
-//            }
-//
-//            processQueues(port, direction);
-//        }
+    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "processPort"))
+    { // TODO: this is lousy, think of something better
+        RMTQueueType direction = (RMTQueueType)msg->par("direction").longValue();
+        const char* portName = msg->par("portName").stringValue();
+        RMTPort* port = rmtAllocator->getPort(portName);
+        if (port != NULL)
+        {
+            processQueues(port, direction);
+        }
+        else
+        {
+            EV << "RMT Scheduler reinvocation: Port " << portName
+               << " ceased to exist!" << endl;
+        }
     }
 
     delete msg;
@@ -60,9 +57,14 @@ void RMTSchedulingBase::onPolicyInit()
 
 void RMTSchedulingBase::scheduleReinvocation(simtime_t time, RMTPort* port, RMTQueueType direction)
 {
+    // TODO: this is lousy, think of something better
     cMessage* msg = new cMessage("processPort");
-    // FIXME: playing with fire here
-    msg->setContextPointer((void*)port);
+    msg->addPar("portName");
+    msg->par("portName").setStringValue(port->getParentModule()->getFullName());
+
+    msg->addPar("direction");
+    msg->par("direction").setLongValue(direction);
+
     scheduleAt(time, msg);
 }
 

@@ -217,3 +217,17 @@ RMTPort* RMTModuleAllocator::getInterfacePort()
 {
     return interfacePort;
 }
+
+RMTPort* RMTModuleAllocator::getPort(const char* name)
+{
+    cModule* portWrapper = getParentModule()->getSubmodule(name);
+    if (portWrapper)
+    {
+        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule("port"));
+    }
+    else
+    {
+        return NULL;
+    }
+
+}

@@ -20,6 +20,10 @@
 
 #include "RMTPort.h"
 #include "RMTQueue.h"
+#include "RMTModuleAllocator.h"
+
+/* FIXME: circular dependencies */
+class RMTModuleAllocator;
 
 /**
  * Noop base class for the RMT scheduling policy.
@@ -53,6 +57,10 @@ class RMTSchedulingBase : public cSimpleModule
 
     /**
      * Method used for creating postponed Scheduler calls (e.g. for PDU spacing).
+     *
+     * @param simtime_t target simulation time
+     * @param port (N-1)-port
+     * @param direction direction that is to be processed
      */
     void scheduleReinvocation(simtime_t time, RMTPort* port, RMTQueueType direction);
 
@@ -60,6 +68,11 @@ class RMTSchedulingBase : public cSimpleModule
      * Handler for OMNeT++ module messages (probably not of much use here).
      */
     void handleMessage(cMessage *msg);
+
+    /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
 
   private:
 
