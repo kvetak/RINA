@@ -1,69 +1,20 @@
 <?xml version="1.0"?>
 <Configuration>
-    <Node id="CR0">
-        <IPC id="DCIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="1_DCDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="AS1">
-        <IPC id="DCIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="2_DCDIF" qosCube="1"/>
-                    <Flow apn="3_DCDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="AS2">
-        <IPC id="DCIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="4_DCDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="TOR3">
-        <IPC id="DCIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="5_DCDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="TOR4">
-        <IPC id="DCIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="6_DCDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="SRV5">
-        <IPC id="TenantIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="7_TenantDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="SRV6">
-        <IPC id="TenantIPC">
-            <RA>
-                <Flows>
-                    <Flow apn="8_TenantDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="0_DCDIF" dst="1_DCDIF" qosCube="1"/>
+                <Connection src="1_DCDIF" dst="2_DCDIF" qosCube="1"/>
+                <Connection src="1_DCDIF" dst="3_DCDIF" qosCube="1"/>
+                <Connection src="2_DCDIF" dst="4_DCDIF" qosCube="1"/>
+                <Connection src="3_DCDIF" dst="5_DCDIF" qosCube="1"/>
+                <Connection src="4_DCDIF" dst="6_DCDIF" qosCube="1"/>
+                <Connection src="5_TenantDIF" dst="7_TenantDIF" qosCube="1"/>
+                <Connection src="6_TenantDIF" dst="8_TenantDIF" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
     <Node id="all">
         <DA>
             <Directory>
