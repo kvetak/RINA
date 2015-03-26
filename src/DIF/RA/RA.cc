@@ -154,6 +154,7 @@ void RA::initSignalsAndListeners()
 
 void RA::initFlowAlloc()
 {
+    cXMLElement* dirXml = par("preallocation").xmlValue();
     cXMLElementList timeMap = dirXml->getChildrenByTagName("SimTime");
 
     for (cXMLElementList::const_iterator it = timeMap.begin(); it != timeMap.end(); ++it)

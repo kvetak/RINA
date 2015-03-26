@@ -23,4 +23,5 @@ simple RA
         @display("i=block/segm");
 
         xml qoscubesData = default(xml("<QoSCube/>"));
+        xml preallocation = default(xml("<root/>"));
 }
