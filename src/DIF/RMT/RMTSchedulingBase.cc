@@ -29,33 +29,41 @@ void RMTSchedulingBase::initialize()
 
 void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
+    if (msg->isSelfMessage() && !strncmp(msg->getFullName(), "processPort", 11))
+    {
+//        RMTPort* port = dynamic_cast<RMTPort*>(msg->getContextPointer());
+//        if (port != NULL)
+//        {
+//            RMTQueueType direction;
+//            if (!opp_strcmp(msg->getFullName(), "processPortInput"))
+//            {
+//                direction = RMTQueue::INPUT;
+//            }
+//            else if (!opp_strcmp(msg->getFullName(), "processPortOutput"))
+//            {
+//                direction = RMTQueue::OUTPUT;
+//            }
+//            else
+//            {
+//            }
+//
+//            processQueues(port, direction);
+//        }
+    }
+
+    delete msg;
 }
 
 void RMTSchedulingBase::onPolicyInit()
 {
-
 }
 
-void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
+void RMTSchedulingBase::scheduleReinvocation(simtime_t time, RMTPort* port, RMTQueueType direction)
 {
-    if (direction == RMTQueue::OUTPUT)
-    {
-        if (port->isReady() && (port->getWaitingOnOutput() > 0))
-        {
-            port->substractWaitingOnOutput();
-            processQueues(port, RMTQueue::OUTPUT);
-        }
-    }
-    else
-    {
-        inputBusy[port] = false;
-
-        if (port->getWaitingOnInput() > 0)
-        {
-            port->substractWaitingOnInput();
-            processQueues(port, RMTQueue::INPUT);
-        }
-    }
+    cMessage* msg = new cMessage("processPort");
+    // FIXME: playing with fire here
+    msg->setContextPointer((void*)port);
+    scheduleAt(time, msg);
 }
 
 void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueueType direction)

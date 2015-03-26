@@ -106,6 +106,7 @@ void RMTPort::handleMessage(cMessage* msg)
         cPacket* packet = NULL;
         if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
         {
+            setBusy();
             // start the transmission
             send(packet, southOutputGate);
 
@@ -258,6 +259,21 @@ void RMTPort::setBusy()
 {
     ready = false;
     redrawGUI();
+}
+
+unsigned long RMTPort::getWaiting(RMTQueueType direction)
+{
+    return (direction == RMTQueue::INPUT ? waitingOnInput : waitingOnOutput);
+}
+
+void RMTPort::addWaiting(RMTQueueType direction)
+{
+    direction == RMTQueue::INPUT ? waitingOnInput++ : waitingOnOutput++;
+}
+
+void RMTPort::substractWaiting(RMTQueueType direction)
+{
+    direction == RMTQueue::INPUT ? waitingOnInput-- : waitingOnOutput--;
 }
 
 void RMTPort::redrawGUI(bool redrawParent)

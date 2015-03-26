@@ -125,15 +125,8 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
         }
     }
 
-    // finally, invoke the scheduling policy
-    if (!((queue->getType() == RMTQueue::INPUT) && (port->hasBlockedInput())))
-    {
-        schedPolicy->processQueues(port, queue->getType());
-    }
-    else
-    {
-        port->addWaitingOnInput();
-    }
+    port->addWaiting(queue->getType());
+    schedPolicy->processQueues(port, queue->getType());
 }
 
 /**
@@ -147,17 +140,24 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     qMonPolicy->onMessageDeparture(queue);
 
+    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+    port->substractWaiting(queue->getType());
+
     // if this is an incoming PDU, take care of scheduler reinvocation
     // (the output direction depends on port readiness, so it's done elsewhere)
     if (queue->getType() == RMTQueue::INPUT)
     {
         // input from this port could be blocked due to a congested output port
-        RMTPort* inputPort = rmtAllocator->getQueueToPortMapping(queue);
-        if (!inputPort->hasBlockedInput())
+        if (!port->hasBlockedInput())
         {
-            schedPolicy->finalizeService(inputPort, queue->getType());
+            schedPolicy->processQueues(port, RMTQueue::INPUT);
         }
     }
+    else
+    { // if this is an outgoing PDU, set the port as busy
+        port->setBusy();
+    }
+
 }
 
 /**
@@ -169,7 +169,7 @@ void RMT::invokePortReadyPolicies(cObject* obj)
 {
     Enter_Method("invokePortReadyPolicies()");
     RMTPort* port = check_and_cast<RMTPort*>(obj);
-    schedPolicy->finalizeService(port, RMTQueue::OUTPUT);
+    schedPolicy->processQueues(port, RMTQueue::OUTPUT);
 }
 
 /**
@@ -252,9 +252,12 @@ RMTPort* RMT::fwTableLookup(const Address& destAddr, const unsigned short &qosId
     else
     { // get a suitable ports from PDUF
         std::vector<RMTPort*> ports = fwd->lookup(destAddr, qosId);
-        if(ports.size()>0){
+        if (ports.size() > 0)
+        {
             return ports.front();
-        } else {
+        }
+        else
+        {
             return NULL;
         }
     }
@@ -273,11 +276,14 @@ RMTPort* RMT::fwTableLookup(const PDU * pdu)
         return rmtAllocator->getInterfacePort();
     }
     else
-    { // get a suitable ports from PDUF
+    { // get output ports from PDUFT
         std::vector<RMTPort*> ports = fwd->lookup(pdu);
-        if(ports.size()>0){
+        if(ports.size()>0)
+        {
             return ports.front();
-        } else {
+        }
+        else
+        {
             return NULL;
         }
     }

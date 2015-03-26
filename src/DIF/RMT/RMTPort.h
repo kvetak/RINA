@@ -31,6 +31,7 @@ class RMTPort : public cSimpleModule
 {
     /* tight coupling for management purposes */
     friend class RA;
+    friend class RMT;
     friend class RMTModuleAllocator;
 
   public:
@@ -137,27 +138,29 @@ class RMTPort : public cSimpleModule
     /**
      * Returns number of PDUs waiting to be read.
      *
+     * @param direction of transfer (read/serve)
      * @return PDUs count accross queues
      */
-    unsigned long getWaitingOnInput() { return waitingOnInput; };
-
-    void addWaitingOnInput() { waitingOnInput++; };
-    void substractWaitingOnInput() { waitingOnInput--; };
-
-    /**
-     * Returns number of PDUs waiting to be written.
-     *
-     * @return PDUs count accross queues
-     */
-    unsigned long getWaitingOnOutput() { return waitingOnOutput; };
-
-    void addWaitingOnOutput() { waitingOnOutput++; };
-    void substractWaitingOnOutput() { waitingOnOutput--; }
-
+    unsigned long getWaiting(RMTQueueType direction);
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage* msg);
+
+    /**
+     * Increments number of waiting PDUs.
+     *
+     * @param direction of transfer (read/serve)
+     */
+    void addWaiting(RMTQueueType direction);
+
+    /**
+     * Decrements number of waiting PDUs.
+     *
+     * @param direction of transfer (read/serve)
+     * @return PDUs count accross queues
+     */
+    void substractWaiting(RMTQueueType direction);
 
   private:
     bool ready;
