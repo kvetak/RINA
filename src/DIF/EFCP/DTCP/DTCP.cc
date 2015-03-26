@@ -95,6 +95,7 @@ void DTCP::initialize(int step)
         disp.setTagArg("p", 0, 340);
         disp.setTagArg("p", 1, 140);
 
+        //TODO A1 Not necessary DTP reference is set during DTCP creation.
         dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
         //  dtcpState = new DTCPState();

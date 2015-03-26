@@ -69,10 +69,23 @@ void DTPState::initialize(int step)
     }
 
 
-    winBased = par("winBased");
-    rateBased = par("rateBased");
+//    winBased = par("winBased");
+//    rateBased = par("rateBased");
+    rateBased = false;
 
-    rxPresent = par("rxPresent");
+//    rxPresent = par("rxPresent");
+
+    if(qoSCube->isForceOrder()){
+      rxPresent = true;
+    }else{
+      rxPresent = false;
+    }
+
+    if(qoSCube->getAvgBand() > 0){
+      winBased = true;
+    }else{
+      winBased = false;
+    }
 
     if(rxPresent || winBased || rateBased){
       dtcpPresent =  true;
