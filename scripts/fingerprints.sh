@@ -1,7 +1,19 @@
 #!/bin/bash
 # Batch run scenarios and output fingerprints.
 
-cd ../examples/
+rina_root="$( readlink -f "$( dirname $0 )/.." )"
+rina_scenarios="${rina_root}/examples"
+
+if [ -f "${rina_root}/out/gcc-debug/src/RINA" ]; then
+    rina_bin=${rina_root}/out/gcc-debug/src/RINA
+elif [ -f "${rina_root}/out/gcc-debug/src/rina.exe" ]; then
+    rina_bin=${rina_root}/out/gcc-debug/src/rina.exe
+else
+    echo "Cannot find the RINA executable!"
+fi
+
+
+cd $rina_scenarios
 
 if [ -n "$2" ]; then
     if [ -n "$( find . -name "$2" -type d)" ]; then
@@ -24,7 +36,7 @@ case "$1" in
 
             grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
                 echo "  $j:"
-                ../../src/rina.exe -u Cmdenv -c "$j" -n ../../examples/:../../src omnetpp.ini | \
+                $rina_bin -u Cmdenv -c "$j" -n ../../examples/:../../src omnetpp.ini | \
                 grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\|unprocessed PDUs\)' | \
                 sed 's/^/    /g'
             done
