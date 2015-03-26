@@ -25,9 +25,9 @@ simple DTPState
     int maxSDUSize @unit(B) = default(1500B);
     int maxPDUSize @unit(B) = default(1500B);
     
-    bool rxPresent = default(true);
-    bool winBased = default(true);
-    bool rateBased = default(false);
+//    bool rxPresent = default(true);
+//    bool winBased = default(true);
+//    bool rateBased = default(false);
     
     double rtt @unit(s) = default(2s);
     double mpl @unit(s) = default(50s);
