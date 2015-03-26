@@ -31,36 +31,36 @@ void DL::onPolicyInit()
 void DL::processQueues(RMTPort* port, RMTQueueType direction)
 {
 
-    if (direction == RMTQueue::OUTPUT)
-    {
-        if (port->isReady())
-        {
-            port->setBusy();
-
-            RMTQueue* outQ = monitor->getNextUrgentQ(port);
-            if(outQ) {
-                outQ->releasePDU();
-            } else {
-                port->setReady();
-            }
-        }
-        else
-        {
-            port->addWaitingOnOutput();
-        }
-    }
-    else if (direction == RMTQueue::INPUT)
-    {
-        if (inputBusy[port] != true)
-        {
-            inputBusy[port] = true;
-
-            RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
-            inQ->releasePDU();
-        }
-        else
-        {
-            port->addWaitingOnInput();
-        }
-    }
+//    if (direction == RMTQueue::OUTPUT)
+//    {
+//        if (port->isReady())
+//        {
+//            port->setBusy();
+//
+//            RMTQueue* outQ = monitor->getNextUrgentQ(port);
+//            if(outQ) {
+//                outQ->releasePDU();
+//            } else {
+//                port->setReady();
+//            }
+//        }
+//        else
+//        {
+//            port->addWaitingOnOutput();
+//        }
+//    }
+//    else if (direction == RMTQueue::INPUT)
+//    {
+//        if (inputBusy[port] != true)
+//        {
+//            inputBusy[port] = true;
+//
+//            RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
+//            inQ->releasePDU();
+//        }
+//        else
+//        {
+//            port->addWaitingOnInput();
+//        }
+//    }
 }
