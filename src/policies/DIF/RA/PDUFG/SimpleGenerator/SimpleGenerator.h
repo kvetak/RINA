@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef STATICGENERATOR_H_
-#define STATICGENERATOR_H_
+#ifndef SimpleGenerator_H_
+#define SimpleGenerator_H_
 
 #include <IntPDUFG.h>
 #include <SimpleTable/SimpleTable.h>
@@ -45,7 +45,7 @@ public:
 
 protected:
     // Called after initialize
-    virtual void onIni();
+    virtual void onPolicyInit();
 
 private:
     DA * difA;

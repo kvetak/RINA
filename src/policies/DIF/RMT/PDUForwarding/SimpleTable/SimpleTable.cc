@@ -60,10 +60,10 @@ void SimpleTable::remove(const string &addr, const unsigned short &qos){
 
 
 // Called after initialize
-void SimpleTable::onIni(){}
+void SimpleTable::onPolicyInit(){}
 
 void SimpleTable::finish(){
-    EV << toString() <<endl;
+ //   EV << toString() <<endl;
 }
 
 }

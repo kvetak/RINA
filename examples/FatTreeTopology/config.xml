@@ -1,61 +1,20 @@
 <?xml version="1.0"?>
 <Configuration>
-	<Server id="Server1">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="TOR1_DC" qosCube="1"/>       
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server2">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="TOR1_DC" qosCube="1"/>   
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server3">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-					<Flow apn="TOR2_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server4">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="TOR2_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Switch id="TOR1">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="AS1_DC" qosCube="1"/>
-                    <Flow apn="AS2_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="TOR2">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS1_DC" qosCube="1"/>
-                    <Flow apn="AS2_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="S1_DC"  dst="TOR1_DC" qosCube="1"/>       
+                <Connection src="S2_DC"  dst="TOR1_DC" qosCube="1"/>   
+                <Connection src="S3_DC"  dst="TOR2_DC" qosCube="1"/>
+                <Connection src="S4_DC"  dst="TOR2_DC" qosCube="1"/>
+                <Connection src="TOR1_DC"  dst="AS1_DC" qosCube="1"/>
+                <Connection src="TOR1_DC"  dst="AS2_DC" qosCube="1"/>     
+                <Connection src="TOR2_DC"  dst="AS1_DC" qosCube="1"/>
+                <Connection src="TOR2_DC"  dst="AS2_DC" qosCube="1"/>     
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
 	<Switch id="AS1">
 		<!--
 			This contains the whole mapping of the network. 

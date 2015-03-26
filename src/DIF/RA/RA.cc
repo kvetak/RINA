@@ -73,7 +73,7 @@ void RA::initialize(int stage)
     rmt = check_and_cast<RMT*>
         (getModuleByPath("^.^.relayAndMux.rmt"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.relayAndMux.rmtModuleAllocator"));
+        (getModuleByPath("^.^.relayAndMux.allocator"));
 
     // retrieve pointers to policies
     qAllocPolicy = check_and_cast<QueueAllocBase*>
@@ -95,10 +95,17 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        if (!opp_strcmp(msg->getName(), "RA-CreateFlow"))
+        if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            createNM1Flow(preparedFlows.front());
-            preparedFlows.pop_front();
+            std::list<Flow*>* flows = preparedFlows[simTime()];
+
+            while (!flows->empty())
+            {
+                createNM1Flow(flows->front());
+                flows->pop_front();
+            }
+
+            delete flows;
             delete msg;
         }
     }
@@ -147,33 +154,55 @@ void RA::initSignalsAndListeners()
 
 void RA::initFlowAlloc()
 {
-    cXMLElement* dirXml = par("flows").xmlValue();
-    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
+    cXMLElement* dirXml = par("preallocation").xmlValue();
+    cXMLElementList timeMap = dirXml->getChildrenByTagName("SimTime");
 
-    for (cXMLElementList::const_iterator it = map.begin(); it != map.end(); ++it)
+    for (cXMLElementList::const_iterator it = timeMap.begin(); it != timeMap.end(); ++it)
     {
         cXMLElement* m = *it;
+        simtime_t time = static_cast<simtime_t>(
+                atoi(m->getAttribute("t")));
 
-        const char* apn = m->getAttribute("apn");
-        unsigned short qosId = (unsigned short)atoi(m->getAttribute("qosCube"));
-
-        APNamingInfo src = APNamingInfo(APN(processName));
-        APNamingInfo dst = APNamingInfo(APN(apn));
-
-        const QoSCube* qosCube = getQoSCubeById(qosId);
-        if (qosCube == NULL)
+        cXMLElementList connMap = m->getChildrenByTagName("Connection");
+        for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
         {
-            EV << "!!! Invalid QoS-id provided for flow with dst " << apn
-               << "! Allocation won't be initiated." << endl;
-            return;
+            cXMLElement* n = *jt;
+            const char* src = n->getAttribute("src");
+            if (opp_strcmp(src, processName.c_str()))
+            {
+                continue;
+            }
+
+            const char* dst = n->getAttribute("dst");
+            unsigned short qosId = static_cast<unsigned short>(
+                            atoi(n->getAttribute("qosCube")));
+
+            APNamingInfo srcAPN = APNamingInfo(APN(src));
+            APNamingInfo dstAPN = APNamingInfo(APN(dst));
+            const QoSCube* qosCube = getQoSCubeById(qosId);
+            if (qosCube == NULL)
+            {
+                EV << "!!! Invalid QoS-id provided for flow with dst " << dst
+                   << "! Allocation won't be initiated." << endl;
+                return;
+            }
+
+            Flow *flow = new Flow(srcAPN, dstAPN);
+            flow->setQosParameters(*qosCube);
+
+            if (preparedFlows[time] == NULL)
+            {
+                preparedFlows[time] = new std::list<Flow*>;
+                preparedFlows[time]->push_back(flow);
+
+                cMessage* msg = new cMessage("RA-CreateConnections");
+                scheduleAt(simTime() + time, msg);
+            }
+            else
+            {
+                preparedFlows[time]->push_back(flow);
+            }
         }
-
-        Flow *fl = new Flow(src, dst);
-        fl->setQosParameters(*qosCube);
-
-        preparedFlows.push_back(fl);
-        cMessage* msg = new cMessage("RA-CreateFlow");
-        scheduleAt(simTime(), msg);
     }
 }
 

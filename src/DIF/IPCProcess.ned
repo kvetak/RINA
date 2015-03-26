@@ -35,11 +35,9 @@ module IPCProcess
         string apName = default(ipcAddress + "_" + difName);
         bool relay = default(false);
         string routingPolicyName = default("dummyRouting");
-        //int    rank;        
     gates:
         inout southIo[];
         inout northIo[];
-        //inout test;
     submodules:
         flowAllocator: FlowAllocator {
             @display("p=167,50");
@@ -48,22 +46,22 @@ module IPCProcess
             @display("p=79,249;i=block/dispatch");
         }
         ribDaemon: RIBDaemon {
-            @display("p=238,147");
+            @display("p=229,153");
         }
 
         efcp: EFCPModule {
             @display("p=79,50");
         }
-        resourceAllocator: ResourceAllocator {
-            @display("p=390,195");
-        }
         enrollment: Enrollment {
-            @display("p=390,100");
+            @display("p=390,50");
         }
         routingPolicy: <routingPolicyName> like IntRouting {
-            @display("p=300,163");
+            @display("p=390,153");
         }
-        
+        resourceAllocator: ResourceAllocator {
+            @display("p=390,249");
+        }
+
     connections allowunconnected:
         relayAndMux.ribdIo <--> ribDaemon.rmtIo;
 }

@@ -169,7 +169,7 @@ void SimpleLS::addRecursive(entries2Next &ret, const unsigned short &qos, const 
 }
 
 //Process a Routing Update, return true => inform FWDG of the update
-bool SimpleLS::processUpdate(const IntRoutingUpdate * update){
+bool SimpleLS::processUpdate(IntRoutingUpdate * update){
     RoutingUpdate * up = check_and_cast<RoutingUpdate*>(update);
 
     unsigned short qos = up->getQoS();
@@ -190,7 +190,7 @@ bool SimpleLS::processUpdate(const IntRoutingUpdate * update){
 }
 
 // Called after initialize
-void SimpleLS::onIni(){
+void SimpleLS::onPolicyInit(){
     myAddr = par("myAddr").stdstringValue();
     if(myAddr == "") {
         myAddr = myAddress.getIpcAddress().getName();

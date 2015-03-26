@@ -54,7 +54,7 @@ protected:
     FWDTable table;
 
     // Called after initialize
-    void onIni();
+    void onPolicyInit();
 };
 
 }

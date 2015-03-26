@@ -1,401 +1,55 @@
 <?xml version="1.0"?>
 <Configuration>
-  <Node id="N0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_0_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_0_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.0.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_0_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_0_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.0.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_0_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_0_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.0.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_1_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_1_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.1.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_1_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_1_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.1.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_1_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_1_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.1.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_2_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_2_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.2.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_2_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_2_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.2.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N0_2_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="0.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S0_2_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="0.2.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_0_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_0_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.0.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_0_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_0_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.0.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_0_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_0_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.0.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_1_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_1_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.1.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_1_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_1_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.1.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_1_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_1_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.1.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_2_0">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_2_0">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.2.0_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_2_1">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_2_1">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.2.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="N1_2_2">
-    <IPC id="relayIpc">
-      <RA>
-        <Flows>
-          <Flow apn="1.2_DC" qosCube="1"/>
-          <Flow apn="1.2.1_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
-  <Node id="S1_2_2">
-    <IPC id="ipcProcess1">
-      <RA>
-        <Flows>
-          <Flow apn="1.2.2_DC" qosCube="1"/>
-        </Flows>
-      </RA>
-    </IPC>
-  </Node>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="0_DC" dst="1_DC" qosCube="1"/>
+                <Connection src="0.0_DC" dst="0_DC" qosCube="1"/>
+                <Connection src="0.0.0_DC" dst="0.0_DC" qosCube="1"/>
+                <Connection src="0.0.0.s_DC" dst="0.0.0_DC" qosCube="1"/>
+                <Connection src="0.0.1_DC" dst="0.0_DC" qosCube="1"/>
+                <Connection src="0.0.1.s_DC" dst="0.0.1_DC" qosCube="1"/>
+                <Connection src="0.0.2_DC" dst="0.0_DC" qosCube="1"/>
+                <Connection src="0.0.2.s_DC" dst="0.0.2_DC" qosCube="1"/>
+                <Connection src="0.1_DC" dst="0_DC" qosCube="1"/>
+                <Connection src="0.1.0_DC" dst="0.1_DC" qosCube="1"/>
+                <Connection src="0.1.0.s_DC" dst="0.1.0_DC" qosCube="1"/>
+                <Connection src="0.1.1_DC" dst="0.1_DC" qosCube="1"/>
+                <Connection src="0.1.1.s_DC" dst="0.1.1_DC" qosCube="1"/>
+                <Connection src="0.1.2_DC" dst="0.1_DC" qosCube="1"/>
+                <Connection src="0.1.2.s_DC" dst="0.1.2_DC" qosCube="1"/>
+                <Connection src="0.2_DC" dst="0_DC" qosCube="1"/>
+                <Connection src="0.2.0_DC" dst="0.2_DC" qosCube="1"/>
+                <Connection src="0.2.0.s_DC" dst="0.2.0_DC" qosCube="1"/>
+                <Connection src="0.2.1_DC" dst="0.2_DC" qosCube="1"/>
+                <Connection src="0.2.1.s_DC" dst="0.2.1_DC" qosCube="1"/>
+                <Connection src="0.2.2_DC" dst="0.2_DC" qosCube="1"/>
+                <Connection src="0.2.2.s_DC" dst="0.2.2_DC" qosCube="1"/>
+                <Connection src="1.0_DC" dst="1_DC" qosCube="1"/>
+                <Connection src="1.0.0_DC" dst="1.0_DC" qosCube="1"/>
+                <Connection src="1.0.0.s_DC" dst="1.0.0_DC" qosCube="1"/>
+                <Connection src="1.0.1_DC" dst="1.0_DC" qosCube="1"/>
+                <Connection src="1.0.1.s_DC" dst="1.0.1_DC" qosCube="1"/>
+                <Connection src="1.0.2_DC" dst="1.0_DC" qosCube="1"/>
+                <Connection src="1.0.2.s_DC" dst="1.0.2_DC" qosCube="1"/>
+                <Connection src="1.1_DC" dst="1_DC" qosCube="1"/>
+                <Connection src="1.1.0_DC" dst="1.1_DC" qosCube="1"/>
+                <Connection src="1.1.0.s_DC" dst="1.1.0_DC" qosCube="1"/>
+                <Connection src="1.1.1_DC" dst="1.1_DC" qosCube="1"/>
+                <Connection src="1.1.1.s_DC" dst="1.1.1_DC" qosCube="1"/>
+                <Connection src="1.1.2_DC" dst="1.1_DC" qosCube="1"/>
+                <Connection src="1.1.2.s_DC" dst="1.1.2_DC" qosCube="1"/>
+                <Connection src="1.2_DC" dst="1_DC" qosCube="1"/>
+                <Connection src="1.2.0_DC" dst="1.2_DC" qosCube="1"/>
+                <Connection src="1.2.0.s_DC" dst="1.2.0_DC" qosCube="1"/>
+                <Connection src="1.2.1_DC" dst="1.2_DC" qosCube="1"/>
+                <Connection src="1.2.1.s_DC" dst="1.2.1_DC" qosCube="1"/>
+                <Connection src="1.2.2_DC" dst="1.2_DC" qosCube="1"/>
+                <Connection src="1.2.2_DC" dst="1.2.1_DC" qosCube="1"/>
+                <Connection src="1.2.2.s_DC" dst="1.2.2_DC" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>            
 
   <DA>
     <Directory>

@@ -74,7 +74,7 @@ void SimpleGenerator::routingUpdated(){
 }
 
 // Called after initialize
-void SimpleGenerator::onIni(){
+void SimpleGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<SimpleTable::SimpleTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));

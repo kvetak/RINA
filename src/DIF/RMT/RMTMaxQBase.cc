@@ -29,7 +29,7 @@ void RMTMaxQBase::initialize()
             (getModuleByPath("^.^.resourceAllocator.addressComparator"));
 
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
+        (getModuleByPath("^.allocator"));
 
     // register slowdown signal for RA
     sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);

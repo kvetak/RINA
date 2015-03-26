@@ -62,7 +62,7 @@ protected:
     void initialize();
 
     // Called after initialize
-    virtual void onIni() = 0;
+    virtual void onPolicyInit() = 0;
 
 private:
     IntPDUForwarding * fwd;

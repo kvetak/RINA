@@ -56,7 +56,7 @@ void StaticGenerator::removedFlow(const Address &addr, const unsigned short &qos
 void StaticGenerator::routingUpdated(){}
 
 // Called after initialize
-void StaticGenerator::onIni(){
+void StaticGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<SimpleTable::SimpleTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));

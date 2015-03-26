@@ -25,7 +25,7 @@ package rina.DIF.RMT;
 module RelayAndMux
 {
     parameters:
-        @display("i=block/classifier;bgb=645,230");
+        @display("i=block/classifier;bgb=700,230");
 
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
@@ -47,19 +47,19 @@ module RelayAndMux
             @display("p=55,55");
         }
         schedulingPolicy: <schedPolicyName> like IntRMTSchedulingPolicy {
-            @display("p=200,55;is=s");
+            @display("p=175,55;is=s");
         }
         queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
-            @display("p=310,55;is=s");
+            @display("p=295,55;is=s");
         }
         maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
-            @display("p=420,55;is=s");
+            @display("p=415,55;is=s");
         }
         pduForwardingPolicy: <ForwardingPolicyName> like IntPDUForwarding {
-            @display("p=420,55;is=s");
+            @display("p=535,55;is=s");
         }
-        rmtModuleAllocator: RMTModuleAllocator {
-            @display("p=575,55");
+        allocator: RMTModuleAllocator {
+            @display("p=655,55;i=block/cogwheel");
         }
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;

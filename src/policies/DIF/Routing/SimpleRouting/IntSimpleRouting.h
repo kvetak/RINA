@@ -27,7 +27,7 @@ typedef entries2Next::iterator entries2NextIt;
 class IntSimpleRouting: public IntRouting {
 public:
     //Process a Routing Update, return true => inform FWDG of the update
-    virtual bool processUpdate(const IntRoutingUpdate * update) = 0;
+    virtual bool processUpdate(IntRoutingUpdate * update) = 0;
 
 
     //Flow inserted/removed
@@ -40,7 +40,7 @@ public:
 
 protected:
     // Called after initialize
-    virtual void onIni() = 0;
+    virtual void onPolicyInit() = 0;
 };
 
 #endif /* IntSimpleRouting_H_ */

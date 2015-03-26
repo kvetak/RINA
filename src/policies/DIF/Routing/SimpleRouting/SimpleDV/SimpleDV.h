@@ -69,12 +69,13 @@ protected:
 class SimpleDV: public IntSimpleRouting {
 public:
     //Process a Routing Update, return true => inform FWDG of the update
-    bool processUpdate(const IntRoutingUpdate * update);
+    bool processUpdate(IntRoutingUpdate * update);
 
 
     //Flow inserted/removed
     void insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric);
     void removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos);
+
 
     //Get Changes
     entries2Next getChanges();
@@ -85,7 +86,7 @@ public:
 
 protected:
     // Called after initialize
-    void onIni();
+    void onPolicyInit();
 
 private:
     unsigned short infMetric;

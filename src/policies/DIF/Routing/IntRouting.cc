@@ -45,7 +45,7 @@ void IntRouting::initialize(){
     listener = new LisRoutingRecv(this);
     catcher->subscribe(SIG_RIBD_RoutingUpdateReceived, listener);
 
-    onIni();
+    onPolicyInit();
 
 }
 
@@ -54,7 +54,7 @@ void IntRouting::sendUpdate(IntRoutingUpdate * update) {
     emit(sigRoutingUpdate, update);
 }
 
-void IntRouting::receiveUpdate(const IntRoutingUpdate * update) {
+void IntRouting::receiveUpdate(IntRoutingUpdate * update) {
     if(processUpdate(update)) {
         fwdg->routingUpdated();
     }

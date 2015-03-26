@@ -9,7 +9,7 @@ void IntPDUFG::initialize(){
     //Set Forwarding policy
     fwd = check_and_cast<IntPDUForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
-    onIni();
+    onPolicyInit();
 }
 
 PDUFTGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const unsigned short &qos){

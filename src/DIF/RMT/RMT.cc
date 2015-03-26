@@ -45,7 +45,7 @@ void RMT::initialize()
     fwd = check_and_cast<IntPDUForwarding*>
         (getModuleByPath("^.pduForwardingPolicy"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
+        (getModuleByPath("^.allocator"));
 
     schedPolicy = check_and_cast<RMTSchedulingBase*>
         (getModuleByPath("^.schedulingPolicy"));
