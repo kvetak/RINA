@@ -23,5 +23,4 @@ simple RA
         @display("i=block/segm");
 
         xml qoscubesData = default(xml("<QoSCube/>"));
-        xml flows = default(xml("<Flows/>"));
 }
