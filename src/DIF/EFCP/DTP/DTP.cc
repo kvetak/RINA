@@ -1338,11 +1338,12 @@ void DTP::runRcvrInactivityTimerPolicy()
 //    //Discard any PDUs on the ClosedWindowQueue
 //    clearClosedWindowQ();
 
+    if(state->isDtcpPresent()){
     //XXX Ok, we can send ControlAck. It won't hurt.
     //Send Control Ack PDU
     sendControlAckPDU();
     //TODO RcvRates
-
+    }
     //Send Transfer PDU With Zero length
     sendEmptyDTPDU();
 
@@ -1361,6 +1362,7 @@ void DTP::runSenderInactivityTimerPolicy()
   state->setSetDrfFlag(true);
   runInitialSeqNumPolicy();
 
+  if(state->isDtcpPresent()){
   dtcp->getDTCPState()->updateSndLWE(state->getNextSeqNumToSendWithoutIncrement());
 
   //Discard any PDUs on the PDUretransmissionQueue
@@ -1372,7 +1374,7 @@ void DTP::runSenderInactivityTimerPolicy()
 
   //Send Control Ack PDU
   sendControlAckPDU();
-
+  }
   //Send Transfer PDU With Zero length
   sendEmptyDTPDU();
 
