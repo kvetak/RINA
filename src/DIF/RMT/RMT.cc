@@ -63,6 +63,9 @@ void RMT::initialize()
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
 
+    // register a signal for notifying others about a packet bit error
+    sigRMTPacketError = registerSignal(SIG_RMT_ErrornousPacket);
+
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTQueuePDURcvd);
@@ -91,7 +94,8 @@ void RMT::finish()
         for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
         {
             cMessage* m = *it;
-            EV << m->getClassName() << " received at " << m->getArrivalTime() << " from "<<m->getSenderModule()->getFullPath() << endl;
+            EV << m->getClassName() << " received at " << m->getArrivalTime()
+               << " from "<<m->getSenderModule()->getFullPath() << endl;
         }
     }
 }
@@ -108,6 +112,16 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
 
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+
+    if (queue->getLastPDU()->hasBitError())
+    {
+        queue->dropLast();
+        EV << "PDU arriving on " << port->getParentModule()->getFullName()
+           << " contains bit error! Dropping." << endl;
+        emit(sigRMTPacketError, obj);
+
+        return;
+    }
 
     // invoke monitor policy
     qMonPolicy->onMessageArrival(queue);

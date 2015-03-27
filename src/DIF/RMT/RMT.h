@@ -98,6 +98,7 @@ class RMT : public RMTBase
     std::deque<cMessage*> invalidPDUs;
 
     simsignal_t sigRMTNoConnID;
+    simsignal_t sigRMTPacketError;
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
     LisRMTQueuePDUSent* lisRMTQueuePDUSent;
     LisRMTPortReady* lisRMTPortReady;

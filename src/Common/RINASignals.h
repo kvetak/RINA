@@ -89,6 +89,7 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 
 //RMT
 extern const char* SIG_RMT_NoConnId;
+extern const char* SIG_RMT_ErrornousPacket;
 extern const char* SIG_RMT_SlowdownRequest;
 extern const char* SIG_RMT_QueuePDURcvd;
 extern const char* SIG_RMT_QueuePDUSent;

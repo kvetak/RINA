@@ -80,6 +80,7 @@ const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
 
 const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
+const char* SIG_RMT_ErrornousPacket             = "RMT-ErrornousPacket";
 const char* SIG_RMT_SlowdownRequest             = "RMT-SlowDownRequest";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
 const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
