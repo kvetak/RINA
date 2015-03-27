@@ -167,7 +167,7 @@ void AEBase::initQoSRequiremets() {
     int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
     int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
     int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-    int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+    double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
     int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
     bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
     bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -197,7 +197,7 @@ void AEBase::initQoSRequiremets() {
     burstDuration = par(PAR_BURSTDURATION);
     if (burstDuration < 0)
         burstDuration = VAL_QOSPARDONOTCARE;
-    undetectedBitErr = par(PAR_UNDETECTBITERR);
+    undetectedBitErr = par(PAR_UNDETECTBITERR).doubleValue();
     if (undetectedBitErr < 0 || undetectedBitErr > 1 )
         undetectedBitErr = VAL_QOSPARDONOTCARE;
     maxSDUsize = par(PAR_MAXSDUSIZE);
@@ -221,7 +221,7 @@ void AEBase::initQoSRequiremets() {
     costbits = par(PAR_COSTBITS);
     if (costbits < 0)
         costbits = VAL_QOSPARDONOTCARE;
-    aTime = par(PAR_ATIME);
+    aTime = par(PAR_ATIME).doubleValue();
     if (aTime < 0)
         aTime = VAL_QOSPARDONOTCARE;
 

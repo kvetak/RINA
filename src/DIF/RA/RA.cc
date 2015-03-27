@@ -265,7 +265,7 @@ void RA::initQoSCubes()
         int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
         int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
         int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-        int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
         int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
         bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -354,7 +354,7 @@ void RA::initQoSCubes()
                 if (costbits < 0)
                     costbits = VAL_QOSPARDONOTCARE;
             }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
-              aTime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+              aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
               if (aTime < 0)
                   aTime = VAL_QOSPARDONOTCARE;
           }
