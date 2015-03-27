@@ -155,13 +155,13 @@ void DTP::initialize(int step)
 
     initSignalsAndListeners();
 
-    if(state->isDtcpPresent()){
+//    if(state->isDtcpPresent()){
       senderInactivityTimer = new SenderInactivityTimer();
       rcvrInactivityTimer = new RcvrInactivityTimer();
-    }else{
-      senderInactivityTimer = NULL;
-      rcvrInactivityTimer = NULL;
-    }
+//    }else{
+//      senderInactivityTimer = NULL;
+//      rcvrInactivityTimer = NULL;
+//    }
 
 //  par(RCVR_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RCVR_INACTIVITY_POLICY_NAME).stringValue());
 //  par(SENDER_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(SENDER_INACTIVITY_POLICY_NAME).stringValue());
@@ -304,6 +304,7 @@ void DTP::handleMessage(cMessage *msg)
 
       case(DTP_A_TIMER):{
         handleDTPATimer(static_cast<ATimer*>(timer));
+        delete msg;
         break;
       }
     }
