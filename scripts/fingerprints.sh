@@ -26,28 +26,64 @@ else
     glob='*'
 fi
 
+
+get_configs()
+{
+    grep '^\[Config ' $1 | sed 's/\[Config \(.*\)].*/\1/'
+}
+
+run_simulation()
+{
+    $rina_bin -u Cmdenv -c "$1" -n ../../examples/:../../src omnetpp.ini
+}
+
 case "$1" in
     check)
         for i in $glob/; do
-
             echo "Checking $i..."
             cd "$i"
+
             if [ ! -f omnetpp.ini ]; then echo "  omnetpp.ini not present!" && cd .. && continue; fi
 
-            grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
+            get_configs omnetpp.ini | while read j; do
                 echo "  $j:"
-                $rina_bin -u Cmdenv -c "$j" -n ../../examples/:../../src omnetpp.ini | \
-                grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\|unprocessed PDUs\)' | \
-                sed 's/^/    /g'
+
+                run_simulation "$j" | \
+                    grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\|unprocessed PDUs\)' | \
+                    sed 's/^/    /g'
             done
             cd ..
         done
         ;;
 
-    regen)
-        # better do this with Python and ConfigParser
+    update)
+        for i in $glob/; do
+
+            echo "Updating fingerprints for $i..."
+            cd "$i"
+
+            if [ ! -f omnetpp.ini ]; then echo "  omnetpp.ini not present!" && cd .. && continue; fi
+
+            get_configs omnetpp.ini | while read j; do
+                printf "  Processing $j... "
+
+                fingerprint=$(
+                    run_simulation "$j" | \
+                    grep '<!> Fingerprint mismatch!' | \
+                    sed 's/.*calculated: \(.\{9\}\).*/\1/'
+                )
+
+                if [ -n "$fingerprint" ]; then
+                    sed -i "/^\[Config $j/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" omnetpp.ini
+                    echo -e "\033[0;32mUPDATED ($fingerprint)\033[0m"
+                else
+                    echo -e "\033[0;31mUNCHANGED\033[0m"
+                fi
+            done
+            cd ..
+        done
         ;;
     *)
-        echo "Usage: fingerprints.sh check [scenario name glob]"
+        echo "Usage: fingerprints.sh check|update [scenario name glob]"
         ;;
 esac
