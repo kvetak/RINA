@@ -67,6 +67,11 @@ case "$1" in
             get_configs omnetpp.ini | while read j; do
                 printf "  Processing $j... "
 
+                if [ -z "$( sed -n "/^\[Config $j/,/^\[Config/p" omnetpp.ini | grep '^fingerprint[ =]')" ]; then
+                    echo -e "\033[0;31mNO FINGERPRINT SPECIFIED\033[0m"
+                    continue
+                fi
+
                 fingerprint=$(
                     run_simulation "$j" | \
                     grep '<!> Fingerprint mismatch!' | \
@@ -77,7 +82,7 @@ case "$1" in
                     sed -i "/^\[Config $j/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" omnetpp.ini
                     echo -e "\033[0;32mUPDATED ($fingerprint)\033[0m"
                 else
-                    echo -e "\033[0;31mUNCHANGED\033[0m"
+                    echo -e "\033[0;36mUNCHANGED\033[0m"
                 fi
             done
             cd ..
