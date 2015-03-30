@@ -651,19 +651,29 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
   else
   {
 
-    DataTransferPDU* dup = pdu->dup();
-    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-    std::ostringstream out;
-    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+      if(dynamic_cast<DTCPTxControlPolicyTCPTahoe*>(txControlPolicy)) {
+          std::ostringstream out;
+          out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+          EV << this->getFullPath() << ": " << out.str().c_str() << " time out at : " << simTime() << endl;
+          std::vector<DataTransferPDU*>::iterator it;
+          it = dtcpState->getClosedWindowQ()->begin();
+          dtcpState->getClosedWindowQ()->insert(it, pdu->dup());
+          dtcpState->incRxSent();
+      } else {
+          DataTransferPDU* dup = pdu->dup();
+          dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+          std::ostringstream out;
+          out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
 
-    bubble(out.str().c_str());
-    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-    dtp->sendToRMT(dup);
+          bubble(out.str().c_str());
+          EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+          dtp->sendToRMT(dup);
 
-    dtcpState->incRxSent();
+          dtcpState->incRxSent();
 
-    timer->setExpiryCount(timer->getExpiryCount() + 1);
-    schedule(timer);
+          timer->setExpiryCount(timer->getExpiryCount() + 1);
+          schedule(timer);
+      }
   }
 
 

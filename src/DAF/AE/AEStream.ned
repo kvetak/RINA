@@ -32,4 +32,7 @@ simple AEStream extends AE like IAE
         int 	size    		@unit(B) = default(1024B);        
         double 	interval  		@unit(s) = default(100ms);        
     
+		@signal[AE_PING_BYTES_RCVD](type=int);
+        @statistic[AE-PING-BYTES-RCVD](title="Bytes received"; source=AE_PING_BYTES_RCVD; record=last);
+        
 }

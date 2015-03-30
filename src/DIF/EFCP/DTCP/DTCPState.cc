@@ -64,6 +64,8 @@ DTCPState::DTCPState()
   immediate = true;
 
   rxSent = 0;
+  ackRcvd = 0; //number of acks received
+  RTO = 1; // retransmission timeout
 }
 
 void DTCPState::incRxSent()

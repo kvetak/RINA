@@ -32,6 +32,8 @@ AEStream::AEStream(){
       PAR_DSTAPINSTANCE   = "dstApInstance";
       PAR_DSTAENAME       = "dstAeName";
       PAR_DSTAEINSTANCE   = "dstAeInstance";
+
+      bytesRcvd = 0;
 }
 
 
@@ -70,7 +72,7 @@ void AEStream::initialize()
     if (stopAt > 0)
         prepareDeallocateRequest();
 
-
+    sigBytesReceived = registerSignal("AE_PING_BYTES_RCVD");
 }
 
 void AEStream::handleMessage(cMessage *msg)
@@ -146,4 +148,6 @@ void AEStream::processMRead(CDAPMessage* msg) {
     object_t object = msg1->getObject();
     EV << " with object '" << object.objectClass << "' and value '" << object.objectVal << "'" << endl;
 
+    bytesRcvd += msg->getByteLength();
+    emit(sigBytesReceived, bytesRcvd);
 }

@@ -65,6 +65,9 @@ class AEStream : public AE
     void prepareDeallocateRequest();
 
     virtual void processMRead(CDAPMessage* msg);
+
+    simsignal_t sigBytesReceived;
+    unsigned int bytesRcvd;
 };
 
 #endif

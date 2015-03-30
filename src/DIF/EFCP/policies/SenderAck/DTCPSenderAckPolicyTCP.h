@@ -1,0 +1,35 @@
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
+
+#ifndef DTCPSENDERACKPOLICYTCP_H_
+#define DTCPSENDERACKPOLICYTCP_H_
+
+#include "DTCPSenderAckPolicyBase.h"
+
+#include "ControlPDU_m.h"
+
+#include "DTPState.h"
+#include "DTCPState.h"
+
+class DTCPSenderAckPolicyTCP : public DTCPSenderAckPolicyBase {
+public:
+    DTCPSenderAckPolicyTCP();
+    virtual ~DTCPSenderAckPolicyTCP();
+
+    void ackPDU(DTPState* dtpState, DTCPState* dtcpState, unsigned int startSeqNum, unsigned int endSeqNum = 0);
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
+
+#endif /* DTCPSENDERACKPOLICYTCP_H_ */

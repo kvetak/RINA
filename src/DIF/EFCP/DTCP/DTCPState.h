@@ -104,6 +104,9 @@ class DTCPState : public cSimpleModule
     void clearPDUQ(PDUQ_t* pduQ);
 
   public:
+    unsigned int ackRcvd; //number of acks received
+    double RTO; // retransmission timeout
+
     DTCPState();
     virtual ~DTCPState();
 //    unsigned int getRtt() const;

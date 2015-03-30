@@ -51,6 +51,7 @@
 #include "DTCPReconcileFCPolicyBase.h"
 #include "DTCPRateReductionPolicyBase.h"
 #include "DTCPECNSlowDownPolicyBase.h"
+#include "DTCPTxControlPolicyTCPTahoe.h"
 
 class DTP;
 
