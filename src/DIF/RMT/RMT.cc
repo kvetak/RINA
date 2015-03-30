@@ -75,14 +75,20 @@ void RMT::initialize()
     getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTQueuePDUSent);
 
     // listen for a signal indicating that a port is ready to serve
-    lisRMTPortReady = new LisRMTPortReady(this);
-    getParentModule()->subscribe(SIG_RMT_PortReadyToServe, lisRMTPortReady);
+    lisRMTPortReadyToServe = new LisRMTPortReadyToServe(this);
+    getParentModule()->subscribe(SIG_RMT_PortReadyToServe, lisRMTPortReadyToServe);
+
+    // listen for a signal indicating that a port is ready to be read from
+    lisRMTPortReadyForRead = new LisRMTPortReadyForRead(this);
+    getParentModule()->subscribe(SIG_RMT_PortReadyForRead, lisRMTPortReadyForRead);
 
     WATCH(relayOn);
     WATCH(onWire);
 }
 
-
+/**
+ * Notify the user of PDUs left in this RMT on simulation end.
+ */
 void RMT::finish()
 {
     size_t pduCount = invalidPDUs.size();
@@ -95,7 +101,7 @@ void RMT::finish()
         {
             cMessage* m = *it;
             EV << m->getClassName() << " received at " << m->getArrivalTime()
-               << " from "<<m->getSenderModule()->getFullPath() << endl;
+               << " from " << m->getSenderModule()->getFullPath() << endl;
         }
     }
 }
@@ -113,11 +119,12 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
 
+    // detection of channel-induced bit error
     if (queue->getLastPDU()->hasBitError())
     {
         queue->dropLast();
         EV << "PDU arriving on " << port->getParentModule()->getFullName()
-           << " contains bit error! Dropping." << endl;
+           << " contains one or more bit errors! Dropping." << endl;
         emit(sigRMTPacketError, obj);
 
         return;
@@ -144,7 +151,8 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
 }
 
 /**
- * Takes care of re-invocation of the scheduling policy after a queue is popped.
+ * Executed after a PDU leaves its queue; notifies the monitoring policy and
+ * queue's port.
  *
  * @param obj RMT queue object
  */
@@ -157,33 +165,47 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     port->substractWaiting(queue->getType());
 
+    // notify MaxQ in case the queue length just went back under its threshold
+    if (queue->getLength() == (queue->getThreshLength() - 1))
+    {
+        maxQPolicy->onQueueLengthDrop(queue);
+    }
+
     // if this is an incoming PDU, take care of scheduler reinvocation
-    // (the output direction depends on port readiness, so it's done elsewhere)
     if (queue->getType() == RMTQueue::INPUT)
     {
-        // input from this port could be blocked due to a congested output port
-        if (!port->hasBlockedInput())
-        {
-            schedPolicy->processQueues(port, RMTQueue::INPUT);
-        }
+        //schedPolicy->processQueues(port, RMTQueue::INPUT);
+        port->scheduleNextRead();
     }
     else
     { // if this is an outgoing PDU, set the port as busy
-        port->setBusy();
+        port->setOutputBusy();
     }
 
 }
 
 /**
- * Takes care of re-invocation of the scheduling policy after a port becomes ready.
+ * Invokes the scheduling policy for output queues.
  *
  * @param obj RMT queue object
  */
-void RMT::invokePortReadyPolicies(cObject* obj)
+void RMT::writeToPort(cObject* obj)
 {
     Enter_Method("invokePortReadyPolicies()");
     RMTPort* port = check_and_cast<RMTPort*>(obj);
     schedPolicy->processQueues(port, RMTQueue::OUTPUT);
+}
+
+/**
+ * Invokes the scheduling policy for input queues.
+ *
+ * @param obj RMT queue object
+ */
+void RMT::readFromPort(cObject* obj)
+{
+    Enter_Method("invokePortReadyPolicies()");
+    RMTPort* port = check_and_cast<RMTPort*>(obj);
+    schedPolicy->processQueues(port, RMTQueue::INPUT);
 }
 
 /**

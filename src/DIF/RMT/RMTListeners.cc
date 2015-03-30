@@ -36,7 +36,13 @@ void LisRMTQueuePDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject*
     rmt->invokeQueueDeparturePolicies(obj);
 }
 
-void LisRMTPortReady::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTPortReadyToServe::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokePortReadyPolicies(obj);
+    rmt->writeToPort(obj);
+}
+
+
+void LisRMTPortReadyForRead::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->readFromPort(obj);
 }

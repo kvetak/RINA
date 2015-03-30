@@ -41,8 +41,8 @@ class RABase : public cSimpleModule
     virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
     virtual void blockNM1PortOutput(Flow* flow) = 0;
     virtual void unblockNM1PortOutput(Flow* flow) = 0;
-    virtual void blockNM1PortInput(cObject* obj) = 0;
-    virtual void unblockNM1PortInput(cObject* obj) = 0;
+//    virtual void blockNM1PortInput(cObject* obj) = 0;
+//    virtual void unblockNM1PortInput(cObject* obj) = 0;
     virtual void signalizeSlowdownRequestToRIBd(cPacket* pdu) = 0;
     virtual void signalizeSlowdownRequestToEFCP(cObject* pdu) = 0;
 

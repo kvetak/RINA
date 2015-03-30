@@ -145,11 +145,11 @@ void RA::initSignalsAndListeners()
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
 
-    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
-
-    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
+//    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
+//    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
+//
+//    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
+//    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
@@ -453,7 +453,8 @@ void RA::bindMediumToRMT()
     interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 
     // create extra queues for management purposes
     rmtAllocator->addMgmtQueues(port);
@@ -575,7 +576,8 @@ void RA::createNM1Flow(Flow *flow)
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
         // TODO: remove this when management isn't piggy-backed anymore!
         // (port shouldn't be ready to send out data when the flow isn't yet allocated)
-        port->setReady();
+        port->setOutputReady();
+        port->setInputReady();
 
         // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
@@ -656,7 +658,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 }
 
 /**
@@ -703,7 +706,8 @@ void RA::postNM1FlowAllocation(Flow* flow)
     if (item == NULL) return;
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRMTPort()->setReady();
+    item->getRMTPort()->setOutputReady();
+    item->getRMTPort()->setInputReady();
 }
 
 /**
@@ -841,45 +845,45 @@ void RA::unblockNM1PortOutput(Flow* flow)
     item->getRMTPort()->unblockOutput();
 }
 
-void RA::blockNM1PortInput(cObject* obj)
-{
-    Enter_Method("blockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            flowItem->getRMTPort()->blockInput();
-        }
-    }
-}
-
-void RA::unblockNM1PortInput(cObject* obj)
-{
-    Enter_Method("unblockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            RMTPort* port = flowItem->getRMTPort();
-            // unblock!
-            port->unblockInput();
-            // resume processing of input queues
-            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
-        }
-    }
-}
+//void RA::blockNM1PortInput(cObject* obj)
+//{
+//    Enter_Method("blockNM1PortInput()");
+//
+//    PDU* pdu = dynamic_cast<PDU*>(obj);
+//    if (pdu != NULL)
+//    {
+//        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+//                pdu->getSrcAddr().getApname().getName(),
+//                pdu->getConnId().getQoSId());
+//
+//        if (flowItem != NULL)
+//        {
+//            flowItem->getRMTPort()->blockInput();
+//        }
+//    }
+//}
+//
+//void RA::unblockNM1PortInput(cObject* obj)
+//{
+//    Enter_Method("unblockNM1PortInput()");
+//
+//    PDU* pdu = dynamic_cast<PDU*>(obj);
+//    if (pdu != NULL)
+//    {
+//        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
+//                pdu->getSrcAddr().getApname().getName(),
+//                pdu->getConnId().getQoSId());
+//
+//        if (flowItem != NULL)
+//        {
+//            RMTPort* port = flowItem->getRMTPort();
+//            // unblock!
+//            port->unblockInput();
+//            // resume processing of input queues
+//            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
+//        }
+//    }
+//}
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
 {

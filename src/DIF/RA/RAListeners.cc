@@ -107,15 +107,15 @@ void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject
     }
 }
 
-void LisRMTPortDrainDisable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-    ra->blockNM1PortInput(obj);
-}
-
-void LisRMTPortDrainEnable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-    ra->unblockNM1PortInput(obj);
-}
+//void LisRMTPortDrainDisable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+//{
+//    ra->blockNM1PortInput(obj);
+//}
+//
+//void LisRMTPortDrainEnable::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+//{
+//    ra->unblockNM1PortInput(obj);
+//}
 
 void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {

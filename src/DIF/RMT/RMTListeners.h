@@ -48,10 +48,17 @@ class LisRMTQueuePDUSent : public RMTListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 
-class LisRMTPortReady : public RMTListeners
+class LisRMTPortReadyToServe : public RMTListeners
 {
   public:
-    LisRMTPortReady(RMTBase* rmt) : RMTListeners(rmt){};
+    LisRMTPortReadyToServe(RMTBase* rmt) : RMTListeners(rmt){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+};
+
+class LisRMTPortReadyForRead : public RMTListeners
+{
+  public:
+    LisRMTPortReadyForRead(RMTBase* rmt) : RMTListeners(rmt){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 

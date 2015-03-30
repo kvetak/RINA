@@ -85,10 +85,7 @@ const char* SIG_RMT_SlowdownRequest             = "RMT-SlowDownRequest";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
 const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
-const char* SIG_RMT_PortDrainDisable            = "RMT-PortDrainDisable";
-const char* SIG_RMT_PortDrainEnable             = "RMT-PortDrainEnable";
-const char* SIG_RMT_PortDrainSlowDown           = "RMT-PortDrainSlowDown";
-const char* SIG_RMT_PortDrainSpeedUp            = "RMT-PortDrainSpeedUp";
+const char* SIG_RMT_PortReadyForRead            = "RMT-PortReadyForRead";
 
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";

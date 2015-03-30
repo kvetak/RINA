@@ -24,30 +24,35 @@ Define_Module(RMTPort);
 
 void RMTPort::initialize()
 {
-    ready = false; // port should get activated by RA
+    outputReady = false; // port should get activated by RA
+    inputReady = false; // port should get activated by RA
     blockedOutput = false;
     blockedInput = false;
+
+    inputReadRate = 0;
+    postReadDelay = 0.0;
 
     waitingOnInput = 0;
     waitingOnOutput = 0;
 
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
-    postServeDelay = par("postServeDelay").doubleValue() / 1000;
+    //postServeDelay = par("postServeDelay").doubleValue() / 1000;
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
 
     sigStatRMTPortUp = registerSignal(SIG_STAT_RMTPORT_UP);
     sigStatRMTPortDown = registerSignal(SIG_STAT_RMTPORT_DOWN);
-    sigRMTPortReady = registerSignal(SIG_RMT_PortReadyToServe);
+    sigRMTPortReadyToWrite = registerSignal(SIG_RMT_PortReadyToServe);
+    sigRMTPortReadyForRead = registerSignal(SIG_RMT_PortReadyForRead);
 
-    WATCH(ready);
+    WATCH(outputReady);
     WATCH(waitingOnInput);
     WATCH(waitingOnOutput);
     WATCH(blockedInput);
     WATCH(blockedOutput);
-    WATCH(postServeDelay);
+    //WATCH(postServeDelay);
     WATCH_PTR(flow);
 }
 
@@ -64,13 +69,17 @@ void RMTPort::handleMessage(cMessage* msg)
         if (!opp_strcmp(msg->getFullName(), "portTransmitEnd"))
         { // a PDU transmit procedure has just been finished
             emit(sigStatRMTPortDown, true);
-            setReadyDelayed();
+            scheduleNextWrite();
         }
         else if (!opp_strcmp(msg->getFullName(), "readyToServe"))
         {
-            setReady();
-            emit(sigRMTPortReady, this);
+            setOutputReady();
         }
+        else if (!opp_strcmp(msg->getFullName(), "readyForRead"))
+        {
+            setInputReady();
+        }
+
         delete msg;
     }
     else if (msg->getArrivalGate() == southInputGate) // incoming message
@@ -106,7 +115,7 @@ void RMTPort::handleMessage(cMessage* msg)
         cPacket* packet = NULL;
         if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
         {
-            setBusy();
+            setOutputBusy();
             // start the transmission
             send(packet, southOutputGate);
 
@@ -120,15 +129,15 @@ void RMTPort::handleMessage(cMessage* msg)
                 }
                 else
                 {
-                    setReadyDelayed();
+                    scheduleNextWrite();
                     emit(sigStatRMTPortDown, true);
                 }
             }
             else
             { // there isn't any delay or rate control in place
-                setReadyDelayed();
+                scheduleNextWrite();
                 emit(sigStatRMTPortDown, true);
-                emit(sigRMTPortReady, this);
+                emit(sigRMTPortReadyToWrite, this);
             }
         }
         else
@@ -235,30 +244,58 @@ RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId) const
     return NULL;
 }
 
-bool RMTPort::isReady()
+bool RMTPort::isOutputReady()
 {
-    return ready;
+    return outputReady;
 }
 
-void RMTPort::setReady()
+void RMTPort::setOutputReady()
 {
     if (blockedOutput == false)
     {
-        ready = true;
-        emit(sigRMTPortReady, this);
+        outputReady = true;
+        emit(sigRMTPortReadyToWrite, this);
         redrawGUI();
     }
 }
 
-void RMTPort::setReadyDelayed()
+void RMTPort::setOutputBusy()
 {
-    scheduleAt(simTime() + postServeDelay, new cMessage("readyToServe"));
+    outputReady = false;
+    redrawGUI();
 }
 
-void RMTPort::setBusy()
+bool RMTPort::isInputReady()
 {
-    ready = false;
+    return inputReady;
+}
+
+void RMTPort::setInputReady()
+{
+    if (blockedInput == false)
+    {
+        inputReady = true;
+        emit(sigRMTPortReadyForRead, this);
+        redrawGUI();
+    }
+}
+
+void RMTPort::setInputBusy()
+{
+    inputReady = false;
     redrawGUI();
+}
+
+void RMTPort::scheduleNextWrite()
+{
+    scheduleAt(simTime(), new cMessage("readyToServe"));
+}
+
+void RMTPort::scheduleNextRead()
+{
+    Enter_Method_Silent("scheduleNextRead()");
+    setInputBusy();
+    scheduleAt(simTime() + postReadDelay, new cMessage("readyForRead"));
 }
 
 unsigned long RMTPort::getWaiting(RMTQueueType direction)
@@ -276,11 +313,22 @@ void RMTPort::substractWaiting(RMTQueueType direction)
     direction == RMTQueue::INPUT ? waitingOnInput-- : waitingOnOutput--;
 }
 
+long RMTPort::getInputRate()
+{
+    return inputReadRate;
+}
+
+void RMTPort::setInputRate(long pdusPerSecond)
+{
+    inputReadRate = pdusPerSecond;
+    postReadDelay = 60.0 / pdusPerSecond;
+}
+
 void RMTPort::redrawGUI(bool redrawParent)
 {
     if (ev.isGUI())
     {
-        getDisplayString().setTagArg("i2", 0, (isReady() ? "status/green" : "status/noentry"));
+        getDisplayString().setTagArg("i2", 0, (isOutputReady() ? "status/green" : "status/noentry"));
 
         if (redrawParent)
         {
@@ -333,9 +381,9 @@ void RMTPort::blockOutput()
 {
     EV << getFullPath() << ": blocking the port output." << endl;
     blockedOutput = true;
-    if (ready)
+    if (outputReady)
     {
-        setBusy();
+        setOutputBusy();
     }
     redrawGUI(true);
 }
@@ -344,7 +392,7 @@ void RMTPort::unblockOutput()
 {
     EV << getFullPath() << ": unblocking the port output." << endl;
     blockedOutput = false;
-    setReady();
+    setOutputReady();
     redrawGUI(true);
 }
 
@@ -359,5 +407,6 @@ void RMTPort::unblockInput()
 {
     EV << getFullPath() << ": unblocking the port input." << endl;
     blockedInput = false;
+    setInputReady();
     redrawGUI(true);
 }
