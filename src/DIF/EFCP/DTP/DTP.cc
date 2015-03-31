@@ -21,6 +21,8 @@
 const char * SIG_STAT_DTP_RTT = "DTP_RTT";
 const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
 const char * SIG_STAT_DTP_RX_SENT = "DTP_RX_SENT";
+const char * DTP_SEQ_NUM_RCVD = "DTP_SEQ_NUM_RCVD";
+
 Define_Module(DTP);
 
 DTP::DTP()
@@ -75,7 +77,7 @@ void DTP::runRTTEstimatorPolicy()
   {
 
     double newRtt = state->getRtt();
-    double alpha = 0.5;
+    double alpha = 0.0;
     /* Default */
     ControlPDU* pdu = (ControlPDU*) state->getCurrentPdu();
     if (pdu->getType() & PDU_SEL_BIT){
@@ -83,6 +85,8 @@ void DTP::runRTTEstimatorPolicy()
     }else{
       if (pdu->getType() & PDU_ACK_BIT)
       {
+          if(strstr(getFullPath().c_str(), "host1.ipcProcess1."))
+              EV << "host1.ipcProcces1 time out";
         unsigned int seqNum = ((AckOnlyPDU*)pdu)->getAckNackSeqNum();
         std::vector<DTCPRxExpiryTimer*>* pduQ = dtcp->getDTCPState()->getRxQ();
         std::vector<DTCPRxExpiryTimer*>::iterator it;
