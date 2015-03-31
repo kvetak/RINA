@@ -31,6 +31,7 @@ moduleinterface IAE
         int burstPeriod	@unit(us); //Burst period measured in useconds
         int burstDuration @unit(us); //Burst duration, measured in useconds fraction of Burst Period
         double undetectedBitErr; //Undetected bit error rate measured as a probability
+        double pduDroppingProbability;
         int maxSDUsize @unit(B); //MaxSDUSize measured in bytes
         bool partialDelivery; //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDelivery; //Incomplete Delivery – Can SDUs with missing pieces be delivered?

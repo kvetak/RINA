@@ -36,6 +36,7 @@ const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
 const char* ELEM_BURSTPERIOD         = "BurstPeriod";
 const char* ELEM_BURSTDURATION       = "BurstDuration";
 const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
 const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
 const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
 const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
@@ -266,6 +267,7 @@ void RA::initQoSCubes()
         int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
         int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
         double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double pduDropProbab        = VAL_QOSPARDONOTCARE;
         int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
         bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -309,6 +311,11 @@ void RA::initQoSCubes()
                 burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (burstDuration < 0)
                     burstDuration = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
+                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (undetectedBitErr < 0 || undetectedBitErr > 1 )
+                    undetectedBitErr = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
                 undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
@@ -367,6 +374,7 @@ void RA::initQoSCubes()
         cube.setBurstPeriod(burstPeriod);
         cube.setBurstDuration(burstDuration);
         cube.setUndetectedBitErr(undetectedBitErr);
+        cube.setPduDropProbability(pduDropProbab);
         cube.setMaxSduSize(maxSDUsize);
         cube.setPartialDelivery(partDeliv);
         cube.setIncompleteDelivery(incompleteDeliv);

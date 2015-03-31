@@ -51,6 +51,7 @@ extern const char* ELEM_PEAKSDUBWDUR;
 extern const char* ELEM_BURSTPERIOD;
 extern const char* ELEM_BURSTDURATION;
 extern const char* ELEM_UNDETECTBITERR;
+extern const char* ELEM_PDUDROPPROBAB;
 extern const char* ELEM_MAXSDUSIZE;
 extern const char* ELEM_PARTIALDELIVER;
 extern const char* ELEM_INCOMPLETEDELIVER;
