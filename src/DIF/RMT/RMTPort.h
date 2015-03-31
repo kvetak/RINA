@@ -196,7 +196,6 @@ class RMTPort : public cSimpleModule
     bool blockedOutput;
     unsigned long waitingOnInput;
     unsigned long waitingOnOutput;
-    //double postServeDelay;
     long inputReadRate;
     double postReadDelay;
     std::string dstAppAddr;

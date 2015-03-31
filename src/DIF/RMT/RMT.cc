@@ -174,7 +174,6 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     // if this is an incoming PDU, take care of scheduler reinvocation
     if (queue->getType() == RMTQueue::INPUT)
     {
-        //schedPolicy->processQueues(port, RMTQueue::INPUT);
         port->scheduleNextRead();
     }
     else
@@ -191,7 +190,7 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
  */
 void RMT::writeToPort(cObject* obj)
 {
-    Enter_Method("invokePortReadyPolicies()");
+    Enter_Method_Silent("writeToPort()");
     RMTPort* port = check_and_cast<RMTPort*>(obj);
     schedPolicy->processQueues(port, RMTQueue::OUTPUT);
 }
@@ -203,7 +202,7 @@ void RMT::writeToPort(cObject* obj)
  */
 void RMT::readFromPort(cObject* obj)
 {
-    Enter_Method("invokePortReadyPolicies()");
+    Enter_Method_Silent("readFromPort()");
     RMTPort* port = check_and_cast<RMTPort*>(obj);
     schedPolicy->processQueues(port, RMTQueue::INPUT);
 }

@@ -145,12 +145,6 @@ void RA::initSignalsAndListeners()
 
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
-
-//    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
-//    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
-//
-//    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
-//    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
@@ -852,46 +846,6 @@ void RA::unblockNM1PortOutput(Flow* flow)
 
     item->getRMTPort()->unblockOutput();
 }
-
-//void RA::blockNM1PortInput(cObject* obj)
-//{
-//    Enter_Method("blockNM1PortInput()");
-//
-//    PDU* pdu = dynamic_cast<PDU*>(obj);
-//    if (pdu != NULL)
-//    {
-//        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-//                pdu->getSrcAddr().getApname().getName(),
-//                pdu->getConnId().getQoSId());
-//
-//        if (flowItem != NULL)
-//        {
-//            flowItem->getRMTPort()->blockInput();
-//        }
-//    }
-//}
-//
-//void RA::unblockNM1PortInput(cObject* obj)
-//{
-//    Enter_Method("unblockNM1PortInput()");
-//
-//    PDU* pdu = dynamic_cast<PDU*>(obj);
-//    if (pdu != NULL)
-//    {
-//        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-//                pdu->getSrcAddr().getApname().getName(),
-//                pdu->getConnId().getQoSId());
-//
-//        if (flowItem != NULL)
-//        {
-//            RMTPort* port = flowItem->getRMTPort();
-//            // unblock!
-//            port->unblockInput();
-//            // resume processing of input queues
-//            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
-//        }
-//    }
-//}
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
 {

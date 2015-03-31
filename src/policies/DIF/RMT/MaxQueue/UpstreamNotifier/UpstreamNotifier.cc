@@ -37,29 +37,6 @@ bool UpstreamNotifier::run(RMTQueue* queue)
         }
     }
 
-    // extended version:
-    // !!! CURRENTLY NOT WORKING, will be available in the next release.
-    // When an output buffer is overflowing, disable reading data from the input
-    // buffer sending data to it. When the input buffer starts to overflow as well,
-    // send out the notification.
-
-//    if (queue->getLength() >= queue->getMaxLength())
-//    {
-//        if (queue->getType() == RMTQueue::OUTPUT)
-//        {
-//            disableSenderPortDrain(queue->getLastPDU());
-//        }
-//        else if (queue->getType() == RMTQueue::INPUT)
-//        {
-//            notifySenderOfCongestion(queue->getLastPDU());
-//        }
-//    }
-//    else if ((queue->getLength() == queue->getThreshLength()) &&
-//            port->hasBlockedInput())
-//    { // the output buffers are keeping up again, continue receiving on input
-//        port->unblockInput();
-//    }
-
     return false;
 }
 

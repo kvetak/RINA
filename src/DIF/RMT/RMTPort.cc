@@ -37,7 +37,6 @@ void RMTPort::initialize()
 
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
-    //postServeDelay = par("postServeDelay").doubleValue() / 1000;
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
             (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
@@ -48,11 +47,14 @@ void RMTPort::initialize()
     sigRMTPortReadyForRead = registerSignal(SIG_RMT_PortReadyForRead);
 
     WATCH(outputReady);
-    WATCH(waitingOnInput);
+    WATCH(inputReady);
+
     WATCH(waitingOnOutput);
-    WATCH(blockedInput);
+    WATCH(waitingOnInput);
+    WATCH(inputReadRate);
+
     WATCH(blockedOutput);
-    //WATCH(postServeDelay);
+    WATCH(blockedInput);
     WATCH_PTR(flow);
 }
 
@@ -365,7 +367,7 @@ void RMTPort::setFlow(Flow* flow)
     {
         if (flow != NULL)
         {
-            // shitty temporary hack to strip the layer name off
+            // shitty temporary (yeah, right) hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();
             dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
         }
