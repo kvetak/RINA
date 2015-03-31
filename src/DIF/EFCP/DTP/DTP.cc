@@ -329,7 +329,7 @@ void DTP::handleMessage(cMessage *msg)
 
   if(state->isDtcpPresent()){
       emit(sigStatDTPClosedWinQ, dtcp->dtcpState->getClosedWinQueLen());
-      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
+      //emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
   }
 
   redrawGUI();
