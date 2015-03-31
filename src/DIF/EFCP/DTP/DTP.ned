@@ -39,6 +39,9 @@ simple DTP
         @signal[DTP_RX_SENT](type=int);
         @statistic[dtp-rx-sent](title="Sum of all retransmissions"; source=DTP_RX_SENT; record=last);
         
+        @signal[DTP_SEQ_NUM_RCVD](type=int);
+        @statistic[dtp-seq-num-rcvd](title="Received sequence number"; source=DTP_SEQ_NUM_RCVD; record=vector, last);
+        
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT
