@@ -43,4 +43,6 @@ simple DTCP
         
 //        @signal[DTCP_CLOSED_WIN_Q](type=double);
 //        @statistic[dtcp-rtt](title="Closed-window Queue length"; source=DTCP_CLOSED_WIN_Q; record=vector, mean);
+        @signal[DTCP_RX_SENT](type=int);
+        @statistic[dtcp-rx-sent](title="Sum of all retransmissions"; source=DTCP_RX_SENT; record=last);
 }

@@ -20,7 +20,7 @@
 
 const char * SIG_STAT_DTP_RTT = "DTP_RTT";
 const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
-const char * SIG_STAT_DTP_RX_SENT = "DTP_RX_SENT";
+
 Define_Module(DTP);
 
 DTP::DTP()
@@ -131,7 +131,7 @@ void DTP::initSignalsAndListeners()
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
   sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
-  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
+//  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
 }
 
 void DTP::initialize(int step)
@@ -329,7 +329,7 @@ void DTP::handleMessage(cMessage *msg)
 
   if(state->isDtcpPresent()){
       emit(sigStatDTPClosedWinQ, dtcp->dtcpState->getClosedWinQueLen());
-      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
+//      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
   }
 
   redrawGUI();

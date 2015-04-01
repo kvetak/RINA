@@ -36,8 +36,7 @@ simple DTP
         @signal[DTP_CLOSED_WIN_Q](type=int);
         @statistic[dtp-close-win-q](title="Closed-window Queue length"; source=DTP_CLOSED_WIN_Q; record=vector, mean);
         
-        @signal[DTP_RX_SENT](type=int);
-        @statistic[dtp-rx-sent](title="Sum of all retransmissions"; source=DTP_RX_SENT; record=last);
+
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT
