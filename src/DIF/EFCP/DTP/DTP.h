@@ -227,7 +227,7 @@ class DTP : public cSimpleModule
     //Statistic signals
     simsignal_t sigStatDTPRTT;
     simsignal_t sigStatDTPClosedWinQ;
-    simsignal_t sigStatDTPRxCount;
+//    simsignal_t sigStatDTPRxCount;
 
 };
 

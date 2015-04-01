@@ -20,7 +20,6 @@
 
 const char * SIG_STAT_DTP_RTT = "DTP_RTT";
 const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
-const char * SIG_STAT_DTP_RX_SENT = "DTP_RX_SENT";
 const char * DTP_SEQ_NUM_RCVD = "DTP_SEQ_NUM_RCVD";
 
 Define_Module(DTP);
@@ -135,7 +134,7 @@ void DTP::initSignalsAndListeners()
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
   sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
-  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
+//  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
 }
 
 void DTP::initialize(int step)
