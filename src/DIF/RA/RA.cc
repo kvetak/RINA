@@ -311,10 +311,10 @@ void RA::initQoSCubes()
                 if (undetectedBitErr < 0 || undetectedBitErr > 1 )
                     undetectedBitErr = VAL_QOSPARDONOTCARE;
             }
-            else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
-                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (undetectedBitErr < 0 || undetectedBitErr > 1 )
-                    undetectedBitErr = VAL_QOSPARDONOTCARE;
+            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
+                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (pduDropProbab < 0 || pduDropProbab > 1 )
+                    pduDropProbab = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
                 maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
