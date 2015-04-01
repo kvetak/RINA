@@ -31,6 +31,7 @@ simple AE like IAE
         int burstPeriod	@unit(us)				= default(-1us); //Burst period measured in useconds
         int burstDuration @unit(us)				= default(-1us); //Burst duration, measured in useconds fraction of Burst Period
         double undetectedBitErr					= default(-1); //Undetected bit error rate measured as a probability
+        double pduDroppingProbability			= default(-1); //PDU dropping probability
         int maxSDUsize @unit(B)					= default(-1B); //MaxSDUSize measured in bytes
         bool partialDelivery					= default(false); //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDelivery					= default(false); //Incomplete Delivery – Can SDUs with missing pieces be delivered?

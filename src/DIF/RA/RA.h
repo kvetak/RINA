@@ -51,6 +51,7 @@ extern const char* ELEM_PEAKSDUBWDUR;
 extern const char* ELEM_BURSTPERIOD;
 extern const char* ELEM_BURSTDURATION;
 extern const char* ELEM_UNDETECTBITERR;
+extern const char* ELEM_PDUDROPPROBAB;
 extern const char* ELEM_MAXSDUSIZE;
 extern const char* ELEM_PARTIALDELIVER;
 extern const char* ELEM_INCOMPLETEDELIVER;
@@ -71,8 +72,6 @@ class RA : public RABase
     virtual bool bindNFlowToNM1Flow(Flow* flow);
     virtual void blockNM1PortOutput(Flow* flow);
     virtual void unblockNM1PortOutput(Flow* flow);
-    virtual void blockNM1PortInput(cObject* obj);
-    virtual void unblockNM1PortInput(cObject* obj);
 
     // event hook handlers
     virtual void postNFlowAllocation(Flow* flow);
@@ -121,9 +120,6 @@ class RA : public RABase
 
     LisRMTSlowdownRequest* lisRMTSDReq;
     LisRIBCongNotif* lisRIBCongNotif;
-
-    LisRMTPortDrainDisable* lisRMTPortDrainDisable;
-    LisRMTPortDrainEnable* lisRMTPortDrainEnable;
 
     void signalizeCreateFlowPositiveToRIBd(Flow* flow);
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);

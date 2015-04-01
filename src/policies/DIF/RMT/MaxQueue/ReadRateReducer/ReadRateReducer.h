@@ -15,18 +15,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef UPSTREAMNOTIFIER_H_
-#define UPSTREAMNOTIFIER_H_
+#ifndef READRATEREDUCER_H_
+#define READRATEREDUCER_H_
 
 #include "RMTMaxQBase.h"
+#include "IntPDUForwarding.h"
 
-class UpstreamNotifier : public RMTMaxQBase
+class ReadRateReducer : public RMTMaxQBase
 {
   public:
     virtual bool run(RMTQueue* queue);
+    virtual void onQueueLengthDrop(RMTQueue* queue);
 
   protected:
     virtual void onPolicyInit();
+
+  private:
+    IntPDUForwarding* fwd;
 };
 
-#endif /* UPSTREAMNOTIFIER_H_ */
+#endif /* READRATEREDUCER_H_ */

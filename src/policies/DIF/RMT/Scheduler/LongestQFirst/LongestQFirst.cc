@@ -23,7 +23,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 
     if (direction == RMTQueue::OUTPUT)
     {
-        if (port->isReady() && port->getWaiting(RMTQueue::OUTPUT))
+        if (port->isOutputReady() && port->getWaiting(RMTQueue::OUTPUT))
         {
             // management PDU should have bigger priority for now
             RMTQueue* outQ = port->getManagementQueue(RMTQueue::OUTPUT);
@@ -40,7 +40,7 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
     }
     else if (direction == RMTQueue::INPUT)
     {
-        if (port->getWaiting(RMTQueue::INPUT))
+        if (port->isInputReady() && port->getWaiting(RMTQueue::INPUT))
         {
             RMTQueue* inQ = port->getManagementQueue(RMTQueue::INPUT);
             if (inQ->getLength() > 0)

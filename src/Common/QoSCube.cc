@@ -31,7 +31,7 @@ const int   VAL_DEFQOS = 0;
 
 QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
         avgBand(VAL_DEFQOS), avgSDUBand(VAL_DEFQOS), peakBandDuration(VAL_DEFQOS), peakSDUBandDuration(VAL_DEFQOS),
-        burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
+        burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), pduDropProbability(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
         costTime(VAL_DEFQOS), costBits(VAL_DEFQOS)
@@ -249,6 +249,9 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
     if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
         (getUndetectedBitErr() <= other.getUndetectedBitErr()) ? score++ : score--;
 
+    if (getPduDropProbability() != VAL_QOSPARDONOTCARE)
+        (getPduDropProbability() <= other.getPduDropProbability()) ? score++ : score--;
+
     if (getMaxSduSize() != VAL_QOSPARDONOTCARE)
         (getMaxSduSize() <= other.getMaxSduSize()) ? score++ : score--;
 
@@ -301,6 +304,9 @@ bool QoSCube::isFeasibility(const QoSCube other) const {
     if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE && getUndetectedBitErr() > other.getUndetectedBitErr())
         return false;
 
+    if (getPduDropProbability() != VAL_QOSPARDONOTCARE && getPduDropProbability() > other.getPduDropProbability())
+        return false;
+
     if (getMaxSduSize() != VAL_QOSPARDONOTCARE && getMaxSduSize() > other.getMaxSduSize())
         return false;
 
@@ -336,6 +342,14 @@ bool QoSCube::isFeasibility(const QoSCube other) const {
 
 bool QoSCube::isDTCPNeeded()const {
   return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
+}
+
+double QoSCube::getPduDropProbability() const {
+    return pduDropProbability;
+}
+
+void QoSCube::setPduDropProbability(double pduDropProbability) {
+    this->pduDropProbability = pduDropProbability;
 }
 
 std::string QoSCube::info() const {
@@ -387,6 +401,12 @@ std::string QoSCube::info() const {
         os << STR_DONOTCARE;
     else
         os << this->getUndetectedBitErr() << "%";
+
+    os << "\n   PDU dropping probability = ";
+    if ( this->getPduDropProbability() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getPduDropProbability() << "%";
 
     os << "\n   max SDU Size = ";
     if ( this->getMaxSduSize() < 0 )

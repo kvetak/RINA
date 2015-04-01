@@ -37,21 +37,38 @@ class RMTPort : public cSimpleModule
   public:
 
     /**
-     * Returns the port state (ready to receive data/busy).
+     * Returns the port state (ready to send out data/busy).
      *
      * @return port state
      */
-    bool isReady();
+    bool isOutputReady();
 
     /**
      * Marks the port as ready to receive data.
      */
-    void setReady();
+    void setOutputReady();
 
     /**
      * Marks the port as busy (e.g. when sending data through it).
      */
-    void setBusy();
+    void setOutputBusy();
+
+    /**
+     * Returns the port state (ready to receive data/busy).
+     *
+     * @return port state
+     */
+    bool isInputReady();
+
+    /**
+     * Marks the port as ready to receive data.
+     */
+    void setInputReady();
+
+    /**
+     * Marks the port as busy (e.g. when sending data through it).
+     */
+    void setInputBusy();
 
     /**
      * Marks the port as blocked for sending (e.g. when (N-1)-EFCPI isn't keeping up).
@@ -77,6 +94,16 @@ class RMTPort : public cSimpleModule
      * Returns input block status.
      */
     bool hasBlockedInput() { return blockedInput; };
+
+    /*
+     * Returns the input drain speed of this port.
+     */
+    long getInputRate();
+
+    /*
+     * Sets the input drain speed of this port.
+     */
+    void setInputRate(long pdusPerSecond);
 
     /**
      * Returns the (N-1)-flow this port is assigned to.
@@ -163,12 +190,14 @@ class RMTPort : public cSimpleModule
     void substractWaiting(RMTQueueType direction);
 
   private:
-    bool ready;
+    bool inputReady;
+    bool outputReady;
     bool blockedInput;
     bool blockedOutput;
     unsigned long waitingOnInput;
     unsigned long waitingOnOutput;
-    double postServeDelay;
+    long inputReadRate;
+    double postReadDelay;
     std::string dstAppAddr;
 
     Flow* flow;
@@ -191,10 +220,12 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
-    void setReadyDelayed();
+    void scheduleNextRead();
+    void scheduleNextWrite();
     void redrawGUI(bool redrawParent = false);
 
-    simsignal_t sigRMTPortReady;
+    simsignal_t sigRMTPortReadyForRead;
+    simsignal_t sigRMTPortReadyToWrite;
     simsignal_t sigStatRMTPortUp;
     simsignal_t sigStatRMTPortDown;
 };

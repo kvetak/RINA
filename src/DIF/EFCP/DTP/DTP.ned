@@ -41,7 +41,7 @@ simple DTP
         
         @signal[DTP_SEQ_NUM_RCVD](type=int);
         @statistic[dtp-seq-num-rcvd](title="Received sequence number"; source=DTP_SEQ_NUM_RCVD; record=vector, last);
-        
+
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT

@@ -34,6 +34,7 @@ extern const char* PAR_PEAKSDUBWDUR;
 extern const char* PAR_BURSTPERIOD;
 extern const char* PAR_BURSTDURATION;
 extern const char* PAR_UNDETECTBITERR;
+extern const char* PAR_PDUDROPPROBAB;
 extern const char* PAR_MAXSDUSIZE;
 extern const char* PAR_PARTIALDELIVER;
 extern const char* PAR_INCOMPLETEDELIVER;

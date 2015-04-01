@@ -96,10 +96,7 @@ extern const char* SIG_RMT_QueuePDUSent;
 extern const char* SIG_RMT_PortPDURcvd;
 extern const char* SIG_RMT_PortPDUSent;
 extern const char* SIG_RMT_PortReadyToServe;
-extern const char* SIG_RMT_PortDrainDisable;
-extern const char* SIG_RMT_PortDrainEnable;
-extern const char* SIG_RMT_PortDrainSlowDown;
-extern const char* SIG_RMT_PortDrainSpeedUp;
+extern const char* SIG_RMT_PortReadyForRead;
 
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;

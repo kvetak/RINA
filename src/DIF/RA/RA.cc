@@ -36,6 +36,7 @@ const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
 const char* ELEM_BURSTPERIOD         = "BurstPeriod";
 const char* ELEM_BURSTDURATION       = "BurstDuration";
 const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
 const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
 const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
 const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
@@ -144,12 +145,6 @@ void RA::initSignalsAndListeners()
 
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
-
-    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
-
-    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
@@ -266,6 +261,7 @@ void RA::initQoSCubes()
         int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
         int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
         double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double pduDropProbab        = VAL_QOSPARDONOTCARE;
         int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
         bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -314,6 +310,11 @@ void RA::initQoSCubes()
                 undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (undetectedBitErr < 0 || undetectedBitErr > 1 )
                     undetectedBitErr = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
+                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (pduDropProbab < 0 || pduDropProbab > 1 )
+                    pduDropProbab = VAL_QOSPARDONOTCARE;
             }
             else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
                 maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
@@ -367,6 +368,7 @@ void RA::initQoSCubes()
         cube.setBurstPeriod(burstPeriod);
         cube.setBurstDuration(burstDuration);
         cube.setUndetectedBitErr(undetectedBitErr);
+        cube.setPduDropProbability(pduDropProbab);
         cube.setMaxSduSize(maxSDUsize);
         cube.setPartialDelivery(partDeliv);
         cube.setIncompleteDelivery(incompleteDeliv);
@@ -453,7 +455,8 @@ void RA::bindMediumToRMT()
     interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 
     // create extra queues for management purposes
     rmtAllocator->addMgmtQueues(port);
@@ -575,7 +578,8 @@ void RA::createNM1Flow(Flow *flow)
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
         // TODO: remove this when management isn't piggy-backed anymore!
         // (port shouldn't be ready to send out data when the flow isn't yet allocated)
-        port->setReady();
+        port->setOutputReady();
+        port->setInputReady();
 
         // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
@@ -656,7 +660,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 }
 
 /**
@@ -703,7 +708,8 @@ void RA::postNM1FlowAllocation(Flow* flow)
     if (item == NULL) return;
     // mark this flow as connected
     item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRMTPort()->setReady();
+    item->getRMTPort()->setOutputReady();
+    item->getRMTPort()->setInputReady();
 }
 
 /**
@@ -839,46 +845,6 @@ void RA::unblockNM1PortOutput(Flow* flow)
     }
 
     item->getRMTPort()->unblockOutput();
-}
-
-void RA::blockNM1PortInput(cObject* obj)
-{
-    Enter_Method("blockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            flowItem->getRMTPort()->blockInput();
-        }
-    }
-}
-
-void RA::unblockNM1PortInput(cObject* obj)
-{
-    Enter_Method("unblockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            RMTPort* port = flowItem->getRMTPort();
-            // unblock!
-            port->unblockInput();
-            // resume processing of input queues
-            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
-        }
-    }
 }
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
