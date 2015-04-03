@@ -193,6 +193,10 @@ protected:
 
     //Signals
     simsignal_t sigStatDTCPRxCount;
+    simsignal_t sigStatDTCPSeqNumRcvd;
+    simsignal_t sigStatDTCPSeqNumSent;
+
+
 };
 
 #endif /* DTCP_H_ */

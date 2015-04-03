@@ -16,7 +16,10 @@
 // 
 
 #include "DTCP.h"
+
 const char * SIG_STAT_DTCP_RX_SENT = "DTCP_RX_SENT";
+const char * SIG_STAT_DTCP_SEQ_NUM_RCVD = "DTCP_SEQ_NUM_RCVD";
+const char * SIG_STAT_DTCP_SEQ_NUM_SENT = "DTCP_SEQ_NUM_SENT";
 
 Define_Module(DTCP);
 
@@ -91,6 +94,8 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
 void DTCP::initSignalsAndListeners()
 {
   sigStatDTCPRxCount = registerSignal(SIG_STAT_DTCP_RX_SENT);
+  sigStatDTCPSeqNumRcvd = registerSignal(SIG_STAT_DTCP_SEQ_NUM_RCVD);
+  sigStatDTCPSeqNumSent = registerSignal(SIG_STAT_DTCP_SEQ_NUM_SENT);
 }
 
 void DTCP::initialize(int step)
@@ -421,6 +426,8 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
     unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     ackPDU(seqNum);
 
+    emit(sigStatDTCPSeqNumRcvd, seqNum);
+
     //update SendLeftWindowEdge
     dtcpState->updateSndLWE(seqNum + 1);
     
@@ -480,6 +487,9 @@ bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 
       dtpState->pushBackToPostablePDUQ((*it));
 //      dtpState->getGeneratedPDUQ()->erase(it);
+
+      emit(sigStatDTCPSeqNumSent, (*it)->getSeqNum());
+
       it = pduQ->erase(it);
 
     }
@@ -728,7 +738,7 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       //TODO B1 (RTT + A + epsilon)
 //      double aTime = dtp->state->getQoSCube()->getATime();
 //      double rtt = dtp->state->getRtt();
-      scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
+      scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + 0.2 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

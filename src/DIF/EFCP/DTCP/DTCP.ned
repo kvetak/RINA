@@ -45,4 +45,10 @@ simple DTCP
 //        @statistic[dtcp-rtt](title="Closed-window Queue length"; source=DTCP_CLOSED_WIN_Q; record=vector, mean);
         @signal[DTCP_RX_SENT](type=int);
         @statistic[dtcp-rx-sent](title="Sum of all retransmissions"; source=DTCP_RX_SENT; record=last);
+        
+        @signal[DTCP_SEQ_NUM_RCVD](type="int");
+        @statistic[dtcp-seq-num-rcvd](title="Received sequence number"; source="DTCP_SEQ_NUM_RCVD"; record=vector, last);
+        
+        @signal[DCTP_SEQ_NUM_SENT](type="int");
+        @statistic[dtcp-seq-num-sent](title="Sent sequence number"; source="DTCP_SEQ_NUM_SENT"; record=vector, last);
 }
