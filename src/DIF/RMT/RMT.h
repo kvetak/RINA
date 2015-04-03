@@ -72,6 +72,8 @@ class RMT : public RMTBase
     IntPDUForwarding* fwd;
     RMTModuleAllocator* rmtAllocator;
 
+    int erroneousCount;
+
     bool relayOn;
     bool onWire;
 
@@ -100,6 +102,8 @@ class RMT : public RMTBase
 
     simsignal_t sigRMTNoConnID;
     simsignal_t sigRMTPacketError;
+    simsignal_t sigRMTPacketErrorCount;
+
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
     LisRMTQueuePDUSent* lisRMTQueuePDUSent;
     LisRMTPortReadyToServe* lisRMTPortReadyToServe;

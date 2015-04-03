@@ -89,5 +89,5 @@ channel ErroneousPath extends DatarateChannel
         datarate = 1Mbps;
         delay = 1us; // 10m
         per = 0.00;
-        ber = 0.0;
+        ber = 0.0001;
 }

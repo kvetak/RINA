@@ -22,6 +22,9 @@ simple RMT
     parameters:		
 		@display("i=block/classifier");    
 		
+		@signal[RMT-ErroneousPacketCount](type="int");
+        @statistic[rmt-erroneous-packet](title="RMT-ErroneousPacketCount"; source="RMT-ErroneousPacketCount"; record=vector, last);
+        
     gates:
         //inout efcpIo;
         inout southIo[];

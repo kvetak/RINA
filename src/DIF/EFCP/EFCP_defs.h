@@ -31,13 +31,13 @@
 #define CEPIDLENGTH 16
 #define SEQNUMLENGTH 64
 
-#define MAXSDUSIZE  1500 //made up
-#define MAX_PDU_SIZE  1500 //made up
-#define DRF_FLAG 0x80
-#define ECN_FLAG 0x01
-#define MAX_CLOSED_WIN_Q_LEN 20
-#define DTP_EPSILON 0.0001
-#define INITIAL_SENDER_CREDIT 10
+#define MAXSDUSIZE              1500 //made up
+#define MAX_PDU_SIZE            1500 //made up
+#define DRF_FLAG                0x80
+#define ECN_FLAG                0x01
+#define MAX_CLOSED_WIN_Q_LEN    20
+#define DTP_EPSILON             0.2     //0.0001
+#define INITIAL_SENDER_CREDIT   10
 
 #define ECN_POLICY_PREFIX "rina.DIF.EFCP.policies.ECN."
 #define ECN_POLICY_NAME "ecnPolicy"

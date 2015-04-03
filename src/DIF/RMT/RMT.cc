@@ -40,6 +40,7 @@ void RMT::initialize()
 {
     relayOn = false;
     onWire = false;
+    erroneousCount = 0;
 
     // get pointers to other components
     fwd = check_and_cast<IntPDUForwarding*>
@@ -65,6 +66,9 @@ void RMT::initialize()
 
     // register a signal for notifying others about a packet bit error
     sigRMTPacketError = registerSignal(SIG_RMT_ErrornousPacket);
+
+    // register a signal for counting
+    sigRMTPacketErrorCount = registerSignal("RMT-ErroneousPacketCount");
 
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
@@ -126,6 +130,9 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
         EV << "PDU arriving on " << port->getParentModule()->getFullName()
            << " contains one or more bit errors! Dropping." << endl;
         emit(sigRMTPacketError, obj);
+
+        erroneousCount++;
+        emit(sigRMTPacketErrorCount, erroneousCount);
 
         return;
     }
