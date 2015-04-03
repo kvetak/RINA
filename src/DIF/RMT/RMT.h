@@ -102,7 +102,7 @@ class RMT : public RMTBase
 
     simsignal_t sigRMTNoConnID;
     simsignal_t sigRMTPacketError;
-    simsignal_t sigRMTPacketErrorCount;
+    simsignal_t sigStatRMTPacketErrorCount;
 
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
     LisRMTQueuePDUSent* lisRMTQueuePDUSent;

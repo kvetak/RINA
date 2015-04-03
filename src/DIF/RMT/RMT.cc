@@ -24,6 +24,8 @@
 
 #include <RMT.h>
 
+const char* SIG_STAT_RMT_ERRONEOUS_PACKETS = "RMT_ErroneousPacketCount";
+
 Define_Module(RMT);
 
 RMT::~RMT()
@@ -67,8 +69,11 @@ void RMT::initialize()
     // register a signal for notifying others about a packet bit error
     sigRMTPacketError = registerSignal(SIG_RMT_ErrornousPacket);
 
-    // register a signal for counting
-    sigRMTPacketErrorCount = registerSignal("RMT-ErroneousPacketCount");
+    // register a signal for counting errorneous cPackets
+    sigStatRMTPacketErrorCount = registerSignal(SIG_STAT_RMT_ERRONEOUS_PACKETS);
+
+    // initialize the vector
+    emit(sigStatRMTPacketErrorCount, erroneousCount);
 
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
@@ -132,7 +137,7 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
         emit(sigRMTPacketError, obj);
 
         erroneousCount++;
-        emit(sigRMTPacketErrorCount, erroneousCount);
+        emit(sigStatRMTPacketErrorCount, erroneousCount);
 
         return;
     }
