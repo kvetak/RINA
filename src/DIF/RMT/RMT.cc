@@ -73,7 +73,7 @@ void RMT::initialize()
     sigStatRMTPacketErrorCount = registerSignal(SIG_STAT_RMT_ERRONEOUS_PACKETS);
 
     // initialize the vector
-    emit(sigStatRMTPacketErrorCount, erroneousCount);
+//    emit(sigStatRMTPacketErrorCount, erroneousCount);
 
     // listen for a signal indicating that a new message has arrived into a queue
     lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
