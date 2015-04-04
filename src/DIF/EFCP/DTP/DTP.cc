@@ -1051,7 +1051,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       {
         if (state->isWinBased())
         {
-          if ( ((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()) && !dtcp->getDTCPState()->isClosedWindow() )
+          if ( ((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()) ) //  && !dtcp->getDTCPState()->isClosedWindow()
           {
             /* The Window is Open. */
             dtcp->runTxControlPolicy(state, pduQ);
