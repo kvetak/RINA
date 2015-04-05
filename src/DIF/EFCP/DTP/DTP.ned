@@ -36,12 +36,10 @@ simple DTP
         @signal[DTP_CLOSED_WIN_Q](type=int);
         @statistic[dtp-close-win-q](title="Closed-window Queue length"; source=DTP_CLOSED_WIN_Q; record=vector, mean);
         
-
-        
         @signal[DTP_SEQ_NUM_RCVD](type=int);
         @statistic[dtp-seq-num-rcvd](title="Received sequence number"; source=DTP_SEQ_NUM_RCVD; record=vector, last);
 
-    gates:
+        gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT
         

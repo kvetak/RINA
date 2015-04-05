@@ -131,14 +131,14 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
     // detection of channel-induced bit error
     if (queue->getLastPDU()->hasBitError())
     {
-        queue->dropLast();
+        const cPacket* dropped = queue->dropLast();
         EV << "PDU arriving on " << port->getParentModule()->getFullName()
            << " contains one or more bit errors! Dropping." << endl;
         emit(sigRMTPacketError, obj);
 
         erroneousCount++;
-        emit(sigStatRMTPacketErrorCount, erroneousCount);
-
+        emit(sigStatRMTPacketErrorCount, ((PDU_Base*)dropped)->getSeqNum());
+        delete dropped;
         return;
     }
 

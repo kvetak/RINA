@@ -31,5 +31,5 @@ network TwoCSs
         }
     connections allowunconnected:
 //        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 3s; ber = 0; } <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 0.5s; ber = 0.00001; } <--> host2.medium;
 }
