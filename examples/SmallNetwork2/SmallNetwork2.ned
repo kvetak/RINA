@@ -68,7 +68,7 @@ network SmallNetwork2
 channel NormalPath extends DatarateChannel
 {
     parameters:
-        datarate = 10Mbps;
+        datarate = 1Mbps;
         delay = 0.1us; // 10m
         per = 0;
         ber = 0;
@@ -89,5 +89,5 @@ channel ErroneousPath extends DatarateChannel
         datarate = 1Mbps;
         delay = 1s; // 10m
         per = 0.00;
-        ber = 0.000000;
+        ber = 0.000001;
 }
