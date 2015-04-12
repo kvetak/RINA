@@ -53,6 +53,8 @@ void RMTQueue::initialize()
     inputGate = gate("inputGate");
     // message retrieval signal handler
     sigRMTPDURcvd = registerSignal(SIG_RMT_QueuePDURcvd);
+    // message pre-departure signal handler
+    sigRMTPDUPreSend = registerSignal(SIG_RMT_QueuePDUPreSend);
     // message departure signal handler
     sigRMTPDUSent = registerSignal(SIG_RMT_QueuePDUSent);
     // length for vector stats
@@ -102,15 +104,15 @@ void RMTQueue::redrawGUI()
     }
     else if (len < thresholdQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorBusy").stringValue());
+        disp.setTagArg("i", 1, "#80FF80");
     }
     else if (len < maxQLength)
     {
-        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorWarn").stringValue());
+        disp.setTagArg("i", 1, "#FF8000");
     }
     else
     {
-        disp.setTagArg("i", 1, getParentModule()->getParentModule()->par("queueColorFull").stringValue());
+        disp.setTagArg("i", 1, "#800000");
     }
 
     // print current saturation in numbers
@@ -146,6 +148,7 @@ void RMTQueue::releasePDU(void)
 
     if (this->getLength() > 0)
     {
+        emit(sigRMTPDUPreSend, this);
         cPacket* pdu = queue.front();
         queue.pop_front();
         send(pdu, outputGate);

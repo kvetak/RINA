@@ -41,6 +41,13 @@ class LisRMTQueuePDURcvd : public RMTListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
 };
 
+class LisRMTQueuePDUPreSend : public RMTListeners
+{
+  public:
+    LisRMTQueuePDUPreSend(RMTBase* rmt) : RMTListeners(rmt){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+};
+
 class LisRMTQueuePDUSent : public RMTListeners
 {
   public:

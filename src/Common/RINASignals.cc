@@ -83,6 +83,7 @@ const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
 const char* SIG_RMT_ErrornousPacket             = "RMT-ErrornousPacket";
 const char* SIG_RMT_SlowdownRequest             = "RMT-SlowDownRequest";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
+const char* SIG_RMT_QueuePDUPreSend             = "RMT-QueuePDUPreSend";
 const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
 const char* SIG_RMT_PortReadyForRead            = "RMT-PortReadyForRead";
