@@ -236,8 +236,9 @@ void DTP::redrawGUI()
   disp.setTagArg("t", 1, "r");
   std::ostringstream desc;
   desc << "nextSeqNum: " << state->getNextSeqNumToSendWithoutIncrement() <<"\n";
-  desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
+
   if(state->isDtcpPresent() && state->isFCPresent()){
+    desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";
