@@ -1,17 +1,10 @@
 #include "IntRouting.h"
 
-IntRouting::IntRouting(){
-    SIG_RIBD_RoutingUpdate = "Routing-Update";
-    SIG_RIBD_RoutingUpdateReceived = "Routing-UpdateReceived";
-}
-
 void IntRouting::finish(){
 
     cModule* catcher = this->getParentModule();
     catcher->unsubscribe(SIG_RIBD_RoutingUpdateReceived, listener);
     delete listener;
-   // delete SIG_RIBD_RoutingUpdate;
-   // delete SIG_RIBD_RoutingUpdateReceived;
 }
 
 void IntRouting::initialize(){
@@ -29,7 +22,6 @@ void IntRouting::initialize(){
     //Set FWDGenerator
     fwdg = check_and_cast<IntPDUFG *>
         (getModuleByPath("^.resourceAllocator.pduFwdGenerator"));
-   // (getModuleByPath("^.PDUFWDGPolicy"));
 
     // Display active policy name.
     cDisplayString& disp = getDisplayString();
