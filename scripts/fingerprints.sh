@@ -80,7 +80,7 @@ case "$1" in
                 if $colorize; then
                     if [ $ret -eq 0 ]; then printf "${txtgreen}"; else printf "${txtred}"; fi
                 fi
-                echo "$output" | grep '\(> Simulation\|> Error\|Segmentation\)' | sed 's/^/    /g'
+                echo "$output" | grep '\(> Simulation\|> No more events\|> Error\|Segmentation\)' | sed 's/^/    /g'
 
                 if $colorize; then printf "${txtgreen}"; fi
                 echo "$output" | grep 'Fingerprint successfully verified' | sed 's/^/    /g'
