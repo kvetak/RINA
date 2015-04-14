@@ -188,12 +188,15 @@ void SimpleDV::handleMessage(cMessage *msg){
 void SimpleDV::finish(){
     IntRouting::finish();
 
-    EV << "I'm "<< myAddr<<endl;
+    EV << "I'm " << myAddr<<endl;
 
-    for(rtTableIt it = table.begin(); it != table.end(); it++){
-        EV << "  QoS " << it->first<<endl;
-        for(tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++){
-            EV<<"    " << it2->first << " -> "<<it2->second.addr << " ("<<it2->second.metric<<")" << endl;
+    for (rtTableIt it = table.begin(); it != table.end(); it++)
+    {
+        EV << "  QoS " << it->first << endl;
+        for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
+        {
+            EV << "    " << it2->first << " via " << it2->second.addr << " ("
+                    << it2->second.metric << " hops)" << endl;
         }
     }
 

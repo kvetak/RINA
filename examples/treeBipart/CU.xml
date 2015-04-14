@@ -10,7 +10,7 @@
     	<cherishThreshold>66</cherishThreshold>
     </CUItem>
     <CUItem id="B1">
-    	<urgency>2</urgency>
+    	<urgency>1</urgency>
     	<cherishThreshold>100</cherishThreshold>
     </CUItem>
     <CUItem id="B2">
