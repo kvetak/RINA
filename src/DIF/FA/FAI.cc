@@ -538,6 +538,7 @@ void FAI::createNorthGates() {
 }
 
 void FAI::receiveCreateFlowResponsePositiveFromNminusOne() {
+    Enter_Method("receiveCreFlowResPositiveFromNminusOne()");
     //Schedule M_Create(Flow)
     this->signalizeCreateFlowRequest();
 }

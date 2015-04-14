@@ -103,7 +103,7 @@ void FAITable::handleMessage(cMessage *msg)
 void FAITable::insertNew(Flow* flow) {
     this->insert(FAITableEntry(flow));
     updateDisplayString();
-    EV << "FT emits signal " << (long)FaiTable.size() << endl;
+    //EV << "FT emits signal " << (long)FaiTable.size() << endl;
     emit(sigStatFTSize, (long)FaiTable.size());
 }
 
