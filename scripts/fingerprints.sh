@@ -10,6 +10,7 @@ if [ -t 1 ]; then
     colorize=true
     txtred='\033[0;31m'
     txtgreen='\033[0;32m'
+    txtyellow='\033[0;33m'
     txtcyan='\033[0;36m'
     txtrst='\033[0m'
 else
@@ -60,17 +61,19 @@ case "$1" in
             get_configs omnetpp.ini | while read j; do
                 echo "  $j:"
 
-                output="$( run_simulation "$j")"
+                output="$( run_simulation "$j" 2>&1 )"
+                ret=$?
 
                 if $colorize; then
-                    if [ $? -eq 0 ]; then printf "${txtgreen}"; else printf "${txtred}"; fi
+                    if [ $ret -eq 0 ]; then printf "${txtgreen}"; else printf "${txtred}"; fi
                 fi
+                echo "$output" | grep '\(> Simulation\|> Error\|Segmentation\)' | sed 's/^/    /g'
 
-                echo "$output" | \
-                    grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\)' | \
-                    sed 's/^/    /g'
-
+                if $colorize; then printf "${txtgreen}"; fi
+                echo "$output" | grep 'Fingerprint successfully verified' | sed 's/^/    /g'
                 if $colorize; then printf "${txtcyan}"; fi
+                echo "$output" | grep 'Fingerprint mismatch' | sed 's/^/    /g'
+                if $colorize; then printf "${txtyellow}"; fi
                 echo "$output" | grep 'unprocessed PDUs' | sed 's/^/    /g'
                 if $colorize; then printf "${txtrst}"; fi
 
