@@ -1,8 +1,20 @@
 #!/bin/bash
 # Batch run scenarios and output fingerprints.
+# TODO: remove bashisms
 
 rina_root="$( readlink -f "$( dirname $0 )/.." )"
 rina_scenarios="${rina_root}/examples"
+
+# enable colors if we're connected to stdout
+if [ -t 1 ]; then
+    colorize=true
+    txtred='\033[0;31m'
+    txtgreen='\033[0;32m'
+    txtcyan='\033[0;36m'
+    txtrst='\033[0m'
+else
+    colorize=false
+fi
 
 if [ -f "${rina_root}/out/gcc-debug/src/RINA" ]; then
     rina_bin=${rina_root}/out/gcc-debug/src/RINA
@@ -48,9 +60,20 @@ case "$1" in
             get_configs omnetpp.ini | while read j; do
                 echo "  $j:"
 
-                run_simulation "$j" | \
-                    grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\|unprocessed PDUs\)' | \
+                output="$( run_simulation "$j")"
+
+                if $colorize; then
+                    if [ $? -eq 0 ]; then printf "${txtgreen}"; else printf "${txtred}"; fi
+                fi
+
+                echo "$output" | \
+                    grep '\(> Fingerprint\|> Error\|> Simulation\|Segmentation\)' | \
                     sed 's/^/    /g'
+
+                if $colorize; then printf "${txtcyan}"; fi
+                echo "$output" | grep 'unprocessed PDUs' | sed 's/^/    /g'
+                if $colorize; then printf "${txtrst}"; fi
+
             done
             cd ..
         done
@@ -68,7 +91,7 @@ case "$1" in
                 printf "  Processing $j... "
 
                 if [ -z "$( sed -n "/^\[Config $j/,/^\[Config/p" omnetpp.ini | grep '^fingerprint[ =]')" ]; then
-                    echo -e "\033[0;31mNO FINGERPRINT SPECIFIED\033[0m"
+                    echo -e "${txtred}NO FINGERPRINT SPECIFIED${txtrst}"
                     continue
                 fi
 
@@ -80,10 +103,13 @@ case "$1" in
 
                 if [ -n "$fingerprint" ]; then
                     sed -i "/^\[Config $j/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" omnetpp.ini
-                    echo -e "\033[0;32mUPDATED ($fingerprint)\033[0m"
+                    if $colorize; then printf "${txtgreen}"; fi
+                    echo "UPDATED ($fingerprint)"
                 else
-                    echo -e "\033[0;36mUNCHANGED\033[0m"
+                    if $colorize; then printf "${txtcyan}"; fi
+                    echo "UNCHANGED"
                 fi
+                if $colorize; then printf "${txtrst}"; fi
             done
             cd ..
         done
