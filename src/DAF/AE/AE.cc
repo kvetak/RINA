@@ -83,7 +83,8 @@ void AE::initialize() {
     //Setup signals
     initSignalsAndListeners();
     //Watchers
-    WATCH_LIST(flows);
+    //WATCH_LIST(flows);
+    WATCH(FlowObject);
     WATCH(connectionState);
 }
 
@@ -177,14 +178,15 @@ bool AE::createBindings(Flow& flow) {
     Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
     //Return true if all dynamically created gates have same index
-    return gIrmIn->getIndex() == gAeIn->getIndex()
-           && gIrmIn->getIndex() == gIrmModIn->getIndex()
-           && gIrmIn->getIndex() == gApIn->getIndex()
-           && gIrmIn->getIndex() == gCdapParentIn->getIndex()
-           && gIrmIn->getIndex() == gSplitIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCaceIn->getIndex()
-           && gIrmIn->getIndex() == gSplitAuthIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCdapIn->getIndex();
+    return gIrmIn->isConnected()
+           && gAeIn->isConnected()
+           && gIrmModIn->isConnected()
+           && gApIn->isConnected()
+           && gCdapParentIn->isConnected()
+           && gSplitIn->isConnected()
+           && gSplitCaceIn->isConnected()
+           && gSplitAuthIn->isConnected()
+           && gSplitCdapIn->isConnected();
 }
 
 void AE::initPointers() {
@@ -195,17 +197,16 @@ void AE::initPointers() {
         error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
 }
 
-void AE::insertFlow(Flow& flow) {
-    //Add a new flow to the end of the Flow list
-    flows.push_back(flow);
+void AE::insertFlow() {
+    //Add a new flow to
 
     //Prepare flow
-    Irm->newFlow(&flows.back());
+    Irm->newFlow(FlowObject);
 
     //Interconnect IRM and AE
-    bool status = createBindings(flow);
+    bool status = createBindings(*FlowObject);
     if (!status) {
-        throw("Gate inconsistency during creation of a new flow!");
+        error("Gate inconsistency during creation of a new flow!");
     }
 }
 
@@ -238,7 +239,8 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     //TODO: Vesely - More sophisticated decission
     if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
         //Initialize flow within AE
-        insertFlow(*flow);
+        FlowObject = flow;
+        insertFlow();
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
         Irm->receiveAllocationResponsePositiveFromIpc(flow);
@@ -303,7 +305,7 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
     int handle = Irm->getGateHandle(flow);
     if (handle != VAL_UNDEF_HANDLE) {
-        msg->setHandle(handle);
+        msg->setHandle(0);
         //Pass Data to CDAP
         //Connection/Release or send data msg
         if (dynamic_cast<CDAP_M_Connect*>(msg) != NULL &&
@@ -356,6 +358,8 @@ bool AE::deleteBindings(Flow& flow) {
     int handle = Irm->getGateHandle(&flow);
     if (handle == VAL_UNDEF_HANDLE)
         error("Delete gates before flow allocation is impossible!");
+    //TODO: Vesely - Ugly!
+    handle = 0;
 
     //Disconnect gates
     cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle);

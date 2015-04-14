@@ -57,7 +57,6 @@ class AEBase : public cSimpleModule
     bool hasFlow(const Flow* flow);
 
     const APNamingInfo& getApni() const;
-    const Flows& getFlows() const;
 
     bool operator== (const AEBase& other) {
         return (apni == other.apni);
@@ -69,9 +68,12 @@ class AEBase : public cSimpleModule
     const std::string& getAuthOther() const;
     void changeConStatus(CDAPConnectionState conState);
     CDAPConnectionState getConStatus();
+    Flow* getFlowObject() const;
+    void setFlowObject(Flow* flowObject);
 
   protected:
-    Flows flows;
+    //Flows flows;
+    Flow* FlowObject;
     APNamingInfo apni;
 
     std::string srcApName;

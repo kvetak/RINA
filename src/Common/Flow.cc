@@ -28,7 +28,8 @@ Flow::Flow() :
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
     createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT),
-    allocInvokeId(0), deallocInvokeId(0)
+    allocInvokeId(0), deallocInvokeId(0),
+    ddtFlag(false)
 {
 }
 
@@ -39,7 +40,8 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
         createFlowRetries(0), maxCreateFlowRetries(VAL_MAXCREATERETRIES), hopCount(VAL_MAXHOPCOUNT),
-        allocInvokeId(0), deallocInvokeId(0)
+        allocInvokeId(0), deallocInvokeId(0),
+        ddtFlag(false)
 {
 }
 
@@ -57,6 +59,7 @@ Flow::~Flow() {
     dstNeighbor = Address();
     allocInvokeId = 0;
     deallocInvokeId = 0;
+    ddtFlag = false;
 }
 
 bool Flow::operator ==(const Flow& other) const {
@@ -68,6 +71,7 @@ bool Flow::operator ==(const Flow& other) const {
             && hopCount == other.hopCount
             && srcNeighbor == other.srcNeighbor && dstNeighbor == other.dstNeighbor
             //&& allocInvokeId == other.allocInvokeId && deallocInvokeId == other.deallocInvokeId
+            && ddtFlag == other.ddtFlag
             );
 }
 
@@ -224,7 +228,9 @@ std::string Flow::infoDestination() const {
 std::string Flow::infoOther() const {
     std::stringstream os;
     os << "Hop Count: " << hopCount << endl
-       << "Retries: " << createFlowRetries << "/" << maxCreateFlowRetries;
+       << "Retries: " << createFlowRetries << "/" << maxCreateFlowRetries << endl
+       << "DDT: " << (ddtFlag ? "yes" : "no");
+       //endl << "InvokeIds: allocate(" << allocInvokeId << ") deallocate(" << deallocInvokeId << ")";
     return os.str();
 }
 
@@ -265,6 +271,14 @@ long Flow::getDeallocInvokeId() const {
 
 void Flow::setDeallocInvokeId(long deallocInvokeId) {
     this->deallocInvokeId = deallocInvokeId;
+}
+
+bool Flow::isDdtFlag() const {
+    return ddtFlag;
+}
+
+void Flow::setDdtFlag(bool ddtFlag) {
+    this->ddtFlag = ddtFlag;
 }
 
 void Flow::swapApni() {

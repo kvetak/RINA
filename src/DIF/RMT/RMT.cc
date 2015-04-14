@@ -510,6 +510,11 @@ void RMT::portToRIB(CDAPMessage* cdap)
  */
 void RMT::ribToPort(CDAPMessage* cdap)
 {
+    if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
+    {
+        portToRIB(cdap);
+        return;
+    }
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
     RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);

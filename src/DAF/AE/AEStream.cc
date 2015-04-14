@@ -86,16 +86,16 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
 
-        Flow fl = Flow(src, dst);
-        fl.setQosParameters(this->getQoSRequirements());
+        FlowObject = new Flow(src, dst);
+        FlowObject->setQosParameters(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
-        insertFlow(fl);
+        insertFlow();
 
-        sendAllocationRequest(&flows.back());
+        sendAllocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
-        sendDeallocationRequest(&flows.back());
+        sendDeallocationRequest(FlowObject);
     }
     else if ( strstr(msg->getName(), MSG_STDATA) ) {
         //Create data stream chunk messsage
@@ -109,7 +109,7 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         data->setByteLength(size);
 
         //Send message
-        sendData(&flows.back(), data);
+        sendData(FlowObject, data);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();

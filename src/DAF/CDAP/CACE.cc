@@ -137,8 +137,7 @@ void CACE::CACEStateMachine(CDAPMessage *cmsg){
         if (!dynamic_cast<CDAP_M_Release*>(cmsg)->getInvokeID()){
             changeConnectionState(NIL);
             //deallocate connection
-            Flows p = ae->getFlows();
-            ae->sendDeallocationRequest(&p.back());
+            ae->sendDeallocationRequest(ae->getFlowObject());
         }
         else {
             processMReleaseR(cmsg);
