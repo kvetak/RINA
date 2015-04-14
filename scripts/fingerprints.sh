@@ -78,7 +78,10 @@ case "$1" in
                 ret=$?
 
                 if $colorize; then
-                    if [ $ret -eq 0 ]; then printf "${txtgreen}"; else printf "${txtred}"; fi
+                    if [ $ret -eq 0 ]; then
+                        printf "${txtgreen}"
+                    else
+                        printf "${txtred}    Error code returned!\n"; fi
                 fi
                 echo "$output" | grep '\(> Simulation\|> No more events\|> Error\|Segmentation\)' | sed 's/^/    /g'
 
