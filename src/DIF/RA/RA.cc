@@ -696,20 +696,13 @@ void RA::postNFlowAllocation(Flow* flow)
  *
  * @param flow established (N-1)-flow
  */
-void RA::postNM1FlowAllocation(Flow* flow)
+void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 {
     Enter_Method("postNM1FlowAllocation()");
-
-    const APN& dstApn = flow->getDstApni().getApn();
-    unsigned short qosId = flow->getConId().getQoSId();
-
-    // TODO: move this to receiveSignal()
-    NM1FlowTableItem* item = flowTable->findFlowByDstApni(dstApn.getName(), qosId);
-    if (item == NULL) return;
     // mark this flow as connected
-    item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRMTPort()->setOutputReady();
-    item->getRMTPort()->setInputReady();
+    ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+    ftItem->getRMTPort()->setOutputReady();
+    ftItem->getRMTPort()->setInputReady();
 }
 
 /**
@@ -817,34 +810,16 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 }
 
 
-void RA::blockNM1PortOutput(Flow* flow)
+void RA::blockNM1PortOutput(NM1FlowTableItem* ftItem)
 {
     Enter_Method("blockNM1PortOutput()");
-
-    NM1FlowTableItem* item = flowTable->lookup(flow);
-    if (item == NULL)
-    {
-//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
-//           << " ignoring pushback request." << endl;
-        return;
-    }
-
-    item->getRMTPort()->blockOutput();
+    ftItem->getRMTPort()->blockOutput();
 }
 
-void RA::unblockNM1PortOutput(Flow* flow)
+void RA::unblockNM1PortOutput(NM1FlowTableItem* ftItem)
 {
     Enter_Method("unblockNM1PortOutput()");
-
-    NM1FlowTableItem* item = flowTable->lookup(flow);
-    if (item == NULL)
-    {
-//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
-//           << " ignoring port unblock request." << endl;
-        return;
-    }
-
-    item->getRMTPort()->unblockOutput();
+    ftItem->getRMTPort()->unblockOutput();
 }
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
@@ -866,7 +841,11 @@ void RA::signalizeSlowdownRequestToRIBd(cPacket* pdu)
 void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
 {
     Enter_Method("signalizeSlowdownRequestToEFCP()");
-    // TODO: move this to the listener
     CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
     emit(sigRASDReqFromRIB, congInfo);
+}
+
+NM1FlowTable* RA::getFlowTable()
+{
+    return flowTable;
 }

@@ -70,12 +70,13 @@ class RA : public RABase
     virtual void createNM1FlowWithoutAllocate(Flow* flow);
     virtual void removeNM1Flow(Flow* flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
-    virtual void blockNM1PortOutput(Flow* flow);
-    virtual void unblockNM1PortOutput(Flow* flow);
+    virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem);
+    virtual void unblockNM1PortOutput(NM1FlowTableItem* ftItem);
+    virtual NM1FlowTable* getFlowTable();
 
     // event hook handlers
     virtual void postNFlowAllocation(Flow* flow);
-    virtual void postNM1FlowAllocation(Flow* flow);
+    virtual void postNM1FlowAllocation(NM1FlowTableItem* ftItem);
 
   protected:
     virtual void initialize(int stage);

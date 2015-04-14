@@ -17,7 +17,6 @@
 
 #include <RAListeners.h>
 
-#include "RMTQueue.h"
 
 RAListeners::RAListeners(RABase* nra) : ra(nra)
 {
@@ -44,7 +43,7 @@ void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    if (flow && !flow->isDdtFlag())
     {
         ra->postNFlowAllocation(flow);
     }
@@ -58,7 +57,7 @@ void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* o
 void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    if (flow && !flow->isDdtFlag())
     {
         ra->postNFlowAllocation(flow);
     }
@@ -71,39 +70,39 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
 void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    const APN& dstApn = flow->getDstApni().getApn();
+    unsigned short qosId = flow->getConId().getQoSId();
+
+    NM1FlowTableItem* item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    if (item != NULL)
     {
-        ra->postNM1FlowAllocation(flow);
+        ra->postNM1FlowAllocation(item);
     }
     else
     {
-        EV << "RAListener received unknown object!" << endl;
+        return;
     }
 }
 
 void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
+
+    if (item)
     {
-        ra->blockNM1PortOutput(flow);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
+        ra->blockNM1PortOutput(item);
     }
 }
 
 void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
+
+    if (item)
     {
-        ra->unblockNM1PortOutput(flow);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
+        ra->unblockNM1PortOutput(item);
     }
 }
 

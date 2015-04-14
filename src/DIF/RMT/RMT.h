@@ -102,10 +102,11 @@ class RMT : public RMTBase
 
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU* msg);
-    void efcpiToEfcpi(PDU* msg);
     void portToEfcpi(PDU* msg);
+    void efcpiToEfcpi(PDU* msg);
     void ribToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
+    void ribToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
     RMTPort* fwTableLookup(const Address& destAddr, const unsigned short &pduQosId);

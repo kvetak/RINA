@@ -510,11 +510,6 @@ void RMT::portToRIB(CDAPMessage* cdap)
  */
 void RMT::ribToPort(CDAPMessage* cdap)
 {
-    if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
-    {
-        portToRIB(cdap);
-        return;
-    }
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
     RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
@@ -538,6 +533,16 @@ void RMT::ribToPort(CDAPMessage* cdap)
         EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
            << ", qosId = 0" << endl;
     }
+}
+
+/**
+ * Bounces a CDAP mesage back to local RIB.
+ *
+ * @param cdap CDAP message to be passed
+ */
+void RMT::ribToRIB(CDAPMessage* cdap)
+{
+    send(cdap, "ribdIo$o");
 }
 
 /**
@@ -662,7 +667,14 @@ void RMT::processMessage(cMessage* msg)
         }
         else
         { // from the RIBd
-            ribToPort(cdap);
+            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
+            {
+                ribToRIB(cdap);
+            }
+            else
+            {
+                ribToPort(cdap);
+            }
         }
     }
     else
