@@ -1,8 +1,8 @@
-package rina.policies.DIF.Routing.dummyRouting;
+package rina.policies.DIF.Routing.DummyRouting;
 
 import rina.policies.DIF.Routing.IntRouting;
 
-simple dummyRouting like IntRouting
+simple DummyRouting like IntRouting
 {
     parameters:
         @display("i=block/socket");

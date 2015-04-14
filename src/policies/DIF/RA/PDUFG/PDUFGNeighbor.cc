@@ -15,51 +15,51 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#include "PDUFTGNeighbor.h"
+#include "PDUFGNeighbor.h"
 
-PDUFTGNeighbor::PDUFTGNeighbor()
+PDUFGNeighbor::PDUFGNeighbor()
 {
 
 }
 
-PDUFTGNeighbor::PDUFTGNeighbor(Address addr, unsigned short qosId, RMTPort * p)
+PDUFGNeighbor::PDUFGNeighbor(Address addr, unsigned short qosId, RMTPort * p)
 {
     dstAddr = addr;
     qos = qosId;
     port = p;
 }
 
-PDUFTGNeighbor::~PDUFTGNeighbor()
+PDUFGNeighbor::~PDUFGNeighbor()
 {
 
 }
 
-Address& PDUFTGNeighbor::getDestAddr()
+Address& PDUFGNeighbor::getDestAddr()
 {
     return dstAddr;
 }
 
-RMTPort * PDUFTGNeighbor::getPort()
+RMTPort * PDUFGNeighbor::getPort()
 {
     return port;
 }
 
-unsigned short PDUFTGNeighbor::getQosId()
+unsigned short PDUFGNeighbor::getQosId()
 {
     return qos;
 }
 
-void PDUFTGNeighbor::setDestAddr(Address & addr)
+void PDUFGNeighbor::setDestAddr(Address & addr)
 {
     dstAddr = addr;
 }
 
-void PDUFTGNeighbor::setPort(RMTPort * p)
+void PDUFGNeighbor::setPort(RMTPort * p)
 {
     port = p;
 }
 
-void PDUFTGNeighbor::setQosId(unsigned short qosId)
+void PDUFGNeighbor::setQosId(unsigned short qosId)
 {
     qos = qosId;
 }

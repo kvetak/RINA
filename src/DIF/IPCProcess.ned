@@ -34,7 +34,7 @@ module IPCProcess
         string difName;
         string apName = default(ipcAddress + "_" + difName);
         bool relay = default(false);
-        string routingPolicyName = default("dummyRouting");
+        string routingPolicyName = default("DummyRouting");
     gates:
         inout southIo[];
         inout northIo[];

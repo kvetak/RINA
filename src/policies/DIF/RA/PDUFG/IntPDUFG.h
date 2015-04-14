@@ -18,12 +18,12 @@
 
 #include <omnetpp.h>
 
-#include "PDUFTGNeighbor.h"
+#include "PDUFGNeighbor.h"
 #include "IntPDUForwarding.h"
 #include "DA.h"
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
-typedef std::list<PDUFTGNeighbor *> NeighborState;
+typedef std::list<PDUFGNeighbor *> NeighborState;
 typedef NeighborState::iterator EIter;
 
 
@@ -35,7 +35,7 @@ public:
     ~IntPDUFG();
 
     // Find the next known neighbor to reach the destination.
-    virtual PDUFTGNeighbor * getNextNeighbor(const Address &destination, const unsigned short & qos);
+    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const unsigned short & qos);
 
     //
     // Flow up/down operations:

@@ -533,7 +533,7 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
     {
@@ -609,7 +609,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
     {
@@ -772,7 +772,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * te =
+    PDUFGNeighbor * te =
         fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(te)
