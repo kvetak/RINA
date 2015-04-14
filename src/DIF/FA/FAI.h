@@ -48,7 +48,6 @@ class FAI : public FAIBase  {
     std::string info() const;
 
     virtual bool receiveAllocateRequest();
-    virtual bool processDegenerateDataTransfer();
     virtual bool receiveAllocateResponsePositive();
     virtual void receiveAllocateResponseNegative();
     virtual bool receiveCreateRequest();
@@ -68,9 +67,21 @@ class FAI : public FAIBase  {
         return FaModule;
     }
 
+    int getLocalCepId() const;
+    void setLocalCepId(int localCepId);
+    int getLocalPortId() const;
+    void setLocalPortId(int localPortId);
+    int getRemoteCepId() const;
+    void setRemoteCepId(int remoteCepId);
+    int getRemotePortId() const;
+    void setRemotePortId(int remotePortId);
+
   protected:
-    int portId;
-    int cepId;
+    int localPortId;
+    int localCEPId;
+    int remotePortId;
+    int remoteCEPId;
+
     AllocateRetryBase* AllocRetryPolicy;
 
     //TODO: Vesely - What about timeouts for M_DELETE and other control messages?
@@ -107,10 +118,6 @@ class FAI : public FAIBase  {
 
   private:
     EFCP* efcp;
-    cGate* southI;
-    cGate* southO;
-    cGate* northI;
-    cGate* northO;
 
     void initSignalsAndListeners();
 

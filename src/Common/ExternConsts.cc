@@ -50,8 +50,11 @@ const char* MOD_DTCP_PATH       = "rina.DIF.EFCP.DTCP.DTCP";
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
 const char* PAR_DIFNAME         = "difName";
-const char* PAR_PORTID          = "portId";
-const char* PAR_CEPID           = "cepId";
+const char* PAR_LOCALPORTID     = "localPortId";
+const char* PAR_LOCALCEPID      = "localCEPId";
+const char* PAR_REMOTEPORTID    = "remotePortId";
+const char* PAR_REMOTECEPID     = "remoteCEPId";
+
 const char* PAR_APNAME          = "apName";
 const char* PAR_APINSTANCE      = "apInstance";
 const char* PAR_AENAME          = "aeName";
@@ -91,3 +94,4 @@ const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;
 const int   DONTCARE_INVOKEID   = 0;
+const int   VAL_UNDEF_PORTID   = -1;

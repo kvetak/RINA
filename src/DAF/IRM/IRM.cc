@@ -209,6 +209,7 @@ void IRM::signalizeAllocateRequest(Flow* flow) {
 
 void IRM::newFlow(Flow* flow) {
     Enter_Method("newFlow()");
+
     //Create a new record in ConnectionTable
     ConTable->insertNew(flow);
 

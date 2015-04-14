@@ -116,50 +116,29 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     FAI* fai = this->createFAI(flow);
 
     //Update flow object
-    flow->setSrcPortId(fai->par(PAR_PORTID));
-    flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
+    flow->setSrcPortId(fai->getLocalPortId());
+    flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    //Are both Apps local? YES then Degenerate transfer ELSE
+    //Are both Apps local? YES then Degenerate transfer
+    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+        fai->setDegenerateDataTransfer(true);
+/*
+        int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+        int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+        fai->setRemotePortId(portId);
+        fai->setRemoteCepId(cepId);
+        fai->par(PAR_REMOTEPORTID) = portId;
+        fai->par(PAR_REMOTECEPID) = cepId;
+        flow->setDstPortId(portId);
+        flow->getConnectionId().setDstCepId(cepId);
+        */
+    }
     bool status;
-    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() )
-         && DifAllocator->isAppLocal( flow->getSrcApni().getApn() )
-       ) {
-        //Proceed with DegenerateDataTransfer
-        status = fai->processDegenerateDataTransfer();
-    }
-    else {
-        //Pass the AllocationRequest to newly created FAI
-        status = fai->receiveAllocateRequest();
-    }
-
+    status = fai->receiveAllocateRequest();
     //Potentially wait for response from RA, after this continue with X
 
     return status;
 }
-
-/*
-void FA::receiveAllocateResponsePositive(Flow* flow) {
-    Enter_Method("receiveAllocateResponsePositive()");
-    //Change status
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_POSI);
-    //Delegate it towards FAI
-    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
-    bool status = fai->receiveAllocateResponsePositive();
-    if (!status){
-        //Error occurred
-        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_ERR);
-    }
-}
-
-void FA::receiveAllocateResponseNegative(Flow* flow) {
-    Enter_Method("receiveAllocateResponseNegative()");
-    //Change status
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_NEGA);
-    //Delegate it towards FAI
-    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
-    fai->receiveAllocateResponseNegative();
-}
-*/
 
 bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
@@ -170,7 +149,9 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     //Is requested APP local?
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
         //Check for duplicity
-        if (FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())) {
+        if (!DifAllocator->isAppLocal(flow->getDstApni().getApn())
+            && FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())
+            ) {
             EV << "Duplicit M_CREATE received thus ignoring!" << endl;
             return false;
         }
@@ -185,10 +166,15 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         //Create FAI
         FAI* fai = this->createFAI(flow);
+        if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+            fai->setDegenerateDataTransfer(true);
+        }
+        fai->setRemotePortId(flow->getDstPortId());
+        fai->setRemoteCepId(flow->getConId().getDstCepId());
 
         //Update flow object
-        flow->setSrcPortId(fai->par(PAR_PORTID));
-        flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
+        flow->setSrcPortId(fai->getLocalPortId());
+        flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
         //Pass the CreateRequest to newly created FAI
         status = fai->receiveCreateRequest();
@@ -275,8 +261,8 @@ FAI* FA::createFAI(Flow* flow) {
 
     //Instantiate module
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
-    module->par(PAR_PORTID) = portId;
-    module->par(PAR_CEPID) = cepId;
+    module->par(PAR_LOCALPORTID) = portId;
+    module->par(PAR_LOCALCEPID) = cepId;
     module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
     module->finalizeParameters();
     module->buildInside();

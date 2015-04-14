@@ -16,7 +16,8 @@
 #include <ConnectionTableEntry.h>
 
 ConnectionTableEntry::ConnectionTableEntry()
-    :  FlowObject(NULL), conStatus(CON_ERROR),
+    :  //FlowObject(NULL)
+       apni(APNamingInfo()), conStatus(CON_ERROR),
        northGateIn(NULL), northGateOut(NULL),
        southGateIn(NULL), southGateOut(NULL),
        FlowAlloc(NULL)
@@ -24,23 +25,16 @@ ConnectionTableEntry::ConnectionTableEntry()
 }
 
 ConnectionTableEntry::ConnectionTableEntry(Flow* flow)
-    :  FlowObject(flow), conStatus(CON_FLOWPENDING),
+    :  conStatus(CON_FLOWPENDING),
        northGateIn(NULL), northGateOut(NULL),
        southGateIn(NULL), southGateOut(NULL),
        FlowAlloc(NULL)
 {
-}
-
-ConnectionTableEntry::ConnectionTableEntry(Flow* flow, cGate* nIn, cGate* nOut)
-:  FlowObject(flow), conStatus(CON_FLOWPENDING),
-   northGateIn(nIn), northGateOut(nOut),
-   southGateIn(NULL), southGateOut(NULL),
-   FlowAlloc(NULL)
-{
+    apni = flow->getSrcApni();
 }
 
 ConnectionTableEntry::~ConnectionTableEntry() {
-    this->FlowObject = NULL;
+    //this->FlowObject = NULL;
     this->conStatus = CON_ERROR;
     this->northGateIn = NULL;
     this->northGateOut = NULL;
@@ -51,8 +45,7 @@ ConnectionTableEntry::~ConnectionTableEntry() {
 
 std::string ConnectionTableEntry::info() const {
     std::ostringstream os;
-    if (FlowObject)
-        os << FlowObject->info() << "\n";
+    os << apni.info() << "\n";
     if (FlowAlloc)
         os << "FA path: " << FlowAlloc->getFullPath() << "\n";
     if (northGateIn && northGateOut)
@@ -95,14 +88,6 @@ void ConnectionTableEntry::setFlowAlloc(FABase* flowAlloc) {
     FlowAlloc = flowAlloc;
 }
 
-Flow* ConnectionTableEntry::getFlowObject() const {
-    return FlowObject;
-}
-
-void ConnectionTableEntry::setFlowObject(Flow* flowObject) {
-    FlowObject = flowObject;
-}
-
 cGate* ConnectionTableEntry::getNorthGateIn() const {
     return northGateIn;
 }
@@ -137,4 +122,12 @@ void ConnectionTableEntry::setSouthGateOut(cGate* southGateOut) {
 
 cModule* ConnectionTableEntry::getIpc() const {
     return FlowAlloc->getParentModule()->getParentModule();
+}
+
+const APNamingInfo& ConnectionTableEntry::getApni() const {
+    return apni;
+}
+
+void ConnectionTableEntry::setApni(const APNamingInfo& apni) {
+    this->apni = apni;
 }

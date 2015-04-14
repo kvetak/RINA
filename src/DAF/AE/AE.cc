@@ -177,14 +177,15 @@ bool AE::createBindings(Flow& flow) {
     Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
     //Return true if all dynamically created gates have same index
-    return gIrmIn->getIndex() == gAeIn->getIndex()
-           && gIrmIn->getIndex() == gIrmModIn->getIndex()
-           && gIrmIn->getIndex() == gApIn->getIndex()
-           && gIrmIn->getIndex() == gCdapParentIn->getIndex()
-           && gIrmIn->getIndex() == gSplitIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCaceIn->getIndex()
-           && gIrmIn->getIndex() == gSplitAuthIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCdapIn->getIndex();
+    return gIrmIn->isConnected()
+           && gAeIn->isConnected()
+           && gIrmModIn->isConnected()
+           && gApIn->isConnected()
+           && gCdapParentIn->isConnected()
+           && gSplitIn->isConnected()
+           && gSplitCaceIn->isConnected()
+           && gSplitAuthIn->isConnected()
+           && gSplitCdapIn->isConnected();
 }
 
 void AE::initPointers() {
@@ -205,7 +206,7 @@ void AE::insertFlow(Flow& flow) {
     //Interconnect IRM and AE
     bool status = createBindings(flow);
     if (!status) {
-        throw("Gate inconsistency during creation of a new flow!");
+        error("Gate inconsistency during creation of a new flow!");
     }
 }
 

@@ -65,6 +65,17 @@ class RIBd : public RIBdBase {
 
     virtual void sendCongestionNotification(PDU* pdu);
 
+    void signalizeSendData(CDAPMessage* msg);
+    void signalizeCreateRequestFlow(Flow* flow);
+    void signalizeDeleteRequestFlow(Flow* flow);
+    void signalizeDeleteResponseFlow(Flow* flow);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeCreateFlow(Flow* flow);
+    void signalizeCreateResponseFlowPositive(Flow* flow);
+    void signalizeCreateResponseFlowNegative(Flow* flow);
+    void signalizeCongestionNotification(CongestionDescriptor* congDesc);
+
   protected:
 
     virtual void initialize();
@@ -106,17 +117,6 @@ class RIBd : public RIBdBase {
 
     /* Listen for PDUFTG update messages. */
     LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
-
-    void signalizeSendData(CDAPMessage* msg);
-    void signalizeCreateRequestFlow(Flow* flow);
-    void signalizeDeleteRequestFlow(Flow* flow);
-    void signalizeDeleteResponseFlow(Flow* flow);
-    void signalizeAllocateResponsePositive(Flow* flow);
-    void signalizeAllocateResponseNegative(Flow* flow);
-    void signalizeCreateFlow(Flow* flow);
-    void signalizeCreateResponseFlowPositive(Flow* flow);
-    void signalizeCreateResponseFlowNegative(Flow* flow);
-    void signalizeCongestionNotification(CongestionDescriptor* congDesc);
 
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);
