@@ -17,7 +17,7 @@
 
 Define_Module(AEPing);
 
-AEPing::AEPing() {
+AEPing::AEPing() : AE() {
   //Consts
   TIM_START           = "StartCommunication";
   TIM_STOP            = "StopCommunication";
@@ -35,7 +35,10 @@ AEPing::AEPing() {
 }
 
 AEPing::~AEPing() {
-
+    connectionState = NIL;
+    FlowObject = NULL;
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AEPing::prepareAllocateRequest() {
@@ -104,8 +107,6 @@ void AEPing::initialize()
 void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), TIM_START) ) {
-        //FIXME: Vesely - last flow in a list?!
-
         //Flow
         APNamingInfo src = this->getApni();
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,

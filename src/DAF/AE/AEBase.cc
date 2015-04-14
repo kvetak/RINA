@@ -260,12 +260,8 @@ Flow* AEBase::getFlowObject() const {
 void AEBase::setFlowObject(Flow* flowObject) {
     FlowObject = flowObject;
 }
-/*
-void AEBase::insertFlow(Flow& flow) {
-    flows.push_back(flow);
-}
-*/
+
 bool AEBase::hasFlow(const Flow* flow) {
-    return *FlowObject == *flow;
+    return FlowObject ? *FlowObject == *flow : false;
 }
 

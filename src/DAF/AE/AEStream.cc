@@ -17,7 +17,7 @@
 
 Define_Module(AEStream);
 
-AEStream::AEStream(){
+AEStream::AEStream() : AE() {
   //Consts
       TIM_START           = "StartCommunication";
       TIM_STOP            = "StopCommunication";

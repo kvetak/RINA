@@ -20,10 +20,13 @@ Define_Module(AE);
 AE::AE() :
         Irm(NULL), Cdap(NULL)
 {
+    FlowObject = NULL;
     connectionState = NIL;
 }
 
 AE::~AE() {
+    connectionState = NIL;
+    FlowObject = NULL;
     Irm = NULL;
     Cdap = NULL;
 }

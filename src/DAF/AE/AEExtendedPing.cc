@@ -41,11 +41,14 @@ const char* VAL_CONNECTION_E      = "connect";
 const char* VAL_RELEASE_E         = "release";
 
 
-AEExtendedPing::AEExtendedPing() {
+AEExtendedPing::AEExtendedPing() : AE() {
 }
 
 AEExtendedPing::~AEExtendedPing() {
-
+    connectionState = NIL;
+    FlowObject = NULL;
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AEExtendedPing::prepareAllocateRequest() {

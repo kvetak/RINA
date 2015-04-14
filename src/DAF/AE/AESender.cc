@@ -18,7 +18,7 @@
 Define_Module(AESender);
 
 
-AESender::AESender() {
+AESender::AESender() : AE() {
     S_TIM_START           = "StartCommunication";
     S_TIM_COM             = "MakeCommunication";
     S_TIM_STOP            = "StopCommunication";
@@ -43,7 +43,10 @@ AESender::AESender() {
 }
 
 AESender::~AESender() {
-
+    connectionState = NIL;
+    FlowObject = NULL;
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AESender::prepareAllocateRequest() {
