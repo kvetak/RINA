@@ -6,6 +6,11 @@ IntPDUFG::IntPDUFG(){}
 IntPDUFG::~ IntPDUFG(){}
 
 void IntPDUFG::initialize(){
+    // Display active policy name.
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("t", 1, "t");
+    disp.setTagArg("t", 0, getClassName());
+
     //Set Forwarding policy
     fwd = check_and_cast<IntPDUForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));

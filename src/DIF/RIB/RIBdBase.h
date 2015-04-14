@@ -22,7 +22,6 @@
 #include "ExternConsts.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
-#include "PDUFTGUpdate.h"
 #include "CongestionDescriptor.h"
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
