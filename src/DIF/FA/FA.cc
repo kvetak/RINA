@@ -122,16 +122,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Are both Apps local? YES then Degenerate transfer
     if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
         fai->setDegenerateDataTransfer(true);
-/*
-        int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
-        int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
-        fai->setRemotePortId(portId);
-        fai->setRemoteCepId(cepId);
-        fai->par(PAR_REMOTEPORTID) = portId;
-        fai->par(PAR_REMOTECEPID) = cepId;
-        flow->setDstPortId(portId);
-        flow->getConnectionId().setDstCepId(cepId);
-        */
+        flow->setDdtFlag(true);
     }
     bool status;
     status = fai->receiveAllocateRequest();
@@ -168,6 +159,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         FAI* fai = this->createFAI(flow);
         if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
             fai->setDegenerateDataTransfer(true);
+            flow->setDdtFlag(true);
         }
         fai->setRemotePortId(flow->getDstPortId());
         fai->setRemoteCepId(flow->getConId().getDstCepId());
@@ -311,12 +303,9 @@ void FA::initSignalsAndListeners() {
     cModule* catcher2 = this->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
-    //sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
-    //sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
     sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
-    //sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
 
     //Signals that this module is processing
     //  AllocateRequest
@@ -334,17 +323,7 @@ void FA::initSignalsAndListeners() {
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
-    //CreateResponseFlowPositive
-    //lisCreResFloPosi = new LisFACreRes(this);
-    //catcher2->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResFloPosi);
-
 }
-
-/*
-void FA::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(this->sigFAAllocResNega, flow);
-}
-*/
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
@@ -359,23 +338,7 @@ void FA::receiveCreateFlowPositive(Flow* flow) {
 
     this->signalizeCreateFlowRequestForward(tmpfl);
 }
-/*
-void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
-    Enter_Method("createFlowResponseForward()");
 
-    FAITableEntry* entry = FaiTable->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
-    entry->getFlow()->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
-    entry->getFlow()->setDstPortId(flow->getDstPortId());
-
-    Flow* tmpfl = entry->getFlow()->dup();
-    tmpfl->swapFlow();
-
-    //Add source address
-    setNeighborAddresses(tmpfl);
-
-    signalizeCreateFlowResponsePositiveForward(tmpfl);
-}
-*/
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
@@ -429,7 +392,6 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
     }
     return addr;
 }
-
 
 void FA::signalizeCreateFlowResponsePositiveForward(Flow* flow) {
     emit(this->sigFACreResPosiFwd, flow);

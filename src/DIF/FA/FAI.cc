@@ -23,6 +23,8 @@ const char*     MOD_ALLOCRETRYPOLICY= "allocateRetryPolicy";
 Define_Module(FAI);
 
 FAI::FAI() : FAIBase() {
+    FaModule = NULL;
+    creReqTimer = NULL;
 }
 
 FAI::~FAI() {
@@ -33,7 +35,8 @@ FAI::~FAI() {
     localCEPId      = VAL_UNDEF_CEPID;
     remotePortId    = VAL_UNDEF_PORTID;
     remoteCEPId     = VAL_UNDEF_CEPID;
-    cancelAndDelete(creReqTimer);
+    if (creReqTimer)
+        cancelAndDelete(creReqTimer);
 }
 
 void FAI::initialize() {
@@ -43,7 +46,6 @@ void FAI::initialize() {
     remoteCEPId  = par(PAR_REMOTECEPID);
 
     creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
-    creReqTimer = new cMessage(TIM_CREREQ);
 
     AllocRetryPolicy = check_and_cast<AllocateRetryBase*>(getParentModule()->getSubmodule(MOD_ALLOCRETRYPOLICY));
 
@@ -70,14 +72,7 @@ bool FAI::receiveAllocateRequest() {
         EV << "Cannot allocate flow which is not in pending state" << endl;
         return false;
     }
-/*
-    if (isDegenerateDataTransfer()) {
-        createNorthGates();
-        FlowObject->swapFlow();
-        signalizeAllocationRequestFromFai();
-        return true;
-    }
-*/
+
     //Invoke NewFlowReqPolicy
     bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
     if (!status){
@@ -129,64 +124,35 @@ bool FAI::receiveAllocateResponsePositive() {
         return false;
     }
 
-    //Is Degenerate Data Transfer
-    /*if (isDegenerateDataTransfer()) {
-        //Invoke NewFlowReqPolicy
-        bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
-        if (!status){
-            EV << "invokeNewFlowPolicy() failed"  << endl;
-            ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
-            return false;
-        }
 
-        //Instantiate 2 EFCPIs
-        status = this->createEFCPI();
-        if (!status) {
-            EV << "createEFCP() failed" << endl;
-            ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
-            return false;
-        }
-
-        status = this->createBindings();
-        if (!status) {
-            EV << "createBindings() failed" << endl;
-            ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
-            return false;
-        }
+    //Instantiate EFCPi
+    bool status = this->createEFCPI();
+    if (!status) {
+        EV << "createEFCP() failed" << endl;
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
+        //Schedule negative M_Create_R(Flow)
+        this->signalizeCreateFlowResponseNegative();
+        return false;
     }
 
-    //Is normal flow allocation
-    else*/
-    {
-        //Instantiate EFCPi
-        bool status = this->createEFCPI();
-        if (!status) {
-            EV << "createEFCP() failed" << endl;
-            ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
-            //Schedule negative M_Create_R(Flow)
-            this->signalizeCreateFlowResponseNegative();
-            return false;
-        }
+    //Interconnect IPC <-> EFCPi <-> RMT
+    status = this->createBindings();
+    if (!status) {
+        EV << "createBindings() failed" << endl;
+        ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
+        //Schedule M_Create_R(Flow-)
+        this->signalizeCreateFlowResponseNegative();
+        return false;
+    }
 
-        //Interconnect IPC <-> EFCPi <-> RMT
-        status = this->createBindings();
-        if (!status) {
-            EV << "createBindings() failed" << endl;
-            ft->changeAllocStatus(FlowObject, FAITableEntry::ALLOC_NEGA);
-            //Schedule M_Create_R(Flow-)
-            this->signalizeCreateFlowResponseNegative();
-            return false;
-        }
+    // bind this flow to a suitable (N-1)-flow
+    RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
+    status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(FlowObject);
 
-        // bind this flow to a suitable (N-1)-flow
-        RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
-        status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(FlowObject);
-
-        ft->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
-        //Signalizes M_Create_R(flow)
-        if (status) {
-            this->signalizeCreateFlowResponsePositive();
-        }
+    ft->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
+    //Signalizes M_Create_R(flow)
+    if (status) {
+        this->signalizeCreateFlowResponsePositive();
     }
 
     return true;
@@ -378,14 +344,6 @@ bool FAI::createEFCPI() {
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
     //Create EFCPI for local bindings
     EFCPInstance* efcpi = efcp->createEFCPI(FlowObject, localCEPId, localPortId);
-    /*
-    //In case of DDT create another EFCPI
-    if (efcpi && isDegenerateDataTransfer()) {
-        Flow* flow = FlowObject->dup();
-        flow->swapFlow();
-        efcpi = efcp->createEFCPI(flow, remoteCEPId, remotePortId);
-    }
-    */
     return efcpi ? true : false;
 }
 
@@ -431,41 +389,6 @@ bool FAI::createBindings() {
     //Efcp.rmt <--> Rmt.efcpIo
     gateRmtUpOut->connectTo(gateEfcpDownIn);
     gateEfcpDownOut->connectTo(gateRmtUpIn);
-
-    /*
-    if (isDegenerateDataTransfer()) {
-        std::ostringstream nameIpcDownRemote;
-        nameIpcDownRemote << GATE_NORTHIO_ << remotePortId;
-
-        cGate* gateIpcDownInRemote = IPCModule->gateHalf(nameIpcDownRemote.str().c_str(), cGate::INPUT);
-        cGate* gateIpcDownOutRemote = IPCModule->gateHalf(nameIpcDownRemote.str().c_str(), cGate::OUTPUT);
-
-        std::ostringstream nameEfcpNorthRemote;
-        nameEfcpNorthRemote << GATE_APPIO_ << remotePortId;
-        cGate* gateEfcpUpInRemote = efcpModule->gateHalf(nameEfcpNorthRemote.str().c_str(), cGate::INPUT);
-        cGate* gateEfcpUpOutRemote = efcpModule->gateHalf(nameEfcpNorthRemote.str().c_str(), cGate::OUTPUT);
-
-        //IPCModule.northIo <--> Efcp.fai
-        gateEfcpUpOutRemote->connectTo(gateIpcDownOutRemote);
-        gateIpcDownInRemote->connectTo(gateEfcpUpInRemote);
-
-        //Create bindings in RMT
-        rmtModule->createEfcpiGate(remoteCEPId);
-
-        std::ostringstream nameRmtUpRemote;
-        nameRmtUpRemote << GATE_EFCPIO_ << remoteCEPId;
-        cGate* gateRmtUpInRemote = rmtModule->getParentModule()->gateHalf(nameRmtUpRemote.str().c_str(), cGate::INPUT);
-        cGate* gateRmtUpOutRemote = rmtModule->getParentModule()->gateHalf(nameRmtUpRemote.str().c_str(), cGate::OUTPUT);
-
-        std::ostringstream nameEfcpDownRemote;
-        nameEfcpDownRemote << GATE_RMT_ << remoteCEPId;
-        cGate* gateEfcpDownInRemote = efcpModule->gateHalf(nameEfcpDownRemote.str().c_str(), cGate::INPUT);
-        cGate* gateEfcpDownOutRemote = efcpModule->gateHalf(nameEfcpDownRemote.str().c_str(), cGate::OUTPUT);
-
-        //Efcp.rmt <--> Rmt.efcpIo
-        gateRmtUpOutRemote->connectTo(gateEfcpDownInRemote);
-        gateEfcpDownOutRemote->connectTo(gateRmtUpInRemote);
-    }*/
 
     return gateEfcpDownIn->isConnected() && gateEfcpDownOut->isConnected()
            && gateEfcpUpIn->isConnected() && gateEfcpUpOut->isConnected()
@@ -580,6 +503,7 @@ void FAI::initSignalsAndListeners() {
 }
 
 void FAI::signalizeCreateFlowRequest() {
+    creReqTimer = new cMessage(TIM_CREREQ);
     //Start timer
     scheduleAt(simTime() + creReqTimeout, creReqTimer);
     //Signalize RIBd to send M_CREATE(flow)
@@ -660,14 +584,6 @@ void FAI::createNorthGates() {
     nameIpcDown << GATE_NORTHIO_ << localPortId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
     IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
-
-/*
-    if (isDegenerateDataTransfer()) {
-        std::ostringstream nameIpcDownRemote;
-        nameIpcDownRemote << GATE_NORTHIO_ << remotePortId;
-        IPCModule->addGate(nameIpcDownRemote.str().c_str(), cGate::INOUT, false);
-    }
-*/
     return;
 }
 

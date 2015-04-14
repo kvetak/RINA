@@ -97,7 +97,7 @@ void AEPing::initialize()
     myPath = this->getFullPath();
 
     //Watchers
-    WATCH_LIST(flows);
+    WATCH(FlowObject);
     WATCH(connectionState);
 }
 
@@ -111,17 +111,16 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
 
-        Flow fl = Flow(src, dst);
-        fl.setQosParameters(this->getQoSRequirements());
+        FlowObject = new Flow(src, dst);
+        FlowObject->setQosParameters(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
-        insertFlow(fl);
+        insertFlow();
 
-        sendAllocationRequest(&flows.back());
+        sendAllocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
-        //FIXME: Vesely - last flow in a list?!
-        sendDeallocationRequest(&flows.back());
+        sendDeallocationRequest(FlowObject);
     }
     else if ( strstr(msg->getName(), MSG_PING) ) {
         //Create PING messsage
@@ -135,7 +134,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         ping->setByteLength(size);
 
         //Send message
-        sendData(&flows.back(), ping);
+        sendData(FlowObject, ping);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -171,7 +170,7 @@ void AEPing::processMRead(CDAPMessage* msg) {
         obj.objectVal = (cObject*)(&myPath);
         pong->setObject(obj);
 
-        sendData(&flows.back(), pong);
+        sendData(FlowObject, pong);
     }
 }
 

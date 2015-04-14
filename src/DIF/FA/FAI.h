@@ -84,7 +84,6 @@ class FAI : public FAIBase  {
 
     AllocateRetryBase* AllocRetryPolicy;
 
-    //TODO: Vesely - What about timeouts for M_DELETE and other control messages?
     cMessage* creReqTimer;
     double creReqTimeout;
 
@@ -105,7 +104,6 @@ class FAI : public FAIBase  {
     LisFAIAllocReq*      lisAllocReq;
     LisFAIAllocResNega*  lisAllocResNega;
     LisFAIAllocResPosi*  lisAllocResPosi;
-    //LisFAICreReq*        lisCreReq;
     LisFAICreResNega*    lisCreResNega;
     LisFAICreResPosi*    lisCreResPosi;
     LisFAIDelReq*        lisDelReq;

@@ -44,14 +44,6 @@ void AEBase::setApni(const APNamingInfo& apni) {
     this->apni = apni;
 }
 
-const Flows& AEBase::getFlows() const {
-    return flows;
-}
-
-void AEBase::setFlows(const Flows& flows) {
-    this->flows = flows;
-}
-
 const int AEBase::getAuthType(){
     return authType;
 }
@@ -261,14 +253,19 @@ void AEBase::handleMessage(cMessage *msg)
     // TODO - Generated method body
 }
 
+Flow* AEBase::getFlowObject() const {
+    return FlowObject;
+}
+
+void AEBase::setFlowObject(Flow* flowObject) {
+    FlowObject = flowObject;
+}
+/*
 void AEBase::insertFlow(Flow& flow) {
     flows.push_back(flow);
 }
-
+*/
 bool AEBase::hasFlow(const Flow* flow) {
-    for (TFlowsIter it = flows.begin(); it != flows.end(); ++it) {
-        if (*it == *flow)
-            return true;
-    }
-    return false;
+    return *FlowObject == *flow;
 }
+
