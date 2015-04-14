@@ -2,6 +2,8 @@
 # Batch run scenarios and output fingerprints.
 # TODO: remove bashisms
 
+exclude_scenarios=(BigRandNet DC)
+
 rina_root="$( readlink -f "$( dirname $0 )/.." )"
 rina_scenarios="${rina_root}/examples"
 
@@ -50,9 +52,20 @@ run_simulation()
     $rina_bin -u Cmdenv -c "$1" -n ../../examples/:../../src omnetpp.ini
 }
 
+should_exclude()
+{
+    for scen in "${exclude_scenarios[@]}"; do
+        if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; return 0; fi
+    done
+    return 1
+}
+
 case "$1" in
     check)
         for i in $glob/; do
+            # exclude some scenarios if needed
+            if should_exclude "$i"; then continue; fi
+
             echo "Checking $i..."
             cd "$i"
 
@@ -84,6 +97,8 @@ case "$1" in
 
     update)
         for i in $glob/; do
+            # exclude some scenarios if needed
+            if should_exclude "$i"; then continue; fi
 
             echo "Updating fingerprints for $i..."
             cd "$i"
