@@ -22,5 +22,5 @@ simple CDAP
         @signal[CDAP-DataReceive];
         
     gates:
-   	    inout splitterIo[];       
+   	    inout splitterIo;       
 }

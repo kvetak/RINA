@@ -160,10 +160,8 @@ void CACE::processMConnect(CDAPMessage *cmsg){
     changeConnectionState(AUTHENTICATING);
 
     take(check_and_cast<cOwnedObject*>(cmsg) );
-    //set handle for messages
-    handle = cmsg->getHandle();
     //Send message
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(cmsg, out);
 }
 
@@ -176,9 +174,7 @@ void CACE::processMConnectResPosi(CDAPMessage *cmsg){
 
     currentConRetries = 0;
 
-    handle = cmsg->getHandle();
-
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(cmsg, out);
 }
 
@@ -191,7 +187,7 @@ void CACE::processMConnectResNega(CDAPMessage *cmsg){
 
     take(cmsg);
 
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(cmsg, out);
 }
 
@@ -203,12 +199,11 @@ void CACE::processMRelease(){
 
     CDAP_M_Release* msg = new CDAP_M_Release("release");
     msg->setInvokeID(0);
-    msg->setHandle(handle);
 
     //set message type
     msg->setOpCode(M_RELEASE);
 
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, msg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(msg, out);
 }
 
@@ -231,7 +226,7 @@ void CACE::processMRelease(CDAPMessage *cmsg){
     //set message type
     msg->setOpCode(M_RELEASE);
     //Send message
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(cmsg, out);
 
 }
@@ -245,12 +240,11 @@ void CACE::processMReleaseR(CDAPMessage *cmsg){
     result.resultValue = 0;
 
     releaseResponse->setResult(result);
-    releaseResponse->setHandle(handle);
 
     //set message type
     releaseResponse->setOpCode(M_RELEASE_R);
 
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, releaseResponse->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(releaseResponse, out);
 }
 

@@ -62,8 +62,8 @@ std::string ConnectionTableEntry::getConnectionStatusString() const {
     switch(this->conStatus)
     {
         case CON_NIL:               return "NULL";
-        case CON_FLOWPENDING:       return "flowpending";
-        case CON_CONNECTPENDING:    return "connectpending";
+        case CON_FLOWPENDING:       return "flow pending";
+        case CON_CONNECTPENDING:    return "connect pending";
         case CON_AUTHENTICATING:    return "authenticating";
         case CON_ESTABLISHED:       return "established";
         case CON_RELEASING:         return "releasing";

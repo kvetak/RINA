@@ -147,7 +147,6 @@ enum headerBitLengths {
 packet CDAPMessage {
     string displayString;
     unsigned int headerBitLength = 160; //in bits
-    int handle;
     Address dstAddr;
     schedulingPriority = -1;
     int32 opCode enum(opCode_t);

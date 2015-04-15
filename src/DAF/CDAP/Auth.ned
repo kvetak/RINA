@@ -21,5 +21,5 @@ simple Auth
         @display("i=block/square");
         
     gates:
-   	    inout splitterIo[];
+   	    inout splitterIo;
 }

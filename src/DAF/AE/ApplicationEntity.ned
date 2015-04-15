@@ -25,8 +25,8 @@ module ApplicationEntity
         @display("i=block/socket;bgb=276,216");
         string aeType = default("AE");
     gates:
-        inout dataIo[];
-        //inout test;
+        inout aeIo;
+                
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             @display("p=135,145");
