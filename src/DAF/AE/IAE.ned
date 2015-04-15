@@ -18,7 +18,7 @@ package rina.DAF.AE;
 moduleinterface IAE
 {
     parameters:
-        @display("i=block/socket");
+        @display("i=block/socket");        
         @class(AE);
         string aeName;
         string aeInstance;

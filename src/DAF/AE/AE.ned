@@ -18,8 +18,12 @@ package rina.DAF.AE;
 simple AE like IAE
 {        
     parameters:
-        @display("i=block/socket");
+        @display("i=block/socket");        
         @class(AE);
+        
+        @signal[AEorRIBd-AllocateResponsePositive];
+        @signal[AE-DataSend];
+        
         string aeName = default("AeErr");
         string aeInstance = default("0");
         

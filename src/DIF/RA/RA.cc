@@ -134,7 +134,7 @@ void RA::initSignalsAndListeners()
 
     lisEFCPStopSending = new LisEFCPStopSending(this);
     thisIPC->getParentModule()->
-            subscribe(SIG_EFCP_StahpSending, this->lisEFCPStopSending);
+            subscribe(SIG_EFCP_StopSending, this->lisEFCPStopSending);
 
     lisEFCPStartSending = new LisEFCPStartSending(this);
     thisIPC->getParentModule()->

@@ -271,6 +271,8 @@ void AE::receiveAllocationResponseNegative(Flow* flow) {
     //Change allocation status
     Irm->changeStatus(flow, ConnectionTableEntry::CON_ERROR);
 
+    deleteBindings(*FlowObject);
+
     //Change connection status
     changeConStatus(NIL);
 }

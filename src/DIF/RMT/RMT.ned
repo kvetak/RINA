@@ -20,7 +20,9 @@ package rina.DIF.RMT;
 simple RMT
 {    
     parameters:		
-		@display("i=block/classifier");    
+		@display("i=block/classifier"); 
+		@signal[RMT-NoConnId](type=PDU?);  
+		@signal[RMT-ErrornousPacket](type=cObject?);
 		
     gates:
         //inout efcpIo;

@@ -71,7 +71,7 @@ void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         if (ae->hasFlow(flow))
-            ae->receiveAllocationResponsePositive(flow);
+            ae->receiveAllocationResponseNegative(flow);
     }
     else
         EV << "AEListener received unknown object!" << endl;

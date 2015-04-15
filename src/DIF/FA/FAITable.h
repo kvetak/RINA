@@ -22,8 +22,10 @@
 #include "FAITableEntry.h"
 
 typedef std::list<FAITableEntry> TFAITable;
+typedef std::list<FAITableEntry*> TFAIPtrs;
 typedef TFAITable::iterator TFTIter;
 typedef TFAITable::const_iterator TFTConstIter;
+typedef TFAIPtrs::iterator TFTPtrsIter;
 
 //Statistic collextion
 extern const char* SIG_STAT_FT_SIZE;
@@ -38,7 +40,7 @@ class FAITable : public cSimpleModule
     FAITableEntry* findEntryByFlow(const Flow* flow);
     FAITableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
     FAITableEntry* findEntryByDstAddressAndFwd(const APN& apname);
-    FAITableEntry* findEntryByDstNeighborAndFwd(const APN& apname);
+    TFAIPtrs findEntryByDstNeighborAndFwd(const APN& apname);
     FAITableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     FAITableEntry* findEntryByFai(FAIBase* fai);
     FAITableEntry* findEntryByInvokeId(long invId);

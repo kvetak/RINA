@@ -19,6 +19,7 @@ simple CDAP
 {
     parameters:
         @display("i=block/star");
+        @signal[CDAP-DataReceive];
         
     gates:
    	    inout splitterIo[];       

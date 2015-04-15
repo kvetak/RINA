@@ -20,6 +20,7 @@ simple FAI
     parameters:
     	@display("i=block/rxtx");
     	
+    	@signal[FAI-DeallocateRequest](type=Flow?);
     	@signal[FAI-AllocateRequest](type=Flow?);
     	@signal[FAI-AllocateResponsePositive](type=Flow?);
     	@signal[FAI-AllocateResponseNegative](type=Flow?);

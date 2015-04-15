@@ -76,14 +76,15 @@ FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     return NULL;
 }
 
-FAITableEntry* FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
+TFAIPtrs FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
+    TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getCFlow()->getDstNeighbor().getApname() == apname
-                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
-            return &(*it);
+                && tft.getAllocateStatus() == FAITableEntry::FORWARDING)
+            list.push_back(&(*it));
     }
-    return NULL;
+    return list;
 }
 
 FAITableEntry* FAITable::findEntryByInvokeId(long invId) {

@@ -127,7 +127,7 @@ void DTP::runCongestionNotificationPolicy()
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting
-  sigEFCPStahpSending = registerSignal(SIG_EFCP_StahpSending);
+  sigEFCPStahpSending = registerSignal(SIG_EFCP_StopSending);
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
   sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);

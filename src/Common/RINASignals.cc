@@ -21,7 +21,7 @@ const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
 const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
 const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
 const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived";
-const char* SIG_RIBD_RoutingUpdateReceived   = "Routing-UpdateReceived";
+const char* SIG_RIBD_RoutingUpdateReceived      = "Routing-UpdateReceived";
 
 const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
@@ -90,8 +90,8 @@ const char* SIG_RMT_PortReadyForRead            = "RMT-PortReadyForRead";
 
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";
-const char* SIG_RIBD_RoutingUpdate            = "Routing-Update";
+const char* SIG_RIBD_RoutingUpdate              = "Routing-Update";
 
-const char* SIG_EFCP_StahpSending               = "EFCP-StahpSending";
+const char* SIG_EFCP_StopSending                = "EFCP-StopSending";
 const char* SIG_EFCP_StartSending               = "EFCP-StartSending";
 

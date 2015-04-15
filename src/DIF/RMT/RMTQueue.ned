@@ -21,8 +21,14 @@ simple RMTQueue
 {
     parameters:
         @display("i=block/queue;is=vs");        
+        
+        @signal[RMT-QueuePDURcvd](type=RMTQueue?);
+        @signal[RMT-QueuePDUPreSend](type=RMTQueue?);
+        @signal[RMT-QueuePDUSent](type=RMTQueue?);
+        
         @signal[RMTQueue_Length](type="long");
         @signal[RMTQueue_Drop](type=bool);
+        
         @statistic[rmtqueue-size](title="RMTQueue Size"; source=RMTQueue_Length; record=vector);
         @statistic[rmtqueue-drop](title="dropped PDUs"; source=count(RMTQueue_Drop); record=last);
     gates:

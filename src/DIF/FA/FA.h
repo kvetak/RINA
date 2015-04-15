@@ -54,7 +54,7 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
-    virtual void receiveCreateFlowPositive(Flow* flow);
+    virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
 
@@ -94,7 +94,6 @@ class FA : public FABase
 
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
-    void signalizeCreateFlowResponsePositiveForward(Flow* flow);
 
     const Address getAddressFromDa(const APN& apn, bool useNeighbor);
 

@@ -104,7 +104,7 @@ extern const char* SIG_PDUFTG_FwdInfoUpdate;
 extern const char* SIG_RIBD_RoutingUpdate;
 
 //EFCP (DTP+DTCP)
-extern const char* SIG_EFCP_StahpSending;
+extern const char* SIG_EFCP_StopSending;
 extern const char* SIG_EFCP_StartSending;
 
 #endif /* RINASIGNALS_H_ */

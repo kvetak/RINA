@@ -183,7 +183,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //Change neighbor addresses
         setNeighborAddresses(flow);
         //Change status to forward
-        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
+        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDING);
 
         //Decrement HopCount
         flow->setHopCount(flow->getHopCount() - 1);
@@ -202,7 +202,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //EV << "status: " << status << endl;
         if (status == true) {
             // flow is already allocated
-            receiveCreateFlowPositive(flow);
+            receiveNM1FlowCreated(flow);
         }
         //else WAIT until allocation of N-1 flow is completed
         else {
@@ -329,11 +329,12 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
 
-void FA::receiveCreateFlowPositive(Flow* flow) {
-    Enter_Method("receiveCreateFlowPositive()");
+void FA::receiveNM1FlowCreated(Flow* flow) {
+    Enter_Method("receiveNM1FlowCreated()");
     EV << "Continue M_CREATE(flow) forward!" << endl;
 
     Flow* tmpfl = flow->dup();
+    FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
     setNeighborAddresses(tmpfl);
 
     this->signalizeCreateFlowRequestForward(tmpfl);
@@ -391,8 +392,4 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
         }
     }
     return addr;
-}
-
-void FA::signalizeCreateFlowResponsePositiveForward(Flow* flow) {
-    emit(this->sigFACreResPosiFwd, flow);
 }
