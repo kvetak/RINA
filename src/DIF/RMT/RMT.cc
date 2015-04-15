@@ -120,8 +120,8 @@ void RMT::finish()
     size_t pduCount = invalidPDUs.size();
     if (pduCount)
     {
-        EV << this->getFullPath()<< endl;
-        EV << "This RMT still contains " << pduCount << " unprocessed PDUs!" << endl;
+        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
 
         for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
         {

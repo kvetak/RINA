@@ -36,7 +36,8 @@ void RMTQueue::finish()
     size_t pduCount = queue.size();
     if (pduCount)
     {
-        EV << "This queue still contains " << pduCount << " unprocessed PDUs!" << endl;
+        EV << "Queue " << getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
 
         for (iterator it = begin(); it != end(); ++it)
         {
