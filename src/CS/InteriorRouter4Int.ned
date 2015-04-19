@@ -13,10 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.DAF.DA.DIFAllocator;
-import rina.DIF.IPCProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
 
 
 module InteriorRouter4Int

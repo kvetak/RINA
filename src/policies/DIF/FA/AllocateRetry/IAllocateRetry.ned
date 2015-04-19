@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.FA.AllocateRetry;
+package rina.src.policies.DIF.FA.AllocateRetry;
 
 moduleinterface IAllocateRetry
 {

@@ -16,9 +16,9 @@
 // 
 
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+import rina.src.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.Monitor.REDMonitor;
+package rina.src.policies.DIF.RMT.Monitor.REDMonitor;
 
 
 simple REDMonitor like IntRMTQMonitorPolicy 

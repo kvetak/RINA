@@ -52,6 +52,8 @@ sta*
 *.out
 src/rina
 src/RINA
+/rina
+
 
 # ignore backup and temp files
 *.bak

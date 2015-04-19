@@ -1,6 +1,6 @@
-package rina.policies.DIF.RA.PDUFG.BiDomainGenerator;
+package rina.src.policies.DIF.RA.PDUFG.BiDomainGenerator;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.policies.DIF.RA.PDUFG.IntPDUFG;
 
 simple BiDomainGenerator like IntPDUFG
 {

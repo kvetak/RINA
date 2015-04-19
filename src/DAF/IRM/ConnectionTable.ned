@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.IRM;
+package rina.src.DAF.IRM;
 
 simple ConnectionTable
 {

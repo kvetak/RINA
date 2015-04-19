@@ -1,6 +1,6 @@
-package rina.policies.DIF.Routing.DomainRouting;
+package rina.src.policies.DIF.Routing.DomainRouting;
 
-import rina.policies.DIF.Routing.IntRouting;
+import rina.src.policies.DIF.Routing.IntRouting;
 
 simple DomainRouting like IntRouting
 {

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.EFCPTable;
+package rina.src.DIF.EFCP.EFCPTable;
 
 simple EFCPTable
 {

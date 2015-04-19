@@ -1,7 +1,7 @@
 package rina.examples.randPrefNet;
-import rina.CS.*;
-import rina.DAF.IRM.ConnectionTable;
-import rina.DIF.EFCP.DTCP.*;
+import rina.src.CS.*;
+import rina.src.DAF.IRM.ConnectionTable;
+import rina.src.DIF.EFCP.DTCP.*;
 
 network randPrefNet {
 	submodules:

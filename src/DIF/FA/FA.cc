@@ -240,8 +240,9 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
 }
 
 FAI* FA::createFAI(Flow* flow) {
+  //@Vladimir: what about using ExternConsts.cc for this?
     // find factory object
-    cModuleType *moduleType = cModuleType::get("rina.DIF.FA.FAI");
+    cModuleType *moduleType = cModuleType::get("rina.src.DIF.FA.FAI");
 
     //Prepare parameters
     int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);

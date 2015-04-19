@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.RA.AddressComparator;
+package rina.src.policies.DIF.RA.AddressComparator;
 
 moduleinterface IntAddressComparator
 {

@@ -25,6 +25,7 @@
 #ifndef DTCP_H_
 #define DTCP_H_
 
+#include <omnetpp.h>
 #include <csimplemodule.h>
 
 //#include "RXControl.h"

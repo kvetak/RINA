@@ -27,14 +27,14 @@
 // @date Last refactorized and documented on 2015-01-12
 
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.Common.Test;
-import rina.DAF.ApplicationProcess;
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.IPCResourceManager;
-import rina.DIF.IPCProcess;
-//import rina.DIF.EFCP.DTP.PushBackChannel;
+import rina.src.Common.Test;
+import rina.src.DAF.ApplicationProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DAF.IRM.IPCResourceManager;
+import rina.src.DIF.IPCProcess;
+//import rina.src.DIF.EFCP.DTP.PushBackChannel;
 
 
 module Host1AP

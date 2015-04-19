@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.src.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.ECNMarker;
+package rina.src.policies.DIF.RMT.MaxQueue.ECNMarker;
 
 simple ECNMarker like IntRMTMaxQPolicy 
 {

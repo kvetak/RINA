@@ -1,6 +1,6 @@
-package rina.policies.DIF.RA.PDUFG.StaticGenerator;
+package rina.src.policies.DIF.RA.PDUFG.StaticGenerator;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.policies.DIF.RA.PDUFG.IntPDUFG;
 
 simple StaticGenerator like IntPDUFG
 {

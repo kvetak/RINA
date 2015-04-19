@@ -1,4 +1,4 @@
-package rina.policies.DIF.RMT.PDUForwarding;
+package rina.src.policies.DIF.RMT.PDUForwarding;
 
 moduleinterface IntPDUForwarding
 {

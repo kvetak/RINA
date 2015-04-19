@@ -1,8 +1,8 @@
-package rina.DIF.FA;
+package rina.src.DIF.FA;
 
-import rina.DIF.NSM.NameSpaceManager;
-import rina.policies.DIF.FA.AllocateRetry.IAllocateRetry;
-import rina.policies.DIF.FA.NewFlowRequest.*;
+import rina.src.DIF.NSM.NameSpaceManager;
+import rina.src.policies.DIF.FA.AllocateRetry.IAllocateRetry;
+import rina.src.policies.DIF.FA.NewFlowRequest.*;
 
 
 module FlowAllocator

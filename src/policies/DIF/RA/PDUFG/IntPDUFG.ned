@@ -1,4 +1,4 @@
-package rina.policies.DIF.RA.PDUFG;
+package rina.src.policies.DIF.RA.PDUFG;
 
 moduleinterface IntPDUFG
 {

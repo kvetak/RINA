@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.DTCP;
+package rina.src.DIF.EFCP.DTCP;
 
 //
 // TODO auto-generated type

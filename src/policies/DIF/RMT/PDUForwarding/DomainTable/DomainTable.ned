@@ -1,6 +1,6 @@
-package rina.policies.DIF.RMT.PDUForwarding.DomainTable;
+package rina.src.policies.DIF.RMT.PDUForwarding.DomainTable;
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+import rina.src.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
 simple DomainTable like IntPDUForwarding
 {
