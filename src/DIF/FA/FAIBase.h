@@ -27,7 +27,6 @@ class FAIBase : public cSimpleModule {
     virtual ~FAIBase();
 
     virtual bool receiveAllocateRequest() = 0;
-    virtual bool processDegenerateDataTransfer() = 0;
     virtual bool receiveAllocateResponsePositive() = 0;
     virtual void receiveAllocateResponseNegative() = 0;
     virtual bool receiveCreateRequest() = 0;
@@ -44,8 +43,17 @@ class FAIBase : public cSimpleModule {
         return FlowObject;
     }
 
+    bool isDegenerateDataTransfer() const {
+        return degenerateDataTransfer;
+    }
+
+    void setDegenerateDataTransfer(bool degenerateDataTransfer) {
+        this->degenerateDataTransfer = degenerateDataTransfer;
+    }
+
   protected:
     Flow* FlowObject;
+    bool degenerateDataTransfer;
 
     //SimpleModule overloads
     virtual void initialize() = 0;

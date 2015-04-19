@@ -27,7 +27,7 @@ void RMTQMonitorBase::initialize()
     disp.setTagArg("t", 0, getClassName());
 
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
+        (getModuleByPath("^.allocator"));
 
     schedPolicy = check_and_cast<RMTSchedulingBase*>
         (getModuleByPath("^.schedulingPolicy"));

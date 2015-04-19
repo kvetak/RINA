@@ -20,9 +20,13 @@ Define_Module(AE);
 AE::AE() :
         Irm(NULL), Cdap(NULL)
 {
+    FlowObject = NULL;
+    connectionState = NIL;
 }
 
 AE::~AE() {
+    connectionState = NIL;
+    FlowObject = NULL;
     Irm = NULL;
     Cdap = NULL;
 }
@@ -31,12 +35,16 @@ void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
     cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
 
+
     //Signals that this module is emitting
     sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
     sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
     sigAESendData      = registerSignal(SIG_AE_DataSend);
     sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
     sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
+    sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
+    sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
+
 
     //Signals that this module is processing
     lisAERcvData = new LisAEReceiveData(this);
@@ -57,6 +65,17 @@ void AE::initSignalsAndListeners() {
 
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
+
+    lisAEConResPosi = new LisAEConResPosi(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponsePositive, lisAEConResPosi);
+
+    lisAEConResNega = new LisAEConResNega(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponseNegative, lisAEConResNega);
+
+    lisAERelRes = new LisAERelRes(this);
+    catcher1->subscribe(SIG_CACE_ReleaseResponse, lisAERelRes);
+
+
 }
 
 void AE::initialize() {
@@ -67,7 +86,9 @@ void AE::initialize() {
     //Setup signals
     initSignalsAndListeners();
     //Watchers
-    WATCH_LIST(flows);
+    //WATCH_LIST(flows);
+    WATCH(FlowObject);
+    WATCH(connectionState);
 }
 
 void AE::handleMessage(cMessage* msg) {
@@ -91,83 +112,32 @@ bool AE::createBindings(Flow& flow) {
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
 
     //Get AE gates
-    cGate* gAeIn;
-    cGate* gAeOut;
-    this->getParentModule()->getOrCreateFirstUnconnectedGatePair(GATE_DATAIO, false, true, *&gAeIn, *&gAeOut);
+    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
+    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
 
     //CDAPParent Module gates
-    cGate* gCdapParentIn;
-    cGate* gCdapParentOut;
-    Cdap->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gCdapParentIn, *&gCdapParentOut);
-
-    //CDAPSplitter gates
-    cModule* CdapSplit = Cdap->getSubmodule(MOD_CDAPSPLIT);
-    cGate* gSplitIn;
-    cGate* gSplitOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gSplitIn, *&gSplitOut);
-    cGate* gSplitCaceIn;
-    cGate* gSplitCaceOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CACEIO, false, true, *&gSplitCaceIn, *&gSplitCaceOut);
-    cGate* gSplitAuthIn;
-    cGate* gSplitAuthOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_AUTHIO, false, true, *&gSplitAuthIn, *&gSplitAuthOut);
-    cGate* gSplitCdapIn;
-    cGate* gSplitCdapOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CDAPIO, false, true, *&gSplitCdapIn, *&gSplitCdapOut);
-
-    //CACE Module gates
-    cModule* CdapCace = Cdap->getSubmodule(MOD_CDAPCACE);
-    cGate* gCaceIn;
-    cGate* gCaceOut;
-    CdapCace->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCaceIn, *&gCaceOut);
-
-    //AUTH Module gates
-    cModule* CdapAuth = Cdap->getSubmodule(MOD_CDAPAUTH);
-    cGate* gAuthIn;
-    cGate* gAuthOut;
-    CdapAuth->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gAuthIn, *&gAuthOut);
-
-    //CDAP Module gates
-    cModule* CdapCdap = Cdap->getSubmodule(MOD_CDAPCDAP);
-    cGate* gCdapIn;
-    cGate* gCdapOut;
-    CdapCdap->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCdapIn, *&gCdapOut);
+    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     //Connect gates together
     gIrmOut->connectTo(gIrmModOut);
     gIrmModOut->connectTo(gApIn);
     gApIn->connectTo(gAeIn);
     gAeIn->connectTo(gCdapParentIn);
-    gCdapParentIn->connectTo(gSplitIn);
 
-    gSplitOut->connectTo(gCdapParentOut);
     gCdapParentOut->connectTo(gAeOut);
     gAeOut->connectTo(gApOut);
     gApOut->connectTo(gIrmModIn);
     gIrmModIn->connectTo(gIrmIn);
 
-    gSplitCaceOut->connectTo(gCaceIn);
-    gCaceOut->connectTo(gSplitCaceIn);
-
-    gSplitAuthOut->connectTo(gAuthIn);
-    gAuthOut->connectTo(gSplitAuthIn);
-
-    gSplitCdapOut->connectTo(gCdapIn);
-    gCdapOut->connectTo(gSplitCdapIn);
-
-
     //Set north-half of the routing in ConnectionTable
     Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
     //Return true if all dynamically created gates have same index
-    return gIrmIn->getIndex() == gAeIn->getIndex()
-           && gIrmIn->getIndex() == gIrmModIn->getIndex()
-           && gIrmIn->getIndex() == gApIn->getIndex()
-           && gIrmIn->getIndex() == gCdapParentIn->getIndex()
-           && gIrmIn->getIndex() == gSplitIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCaceIn->getIndex()
-           && gIrmIn->getIndex() == gSplitAuthIn->getIndex()
-           && gIrmIn->getIndex() == gSplitCdapIn->getIndex();
+    return gIrmIn->isConnected()
+           && gAeIn->isConnected()
+           && gIrmModIn->isConnected()
+           && gApIn->isConnected();
 }
 
 void AE::initPointers() {
@@ -178,17 +148,16 @@ void AE::initPointers() {
         error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
 }
 
-void AE::insertFlow(Flow& flow) {
-    //Add a new flow to the end of the Flow list
-    flows.push_back(flow);
+void AE::insertFlow() {
+    //Add a new flow to
 
     //Prepare flow
-    Irm->newFlow(&flows.back());
+    Irm->newFlow(FlowObject);
 
     //Interconnect IRM and AE
-    bool status = createBindings(flow);
+    bool status = createBindings(*FlowObject);
     if (!status) {
-        throw("Gate inconsistency during creation of a new flow!");
+        error("Gate inconsistency during creation of a new flow!");
     }
 }
 
@@ -221,15 +190,22 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     //TODO: Vesely - More sophisticated decission
     if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
         //Initialize flow within AE
-        insertFlow(*flow);
+        FlowObject = flow;
+        insertFlow();
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
-        Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
-        this->signalizeAllocateResponsePositive(flow);
+        Irm->receiveAllocationResponsePositiveFromIpc(flow) ?
+                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_CONNECTPENDING)
+                :
+                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_ERROR);
+
+        //Change connection status
+        changeConStatus(CONNECTION_PENDING);
+        this->signalizeAllocateResponsePositive(FlowObject);
     }
     else {
-        this->signalizeAllocateResponseNegative(flow);
+        this->signalizeAllocateResponseNegative(FlowObject);
     }
 }
 
@@ -246,6 +222,11 @@ void AE::receiveAllocationResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocationResponseNegative()");
     //Change allocation status
     Irm->changeStatus(flow, ConnectionTableEntry::CON_ERROR);
+
+    deleteBindings(*FlowObject);
+
+    //Change connection status
+    changeConStatus(NIL);
 }
 
 void AE::receiveAllocationResponsePositive(Flow* flow) {
@@ -255,11 +236,17 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
 
     //Change allocation status
     Irm->changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
+
+    //Change connection status
+    changeConStatus(CONNECTION_PENDING);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {
     //TODO: Vesely - Substitute with signal
     Irm->receiveAllocationRequestFromAe(flow);
+
+    //Change connection status
+    changeConStatus(FLOW_PENDING);
 }
 
 void AE::sendDeallocationRequest(Flow* flow) {
@@ -273,11 +260,24 @@ void AE::signalizeAllocateResponseNegative(Flow* flow) {
 
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
-    int handle = Irm->getGateHandle(flow);
+    int handle = Irm->getIrmGateHandle(flow);
     if (handle != VAL_UNDEF_HANDLE) {
-        msg->setHandle(handle);
         //Pass Data to CDAP
-        signalizeSendData(msg);
+        //Connection/Release or send data msg
+        if (dynamic_cast<CDAP_M_Connect*>(msg) != NULL &&
+                getConStatus() == CONNECTION_PENDING){
+            signalizeConnectionRequest(msg);
+        }
+        else if(dynamic_cast<CDAP_M_Release*>(msg) != NULL){
+            signalizeReleaseRequest(msg);
+            changeConStatus(RELEASING);
+        }
+        else if(getConStatus() == ESTABLISHED
+                //TODO: Vesely - Ugly hack to support old AE wo Establishment. Should be removed sooner or later
+                || getConStatus() == CONNECTION_PENDING
+                ){
+            signalizeSendData(msg);
+        }
     }
     else {
         EV << "Sending data before flow is allocated!" << endl;
@@ -311,59 +311,30 @@ void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
 bool AE::deleteBindings(Flow& flow) {
     EV << this->getFullPath() << " deleted bindings" << endl;
 
-    int handle = Irm->getGateHandle(&flow);
-    if (handle == VAL_UNDEF_HANDLE)
+    int handle1 = Irm->getIrmGateHandle(&flow);
+    int handle2 = Irm->getApGateHandle(&flow);
+    if (handle1 == VAL_UNDEF_HANDLE)
         error("Delete gates before flow allocation is impossible!");
 
     //Disconnect gates
-    cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle);
-    cGate* gIrmOut = Irm->gateHalf(GATE_AEIO, cGate::OUTPUT, handle);
+    cGate* gIrmIn = Irm->gateHalf(GATE_AEIO, cGate::INPUT, handle1);
+    cGate* gIrmOut = Irm->gateHalf(GATE_AEIO, cGate::OUTPUT, handle1);
 
     cModule* IrmMod = Irm->getParentModule();
-    cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle);
-    cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle);
+    cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle1);
+    cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle1);
 
     cModule* ApMon = this->getParentModule()->getParentModule();
-    cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle);
-    cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle);
+    cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle2);
+    cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle2);
 
     //Get AE gates
-    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::INPUT, handle);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_DATAIO, cGate::OUTPUT, handle);
+    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
+    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
 
     //CDAPParent Module gates
-    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT, handle);
-    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, handle);
-
-    //CDAPSplitter gates
-    cModule* CdapSplit = Cdap->getSubmodule(MOD_CDAPSPLIT);
-    cGate* gSplitIn = CdapSplit->gateHalf(GATE_SOUTHIO, cGate::INPUT, handle);
-    cGate* gSplitOut = CdapSplit->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, handle);
-
-    cGate* gSplitCaceIn = CdapSplit->gateHalf(GATE_CACEIO, cGate::INPUT, handle);
-    cGate* gSplitCaceOut = CdapSplit->gateHalf(GATE_CACEIO, cGate::OUTPUT, handle);
-
-    cGate* gSplitAuthIn = CdapSplit->gateHalf(GATE_AUTHIO, cGate::INPUT, handle);
-    cGate* gSplitAuthOut = CdapSplit->gateHalf(GATE_AUTHIO, cGate::OUTPUT, handle);
-
-    cGate* gSplitCdapIn = CdapSplit->gateHalf(GATE_CDAPIO, cGate::INPUT, handle);
-    cGate* gSplitCdapOut = CdapSplit->gateHalf(GATE_CDAPIO, cGate::OUTPUT, handle);
-
-
-    //CACE Module gates
-    cModule* CdapCace = Cdap->getSubmodule(MOD_CDAPCACE);
-    cGate* gCaceIn = CdapCace->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
-    cGate* gCaceOut = CdapCace->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
-
-    //AUTH Module gates
-    cModule* CdapAuth = Cdap->getSubmodule(MOD_CDAPAUTH);
-    cGate* gAuthIn = CdapAuth->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
-    cGate* gAuthOut = CdapAuth->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
-
-    //CDAP Module gates
-    cModule* CdapCdap = Cdap->getSubmodule(MOD_CDAPCDAP);
-    cGate* gCdapIn = CdapCdap->gateHalf(GATE_SPLITIO, cGate::INPUT, handle);
-    cGate* gCdapOut = CdapCdap->gateHalf(GATE_SPLITIO, cGate::OUTPUT, handle);
+    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     //Disconnect gates
     gIrmOut->disconnect();
@@ -371,40 +342,27 @@ bool AE::deleteBindings(Flow& flow) {
     gApIn->disconnect();
     gAeIn->disconnect();
     gCdapParentIn->disconnect();
-    gSplitIn->disconnect();
 
-    gSplitOut->disconnect();
     gCdapParentOut->disconnect();
     gAeOut->disconnect();
     gApOut->disconnect();
     gIrmModIn->disconnect();
     gIrmIn->disconnect();
 
-    gSplitCaceOut->disconnect();
-    gCaceIn->disconnect();
-    gCaceOut->disconnect();
-    gSplitCaceIn->disconnect();
-
-    gSplitAuthOut->disconnect();
-    gAuthIn->disconnect();
-    gAuthOut->disconnect();
-    gSplitAuthIn->disconnect();
-
-    gSplitCdapOut->disconnect();
-    gCdapIn->disconnect();
-    gCdapOut->disconnect();
-    gSplitCdapIn->disconnect();
-
     //Return true if all dynamically created gates are disconnected
     return !gIrmIn->isConnected() && !gIrmOut->isConnected()
             && !gAeIn->isConnected() && !gAeOut->isConnected()
-            && !gCdapParentIn->isConnected() && !gCdapParentOut->isConnected()
-            && !gSplitIn->isConnected() && !gSplitOut->isConnected()
-            && !gSplitCaceIn->isConnected() && !gSplitCaceOut->isConnected()
-            && !gSplitAuthIn->isConnected() && !gSplitAuthOut->isConnected()
-            && !gSplitCdapIn->isConnected() && !gSplitCdapOut->isConnected();
+            && !gCdapParentIn->isConnected() && !gCdapParentOut->isConnected();
 }
 
 void AE::processMReadR(CDAPMessage* msg) {
 
+}
+
+void AE::signalizeConnectionRequest(CDAPMessage* msg){
+    emit(sigAEConReq, msg);
+}
+
+void AE::signalizeReleaseRequest(CDAPMessage* msg){
+    emit(sigAERelReq, msg);
 }

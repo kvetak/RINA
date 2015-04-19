@@ -16,6 +16,7 @@
 // 
 
 #include "DTCP.h"
+const char * SIG_STAT_DTCP_RX_SENT = "DTCP_RX_SENT";
 
 Define_Module(DTCP);
 
@@ -87,6 +88,11 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
   dtcpState->setSenderLeftWinEdge(senderLeftWinEdge);
 }
 
+void DTCP::initSignalsAndListeners()
+{
+  sigStatDTCPRxCount = registerSignal(SIG_STAT_DTCP_RX_SENT);
+}
+
 void DTCP::initialize(int step)
 {
     Enter_Method("initialize");
@@ -95,6 +101,7 @@ void DTCP::initialize(int step)
         disp.setTagArg("p", 0, 340);
         disp.setTagArg("p", 1, 140);
 
+        //TODO A1 Not necessary DTP reference is set during DTCP creation.
         dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
         //  dtcpState = new DTCPState();
@@ -142,6 +149,8 @@ void DTCP::initialize(int step)
         rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
   			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
+
+  			initSignalsAndListeners();
     }
 }
 
@@ -663,6 +672,9 @@ void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 
     timer->setExpiryCount(timer->getExpiryCount() + 1);
     schedule(timer);
+
+
+    emit(sigStatDTCPRxCount, dtcpState->getRxSent());
   }
 
 

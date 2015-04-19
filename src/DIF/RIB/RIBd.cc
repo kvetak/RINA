@@ -35,84 +35,18 @@ const int   VAL_FLOWNEGA        = 0;
 const char* VAL_FLREQ           = "Request  ";
 const char* VAL_FLREQPOSI       = "Response+  ";
 const char* VAL_FLREQNEGA       = "Response-  ";
-const char* MSG_FWDUPDATE       = "FwdUpdate";
+const char* MSG_ROUTINGUPDATE       = "RoutingUpdate";
 
 Define_Module(RIBd);
 
 void RIBd::initialize() {
     //Init signals and listeners
     initSignalsAndListeners();
-    //Init CDAP gates and connections
-    initCdapBindings();
     //Init MyAddress
     initMyAddress();
 }
 
 void RIBd::handleMessage(cMessage *msg) {
-
-}
-
-void RIBd::initCdapBindings() {
-
-    //Get RIBDaemon gates
-    cModule* RibD = this->getParentModule();
-    cGate* gRibdIn = RibD->gateHalf(GATE_RMTIO, cGate::INPUT);
-    cGate* gRibdOut = RibD->gateHalf(GATE_RMTIO, cGate::OUTPUT);
-
-    //CDAPParent Module gates
-    cModule* Cdap = RibD->getSubmodule(MOD_CDAP);
-    cGate* gCdapParentIn;
-    cGate* gCdapParentOut;
-    Cdap->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gCdapParentIn, *&gCdapParentOut);
-
-    //CDAPSplitter gates
-    cModule* CdapSplit = Cdap->getSubmodule(MOD_CDAPSPLIT);
-    cGate* gSplitIn;
-    cGate* gSplitOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gSplitIn, *&gSplitOut);
-    cGate* gSplitCaceIn;
-    cGate* gSplitCaceOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CACEIO, false, true, *&gSplitCaceIn, *&gSplitCaceOut);
-    cGate* gSplitAuthIn;
-    cGate* gSplitAuthOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_AUTHIO, false, true, *&gSplitAuthIn, *&gSplitAuthOut);
-    cGate* gSplitCdapIn;
-    cGate* gSplitCdapOut;
-    CdapSplit->getOrCreateFirstUnconnectedGatePair(GATE_CDAPIO, false, true, *&gSplitCdapIn, *&gSplitCdapOut);
-
-    //CACE Module gates
-    cModule* CdapCace = Cdap->getSubmodule(MOD_CDAPCACE);
-    cGate* gCaceIn;
-    cGate* gCaceOut;
-    CdapCace->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCaceIn, *&gCaceOut);
-
-    //AUTH Module gates
-    cModule* CdapAuth = Cdap->getSubmodule(MOD_CDAPAUTH);
-    cGate* gAuthIn;
-    cGate* gAuthOut;
-    CdapAuth->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gAuthIn, *&gAuthOut);
-
-    //CDAP Module gates
-    cModule* CdapCdap = Cdap->getSubmodule(MOD_CDAPCDAP);
-    cGate* gCdapIn;
-    cGate* gCdapOut;
-    CdapCdap->getOrCreateFirstUnconnectedGatePair(GATE_SPLITIO, false, true, *&gCdapIn, *&gCdapOut);
-
-    //Connect gates together
-    gRibdIn->connectTo(gCdapParentIn);
-    gCdapParentIn->connectTo(gSplitIn);
-
-    gSplitOut->connectTo(gCdapParentOut);
-    gCdapParentOut->connectTo(gRibdOut);
-
-    gSplitCaceOut->connectTo(gCaceIn);
-    gCaceOut->connectTo(gSplitCaceIn);
-
-    gSplitAuthOut->connectTo(gAuthIn);
-    gAuthOut->connectTo(gSplitAuthIn);
-
-    gSplitCdapOut->connectTo(gCdapIn);
-    gCdapOut->connectTo(gSplitCdapIn);
 
 }
 
@@ -257,7 +191,8 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
-    sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
+   // sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
+    sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
     sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
 
     //Signals that this module is processing
@@ -293,8 +228,8 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDCreFloNega = new LisRIBDCreFloNega(this);
     catcher2->subscribe(SIG_RA_CreateFlowNegative, lisRIBDCreFloNega);
 
-    lisRIBDFwdInfoUpdate = new LisRIBDFwdInfoUpdate(this);
-    catcher2->subscribe(SIG_PDUFTG_FwdInfoUpdate, lisRIBDFwdInfoUpdate);
+    lisRIBDRoutingUpdate = new LisRIBDRoutingUpdate(this);
+    catcher2->subscribe(SIG_RIBD_RoutingUpdate, lisRIBDRoutingUpdate);
 
     lisRIBDCongNotif = new LisRIBDCongesNotif(this);
     catcher2->subscribe(SIG_RA_InvokeSlowdown, lisRIBDCongNotif);
@@ -371,8 +306,13 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
 }
 
 void RIBd::signalizeSendData(CDAPMessage* msg) {
-    //Setup handle which is for RIBd always 0
-    msg->setHandle(0);
+    //Check dstAddress
+    if (msg->getDstAddr() == Address::UNSPECIFIED_ADDRESS) {
+        EV << "Destination address cannot be UNSPECIFIED!" << endl;
+        return;
+    }
+
+    msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
     emit(sigRIBDSendData, msg);
@@ -527,28 +467,28 @@ void RIBd::processMWrite(CDAPMessage* msg)
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //CreateRequest Flow
-    if (dynamic_cast<PDUFTGUpdate *>(object.objectVal))
+    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
     {
-        PDUFTGUpdate * update = (check_and_cast<PDUFTGUpdate *>(object.objectVal));
+        IntRoutingUpdate * update = (check_and_cast<IntRoutingUpdate *>(object.objectVal));
 
         /* Signal that an update obj has been received. */
-        emit(sigRIBDFwdUpdateRecv, update);
+        emit(sigRIBDRoutingUpdateRecv, update);
     }
 }
 
-void RIBd::receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * info)
+void RIBd::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
 {
     EV << getFullPath() << " Forwarding update to send to " << info->getDestination();
 
     /* Emits the CDAP message. */
 
-    CDAP_M_Write * cdapm = new CDAP_M_Write(MSG_FWDUPDATE);
+    CDAP_M_Write * cdapm = new CDAP_M_Write(MSG_ROUTINGUPDATE);
     std::ostringstream os;
     object_t flowobj;
 
     /* Prepare the object to send. */
 
-    os << "FwdUpdateTo" << info->getDestination();
+    os << "RoutingUpdateTo" << info->getDestination();
 
     flowobj.objectClass = info->getClassName();
     flowobj.objectName  = os.str();

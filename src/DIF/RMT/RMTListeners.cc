@@ -28,15 +28,26 @@ RMTListeners::~RMTListeners()
 
 void LisRMTQueuePDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokeQueueArrivalPolicies(obj);
+    rmt->onQueueArrival(obj);
+}
+
+void LisRMTQueuePDUPreSend::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->preQueueDeparture(obj);
 }
 
 void LisRMTQueuePDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokeQueueDeparturePolicies(obj);
+    rmt->postQueueDeparture(obj);
 }
 
-void LisRMTPortReady::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTPortReadyToServe::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->invokePortReadyPolicies(obj);
+    rmt->writeToPort(obj);
+}
+
+
+void LisRMTPortReadyForRead::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->readFromPort(obj);
 }

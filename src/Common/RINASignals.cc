@@ -10,6 +10,8 @@
 const char* SIG_AE_AllocateRequest              = "AE-AllocateRequest";
 const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
 const char* SIG_AE_DataSend                     = "AE-DataSend";
+const char* SIG_AE_ConnectionRequest            = "AE-ConnectionRequest";
+const char* SIG_AE_ReleaseRequest               = "AE-ReleaseRequest";
 
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
@@ -19,9 +21,18 @@ const char* SIG_RIBD_CreateFlow                 = "RIBd-CreateFlow";
 const char* SIG_RIBD_CreateFlowResponseNegative = "RIBd-CreateFlowResponseNegative";
 const char* SIG_RIBD_CreateFlowResponsePositive = "RIBd-CreateFlowResponsePositive";
 const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived";
+const char* SIG_RIBD_RoutingUpdateReceived      = "Routing-UpdateReceived";
+
 const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
+
+const char* SIG_CACE_ConnectionResponsePositive = "CACE-ConnectionResponsePositive";
+const char* SIG_CACE_ConnectionResponseNegative = "CACE-ConnectionResponseNegative";
+const char* SIG_CACE_ReleaseResponse            = "CACE-ReleaseResponse";
+const char* SIG_CACE_AuthenticationRequest      = "CACE-AuthenticationRequest";
+
+const char* SIG_Auth_AuthenticationResponse     = "Auth-AuthenticationResponse";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
@@ -69,18 +80,18 @@ const char* SIG_RIB_DeleteRequestFlow           = "RIB-DeleteRequestFlow";
 const char* SIG_RIB_DeleteResponseFlow          = "RIB-DeleteResponseFlow";
 
 const char* SIG_RMT_NoConnId                    = "RMT-NoConnId";
+const char* SIG_RMT_ErrornousPacket             = "RMT-ErrornousPacket";
 const char* SIG_RMT_SlowdownRequest             = "RMT-SlowDownRequest";
 const char* SIG_RMT_QueuePDURcvd                = "RMT-QueuePDURcvd";
+const char* SIG_RMT_QueuePDUPreSend             = "RMT-QueuePDUPreSend";
 const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
-const char* SIG_RMT_PortDrainDisable            = "RMT-PortDrainDisable";
-const char* SIG_RMT_PortDrainEnable             = "RMT-PortDrainEnable";
-const char* SIG_RMT_PortDrainSlowDown           = "RMT-PortDrainSlowDown";
-const char* SIG_RMT_PortDrainSpeedUp            = "RMT-PortDrainSpeedUp";
+const char* SIG_RMT_PortReadyForRead            = "RMT-PortReadyForRead";
 
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";
+const char* SIG_RIBD_RoutingUpdate              = "Routing-Update";
 
-const char* SIG_EFCP_StahpSending               = "EFCP-StahpSending";
+const char* SIG_EFCP_StopSending                = "EFCP-StopSending";
 const char* SIG_EFCP_StartSending               = "EFCP-StartSending";
 

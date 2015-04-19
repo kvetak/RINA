@@ -31,26 +31,24 @@ class RMTPort : public cSimpleModule
 {
     /* tight coupling for management purposes */
     friend class RA;
+    friend class RMT;
     friend class RMTModuleAllocator;
 
   public:
+
+    /**
+     * Returns the port state (ready to send out data/busy).
+     *
+     * @return port state
+     */
+    bool isOutputReady();
 
     /**
      * Returns the port state (ready to receive data/busy).
      *
      * @return port state
      */
-    bool isReady();
-
-    /**
-     * Marks the port as ready to receive data.
-     */
-    void setReady();
-
-    /**
-     * Marks the port as busy (e.g. when sending data through it).
-     */
-    void setBusy();
+    bool isInputReady();
 
     /**
      * Marks the port as blocked for sending (e.g. when (N-1)-EFCPI isn't keeping up).
@@ -76,6 +74,16 @@ class RMTPort : public cSimpleModule
      * Returns input block status.
      */
     bool hasBlockedInput() { return blockedInput; };
+
+    /*
+     * Returns the input drain speed of this port.
+     */
+    long getInputRate();
+
+    /*
+     * Sets the input drain speed of this port.
+     */
+    void setInputRate(long pdusPerSecond);
 
     /**
      * Returns the (N-1)-flow this port is assigned to.
@@ -137,35 +145,39 @@ class RMTPort : public cSimpleModule
     /**
      * Returns number of PDUs waiting to be read.
      *
+     * @param direction of transfer (read/serve)
      * @return PDUs count accross queues
      */
-    unsigned long getWaitingOnInput() { return waitingOnInput; };
-
-    void addWaitingOnInput() { waitingOnInput++; };
-    void substractWaitingOnInput() { waitingOnInput--; };
-
-    /**
-     * Returns number of PDUs waiting to be written.
-     *
-     * @return PDUs count accross queues
-     */
-    unsigned long getWaitingOnOutput() { return waitingOnOutput; };
-
-    void addWaitingOnOutput() { waitingOnOutput++; };
-    void substractWaitingOnOutput() { waitingOnOutput--; }
-
+    unsigned long getWaiting(RMTQueueType direction);
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage* msg);
 
+    /**
+     * Increments number of waiting PDUs.
+     *
+     * @param direction of transfer (read/serve)
+     */
+    void addWaiting(RMTQueueType direction);
+
+    /**
+     * Decrements number of waiting PDUs.
+     *
+     * @param direction of transfer (read/serve)
+     * @return PDUs count accross queues
+     */
+    void substractWaiting(RMTQueueType direction);
+
   private:
-    bool ready;
+    bool inputReady;
+    bool outputReady;
     bool blockedInput;
     bool blockedOutput;
     unsigned long waitingOnInput;
     unsigned long waitingOnOutput;
-    double postServeDelay;
+    long inputReadRate;
+    double postReadDelay;
     std::string dstAppAddr;
 
     Flow* flow;
@@ -179,6 +191,26 @@ class RMTPort : public cSimpleModule
     RMTQueues outputQueues;
     RMTQueues inputQueues;
 
+    /**
+     * Marks the port as ready to receive data.
+     */
+    void setOutputReady();
+
+    /**
+     * Marks the port as busy (e.g. when sending data through it).
+     */
+    void setOutputBusy();
+
+    /**
+     * Marks the port as ready to receive data.
+     */
+    void setInputReady();
+
+    /**
+     * Marks the port as busy (e.g. when sending data through it).
+     */
+    void setInputBusy();
+
     void postInitialize();
     void setFlow(Flow* flow);
     void registerInputQueue(RMTQueue* queue);
@@ -188,10 +220,12 @@ class RMTPort : public cSimpleModule
     cGate* getSouthInputGate() const;
     cGate* getSouthOutputGate() const;
 
-    void setReadyDelayed();
+    void scheduleNextRead();
+    void scheduleNextWrite();
     void redrawGUI(bool redrawParent = false);
 
-    simsignal_t sigRMTPortReady;
+    simsignal_t sigRMTPortReadyForRead;
+    simsignal_t sigRMTPortReadyToWrite;
     simsignal_t sigStatRMTPortUp;
     simsignal_t sigStatRMTPortDown;
 };

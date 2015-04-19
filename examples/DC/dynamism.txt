@@ -1,0 +1,23 @@
+[Config DistanceVector]
+
+**.applicationEntity.aeType = "AEPing"
+**.iae.aeName = "Ping"
+
+**.VM*.TenantIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.SRV*.TenantIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.SRV*.DCIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.TOR*.DCIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.AS*.DCIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.CR*.TenantIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+**.CR*.DCIPC.resourceAllocator.pduftgPolicyName = "DistanceVectorPolicy"
+
+**.CR0.TenantIPC.resourceAllocator.pduFwdTabGenerator.netStateVisible = true
+**.CR0.TenantIPC.resourceAllocator.pduFwdTabGenerator.netStateMod 	= "^.^.^"
+**.CR0.TenantIPC.resourceAllocator.pduFwdTabGenerator.netStateAlign 	= "r"
+
+**.VM7.AP.applicationEntity.iae.dstApName	= "App0VM8"
+**.VM7.AP.applicationEntity.iae.dstAeName = "Ping"
+**.VM7.AP.applicationEntity.iae.startAt 	= 500s
+**.VM7.AP.applicationEntity.iae.pingAt 	= 501s
+**.VM7.AP.applicationEntity.iae.rate 		= 5
+**.VM7.AP.applicationEntity.iae.stopAt 	= 1000s

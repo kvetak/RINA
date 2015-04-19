@@ -19,33 +19,39 @@ Define_Module(LongestQFirst);
 
 void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 {
+    Enter_Method("processQueues()");
 
     if (direction == RMTQueue::OUTPUT)
     {
-        if (port->isReady())
+        if (port->isOutputReady() && port->getWaiting(RMTQueue::OUTPUT))
         {
-            port->setBusy();
-
-            RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
-            outQ->releasePDU();
-        }
-        else
-        {
-            port->addWaitingOnOutput();
+            // management PDU should have bigger priority for now
+            RMTQueue* outQ = port->getManagementQueue(RMTQueue::OUTPUT);
+            if (outQ->getLength() > 0)
+            {
+                outQ->releasePDU();
+            }
+            else
+            {
+                outQ = port->getLongestQueue(RMTQueue::OUTPUT);
+                outQ->releasePDU();
+            }
         }
     }
     else if (direction == RMTQueue::INPUT)
     {
-        if (inputBusy[port] != true)
+        if (port->isInputReady() && port->getWaiting(RMTQueue::INPUT))
         {
-            inputBusy[port] = true;
-
-            RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
-            inQ->releasePDU();
-        }
-        else
-        {
-            port->addWaitingOnInput();
+            RMTQueue* inQ = port->getManagementQueue(RMTQueue::INPUT);
+            if (inQ->getLength() > 0)
+            {
+                inQ->releasePDU();
+            }
+            else
+            {
+                inQ = port->getLongestQueue(RMTQueue::INPUT);
+                inQ->releasePDU();
+            }
         }
     }
 }

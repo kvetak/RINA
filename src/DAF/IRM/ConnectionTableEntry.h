@@ -35,7 +35,6 @@ class ConnectionTableEntry {
     //De-constructors
     ConnectionTableEntry();
     ConnectionTableEntry(Flow* flow);
-    ConnectionTableEntry(Flow* flow, cGate* nIn, cGate* nOut);
     virtual ~ConnectionTableEntry();
 
     std::string info() const;
@@ -45,8 +44,6 @@ class ConnectionTableEntry {
     void setConStatus(ConnectionStatus conStatus);
     FABase* getFlowAlloc() const;
     void setFlowAlloc(FABase* flowAlloc);
-    Flow* getFlowObject() const;
-    void setFlowObject(Flow* flowObject);
     cGate* getNorthGateIn() const;
     void setNorthGateIn(cGate* northGateIn);
     cGate* getNorthGateOut() const;
@@ -55,11 +52,14 @@ class ConnectionTableEntry {
     void setSouthGateIn(cGate* southGateIn);
     cGate* getSouthGateOut() const;
     void setSouthGateOut(cGate* southGateOut);
+    const APNamingInfo& getApni() const;
+    void setApni(const APNamingInfo& apni);
 
     cModule* getIpc() const;
 
   private:
-    Flow*   FlowObject;
+    //Flow*   FlowObject;
+    APNamingInfo apni;
     ConnectionStatus conStatus;
     cGate*  northGateIn;
     cGate*  northGateOut;

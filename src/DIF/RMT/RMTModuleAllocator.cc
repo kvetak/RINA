@@ -175,6 +175,7 @@ void RMTModuleAllocator::removeQueue(RMTQueue* queue)
     port->getParentModule()->deleteGate(queue->getFullName());
 
     qMonPolicy->preQueueRemoval(queue);
+    queue->callFinish();
     queue->deleteModule();
 }
 
@@ -205,6 +206,7 @@ void RMTModuleAllocator::removePort(RMTPort* port)
     removeQueues(port->getOutputQueues());
     removeQueues(port->getInputQueues());
 
+    port->callFinish();
     port->getParentModule()->deleteModule();
 }
 
@@ -216,4 +218,18 @@ RMTPort* RMTModuleAllocator::getQueueToPortMapping(RMTQueue* queue)
 RMTPort* RMTModuleAllocator::getInterfacePort()
 {
     return interfacePort;
+}
+
+RMTPort* RMTModuleAllocator::getPort(const char* name)
+{
+    cModule* portWrapper = getParentModule()->getSubmodule(name);
+    if (portWrapper)
+    {
+        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule("port"));
+    }
+    else
+    {
+        return NULL;
+    }
+
 }

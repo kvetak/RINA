@@ -20,6 +20,10 @@
 
 #include "RMTPort.h"
 #include "RMTQueue.h"
+#include "RMTModuleAllocator.h"
+
+/* FIXME: circular dependencies */
+class RMTModuleAllocator;
 
 /**
  * Noop base class for the RMT scheduling policy.
@@ -34,23 +38,15 @@ class RMTSchedulingBase : public cSimpleModule
   public:
 
     /**
-     * A hook method invoked after some queue has data to send.
+     * A hook method invoked on multiple occasions.
+     * 1) A PDU arrives into a queue.
+     * 2) An (N-1)-port becomes ready to serve.
+     * 3) By self-postponed scheduler invocation.
      *
-     * @param port the queue's (N-1)-port
+     * @param port the (N-1)-port
      * @param direction the direction of data flow (in/out)
      */
     virtual void processQueues(RMTPort* port, RMTQueueType direction);
-
-    /**
-     * A hook method invoked after a queue is done serving its data.
-     * It's used mainly to ensure that processQueues() is re-invoked when
-     * there are other PDUs waiting in queues, hence it shouldn't be overridden
-     * unless there is a good reason to do so.
-     *
-     * @param port the queue's (N-1)-port
-     * @param direction the direction of data flow (in/out)
-     */
-    virtual void finalizeService(RMTPort* port, RMTQueueType direction);
 
   protected:
 
@@ -60,12 +56,23 @@ class RMTSchedulingBase : public cSimpleModule
     virtual void onPolicyInit();
 
     /**
+     * Method used for creating postponed Scheduler calls (e.g. for PDU spacing).
+     *
+     * @param simtime_t target simulation time
+     * @param port (N-1)-port
+     * @param direction direction that is to be processed
+     */
+    void scheduleReinvocation(simtime_t time, RMTPort* port, RMTQueueType direction);
+
+    /**
      * Handler for OMNeT++ module messages (probably not of much use here).
      */
     void handleMessage(cMessage *msg);
 
-    // temporary
-    std::map<RMTPort*, bool> inputBusy;
+    /**
+     * Pointer to the RMT allocator module (also providing queue<->port mappings).
+     */
+    RMTModuleAllocator* rmtAllocator;
 
   private:
 

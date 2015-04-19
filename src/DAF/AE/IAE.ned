@@ -18,7 +18,7 @@ package rina.DAF.AE;
 moduleinterface IAE
 {
     parameters:
-        @display("i=block/socket");
+        @display("i=block/socket");        
         @class(AE);
         string aeName;
         string aeInstance;
@@ -31,6 +31,7 @@ moduleinterface IAE
         int burstPeriod	@unit(us); //Burst period measured in useconds
         int burstDuration @unit(us); //Burst duration, measured in useconds fraction of Burst Period
         double undetectedBitErr; //Undetected bit error rate measured as a probability
+        double pduDroppingProbability; //PDU dropping probability
         int maxSDUsize @unit(B); //MaxSDUSize measured in bytes
         bool partialDelivery; //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDelivery; //Incomplete Delivery – Can SDUs with missing pieces be delivered?
@@ -41,4 +42,10 @@ moduleinterface IAE
         int costTime; //measured in $/ms
         int costBits; //measured in $/Mb
         double aTime; //measured in ms
+        
+        //Authentication
+        int authType;
+        string authName;
+        string authPassword;
+        string authOther; //Other type of authentication different from name & password 
 }

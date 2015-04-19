@@ -24,6 +24,7 @@ const char* PAR_PEAKSDUBWDUR        = "peakSDUBandwidthDuration";
 const char* PAR_BURSTPERIOD         = "burstPeriod";
 const char* PAR_BURSTDURATION       = "burstDuration";
 const char* PAR_UNDETECTBITERR      = "undetectedBitErr";
+const char* PAR_PDUDROPPROBAB       = "pduDroppingProbability";
 const char* PAR_MAXSDUSIZE          = "maxSDUsize";
 const char* PAR_PARTIALDELIVER      = "partialDelivery";
 const char* PAR_INCOMPLETEDELIVER   = "incompleteDelivery";
@@ -43,12 +44,19 @@ void AEBase::setApni(const APNamingInfo& apni) {
     this->apni = apni;
 }
 
-const Flows& AEBase::getFlows() const {
-    return flows;
+const int AEBase::getAuthType(){
+    return authType;
 }
 
-void AEBase::setFlows(const Flows& flows) {
-    this->flows = flows;
+const std::string& AEBase::getAuthName() const {
+    return authName;
+}
+
+const std::string& AEBase::getAuthPassword() const {
+    return authPassword;
+}
+const std::string& AEBase::getAuthOther() const {
+    return authOther;
 }
 
 const std::string& AEBase::getSrcAeInstance() const {
@@ -81,6 +89,14 @@ const std::string& AEBase::getSrcApName() const {
 
 void AEBase::setSrcApName(const std::string& srcApName) {
     this->srcApName = srcApName;
+}
+
+void AEBase::changeConStatus(CDAPConnectionState conState){
+    this->connectionState = conState;
+}
+
+CDAPConnectionState AEBase::getConStatus(){
+    return this->connectionState;
 }
 
 void AEBase::initNamingInfo() {
@@ -117,6 +133,7 @@ void AEBase::initQoSRequiremets() {
            hasPar(PAR_BURSTPERIOD) &&
            hasPar(PAR_BURSTDURATION) &&
            hasPar(PAR_UNDETECTBITERR) &&
+           hasPar(PAR_PDUDROPPROBAB) &&
            hasPar(PAR_MAXSDUSIZE) &&
            hasPar(PAR_PARTIALDELIVER) &&
            hasPar(PAR_INCOMPLETEDELIVER) &&
@@ -144,7 +161,8 @@ void AEBase::initQoSRequiremets() {
     int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
     int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
     int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-    int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+    double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+    double pduDropProbab        = VAL_QOSPARDONOTCARE;
     int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
     bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
     bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -174,9 +192,12 @@ void AEBase::initQoSRequiremets() {
     burstDuration = par(PAR_BURSTDURATION);
     if (burstDuration < 0)
         burstDuration = VAL_QOSPARDONOTCARE;
-    undetectedBitErr = par(PAR_UNDETECTBITERR);
+    undetectedBitErr = par(PAR_UNDETECTBITERR).doubleValue();
     if (undetectedBitErr < 0 || undetectedBitErr > 1 )
         undetectedBitErr = VAL_QOSPARDONOTCARE;
+    pduDropProbab = par(PAR_PDUDROPPROBAB).doubleValue();
+    if (pduDropProbab < 0 || pduDropProbab > 1 )
+        pduDropProbab = VAL_QOSPARDONOTCARE;
     maxSDUsize = par(PAR_MAXSDUSIZE);
     if (maxSDUsize < 0)
         maxSDUsize = VAL_QOSPARDONOTCARE;
@@ -198,7 +219,7 @@ void AEBase::initQoSRequiremets() {
     costbits = par(PAR_COSTBITS);
     if (costbits < 0)
         costbits = VAL_QOSPARDONOTCARE;
-    aTime = par(PAR_ATIME);
+    aTime = par(PAR_ATIME).doubleValue();
     if (aTime < 0)
         aTime = VAL_QOSPARDONOTCARE;
 
@@ -232,14 +253,15 @@ void AEBase::handleMessage(cMessage *msg)
     // TODO - Generated method body
 }
 
-void AEBase::insertFlow(Flow& flow) {
-    flows.push_back(flow);
+Flow* AEBase::getFlowObject() const {
+    return FlowObject;
+}
+
+void AEBase::setFlowObject(Flow* flowObject) {
+    FlowObject = flowObject;
 }
 
 bool AEBase::hasFlow(const Flow* flow) {
-    for (TFlowsIter it = flows.begin(); it != flows.end(); ++it) {
-        if (*it == *flow)
-            return true;
-    }
-    return false;
+    return FlowObject ? *FlowObject == *flow : false;
 }
+

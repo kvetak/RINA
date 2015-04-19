@@ -47,7 +47,7 @@ void EFCP::initialize(int step){
 
 
 
-EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
+EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
   Enter_Method("createEFCPI()");
 
 //  this->efcpTable = (EFCPTable*)this->getSubmodule("efcpTable");
@@ -55,7 +55,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
   cModule* efcpModule = this->getParentModule();
 
   std::ostringstream name;
-  name << MOD_EFCPI << flow->getConId().getSrcCepId();
+  name << MOD_EFCPI << cepId;
   cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
   cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
 
@@ -74,7 +74,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
 
    //Flow is not in EFCPTable -> create delimiting
-    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, flow->getSrcPortId()));
+    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, portId));
 
     //Add tmpEFCPEntry to efcpTable
     efcpTable->insertEntry(tmpEfcpEntry);
@@ -130,7 +130,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId){
 
   /* Create gate in EFCPModule for Delimiting <--> FAI */
   std::ostringstream gateName_str;
-  gateName_str << GATE_APPIO_ << cepId;
+  gateName_str << GATE_APPIO_ << portId;
 
 
 
@@ -221,8 +221,10 @@ bool EFCP::deleteEFCPI(Flow* flow)
   }
 
 //  entry->flushDTPs();
+  entry->getDelimit()->callFinish();
   entry->getDelimit()->deleteModule();
   for(;!entry->getEfcpiTab()->empty();){
+    entry->getEfcpiTab()->front()->getDtp()->getParentModule()->callFinish();
     entry->getEfcpiTab()->front()->getDtp()->getParentModule()->deleteModule();
 //    delete entry->getEfcpiTab()->front()->getDtcp()->deleteModule();
     entry->getEfcpiTab()->erase(entry->getEfcpiTab()->begin());

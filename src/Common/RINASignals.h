@@ -13,6 +13,8 @@
 extern const char* SIG_AE_AllocateRequest;
 extern const char* SIG_AE_DeallocateRequest;
 extern const char* SIG_AE_DataSend;
+extern const char* SIG_AE_ConnectionRequest;
+extern const char* SIG_AE_ReleaseRequest;
 
 //RIBd
 extern const char* SIG_RIBD_DataSend;
@@ -23,10 +25,20 @@ extern const char* SIG_RIBD_CreateFlow;
 extern const char* SIG_RIBD_CreateFlowResponseNegative;
 extern const char* SIG_RIBD_CreateFlowResponsePositive;
 extern const char* SIG_RIBD_ForwardingUpdateReceived;
+extern const char* SIG_RIBD_RoutingUpdateReceived;
 extern const char* SIG_RIBD_CongestionNotification;
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
+
+//CACE
+extern const char* SIG_CACE_ConnectionResponsePositive;
+extern const char* SIG_CACE_ConnectionResponseNegative;
+extern const char* SIG_CACE_ReleaseResponse;
+extern const char* SIG_CACE_AuthenticationRequest;
+
+//Auth
+extern const char* SIG_Auth_AuthenticationResponse;
 
 //IRM
 extern const char* SIG_IRM_AllocateRequest;
@@ -77,22 +89,22 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 
 //RMT
 extern const char* SIG_RMT_NoConnId;
+extern const char* SIG_RMT_ErrornousPacket;
 extern const char* SIG_RMT_SlowdownRequest;
 extern const char* SIG_RMT_QueuePDURcvd;
+extern const char* SIG_RMT_QueuePDUPreSend;
 extern const char* SIG_RMT_QueuePDUSent;
 extern const char* SIG_RMT_PortPDURcvd;
 extern const char* SIG_RMT_PortPDUSent;
 extern const char* SIG_RMT_PortReadyToServe;
-extern const char* SIG_RMT_PortDrainDisable;
-extern const char* SIG_RMT_PortDrainEnable;
-extern const char* SIG_RMT_PortDrainSlowDown;
-extern const char* SIG_RMT_PortDrainSpeedUp;
+extern const char* SIG_RMT_PortReadyForRead;
 
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;
+extern const char* SIG_RIBD_RoutingUpdate;
 
 //EFCP (DTP+DTCP)
-extern const char* SIG_EFCP_StahpSending;
+extern const char* SIG_EFCP_StopSending;
 extern const char* SIG_EFCP_StartSending;
 
 #endif /* RINASIGNALS_H_ */

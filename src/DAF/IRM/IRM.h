@@ -43,7 +43,8 @@ class IRM : public cSimpleModule   {
 
     void newFlow(Flow* flow);
     void changeStatus(Flow* flow, ConnectionTableEntry::ConnectionStatus status);
-    int getGateHandle(Flow* flow) const;
+    int getIrmGateHandle(Flow* flow) const;
+    int getApGateHandle(Flow* flow) const;
     void setNorthGates(Flow* flow, cGate* nIn, cGate* nOut);
 
     ConnectionTable* getConTable() const;

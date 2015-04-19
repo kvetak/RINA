@@ -24,4 +24,5 @@ simple TailDrop like IntRMTMaxQPolicy
 {
     parameters:
         @display("i=block/socket");
+        @signal[RMT-SlowDownRequest];
 }

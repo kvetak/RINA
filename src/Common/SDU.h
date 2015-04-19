@@ -16,7 +16,7 @@
 #ifndef SDU_H_
 #define SDU_H_
 
-
+#include <omnetpp.h>
 #include <cobject.h>
 #include <vector>
 #include "EFCP_defs.h"
@@ -36,7 +36,7 @@
 #define SDU_L_LAST_FRAG_SDU 0x02
 #define SDU_L_LAST_SDU_FIRST_FRAG 0x03 /* Last fragment, ZERO or more SDUs followed by first fragment */
 
-typedef std::vector<CDAPMessage*> mUserDataType;
+typedef std::vector<cPacket*> mUserDataType;
 class SDU : public SDU_Base
 {
 
@@ -73,8 +73,8 @@ public:
     const unsigned char* getUserData(unsigned int offset);
     void setUserData(unsigned char* userData, unsigned int size);
 
-    bool addUserData(CDAPMessage* msg);
-    CDAPMessage* getUserData();
+    bool addUserData(cPacket* msg);
+    cPacket* getUserData();
 
     std::vector<SDU*>fragment(unsigned int size);
     SDU* genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOffset);

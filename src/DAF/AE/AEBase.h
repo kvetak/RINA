@@ -25,7 +25,6 @@
 
 typedef std::list<Flow> Flows;
 typedef Flows::iterator TFlowsIter;
-
 //Consts
 
 extern const char* PAR_AVGBW;
@@ -35,6 +34,7 @@ extern const char* PAR_PEAKSDUBWDUR;
 extern const char* PAR_BURSTPERIOD;
 extern const char* PAR_BURSTDURATION;
 extern const char* PAR_UNDETECTBITERR;
+extern const char* PAR_PDUDROPPROBAB;
 extern const char* PAR_MAXSDUSIZE;
 extern const char* PAR_PARTIALDELIVER;
 extern const char* PAR_INCOMPLETEDELIVER;
@@ -46,20 +46,34 @@ extern const char* PAR_COSTTIME;
 extern const char* PAR_COSTBITS;
 extern const char* PAR_ATIME;
 
+
+enum CDAPConnectionState {NIL,
+    FLOW_PENDING, CONNECTION_PENDING,
+    AUTHENTICATING, ESTABLISHED, RELEASING};
+
 class AEBase : public cSimpleModule
 {
   public:
     bool hasFlow(const Flow* flow);
 
     const APNamingInfo& getApni() const;
-    const Flows& getFlows() const;
 
     bool operator== (const AEBase& other) {
         return (apni == other.apni);
     }
 
+    const int getAuthType();
+    const std::string& getAuthName() const;
+    const std::string& getAuthPassword() const;
+    const std::string& getAuthOther() const;
+    void changeConStatus(CDAPConnectionState conState);
+    CDAPConnectionState getConStatus();
+    Flow* getFlowObject() const;
+    void setFlowObject(Flow* flowObject);
+
   protected:
-    Flows flows;
+    //Flows flows;
+    Flow* FlowObject;
     APNamingInfo apni;
 
     std::string srcApName;
@@ -67,7 +81,14 @@ class AEBase : public cSimpleModule
     std::string srcAeName;
     std::string srcAeInstance;
 
+    int authType;
+    std::string authName;
+    std::string authPassword;
+    std::string authOther;
+
     QoSCube QoSRequirements;
+
+    CDAPConnectionState connectionState;
 
     //Getters/Setters
     const std::string& getSrcAeInstance() const;

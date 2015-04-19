@@ -36,6 +36,7 @@ const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
 const char* ELEM_BURSTPERIOD         = "BurstPeriod";
 const char* ELEM_BURSTDURATION       = "BurstDuration";
 const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
 const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
 const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
 const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
@@ -62,8 +63,9 @@ void RA::initialize(int stage)
     rmtModule = thisIPC->getSubmodule("relayAndMux");
 
     // Get access to the forwarding and routing functionalities...
-    fwdtg = check_and_cast<PDUFwdTabGenerator *>
-        (getModuleByPath("^.pduFwdTabGenerator"));
+    fwdtg = check_and_cast<IntPDUFG *>
+        (getModuleByPath("^.pduFwdGenerator"));
+
 
     difAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^.difAllocator.da"));
@@ -72,7 +74,7 @@ void RA::initialize(int stage)
     rmt = check_and_cast<RMT*>
         (getModuleByPath("^.^.relayAndMux.rmt"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.relayAndMux.rmtModuleAllocator"));
+        (getModuleByPath("^.^.relayAndMux.allocator"));
 
     // retrieve pointers to policies
     qAllocPolicy = check_and_cast<QueueAllocBase*>
@@ -94,10 +96,17 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-        if (!opp_strcmp(msg->getName(), "RA-CreateFlow"))
+        if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            createNM1Flow(preparedFlows.front());
-            preparedFlows.pop_front();
+            std::list<Flow*>* flows = preparedFlows[simTime()];
+
+            while (!flows->empty())
+            {
+                createNM1Flow(flows->front());
+                flows->pop_front();
+            }
+
+            delete flows;
             delete msg;
         }
     }
@@ -125,7 +134,7 @@ void RA::initSignalsAndListeners()
 
     lisEFCPStopSending = new LisEFCPStopSending(this);
     thisIPC->getParentModule()->
-            subscribe(SIG_EFCP_StahpSending, this->lisEFCPStopSending);
+            subscribe(SIG_EFCP_StopSending, this->lisEFCPStopSending);
 
     lisEFCPStartSending = new LisEFCPStartSending(this);
     thisIPC->getParentModule()->
@@ -136,43 +145,59 @@ void RA::initSignalsAndListeners()
 
     lisRIBCongNotif = new LisRIBCongNotif(this);
     thisIPC->subscribe(SIG_RIBD_CongestionNotification, this->lisRIBCongNotif);
-
-    lisRMTPortDrainDisable = new LisRMTPortDrainDisable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainDisable, this->lisRMTPortDrainDisable);
-
-    lisRMTPortDrainEnable = new LisRMTPortDrainEnable(this);
-    thisIPC->subscribe(SIG_RMT_PortDrainEnable, this->lisRMTPortDrainEnable);
 }
 
 void RA::initFlowAlloc()
 {
-    cXMLElement* dirXml = par("flows").xmlValue();
-    cXMLElementList map = dirXml->getChildrenByTagName("Flow");
+    cXMLElement* dirXml = par("preallocation").xmlValue();
+    cXMLElementList timeMap = dirXml->getChildrenByTagName("SimTime");
 
-    for (cXMLElementList::const_iterator it = map.begin(); it != map.end(); ++it)
+    for (cXMLElementList::const_iterator it = timeMap.begin(); it != timeMap.end(); ++it)
     {
         cXMLElement* m = *it;
+        simtime_t time = static_cast<simtime_t>(
+                atoi(m->getAttribute("t")));
 
-        const char* apn = m->getAttribute("apn");
-        unsigned short qosId = (unsigned short)atoi(m->getAttribute("qosCube"));
-
-        APNamingInfo src = APNamingInfo(APN(processName));
-        APNamingInfo dst = APNamingInfo(APN(apn));
-
-        const QoSCube* qosCube = getQoSCubeById(qosId);
-        if (qosCube == NULL)
+        cXMLElementList connMap = m->getChildrenByTagName("Connection");
+        for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
         {
-            EV << "!!! Invalid QoS-id provided for flow with dst " << apn
-               << "! Allocation won't be initiated." << endl;
-            return;
+            cXMLElement* n = *jt;
+            const char* src = n->getAttribute("src");
+            if (opp_strcmp(src, processName.c_str()))
+            {
+                continue;
+            }
+
+            const char* dst = n->getAttribute("dst");
+            unsigned short qosId = static_cast<unsigned short>(
+                            atoi(n->getAttribute("qosCube")));
+
+            APNamingInfo srcAPN = APNamingInfo(APN(src));
+            APNamingInfo dstAPN = APNamingInfo(APN(dst));
+            const QoSCube* qosCube = getQoSCubeById(qosId);
+            if (qosCube == NULL)
+            {
+                EV << "!!! Invalid QoS-id provided for flow with dst " << dst
+                   << "! Allocation won't be initiated." << endl;
+                return;
+            }
+
+            Flow *flow = new Flow(srcAPN, dstAPN);
+            flow->setQosParameters(*qosCube);
+
+            if (preparedFlows[time] == NULL)
+            {
+                preparedFlows[time] = new std::list<Flow*>;
+                preparedFlows[time]->push_back(flow);
+
+                cMessage* msg = new cMessage("RA-CreateConnections");
+                scheduleAt(simTime() + time, msg);
+            }
+            else
+            {
+                preparedFlows[time]->push_back(flow);
+            }
         }
-
-        Flow *fl = new Flow(src, dst);
-        fl->setQosParameters(*qosCube);
-
-        preparedFlows.push_back(fl);
-        cMessage* msg = new cMessage("RA-CreateFlow");
-        scheduleAt(simTime(), msg);
     }
 }
 
@@ -235,7 +260,8 @@ void RA::initQoSCubes()
         int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
         int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
         int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-        int undetectedBitErr        = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double pduDropProbab        = VAL_QOSPARDONOTCARE;
         int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
         bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
@@ -285,6 +311,11 @@ void RA::initQoSCubes()
                 if (undetectedBitErr < 0 || undetectedBitErr > 1 )
                     undetectedBitErr = VAL_QOSPARDONOTCARE;
             }
+            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
+                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (pduDropProbab < 0 || pduDropProbab > 1 )
+                    pduDropProbab = VAL_QOSPARDONOTCARE;
+            }
             else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
                 maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
                 if (maxSDUsize < 0)
@@ -324,7 +355,7 @@ void RA::initQoSCubes()
                 if (costbits < 0)
                     costbits = VAL_QOSPARDONOTCARE;
             }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
-              aTime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+              aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
               if (aTime < 0)
                   aTime = VAL_QOSPARDONOTCARE;
           }
@@ -337,6 +368,7 @@ void RA::initQoSCubes()
         cube.setBurstPeriod(burstPeriod);
         cube.setBurstDuration(burstDuration);
         cube.setUndetectedBitErr(undetectedBitErr);
+        cube.setPduDropProbability(pduDropProbab);
         cube.setMaxSduSize(maxSDUsize);
         cube.setPartialDelivery(partDeliv);
         cube.setIncompleteDelivery(incompleteDeliv);
@@ -423,7 +455,8 @@ void RA::bindMediumToRMT()
     interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
     port->postInitialize();
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 
     // create extra queues for management purposes
     rmtAllocator->addMgmtQueues(port);
@@ -500,7 +533,7 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
     {
@@ -545,7 +578,8 @@ void RA::createNM1Flow(Flow *flow)
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
         // TODO: remove this when management isn't piggy-backed anymore!
         // (port shouldn't be ready to send out data when the flow isn't yet allocated)
-        port->setReady();
+        port->setOutputReady();
+        port->setInputReady();
 
         // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
@@ -575,7 +609,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
     {
@@ -626,7 +660,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    port->setReady();
+    port->setOutputReady();
+    port->setInputReady();
 }
 
 /**
@@ -661,19 +696,13 @@ void RA::postNFlowAllocation(Flow* flow)
  *
  * @param flow established (N-1)-flow
  */
-void RA::postNM1FlowAllocation(Flow* flow)
+void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 {
     Enter_Method("postNM1FlowAllocation()");
-
-    const APN& dstApn = flow->getDstApni().getApn();
-    unsigned short qosId = flow->getConId().getQoSId();
-
-    // TODO: move this to receiveSignal()
-    NM1FlowTableItem* item = flowTable->findFlowByDstApni(dstApn.getName(), qosId);
-    if (item == NULL) return;
     // mark this flow as connected
-    item->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    item->getRMTPort()->setReady();
+    ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+    ftItem->getRMTPort()->setOutputReady();
+    ftItem->getRMTPort()->setInputReady();
 }
 
 /**
@@ -736,7 +765,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFTGNeighbor * te =
+    PDUFGNeighbor * te =
         fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(te)
@@ -781,74 +810,16 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 }
 
 
-void RA::blockNM1PortOutput(Flow* flow)
+void RA::blockNM1PortOutput(NM1FlowTableItem* ftItem)
 {
     Enter_Method("blockNM1PortOutput()");
-
-    NM1FlowTableItem* item = flowTable->lookup(flow);
-    if (item == NULL)
-    {
-//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
-//           << " ignoring pushback request." << endl;
-        return;
-    }
-
-    item->getRMTPort()->blockOutput();
+    ftItem->getRMTPort()->blockOutput();
 }
 
-void RA::unblockNM1PortOutput(Flow* flow)
+void RA::unblockNM1PortOutput(NM1FlowTableItem* ftItem)
 {
     Enter_Method("unblockNM1PortOutput()");
-
-    NM1FlowTableItem* item = flowTable->lookup(flow);
-    if (item == NULL)
-    {
-//        EV << "!!! given (N-1)-flow isn't registered in the flow table;"
-//           << " ignoring port unblock request." << endl;
-        return;
-    }
-
-    item->getRMTPort()->unblockOutput();
-}
-
-void RA::blockNM1PortInput(cObject* obj)
-{
-    Enter_Method("blockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            flowItem->getRMTPort()->blockInput();
-        }
-    }
-}
-
-void RA::unblockNM1PortInput(cObject* obj)
-{
-    Enter_Method("unblockNM1PortInput()");
-
-    PDU* pdu = dynamic_cast<PDU*>(obj);
-    if (pdu != NULL)
-    {
-        NM1FlowTableItem* flowItem = flowTable->findFlowByDstApni(
-                pdu->getSrcAddr().getApname().getName(),
-                pdu->getConnId().getQoSId());
-
-        if (flowItem != NULL)
-        {
-            RMTPort* port = flowItem->getRMTPort();
-            // unblock!
-            port->unblockInput();
-            // resume processing of input queues
-            rmt->invokeQueueDeparturePolicies(port->getFirstQueue(RMTQueue::INPUT));
-        }
-    }
+    ftItem->getRMTPort()->unblockOutput();
 }
 
 void RA::signalizeCreateFlowPositiveToRIBd(Flow* flow)
@@ -870,7 +841,11 @@ void RA::signalizeSlowdownRequestToRIBd(cPacket* pdu)
 void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
 {
     Enter_Method("signalizeSlowdownRequestToEFCP()");
-    // TODO: move this to the listener
     CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
     emit(sigRASDReqFromRIB, congInfo);
+}
+
+NM1FlowTable* RA::getFlowTable()
+{
+    return flowTable;
 }

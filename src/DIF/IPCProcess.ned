@@ -24,6 +24,7 @@ import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RA.ResourceAllocator;
 import rina.DIF.RIB.RIBDaemon;
 import rina.DIF.RMT.RelayAndMux;
+import rina.policies.DIF.Routing.IntRouting;
 
 module IPCProcess
 {
@@ -33,11 +34,10 @@ module IPCProcess
         string difName;
         string apName = default(ipcAddress + "_" + difName);
         bool relay = default(false);
-        //int    rank;        
+        string routingPolicyName = default("DummyRouting");
     gates:
         inout southIo[];
         inout northIo[];
-        //inout test;
     submodules:
         flowAllocator: FlowAllocator {
             @display("p=167,50");
@@ -46,18 +46,22 @@ module IPCProcess
             @display("p=79,249;i=block/dispatch");
         }
         ribDaemon: RIBDaemon {
-            @display("p=238,147");
+            @display("p=229,153");
         }
 
         efcp: EFCPModule {
             @display("p=79,50");
         }
-        resourceAllocator: ResourceAllocator {
-            @display("p=390,195");
-        }
         enrollment: Enrollment {
-            @display("p=390,100");
+            @display("p=390,50");
         }
+        routingPolicy: <routingPolicyName> like IntRouting {
+            @display("p=390,153");
+        }
+        resourceAllocator: ResourceAllocator {
+            @display("p=390,249");
+        }
+
     connections allowunconnected:
         relayAndMux.ribdIo <--> ribDaemon.rmtIo;
 }

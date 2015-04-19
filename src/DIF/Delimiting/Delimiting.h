@@ -48,7 +48,7 @@ class Delimiting : public cSimpleModule
 
     unsigned int seqNum;
 
-    void processMsgFromFAI(CDAPMessage* msg);
+    void processMsgFromFAI(cPacket* msg);
     void handleMsgFromEfcpi(Data* msg);
   public:
     Delimiting();

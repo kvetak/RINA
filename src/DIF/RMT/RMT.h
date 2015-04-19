@@ -26,6 +26,8 @@
 #define RMT_H_
 
 #include <omnetpp.h>
+#include <fstream>
+#include <bitset>
 
 #include "RINASignals.h"
 #include "ExternConsts.h"
@@ -33,7 +35,7 @@
 #include "PDU.h"
 #include "CDAPMessage_m.h"
 
-#include "PDUForwardingTable.h"
+#include "IntPDUForwarding.h"
 #include "QueueAllocBase.h"
 #include "AddressComparatorBase.h"
 
@@ -44,7 +46,11 @@
 #include "RMTQMonitorBase.h"
 #include "RMTMaxQBase.h"
 
+// mapping of cepIDs to output gates
 typedef std::map<int, cGate*> EfcpiMapping;
+
+// shared access to trace logger
+extern std::ofstream rmtTraceFile;
 
 class RMT : public RMTBase
 {
@@ -58,9 +64,11 @@ class RMT : public RMTBase
     virtual bool getRelayStatus() { return relayOn; };
     virtual bool isOnWire() { return onWire; };
 
-    virtual void invokeQueueArrivalPolicies(cObject* obj);
-    virtual void invokeQueueDeparturePolicies(cObject* obj);
-    virtual void invokePortReadyPolicies(cObject* obj);
+    virtual void onQueueArrival(cObject* obj);
+    virtual void preQueueDeparture(cObject* obj);
+    virtual void postQueueDeparture(cObject* obj);
+    virtual void writeToPort(cObject* obj);
+    virtual void readFromPort(cObject* obj);
 
   protected:
     virtual void initialize();
@@ -68,7 +76,7 @@ class RMT : public RMTBase
     virtual void finish();
 
   private:
-    PDUForwardingTable* fwTable;
+    IntPDUForwarding* fwd;
     RMTModuleAllocator* rmtAllocator;
 
     bool relayOn;
@@ -85,21 +93,35 @@ class RMT : public RMTBase
     QueueIDGenBase* queueIdGenerator;
     AddressComparatorBase* addrComparator;
 
+    enum TraceEventType
+    {
+        MSG_SEND = 's', MSG_RECEIVE = 'r', MSG_ENQUEUE = '+', MSG_DEQUEUE = '-',
+        MSG_DROP = 'd'
+    };
+    bool tracing;
+
     void processMessage(cMessage* msg);
     void efcpiToPort(PDU* msg);
-    void efcpiToEfcpi(PDU* msg);
     void portToEfcpi(PDU* msg);
+    void efcpiToEfcpi(PDU* msg);
     void ribToPort(CDAPMessage* msg);
     void portToRIB(CDAPMessage* msg);
+    void ribToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    RMTPort* fwTableLookup(Address& destAddr, short pduQosId, bool useQoS = true);
+    RMTPort* fwTableLookup(const Address& destAddr, const unsigned short &pduQosId);
+    RMTPort* fwTableLookup(const PDU * pdu);
     std::deque<cMessage*> invalidPDUs;
 
+    void tracePDUEvent(const cPacket* pkt, TraceEventType eventType);
+
     simsignal_t sigRMTNoConnID;
+    simsignal_t sigRMTPacketError;
     LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
+    LisRMTQueuePDUPreSend* lisRMTQueuePDUPreSend;
     LisRMTQueuePDUSent* lisRMTQueuePDUSent;
-    LisRMTPortReady* lisRMTPortReady;
+    LisRMTPortReadyToServe* lisRMTPortReadyToServe;
+    LisRMTPortReadyForRead* lisRMTPortReadyForRead;
 
     // management methods for Resource Allocator
     void setOnWire(bool status) { onWire = status; };

@@ -17,7 +17,7 @@ package rina.examples.AllNodes;
 
 import rina.CS.BorderRouter;
 import rina.CS.Host1AP;
-import rina.CS.InteriorRouter2Int;
+import rina.CS.InteriorRouterNInt;
 
 
 //
@@ -45,14 +45,14 @@ network AllNodes
         HostB2: Host1AP {
             @display("p=478,243");
         }
-        InteriorRouter: InteriorRouter2Int {
+        InteriorRouter: InteriorRouterNInt {
             @display("p=251,143");
         }
     connections:
         HostA1.medium <--> BorderRouterA.medium[0];
         HostA2.medium <--> BorderRouterA.medium[1];
-        BorderRouterA.medium[2] <--> InteriorRouter.medium[0];
-        BorderRouterB.medium[2] <--> InteriorRouter.medium[1];
+        BorderRouterA.medium[2] <--> InteriorRouter.medium++;
+        BorderRouterB.medium[2] <--> InteriorRouter.medium++;
         HostB1.medium <--> BorderRouterB.medium[0];
         HostB2.medium <--> BorderRouterB.medium[1];
 }

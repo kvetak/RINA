@@ -15,11 +15,12 @@
 
 #include <FAIBase.h>
 
-FAIBase::FAIBase() : FlowObject(NULL)
+FAIBase::FAIBase() : FlowObject(NULL), degenerateDataTransfer(false)
 {
 }
 
 FAIBase::~FAIBase() {
     FlowObject = NULL;
+    degenerateDataTransfer = false;
 }
 

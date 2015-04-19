@@ -33,7 +33,6 @@ class AE : public AEBase
   public:
     AE();
     virtual ~AE();
-
     void receiveData(CDAPMessage* obj);
     void sendData(Flow* flow, CDAPMessage* msg);
 
@@ -56,7 +55,7 @@ class AE : public AEBase
     void initPointers();
     void initSignalsAndListeners();
 
-    void insertFlow(Flow& flow);
+    void insertFlow();
     bool createBindings(Flow& flow);
     bool deleteBindings(Flow& flow);
 
@@ -66,6 +65,8 @@ class AE : public AEBase
     simsignal_t sigAESendData;
     simsignal_t sigAEAllocResPosi;
     simsignal_t sigAEAllocResNega;
+    simsignal_t sigAEConReq;
+    simsignal_t sigAERelReq;
 
     //Listeners
     LisAEReceiveData* lisAERcvData;
@@ -74,6 +75,9 @@ class AE : public AEBase
     LisAEAllResNega* lisAEAllResNega;
     LisAEDeallReqFromFai* lisAEDeallReqFromFai;
     LisAEDeallReqFromFai* lisAEDeallResFromFai;
+    LisAEConResPosi* lisAEConResPosi;
+    LisAEConResNega* lisAEConResNega;
+    LisAERelRes* lisAERelRes;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
@@ -81,6 +85,8 @@ class AE : public AEBase
     void signalizeSendData(cMessage* msg);
     void signalizeAllocateResponsePositive(Flow* flow);
     void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeConnectionRequest(CDAPMessage* msg);
+    void signalizeReleaseRequest(CDAPMessage* msg);
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);

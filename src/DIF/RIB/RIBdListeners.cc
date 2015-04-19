@@ -14,6 +14,8 @@
 // 
 
 #include "RIBdListeners.h"
+#include "IntRoutingUpdate.h"
+
 
 RIBdListeners::RIBdListeners(RIBdBase* nribd) : ribd(nribd)
 {
@@ -129,17 +131,17 @@ void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 
 }
 
-void LisRIBDFwdInfoUpdate::receiveSignal(
+void LisRIBDRoutingUpdate::receiveSignal(
         cComponent* src, simsignal_t id, cObject* obj)
 {
-    EV << "LisRIBDFwdInfoUpdate initiated by " << src->getFullPath()
+    EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
 
-    PDUFTGUpdate * info = dynamic_cast<PDUFTGUpdate *>(obj);
+    IntRoutingUpdate * info = dynamic_cast<IntRoutingUpdate *>(obj);
 
     if (info)
     {
-        ribd->receiveForwardingInfoUpdateFromPDUFTG(info);
+        ribd->receiveRoutingUpdateFromRouting(info);
     }
     else
     {

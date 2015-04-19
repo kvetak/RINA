@@ -90,6 +90,14 @@ class RMTModuleAllocator : public cSimpleModule
     RMTPort* getQueueToPortMapping(RMTQueue* queue);
 
     /**
+     * Returns (N-1)-port by its name.
+     *
+     * @param name port name
+     * @return (N-1)-port
+     */
+    RMTPort* getPort(const char* name);
+
+    /**
      * Returns the mock inteface (N-1)-port. Only to be used in the bottom DIFs.
      *
      * @return (N-1)-port (NULL if this isn't the bottom DIF)

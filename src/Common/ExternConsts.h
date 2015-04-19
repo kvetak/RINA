@@ -28,6 +28,7 @@ extern const char* MOD_EFCP;
 extern const char* MOD_FAITABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
+extern const char* MOD_IAE;
 extern const char* MOD_IRM;
 extern const char* MOD_IPCRESMANAGER;
 extern const char* MOD_CDAP;
@@ -50,8 +51,10 @@ extern const char* MOD_DTCP_PATH;
 //Module parameters
 extern const char* PAR_IPCADDR;
 extern const char* PAR_DIFNAME;
-extern const char* PAR_PORTID;
-extern const char* PAR_CEPID;
+extern const char* PAR_LOCALPORTID;
+extern const char* PAR_LOCALCEPID;
+extern const char* PAR_REMOTEPORTID;
+extern const char* PAR_REMOTECEPID;
 extern const char* PAR_APNAME;
 extern const char* PAR_APINSTANCE;
 extern const char* PAR_AENAME;
@@ -90,6 +93,7 @@ extern const int    VAL_QOSPARDONOTCARE;
 extern const bool   VAL_QOSPARDEFBOOL;
 extern const int    UNINIT_INVOKEID;
 extern const int    DONTCARE_INVOKEID;
+extern const int    VAL_UNDEF_PORTID;
 
 
 class ExternConsts {

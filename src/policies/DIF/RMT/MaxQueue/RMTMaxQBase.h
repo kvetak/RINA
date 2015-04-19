@@ -44,6 +44,12 @@ class RMTMaxQBase : public cSimpleModule
      */
     virtual bool run(RMTQueue* queue);
 
+    /**
+     * A hook method invoked when a queue length drops back under its threshold.
+     * @param queue pointer to the queue
+     */
+    virtual void onQueueLengthDrop(RMTQueue* queue);
+
   protected:
 
     /**
@@ -62,34 +68,6 @@ class RMTMaxQBase : public cSimpleModule
      * @param pdu pointer to PDU
      */
     void notifySenderOfCongestion(const cPacket* pdu);
-
-    /**
-     * Stops receiving data from PDU sender's arrival port.
-     *
-     * @param pointer to PDU
-     */
-    void disableSenderPortDrain(const cPacket* pdu);
-
-    /**
-     * Starts receiving data from PDU sender's arrival port.
-     *
-     * @param pointer to PDU
-     */
-    void enableSenderPortDrain(const cPacket* pdu);
-
-    /**
-     * Increases the rate of receiving data from PDU sender's arrival port at a faster rate.
-     *
-     * @param pointer to PDU
-     */
-    void slowDownSenderPortDrain(const cPacket* pdu);
-
-    /**
-     * Stops receiving data from PDU sender's arrival port.
-     *
-     * @param pointer to PDU
-     */
-    void speedUpSenderPortDrain(const cPacket* pdu);
 
     /**
      * Pointer to the monitoring policy module.

@@ -116,50 +116,20 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     FAI* fai = this->createFAI(flow);
 
     //Update flow object
-    flow->setSrcPortId(fai->par(PAR_PORTID));
-    flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
+    flow->setSrcPortId(fai->getLocalPortId());
+    flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    //Are both Apps local? YES then Degenerate transfer ELSE
+    //Are both Apps local? YES then Degenerate transfer
+    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+        fai->setDegenerateDataTransfer(true);
+        flow->setDdtFlag(true);
+    }
     bool status;
-    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() )
-         && DifAllocator->isAppLocal( flow->getSrcApni().getApn() )
-       ) {
-        //Proceed with DegenerateDataTransfer
-        status = fai->processDegenerateDataTransfer();
-    }
-    else {
-        //Pass the AllocationRequest to newly created FAI
-        status = fai->receiveAllocateRequest();
-    }
-
+    status = fai->receiveAllocateRequest();
     //Potentially wait for response from RA, after this continue with X
 
     return status;
 }
-
-/*
-void FA::receiveAllocateResponsePositive(Flow* flow) {
-    Enter_Method("receiveAllocateResponsePositive()");
-    //Change status
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_POSI);
-    //Delegate it towards FAI
-    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
-    bool status = fai->receiveAllocateResponsePositive();
-    if (!status){
-        //Error occurred
-        FaiTable->changeAllocStatus(fai, FAITableEntry::ALLOC_ERR);
-    }
-}
-
-void FA::receiveAllocateResponseNegative(Flow* flow) {
-    Enter_Method("receiveAllocateResponseNegative()");
-    //Change status
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_NEGA);
-    //Delegate it towards FAI
-    FAIBase* fai = FaiTable->findEntryByFlow(flow)->getFai();
-    fai->receiveAllocateResponseNegative();
-}
-*/
 
 bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
@@ -170,7 +140,9 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     //Is requested APP local?
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
         //Check for duplicity
-        if (FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())) {
+        if (!DifAllocator->isAppLocal(flow->getDstApni().getApn())
+            && FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())
+            ) {
             EV << "Duplicit M_CREATE received thus ignoring!" << endl;
             return false;
         }
@@ -185,10 +157,16 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         //Create FAI
         FAI* fai = this->createFAI(flow);
+        if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+            fai->setDegenerateDataTransfer(true);
+            flow->setDdtFlag(true);
+        }
+        fai->setRemotePortId(flow->getDstPortId());
+        fai->setRemoteCepId(flow->getConId().getDstCepId());
 
         //Update flow object
-        flow->setSrcPortId(fai->par(PAR_PORTID));
-        flow->getConnectionId().setSrcCepId(fai->par(PAR_CEPID));
+        flow->setSrcPortId(fai->getLocalPortId());
+        flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
         //Pass the CreateRequest to newly created FAI
         status = fai->receiveCreateRequest();
@@ -205,7 +183,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //Change neighbor addresses
         setNeighborAddresses(flow);
         //Change status to forward
-        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
+        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDING);
 
         //Decrement HopCount
         flow->setHopCount(flow->getHopCount() - 1);
@@ -224,7 +202,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //EV << "status: " << status << endl;
         if (status == true) {
             // flow is already allocated
-            receiveCreateFlowPositive(flow);
+            receiveNM1FlowCreated(flow);
         }
         //else WAIT until allocation of N-1 flow is completed
         else {
@@ -275,8 +253,8 @@ FAI* FA::createFAI(Flow* flow) {
 
     //Instantiate module
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
-    module->par(PAR_PORTID) = portId;
-    module->par(PAR_CEPID) = cepId;
+    module->par(PAR_LOCALPORTID) = portId;
+    module->par(PAR_LOCALCEPID) = cepId;
     module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
     module->finalizeParameters();
     module->buildInside();
@@ -325,12 +303,9 @@ void FA::initSignalsAndListeners() {
     cModule* catcher2 = this->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
-    //sigFAAllocResNega   = registerSignal(SIG_FA_AllocateResponseNegative);
-    //sigFAAllocResPosi   = registerSignal(SIG_FA_AllocateResponsePositive);
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
     sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
-    //sigFACreResPosi     = registerSignal(SIG_FA_CreateFlowResponsePositive);
 
     //Signals that this module is processing
     //  AllocateRequest
@@ -348,48 +323,23 @@ void FA::initSignalsAndListeners() {
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
-    //CreateResponseFlowPositive
-    //lisCreResFloPosi = new LisFACreRes(this);
-    //catcher2->subscribe(SIG_RIBD_CreateFlowResponsePositive, lisCreResFloPosi);
-
 }
-
-/*
-void FA::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(this->sigFAAllocResNega, flow);
-}
-*/
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
 
-void FA::receiveCreateFlowPositive(Flow* flow) {
-    Enter_Method("receiveCreateFlowPositive()");
+void FA::receiveNM1FlowCreated(Flow* flow) {
+    Enter_Method("receiveNM1FlowCreated()");
     EV << "Continue M_CREATE(flow) forward!" << endl;
 
     Flow* tmpfl = flow->dup();
+    FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
     setNeighborAddresses(tmpfl);
 
     this->signalizeCreateFlowRequestForward(tmpfl);
 }
-/*
-void FA::receiveCreateResponseFlowPositiveFromRibd(Flow* flow) {
-    Enter_Method("createFlowResponseForward()");
 
-    FAITableEntry* entry = FaiTable->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
-    entry->getFlow()->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
-    entry->getFlow()->setDstPortId(flow->getDstPortId());
-
-    Flow* tmpfl = entry->getFlow()->dup();
-    tmpfl->swapFlow();
-
-    //Add source address
-    setNeighborAddresses(tmpfl);
-
-    signalizeCreateFlowResponsePositiveForward(tmpfl);
-}
-*/
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
@@ -442,9 +392,4 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
         }
     }
     return addr;
-}
-
-
-void FA::signalizeCreateFlowResponsePositiveForward(Flow* flow) {
-    emit(this->sigFACreResPosiFwd, flow);
 }

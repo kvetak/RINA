@@ -64,4 +64,22 @@ class LisAEAllResNega : public AEListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisAEConResPosi : public AEListeners {
+  public:
+    LisAEConResPosi(AE* nae) :  AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisAEConResNega : public AEListeners {
+  public:
+    LisAEConResNega(AE* nae) :  AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisAERelRes : public AEListeners {
+  public:
+    LisAERelRes(AE* nae) :  AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 #endif /* AELISTENERS_H_ */

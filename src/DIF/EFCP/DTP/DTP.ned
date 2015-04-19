@@ -30,14 +30,16 @@ simple DTP
         string initialSeqNumPolicy = default("");
         string rttEstimatorPolicy = default("");
         
+        @signal[EFCP-StopSending](type=Flow?);
+        @signal[EFCP-StartSending](type=Flow?);
+        
         @signal[DTP_RTT](type=double);
         @statistic[dtp-rtt](title="Estimated RTT"; source=DTP_RTT; record=vector, mean);
         
-        @signal[DTP_CLOSED_WIN_Q](type=int);
+        @signal[DTP_CLOSED_WIN_Q](type=unsigned long);
         @statistic[dtp-close-win-q](title="Closed-window Queue length"; source=DTP_CLOSED_WIN_Q; record=vector, mean);
         
-        @signal[DTP_RX_COUNT](type=int);
-        @statistic[dtp-rx-count](title="Sum of all retransmissions"; source=DTP_RX_COUNT; record=last);
+
     gates:
         inout northIo; //towards Delimiting
         inout southIo; //towards RMT

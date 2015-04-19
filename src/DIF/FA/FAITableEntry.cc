@@ -27,13 +27,7 @@ FAITableEntry::FAITableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN)
     this->timeCreated    = simTime();
     this->timeDeleted    = 0;
 }
-/*
-FAITableEntry::FAITableEntry(FAIBase* nfai): flow(NULL), allocStatus(this->UNKNOWN) {
-    this->fai            = nfai;
-    this->timeCreated    = simTime();
-    this->timeDeleted    = 0;
-}
-*/
+
 FAITableEntry::~FAITableEntry() {
     this->fai       = NULL;
     this->flow      = NULL;
@@ -77,16 +71,17 @@ return timeDeleted;
 std::string FAITableEntry::getAllocateStatusString() const {
     switch(this->allocStatus)
     {
-        case ALLOC_PEND:    return "allocation pending";
-        case TRANSFER:      return "allocation positive, transfer";
-        case ALLOC_NEGA:    return "allocation negative";
-        case ALLOC_ERR:     return "allocation error";
-        case DEALLOC_PEND:  return "deallocation pending";
-        case DEALLOCATED:   return "deallocated";
-        case DEINST_PEND:   return "deinstantiation pending";
-        case DEINSTANTIATED:return "deinstantiated";
-        case FORWARDED:     return "allocation forwarded";
-        default:            return "UNKNOWN";
+        case ALLOC_PEND:        return "allocation pending";
+        case TRANSFER:          return "allocation positive, transfer";
+        case ALLOC_NEGA:        return "allocation negative";
+        case ALLOC_ERR:         return "allocation error";
+        case DEALLOC_PEND:      return "deallocation pending";
+        case DEALLOCATED:       return "deallocated";
+        case DEINST_PEND:       return "deinstantiation pending";
+        case DEINSTANTIATED:    return "deinstantiated";
+        case FORWARDING:        return "allocation forwarded";
+        case FORWARDED:         return "allocation forwarded";
+        default:                return "UNKNOWN";
     }
 //    static std::string AllocateStatusStrings[] = {"Pending", "Allocation Positive", "Allocation Negative"};
 //    return AllocateStatusStrings[];

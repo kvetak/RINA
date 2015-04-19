@@ -15,6 +15,8 @@
 
 #include <CongestionDescriptor.h>
 
+Register_Class(CongestionDescriptor);
+
 CongestionDescriptor::CongestionDescriptor()
 {
     ConId.setSrcCepId(-1);

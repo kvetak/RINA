@@ -20,7 +20,7 @@
 
 const char * SIG_STAT_DTP_RTT = "DTP_RTT";
 const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
-const char * SIG_STAT_DTP_RX_SENT = "DTP_RX_SENT";
+
 Define_Module(DTP);
 
 DTP::DTP()
@@ -127,11 +127,11 @@ void DTP::runCongestionNotificationPolicy()
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting
-  sigEFCPStahpSending = registerSignal(SIG_EFCP_StahpSending);
+  sigEFCPStahpSending = registerSignal(SIG_EFCP_StopSending);
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
   sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
-  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
+//  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
 }
 
 void DTP::initialize(int step)
@@ -155,14 +155,14 @@ void DTP::initialize(int step)
 
     initSignalsAndListeners();
 
-    if(state->isDtcpPresent()){
+//    if(state->isDtcpPresent()){
       senderInactivityTimer = new SenderInactivityTimer();
       rcvrInactivityTimer = new RcvrInactivityTimer();
-    }else{
-      senderInactivityTimer = NULL;
-      rcvrInactivityTimer = NULL;
-    }
-  }
+//    }else{
+//      senderInactivityTimer = NULL;
+//      rcvrInactivityTimer = NULL;
+//    }
+
 //  par(RCVR_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RCVR_INACTIVITY_POLICY_NAME).stringValue());
 //  par(SENDER_INACTIVITY_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(SENDER_INACTIVITY_POLICY_NAME).stringValue());
 //  par(INITIAL_SEQ_NUM_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(INITIAL_SEQ_NUM_POLICY_NAME).stringValue());
@@ -173,7 +173,7 @@ void DTP::initialize(int step)
   senderInactivityPolicy  = (DTPSenderInactivityPolicyBase*) createPolicyModule(SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
   initialSeqNumPolicy     = (DTPInitialSeqNumPolicyBase*) createPolicyModule(INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
   rttEstimatorPolicy      = (DTPRTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
-
+  }
 
 
 }
@@ -236,8 +236,9 @@ void DTP::redrawGUI()
   disp.setTagArg("t", 1, "r");
   std::ostringstream desc;
   desc << "nextSeqNum: " << state->getNextSeqNumToSendWithoutIncrement() <<"\n";
-  desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
+
   if(state->isDtcpPresent() && state->isFCPresent()){
+    desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";
@@ -304,6 +305,7 @@ void DTP::handleMessage(cMessage *msg)
 
       case(DTP_A_TIMER):{
         handleDTPATimer(static_cast<ATimer*>(timer));
+        delete msg;
         break;
       }
     }
@@ -328,7 +330,7 @@ void DTP::handleMessage(cMessage *msg)
 
   if(state->isDtcpPresent()){
       emit(sigStatDTPClosedWinQ, dtcp->dtcpState->getClosedWinQueLen());
-      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
+//      emit(sigStatDTPRxCount, dtcp->dtcpState->getRxSent());
   }
 
   redrawGUI();
@@ -1340,11 +1342,12 @@ void DTP::runRcvrInactivityTimerPolicy()
 //    //Discard any PDUs on the ClosedWindowQueue
 //    clearClosedWindowQ();
 
+    if(state->isDtcpPresent()){
     //XXX Ok, we can send ControlAck. It won't hurt.
     //Send Control Ack PDU
     sendControlAckPDU();
     //TODO RcvRates
-
+    }
     //Send Transfer PDU With Zero length
     sendEmptyDTPDU();
 
@@ -1363,6 +1366,7 @@ void DTP::runSenderInactivityTimerPolicy()
   state->setSetDrfFlag(true);
   runInitialSeqNumPolicy();
 
+  if(state->isDtcpPresent()){
   dtcp->getDTCPState()->updateSndLWE(state->getNextSeqNumToSendWithoutIncrement());
 
   //Discard any PDUs on the PDUretransmissionQueue
@@ -1374,7 +1378,7 @@ void DTP::runSenderInactivityTimerPolicy()
 
   //Send Control Ack PDU
   sendControlAckPDU();
-
+  }
   //Send Transfer PDU With Zero length
   sendEmptyDTPDU();
 

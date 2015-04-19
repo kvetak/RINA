@@ -209,6 +209,7 @@ void IRM::signalizeAllocateRequest(Flow* flow) {
 
 void IRM::newFlow(Flow* flow) {
     Enter_Method("newFlow()");
+
     //Create a new record in ConnectionTable
     ConTable->insertNew(flow);
 
@@ -301,11 +302,25 @@ void IRM::changeStatus(Flow* flow,ConnectionTableEntry::ConnectionStatus status)
     ConTable->setStatus(flow, status);
 }
 
-int IRM::getGateHandle(Flow* flow) const {
+int IRM::getIrmGateHandle(Flow* flow) const {
     ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
-    return ( cte && cte->getNorthGateIn() ) ? cte->getNorthGateIn()->getIndex() : VAL_UNDEF_HANDLE;
+    if (cte && cte->getNorthGateIn()) {
+        //EV << "!!!!!!!!!!!!!!" << cte->getNorthGateIn()->getFullName() << endl;
+        return cte->getNorthGateIn()->getIndex();
+    }
+    return VAL_UNDEF_HANDLE;
 }
 
 void IRM::setNorthGates(Flow* flow, cGate* nIn, cGate* nOut) {
     ConTable->setNorthGates(flow, nIn, nOut);
+}
+
+int IRM::getApGateHandle(Flow* flow) const {
+    ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
+    if (cte && cte->getNorthGateIn()) {
+        std::string desc = cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getFullName();
+        EV << "!!!!!!!!!!!!!!" << desc << endl;
+        return cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getIndex();
+    }
+    return VAL_UNDEF_HANDLE;
 }

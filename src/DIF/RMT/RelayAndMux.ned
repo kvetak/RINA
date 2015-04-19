@@ -18,24 +18,40 @@
 import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
 import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
 package rina.DIF.RMT;
 
 module RelayAndMux
 {
     parameters:
-        @display("i=block/classifier;bgb=645,230");
+        @display("i=block/classifier;bgb=700,230");
 
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("SimpleMonitor");
         string maxQPolicyName = default("TailDrop");
+        string ForwardingPolicyName = default("SimpleTable");
 
         int defaultMaxQLength = default(20);
         int defaultThreshQLength = default(10);
-
-        string queueColorBusy = default("#80FF80");
-        string queueColorWarn = default("#FF8000");
-        string queueColorFull = default("#800000");
+        
+        // PDU tracefile generation.
+        // format: event time node ipcp pduType pduSize flags flow DIF srcAddr dstAddr seq id
+        //
+        // event: r (receive) / s (send) / + (enqueue) / - (dequeue) / d (drop)
+        // time: event timestamp in seconds
+        // node: node name
+        // ipcp: IPC process name
+        // pduType: PDU type
+        // pduSize: PDU size in bits
+        // flags: PDU flags
+        // flow: flow-id (srcCEP + dstCEP + qosID)
+        // DIF: DIF name
+        // srcAddr: source address
+        // dstAddr: destination address
+        // seq: PDU sequence number
+        // id: packet ID (unambiguous in scope of whole simulation)
+        bool pduTracing = default(false);
 
     gates:
         inout ribdIo;
@@ -45,16 +61,19 @@ module RelayAndMux
             @display("p=55,55");
         }
         schedulingPolicy: <schedPolicyName> like IntRMTSchedulingPolicy {
-            @display("p=200,55;is=s");
+            @display("p=175,55;is=s");
         }
         queueMonitorPolicy: <qMonitorPolicyName> like IntRMTQMonitorPolicy {
-            @display("p=310,55;is=s");
+            @display("p=295,55;is=s");
         }
         maxQueuePolicy: <maxQPolicyName> like IntRMTMaxQPolicy {
-            @display("p=420,55;is=s");
+            @display("p=415,55;is=s");
         }
-        rmtModuleAllocator: RMTModuleAllocator {
-            @display("p=575,55");
+        pduForwardingPolicy: <ForwardingPolicyName> like IntPDUForwarding {
+            @display("p=535,55;is=s");
+        }
+        allocator: RMTModuleAllocator {
+            @display("p=655,55;i=block/cogwheel");
         }
     connections allowunconnected:
         ribdIo <--> rmt.ribdIo;

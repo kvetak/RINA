@@ -18,8 +18,12 @@ package rina.DAF.AE;
 simple AE like IAE
 {        
     parameters:
-        @display("i=block/socket");
+        @display("i=block/socket");        
         @class(AE);
+        
+        @signal[AEorRIBd-AllocateResponsePositive];
+        @signal[AE-DataSend];
+        
         string aeName = default("AeErr");
         string aeInstance = default("0");
         
@@ -31,6 +35,7 @@ simple AE like IAE
         int burstPeriod	@unit(us)				= default(-1us); //Burst period measured in useconds
         int burstDuration @unit(us)				= default(-1us); //Burst duration, measured in useconds fraction of Burst Period
         double undetectedBitErr					= default(-1); //Undetected bit error rate measured as a probability
+        double pduDroppingProbability			= default(-1); //PDU dropping probability
         int maxSDUsize @unit(B)					= default(-1B); //MaxSDUSize measured in bytes
         bool partialDelivery					= default(false); //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
         bool incompleteDelivery					= default(false); //Incomplete Delivery – Can SDUs with missing pieces be delivered?
@@ -41,6 +46,12 @@ simple AE like IAE
         int costTime							= default(-1); //measured in $/ms
         int costBits							= default(-1); //measured in $/Mb
         double aTime							= default(-1); //measured in ms
+        
+        //Authentication
+        int authType							= default(0);
+        string authName							= default("0");
+        string authPassword						= default("0");
+        string authOther						= default("0");
 
 //        int averageBandwidth @unit(bps) 		= default(maxSDUsize*8*averageSDUBandwidth); //bits/s
 //        int averageSDUBandwidth 				= default(1000); //SDU/s

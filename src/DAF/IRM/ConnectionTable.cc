@@ -40,11 +40,6 @@ void ConnectionTable::insertNew(Flow* flow) {
     this->insert(ConnectionTableEntry(flow));
 }
 
-void ConnectionTable::insertNew(Flow* flow, cGate* nIn, cGate* nOut) {
-    Enter_Method("insertNew()");
-    this->insert(ConnectionTableEntry(flow, nIn, nOut));
-}
-
 void ConnectionTable::insert(const ConnectionTableEntry& entry) {
     Enter_Method("insert()");
     ConTable.push_back(entry);
@@ -53,19 +48,20 @@ void ConnectionTable::insert(const ConnectionTableEntry& entry) {
 void ConnectionTable::remove() {
 }
 
-ConnectionTableEntry* ConnectionTable::findEntryByFlow(Flow* flow) {
+ConnectionTableEntry* ConnectionTable::findEntryByAPNI(const APNamingInfo& apni) {
     for(TCTIter it = ConTable.begin(); it != ConTable.end(); ++it) {
-        //EV << "Comparing" << it->getFlowObject() << " and " << flow << endl;
-        //EV << "=========NOVY=========\n" << it->getFlowObject()->info() << endl;
-        //EV << "=========STARY=========\n" << flow->info() << endl;
-        if ( *(it->getFlowObject()) == *flow )
+        if ( it->getApni() == apni )
             return &(*it);
     }
     return NULL;
 }
 
+ConnectionTableEntry* ConnectionTable::findEntryByFlow(Flow* flow) {
+    return findEntryByAPNI(flow->getSrcApni());
+}
+
 bool ConnectionTable::setSouthGates(Flow* flow, cGate* sIn, cGate* sOut) {
-    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
     if (cte) {
         cte->setSouthGateIn(sIn);
         cte->setSouthGateOut(sOut);
@@ -76,7 +72,7 @@ bool ConnectionTable::setSouthGates(Flow* flow, cGate* sIn, cGate* sOut) {
 }
 
 bool ConnectionTable::setNorthGates(Flow* flow, cGate* nIn, cGate* nOut) {
-    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
     if (cte) {
         cte->setNorthGateIn(nIn);
         cte->setNorthGateOut(nOut);
@@ -87,7 +83,7 @@ bool ConnectionTable::setNorthGates(Flow* flow, cGate* nIn, cGate* nOut) {
 }
 
 bool ConnectionTable::setFa(Flow* flow, FABase* fa) {
-    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
     if (cte) {
         cte->setFlowAlloc(fa);
         return true;
@@ -111,7 +107,7 @@ cGate* ConnectionTable::findOutputGate(cGate* input, bool& isGoingUp) {
 }
 
 bool ConnectionTable::setStatus(Flow* flow, ConnectionTableEntry::ConnectionStatus status) {
-    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
     if (cte) {
         cte->setConStatus(status);
         return true;
@@ -126,6 +122,7 @@ void ConnectionTable::handleMessage(cMessage *msg)
 }
 
 FABase* ConnectionTable::getFa(Flow* flow) {
-    ConnectionTableEntry* cte = this->findEntryByFlow(flow);
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
     return cte ? cte->getFlowAlloc() : NULL;
 }
+

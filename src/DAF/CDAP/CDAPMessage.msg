@@ -103,18 +103,21 @@ struct authValue_t {
 
 // General structure holding operation return value and potentionaly its verbal
 // explanation for debugging purposes
+//Magical length is 8 B
 struct result_t {        
     string resultReason;	//Additional explanation of resultValue
-    int resultValue;		//The result of an operation, indicating its success, partial success in the case of synchronized operations, or reason for failure.
+    int32 resultValue;		//The result of an operation, indicating its success, partial success in the case of synchronized operations, or reason for failure.
 }
 
 // General structure holding authentication related information
+// Magic length is 17 B
 struct auth_t {
     unsigned char authType enum(authTypes_t);	//Authentication type
     authValue_t authValue;						//Relevant authentication data
 }
 
 // General structures for holding naming information regarding requestor/responder
+// Magic length is 64 B 
 struct naming_t {
 	string AEInst;			//AE instance-id							
 	string AEName;			//AE name				
@@ -129,17 +132,25 @@ struct object_t {
     ObjectPtr objectVal;	//Actual object
 }
 
+// Magical Header lengths
+enum headerBitLengths {        
+    hdrInt32 	= 32;
+    hdrFiltr	= 128;
+    hdrResult	= 132;
+    hdrAuth 	= 136;
+    hdrNaming 	= 512;
+}
+
 //////////////////////////////////////////////
 //CDAP general messages
 //////////////////////////////////////////////
 packet CDAPMessage {
     string displayString;
-    unsigned int size;
-    int handle;
+    unsigned int headerBitLength = 160; //in bits
     Address dstAddr;
     schedulingPriority = -1;
-    unsigned char opCode enum(opCode_t);
-    long invokeID;	
+    int32 opCode enum(opCode_t);
+    int32 invokeID;	
 }
 
 //////////////////////////////////////////////
@@ -149,11 +160,13 @@ packet CDAPMessage {
 packet CDAP_M_Connect extends CDAPMessage {	
     displayString = "b=15,15,oval,#0066CC,#0066CC,0";
 	opCode enum(opCode_t) = M_CONNECT;
+	headerBitLength = (2+3)*hdrInt32 + hdrAuth + 2*hdrNaming;
 		
-	unsigned char flags enum(flagValues_t);
-	int version;		
-	int absSyntax enum(absSyntax_t);	
-	auth_t auth;	
+	int32 flags enum(flagValues_t);
+	int32 version;		
+	int32 absSyntax enum(absSyntax_t);	
+	
+	auth_t auth;		
 	naming_t src;
 	naming_t dst;
 }
@@ -161,11 +174,15 @@ packet CDAP_M_Connect extends CDAPMessage {
 packet CDAP_M_Connect_R extends CDAPMessage {
 	displayString = "b=15,15,oval,#0099FF,#0099FF,0";
 	opCode enum(opCode_t) = M_CONNECT_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;		
-	result_t result;		   
-	int absSyntax enum(absSyntax_t);	
-	auth_t auth;	
+	headerBitLength = (2+3)*hdrInt32 + hdrAuth + 2*hdrNaming + hdrResult;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;		
+	int32 absSyntax enum(absSyntax_t);
+	
+	result_t result;	
+	
+	auth_t auth;		
 	naming_t src;
 	naming_t dst;
 }
@@ -176,16 +193,21 @@ packet CDAP_M_Connect_R extends CDAPMessage {
 
 packet CDAP_M_Release extends CDAPMessage {
 	displayString = "b=15,15,oval,#993399,#993399,0";    
-	opCode enum(opCode_t) = M_RELEASE;	
-	unsigned char flags enum(flagValues_t);
-	int version;
+	opCode enum(opCode_t) = M_RELEASE;
+	headerBitLength = (2+2)*hdrInt32;	
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
 }
 
 packet CDAP_M_Release_R extends CDAPMessage {
     displayString = "b=15,15,oval,#9966CC,#9966CC,0";
-	opCode enum(opCode_t) = M_RELEASE_R;		
-	unsigned char flags enum(flagValues_t);
-	int version;
+	opCode enum(opCode_t) = M_RELEASE_R;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult;
+			
+	int32 flags enum(flagValues_t);
+	int32 version;
+	
 	result_t result;	
 }
 
@@ -196,21 +218,30 @@ packet CDAP_M_Release_R extends CDAPMessage {
 packet CDAP_M_Create extends CDAPMessage {
     displayString = "b=15,15,oval,#FFEE00,#FFEE00,0";
 	opCode enum(opCode_t) = M_CREATE;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;	
+	
+	int32 scope;
+	string filter;	
 }
 
 packet CDAP_M_Create_R extends CDAPMessage {
     displayString = "b=15,15,oval,#FFFF66,#FFFF66,0";
 	opCode enum(opCode_t) = M_CREATE_R;
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;	
+		
 	object_t object;	
-	int filter;		
+	
+	string filter;
+	
+	result_t result;		
 }
 
 //////////////////////////////////////////////
@@ -219,22 +250,31 @@ packet CDAP_M_Create_R extends CDAPMessage {
 
 packet CDAP_M_Delete extends CDAPMessage {
 	displayString = "b=15,15,oval,#CC6633,#CC6633,0";    
-	opCode enum(opCode_t) = M_DELETE;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
+	opCode enum(opCode_t) = M_DELETE;
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;		
+	
+	int32 scope;
+	string filter;		
 }
 
 packet CDAP_M_Delete_R extends CDAPMessage {
     displayString = "b=15,15,oval,#CC9966,#CC9966,0";
 	opCode enum(opCode_t) = M_DELETE_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+			
 	object_t object;
-	int filter;			
+	
+	string filter;
+	
+	result_t result;			
 }
 
 //////////////////////////////////////////////
@@ -244,21 +284,30 @@ packet CDAP_M_Delete_R extends CDAPMessage {
 packet CDAP_M_Read extends CDAPMessage {
     displayString = "b=15,15,oval,#33CCCC,#33CCCC,0"; 
 	opCode enum(opCode_t) = M_READ;	
-	unsigned char flags enum(flagValues_t);
-	int version;
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;			
+	
+	int32 scope;
+	string filter;			
 }
 
 packet CDAP_M_Read_R extends CDAPMessage {
     displayString = "b=15,15,oval,#33FFCC,#33FFCC,0";
 	opCode enum(opCode_t) = M_READ_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+			
 	object_t object;
-	int filter;		
+	
+	string filter;
+	
+	result_t result;
 }
 
 //////////////////////////////////////////////
@@ -268,17 +317,23 @@ packet CDAP_M_Read_R extends CDAPMessage {
 packet CDAP_M_CancelRead extends CDAPMessage {
     displayString = "b=15,15,oval,#333366,#333366,0";
 	opCode enum(opCode_t) = M_CANCELREAD;	
-	unsigned char flags enum(flagValues_t);
-	int version;
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+
+	result_t result;	
 }
 
 packet CDAP_M_CancelRead_R extends CDAPMessage {
     displayString = "b=15,15,oval,#333399,#333399,0";
-	opCode enum(opCode_t) = M_CANCELREAD_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;	
+	opCode enum(opCode_t) = M_CANCELREAD_R;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+	
+	result_t result;		
 }
 
 //////////////////////////////////////////////
@@ -288,21 +343,30 @@ packet CDAP_M_CancelRead_R extends CDAPMessage {
 packet CDAP_M_Write extends CDAPMessage {
     displayString = "b=15,15,oval,#CC9900,#CC9900,0";
 	opCode enum(opCode_t) = M_WRITE;	
-	unsigned char flags enum(flagValues_t);
-	int version;
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;					
+	
+	int32 scope;
+	string filter;			
 }
 
 packet CDAP_M_Write_R extends CDAPMessage {
     displayString = "b=15,15,oval,#CC9933,#CC9933,0";
 	opCode enum(opCode_t) = M_WRITE_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+			
 	object_t object;
-	int filter;			
+	
+	string filter;
+	
+	result_t result;		
 }
 
 //////////////////////////////////////////////
@@ -312,21 +376,30 @@ packet CDAP_M_Write_R extends CDAPMessage {
 packet CDAP_M_Start extends CDAPMessage {
     displayString = "b=15,15,oval,#99CC00,#99CC00,0";
 	opCode enum(opCode_t) = M_START;	
-	unsigned char flags enum(flagValues_t);
-	int version;
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;		
+	
+	int32 scope;
+	string filter;			
 }
 
 packet CDAP_M_Start_R extends CDAPMessage {
 	displayString = "b=15,15,oval,#99FF33,#99FF33,0";
 	opCode enum(opCode_t) = M_START_R;
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+			
 	object_t object;
-	int filter;		
+	
+	string filter;
+	
+	result_t result;		
 }
 
 //////////////////////////////////////////////
@@ -334,24 +407,32 @@ packet CDAP_M_Start_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Stop extends CDAPMessage {
-	displayString = "b=15,15,oval,#FF3333,#FF3333,0";
+	displayString = "b=15,15,oval,#FF3333,#FF3333,0";	
 	opCode enum(opCode_t) = M_STOP;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
+	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
+		
+	int32 flags enum(flagValues_t);
+	int32 version;
+		
 	object_t object;
-	int scope;
-	int filter;		
 	
+	int32 scope;
+	string filter;		
 }
 
 packet CDAP_M_Stop_R extends CDAPMessage {
     displayString = "b=15,15,oval,#FF6666,#FF6666,0";
 	opCode enum(opCode_t) = M_STOP_R;	
-	unsigned char flags enum(flagValues_t);
-	int version;	
-	result_t result;
+	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
+	
+	int32 flags enum(flagValues_t);
+	int32 version;
+			
 	object_t object;
-	int filter;			
+	
+	string filter;
+	
+	result_t result;
 }
 
 

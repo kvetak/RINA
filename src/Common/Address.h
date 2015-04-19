@@ -34,7 +34,7 @@
  */
 class Address {
   public:
-
+    static const Address UNSPECIFIED_ADDRESS;
     /**
      * @brief Constructor of blank Address
      */
@@ -65,6 +65,14 @@ class Address {
      *         are equal between this and other Address
      */
     bool operator== (const Address& other) const;
+
+    /**
+     * LesTan operator overload
+     * @param other Address for comparison
+     * @return Returns true if IPC address, DIF name and AP Name
+     *         is smaller in this and other Address
+     */
+    bool operator< (const Address& other) const;
 
     /**
      * @brief Info text output suitable for << string streams and  WATCH

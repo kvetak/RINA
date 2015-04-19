@@ -87,6 +87,11 @@ class QoSCube {
     double undetectedBitErr;    //Undetected bit error rate measured as a probability
 
     /**
+     * @brief Attribute holding probability of dropping PDUs
+     */
+    double pduDropProbability;  //Probability of dropping PDUs
+
+    /**
      * @brief Attribute holding maximum SDU size
      */
     int maxSDUsize;             //MaxSDUSize measured in bytes
@@ -260,6 +265,18 @@ class QoSCube {
     void setUndetectedBitErr(double undetectedBitErr);
 
     /**
+     * @brief Gets PDU Dropping Probability parameter
+     * @return Value in range from 0.0 to 1.0 measured as a probability
+     */
+    double getPduDropProbability() const;
+
+    /**
+     * @brief Sets PDU Dropping Probability parameter
+     * @param pduDropProbability A new value in range from 0.0 to 1.0 measured as a probability
+     */
+    void setPduDropProbability(double pduDropProbability);
+
+    /**
      * @brief Gets partial delivery flag
      * @return Boolean flag value
      */
@@ -380,6 +397,14 @@ class QoSCube {
      * @param templ
      */
     virtual short countFeasibilityScore(const QoSCube other) const;
+
+    /**
+     * @brief Simple QoSCube comparator measuring if this is a feasibility QoSCube to other QoSCubes
+     * If any QoS parameter could not be satisfied then return false. If not return true.
+     * Function should be reimplemented to more sophisticated one in case of inheritance.
+     * @param templ
+     */
+    virtual bool isFeasibility(const QoSCube other) const;
 
     /**
      * @brief Prints QoSCube information as string

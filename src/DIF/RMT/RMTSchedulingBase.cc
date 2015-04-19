@@ -19,6 +19,9 @@ Define_Module(RMTSchedulingBase);
 
 void RMTSchedulingBase::initialize()
 {
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.allocator"));
+
     // display active policy name
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
@@ -29,33 +32,40 @@ void RMTSchedulingBase::initialize()
 
 void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
+    if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "processPort"))
+    { // TODO: this is lousy, think of something better
+        RMTQueueType direction = (RMTQueueType)msg->par("direction").longValue();
+        const char* portName = msg->par("portName").stringValue();
+        RMTPort* port = rmtAllocator->getPort(portName);
+        if (port != NULL)
+        {
+            processQueues(port, direction);
+        }
+        else
+        {
+            EV << "RMT Scheduler reinvocation: Port " << portName
+               << " ceased to exist!" << endl;
+        }
+    }
+
+    delete msg;
 }
 
 void RMTSchedulingBase::onPolicyInit()
 {
-
 }
 
-void RMTSchedulingBase::finalizeService(RMTPort* port, RMTQueueType direction)
+void RMTSchedulingBase::scheduleReinvocation(simtime_t time, RMTPort* port, RMTQueueType direction)
 {
-    if (direction == RMTQueue::OUTPUT)
-    {
-        if (port->isReady() && (port->getWaitingOnOutput() > 0))
-        {
-            port->substractWaitingOnOutput();
-            processQueues(port, RMTQueue::OUTPUT);
-        }
-    }
-    else
-    {
-        inputBusy[port] = false;
+    // TODO: this is lousy, think of something better
+    cMessage* msg = new cMessage("processPort");
+    msg->addPar("portName");
+    msg->par("portName").setStringValue(port->getParentModule()->getFullName());
 
-        if (port->getWaitingOnInput() > 0)
-        {
-            port->substractWaitingOnInput();
-            processQueues(port, RMTQueue::INPUT);
-        }
-    }
+    msg->addPar("direction");
+    msg->par("direction").setLongValue(direction);
+
+    scheduleAt(time, msg);
 }
 
 void RMTSchedulingBase::processQueues(RMTPort* port, RMTQueueType direction)

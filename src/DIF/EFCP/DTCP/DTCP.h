@@ -183,7 +183,15 @@ public:
 protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
-    int numInitStages() const { return 2;};
+    int numInitStages() const
+    {
+      return 2;
+    }
+    void initSignalsAndListeners();
+
+
+    //Signals
+    simsignal_t sigStatDTCPRxCount;
 };
 
 #endif /* DTCP_H_ */

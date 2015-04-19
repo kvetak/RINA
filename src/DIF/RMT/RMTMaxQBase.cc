@@ -29,15 +29,10 @@ void RMTMaxQBase::initialize()
             (getModuleByPath("^.^.resourceAllocator.addressComparator"));
 
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.rmtModuleAllocator"));
+        (getModuleByPath("^.allocator"));
 
     // register slowdown signal for RA
     sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
-    sigRMTPortDrainDisable = registerSignal(SIG_RMT_PortDrainDisable);
-    sigRMTPortDrainEnable = registerSignal(SIG_RMT_PortDrainEnable);
-    sigRMTPortDrainSpeedUp = registerSignal(SIG_RMT_PortDrainSpeedUp);
-    sigRMTPortDrainSlowDown = registerSignal(SIG_RMT_PortDrainSlowDown);
-
 
     // display active policy name
     cDisplayString& disp = getDisplayString();
@@ -61,27 +56,11 @@ bool RMTMaxQBase::run(RMTQueue* queue)
     return false;
 }
 
+void RMTMaxQBase::onQueueLengthDrop(RMTQueue* queue)
+{
+}
+
 void RMTMaxQBase::notifySenderOfCongestion(const cPacket* pdu)
 {
     emit(sigRMTSDReq, pdu);
-}
-
-void RMTMaxQBase::disableSenderPortDrain(const cPacket* pdu)
-{
-    emit(sigRMTPortDrainDisable, pdu);
-}
-
-void RMTMaxQBase::enableSenderPortDrain(const cPacket* pdu)
-{
-    emit(sigRMTPortDrainEnable, pdu);
-}
-
-void RMTMaxQBase::slowDownSenderPortDrain(const cPacket* pdu)
-{
-    emit(sigRMTPortDrainSlowDown, pdu);
-}
-
-void RMTMaxQBase::speedUpSenderPortDrain(const cPacket* pdu)
-{
-    emit(sigRMTPortDrainSpeedUp, pdu);
 }

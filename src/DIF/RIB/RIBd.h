@@ -33,6 +33,7 @@
 #include "RIBdListeners.h"
 #include "RINASignals.h"
 #include "PDU.h"
+#include "IntRoutingUpdate.h"
 
 //Constants
 extern const char* MSG_CONGEST;
@@ -46,6 +47,7 @@ extern const int   VAL_FLOWNEGA;
 extern const char* VAL_FLREQ;
 extern const char* VAL_FLREQPOSI;
 extern const char* VAL_FLREQNEGA;
+extern const char* MSG_ROUTINGUPDATE;
 
 class RIBd : public RIBdBase {
   public:
@@ -59,9 +61,20 @@ class RIBd : public RIBdBase {
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
     /* Handles information coming from PDUFTG module. */
-    virtual void receiveForwardingInfoUpdateFromPDUFTG(PDUFTGUpdate * update);
+    virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * update);
 
     virtual void sendCongestionNotification(PDU* pdu);
+
+    void signalizeSendData(CDAPMessage* msg);
+    void signalizeCreateRequestFlow(Flow* flow);
+    void signalizeDeleteRequestFlow(Flow* flow);
+    void signalizeDeleteResponseFlow(Flow* flow);
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
+    void signalizeCreateFlow(Flow* flow);
+    void signalizeCreateResponseFlowPositive(Flow* flow);
+    void signalizeCreateResponseFlowNegative(Flow* flow);
+    void signalizeCongestionNotification(CongestionDescriptor* congDesc);
 
   protected:
 
@@ -84,7 +97,8 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDCongNotif;
 
     /* Emit update received signal. */
-    simsignal_t sigRIBDFwdUpdateRecv;
+    //simsignal_t sigRIBDFwdUpdateRecv;
+    simsignal_t sigRIBDRoutingUpdateRecv;
 
     //Listeners
     LisRIBDRcvData*             lisRIBDRcvData;
@@ -102,18 +116,7 @@ class RIBd : public RIBdBase {
     LisRIBDCongesNotif*         lisRIBDCongNotif;
 
     /* Listen for PDUFTG update messages. */
-    LisRIBDFwdInfoUpdate*       lisRIBDFwdInfoUpdate;
-
-    void signalizeSendData(CDAPMessage* msg);
-    void signalizeCreateRequestFlow(Flow* flow);
-    void signalizeDeleteRequestFlow(Flow* flow);
-    void signalizeDeleteResponseFlow(Flow* flow);
-    void signalizeAllocateResponsePositive(Flow* flow);
-    void signalizeAllocateResponseNegative(Flow* flow);
-    void signalizeCreateFlow(Flow* flow);
-    void signalizeCreateResponseFlowPositive(Flow* flow);
-    void signalizeCreateResponseFlowNegative(Flow* flow);
-    void signalizeCongestionNotification(CongestionDescriptor* congDesc);
+    LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
 
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);

@@ -24,6 +24,8 @@ class UpstreamNotifier : public RMTMaxQBase
 {
   public:
     virtual bool run(RMTQueue* queue);
+
+  protected:
     virtual void onPolicyInit();
 };
 

@@ -21,12 +21,11 @@ simple RA
 {
     parameters:
         @display("i=block/segm");
-        //TODO: Change signal types to objects
-        @signal[CreateRequestFlow](type="bool");
-        @signal[CreateResponseFlow](type="bool");
-        @signal[DeleteRequestFlow](type="bool");
-        @signal[DeleteResponseFlow](type="bool");
+        
+        @signal[RA-CreateFlowPositive](type=Flow?);
+        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
+        @signal[RA-InvokeSlowdown](type=cPacket?);
 
         xml qoscubesData = default(xml("<QoSCube/>"));
-        xml flows = default(xml("<Flows/>"));
+        xml preallocation = default(xml("<root/>"));
 }
