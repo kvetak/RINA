@@ -13,27 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+package rina.examples.TwoScheduling;
 
-simple AESender extends AE like IAE
+import ned.DatarateChannel;
+import rina.CS.HostNAP;
+
+
+network TwoScheduling
 {
-    parameters:
-        @class(AESender);
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
-        
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
-        int sendAfter  @unit(s) = default(0s);
-        
-        double rate = default(1);  
-        double ratevar = default(0);    
-        
-        int size = default(1024);
-        int sizevar = default(0);
-        
-        bool printAtEnd = default(false);
-        
+    @display("bgb=325,196");
+    submodules:
+        host1: HostNAP {
+            @display("p=82,92");
+        }
+        host2: HostNAP {
+            @display("p=231,92");
+        }
+    connections allowunconnected:
+//        host1.medium <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 50ms; ber = 0; } <--> host2.medium;
 }
