@@ -135,17 +135,17 @@ Register_Class(Routing);
 
 
     void Routing::finish(){
+        if(par("printAtEnd").boolValue()){
+            EV<< "Routing at "<< myAddress <<endl;
+            dmUpdateM dmu = getAll();
 
-        EV<< "Routing at "<< myAddress <<endl;
-        dmUpdateM dmu = getAll();
-
-        for(DMRnms::dmUpdateMIt it = dmu.begin(); it!= dmu.end(); it++){
-            EV << "Domain : \"" << it->domain<<"\"" << endl;
-            for(DMRnms::s2AIt eIt = it->entries.begin(); eIt != it->entries.end(); eIt++){
-                EV << "  "<< eIt->first << " -> " << eIt->second << endl;
+            for(DMRnms::dmUpdateMIt it = dmu.begin(); it!= dmu.end(); it++){
+                EV << "Domain : \"" << it->domain<<"\"" << endl;
+                for(DMRnms::s2AIt eIt = it->entries.begin(); eIt != it->entries.end(); eIt++){
+                    EV << "  "<< eIt->first << " -> " << eIt->second << endl;
+                }
             }
         }
-
     }
 
 }

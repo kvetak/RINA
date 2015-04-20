@@ -131,13 +131,15 @@ void AESender::initialize()
 
 void AESender::finish()
 {
-    EV << "At "<<this->getApni()<<endl;
-    EV << send << " ("<<sendSize << ")"<<endl;
-    EV << received << " ("<<receivedSize << ")"<<endl;
-    EV << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
-    EV << minDelay << " / "<<maxDelay<<endl;
-    EV << firstR << " -> "<<lastR<<endl;
-    EV << "-----------------"<<endl;
+    if(par("printAtEnd").boolValue()){
+        EV << "At "<<this->getApni()<<endl;
+        EV << send << " ("<<sendSize << ")"<<endl;
+        EV << received << " ("<<receivedSize << ")"<<endl;
+        EV << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
+        EV << minDelay << " / "<<maxDelay<<endl;
+        EV << firstR << " -> "<<lastR<<endl;
+        EV << "-----------------"<<endl;
+    }
 }
 
 void AESender::handleSelfMessage(cMessage *msg) {

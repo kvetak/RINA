@@ -7,4 +7,6 @@ simple DomainRouting like IntRouting
     parameters:
         @display("i=block/socket");
         @class(DMRnms::Routing);
+        
+        bool printAtEnd = default(false);
 }
