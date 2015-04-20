@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,35 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef DTPRTTESTIMATORPOLICYTCP_H_
-#define DTPRTTESTIMATORPOLICYTCP_H_
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-#include <DTPRTTEstimatorPolicyBase.h>
+package rina.policies.DIF.RMT.MaxQueue.UpstreamNotifier;
 
-#include "DTPState.h"
-#include "DTCPState.h"
-#include "ControlPDU_m.h"
-#include "math.h"
-
-#define STATE_FIRST     1
-#define STATE_NEXT      2
-
-class DTPRTTEstimatorPolicyTCP : public DTPRTTEstimatorPolicyBase {
-public:
-    int state;
-    double SRTT;
-    double RTTVar;
-    double RTO;
-    double k;
-    double G;
-
-    simsignal_t sigStatTCPRTO;
-
-
-    DTPRTTEstimatorPolicyTCP();
-    virtual ~DTPRTTEstimatorPolicyTCP();
-
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
-};
-
-#endif /* DTPRTTESTIMATORPOLICYTCP_H_ */
+simple REDUpstreamNotifier like IntRMTMaxQPolicy 
+{
+    parameters:
+        @display("i=block/socket");
+        
+        @signal[REDUpstreamNotifierSeqNum](type=int);
+        @statistic[red-upstream-notifier-seq-num](title="REDUpstreamNotifier"; source=REDUpstreamNotifierSeqNum; record=vector);        
+}

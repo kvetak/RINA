@@ -570,7 +570,10 @@ bool DTCP::runECNSlowDownPolicy(DTPState* dtpState)
   if (ecnSlowDownPolicy == NULL || ecnSlowDownPolicy->run(dtpState, dtcpState))
   {
     /* Default */
-
+      if((txControlPolicy != NULL) && dynamic_cast<DTCPTxControlPolicyTCPTahoe*>(txControlPolicy)) {
+          DTCPTxControlPolicyTCPTahoe* policy = (DTCPTxControlPolicyTCPTahoe*)txControlPolicy;
+          policy->slowDown();
+      }
     /* End default */
 
   }
@@ -739,9 +742,9 @@ void DTCP::schedule(DTCPTimers* timer, double time){
 //      double aTime = dtp->state->getQoSCube()->getATime();
 //      double rtt = dtp->state->getRtt();
       if(dynamic_cast<DTCPTxControlPolicyTCPTahoe*>(txControlPolicy)) {
-          scheduleAt(simTime() + dtcpState->RTO, rxExpTimer);
+          scheduleAt(simTime() + dtcpState->RTO * 2, rxExpTimer);
       } else
-          scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
+          scheduleAt(simTime() + dtp->state->getRtt() * 4 + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

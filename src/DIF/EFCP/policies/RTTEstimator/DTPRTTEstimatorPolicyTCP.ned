@@ -20,4 +20,7 @@ simple DTPRTTEstimatorPolicyTCP
     parameters:
         @display("i=block/socket");
         string policyName = "DTPRTTEstimatorPolicyTCP";
+        
+        @signal[TCP_RTO](type=double);
+        @statistic[TCP-RTO](title="TCP RTO"; source=TCP_RTO; record=vector, mean);
 }

@@ -58,27 +58,130 @@ network SmallNetwork2
 
         router1.medium[0] <--> NormalPath <--> host1.medium;
         router1.medium[1] <--> NormalPath <--> host2.medium;
-        router1.medium[2] <--> NormalPath <--> router2.medium[0];
-        router2.medium[1] <--> NormalPath <--> router3.medium[0];
+        router1.medium[2] <--> HighSpeedPath <--> router2.medium[0];
+        router2.medium[1] <--> HighSpeedPath <--> router3.medium[0];
 //        router2.medium[2] <--> host3.medium;
         router3.medium[1] <--> NormalPath <--> host4.medium;
-        router3.medium[2] <--> ErroneousPath <--> host5.medium;
+        router3.medium[2] <--> SlowPath <--> host5.medium;
+}
+
+network SmallNetwork3
+{
+    @display("bgb=586,372");
+    submodules:
+        host1: Host1AP {
+            @display("p=92,83");
+        }
+        host2: Host1AP {
+            @display("p=92,252");
+        }
+//        host3: Host1AP {
+//            @display("p=275,83");
+//        }
+        host4: Host1AP {
+            @display("p=473,83");
+        }
+        host5: Host1AP {
+            @display("p=473,252");
+        }
+        router1: InteriorRouter3Int {
+            @display("p=166,165");
+        }
+        router2: InteriorRouter2Int {
+            @display("p=275,165");
+        }
+        router3: InteriorRouter3Int {
+            @display("p=388,165");
+        }
+
+    connections:
+//        router1.medium[0] <--> host1.medium;
+//        router1.medium[1] <--> host2.medium;
+//        router1.medium[2] <--> router2.medium[0];
+//        router2.medium[1] <--> router3.medium[0];
+////        router2.medium[2] <--> host3.medium;
+//        router3.medium[1] <--> host4.medium;
+//        router3.medium[2] <--> host5.medium;
+
+        router1.medium[0] <--> NormalPath <--> host1.medium;
+        router1.medium[1] <--> NormalPath <--> host2.medium;
+        router1.medium[2] <--> HighSpeedPath <--> router2.medium[0];
+        router2.medium[1] <--> SlowPath <--> router3.medium[0];
+//        router2.medium[2] <--> host3.medium;
+        router3.medium[1] <--> NormalPath <--> host4.medium;
+        router3.medium[2] <--> NormalPath <--> host5.medium;
+}
+
+network SmallNetwork4
+{
+    @display("bgb=586,372");
+    submodules:
+        host1: Host1AP {
+            @display("p=92,83");
+        }
+        host2: Host1AP {
+            @display("p=92,252");
+        }
+//        host3: Host1AP {
+//            @display("p=275,83");
+//        }
+        host4: Host1AP {
+            @display("p=473,83");
+        }
+        host5: Host1AP {
+            @display("p=473,252");
+        }
+        router1: InteriorRouter3Int {
+            @display("p=166,165");
+        }
+        router2: InteriorRouter2Int {
+            @display("p=275,165");
+        }
+        router3: InteriorRouter3Int {
+            @display("p=388,165");
+        }
+
+    connections:
+//        router1.medium[0] <--> host1.medium;
+//        router1.medium[1] <--> host2.medium;
+//        router1.medium[2] <--> router2.medium[0];
+//        router2.medium[1] <--> router3.medium[0];
+////        router2.medium[2] <--> host3.medium;
+//        router3.medium[1] <--> host4.medium;
+//        router3.medium[2] <--> host5.medium;
+
+        router1.medium[0] <--> NormalPath <--> host1.medium;
+        router1.medium[1] <--> NormalPath <--> host2.medium;
+        router1.medium[2] <--> SlowPath <--> router2.medium[0];
+        router2.medium[1] <--> HighSpeedPath <--> router3.medium[0];
+//        router2.medium[2] <--> host3.medium;
+        router3.medium[1] <--> NormalPath <--> host4.medium;
+        router3.medium[2] <--> NormalPath <--> host5.medium;
 }
 
 channel NormalPath extends DatarateChannel
 {
     parameters:
         datarate = 1Mbps;
-        delay = 0.1us; // 10m
+        delay = 100ms; // 10m
         per = 0;
         ber = 0;
 }
 
-channel LongPath extends DatarateChannel
+channel HighSpeedPath extends DatarateChannel
 {
     parameters:
-        datarate = 1Mbps;
-        delay = 0.0565us; // 10m
+        datarate = 2Mbps;
+        delay = 100ms; // 10m
+        per = 0;
+        ber = 0;
+}
+
+channel SlowPath extends DatarateChannel
+{
+    parameters:
+        datarate = 300000bps;
+        delay = 100ms; // 10m
         per = 0;
         ber = 0;
 }
@@ -87,7 +190,7 @@ channel ErroneousPath extends DatarateChannel
 {
     parameters:
         datarate = 1Mbps;
-        delay = 1s; // 10m
+        delay = 1ms; // 10m
         per = 0.00;
         ber = 0.000001;
 }

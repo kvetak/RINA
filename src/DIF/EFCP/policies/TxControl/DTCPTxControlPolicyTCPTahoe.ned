@@ -22,6 +22,7 @@ simple DTCPTxControlPolicyTCPTahoe
     parameters:
         @display("i=block/socket");
         string policyName = "TCP Tahoe";
+        int packetSize = default(536);
 
         @signal[TCP_Tahoe_CWND](type=int);
         @statistic[TCP-Tahoe-CWND](title="TCP Tahoe CWND"; source=TCP_Tahoe_CWND; record=vector, mean);

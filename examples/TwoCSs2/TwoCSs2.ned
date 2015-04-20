@@ -13,35 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef DTPRTTESTIMATORPOLICYTCP_H_
-#define DTPRTTESTIMATORPOLICYTCP_H_
+package rina.examples.TwoCSs2;
 
-#include <DTPRTTEstimatorPolicyBase.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-#include "ControlPDU_m.h"
-#include "math.h"
-
-#define STATE_FIRST     1
-#define STATE_NEXT      2
-
-class DTPRTTEstimatorPolicyTCP : public DTPRTTEstimatorPolicyBase {
-public:
-    int state;
-    double SRTT;
-    double RTTVar;
-    double RTO;
-    double k;
-    double G;
-
-    simsignal_t sigStatTCPRTO;
+import ned.DatarateChannel;
+import rina.CS.Host1AP;
 
 
-    DTPRTTEstimatorPolicyTCP();
-    virtual ~DTPRTTEstimatorPolicyTCP();
-
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
-};
-
-#endif /* DTPRTTESTIMATORPOLICYTCP_H_ */
+network TwoCSs2
+{
+    @display("bgb=325,196");
+    submodules:
+        host1: Host1AP {
+            @display("p=82,92");
+        }
+        host2: Host1AP {
+            @display("p=231,92");
+        }
+    connections allowunconnected:
+//        host1.medium <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 0.5s; ber = 0.0001; } <--> host2.medium;
+}

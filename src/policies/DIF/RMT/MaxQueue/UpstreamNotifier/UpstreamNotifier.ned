@@ -23,4 +23,7 @@ simple UpstreamNotifier like IntRMTMaxQPolicy
 {
     parameters:
         @display("i=block/socket");
+        
+        @signal[UpstreamNotifierSeqNum](type=int);
+        @statistic[upstream-notifier-seq-num](title="UpstreamNotifier"; source=UpstreamNotifierSeqNum; record=vector);        
 }

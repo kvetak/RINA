@@ -13,35 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef DTPRTTESTIMATORPOLICYTCP_H_
-#define DTPRTTESTIMATORPOLICYTCP_H_
+#ifndef REDUPSTREAMNOTIFIER_H_
+#define REDUPSTREAMNOTIFIER_H_
 
-#include <DTPRTTEstimatorPolicyBase.h>
+#include <RMTMaxQBase.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
-#include "ControlPDU_m.h"
-#include "math.h"
-
-#define STATE_FIRST     1
-#define STATE_NEXT      2
-
-class DTPRTTEstimatorPolicyTCP : public DTPRTTEstimatorPolicyBase {
+class REDUpstreamNotifier: public RMTMaxQBase {
 public:
-    int state;
-    double SRTT;
-    double RTTVar;
-    double RTO;
-    double k;
-    double G;
+  virtual bool run(RMTQueue* queue);
 
-    simsignal_t sigStatTCPRTO;
+protected:
+  virtual void onPolicyInit();
 
-
-    DTPRTTEstimatorPolicyTCP();
-    virtual ~DTPRTTEstimatorPolicyTCP();
-
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+  simsignal_t sigStatUpstreamNotifierSeqNum;
 };
 
-#endif /* DTPRTTESTIMATORPOLICYTCP_H_ */
+#endif /* REDUPSTREAMNOTIFIER_H_ */

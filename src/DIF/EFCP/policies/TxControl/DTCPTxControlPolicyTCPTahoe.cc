@@ -39,11 +39,26 @@ void DTCPTxControlPolicyTCPTahoe::initialize(int step)
     if(step == 0){
         sigStatTCPTahoeCWND = registerSignal("TCP_Tahoe_CWND");
     }
+    slowedDown = false;
+    packetSize = par("packetSize").longValue();
+}
+
+void DTCPTxControlPolicyTCPTahoe::slowDown() {
+    if(! slowedDown ) {
+        state = STATE_CNG_AVOID;
+        snd_cwnd = std::max(int(snd_cwnd / 2), 2);
+        ssthresh = snd_cwnd;
+        slowedDown = true;
+        emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
+    }
 }
 
 bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
 {
-    uint32 sendCredit = 0;
+    int sendCredit = 0;
+    double time = simTime().dbl();
+    time = time + 1;
+    slowedDown = false;
 
     if( state != STATE_STARTING_SLOW_START ) {
         if( dtcpState->ackRcvd > ackRcvd ) {
@@ -66,7 +81,7 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
                     snd_cwnd += 1 / snd_cwnd; // snd_cwnd += SMSS * SMSS / snd_cwnd;
             }
 
-            sendCredit = snd_cwnd - old_cwnd + n;
+            sendCredit = int(snd_cwnd) - old_cwnd + n;
         }
 
         if( dtcpState->getRxSent() >  rxSent) {
@@ -82,8 +97,11 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
         sendCredit = snd_cwnd;
     }
 
+    if(snd_cwnd > dtcpState->getRcvCredit())
+        state = STATE_CNG_AVOID;
+
     if(sendCredit > 0)
-        emit(sigStatTCPTahoeCWND, snd_cwnd);
+        emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
 
     // -------------  adding packets to send queue
     std::vector<DataTransferPDU*>::iterator it;

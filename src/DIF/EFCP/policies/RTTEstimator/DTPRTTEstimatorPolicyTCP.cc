@@ -20,6 +20,8 @@ DTPRTTEstimatorPolicyTCP::DTPRTTEstimatorPolicyTCP() {
     state = STATE_FIRST;
     k = 4;
     G = 0.1;
+
+    sigStatTCPRTO = registerSignal("TCP_RTO");
 }
 
 DTPRTTEstimatorPolicyTCP::~DTPRTTEstimatorPolicyTCP() {
@@ -86,6 +88,8 @@ bool DTPRTTEstimatorPolicyTCP::run(DTPState* dtpState, DTCPState* dtcpState)
 
     dtpState->setRtt(newRtt);
     dtcpState->RTO = RTO;
+
+    emit(sigStatTCPRTO, RTO);
 
     return false;
 }

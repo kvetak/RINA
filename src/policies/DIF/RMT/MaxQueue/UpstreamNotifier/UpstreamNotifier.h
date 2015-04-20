@@ -27,6 +27,8 @@ class UpstreamNotifier : public RMTMaxQBase
 
   protected:
     virtual void onPolicyInit();
+
+    simsignal_t sigStatUpstreamNotifierSeqNum;
 };
 
 #endif /* UPSTREAMNOTIFIER_H_ */

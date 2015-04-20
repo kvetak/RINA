@@ -31,6 +31,8 @@ bool DTCPSenderAckPolicyTCP::run(DTPState* dtpState, DTCPState* dtcpState) {
     ackPDU(dtpState, dtcpState, seqNum);
     dtcpState->updateSndLWE(seqNum + 1);
 
+    dtcpState->setClosedWindow(false);
+
     return false;
 }
 

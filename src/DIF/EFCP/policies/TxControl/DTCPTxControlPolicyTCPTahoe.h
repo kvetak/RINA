@@ -46,11 +46,16 @@ public:
     uint32 state;
     uint32 rxSent;
     uint32 ackRcvd;
+    uint32 packetSize;
+
+    bool slowedDown;
 
     DTCPTxControlPolicyTCPTahoe();
     virtual ~DTCPTxControlPolicyTCPTahoe();
 
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void slowDown();
 protected:
     //Statistic signals
     simsignal_t sigStatTCPTahoeCWND;
