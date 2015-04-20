@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,18 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.RA.ForwardingTable.ExtPrefixPDUForwardingTable;
+#ifndef DummyRouting_H_
+#define DummyRouting_H_
 
-import rina.policies.DIF.RA.ForwardingTable.IntPDUForwardingTable;
+#include <IntRouting.h>
 
-//
-// TODO auto-generated module
-//
-simple ExtPrefixPDUForwardingTable like IntPDUForwardingTable
-{
-      parameters:
-    	@display("i=block/table2");  
-        int beQoSId = default(255);
-        xml qos2Valid = default(xml("<qos2Valid/>"));
-          
-}
+class DummyRouting: public IntRouting {
+public:
+    //Process a Routing Update, return true => inform FWDG of the update
+    bool processUpdate(IntRoutingUpdate * update);
+
+protected:
+    // Called after initialize
+    void onPolicyInit();
+};
+
+#endif /* DummyRouting_H_ */

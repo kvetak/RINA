@@ -20,8 +20,8 @@ simple CDAPSplitter
     parameters:
     	@display("i=block/layer");
  	gates:
- 	    inout caceIo[];
- 	    inout authIo[];
- 	    inout cdapIo[];
- 	    inout southIo[];
+ 	    inout caceIo;
+ 	    inout authIo;
+ 	    inout cdapIo;
+ 	    inout southIo;
 }

@@ -24,6 +24,8 @@ simple REDDropper like IntRMTMaxQPolicy
 {
     parameters:
         @display("i=block/socket");
+        @signal[RMT-SlowDownRequest];
+        
         double dropProbability = default(0.4);
         bool marking = default(false);        
 }

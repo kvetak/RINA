@@ -24,14 +24,12 @@ module InteriorRouterNInt
 {
     @display("i=abstract/switch;bgb=206,325");
     @node;
-
-    int nofInt = default(1);
-
+    
     gates:
-        inout medium[nofInt];
+        inout medium[];
 
     submodules:
-        ipcProcess[nofInt]: IPCProcess {
+        ipcProcess[sizeof(medium)]: IPCProcess {
             @display("p=104,245");
         }
         relayIpc: IPCProcess {
@@ -44,7 +42,7 @@ module InteriorRouterNInt
     connections allowunconnected:
 
         // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..nofInt-1 {
+        for i=0..sizeof(medium)-1 {
             relayIpc.southIo++ <--> ipcProcess[i].northIo++;
             ipcProcess[i].southIo++ <--> medium[i];
         }

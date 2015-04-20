@@ -21,6 +21,9 @@
 
 #include <omnetpp.h>
 #include "RABase.h"
+#include "NM1FlowTable.h"
+#include "NM1FlowTableItem.h"
+#include "RMTQueue.h"
 
 class RAListeners : public cListener
 {

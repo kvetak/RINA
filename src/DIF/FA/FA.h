@@ -54,8 +54,7 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
-    virtual void receiveCreateFlowPositive(Flow* flow);
-    //virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow);
+    virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
 
@@ -67,12 +66,8 @@ class FA : public FABase
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
     //Signals
-    //simsignal_t sigFAIAllocReq;
-    //simsignal_t sigFAAllocResNega;
-    //simsignal_t sigFAAllocResPosi;
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
-    //simsignal_t sigFACreResPosi;
     simsignal_t sigFACreResPosiFwd;
 
     //Listeners
@@ -80,14 +75,12 @@ class FA : public FABase
     LisFACreFloPosi*    lisCreFloPosi;
     LisFADeallocReq*    lisDeallocReq;
     LisFACreReq*        lisCreReq;
-    //LisFACreRes*        lisCreResFloPosi;
 
   protected:
     //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void initPointers();
-
 
   private:
     EFCP* Efcp;
@@ -99,10 +92,8 @@ class FA : public FABase
 
     void initSignalsAndListeners();
 
-    //void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
-    void signalizeCreateFlowResponsePositiveForward(Flow* flow);
 
     const Address getAddressFromDa(const APN& apn, bool useNeighbor);
 

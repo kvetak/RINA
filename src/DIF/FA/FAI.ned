@@ -20,6 +20,7 @@ simple FAI
     parameters:
     	@display("i=block/rxtx");
     	
+    	@signal[FAI-DeallocateRequest](type=Flow?);
     	@signal[FAI-AllocateRequest](type=Flow?);
     	@signal[FAI-AllocateResponsePositive](type=Flow?);
     	@signal[FAI-AllocateResponseNegative](type=Flow?);
@@ -29,8 +30,10 @@ simple FAI
     	@signal[FAI-CreateFlowResponseNegative](type=Flow?);
     	@signal[FAI-DeleteFlowResponse](type=Flow?);
     	
-    	int portId = default(-1);
-    	int cepId = default(-1);   
-    	
+    	int localPortId 	= default(-1);
+    	int localCEPId 		= default(-1);
+    	int remotePortId 	= default(-1);
+    	int remoteCEPId 	= default(-1);
+    	       	
     	double createRequestTimeout @unit(s) = default(10s);   	  	
 }

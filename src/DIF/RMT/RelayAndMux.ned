@@ -34,10 +34,24 @@ module RelayAndMux
 
         int defaultMaxQLength = default(20);
         int defaultThreshQLength = default(10);
-
-        string queueColorBusy = default("#80FF80");
-        string queueColorWarn = default("#FF8000");
-        string queueColorFull = default("#800000");
+        
+        // PDU tracefile generation.
+        // format: event time node ipcp pduType pduSize flags flow DIF srcAddr dstAddr seq id
+        //
+        // event: r (receive) / s (send) / + (enqueue) / - (dequeue) / d (drop)
+        // time: event timestamp in seconds
+        // node: node name
+        // ipcp: IPC process name
+        // pduType: PDU type
+        // pduSize: PDU size in bits
+        // flags: PDU flags
+        // flow: flow-id (srcCEP + dstCEP + qosID)
+        // DIF: DIF name
+        // srcAddr: source address
+        // dstAddr: destination address
+        // seq: PDU sequence number
+        // id: packet ID (unambiguous in scope of whole simulation)
+        bool pduTracing = default(false);
 
     gates:
         inout ribdIo;

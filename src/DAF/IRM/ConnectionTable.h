@@ -31,11 +31,11 @@ class ConnectionTable : public cSimpleModule
     std::string info() const;
 
     void insertNew(Flow* flow);
-    void insertNew(Flow* flow, cGate* nIn, cGate* nOut);
     void insert(const ConnectionTableEntry& entry);
     void remove();
 
     ConnectionTableEntry* findEntryByFlow(Flow* flow);
+    ConnectionTableEntry* findEntryByAPNI(const APNamingInfo& apni);
 
     cGate* findOutputGate(cGate* input, bool& isGoingUp);
 

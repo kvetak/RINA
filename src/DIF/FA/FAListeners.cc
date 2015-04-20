@@ -57,50 +57,16 @@ void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
 
 void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "CreateFlowPositive initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow) {
+    if (flow && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()) {
         //EV << "-----\n" << flow->info() << endl;
-        FAITableEntry* entry = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
-        if (fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-            && entry )
+        TFAIPtrs entries = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
+        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
+            fa->receiveNM1FlowCreated( (*it)->getFlow() );
+        }
+    }
+    else
+        EV << "Received not a flow object or signal is not for mine FA!" << endl;
+}
 
-            fa->receiveCreateFlowPositive(entry->getFlow());
-        else
-            EV << "Flow not in my FaiTable" << endl;
-    }
-    else
-        EV << "Received not a flow object!" << endl;
-}
-/*
-void LisFACreRes::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
-    EV << "CreateFlowResponsePositive initiated by " << src->getFullPath()
-       << " and processed by " << fa->getFullPath() << endl;
-    Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow) {
-        FAITableEntry* entry = fa->getFaiTable()->findEntryByApns(flow->getSrcApni().getApn(), flow->getDstApni().getApn());
-        if ( entry )
-            fa->receiveCreateResponseFlowPositiveFromRibd(flow);
-        else
-            EV << "Flow not in FaiTable" << endl;
-    }
-    else
-        EV << "Received not a flow object!" << endl;
-}
-*/
-/*
-void LisFAAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
-    EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
-    Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow) {
-        //Pass request to FA that has this Flow in its Flow table
-        if (fa->getFaiTable()->findEntryByFlow(flow))
-            fa->receiveAllocateResponseNegative(flow);
-        else
-            EV << "Flow not in FaiTable" << endl;
-    }
-    else
-        EV << "Received not a flow object!" << endl;
-}
-*/

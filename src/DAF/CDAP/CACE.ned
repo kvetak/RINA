@@ -24,5 +24,5 @@ simple CACE
     	@display("i=block/triangle");
     	
    	gates:
-   	    inout splitterIo[];
+   	    inout splitterIo;
 }

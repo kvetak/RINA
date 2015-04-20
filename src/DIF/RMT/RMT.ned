@@ -20,7 +20,9 @@ package rina.DIF.RMT;
 simple RMT
 {    
     parameters:		
-		@display("i=block/classifier");    
+		@display("i=block/classifier"); 
+		@signal[RMT-NoConnId](type=PDU?);  
+		@signal[RMT-ErrornousPacket](type=cObject?);
 		
 		@signal[RMT_ErroneousPacketCount](type=int);
         @statistic[rmt-erroneous-packets](title="Erroneous Packet Count"; source=RMT_ErroneousPacketCount; record=vector);        

@@ -26,4 +26,5 @@ simple UpstreamNotifier like IntRMTMaxQPolicy
         
         @signal[UpstreamNotifierSeqNum](type=int);
         @statistic[upstream-notifier-seq-num](title="UpstreamNotifier"; source=UpstreamNotifierSeqNum; record=vector);        
+        @signal[RMT-SlowDownRequest];
 }

@@ -25,6 +25,11 @@
 #include <RMT.h>
 
 const char* SIG_STAT_RMT_ERRONEOUS_PACKETS = "RMT_ErroneousPacketCount";
+// shared access to trace logger
+#ifndef RMT_TRACING
+#define RMT_TRACING
+std::ofstream rmtTraceFile;
+#endif
 
 Define_Module(RMT);
 
@@ -40,9 +45,25 @@ RMT::~RMT()
 
 void RMT::initialize()
 {
+    // set up features
     relayOn = false;
     onWire = false;
     erroneousCount = 0;
+    tracing = getParentModule()->par("pduTracing").boolValue();
+    if (tracing && !rmtTraceFile.is_open())
+    {
+        std::ostringstream filename;
+        filename << "results/" << ev.getConfigEx()->getActiveConfigName() << "-"
+                 << ev.getConfigEx()->getActiveRunNumber() << ".tr";
+        rmtTraceFile.open(filename.str().c_str());
+
+        if (!rmtTraceFile.is_open())
+        {
+            EV << "Couldn't create a trace file!" << endl;
+            tracing = false;
+        }
+    }
+
 
     // get pointers to other components
     fwd = check_and_cast<IntPDUForwarding*>
@@ -79,6 +100,10 @@ void RMT::initialize()
     lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
     getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTQueuePDURcvd);
 
+    // listen for a signal indicating that a message is leaving a queue
+    lisRMTQueuePDUPreSend = new LisRMTQueuePDUPreSend(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUPreSend, lisRMTQueuePDUPreSend);
+
     // listen for a signal indicating that a message has left a queue
     lisRMTQueuePDUSent = new LisRMTQueuePDUSent(this);
     getParentModule()->subscribe(SIG_RMT_QueuePDUSent, lisRMTQueuePDUSent);
@@ -103,8 +128,8 @@ void RMT::finish()
     size_t pduCount = invalidPDUs.size();
     if (pduCount)
     {
-        EV << this->getFullPath()<< endl;
-        EV << "This RMT still contains " << pduCount << " unprocessed PDUs!" << endl;
+        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
 
         for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
         {
@@ -113,32 +138,88 @@ void RMT::finish()
                << " from " << m->getSenderModule()->getFullPath() << endl;
         }
     }
+
+    if (rmtTraceFile.is_open())
+    {
+        rmtTraceFile.flush();
+        rmtTraceFile.close();
+    }
 }
 
 /**
- * Invokes RMT policies related to queue processing. To be called when a message
- * arrives into a queue.
+ * Append a line into the trace file.
+ *
+ * @param pkt packet
+ * @param eventType event (receive/send/enqueue/dequeue/drop)
+ */
+void RMT::tracePDUEvent(const cPacket* pkt, TraceEventType eventType)
+{
+    const PDU* pdu = dynamic_cast<const PDU*>(pkt);
+    if (pdu == NULL)
+    {
+        return;
+    }
+
+    std::ostringstream flowID;
+    flowID << pdu->getConnId().getSrcCepId() << pdu->getConnId().getDstCepId()
+           << pdu->getConnId().getQoSId();
+
+    std::string flags = std::bitset<8>(pdu->getFlags()).to_string().c_str();
+
+    rmtTraceFile << char(eventType) << " "
+            << simTime() << " "
+            << getModuleByPath("^.^.^.")->getFullName() << " "
+            << getModuleByPath("^.^.")->getFullName() << " "
+            << pdu->getClassName() << " "
+            << pdu->getBitLength() << " "
+            << flags << " "
+            << flowID.str().c_str() << " "
+            << pdu->getDstAddr().getDifName() << " "
+            << pdu->getSrcAddr().getIpcAddress() << " "
+            << pdu->getDstAddr().getIpcAddress() << " "
+            << pdu->getSeqNum() << " "
+            << pdu->getId()
+            << endl;
+}
+
+/**
+ * Procedures executed when a PDU arrives into a queue.
  *
  * @param obj RMT queue object
  */
-void RMT::invokeQueueArrivalPolicies(cObject* obj)
+void RMT::onQueueArrival(cObject* obj)
 {
-    Enter_Method("invokeQueueArrivalPolicies()");
+    Enter_Method("onQueueArrival()");
 
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+
+    if (tracing)
+    {
+        if (queue->getType() == RMTQueue::INPUT)
+        {
+            tracePDUEvent(queue->getLastPDU(), MSG_RECEIVE);
+        }
+        tracePDUEvent(queue->getLastPDU(), MSG_ENQUEUE);
+    }
 
     // detection of channel-induced bit error
     if (queue->getLastPDU()->hasBitError())
     {
         const cPacket* dropped = queue->dropLast();
+
         EV << "PDU arriving on " << port->getParentModule()->getFullName()
            << " contains one or more bit errors! Dropping." << endl;
+        if (tracing)
+        {
+            tracePDUEvent(queue->getLastPDU(), MSG_DROP);
+        }
         emit(sigRMTPacketError, obj);
 
         erroneousCount++;
         emit(sigStatRMTPacketErrorCount, ((PDU_Base*)dropped)->getSeqNum());
         delete dropped;
+
         return;
     }
 
@@ -151,6 +232,10 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
         // if the PDU has to be dropped, finish it here
         if (maxQPolicy->run(queue))
         {
+            if (tracing)
+            {
+                tracePDUEvent(queue->getLastPDU(), MSG_DROP);
+            }
             const cPacket* dropped = queue->dropLast();
             qMonPolicy->onMessageDrop(queue, dropped);
             delete dropped;
@@ -163,14 +248,33 @@ void RMT::invokeQueueArrivalPolicies(cObject* obj)
 }
 
 /**
- * Executed after a PDU leaves its queue; notifies the monitoring policy and
- * queue's port.
+ * Procedures executed right before a PDU leaves its queue.
  *
  * @param obj RMT queue object
  */
-void RMT::invokeQueueDeparturePolicies(cObject* obj)
+void RMT::preQueueDeparture(cObject* obj)
 {
-    Enter_Method("invokeQueueDeparturePolicies()");
+    Enter_Method("preQueueDeparture()");
+    RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+
+    if (tracing)
+    {
+        tracePDUEvent(queue->getFirstPDU(), MSG_DEQUEUE);
+        if (queue->getType() == RMTQueue::OUTPUT)
+        {
+            tracePDUEvent(queue->getFirstPDU(), MSG_SEND);
+        }
+    }
+}
+
+/**
+ * Procedures executed after a PDU leaves its queue.
+ *
+ * @param obj RMT queue object
+ */
+void RMT::postQueueDeparture(cObject* obj)
+{
+    Enter_Method("postQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
     qMonPolicy->onMessageDeparture(queue);
 
@@ -192,7 +296,6 @@ void RMT::invokeQueueDeparturePolicies(cObject* obj)
     { // if this is an outgoing PDU, set the port as busy
         port->setOutputBusy();
     }
-
 }
 
 /**
@@ -447,6 +550,16 @@ void RMT::ribToPort(CDAPMessage* cdap)
 }
 
 /**
+ * Bounces a CDAP mesage back to local RIB.
+ *
+ * @param cdap CDAP message to be passed
+ */
+void RMT::ribToRIB(CDAPMessage* cdap)
+{
+    send(cdap, "ribdIo$o");
+}
+
+/**
  * Relays incoming message to an output queue based on data from PDUFwTable.
  *
  * @param msg either a PDU or a CDAP message to be relayed
@@ -568,7 +681,14 @@ void RMT::processMessage(cMessage* msg)
         }
         else
         { // from the RIBd
-            ribToPort(cdap);
+            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
+            {
+                ribToRIB(cdap);
+            }
+            else
+            {
+                ribToPort(cdap);
+            }
         }
     }
     else

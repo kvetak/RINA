@@ -41,11 +41,14 @@ const char* VAL_CONNECTION_E      = "connect";
 const char* VAL_RELEASE_E         = "release";
 
 
-AEExtendedPing::AEExtendedPing() {
+AEExtendedPing::AEExtendedPing() : AE() {
 }
 
 AEExtendedPing::~AEExtendedPing() {
-
+    connectionState = NIL;
+    FlowObject = NULL;
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AEExtendedPing::prepareAllocateRequest() {
@@ -124,7 +127,8 @@ void AEExtendedPing::initialize()
     myPath = this->getFullPath();
 
     //Watchers
-    WATCH_LIST(flows);
+    WATCH(FlowObject);
+    //WATCH_LIST(flows);
     WATCH(connectionState);
 }
 
@@ -138,13 +142,13 @@ void AEExtendedPing::handleSelfMessage(cMessage *msg) {
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
 
-        Flow fl = Flow(src, dst);
-        fl.setQosParameters(this->getQoSRequirements());
+        FlowObject = new Flow(src, dst);
+        FlowObject->setQosParameters(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
-        insertFlow(fl);
+        insertFlow();
 
-        sendAllocationRequest(&flows.back());
+        sendAllocationRequest(getFlowObject());
     }
     else if ( !strcmp(msg->getName(), TIM_CONNECT_E)){
         //Create MConnect message
@@ -163,13 +167,13 @@ void AEExtendedPing::handleSelfMessage(cMessage *msg) {
         connect->setOpCode(M_CONNECT);
 
         //Send message
-        sendData(&flows.back(), connect);
+        sendData(FlowObject, connect);
     }
     else if ( !strcmp(msg->getName(), TIM_STOP_E) ) {
         CDAP_M_Release* releaseRequest = new CDAP_M_Release(VAL_RELEASE_E);
         releaseRequest->setInvokeID(0);
 
-        sendData(&flows.back(), releaseRequest);
+        sendData(FlowObject, releaseRequest);
 
     }
     else if ( strstr(msg->getName(), MSG_PING_E) ) {
@@ -184,7 +188,7 @@ void AEExtendedPing::handleSelfMessage(cMessage *msg) {
         ping->setByteLength(size);
 
         //Send message
-        sendData(&flows.back(), ping);
+        sendData(FlowObject, ping);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -220,7 +224,7 @@ void AEExtendedPing::processMRead(CDAPMessage* msg) {
         obj.objectVal = (cObject*)(&myPath);
         pong->setObject(obj);
 
-        sendData(&flows.back(), pong);
+        sendData(FlowObject, pong);
     }
 }
 

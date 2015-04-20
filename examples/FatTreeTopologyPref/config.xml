@@ -1,166 +1,47 @@
 <?xml version="1.0"?>
 <Configuration>
-	<Server id="Server11">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R1.TOR_DC" qosCube="1"/>       
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server12">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R1.TOR_DC" qosCube="1"/>   
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server13">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R1.TOR_DC" qosCube="1"/>   
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server21">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-					<Flow apn="R2.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server22">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R2.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server23">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R2.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server31">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R3.TOR_DC" qosCube="1"/>       
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server32">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R3.TOR_DC" qosCube="1"/>   
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server33">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R3.TOR_DC" qosCube="1"/>   
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server41">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-					<Flow apn="R4.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server42">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R4.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Server id="Server43">
-		<IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                	<Flow apn="R4.TOR_DC" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-	</Server>
-	<Switch id="TOR1">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="AS.1_DC" qosCube="1"/>
-                    <Flow apn="AS.2_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="TOR2">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.1_DC" qosCube="1"/>
-                    <Flow apn="AS.2_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="TOR3">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="AS.3_DC" qosCube="1"/>
-                    <Flow apn="AS.4_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="TOR4">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.3_DC" qosCube="1"/>
-                    <Flow apn="AS.4_DC" qosCube="1"/>     
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="AS1">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.5_DC" qosCube="1"/>  
-                </Flows>
-            </RA>
-        </IPC>
-		<!--
-			This contains the whole mapping of the network. 
-			It can be used to the Dif Allocator of every element.
-		-->
-		<DA>
+  <ConnectionSets>
+    <ConnectionSet id="all">
+      <SimTime t="0">
+        <Connection src="R1.S1_DC" dst="R1.TOR_DC" qosCube="1"/>
+        <Connection src="R1.S2_DC" dst="R1.TOR_DC" qosCube="1"/>
+        <Connection src="R1.S3_DC" dst="R1.TOR_DC" qosCube="1"/>
+        
+        <Connection src="R2.S1_DC" dst="R2.TOR_DC" qosCube="1"/>
+        <Connection src="R2.S2_DC" dst="R2.TOR_DC" qosCube="1"/>
+        <Connection src="R2.S3_DC" dst="R2.TOR_DC" qosCube="1"/>
+        
+        <Connection src="R3.S1_DC" dst="R3.TOR_DC" qosCube="1"/>
+        <Connection src="R3.S2_DC" dst="R3.TOR_DC" qosCube="1"/>
+        <Connection src="R3.S3_DC" dst="R3.TOR_DC" qosCube="1"/>
+        
+        <Connection src="R4.S1_DC" dst="R4.TOR_DC" qosCube="1"/>
+        <Connection src="R4.S2_DC" dst="R4.TOR_DC" qosCube="1"/>
+        <Connection src="R4.S3_DC" dst="R4.TOR_DC" qosCube="1"/>
+        
+        <Connection src="R1.TOR_DC" dst="AS.1_DC" qosCube="1"/>
+        <Connection src="R1.TOR_DC" dst="AS.2_DC" qosCube="1"/>
+        
+        <Connection src="R2.TOR_DC" dst="AS.1_DC" qosCube="1"/>
+        <Connection src="R2.TOR_DC" dst="AS.2_DC" qosCube="1"/>
+        
+        <Connection src="R3.TOR_DC" dst="AS.3_DC" qosCube="1"/>
+        <Connection src="R3.TOR_DC" dst="AS.4_DC" qosCube="1"/>
+        
+        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosCube="1"/>
+        <Connection src="R4.TOR_DC" dst="AS.4_DC" qosCube="1"/>
+        
+        <Connection src="AS.1_DC" dst="AS.5_DC" qosCube="1"/>
+        <Connection src="AS.2_DC" dst="AS.5_DC" qosCube="1"/>
+        
+        <Connection src="AS.3_DC" dst="AS.6_DC" qosCube="1"/>
+        <Connection src="AS.4_DC" dst="AS.6_DC" qosCube="1"/>
+        
+      </SimTime>
+    </ConnectionSet>
+  </ConnectionSets>
+  
+	<DA>
 			<Directory>
 				<!-- 
 					How the DIF name are formatted? 
@@ -313,52 +194,7 @@
 					<DIF difName="DC" ipcAddress="R4.S3"/>
 				</APN>
 			</Directory>
-		</DA>
-	</Switch>
-	<Switch id="AS2">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.6_DC" qosCube="1"/>  
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="AS3">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.5_DC" qosCube="1"/>  
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="AS4">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.6_DC" qosCube="1"/>  
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="AS5">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-					<Flow apn="AS.6_DC" qosCube="1"/>  
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
-	<Switch id="AS6">
-		<IPC id="relayIpc">
-            <RA>
-                <Flows>
-                </Flows>
-            </RA>
-        </IPC>
-	</Switch>
+	</DA>
 	
 	<QoSCubesSet>
 		<QosCube id="1">

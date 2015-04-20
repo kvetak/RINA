@@ -1,184 +1,31 @@
 <?xml version="1.0"?>
 <Configuration>
-    <Node id="H0">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R12_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H1">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R13_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H2">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R14_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H3">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R15_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H4">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R16_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H5">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R17_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H6">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R18_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H7">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R19_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H8">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R12_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H9">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R13_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H10">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R14_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="H11">
-        <IPC id="ipcProcess1">
-            <RA>
-                <Flows>
-                    <Flow apn="R15_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R12">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R17_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R13">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R18_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R14">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R19_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R15">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R12_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R16">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R13_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R17">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R14_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R18">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                    <Flow apn="R15_RandDIF" qosCube="1"/>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
-    <Node id="R19">
-        <IPC id="relayIpc">
-            <RA>
-                <Flows>
-                </Flows>
-            </RA>
-        </IPC>
-    </Node>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="H0_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="H1_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="H2_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="H3_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+                <Connection src="H4_RandDIF" dst="R16_RandDIF" qosCube="1"/>
+                <Connection src="H5_RandDIF" dst="R17_RandDIF" qosCube="1"/>
+                <Connection src="H6_RandDIF" dst="R18_RandDIF" qosCube="1"/>
+                <Connection src="H7_RandDIF" dst="R19_RandDIF" qosCube="1"/>
+                <Connection src="H8_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="H9_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="H10_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="H11_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+                <Connection src="R12_RandDIF" dst="R17_RandDIF" qosCube="1"/>
+                <Connection src="R13_RandDIF" dst="R18_RandDIF" qosCube="1"/>
+                <Connection src="R14_RandDIF" dst="R19_RandDIF" qosCube="1"/>
+                <Connection src="R15_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="R16_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="R17_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="R18_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+    
     <Node id="all">
         <DA>
             <Directory>

@@ -55,7 +55,7 @@ class AE : public AEBase
     void initPointers();
     void initSignalsAndListeners();
 
-    void insertFlow(Flow& flow);
+    void insertFlow();
     bool createBindings(Flow& flow);
     bool deleteBindings(Flow& flow);
 

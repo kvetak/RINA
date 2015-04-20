@@ -175,6 +175,7 @@ void RMTModuleAllocator::removeQueue(RMTQueue* queue)
     port->getParentModule()->deleteGate(queue->getFullName());
 
     qMonPolicy->preQueueRemoval(queue);
+    queue->callFinish();
     queue->deleteModule();
 }
 
@@ -205,6 +206,7 @@ void RMTModuleAllocator::removePort(RMTPort* port)
     removeQueues(port->getOutputQueues());
     removeQueues(port->getInputQueues());
 
+    port->callFinish();
     port->getParentModule()->deleteModule();
 }
 

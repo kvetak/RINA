@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <Configuration>
+
 	<qos2Valid>
 		<QosCube id="0">
 			<accepts>1</accepts>
@@ -28,82 +29,36 @@
 		</QosCube>
 	</qos2Valid>
   
+	<QoSCubesSetShim>
+		<QosCube id="1">
+		</QosCube>
+	</QoSCubesSetShim>
+	
 	<QoSCubesSet>
 		<QosCube id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>1000</Delay>
-			<Jitter>500</Jitter>
+			<Delay>10</Delay>	
+			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
+			<CostTime>1000</CostTime>
+			<CostBits>1000</CostBits>
+		</QosCube>
+		<QosCube id="2">	
+			<Delay>10</Delay>	
+			<PDUDroppingProbability>0.1</PDUDroppingProbability>		
 			<CostTime>100</CostTime>
 			<CostBits>100</CostBits>
-			<ATime>0</ATime>						
-		</QosCube>
-		<QosCube id="2">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.5</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>1</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>1000</Delay>
-			<Jitter>500</Jitter>
-			<CostTime>50</CostTime>
-			<CostBits>50</CostBits>
-			<ATime>0</ATime>						
 		</QosCube>		
 		<QosCube id="3">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>1</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>10000</Delay>
-			<Jitter>5000</Jitter>
-			<CostTime>50</CostTime>
-			<CostBits>50</CostBits>
-			<ATime>0</ATime>						
+			<Delay>100</Delay>	
+			<PDUDroppingProbability>0.001</PDUDroppingProbability>	
+			<CostTime>100</CostTime>
+			<CostBits>100</CostBits>		
 		</QosCube>		
 		<QosCube id="4">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.5</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>1</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>10000</Delay>
-			<Jitter>5000</Jitter>
-			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
+			<Delay>100</Delay>	
+			<PDUDroppingProbability>0.1</PDUDroppingProbability>	
+			<CostTime>10</CostTime>
+			<CostBits>10</CostBits>	
 		</QosCube>		
 	</QoSCubesSet>
+	
 </Configuration>

@@ -25,6 +25,7 @@ void CDAPSplitter::initialize()
 }
 
 CDAPSplitter::CDAPSplitter() {
+    MsgLog = NULL;
 }
 
 CDAPSplitter::~CDAPSplitter() {
@@ -63,7 +64,7 @@ void CDAPSplitter::handleMessage(cMessage *msg)
         if (dynamic_cast<CDAP_M_Connect*>(msg) ||  dynamic_cast<CDAP_M_Connect_R*>(msg) ||
             dynamic_cast<CDAP_M_Release*>(msg) ||  dynamic_cast<CDAP_M_Release_R*>(msg) )
         {
-            out = gateHalf(GATE_CACEIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
+            out = gateHalf(GATE_CACEIO, cGate::OUTPUT);
         }
 
         //Pass it to the Auth module
@@ -78,7 +79,7 @@ void CDAPSplitter::handleMessage(cMessage *msg)
                  dynamic_cast<CDAP_M_CancelRead*>(msg) || dynamic_cast<CDAP_M_CancelRead_R*>(msg) )
         {
             //EV <<"XXXXXXXX "<< msg->getArrivalGate()->getFullName() << "-" << msg->getArrivalGate()->getIndex() << endl;
-            out = gateHalf(GATE_CDAPIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
+            out = gateHalf(GATE_CDAPIO, cGate::OUTPUT);
         }
 
     }
@@ -86,7 +87,7 @@ void CDAPSplitter::handleMessage(cMessage *msg)
     else if (strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) == NULL) {
         MsgLog->insert(check_and_cast<CDAPMessage*>(msg), true);
 
-        out = gateHalf(GATE_SOUTHIO, cGate::OUTPUT, msg->getArrivalGate()->getIndex());
+        out = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
     }
 
 

@@ -130,7 +130,7 @@ void DTP::runCongestionNotificationPolicy()
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting
-  sigEFCPStahpSending = registerSignal(SIG_EFCP_StahpSending);
+  sigEFCPStahpSending = registerSignal(SIG_EFCP_StopSending);
   sigEFCPStartSending = registerSignal(SIG_EFCP_StartSending);
   sigStatDTPRTT       = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ= registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
@@ -239,8 +239,9 @@ void DTP::redrawGUI()
   disp.setTagArg("t", 1, "r");
   std::ostringstream desc;
   desc << "nextSeqNum: " << state->getNextSeqNumToSendWithoutIncrement() <<"\n";
-  desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
+
   if(state->isDtcpPresent() && state->isFCPresent()){
+    desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";

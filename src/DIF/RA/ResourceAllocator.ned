@@ -20,7 +20,6 @@ package rina.DIF.RA;
 import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
-import rina.policies.DIF.RA.Forwarding.IntPDUFTGPolicy;
 import rina.policies.DIF.RA.PDUFG.IntPDUFG;
 
 

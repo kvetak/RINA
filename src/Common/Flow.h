@@ -319,6 +319,18 @@ class Flow : public cObject
      */
     void setDeallocInvokeId(long deallocInvokeId);
 
+    /**
+     * @brief Gets whether flow is for Degenerate Data Transfer
+     * @return True if DDT otherwise false
+     */
+    bool isDdtFlag() const;
+
+    /**
+     * @brief Sets Degenerate Data Transfer flag
+     * @param ddtFlag True if DDT otherwise false
+     */
+    void setDdtFlag(bool ddtFlag);
+
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
 
@@ -396,6 +408,11 @@ class Flow : public cObject
      * @brief Attribute holding persistant InvokeId used for deallocation
      */
     long deallocInvokeId;
+
+    /**
+     * @brief Attribute representing whether flow is for Degenerate Data Transfer or not
+     */
+    bool ddtFlag;
 
     /**
      * @brief Auxiliary function swapping source and destination PortIds

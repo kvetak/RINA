@@ -27,13 +27,12 @@ class FAITableEntry {
     enum EAllocateStatus {UNKNOWN,
         ALLOC_PEND, ALLOC_NEGA, ALLOC_ERR,
         TRANSFER,
-        FORWARDED,
+        FORWARDING, FORWARDED,
         DEALLOC_PEND, DEALLOCATED,
         DEINST_PEND, DEINSTANTIATED};
 
     FAITableEntry();
     FAITableEntry(Flow* nflow);
-    //FAITableEntry(FAIBase* nfai);
     virtual ~FAITableEntry();
 
     bool operator== (const FAITableEntry& other) const;

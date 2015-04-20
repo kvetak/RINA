@@ -36,7 +36,6 @@ public:
     void treatAuthRes(CDAPMessage *cmsg);
   protected:
 
-    int handle;
     int potentialConTimer;
     int currentConRetries;
     int maxConRetries;

@@ -44,31 +44,11 @@ class RMTPort : public cSimpleModule
     bool isOutputReady();
 
     /**
-     * Marks the port as ready to receive data.
-     */
-    void setOutputReady();
-
-    /**
-     * Marks the port as busy (e.g. when sending data through it).
-     */
-    void setOutputBusy();
-
-    /**
      * Returns the port state (ready to receive data/busy).
      *
      * @return port state
      */
     bool isInputReady();
-
-    /**
-     * Marks the port as ready to receive data.
-     */
-    void setInputReady();
-
-    /**
-     * Marks the port as busy (e.g. when sending data through it).
-     */
-    void setInputBusy();
 
     /**
      * Marks the port as blocked for sending (e.g. when (N-1)-EFCPI isn't keeping up).
@@ -210,6 +190,26 @@ class RMTPort : public cSimpleModule
 
     RMTQueues outputQueues;
     RMTQueues inputQueues;
+
+    /**
+     * Marks the port as ready to receive data.
+     */
+    void setOutputReady();
+
+    /**
+     * Marks the port as busy (e.g. when sending data through it).
+     */
+    void setOutputBusy();
+
+    /**
+     * Marks the port as ready to receive data.
+     */
+    void setInputReady();
+
+    /**
+     * Marks the port as busy (e.g. when sending data through it).
+     */
+    void setInputBusy();
 
     void postInitialize();
     void setFlow(Flow* flow);

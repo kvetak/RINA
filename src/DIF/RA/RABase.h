@@ -22,6 +22,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "QoSCube.h"
+#include "NM1FlowTable.h"
 #include "Flow.h"
 
 typedef std::list<QoSCube> QoSCubeSet;
@@ -36,11 +37,12 @@ class RABase : public cSimpleModule
     virtual void createNM1Flow(Flow *flow) = 0;
     virtual void createNM1FlowWithoutAllocate(Flow *flow) = 0;
     virtual void postNFlowAllocation(Flow* flow) = 0;
-    virtual void postNM1FlowAllocation(Flow* flow) = 0;
+    virtual void postNM1FlowAllocation(NM1FlowTableItem* ftItem) = 0;
     virtual void removeNM1Flow(Flow *flow) = 0;
     virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
-    virtual void blockNM1PortOutput(Flow* flow) = 0;
-    virtual void unblockNM1PortOutput(Flow* flow) = 0;
+    virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem) = 0;
+    virtual void unblockNM1PortOutput(NM1FlowTableItem* ftItem) = 0;
+    virtual NM1FlowTable* getFlowTable() = 0;
     virtual void signalizeSlowdownRequestToRIBd(cPacket* pdu) = 0;
     virtual void signalizeSlowdownRequestToEFCP(cObject* pdu) = 0;
 

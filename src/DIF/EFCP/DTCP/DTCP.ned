@@ -51,4 +51,5 @@ simple DTCP
         
         @signal[DCTP_SEQ_NUM_SENT](type="int");
         @statistic[dtcp-seq-num-sent](title="Sent sequence number"; source="DTCP_SEQ_NUM_SENT"; record=vector, last);
+
 }

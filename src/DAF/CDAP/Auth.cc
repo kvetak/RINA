@@ -91,7 +91,6 @@ void Auth::validate(CDAPMessage *cmsg) {
     cmsgCR->setOpCode(M_CONNECT_R);
     cmsgCR->setResult(result);
     cmsgCR->setAuth(cmsgC->getAuth());
-    cmsgCR->setHandle(cmsgC->getHandle());
 
     signalizeAuthResult(cmsgCR);
 }

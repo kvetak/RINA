@@ -18,7 +18,7 @@
 Define_Module(AESender);
 
 
-AESender::AESender() {
+AESender::AESender() : AE() {
     S_TIM_START           = "StartCommunication";
     S_TIM_COM             = "MakeCommunication";
     S_TIM_STOP            = "StopCommunication";
@@ -43,7 +43,10 @@ AESender::AESender() {
 }
 
 AESender::~AESender() {
-
+    connectionState = NIL;
+    FlowObject = NULL;
+    Irm = NULL;
+    Cdap = NULL;
 }
 
 void AESender::prepareAllocateRequest() {
@@ -115,7 +118,7 @@ void AESender::initialize()
     lastR = 0;
 
     //Watchers
-    WATCH_LIST(flows);
+    WATCH(FlowObject);
     WATCH(send);
     WATCH(received);
     WATCH(pingreceived);
@@ -147,21 +150,20 @@ void AESender::handleSelfMessage(cMessage *msg) {
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
 
-        Flow fl = Flow(src, dst);
-        fl.setQosParameters(this->getQoSRequirements());
+        FlowObject = new Flow(src, dst);
+        FlowObject->setQosParameters(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
-        insertFlow(fl);
+        insertFlow();
 
-        sendAllocationRequest(&flows.back());
+        sendAllocationRequest(FlowObject);
 
         //Schedule ComRequest
         cMessage* m = new cMessage(S_TIM_COM);
         scheduleAt(simTime()+sendAfter, m);
     }
     else if ( !strcmp(msg->getName(), S_TIM_STOP) ) {
-        //FIXME: Vesely - last flow in a list?!
-        sendDeallocationRequest(&flows.back());
+        sendDeallocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), S_TIM_COM) ) {
         if(stopAt > simTime()){
@@ -180,7 +182,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
             ping->setByteLength(msgSize);
 
             //Send message
-            sendData(&flows.back(), ping);
+            sendData(FlowObject, ping);
             send++;
             sendSize += msgSize;
 
@@ -224,7 +226,7 @@ void AESender::processMRead(CDAPMessage* msg) {
         pong->setObject(obj);
         pong->setByteLength(msg->getByteLength());
 
-        sendData(&flows.back(), pong);
+        sendData(FlowObject, pong);
 
         pingreceived++;
         pingreceivedSize += msg->getByteLength();

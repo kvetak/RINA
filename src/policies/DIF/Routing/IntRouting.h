@@ -20,23 +20,16 @@
 
 #include <vector>
 #include <string>
+#include "RINASignals.h"
 #include "IntRoutingUpdate.h"
-
-
-
 #include "Address.h"
 #include "IntPDUFG.h"
 
 class LisRoutingRecv;
 
 class IntRouting  : public cSimpleModule {
-    //Consts
-    const char* SIG_RIBD_RoutingUpdate;
-    const char* SIG_RIBD_RoutingUpdateReceived;
-
 public:
-    //Constructor/Destructor
-    IntRouting();
+    //Destructor
     virtual void finish();
 
     void receiveUpdate(IntRoutingUpdate * update);

@@ -27,7 +27,6 @@ void CDAP::handleMessage(cMessage* msg)
     //Pass CDAP message to AE or RIBd
     if (dynamic_cast<CDAPMessage*>(msg)) {
         CDAPMessage* cmsg = check_and_cast<CDAPMessage*>(msg);
-        cmsg->setHandle(cmsg->getArrivalGate()->getIndex());
         signalizeReceiveData(cmsg);
         //delete cmsg;
     }
@@ -53,7 +52,7 @@ void CDAP::sendData(CDAPMessage* cmsg) {
     take(check_and_cast<cOwnedObject*>(cmsg) );
 
     //Send message
-    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT, cmsg->getHandle());
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
     send(cmsg, out);
 }
 
