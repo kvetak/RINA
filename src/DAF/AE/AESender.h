@@ -21,6 +21,19 @@
 //RINASim libraries
 #include "AE.h"
 
+
+class PingMsg : public CDAP_M_Read {
+public:
+    PingMsg();
+    simtime_t pingAt;
+};
+
+class PongMsg : public CDAP_M_Read_R {
+public:
+    PongMsg(simtime_t pingAt);
+    simtime_t pingAt, pongAt;
+};
+
 class AESender : public AE
 {
     //Consts
