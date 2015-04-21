@@ -231,6 +231,7 @@ void AEBase::initQoSRequiremets() {
     cube.setBurstPeriod(burstPeriod);
     cube.setBurstDuration(burstDuration);
     cube.setUndetectedBitErr(undetectedBitErr);
+    cube.setPduDropProbability(pduDropProbab);
     cube.setMaxSduSize(maxSDUsize);
     cube.setPartialDelivery(partDeliv);
     cube.setIncompleteDelivery(incompleteDeliv);

@@ -133,11 +133,14 @@ void AESender::finish()
 {
     if(par("printAtEnd").boolValue()){
         EV << "At "<<this->getApni()<<endl;
-        EV << send << " ("<<sendSize << ")"<<endl;
-        EV << received << " ("<<receivedSize << ")"<<endl;
-        EV << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
-        EV << minDelay << " / "<<maxDelay<<endl;
-        EV << firstR << " -> "<<lastR<<endl;
+        if(FlowObject != NULL) {
+            EV << "With QoS " << FlowObject->getConId().getQoSId() <<endl;
+        }
+        EV << "send " << send << " ("<<sendSize << ")"<<endl;
+        EV << "pingsRcv "  << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
+        EV << "pongsRcv "  << received << " ("<<receivedSize << ")"<<endl;
+        EV << "delay "  << minDelay << " / "<<maxDelay<<endl;
+        EV << "timestamps "  << firstR << " -> "<<lastR<<endl;
         EV << "-----------------"<<endl;
     }
 }

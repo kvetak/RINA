@@ -34,6 +34,6 @@ network TwoScheduling
             @display("p=154,121");
         }
     connections allowunconnected:
-        host1.medium <--> DatarateChannel{delay = 50ms;} <--> router.medium[0];
-        host2.medium <--> DatarateChannel{delay = 50ms;} <--> router.medium[1];
+        host1.medium <--> DatarateChannel{delay = 50ms; datarate = 100 Mbps;} <--> router.medium[0];
+        host2.medium <--> DatarateChannel{delay = 50ms; datarate = 100 Mbps;} <--> router.medium[1];
 }

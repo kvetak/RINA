@@ -247,10 +247,10 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
         (getBurstDuration() <= other.getBurstDuration()) ? score++ : score--;
 
     if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
-        (getUndetectedBitErr() <= other.getUndetectedBitErr()) ? score++ : score--;
+        (getUndetectedBitErr() >= other.getUndetectedBitErr()) ? score++ : score--;
 
     if (getPduDropProbability() != VAL_QOSPARDONOTCARE)
-        (getPduDropProbability() <= other.getPduDropProbability()) ? score++ : score--;
+        (getPduDropProbability() >= other.getPduDropProbability()) ? score++ : score--;
 
     if (getMaxSduSize() != VAL_QOSPARDONOTCARE)
         (getMaxSduSize() <= other.getMaxSduSize()) ? score++ : score--;
@@ -262,19 +262,19 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
     (isForceOrder() == other.isForceOrder()) ? score++ : score--;
 
     if (getMaxAllowGap() != VAL_QOSPARDONOTCARE)
-        (getMaxAllowGap() <= other.getMaxAllowGap()) ? score++ : score--;
+        (getMaxAllowGap() >= other.getMaxAllowGap()) ? score++ : score--;
 
     if (getDelay() != VAL_QOSPARDONOTCARE)
-        (getDelay() <= other.getDelay()) ? score++ : score--;
+        (getDelay() >= other.getDelay()) ? score++ : score--;
 
     if (getJitter() != VAL_QOSPARDONOTCARE)
-        (getJitter() <= other.getJitter()) ? score++ : score--;
+        (getJitter() >= other.getJitter()) ? score++ : score--;
 
     if (getCostTime() != VAL_QOSPARDONOTCARE)
-        (getCostTime() <= other.getCostTime()) ? score++ : score--;
+        (getCostTime() >= other.getCostTime()) ? score++ : score--;
 
     if (getCostBits() != VAL_QOSPARDONOTCARE)
-        (getCostBits() <= other.getCostBits()) ? score++ : score--;
+        (getCostBits() >= other.getCostBits()) ? score++ : score--;
 
     if (getATime() != VAL_QOSPARDONOTCARE)
             (getATime() <= other.getATime()) ? score++ : score--;
@@ -283,6 +283,7 @@ short QoSCube::countFeasibilityScore(const QoSCube other) const {
 }
 
 bool QoSCube::isFeasibility(const QoSCube other) const {
+
     if (getAvgBand() != VAL_QOSPARDONOTCARE && getAvgBand() > other.getAvgBand())
         return false;
 
@@ -301,11 +302,13 @@ bool QoSCube::isFeasibility(const QoSCube other) const {
     if (getBurstDuration() != VAL_QOSPARDONOTCARE && getBurstDuration() > other.getBurstDuration())
         return false;
 
-    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE && getUndetectedBitErr() > other.getUndetectedBitErr())
+    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE && getUndetectedBitErr() < other.getUndetectedBitErr())
         return false;
 
-    if (getPduDropProbability() != VAL_QOSPARDONOTCARE && getPduDropProbability() > other.getPduDropProbability())
+    if (getPduDropProbability() != VAL_QOSPARDONOTCARE && getPduDropProbability() < other.getPduDropProbability()){
+        EV << getPduDropProbability() << " vs " << other.getPduDropProbability() <<endl;
         return false;
+    }
 
     if (getMaxSduSize() != VAL_QOSPARDONOTCARE && getMaxSduSize() > other.getMaxSduSize())
         return false;
@@ -319,24 +322,21 @@ bool QoSCube::isFeasibility(const QoSCube other) const {
     if(!other.isForceOrder() && isForceOrder())
         return false;
 
-    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE && getMaxAllowGap() > other.getMaxAllowGap())
+    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE && getMaxAllowGap() < other.getMaxAllowGap())
+        return false;
+    if (getDelay() != VAL_QOSPARDONOTCARE && getDelay() < other.getDelay())
         return false;
 
-    if (getDelay() != VAL_QOSPARDONOTCARE && getDelay() > other.getDelay())
+    if (getJitter() != VAL_QOSPARDONOTCARE && getJitter() < other.getJitter())
+        return false;
+    if (getCostTime() != VAL_QOSPARDONOTCARE && getCostTime() < other.getCostTime())
         return false;
 
-    if (getJitter() != VAL_QOSPARDONOTCARE && getJitter() > other.getJitter())
-        return false;
-
-    if (getCostTime() != VAL_QOSPARDONOTCARE && getCostTime() > other.getCostTime())
-        return false;
-
-    if (getCostBits() != VAL_QOSPARDONOTCARE && getCostBits() > other.getCostBits())
+    if (getCostBits() != VAL_QOSPARDONOTCARE && getCostBits() < other.getCostBits())
         return false;
 
     if (getATime() != VAL_QOSPARDONOTCARE && getATime() > other.getATime())
         return false;
-
     return true;
 }
 
