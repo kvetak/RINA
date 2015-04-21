@@ -14,16 +14,15 @@ vector<RMTPort * > QoSTable::lookup(const PDU * pdu){
     return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
 }
 vector<RMTPort * > QoSTable::lookup(const Address &dst, const unsigned short &qos){
-
     vector<RMTPort* > ret;
     string dstAddr = dst.getIpcAddress().getName();
 
     ret = lookupInt(dstAddr, qos);
 
-    if(! ret.empty() && qos == 0) {
+    if(ret.empty() && qos == 0) {
         for(QoSFWDTableIt qIt = table.begin(); qIt != table.end(); qIt++){
             ret = lookupInt(dstAddr, qIt->first);
-            if(ret.empty()) { return ret; }
+            if(!ret.empty()) { return ret; }
         }
     }
 

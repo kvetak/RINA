@@ -17,6 +17,7 @@ package rina.examples.TwoScheduling;
 
 import ned.DatarateChannel;
 import rina.CS.HostNAP;
+import rina.CS.InteriorRouter2Int;
 
 
 network TwoScheduling
@@ -29,7 +30,10 @@ network TwoScheduling
         host2: HostNAP {
             @display("p=231,92");
         }
+        router: InteriorRouter2Int {
+            @display("p=154,121");
+        }
     connections allowunconnected:
-//        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 50ms; ber = 0; } <--> host2.medium;
+        host1.medium <--> DatarateChannel{delay = 50ms;} <--> router.medium[0];
+        host2.medium <--> DatarateChannel{delay = 50ms;} <--> router.medium[1];
 }
