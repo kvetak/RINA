@@ -17,31 +17,38 @@
 
 #include <DLMonitor.h>
 
-Define_Module(DLMonitor);
+namespace DLMonitor {
 
+Define_Module(DLMonitor);
 
 dlCUInfo::dlCUInfo(){
     CUId = "";
+    queue = "outQ_";
     urgency = 0;
     threshold = 0;
 }
 dlCUInfo::dlCUInfo(std::string id){
     CUId = id;
+    queue = "outQ_";
+    queue.append(CUId);
     urgency = 0;
     threshold = 0;
 }
-dlCUInfo::dlCUInfo(std::string id, int urg, int thre){
+dlCUInfo::dlCUInfo(std::string id, std::string _queue, int urg, int thre){
     CUId = id;
+    queue = _queue;
     urgency = urg;
     threshold = thre;
 }
 
 void DLMonitor::onPolicyInit(){
+
     cXMLElement* cuXml = NULL;
-    if (par("cuData").xmlValue() != NULL && par("cuData").xmlValue()->hasChildren())
+    if (par("cuData").xmlValue() != NULL && par("cuData").xmlValue()->hasChildren()){
         cuXml = par("cuData").xmlValue();
-    else
+    } else {
         error("cuData parameter not initialized!");
+    }
 
     cXMLElementList cus = cuXml->getChildrenByTagName("CUItem");
     for (cXMLElementList::iterator it = cus.begin(); it != cus.end(); ++it) {
@@ -50,6 +57,7 @@ void DLMonitor::onPolicyInit(){
             EV << "Error parsing CU. Its ID is missing!" << endl;
             continue;
         }
+
         std::string cu = m->getAttribute("id");
         if (cu == "") {
             EV << "Error parsing CU. Its ID is missing!" << endl;
@@ -65,8 +73,7 @@ void DLMonitor::onPolicyInit(){
                 inf.urgency = n->getNodeValue() ? atoi(n->getNodeValue()) : 0;
                 if (inf.urgency < 0)
                     inf.urgency = 0;
-            }
-            else if ( !strcmp(n->getTagName(), "cherishThreshold") ) {
+            } else if ( !strcmp(n->getTagName(), "cherishThreshold") ) {
                 inf.threshold = n->getNodeValue() ? atoi(n->getNodeValue()) : 0;
                 if (inf.threshold < 0)
                     inf.threshold = 0;
@@ -75,76 +82,129 @@ void DLMonitor::onPolicyInit(){
 
         CUs[cu] = inf;
     }
-
 }
-
-
 
 void DLMonitor::onMessageArrival(RMTQueue* queue) {
-    if(queue->getType() == RMTQueue::INPUT){
-        return;
-    }
-
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
-        count[port]++;
-        std::string cu = Q2CU[queue];
-        int urgency = CUs[cu].urgency;
-
-        queues[port][urgency].push_back(queue);
-        lastInsertedUrgency[port] = urgency;
+        if(queue->getType() == RMTQueue::INPUT){
+            inC[port] ++;
+            if(inM[port] != queue) {
+                inQ[port].push_back(queue);
+            }
+        }
+        if(queue->getType() == RMTQueue::OUTPUT){
+            outC[port] ++;
+            if(outM[port] != queue) {
+                std::string cu = Q2CU[queue];
+                int urgency = CUs[cu].urgency;
+                outQs[port][urgency].push_back(queue);
+                lastInsertedUrgency[port] = urgency;
+            }
+        }
     }
 }
 
-void DLMonitor::onMessageDeparture(RMTQueue* queue) {
-    if(queue->getType() == RMTQueue::INPUT){
-        return;
-    }
-
-    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    if(port != NULL){
-        count[port]--;
-    }
-}
+void DLMonitor::onMessageDeparture(RMTQueue* queue) {}
 
 void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
-    if(queue->getType() == RMTQueue::INPUT){
-        return;
-    }
-
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
-        count[port]--;
-        queues[port][lastInsertedUrgency[port]].pop_back();
+        if(queue->getType() == RMTQueue::INPUT){
+            inC[port] --;
+            if(inM[port] != queue) {
+                inQ[port].pop_back();
+            }
+        } else {
+            outC[port] --;
+            if(outM[port] != queue) {
+                outQs[port][lastInsertedUrgency[port]].pop_back();
+            }
+        }
     }
 }
 
 void DLMonitor::postQueueCreation(RMTQueue* queue){
-    std::string cu = queue->getName();
-    if(CUs.find(cu) == CUs.end()){
-        cu == "BE";
+    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+    inM[port] = port->getManagementQueue(RMTQueue::INPUT);
+    outM[port] = port->getManagementQueue(RMTQueue::OUTPUT);
+
+    if(queue != inM[port] && queue != outM[port]) {
+
+        std::string cu = "BE";
+
+        for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
+            if(it->second.queue == queue->getName()){
+                cu = it->first;
+            }
+        }
+        Q2CU[queue] = cu;
     }
-    Q2CU[queue] = cu;
 }
 
-
-int DLMonitor::getPortCount(RMTPort* port){
-    return count[port];
+int DLMonitor::getInCount(RMTPort* port) {
+    return inC[port];
 }
 
-int DLMonitor::getThreshold(RMTQueue* queue){
+int DLMonitor::getInThreshold(RMTQueue * queue){
+    return queue->getMaxLength();
+}
+
+RMTQueue* DLMonitor::getNextInput(RMTPort* port){
+    RMTQueue* q = NULL;
+
+    if(inM[port]->getLength() > 0) {
+        q = inM[port];
+    } else {
+        QueuesList* ql = &(inQ[port]);
+        if(!ql->empty()) {
+            q = ql->front();
+            ql->pop_front();
+        }
+    }
+
+    if(q != NULL){
+        inC[port]--;
+    }
+
+    return q;
+}
+
+int DLMonitor::getOutCount(RMTPort* port){
+    return outC[port];
+}
+
+int DLMonitor::getOutThreshold(RMTQueue * queue){
+    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+    if(outM[port] == queue) {
+        return queue->getMaxLength();
+    }
     std::string cu = Q2CU[queue];
     return CUs[cu].threshold;
 }
 
-RMTQueue* DLMonitor::getNextUrgentQ(RMTPort * port){
-    PriorityQueuesList * qs = & queues[port];
-    for(PQListRIterator it = qs->rbegin(); it != qs->rend(); it++){
-        if(!it->second.empty()){
-            RMTQueue* q = it->second.front();
-            it->second.pop_front();
-            return q;
+RMTQueue* DLMonitor::getNextOutput(RMTPort* port){
+    RMTQueue* q = NULL;
+
+    if(outM[port]->getLength() > 0) {
+        q = outM[port];
+    } else {
+        PriorityQueuesList * qs = & outQs[port];
+        for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
+            if(!it->second.empty()){
+                q = it->second.front();
+                it->second.pop_front();
+            }
         }
     }
-    return NULL;
+
+    if(q != NULL){
+        outC[port]--;
+    }
+
+    return q;
+}
+
+
+
 }

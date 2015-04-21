@@ -17,9 +17,9 @@
 
 import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.DLMaxQ;
+package rina.policies.DIF.RMT.MaxQueue.PortMaxQ;
 
-simple DLMaxQ like IntRMTMaxQPolicy 
+simple PortMaxQ like IntRMTMaxQPolicy 
 {
     parameters:
         @display("i=block/socket");

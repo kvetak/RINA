@@ -25,7 +25,7 @@
 #include <vector>
 #include <list>
 
-namespace DLMonitor {
+namespace BEMonitor {
 
 using namespace std;
 
@@ -35,29 +35,7 @@ typedef map<RMTPort*, QueuesList > port2Queues;
 typedef map<RMTPort*, unsigned int > port2Count;
 
 
-struct dlCUInfo {
-    std::string CUId, queue;
-    int urgency;
-    int threshold;
-
-    dlCUInfo();
-    dlCUInfo(std::string id);
-    dlCUInfo(std::string id, std::string _queue, int urg, int thre);
-};
-
-typedef std::map<std::string, dlCUInfo> cuRepo;
-typedef cuRepo::iterator cuRepoiterator;
-
-typedef std::map<RMTQueue*, std::string> queue2CU;
-
-
-typedef std::map<int, QueuesList> PriorityQueuesList;
-typedef PriorityQueuesList::iterator PQListIterator;
-typedef PriorityQueuesList::reverse_iterator PQListRIterator;
-
-typedef std::map<RMTPort*, PriorityQueuesList> Port2PQ;
-
-class DLMonitor : public SmartMonitor
+class BEMonitor : public SmartMonitor
 {
 public:
     void onPolicyInit();
@@ -75,14 +53,9 @@ public:
     RMTQueue* getNextOutput(RMTPort* port);
 
   protected:
-    cuRepo CUs;
-    queue2CU Q2CU;
-
     port2Queue inM, outM;
-    port2Queues inQ;
-    Port2PQ outQs;
-
-    port2Count inC, outC, lastInsertedUrgency;
+    port2Queues inQ, outQ;
+    port2Count inC, outC;
 };
 
 }

@@ -19,15 +19,20 @@
 #define DLMaxQ_H_
 
 #include "RMTMaxQBase.h"
-#include "DLMonitor.h"
+#include "SmartMonitor.h"
 
-class DLMaxQ : public RMTMaxQBase
+#include <map>
+
+class PortMaxQ : public RMTMaxQBase
 {
   public:
     bool run(RMTQueue* queue);
     void onPolicyInit();
+    void finish();
   protected:
-    DLMonitor * monitor;
+    SmartMonitor * monitor;
+
+    std::map<unsigned short, unsigned int> dropIn, dropOut;
 };
 
-#endif /* ECNMARKER_H_ */
+#endif /*  */

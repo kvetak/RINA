@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,22 +15,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __RINA_DL_H_
-#define __RINA_DL_H_
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-#include <omnetpp.h>
+package rina.policies.DIF.RMT.Monitor.BEMonitor;
 
-#include "RMTSchedulingBase.h"
-#include "DLMonitor.h"
-
-class DL : public RMTSchedulingBase
+simple BEMonitor like IntRMTQMonitorPolicy 
 {
-public:
-    virtual void onPolicyInit();
-  private:
-    virtual void processQueues(RMTPort* port, RMTQueueType direction);
-  protected:
-    DLMonitor * monitor;
-};
-
-#endif
+    parameters:
+        @display("i=block/socket");
+        @class(BEMonitor::BEMonitor);
+}

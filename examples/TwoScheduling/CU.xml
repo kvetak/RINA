@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
 <Configuration>
   <CU>
-    <CUItem id="M">
-    	<urgency>5</urgency>
-    	<cherishThreshold>150</cherishThreshold>
-    </CUItem>
     <CUItem id="A1">
+    	<queue>outQ_A1</queue>
     	<urgency>2</urgency>
     	<cherishThreshold>100</cherishThreshold>
     </CUItem>
     <CUItem id="A2">
+    	<queue>outQ_A2</queue>
     	<urgency>2</urgency>
-    	<cherishThreshold>66</cherishThreshold>
+    	<cherishThreshold>50</cherishThreshold>
     </CUItem>
     <CUItem id="B1">
+    	<queue>outQ_A1</queue>
     	<urgency>1</urgency>
     	<cherishThreshold>100</cherishThreshold>
     </CUItem>
     <CUItem id="B2">
+    	<queue>outQ_B2</queue>
     	<urgency>1</urgency>
-    	<cherishThreshold>0</cherishThreshold>
+    	<cherishThreshold>50</cherishThreshold>
     </CUItem>
     <CUItem id="BE">
+    	<queue>outQ_BE</queue>
     	<urgency>0</urgency>
-    	<cherishThreshold>33</cherishThreshold>
+    	<cherishThreshold>20</cherishThreshold>
     </CUItem>
   </CU>
   
   <qos2CU>
-  	<qos id="0" cu="M" />
   	<qos id="1" cu="A1" />
   	<qos id="2" cu="A2" />
   	<qos id="3" cu="B1" />

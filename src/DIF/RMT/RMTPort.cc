@@ -198,7 +198,9 @@ cGate* RMTPort::getSouthOutputGate() const
 RMTQueue* RMTPort::getManagementQueue(RMTQueueType type) const
 {
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
-
+    if(queueVect.empty()) {
+        return NULL;
+    }
     return queueVect.front();
 }
 

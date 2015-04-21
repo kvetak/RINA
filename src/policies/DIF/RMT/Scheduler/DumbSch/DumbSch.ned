@@ -15,10 +15,10 @@
 
 import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
 
-package rina.policies.DIF.RMT.Scheduler.DL;
+package rina.policies.DIF.RMT.Scheduler.DumbSch;
 
 
-simple DL like IntRMTSchedulingPolicy
+simple DumbSch like IntRMTSchedulingPolicy
 {
     parameters:
         @display("i=block/socket");
