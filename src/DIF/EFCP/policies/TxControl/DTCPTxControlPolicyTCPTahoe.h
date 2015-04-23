@@ -47,6 +47,7 @@ public:
     uint32 rxSent;
     uint32 ackRcvd;
     uint32 packetSize;
+    uint32 flightSize;
 
     bool slowedDown;
 

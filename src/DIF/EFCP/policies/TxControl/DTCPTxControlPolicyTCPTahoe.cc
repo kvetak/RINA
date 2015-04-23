@@ -28,6 +28,7 @@ DTCPTxControlPolicyTCPTahoe::DTCPTxControlPolicyTCPTahoe() {
     rxSent = 0;
     ackRcvd = 0;
     snd_cwnd = RST_WND;
+    flightSize = 0;
 }
 
 DTCPTxControlPolicyTCPTahoe::~DTCPTxControlPolicyTCPTahoe() {
@@ -58,12 +59,12 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
     int sendCredit = 0;
     double time = simTime().dbl();
     time = time + 1;
-    slowedDown = false;
 
     if( state != STATE_STARTING_SLOW_START ) {
         if( dtcpState->ackRcvd > ackRcvd ) {
             uint32 n = 0;
             n = dtcpState->ackRcvd - ackRcvd;
+            flightSize -= n;
             ackRcvd = dtcpState->ackRcvd;
 
             if(state == STATE_SLOW_START && n > 10)
@@ -81,7 +82,8 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
                     snd_cwnd += 1 / snd_cwnd; // snd_cwnd += SMSS * SMSS / snd_cwnd;
             }
 
-            sendCredit = int(snd_cwnd) - old_cwnd + n;
+//            sendCredit = int(snd_cwnd) - old_cwnd + n;
+            sendCredit = int(snd_cwnd) - flightSize;
         }
 
         if( dtcpState->getRxSent() >  rxSent) {
@@ -106,7 +108,7 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
     // -------------  adding packets to send queue
     std::vector<DataTransferPDU*>::iterator it;
     PDUQ_t* pduQ = NULL;
-    uint32 sentNo = 1;
+    int sentNo = 1;
 
     for(int i = 1; i <= 2; i++) {
         if (dtcpState->getClosedWinQueLen() > 0) {
@@ -116,6 +118,8 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
 
         for (it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSenderRightWinEdge() && sentNo <= sendCredit; sentNo++) {
             dtpState->pushBackToPostablePDUQ((*it));
+            flightSize++;
+            slowedDown = false;
             it = pduQ->erase(it);
         }
     }
