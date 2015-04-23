@@ -42,7 +42,7 @@ vector<RMTPort * > QoSTable::lookupInt(const string &dst, const unsigned short &
 string QoSTable::toString(){
     std::ostringstream os;
 
-    os << this->getName()<<endl;
+    os << this->getFullPath()<<endl;
 
     for(QoSFWDTableIt qIt = table.begin(); qIt != table.end(); qIt++){
         os << "\tQoS : " <<qIt->first << endl;
