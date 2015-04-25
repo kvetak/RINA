@@ -34,10 +34,6 @@ void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     {
         ra->createNM1FlowWithoutAllocate(flow);
     }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
 }
 
 void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -47,11 +43,6 @@ void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* o
     {
         ra->postNFlowAllocation(flow);
     }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
-
 }
 
 void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -60,10 +51,6 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
     if (flow && !flow->isDdtFlag())
     {
         ra->postNFlowAllocation(flow);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
     }
 }
 
@@ -77,10 +64,6 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
     if (item != NULL)
     {
         ra->postNM1FlowAllocation(item);
-    }
-    else
-    {
-        return;
     }
 }
 
@@ -112,10 +95,6 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
     if (pdu)
     {
         ra->signalizeSlowdownRequestToRIBd(pdu);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
     }
 }
 

@@ -92,15 +92,15 @@ class RMTPort : public cSimpleModule
      */
     const Flow* getFlow() const;
 
-    /**
-     * Returns the port's management queue.
-     * Note: this will go away soon when we start dedicating entire (N-1)-flows
-     *       for management purposes
-     *
-     * @param type direction of data
-     * @return management queue
-     */
-    RMTQueue* getManagementQueue(RMTQueueType type) const;
+//    /**
+//     * Returns the port's management queue.
+//     * Note: this will go away soon when we start dedicating entire (N-1)-flows
+//     *       for management purposes
+//     *
+//     * @param type direction of data
+//     * @return management queue
+//     */
+//    RMTQueue* getManagementQueue(RMTQueueType type) const;
 
     /**
      * Returns the first queue available on this port.

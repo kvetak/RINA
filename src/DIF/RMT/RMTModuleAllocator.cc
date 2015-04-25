@@ -108,17 +108,17 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     return queue;
 }
 
-void RMTModuleAllocator::addMgmtQueues(RMTPort* port)
-{
-    cModule* inQ = addQueue(RMTQueue::INPUT, port, "M");
-    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, "M");
-
-    cDisplayString& dispIn = inQ->getDisplayString();
-    cDisplayString& dispOut = outQ->getDisplayString();
-
-    dispIn.setTagArg("i2", 0, "status/execute");
-    dispOut.setTagArg("i2", 0, "status/execute");
-}
+//void RMTModuleAllocator::addMgmtQueues(RMTPort* port)
+//{
+//    cModule* inQ = addQueue(RMTQueue::INPUT, port, "M");
+//    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, "M");
+//
+//    cDisplayString& dispIn = inQ->getDisplayString();
+//    cDisplayString& dispOut = outQ->getDisplayString();
+//
+//    dispIn.setTagArg("i2", 0, "status/execute");
+//    dispOut.setTagArg("i2", 0, "status/execute");
+//}
 
 RMTPort* RMTModuleAllocator::addPort(Flow* flow)
 {
@@ -142,6 +142,10 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     if (flow == NULL)
     {
         interfacePort = port;
+    }
+    else if (flow->getConId().getQoSId() == 42)
+    {
+        portDisp.setTagArg("i2", 0, "status/execute");
     }
 
     return port;

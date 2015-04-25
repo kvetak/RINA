@@ -515,7 +515,7 @@ void RMT::ribToPort(CDAPMessage* cdap)
     RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
     if (outPort != NULL)
     {
-        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
     }
 
     if (outQueue != NULL)
@@ -580,7 +580,7 @@ void RMT::portToPort(cMessage* msg)
                << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
-        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
     }
     else
     {
