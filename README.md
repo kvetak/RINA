@@ -35,59 +35,62 @@ RINA Simulator
 		/policies				... all programable RINA policies
 
 ###Policies
-	/DAF                    ... DAF policies
-	/DIF                    ... DIF policies
-	    /FA                     ... Policies related to FA modules
+	/DAF                           ... DAF policies
+	/DIF                           ... DIF policies
+	    /FA                        ... policies related to FA modules
 	        /AllocateRetry
 	            /LimitedRetries
 	        /NewFlowRequest
 	            /NewFlowRequest
-	    /RA                     ... Policies related to RA modules
-	        /AddressComparator
-	            /ExactMatch
-	            /PrefixMatch
-	        /PDUFG
-	            /BiDomainGenerator
-	            /QoSDomainGenerator
-	            /SimpleGenerator
-	            /SingleDomainGenerator
-	            /StaticGenerator
-	        /QueueAlloc
-	            /QueuePerNCU
-	            /QueuePerNFlow
-	            /QueuePerNQoS
-	            /SingleQueue
-	        /QueueIDGen
-	            /IDPerNCU
-	            /IDPerNFlow
-	            /IDPerNQoS
-	            /SingleID
-	    /RMT                    ... Policies related to RMT modules
-	        /MaxQueue
-	            /ECNMarker
-	            /PortMaxQ
-	            /ReadRateReducer
-	            /REDDropper
-	            /TailDrop
-	            /UpstreamNotifier
-	        /Monitor
+	    /RA                            ... policies related to RA modules
+	        /AddressComparator         ... policy used for determining whether a PDU address matches the IPCP's address  
+	            /ExactMatch            ... exact matching
+	            /PrefixMatch           ... matching based on address prefix
+	        /PDUFG                     ... PDU Forwarding Generator providing data used by the PDU Forwarding policy 
+	            /BiDomainGenerator     
+	            /QoSDomainGenerator    
+	            /SimpleGenerator       
+	            /SingleDomainGenerator 
+	            /StaticGenerator       ... load forwarding information from XML configuration 
+	        /QueueAlloc                ... (N-1)-port queue allocation strategy
+	            /QueuePerNCU           
+	            /QueuePerNFlow         ... one queue per (N)-flow 
+	            /QueuePerNQoS          ... one queue per (N)-QoS cube
+	            /SingleQueue           ... one queue for all
+	        /QueueIDGen                ... companion policy to QueueAlloc; returns queue ID for given PDU or Flow object 
+	            /IDPerNCU              ... used with QueueAlloc::QueuePerNCU
+	            /IDPerNFlow            ... used with QueueAlloc::QueuePerNFlow
+	            /IDPerNQoS             ... used with QueueAlloc::QueuePerNQoS
+	            /SingleID              ... used with QueueAlloc::SingleQueue
+	    /RMT                           ... policies related to RMT modules
+	        /MaxQueue                  ... policy invoked when a queue size grows over its threshold 
+	            /ECNMarker             ... if queue size >= threshold, apply ECN marking on new PDUs; if size >= max, drop
+	            /PortMaxQ              
+	            /ReadRateReducer       ... if queue size >= allowed maximum, stop receiving data from input ports 
+	            /REDDropper            ... used with Monitor::REDMonitor; Random Early Detection implementation
+	            /TailDrop              ... if queue size >= allowed maximum, drop new PDUs
+	            /UpstreamNotifier      ... if queue size >= allowed maximum, send a notification to the PDU sender
+	        /Monitor                   ... state-keeping policy invoked on various queue events 
 	            /BEMonitor
 	            /DLMonitor
-	            /REDMonitor
-	            /SimpleMonitor
+	            /REDMonitor            ... used with MaxQueue::REDDropper; Random Early Detection implementation
+	            /SimpleMonitor         ... noop
 	            /SmartMonitor
-	        /PDUForwarding
+	        /PDUForwarding             ... policy used to decide where to forward a PDU
 	            /DomainTable
-	            /MiniTable
+	            /MiniTable             ... a table with {dstAddr -> port} mappings
 	            /QoSTable
-	            /SimpleTable
-	        /Scheduler
-	            /LongestQFirst
-	            /DumbSch
-	    /Routing                ... Routing policies
+	            /SimpleTable           ... a table with {(dstAddr, QoS) -> port} mappings
+	        /Scheduler                 ... policy deciding which (N-1)-port queue should be processed next
+	            /DL 
+	            /LongestQFirst         ... pick the queue which contains the most PDUs 
+	    /Routing                       ... routing policies
 	        /DomainRouting
-	        /DummyRouting
+	        /DummyRouting              ... noop
 	        /SimpleRouting
-	
+	            /SimpleDV              ... a simple distance vector-like protocol
+	            /SimpleLS              ... a simple link-state-like protocol
+	        
+	           
 	
 	
