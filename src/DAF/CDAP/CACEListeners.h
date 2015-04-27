@@ -33,6 +33,14 @@ public:
         CACE* cace;
 };
 
+class LisCACESendData : public CACEListeners {
+public:
+    LisCACESendData(CACE* ncace): CACEListeners(ncace){};
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+};
+
+//TODO: remove unused listeners
+
 class LisCACEConReq : public CACEListeners {
 public:
     LisCACEConReq(CACE* ncace): CACEListeners(ncace){};

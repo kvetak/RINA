@@ -13,21 +13,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.Enrollment;
+#ifndef __RINA_ENROLLMENTSTATETABLE_H_
+#define __RINA_ENROLLMENTSTATETABLE_H_
 
-//
-// TODO auto-generated module
-//
-simple Enrollment
+#include <omnetpp.h>
+#include "Flow.h"
+#include "EnrollmentStateTableEntry.h"
+
+typedef std::list<EnrollmentStateTableEntry> EnrollStateTable;
+typedef EnrollStateTable::iterator EnrollStateTableIter;
+typedef EnrollStateTable::const_iterator EnrollStateTableConstIter;
+
+class EnrollmentStateTable : public cSimpleModule
 {
-    parameters:
-    	@display("i=block/arrival");
-	    
-	    //Authentication
-        int authType							= default(0);
-        string authName							= default("0");
-        string authPassword						= default("0");
-        string authOther						= default("0");
-        
-        int maxConRetries						= default(1);
-}
+public:
+    void insert(EnrollmentStateTableEntry entry);
+    EnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+  private:
+    EnrollStateTable StateTable;
+};
+
+#endif

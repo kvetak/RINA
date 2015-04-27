@@ -13,21 +13,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.Enrollment;
+#include <OperationObj.h>
 
-//
-// TODO auto-generated module
-//
-simple Enrollment
-{
-    parameters:
-    	@display("i=block/arrival");
-	    
-	    //Authentication
-        int authType							= default(0);
-        string authName							= default("0");
-        string authPassword						= default("0");
-        string authOther						= default("0");
-        
-        int maxConRetries						= default(1);
+OperationObj::OperationObj() {
+}
+
+OperationObj::~OperationObj() {
+}
+
+void OperationObj::setSrcAddress(const Address& srcAddr) {
+    this->srcAddr = srcAddr;
+}
+
+void OperationObj::setDstAddress(const Address& dstAddr) {
+    this->dstAddr = dstAddr;
+}
+
+OperationObj* OperationObj::dup() const {
+
+    OperationObj* obj = new OperationObj();
+    obj->setSrcAddress(this->getSrcAddress());
+    obj->setDstAddress(this->getDstAddress());
+
+    return obj;
+}
+
+const Address& OperationObj::getSrcAddress() const {
+    return srcAddr;
+}
+
+const Address& OperationObj::getDstAddress() const {
+    return dstAddr;
 }

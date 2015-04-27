@@ -15,19 +15,17 @@
 
 package rina.DIF.Enrollment;
 
-//
-// TODO auto-generated module
-//
-simple Enrollment
+
+network EnrollmentModule
 {
     parameters:
-    	@display("i=block/arrival");
-	    
-	    //Authentication
-        int authType							= default(0);
-        string authName							= default("0");
-        string authPassword						= default("0");
-        string authOther						= default("0");
-        
-        int maxConRetries						= default(1);
+        @display("i=block/arrival;bgb=281,170");
+
+    submodules:
+        enrollment: Enrollment {
+            @display("p=82,83");
+        }
+        enrollmentStateTable: EnrollmentStateTable {
+            @display("p=197,83");
+        }
 }

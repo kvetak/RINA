@@ -23,6 +23,7 @@
 #include "ExternConsts.h"
 #include "AE.h"
 
+class LisCACESendData;
 class LisCACEConReq;
 class LisCACERelReq;
 class LisCACEAuthRes;
@@ -34,6 +35,8 @@ public:
     void processMConnectResPosi(CDAPMessage *cmsg);
     void processMConnectResNega(CDAPMessage *cmsg);
     void treatAuthRes(CDAPMessage *cmsg);
+
+    void sendData(CDAPMessage *cmsg);
   protected:
 
     int potentialConTimer;
@@ -46,9 +49,13 @@ public:
     simsignal_t sigCACEConResNega;
     simsignal_t sigCACERelRes;
 
+    simsignal_t sigCACEReceiveData;
+
     LisCACEConReq* lisCACEConReq;
     LisCACERelReq* lisCACERelReq;
     LisCACEAuthRes* lisCACEAuthRes;
+
+    LisCACESendData* lisCACESendData;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -59,6 +66,7 @@ public:
     void processMRelease();
     void processMReleaseR(CDAPMessage *cmsg);
     void sendMessage(CDAPMessage *cmsg);
+    void signalizeDataReceive(CDAPMessage* cmsg);
     void signalizeAuthenticationRequest(CDAPMessage* cmsg);
     void signalizeConnResponseNegative(CDAPMessage* cmsg);
     void signalizeConnResponsePositive(CDAPMessage* cmsg);

@@ -27,15 +27,41 @@ extern const char* SIG_RIBD_CreateFlowResponsePositive;
 extern const char* SIG_RIBD_ForwardingUpdateReceived;
 extern const char* SIG_RIBD_RoutingUpdateReceived;
 extern const char* SIG_RIBD_CongestionNotification;
+//TODO:remove this signal
+extern const char* SIG_RIBD_EnrollmentObjReceived;
+
+extern const char* SIG_RIBD_StartEnrollmentRequest;
+extern const char* SIG_RIBD_StartEnrollmentResponse;
+extern const char* SIG_RIBD_StopEnrollmentRequest;
+extern const char* SIG_RIBD_StopEnrollmentResponse;
+extern const char* SIG_RIBD_StartOperationRequest;
+extern const char* SIG_RIBD_StartOperationResponse;
+
+extern const char* SIG_RIBD_ConnectionResponsePositive;
+extern const char* SIG_RIBD_ConnectionResponseNegative;
+extern const char* SIG_RIBD_ConnectionRequest;
+extern const char* SIG_RIBD_CACESend;
+
+//Enrollment
+extern const char* SIG_ENROLLMENT_DataSend;
+extern const char* SIG_ENROLLMENT_CACEDataSend;
+extern const char* SIG_ENROLLMENT_StartEnrollmentRequest;
+extern const char* SIG_ENROLLMENT_StartEnrollmentResponse;
+extern const char* SIG_ENROLLMENT_StopEnrollmentRequest;
+extern const char* SIG_ENROLLMENT_StopEnrollmentResponse;
+extern const char* SIG_ENROLLMENT_StartOperationRequest;
+extern const char* SIG_ENROLLMENT_StartOperationResponse;
 
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
+extern const char* SIG_CDAP_SendData;
 
 //CACE
 extern const char* SIG_CACE_ConnectionResponsePositive;
 extern const char* SIG_CACE_ConnectionResponseNegative;
 extern const char* SIG_CACE_ReleaseResponse;
 extern const char* SIG_CACE_AuthenticationRequest;
+extern const char* SIG_CACE_DataReceive;
 
 //Auth
 extern const char* SIG_Auth_AuthenticationResponse;

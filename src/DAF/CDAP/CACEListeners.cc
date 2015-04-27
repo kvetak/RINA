@@ -24,6 +24,16 @@ CACEListeners::~CACEListeners() {
     cace = NULL;
 }
 
+void LisCACESendData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cace->getFullPath() << endl;
+    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
+    if (msg)
+        cace->sendData(msg);
+    else
+        EV << "Received not a CACEMessage!" << endl;
+}
+
 void LisCACEConReq::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)

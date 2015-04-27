@@ -31,7 +31,7 @@ void CACE::handleMessage(cMessage *msg)
     //check message and process it to CACEStateMachine
     if (dynamic_cast<CDAPMessage*>(msg)) {
         CDAPMessage* cmsg = check_and_cast<CDAPMessage*>(msg);
-        CACEStateMachine(cmsg);
+        signalizeDataReceive(cmsg);
     }
 }
 
@@ -49,6 +49,7 @@ void CACE::initSignalsAndListeners(){
     sigCACEConResNega = registerSignal(SIG_CACE_ConnectionResponseNegative);
     sigCACERelRes = registerSignal(SIG_CACE_ReleaseResponse);
     sigCACEAuthReq = registerSignal(SIG_CACE_AuthenticationRequest);
+    sigCACEReceiveData = registerSignal(SIG_CACE_DataReceive);
 
     //Signals that this module is processing
     //connection request from AE
@@ -62,6 +63,10 @@ void CACE::initSignalsAndListeners(){
     //authentication validation response from Auth
     lisCACEAuthRes = new LisCACEAuthRes(this);
     catcher2->subscribe(SIG_Auth_AuthenticationResponse, lisCACEAuthRes);
+
+    //send data from AE/Enrollment
+    lisCACESendData = new LisCACESendData(this);
+    catcher->subscribe(SIG_RIBD_CACESend, lisCACESendData);
 
 }
 
@@ -250,6 +255,18 @@ void CACE::processMReleaseR(CDAPMessage *cmsg){
 
 void CACE::sendMessage(CDAPMessage *cmsg){
 
+}
+
+void CACE::sendData(CDAPMessage *cmsg){
+    Enter_Method("CACE SendData()");
+    take(check_and_cast<cOwnedObject*>(cmsg) );
+
+    cGate* out = gateHalf(GATE_SPLITIO, cGate::OUTPUT);
+    send(cmsg, out);
+}
+
+void CACE::signalizeDataReceive(CDAPMessage* cmsg) {
+    emit(sigCACEReceiveData, cmsg);
 }
 
 void CACE::signalizeConnResponseNegative(CDAPMessage* cmsg){

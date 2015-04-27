@@ -19,7 +19,7 @@ package rina.DIF;
 import rina.Common.Test;
 import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.DIF.EFCP.EFCPModule;
-import rina.DIF.Enrollment.Enrollment;
+import rina.DIF.Enrollment.EnrollmentModule;
 import rina.DIF.FA.FlowAllocator;
 import rina.DIF.RA.ResourceAllocator;
 import rina.DIF.RIB.RIBDaemon;
@@ -52,7 +52,7 @@ module IPCProcess
         efcp: EFCPModule {
             @display("p=79,50");
         }
-        enrollment: Enrollment {
+        enrollmentModule: EnrollmentModule {
             @display("p=390,50");
         }
         routingPolicy: <routingPolicyName> like IntRouting {

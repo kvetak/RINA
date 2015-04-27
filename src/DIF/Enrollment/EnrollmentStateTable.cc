@@ -13,21 +13,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.Enrollment;
+#include "EnrollmentStateTable.h"
 
-//
-// TODO auto-generated module
-//
-simple Enrollment
+Define_Module(EnrollmentStateTable);
+
+void EnrollmentStateTable::initialize()
 {
-    parameters:
-    	@display("i=block/arrival");
-	    
-	    //Authentication
-        int authType							= default(0);
-        string authName							= default("0");
-        string authPassword						= default("0");
-        string authOther						= default("0");
-        
-        int maxConRetries						= default(1);
+    WATCH_LIST(StateTable);
+}
+
+void EnrollmentStateTable::insert(EnrollmentStateTableEntry entry) {
+    StateTable.push_back(entry);
+}
+
+EnrollmentStateTableEntry* EnrollmentStateTable::findEntryByDstAPN(const APN& apn) {
+    for(EnrollStateTableIter it = StateTable.begin(); it != StateTable.end(); ++it) {
+        EnrollmentStateTableEntry est = *it;
+        if (est.getFlow()->getDstAddr().getApname() == apn)
+            return &(*it);
+    }
+    return NULL;
+}
+
+void EnrollmentStateTable::handleMessage(cMessage *msg)
+{
+
 }
