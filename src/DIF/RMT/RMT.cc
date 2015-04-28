@@ -282,6 +282,7 @@ void RMT::postQueueDeparture(cObject* obj)
 {
     Enter_Method("postQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+
     qMonPolicy->postPDURelease(queue);
 
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
