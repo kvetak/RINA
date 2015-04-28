@@ -233,6 +233,7 @@ OBJS = \
     $O/src/DAF/IRM/IRMListeners.o \
     $O/src/DAF/IRM/ConnectionTable.o \
     $O/src/DIF/Delimiting/Delimiting.o \
+    $O/src/DIF/EFCP/EFCPPolicySet.o \
     $O/src/DIF/EFCP/EFCPInstance.o \
     $O/src/DIF/EFCP/EFCP.o \
     $O/src/DIF/EFCP/DTCP/DTCPState.o \
@@ -582,6 +583,7 @@ $O/policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.o: policies/DIF/EFCP/DTCP/ECN/DT
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyDefault.o: policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyDefault.cc \
 	policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.h \
@@ -606,6 +608,7 @@ $O/policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyDefault.o: policies/DIF/EFCP/DTCP/ECN
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.o: policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.h \
@@ -629,6 +632,7 @@ $O/policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.o: policies/DIF/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/FCOverrun/DTCPFCOverrunPolicyBase.o: policies/DIF/EFCP/DTCP/FCOverrun/DTCPFCOverrunPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/FCOverrun/DTCPFCOverrunPolicyBase.h \
@@ -652,6 +656,7 @@ $O/policies/DIF/EFCP/DTCP/FCOverrun/DTCPFCOverrunPolicyBase.o: policies/DIF/EFCP
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.o: policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
@@ -675,6 +680,7 @@ $O/policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.o: policie
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.o: policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
@@ -698,6 +704,7 @@ $O/policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.o: policie
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.o: policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
@@ -721,6 +728,7 @@ $O/policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.o: policie
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.o: policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
@@ -744,6 +752,7 @@ $O/policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.o: policies/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/RcvrAck/DTCPRcvrAckPolicyBase.o: policies/DIF/EFCP/DTCP/RcvrAck/DTCPRcvrAckPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/RcvrAck/DTCPRcvrAckPolicyBase.h \
@@ -767,6 +776,7 @@ $O/policies/DIF/EFCP/DTCP/RcvrAck/DTCPRcvrAckPolicyBase.o: policies/DIF/EFCP/DTC
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.o: policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
@@ -790,6 +800,7 @@ $O/policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.o: policie
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.o: policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
@@ -813,6 +824,7 @@ $O/policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.o: policies/DIF/EFCP/DTCP/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.o: policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
@@ -836,6 +848,7 @@ $O/policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.o: policies/DIF/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.o: policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
@@ -859,6 +872,7 @@ $O/policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.o: policies/DIF/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/SenderAck/DTCPSenderAckPolicyBase.o: policies/DIF/EFCP/DTCP/SenderAck/DTCPSenderAckPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/SenderAck/DTCPSenderAckPolicyBase.h \
@@ -882,6 +896,7 @@ $O/policies/DIF/EFCP/DTCP/SenderAck/DTCPSenderAckPolicyBase.o: policies/DIF/EFCP
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/SendingAck/DTCPSendingAckPolicyBase.o: policies/DIF/EFCP/DTCP/SendingAck/DTCPSendingAckPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/SendingAck/DTCPSendingAckPolicyBase.h \
@@ -906,6 +921,7 @@ $O/policies/DIF/EFCP/DTCP/SendingAck/DTCPSendingAckPolicyBase.o: policies/DIF/EF
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTCP/TxControl/DTCPTxControlPolicyBase.o: policies/DIF/EFCP/DTCP/TxControl/DTCPTxControlPolicyBase.cc \
 	policies/DIF/EFCP/DTCP/TxControl/DTCPTxControlPolicyBase.h \
@@ -929,6 +945,7 @@ $O/policies/DIF/EFCP/DTCP/TxControl/DTCPTxControlPolicyBase.o: policies/DIF/EFCP
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTP/InitialSeqNum/DTPInitialSeqNumPolicyBase.o: policies/DIF/EFCP/DTP/InitialSeqNum/DTPInitialSeqNumPolicyBase.cc \
 	policies/DIF/EFCP/DTP/InitialSeqNum/DTPInitialSeqNumPolicyBase.h \
@@ -952,6 +969,7 @@ $O/policies/DIF/EFCP/DTP/InitialSeqNum/DTPInitialSeqNumPolicyBase.o: policies/DI
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTP/RTTEstimator/DTPRTTEstimatorPolicyBase.o: policies/DIF/EFCP/DTP/RTTEstimator/DTPRTTEstimatorPolicyBase.cc \
 	policies/DIF/EFCP/DTP/RTTEstimator/DTPRTTEstimatorPolicyBase.h \
@@ -975,6 +993,7 @@ $O/policies/DIF/EFCP/DTP/RTTEstimator/DTPRTTEstimatorPolicyBase.o: policies/DIF/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTP/RcvrInactivity/DTPRcvrInactivityPolicyBase.o: policies/DIF/EFCP/DTP/RcvrInactivity/DTPRcvrInactivityPolicyBase.cc \
 	policies/DIF/EFCP/DTP/RcvrInactivity/DTPRcvrInactivityPolicyBase.h \
@@ -998,6 +1017,7 @@ $O/policies/DIF/EFCP/DTP/RcvrInactivity/DTPRcvrInactivityPolicyBase.o: policies/
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/policies/DIF/EFCP/DTP/SenderInactivity/DTPSenderInactivityPolicyBase.o: policies/DIF/EFCP/DTP/SenderInactivity/DTPSenderInactivityPolicyBase.cc \
 	policies/DIF/EFCP/DTP/SenderInactivity/DTPSenderInactivityPolicyBase.h \
@@ -1021,6 +1041,7 @@ $O/policies/DIF/EFCP/DTP/SenderInactivity/DTPSenderInactivityPolicyBase.o: polic
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/Common/APN.o: src/Common/APN.cc \
 	src/Common/APN.h
@@ -1036,12 +1057,14 @@ $O/src/Common/CongestionDescriptor.o: src/Common/CongestionDescriptor.cc \
 	src/Common/ConnectionId.h \
 	src/Common/ExternConsts.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/ConnectionId.o: src/Common/ConnectionId.cc \
 	src/Common/ConnectionId.h \
 	src/Common/ExternConsts.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/DAP.o: src/Common/DAP.cc \
 	src/Common/DAP.h
 $O/src/Common/Data.o: src/Common/Data.cc \
@@ -1060,7 +1083,8 @@ $O/src/Common/Flow.o: src/Common/Flow.cc \
 	src/Common/ExternConsts.h \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/ModuleAccess.o: src/Common/ModuleAccess.cc \
 	src/Common/ModuleAccess.h
 $O/src/Common/PDU.o: src/Common/PDU.cc \
@@ -1072,7 +1096,8 @@ $O/src/Common/PDU.o: src/Common/PDU.cc \
 	src/Common/PDU.h \
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/PDU_m.o: src/Common/PDU_m.cc \
 	src/Common/APN.h \
 	src/Common/Address.h \
@@ -1081,13 +1106,15 @@ $O/src/Common/PDU_m.o: src/Common/PDU_m.cc \
 	src/Common/ExternConsts.h \
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/Policy.o: src/Common/Policy.cc \
 	src/Common/Policy.h
 $O/src/Common/QoSCube.o: src/Common/QoSCube.cc \
 	src/Common/ExternConsts.h \
 	src/Common/Policy.h \
-	src/Common/QoSCube.h
+	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/Common/RINASignals.o: src/Common/RINASignals.cc \
 	src/Common/RINASignals.h
 $O/src/Common/SDU.o: src/Common/SDU.cc \
@@ -1139,6 +1166,7 @@ $O/src/DAF/AE/AE.o: src/DAF/AE/AE.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1153,7 +1181,8 @@ $O/src/DAF/AE/AEBase.o: src/DAF/AE/AEBase.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
-	src/DAF/AE/AEBase.h
+	src/DAF/AE/AEBase.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/DAF/AE/AEExtendedPing.o: src/DAF/AE/AEExtendedPing.cc \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \
@@ -1184,6 +1213,7 @@ $O/src/DAF/AE/AEExtendedPing.o: src/DAF/AE/AEExtendedPing.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1217,6 +1247,7 @@ $O/src/DAF/AE/AEListeners.o: src/DAF/AE/AEListeners.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1251,6 +1282,7 @@ $O/src/DAF/AE/AEPing.o: src/DAF/AE/AEPing.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1285,6 +1317,7 @@ $O/src/DAF/AE/AESender.o: src/DAF/AE/AESender.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1319,6 +1352,7 @@ $O/src/DAF/AE/AEStream.o: src/DAF/AE/AEStream.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1384,6 +1418,7 @@ $O/src/DAF/AE/EFCPListeners.o: src/DAF/AE/EFCPListeners.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -1442,6 +1477,7 @@ $O/src/DAF/CDAP/Auth.o: src/DAF/CDAP/Auth.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1477,6 +1513,7 @@ $O/src/DAF/CDAP/AuthListeners.o: src/DAF/CDAP/AuthListeners.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1512,6 +1549,7 @@ $O/src/DAF/CDAP/CACE.o: src/DAF/CDAP/CACE.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1547,6 +1585,7 @@ $O/src/DAF/CDAP/CACEListeners.o: src/DAF/CDAP/CACEListeners.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1618,6 +1657,7 @@ $O/src/DAF/DA/DA.o: src/DAF/DA/DA.cc \
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1670,6 +1710,7 @@ $O/src/DAF/IRM/ConnectionTable.o: src/DAF/IRM/ConnectionTable.cc \
 	src/Common/QoSCube.h \
 	src/DAF/IRM/ConnectionTable.h \
 	src/DAF/IRM/ConnectionTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1685,6 +1726,7 @@ $O/src/DAF/IRM/ConnectionTableEntry.o: src/DAF/IRM/ConnectionTableEntry.cc \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
 	src/DAF/IRM/ConnectionTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1714,6 +1756,7 @@ $O/src/DAF/IRM/IRM.o: src/DAF/IRM/IRM.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1743,6 +1786,7 @@ $O/src/DAF/IRM/IRMListeners.o: src/DAF/IRM/IRMListeners.cc \
 	src/DAF/IRM/ConnectionTableEntry.h \
 	src/DAF/IRM/IRM.h \
 	src/DAF/IRM/IRMListeners.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -1765,6 +1809,7 @@ $O/src/DIF/Delimiting/Delimiting.o: src/DIF/Delimiting/Delimiting.cc \
 	src/DIF/Delimiting/Delimiting.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/EFCP.o: src/DIF/EFCP/EFCP.cc \
 	policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.h \
@@ -1828,6 +1873,7 @@ $O/src/DIF/EFCP/EFCP.o: src/DIF/EFCP/EFCP.cc \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCP.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -1914,6 +1960,7 @@ $O/src/DIF/EFCP/EFCPInstance.o: src/DIF/EFCP/EFCPInstance.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
@@ -1939,6 +1986,8 @@ $O/src/DIF/EFCP/EFCPInstance.o: src/DIF/EFCP/EFCPInstance.cc \
 	src/policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
 	src/policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
 	src/policies/DIF/RMT/Scheduler/RMTSchedulingBase.h
+$O/src/DIF/EFCP/EFCPPolicySet.o: src/DIF/EFCP/EFCPPolicySet.cc \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/DIF/EFCP/DTCP/ControlPDU_m.o: src/DIF/EFCP/DTCP/ControlPDU_m.cc \
 	src/Common/APN.h \
 	src/Common/Address.h \
@@ -1949,7 +1998,8 @@ $O/src/DIF/EFCP/DTCP/ControlPDU_m.o: src/DIF/EFCP/DTCP/ControlPDU_m.cc \
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
-	src/DIF/EFCP/DTCP/ControlPDU_m.h
+	src/DIF/EFCP/DTCP/ControlPDU_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h
 $O/src/DIF/EFCP/DTCP/DTCP.o: src/DIF/EFCP/DTCP/DTCP.cc \
 	policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.h \
@@ -2008,6 +2058,7 @@ $O/src/DIF/EFCP/DTCP/DTCP.o: src/DIF/EFCP/DTCP/DTCP.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
@@ -2053,6 +2104,7 @@ $O/src/DIF/EFCP/DTCP/DTCPState.o: src/DIF/EFCP/DTCP/DTCPState.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTCP/DTCPTimers_m.o: src/DIF/EFCP/DTCP/DTCPTimers_m.cc \
 	src/Common/APN.h \
@@ -2073,6 +2125,7 @@ $O/src/DIF/EFCP/DTCP/DTCPTimers_m.o: src/DIF/EFCP/DTCP/DTCPTimers_m.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTCP/RXControl.o: src/DIF/EFCP/DTCP/RXControl.cc \
 	src/DIF/EFCP/DTCP/RXControl.h
@@ -2134,6 +2187,7 @@ $O/src/DIF/EFCP/DTP/DTP.o: src/DIF/EFCP/DTP/DTP.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
@@ -2178,6 +2232,7 @@ $O/src/DIF/EFCP/DTP/DTPState.o: src/DIF/EFCP/DTP/DTPState.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTP/DTPTimers_m.o: src/DIF/EFCP/DTP/DTPTimers_m.cc \
 	src/Common/APN.h \
@@ -2198,6 +2253,7 @@ $O/src/DIF/EFCP/DTP/DTPTimers_m.o: src/DIF/EFCP/DTP/DTPTimers_m.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTP/DataTransferPDU.o: src/DIF/EFCP/DTP/DataTransferPDU.cc \
 	src/Common/APN.h \
@@ -2217,6 +2273,7 @@ $O/src/DIF/EFCP/DTP/DataTransferPDU.o: src/DIF/EFCP/DTP/DataTransferPDU.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTP/DataTransferPDU_m.o: src/DIF/EFCP/DTP/DataTransferPDU_m.cc \
 	src/Common/APN.h \
@@ -2235,6 +2292,7 @@ $O/src/DIF/EFCP/DTP/DataTransferPDU_m.o: src/DIF/EFCP/DTP/DataTransferPDU_m.cc \
 	src/DAF/CDAP/CDAPMessage_m.h \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
 $O/src/DIF/EFCP/DTP/DumbGate.o: src/DIF/EFCP/DTP/DumbGate.cc \
 	src/DIF/EFCP/DTP/DumbGate.h
@@ -2311,6 +2369,7 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTable.o: src/DIF/EFCP/EFCPTable/EFCPTable.cc \
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -2398,6 +2457,7 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTableEntry.o: src/DIF/EFCP/EFCPTable/EFCPTableEntr
 	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
 	src/DIF/FA/FABase.h \
@@ -2488,6 +2548,7 @@ $O/src/DIF/FA/FA.o: src/DIF/FA/FA.cc \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCP.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -2531,6 +2592,7 @@ $O/src/DIF/FA/FABase.o: src/DIF/FA/FABase.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2597,6 +2659,7 @@ $O/src/DIF/FA/FAI.o: src/DIF/FA/FAI.cc \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCP.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -2637,6 +2700,7 @@ $O/src/DIF/FA/FAIBase.o: src/DIF/FA/FAIBase.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FAIBase.h
 $O/src/DIF/FA/FAIListeners.o: src/DIF/FA/FAIListeners.cc \
 	policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.h \
@@ -2700,6 +2764,7 @@ $O/src/DIF/FA/FAIListeners.o: src/DIF/FA/FAIListeners.cc \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCP.h \
 	src/DIF/EFCP/EFCPInstance.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCPTable/EFCPTable.h \
 	src/DIF/EFCP/EFCPTable/EFCPTableEntry.h \
 	src/DIF/EFCP/EFCP_defs.h \
@@ -2740,6 +2805,7 @@ $O/src/DIF/FA/FAITable.o: src/DIF/FA/FAITable.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
 	src/DIF/FA/FAITableEntry.h
@@ -2753,6 +2819,7 @@ $O/src/DIF/FA/FAITableEntry.o: src/DIF/FA/FAITableEntry.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITableEntry.h
 $O/src/DIF/FA/FAListeners.o: src/DIF/FA/FAListeners.cc \
@@ -2765,6 +2832,7 @@ $O/src/DIF/FA/FAListeners.o: src/DIF/FA/FAListeners.cc \
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2798,6 +2866,7 @@ $O/src/DIF/RA/NM1FlowTable.o: src/DIF/RA/NM1FlowTable.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2821,6 +2890,7 @@ $O/src/DIF/RA/NM1FlowTableItem.o: src/DIF/RA/NM1FlowTableItem.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2843,6 +2913,7 @@ $O/src/DIF/RA/QueueAllocBase.o: src/DIF/RA/QueueAllocBase.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2870,6 +2941,7 @@ $O/src/DIF/RA/QueueIDGenBase.o: src/DIF/RA/QueueIDGenBase.cc \
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h
 $O/src/DIF/RA/RA.o: src/DIF/RA/RA.cc \
 	src/Common/APN.h \
@@ -2896,6 +2968,7 @@ $O/src/DIF/RA/RA.o: src/DIF/RA/RA.cc \
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2934,6 +3007,7 @@ $O/src/DIF/RA/RABase.o: src/DIF/RA/RABase.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2958,6 +3032,7 @@ $O/src/DIF/RA/RAListeners.o: src/DIF/RA/RAListeners.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -2984,6 +3059,7 @@ $O/src/DIF/RIB/RIBd.o: src/DIF/RIB/RIBd.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RIB/RIBd.h \
 	src/DIF/RIB/RIBdBase.h \
 	src/DIF/RIB/RIBdListeners.h \
@@ -3002,6 +3078,7 @@ $O/src/DIF/RIB/RIBdBase.o: src/DIF/RIB/RIBdBase.cc \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RIB/RIBdBase.h \
 	src/policies/DIF/Routing/IntRoutingUpdate.h
 $O/src/DIF/RIB/RIBdListeners.o: src/DIF/RIB/RIBdListeners.cc \
@@ -3018,6 +3095,7 @@ $O/src/DIF/RIB/RIBdListeners.o: src/DIF/RIB/RIBdListeners.cc \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RIB/RIBdBase.h \
 	src/DIF/RIB/RIBdListeners.h \
 	src/policies/DIF/Routing/IntRoutingUpdate.h
@@ -3035,6 +3113,7 @@ $O/src/DIF/RMT/RMT.o: src/DIF/RMT/RMT.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3074,6 +3153,7 @@ $O/src/DIF/RMT/RMTMaxQBase.o: src/DIF/RMT/RMTMaxQBase.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3096,6 +3176,7 @@ $O/src/DIF/RMT/RMTModuleAllocator.o: src/DIF/RMT/RMTModuleAllocator.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3117,6 +3198,7 @@ $O/src/DIF/RMT/RMTPort.o: src/DIF/RMT/RMTPort.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h
@@ -3134,6 +3216,7 @@ $O/src/DIF/RMT/RMTQMonitorBase.o: src/DIF/RMT/RMTQMonitorBase.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3152,6 +3235,7 @@ $O/src/DIF/RMT/RMTQueue.o: src/DIF/RMT/RMTQueue.cc \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTQueue.h
 $O/src/DIF/RMT/RMTSchedulingBase.o: src/DIF/RMT/RMTSchedulingBase.cc \
 	src/Common/APN.h \
@@ -3167,6 +3251,7 @@ $O/src/DIF/RMT/RMTSchedulingBase.o: src/DIF/RMT/RMTSchedulingBase.cc \
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3184,6 +3269,7 @@ $O/src/policies/DIF/FA/AllocateRetry/AllocateRetryBase.o: src/policies/DIF/FA/Al
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/FA/AllocateRetry/AllocateRetryBase.h
 $O/src/policies/DIF/FA/AllocateRetry/LimitedRetries/LimitedRetries.o: src/policies/DIF/FA/AllocateRetry/LimitedRetries/LimitedRetries.cc \
 	src/Common/APN.h \
@@ -3195,6 +3281,7 @@ $O/src/policies/DIF/FA/AllocateRetry/LimitedRetries/LimitedRetries.o: src/polici
 	src/Common/Flow.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/FA/AllocateRetry/AllocateRetryBase.h \
 	src/policies/DIF/FA/AllocateRetry/LimitedRetries/LimitedRetries.h
 $O/src/policies/DIF/FA/NewFlowRequest/NewFlowRequestBase.o: src/policies/DIF/FA/NewFlowRequest/NewFlowRequestBase.cc \
@@ -3211,6 +3298,7 @@ $O/src/policies/DIF/FA/NewFlowRequest/NewFlowRequestBase.o: src/policies/DIF/FA/
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3236,6 +3324,7 @@ $O/src/policies/DIF/FA/NewFlowRequest/QoSCubeComparer/QoSCubeComparer.o: src/pol
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3262,6 +3351,7 @@ $O/src/policies/DIF/FA/NewFlowRequest/QoSCubeComparerMin/QoSCubeComparerMin.o: s
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3313,6 +3403,7 @@ $O/src/policies/DIF/RA/PDUFG/IntBbPDUFG.o: src/policies/DIF/RA/PDUFG/IntBbPDUFG.
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3352,6 +3443,7 @@ $O/src/policies/DIF/RA/PDUFG/IntPDUFG.o: src/policies/DIF/RA/PDUFG/IntPDUFG.cc \
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3376,6 +3468,7 @@ $O/src/policies/DIF/RA/PDUFG/PDUFGNeighbor.o: src/policies/DIF/RA/PDUFG/PDUFGNei
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/PDUFG/PDUFGNeighbor.h \
@@ -3405,6 +3498,7 @@ $O/src/policies/DIF/RA/PDUFG/BiDomainGenerator/BiDomainGenerator.o: src/policies
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3445,6 +3539,7 @@ $O/src/policies/DIF/RA/PDUFG/SimpleGenerator/SimpleGenerator.o: src/policies/DIF
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3484,6 +3579,7 @@ $O/src/policies/DIF/RA/PDUFG/SingleDomainGenerator/SingleDomainGenerator.o: src/
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3524,6 +3620,7 @@ $O/src/policies/DIF/RA/PDUFG/StaticGenerator/StaticGenerator.o: src/policies/DIF
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3550,6 +3647,7 @@ $O/src/policies/DIF/RA/QueueAlloc/QueuePerNCU/QueuePerNCU.o: src/policies/DIF/RA
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3580,6 +3678,7 @@ $O/src/policies/DIF/RA/QueueAlloc/QueuePerNFlow/QueuePerNFlow.o: src/policies/DI
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3610,6 +3709,7 @@ $O/src/policies/DIF/RA/QueueAlloc/QueuePerNQoS/QueuePerNQoS.o: src/policies/DIF/
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3640,6 +3740,7 @@ $O/src/policies/DIF/RA/QueueAlloc/SingleQueue/SingleQueue.o: src/policies/DIF/RA
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -3668,6 +3769,7 @@ $O/src/policies/DIF/RA/QueueIDGen/IDPerNCU/IDPerNCU.o: src/policies/DIF/RA/Queue
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/RA/QueueIDGen/IDPerNCU/IDPerNCU.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h
 $O/src/policies/DIF/RA/QueueIDGen/IDPerNFlow/IDPerNFlow.o: src/policies/DIF/RA/QueueIDGen/IDPerNFlow/IDPerNFlow.cc \
@@ -3682,6 +3784,7 @@ $O/src/policies/DIF/RA/QueueIDGen/IDPerNFlow/IDPerNFlow.o: src/policies/DIF/RA/Q
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/RA/QueueIDGen/IDPerNFlow/IDPerNFlow.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h
 $O/src/policies/DIF/RA/QueueIDGen/IDPerNQoS/IDPerNQoS.o: src/policies/DIF/RA/QueueIDGen/IDPerNQoS/IDPerNQoS.cc \
@@ -3696,6 +3799,7 @@ $O/src/policies/DIF/RA/QueueIDGen/IDPerNQoS/IDPerNQoS.o: src/policies/DIF/RA/Que
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/RA/QueueIDGen/IDPerNQoS/IDPerNQoS.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h
 $O/src/policies/DIF/RA/QueueIDGen/SingleID/SingleID.o: src/policies/DIF/RA/QueueIDGen/SingleID/SingleID.cc \
@@ -3710,6 +3814,7 @@ $O/src/policies/DIF/RA/QueueIDGen/SingleID/SingleID.o: src/policies/DIF/RA/Queue
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
 	src/policies/DIF/RA/QueueIDGen/SingleID/SingleID.h
 $O/src/policies/DIF/RMT/MaxQueue/DLMaxQ/DLMaxQ.o: src/policies/DIF/RMT/MaxQueue/DLMaxQ/DLMaxQ.cc \
@@ -3726,6 +3831,7 @@ $O/src/policies/DIF/RMT/MaxQueue/DLMaxQ/DLMaxQ.o: src/policies/DIF/RMT/MaxQueue/
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3750,6 +3856,7 @@ $O/src/policies/DIF/RMT/MaxQueue/ECNMarker/ECNMarker.o: src/policies/DIF/RMT/Max
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3773,6 +3880,7 @@ $O/src/policies/DIF/RMT/MaxQueue/REDDropper/REDDropper.o: src/policies/DIF/RMT/M
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3797,6 +3905,7 @@ $O/src/policies/DIF/RMT/MaxQueue/ReadRateReducer/ReadRateReducer.o: src/policies
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3821,6 +3930,7 @@ $O/src/policies/DIF/RMT/MaxQueue/TailDrop/TailDrop.o: src/policies/DIF/RMT/MaxQu
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3844,6 +3954,7 @@ $O/src/policies/DIF/RMT/MaxQueue/UpstreamNotifier/UpstreamNotifier.o: src/polici
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3867,6 +3978,7 @@ $O/src/policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.o: src/policies/DIF/RMT/Moni
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3889,6 +4001,7 @@ $O/src/policies/DIF/RMT/Monitor/REDMonitor/REDMonitor.o: src/policies/DIF/RMT/Mo
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3911,6 +4024,7 @@ $O/src/policies/DIF/RMT/Monitor/SimpleMonitor/SimpleMonitor.o: src/policies/DIF/
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -3933,6 +4047,7 @@ $O/src/policies/DIF/RMT/PDUForwarding/IntPDUForwarding.o: src/policies/DIF/RMT/P
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
@@ -3952,6 +4067,7 @@ $O/src/policies/DIF/RMT/PDUForwarding/DomainTable/DomainTable.o: src/policies/DI
 	src/Common/RINASignals.h \
 	src/Common/Utils.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
@@ -3971,6 +4087,7 @@ $O/src/policies/DIF/RMT/PDUForwarding/MiniTable/MiniTable.o: src/policies/DIF/RM
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
@@ -3990,6 +4107,7 @@ $O/src/policies/DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.o: src/policies/DI
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
 	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
@@ -4009,6 +4127,7 @@ $O/src/policies/DIF/RMT/Scheduler/DL/DL.o: src/policies/DIF/RMT/Scheduler/DL/DL.
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -4032,6 +4151,7 @@ $O/src/policies/DIF/RMT/Scheduler/LongestQFirst/LongestQFirst.o: src/policies/DI
 	src/Common/QoSCube.h \
 	src/Common/RINASignals.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h \
@@ -4064,6 +4184,7 @@ $O/src/policies/DIF/Routing/IntBbRouting.o: src/policies/DIF/Routing/IntBbRoutin
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4101,6 +4222,7 @@ $O/src/policies/DIF/Routing/IntRouting.o: src/policies/DIF/Routing/IntRouting.cc
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4142,6 +4264,7 @@ $O/src/policies/DIF/Routing/DomainRouting/Routing.o: src/policies/DIF/Routing/Do
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4182,6 +4305,7 @@ $O/src/policies/DIF/Routing/DomainRouting/rModule.o: src/policies/DIF/Routing/Do
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4220,6 +4344,7 @@ $O/src/policies/DIF/Routing/DomainRouting/DV/DV.o: src/policies/DIF/Routing/Doma
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4259,6 +4384,7 @@ $O/src/policies/DIF/Routing/DomainRouting/LS/LS.o: src/policies/DIF/Routing/Doma
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4298,6 +4424,7 @@ $O/src/policies/DIF/Routing/DummyRouting/DummyRouting.o: src/policies/DIF/Routin
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4335,6 +4462,7 @@ $O/src/policies/DIF/Routing/SimpleRouting/SimpleDV/SimpleDV.o: src/policies/DIF/
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \
@@ -4373,6 +4501,7 @@ $O/src/policies/DIF/Routing/SimpleRouting/SimpleLS/SimpleLS.o: src/policies/DIF/
 	src/DAF/DA/NeighborTableEntry.h \
 	src/DAF/DA/SearchTable.h \
 	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/FA/FABase.h \
 	src/DIF/FA/FAIBase.h \
 	src/DIF/FA/FAITable.h \

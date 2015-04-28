@@ -31,6 +31,7 @@
 //RINASim libraries
 #include "Policy.h"
 #include "ExternConsts.h"
+#include "EFCPPolicySet.h"
 
 extern const char* STR_DONOTCARE;
 extern const char* STR_YES;
@@ -145,6 +146,13 @@ class QoSCube {
      * @brief Vector of bound default policies
      */
     std::vector<Policy*> policyList;
+
+
+    /**
+     * @brief Vector of bound default policies
+     */
+    const EFCPPolicySet* efcpPolicies;
+
   public:
     /**
      * @brief Constructor of QoSCube with undefined values
@@ -411,6 +419,8 @@ class QoSCube {
      * @return String of QoSCube textual representation
      */
     std::string info() const;
+    const EFCPPolicySet* getEfcpPolicies() const;
+    void setEfcpPolicies(const EFCPPolicySet* efcpPolicies);
 };
 
 //Free function

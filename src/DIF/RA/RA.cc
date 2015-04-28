@@ -47,6 +47,7 @@ const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
 const char* ELEM_ATIME               = "ATime";
+const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 void RA::initialize(int stage)
 {
@@ -273,6 +274,8 @@ void RA::initQoSCubes()
         int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
         double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
 
+        EFCPPolicySet* efcpPolicies = new EFCPPolicySet();
+
         cXMLElementList attrs = m->getChildren();
         for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
             cXMLElement* n = *jt;
@@ -358,7 +361,10 @@ void RA::initQoSCubes()
               aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
               if (aTime < 0)
                   aTime = VAL_QOSPARDONOTCARE;
-          }
+           }else if(!strcmp(n->getTagName(), ELEM_EFCPPOL)) {
+             efcpPolicies->init(n);
+           }
+
         }
 
         cube.setAvgBand(avgBand);
@@ -379,6 +385,7 @@ void RA::initQoSCubes()
         cube.setCostBits(costbits);
         cube.setCostTime(costtime);
         cube.setATime(aTime);
+        cube.setEfcpPolicies(efcpPolicies);
 
         QoSCubes.push_back(cube);
     }
