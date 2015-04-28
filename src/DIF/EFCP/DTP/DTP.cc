@@ -1134,7 +1134,12 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       //TODO A4 Report change in specs
       //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
       //but if this is the first PDU we send, we have to update it here
-      dtcp->updateSenderLWE(dtcp->getDTCPState()->getRxQ()->front()->getPdu()->getSeqNum());
+      if(dtcp->getDTCPState()->getRxQLen()){
+        dtcp->updateSenderLWE(dtcp->getDTCPState()->getRxQ()->front()->getPdu()->getSeqNum());
+      }else{
+        dtcp->updateSenderLWE(state->getLastSeqNumSent());
+      }
+
 
     }
     else
