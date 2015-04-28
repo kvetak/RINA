@@ -243,6 +243,8 @@ void RMT::preQueueDeparture(cObject* obj)
     Enter_Method("preQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
 
+    qMonPolicy->onMessageDeparture(queue);
+
     if (tracing)
     {
         tracePDUEvent(queue->getFirstPDU(), MSG_DEQUEUE);
@@ -262,7 +264,7 @@ void RMT::postQueueDeparture(cObject* obj)
 {
     Enter_Method("postQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
-    qMonPolicy->onMessageDeparture(queue);
+    //qMonPolicy->onMessageDeparture(queue);
 
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     port->substractWaiting(queue->getType());
