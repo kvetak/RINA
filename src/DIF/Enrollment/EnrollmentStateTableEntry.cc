@@ -16,8 +16,8 @@
 #include <EnrollmentStateTableEntry.h>
 
 EnrollmentStateTableEntry::EnrollmentStateTableEntry() :
-    flow(NULL), conStatus(this->CON_NIL), connectRetries(0),
-    isInitiator(false), enrollStatus(this->ENROLLMENT_NIL)
+    conStatus(this->CON_NIL), enrollStatus(this->ENROLL_NIL), connectRetries(0),
+    immediateEnrollment(false), isInitiator(false),flow(NULL)
 {
 }
 
@@ -26,7 +26,7 @@ EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) {
     this->conStatus = this->CON_CONNECTPENDING;
     this->connectRetries = 0;
     this->isInitiator = false;
-    this->enrollStatus = this->ENROLLMENT_NIL;
+    this->enrollStatus = this->ENROLL_NIL;
 }
 
 EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) {
@@ -34,7 +34,7 @@ EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentState
     this->conStatus = status;
     this->connectRetries = 0;
     this->isInitiator = isInitiator;
-    this->enrollStatus = this->ENROLLMENT_NIL;
+    this->enrollStatus = this->ENROLL_NIL;
 }
 
 EnrollmentStateTableEntry::~EnrollmentStateTableEntry() {
@@ -51,6 +51,14 @@ int EnrollmentStateTableEntry::getCurrentConnectRetries() {
 
 bool EnrollmentStateTableEntry::getIsInitiator() {
     return isInitiator;
+}
+
+bool EnrollmentStateTableEntry::getIsImmediateEnrollment() {
+    return immediateEnrollment;
+}
+
+void EnrollmentStateTableEntry::setIsImmediateEnrollment(bool immediate) {
+    this->immediateEnrollment = immediate;
 }
 
 EnrollmentStateTableEntry::CACEConnectionStatus EnrollmentStateTableEntry::getCACEConStatus() const{
@@ -78,7 +86,7 @@ EnrollmentStateTableEntry::EnrollmentStatus EnrollmentStateTableEntry::getEnroll
 
 
 std::string EnrollmentStateTableEntry::getCACEConnectionStatus() const {
-    switch(this->conStatus){
+    switch(this->conStatus) {
         case CON_ERROR: return "error";
         case CON_NIL: return "nil";
         case CON_FLOWPENDING: return "flow pending";
@@ -86,12 +94,32 @@ std::string EnrollmentStateTableEntry::getCACEConnectionStatus() const {
         case CON_AUTHENTICATING: return "authenticating";
         case CON_ESTABLISHED: return "established";
         case CON_RELEASING: return "releasing";
+
+        default: return "UNKNOWN";
+    }
+}
+
+std::string EnrollmentStateTableEntry::getEnrollmentStatusInfo() const {
+    switch(this->enrollStatus) {
+        case ENROLL_ERROR: return "error";
+        case ENROLL_NIL: return "nil";
+        case ENROLL_WAIT_START_ENROLLMENT: return "wait start enrollment";
+        case ENROLL_WAIT_START_RESPONSE_ENROLLMENT: return "wait start response enrollment";
+        case ENROLL_WAIT_STOP_ENROLLMENT: return "wait stop enrollment";
+        case ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT: return "wait stop response enrollment";
+        case ENROLL_WAIT_READ_RESPONSE: return "wait read response";
+        case ENROLL_WAIT_START_OPERATION: return "wait start operation";
+        case ENROLL_CREATING_OBJ: return "creating obj";
+        case ENROLL_ENROLLED: return "enrolled";
+
+        default: return "UNKNOWN";
     }
 }
 
 std::string EnrollmentStateTableEntry::info() const {
     std::ostringstream os;
     os << "CACEConnectionStatus: " << this->getCACEConnectionStatus() << endl;
+    os << "EnrollmentStatus: " << this->getEnrollmentStatusInfo() << endl;
 
     return os.str();
 }

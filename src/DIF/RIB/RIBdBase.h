@@ -56,6 +56,7 @@ class RIBdBase : public cSimpleModule {
 
     virtual void sendCongestionNotification(PDU* pdu) = 0;
 
+    void setMyAddress(const Address& addr);
     const Address& getMyAddress() const;
 
   protected:

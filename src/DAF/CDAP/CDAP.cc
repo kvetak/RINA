@@ -45,8 +45,6 @@ void CDAP::initSignalsAndListeners() {
     lisCDAPSendData = new LisCDAPSendData(this);
     catcher->subscribe(SIG_AE_DataSend, lisCDAPSendData);
     catcher->subscribe(SIG_RIBD_DataSend, lisCDAPSendData);
-    if(catcher2)
-        catcher2->subscribe(SIG_ENROLLMENT_DataSend, lisCDAPSendData);
 }
 
 void CDAP::sendData(CDAPMessage* cmsg) {

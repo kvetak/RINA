@@ -30,19 +30,16 @@ public:
                                CON_ESTABLISHED,
                                CON_RELEASING};
 
-    enum EnrollmentStatus {ENROLLMENT_NIL,
-                            ENROLLMENT_AWAIT_START_ENROLLMENT,
-                            ENROLLMENT_AWAIT_START_RESPONSE_ENROLLMENT,
-
-
-                            ENROLLMENT_SENDING_OBJECTS,
-                            ENROLLMENT_WAIT_FOR_OBJECTS_OR_STOP_ENROLLMENT,
-
-                            ENROLLMENT_POSSIBLY_READ_AND_WAIT_FOR_STOP_RESPONSE_ENROLLMENT,
-                            ENROLLMENT_POSSIBLY_READ,
-                            ENROLLMENT_WAIT_START_OPERATION,
-                            ENROLLMENT_POSSIBLY_READ_WAIT_FOR_M_START_OPERATION,
-                            ENROLLMENT_OPERATIONAL};
+    enum EnrollmentStatus {ENROLL_ERROR,
+                            ENROLL_NIL,
+                            ENROLL_WAIT_START_ENROLLMENT,
+                            ENROLL_WAIT_START_RESPONSE_ENROLLMENT,
+                            ENROLL_WAIT_STOP_ENROLLMENT,
+                            ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT,
+                            ENROLL_WAIT_READ_RESPONSE,
+                            ENROLL_WAIT_START_OPERATION,
+                            ENROLL_CREATING_OBJ,
+                            ENROLL_ENROLLED};
 
     EnrollmentStateTableEntry();
     EnrollmentStateTableEntry(Flow* flow);
@@ -54,6 +51,9 @@ public:
     EnrollmentStateTableEntry::CACEConnectionStatus getCACEConStatus() const;
     EnrollmentStateTableEntry::EnrollmentStatus getEnrollmentStatus() const;
     bool getIsInitiator();
+    bool getIsImmediateEnrollment();
+
+    void setIsImmediateEnrollment(bool immediate);
 
     void increaseCurrentConnectRetries();
     void setCACEConStatus(EnrollmentStateTableEntry::CACEConnectionStatus status);
@@ -61,11 +61,13 @@ public:
 
     std::string info() const;
     std::string getCACEConnectionStatus() const;
+    std::string getEnrollmentStatusInfo() const;
 
 private:
     CACEConnectionStatus conStatus;
     EnrollmentStatus enrollStatus;
     int connectRetries;
+    bool immediateEnrollment;
     bool isInitiator;
     Flow *flow;
 };

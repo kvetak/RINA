@@ -70,6 +70,8 @@ class Enrollment : public cSimpleModule
     void processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
     void processConResNega(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
     void processNewConReq(EnrollmentStateTableEntry* entry);
+    void processStopEnrollmentImmediate(EnrollmentStateTableEntry* entry);
+    void processStopEnrollmentResponse(EnrollmentStateTableEntry* entry);
 
 
 

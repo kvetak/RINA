@@ -285,24 +285,23 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDRcvEnrollCACE = new LisRIBDRcvEnrollCACE(this);
     catcher2->subscribe(SIG_ENROLLMENT_CACEDataSend, lisRIBDRcvEnrollCACE);
 
-
     lisRIBDStaEnrolReq = new LisRIBDStaEnrolReq(this);
     catcher2->subscribe(SIG_ENROLLMENT_StartEnrollmentRequest, lisRIBDStaEnrolReq);
 
     lisRIBDStaEnrolRes = new LisRIBDStaEnrolRes(this);
-    catcher2->subscribe(SIG_ENROLLMENT_StartEnrollmentResponse, lisRIBDStaEnrolReq);
+    catcher2->subscribe(SIG_ENROLLMENT_StartEnrollmentResponse, lisRIBDStaEnrolRes);
 
     lisRIBDStoEnrolReq = new LisRIBDStoEnrolReq(this);
-    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentRequest, lisRIBDStaEnrolReq);
+    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentRequest, lisRIBDStoEnrolReq);
 
     lisRIBDStoEnrolRes = new LisRIBDStoEnrolRes(this);
-    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentResponse, lisRIBDStaEnrolReq);
+    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentResponse, lisRIBDStoEnrolRes);
 
     lisRIBDStaOperReq = new LisRIBDStaOperReq(this);
-    catcher2->subscribe(SIG_ENROLLMENT_StartOperationRequest, lisRIBDStaEnrolReq);
+    catcher2->subscribe(SIG_ENROLLMENT_StartOperationRequest, lisRIBDStaOperReq);
 
     lisRIBDStaOperRes = new LisRIBDStaOperRes(this);
-    catcher2->subscribe(SIG_ENROLLMENT_StartOperationResponse, lisRIBDStaEnrolReq);
+    catcher2->subscribe(SIG_ENROLLMENT_StartOperationResponse, lisRIBDStaOperRes);
 
 }
 
@@ -649,7 +648,7 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     msg->setOpCode(M_START);
 
     //TODO: check and rework generate invoke id
-    msg->setInvokeID(getNewInvokeId());
+    //msg->setInvokeID(getNewInvokeId());
 
     msg->setDstAddr(obj->getDstAddress());
 
@@ -673,7 +672,7 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     msg->setOpCode(M_START_R);
 
     //TODO: check and rework generate invoke id
-    msg->setInvokeID(getNewInvokeId());
+    //msg->setInvokeID(getNewInvokeId());
 
     msg->setDstAddr(obj->getDstAddress());
 
@@ -697,7 +696,7 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     msg->setOpCode(M_STOP);
 
     //TODO: check and rework generate invoke id
-    msg->setInvokeID(getNewInvokeId());
+    //msg->setInvokeID(getNewInvokeId());
 
     msg->setDstAddr(obj->getDstAddress());
 
@@ -721,7 +720,7 @@ void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     msg->setOpCode(M_STOP_R);
 
     //TODO: check and rework generate invoke id
-    msg->setInvokeID(getNewInvokeId());
+    //msg->setInvokeID(getNewInvokeId());
 
     msg->setDstAddr(obj->getDstAddress());
 
@@ -825,7 +824,7 @@ void RIBd::processMStopR(CDAPMessage* msg) {
 void RIBd::sendCACE(CDAPMessage* msg) {
     Enter_Method("sendCACE()");
 
-    //TODO: if M_CONNECT then add invoke id
+    //TODO: add invoke id
 
     signalizeSendCACE(msg);
 }

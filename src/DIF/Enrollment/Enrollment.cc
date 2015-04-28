@@ -24,12 +24,13 @@ const char* PAR_AUTH_PASS       = "authPassword";
 const char* PAR_CON_RETRIES     = "maxConRetries";
 
 Enrollment::Enrollment() :
-        StateTable(NULL)
+        StateTable(NULL), ribd(NULL)
 {
 }
 
 Enrollment::~Enrollment(){
-
+    StateTable = NULL;
+    ribd = NULL;
 }
 
 void Enrollment::initialize()
@@ -94,8 +95,6 @@ void Enrollment::initSignalsAndListeners() {
 
     lisEnrollmentConReq = new LisEnrollmentConReq(this);
     catcher1->subscribe(SIG_RIBD_ConnectionRequest, lisEnrollmentConReq);
-
-
 }
 
 void Enrollment::startCACE(Flow* flow) {
@@ -135,21 +134,6 @@ void Enrollment::startCACE(Flow* flow) {
 
     //send data to ribd to send
     signalizeCACESendData(msg);
-}
-
-void Enrollment::startEnrollment(EnrollmentStateTableEntry* entry) {
-    Enter_Method("startEnrollment()");
-
-    EnrollmentObj* enrollObj = new EnrollmentObj(entry->getFlow()->getSrcAddr(), entry->getFlow()->getDstAddr());
-
-    enrollObj->setAddress(APN(ribd->getMyAddress().getIpcAddress().getName()));
-
-    //TODO: add other necessary information
-
-    //process enrollment object to ribd to send
-    signalizeStartEnrollmentRequest(enrollObj);
-
-    entry->setEnrollmentStatus(EnrollmentStateTableEntry::Enroll)
 }
 
 void Enrollment::insertStateTableEntry(Flow* flow){
@@ -215,8 +199,15 @@ void Enrollment::receiveConnectRequest(CDAPMessage* msg) {
     authenticate(entry, cmsg);
 }
 
-void Enrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
-    Enter_Method("receiveStartEnrollmentRequest()");
+
+
+
+
+
+/*   enrollment initiator */
+
+void Enrollment::startEnrollment(EnrollmentStateTableEntry* entry) {
+    Enter_Method("startEnrollment()");
 
     EnrollmentObj* enrollObj = new EnrollmentObj(entry->getFlow()->getSrcAddr(), entry->getFlow()->getDstAddr());
 
@@ -226,25 +217,167 @@ void Enrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
 
     //process enrollment object to ribd to send
     signalizeStartEnrollmentRequest(enrollObj);
+
+    //set appropriate state
+    entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_START_RESPONSE_ENROLLMENT);
 }
 
 void Enrollment::receiveStartEnrollmentResponse(CDAPMessage* msg) {
     Enter_Method("receiveStartEnrollmentResponse()");
 
+    CDAP_M_Start_R* smsg = check_and_cast<CDAP_M_Start_R*>(msg);
+
+    //not expected message
+    if (!smsg) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApname().getName().c_str()));
+
+    //check for appropriate state
+    if (entry->getEnrollmentStatus() != EnrollmentStateTableEntry::ENROLL_WAIT_START_RESPONSE_ENROLLMENT) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    //assign new, received address
+    Address newAddr = ribd->getMyAddress();
+    newAddr.setIpcAddress(APN(enrollRec->getAddress().getName().c_str()));
+    ribd->setMyAddress(newAddr);
+
+    //TODO: assign other received values
+
+    //change state
+    entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_STOP_ENROLLMENT);
+
+    //TODO: wait for create messages and stop enrollment request
 }
 
 void Enrollment::receiveStopEnrollmentRequest(CDAPMessage* msg) {
     Enter_Method("receiveStopEnrollmentRequest()");
 
+
+    CDAP_M_Stop* smsg = check_and_cast<CDAP_M_Stop*>(msg);
+
+    //not expected message
+    if (!smsg) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApname().getName().c_str()));
+
+    //check for appropriate state
+    if (entry->getEnrollmentStatus() != EnrollmentStateTableEntry::ENROLL_WAIT_STOP_ENROLLMENT) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    //set immediate transition to operational state
+    entry->setIsImmediateEnrollment(enrollRec->getIsImmediate());
+
+    //set appropriate state
+    entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_READ_RESPONSE);
+
+    //TODO: send read requests, wait for responses, send Mstop enrollment
+    //for now send stop enrollment response
+    processStopEnrollmentResponse(entry);
+}
+
+void Enrollment::processStopEnrollmentResponse(EnrollmentStateTableEntry* entry) {
+
+    EnrollmentObj* enrollObj = new EnrollmentObj(entry->getFlow()->getSrcAddr(), entry->getFlow()->getDstAddr());
+
+    signalizeStopEnrollmentResponse(enrollObj);
+
+    if (entry->getIsImmediateEnrollment()) {
+        entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_ENROLLED);
+        //TODO: enrollment done --> emit signal somewhere!
+    }
+    else {
+        entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_START_OPERATION);
+        //TODO: continue enrollemnt here
+    }
+}
+
+void Enrollment::receiveStartOperationRequest(CDAPMessage* msg) {
+    Enter_Method("receiveStartOperationRequest()");
+
+}
+
+
+
+
+
+
+/* enrollment member */
+
+void Enrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
+    Enter_Method("receiveStartEnrollmentRequest()");
+
+    CDAP_M_Start* smsg = check_and_cast<CDAP_M_Start*>(msg);
+
+    //not expected message
+    if (!smsg) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApname().getName().c_str()));
+
+    //check for appropriate state
+    if (entry->getEnrollmentStatus() != EnrollmentStateTableEntry::ENROLL_WAIT_START_ENROLLMENT) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+
+    EnrollmentObj* enrollObj = new EnrollmentObj(entry->getFlow()->getSrcAddr(), entry->getFlow()->getDstAddr());
+
+    //TODO: repair this dummy address assign
+    enrollObj->setAddress(APN(enrollRec->getAddress().getName()));
+
+    //TODO: add other necessary information
+
+    //process enrollment object to ribd to send
+    signalizeStartEnrollmentResponse(enrollObj);
+
+    //TODO: send create messages, wait for responses, then send stop enrollment
+    //for now send stop enrollment
+    processStopEnrollmentImmediate(entry);
 }
 
 void Enrollment::receiveStopEnrollmentResponse(CDAPMessage* msg) {
     Enter_Method("receiveStopEnrollmentResponse()");
 
-}
+    CDAP_M_Stop_R* smsg = check_and_cast<CDAP_M_Stop_R*>(msg);
 
-void Enrollment::receiveStartOperationRequest(CDAPMessage* msg) {
-    Enter_Method("receiveStartOperationRequest()");
+    //not expected message
+    if (!smsg) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApname().getName().c_str()));
+
+    //check for appropriate state
+    if (entry->getEnrollmentStatus() != EnrollmentStateTableEntry::ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT) {
+        //TODO: send release and deallocate
+        return;
+    }
+
+    if (entry->getIsImmediateEnrollment()) {
+        entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_ENROLLED);
+        //TODO: emit signal somewhere and probably send rib update ...
+    }
+    else {
+        //TODO: add appropriate state for read and wait operation
+    }
 }
 
 void Enrollment::receiveStartOperationResponse(CDAPMessage* msg) {
@@ -252,6 +385,20 @@ void Enrollment::receiveStartOperationResponse(CDAPMessage* msg) {
 
 }
 
+void Enrollment::processStopEnrollmentImmediate(EnrollmentStateTableEntry* entry) {
+
+    EnrollmentObj* enrollObj = new EnrollmentObj(entry->getFlow()->getSrcAddr(), entry->getFlow()->getDstAddr());
+
+    //set immediate
+    enrollObj->setIsImmediate(true);
+    entry->setIsImmediateEnrollment(true);
+
+    //TODO: add other necessary information
+
+    signalizeStopEnrollmentRequest(enrollObj);
+
+    entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT);
+}
 
 
 void Enrollment::authenticate(EnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
@@ -279,32 +426,6 @@ void Enrollment::authenticate(EnrollmentStateTableEntry* entry, CDAP_M_Connect* 
     //not valid auth send negative response
     processConResNega(entry, msg);
 }
-
-/*void Enrollment::caceStateMachine(CDAPMessage *msg) {
-    //M_Connect_R
-    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)){
-        CDAP_M_Connect_R* msgCR = check_and_cast<CDAP_M_Connect_R*>(msg);
-        EnrollmentStateTableEntry* StateEntry = StateTable->findEntryByDstAPN(APN(msgCR->getSrc().ApName.c_str()));
-        if (StateEntry->getCACEConStatus() == EnrollmentStateTableEntry::CON_AUTHENTICATING) {
-            if (msgCR->getResult().resultValue == 0) {//SUCCESS
-                //signalizeConnResponsePositive(cmsg);
-                StateEntry->setCACEConStatus(EnrollmentStateTableEntry::CON_ESTABLISHED);
-                //now start enrollment
-                enrollmentStart(StateEntry);
-            }
-            else {
-                //this is connection retry
-                //signalizeConnResponseNegative(cmsg);
-                StateEntry->setCACEConStatus(EnrollmentStateTableEntry::CON_CONNECTPENDING);
-                //TODO: send cdap message with new auth
-            }
-        }
-        else {
-            //TODO: probably immediate deallocation
-            //processMRelease();
-        }
-    }
-}*/
 
 void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
     Enter_Method("processNewConReq()");
@@ -384,6 +505,7 @@ void Enrollment::processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage
     signalizeCACESendData(msg);
 
     entry->setCACEConStatus(EnrollmentStateTableEntry::CON_ESTABLISHED);
+    entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_START_ENROLLMENT);
 }
 
 void Enrollment::processConResNega(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
