@@ -6,4 +6,5 @@ simple RateGenerator like IntPDUFG
 {
     parameters:
         @display("i=block/socket");
+        int interval = default(1);
 }

@@ -24,7 +24,7 @@
 #include <map>
 #include <set>
 
-#define MBS_FROM_BYTES(x)   (x / 1024)
+#define SCALE_BYTES(x)   (x / 1024)
 // Comment it to remove the visual debugging.
 #define RATEGENERATOR_ENHANCED_DEBUG
 
@@ -64,7 +64,7 @@ private:
     SimpleTable::SimpleTable * fwd;
     IntSimpleRouting * rt;
     RatesMonitor * rmtp;
-
+    int interval;
     NTable neighbours;
 };
 
