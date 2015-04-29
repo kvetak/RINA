@@ -20,22 +20,6 @@
 
 Define_Module(RateGenerator);
 
-#ifdef RATEGENERATOR_ENHANCED_DEBUGa
-void RateGenerator::enhancedDebug()
-{
-    if(ev.isGUI())
-    {
-        //cModule * ipcm = check_and_cast<cModule *>(getModuleByPath("^.^.^"));
-        //cDisplayString & cs = ipcm->getDisplayString();
-
-        //cs.setTagArg("t", 1, "l");
-        //cs.setTagArg("t", 0, fwd->toString().c_str());
-    }
-
-    EV << fwd->toString();
-}
-#endif
-
 void RateGenerator::handleMessage(cMessage *msg)
 {
     // React to self message only.
@@ -61,7 +45,7 @@ void RateGenerator::handleMessage(cMessage *msg)
                     ++p)
                 {
                     // Acquire the rate of the port.
-                    unsigned short rate = (unsigned short)(MBS_FROM_BYTES(
+                    unsigned short rate = (unsigned short)(SCALE_BYTES(
                         rmtp->getByteRate(*p)));
                     const Address addr =
                         Address((*p)->getFlow()->getDstApni().getApn().getName());
@@ -82,7 +66,7 @@ void RateGenerator::handleMessage(cMessage *msg)
         cs.setTagArg("t", 0, str.str().c_str());
 #endif
 
-        scheduleAt(simTime() + 0.5, new cMessage(RATE_GENERATOR_TIMEOUT));
+        scheduleAt(simTime() + interval, new cMessage(RATE_GENERATOR_TIMEOUT));
     }
 }
 
@@ -94,7 +78,7 @@ void RateGenerator::insertedFlow(
     std::string dst = addr.getIpcAddress().getName();
 
     // Acquire the rate of the port.
-    unsigned short rate = (unsigned short)MBS_FROM_BYTES(
+    unsigned short rate = (unsigned short)SCALE_BYTES(
         rmtp->getByteRate(port));
 
     neighbours[dst][qos].insert(port);
@@ -108,7 +92,9 @@ void RateGenerator::insertedFlow(
 }
 
 // Called after initialize
-void RateGenerator::onPolicyInit(){
+void RateGenerator::onPolicyInit()
+{
+    interval = par("interval");
 
     // Obtain a pointer to the forwarding policy.
     fwd = check_and_cast<SimpleTable::SimpleTable *>(
@@ -126,7 +112,7 @@ void RateGenerator::onPolicyInit(){
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
 
     // Start the rate updating timeout.
-    scheduleAt(simTime() + 0.5, new cMessage(RATE_GENERATOR_TIMEOUT));
+    scheduleAt(simTime() + interval, new cMessage(RATE_GENERATOR_TIMEOUT));
 }
 
 void RateGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port)
