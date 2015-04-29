@@ -22,24 +22,22 @@ network SmallNetworkPar
 {
     @display("bgb=586,372");
     double ldelay @unit(s) = default(0.1s);
-    types:
+    double lber = default(0.0);
+        types:
         channel SlowP extends DatarateChannel {
     		parameters:
             datarate = 2Mbps;
             per = 0;
-            ber = 0;
 	    }
 	    channel NormalP extends DatarateChannel {
             parameters:
                 datarate = 10Mbps;
                 per = 0;
-                ber = 0;
         }
         channel HighSpeedP extends DatarateChannel {
             parameters:
                 datarate = 20Mbps;
                 per = 0;
-                ber = 0;
         }
     submodules:
         host1: Host1AP {
@@ -76,13 +74,13 @@ network SmallNetworkPar
 //        router3.medium[1] <--> host4.medium;
 //        router3.medium[2] <--> host5.medium;
 
-        router1.medium[0] <--> NormalP{delay = ldelay;} <--> host1.medium;
-        router1.medium[1] <--> NormalP{delay = ldelay;} <--> host2.medium;
-        router1.medium[2] <--> HighSpeedP{delay = ldelay;} <--> router2.medium[0];
-        router2.medium[1] <--> HighSpeedP{delay = ldelay;} <--> router3.medium[0];
+        router1.medium[0] <--> NormalP{delay = ldelay; ber = 0;} <--> host1.medium;
+        router1.medium[1] <--> NormalP{delay = ldelay; ber = 0;} <--> host2.medium;
+        router1.medium[2] <--> HighSpeedP{delay = ldelay; ber = 0;} <--> router2.medium[0];
+        router2.medium[1] <--> HighSpeedP{delay = ldelay; ber = 0;} <--> router3.medium[0];
 //        router2.medium[2] <--> host3.medium;
-        router3.medium[1] <--> NormalP{delay = ldelay;} <--> host4.medium;
-        router3.medium[2] <--> SlowP{delay = ldelay;} <--> host5.medium;
+        router3.medium[1] <--> NormalP{delay = ldelay; ber = 0;} <--> host4.medium;
+        router3.medium[2] <--> SlowP{delay = ldelay; ber = lber;} <--> host5.medium;
 }
 
 network SmallNetwork2

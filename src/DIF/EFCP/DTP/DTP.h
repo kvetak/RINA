@@ -208,6 +208,7 @@ class DTP : public cSimpleModule
 
     void runCongestionNotificationPolicy();
 
+    double timeoutScale;
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);

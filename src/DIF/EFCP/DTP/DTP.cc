@@ -826,6 +826,56 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     if (pdu->getSeqNum() == state->getMaxSeqNumRcvd() + 1)
 //    if (pdu->getSeqNum() == state->getRcvLeftWinEdge())
     {
+/////////////////////////////// my code
+        if(state->nAcked) {
+            state->nAcked = false;
+        }
+        state->oooPDUQ.push_back(pdu);
+        while(true) {
+            bool found = false;
+            std::vector<DataTransferPDU*>::iterator it = state->oooPDUQ.begin();
+            while (it != state->oooPDUQ.end())
+            {
+                if ((*it)->getSeqNum() == state->getMaxSeqNumRcvd() + 1)
+                {
+                    state->incMaxSeqNumRcvd();
+                    //XXX This is not mentioned in the specs. IMHO this is the most important part ;)
+                    addPDUToReassemblyQ((*it));
+
+                    if (state->isDtcpPresent())
+                    {
+                        svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+                    }
+                    else
+                    {
+                        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+                        startATimer((*it)->getSeqNum());
+
+                    }
+                    state->oooPDUQ.erase(it);
+                    delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
+                    found = true;
+//                    delete (*it);
+                    break;
+                } else
+                    ++it;
+            }
+            if(state->oooPDUQ.empty())
+                break;
+            if(!found) {
+                NackOnlyPDU* nackPDU = new NackOnlyPDU();
+                setPDUHeader(nackPDU);
+                nackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+                nackPDU->setAckNackSeqNum(state->getMaxSeqNumRcvd() + 1);
+                EV << getFullPath() << ": Sending NAck for PDU number: " << state->getMaxSeqNumRcvd() + 1 << endl;
+                //    send(ackPDU, southO);
+                sendToRMT(nackPDU);
+                state->nAcked = true;
+                break;
+            }
+        }
+        return;
+/////////////////////////////// end of my code
     state->incMaxSeqNumRcvd();
       //XXX This is not mentioned in the specs. IMHO this is the most important part ;)
       addPDUToReassemblyQ(pdu);
@@ -852,9 +902,26 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     else
     {
       /* Case 5) it is out of order */
-      if (pdu->getSeqNum() > state->getMaxSeqNumRcvd() + 1)
-//      if (pdu->getSeqNum() > state->getRcvLeftWinEdge() + 1)
-      {
+
+        if (pdu->getSeqNum() > state->getMaxSeqNumRcvd() + 1)
+  //      if (pdu->getSeqNum() > state->getRcvLeftWinEdge() + 1)
+        {
+
+/////////////////////////////// my code
+           if(!state->nAcked) {
+              NackOnlyPDU* nackPDU = new NackOnlyPDU();
+              setPDUHeader(nackPDU);
+              nackPDU->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+              nackPDU->setAckNackSeqNum(state->getMaxSeqNumRcvd() + 1);
+              EV << getFullPath() << ": Sending NAck for PDU number: " << state->getMaxSeqNumRcvd() + 1 << endl;
+              //    send(ackPDU, southO);
+              sendToRMT(nackPDU);
+              state->nAcked = true;
+           }
+           state->oooPDUQ.push_back(pdu);
+           return;
+
+/////////////////////////////// previous code
         //TODO A! Mention it to others - confirmation pending
         /* NOT IN SPECS */
         addPDUToReassemblyQ(pdu);
@@ -874,6 +941,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         }
 
         delimitFromRMT(pdu);
+/////////////////////////////// end of previous code
         //XXX!!!!
             return;
       }

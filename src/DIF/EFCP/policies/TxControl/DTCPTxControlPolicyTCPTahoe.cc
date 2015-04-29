@@ -87,12 +87,13 @@ bool DTCPTxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
         }
 
         if( dtcpState->getRxSent() >  rxSent) {
-            ssthresh = std::max(int(snd_cwnd / 2), 2);
-            state = STATE_SLOW_START;
-            snd_cwnd = RST_WND;
-            rxSent = dtcpState->getRxSent();
-
-            sendCredit = snd_cwnd;
+            slowDown();
+//            ssthresh = std::max(int(snd_cwnd / 2), 2);
+//            state = STATE_SLOW_START;
+//            snd_cwnd = RST_WND;
+//            rxSent = dtcpState->getRxSent();
+//
+//            sendCredit = snd_cwnd;
         }
     } else {
         state = STATE_SLOW_START;

@@ -742,9 +742,9 @@ void DTCP::schedule(DTCPTimers* timer, double time){
 //      double aTime = dtp->state->getQoSCube()->getATime();
 //      double rtt = dtp->state->getRtt();
       if(dynamic_cast<DTCPTxControlPolicyTCPTahoe*>(txControlPolicy)) {
-          scheduleAt(simTime() + dtcpState->RTO * 2, rxExpTimer);
+          scheduleAt(simTime() + dtcpState->RTO * dtp->timeoutScale, rxExpTimer);
       } else
-          scheduleAt(simTime() + dtp->state->getRtt() * 4 + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
+          scheduleAt(simTime() + dtp->state->getRtt() * dtp->timeoutScale + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

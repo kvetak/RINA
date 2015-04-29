@@ -68,7 +68,6 @@ private:
     /* Move to DTCPState! */
 
 
-
     PDUQ_t reassemblyPDUQ;
     PDUQ_t generatedPDUs;
     PDUQ_t postablePDUs;
@@ -182,6 +181,10 @@ public:
     void setMpl(double mpl);
     bool isBlockingPort() const;
     void setBlockingPort(bool blockingPort);
+
+    bool nAcked;
+    PDUQ_t oooPDUQ;
+
 
 protected:
   virtual void handleMessage(cMessage *msg);

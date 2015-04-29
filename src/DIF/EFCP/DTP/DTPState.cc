@@ -105,6 +105,7 @@ void DTPState::initDefaults(){
   rateBased = false;
   incompDeliv = false;
 
+  nAcked = false;
 
   lastSDUDelivered = 0;
   rcvLeftWinEdge = 0;
@@ -153,6 +154,7 @@ DTPState::~DTPState() {
   clearReassemblyPDUQ();
   clearGeneratedPDUQ();
   clearPostablePDUQ();
+  clearPDUQ(&oooPDUQ);
 }
 
 bool DTPState::isDtcpPresent() const {

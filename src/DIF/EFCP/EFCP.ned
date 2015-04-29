@@ -44,6 +44,8 @@ simple EFCP
   		
   		double rtt @unit(s) = default(2s);
   		double mpl @unit(s) = default(50s);
+  		
+  		double timeoutScale = default(1);
         
   		int rcvCredit = default(10);
   		int initialSenderCredit = default(10);

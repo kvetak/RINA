@@ -91,6 +91,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
   dtpModule->setFlow(flow);
   dtpModule->setQoSCube(qosCube);
   dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
+  dtpModule->timeoutScale = par("timeoutScale").doubleValue();
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
