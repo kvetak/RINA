@@ -51,7 +51,7 @@ void RateGenerator::handleMessage(cMessage *msg)
                         Address((*p)->getFlow()->getDstApni().getApn().getName());
 
 #ifdef RATEGENERATOR_ENHANCED_DEBUG
-                      str << t->first << ", " << rmtp->getByteRate(*p) <<"\n";
+                      str << t->first << ", " << SCALE_BYTES(rmtp->getByteRate(*p)) <<"\n";
 #endif
 
                     rt->insertFlow(addr, t->first, e->first, rate);
