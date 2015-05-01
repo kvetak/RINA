@@ -3,25 +3,25 @@
     <ConnectionSets>
         <ConnectionSet id="all">
             <SimTime t="0">
-                <Connection src="H0_RandDIF" dst="R12_RandDIF" qosCube="1"/>
-                <Connection src="H1_RandDIF" dst="R13_RandDIF" qosCube="1"/>
-                <Connection src="H2_RandDIF" dst="R14_RandDIF" qosCube="1"/>
-                <Connection src="H3_RandDIF" dst="R15_RandDIF" qosCube="1"/>
-                <Connection src="H4_RandDIF" dst="R16_RandDIF" qosCube="1"/>
-                <Connection src="H5_RandDIF" dst="R17_RandDIF" qosCube="1"/>
-                <Connection src="H6_RandDIF" dst="R18_RandDIF" qosCube="1"/>
-                <Connection src="H7_RandDIF" dst="R19_RandDIF" qosCube="1"/>
-                <Connection src="H8_RandDIF" dst="R12_RandDIF" qosCube="1"/>
-                <Connection src="H9_RandDIF" dst="R13_RandDIF" qosCube="1"/>
-                <Connection src="H10_RandDIF" dst="R14_RandDIF" qosCube="1"/>
-                <Connection src="H11_RandDIF" dst="R15_RandDIF" qosCube="1"/>
-                <Connection src="R12_RandDIF" dst="R17_RandDIF" qosCube="1"/>
-                <Connection src="R13_RandDIF" dst="R18_RandDIF" qosCube="1"/>
-                <Connection src="R14_RandDIF" dst="R19_RandDIF" qosCube="1"/>
-                <Connection src="R15_RandDIF" dst="R12_RandDIF" qosCube="1"/>
-                <Connection src="R16_RandDIF" dst="R13_RandDIF" qosCube="1"/>
-                <Connection src="R17_RandDIF" dst="R14_RandDIF" qosCube="1"/>
-                <Connection src="R18_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+                <Connection src="H0_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+                <Connection src="H1_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+                <Connection src="H2_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+                <Connection src="H3_RandDIF" dst="R15_RandDIF" qosReq="1"/>
+                <Connection src="H4_RandDIF" dst="R16_RandDIF" qosReq="1"/>
+                <Connection src="H5_RandDIF" dst="R17_RandDIF" qosReq="1"/>
+                <Connection src="H6_RandDIF" dst="R18_RandDIF" qosReq="1"/>
+                <Connection src="H7_RandDIF" dst="R19_RandDIF" qosReq="1"/>
+                <Connection src="H8_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+                <Connection src="H9_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+                <Connection src="H10_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+                <Connection src="H11_RandDIF" dst="R15_RandDIF" qosReq="1"/>
+                <Connection src="R12_RandDIF" dst="R17_RandDIF" qosReq="1"/>
+                <Connection src="R13_RandDIF" dst="R18_RandDIF" qosReq="1"/>
+                <Connection src="R14_RandDIF" dst="R19_RandDIF" qosReq="1"/>
+                <Connection src="R15_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+                <Connection src="R16_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+                <Connection src="R17_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+                <Connection src="R18_RandDIF" dst="R15_RandDIF" qosReq="1"/>
             </SimTime>
         </ConnectionSet>
     </ConnectionSets>
@@ -185,4 +185,26 @@
             <ATime>0</ATime>
         </QosCube>
     </QoSCubesSet>
+    
+      <QoSReqSet>
+    <QosReq id="1">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <MaxSDUSize>1500</MaxSDUSize>
+      <PartialDelivery>0</PartialDelivery>
+      <IncompleteDelivery>0</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>            
+    </QosReq>
+  </QoSReqSet>
 </Configuration>

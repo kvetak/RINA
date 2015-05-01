@@ -128,14 +128,19 @@
 			<ATime>0</ATime>						
 		</QoSCube>		
 	</QoSCubesSet>
+	
+	<QoSReqsSet>
+	 <QoSReq id="1">
+	 </QoSReq>
+  </QoSReqsSet>
 
     <ConnectionSets>
         <ConnectionSet id="PingWithPreallocation">
             <SimTime t="1">
-                <Connection src="33_Layer11" dst="11_Layer11" qosCube="1"/>
+                <Connection src="33_Layer11" dst="11_Layer11" qosReq="1"/>
             </SimTime>
             <SimTime t="2">
-                <Connection src="33_Layer11" dst="22_Layer11" qosCube="1"/>
+                <Connection src="33_Layer11" dst="22_Layer11" qosReq="1"/>
             </SimTime>            
         </ConnectionSet>
     </ConnectionSets>	

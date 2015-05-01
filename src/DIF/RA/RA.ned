@@ -27,5 +27,6 @@ simple RA
         @signal[RA-InvokeSlowdown](type=cPacket?);
 
         xml qoscubesData = default(xml("<QoSCube/>"));
+        xml qosReqData = default(xml("<QoSReq/>"));
         xml preallocation = default(xml("<root/>"));
 }
