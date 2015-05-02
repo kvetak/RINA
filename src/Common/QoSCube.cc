@@ -34,7 +34,8 @@ QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
         burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), pduDropProbability(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
-        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS)
+        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS), aTime(VAL_DEFQOS),
+        rxOn(false), windowFCOn(false), rateFCOn(false)
 {
 }
 
