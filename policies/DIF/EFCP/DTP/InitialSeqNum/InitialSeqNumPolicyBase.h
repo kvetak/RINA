@@ -15,15 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTPInitialSeqNumPolicyBase.h
+ * @file InitialSeqNumPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTPINITIALSEQNUMPOLICYBASE_H_
-#define DTPINITIALSEQNUMPOLICYBASE_H_
+#ifndef INITIALSEQNUMPOLICYBASE_H_
+#define INITIALSEQNUMPOLICYBASE_H_
 
 #include <omnetpp.h>
 
@@ -48,4 +48,4 @@ class InitialSeqNumPolicyBase : public EFCPPolicy
 
 };
 
-#endif /* DTPINITIALSEQNUMPOLICYBASE_H_ */
+#endif /* INITIALSEQNUMPOLICYBASE_H_ */

@@ -15,34 +15,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPTxControlPolicyBase.h
+ * @file TxControlPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPTXCONTROLPOLICYBASE_H_
-#define DTCPTXCONTROLPOLICYBASE_H_
+#ifndef TXCONTROLPOLICYBASE_H_
+#define TXCONTROLPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "EFCPPolicy.h"
 
 /*
  *
  */
-class DTCPTxControlPolicyBase : public cSimpleModule
+class TxControlPolicyBase : public EFCPPolicy
 {
   public:
-    DTCPTxControlPolicyBase();
-    virtual ~DTCPTxControlPolicyBase();
+    TxControlPolicyBase();
+    virtual ~TxControlPolicyBase();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
   protected:
     virtual void initialize(){};
     virtual void handleMessage(cMessage* msg){};
 };
 
-#endif /* DTCPTXCONTROLPOLICYBASE_H_ */
+#endif /* TXCONTROLPOLICYBASE_H_ */

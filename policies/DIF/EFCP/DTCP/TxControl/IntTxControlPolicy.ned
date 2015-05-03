@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.TxControl;
 
-moduleinterface IntDTCPTxControlPolicy
+moduleinterface IntTxControlPolicy
 {
     parameters:
         @display("i=block/socket");

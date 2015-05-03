@@ -122,7 +122,7 @@ void DTCP::initialize(int step)
         senderAckPolicy       = (DTCPSenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
         fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
         noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
-        txControlPolicy       = (DTCPTxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
+        txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
         noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
         reconcileFCPolicy     = (DTCPReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
         rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
@@ -454,30 +454,30 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 {
   Enter_Method("TxControlPolicy");
-  if (txControlPolicy == NULL || txControlPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
-     And Set the ClosedWindow flag appropriately. */
-    std::vector<DataTransferPDU*>::iterator it;
-//    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
-    for (it = pduQ->begin();
-        it != pduQ->end() && (*it)->getSeqNum() <= getSndRtWinEdge();)
-    {
+  txControlPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
+//     And Set the ClosedWindow flag appropriately. */
+//    std::vector<DataTransferPDU*>::iterator it;
+////    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
+//    for (it = pduQ->begin();
+//        it != pduQ->end() && (*it)->getSeqNum() <= getSndRtWinEdge();)
+//    {
+//
+//      dtpState->pushBackToPostablePDUQ((*it));
+////      dtpState->getGeneratedPDUQ()->erase(it);
+//      it = pduQ->erase(it);
+//
+//    }
+//
+//    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen())
+//    {
+//      dtcpState->setClosedWindow(true);
+//    }
+//    /* End default */
 
-      dtpState->pushBackToPostablePDUQ((*it));
-//      dtpState->getGeneratedPDUQ()->erase(it);
-      it = pduQ->erase(it);
-
-    }
-
-    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen())
-    {
-      dtcpState->setClosedWindow(true);
-    }
-    /* End default */
-
-  }
+//  }
   return false;
 }
 
