@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.RcvrControlAck;
 
-moduleinterface IntDTCPRcvrControlAck
+moduleinterface IntRcvrControlAckPolicy
 {
     parameters:
         @display("i=block/socket");

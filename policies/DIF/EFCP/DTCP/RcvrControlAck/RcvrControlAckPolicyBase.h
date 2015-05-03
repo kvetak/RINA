@@ -15,30 +15,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRcvrControlAckPolicyBase.h
+ * @file RcvrControlAckPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPRCVRCONTROLACKPOLICYBASE_H_
-#define DTCPRCVRCONTROLACKPOLICYBASE_H_
+#ifndef RCVRCONTROLACKPOLICYBASE_H_
+#define RCVRCONTROLACKPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
+#include "EFCPPolicy.h"
 /*
  *
  */
-class DTCPRcvrControlAckPolicyBase : public cSimpleModule
+class RcvrControlAckPolicyBase : public EFCPPolicy
 {
   public:
-    DTCPRcvrControlAckPolicyBase();
-    virtual ~DTCPRcvrControlAckPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    RcvrControlAckPolicyBase();
+    virtual ~RcvrControlAckPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+        void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
   protected:
     virtual void initialize(){};
@@ -46,4 +45,4 @@ class DTCPRcvrControlAckPolicyBase : public cSimpleModule
 
 };
 
-#endif /* DTCPRCVRCONTROLACKPOLICYBASE_H_ */
+#endif /* RCVRCONTROLACKPOLICYBASE_H_ */

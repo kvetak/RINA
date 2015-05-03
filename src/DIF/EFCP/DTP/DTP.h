@@ -160,18 +160,18 @@ class DTP : public cSimpleModule
     void clearRxQ();
     void clearClosedWindowQ();
 
-    void sendToRMT(PDU *pdu);
+
 
     void schedule(DTPTimers* timer, double time =0.0);
 
 //    void handleSDUs(CDAPMessage* cdap);
-    void setPDUHeader(PDU* pdu);
+
     void initGates();
 
     bool commonRcvControl(ControlPDU* pdu);
     void sendControlAckPDU();
     void sendEmptyDTPDU();
-    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
+
 
     void sendAckOnlyPDU(unsigned int seqNum);
     bool setDRFInPDU(bool override);
@@ -210,7 +210,12 @@ class DTP : public cSimpleModule
 
     void resetSenderInactivTimer();
 
+    void setPDUHeader(PDU* pdu);
+
     void sendFCOnlyPDU();
+    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
+
+    void sendToRMT(PDU *pdu);
 
 
     void runCongestionNotificationPolicy();

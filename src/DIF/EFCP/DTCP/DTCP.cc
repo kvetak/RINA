@@ -118,7 +118,7 @@ void DTCP::initialize(int step)
         receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
         lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
-        rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
+        rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
         senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
         fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
         noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
@@ -325,78 +325,78 @@ bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrControlAckPolicy");
-  if(rcvrControlAckPolicy == NULL || rcvrControlAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-//    bool sendAck = false;
-//    bool sendFC = true;
-    /* RcvrControlAck Policy with Default: */
-    //"adjust as necessary" :D great advice
-    ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
-    //      TODO: unsigned int lastCtrlSeqNumRcv;
-    if(dtcpState->getNextSndCtrlSeqNumNoInc() != ctrlAckPDU->getLastCtrlSeqNumRcv()){
-      // Does not necessary means an error.
-
-    }
-    //unsigned int sndLtWinEdge;
-    if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
-      bubble("ControlAckPDU: Missing PDU on the receiver end.");
-//      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
-    }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
-//      sendAck = true;
-    }
-
-    //unsigned int sndRtWinEdge;
-    if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
-//      sendFC = true;
-    }
-
-    //unsigned int myLtWinEdge;
-    if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
-      //serves as an ack -> remove PDUs from RxQ
-      ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
-      updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
-    }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
-      bubble("ControlAckPDU: Missing PDU on the sender's end.");
-//      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
-    }
-
-    //      unsigned int myRtWinEdge;
-    if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
-      dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
-    }
-
-    //unsigned int myRcvRate;
-    if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
-      dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
-    }
-
-    //TODO A2 Verify it one more time
-//    if(sendAck && sendFC){
-//      dtp->sendAckFlowPDU();
-//    }else if (sendAck){
-//      dtp->sendAckOnlyPDU(dtpState->getRcvLeftWinEdge() - 1);
-//    }else{
-//      dtp->sendFCOnlyPDU();
+  rcvrControlAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+////    bool sendAck = false;
+////    bool sendFC = true;
+//    /* RcvrControlAck Policy with Default: */
+//    //"adjust as necessary" :D great advice
+//    ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
+//    //      TODO: unsigned int lastCtrlSeqNumRcv;
+//    if(dtcpState->getNextSndCtrlSeqNumNoInc() != ctrlAckPDU->getLastCtrlSeqNumRcv()){
+//      // Does not necessary means an error.
+//
 //    }
-    // Send Ack/Flow Control PDU with LWE and RWE
-    dtp->sendAckFlowPDU();
-
-    // Send empty Transfer PDU with NextSeqNumToSend-1
-    DataTransferPDU* dataPdu = new DataTransferPDU();
-    dtp->setPDUHeader(dataPdu);
-    unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
-    dataPdu->setSeqNum(seqNum);
-    UserDataField* userData = new UserDataField();
-
-    dataPdu->setUserDataField(userData);
-
-    dtp->sendToRMT(dataPdu);
-
-
-    /* End default */
-
-  }
+//    //unsigned int sndLtWinEdge;
+//    if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
+//      bubble("ControlAckPDU: Missing PDU on the receiver end.");
+////      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
+//    }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
+////      sendAck = true;
+//    }
+//
+//    //unsigned int sndRtWinEdge;
+//    if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
+////      sendFC = true;
+//    }
+//
+//    //unsigned int myLtWinEdge;
+//    if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
+//      //serves as an ack -> remove PDUs from RxQ
+//      ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
+//      updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
+//    }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
+//      bubble("ControlAckPDU: Missing PDU on the sender's end.");
+////      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
+//    }
+//
+//    //      unsigned int myRtWinEdge;
+//    if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
+//      dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
+//    }
+//
+//    //unsigned int myRcvRate;
+//    if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
+//      dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
+//    }
+//
+//    //TODO A2 Verify it one more time
+////    if(sendAck && sendFC){
+////      dtp->sendAckFlowPDU();
+////    }else if (sendAck){
+////      dtp->sendAckOnlyPDU(dtpState->getRcvLeftWinEdge() - 1);
+////    }else{
+////      dtp->sendFCOnlyPDU();
+////    }
+//    // Send Ack/Flow Control PDU with LWE and RWE
+//    dtp->sendAckFlowPDU();
+//
+//    // Send empty Transfer PDU with NextSeqNumToSend-1
+//    DataTransferPDU* dataPdu = new DataTransferPDU();
+//    dtp->setPDUHeader(dataPdu);
+//    unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
+//    dataPdu->setSeqNum(seqNum);
+//    UserDataField* userData = new UserDataField();
+//
+//    dataPdu->setUserDataField(userData);
+//
+//    dtp->sendToRMT(dataPdu);
+//
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 
