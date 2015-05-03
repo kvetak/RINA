@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +15,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPSenderAckPolicyBase.h
+ * @file SenderAckPolicyDefault.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 7, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default SenderAck behavior
  * @detail
  */
 
-#ifndef DTCPSENDERACKPOLICYBASE_H_
-#define DTCPSENDERACKPOLICYBASE_H_
+#include <SenderAckDefaultPolicy/SenderAckDefaultPolicy.h>
 
-#include <omnetpp.h>
+Register_Class(SenderAckDefaultPolicy);
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPSenderAckPolicyBase : public cSimpleModule
+SenderAckDefaultPolicy::SenderAckDefaultPolicy()
 {
-  public:
-    DTCPSenderAckPolicyBase();
-    virtual ~DTCPSenderAckPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTCPSENDERACKPOLICYBASE_H_ */
+SenderAckDefaultPolicy::~SenderAckDefaultPolicy()
+{
+
+}
+
+bool SenderAckDefaultPolicy::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("SenderAckPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
+}

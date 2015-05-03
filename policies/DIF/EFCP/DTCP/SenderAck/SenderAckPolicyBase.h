@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -15,32 +15,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file InitialSeqNumPolicyDefault.cc
+ * @file SenderAckPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2015
+ * @date Jan 7, 2015
  * @brief
  * @detail
  */
 
-#include "InitialSeqNumPolicyDefault.h"
+#ifndef SENDERACKPOLICYBASE_H_
+#define SENDERACKPOLICYBASE_H_
 
-Register_Class(InitialSeqNumPolicyDefault);
+#include <omnetpp.h>
 
-InitialSeqNumPolicyDefault::InitialSeqNumPolicyDefault()
+#include "EFCPPolicy.h"
+
+
+/*
+ *
+ */
+class SenderAckPolicyBase : public EFCPPolicy
 {
+  public:
+    SenderAckPolicyBase();
+    virtual ~SenderAckPolicyBase();
+//        virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
-}
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-InitialSeqNumPolicyDefault::~InitialSeqNumPolicyDefault()
-{
+};
 
-}
-
-bool InitialSeqNumPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  Enter_Method("InitialSeqNumPolicyDefault");
-
-  defaultAction(dtpState, dtcpState);
-
-  return false;
-}
+#endif /* SENDERACKPOLICYBASE_H_ */

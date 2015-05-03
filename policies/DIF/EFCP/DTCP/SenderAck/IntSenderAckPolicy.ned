@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.SenderAck;
 
-moduleinterface IntDTCPSenderAckPolicy
+moduleinterface IntSenderAckPolicy
 {
     parameters:
         @display("i=block/socket");

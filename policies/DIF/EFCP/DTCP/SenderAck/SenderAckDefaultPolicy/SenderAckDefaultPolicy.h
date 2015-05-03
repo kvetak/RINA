@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,32 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file InitialSeqNumPolicyDefault.cc
+ * @file SenderAckPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date May 3, 2015
- * @brief
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#include "InitialSeqNumPolicyDefault.h"
+#ifndef SENDERACKDEFAULTPOLICY_H_
+#define SENDERACKDEFAULTPOLICY_H_
 
-Register_Class(InitialSeqNumPolicyDefault);
+#include <SenderAckPolicyBase.h>
 
-InitialSeqNumPolicyDefault::InitialSeqNumPolicyDefault()
+class SenderAckDefaultPolicy : public SenderAckPolicyBase
 {
+  public:
+    SenderAckDefaultPolicy();
+    virtual ~SenderAckDefaultPolicy();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-}
-
-InitialSeqNumPolicyDefault::~InitialSeqNumPolicyDefault()
-{
-
-}
-
-bool InitialSeqNumPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  Enter_Method("InitialSeqNumPolicyDefault");
-
-  defaultAction(dtpState, dtcpState);
-
-  return false;
-}
+#endif /* SENDERACKDEFAULTPOLICY_H_ */

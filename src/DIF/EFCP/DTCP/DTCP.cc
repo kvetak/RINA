@@ -119,7 +119,7 @@ void DTCP::initialize(int step)
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
         lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
         rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
-        senderAckPolicy       = (DTCPSenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
+        senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
         fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
         noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
         txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
@@ -403,17 +403,17 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 {
   Enter_Method("SenderAckPolicy");
-  if(senderAckPolicy == NULL || senderAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
-    ackPDU(seqNum);
-
-    //update SendLeftWindowEdge
-    dtcpState->updateSndLWE(seqNum + 1);
-    
-    /* End default */
-
-  }
+  senderAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
+//    ackPDU(seqNum);
+//
+//    //update SendLeftWindowEdge
+//    dtcpState->updateSndLWE(seqNum + 1);
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 

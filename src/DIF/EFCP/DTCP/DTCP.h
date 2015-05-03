@@ -44,7 +44,7 @@
 #include "SendingAckPolicyBase.h"
 #include "DTCPLostControlPDUPolicyBase.h"
 #include "DTCPRcvrControlAckPolicyBase.h"
-#include "DTCPSenderAckPolicyBase.h"
+#include "SenderAckPolicyBase.h"
 #include "DTCPFCOverrunPolicyBase.h"
 #include "DTCPNoOverridePeakPolicyBase.h"
 #include "TxControlPolicyBase.h"
@@ -71,7 +71,7 @@ class DTCP: public cSimpleModule {
     SendingAckPolicyBase* sendingAckPolicy;
     DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
     DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
-    DTCPSenderAckPolicyBase* senderAckPolicy;
+    SenderAckPolicyBase* senderAckPolicy;
     DTCPFCOverrunPolicyBase* fcOverrunPolicy;
     DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
     TxControlPolicyBase* txControlPolicy;

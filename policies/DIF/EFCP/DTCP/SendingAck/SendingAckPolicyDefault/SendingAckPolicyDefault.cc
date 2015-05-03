@@ -24,6 +24,8 @@
 
 #include "SendingAckPolicyDefault.h"
 
+Register_Class(SendingAckPolicyDefault);
+
 SendingAckPolicyDefault::SendingAckPolicyDefault()
 {
 

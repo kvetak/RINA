@@ -22,7 +22,9 @@
  * @detail
  */
 
-#include <TxControlPolicyDefault.h>
+#include "TxControlPolicyDefault.h"
+
+Register_Class(TxControlPolicyDefault);
 
 TxControlPolicyDefault::TxControlPolicyDefault()
 {

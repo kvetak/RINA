@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -15,32 +15,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file InitialSeqNumPolicyDefault.cc
+ * @file SenderAckPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2015
+ * @date Jan 7, 2015
  * @brief
  * @detail
  */
 
-#include "InitialSeqNumPolicyDefault.h"
+#include "SenderAckPolicyBase.h"
+#include "DTCP.h"
 
-Register_Class(InitialSeqNumPolicyDefault);
+SenderAckPolicyBase::SenderAckPolicyBase()
+{
 
-InitialSeqNumPolicyDefault::InitialSeqNumPolicyDefault()
+
+}
+
+SenderAckPolicyBase::~SenderAckPolicyBase()
 {
 
 }
 
-InitialSeqNumPolicyDefault::~InitialSeqNumPolicyDefault()
+void SenderAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+  DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
+  /* Default */
+  unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
+  dtcp->ackPDU(seqNum);
 
-}
+  //update SendLeftWindowEdge
+  dtcpState->updateSndLWE(seqNum + 1);
 
-bool InitialSeqNumPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  Enter_Method("InitialSeqNumPolicyDefault");
-
-  defaultAction(dtpState, dtcpState);
-
-  return false;
+  /* End default */
 }
