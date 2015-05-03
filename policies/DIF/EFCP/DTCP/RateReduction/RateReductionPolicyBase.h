@@ -15,23 +15,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRateReductionPolicyBase.cc
+ * @file RateReductionPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <RateReduction/DTCPRateReductionPolicyBase.h>
+#ifndef RATEREDUCTIONPOLICYBASE_H_
+#define RATEREDUCTIONPOLICYBASE_H_
 
-DTCPRateReductionPolicyBase::DTCPRateReductionPolicyBase()
+#include <omnetpp.h>
+
+#include "EFCPPolicy.h"
+
+/*
+ *
+ */
+class RateReductionPolicyBase : public EFCPPolicy
 {
+  public:
+    RateReductionPolicyBase();
+    virtual ~RateReductionPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-}
+};
 
-DTCPRateReductionPolicyBase::~DTCPRateReductionPolicyBase()
-{
-
-}
-
+#endif /* RATEREDUCTIONPOLICYBASE_H_ */

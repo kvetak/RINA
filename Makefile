@@ -62,6 +62,7 @@ INCLUDE_PATH = \
     -Ipolicies/DIF/EFCP/DTCP/NoOverridePeak \
     -Ipolicies/DIF/EFCP/DTCP/NoRateSlowDown \
     -Ipolicies/DIF/EFCP/DTCP/RateReduction \
+    -Ipolicies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault \
     -Ipolicies/DIF/EFCP/DTCP/RcvrAck \
     -Ipolicies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault \
     -Ipolicies/DIF/EFCP/DTCP/RcvrControlAck \
@@ -185,7 +186,8 @@ OBJS = \
     $O/policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.o \
-    $O/policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.o \
+    $O/policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.o \
+    $O/policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/RateReductionPolicyDefault.o \
     $O/policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/RcvrAckPolicyDefault.o \
     $O/policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.o \
@@ -491,6 +493,7 @@ clean:
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/NoOverridePeak/*_m.cc policies/DIF/EFCP/DTCP/NoOverridePeak/*_m.h
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/NoRateSlowDown/*_m.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/*_m.h
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/RateReduction/*_m.cc policies/DIF/EFCP/DTCP/RateReduction/*_m.h
+	$(Q)-rm -f policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/*_m.cc policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/*_m.h
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/RcvrAck/*_m.cc policies/DIF/EFCP/DTCP/RcvrAck/*_m.h
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*_m.cc policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*_m.h
 	$(Q)-rm -f policies/DIF/EFCP/DTCP/RcvrControlAck/*_m.cc policies/DIF/EFCP/DTCP/RcvrControlAck/*_m.h
@@ -598,7 +601,7 @@ cleanall: clean
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc examples/*.cc examples/AllNodes/*.cc examples/AllNodes/results/*.cc examples/BigRandNet/*.cc examples/BigRandNet/results/*.cc examples/DC/*.cc examples/ExtendedPingTwoCSsSimple/*.cc examples/ExtendedPingTwoCSsSimple/results/*.cc examples/FatTreeTopology/*.cc examples/FatTreeTopology/results/*.cc examples/FatTreeTopologyPref/*.cc examples/FatTreeTopologyPref/results/*.cc examples/SimpleRelay/*.cc examples/SimpleRelay/results/*.cc examples/SimpleRelayCongestion/*.cc examples/SimpleRelayCongestion/results/*.cc examples/SingleCS/*.cc examples/SingleCS/results/*.cc examples/SmallNetRouting/*.cc examples/SmallNetRouting/results/*.cc examples/SmallNetwork/*.cc examples/SmallNetwork/results/*.cc examples/SmallNetwork2/*.cc examples/SmallNetwork2/results/*.cc examples/SmallRandNet/*.cc examples/SmallRandNet/results/*.cc examples/TwoCSWithDelay/*.cc examples/TwoCSWithDelay/results/*.cc examples/TwoCSs/*.cc examples/TwoCSs/results/*.cc examples/TwoCSsSimple/*.cc examples/TwoCSsSimple/results/*.cc examples/randPrefNet/*.cc examples/treeBipart/*.cc policies/*.cc policies/DIF/*.cc policies/DIF/EFCP/*.cc policies/DIF/EFCP/DTCP/*.cc policies/DIF/EFCP/DTCP/ECN/*.cc policies/DIF/EFCP/DTCP/ECNSlowDown/*.cc policies/DIF/EFCP/DTCP/FCOverrun/*.cc policies/DIF/EFCP/DTCP/FCOverrun/FCOverrunPolicyDefault/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/*.cc policies/DIF/EFCP/DTCP/RateReduction/*.cc policies/DIF/EFCP/DTCP/RcvrAck/*.cc policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrFC/*.cc policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/*.cc policies/DIF/EFCP/DTCP/SenderAck/*.cc policies/DIF/EFCP/DTCP/SenderAck/SenderAckDefaultPolicy/*.cc policies/DIF/EFCP/DTCP/SendingAck/*.cc policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/TxControl/*.cc policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyDefault/*.cc policies/DIF/EFCP/DTP/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyDefault/*.cc policies/DIF/EFCP/DTP/RTTEstimator/*.cc policies/DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyDefault/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyDefault/*.cc policies/DIF/EFCP/DTP/SenderInactivity/*.cc policies/DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyDefault/*.cc scripts/*.cc src/*.cc src/CS/*.cc src/Common/*.cc src/DAF/*.cc src/DAF/AE/*.cc src/DAF/CDAP/*.cc src/DAF/DA/*.cc src/DAF/IRM/*.cc src/DIF/*.cc src/DIF/Delimiting/*.cc src/DIF/EFCP/*.cc src/DIF/EFCP/DTCP/*.cc src/DIF/EFCP/DTP/*.cc src/DIF/EFCP/EFCPTable/*.cc src/DIF/Enrollment/*.cc src/DIF/FA/*.cc src/DIF/NSM/*.cc src/DIF/RA/*.cc src/DIF/RIB/*.cc src/DIF/RMT/*.cc src/policies/*.cc src/policies/DAF/*.cc src/policies/DIF/*.cc src/policies/DIF/FA/*.cc src/policies/DIF/FA/AllocateRetry/*.cc src/policies/DIF/FA/AllocateRetry/LimitedRetries/*.cc src/policies/DIF/FA/NewFlowRequest/*.cc src/policies/DIF/FA/NewFlowRequest/QoSCubeComparer/*.cc src/policies/DIF/FA/NewFlowRequest/QoSCubeComparerMin/*.cc src/policies/DIF/RA/*.cc src/policies/DIF/RA/AddressComparator/*.cc src/policies/DIF/RA/AddressComparator/ExactMatch/*.cc src/policies/DIF/RA/AddressComparator/PrefixMatch/*.cc src/policies/DIF/RA/PDUFG/*.cc src/policies/DIF/RA/PDUFG/BiDomainGenerator/*.cc src/policies/DIF/RA/PDUFG/SimpleGenerator/*.cc src/policies/DIF/RA/PDUFG/SingleDomainGenerator/*.cc src/policies/DIF/RA/PDUFG/StaticGenerator/*.cc src/policies/DIF/RA/QueueAlloc/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNCU/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNFlow/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNQoS/*.cc src/policies/DIF/RA/QueueAlloc/SingleQueue/*.cc src/policies/DIF/RA/QueueIDGen/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNCU/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNFlow/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNQoS/*.cc src/policies/DIF/RA/QueueIDGen/SingleID/*.cc src/policies/DIF/RMT/*.cc src/policies/DIF/RMT/MaxQueue/*.cc src/policies/DIF/RMT/MaxQueue/DLMaxQ/*.cc src/policies/DIF/RMT/MaxQueue/ECNMarker/*.cc src/policies/DIF/RMT/MaxQueue/REDDropper/*.cc src/policies/DIF/RMT/MaxQueue/ReadRateReducer/*.cc src/policies/DIF/RMT/MaxQueue/TailDrop/*.cc src/policies/DIF/RMT/MaxQueue/UpstreamNotifier/*.cc src/policies/DIF/RMT/Monitor/*.cc src/policies/DIF/RMT/Monitor/DLMonitor/*.cc src/policies/DIF/RMT/Monitor/REDMonitor/*.cc src/policies/DIF/RMT/Monitor/SimpleMonitor/*.cc src/policies/DIF/RMT/PDUForwarding/*.cc src/policies/DIF/RMT/PDUForwarding/DomainTable/*.cc src/policies/DIF/RMT/PDUForwarding/MiniTable/*.cc src/policies/DIF/RMT/PDUForwarding/SimpleTable/*.cc src/policies/DIF/RMT/Scheduler/*.cc src/policies/DIF/RMT/Scheduler/DL/*.cc src/policies/DIF/RMT/Scheduler/LongestQFirst/*.cc src/policies/DIF/Routing/*.cc src/policies/DIF/Routing/DomainRouting/*.cc src/policies/DIF/Routing/DomainRouting/DV/*.cc src/policies/DIF/Routing/DomainRouting/LS/*.cc src/policies/DIF/Routing/DummyRouting/*.cc src/policies/DIF/Routing/SimpleRouting/*.cc src/policies/DIF/Routing/SimpleRouting/SimpleDV/*.cc src/policies/DIF/Routing/SimpleRouting/SimpleLS/*.cc
+	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc examples/*.cc examples/AllNodes/*.cc examples/AllNodes/results/*.cc examples/BigRandNet/*.cc examples/BigRandNet/results/*.cc examples/DC/*.cc examples/ExtendedPingTwoCSsSimple/*.cc examples/ExtendedPingTwoCSsSimple/results/*.cc examples/FatTreeTopology/*.cc examples/FatTreeTopology/results/*.cc examples/FatTreeTopologyPref/*.cc examples/FatTreeTopologyPref/results/*.cc examples/SimpleRelay/*.cc examples/SimpleRelay/results/*.cc examples/SimpleRelayCongestion/*.cc examples/SimpleRelayCongestion/results/*.cc examples/SingleCS/*.cc examples/SingleCS/results/*.cc examples/SmallNetRouting/*.cc examples/SmallNetRouting/results/*.cc examples/SmallNetwork/*.cc examples/SmallNetwork/results/*.cc examples/SmallNetwork2/*.cc examples/SmallNetwork2/results/*.cc examples/SmallRandNet/*.cc examples/SmallRandNet/results/*.cc examples/TwoCSWithDelay/*.cc examples/TwoCSWithDelay/results/*.cc examples/TwoCSs/*.cc examples/TwoCSs/results/*.cc examples/TwoCSsSimple/*.cc examples/TwoCSsSimple/results/*.cc examples/randPrefNet/*.cc examples/treeBipart/*.cc policies/*.cc policies/DIF/*.cc policies/DIF/EFCP/*.cc policies/DIF/EFCP/DTCP/*.cc policies/DIF/EFCP/DTCP/ECN/*.cc policies/DIF/EFCP/DTCP/ECNSlowDown/*.cc policies/DIF/EFCP/DTCP/FCOverrun/*.cc policies/DIF/EFCP/DTCP/FCOverrun/FCOverrunPolicyDefault/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/*.cc policies/DIF/EFCP/DTCP/RateReduction/*.cc policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrAck/*.cc policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrFC/*.cc policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/*.cc policies/DIF/EFCP/DTCP/SenderAck/*.cc policies/DIF/EFCP/DTCP/SenderAck/SenderAckDefaultPolicy/*.cc policies/DIF/EFCP/DTCP/SendingAck/*.cc policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/TxControl/*.cc policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyDefault/*.cc policies/DIF/EFCP/DTP/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyDefault/*.cc policies/DIF/EFCP/DTP/RTTEstimator/*.cc policies/DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyDefault/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyDefault/*.cc policies/DIF/EFCP/DTP/SenderInactivity/*.cc policies/DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyDefault/*.cc scripts/*.cc src/*.cc src/CS/*.cc src/Common/*.cc src/DAF/*.cc src/DAF/AE/*.cc src/DAF/CDAP/*.cc src/DAF/DA/*.cc src/DAF/IRM/*.cc src/DIF/*.cc src/DIF/Delimiting/*.cc src/DIF/EFCP/*.cc src/DIF/EFCP/DTCP/*.cc src/DIF/EFCP/DTP/*.cc src/DIF/EFCP/EFCPTable/*.cc src/DIF/Enrollment/*.cc src/DIF/FA/*.cc src/DIF/NSM/*.cc src/DIF/RA/*.cc src/DIF/RIB/*.cc src/DIF/RMT/*.cc src/policies/*.cc src/policies/DAF/*.cc src/policies/DIF/*.cc src/policies/DIF/FA/*.cc src/policies/DIF/FA/AllocateRetry/*.cc src/policies/DIF/FA/AllocateRetry/LimitedRetries/*.cc src/policies/DIF/FA/NewFlowRequest/*.cc src/policies/DIF/FA/NewFlowRequest/QoSCubeComparer/*.cc src/policies/DIF/FA/NewFlowRequest/QoSCubeComparerMin/*.cc src/policies/DIF/RA/*.cc src/policies/DIF/RA/AddressComparator/*.cc src/policies/DIF/RA/AddressComparator/ExactMatch/*.cc src/policies/DIF/RA/AddressComparator/PrefixMatch/*.cc src/policies/DIF/RA/PDUFG/*.cc src/policies/DIF/RA/PDUFG/BiDomainGenerator/*.cc src/policies/DIF/RA/PDUFG/SimpleGenerator/*.cc src/policies/DIF/RA/PDUFG/SingleDomainGenerator/*.cc src/policies/DIF/RA/PDUFG/StaticGenerator/*.cc src/policies/DIF/RA/QueueAlloc/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNCU/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNFlow/*.cc src/policies/DIF/RA/QueueAlloc/QueuePerNQoS/*.cc src/policies/DIF/RA/QueueAlloc/SingleQueue/*.cc src/policies/DIF/RA/QueueIDGen/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNCU/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNFlow/*.cc src/policies/DIF/RA/QueueIDGen/IDPerNQoS/*.cc src/policies/DIF/RA/QueueIDGen/SingleID/*.cc src/policies/DIF/RMT/*.cc src/policies/DIF/RMT/MaxQueue/*.cc src/policies/DIF/RMT/MaxQueue/DLMaxQ/*.cc src/policies/DIF/RMT/MaxQueue/ECNMarker/*.cc src/policies/DIF/RMT/MaxQueue/REDDropper/*.cc src/policies/DIF/RMT/MaxQueue/ReadRateReducer/*.cc src/policies/DIF/RMT/MaxQueue/TailDrop/*.cc src/policies/DIF/RMT/MaxQueue/UpstreamNotifier/*.cc src/policies/DIF/RMT/Monitor/*.cc src/policies/DIF/RMT/Monitor/DLMonitor/*.cc src/policies/DIF/RMT/Monitor/REDMonitor/*.cc src/policies/DIF/RMT/Monitor/SimpleMonitor/*.cc src/policies/DIF/RMT/PDUForwarding/*.cc src/policies/DIF/RMT/PDUForwarding/DomainTable/*.cc src/policies/DIF/RMT/PDUForwarding/MiniTable/*.cc src/policies/DIF/RMT/PDUForwarding/SimpleTable/*.cc src/policies/DIF/RMT/Scheduler/*.cc src/policies/DIF/RMT/Scheduler/DL/*.cc src/policies/DIF/RMT/Scheduler/LongestQFirst/*.cc src/policies/DIF/Routing/*.cc src/policies/DIF/Routing/DomainRouting/*.cc src/policies/DIF/Routing/DomainRouting/DV/*.cc src/policies/DIF/Routing/DomainRouting/LS/*.cc src/policies/DIF/Routing/DummyRouting/*.cc src/policies/DIF/Routing/SimpleRouting/*.cc src/policies/DIF/Routing/SimpleRouting/SimpleDV/*.cc src/policies/DIF/Routing/SimpleRouting/SimpleLS/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/policies/DIF/EFCP/EFCPPolicy.o: policies/DIF/EFCP/EFCPPolicy.cc \
@@ -802,8 +805,96 @@ $O/policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.o: policie
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
-$O/policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.o: policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.cc \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+$O/policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.o: policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.cc \
+	policies/DIF/EFCP/DTCP/ECN/DTCPECNPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyBase.h \
+	policies/DIF/EFCP/DTCP/FCOverrun/DTCPFCOverrunPolicyBase.h \
+	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
+	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
+	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
+	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
+	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
+	policies/DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyBase.h \
+	policies/DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyBase.h \
+	policies/DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyBase.h \
+	policies/DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyBase.h \
+	policies/DIF/EFCP/EFCPPolicy.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/CongestionDescriptor.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/Data.h \
+	src/Common/Data_m.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/ModuleAccess.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/RINASignals.h \
+	src/Common/SDU.h \
+	src/Common/SDU_m.h \
+	src/DAF/AE/QoSReq.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DAF/DA/DA.h \
+	src/DAF/DA/Directory.h \
+	src/DAF/DA/DirectoryEntry.h \
+	src/DAF/DA/NamingInformation.h \
+	src/DAF/DA/NamingInformationEntry.h \
+	src/DAF/DA/NeighborTable.h \
+	src/DAF/DA/NeighborTableEntry.h \
+	src/DAF/DA/SearchTable.h \
+	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/DTCP/ControlPDU_m.h \
+	src/DIF/EFCP/DTCP/DTCP.h \
+	src/DIF/EFCP/DTCP/DTCPState.h \
+	src/DIF/EFCP/DTCP/DTCPTimers_m.h \
+	src/DIF/EFCP/DTP/DTP.h \
+	src/DIF/EFCP/DTP/DTPState.h \
+	src/DIF/EFCP/DTP/DTPTimers_m.h \
+	src/DIF/EFCP/DTP/DataTransferPDU.h \
+	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
+	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/EFCP/EFCP_defs.h \
+	src/DIF/FA/FABase.h \
+	src/DIF/FA/FAIBase.h \
+	src/DIF/FA/FAITable.h \
+	src/DIF/FA/FAITableEntry.h \
+	src/DIF/RA/NM1FlowTable.h \
+	src/DIF/RA/NM1FlowTableItem.h \
+	src/DIF/RA/RA.h \
+	src/DIF/RA/RABase.h \
+	src/DIF/RA/RAListeners.h \
+	src/DIF/RMT/RMT.h \
+	src/DIF/RMT/RMTBase.h \
+	src/DIF/RMT/RMTListeners.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h \
+	src/policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	src/policies/DIF/RA/PDUFG/IntPDUFG.h \
+	src/policies/DIF/RA/PDUFG/PDUFGNeighbor.h \
+	src/policies/DIF/RA/QueueAlloc/QueueAllocBase.h \
+	src/policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	src/policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
+	src/policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	src/policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
+	src/policies/DIF/RMT/Scheduler/RMTSchedulingBase.h
+$O/policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/RateReductionPolicyDefault.o: policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/RateReductionPolicyDefault.cc \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/RateReductionPolicyDefault.h \
+	policies/DIF/EFCP/EFCPPolicy.h \
 	src/Common/APN.h \
 	src/Common/Address.h \
 	src/Common/ConnectionId.h \
@@ -834,7 +925,7 @@ $O/policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.o: policies/DIF/EFCP/DTCP/Rc
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
@@ -947,7 +1038,8 @@ $O/policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.o: policies/DI
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -1112,7 +1204,8 @@ $O/policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.o: policies/DIF/EFCP
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -1277,7 +1370,8 @@ $O/policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.o: policies/DIF/EFCP/DTC
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -1389,7 +1483,8 @@ $O/policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.o: policies/DIF/EFCP/D
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -2472,7 +2567,8 @@ $O/src/DIF/EFCP/EFCP.o: src/DIF/EFCP/EFCP.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -2563,7 +2659,8 @@ $O/src/DIF/EFCP/EFCPInstance.o: src/DIF/EFCP/EFCPInstance.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -2649,7 +2746,8 @@ $O/src/DIF/EFCP/EFCPListeners.o: src/DIF/EFCP/EFCPListeners.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -2753,7 +2851,8 @@ $O/src/DIF/EFCP/DTCP/DTCP.o: src/DIF/EFCP/DTCP/DTCP.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -2883,7 +2982,8 @@ $O/src/DIF/EFCP/DTP/DTP.o: src/DIF/EFCP/DTP/DTP.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -3065,7 +3165,8 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTable.o: src/DIF/EFCP/EFCPTable/EFCPTable.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -3154,7 +3255,8 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTableEntry.o: src/DIF/EFCP/EFCPTable/EFCPTableEntr
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -3244,7 +3346,8 @@ $O/src/DIF/FA/FA.o: src/DIF/FA/FA.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -3357,7 +3460,8 @@ $O/src/DIF/FA/FAI.o: src/DIF/FA/FAI.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \
@@ -3464,7 +3568,8 @@ $O/src/DIF/FA/FAIListeners.o: src/DIF/FA/FAIListeners.cc \
 	policies/DIF/EFCP/DTCP/LostControlPDU/DTCPLostControlPDUPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoOverridePeak/DTCPNoOverridePeakPolicyBase.h \
 	policies/DIF/EFCP/DTCP/NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h \
-	policies/DIF/EFCP/DTCP/RateReduction/DTCPRateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h \
+	policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h \

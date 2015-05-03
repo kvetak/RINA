@@ -50,7 +50,7 @@
 #include "TxControlPolicyBase.h"
 #include "DTCPNoRateSlowDownPolicyBase.h"
 #include "ReconcileFCPolicyBase.h"
-#include "DTCPRateReductionPolicyBase.h"
+#include "RateReductionPolicyBase.h"
 #include "DTCPECNSlowDownPolicyBase.h"
 
 class DTP;
@@ -77,7 +77,7 @@ class DTCP: public cSimpleModule {
     TxControlPolicyBase* txControlPolicy;
     DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
     ReconcileFCPolicyBase* reconcileFCPolicy;
-    DTCPRateReductionPolicyBase* rateReductionPolicy;
+    RateReductionPolicyBase* rateReductionPolicy;
     DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
 
 

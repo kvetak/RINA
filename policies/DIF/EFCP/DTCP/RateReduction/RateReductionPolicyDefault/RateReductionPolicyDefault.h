@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -14,12 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file RateReductionPolicyDefault.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Rate Reduction behavior
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.RateReduction;
+#ifndef RATEREDUCTIONPOLICYDEFAULT_H_
+#define RATEREDUCTIONPOLICYDEFAULT_H_
 
-moduleinterface IntDTCPRateReductionPolicy
+#include <RateReductionPolicyBase.h>
+
+class RateReductionPolicyDefault : public RateReductionPolicyBase
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
-}
+  public:
+    RateReductionPolicyDefault();
+    virtual ~RateReductionPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
+
+#endif /* RATEREDUCTIONPOLICYDEFAULT_H_ */

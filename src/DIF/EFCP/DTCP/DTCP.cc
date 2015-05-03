@@ -125,7 +125,7 @@ void DTCP::initialize(int step)
         txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
         noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
         reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
-        rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
+        rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
   			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
 
@@ -510,28 +510,28 @@ reconcileFCPolicy->call(dtpState, dtcpState);
 bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 {
   Enter_Method("RateReductionPolicy");
-  if (rateReductionPolicy == NULL || rateReductionPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
-    {
-//      flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
-      dtcpState->setRcvrRate(dtcpState->getRcvrRate() *0.9);
-
-    }
-    else
-    {
-      if (dtcpState->getRcvrRate() < dtcpState->getConfigRcvrRate()
-          && dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
-      {
-        //set rate back to config rate
-        dtcpState->setRcvrRate(dtcpState->getConfigRcvrRate());
-      }
-    }
-    dtp->sendAckFlowPDU();
-    /* End default */
-
-  }
+  rateReductionPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
+//    {
+////      flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
+//      dtcpState->setRcvrRate(dtcpState->getRcvrRate() *0.9);
+//
+//    }
+//    else
+//    {
+//      if (dtcpState->getRcvrRate() < dtcpState->getConfigRcvrRate()
+//          && dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+//      {
+//        //set rate back to config rate
+//        dtcpState->setRcvrRate(dtcpState->getConfigRcvrRate());
+//      }
+//    }
+//    dtp->sendAckFlowPDU();
+//    /* End default */
+//
+//  }
   return false;
 }
 

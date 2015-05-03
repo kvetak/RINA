@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +15,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRateReductionPolicyBase.h
+ * @file RateReductionPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Rate Reduction behavior
  * @detail
  */
 
-#ifndef DTCPRATEREDUCTIONPOLICYBASE_H_
-#define DTCPRATEREDUCTIONPOLICYBASE_H_
+#include "RateReductionPolicyDefault.h"
 
-#include <omnetpp.h>
+Register_Class(RateReductionPolicyDefault);
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPRateReductionPolicyBase : public cSimpleModule
+RateReductionPolicyDefault::RateReductionPolicyDefault()
 {
-  public:
-    DTCPRateReductionPolicyBase();
-    virtual ~DTCPRateReductionPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+  // TODO Auto-generated constructor stub
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
+}
 
-};
+RateReductionPolicyDefault::~RateReductionPolicyDefault()
+{
 
-#endif /* DTCPRATEREDUCTIONPOLICYBASE_H_ */
+}
+
+bool RateReductionPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("RateReductionPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
+}
