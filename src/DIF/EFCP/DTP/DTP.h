@@ -172,7 +172,7 @@ class DTP : public cSimpleModule
     void sendControlAckPDU();
     void sendEmptyDTPDU();
     void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
-    void sendFCOnlyPDU();
+
     void sendAckOnlyPDU(unsigned int seqNum);
     bool setDRFInPDU(bool override);
 
@@ -209,6 +209,9 @@ class DTP : public cSimpleModule
     void startATimer(unsigned int seqNum);
 
     void resetSenderInactivTimer();
+
+    void sendFCOnlyPDU();
+
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);

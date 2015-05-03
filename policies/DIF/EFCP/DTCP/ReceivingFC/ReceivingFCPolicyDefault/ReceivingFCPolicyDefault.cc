@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,11 +13,26 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.EFCP.DTCP.ReceivingFC;
+#include <ReceivingFCPolicyDefault/ReceivingFCPolicyDefault.h>
 
-moduleinterface IntDTCPReceivingFCPolicy
+Register_Class(ReceivingFCPolicyDefault);
+
+ReceivingFCPolicyDefault::ReceivingFCPolicyDefault()
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
+  // TODO Auto-generated constructor stub
+
+}
+
+ReceivingFCPolicyDefault::~ReceivingFCPolicyDefault()
+{
+  // TODO Auto-generated destructor stub
+}
+
+bool ReceivingFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("ReceivingFCPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
 }

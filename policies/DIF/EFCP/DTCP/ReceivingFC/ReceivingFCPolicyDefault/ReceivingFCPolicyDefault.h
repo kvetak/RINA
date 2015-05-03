@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,20 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPReceivingFCPolicyBase.cc
+ * @file ReceivingFCPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default ReceivingFC behavior
  * @detail
  */
 
-#include "DTCPReceivingFCPolicyBase.h"
+#ifndef RECEIVINGFCPOLICYDEFAULT_H_
+#define RECEIVINGFCPOLICYDEFAULT_H_
 
-DTCPReceivingFCPolicyBase::DTCPReceivingFCPolicyBase()
+#include <ReceivingFCPolicyBase.h>
+
+class ReceivingFCPolicyDefault : public ReceivingFCPolicyBase
 {
-}
+  public:
+    ReceivingFCPolicyDefault();
+    virtual ~ReceivingFCPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-DTCPReceivingFCPolicyBase::~DTCPReceivingFCPolicyBase()
-{
-}
-
+#endif /* RECEIVINGFCPOLICYDEFAULT_H_ */

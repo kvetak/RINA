@@ -40,7 +40,7 @@
 #include "DTCPECNPolicyBase.h"
 #include "DTCPRcvrFCPolicyBase.h"
 #include "DTCPRcvrAckPolicyBase.h"
-#include "DTCPReceivingFCPolicyBase.h"
+#include "ReceivingFCPolicyBase.h"
 #include "SendingAckPolicyBase.h"
 #include "DTCPLostControlPDUPolicyBase.h"
 #include "DTCPRcvrControlAckPolicyBase.h"
@@ -67,7 +67,7 @@ class DTCP: public cSimpleModule {
     DTCPECNPolicyBase* ecnPolicy;
     DTCPRcvrFCPolicyBase* rcvrFCPolicy;
     DTCPRcvrAckPolicyBase* rcvrAckPolicy;
-    DTCPReceivingFCPolicyBase* receivingFCPolicy;
+    ReceivingFCPolicyBase* receivingFCPolicy;
     SendingAckPolicyBase* sendingAckPolicy;
     DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
     DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;

@@ -115,7 +115,7 @@ void DTCP::initialize(int step)
         ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
         rcvrFCPolicy          = (DTCPRcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
         rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
-        receivingFCPolicy     = (DTCPReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
+        receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
         lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
         rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
@@ -268,19 +268,19 @@ bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 {
   Enter_Method("ReceivingFCPolicy");
-  if(receivingFCPolicy == NULL || receivingFCPolicy->run(dtpState, dtcpState)){
+  receivingFCPolicy->call(dtpState, dtcpState);
     /* Default */
-    if (dtpState->isWinBased())
-    {
-
-      //Send FlowControl PDU /* Already updated the window and not sending Ack */
-      dtp->sendFCOnlyPDU();
-
-    }
+//    if (dtpState->isWinBased())
+//    {
+//
+//      //Send FlowControl PDU /* Already updated the window and not sending Ack */
+//      dtp->sendFCOnlyPDU();
+//
+//    }
 
     /* End default */
 
-  }
+//  }
   return false;
 }
 
