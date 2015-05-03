@@ -15,22 +15,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPReconcileFCPolicyBase.cc
+ * @file ReconcileFCPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <DTCPReconcileFCPolicyBase.h>
+#include "ReconcileFCPolicyBase.h"
 
-DTCPReconcileFCPolicyBase::DTCPReconcileFCPolicyBase()
+ReconcileFCPolicyBase::ReconcileFCPolicyBase()
 {
 
 }
 
-DTCPReconcileFCPolicyBase::~DTCPReconcileFCPolicyBase()
+ReconcileFCPolicyBase::~ReconcileFCPolicyBase()
 {
 
 }
 
+void ReconcileFCPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+  /* Default */
+  /* Default is empty :)*/
+  /* End default */
+}

@@ -186,7 +186,8 @@ OBJS = \
     $O/policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.o \
-    $O/policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.o \
+    $O/policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.o \
+    $O/policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/ReconcileFCDefaultPolicy.o \
     $O/policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.o \
     $O/policies/DIF/EFCP/DTCP/SenderAck/SenderAckDefaultPolicy/SenderAckDefaultPolicy.o \
     $O/policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.o \
@@ -914,8 +915,36 @@ $O/policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.o: policies/DIF/
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h
-$O/policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.o: policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.cc \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+$O/policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.o: policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.cc \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/EFCPPolicy.h \
+	src/Common/APN.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/Data.h \
+	src/Common/Data_m.h \
+	src/Common/ExternConsts.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/SDU.h \
+	src/Common/SDU_m.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/DTCP/DTCPState.h \
+	src/DIF/EFCP/DTCP/DTCPTimers_m.h \
+	src/DIF/EFCP/DTP/DTPState.h \
+	src/DIF/EFCP/DTP/DTPTimers_m.h \
+	src/DIF/EFCP/DTP/DataTransferPDU.h \
+	src/DIF/EFCP/DTP/DataTransferPDU_m.h \
+	src/DIF/EFCP/DTP/UserDataField.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/EFCP/EFCP_defs.h
+$O/policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/ReconcileFCDefaultPolicy.o: policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/ReconcileFCDefaultPolicy.cc \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCDefaultPolicy/ReconcileFCDefaultPolicy.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/EFCPPolicy.h \
 	src/Common/APN.h \
 	src/Common/Address.h \
 	src/Common/ConnectionId.h \
@@ -951,7 +980,7 @@ $O/policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.o: policies/DIF/EFCP/DTC
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -1064,7 +1093,7 @@ $O/policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.o: policies/DIF/EFCP/D
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2148,7 +2177,7 @@ $O/src/DIF/EFCP/EFCP.o: src/DIF/EFCP/EFCP.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2240,7 +2269,7 @@ $O/src/DIF/EFCP/EFCPInstance.o: src/DIF/EFCP/EFCPInstance.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2327,7 +2356,7 @@ $O/src/DIF/EFCP/EFCPListeners.o: src/DIF/EFCP/EFCPListeners.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2432,7 +2461,7 @@ $O/src/DIF/EFCP/DTCP/DTCP.o: src/DIF/EFCP/DTCP/DTCP.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2563,7 +2592,7 @@ $O/src/DIF/EFCP/DTP/DTP.o: src/DIF/EFCP/DTP/DTP.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2746,7 +2775,7 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTable.o: src/DIF/EFCP/EFCPTable/EFCPTable.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2836,7 +2865,7 @@ $O/src/DIF/EFCP/EFCPTable/EFCPTableEntry.o: src/DIF/EFCP/EFCPTable/EFCPTableEntr
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -2927,7 +2956,7 @@ $O/src/DIF/FA/FA.o: src/DIF/FA/FA.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -3041,7 +3070,7 @@ $O/src/DIF/FA/FAI.o: src/DIF/FA/FAI.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \
@@ -3149,7 +3178,7 @@ $O/src/DIF/FA/FAIListeners.o: src/DIF/FA/FAIListeners.cc \
 	policies/DIF/EFCP/DTCP/RcvrControlAck/DTCPRcvrControlAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/RcvrFC/DTCPRcvrFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/ReceivingFC/DTCPReceivingFCPolicyBase.h \
-	policies/DIF/EFCP/DTCP/ReconcileFC/DTCPReconcileFCPolicyBase.h \
+	policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h \
 	policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h \

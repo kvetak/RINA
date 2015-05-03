@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.ReconcileFC;
 
-moduleinterface IntDTCPReconcileFCPolicy
+moduleinterface IntReconcileFCPolicy
 {
     parameters:
         @display("i=block/socket");

@@ -49,7 +49,7 @@
 #include "DTCPNoOverridePeakPolicyBase.h"
 #include "TxControlPolicyBase.h"
 #include "DTCPNoRateSlowDownPolicyBase.h"
-#include "DTCPReconcileFCPolicyBase.h"
+#include "ReconcileFCPolicyBase.h"
 #include "DTCPRateReductionPolicyBase.h"
 #include "DTCPECNSlowDownPolicyBase.h"
 
@@ -76,7 +76,7 @@ class DTCP: public cSimpleModule {
     DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
     TxControlPolicyBase* txControlPolicy;
     DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
-    DTCPReconcileFCPolicyBase* reconcileFCPolicy;
+    ReconcileFCPolicyBase* reconcileFCPolicy;
     DTCPRateReductionPolicyBase* rateReductionPolicy;
     DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
 

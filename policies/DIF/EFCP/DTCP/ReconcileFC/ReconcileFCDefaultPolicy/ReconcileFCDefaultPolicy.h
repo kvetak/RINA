@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPReconcileFCPolicyBase.h
+ * @file ReconcileFCPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#ifndef DTCPRECONCILEFCPOLICYBASE_H_
-#define DTCPRECONCILEFCPOLICYBASE_H_
+#ifndef RECONCILEFCDEFAULTPOLICY_H_
+#define RECONCILEFCDEFAULTPOLICY_H_
 
-#include <omnetpp.h>
+#include <ReconcileFCPolicyBase.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPReconcileFCPolicyBase : public cSimpleModule
+class ReconcileFCDefaultPolicy : public ReconcileFCPolicyBase
 {
   public:
-    DTCPReconcileFCPolicyBase();
-    virtual ~DTCPReconcileFCPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
+    ReconcileFCDefaultPolicy();
+    virtual ~ReconcileFCDefaultPolicy();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 };
 
-#endif /* DTCPRECONCILEFCPOLICYBASE_H_ */
+#endif /* RECONCILEFCDEFAULTPOLICY_H_ */

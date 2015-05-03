@@ -124,7 +124,7 @@ void DTCP::initialize(int step)
         noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
         txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
         noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
-        reconcileFCPolicy     = (DTCPReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
+        reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
         rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
   			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
@@ -502,13 +502,8 @@ bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
 bool DTCP::runReconcileFCPolicy(DTPState* dtpState)
 {
   Enter_Method("ReconcileFCPolicy");
-  if (reconcileFCPolicy == NULL || reconcileFCPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    /* Default is empty :)*/
-    /* End default */
+reconcileFCPolicy->call(dtpState, dtcpState);
 
-  }
   return false;
 }
 
