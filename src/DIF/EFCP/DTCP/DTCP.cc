@@ -113,7 +113,7 @@ void DTCP::initialize(int step)
 
         //TODO A1 Load list of policies
         ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-        rcvrFCPolicy          = (DTCPRcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
+        rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
         rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
         receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
@@ -185,25 +185,25 @@ void DTCP::incRcvRtWinEdge()
 bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrFCPolicy");
-  if(rcvrFCPolicy == NULL || rcvrFCPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-    /* This policy has to be the one to impose the condition to set WindowClosed to True */
-    /* Default */
-    //TODO A2 Where else are these variables updated?
-    if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
-    {
-
-      incRcvRtWinEdge();
-    }
-    else
-    {
-      /* Buffers are getting low */
-      //Leave RightWindowEdge unchanged.
-    }
-    /* End default */
-
-  }
+  rcvrFCPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+//    /* This policy has to be the one to impose the condition to set WindowClosed to True */
+//    /* Default */
+//    //TODO A2 Where else are these variables updated?
+//    if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+//    {
+//
+//      incRcvRtWinEdge();
+//    }
+//    else
+//    {
+//      /* Buffers are getting low */
+//      //Leave RightWindowEdge unchanged.
+//    }
+//    /* End default */
+//
+//  }
   return false;
 }
 

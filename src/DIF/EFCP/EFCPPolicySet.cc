@@ -238,4 +238,5 @@ bool EFCPPolicySet::init(cXMLElement* parent)
       txControl = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_TXCONTROL;
     }
   }
+  return true;
 }

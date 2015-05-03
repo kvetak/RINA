@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,31 +15,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRcvrFCPolicyBase.h
+ * @file RcvrFCPolicyDefault.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#ifndef DTCPRCVRFCPOLICYBASE_H_
-#define DTCPRCVRFCPOLICYBASE_H_
+#include <RcvrFCPolicyDefault/RcvrFCPolicyDefault.h>
 
-#include <omnetpp.h>
+Register_Class(RcvrFCPolicyDefault);
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
-class DTCPRcvrFCPolicyBase : public cSimpleModule
+RcvrFCPolicyDefault::RcvrFCPolicyDefault()
 {
-  public:
-    DTCPRcvrFCPolicyBase();
-    virtual ~DTCPRcvrFCPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+  // TODO Auto-generated constructor stub
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-};
+}
 
-#endif /* DTCPRCVRFCPOLICYBASE_H_ */
+RcvrFCPolicyDefault::~RcvrFCPolicyDefault()
+{
+  // TODO Auto-generated destructor stub
+}
+
+bool RcvrFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("RcvrFCPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
+}

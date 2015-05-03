@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-//
+// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,12 +14,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file RcvrFCPolicyBase.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jan 5, 2015
+ * @brief
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.RcvrFC;
+#ifndef RCVRFCPOLICYBASE_H_
+#define RCVRFCPOLICYBASE_H_
 
-moduleinterface IntDTCPRcvrFCPolicy
+#include <omnetpp.h>
+
+#include "EFCPPolicy.h"
+
+class RcvrFCPolicyBase : public EFCPPolicy
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
-}
+  public:
+    RcvrFCPolicyBase();
+    virtual ~RcvrFCPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+        void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+};
+
+#endif /* RCVRFCPOLICYBASE_H_ */

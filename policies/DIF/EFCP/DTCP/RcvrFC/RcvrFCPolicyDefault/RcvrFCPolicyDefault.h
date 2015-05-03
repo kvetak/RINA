@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,23 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRcvrFCPolicyBase.cc
+ * @file RcvrFCPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#include <RcvrFC/DTCPRcvrFCPolicyBase.h>
+#ifndef RCVRFCPOLICYDEFAULT_H_
+#define RCVRFCPOLICYDEFAULT_H_
 
-DTCPRcvrFCPolicyBase::DTCPRcvrFCPolicyBase()
+#include <RcvrFCPolicyBase.h>
+
+class RcvrFCPolicyDefault : public RcvrFCPolicyBase
 {
+  public:
+    RcvrFCPolicyDefault();
+    virtual ~RcvrFCPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-
-}
-
-DTCPRcvrFCPolicyBase::~DTCPRcvrFCPolicyBase()
-{
-
-}
-
+#endif /* RCVRFCPOLICYDEFAULT_H_ */
