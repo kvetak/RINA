@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.NoRateSlowDown;
 
-moduleinterface IntDTCPNoRateSlowDownPolicy
+moduleinterface IntNoRateSlowDownPolicy
 {
     parameters:
         @display("i=block/socket");

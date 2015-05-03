@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,24 +12,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file DTCPNoRateSlowDownPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
- * @detail
- */
 
-#include <NoRateSlowDown/DTCPNoRateSlowDownPolicyBase.h>
+#include <NoRateSlowDownPolicyDefault/NoRateSlowDownPolicyDefault.h>
 
-DTCPNoRateSlowDownPolicyBase::DTCPNoRateSlowDownPolicyBase()
+Register_Class(NoRateSlowDownPolicyDefault)
+
+NoRateSlowDownPolicyDefault::NoRateSlowDownPolicyDefault()
 {
-
+  // TODO Auto-generated constructor stub
 
 }
 
-DTCPNoRateSlowDownPolicyBase::~DTCPNoRateSlowDownPolicyBase()
+NoRateSlowDownPolicyDefault::~NoRateSlowDownPolicyDefault()
 {
-
+  // TODO Auto-generated destructor stub
 }
 
+bool NoRateSlowDownPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("InitialSeqNumPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
+}

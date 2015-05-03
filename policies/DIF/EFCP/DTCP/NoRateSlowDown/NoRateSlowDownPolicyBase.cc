@@ -15,35 +15,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPNoRateSlowDownPolicyBase.h
+ * @file NoRateSlowDownPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPNORATESLOWDOWNPOLICYBASE_H_
-#define DTCPNORATESLOWDOWNPOLICYBASE_H_
+#include "NoRateSlowDownPolicyBase.h"
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPNoRateSlowDownPolicyBase : public cSimpleModule
+NoRateSlowDownPolicyBase::NoRateSlowDownPolicyBase()
 {
-  public:
-    DTCPNoRateSlowDownPolicyBase();
-    virtual ~DTCPNoRateSlowDownPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTCPNORATESLOWDOWNPOLICYBASE_H_ */
+NoRateSlowDownPolicyBase::~NoRateSlowDownPolicyBase()
+{
+
+}
+
+void NoRateSlowDownPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+  /* Default */
+  //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
+  /* Default */
+
+  dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
+  dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
+//  dtcpState->incincPdusSentInTimeUnit();
+  dtcpState->setPdusSentInTimeUnit(dtcpState->getPdusSentInTimeUnit() + 1);
+  /* End default */
+}

@@ -123,7 +123,7 @@ void DTCP::initialize(int step)
         fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
         noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
         txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
-        noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
+        noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
         reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
         rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
   			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
@@ -484,18 +484,18 @@ bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
 {
   Enter_Method("NoRateSlowDownPolicy");
-  if (noRateSlowDownPolicy == NULL || noRateSlowDownPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
-    /* Default */
-
-    dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
-    dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
-    incPdusSentInTimeUnit();
-    /* End default */
-
-  }
+  noRateSlowDownPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
+//    /* Default */
+//
+//    dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
+//    dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
+//    incPdusSentInTimeUnit();
+//    /* End default */
+//
+//  }
   return false;
 }
 
