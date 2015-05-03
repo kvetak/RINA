@@ -504,4 +504,15 @@ void DTPState::handleMessage(cMessage* msg)
 {
 }
 
+/* Dirty hacks */
+ATimer* DTPState::getTmpAtimer() const
+{
+  return tmpAtimer;
+}
 
+void DTPState::setTmpAtimer(ATimer* tmpAtimer)
+{
+  this->tmpAtimer = tmpAtimer;
+}
+
+/* End dirty hacks */

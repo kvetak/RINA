@@ -167,7 +167,7 @@ class DTP : public cSimpleModule
 //    void handleSDUs(CDAPMessage* cdap);
     void setPDUHeader(PDU* pdu);
     void initGates();
-    void delimitFromRMT(DataTransferPDU* pdu);
+
     bool commonRcvControl(ControlPDU* pdu);
     void sendControlAckPDU();
     void sendEmptyDTPDU();
@@ -180,7 +180,7 @@ class DTP : public cSimpleModule
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
     void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
 
-    void resetSenderInactivTimer();
+
     void rcvrBufferStateChange();
     bool isDuplicate(unsigned int seqNum);
     void notifyAboutInactivity();
@@ -196,6 +196,8 @@ class DTP : public cSimpleModule
 //    bool readImmediate(int portId, unsigned char* buffer, int len);
 //    bool write(int portId, unsigned char *buffer, int len);
 
+    void delimitFromRMT(DataTransferPDU* pdu);
+
     void setFlow(const Flow* flow);
     void setDTCP(DTCP* dtcp);
     const QoSCube* getQoSCube() const;
@@ -205,6 +207,8 @@ class DTP : public cSimpleModule
     void flushAllQueuesAndPrepareToDie();
     cModule* createPolicyModule(const char* prefix, const char* name);
     void startATimer(unsigned int seqNum);
+
+    void resetSenderInactivTimer();
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);
@@ -218,7 +222,7 @@ class DTP : public cSimpleModule
     }
     void initSignalsAndListeners();
 
-    ;
+
 
     //Signals
 

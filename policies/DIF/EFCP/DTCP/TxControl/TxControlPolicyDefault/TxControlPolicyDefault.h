@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPSendingAckPolicyBase.h
+ * @file TxControlPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#ifndef DTCPSENDINGACKPOLICYBASE_H_
-#define DTCPSENDINGACKPOLICYBASE_H_
+#ifndef TXCONTROLPOLICYDEFAULT_H_
+#define TXCONTROLPOLICYDEFAULT_H_
 
-#include <omnetpp.h>
+#include "TxControlPolicyBase.h"
 
-#include "DTPState.h"
-#include "DTCPState.h"
-#include "DTPTimers_m.h"
-
-/*
- *
- */
-class DTCPSendingAckPolicyBase : public cSimpleModule
+class TxControlPolicyDefault : public TxControlPolicyBase
 {
   public:
-    DTCPSendingAckPolicyBase();
-    virtual ~DTCPSendingAckPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState, ATimer* timer) = 0;
-
-      protected:
-        virtual void initialize(){};
-        virtual void handleMessage(cMessage* msg){};
+    TxControlPolicyDefault();
+    virtual ~TxControlPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 };
 
-#endif /* DTCPSENDINGACKPOLICYBASE_H_ */
+#endif /* TXCONTROLPOLICYDEFAULT_H_ */

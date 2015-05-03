@@ -864,6 +864,8 @@ void DTP::resetSenderInactivTimer()
 void DTP::handleDTPATimer(ATimer* timer)
 {
 
+  state->setTmpAtimer(timer);
+
   if(state->isDtcpPresent()){
 //    runSendingAckPolicy(timer);
     dtcp->runSendingAckPolicy(state, timer);

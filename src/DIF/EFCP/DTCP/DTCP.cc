@@ -116,7 +116,7 @@ void DTCP::initialize(int step)
         rcvrFCPolicy          = (DTCPRcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
         rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
         receivingFCPolicy     = (DTCPReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
-        sendingAckPolicy      = (DTCPSendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
+        sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
         lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
         rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
         senderAckPolicy       = (DTCPSenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
@@ -289,21 +289,21 @@ bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 {
   Enter_Method("SendingAckPolicy");
-  if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
-    /* Default */
+  sendingAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+//    //Update RcvLetWindowEdge
+//    dtpState->updateRcvLWE(timer->getSeqNum());
+//
+//    //Invoke Delimiting
+//    dtp->delimitFromRMT(NULL);
+//
+//    //resetSenderInactivity
+//    dtp->resetSenderInactivTimer();
+//
+//    /* End default */
 
-    //Update RcvLetWindowEdge
-    dtpState->updateRcvLWE(timer->getSeqNum());
-
-    //Invoke Delimiting
-    dtp->delimitFromRMT(NULL);
-
-    //resetSenderInactivity
-    dtp->resetSenderInactivTimer();
-
-    /* End default */
-
-  }
+//  }
   return false;
 }
 
