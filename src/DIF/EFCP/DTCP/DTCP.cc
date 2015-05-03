@@ -114,7 +114,7 @@ void DTCP::initialize(int step)
         //TODO A1 Load list of policies
         ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
         rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
-        rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
+        rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
         receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
         lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
@@ -210,58 +210,58 @@ bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrAckPolicy");
-  if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
-
-    if(dtpState->getRcvLeftWinEdge() == 0){
-      seqNum = 0;
-    }
-
-    if (dtcpState->isImmediate())
-    {
-      //Update LeftWindowEdge removing allowed gaps;
-      dtpState->updateRcvLWE(seqNum);
-//      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+  rcvrAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
 //
-//      PDUQ_t::iterator it;
-//      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
-//      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-//      {
-//        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
-//          dtpState->incRcvLeftWindowEdge();
+//    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
 //
-//        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
-//          continue;
-//        }else {
-//          if(pduQ->size() == 1 || it == pduQ->begin()){
-//            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
-//              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
-//            }
-//          }else{
-//            (*(it-1))->getSDUGap((*it));
-//          }
-//          break;
-//        }
-//      }
-
-      //send an Ack/FlowControlPDU
-      dtp->sendAckFlowPDU(seqNum, true);
-
-
-      //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
-      //XXX How could there be any A-Timer when isImmediate returned true?
-
-    }
-    else
-    {
-      //set A-timer for this PDU
-      dtp->startATimer(seqNum);
-    }
-
-    /* End default */
-  }
+//    if(dtpState->getRcvLeftWinEdge() == 0){
+//      seqNum = 0;
+//    }
+//
+//    if (dtcpState->isImmediate())
+//    {
+//      //Update LeftWindowEdge removing allowed gaps;
+//      dtpState->updateRcvLWE(seqNum);
+////      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+////
+////      PDUQ_t::iterator it;
+////      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+////      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+////      {
+////        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+////          dtpState->incRcvLeftWindowEdge();
+////
+////        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+////          continue;
+////        }else {
+////          if(pduQ->size() == 1 || it == pduQ->begin()){
+////            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+////              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+////            }
+////          }else{
+////            (*(it-1))->getSDUGap((*it));
+////          }
+////          break;
+////        }
+////      }
+//
+//      //send an Ack/FlowControlPDU
+//      dtp->sendAckFlowPDU(seqNum, true);
+//
+//
+//      //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
+//      //XXX How could there be any A-Timer when isImmediate returned true?
+//
+//    }
+//    else
+//    {
+//      //set A-timer for this PDU
+//      dtp->startATimer(seqNum);
+//    }
+//
+//    /* End default */
+//  }
   return false;
 }
 

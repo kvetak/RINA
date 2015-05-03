@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,30 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPRcvrAckPolicyBase.h
+ * @file RcvrAckPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default RcvrAck behavior
  * @detail
  */
 
-#ifndef DTCPRCVRACKPOLICYBASE_H_
-#define DTCPRCVRACKPOLICYBASE_H_
-#include <omnetpp.h>
+#ifndef RCVRACKPOLICYDEFAULT_H_
+#define RCVRACKPOLICYDEFAULT_H_
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include <RcvrAckPolicyBase.h>
 
-class DTCPRcvrAckPolicyBase : public cSimpleModule
+class RcvrAckPolicyDefault : public RcvrAckPolicyBase
 {
   public:
-    DTCPRcvrAckPolicyBase();
-    virtual ~DTCPRcvrAckPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
+    RcvrAckPolicyDefault();
+    virtual ~RcvrAckPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 };
 
-#endif /* DTCPRCVRACKPOLICYBASE_H_ */
+#endif /* RCVRACKPOLICYDEFAULT_H_ */
