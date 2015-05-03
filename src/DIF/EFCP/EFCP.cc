@@ -47,17 +47,23 @@ void EFCP::initialize(int step){
 
 
 
-EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
+EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   Enter_Method("createEFCPI()");
 
 //  this->efcpTable = (EFCPTable*)this->getSubmodule("efcpTable");
+  const QoSCube* qosCube = resourceAllocator->getQoSCubeById(flow->getConId().getQoSId());
+  const EFCPPolicySet* efcpPolicySet = qosCube->getEfcpPolicies();
 
   cModule* efcpModule = this->getParentModule();
 
   std::ostringstream name;
   name << MOD_EFCPI << cepId;
-  cModuleType *moduleType = cModuleType::get(MOD_EFCPI_PATH);
+  cModuleType* moduleType = cModuleType::get(MOD_EFCPI_PATH);
   cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
+  efcpiModule->par("initialSeqNumPolicyName").setStringValue(efcpPolicySet->getInitialSeqNum());
+  efcpiModule->par("rcvrInactivityPolicyName").setStringValue(efcpPolicySet->getRcvrInactiv());
+  efcpiModule->par("senderInactivityPolicyName").setStringValue(efcpPolicySet->getSenderInactiv());
+  efcpiModule->par("rttEstimatorPolicyName").setStringValue(efcpPolicySet->getRttEstimat());
 
   efcpiModule->finalizeParameters();
   efcpiModule->buildInside();
@@ -71,8 +77,6 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
     tmpEfcpEntry = new EFCPTableEntry();
 
-
-
    //Flow is not in EFCPTable -> create delimiting
     tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, portId));
 
@@ -81,16 +85,20 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
     tmpEfcpEntry->setFlow(flow);
   }
 
-  const QoSCube* qosCube = resourceAllocator->getQoSCubeById(flow->getConId().getQoSId());
-  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
-  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
-  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
-  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
-  dtpModule->par("rttEstimatorPolicy").setStringValue(par("rttEstimatorPolicy").stringValue());
+
+  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
+  DTPState* dtpState = (DTPState*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP_STATE)).c_str());
+  dtpState->setQoSCube(qosCube);
+  dtpModule->setState(dtpState);
+
+//  dtpModule->par("rcvrInactivityPolicy").setStringValue(par("rcvrInactivityPolicy").stringValue());
+//  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
+//  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
+//  dtpModule->par("rttEstimatorPolicy").setStringValue(par("rttEstimatorPolicy").stringValue());
   dtpModule->callInitialize(0);
   dtpModule->setFlow(flow);
-  dtpModule->setQoSCube(qosCube);
-  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
+
+//  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
 
   EFCPInstance* efcpi = new EFCPInstance();
   efcpi->setDtp(dtpModule);
@@ -183,6 +191,17 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
+
+
+
+    cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
+
+    DTCPState* dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, efcpiModule);
+    dtcpState->finalizeParameters();
+    dtcpState->buildInside();
+    dtcpState->scheduleStart(simTime());
+
+
 //    dtcpModule->callInitialize();
 
 

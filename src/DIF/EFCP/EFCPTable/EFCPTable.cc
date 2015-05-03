@@ -66,7 +66,7 @@ std::string EFCPTable::info() const {
  * @param flow
  * @return
  */
-EFCPTableEntry* EFCPTable::getEntryByFlow(Flow* flow){
+EFCPTableEntry* EFCPTable::getEntryByFlow(const Flow* flow){
 
   for(TEFCPTable::iterator it = this->efcpTable.begin(); it != efcpTable.end(); ++it){
 

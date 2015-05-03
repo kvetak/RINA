@@ -14,46 +14,36 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+
 /**
- * @file EFCPTable.h
+ * @file DTPRTTEstimatorPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Jan 22, 2015
  * @brief
  * @detail
  */
 
-#ifndef EFCPTABLE_H_
-#define EFCPTABLE_H_
+#ifndef RTTESTIMATORPOLICYBASE_H_
+#define RTTESTIMATORPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "EFCPTableEntry.h"
+#include "EFCPPolicy.h"
 
-
-
-typedef std::vector<EFCPTableEntry*> TEFCPTable;
-
-class EFCPTable : public cSimpleModule
+/*
+ *
+ */
+class RTTEstimatorPolicyBase : public EFCPPolicy
 {
-  private:
-    TEFCPTable efcpTable;
+  public:
+    RTTEstimatorPolicyBase();
+    virtual ~RTTEstimatorPolicyBase();
+//    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-
-  public:
-    EFCPTable();
-    virtual ~EFCPTable();
-    EFCPTableEntry* getEntryByFlow(const Flow* flow);
-    EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
-    EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
-    DTP* getDTPBySrcCEP(int srcCEP);
-    void insertEntry(EFCPTableEntry* entry);
-
-    std::string info() const;
-
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 };
 
-#endif /* EFCPTABLE_H_ */
+#endif /* RTTESTIMATORPOLICYBASE_H_ */

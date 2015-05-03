@@ -35,7 +35,7 @@ QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
         costTime(VAL_DEFQOS), costBits(VAL_DEFQOS), aTime(VAL_DEFQOS),
-        rxOn(false), windowFCOn(false), rateFCOn(false)
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(NULL)
 {
 }
 
@@ -170,6 +170,10 @@ QoSCube::~QoSCube() {
     jitter = VAL_DEFQOS;                 //Jitter in usecs
     costTime = VAL_DEFQOS;               //measured in $/ms
     costBits = VAL_DEFQOS;               //measured in $/Mb
+
+//    if(efcpPolicies != NULL){
+//      delete efcpPolicies;
+//    }
 }
 
 unsigned short QoSCube::getQosId() const {
@@ -342,7 +346,7 @@ bool QoSCube::isFeasibility(const QoSCube other) const {
 }
 
 bool QoSCube::isDTCPNeeded()const {
-  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
+  return isRxOn() || isWindowFcOn() || isRateFcOn();
 }
 
 double QoSCube::getPduDropProbability() const {
@@ -464,6 +468,21 @@ std::string QoSCube::info() const {
 const EFCPPolicySet* QoSCube::getEfcpPolicies() const
 {
   return efcpPolicies;
+}
+
+bool QoSCube::isRateFcOn() const
+{
+return rateFCOn;
+}
+
+bool QoSCube::isRxOn() const
+{
+return rxOn;
+}
+
+bool QoSCube::isWindowFcOn() const
+{
+return windowFCOn;
 }
 
 void QoSCube::setEfcpPolicies(const EFCPPolicySet* efcpPolicies)

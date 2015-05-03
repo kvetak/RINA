@@ -41,7 +41,7 @@ typedef std::vector<EFCPInstance*> TEFCPITab; //type EFCP instance
 class EFCPTableEntry
 {
   private:
-    Flow* flow;
+    const Flow* flow;
     Delimiting* delimit;
     TEFCPITab efcpiTab;
 
@@ -54,7 +54,7 @@ class EFCPTableEntry
     TEFCPITab* getEfcpiTab();
     const Flow* getFlow() const;
     void setDelimit(Delimiting* delimit);
-    void setFlow(Flow* flow);
+    void setFlow(const Flow* flow);
     void addEFCPI(EFCPInstance* efcpi);
     bool flushDTPs();
 };

@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,24 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file DTPRcvrInactivityPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
- * @detail
- */
 
-#include <RcvrInactivity/DTPRcvrInactivityPolicyBase.h>
+package rina.policies.DIF.EFCP.DTP.InitialSeqNum;
 
-DTPRcvrInactivityPolicyBase::DTPRcvrInactivityPolicyBase()
+moduleinterface IntInitialSeqNumPolicy
 {
-
-
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }
-
-DTPRcvrInactivityPolicyBase::~DTPRcvrInactivityPolicyBase()
-{
-
-}
-

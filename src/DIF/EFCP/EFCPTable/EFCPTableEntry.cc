@@ -67,7 +67,7 @@ const Flow* EFCPTableEntry::getFlow() const
   return flow;
 }
 
-void EFCPTableEntry::setFlow(Flow* flow)
+void EFCPTableEntry::setFlow(const Flow* flow)
 {
   this->flow = flow;
 }

@@ -15,35 +15,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTPRcvrInactivityPolicyBase.h
+ * @file SenderInactivityPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTPRCVRINACTIVITYPOLICYBASE_H_
-#define DTPRCVRINACTIVITYPOLICYBASE_H_
+#include "SenderInactivityPolicyBase.h"
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTPRcvrInactivityPolicyBase : public cSimpleModule
+SenderInactivityPolicyBase::SenderInactivityPolicyBase()
 {
-  public:
-    DTPRcvrInactivityPolicyBase();
-    virtual ~DTPRcvrInactivityPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTPRCVRINACTIVITYPOLICYBASE_H_ */
+SenderInactivityPolicyBase::~SenderInactivityPolicyBase()
+{
+
+}
+
+void SenderInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+  InitialSeqNumPolicyBase* initialSeqNum = (InitialSeqNumPolicyBase*)getModuleByPath((std::string(".") + std::string("initialSeqNumPolicy")).c_str());
+  initialSeqNum->call(dtpState, dtcpState);
+}

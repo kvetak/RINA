@@ -16,13 +16,23 @@
 // 
 
 package rina.src.DIF.EFCP;
+import rina.policies.DIF.EFCP.DTP.InitialSeqNum.IntInitialSeqNumPolicy;
+import rina.policies.DIF.EFCP.DTP.RTTEstimator.IntRTTEstimatorPolicy;
+import rina.policies.DIF.EFCP.DTP.RcvrInactivity.IntRcvrInactivityPolicy;
+import rina.policies.DIF.EFCP.DTP.SenderInactivity.IntSenderInactivityPolicy;
 import rina.src.DIF.EFCP.DTP.DTP;
+import rina.src.DIF.EFCP.DTP.DTPState;
 import rina.src.DIF.EFCP.DTP.DumbGate;
 
 
 module EFCPI
 {
-    @display("i=block/layer;bgb=517,232");
+    parameters:
+        @display("i=block/layer;bgb=506,241");
+        string initialSeqNumPolicyName;
+        string rcvrInactivityPolicyName;
+        string senderInactivityPolicyName;
+        string rttEstimatorPolicyName;
     gates:
         inout northIo; //to FAI
         inout southIo; //to RMT
@@ -36,10 +46,25 @@ module EFCPI
         southG: DumbGate {
             @display("p=41,201;is=vs");
         }
+        dtpState: DTPState {
+            @display("p=131,41");
+        }
+        initialSeqNumPolicy: <initialSeqNumPolicyName> like IntInitialSeqNumPolicy {
+            @display("p=387,29;is=vs");
+        }
+        rttEstimatorPolicy: <rttEstimatorPolicyName> like IntRTTEstimatorPolicy {
+            @display("p=387,100;is=vs");
+        }
+        senderInactivityPolicy: <senderInactivityPolicyName> like IntSenderInactivityPolicy {
+            @display("p=387,68;is=vs");
+        }
+        rcvrInactivityPolicy: <rcvrInactivityPolicyName> like IntRcvrInactivityPolicy {
+            @display("p=387,133;is=vs");
+        }
     connections allowunconnected:
         northG.northIo <--> northIo;
         dtp.northIo <--> northG.southIo;
-//        
+        //        
         dtp.southIo <--> southG.northIo;
         southG.southIo <--> southIo;
 

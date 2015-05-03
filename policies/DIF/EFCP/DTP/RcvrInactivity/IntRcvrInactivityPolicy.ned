@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.EFCP.DTP.RTTEstimator;
+package rina.policies.DIF.EFCP.DTP.RcvrInactivity;
 
-moduleinterface IntDTPRTTEstimatorPolicy
+moduleinterface IntRcvrInactivityPolicy
 {
     parameters:
         @display("i=block/socket");

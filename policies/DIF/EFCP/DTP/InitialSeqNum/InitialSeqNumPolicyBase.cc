@@ -15,35 +15,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTPSenderInactivityPolicyBase.h
+ * @file InitialSeqNumPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTPSENDERINACTIVITYPOLICYBASE_H_
-#define DTPSENDERINACTIVITYPOLICYBASE_H_
+#include <InitialSeqNum/InitialSeqNumPolicyBase.h>
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTPSenderInactivityPolicyBase : public cSimpleModule
+InitialSeqNumPolicyBase::InitialSeqNumPolicyBase()
 {
-  public:
-    DTPSenderInactivityPolicyBase();
-    virtual ~DTPSenderInactivityPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTPSENDERINACTIVITYPOLICYBASE_H_ */
+InitialSeqNumPolicyBase::~InitialSeqNumPolicyBase()
+{
+
+}
+
+void InitialSeqNumPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+  dtpState->setNextSeqNumToSend(1);
+}

@@ -15,23 +15,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTPInitialSeqNumPolicyBase.cc
+ * @file RcvrInactivityPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <InitialSeqNum/DTPInitialSeqNumPolicyBase.h>
+#ifndef RCVRINACTIVITYPOLICYBASE_H_
+#define RCVRINACTIVITYPOLICYBASE_H_
 
-DTPInitialSeqNumPolicyBase::DTPInitialSeqNumPolicyBase()
+#include <omnetpp.h>
+
+#include "EFCPPolicy.h"
+
+/*
+ *
+ */
+class RcvrInactivityPolicyBase : public EFCPPolicy
 {
+  public:
+    RcvrInactivityPolicyBase();
+    virtual ~RcvrInactivityPolicyBase();
+//    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
-}
+};
 
-DTPInitialSeqNumPolicyBase::~DTPInitialSeqNumPolicyBase()
-{
-
-}
-
+#endif /* RCVRINACTIVITYPOLICYBASE_H_ */

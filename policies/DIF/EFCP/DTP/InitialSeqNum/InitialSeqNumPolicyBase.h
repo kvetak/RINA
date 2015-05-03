@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -15,45 +15,37 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file EFCPTable.h
+ * @file DTPInitialSeqNumPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef EFCPTABLE_H_
-#define EFCPTABLE_H_
+#ifndef DTPINITIALSEQNUMPOLICYBASE_H_
+#define DTPINITIALSEQNUMPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "EFCPTableEntry.h"
+#include "EFCPPolicy.h"
 
-
-
-typedef std::vector<EFCPTableEntry*> TEFCPTable;
-
-class EFCPTable : public cSimpleModule
+/*
+ *
+ */
+class InitialSeqNumPolicyBase : public EFCPPolicy
 {
-  private:
-    TEFCPTable efcpTable;
+  public:
+    InitialSeqNumPolicyBase();
+    virtual ~InitialSeqNumPolicyBase();
+//    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-
-  public:
-    EFCPTable();
-    virtual ~EFCPTable();
-    EFCPTableEntry* getEntryByFlow(const Flow* flow);
-    EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
-    EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
-    DTP* getDTPBySrcCEP(int srcCEP);
-    void insertEntry(EFCPTableEntry* entry);
-
-    std::string info() const;
 
 };
 
-#endif /* EFCPTABLE_H_ */
+#endif /* DTPINITIALSEQNUMPOLICYBASE_H_ */

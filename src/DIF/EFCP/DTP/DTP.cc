@@ -37,9 +37,6 @@ DTP::DTP()
 
   state = NULL;
 
-//  std::stringstream moduleName;
-//  moduleName << MOD_DTP_PATH << "." << MOD_DTP_STATE;
-
   //intentionally left out callInitialize
 
 
@@ -71,49 +68,8 @@ cModule* DTP::createPolicyModule(const char* prefix, const char* name)
 void DTP::runRTTEstimatorPolicy()
 {
   Enter_Method("RTTEstimatorPolicy");
-  if (rttEstimatorPolicy == NULL || rttEstimatorPolicy->run(state, dtcp->getDTCPState()))
-  {
+  rttEstimatorPolicy->call(state, dtcp->getDTCPState());
 
-    double newRtt = state->getRtt();
-    double alpha = 0.5;
-    /* Default */
-    ControlPDU* pdu = (ControlPDU*) state->getCurrentPdu();
-    if (pdu->getType() & PDU_SEL_BIT){
-
-    }else{
-      if (pdu->getType() & PDU_ACK_BIT)
-      {
-        unsigned int seqNum = ((AckOnlyPDU*)pdu)->getAckNackSeqNum();
-        std::vector<DTCPRxExpiryTimer*>* pduQ = dtcp->getDTCPState()->getRxQ();
-        std::vector<DTCPRxExpiryTimer*>::iterator it;
-        bool foundAck = false;
-        for(it = pduQ->begin(); it != pduQ->end(); ++it){
-          if((*it)->getPdu()->getSeqNum() == seqNum){
-              foundAck = true;
-            double now = simTime().dbl();
-            double sent = (*it)->getSent();
-            newRtt = now - sent;
-
-            newRtt = floor(newRtt * 1000000000);
-            newRtt = newRtt/ 1000000000;
-
-          }
-        }
-        if(!foundAck){
-
-            EV << "RTTEstimator: Did not found PDU on RxQ to compare times." << endl;
-            return;
-        }
-
-      }else{
-
-      }
-    }
-    double tmp = floor(((alpha * state->getRtt()) + ((1 - alpha)* newRtt)) * 1000000000);
-    state->setRtt((double)tmp/1000000000);
-    EV << "Current RTT: " << state->getRtt() << endl;
-    /* End Default */
-  }
 
   emit(sigStatDTPRTT, state->getRtt());
 
@@ -138,26 +94,25 @@ void DTP::initialize(int step)
 {
 
   if(step == 0){
-    if(state == NULL){
-    cModuleType* moduleType = cModuleType::get(MOD_DTP_STATE_PATH);
-    state  = (DTPState*) moduleType->create(MOD_DTP_STATE, getParentModule());
-    state->finalizeParameters();
-    state->buildInside();
-    state->scheduleStart(simTime());
 
     initGates();
+    initialSeqNumPolicy = (InitialSeqNumPolicyBase*) getModuleByPath((std::string(".^.") + std::string(INITIAL_SEQ_NUM_POLICY_NAME)).c_str());
+    rcvrInactivityPolicy = (RcvrInactivityPolicyBase*) getModuleByPath((std::string(".^.") + std::string(RCVR_INACTIVITY_POLICY_NAME)).c_str());
+    senderInactivityPolicy = (SenderInactivityPolicyBase*) getModuleByPath((std::string(".^.") + std::string(SENDER_INACTIVITY_POLICY_NAME)).c_str());
+    rttEstimatorPolicy = (RTTEstimatorPolicyBase*) getModuleByPath((std::string(".^.") + std::string(RTT_ESTIMATOR_POLICY_NAME)).c_str());
 
-    }
+    senderInactivityTimer = new SenderInactivityTimer();
+    rcvrInactivityTimer = new RcvrInactivityTimer();
 
 
-
-  }else if(step == 1){
+  }
+  else if (step == 1)
+  {
 
     initSignalsAndListeners();
 
 //    if(state->isDtcpPresent()){
-      senderInactivityTimer = new SenderInactivityTimer();
-      rcvrInactivityTimer = new RcvrInactivityTimer();
+
 //    }else{
 //      senderInactivityTimer = NULL;
 //      rcvrInactivityTimer = NULL;
@@ -168,11 +123,14 @@ void DTP::initialize(int step)
 //  par(INITIAL_SEQ_NUM_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(INITIAL_SEQ_NUM_POLICY_NAME).stringValue());
 //  par(RTT_ESTIMATOR_POLICY_NAME).setStringValue(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par(RTT_ESTIMATOR_POLICY_NAME).stringValue());
 
-
-  rcvrInactivityPolicy    = (DTPRcvrInactivityPolicyBase*) createPolicyModule(RCVR_INACTIVITY_POLICY_PREFIX, RCVR_INACTIVITY_POLICY_NAME);
-  senderInactivityPolicy  = (DTPSenderInactivityPolicyBase*) createPolicyModule(SENDER_INACTIVITY_POLICY_PREFIX, SENDER_INACTIVITY_POLICY_NAME);
-  initialSeqNumPolicy     = (DTPInitialSeqNumPolicyBase*) createPolicyModule(INITIAL_SEQ_NUM_POLICY_PREFIX, INITIAL_SEQ_NUM_POLICY_NAME);
-  rttEstimatorPolicy      = (DTPRTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX, RTT_ESTIMATOR_POLICY_NAME);
+//    rcvrInactivityPolicy = (RcvrInactivityPolicyBase*) createPolicyModule(RCVR_INACTIVITY_POLICY_PREFIX,
+//        RCVR_INACTIVITY_POLICY_NAME);
+//    senderInactivityPolicy = (SenderInactivityPolicyBase*) createPolicyModule(SENDER_INACTIVITY_POLICY_PREFIX,
+//        SENDER_INACTIVITY_POLICY_NAME);
+//    initialSeqNumPolicy = (InitialSeqNumPolicyBase*) createPolicyModule(INITIAL_SEQ_NUM_POLICY_PREFIX,
+//        INITIAL_SEQ_NUM_POLICY_NAME);
+//    rttEstimatorPolicy = (RTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX,
+//        RTT_ESTIMATOR_POLICY_NAME);
   }
 
 
@@ -195,13 +153,7 @@ void DTP::setQoSCube(const QoSCube* qosCube)
 {
   //TODO A2 Make copy
   state->setQoSCube(qosCube);
-//  if(qosCube->isForceOrder()){
-//    state->setRxPresent(true);
-//  }
-//  //TODO A1
-//  if(qosCube->getAvgBand() > 0){
-//    state->setWinBased(true);
-//  }
+
 }
 
 void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
@@ -1199,14 +1151,12 @@ void DTP::sduProtection(SDU *sdu)
 bool DTP::runInitialSeqNumPolicy()
 {
   Enter_Method("InitialSeqNumPolicy");
-  if (initialSeqNumPolicy == NULL || initialSeqNumPolicy->run(state, dtcp->getDTCPState()))
-  {
 
-  /*Default*/
-  //TODO B1 set it to random number
-  state->setNextSeqNumToSend(DEFAULT_INIT_SEQUENCE_NUMBER);
+//  if(initialSeqNumPolicy->run(state, dtcp->getDTCPState())){
+//    initialSeqNumPolicy->defaultAction(state, dtcp->getDTCPState());
+//  }
 
-  }
+  initialSeqNumPolicy->call(state, dtcp->getDTCPState());
   return false;
 }
 
@@ -1332,8 +1282,8 @@ void DTP::notifyAboutInactivity()
 void DTP::runRcvrInactivityTimerPolicy()
 {
   Enter_Method("RcvrInactivityPolicy");
-  if (rcvrInactivityPolicy == NULL || rcvrInactivityPolicy->run(state, dtcp->getDTCPState()))
-  {
+  rcvrInactivityPolicy->call(state, dtcp->getDTCPState());
+
 
     //XXX Why reset my sending direction when I am not receiving anything?
     // I can still be sending load of PDUs
@@ -1347,49 +1297,25 @@ void DTP::runRcvrInactivityTimerPolicy()
 //    //Discard any PDUs on the ClosedWindowQueue
 //    clearClosedWindowQ();
 
-    if(state->isDtcpPresent()){
+//    if(state->isDtcpPresent()){
     //XXX Ok, we can send ControlAck. It won't hurt.
     //Send Control Ack PDU
-    sendControlAckPDU();
+//    sendControlAckPDU();
     //TODO RcvRates
-    }
+//    }
     //Send Transfer PDU With Zero length
-    sendEmptyDTPDU();
+//    sendEmptyDTPDU();
 
     // Notify User Flow there has been no activity for awhile.
-    notifyAboutInactivity();
-  }
+//    notifyAboutInactivity();
+
 }
 
 void DTP::runSenderInactivityTimerPolicy()
 {
   Enter_Method("SenderInactivityPolicy");
-   if (senderInactivityPolicy == NULL || senderInactivityPolicy->run(state, dtcp->getDTCPState()))
-   {
+  senderInactivityPolicy->call(state, dtcp->getDTCPState());
 
-  /* Default */
-  state->setSetDrfFlag(true);
-  runInitialSeqNumPolicy();
-
-  if(state->isDtcpPresent()){
-  dtcp->getDTCPState()->updateSndLWE(state->getNextSeqNumToSendWithoutIncrement());
-
-  //Discard any PDUs on the PDUretransmissionQueue
-  clearRxQ();
-
-  //Discard any PDUs on the ClosedWindowQueue
-  dtcp->getDTCPState()->clearClosedWindowQ();
-
-
-  //Send Control Ack PDU
-  sendControlAckPDU();
-  }
-  //Send Transfer PDU With Zero length
-  sendEmptyDTPDU();
-
-  // Notify User Flow there has been no activity for awhile.
-  notifyAboutInactivity();
-   }
 
 }
 
@@ -1520,7 +1446,7 @@ void DTP::schedule(DTPTimers *timer, double time)
   }
 }
 
-void DTP::setFlow(Flow* flow)
+void DTP::setFlow(const Flow* flow)
 {
   this->flow = flow;
 }
@@ -1532,3 +1458,7 @@ void DTP::setDTCP(DTCP* dtcp){
   }
 }
 
+void DTP::setState(DTPState* state)
+{
+  this->state = state;
+}

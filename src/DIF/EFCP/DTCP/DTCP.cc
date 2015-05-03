@@ -102,34 +102,13 @@ void DTCP::initialize(int step)
         disp.setTagArg("p", 1, 140);
 
         //TODO A1 Not necessary DTP reference is set during DTCP creation.
-        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
 
         //  dtcpState = new DTCPState();
-        cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
 
-        dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
-        dtcpState->finalizeParameters();
-        dtcpState->buildInside();
-        dtcpState->scheduleStart(simTime());
         //  dtcpState->callInitialize();
 
-        //TODO A2 based on DTPState create appropriate components
-        if (dtp->state->isRxPresent())
-        {
-            //    rxControl = new RXControl();
-        }
 
-        if (dtp->state->isFCPresent())
-        {
-            //    flowControl = new FlowControl();
-            //    flowControl->initialize();
-
-            if (dtp->state->isWinBased())
-            {
-                //      windowTimer = new WindowTimer();
-                //      schedule(windowTimer);
-            }
-        }
 
 
         //TODO A1 Load list of policies
@@ -349,8 +328,8 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
   if(rcvrControlAckPolicy == NULL || rcvrControlAckPolicy->run(dtpState, dtcpState)){
     /* Default */
 
-    bool sendAck = false;
-    bool sendFC = true;
+//    bool sendAck = false;
+//    bool sendFC = true;
     /* RcvrControlAck Policy with Default: */
     //"adjust as necessary" :D great advice
     ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
@@ -364,12 +343,12 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
       bubble("ControlAckPDU: Missing PDU on the receiver end.");
 //      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
     }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
-      sendAck = true;
+//      sendAck = true;
     }
 
     //unsigned int sndRtWinEdge;
     if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
-      sendFC = true;
+//      sendFC = true;
     }
 
     //unsigned int myLtWinEdge;
@@ -392,6 +371,14 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
       dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
     }
 
+    //TODO A2 Verify it one more time
+//    if(sendAck && sendFC){
+//      dtp->sendAckFlowPDU();
+//    }else if (sendAck){
+//      dtp->sendAckOnlyPDU(dtpState->getRcvLeftWinEdge() - 1);
+//    }else{
+//      dtp->sendFCOnlyPDU();
+//    }
     // Send Ack/Flow Control PDU with LWE and RWE
     dtp->sendAckFlowPDU();
 

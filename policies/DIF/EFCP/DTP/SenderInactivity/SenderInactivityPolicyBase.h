@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+  // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 // 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -15,23 +15,36 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTPSenderInactivityPolicyBase.cc
+ * @file SenderInactivityPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <SenderInactivity/DTPSenderInactivityPolicyBase.h>
+#ifndef SENDERINACTIVITYPOLICYBASE_H_
+#define SENDERINACTIVITYPOLICYBASE_H_
 
-DTPSenderInactivityPolicyBase::DTPSenderInactivityPolicyBase()
+#include <omnetpp.h>
+
+#include "EFCPPolicy.h"
+#include "InitialSeqNumPolicyBase.h"
+
+/*
+ *
+ */
+class SenderInactivityPolicyBase : public EFCPPolicy
 {
+  public:
+    SenderInactivityPolicyBase();
+    virtual ~SenderInactivityPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-}
+};
 
-DTPSenderInactivityPolicyBase::~DTPSenderInactivityPolicyBase()
-{
-
-}
-
+#endif /* SENDERINACTIVITYPOLICYBASE_H_ */

@@ -108,7 +108,7 @@ public:
     virtual ~EFCP();
 
 
-    EFCPInstance* createEFCPI(Flow* flow, int cepId, int portId);
+    EFCPInstance* createEFCPI(const Flow* flow, int cepId, int portId);
     bool deleteEFCPI(Flow *flow);
 
 

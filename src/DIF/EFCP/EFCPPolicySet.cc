@@ -26,41 +26,42 @@
 #include <EFCPPolicySet.h>
 
 const char* ELEM_INITSEQNUM            = "InitialSeqNum";
-const char* DEFAULT_INITSEQNUM         = "DTPInitialSeqNumPolicyDefault";
+const char* DEFAULT_INITSEQNUM         = "InitialSeqNumPolicyDefault";
 const char* ELEM_RCVRINACTIV           = "RcvrInactivity";
-const char* DEFAULT_RCVRINACTIV         = "DTPRcvrInactivityPolicyDefault";
+const char* DEFAULT_RCVRINACTIV        = "RcvrInactivityPolicyDefault";
 const char* ELEM_RTTESTIMAT            = "RTTEstimator";
-const char* DEFAULT_RTTESTIMAT         = "DTPRTTEstimatorPolicyDefault";
+const char* DEFAULT_RTTESTIMAT         = "RTTEstimatorPolicyDefault";
 const char* ELEM_SENDERINACTIV         = "SenderInactivity";
-const char* DEFAULT_SENDERINACTIV      = "DTCPSenderInactivityPolicyDefault";
+const char* DEFAULT_SENDERINACTIV      = "SenderInactivityPolicyDefault";
 const char* ELEM_FCOVERRUN             = "FCOverrun";
-const char* DEFAULT_FCOVERRUN          = "DTCPFCOverrunPolicyDefault";
+const char* DEFAULT_FCOVERRUN          = "FCOverrunPolicyDefault";
 const char* ELEM_LOSTCONTROLPDU        = "LostControlPDU";
-const char* DEFAULT_LOSTCONTROLPDU     = "DTCPLostControlPDUPolicyDefault";
+const char* DEFAULT_LOSTCONTROLPDU     = "LostControlPDUPolicyDefault";
 const char* ELEM_NOOVERRIDEPEAK        = "NoOverridePeak";
-const char* DEFAULT_NOOVERRIDEPEAK     = "DTCPNoOverridePeakPolicyDefault";
+const char* DEFAULT_NOOVERRIDEPEAK     = "NoOverridePeakPolicyDefault";
 const char* ELEM_NORATESLOWDOWN        = "NoRateSlowDown";
-const char* DEFAULT_NORATESLOWDOWN     = "DTCPNoRateSlowDownPolicyDefault";
+const char* DEFAULT_NORATESLOWDOWN     = "NoRateSlowDownPolicyDefault";
 const char* ELEM_RATEREDUCTION         = "RateReduction";
-const char* DEFAULT_RATEREDUCTION      = "DTCPRateReductionPolicyDefault";
+const char* DEFAULT_RATEREDUCTION      = "RateReductionPolicyDefault";
 const char* ELEM_RCVRACK               = "RcvrAck";
-const char* DEFAULT_RCVRACK            = "DTCPRcvrAckPolicyDefault";
+const char* DEFAULT_RCVRACK            = "RcvrAckPolicyDefault";
 const char* ELEM_RCVRCONTROLACK        = "RcvrAck";
-const char* DEFAULT_RCVRCONTROLACK     = "DTCPRcvrAckPolicyDefault";
+const char* DEFAULT_RCVRCONTROLACK     = "RcvrAckPolicyDefault";
 const char* ELEM_RCVRFC                = "RcvrFC";
-const char* DEFAULT_RCVRFC             = "DTCPRcvrFCPolicyDefault";
+const char* DEFAULT_RCVRFC             = "RcvrFCPolicyDefault";
 const char* ELEM_RECEIVINGFC           = "ReceivingFC";
-const char* DEFAULT_RECEIVINGFC        = "DTCPReceivingFCPolicyDefault";
+const char* DEFAULT_RECEIVINGFC        = "ReceivingFCPolicyDefault";
 const char* ELEM_RECONCILEFC           = "ReconcileFC";
-const char* DEFAULT_RECONCILEFC        = "DTCPReconcileFCPolicyDefault";
+const char* DEFAULT_RECONCILEFC        = "ReconcileFCPolicyDefault";
 const char* ELEM_SENDERACK             = "SenderAck";
-const char* DEFAULT_SENDERACK          = "DTCPSenderAckPolicyDefault";
+const char* DEFAULT_SENDERACK          = "SenderAckPolicyDefault";
 const char* ELEM_SENDINGACK            = "SendingAck";
-const char* DEFAULT_SENDINGACK         = "DTCPSendingAckPolicyDefault";
+const char* DEFAULT_SENDINGACK         = "SendingAckPolicyDefault";
 const char* ELEM_TXCONTROL             = "TxControl";
-const char* DEFAULT_TXCONTROL          = "DTCPTxControlPolicyDefault";
+const char* DEFAULT_TXCONTROL          = "TxControlPolicyDefault";
 
-EFCPPolicySet::EFCPPolicySet() : fcOverrun(DEFAULT_FCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
+EFCPPolicySet::EFCPPolicySet() : initialSeqNum(DEFAULT_INITSEQNUM), rcvrInactiv(DEFAULT_RCVRINACTIV),
+    rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), fcOverrun(DEFAULT_FCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
     noOverridePeak(DEFAULT_NOOVERRIDEPEAK), noRateSlowDown(DEFAULT_NORATESLOWDOWN),
     rateReduction(DEFAULT_RATEREDUCTION), rcvrAck(DEFAULT_RCVRACK), rcvrControlAck(DEFAULT_RCVRCONTROLACK),
     rcvrFC(DEFAULT_RCVRFC), receivingFC(DEFAULT_RECEIVINGFC), reconcileFC(DEFAULT_RECONCILEFC),

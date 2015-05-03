@@ -430,6 +430,9 @@ class QoSCube {
     std::string info() const;
     const EFCPPolicySet* getEfcpPolicies() const;
     void setEfcpPolicies(const EFCPPolicySet* efcpPolicies);
+    bool isRateFcOn() const;
+    bool isRxOn() const;
+    bool isWindowFcOn() const;
 };
 
 //Free function
