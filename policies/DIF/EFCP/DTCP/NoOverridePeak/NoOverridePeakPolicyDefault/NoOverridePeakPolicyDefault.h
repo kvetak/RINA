@@ -1,5 +1,5 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -14,12 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file NoOverridePeakPolicyDefault.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default No Override Peak behavior
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.NoOverridePeak;
+#ifndef NOOVERRIDEPEAKPOLICYDEFAULT_H_
+#define NOOVERRIDEPEAKPOLICYDEFAULT_H_
 
-moduleinterface IntDTCPNoOverridePeakPolicy
+#include <NoOverridePeakPolicyBase.h>
+
+class NoOverridePeakPolicyDefault : public NoOverridePeakPolicyBase
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
-}
+  public:
+    NoOverridePeakPolicyDefault();
+    virtual ~NoOverridePeakPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
+
+#endif /* NOOVERRIDEPEAKPOLICYDEFAULT_H_ */

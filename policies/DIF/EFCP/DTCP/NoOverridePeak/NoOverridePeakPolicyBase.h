@@ -15,34 +15,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPNoOverridePeakPolicyBase.h
+ * @file NoOverridePeakPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 8, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPNOOVERRIDEPEAKPOLICYBASE_H_
-#define DTCPNOOVERRIDEPEAKPOLICYBASE_H_
+#ifndef NOOVERRIDEPEAKPOLICYBASE_H_
+#define NOOVERRIDEPEAKPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "EFCPPolicy.h"
 
 /*
  *
  */
-class DTCPNoOverridePeakPolicyBase : public cSimpleModule
+class NoOverridePeakPolicyBase : public EFCPPolicy
 {
   public:
-    DTCPNoOverridePeakPolicyBase();
-    virtual ~DTCPNoOverridePeakPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    NoOverridePeakPolicyBase();
+    virtual ~NoOverridePeakPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
   protected:
     virtual void initialize(){};
     virtual void handleMessage(cMessage* msg){};
 };
 
-#endif /* DTCPNOOVERRIDEPEAKPOLICYBASE_H_ */
+#endif /* NOOVERRIDEPEAKPOLICYBASE_H_ */
