@@ -26,7 +26,7 @@
 
 #define SCALE_BYTES(x)   (x / 1024)
 // Comment it to remove the visual debugging.
-#define RATEGENERATOR_ENHANCED_DEBUG
+#define RATESGENERATOR_ENHANCED_DEBUG
 
 typedef std::set<RMTPort*> PortsSet;
 typedef std::map<unsigned short, PortsSet> Nentries;
@@ -36,9 +36,20 @@ typedef PortsSet::iterator PortsSetIt;
 typedef Nentries::iterator NentriesIt;
 typedef NTable::iterator NTableIt;
 
+//
+// Structures necessary to remember the rates and avoid continue
+// routing update.
+//
+
+typedef std::map<unsigned short, unsigned short> QosToRateMap;
+typedef std::map<std::string, QosToRateMap> RateMap;
+
+typedef QosToRateMap::iterator QTRIter;
+typedef RateMap::iterator RateIter;
+
 // Provides an maintain updated the neighbor state according to the link load
 // on them.
-class RateGenerator: public IntPDUFG
+class RatesGenerator: public IntPDUFG
 {
 public:
 
@@ -56,7 +67,7 @@ protected:
     // Handles messages directed to this module.
     virtual void handleMessage(cMessage *msg);
 
-    // Ploicy initialization steps.
+    // Policy initialization steps.
     virtual void onPolicyInit();
 
 private:
@@ -64,8 +75,16 @@ private:
     SimpleTable::SimpleTable * fwd;
     IntSimpleRouting * rt;
     RatesMonitor * rmtp;
-    int interval;
     NTable neighbours;
+
+    // Cache for the rates.
+    RateMap rateCache;
+
+    // Time between a link load check and another.
+    int interval;
+
+    // Does the entry in exists in cache?
+    bool rateCacheEntryExists(std::string dest, unsigned short qos);
 };
 
 #endif // __RATEGENERATOR_H

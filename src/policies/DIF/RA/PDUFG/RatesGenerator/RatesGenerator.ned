@@ -1,8 +1,8 @@
-package rina.policies.DIF.RA.PDUFG.RateGenerator;
+package rina.policies.DIF.RA.PDUFG.RatesGenerator;
 
 import rina.policies.DIF.RA.PDUFG.IntPDUFG;
 
-simple RateGenerator like IntPDUFG
+simple RatesGenerator like IntPDUFG
 {
     parameters:
         @display("i=block/socket");
