@@ -169,8 +169,7 @@ class DTP : public cSimpleModule
     void initGates();
 
     bool commonRcvControl(ControlPDU* pdu);
-    void sendControlAckPDU();
-    void sendEmptyDTPDU();
+
 
 
     void sendAckOnlyPDU(unsigned int seqNum);
@@ -214,6 +213,8 @@ class DTP : public cSimpleModule
 
     void sendFCOnlyPDU();
     void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
+    void sendControlAckPDU();
+      void sendEmptyDTPDU();
 
     void sendToRMT(PDU *pdu);
 

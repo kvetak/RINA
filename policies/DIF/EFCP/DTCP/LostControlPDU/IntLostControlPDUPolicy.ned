@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.LostControlPDU;
 
-moduleinterface IntDTCPLostControlPDUPolicy
+moduleinterface IntLostControlPDUPolicy
 {
     parameters:
         @display("i=block/socket");

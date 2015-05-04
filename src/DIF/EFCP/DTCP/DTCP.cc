@@ -117,7 +117,7 @@ void DTCP::initialize(int step)
         rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
         receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
         sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
-        lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
+        lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
         rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
         senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
         fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
@@ -310,15 +310,15 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 {
   Enter_Method("LostControlPDUPolicy");
-  if(lostControlPDUPolicy == NULL || lostControlPDUPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    dtp->sendControlAckPDU();
-    dtp->sendEmptyDTPDU();
-    setLastCtrlSeqnumRcvd(dtpState->getCurrentPdu()->getSeqNum());
-
-    /* End default */
-
-  }
+  lostControlPDUPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    dtp->sendControlAckPDU();
+//    dtp->sendEmptyDTPDU();
+//    setLastCtrlSeqnumRcvd(dtpState->getCurrentPdu()->getSeqNum());
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 

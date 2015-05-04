@@ -15,34 +15,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPLostControlPDUPolicyBase.h
+ * @file LostControlPDUPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 5, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPLOSTCONTROLPDUPOLICYBASE_H_
-#define DTCPLOSTCONTROLPDUPOLICYBASE_H_
+#ifndef LOSTCONTROLPDUPOLICYBASE_H_
+#define LOSTCONTROLPDUPOLICYBASE_H_
 
 #include <omnetpp.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "EFCPPolicy.h"
 
 /*
  *
  */
-class DTCPLostControlPDUPolicyBase : public cSimpleModule
+class LostControlPDUPolicyBase : public EFCPPolicy
 {
   public:
-    DTCPLostControlPDUPolicyBase();
-    virtual ~DTCPLostControlPDUPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    LostControlPDUPolicyBase();
+    virtual ~LostControlPDUPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
   protected:
     virtual void initialize(){};
     virtual void handleMessage(cMessage* msg){};
 };
 
-#endif /* DTCPLOSTCONTROLPDUPOLICYBASE_H_ */
+#endif /* LOSTCONTROLPDUPOLICYBASE_H_ */

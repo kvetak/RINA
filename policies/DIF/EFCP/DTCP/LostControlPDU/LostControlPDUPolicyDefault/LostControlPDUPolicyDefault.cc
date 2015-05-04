@@ -1,6 +1,6 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,23 +15,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPLostControlPDUPolicyBase.cc
+ * @file LostControlPduPolicyDefault.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 5, 2015
- * @brief
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Lost Control PDU behavior
  * @detail
  */
 
-#include <LostControlPDU/DTCPLostControlPDUPolicyBase.h>
+#include <LostControlPDUPolicyDefault/LostControlPDUPolicyDefault.h>
 
-DTCPLostControlPDUPolicyBase::DTCPLostControlPDUPolicyBase()
+Register_Class(LostControlPDUPolicyDefault)
+
+LostControlPDUPolicyDefault::LostControlPDUPolicyDefault()
 {
-
+  // TODO Auto-generated constructor stub
 
 }
 
-DTCPLostControlPDUPolicyBase::~DTCPLostControlPDUPolicyBase()
+LostControlPDUPolicyDefault::~LostControlPDUPolicyDefault()
 {
-
+  // TODO Auto-generated destructor stub
 }
 
+bool LostControlPDUPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("LostControlPDUPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
+}
