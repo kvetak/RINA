@@ -15,34 +15,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file DTCPFCOverrunPolicyBase.h
+ * @file FCOverrunPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 8, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPFCOVERRUNPOLICYBASE_H_
-#define DTCPFCOVERRUNPOLICYBASE_H_
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPFCOverrunPolicyBase : public cSimpleModule
+#include "FCOverrunPolicyBase.h"
+#include "DTP.h"
+FCOverrunPolicyBase::FCOverrunPolicyBase()
 {
-  public:
-    DTCPFCOverrunPolicyBase();
-    virtual ~DTCPFCOverrunPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTCPFCOVERRUNPOLICYBASE_H_ */
+FCOverrunPolicyBase::~FCOverrunPolicyBase()
+{
+
+}
+
+void FCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  /* Default */
+  dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+  //Block further Write API calls on this port-id
+  dtp->notifyStopSending();
+  /* End default */
+}

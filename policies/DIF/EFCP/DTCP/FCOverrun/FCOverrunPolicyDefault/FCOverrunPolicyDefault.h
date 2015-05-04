@@ -1,4 +1,6 @@
 //
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -12,15 +14,25 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file FCOverrunPolicyDefault.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Flow Control Overrun behavior
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.NoOverridePeak.NoOverridePeakPolicyDefault;
-import rina.policies.DIF.EFCP.DTCP.NoOverridePeak.IntNoOverridePeakPolicy;
-//
-// TODO auto-generated type
-//
-simple NoOverridePeakPolicyDefault like IntNoOverridePeakPolicy
+#ifndef FCOVERRUNPOLICYDEFAULT_H_
+#define FCOVERRUNPOLICYDEFAULT_H_
+
+#include <FCOverrunPolicyBase.h>
+
+class FCOverrunPolicyDefault : public FCOverrunPolicyBase
 {
-    parameters:
-        string policyName = "NoOverridePeak Default";
-        @display("i=block/socket");
-}
+  public:
+    FCOverrunPolicyDefault();
+    virtual ~FCOverrunPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
+
+#endif /* FCOVERRUNPOLICYDEFAULT_H_ */

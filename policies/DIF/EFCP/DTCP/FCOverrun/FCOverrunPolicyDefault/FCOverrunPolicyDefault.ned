@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,24 +12,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
-/**
- * @file DTCPFCOverrunPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 8, 2015
- * @brief
- * @detail
- */
 
-#include <FCOverrun/DTCPFCOverrunPolicyBase.h>
-
-DTCPFCOverrunPolicyBase::DTCPFCOverrunPolicyBase()
+package rina.policies.DIF.EFCP.DTCP.FCOverrun.FCOverrunPolicyDefault;
+import rina.policies.DIF.EFCP.DTCP.FCOverrun.IntFCOverrunPolicy;
+//
+// TODO auto-generated type
+//
+simple FCOverrunPolicyDefault like IntFCOverrunPolicy
 {
-
-
+    parameters:
+        string policyName = "FCOverun Default";
+        @display("i=block/socket");
 }
-
-DTCPFCOverrunPolicyBase::~DTCPFCOverrunPolicyBase()
-{
-
-}
-

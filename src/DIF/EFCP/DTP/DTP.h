@@ -184,7 +184,7 @@ class DTP : public cSimpleModule
     bool isDuplicate(unsigned int seqNum);
     void notifyAboutInactivity();
     void notifyAboutUnableMaintain();
-    void notifyStopSending();
+
     void notifyStartSending();
 
   public:
@@ -218,6 +218,9 @@ class DTP : public cSimpleModule
 
     void sendToRMT(PDU *pdu);
 
+
+
+    void notifyStopSending();
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);

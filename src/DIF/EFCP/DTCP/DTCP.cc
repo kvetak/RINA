@@ -120,7 +120,7 @@ void DTCP::initialize(int step)
         lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
         rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
         senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
-        fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
+        fcOverrunPolicy       = (FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
         noOverridePeakPolicy  = (NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
         txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
         noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
@@ -421,14 +421,14 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
 {
   Enter_Method("FCOverrunPolicy");
-  if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-    //Block further Write API calls on this port-id
-    dtp->notifyStopSending();
-    /* End default */
-
-  }
+  fcOverrunPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+//    //Block further Write API calls on this port-id
+//    dtp->notifyStopSending();
+//    /* End default */
+//
+//  }
   return false;
 }
 

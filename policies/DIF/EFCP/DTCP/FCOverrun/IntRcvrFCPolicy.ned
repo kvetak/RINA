@@ -17,7 +17,7 @@
 
 package rina.policies.DIF.EFCP.DTCP.FCOverrun;
 
-moduleinterface IntDTCPFCOverrunPolicy
+moduleinterface IntFCOverrunPolicy
 {
     parameters:
         @display("i=block/socket");
