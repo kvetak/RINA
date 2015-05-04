@@ -13,19 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <RateGenerator.h>
+#include <RatesGenerator.h>
 #include "APN.h"
 
 #define RATE_GENERATOR_TIMEOUT  "PDUFG_RateGenerator"
 
-Define_Module(RateGenerator);
+Define_Module(RatesGenerator);
 
-void RateGenerator::handleMessage(cMessage *msg)
+void RatesGenerator::handleMessage(cMessage *msg)
 {
     // React to self message only.
     if(msg->isSelfMessage())
     {
-#ifdef RATEGENERATOR_ENHANCED_DEBUG
+#ifdef RATESGENERATOR_ENHANCED_DEBUG
         std::ostringstream str;
 #endif
 
@@ -50,16 +50,37 @@ void RateGenerator::handleMessage(cMessage *msg)
                     const Address addr =
                         Address((*p)->getFlow()->getDstApni().getApn().getName());
 
-#ifdef RATEGENERATOR_ENHANCED_DEBUG
-                      str << t->first << ", " << SCALE_BYTES(rmtp->getByteRate(*p)) <<"\n";
+#ifdef RATESGENERATOR_ENHANCED_DEBUG
+                    str << t->first << ", " << SCALE_BYTES(rmtp->getByteRate(*p)) <<"\n";
 #endif
 
-                    rt->insertFlow(addr, t->first, e->first, rate);
+                    // Do not update if the rate does not change.
+                    if(rateCacheEntryExists(t->first, e->first))
+                    {
+                        if(rateCache[t->first][e->first] != rate)
+                        {
+                            rateCache[t->first][e->first] = rate;
+                            rt->insertFlow(addr, t->first, e->first, rate);
+
+                            EV << "Rate to " << t->first << ", " << e->first << " updated to " << rate << "." << endl;
+                        }
+                        else
+                        {
+                            EV << "Rate to " << t->first << ", " << e->first << " is the same(at " << rate << ")." << endl;
+                        }
+                    }
+                    else
+                    {
+                        rateCache[t->first][e->first] = rate;
+                        rt->insertFlow(addr, t->first, e->first, rate);
+
+                        EV << "Rate to " << t->first << ", " << e->first << " updated to " << rate << "." << endl;
+                    }
                 }
             }
         }
 
-#ifdef RATEGENERATOR_ENHANCED_DEBUG
+#ifdef RATESGENERATOR_ENHANCED_DEBUG
         cModule * ipcm = check_and_cast<cModule *>(getModuleByPath("^.^.^"));
         cDisplayString & cs = ipcm->getDisplayString();
         cs.setTagArg("t", 1, "l");
@@ -70,7 +91,7 @@ void RateGenerator::handleMessage(cMessage *msg)
     }
 }
 
-void RateGenerator::insertedFlow(
+void RatesGenerator::insertedFlow(
     const Address &addr,
     const unsigned short &qos,
     RMTPort * port)
@@ -85,14 +106,38 @@ void RateGenerator::insertedFlow(
 
     if(neighbours[dst][qos].size() == 1)
     {
+        // Add to cache.
+        rateCache[dst][qos] = rate;
         rt->insertFlow(addr, dst, qos, rate);
 
         routingUpdated();
     }
 }
 
+bool RatesGenerator::rateCacheEntryExists(
+    std::string dest,
+    unsigned short qos)
+{
+    char found = 0;
+    RateIter ri = rateCache.find(dest);
+
+    // First level entry found.
+    if(ri != rateCache.end())
+    {
+        QTRIter qi = ri->second.find(qos);
+
+        // Second level entry found.
+        if(qi != ri->second.end())
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 // Called after initialize
-void RateGenerator::onPolicyInit()
+void RatesGenerator::onPolicyInit()
 {
     interval = par("interval");
 
@@ -115,7 +160,7 @@ void RateGenerator::onPolicyInit()
     scheduleAt(simTime() + interval, new cMessage(RATE_GENERATOR_TIMEOUT));
 }
 
-void RateGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port)
+void RatesGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port)
 {
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst][qos].erase(port);
@@ -130,11 +175,18 @@ void RateGenerator::removedFlow(const Address &addr, const unsigned short &qos, 
             neighbours.erase(dst);
         }
 
+        if(rateCacheEntryExists(dst, qos))
+        {
+            // Removes the entry from the cache.
+            rateCache[dst].erase(qos);
+            rateCache.erase(dst);
+        }
+
         routingUpdated();
     }
 }
 
-void RateGenerator::routingUpdated()
+void RatesGenerator::routingUpdated()
 {
     entries2Next changes = rt->getChanges();
 
