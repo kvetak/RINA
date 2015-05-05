@@ -183,7 +183,7 @@ class DTP : public cSimpleModule
     void rcvrBufferStateChange();
     bool isDuplicate(unsigned int seqNum);
     void notifyAboutInactivity();
-    void notifyAboutUnableMaintain();
+
 
     void notifyStartSending();
 
@@ -221,6 +221,7 @@ class DTP : public cSimpleModule
 
 
     void notifyStopSending();
+    void notifyAboutUnableMaintain();
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);

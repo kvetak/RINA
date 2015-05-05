@@ -39,6 +39,7 @@ DTCP::DTCP() {
   reconcileFCPolicy = NULL;
   rateReductionPolicy = NULL;
   ecnSlowDownPolicy = NULL;
+  rxTimerExpiryPolicy = NULL;
 
 
 
@@ -628,36 +629,40 @@ void DTCP::handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer)
 void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 {
 
-  DataTransferPDU* pdu = timer->getPdu();
+  rxTimerExpiryPolicy->call(dtp->state, dtcpState);
 
-  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
-  {
-    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
-    // Notify User Flow that we were unable to maintain the QoS for this connection
-    dtp->notifyAboutUnableMaintain();
-//    throw cRuntimeError("Unable to maintain the QoS for this connection");
-    ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
-  }
-  else
-  {
+  emit(sigStatDTCPRxCount, dtcpState->getRxSent());
 
-    DataTransferPDU* dup = pdu->dup();
-    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-    std::ostringstream out;
-    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
-
-    bubble(out.str().c_str());
-    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-    dtp->sendToRMT(dup);
-
-    dtcpState->incRxSent();
-
-    timer->setExpiryCount(timer->getExpiryCount() + 1);
-    schedule(timer);
-
-
-    emit(sigStatDTCPRxCount, dtcpState->getRxSent());
-  }
+//  DataTransferPDU* pdu = timer->getPdu();
+//
+//  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
+//  {
+//    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+//    // Notify User Flow that we were unable to maintain the QoS for this connection
+//    dtp->notifyAboutUnableMaintain();
+////    throw cRuntimeError("Unable to maintain the QoS for this connection");
+//    ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
+//  }
+//  else
+//  {
+//
+//    DataTransferPDU* dup = pdu->dup();
+//    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+//    std::ostringstream out;
+//    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+//
+//    bubble(out.str().c_str());
+//    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+//    dtp->sendToRMT(dup);
+//
+//    dtcpState->incRxSent();
+//
+//    timer->setExpiryCount(timer->getExpiryCount() + 1);
+//    schedule(timer);
+//
+//
+//    emit(sigStatDTCPRxCount, dtcpState->getRxSent());
+//  }
 
 
 }
@@ -711,7 +716,19 @@ void DTCP::schedule(DTCPTimers* timer, double time){
 
 }
 
-
+void DTCP::scheduleRxTimerExpiry()
+{
+  std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  for (it = rxQ->begin(); it != rxQ->end(); ++it)
+  {
+    if (!(*it)->isScheduled())
+    {
+      schedule((*it));
+      break;
+    }
+  }
+}
 
 void DTCP::resetWindowTimer(){
   Enter_Method_Silent();
