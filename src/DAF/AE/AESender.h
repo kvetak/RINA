@@ -22,6 +22,9 @@
 #include "AE.h"
 
 
+#include <map>
+
+
 class PingMsg : public CDAP_M_Read {
 public:
     PingMsg();
@@ -78,6 +81,10 @@ class AESender : public AE
     std::string dstAeName;
     std::string dstAeInstance;
 
+    int pduburst;
+
+    double recTimes;
+
     simtime_t startAt;
     simtime_t stopAt;
     simtime_t sendAfter;
@@ -106,6 +113,10 @@ class AESender : public AE
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
+
+
+    std::map<double, int> times;
+    double dround(double a, int ndigits);
 
 };
 

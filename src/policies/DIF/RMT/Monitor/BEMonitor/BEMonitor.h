@@ -52,6 +52,9 @@ public:
     int getOutThreshold(RMTQueue * queue);
     RMTQueue* getNextOutput(RMTPort* port);
 
+    queueStat getInStat(RMTQueue * queue);
+    queueStat getOutStat(RMTQueue * queue);
+
   protected:
     port2Queue inM, outM;
     port2Queues inQ, outQ;

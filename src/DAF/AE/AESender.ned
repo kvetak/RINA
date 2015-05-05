@@ -31,9 +31,13 @@ simple AESender extends AE like IAE
         double rate = default(1);  
         double ratevar = default(0);    
         
+        int pduburst = default(1);   
+        
+        
         int size = default(1024);
         int sizevar = default(0);
         
         bool printAtEnd = default(false);
+        bool recTimes = default(false);
         
 }

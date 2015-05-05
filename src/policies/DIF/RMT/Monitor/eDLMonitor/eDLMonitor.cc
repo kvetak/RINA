@@ -15,17 +15,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <DLMonitor.h>
+#include <eDLMonitor.h>
 
-namespace DLMonitor {
+namespace eDLMonitor {
 
-Define_Module(DLMonitor);
+Define_Module(eDLMonitor);
 
 dlCUInfo::dlCUInfo(){
     CUId = "";
     queue = "outQ_";
     urgency = 0;
     threshold = 0;
+    dropProb = 1;
+    absThreshold = 0;
 }
 dlCUInfo::dlCUInfo(std::string id){
     CUId = id;
@@ -33,15 +35,19 @@ dlCUInfo::dlCUInfo(std::string id){
     queue.append(CUId);
     urgency = 0;
     threshold = 0;
+    dropProb = 1;
+    absThreshold = 0;
 }
-dlCUInfo::dlCUInfo(std::string id, std::string _queue, int urg, int thre){
+dlCUInfo::dlCUInfo(std::string id, std::string _queue, int urg, int thre, double dropP, int absThre){
     CUId = id;
     queue = _queue;
     urgency = urg;
     threshold = thre;
+    dropProb = dropP;
+    absThreshold = absThre;
 }
 
-void DLMonitor::onPolicyInit(){
+void eDLMonitor::onPolicyInit(){
 
     cXMLElement* cuXml = NULL;
     if (par("cuData").xmlValue() != NULL && par("cuData").xmlValue()->hasChildren()){
@@ -77,14 +83,67 @@ void DLMonitor::onPolicyInit(){
                 inf.threshold = n->getNodeValue() ? atoi(n->getNodeValue()) : 0;
                 if (inf.threshold < 0)
                     inf.threshold = 0;
+            } else if ( !strcmp(n->getTagName(), "cherishAbsThreshold") ) {
+                inf.absThreshold = n->getNodeValue() ? atoi(n->getNodeValue()) : 0;
+                if (inf.absThreshold < 0)
+                    inf.absThreshold = 0;
+            } else if ( !strcmp(n->getTagName(), "cherishDropProbability") ) {
+                inf.dropProb = n->getNodeValue() ? atof(n->getNodeValue()) : 0.0;
+                if (inf.dropProb < 0.0)
+                    inf.dropProb = 0.0;
+                else if (inf.dropProb > 1.0)
+                    inf.dropProb = 1.0;
             }
         }
 
+        if(inf.absThreshold < inf.threshold) { inf.absThreshold = inf.threshold; }
+
         CUs[cu] = inf;
+    }
+
+
+    cXMLElement* urgXml = NULL;
+    if (par("urgData").xmlValue() != NULL && par("urgData").xmlValue()->hasChildren()){
+        urgXml = par("urgData").xmlValue();
+    } else {
+        error("urgData parameter not initialized!");
+    }
+
+    cXMLElementList urgs = urgXml->getChildrenByTagName("urgency");
+    for (cXMLElementList::iterator it = urgs.begin(); it != urgs.end(); ++it) {
+        cXMLElement* m = *it;
+        if (!m->getAttribute("val")) {
+            EV << "Error parsing urgency. Its val is missing!" << endl;
+            continue;
+        }
+        std::string valS = m->getAttribute("val");
+        if (valS == "") {
+            EV << "Error parsing urgency. Its val is missing!" << endl;
+            continue;
+        }
+
+        if (!m->getAttribute("prob")) {
+            EV << "Error parsing urgency. Its prob is missing!" << endl;
+            continue;
+        }
+        std::string probS = m->getAttribute("prob");
+        if (probS == "") {
+            EV << "Error parsing urgency. Its prob is missing!" << endl;
+            continue;
+        }
+
+        int val = atoi(valS.c_str());
+        if(val<0) { val = 0; }
+
+        double prob = atof(probS.c_str());
+        if(prob<0) { prob = 0; }
+        if(prob>1) { prob = 1; }
+
+        probs[val] = prob;
     }
 }
 
-void DLMonitor::onMessageArrival(RMTQueue* queue) {
+void eDLMonitor::onMessageArrival(RMTQueue* queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
@@ -105,9 +164,9 @@ void DLMonitor::onMessageArrival(RMTQueue* queue) {
     }
 }
 
-void DLMonitor::onMessageDeparture(RMTQueue* queue) {}
+void eDLMonitor::onMessageDeparture(RMTQueue* queue) {}
 
-void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
+void eDLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
@@ -124,13 +183,12 @@ void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     }
 }
 
-void DLMonitor::postQueueCreation(RMTQueue* queue){
+void eDLMonitor::postQueueCreation(RMTQueue* queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     inM[port] = port->getManagementQueue(RMTQueue::INPUT);
     outM[port] = port->getManagementQueue(RMTQueue::OUTPUT);
 
-    if(queue != inM[port] && queue != outM[port]) {
-
+    if(queue->getType() == RMTQueue::OUTPUT && queue != outM[port]) {
         std::string cu = "BE";
 
         for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
@@ -142,15 +200,15 @@ void DLMonitor::postQueueCreation(RMTQueue* queue){
     }
 }
 
-int DLMonitor::getInCount(RMTPort* port) {
+int eDLMonitor::getInCount(RMTPort* port) {
     return inC[port];
 }
 
-int DLMonitor::getInThreshold(RMTQueue * queue){
+int eDLMonitor::getInThreshold(RMTQueue * queue){
     return queue->getMaxLength();
 }
 
-RMTQueue* DLMonitor::getNextInput(RMTPort* port){
+RMTQueue* eDLMonitor::getNextInput(RMTPort* port){
     RMTQueue* q = NULL;
 
     if(inM[port]->getLength() > 0) {
@@ -170,11 +228,11 @@ RMTQueue* DLMonitor::getNextInput(RMTPort* port){
     return q;
 }
 
-int DLMonitor::getOutCount(RMTPort* port){
+int eDLMonitor::getOutCount(RMTPort* port){
     return outC[port];
 }
 
-int DLMonitor::getOutThreshold(RMTQueue * queue){
+int eDLMonitor::getOutThreshold(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(outM[port] == queue) {
         return queue->getMaxLength();
@@ -183,46 +241,57 @@ int DLMonitor::getOutThreshold(RMTQueue * queue){
     return CUs[cu].threshold;
 }
 
-RMTQueue* DLMonitor::getNextOutput(RMTPort* port){
+RMTQueue* eDLMonitor::getNextOutput(RMTPort* port){
     RMTQueue* q = NULL;
 
     if(outM[port]->getLength() > 0) {
         q = outM[port];
     } else {
         PriorityQueuesList * qs = & outQs[port];
+        PQListRIterator tit = qs->rend();
         for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
             if(!it->second.empty()){
-                q = it->second.front();
-                it->second.pop_front();
+                tit = it;
+                double tP = probs[it->first];
+                if(tP <= 0 || tP < uniform(0,1) ){
+                    q = it->second.front();
+                    it->second.pop_front();
+                }
             }
+        }
+        if(q == NULL && tit != qs->rend()){
+            q = tit->second.front();
+            tit->second.pop_front();
         }
     }
 
     if(q != NULL){
         outC[port]--;
+    } else {
+        error("No queue found");
     }
 
     return q;
 }
 
 
-queueStat DLMonitor::getInStat(RMTQueue * queue){
+queueStat eDLMonitor::getInStat(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
-
-    if(inC[port] > queue->getMaxLength()+5) {
-        error("no esta dropeando entrada");
-    }
 
     return queueStat(inC[port],queue->getMaxLength(),1,queue->getMaxLength());
 }
-queueStat DLMonitor::getOutStat(RMTQueue * queue){
+queueStat eDLMonitor::getOutStat(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
-    int th = (outM[port] == queue)? queue->getMaxLength() : CUs[Q2CU[queue]].threshold;
+    dlCUInfo din = CUs[Q2CU[queue]];
+    if(outM[port] == queue) {
+        return queueStat(outC[port],queue->getMaxLength(),1,queue->getMaxLength());
+    } else {
+        return queueStat(outC[port],din.threshold,din.dropProb, din.absThreshold);
 
-    return queueStat(outC[port],th,1,th);
+    }
 }
 
 

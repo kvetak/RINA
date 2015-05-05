@@ -16,6 +16,8 @@
 #include <QoSDomainGenerator/QoSDomainGenerator.h>
 #include "APN.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 
 
 namespace QoSDomainGenerator {
@@ -29,25 +31,22 @@ void QoSDomainGenerator::insertedFlow(const Address &addr, const unsigned short 
     std::string dst = addr.getIpcAddress().getName();
     neighbours[qos][dst].insert(port);
     if(neighbours[qos][dst].size() == 1){
-        switch(qos) {
-            case 1 :rt->addFlow(addr,"1", dst,1); break;
-            case 2 :rt->addFlow(addr,"2", dst,1); break;
-            case 3 :rt->addFlow(addr,"3", dst,1); break;
-            case 4 :rt->addFlow(addr,"4", dst,1); break;
-        }
+        char intStr[10];
+        sprintf(intStr, "%d", qos);
+        string str = string(intStr);
+        rt->addFlow(addr,str, dst,1);
         routingUpdated();
     }
 }
 void QoSDomainGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[qos][dst].erase(port);
+
     if(neighbours[qos][dst].size() <= 0){
-        switch(qos) {
-            case 1 :rt->removeFlow(addr,"1", dst); break;
-            case 2 :rt->removeFlow(addr,"2", dst); break;
-            case 3 :rt->removeFlow(addr,"3", dst); break;
-            case 4 :rt->removeFlow(addr,"4", dst); break;
-        }
+        char intStr[10];
+        sprintf(intStr, "%d", qos);
+        string str = string(intStr);
+        rt->removeFlow(addr,str, dst);
         neighbours[qos].erase(dst);
         routingUpdated();
     }
@@ -58,10 +57,8 @@ void QoSDomainGenerator::routingUpdated(){
     DMRnms::dmUpdateM changes = rt->getChanges();
     for(DMRnms::dmUpdateMIt it = changes.begin(); it!= changes.end(); it++){
         unsigned short QoS;
-        if(it->domain == "1") { QoS = 1; }
-        else if(it->domain == "2") { QoS = 2; }
-        else if(it->domain == "3") { QoS = 3; }
-        else if(it->domain == "4") { QoS = 4; }
+        int value = atoi(it->domain.c_str());
+        if(value > 0 && value <= nDom) { QoS = value; }
         else { continue; }
 
         for(DMRnms::s2AIt eIt = it->entries.begin(); eIt != it->entries.end(); eIt++){
@@ -96,16 +93,24 @@ void QoSDomainGenerator::onPolicyInit(){
 
     std::string alg = par("alg").stdstringValue();
 
+    nDom = par("nDomains").longValue();
+
     if(alg == "LS"){
-        rt->addDomain("1", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
-        rt->addDomain("2", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
-        rt->addDomain("3", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
-        rt->addDomain("4", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
+        char intStr[10];
+        string str;
+        for(int i = 1; i<= nDom; i++){
+            sprintf(intStr, "%d", i);
+            str = string(intStr);
+            rt->addDomain(str, getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
+        }
     } else {
-        rt->addDomain("1", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
-        rt->addDomain("2", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
-        rt->addDomain("3", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
-        rt->addDomain("4", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
+        char intStr[10];
+        string str;
+        for(int i = 1; i<= nDom; i++){
+            sprintf(intStr, "%d", i);
+            str = string(intStr);
+            rt->addDomain(str, getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
+        }
     }
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));

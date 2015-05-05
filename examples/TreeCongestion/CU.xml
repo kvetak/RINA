@@ -4,27 +4,27 @@
     <CUItem id="A1">
     	<queue>outQ_A1</queue>
     	<urgency>2</urgency>
-    	<cherishThreshold>100</cherishThreshold>
+    	<cherishThreshold>80</cherishThreshold>
     </CUItem>
     <CUItem id="A2">
     	<queue>outQ_A2</queue>
     	<urgency>2</urgency>
-    	<cherishThreshold>90</cherishThreshold>
+    	<cherishThreshold>60</cherishThreshold>
     </CUItem>
     <CUItem id="B1">
     	<queue>outQ_A1</queue>
     	<urgency>1</urgency>
-    	<cherishThreshold>100</cherishThreshold>
+    	<cherishThreshold>80</cherishThreshold>
     </CUItem>
     <CUItem id="B2">
     	<queue>outQ_B2</queue>
     	<urgency>1</urgency>
-    	<cherishThreshold>90</cherishThreshold>
+    	<cherishThreshold>60</cherishThreshold>
     </CUItem>
     <CUItem id="BE">
     	<queue>outQ_BE</queue>
     	<urgency>0</urgency>
-    	<cherishThreshold>50</cherishThreshold>
+    	<cherishThreshold>40</cherishThreshold>
     </CUItem>
   </CU>
   
