@@ -52,6 +52,7 @@
 #include "ReconcileFCPolicyBase.h"
 #include "RateReductionPolicyBase.h"
 #include "DTCPECNSlowDownPolicyBase.h"
+#include "RxTimerExpiryPolicyBase.h"
 
 class DTP;
 
@@ -79,6 +80,7 @@ class DTCP: public cSimpleModule {
     ReconcileFCPolicyBase* reconcileFCPolicy;
     RateReductionPolicyBase* rateReductionPolicy;
     DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
+    RxTimerExpiryPolicyBase* rxTimerExpiryPolicy;
 
 
     /*Timers*/
@@ -180,6 +182,7 @@ public:
     void redrawGUI();
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
+    void scheduleRxTimerExpiry();
 
 protected:
     virtual void handleMessage(cMessage *msg);
