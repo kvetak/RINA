@@ -433,6 +433,9 @@ class QoSCube {
     bool isRateFcOn() const;
     bool isRxOn() const;
     bool isWindowFcOn() const;
+    void setRateFcOn(bool rateFcOn);
+    void setRxOn(bool rxOn);
+    void setWindowFcOn(bool windowFcOn);
 };
 
 //Free function

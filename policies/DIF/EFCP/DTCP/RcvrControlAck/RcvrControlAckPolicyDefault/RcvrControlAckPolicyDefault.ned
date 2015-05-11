@@ -21,6 +21,6 @@ import rina.policies.DIF.EFCP.DTCP.RcvrControlAck.IntRcvrControlAckPolicy;
 simple RcvrControlAckPolicyDefault like IntRcvrControlAckPolicy
 {
     parameters:
-        string policyName = "InitialSeqNum Default";
+        string policyName = "RcvrControlAck Default";
         @display("i=block/socket");
 }

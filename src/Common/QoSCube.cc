@@ -171,6 +171,7 @@ QoSCube::~QoSCube() {
     costTime = VAL_DEFQOS;               //measured in $/ms
     costBits = VAL_DEFQOS;               //measured in $/Mb
 
+    //TODO A2 Release efcpPolicies
 //    if(efcpPolicies != NULL){
 //      delete efcpPolicies;
 //    }
@@ -488,4 +489,19 @@ return windowFCOn;
 void QoSCube::setEfcpPolicies(const EFCPPolicySet* efcpPolicies)
 {
   this->efcpPolicies = efcpPolicies;
+}
+
+void QoSCube::setRateFcOn(bool rateFcOn)
+{
+  rateFCOn = rateFcOn;
+}
+
+void QoSCube::setRxOn(bool rxOn)
+{
+  this->rxOn = rxOn;
+}
+
+void QoSCube::setWindowFcOn(bool windowFcOn)
+{
+  windowFCOn = windowFcOn;
 }

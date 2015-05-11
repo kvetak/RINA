@@ -113,21 +113,21 @@ void DTCP::initialize(int step)
 
 
         //TODO A1 Load list of policies
-        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-        rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
-        rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
-        receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
-        sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
-        lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
-        rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
-        senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
-        fcOverrunPolicy       = (FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
-        noOverridePeakPolicy  = (NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
-        txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
-        noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
-        reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
-        rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
-  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+//        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
+//        rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
+//        rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
+//        receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
+//        sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
+//        lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
+//        rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
+//        senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
+//        fcOverrunPolicy       = (FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
+//        noOverridePeakPolicy  = (NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
+//        txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
+//        noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
+//        reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
+//        rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
+//  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
 
   			initSignalsAndListeners();
@@ -946,4 +946,79 @@ bool DTCP::isClosedWinQClosed()
 void DTCP::updateSenderLWE(unsigned int seqNum)
 {
   dtcpState->updateSndLWE(seqNum);
+}
+
+void DTCP::setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy)
+{
+  this->fcOverrunPolicy = fcOverrunPolicy;
+}
+
+void DTCP::setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy)
+{
+  lostControlPDUPolicy = lostControlPduPolicy;
+}
+
+void DTCP::setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy)
+{
+  this->noOverridePeakPolicy = noOverridePeakPolicy;
+}
+
+void DTCP::setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy)
+{
+  this->noRateSlowDownPolicy = noRateSlowDownPolicy;
+}
+
+void DTCP::setRateReductionPolicy(RateReductionPolicyBase* rateReductionPolicy)
+{
+  this->rateReductionPolicy = rateReductionPolicy;
+}
+
+void DTCP::setRcvrAckPolicy(RcvrAckPolicyBase* rcvrAckPolicy)
+{
+  this->rcvrAckPolicy = rcvrAckPolicy;
+}
+
+void DTCP::setRcvrControlAckPolicy(RcvrControlAckPolicyBase* rcvrControlAckPolicy)
+{
+  this->rcvrControlAckPolicy = rcvrControlAckPolicy;
+}
+
+void DTCP::setRcvrFcPolicy(RcvrFCPolicyBase* rcvrFcPolicy)
+{
+  rcvrFCPolicy = rcvrFcPolicy;
+}
+
+void DTCP::setReceivingFcPolicy(ReceivingFCPolicyBase* receivingFcPolicy)
+{
+  receivingFCPolicy = receivingFcPolicy;
+}
+
+void DTCP::setReconcileFcPolicy(ReconcileFCPolicyBase* reconcileFcPolicy)
+{
+  reconcileFCPolicy = reconcileFcPolicy;
+}
+
+void DTCP::setRxTimerExpiryPolicy(RxTimerExpiryPolicyBase* rxTimerExpiryPolicy)
+{
+  this->rxTimerExpiryPolicy = rxTimerExpiryPolicy;
+}
+
+void DTCP::setSenderAckPolicy(SenderAckPolicyBase* senderAckPolicy)
+{
+  this->senderAckPolicy = senderAckPolicy;
+}
+
+void DTCP::setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy)
+{
+  this->sendingAckPolicy = sendingAckPolicy;
+}
+
+void DTCP::setTxControlPolicy(TxControlPolicyBase* txControlPolicy)
+{
+  this->txControlPolicy = txControlPolicy;
+}
+
+void DTCP::setDtcpState(DTCPState* dtcpState)
+{
+  this->dtcpState = dtcpState;
 }

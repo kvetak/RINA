@@ -131,6 +131,8 @@ void DTP::initialize(int step)
 //        INITIAL_SEQ_NUM_POLICY_NAME);
 //    rttEstimatorPolicy = (RTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX,
 //        RTT_ESTIMATOR_POLICY_NAME);
+
+    runInitialSeqNumPolicy();
   }
 
 
@@ -182,7 +184,9 @@ void DTP::redrawGUI()
       return;
   }
 
+  if(state->isDtcpPresent()){
   dtcp->redrawGUI();
+  }
 
   cDisplayString& disp = getDisplayString();
   disp.setTagArg("t", 1, "r");

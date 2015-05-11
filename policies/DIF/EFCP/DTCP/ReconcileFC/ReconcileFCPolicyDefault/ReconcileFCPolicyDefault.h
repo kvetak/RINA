@@ -15,33 +15,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 /**
- * @file SenderAckPolicyDefault.cc
+ * @file ReconcileFCPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date May 3, 2015
- * @brief This is an example policy class implementing default SenderAck behavior
+ * @brief This is an example policy class implementing default Initial Sequence Number behavior
  * @detail
  */
 
-#include <SenderAckDefaultPolicy/SenderAckDefaultPolicy.h>
+#ifndef RECONCILEFCDEFAULTPOLICY_H_
+#define RECONCILEFCDEFAULTPOLICY_H_
 
-Register_Class(SenderAckDefaultPolicy);
+#include <ReconcileFCPolicyBase.h>
 
-SenderAckDefaultPolicy::SenderAckDefaultPolicy()
+class ReconcileFCPolicyDefault : public ReconcileFCPolicyBase
 {
+  public:
+    ReconcileFCPolicyDefault();
+    virtual ~ReconcileFCPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-
-}
-
-SenderAckDefaultPolicy::~SenderAckDefaultPolicy()
-{
-
-}
-
-bool SenderAckDefaultPolicy::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  Enter_Method("SenderAckPolicyDefault");
-
-  defaultAction(dtpState, dtcpState);
-
-  return false;
-}
+#endif /* RECONCILEFCDEFAULTPOLICY_H_ */

@@ -25,6 +25,64 @@
 #include "EFCP.h"
 Define_Module(EFCP);
 
+#define ECN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECN."
+#define ECN_POLICY_NAME "ecnPolicy"
+
+#define RCVR_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrFC."
+#define RCVR_FC_POLICY_NAME "rcvrFCPolicy"
+
+#define RCVR_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrAck."
+#define RCVR_ACK_POLICY_NAME "rcvrAckPolicy"
+
+#define RECEIVING_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ReceivingFC."
+#define RECEIVING_FC_POLICY_NAME "receivingFCPolicy"
+
+#define SENDING_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SendingAck."
+#define SENDING_ACK_POLICY_NAME "sendingAckPolicy"
+
+#define LOST_CONTROL_PDU_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.LostControlPDU."
+#define LOST_CONTROL_PDU_POLICY_NAME "lostControlPDUPolicy"
+
+#define RCVR_CONTROL_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrControlAck."
+#define RCVR_CONTROL_ACK_POLICY_NAME "rcvrControlAckPolicy"
+
+#define SENDER_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SenderAck."
+#define SENDER_ACK_POLICY_NAME "senderAckPolicy"
+
+#define FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
+#define FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
+
+#define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
+#define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"
+
+#define TX_CONTROL_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.TxControl."
+#define TX_CONTROL_POLICY_NAME "txControlPolicy"
+
+#define NO_RATE_SLOW_DOWN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoRateSlowDown."
+#define NO_RATE_SLOW_DOWN_POLICY_NAME "noRateSlowDownPolicy"
+
+#define RECONCILE_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ReconcileFC."
+#define RECONCILE_FC_POLICY_NAME "reconcileFCPolicy"
+
+#define RATE_REDUCTION_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RateReduction."
+#define RATE_REDUCTION_POLICY_NAME "rateReductionPolicy"
+
+
+#define RCVR_INACTIVITY_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.RcvrInactivity."
+#define RCVR_INACTIVITY_POLICY_NAME "rcvrInactivityPolicy"
+
+#define SENDER_INACTIVITY_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.SenderInactivity."
+#define SENDER_INACTIVITY_POLICY_NAME "senderInactivityPolicy"
+
+#define INITIAL_SEQ_NUM_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.InitialSeqNum."
+#define INITIAL_SEQ_NUM_POLICY_NAME "initialSeqNumPolicy"
+
+#define RTT_ESTIMATOR_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.RTTEstimator."
+#define RTT_ESTIMATOR_POLICY_NAME "rttEstimatorPolicy"
+
+#define ECN_SLOW_DOWN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECNSlowDown."
+#define ECN_SLOW_DOWN_POLICY_NAME "ecnSlowDownPolicy"
+
 EFCP::EFCP() {
 
 }
@@ -106,7 +164,7 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
   //2. If necessary create DTCP module
   if(qosCube->isDTCPNeeded()){
-      efcpi->setDtcp(this->createDTCP(efcpiModule));
+      efcpi->setDtcp(this->createDTCP(efcpiModule, efcpPolicySet));
   }else{
     efcpi->setDtcp(NULL);
   }
@@ -169,25 +227,50 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   return efcpi;
 }
 
-DTCP* EFCP::createDTCP(cModule* efcpiModule)
+DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
 {
     cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
     DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
-    dtcpModule->par("ecnPolicy").setStringValue(par("ecnPolicy").stringValue());
-    dtcpModule->par("rcvrFCPolicy").setStringValue(par("rcvrFCPolicy").stringValue());
-    dtcpModule->par("rcvrAckPolicy").setStringValue(par("rcvrAckPolicy").stringValue());
-    dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
-    dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
-    dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
-    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("rcvrControlAckPolicy").stringValue());
-    dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
-    dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
-    dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
-    dtcpModule->par("txControlPolicy").setStringValue(par("txControlPolicy").stringValue());
-    dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
-    dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
-    dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
-    dtcpModule->par("ecnSlowDownPolicy").setStringValue(par("ecnSlowDownPolicy").stringValue());
+//    dtcpModule->par("ecnPolicy").setStringValue(par("ecnPolicy").stringValue());
+//    dtcpModule->par("rcvrFCPolicy").setStringValue(par("rcvrFCPolicy").stringValue());
+//    dtcpModule->par("rcvrAckPolicy").setStringValue(par("rcvrAckPolicy").stringValue());
+//    dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
+//    dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
+//    dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
+//    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("rcvrControlAckPolicy").stringValue());
+//    dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
+//    dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
+//    dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
+//    dtcpModule->par("txControlPolicy").setStringValue(par("txControlPolicy").stringValue());
+//    dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
+//    dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
+//    dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
+//    dtcpModule->par("ecnSlowDownPolicy").setStringValue(par("ecnSlowDownPolicy").stringValue());
+//
+
+//    ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
+    dtcpModule->setRcvrFcPolicy((RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, efcpPolicySet->getRcvrFc(), RCVR_FC_POLICY_NAME, efcpiModule));
+    dtcpModule->setRcvrAckPolicy((RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrAck(), RCVR_ACK_POLICY_NAME, efcpiModule));
+    dtcpModule->setReceivingFcPolicy((ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, efcpPolicySet->getReceivingFc(), RECEIVING_FC_POLICY_NAME, efcpiModule));
+    dtcpModule->setSendingAckPolicy((SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, efcpPolicySet->getSendingAck(), SENDING_ACK_POLICY_NAME, efcpiModule));
+    dtcpModule->setLostControlPduPolicy((LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, efcpPolicySet->getLostControlPdu(), LOST_CONTROL_PDU_POLICY_NAME, efcpiModule));
+    dtcpModule->setRcvrControlAckPolicy((RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrControlAck(), RCVR_CONTROL_ACK_POLICY_NAME, efcpiModule));
+    dtcpModule->setSenderAckPolicy((SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, efcpPolicySet->getSenderAck(), SENDER_ACK_POLICY_NAME, efcpiModule));
+    dtcpModule->setFcOverrunPolicy((FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getFcOverrun(), FC_OVERRUN_POLICY_NAME, efcpiModule));
+    dtcpModule->setNoOverridePeakPolicy((NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, efcpPolicySet->getNoOverridePeak(), NO_OVERRIDE_PEAK_POLICY_NAME, efcpiModule));
+    dtcpModule->setTxControlPolicy((TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, efcpPolicySet->getTxControl(), TX_CONTROL_POLICY_NAME, efcpiModule));
+    dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule));
+    dtcpModule->setReconcileFcPolicy( (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, efcpPolicySet->getReconcileFc(), RECONCILE_FC_POLICY_NAME, efcpiModule));
+    dtcpModule->setRateReductionPolicy( (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, efcpPolicySet->getRateReduction(), RATE_REDUCTION_POLICY_NAME, efcpiModule));
+//    dtcpModule->setEcnSlowDownPolicy( (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+
+
+
+
+
+//    efcpiModule->par("rttEstimatorPolicyName").setStringValue(efcpPolicySet->getRttEstimat());
+
+
     dtcpModule->finalizeParameters();
     dtcpModule->buildInside();
     dtcpModule->scheduleStart(simTime());
@@ -201,11 +284,40 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule)
     dtcpState->buildInside();
     dtcpState->scheduleStart(simTime());
 
+    dtcpModule->setDtcpState(dtcpState);
+
 
 //    dtcpModule->callInitialize();
 
 
     return dtcpModule;
+}
+
+/**
+ *
+ * @param prefix Prefix to the location of specific policy (eg. rina.policies.DIF.EFCP.DTP.InitialSeqNum.) including the last dot.
+ * @param name Name of the specific policy type. This method expects .ned file in directory with the same name (eg. InitialSeqNumPolicyDefault)
+ * @param policy Name of the variable holding pointer to this policy.
+ * @param parent Parent module in which the policy will be created.
+ * @return returns pointer to newly created module
+ */
+cModule* EFCP::createPolicyModule(const char* prefix, const char* name, const char* policy, cModule* parent)
+{
+
+    std::stringstream modulePath;
+    modulePath << prefix << name <<"."<< name;
+    cModuleType* policyType = cModuleType::get(modulePath.str().c_str());
+    cModule* module =  policyType->create(policy, parent);
+    module->finalizeParameters();
+    module->buildInside();
+    module->scheduleStart(simTime());
+
+    cDisplayString& disp = module->getDisplayString();
+    disp.setTagArg("is", 0, "vs");
+
+//    return policyType->createScheduleInit(policy, parent);
+    return module;
+
 }
 
 

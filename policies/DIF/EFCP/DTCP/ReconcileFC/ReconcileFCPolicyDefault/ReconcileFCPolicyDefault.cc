@@ -22,22 +22,22 @@
  * @detail
  */
 
-#include <ReconcileFCDefaultPolicy.h>
+#include <ReconcileFCPolicyDefault.h>
 
-Register_Class(ReconcileFCDefaultPolicy);
+Register_Class(ReconcileFCPolicyDefault);
 
-ReconcileFCDefaultPolicy::ReconcileFCDefaultPolicy()
+ReconcileFCPolicyDefault::ReconcileFCPolicyDefault()
 {
   // TODO Auto-generated constructor stub
 
 }
 
-ReconcileFCDefaultPolicy::~ReconcileFCDefaultPolicy()
+ReconcileFCPolicyDefault::~ReconcileFCPolicyDefault()
 {
   // TODO Auto-generated destructor stub
 }
 
-bool ReconcileFCDefaultPolicy::run(DTPState* dtpState, DTCPState* dtcpState)
+bool ReconcileFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
 {
   Enter_Method("ReconcileFCPolicyDefault");
 

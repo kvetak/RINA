@@ -24,6 +24,8 @@
 
 #include <FCOverrunPolicyDefault.h>
 
+Register_Class(FCOverrunPolicyDefault);
+
 FCOverrunPolicyDefault::FCOverrunPolicyDefault()
 {
   // TODO Auto-generated constructor stub

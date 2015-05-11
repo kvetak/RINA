@@ -183,6 +183,21 @@ public:
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
     void scheduleRxTimerExpiry();
+    void setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy);
+    void setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy);
+    void setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy);
+    void setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy);
+    void setRateReductionPolicy(RateReductionPolicyBase* rateReductionPolicy);
+    void setRcvrAckPolicy(RcvrAckPolicyBase* rcvrAckPolicy);
+    void setRcvrControlAckPolicy(RcvrControlAckPolicyBase* rcvrControlAckPolicy);
+    void setRcvrFcPolicy(RcvrFCPolicyBase* rcvrFcPolicy);
+    void setReceivingFcPolicy(ReceivingFCPolicyBase* receivingFcPolicy);
+    void setReconcileFcPolicy(ReconcileFCPolicyBase* reconcileFcPolicy);
+    void setRxTimerExpiryPolicy(RxTimerExpiryPolicyBase* rxTimerExpiryPolicy);
+    void setSenderAckPolicy(SenderAckPolicyBase* senderAckPolicy);
+    void setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy);
+    void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
+    void setDtcpState(DTCPState* dtcpState);
 
 protected:
     virtual void handleMessage(cMessage *msg);

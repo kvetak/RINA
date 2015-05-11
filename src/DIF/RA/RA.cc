@@ -49,6 +49,9 @@ const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
 const char* ELEM_ATIME               = "ATime";
+const char* ELEM_RXON                = "RxOn";
+const char* ELEM_WINON               = "WinOn";
+const char* ELEM_RATEON              = "RateOn";
 const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 void RA::initialize(int stage)
@@ -277,6 +280,9 @@ void RA::initQoSCubes()
         int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
         int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
         double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
+        bool rxOn                   = VAL_QOSPARDEFBOOL;
+        bool winOn                  = VAL_QOSPARDEFBOOL;
+        bool rateOn                 = VAL_QOSPARDEFBOOL;
 
         EFCPPolicySet* efcpPolicies = new EFCPPolicySet();
 
@@ -364,8 +370,17 @@ void RA::initQoSCubes()
             }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
               aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
               if (aTime < 0)
-                  aTime = VAL_QOSPARDONOTCARE;
-           }else if(!strcmp(n->getTagName(), ELEM_EFCPPOL)) {
+                aTime = VAL_QOSPARDONOTCARE;
+            }else if (!strcmp(n->getTagName(), ELEM_RXON)) {
+              rxOn = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+
+            }else if (!strcmp(n->getTagName(), ELEM_WINON)) {
+              winOn = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+
+            }else if (!strcmp(n->getTagName(), ELEM_RATEON)) {
+              rateOn = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+
+            }else if(!strcmp(n->getTagName(), ELEM_EFCPPOL)) {
              efcpPolicies->init(n);
            }
 
@@ -390,6 +405,9 @@ void RA::initQoSCubes()
         cube.setCostTime(costtime);
         cube.setATime(aTime);
         cube.setEfcpPolicies(efcpPolicies);
+        cube.setRxOn(rxOn);
+        cube.setWindowFcOn(winOn);
+        cube.setRateFcOn(rateOn);
 
         QoSCubes.push_back(cube);
     }

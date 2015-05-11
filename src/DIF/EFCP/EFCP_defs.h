@@ -16,7 +16,7 @@
 //
 
 /*
- * @file EFCP.h
+ * @file EFCP_defs.h
  * @author Marcel Marek
  * @date Apr 28, 2014
  * @brief

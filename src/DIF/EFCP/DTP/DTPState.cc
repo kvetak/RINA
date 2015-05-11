@@ -69,27 +69,30 @@ void DTPState::initialize(int step)
     }
 
 
-//    winBased = par("winBased");
-//    rateBased = par("rateBased");
-    rateBased = false;
+////    winBased = par("winBased");
+////    rateBased = par("rateBased");
+//    rateBased = false;
+//
+////    rxPresent = par("rxPresent");
+//
+//    if(qoSCube->isRxOn()){
+//      rxPresent = true;
+//    }else{
+//      rxPresent = false;
+//    }
+    rxPresent = qoSCube->isRxOn();
+    winBased = qoSCube->isWindowFcOn();
+    rateBased = qoSCube->isRateFcOn();
 
-//    rxPresent = par("rxPresent");
-
-    if(qoSCube->isForceOrder()){
-      rxPresent = true;
-    }else{
-      rxPresent = false;
-    }
-
-    if(qoSCube->getAvgBand() > 0){
-      winBased = true;
-    }else{
-      winBased = false;
-    }
+//    if(qoSCube->getAvgBand() > 0){
+//      winBased = true;
+//    }else{
+//      winBased = false;
+//    }
 
     if(rxPresent || winBased || rateBased){
       dtcpPresent =  true;
-      //TODO A! create DTCP module here?
+
     }
   }
 }

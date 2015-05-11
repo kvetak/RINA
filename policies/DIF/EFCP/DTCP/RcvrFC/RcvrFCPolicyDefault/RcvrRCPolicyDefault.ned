@@ -13,14 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.EFCP.DTCP.ReconcileFC.ReconcileFCDefaultPolicy;
-import rina.policies.DIF.EFCP.DTCP.ReconcileFC.IntReconcileFCPolicy;
+package rina.policies.DIF.EFCP.DTCP.RcvrFC.RcvrFCPolicyDefault;
+import rina.policies.DIF.EFCP.DTCP.RcvrFC.IntRcvrFCPolicy;
 //
 // TODO auto-generated type
 //
-module ReconcileFCDefaultPolicy like IntReconcileFCPolicy
+simple RcvrFCPolicyDefault like IntRcvrFCPolicy
 {
     parameters:
-        string policyName = "InitialSeqNum Default";
+        string policyName = "RcvrFC Default";
         @display("i=block/socket");
 }
