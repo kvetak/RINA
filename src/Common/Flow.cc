@@ -155,7 +155,7 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
-const QoSCube& Flow::getQosParameters() const {
+const QoSReq& Flow::getQosParameters() const {
     return qosParameters;
 }
 
@@ -299,7 +299,7 @@ Flow& Flow::swapFlow() {
     return *this;
 }
 
-void Flow::setQosParameters(const QoSCube& qosParameters) {
+void Flow::setQosParameters(const QoSReq& qosParameters) {
     this->qosParameters = qosParameters;
 }
 

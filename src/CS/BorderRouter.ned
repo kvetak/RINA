@@ -26,10 +26,10 @@
 // @author Vladimir Vesely (ivesely@fit.vutbr.cz)
 // @date Last refactorized and documented on 2015-01-12
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.DAF.DA.DIFAllocator;
-import rina.DIF.IPCProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
 
 module BorderRouter
 {

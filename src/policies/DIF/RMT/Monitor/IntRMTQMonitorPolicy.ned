@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.RMT.Monitor;
+package rina.src.policies.DIF.RMT.Monitor;
 
 moduleinterface IntRMTQMonitorPolicy
 {

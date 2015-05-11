@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.FA.AllocateRetry.LimitedRetries;
+package rina.src.policies.DIF.FA.AllocateRetry.LimitedRetries;
 
-import rina.policies.DIF.FA.AllocateRetry.IAllocateRetry; 
+import rina.src.policies.DIF.FA.AllocateRetry.IAllocateRetry; 
 
 simple LimitedRetries like IAllocateRetry
 {

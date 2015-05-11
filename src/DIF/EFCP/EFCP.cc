@@ -56,7 +56,7 @@ EFCPInstance* EFCP::createEFCPI(Flow* flow, int cepId, int portId){
 
   std::ostringstream name;
   name << MOD_EFCPI << cepId;
-  cModuleType *moduleType = cModuleType::get("rina.DIF.EFCP.EFCPI");
+  cModuleType *moduleType = cModuleType::get(MOD_EFCPI_PATH);
   cModule* efcpiModule = moduleType->create(name.str().c_str(), efcpModule);
 
   efcpiModule->finalizeParameters();
@@ -196,7 +196,7 @@ Delimiting* EFCP::createDelimiting(cModule* efcpiModule, int portId){
     std::ostringstream name;
     name << DELIMITING_MODULE_NAME << "_" << portId;
     //0. Create Delimiting module within EFCPModule
-    cModuleType* delimitType = cModuleType::get("rina.DIF.Delimiting.Delimiting");
+    cModuleType* delimitType = cModuleType::get(MOD_DELIMITING_PATH);
 
     Delimiting* delimit = (Delimiting*)delimitType->create(name.str().c_str(), this->getParentModule());
     delimit->finalizeParameters();

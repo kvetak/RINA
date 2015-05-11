@@ -44,9 +44,13 @@ extern const char* MOD_DTCP_STATE;
 extern const char* MOD_EFCPI;
 
 //Module type paths
+extern const char* MOD_EFCP_PATH;
+extern const char* MOD_EFCPI_PATH;
 extern const char* MOD_DTP_PATH;
 extern const char* MOD_DTP_STATE_PATH;
 extern const char* MOD_DTCP_PATH;
+extern const char* MOD_DTCP_STATE_PATH;
+extern const char* MOD_DELIMITING_PATH;
 
 //Module parameters
 extern const char* PAR_IPCADDR;

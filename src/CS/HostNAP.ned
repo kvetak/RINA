@@ -15,13 +15,13 @@
 
 // Author: Kewin Rausch <kewin.rausch@create-net.org>
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.Common.Test;
-import rina.DAF.ApplicationProcess;
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.IPCResourceManager;
-import rina.DIF.IPCProcess;
+import rina.src.Common.Test;
+import rina.src.DAF.ApplicationProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DAF.IRM.IPCResourceManager;
+import rina.src.DIF.IPCProcess;
 
 module HostNAP
 {

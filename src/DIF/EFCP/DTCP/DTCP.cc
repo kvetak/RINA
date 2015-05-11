@@ -105,7 +105,7 @@ void DTCP::initialize(int step)
         dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
 
         //  dtcpState = new DTCPState();
-        cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
+        cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
 
         dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
         dtcpState->finalizeParameters();
@@ -642,7 +642,7 @@ void DTCP::handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer)
   runRxTimerExpiryPolicy(timer);
 
 }
-
+//TODO A! Make it Module-based policy
 void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 {
 

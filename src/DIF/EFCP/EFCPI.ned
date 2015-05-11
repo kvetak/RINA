@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP;
-import rina.DIF.EFCP.DTP.DTP;
-import rina.DIF.EFCP.DTP.DumbGate;
+package rina.src.DIF.EFCP;
+import rina.src.DIF.EFCP.DTP.DTP;
+import rina.src.DIF.EFCP.DTP.DumbGate;
 
 
 module EFCPI

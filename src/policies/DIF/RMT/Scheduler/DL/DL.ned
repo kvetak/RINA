@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
+import rina.src.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
 
-package rina.policies.DIF.RMT.Scheduler.DL;
+package rina.src.policies.DIF.RMT.Scheduler.DL;
 
 
 simple DL like IntRMTSchedulingPolicy

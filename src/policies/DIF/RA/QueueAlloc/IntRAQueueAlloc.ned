@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.RA.QueueAlloc;
+package rina.src.policies.DIF.RA.QueueAlloc;
 
 moduleinterface IntRAQueueAlloc
 {

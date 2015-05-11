@@ -11,10 +11,10 @@ rina_scenarios="${rina_root}/examples"
 glob='*'
 
 # locate the executable
-if [ -f "${rina_root}/out/gcc-debug/src/RINA" ]; then
-    rina_bin=${rina_root}/out/gcc-debug/src/RINA
-elif [ -f "${rina_root}/out/gcc-debug/src/rina.exe" ]; then
-    rina_bin=${rina_root}/out/gcc-debug/src/rina.exe
+if [ -f "${rina_root}/out/gcc-debug/rina" ]; then
+    rina_bin=${rina_root}/out/gcc-debug/rina
+elif [ -f "${rina_root}/out/gcc-debug/rina.exe" ]; then
+    rina_bin=${rina_root}/out/gcc-debug/rina.exe
 else
     echo "Cannot find the RINA executable!"
     exit 1
@@ -127,7 +127,7 @@ for i in $glob/; do
 
     grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
         printf "  $j: "
-        output="$( $rina_bin -u Cmdenv -c "$j" -n ../../examples/:../../src omnetpp.ini 2>&1 )"
+        output="$( $rina_bin -u Cmdenv -c "$j" -n "$rina_root" omnetpp.ini 2>&1 )"
         ret=$?
 
         if [ $mode = "check" ]; then

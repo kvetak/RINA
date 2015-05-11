@@ -85,7 +85,10 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
+			<ATime>0</ATime>
+			<EFCPPolicySet>
+			  <FCOverrun>Default</FCOverrun>   
+			</EFCPPolicySet>
 		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>

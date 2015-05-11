@@ -1,6 +1,6 @@
-package rina.policies.DIF.RA.PDUFG.SingleDomainGenerator;
+package rina.src.policies.DIF.RA.PDUFG.SingleDomainGenerator;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.policies.DIF.RA.PDUFG.IntPDUFG;
 
 simple SingleDomainGenerator like IntPDUFG
 {

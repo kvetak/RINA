@@ -15,8 +15,8 @@
 
 package rina.examples.SimpleRelay;
 import ned.DatarateChannel;
-import rina.CS.Host1AP;
-import rina.CS.InteriorRouter2Int;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
 
 
 network SimpleRelay

@@ -15,9 +15,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+import rina.src.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.Monitor.SimpleMonitor;
+package rina.src.policies.DIF.RMT.Monitor.SimpleMonitor;
 
 simple SimpleMonitor like IntRMTQMonitorPolicy 
 {

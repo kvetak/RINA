@@ -44,6 +44,8 @@
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
+extern const char* PAR_QOSREQ;
+extern const char* ELEM_QOSREQ;
 extern const char* ELEM_AVGBW;
 extern const char* ELEM_AVGSDUBW;
 extern const char* ELEM_PEAKBWDUR;
@@ -99,6 +101,7 @@ class RA : public RABase
     std::map<simtime_t, std::list<Flow*>*> preparedFlows;
 
     void initQoSCubes();
+    void initQoSReqById(QoSReq* cube, unsigned short id);
     void initSignalsAndListeners();
     void initFlowAlloc();
     void setRMTMode();

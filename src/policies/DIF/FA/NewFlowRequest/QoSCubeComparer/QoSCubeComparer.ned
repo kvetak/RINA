@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.FA.NewFlowRequest.QoSCubeComparer;
+package rina.src.policies.DIF.FA.NewFlowRequest.QoSCubeComparer;
 
-import rina.policies.DIF.FA.NewFlowRequest.INewFlowRequest;
+import rina.src.policies.DIF.FA.NewFlowRequest.INewFlowRequest;
 
 simple QoSCubeComparer like INewFlowRequest
 {

@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.NSM;
+package rina.src.DIF.NSM;
 
-import rina.DIF.FA.FAI;
+import rina.src.DIF.FA.FAI;
 
 
 module NameSpaceManager

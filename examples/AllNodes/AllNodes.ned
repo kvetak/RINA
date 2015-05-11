@@ -15,9 +15,9 @@
 
 package rina.examples.AllNodes;
 
-import rina.CS.BorderRouter;
-import rina.CS.Host1AP;
-import rina.CS.InteriorRouterNInt;
+import rina.src.CS.BorderRouter;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouterNInt;
 
 
 //

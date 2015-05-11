@@ -3,14 +3,14 @@
     <ConnectionSets>
         <ConnectionSet id="all">
             <SimTime t="0">
-                <Connection src="S1_DC"  dst="TOR1_DC" qosCube="1"/>       
-                <Connection src="S2_DC"  dst="TOR1_DC" qosCube="1"/>   
-                <Connection src="S3_DC"  dst="TOR2_DC" qosCube="1"/>
-                <Connection src="S4_DC"  dst="TOR2_DC" qosCube="1"/>
-                <Connection src="TOR1_DC"  dst="AS1_DC" qosCube="1"/>
-                <Connection src="TOR1_DC"  dst="AS2_DC" qosCube="1"/>     
-                <Connection src="TOR2_DC"  dst="AS1_DC" qosCube="1"/>
-                <Connection src="TOR2_DC"  dst="AS2_DC" qosCube="1"/>     
+                <Connection src="S1_DC"  dst="TOR1_DC" qosReq="1"/>       
+                <Connection src="S2_DC"  dst="TOR1_DC" qosReq="1"/>   
+                <Connection src="S3_DC"  dst="TOR2_DC" qosReq="1"/>
+                <Connection src="S4_DC"  dst="TOR2_DC" qosReq="1"/>
+                <Connection src="TOR1_DC"  dst="AS1_DC" qosReq="1"/>
+                <Connection src="TOR1_DC"  dst="AS2_DC" qosReq="1"/>     
+                <Connection src="TOR2_DC"  dst="AS1_DC" qosReq="1"/>
+                <Connection src="TOR2_DC"  dst="AS2_DC" qosReq="1"/>     
             </SimTime>
         </ConnectionSet>
     </ConnectionSets>
@@ -127,4 +127,26 @@
 			<ATime>0</ATime>						
 		</QosCube>		
 	</QoSCubesSet>
+	
+	<QoSReqSet>
+    <QosReq id="1">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <MaxSDUSize>1500</MaxSDUSize>
+      <PartialDelivery>0</PartialDelivery>
+      <IncompleteDelivery>0</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>            
+    </QosReq>
+  </QoSReqSet>
 </Configuration>

@@ -42,10 +42,14 @@ const char* MOD_EFCPI           = "efcpi_";
 
 
 //Module type paths
-const char* MOD_EFCP_PATH        = "rina.DIF.EFCP";
-const char* MOD_DTP_PATH        = "rina.DIF.EFCP.DTP.DTP";
-const char* MOD_DTP_STATE_PATH  = "rina.DIF.EFCP.DTP.DTPState";
-const char* MOD_DTCP_PATH       = "rina.DIF.EFCP.DTCP.DTCP";
+const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";
+const char* MOD_EFCPI_PATH      = "rina.src.DIF.EFCP.EFCPI";
+const char* MOD_DTP_PATH        = "rina.src.DIF.EFCP.DTP.DTP";
+const char* MOD_DTP_STATE_PATH  = "rina.src.DIF.EFCP.DTP.DTPState";
+const char* MOD_DTCP_PATH       = "rina.src.DIF.EFCP.DTCP.DTCP";
+const char* MOD_DTCP_STATE_PATH = "rina.src.DIF.EFCP.DTCP.DTCPState";
+const char* MOD_DELIMITING_PATH = "rina.src.DIF.Delimiting.Delimiting";
+
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";

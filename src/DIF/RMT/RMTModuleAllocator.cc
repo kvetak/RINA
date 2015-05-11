@@ -52,8 +52,9 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
         return queue;
     }
 
+    //@Tomas: what about using ExternConsts.cc for this?
     // instantiate a new module
-    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
+    cModuleType *moduleType = cModuleType::get("rina.src.DIF.RMT.RMTQueue");
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), portWrapper);
     queue = dynamic_cast<RMTQueue*>(newModule);
 
@@ -125,9 +126,9 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     std::ostringstream portName;
     portName << "p" << portCount;
     portCount++;
-
+    //@Tomas: what about using ExternConsts.cc for this?
     // initialize a wrapper with port inside it
-    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPortWrapper");
+    cModuleType* moduleType = cModuleType::get("rina.src.DIF.RMT.RMTPortWrapper");
     cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
     RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
 

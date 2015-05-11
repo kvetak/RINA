@@ -15,7 +15,7 @@
 
 package rina.examples.SmallNetwork2;
 import ned.DatarateChannel;
-import rina.CS.*;
+import rina.src.CS.*;
 
 
 network SmallNetwork2

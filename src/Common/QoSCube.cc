@@ -459,3 +459,13 @@ std::string QoSCube::info() const {
 
     return os.str();
 }
+
+const EFCPPolicySet* QoSCube::getEfcpPolicies() const
+{
+  return efcpPolicies;
+}
+
+void QoSCube::setEfcpPolicies(const EFCPPolicySet* efcpPolicies)
+{
+  this->efcpPolicies = efcpPolicies;
+}

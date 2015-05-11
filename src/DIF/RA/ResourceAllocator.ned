@@ -15,12 +15,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.src.DIF.RA;
 
-import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
-import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
-import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
+import rina.src.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
+import rina.src.policies.DIF.RA.AddressComparator.IntAddressComparator;
+import rina.src.policies.DIF.RA.PDUFG.IntPDUFG;
 
 
 module ResourceAllocator

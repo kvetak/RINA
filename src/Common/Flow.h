@@ -23,6 +23,7 @@
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
 #include "Address.h"
+#include "QoSReq.h"
 
 extern const int VAL_UNDEFINED;
 extern const int VAL_MAXHOPCOUNT;
@@ -141,15 +142,15 @@ class Flow : public cObject
 
     /**
      * @brief Gets QoS parameters wanted by flow initiator
-     * @return Read-only QoSCube instance
+     * @return Read-only QoSReq instance
      */
-    const QoSCube& getQosParameters() const;
+    const QoSReq& getQosParameters() const;
 
     /**
      * @brief Sets QoS parameters wanted by flow initiator
-     * @param qosParameters A new QoSCube instance that is accompanied with Flow
+     * @param qosParameters A new QoSReq instance that is accompanied with Flow
      */
-    void setQosParameters(const QoSCube& qosParameters);
+    void setQosParameters(const QoSReq& qosParameters);
 
     /**
      * @brief Gets read-only source APNamingInfo
@@ -395,9 +396,9 @@ class Flow : public cObject
     uint32_t hopCount;
 
     /**
-     * @brief Attribute holding wanted QoS parameters in form of QoSCube
+     * @brief Attribute holding wanted QoS parameters in form of QoSReq
      */
-    QoSCube qosParameters;
+    QoSReq qosParameters;
 
     /**
      * @brief Attribute holding persistant InvokeId used for allocation

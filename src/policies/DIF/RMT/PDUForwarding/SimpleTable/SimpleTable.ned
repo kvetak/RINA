@@ -1,6 +1,6 @@
-package rina.policies.DIF.RMT.PDUForwarding.SimpleTable;
+package rina.src.policies.DIF.RMT.PDUForwarding.SimpleTable;
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+import rina.src.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
 simple SimpleTable like IntPDUForwarding
 {
