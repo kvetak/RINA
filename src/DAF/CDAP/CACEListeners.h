@@ -39,24 +39,4 @@ public:
     virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
 };
 
-//TODO: remove unused listeners
-
-class LisCACEConReq : public CACEListeners {
-public:
-    LisCACEConReq(CACE* ncace): CACEListeners(ncace){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-};
-
-class LisCACERelReq : public CACEListeners {
-public:
-    LisCACERelReq(CACE* ncace): CACEListeners(ncace){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-};
-
-class LisCACEAuthRes : public CACEListeners {
-public:
-    LisCACEAuthRes(CACE* ncace): CACEListeners(ncace){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-};
-
 #endif /* CACELISTENERS_H_ */

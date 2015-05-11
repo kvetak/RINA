@@ -222,10 +222,6 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
     sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
 
-
-    //TODO: remove this signal
-    sigRIBDEnrollObjRecv = registerSignal(SIG_RIBD_EnrollmentObjReceived);
-
     sigRIBDStartEnrollReq = registerSignal(SIG_RIBD_StartEnrollmentRequest);
     sigRIBDStartEnrollRes = registerSignal(SIG_RIBD_StartEnrollmentResponse);
     sigRIBDStopEnrollReq  = registerSignal(SIG_RIBD_StopEnrollmentRequest);

@@ -115,8 +115,6 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
     simsignal_t sigRIBDCongNotif;
-    //TODO: remove this signal
-    simsignal_t sigRIBDEnrollObjRecv;
 
     simsignal_t sigRIBDStartEnrollReq;
     simsignal_t sigRIBDStartEnrollRes;

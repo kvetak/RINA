@@ -24,8 +24,6 @@ const char* SIG_RIBD_ForwardingUpdateReceived   = "RIBd-ForwardingUpdateReceived
 const char* SIG_RIBD_RoutingUpdateReceived      = "Routing-UpdateReceived";
 
 const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
-//TODO:remove this signal
-const char* SIG_RIBD_EnrollmentObjReceived      = "RIBd-EnrollmentObjReceived";
 
 const char* SIG_RIBD_StartEnrollmentRequest     = "RIBd-StartEnrollmentRequest";
 const char* SIG_RIBD_StartEnrollmentResponse    = "RIBd-StartEnrollmentResponse";
@@ -51,13 +49,7 @@ const char* SIG_ENROLLMENT_StartOperationResponse = "Enrollment-StartOperationRe
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 const char* SIG_CDAP_SendData                   = "CDAP-SendData";
 
-const char* SIG_CACE_ConnectionResponsePositive = "CACE-ConnectionResponsePositive";
-const char* SIG_CACE_ConnectionResponseNegative = "CACE-ConnectionResponseNegative";
-const char* SIG_CACE_ReleaseResponse            = "CACE-ReleaseResponse";
-const char* SIG_CACE_AuthenticationRequest      = "CACE-AuthenticationRequest";
 const char* SIG_CACE_DataReceive                = "CACE-DataReceive";
-
-const char* SIG_Auth_AuthenticationResponse     = "Auth-AuthenticationResponse";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";

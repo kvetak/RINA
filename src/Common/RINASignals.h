@@ -27,8 +27,6 @@ extern const char* SIG_RIBD_CreateFlowResponsePositive;
 extern const char* SIG_RIBD_ForwardingUpdateReceived;
 extern const char* SIG_RIBD_RoutingUpdateReceived;
 extern const char* SIG_RIBD_CongestionNotification;
-//TODO:remove this signal
-extern const char* SIG_RIBD_EnrollmentObjReceived;
 
 extern const char* SIG_RIBD_StartEnrollmentRequest;
 extern const char* SIG_RIBD_StartEnrollmentResponse;
@@ -57,14 +55,7 @@ extern const char* SIG_CDAP_DateReceive;
 extern const char* SIG_CDAP_SendData;
 
 //CACE
-extern const char* SIG_CACE_ConnectionResponsePositive;
-extern const char* SIG_CACE_ConnectionResponseNegative;
-extern const char* SIG_CACE_ReleaseResponse;
-extern const char* SIG_CACE_AuthenticationRequest;
 extern const char* SIG_CACE_DataReceive;
-
-//Auth
-extern const char* SIG_Auth_AuthenticationResponse;
 
 //IRM
 extern const char* SIG_IRM_AllocateRequest;
