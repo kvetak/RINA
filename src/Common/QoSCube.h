@@ -146,10 +146,19 @@ class QoSCube {
     double aTime;               //A-Timer in ms
 
     /**
-     * @brief Vector of bound default policies
+     * @brief Attribute holding whether Retransmission Control is active
      */
-    std::vector<Policy*> policyList;
+    bool rxOn;            //Is retransmission active
 
+    /**
+     * @brief Attribute holding whether Window-based Flow Control is active
+     */
+    bool windowFCOn;            //Is Window-based Flow Control active
+
+    /**
+     * @brief Attribute holding whether Rate-based Flow Control is active
+     */
+    bool rateFCOn;            //Is Rate-based Flow Control active
 
     /**
      * @brief Vector of bound default policies
@@ -412,8 +421,13 @@ class QoSCube {
     std::string info() const;
 
     const EFCPPolicySet* getEfcpPolicies() const;
-
     void setEfcpPolicies(EFCPPolicySet* efcpPolicies);
+    bool isRateFcOn() const;
+    bool isRxOn() const;
+    bool isWindowFcOn() const;
+    void setRateFcOn(bool rateFcOn);
+    void setRxOn(bool rxOn);
+    void setWindowFcOn(bool windowFcOn);
 };
 
 //Free function

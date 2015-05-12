@@ -38,20 +38,21 @@
 
 /* Policies */
 #include "DTCPECNPolicyBase.h"
-#include "DTCPRcvrFCPolicyBase.h"
-#include "DTCPRcvrAckPolicyBase.h"
-#include "DTCPReceivingFCPolicyBase.h"
-#include "DTCPSendingAckPolicyBase.h"
-#include "DTCPLostControlPDUPolicyBase.h"
-#include "DTCPRcvrControlAckPolicyBase.h"
-#include "DTCPSenderAckPolicyBase.h"
-#include "DTCPFCOverrunPolicyBase.h"
-#include "DTCPNoOverridePeakPolicyBase.h"
-#include "DTCPTxControlPolicyBase.h"
-#include "DTCPNoRateSlowDownPolicyBase.h"
-#include "DTCPReconcileFCPolicyBase.h"
-#include "DTCPRateReductionPolicyBase.h"
+#include "RcvrFCPolicyBase.h"
+#include "RcvrAckPolicyBase.h"
+#include "ReceivingFCPolicyBase.h"
+#include "SendingAckPolicyBase.h"
+#include "LostControlPDUPolicyBase.h"
+#include "RcvrControlAckPolicyBase.h"
+#include "SenderAckPolicyBase.h"
+#include "FCOverrunPolicyBase.h"
+#include "NoOverridePeakPolicyBase.h"
+#include "TxControlPolicyBase.h"
+#include "NoRateSlowDownPolicyBase.h"
+#include "ReconcileFCPolicyBase.h"
+#include "RateReductionPolicyBase.h"
 #include "DTCPECNSlowDownPolicyBase.h"
+#include "RxTimerExpiryPolicyBase.h"
 
 class DTP;
 
@@ -65,20 +66,21 @@ class DTCP: public cSimpleModule {
 //    RXControl* rxControl;
 
     DTCPECNPolicyBase* ecnPolicy;
-    DTCPRcvrFCPolicyBase* rcvrFCPolicy;
-    DTCPRcvrAckPolicyBase* rcvrAckPolicy;
-    DTCPReceivingFCPolicyBase* receivingFCPolicy;
-    DTCPSendingAckPolicyBase* sendingAckPolicy;
-    DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
-    DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
-    DTCPSenderAckPolicyBase* senderAckPolicy;
-    DTCPFCOverrunPolicyBase* fcOverrunPolicy;
-    DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
-    DTCPTxControlPolicyBase* txControlPolicy;
-    DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
-    DTCPReconcileFCPolicyBase* reconcileFCPolicy;
-    DTCPRateReductionPolicyBase* rateReductionPolicy;
+    RcvrFCPolicyBase* rcvrFCPolicy;
+    RcvrAckPolicyBase* rcvrAckPolicy;
+    ReceivingFCPolicyBase* receivingFCPolicy;
+    SendingAckPolicyBase* sendingAckPolicy;
+    LostControlPDUPolicyBase* lostControlPDUPolicy;
+    RcvrControlAckPolicyBase* rcvrControlAckPolicy;
+    SenderAckPolicyBase* senderAckPolicy;
+    FCOverrunPolicyBase* fcOverrunPolicy;
+    NoOverridePeakPolicyBase* noOverridePeakPolicy;
+    TxControlPolicyBase* txControlPolicy;
+    NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
+    ReconcileFCPolicyBase* reconcileFCPolicy;
+    RateReductionPolicyBase* rateReductionPolicy;
     DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
+    RxTimerExpiryPolicyBase* rxTimerExpiryPolicy;
 
 
     /*Timers*/
@@ -180,6 +182,22 @@ public:
     void redrawGUI();
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
+    void scheduleRxTimerExpiry();
+    void setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy);
+    void setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy);
+    void setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy);
+    void setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy);
+    void setRateReductionPolicy(RateReductionPolicyBase* rateReductionPolicy);
+    void setRcvrAckPolicy(RcvrAckPolicyBase* rcvrAckPolicy);
+    void setRcvrControlAckPolicy(RcvrControlAckPolicyBase* rcvrControlAckPolicy);
+    void setRcvrFcPolicy(RcvrFCPolicyBase* rcvrFcPolicy);
+    void setReceivingFcPolicy(ReceivingFCPolicyBase* receivingFcPolicy);
+    void setReconcileFcPolicy(ReconcileFCPolicyBase* reconcileFcPolicy);
+    void setRxTimerExpiryPolicy(RxTimerExpiryPolicyBase* rxTimerExpiryPolicy);
+    void setSenderAckPolicy(SenderAckPolicyBase* senderAckPolicy);
+    void setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy);
+    void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
+    void setDtcpState(DTCPState* dtcpState);
 
 protected:
     virtual void handleMessage(cMessage *msg);

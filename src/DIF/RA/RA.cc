@@ -32,6 +32,7 @@ const char* PAR_QOSREQ               = "qosReqData";
 const char* ELEM_QOSREQ              = "QoSReq";
 const char* ATTR_ID                  = "id";
 
+
 void RA::initialize(int stage)
 {
     if (stage == 1)
@@ -231,12 +232,15 @@ void RA::initQoSCubes()
         QoSCube cube = QoSCube(attrs);
         cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
 
+
+
         //Integrity check!!!
-        if (cube.isDefined())
+        if (cube.isDefined()){
             QoSCubes.push_back(cube);
-        else {
+        }else {
             EV << "QoSCube with ID " << cube.getQosId() << " contains DO-NOT-CARE parameter. It is not fully defined, thus it is not loaded into RA's QoS-cube set!" << endl;
         }
+
     }
 
     if (!QoSCubes.size()) {

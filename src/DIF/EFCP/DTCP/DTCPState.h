@@ -98,10 +98,11 @@ class DTCPState : public cSimpleModule
 
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
-    ///////
+
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
-    ///////
+
     void clearPDUQ(PDUQ_t* pduQ);
+
 
   public:
     DTCPState();
@@ -183,6 +184,7 @@ class DTCPState : public cSimpleModule
     bool isClosedWinQClosed() const;
     void incRxSent();
     unsigned int getRxSent() const;
+
 
   protected:
     virtual void handleMessage(cMessage *msg);

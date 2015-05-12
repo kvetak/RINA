@@ -30,14 +30,47 @@
 class EFCPPolicySet
 {
   private:
+    const char* initialSeqNum;
+    const char* rcvrInactiv;
+    const char* rttEstimat;
+    const char* senderInactiv;
     const char* fcOverrun;
+    const char* lostControlPDU;
+    const char* noOverridePeak;
+    const char* noRateSlowDown;
+    const char* rateReduction;
+    const char* rcvrAck;
+    const char* rcvrControlAck;
+    const char* rcvrFC;
+    const char* receivingFC;
+    const char* reconcileFC;
+    const char* senderAck;
+    const char* sendingAck;
+    const char* txControl;
+    const char* rxTimerExpiry;
 
   public:
     EFCPPolicySet();
     virtual ~EFCPPolicySet();
-    const char* getFcOverrun() const;
-    void setFcOverrun(const char* fcOverrun);
     bool init(cXMLElement* parent);
+    const char* getFcOverrun() const;
+    const char* getLostControlPdu() const;
+    const char* getNoOverridePeak() const;
+    const char* getNoRateSlowDown() const;
+    const char* getRateReduction() const;
+    const char* getRcvrAck() const;
+    const char* getRcvrControlAck() const;
+    const char* getRcvrFc() const;
+    const char* getReceivingFc() const;
+    const char* getReconcileFc() const;
+    const char* getSenderAck() const;
+    const char* getSendingAck() const;
+    const char* getTxControl() const;
+    const char* getInitialSeqNum() const;
+    const char* getRcvrInactiv() const;
+    const char* getRttEstimat() const;
+    const char* getSenderInactiv() const;
+    const char* getRxTimerExpiry() const;
 };
 
 #endif /* EFCPPOLICYSET_H_ */

@@ -38,6 +38,7 @@ extern const char* MOD_CDAPCACE;
 extern const char* MOD_CDAPAUTH;
 extern const char* MOD_CDAPCDAP;
 extern const char* MOD_EFCPTABLE;
+extern const char* MOD_DTP;
 extern const char* MOD_DTCP;
 extern const char* MOD_DTP_STATE;
 extern const char* MOD_DTCP_STATE;

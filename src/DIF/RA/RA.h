@@ -47,6 +47,29 @@ extern const char* ELEM_QOSCUBE;
 extern const char* PAR_QOSREQ;
 extern const char* ELEM_QOSREQ;
 extern const char* ATTR_ID;
+extern const char* ELEM_AVGBW;
+extern const char* ELEM_AVGSDUBW;
+extern const char* ELEM_PEAKBWDUR;
+extern const char* ELEM_PEAKSDUBWDUR;
+extern const char* ELEM_BURSTPERIOD;
+extern const char* ELEM_BURSTDURATION;
+extern const char* ELEM_UNDETECTBITERR;
+extern const char* ELEM_PDUDROPPROBAB;
+extern const char* ELEM_MAXSDUSIZE;
+extern const char* ELEM_PARTIALDELIVER;
+extern const char* ELEM_INCOMPLETEDELIVER;
+extern const char* ELEM_FORCEORDER;
+extern const char* ELEM_MAXALLOWGAP;
+extern const char* ELEM_DELAY;
+extern const char* ELEM_JITTER;
+extern const char* ELEM_COSTTIME;
+extern const char* ELEM_COSTBITS;
+extern const char* ELEM_ATIME;
+extern const char* ELEM_RXON;
+extern const char* ELEM_WINON;
+extern const char* ELEM_RATEON;
+extern const char* ELEM_EFCPPOL;
+
 
 class RA : public RABase
 {

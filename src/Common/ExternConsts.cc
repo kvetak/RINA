@@ -35,6 +35,7 @@ const char* MOD_CDAPCACE        = "cace";
 const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCDAP        = "cdap";
 const char* MOD_EFCPTABLE       = "efcpTable";
+const char* MOD_DTP             = "dtp";
 const char* MOD_DTCP            = "dtcp";
 const char* MOD_DTP_STATE       = "dtpState";
 const char* MOD_DTCP_STATE      = "dtcpState";

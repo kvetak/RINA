@@ -46,7 +46,7 @@ class EFCPTable : public cSimpleModule
   public:
     EFCPTable();
     virtual ~EFCPTable();
-    EFCPTableEntry* getEntryByFlow(Flow* flow);
+    EFCPTableEntry* getEntryByFlow(const Flow* flow);
     EFCPTableEntry* getEntryByEFCPI(EFCPInstance* efcpi);
     EFCPTableEntry* getEntryByDelimit(Delimiting* delimit);
     DTP* getDTPBySrcCEP(int srcCEP);

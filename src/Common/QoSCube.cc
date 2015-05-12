@@ -38,7 +38,8 @@ QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
         burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), pduDropProbability(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
-        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS)
+        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS), aTime(VAL_DEFQOS),
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(NULL)
 {
 }
 
@@ -47,7 +48,8 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_DEFQOS),
         burstPeriod(VAL_QOSPARDONOTCARE), burstDuration(VAL_QOSPARDONOTCARE), undetectedBitErr(VAL_QOSPARDONOTCARE), pduDropProbability(VAL_QOSPARDONOTCARE), maxSDUsize(VAL_QOSPARDONOTCARE),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_QOSPARDONOTCARE), delay(VAL_QOSPARDONOTCARE), jitter(VAL_QOSPARDONOTCARE),
-        costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE)
+        costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFQOS),
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(NULL)
 {
     for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
         cXMLElement* n = *jt;
@@ -165,6 +167,7 @@ QoSCube::~QoSCube() {
 std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
     return os << cube.info();
 }
+
 
 int QoSCube::getAvgBand() const {
     return avgBand;
@@ -311,7 +314,7 @@ void QoSCube::setQosId(unsigned short qoSId) {
 }
 
 bool QoSCube::isDTCPNeeded()const {
-  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
+  return isRxOn() || isWindowFcOn() || isRateFcOn();
 }
 
 double QoSCube::getPduDropProbability() const {
@@ -435,6 +438,21 @@ const EFCPPolicySet* QoSCube::getEfcpPolicies() const
   return efcpPolicies;
 }
 
+bool QoSCube::isRateFcOn() const
+{
+return rateFCOn;
+}
+
+bool QoSCube::isRxOn() const
+{
+return rxOn;
+}
+
+bool QoSCube::isWindowFcOn() const
+{
+return windowFCOn;
+}
+
 bool QoSCube::isDefined() {
     return avgBand != VAL_QOSPARDONOTCARE && avgSDUBand != VAL_QOSPARDONOTCARE
             && peakBandDuration != VAL_QOSPARDONOTCARE && peakSDUBandDuration != VAL_QOSPARDONOTCARE
@@ -443,7 +461,8 @@ bool QoSCube::isDefined() {
             && maxSDUsize != VAL_QOSPARDONOTCARE && maxAllowGap != VAL_QOSPARDONOTCARE
             && delay != VAL_QOSPARDONOTCARE && jitter != VAL_QOSPARDONOTCARE
             && costTime != VAL_QOSPARDONOTCARE && costBits != VAL_QOSPARDONOTCARE
-            && aTime != VAL_QOSPARDONOTCARE
+            && aTime != VAL_QOSPARDONOTCARE && rxOn != VAL_QOSPARDONOTCARE
+            && windowFCOn != VAL_QOSPARDONOTCARE && rateFCOn!= VAL_QOSPARDONOTCARE
             ;
 }
 
@@ -452,3 +471,18 @@ void QoSCube::setEfcpPolicies(EFCPPolicySet* efcpPolicies)
   this->efcpPolicies = efcpPolicies;
 }
 
+
+void QoSCube::setRateFcOn(bool rateFcOn)
+{
+  rateFCOn = rateFcOn;
+}
+
+void QoSCube::setRxOn(bool rxOn)
+{
+  this->rxOn = rxOn;
+}
+
+void QoSCube::setWindowFcOn(bool windowFcOn)
+{
+  windowFCOn = windowFcOn;
+}
