@@ -31,8 +31,9 @@ RINA Simulator
 		/Common					... shared basic classes
 		/CS						... computing system simulation nodes
 		/DAF					... DAF components
-		/DIF 					... DIF components
-		/policies				... all programable RINA policies
+		/DIF 					... DIF component
+	
+	/policies				... all programable RINA policies
 
 ###Policies
 	/DAF                           ... DAF policies

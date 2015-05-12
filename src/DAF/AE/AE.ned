@@ -22,6 +22,7 @@ simple AE like IAE
         @class(AE);
         
         @signal[AEorRIBd-AllocateResponsePositive];
+        @signal[AEorRIBd-AllocateResponseNegative];
         @signal[AE-DataSend];
         
         string aeName = default("AeErr");
