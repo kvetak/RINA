@@ -59,13 +59,15 @@ const char* ELEM_SENDINGACK            = "SendingAck";
 const char* DEFAULT_SENDINGACK         = "SendingAckPolicyDefault";
 const char* ELEM_TXCONTROL             = "TxControl";
 const char* DEFAULT_TXCONTROL          = "TxControlPolicyDefault";
+const char* ELEM_RXTIMEREXPIRY         = "RxTimerExpiry";
+const char* DEFAULT_RXTIMEREXPIRY      = "RxTimerExpiryPolicyDefault";
 
 EFCPPolicySet::EFCPPolicySet() : initialSeqNum(DEFAULT_INITSEQNUM), rcvrInactiv(DEFAULT_RCVRINACTIV),
     rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), fcOverrun(DEFAULT_FCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
     noOverridePeak(DEFAULT_NOOVERRIDEPEAK), noRateSlowDown(DEFAULT_NORATESLOWDOWN),
     rateReduction(DEFAULT_RATEREDUCTION), rcvrAck(DEFAULT_RCVRACK), rcvrControlAck(DEFAULT_RCVRCONTROLACK),
     rcvrFC(DEFAULT_RCVRFC), receivingFC(DEFAULT_RECEIVINGFC), reconcileFC(DEFAULT_RECONCILEFC),
-    senderAck(DEFAULT_SENDERACK), sendingAck(DEFAULT_SENDINGACK), txControl(DEFAULT_TXCONTROL){
+    senderAck(DEFAULT_SENDERACK), sendingAck(DEFAULT_SENDINGACK), txControl(DEFAULT_TXCONTROL), rxTimerExpiry(DEFAULT_RXTIMEREXPIRY){
 
 
 }
@@ -161,6 +163,11 @@ const char* EFCPPolicySet::getTxControl() const
   return txControl;
 }
 
+const char* EFCPPolicySet::getRxTimerExpiry() const
+{
+  return rxTimerExpiry;
+}
+
 bool EFCPPolicySet::init(cXMLElement* parent)
 {
 
@@ -237,6 +244,12 @@ bool EFCPPolicySet::init(cXMLElement* parent)
     {
       txControl = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_TXCONTROL;
     }
+    else if (!strcmp(policyTag->getTagName(), ELEM_RXTIMEREXPIRY))
+    {
+      rxTimerExpiry = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_RXTIMEREXPIRY;
+    }
   }
   return true;
 }
+
+

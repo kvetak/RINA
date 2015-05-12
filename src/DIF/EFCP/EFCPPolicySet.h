@@ -47,6 +47,7 @@ class EFCPPolicySet
     const char* senderAck;
     const char* sendingAck;
     const char* txControl;
+    const char* rxTimerExpiry;
 
   public:
     EFCPPolicySet();
@@ -69,6 +70,7 @@ class EFCPPolicySet
     const char* getRcvrInactiv() const;
     const char* getRttEstimat() const;
     const char* getSenderInactiv() const;
+    const char* getRxTimerExpiry() const;
 };
 
 #endif /* EFCPPOLICYSET_H_ */

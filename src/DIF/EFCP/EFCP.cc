@@ -83,6 +83,9 @@ Define_Module(EFCP);
 #define ECN_SLOW_DOWN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECNSlowDown."
 #define ECN_SLOW_DOWN_POLICY_NAME "ecnSlowDownPolicy"
 
+#define RX_TIMER_EXPIRY_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RxTimerExpiry."
+#define RX_TIMER_EXPIRY_POLICY_NAME "rxTimerExpiryPolicy"
+
 EFCP::EFCP() {
 
 }
@@ -262,6 +265,7 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
     dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule));
     dtcpModule->setReconcileFcPolicy( (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, efcpPolicySet->getReconcileFc(), RECONCILE_FC_POLICY_NAME, efcpiModule));
     dtcpModule->setRateReductionPolicy( (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, efcpPolicySet->getRateReduction(), RATE_REDUCTION_POLICY_NAME, efcpiModule));
+    dtcpModule->setRxTimerExpiryPolicy( (RxTimerExpiryPolicyBase*) createPolicyModule(RX_TIMER_EXPIRY_POLICY_PREFIX, efcpPolicySet->getRxTimerExpiry(), RX_TIMER_EXPIRY_POLICY_NAME, efcpiModule));
 //    dtcpModule->setEcnSlowDownPolicy( (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
 
