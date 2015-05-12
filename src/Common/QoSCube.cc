@@ -330,61 +330,32 @@ std::string QoSCube::info() const {
 
     if (this->getQosId())
         os << "QoSCube Id> " << this->getQosId();
-    else
-        os << "QoS Parameters List>";
 
     os << "\n   average BW = ";
-    if ( this->getAvgBand() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getAvgBand() << " bit/s";
 
     os   << "\n   average SDU BW = ";
-    if (this->getAvgSduBand() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getAvgSduBand() << " SDU/s";
 
     os << "\n   peak BW duration = ";
-    if (this->getPeakBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getPeakBandDuration() << " bit/s";
 
     os << "\n   peak SDU BW duration = ";
-    if ( this->getPeakSduBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getPeakSduBandDuration() << " SDU/s";
 
     os << "\n   burst period = ";
-    if ( this->getBurstPeriod() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getBurstPeriod() << " usecs";
 
     os << "\n   burst duration = ";
-    if ( this->getBurstDuration() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getBurstDuration() << " usecs";
 
     os << "\n   undetect. bit errors = ";
-    if ( this->getUndetectedBitErr() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getUndetectedBitErr() << "%";
 
     os << "\n   PDU dropping probability = ";
-    if ( this->getPduDropProbability() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getPduDropProbability() << "%";
 
     os << "\n   max SDU Size = ";
-    if ( this->getMaxSduSize() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getMaxSduSize() << " B";
 
     os << "\n   partial delivery = " << (this->isPartialDelivery() ? STR_YES : STR_NO );
@@ -394,41 +365,22 @@ std::string QoSCube::info() const {
     os << "\n   force order = " << (this->isForceOrder() ? STR_YES : STR_NO );
 
     os << "\n   max allowed gap = ";
-    if ( this->getMaxAllowGap() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getMaxAllowGap() << " SDUs";
 
     os << "\n   delay = ";
-    if ( this->getDelay() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getDelay() << " usecs";
 
     os << "\n   jitter = ";
-    if ( this->getJitter() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getJitter() << " usecs";
 
     os << "\n   cost-time = ";
-    if ( this->getCostTime() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getCostTime() << " $/ms";
 
     os << "\n   cost-bits = ";
-    if ( this->getCostBits() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getCostBits() << " $/Mb";
 
     os << "\n   A-Time = ";
-    if ( this->getATime() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getATime() << "ms";
-
 
     return os.str();
 }

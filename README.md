@@ -38,10 +38,11 @@ RINA Simulator
 	/DAF                           ... DAF policies
 	/DIF                           ... DIF policies
 	    /FA                        ... policies related to FA modules
-	        /AllocateRetry
-	            /LimitedRetries
-	        /NewFlowRequest
-	            /NewFlowRequest
+	        /AllocateRetry             ... what happen when M_CREATE is resend by Flow Allocator
+	            /LimitedRetries        ... when retransmit treshold is met, allocation is discontinued
+	        /NewFlowRequest            ... when new flow is being allocated, how are its requirements mapped to RA QoSCubes
+	            /ScoreComparer         ... QoSCube with best score wins
+	            /MinComparer           ... QoSCube with minimal feasibility wins
 	    /RA                            ... policies related to RA modules
 	        /AddressComparator         ... policy used for determining whether a PDU address matches the IPCP's address  
 	            /ExactMatch            ... exact matching
