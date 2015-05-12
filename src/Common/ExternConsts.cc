@@ -90,6 +90,24 @@ const char* GATE_EFCPI_SOUTHIO  = "southIo";
 //XML attributes and elements
 const char* ELEM_APN            = "APN";
 const char* ATTR_APN            = "apn";
+const char* ELEM_AVGBW               = "AverageBandwidth";
+const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
+const char* ELEM_PEAKBWDUR           = "PeakBandwidthDuration";
+const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
+const char* ELEM_BURSTPERIOD         = "BurstPeriod";
+const char* ELEM_BURSTDURATION       = "BurstDuration";
+const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
+const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
+const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
+const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
+const char* ELEM_FORCEORDER          = "ForceOrder";
+const char* ELEM_MAXALLOWGAP         = "MaxAllowableGap";
+const char* ELEM_DELAY               = "Delay";
+const char* ELEM_JITTER              = "Jitter";
+const char* ELEM_COSTTIME            = "CostTime";
+const char* ELEM_COSTBITS            = "CostBits";
+
 
 //Values
 //TODO: Vesely @Marek - What about -1 as default DoNotCare value

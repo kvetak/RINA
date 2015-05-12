@@ -38,6 +38,9 @@ extern const char* STR_YES;
 extern const char* STR_NO;
 extern const int   VAL_DEFQOS;
 
+extern const char* ELEM_ATIME;
+extern const char* ELEM_EFCPPOL;
+
 /**
  * @brief Class representing QoSCube with all its properties that is primarily used by FA, RMT and RA
  * Specification sources are http://nes.fit.vutbr.cz/ivesely/pmwiki.php/RINA/EFCP#t2._QoS-Cube_Specfic_Parameters and http://nes.fit.vutbr.cz/ivesely/pmwiki.php/RINA/ServiceDefinition
@@ -151,7 +154,7 @@ class QoSCube {
     /**
      * @brief Vector of bound default policies
      */
-    const EFCPPolicySet* efcpPolicies;
+    EFCPPolicySet* efcpPolicies;
 
   public:
     /**
@@ -159,10 +162,14 @@ class QoSCube {
      */
     QoSCube();
 
+    QoSCube(cXMLElementList& attrs);
+
     /**
      * @brief Destructor assigning default uninitialized values
      */
     virtual ~QoSCube();
+
+    bool isDefined();
 
     /**
      * @brief Gets QoSCube identifier
@@ -391,6 +398,7 @@ class QoSCube {
      * @param aTime A new value measured in ms
      */
     void setATime(double aTime);
+
     /**
      * @brief Returns true if DTCP module is needed in order to support this QoScube
      * @return
@@ -398,29 +406,14 @@ class QoSCube {
     bool isDTCPNeeded() const;
 
     /**
-     * @brief Simple QoSCube comparator measuring feasibility score of this and other QoSCubes
-     * If QoS parameter could be satisfied then increment +1 to score. If not then decrement -1.
-     * If parameter has do-not-care value then add nothing to the score.
-     * Function should be reimplemented to more sophisticated one in case of inheritance.
-     * @param templ
-     */
-    virtual short countFeasibilityScore(const QoSCube other) const;
-
-    /**
-     * @brief Simple QoSCube comparator measuring if this is a feasibility QoSCube to other QoSCubes
-     * If any QoS parameter could not be satisfied then return false. If not return true.
-     * Function should be reimplemented to more sophisticated one in case of inheritance.
-     * @param templ
-     */
-    virtual bool isFeasibility(const QoSCube other) const;
-
-    /**
      * @brief Prints QoSCube information as string
      * @return String of QoSCube textual representation
      */
     std::string info() const;
+
     const EFCPPolicySet* getEfcpPolicies() const;
-    void setEfcpPolicies(const EFCPPolicySet* efcpPolicies);
+
+    void setEfcpPolicies(EFCPPolicySet* efcpPolicies);
 };
 
 //Free function

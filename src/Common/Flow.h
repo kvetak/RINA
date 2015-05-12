@@ -144,13 +144,13 @@ class Flow : public cObject
      * @brief Gets QoS parameters wanted by flow initiator
      * @return Read-only QoSReq instance
      */
-    const QoSReq& getQosParameters() const;
+    const QoSReq& getQosRequirements() const;
 
     /**
      * @brief Sets QoS parameters wanted by flow initiator
      * @param qosParameters A new QoSReq instance that is accompanied with Flow
      */
-    void setQosParameters(const QoSReq& qosParameters);
+    void setQosRequirements(const QoSReq& qosReqs);
 
     /**
      * @brief Gets read-only source APNamingInfo
@@ -292,8 +292,6 @@ class Flow : public cObject
      */
     void setDstNeighbor(const Address& dstNeighbor);
 
-    //const long getPortCepId() const;
-
     /**
      * @brief Gets allocation InvokeId
      * Used inside M_CREATE(_R)(flow) messages
@@ -398,7 +396,7 @@ class Flow : public cObject
     /**
      * @brief Attribute holding wanted QoS parameters in form of QoSReq
      */
-    QoSReq qosParameters;
+    QoSReq qosReqs;
 
     /**
      * @brief Attribute holding persistant InvokeId used for allocation

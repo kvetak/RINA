@@ -15,10 +15,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.src.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
-import rina.src.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
-import rina.src.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
-import rina.src.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+import rina.policies.DIF.RMT.Scheduler.IntRMTSchedulingPolicy;
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
 package rina.src.DIF.RMT;
 

@@ -51,8 +51,6 @@ EFCPPolicySet::~EFCPPolicySet()
 
 bool EFCPPolicySet::init(cXMLElement* parent)
 {
-
-
     cXMLElementList attrs = parent->getChildren();
   for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt)
   {
@@ -62,4 +60,5 @@ bool EFCPPolicySet::init(cXMLElement* parent)
       fcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_FCOVERRUN;
     }
   }
+  return false;
 }

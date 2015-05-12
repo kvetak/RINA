@@ -155,8 +155,8 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
-const QoSReq& Flow::getQosParameters() const {
-    return qosParameters;
+const QoSReq& Flow::getQosRequirements() const {
+    return qosReqs;
 }
 
 Flow* Flow::dup() const {
@@ -171,7 +171,7 @@ Flow* Flow::dup() const {
     flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
-    flow->setQosParameters(this->getQosParameters());
+    flow->setQosRequirements(this->getQosRequirements());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());
     flow->setAllocInvokeId(this->getAllocInvokeId());
@@ -249,14 +249,6 @@ bool Flow::compare(const Flow& other) const {
             );
 }
 
-/*
-const long Flow::getPortCepId() const {
-    int ports = getSrcPortId() xor getDstPortId();
-    int ceps = conId.getSrcCepId() xor conId.getDstCepId();
-    return (long) ((ports << sizeof(int)) xor ceps);
-}
-*/
-
 long Flow::getAllocInvokeId() const{
     return allocInvokeId;
 }
@@ -299,8 +291,8 @@ Flow& Flow::swapFlow() {
     return *this;
 }
 
-void Flow::setQosParameters(const QoSReq& qosParameters) {
-    this->qosParameters = qosParameters;
+void Flow::setQosRequirements(const QoSReq& qosParameters) {
+    this->qosReqs = qosParameters;
 }
 
 std::string Flow::info() const {

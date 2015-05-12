@@ -24,7 +24,7 @@ import rina.src.DIF.FA.FlowAllocator;
 import rina.src.DIF.RA.ResourceAllocator;
 import rina.src.DIF.RIB.RIBDaemon;
 import rina.src.DIF.RMT.RelayAndMux;
-import rina.src.policies.DIF.Routing.IntRouting;
+import rina.policies.DIF.Routing.IntRouting;
 
 module IPCProcess
 {

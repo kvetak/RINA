@@ -40,8 +40,7 @@ moduleinterface IAE
         int delay @unit(us); //Delay in usecs
         int jitter @unit(us); //Jitter in usecs
         int costTime; //measured in $/ms
-        int costBits; //measured in $/Mb
-        double aTime; //measured in ms
+        int costBits; //measured in $/Mb        
         
         //Authentication
         int authType;

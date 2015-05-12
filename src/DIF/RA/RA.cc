@@ -31,25 +31,6 @@ const char* ELEM_QOSCUBE             = "QoSCube";
 const char* PAR_QOSREQ               = "qosReqData";
 const char* ELEM_QOSREQ              = "QoSReq";
 const char* ATTR_ID                  = "id";
-const char* ELEM_AVGBW               = "AverageBandwidth";
-const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
-const char* ELEM_PEAKBWDUR           = "PeakBandwidthDuration";
-const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
-const char* ELEM_BURSTPERIOD         = "BurstPeriod";
-const char* ELEM_BURSTDURATION       = "BurstDuration";
-const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
-const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
-const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
-const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
-const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
-const char* ELEM_FORCEORDER          = "ForceOrder";
-const char* ELEM_MAXALLOWGAP         = "MaxAllowableGap";
-const char* ELEM_DELAY               = "Delay";
-const char* ELEM_JITTER              = "Jitter";
-const char* ELEM_COSTTIME            = "CostTime";
-const char* ELEM_COSTBITS            = "CostBits";
-const char* ELEM_ATIME               = "ATime";
-const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 void RA::initialize(int stage)
 {
@@ -177,18 +158,12 @@ void RA::initFlowAlloc()
 
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
-//            const QoSCube* qosCube = getQoSCubeById(qosReqId);
-            QoSReq* qosReq = new QoSReq();
-            initQoSReqById(qosReq, qosReqId);
-//            if (qosCube == NULL)
-//            {
-//                EV << "!!! Invalid QoS-id provided for flow with dst " << dst
-//                   << "! Allocation won't be initiated." << endl;
-//                return;
-//            }
+
+            QoSReq* qosReq = initQoSReqById(qosReqId);
+            if (qosReq == NULL) continue;
 
             Flow *flow = new Flow(srcAPN, dstAPN);
-            flow->setQosParameters(*qosReq);
+            flow->setQosRequirements(*qosReq);
 
             if (preparedFlows[time] == NULL)
             {
@@ -251,148 +226,19 @@ void RA::initQoSCubes()
             EV << "Error parsing QoSCube. Its ID is missing!" << endl;
             continue;
         }
-        else if (! (unsigned short)atoi(m->getAttribute(ATTR_ID)) ) {
-            EV << "QosID = 0 is reserved and cannot be used!" << endl;
-            continue;
-        }
-
-        QoSCube cube;
-        cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
-        //Following data types should be same as in QoSCubes.h
-        int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
-        int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
-        int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
-        int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-        int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
-        int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-        double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
-        double pduDropProbab        = VAL_QOSPARDONOTCARE;
-        int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
-        bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-        bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
-        bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
-        unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-        int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
-        int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
-        int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
-        int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
-        double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
-
-        EFCPPolicySet* efcpPolicies = new EFCPPolicySet();
 
         cXMLElementList attrs = m->getChildren();
-        for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
-            cXMLElement* n = *jt;
-            if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
-                avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (avgBand < 0)
-                    avgBand = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_AVGSDUBW)) {
-                avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (avgSDUBand < 0)
-                    avgSDUBand = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PEAKBWDUR)) {
-                peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (peakBandDuration < 0)
-                    peakBandDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PEAKSDUBWDUR)) {
-                peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (peakSDUBandDuration < 0)
-                    peakSDUBandDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_BURSTPERIOD)) {
-                burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (burstPeriod < 0)
-                    burstPeriod = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_BURSTDURATION)) {
-                burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (burstDuration < 0)
-                    burstDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
-                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (undetectedBitErr < 0 || undetectedBitErr > 1 )
-                    undetectedBitErr = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
-                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (pduDropProbab < 0 || pduDropProbab > 1 )
-                    pduDropProbab = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
-                maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (maxSDUsize < 0)
-                    maxSDUsize = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PARTIALDELIVER)) {
-                partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_INCOMPLETEDELIVER)) {
-                incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_FORCEORDER)) {
-                forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_MAXALLOWGAP)) {
-                maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (maxAllowGap < 0)
-                    maxAllowGap = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_DELAY)) {
-                delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (delay < 0)
-                    delay = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_JITTER)) {
-                jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (jitter < 0)
-                    jitter = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_COSTTIME)) {
-                costtime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-                if (costtime < 0)
-                    costtime = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_COSTBITS)) {
-                costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-                if (costbits < 0)
-                    costbits = VAL_QOSPARDONOTCARE;
-            }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
-              aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-              if (aTime < 0)
-                  aTime = VAL_QOSPARDONOTCARE;
-           }else if(!strcmp(n->getTagName(), ELEM_EFCPPOL)) {
-             efcpPolicies->init(n);
-           }
+        QoSCube cube = QoSCube(attrs);
+        cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
 
+        //Integrity check!!!
+        if (cube.isDefined())
+            QoSCubes.push_back(cube);
+        else {
+            EV << "QoSCube with ID " << cube.getQosId() << " contains DO-NOT-CARE parameter. It is not fully defined, thus it is not loaded into RA's QoS-cube set!" << endl;
         }
-
-        cube.setAvgBand(avgBand);
-        cube.setAvgSduBand(avgSDUBand);
-        cube.setPeakBandDuration(peakBandDuration);
-        cube.setPeakSduBandDuration(peakSDUBandDuration);
-        cube.setBurstPeriod(burstPeriod);
-        cube.setBurstDuration(burstDuration);
-        cube.setUndetectedBitErr(undetectedBitErr);
-        cube.setPduDropProbability(pduDropProbab);
-        cube.setMaxSduSize(maxSDUsize);
-        cube.setPartialDelivery(partDeliv);
-        cube.setIncompleteDelivery(incompleteDeliv);
-        cube.setForceOrder(forceOrder);
-        cube.setMaxAllowGap(maxAllowGap);
-        cube.setDelay(delay);
-        cube.setJitter(jitter);
-        cube.setCostBits(costbits);
-        cube.setCostTime(costtime);
-        cube.setATime(aTime);
-        cube.setEfcpPolicies(efcpPolicies);
-
-        QoSCubes.push_back(cube);
     }
+
     if (!QoSCubes.size()) {
         std::ostringstream os;
         os << this->getFullPath() << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!" << endl;
@@ -404,16 +250,14 @@ void RA::initQoSCubes()
  * Initializes QoS requirement identified by give id
  * @param id ID of the QoSReq to be initialized
  */
-void RA::initQoSReqById(QoSReq* cube, unsigned short id)
+QoSReq* RA::initQoSReqById(unsigned short id)
 {
-
-
     cXMLElement* qosXml = NULL;
     if (par(PAR_QOSREQ).xmlValue() != NULL && par(PAR_QOSREQ).xmlValue()->hasChildren()){
         qosXml = par(PAR_QOSREQ).xmlValue();
     }else{
 //        error((std::string(PAR_QOSREQ) + std::string(" parameter not initialized!")).c_str());
-      return;
+      return NULL;
     }
 
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSREQ);
@@ -423,149 +267,16 @@ void RA::initQoSReqById(QoSReq* cube, unsigned short id)
             EV << "Error parsing QoSReq. Its ID is missing!" << endl;
             continue;
         }
+        //Skipping QoSReqs with wrong ID
         else if ((unsigned short)atoi(m->getAttribute(ATTR_ID)) != id) {
-//            EV << "QosID = 0 is reserved and cannot be used!" << endl;
             continue;
         }
 
-
-        cube->setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
-        //Following data types should be same as in QoSCubes.h
-        int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
-        int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
-        int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
-        int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-        int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
-        int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
-        double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
-        double pduDropProbab        = VAL_QOSPARDONOTCARE;
-        int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
-        bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-        bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
-        bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
-        unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-        int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
-        int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
-        int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
-        int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
-        double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
-
-
-
         cXMLElementList attrs = m->getChildren();
-        for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
-            cXMLElement* n = *jt;
-            if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
-                avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (avgBand < 0)
-                    avgBand = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_AVGSDUBW)) {
-                avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (avgSDUBand < 0)
-                    avgSDUBand = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PEAKBWDUR)) {
-                peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (peakBandDuration < 0)
-                    peakBandDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PEAKSDUBWDUR)) {
-                peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (peakSDUBandDuration < 0)
-                    peakSDUBandDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_BURSTPERIOD)) {
-                burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (burstPeriod < 0)
-                    burstPeriod = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_BURSTDURATION)) {
-                burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (burstDuration < 0)
-                    burstDuration = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
-                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (undetectedBitErr < 0 || undetectedBitErr > 1 )
-                    undetectedBitErr = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
-                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (pduDropProbab < 0 || pduDropProbab > 1 )
-                    pduDropProbab = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
-                maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (maxSDUsize < 0)
-                    maxSDUsize = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_PARTIALDELIVER)) {
-                partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_INCOMPLETEDELIVER)) {
-                incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_FORCEORDER)) {
-                forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_MAXALLOWGAP)) {
-                maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (maxAllowGap < 0)
-                    maxAllowGap = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_DELAY)) {
-                delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (delay < 0)
-                    delay = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_JITTER)) {
-                jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
-                if (jitter < 0)
-                    jitter = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_COSTTIME)) {
-                costtime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-                if (costtime < 0)
-                    costtime = VAL_QOSPARDONOTCARE;
-            }
-            else if (!strcmp(n->getTagName(), ELEM_COSTBITS)) {
-                costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-                if (costbits < 0)
-                    costbits = VAL_QOSPARDONOTCARE;
-            }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
-              aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-              if (aTime < 0)
-                  aTime = VAL_QOSPARDONOTCARE;
-           }
 
-        }
-
-        cube->setAvgBand(avgBand);
-        cube->setAvgSduBand(avgSDUBand);
-        cube->setPeakBandDuration(peakBandDuration);
-        cube->setPeakSduBandDuration(peakSDUBandDuration);
-        cube->setBurstPeriod(burstPeriod);
-        cube->setBurstDuration(burstDuration);
-        cube->setUndetectedBitErr(undetectedBitErr);
-        cube->setPduDropProbability(pduDropProbab);
-        cube->setMaxSduSize(maxSDUsize);
-        cube->setPartialDelivery(partDeliv);
-        cube->setIncompleteDelivery(incompleteDeliv);
-        cube->setForceOrder(forceOrder);
-        cube->setMaxAllowGap(maxAllowGap);
-        cube->setDelay(delay);
-        cube->setJitter(jitter);
-        cube->setCostBits(costbits);
-        cube->setCostTime(costtime);
-        cube->setATime(aTime);
-
-
-//        QoSCubes.push_back(cube);
+        return new QoSReq(attrs);
     }
-
-
-
+    return NULL;
 }
 
 
@@ -966,7 +677,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
         Flow *nm1Flow = new Flow(src, dst);
         // FIXME: useless, appropriate QoS class has to be chosen by some algorithm
-        nm1Flow->setQosParameters(flow->getQosParameters());
+        nm1Flow->setQosRequirements(flow->getQosRequirements());
         // initiate flow creation
         createNM1Flow(nm1Flow);
         // repeat the lookup
