@@ -132,7 +132,7 @@ void DTP::initialize(int step)
 //    rttEstimatorPolicy = (RTTEstimatorPolicyBase*) createPolicyModule(RTT_ESTIMATOR_POLICY_PREFIX,
 //        RTT_ESTIMATOR_POLICY_NAME);
 
-    runInitialSeqNumPolicy();
+//    runInitialSeqNumPolicy();
   }
 
 
@@ -1162,7 +1162,12 @@ bool DTP::runInitialSeqNumPolicy()
 //    initialSeqNumPolicy->defaultAction(state, dtcp->getDTCPState());
 //  }
 
-  initialSeqNumPolicy->call(state, dtcp->getDTCPState());
+  if(state->isDtcpPresent()){
+    initialSeqNumPolicy->call(state, dtcp->getDTCPState());
+  }else{
+    initialSeqNumPolicy->call(state, NULL);
+  }
+
   return false;
 }
 

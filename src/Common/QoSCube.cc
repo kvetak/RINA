@@ -39,7 +39,7 @@ QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
         costTime(VAL_DEFQOS), costBits(VAL_DEFQOS), aTime(VAL_DEFQOS),
-        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(NULL)
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
 {
 }
 
@@ -49,7 +49,7 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_DEFQOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_QOSPARDONOTCARE), delay(VAL_QOSPARDONOTCARE), jitter(VAL_QOSPARDONOTCARE),
         costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFQOS),
-        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(NULL)
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
 {
     for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
         cXMLElement* n = *jt;

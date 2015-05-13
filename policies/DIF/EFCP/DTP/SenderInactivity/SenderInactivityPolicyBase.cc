@@ -37,6 +37,5 @@ SenderInactivityPolicyBase::~SenderInactivityPolicyBase()
 
 void SenderInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  InitialSeqNumPolicyBase* initialSeqNum = (InitialSeqNumPolicyBase*)getModuleByPath((std::string(".") + std::string("initialSeqNumPolicy")).c_str());
-  initialSeqNum->call(dtpState, dtcpState);
+
 }
