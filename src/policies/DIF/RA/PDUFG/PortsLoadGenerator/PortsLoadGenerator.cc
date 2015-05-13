@@ -12,46 +12,54 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
+// NOTE: Procedures are sorted by name.
 
-#include <RatesGenerator.h>
+#include <PortsLoadGenerator.h>
 #include "APN.h"
 
-#define RATE_GENERATOR_TIMEOUT  "PDUFG_RateGenerator"
+#define PORTSLOAD_GENERATOR_TIMEOUT     "PDUFG_RateGenerator"
+#define PORTSLOAD_GENERATOR_UPDATE      1
 
-Define_Module(RatesGenerator);
+Define_Module(PortsLoadGenerator);
 
-void RatesGenerator::handleMessage(cMessage *msg)
+void PortsLoadGenerator::handleMessage(cMessage *msg)
 {
     // React to self message only.
     if(msg->isSelfMessage())
     {
-#ifdef RATESGENERATOR_ENHANCED_DEBUG
+        if(msg->getKind() == PORTSLOAD_GENERATOR_UPDATE)
+        {
+            rt->scheduleUpdate();
+
+            // Schedule the next routing update.
+            scheduleAt(
+                simTime() + upInt,
+                new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
+        }
+
+#ifdef PORTSLOADGENERATOR_ENHANCED_DEBUG
         std::ostringstream str;
 #endif
 
-        for(
-            NTableIt t = neighbours.begin();
-            t != neighbours.end();
-            ++t)
+        for(NTableIt t = neighbours.begin(); t != neighbours.end(); ++t)
         {
-            for(
-                NentriesIt e = t->second.begin();
-                e != t->second.end();
-                ++e)
+            for(NentriesIt e = t->second.begin(); e != t->second.end(); ++e)
             {
                 for(
-                    PortsSetIt p = e->second.begin();
-                    p != e->second.end();
-                    ++p)
+                        PortsSetIt p = e->second.begin();
+                        p != e->second.end();
+                        ++p)
                 {
                     // Acquire the rate of the port.
                     unsigned short rate = (unsigned short)(SCALE_BYTES(
                         rmtp->getByteRate(*p)));
                     const Address addr =
-                        Address((*p)->getFlow()->getDstApni().getApn().getName());
+                        Address((*p)->getFlow()->getDstApni().getApn().
+                                getName());
 
-#ifdef RATESGENERATOR_ENHANCED_DEBUG
-                    str << t->first << ", " << SCALE_BYTES(rmtp->getByteRate(*p)) <<"\n";
+#ifdef PORTSLOADGENERATOR_ENHANCED_DEBUG
+                    str << t->first << ", " <<
+                            SCALE_BYTES(rmtp->getByteRate(*p)) <<"\n";
 #endif
 
                     // Do not update if the rate does not change.
@@ -60,38 +68,51 @@ void RatesGenerator::handleMessage(cMessage *msg)
                         if(rateCache[t->first][e->first] != rate)
                         {
                             rateCache[t->first][e->first] = rate;
-                            rt->insertFlow(addr, t->first, e->first, rate);
 
-                            EV << "Rate to " << t->first << ", " << e->first << " updated to " << rate << "." << endl;
+                            // This do not cause an update to be dispatched.
+                            rt->insertFlow(addr, t->first, e->first, rate, false);
+
+                            EV << "Rate to " << t->first << ", " << e->first
+                                    << " updated to " << rate << "." << endl;
                         }
                         else
                         {
-                            EV << "Rate to " << t->first << ", " << e->first << " is the same(at " << rate << ")." << endl;
+                            EV << "Rate to " << t->first << ", " << e->first
+                                    << " is the same(at " << rate << ")." << endl;
                         }
                     }
                     else
                     {
                         rateCache[t->first][e->first] = rate;
-                        rt->insertFlow(addr, t->first, e->first, rate);
 
-                        EV << "Rate to " << t->first << ", " << e->first << " updated to " << rate << "." << endl;
+                        // This do not cause an update to be dispatched.
+                        rt->insertFlow(addr, t->first, e->first, rate, false);
+
+                        EV << "Rate to " << t->first << ", " << e->first
+                                << " updated to " << rate << "." << endl;
                     }
                 }
             }
         }
 
-#ifdef RATESGENERATOR_ENHANCED_DEBUG
+        // Update the fwd table using the local infos.
+        routingUpdated();
+
+#ifdef PORTSLOADGENERATOR_ENHANCED_DEBUG
         cModule * ipcm = check_and_cast<cModule *>(getModuleByPath("^.^.^"));
         cDisplayString & cs = ipcm->getDisplayString();
         cs.setTagArg("t", 1, "l");
         cs.setTagArg("t", 0, str.str().c_str());
 #endif
 
-        scheduleAt(simTime() + interval, new cMessage(RATE_GENERATOR_TIMEOUT));
+        // Schedule the next rate update.
+        scheduleAt(
+            simTime() + rtInt,
+            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
     }
 }
 
-void RatesGenerator::insertedFlow(
+void PortsLoadGenerator::insertedFlow(
     const Address &addr,
     const unsigned short &qos,
     RMTPort * port)
@@ -108,17 +129,47 @@ void RatesGenerator::insertedFlow(
     {
         // Add to cache.
         rateCache[dst][qos] = rate;
-        rt->insertFlow(addr, dst, qos, rate);
+        rt->insertFlow(addr, dst, qos, rate, true);
 
         routingUpdated();
     }
 }
 
-bool RatesGenerator::rateCacheEntryExists(
+void PortsLoadGenerator::onPolicyInit()
+{
+    rtInt = par("rateInterval");
+    upInt = par("updateInterval");
+
+    // Obtain a pointer to the forwarding policy.
+    fwd = check_and_cast<SimpleTable::SimpleTable *>(
+        getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+
+    // Obtain a pointer to the routing policy.
+    rt = check_and_cast<IntPortsLoadRouting *>(
+        getModuleByPath("^.^.routingPolicy"));
+
+    // Obtain a pointer to the queue monitor policy.
+    rmtp = check_and_cast<PortsLoadMonitor *>(
+            getModuleByPath("^.^.relayAndMux.queueMonitorPolicy"));
+
+    // Obtain a pointer to the DIF allocator module.
+    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+
+    // Start the rate updating timeout.
+    scheduleAt(
+        simTime() + rtInt,
+        new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
+
+    // Start the route update timeout.
+    scheduleAt(
+        simTime() + upInt,
+        new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
+}
+
+bool PortsLoadGenerator::rateCacheEntryExists(
     std::string dest,
     unsigned short qos)
 {
-    char found = 0;
     RateIter ri = rateCache.find(dest);
 
     // First level entry found.
@@ -136,31 +187,10 @@ bool RatesGenerator::rateCacheEntryExists(
     return false;
 }
 
-// Called after initialize
-void RatesGenerator::onPolicyInit()
-{
-    interval = par("interval");
-
-    // Obtain a pointer to the forwarding policy.
-    fwd = check_and_cast<SimpleTable::SimpleTable *>(
-        getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
-
-    // Obtain a pointer to the routing policy.
-    rt = check_and_cast<IntSimpleRouting *>(
-        getModuleByPath("^.^.routingPolicy"));
-
-    // Obtain a pointer to the queue monitor policy.
-    rmtp = check_and_cast<RatesMonitor *>(
-            getModuleByPath("^.^.relayAndMux.queueMonitorPolicy"));
-
-    // Obtain a pointer to the DIF allocator module.
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
-
-    // Start the rate updating timeout.
-    scheduleAt(simTime() + interval, new cMessage(RATE_GENERATOR_TIMEOUT));
-}
-
-void RatesGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port)
+void PortsLoadGenerator::removedFlow(
+        const Address &addr,
+        const unsigned short &qos,
+        RMTPort * port)
 {
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst][qos].erase(port);
@@ -168,7 +198,7 @@ void RatesGenerator::removedFlow(const Address &addr, const unsigned short &qos,
     if(neighbours[dst][qos].size() <= 0)
     {
         neighbours[dst].erase(qos);
-        rt->removeFlow(addr, dst, qos);
+        rt->removeFlow(addr, dst, qos, true);
 
         if(neighbours[dst].size() <= 0)
         {
@@ -186,7 +216,7 @@ void RatesGenerator::removedFlow(const Address &addr, const unsigned short &qos,
     }
 }
 
-void RatesGenerator::routingUpdated()
+void PortsLoadGenerator::routingUpdated()
 {
     entries2Next changes = rt->getChanges();
 

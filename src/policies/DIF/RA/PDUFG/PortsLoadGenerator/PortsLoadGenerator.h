@@ -13,20 +13,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef __RATEGENERATOR_H
-#define __RATEGENERATOR_H
+#ifndef __PORTSLOADGENERATOR_H
+#define __PORTSLOADGENERATOR_H
 
 #include <IntPDUFG.h>
-#include <Monitor/RatesMonitor/RatesMonitor.h>
+#include <PortsLoadMonitor.h>
 #include <SimpleTable/SimpleTable.h>
-#include <SimpleRouting/IntSimpleRouting.h>
+#include <IntPortsLoadRouting.h>
 
 #include <map>
 #include <set>
 
 #define SCALE_BYTES(x)   (x / 1024)
 // Comment it to remove the visual debugging.
-#define RATESGENERATOR_ENHANCED_DEBUG
+#define PORTSLOADGENERATOR_ENHANCED_DEBUG
 
 typedef std::set<RMTPort*> PortsSet;
 typedef std::map<unsigned short, PortsSet> Nentries;
@@ -49,7 +49,7 @@ typedef RateMap::iterator RateIter;
 
 // Provides an maintain updated the neighbor state according to the link load
 // on them.
-class RatesGenerator: public IntPDUFG
+class PortsLoadGenerator : public IntPDUFG
 {
 public:
 
@@ -73,18 +73,20 @@ protected:
 private:
     DA * difA;
     SimpleTable::SimpleTable * fwd;
-    IntSimpleRouting * rt;
-    RatesMonitor * rmtp;
+    IntPortsLoadRouting * rt;
+    PortsLoadMonitor * rmtp;
     NTable neighbours;
 
-    // Cache for the rates.
+    // Cache for the rates of the local ports.
     RateMap rateCache;
 
     // Time between a link load check and another.
-    int interval;
+    int rtInt;
+    // Time between a route update and another.
+    int upInt;
 
     // Does the entry in exists in cache?
     bool rateCacheEntryExists(std::string dest, unsigned short qos);
 };
 
-#endif // __RATEGENERATOR_H
+#endif // __PORTSLOADGENERATOR_H

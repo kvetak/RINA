@@ -17,15 +17,15 @@
 //
 // NOTE:The procedures are sorted by name.
 
-#define RATESMONITOR_SELFMSG "RMT_MonitorPolicy_Rates"
+#define RATESMONITOR_SELFMSG "RMT_MonitorPolicy_PortsLoad"
 
 #include <stdio.h>
-#include <RatesMonitor.h>
+#include <PortsLoadMonitor.h>
 
-Define_Module(RatesMonitor);
+Define_Module(PortsLoadMonitor);
 
-#ifdef RATESMONITOR_ENHANCED_DEBUG
-void RatesMonitor::enhancedDebug()
+#ifdef PORTSLOADMONITOR_ENHANCED_DEBUG
+void PortsLoadMonitor::enhancedDebug()
 {
     if(ev.isGUI())
     {
@@ -44,7 +44,7 @@ void RatesMonitor::enhancedDebug()
 }
 #endif
 
-int64 RatesMonitor::getByteRate(RMTPort * port)
+int64 PortsLoadMonitor::getByteRate(RMTPort * port)
 {
     PMIter i = rates.find(port);
 
@@ -58,7 +58,7 @@ int64 RatesMonitor::getByteRate(RMTPort * port)
     return 0;
 }
 
-void RatesMonitor::handleMessage(cMessage* msg)
+void PortsLoadMonitor::handleMessage(cMessage* msg)
 {
     // Only consider messages which you send to yourself.
     if(msg->isSelfMessage())
@@ -70,7 +70,7 @@ void RatesMonitor::handleMessage(cMessage* msg)
             i->second = 0;
         }
 
-#ifdef RATESMONITOR_ENHANCED_DEBUG
+#ifdef PORTSLOADMONITOR_ENHANCED_DEBUG
         enhancedDebug();
 #endif
 
@@ -79,7 +79,7 @@ void RatesMonitor::handleMessage(cMessage* msg)
     }
 }
 
-void RatesMonitor::onMessageArrival(RMTQueue* queue)
+void PortsLoadMonitor::onMessageArrival(RMTQueue* queue)
 {
     // Get the arrived message.
     const cPacket * pdu = queue->getLastPDU();
@@ -107,12 +107,12 @@ void RatesMonitor::onMessageArrival(RMTQueue* queue)
     // together.
     acc[port] += pdu->getByteLength();
 
-#ifdef RATESMONITOR_ENHANCED_DEBUG
+#ifdef PORTSLOADMONITOR_ENHANCED_DEBUG
     enhancedDebug();
 #endif
 }
 
-void RatesMonitor::onMessageDeparture(RMTQueue* queue)
+void PortsLoadMonitor::onMessageDeparture(RMTQueue* queue)
 {
     // Get the departing message.
     const cPacket * pdu = queue->getFirstPDU();
@@ -140,12 +140,12 @@ void RatesMonitor::onMessageDeparture(RMTQueue* queue)
     // together.
     acc[port] += pdu->getByteLength();
 
-#ifdef RATESMONITOR_ENHANCED_DEBUG
+#ifdef PORTSLOADMONITOR_ENHANCED_DEBUG
     enhancedDebug();
 #endif
 }
 
-void RatesMonitor::onPolicyInit()
+void PortsLoadMonitor::onPolicyInit()
 {
     // Get a pointer to the allocator.
     rmtA = check_and_cast<RMTModuleAllocator *>(
