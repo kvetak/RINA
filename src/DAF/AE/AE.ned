@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+package rina.src.DAF.AE;
 
 simple AE like IAE
 {        
@@ -22,6 +22,7 @@ simple AE like IAE
         @class(AE);
         
         @signal[AEorRIBd-AllocateResponsePositive];
+        @signal[AEorRIBd-AllocateResponseNegative];
         @signal[AE-DataSend];
         
         string aeName = default("AeErr");
@@ -44,8 +45,7 @@ simple AE like IAE
         int delay @unit(us)						= default(-1us); //Delay in usecs
         int jitter @unit(us)					= default(-1us); //Jitter in usecs
         int costTime							= default(-1); //measured in $/ms
-        int costBits							= default(-1); //measured in $/Mb
-        double aTime							= default(-1); //measured in ms
+        int costBits							= default(-1); //measured in $/Mb        
         
         //Authentication
         int authType							= default(0);

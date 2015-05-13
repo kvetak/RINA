@@ -15,7 +15,7 @@
 
 package rina.examples.SingleCS;
 
-import rina.CS.Host2AP;
+import rina.src.CS.Host2AP;
 
 
 network SingleCS

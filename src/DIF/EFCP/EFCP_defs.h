@@ -16,7 +16,7 @@
 //
 
 /*
- * @file EFCP.h
+ * @file EFCP_defs.h
  * @author Marcel Marek
  * @date Apr 28, 2014
  * @brief
@@ -25,6 +25,7 @@
 
 #ifndef EFCP_H_
 #define EFCP_H_
+//TODO B1 Make const char of most of them
 
 #define QOSIDLENGTH 8
 #define PORTIDLENGTH 8
@@ -39,62 +40,62 @@
 #define DTP_EPSILON 0.0001
 #define INITIAL_SENDER_CREDIT 10
 
-#define ECN_POLICY_PREFIX "rina.DIF.EFCP.policies.ECN."
+#define ECN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECN."
 #define ECN_POLICY_NAME "ecnPolicy"
 
-#define RCVR_FC_POLICY_PREFIX "rina.DIF.EFCP.policies.RcvrFC."
+#define RCVR_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrFC."
 #define RCVR_FC_POLICY_NAME "rcvrFCPolicy"
 
-#define RCVR_ACK_POLICY_PREFIX "rina.DIF.EFCP.policies.RcvrAck."
+#define RCVR_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrAck."
 #define RCVR_ACK_POLICY_NAME "rcvrAckPolicy"
 
-#define RECEIVING_FC_POLICY_PREFIX "rina.DIF.EFCP.policies.ReceivingFC."
+#define RECEIVING_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ReceivingFC."
 #define RECEIVING_FC_POLICY_NAME "receivingFCPolicy"
 
-#define SENDING_ACK_POLICY_PREFIX "rina.DIF.EFCP.policies.SendingAck."
+#define SENDING_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SendingAck."
 #define SENDING_ACK_POLICY_NAME "sendingAckPolicy"
 
-#define LOST_CONTROL_PDU_POLICY_PREFIX "rina.DIF.EFCP.policies.LostControlPDU."
+#define LOST_CONTROL_PDU_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.LostControlPDU."
 #define LOST_CONTROL_PDU_POLICY_NAME "lostControlPDUPolicy"
 
-#define RCVR_CONTROL_ACK_POLICY_PREFIX "rina.DIF.EFCP.policies.RcvrControlAck."
+#define RCVR_CONTROL_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvrControlAck."
 #define RCVR_CONTROL_ACK_POLICY_NAME "rcvrControlAckPolicy"
 
-#define SENDER_ACK_POLICY_PREFIX "rina.DIF.EFCP.policies.SenderAck."
+#define SENDER_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SenderAck."
 #define SENDER_ACK_POLICY_NAME "senderAckPolicy"
 
-#define FC_OVERRUN_POLICY_PREFIX "rina.DIF.EFCP.policies.FCOverrun."
+#define FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
 #define FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
 
-#define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.DIF.EFCP.policies.NoOverridePeak."
+#define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
 #define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"
 
-#define TX_CONTROL_POLICY_PREFIX "rina.DIF.EFCP.policies.TxControl."
+#define TX_CONTROL_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.TxControl."
 #define TX_CONTROL_POLICY_NAME "txControlPolicy"
 
-#define NO_RATE_SLOW_DOWN_POLICY_PREFIX "rina.DIF.EFCP.policies.NoRateSlowDown."
+#define NO_RATE_SLOW_DOWN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoRateSlowDown."
 #define NO_RATE_SLOW_DOWN_POLICY_NAME "noRateSlowDownPolicy"
 
-#define RECONCILE_FC_POLICY_PREFIX "rina.DIF.EFCP.policies.ReconcileFC."
+#define RECONCILE_FC_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ReconcileFC."
 #define RECONCILE_FC_POLICY_NAME "reconcileFCPolicy"
 
-#define RATE_REDUCTION_POLICY_PREFIX "rina.DIF.EFCP.policies.RateReduction."
+#define RATE_REDUCTION_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RateReduction."
 #define RATE_REDUCTION_POLICY_NAME "rateReductionPolicy"
 
 
-#define RCVR_INACTIVITY_POLICY_PREFIX "rina.DIF.EFCP.policies.RcvrInactivity."
+#define RCVR_INACTIVITY_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.RcvrInactivity."
 #define RCVR_INACTIVITY_POLICY_NAME "rcvrInactivityPolicy"
 
-#define SENDER_INACTIVITY_POLICY_PREFIX "rina.DIF.EFCP.policies.SenderInactivity."
+#define SENDER_INACTIVITY_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.SenderInactivity."
 #define SENDER_INACTIVITY_POLICY_NAME "senderInactivityPolicy"
 
-#define INITIAL_SEQ_NUM_POLICY_PREFIX "rina.DIF.EFCP.policies.InitialSeqNum."
+#define INITIAL_SEQ_NUM_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.InitialSeqNum."
 #define INITIAL_SEQ_NUM_POLICY_NAME "initialSeqNumPolicy"
 
-#define RTT_ESTIMATOR_POLICY_PREFIX "rina.DIF.EFCP.policies.RTTEstimator."
+#define RTT_ESTIMATOR_POLICY_PREFIX "rina.policies.DIF.EFCP.DTP.RTTEstimator."
 #define RTT_ESTIMATOR_POLICY_NAME "rttEstimatorPolicy"
 
-#define ECN_SLOW_DOWN_POLICY_PREFIX "rina.DIF.EFCP.policies.ECNSlowDown."
+#define ECN_SLOW_DOWN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECNSlowDown."
 #define ECN_SLOW_DOWN_POLICY_NAME "ecnSlowDownPolicy"
 
 

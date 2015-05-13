@@ -20,7 +20,7 @@ import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-package rina.DIF.RMT;
+package rina.src.DIF.RMT;
 
 module RelayAndMux
 {

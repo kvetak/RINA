@@ -13,10 +13,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+package rina.src.DAF.AE;
 
-import rina.Common.Test;
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.Common.Test;
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 
 
 module ApplicationEntity

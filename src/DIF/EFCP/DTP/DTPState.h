@@ -32,7 +32,12 @@
 #include "EFCP_defs.h"
 #include "DataTransferPDU.h"
 
+
 #include "PDU.h"
+
+/* Dirty hacks */
+#include "DTPTimers_m.h"
+/* End dirty hacks */
 
 
 
@@ -100,6 +105,14 @@ private:
     /* new */
     bool ecnSet; //This variable gets set upon reception of DataTransfer PDU with ECN bit set and cleared upon reception of DataTransfer PDU with ECN bit cleared.
     bool blockingPort;
+
+    /* Dirty hacks */
+    /* This section contains temporary 'dirty hacks' variables to bypass obstacles.
+     * They might and hopefully will be removed very soon, so do not depend on them.
+     */
+    ATimer* tmpAtimer;
+
+    /* End Dirsty hacks */
 
     void clearPDUQ(std::vector<DataTransferPDU*>* pduQ);
     void clearGeneratedPDUQ();
@@ -182,6 +195,12 @@ public:
     void setMpl(double mpl);
     bool isBlockingPort() const;
     void setBlockingPort(bool blockingPort);
+
+
+    /* Dirty hacks */
+    ATimer* getTmpAtimer() const;
+    void setTmpAtimer(ATimer* tmpAtimer);
+    /* End dirty hacks */
 
 protected:
   virtual void handleMessage(cMessage *msg);

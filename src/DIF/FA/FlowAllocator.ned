@@ -1,6 +1,6 @@
-package rina.DIF.FA;
+package rina.src.DIF.FA;
 
-import rina.DIF.NSM.NameSpaceManager;
+import rina.src.DIF.NSM.NameSpaceManager;
 import rina.policies.DIF.FA.AllocateRetry.IAllocateRetry;
 import rina.policies.DIF.FA.NewFlowRequest.*;
 
@@ -9,7 +9,7 @@ module FlowAllocator
 {
     parameters:
         @display("i=block/fork;bgb=513,318");
-        string newFlowReqPolicyType = default("QoSCubeComparer");
+        string newFlowReqPolicyType = default("ScoreComparer");
         string allocRetryPolicyType = default("LimitedRetries");
     gates:
 

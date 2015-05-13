@@ -68,6 +68,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
@@ -87,6 +88,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
@@ -96,7 +98,10 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
+			<ATime>0</ATime>
+			<EFCPPolicySet>
+			  <FCOverrun>Default</FCOverrun>   
+			</EFCPPolicySet>
 		</QoSCube>
         <QoSCube id="42">
             <AverageBandwidth>1200000000</AverageBandwidth>

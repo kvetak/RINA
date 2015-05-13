@@ -442,3 +442,9 @@ void DTCPState::initFromQoS(const QoSCube* qosCube)
 {
 
 }
+
+unsigned int DTCPState::getRxQLen()
+{
+  return rxQ.size();
+}
+

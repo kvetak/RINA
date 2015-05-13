@@ -14,7 +14,7 @@
 // 
 
 
-package rina.DIF.EFCP.DTP;
+package rina.src.DIF.EFCP.DTP;
 
 import ned.IdealChannel;
 

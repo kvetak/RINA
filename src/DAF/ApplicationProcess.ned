@@ -13,17 +13,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF;
+package rina.src.DAF;
 
-import rina.Common.Test;
-import rina.DAF.AE.AEPing;
-import rina.DAF.AE.ApplicationEntity;
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DAF.DA.DIFAllocator;
-import rina.DAF.IRM.ConnectionTable;
-import rina.DAF.IRM.IRM;
-import rina.DIF.RIB.RIBDaemon;
-import rina.DIF.RMT.RMT;
+import rina.src.Common.Test;
+import rina.src.DAF.AE.AEPing;
+import rina.src.DAF.AE.ApplicationEntity;
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DAF.IRM.ConnectionTable;
+import rina.src.DAF.IRM.IRM;
+import rina.src.DIF.RIB.RIBDaemon;
+import rina.src.DIF.RMT.RMT;
 
 module ApplicationProcess
 {

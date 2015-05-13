@@ -39,6 +39,7 @@ DTCP::DTCP() {
   reconcileFCPolicy = NULL;
   rateReductionPolicy = NULL;
   ecnSlowDownPolicy = NULL;
+  rxTimerExpiryPolicy = NULL;
 
 
 
@@ -102,52 +103,31 @@ void DTCP::initialize(int step)
         disp.setTagArg("p", 1, 140);
 
         //TODO A1 Not necessary DTP reference is set during DTCP creation.
-        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(DTP_MODULE_NAME)).c_str());
+        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
 
         //  dtcpState = new DTCPState();
-        cModuleType* dtcpStateType = cModuleType::get("rina.DIF.EFCP.DTCP.DTCPState");
 
-        dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, this->getParentModule());
-        dtcpState->finalizeParameters();
-        dtcpState->buildInside();
-        dtcpState->scheduleStart(simTime());
         //  dtcpState->callInitialize();
 
-        //TODO A2 based on DTPState create appropriate components
-        if (dtp->state->isRxPresent())
-        {
-            //    rxControl = new RXControl();
-        }
 
-        if (dtp->state->isFCPresent())
-        {
-            //    flowControl = new FlowControl();
-            //    flowControl->initialize();
-
-            if (dtp->state->isWinBased())
-            {
-                //      windowTimer = new WindowTimer();
-                //      schedule(windowTimer);
-            }
-        }
 
 
         //TODO A1 Load list of policies
-        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-        rcvrFCPolicy          = (DTCPRcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
-        rcvrAckPolicy         = (DTCPRcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
-        receivingFCPolicy     = (DTCPReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
-        sendingAckPolicy      = (DTCPSendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
-        lostControlPDUPolicy  = (DTCPLostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
-        rcvrControlAckPolicy  = (DTCPRcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
-        senderAckPolicy       = (DTCPSenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
-        fcOverrunPolicy       = (DTCPFCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
-        noOverridePeakPolicy  = (DTCPNoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
-        txControlPolicy       = (DTCPTxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
-        noRateSlowDownPolicy  = (DTCPNoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
-        reconcileFCPolicy     = (DTCPReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
-        rateReductionPolicy   = (DTCPRateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
-  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+//        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
+//        rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
+//        rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
+//        receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
+//        sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
+//        lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
+//        rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
+//        senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
+//        fcOverrunPolicy       = (FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
+//        noOverridePeakPolicy  = (NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
+//        txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
+//        noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
+//        reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
+//        rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
+//  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
 
   			initSignalsAndListeners();
@@ -206,102 +186,102 @@ void DTCP::incRcvRtWinEdge()
 bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrFCPolicy");
-  if(rcvrFCPolicy == NULL || rcvrFCPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-    /* This policy has to be the one to impose the condition to set WindowClosed to True */
-    /* Default */
-    //TODO A2 Where else are these variables updated?
-    if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
-    {
-
-      incRcvRtWinEdge();
-    }
-    else
-    {
-      /* Buffers are getting low */
-      //Leave RightWindowEdge unchanged.
-    }
-    /* End default */
-
-  }
+  rcvrFCPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+//    /* This policy has to be the one to impose the condition to set WindowClosed to True */
+//    /* Default */
+//    //TODO A2 Where else are these variables updated?
+//    if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+//    {
+//
+//      incRcvRtWinEdge();
+//    }
+//    else
+//    {
+//      /* Buffers are getting low */
+//      //Leave RightWindowEdge unchanged.
+//    }
+//    /* End default */
+//
+//  }
   return false;
 }
 
 bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrAckPolicy");
-  if(rcvrAckPolicy == NULL || rcvrAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
-
-    if(dtpState->getRcvLeftWinEdge() == 0){
-      seqNum = 0;
-    }
-
-    if (dtcpState->isImmediate())
-    {
-      //Update LeftWindowEdge removing allowed gaps;
-      dtpState->updateRcvLWE(seqNum);
-//      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+  rcvrAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
 //
-//      PDUQ_t::iterator it;
-//      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
-//      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-//      {
-//        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
-//          dtpState->incRcvLeftWindowEdge();
+//    unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
 //
-//        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
-//          continue;
-//        }else {
-//          if(pduQ->size() == 1 || it == pduQ->begin()){
-//            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
-//              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
-//            }
-//          }else{
-//            (*(it-1))->getSDUGap((*it));
-//          }
-//          break;
-//        }
-//      }
-
-      //send an Ack/FlowControlPDU
-      dtp->sendAckFlowPDU(seqNum, true);
-
-
-      //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
-      //XXX How could there be any A-Timer when isImmediate returned true?
-
-    }
-    else
-    {
-      //set A-timer for this PDU
-      dtp->startATimer(seqNum);
-    }
-
-    /* End default */
-  }
+//    if(dtpState->getRcvLeftWinEdge() == 0){
+//      seqNum = 0;
+//    }
+//
+//    if (dtcpState->isImmediate())
+//    {
+//      //Update LeftWindowEdge removing allowed gaps;
+//      dtpState->updateRcvLWE(seqNum);
+////      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
+////
+////      PDUQ_t::iterator it;
+////      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
+////      for (it = pduQ->begin(); it != pduQ->end(); ++it)
+////      {
+////        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
+////          dtpState->incRcvLeftWindowEdge();
+////
+////        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
+////          continue;
+////        }else {
+////          if(pduQ->size() == 1 || it == pduQ->begin()){
+////            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
+////              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
+////            }
+////          }else{
+////            (*(it-1))->getSDUGap((*it));
+////          }
+////          break;
+////        }
+////      }
+//
+//      //send an Ack/FlowControlPDU
+//      dtp->sendAckFlowPDU(seqNum, true);
+//
+//
+//      //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
+//      //XXX How could there be any A-Timer when isImmediate returned true?
+//
+//    }
+//    else
+//    {
+//      //set A-timer for this PDU
+//      dtp->startATimer(seqNum);
+//    }
+//
+//    /* End default */
+//  }
   return false;
 }
 
 bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 {
   Enter_Method("ReceivingFCPolicy");
-  if(receivingFCPolicy == NULL || receivingFCPolicy->run(dtpState, dtcpState)){
+  receivingFCPolicy->call(dtpState, dtcpState);
     /* Default */
-    if (dtpState->isWinBased())
-    {
-
-      //Send FlowControl PDU /* Already updated the window and not sending Ack */
-      dtp->sendFCOnlyPDU();
-
-    }
+//    if (dtpState->isWinBased())
+//    {
+//
+//      //Send FlowControl PDU /* Already updated the window and not sending Ack */
+//      dtp->sendFCOnlyPDU();
+//
+//    }
 
     /* End default */
 
-  }
+//  }
   return false;
 }
 
@@ -310,123 +290,131 @@ bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 {
   Enter_Method("SendingAckPolicy");
-  if(sendingAckPolicy == NULL || sendingAckPolicy->run(dtpState, dtcpState, timer)){
-    /* Default */
+  sendingAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+//    //Update RcvLetWindowEdge
+//    dtpState->updateRcvLWE(timer->getSeqNum());
+//
+//    //Invoke Delimiting
+//    dtp->delimitFromRMT(NULL);
+//
+//    //resetSenderInactivity
+//    dtp->resetSenderInactivTimer();
+//
+//    /* End default */
 
-    //Update RcvLetWindowEdge
-    dtpState->updateRcvLWE(timer->getSeqNum());
-
-    //Invoke Delimiting
-    dtp->delimitFromRMT(NULL);
-
-    //resetSenderInactivity
-    dtp->resetSenderInactivTimer();
-
-    /* End default */
-
-  }
+//  }
   return false;
 }
 
 bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 {
   Enter_Method("LostControlPDUPolicy");
-  if(lostControlPDUPolicy == NULL || lostControlPDUPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    dtp->sendControlAckPDU();
-    dtp->sendEmptyDTPDU();
-    setLastCtrlSeqnumRcvd(dtpState->getCurrentPdu()->getSeqNum());
-
-    /* End default */
-
-  }
+  lostControlPDUPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    dtp->sendControlAckPDU();
+//    dtp->sendEmptyDTPDU();
+//    setLastCtrlSeqnumRcvd(dtpState->getCurrentPdu()->getSeqNum());
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 
 bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 {
   Enter_Method("RcvrControlAckPolicy");
-  if(rcvrControlAckPolicy == NULL || rcvrControlAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-
-    bool sendAck = false;
-    bool sendFC = true;
-    /* RcvrControlAck Policy with Default: */
-    //"adjust as necessary" :D great advice
-    ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
-    //      TODO: unsigned int lastCtrlSeqNumRcv;
-    if(dtcpState->getNextSndCtrlSeqNumNoInc() != ctrlAckPDU->getLastCtrlSeqNumRcv()){
-      // Does not necessary means an error.
-
-    }
-    //unsigned int sndLtWinEdge;
-    if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
-      bubble("ControlAckPDU: Missing PDU on the receiver end.");
-//      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
-    }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
-      sendAck = true;
-    }
-
-    //unsigned int sndRtWinEdge;
-    if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
-      sendFC = true;
-    }
-
-    //unsigned int myLtWinEdge;
-    if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
-      //serves as an ack -> remove PDUs from RxQ
-      ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
-      updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
-    }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
-      bubble("ControlAckPDU: Missing PDU on the sender's end.");
-//      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
-    }
-
-    //      unsigned int myRtWinEdge;
-    if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
-      dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
-    }
-
-    //unsigned int myRcvRate;
-    if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
-      dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
-    }
-
-    // Send Ack/Flow Control PDU with LWE and RWE
-    dtp->sendAckFlowPDU();
-
-    // Send empty Transfer PDU with NextSeqNumToSend-1
-    DataTransferPDU* dataPdu = new DataTransferPDU();
-    dtp->setPDUHeader(dataPdu);
-    unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
-    dataPdu->setSeqNum(seqNum);
-    UserDataField* userData = new UserDataField();
-
-    dataPdu->setUserDataField(userData);
-
-    dtp->sendToRMT(dataPdu);
-
-
-    /* End default */
-
-  }
+  rcvrControlAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//
+////    bool sendAck = false;
+////    bool sendFC = true;
+//    /* RcvrControlAck Policy with Default: */
+//    //"adjust as necessary" :D great advice
+//    ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
+//    //      TODO: unsigned int lastCtrlSeqNumRcv;
+//    if(dtcpState->getNextSndCtrlSeqNumNoInc() != ctrlAckPDU->getLastCtrlSeqNumRcv()){
+//      // Does not necessary means an error.
+//
+//    }
+//    //unsigned int sndLtWinEdge;
+//    if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
+//      bubble("ControlAckPDU: Missing PDU on the receiver end.");
+////      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
+//    }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
+////      sendAck = true;
+//    }
+//
+//    //unsigned int sndRtWinEdge;
+//    if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
+////      sendFC = true;
+//    }
+//
+//    //unsigned int myLtWinEdge;
+//    if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
+//      //serves as an ack -> remove PDUs from RxQ
+//      ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
+//      updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
+//    }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
+//      bubble("ControlAckPDU: Missing PDU on the sender's end.");
+////      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
+//    }
+//
+//    //      unsigned int myRtWinEdge;
+//    if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
+//      dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
+//    }
+//
+//    //unsigned int myRcvRate;
+//    if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
+//      dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
+//    }
+//
+//    //TODO A2 Verify it one more time
+////    if(sendAck && sendFC){
+////      dtp->sendAckFlowPDU();
+////    }else if (sendAck){
+////      dtp->sendAckOnlyPDU(dtpState->getRcvLeftWinEdge() - 1);
+////    }else{
+////      dtp->sendFCOnlyPDU();
+////    }
+//    // Send Ack/Flow Control PDU with LWE and RWE
+//    dtp->sendAckFlowPDU();
+//
+//    // Send empty Transfer PDU with NextSeqNumToSend-1
+//    DataTransferPDU* dataPdu = new DataTransferPDU();
+//    dtp->setPDUHeader(dataPdu);
+//    unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
+//    dataPdu->setSeqNum(seqNum);
+//    UserDataField* userData = new UserDataField();
+//
+//    dataPdu->setUserDataField(userData);
+//
+//    dtp->sendToRMT(dataPdu);
+//
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 
 bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 {
   Enter_Method("SenderAckPolicy");
-  if(senderAckPolicy == NULL || senderAckPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
-    ackPDU(seqNum);
-
-    //update SendLeftWindowEdge
-    dtcpState->updateSndLWE(seqNum + 1);
-    
-    /* End default */
-
-  }
+  senderAckPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
+//    ackPDU(seqNum);
+//
+//    //update SendLeftWindowEdge
+//    dtcpState->updateSndLWE(seqNum + 1);
+//
+//    /* End default */
+//
+//  }
   return false;
 }
 
@@ -434,32 +422,32 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
 {
   Enter_Method("FCOverrunPolicy");
-  if(fcOverrunPolicy == NULL || fcOverrunPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-    //Block further Write API calls on this port-id
-    dtp->notifyStopSending();
-    /* End default */
-
-  }
+  fcOverrunPolicy->call(dtpState, dtcpState);
+//    /* Default */
+//    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+//    //Block further Write API calls on this port-id
+//    dtp->notifyStopSending();
+//    /* End default */
+//
+//  }
   return false;
 }
 
 bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 {
   Enter_Method("NoOverridePeakPolicy");
-  if (noOverridePeakPolicy == NULL || noOverridePeakPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    setSendingRateFullfilled(true);
-    if (dtcpState->getClosedWinQueLen() < dtcpState->getMaxClosedWinQueLen() - 1)
-    {
-      dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-
-    }
-    /* End default */
-
-  }
+  noOverridePeakPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    setSendingRateFullfilled(true);
+//    if (dtcpState->getClosedWinQueLen() < dtcpState->getMaxClosedWinQueLen() - 1)
+//    {
+//      dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+//
+//    }
+//    /* End default */
+//
+//  }
   return false;
 }
 
@@ -467,89 +455,84 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 {
   Enter_Method("TxControlPolicy");
-  if (txControlPolicy == NULL || txControlPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
-     And Set the ClosedWindow flag appropriately. */
-    std::vector<DataTransferPDU*>::iterator it;
-//    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
-    for (it = pduQ->begin();
-        it != pduQ->end() && (*it)->getSeqNum() <= getSndRtWinEdge();)
-    {
+  txControlPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    /* Add as many PDU to PostablePDUs as Window Allows, closing it if necessary
+//     And Set the ClosedWindow flag appropriately. */
+//    std::vector<DataTransferPDU*>::iterator it;
+////    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
+//    for (it = pduQ->begin();
+//        it != pduQ->end() && (*it)->getSeqNum() <= getSndRtWinEdge();)
+//    {
+//
+//      dtpState->pushBackToPostablePDUQ((*it));
+////      dtpState->getGeneratedPDUQ()->erase(it);
+//      it = pduQ->erase(it);
+//
+//    }
+//
+//    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen())
+//    {
+//      dtcpState->setClosedWindow(true);
+//    }
+//    /* End default */
 
-      dtpState->pushBackToPostablePDUQ((*it));
-//      dtpState->getGeneratedPDUQ()->erase(it);
-      it = pduQ->erase(it);
-
-    }
-
-    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen())
-    {
-      dtcpState->setClosedWindow(true);
-    }
-    /* End default */
-
-  }
+//  }
   return false;
 }
 
 bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
 {
   Enter_Method("NoRateSlowDownPolicy");
-  if (noRateSlowDownPolicy == NULL || noRateSlowDownPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
-    /* Default */
-
-    dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
-    dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
-    incPdusSentInTimeUnit();
-    /* End default */
-
-  }
+  noRateSlowDownPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
+//    /* Default */
+//
+//    dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());
+//    dtpState->getGeneratedPDUQ()->erase(dtpState->getGeneratedPDUQ()->begin());
+//    incPdusSentInTimeUnit();
+//    /* End default */
+//
+//  }
   return false;
 }
 
 bool DTCP::runReconcileFCPolicy(DTPState* dtpState)
 {
   Enter_Method("ReconcileFCPolicy");
-  if (reconcileFCPolicy == NULL || reconcileFCPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    /* Default is empty :)*/
-    /* End default */
+reconcileFCPolicy->call(dtpState, dtcpState);
 
-  }
   return false;
 }
 
 bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 {
   Enter_Method("RateReductionPolicy");
-  if (rateReductionPolicy == NULL || rateReductionPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
-    if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
-    {
-//      flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
-      dtcpState->setRcvrRate(dtcpState->getRcvrRate() *0.9);
-
-    }
-    else
-    {
-      if (dtcpState->getRcvrRate() < dtcpState->getConfigRcvrRate()
-          && dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
-      {
-        //set rate back to config rate
-        dtcpState->setRcvrRate(dtcpState->getConfigRcvrRate());
-      }
-    }
-    dtp->sendAckFlowPDU();
-    /* End default */
-
-  }
+  rateReductionPolicy->call(dtpState, dtcpState);
+//  {
+//    /* Default */
+//    if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
+//    {
+////      flowControl->rcvrRate *= 0.9; //Reduce Rate 10%
+//      dtcpState->setRcvrRate(dtcpState->getRcvrRate() *0.9);
+//
+//    }
+//    else
+//    {
+//      if (dtcpState->getRcvrRate() < dtcpState->getConfigRcvrRate()
+//          && dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+//      {
+//        //set rate back to config rate
+//        dtcpState->setRcvrRate(dtcpState->getConfigRcvrRate());
+//      }
+//    }
+//    dtp->sendAckFlowPDU();
+//    /* End default */
+//
+//  }
   return false;
 }
 
@@ -642,40 +625,44 @@ void DTCP::handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer)
   runRxTimerExpiryPolicy(timer);
 
 }
-
+//TODO A! Make it Module-based policy
 void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 {
 
-  DataTransferPDU* pdu = timer->getPdu();
+  rxTimerExpiryPolicy->call(dtp->state, dtcpState);
 
-  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
-  {
-    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
-    // Notify User Flow that we were unable to maintain the QoS for this connection
-    dtp->notifyAboutUnableMaintain();
-//    throw cRuntimeError("Unable to maintain the QoS for this connection");
-    ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
-  }
-  else
-  {
+  emit(sigStatDTCPRxCount, dtcpState->getRxSent());
 
-    DataTransferPDU* dup = pdu->dup();
-    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-    std::ostringstream out;
-    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
-
-    bubble(out.str().c_str());
-    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-    dtp->sendToRMT(dup);
-
-    dtcpState->incRxSent();
-
-    timer->setExpiryCount(timer->getExpiryCount() + 1);
-    schedule(timer);
-
-
-    emit(sigStatDTCPRxCount, dtcpState->getRxSent());
-  }
+//  DataTransferPDU* pdu = timer->getPdu();
+//
+//  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
+//  {
+//    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+//    // Notify User Flow that we were unable to maintain the QoS for this connection
+//    dtp->notifyAboutUnableMaintain();
+////    throw cRuntimeError("Unable to maintain the QoS for this connection");
+//    ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
+//  }
+//  else
+//  {
+//
+//    DataTransferPDU* dup = pdu->dup();
+//    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+//    std::ostringstream out;
+//    out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+//
+//    bubble(out.str().c_str());
+//    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+//    dtp->sendToRMT(dup);
+//
+//    dtcpState->incRxSent();
+//
+//    timer->setExpiryCount(timer->getExpiryCount() + 1);
+//    schedule(timer);
+//
+//
+//    emit(sigStatDTCPRxCount, dtcpState->getRxSent());
+//  }
 
 
 }
@@ -729,7 +716,19 @@ void DTCP::schedule(DTCPTimers* timer, double time){
 
 }
 
-
+void DTCP::scheduleRxTimerExpiry()
+{
+  std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+  std::vector<DTCPRxExpiryTimer*>::iterator it;
+  for (it = rxQ->begin(); it != rxQ->end(); ++it)
+  {
+    if (!(*it)->isScheduled())
+    {
+      schedule((*it));
+      break;
+    }
+  }
+}
 
 void DTCP::resetWindowTimer(){
   Enter_Method_Silent();
@@ -947,4 +946,79 @@ bool DTCP::isClosedWinQClosed()
 void DTCP::updateSenderLWE(unsigned int seqNum)
 {
   dtcpState->updateSndLWE(seqNum);
+}
+
+void DTCP::setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy)
+{
+  this->fcOverrunPolicy = fcOverrunPolicy;
+}
+
+void DTCP::setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy)
+{
+  lostControlPDUPolicy = lostControlPduPolicy;
+}
+
+void DTCP::setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy)
+{
+  this->noOverridePeakPolicy = noOverridePeakPolicy;
+}
+
+void DTCP::setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy)
+{
+  this->noRateSlowDownPolicy = noRateSlowDownPolicy;
+}
+
+void DTCP::setRateReductionPolicy(RateReductionPolicyBase* rateReductionPolicy)
+{
+  this->rateReductionPolicy = rateReductionPolicy;
+}
+
+void DTCP::setRcvrAckPolicy(RcvrAckPolicyBase* rcvrAckPolicy)
+{
+  this->rcvrAckPolicy = rcvrAckPolicy;
+}
+
+void DTCP::setRcvrControlAckPolicy(RcvrControlAckPolicyBase* rcvrControlAckPolicy)
+{
+  this->rcvrControlAckPolicy = rcvrControlAckPolicy;
+}
+
+void DTCP::setRcvrFcPolicy(RcvrFCPolicyBase* rcvrFcPolicy)
+{
+  rcvrFCPolicy = rcvrFcPolicy;
+}
+
+void DTCP::setReceivingFcPolicy(ReceivingFCPolicyBase* receivingFcPolicy)
+{
+  receivingFCPolicy = receivingFcPolicy;
+}
+
+void DTCP::setReconcileFcPolicy(ReconcileFCPolicyBase* reconcileFcPolicy)
+{
+  reconcileFCPolicy = reconcileFcPolicy;
+}
+
+void DTCP::setRxTimerExpiryPolicy(RxTimerExpiryPolicyBase* rxTimerExpiryPolicy)
+{
+  this->rxTimerExpiryPolicy = rxTimerExpiryPolicy;
+}
+
+void DTCP::setSenderAckPolicy(SenderAckPolicyBase* senderAckPolicy)
+{
+  this->senderAckPolicy = senderAckPolicy;
+}
+
+void DTCP::setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy)
+{
+  this->sendingAckPolicy = sendingAckPolicy;
+}
+
+void DTCP::setTxControlPolicy(TxControlPolicyBase* txControlPolicy)
+{
+  this->txControlPolicy = txControlPolicy;
+}
+
+void DTCP::setDtcpState(DTCPState* dtcpState)
+{
+  this->dtcpState = dtcpState;
 }

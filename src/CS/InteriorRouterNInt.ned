@@ -15,10 +15,10 @@
 
 // Author: Kewin Rausch <kewin.rausch@create-net.org>
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.DAF.DA.DIFAllocator;
-import rina.DIF.IPCProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
 
 module InteriorRouterNInt
 {

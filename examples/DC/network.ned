@@ -1,10 +1,10 @@
 package rina.examples.DC;
 
-import rina.CS.DC_VM;
-import rina.CS.DC_Server;
-import rina.CS.DC_TOR;
-import rina.CS.DC_AS;
-import rina.CS.DC_CR;
+import rina.src.CS.DC_VM;
+import rina.src.CS.DC_Server;
+import rina.src.CS.DC_TOR;
+import rina.src.CS.DC_AS;
+import rina.src.CS.DC_CR;
 
 network DC
 {

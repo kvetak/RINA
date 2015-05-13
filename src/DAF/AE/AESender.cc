@@ -151,7 +151,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
                                          this->dstAeName, this->dstAeInstance);
 
         FlowObject = new Flow(src, dst);
-        FlowObject->setQosParameters(this->getQoSRequirements());
+        FlowObject->setQosRequirements(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
         insertFlow();

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+package rina.src.DAF.AE;
 
 moduleinterface IAE
 {
@@ -40,8 +40,7 @@ moduleinterface IAE
         int delay @unit(us); //Delay in usecs
         int jitter @unit(us); //Jitter in usecs
         int costTime; //measured in $/ms
-        int costBits; //measured in $/Mb
-        double aTime; //measured in ms
+        int costBits; //measured in $/Mb        
         
         //Authentication
         int authType;

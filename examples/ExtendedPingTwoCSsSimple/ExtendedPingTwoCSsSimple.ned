@@ -16,7 +16,7 @@
 package rina.examples.ExtendedPingTwoCSsSimple;
 
 import ned.DatarateChannel;
-import rina.CS.TestHost1AP;
+import rina.src.CS.TestHost1AP;
 
 
 network ExtendedPingTwoCSsSimple

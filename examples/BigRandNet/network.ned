@@ -1,8 +1,8 @@
 package rina.examples.BigRandNet;
 
-import rina.CS.BorderRouter;
-import rina.CS.HostNAP;
-import rina.CS.InteriorRouterNInt;
+import rina.src.CS.BorderRouter;
+import rina.src.CS.HostNAP;
+import rina.src.CS.InteriorRouterNInt;
 
 network BigRandNet
 {

@@ -14,7 +14,7 @@
 // 
 
 package rina.examples.SmallNetwork;
-import rina.CS.*;
+import rina.src.CS.*;
 
 
 network SmallNetwork
