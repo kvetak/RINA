@@ -15,11 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef __RATESMONITOR_H
-#define __RATESMONITOR_H
+#ifndef __PORTSLOADMONITOR_H
+#define __PORTSLOADMONITOR_H
 
 // Comment to remove the enhanced debugging.
-//#define RATESMONITOR_ENHANCED_DEBUG
+//#define PORTSLOADMONITOR_ENHANCED_DEBUG
 
 #include "RMTQMonitorBase.h"
 #include "RMTModuleAllocator.h"
@@ -34,7 +34,7 @@ typedef PortsMap::iterator PMIter;
 // This policy will be in charge of monitoring the receiving/transmission rates
 // for the IPC process.
 //
-class RatesMonitor : public RMTQMonitorBase
+class PortsLoadMonitor : public RMTQMonitorBase
 {
 private:
 
@@ -72,4 +72,4 @@ public:
     virtual void onMessageDeparture(RMTQueue* queue);
 };
 
-#endif // __RATESMONITOR_H
+#endif // __PORTSLOADMONITOR_H
