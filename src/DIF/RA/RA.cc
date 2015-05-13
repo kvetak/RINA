@@ -46,6 +46,7 @@ void RA::initialize(int stage)
     // retrieve pointers to other modules
     thisIPC = this->getParentModule()->getParentModule();
     rmtModule = thisIPC->getSubmodule("relayAndMux");
+    mgmtReqs = NULL;
 
     // Get access to the forwarding and routing functionalities...
     fwdtg = check_and_cast<IntPDUFG *>
@@ -210,44 +211,64 @@ void RA::setRMTMode()
 
 /**
  * Initializes QoS cubes from given XML configuration directive.
- *
  */
 void RA::initQoSCubes()
 {
     cXMLElement* qosXml = NULL;
-    if (par(PAR_QOSDATA).xmlValue() != NULL && par(PAR_QOSDATA).xmlValue()->hasChildren())
+    if (par(PAR_QOSDATA).xmlValue() != NULL
+            && par(PAR_QOSDATA).xmlValue()->hasChildren())
         qosXml = par(PAR_QOSDATA).xmlValue();
     else
         error("qoscubesData parameter not initialized!");
 
+    // load cubes from XML
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSCUBE);
-    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it) {
+    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it)
+    {
         cXMLElement* m = *it;
-        if (!m->getAttribute(ATTR_ID)) {
+        if (!m->getAttribute(ATTR_ID))
+        {
             EV << "Error parsing QoSCube. Its ID is missing!" << endl;
             continue;
         }
 
         cXMLElementList attrs = m->getChildren();
         QoSCube cube = QoSCube(attrs);
-        cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
-
-
+        cube.setQosId((unsigned short) atoi(m->getAttribute(ATTR_ID)));
 
         //Integrity check!!!
-        if (cube.isDefined()){
+        if (cube.isDefined())
+        {
             QoSCubes.push_back(cube);
-        }else {
-            EV << "QoSCube with ID " << cube.getQosId() << " contains DO-NOT-CARE parameter. It is not fully defined, thus it is not loaded into RA's QoS-cube set!" << endl;
         }
-
+        else
+        {
+            EV << "QoSCube with ID " << cube.getQosId()
+                    << " contains DO-NOT-CARE parameter. It is not fully defined, thus it is not loaded into RA's QoS-cube set!"
+                    << endl;
+        }
     }
 
-    if (!QoSCubes.size()) {
+    if (!QoSCubes.size())
+    {
         std::ostringstream os;
-        os << this->getFullPath() << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!" << endl;
+        os << this->getFullPath()
+                << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!"
+                << endl;
         error(os.str().c_str());
     }
+
+    // add a static QoS cube for management
+    // TODO: make a new constructor accepting precise values for this
+    QoSCube cube = QoSCube();
+    // <- fill it out here
+    QoSCubes.push_back(cube);
+
+    // add a QoS requirements object
+    mgmtReqs = new QoSReq();
+    // <- fill it out here
+
+
 }
 
 /**
@@ -257,22 +278,29 @@ void RA::initQoSCubes()
 QoSReq* RA::initQoSReqById(unsigned short id)
 {
     cXMLElement* qosXml = NULL;
-    if (par(PAR_QOSREQ).xmlValue() != NULL && par(PAR_QOSREQ).xmlValue()->hasChildren()){
+    if (par(PAR_QOSREQ).xmlValue() != NULL
+            && par(PAR_QOSREQ).xmlValue()->hasChildren())
+    {
         qosXml = par(PAR_QOSREQ).xmlValue();
-    }else{
+    }
+    else
+    {
 //        error((std::string(PAR_QOSREQ) + std::string(" parameter not initialized!")).c_str());
-      return NULL;
+        return NULL;
     }
 
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSREQ);
-    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it) {
+    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it)
+    {
         cXMLElement* m = *it;
-        if (!m->getAttribute(ATTR_ID)) {
+        if (!m->getAttribute(ATTR_ID))
+        {
             EV << "Error parsing QoSReq. Its ID is missing!" << endl;
             continue;
         }
         //Skipping QoSReqs with wrong ID
-        else if ((unsigned short)atoi(m->getAttribute(ATTR_ID)) != id) {
+        else if ((unsigned short) atoi(m->getAttribute(ATTR_ID)) != id)
+        {
             continue;
         }
 
@@ -723,7 +751,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
         // prepare the new flow specifics
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
-        nm1Flow->setQosParameters(flow->getQosParameters());
+        nm1Flow->setQosRequirements(flow->getQosRequirements());
         if (pendingFlows[neighAddr] == NULL)
         {
             pendingFlows[neighAddr] = new std::list<Flow*>;
@@ -731,16 +759,16 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         pendingFlows[neighAddr]->push_back(nm1Flow);
 
         // check if a management flow to given destination is already present
-        if (flowTable->findFlowByDstApni(neighAddr, 42) == NULL)
+        if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSCUBE) == NULL)
         { // it isn't, we should allocate it first
             EV << "\n\n\nallocating a management flow\n\n\n" << endl;
             Flow *nm1Flow2 = new Flow(srcAPN, neighAPN);
-            nm1Flow2->setQosParameters(*getQoSCubeById(42));
+            nm1Flow2->setQosRequirements(*mgmtReqs);
             createNM1Flow(nm1Flow2);
         }
         else
         { // the management flow is in place
-            if (flowTable->findFlowByDstApni(neighAddr, 42) == NULL)
+            if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSCUBE) == NULL)
             { // ...but still being allocated
                 EV << "\n\n\nwaiting for mgmt flow to finish allocating\n\n\n" << endl;
             }
