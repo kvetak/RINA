@@ -148,18 +148,14 @@ void eDLMonitor::onMessageArrival(RMTQueue* queue) {
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
             inC[port] ++;
-            if(inM[port] != queue) {
-                inQ[port].push_back(queue);
-            }
+            inQ[port].push_back(queue);
         }
         if(queue->getType() == RMTQueue::OUTPUT){
             outC[port] ++;
-            if(outM[port] != queue) {
-                std::string cu = Q2CU[queue];
-                int urgency = CUs[cu].urgency;
-                outQs[port][urgency].push_back(queue);
-                lastInsertedUrgency[port] = urgency;
-            }
+            std::string cu = Q2CU[queue];
+            int urgency = CUs[cu].urgency;
+            outQs[port][urgency].push_back(queue);
+            lastInsertedUrgency[port] = urgency;
         }
     }
 }
@@ -171,24 +167,18 @@ void eDLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
             inC[port] --;
-            if(inM[port] != queue) {
-                inQ[port].pop_back();
-            }
+            inQ[port].pop_back();
         } else {
             outC[port] --;
-            if(outM[port] != queue) {
-                outQs[port][lastInsertedUrgency[port]].pop_back();
-            }
+            outQs[port][lastInsertedUrgency[port]].pop_back();
         }
     }
 }
 
 void eDLMonitor::postQueueCreation(RMTQueue* queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    inM[port] = port->getManagementQueue(RMTQueue::INPUT);
-    outM[port] = port->getManagementQueue(RMTQueue::OUTPUT);
 
-    if(queue->getType() == RMTQueue::OUTPUT && queue != outM[port]) {
+    if(queue->getType() == RMTQueue::OUTPUT) {
         std::string cu = "BE";
 
         for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
@@ -211,14 +201,10 @@ int eDLMonitor::getInThreshold(RMTQueue * queue){
 RMTQueue* eDLMonitor::getNextInput(RMTPort* port){
     RMTQueue* q = NULL;
 
-    if(inM[port]->getLength() > 0) {
-        q = inM[port];
-    } else {
-        QueuesList* ql = &(inQ[port]);
-        if(!ql->empty()) {
-            q = ql->front();
-            ql->pop_front();
-        }
+    QueuesList* ql = &(inQ[port]);
+    if(!ql->empty()) {
+        q = ql->front();
+        ql->pop_front();
     }
 
     if(q != NULL){
@@ -234,9 +220,6 @@ int eDLMonitor::getOutCount(RMTPort* port){
 
 int eDLMonitor::getOutThreshold(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    if(outM[port] == queue) {
-        return queue->getMaxLength();
-    }
     std::string cu = Q2CU[queue];
     return CUs[cu].threshold;
 }
@@ -244,25 +227,21 @@ int eDLMonitor::getOutThreshold(RMTQueue * queue){
 RMTQueue* eDLMonitor::getNextOutput(RMTPort* port){
     RMTQueue* q = NULL;
 
-    if(outM[port]->getLength() > 0) {
-        q = outM[port];
-    } else {
-        PriorityQueuesList * qs = & outQs[port];
-        PQListRIterator tit = qs->rend();
-        for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
-            if(!it->second.empty()){
-                tit = it;
-                double tP = probs[it->first];
-                if(tP <= 0 || tP < uniform(0,1) ){
-                    q = it->second.front();
-                    it->second.pop_front();
-                }
+    PriorityQueuesList * qs = & outQs[port];
+    PQListRIterator tit = qs->rend();
+    for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
+        if(!it->second.empty()){
+            tit = it;
+            double tP = probs[it->first];
+            if(tP <= 0 || tP < uniform(0,1) ){
+                q = it->second.front();
+                it->second.pop_front();
             }
         }
-        if(q == NULL && tit != qs->rend()){
-            q = tit->second.front();
-            tit->second.pop_front();
-        }
+    }
+    if(q == NULL && tit != qs->rend()){
+        q = tit->second.front();
+        tit->second.pop_front();
     }
 
     if(q != NULL){
@@ -286,12 +265,7 @@ queueStat eDLMonitor::getOutStat(RMTQueue * queue){
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
     dlCUInfo din = CUs[Q2CU[queue]];
-    if(outM[port] == queue) {
-        return queueStat(outC[port],queue->getMaxLength(),1,queue->getMaxLength());
-    } else {
-        return queueStat(outC[port],din.threshold,din.dropProb, din.absThreshold);
-
-    }
+    return queueStat(outC[port],din.threshold,din.dropProb, din.absThreshold);
 }
 
 

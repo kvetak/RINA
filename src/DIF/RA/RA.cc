@@ -373,8 +373,6 @@ void RA::bindMediumToRMT()
     port->setOutputReady();
     port->setInputReady();
 
-//    // create extra queues for management purposes
-//    rmtAllocator->addMgmtQueues(port);
     // apply queue allocation policy handler
     qAllocPolicy->onNM1PortInit(port);
 }
@@ -408,8 +406,6 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     port->postInitialize();
 
     // 3) allocate queues
-//    // create extra queues for management purposes (this will likely go away later)
-//    rmtAllocator->addMgmtQueues(port);
     // apply queue allocation policy handler
     qAllocPolicy->onNM1PortInit(port);    
 
@@ -492,11 +488,6 @@ void RA::createNM1Flow(Flow *flow)
     { // the Allocate procedure has sucessfully begun (and M_CREATE request has been sent)
         // bind the new (N-1)-flow to an RMT port
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
-//        // TODO: remove this when management isn't piggy-backed anymore!
-//        // (port shouldn't be ready to send out data when the flow isn't yet allocated)
-//        port->setOutputReady();
-//        port->setInputReady();
-
         // notify the PDUFG of the new flow
         fwdtg->insertFlowInfo(
             Address(flow->getDstApni().getApn().getName()),
@@ -756,9 +747,9 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
         { // it isn't, we should allocate it first
             EV << "\n\n\nallocating a management flow\n\n\n" << endl;
-            Flow *nm1Flow2 = new Flow(srcAPN, neighAPN);
-            nm1Flow2->setQosRequirements(mgmtReqs);
-            createNM1Flow(nm1Flow2);
+            Flow *mgmtNM1Flow = new Flow(srcAPN, neighAPN);
+            mgmtNM1Flow->setQosRequirements(mgmtReqs);
+            createNM1Flow(mgmtNM1Flow);
         }
         else
         { // the management flow is in place

@@ -81,7 +81,6 @@ public:
     cuRepo CUs;
     queue2CU Q2CU;
 
-    port2Queue inM, outM;
     port2Queues inQ;
     Port2PQ outQs;
 

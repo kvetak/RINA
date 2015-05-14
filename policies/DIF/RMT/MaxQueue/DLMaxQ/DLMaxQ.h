@@ -21,6 +21,8 @@
 #include "RMTMaxQBase.h"
 #include "DLMonitor.h"
 
+using namespace DLMonitor;
+
 class DLMaxQ : public RMTMaxQBase
 {
   public:

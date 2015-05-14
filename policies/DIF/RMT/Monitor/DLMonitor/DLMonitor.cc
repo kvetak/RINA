@@ -89,18 +89,14 @@ void DLMonitor::onMessageArrival(RMTQueue* queue) {
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
             inC[port] ++;
-            if(inM[port] != queue) {
-                inQ[port].push_back(queue);
-            }
+            inQ[port].push_back(queue);
         }
         if(queue->getType() == RMTQueue::OUTPUT){
             outC[port] ++;
-            if(outM[port] != queue) {
-                std::string cu = Q2CU[queue];
-                int urgency = CUs[cu].urgency;
-                outQs[port][urgency].push_back(queue);
-                lastInsertedUrgency[port] = urgency;
-            }
+            std::string cu = Q2CU[queue];
+            int urgency = CUs[cu].urgency;
+            outQs[port][urgency].push_back(queue);
+            lastInsertedUrgency[port] = urgency;
         }
     }
 }
@@ -112,34 +108,26 @@ void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
             inC[port] --;
-            if(inM[port] != queue) {
-                inQ[port].pop_back();
-            }
+            inQ[port].pop_back();
         } else {
             outC[port] --;
-            if(outM[port] != queue) {
-                outQs[port][lastInsertedUrgency[port]].pop_back();
-            }
+            outQs[port][lastInsertedUrgency[port]].pop_back();
         }
     }
 }
 
 void DLMonitor::postQueueCreation(RMTQueue* queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    inM[port] = port->getManagementQueue(RMTQueue::INPUT);
-    outM[port] = port->getManagementQueue(RMTQueue::OUTPUT);
 
-    if(queue != inM[port] && queue != outM[port]) {
+    std::string cu = "BE";
 
-        std::string cu = "BE";
-
-        for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
-            if(it->second.queue == queue->getName()){
-                cu = it->first;
-            }
+    for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
+        if(it->second.queue == queue->getName()){
+            cu = it->first;
         }
-        Q2CU[queue] = cu;
     }
+
+    Q2CU[queue] = cu;
 }
 
 int DLMonitor::getInCount(RMTPort* port) {
@@ -153,14 +141,10 @@ int DLMonitor::getInThreshold(RMTQueue * queue){
 RMTQueue* DLMonitor::getNextInput(RMTPort* port){
     RMTQueue* q = NULL;
 
-    if(inM[port]->getLength() > 0) {
-        q = inM[port];
-    } else {
-        QueuesList* ql = &(inQ[port]);
-        if(!ql->empty()) {
-            q = ql->front();
-            ql->pop_front();
-        }
+    QueuesList* ql = &(inQ[port]);
+    if(!ql->empty()) {
+        q = ql->front();
+        ql->pop_front();
     }
 
     if(q != NULL){
@@ -176,9 +160,6 @@ int DLMonitor::getOutCount(RMTPort* port){
 
 int DLMonitor::getOutThreshold(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    if(outM[port] == queue) {
-        return queue->getMaxLength();
-    }
     std::string cu = Q2CU[queue];
     return CUs[cu].threshold;
 }
@@ -186,15 +167,11 @@ int DLMonitor::getOutThreshold(RMTQueue * queue){
 RMTQueue* DLMonitor::getNextOutput(RMTPort* port){
     RMTQueue* q = NULL;
 
-    if(outM[port]->getLength() > 0) {
-        q = outM[port];
-    } else {
-        PriorityQueuesList * qs = & outQs[port];
-        for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
-            if(!it->second.empty()){
-                q = it->second.front();
-                it->second.pop_front();
-            }
+    PriorityQueuesList * qs = & outQs[port];
+    for(PQListRIterator it = qs->rbegin(); it != qs->rend() && q == NULL; it++){
+        if(!it->second.empty()){
+            q = it->second.front();
+            it->second.pop_front();
         }
     }
 
@@ -220,8 +197,7 @@ queueStat DLMonitor::getOutStat(RMTQueue * queue){
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
-    int th = (outM[port] == queue)? queue->getMaxLength() : CUs[Q2CU[queue]].threshold;
-
+    int th = CUs[Q2CU[queue]].threshold;
     return queueStat(outC[port],th,1,th);
 }
 

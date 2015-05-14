@@ -56,7 +56,6 @@ public:
     queueStat getOutStat(RMTQueue * queue);
 
   protected:
-    port2Queue inM, outM;
     port2Queues inQ, outQ;
     port2Count inC, outC;
 };
