@@ -32,7 +32,7 @@ public:
 
     // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
     virtual std::vector<RMTPort * > lookup(const PDU * pdu) = 0;
-    virtual std::vector<RMTPort * > lookup(const Address &dst, const unsigned short &qos) = 0;
+    virtual std::vector<RMTPort * > lookup(const Address &dst, const std::string& qos) = 0;
     // Returns a representation of the Forwarding Knowledge
     virtual std::string toString() = 0;
 

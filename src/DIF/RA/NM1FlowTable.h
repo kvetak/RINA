@@ -31,8 +31,8 @@ class NM1FlowTable : public cSimpleModule
     void insert(const NM1FlowTableItem* entry);
     void insert(Flow* flow, FABase* fa, RMTPort* port, std::string gateName);
     void remove(Flow* flow);
-    NM1FlowTableItem* findFlowByDstApni(std::string addr, unsigned short qosId);
-    NM1FlowTableItem* findFlowByDstAddr(std::string addr, unsigned short qosId);
+    NM1FlowTableItem* findFlowByDstApni(std::string addr, std::string qosId);
+    NM1FlowTableItem* findFlowByDstAddr(std::string addr, std::string qosId);
     NM1FlowTableItem* lookup(Flow* flow);
 
   protected:

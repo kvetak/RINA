@@ -27,28 +27,29 @@
 const char* STR_DONOTCARE = "do-not-care";
 const char* STR_YES = "yes";
 const char* STR_NO = "no";
-const int   VAL_DEFQOS = 0;
+const int   VAL_DEFAULT_QOS = 0;
+const std::string VAL_UNDEF_QOSID = "UNDEF-QoSCube";
+const std::string VAL_MGMTQOSID = "MGMT-QoSCube";
 
 const char* ELEM_ATIME               = "ATime";
 const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
-
-QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
-        avgBand(VAL_DEFQOS), avgSDUBand(VAL_DEFQOS), peakBandDuration(VAL_DEFQOS), peakSDUBandDuration(VAL_DEFQOS),
-        burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), pduDropProbability(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
+QoSCube::QoSCube() : qoSId(VAL_UNDEF_QOSID),
+        avgBand(VAL_DEFAULT_QOS), avgSDUBand(VAL_DEFAULT_QOS), peakBandDuration(VAL_DEFAULT_QOS), peakSDUBandDuration(VAL_DEFAULT_QOS),
+        burstPeriod(VAL_DEFAULT_QOS), burstDuration(VAL_DEFAULT_QOS), undetectedBitErr(VAL_DEFAULT_QOS), pduDropProbability(VAL_DEFAULT_QOS), maxSDUsize(VAL_DEFAULT_QOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
-        maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
-        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS), aTime(VAL_DEFQOS),
+        maxAllowGap(VAL_DEFAULT_QOS), delay(VAL_DEFAULT_QOS), jitter(VAL_DEFAULT_QOS),
+        costTime(VAL_DEFAULT_QOS), costBits(VAL_DEFAULT_QOS), aTime(VAL_DEFAULT_QOS),
         rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
 {
 }
 
-QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_DEFQOS),
+QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
         avgBand(VAL_QOSPARDONOTCARE), avgSDUBand(VAL_QOSPARDONOTCARE), peakBandDuration(VAL_QOSPARDONOTCARE), peakSDUBandDuration(VAL_QOSPARDONOTCARE),
         burstPeriod(VAL_QOSPARDONOTCARE), burstDuration(VAL_QOSPARDONOTCARE), undetectedBitErr(VAL_QOSPARDONOTCARE), pduDropProbability(VAL_QOSPARDONOTCARE), maxSDUsize(VAL_QOSPARDONOTCARE),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_QOSPARDONOTCARE), delay(VAL_QOSPARDONOTCARE), jitter(VAL_QOSPARDONOTCARE),
-        costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFQOS),
+        costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFAULT_QOS),
         rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
 {
     for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
@@ -141,33 +142,69 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_DEFQOS),
        }
     }
 }
-QoSCube::~QoSCube() {
-    qoSId = VAL_DEFQOS;
 
-    avgBand = VAL_DEFQOS;
-    avgSDUBand = VAL_DEFQOS;             //Average SDU bandwidth (measured in SDUs/sec)
-    peakBandDuration = VAL_DEFQOS;       //Peak bandwidth-duration (measured in bits/sec);
-    peakSDUBandDuration = VAL_DEFQOS;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-    burstPeriod = VAL_DEFQOS;            //Burst period measured in useconds
-    burstDuration = VAL_DEFQOS;          //Burst duration, measured in useconds fraction of Burst Period
-    undetectedBitErr = VAL_DEFQOS;    //Undetected bit error rate measured as a probability
-    pduDropProbability = VAL_DEFQOS;
-    maxSDUsize = VAL_DEFQOS;             //MaxSDUSize measured in bytes
+QoSCube::QoSCube(std::string tqosid,
+        int tavgBand, int tavgSDUBand,
+        int tpeakBandDuration, int tpeakSDUBandDuration,
+        int tburstPeriod, int tburstDuration,
+        double tundetectedBitErr, double tpduDropProbab,
+        int tmaxSDUsize,
+        bool tpartDeliv, bool tincompleteDeliv, bool tforceOrder,
+        unsigned int tmaxAllowGap, int tdelay, int tjitter,
+        int tcosttime, int tcostbits,
+        double tatime, bool trxon, bool twinfcon, bool tratefcon) :
+                qoSId(tqosid),
+                avgBand(tavgBand), avgSDUBand(tavgSDUBand),
+                peakBandDuration(tpeakBandDuration), peakSDUBandDuration(tpeakSDUBandDuration),
+                burstPeriod(tburstPeriod), burstDuration(tburstDuration),
+                undetectedBitErr(tundetectedBitErr), pduDropProbability(tpduDropProbab),
+                maxSDUsize(tmaxSDUsize),
+                partDeliv(tpartDeliv), incompleteDeliv(tincompleteDeliv), forceOrder(tforceOrder),
+                maxAllowGap(tmaxAllowGap), delay(tdelay), jitter(tjitter),
+                costTime(tcosttime), costBits(tcostbits),
+                aTime(tatime), rxOn(trxon), windowFCOn(twinfcon), rateFCOn(tratefcon),
+                efcpPolicies(new EFCPPolicySet())
+{
+}
+
+QoSCube::~QoSCube() {
+    qoSId = VAL_DEFAULT_QOS;
+
+    avgBand = VAL_DEFAULT_QOS;
+    avgSDUBand = VAL_DEFAULT_QOS;             //Average SDU bandwidth (measured in SDUs/sec)
+    peakBandDuration = VAL_DEFAULT_QOS;       //Peak bandwidth-duration (measured in bits/sec);
+    peakSDUBandDuration = VAL_DEFAULT_QOS;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    burstPeriod = VAL_DEFAULT_QOS;            //Burst period measured in useconds
+    burstDuration = VAL_DEFAULT_QOS;          //Burst duration, measured in useconds fraction of Burst Period
+    undetectedBitErr = VAL_DEFAULT_QOS;    //Undetected bit error rate measured as a probability
+    pduDropProbability = VAL_DEFAULT_QOS;
+    maxSDUsize = VAL_DEFAULT_QOS;             //MaxSDUSize measured in bytes
     partDeliv = false;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
     incompleteDeliv = false;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
     forceOrder = false;            //Must SDUs be delivered in-order bits
-    maxAllowGap = VAL_DEFQOS;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-    delay = VAL_DEFQOS;                  //Delay in usecs
-    jitter = VAL_DEFQOS;                 //Jitter in usecs
-    costTime = VAL_DEFQOS;               //measured in $/ms
-    costBits = VAL_DEFQOS;               //measured in $/Mb
-    aTime = VAL_DEFQOS;
+    maxAllowGap = VAL_DEFAULT_QOS;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    delay = VAL_DEFAULT_QOS;                  //Delay in usecs
+    jitter = VAL_DEFAULT_QOS;                 //Jitter in usecs
+    costTime = VAL_DEFAULT_QOS;               //measured in $/ms
+    costBits = VAL_DEFAULT_QOS;               //measured in $/Mb
+    aTime = VAL_DEFAULT_QOS;
 }
+
+const QoSCube QoSCube::MANAGEMENT(VAL_MGMTQOSID,
+                                  2048, 10,
+                                  4096, 20,
+                                  10000, 10000,
+                                  0.0, 0.0,
+                                  1500,
+                                  false, false, true,
+                                  0, 0, 0,
+                                  0, 0,
+                                  0.0, true, true, false
+                                 );
 
 std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
     return os << cube.info();
 }
-
 
 int QoSCube::getAvgBand() const {
     return avgBand;
@@ -281,7 +318,7 @@ void QoSCube::setUndetectedBitErr(double undetectedBitErr) {
     this->undetectedBitErr = undetectedBitErr;
 }
 
-unsigned short QoSCube::getQosId() const {
+std::string QoSCube::getQosId() const {
     return qoSId;
 }
 
@@ -309,7 +346,7 @@ void QoSCube::setATime(double aTime) {
     this->aTime = aTime;
 }
 
-void QoSCube::setQosId(unsigned short qoSId) {
+void QoSCube::setQosId(std::string qoSId) {
     this->qoSId = qoSId;
 }
 
@@ -328,8 +365,7 @@ void QoSCube::setPduDropProbability(double pduDropProbability) {
 std::string QoSCube::info() const {
     std::ostringstream os;
 
-    if (this->getQosId())
-        os << "QoSCube Id> " << this->getQosId();
+    os << "QoSCube Id> " << this->getQosId();
 
     os << "\n   average BW = ";
         os << this->getAvgBand() << " bit/s";

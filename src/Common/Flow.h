@@ -25,7 +25,7 @@
 #include "Address.h"
 #include "QoSReq.h"
 
-extern const int VAL_UNDEFINED;
+extern const int VAL_UNDEF_PORTID;
 extern const int VAL_MAXHOPCOUNT;
 extern const int VAL_MAXCREATERETRIES;
 
@@ -145,6 +145,8 @@ class Flow : public cObject
      * @return Read-only QoSReq instance
      */
     const QoSReq& getQosRequirements() const;
+
+    QoSReq& getQosReqs();
 
     /**
      * @brief Sets QoS parameters wanted by flow initiator

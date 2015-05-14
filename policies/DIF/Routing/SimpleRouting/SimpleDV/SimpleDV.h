@@ -37,12 +37,12 @@ typedef std::vector<rtEntry> entriesL;
 typedef std::vector<rtEntry>::iterator entriesIt;
 
 typedef std::map<Address, unsigned short> neighMetric;
-typedef std::map<unsigned short, neighMetric> qosNeighMetric;
+typedef std::map<std::string, neighMetric> qosNeighMetric;
 typedef neighMetric::iterator neighMetricIt;
 typedef qosNeighMetric::iterator qosNeighMetricIt;
 
 typedef std::map<std::string, rtEntry> tTable;
-typedef std::map<unsigned short, tTable> rtTable;
+typedef std::map<std::string, tTable> rtTable;
 typedef tTable::iterator tTableIt;
 typedef rtTable::iterator rtTableIt;
 
@@ -50,10 +50,10 @@ typedef rtTable::iterator rtTableIt;
 
 class RoutingUpdate : public IntRoutingUpdate {
 public:
-    RoutingUpdate(const Address &_addr, const std::string &_src, const unsigned short &_qos);
+    RoutingUpdate(const Address &_addr, const std::string &_src, const std::string& _qos);
 
     std::string getSrc();
-    unsigned short getQoS();
+    std::string getQoS();
 
     void addEntry(rtEntry);
 
@@ -62,7 +62,7 @@ public:
 
 protected:
     std::string src;
-    unsigned short qos;
+    std::string qos;
     entriesL entries;
 };
 
@@ -73,8 +73,8 @@ public:
 
 
     //Flow inserted/removed
-    void insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric);
-    void removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos);
+    void insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric);
+    void removeFlow(const Address &addr, const std::string &dst, const std::string& qos);
 
 
     //Get Changes

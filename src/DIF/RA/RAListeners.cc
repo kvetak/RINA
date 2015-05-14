@@ -58,7 +58,7 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    unsigned short qosId = flow->getConId().getQoSId();
+    std::string qosId = flow->getConId().getQoSId();
 
     NM1FlowTableItem* item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
     if (item != NULL)

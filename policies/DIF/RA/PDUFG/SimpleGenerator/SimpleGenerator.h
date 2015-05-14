@@ -26,7 +26,7 @@
 namespace SimpleGenerator {
 
 typedef std::set<RMTPort*> PortsSet;
-typedef std::map<unsigned short, PortsSet> Nentries;
+typedef std::map<std::string, PortsSet> Nentries;
 typedef std::map<std::string, Nentries> NTable;
 
 typedef PortsSet::iterator PortsSetIt;
@@ -37,8 +37,8 @@ typedef NTable::iterator NTableIt;
 class SimpleGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const std::string& qos, RMTPort * port);
+    virtual void removedFlow(const Address &addr, const std::string& qos, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();

@@ -17,7 +17,7 @@
 
 Define_Module(ScoreComparer);
 
-short ScoreComparer::countFeasibilityScore(const QoSReq requirements, const QoSCube cube) const {
+short ScoreComparer::countFeasibilityScore(const QoSReq& requirements, const QoSCube& cube) const {
     short score = 0;
 
     if (requirements.getAvgBand() != VAL_QOSPARDONOTCARE)
@@ -81,11 +81,19 @@ bool ScoreComparer::run(Flow& flow) {
         return false;
     }
 
+    EV << flow.getQosRequirements().getAvgBand() << endl;
+
+    //Always translate management traffic to appropriate management QoSCube
+    if (flow.getQosRequirements().compare(QoSReq::MANAGEMENT)) {
+        flow.getConnectionId().setQoSId(VAL_MGMTQOSID);
+        return true;
+    }
+
     //TODO: Compare QoS Parameters with available QoS cubes
     QoSCubeSet cubes = ResourceAllocator->getQoSCubes();
     //EV << ResourceAllocator->getQoSCubes();
 
-    unsigned short qosid = 0;
+    std::string qosid = VAL_UNDEF_QOSID;
     short score = 0;
 
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
@@ -100,6 +108,6 @@ bool ScoreComparer::run(Flow& flow) {
         }
     }
     flow.getConnectionId().setQoSId(qosid);
-    return qosid ? true : false;
+    return qosid.compare(VAL_UNDEF_QOSID) ? true : false;
 }
 

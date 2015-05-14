@@ -35,20 +35,20 @@ public:
     ~IntPDUFG();
 
     // Find the next known neighbor to reach the destination.
-    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const unsigned short & qos);
+    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const std::string& qos);
 
     //
     // Flow up/down operations:
     //
 
     // Inserts a new flow through which a neighbor can be reached.
-    void insertFlowInfo(Address addr, unsigned short qos, RMTPort * port);
+    void insertFlowInfo(Address addr, std::string qos, RMTPort * port);
     // Removes an existing flow from the existing ones.
     void removeFlowInfo(RMTPort * port);
 
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port) = 0;
-    virtual void removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port) = 0;
+    virtual void insertedFlow(const Address &addr, const std::string &qos, RMTPort * port) = 0;
+    virtual void removedFlow(const Address &addr, const std::string &qos, RMTPort * port) = 0;
 
     //Routing has processes a routing update
     virtual void routingUpdated() = 0;

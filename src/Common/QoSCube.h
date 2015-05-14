@@ -33,13 +33,15 @@
 #include "ExternConsts.h"
 #include "EFCPPolicySet.h"
 
-extern const char* STR_DONOTCARE;
-extern const char* STR_YES;
-extern const char* STR_NO;
-extern const int   VAL_DEFQOS;
+extern const char*          STR_DONOTCARE;
+extern const char*          STR_YES;
+extern const char*          STR_NO;
+extern const int            VAL_DEFAULT_QOS;
+extern const std::string    VAL_UNDEF_QOSID;
+extern const std::string    VAL_MGMTQOSID;
 
-extern const char* ELEM_ATIME;
-extern const char* ELEM_EFCPPOL;
+extern const char*          ELEM_ATIME;
+extern const char*          ELEM_EFCPPOL;
 
 /**
  * @brief Class representing QoSCube with all its properties that is primarily used by FA, RMT and RA
@@ -53,7 +55,7 @@ class QoSCube {
     /**
      * @brief Attribute holding QoSCube identifier. Beaware, value 0 is reserved for Flow QoS demands!
      */
-    unsigned short qoSId;
+    std::string qoSId;
 
     /**
      * @brief Attribute holding average bandwidth
@@ -173,10 +175,20 @@ class QoSCube {
 
     QoSCube(cXMLElementList& attrs);
 
+    QoSCube(std::string tqosid,
+            int tavgBand, int tavgSDUBand, int tpeakBandDuration, int tpeakSDUBandDuration, int tburstPeriod, int tburstDuration,
+            double tundetectedBitErr, double tpduDropProbab,
+            int tmaxSDUsize, bool tpartDeliv, bool tincompleteDeliv, bool tforceOrder,
+            unsigned int tmaxAllowGap, int tdelay, int tjitter, int tcosttime, int tcostbits,
+            double tatime, bool trxon, bool twinfcon, bool tratefcon
+            );
+
     /**
      * @brief Destructor assigning default uninitialized values
      */
     virtual ~QoSCube();
+
+    static const QoSCube MANAGEMENT;
 
     bool isDefined();
 
@@ -184,13 +196,13 @@ class QoSCube {
      * @brief Gets QoSCube identifier
      * @return QoSCube identifier as unsigned number, where value 0 is reserved for AE's Flow QoS parameters
      */
-    unsigned short getQosId() const;
+    std::string getQosId() const;
 
     /**
      * @brief Sets QoSCube identifier
      * @param qoSId A new QoSCube identifier
      */
-    void setQosId(unsigned short qoSId);
+    void setQosId(std::string qoSId);
 
     /**
      * @brief Gets Average Bandwidth parameter

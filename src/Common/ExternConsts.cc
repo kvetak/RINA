@@ -41,7 +41,6 @@ const char* MOD_DTP_STATE       = "dtpState";
 const char* MOD_DTCP_STATE      = "dtcpState";
 const char* MOD_EFCPI           = "efcpi_";
 
-
 //Module type paths
 const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";
 const char* MOD_EFCPI_PATH      = "rina.src.DIF.EFCP.EFCPI";
@@ -117,5 +116,4 @@ const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;
 const int   DONTCARE_INVOKEID   = 0;
-const int   VAL_UNDEF_PORTID   = -1;
-const unsigned short VAL_MGMTQOSCUBE = 42;
+//const int   VAL_UNDEF_PORTID   = -1;

@@ -37,24 +37,24 @@ struct linksU{
 typedef std::map<std::string, linksU> linksSt;
 typedef std::pair<std::string, linksU> linksStEntry;
 
-typedef std::map<unsigned short, linksSt> linksStCol;
-typedef std::pair<unsigned short, linksSt> linksStColEntry;
+typedef std::map<std::string, linksSt> linksStCol;
+typedef std::pair<std::string, linksSt> linksStColEntry;
 
 typedef std::map<std::string, unsigned short>::iterator linksIt;
 typedef linksSt::iterator linksStIt;
 typedef linksStCol::iterator linksStColIt;
 
 typedef std::map<Address, unsigned short> neighMetric;
-typedef std::map<unsigned short, neighMetric> qosNeighMetric;
+typedef std::map<std::string, neighMetric> qosNeighMetric;
 typedef neighMetric::iterator neighMetricIt;
 typedef qosNeighMetric::iterator qosNeighMetricIt;
 
 
-typedef std::set<unsigned short> qosSet;
+typedef std::set<std::string> qosSet;
 typedef std::set<std::string> addrSet;
 typedef std::vector<std::string> addrList;
-typedef std::map<unsigned short, addrSet> qos2addrSet;
-typedef std::pair<unsigned short, addrSet> qos2addrSetEntry;
+typedef std::map<std::string, addrSet> qos2addrSet;
+typedef std::pair<std::string, addrSet> qos2addrSetEntry;
 typedef qosSet::iterator qosSetIt;
 typedef addrSet::iterator addrSetIt;
 typedef qos2addrSet::iterator qos2addrSetIt;
@@ -122,9 +122,9 @@ typedef mList::iterator mListIt;
 
 class RoutingUpdate : public IntRoutingUpdate {
 public:
-    RoutingUpdate(const Address &_addr, const unsigned short &_qos);
+    RoutingUpdate(const Address &_addr, const std::string&_qos);
 
-    unsigned short getQoS();
+    std::string getQoS();
 
     void addEntry(const std::string &, linksU);
     void setEntries(linksSt);
@@ -133,7 +133,7 @@ public:
     linksStIt entriesEnd();
 
 protected:
-    unsigned short qos;
+    std::string qos;
     linksSt entries;
 };
 
@@ -144,8 +144,8 @@ public:
 
 
     //Flow inserted/removed
-    void insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric);
-    void removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos);
+    void insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric);
+    void removeFlow(const Address &addr, const std::string &dst, const std::string& qos);
 
     //Get Changes
     entries2Next getChanges();
@@ -165,10 +165,10 @@ private:
     linksStCol netState;
     qos2addrSet lastChanges;
     unsigned int secId;
-    linksSt getChangedEntries (const unsigned short &qos);
+    linksSt getChangedEntries (const std::string& qos);
 
     TreeNode constructTree(linksSt &ls);
-    void addRecursive(entries2Next &ret, const unsigned short &qos, const std::string &next, TreeNode * t);
+    void addRecursive(entries2Next &ret, const std::string& qos, const std::string &next, TreeNode * t);
 
     bool scheduledUpdate;
     void scheduleUpdate();

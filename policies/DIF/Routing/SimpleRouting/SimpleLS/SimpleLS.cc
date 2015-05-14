@@ -7,11 +7,11 @@ Register_Class(SimpleLS);
 using namespace std;
 
 
-RoutingUpdate::RoutingUpdate(const Address &_addr, const unsigned short &_qos):IntRoutingUpdate(_addr){
+RoutingUpdate::RoutingUpdate(const Address &_addr, const std::string &_qos):IntRoutingUpdate(_addr){
     qos = _qos;
 }
 
-unsigned short RoutingUpdate::getQoS(){
+std::string RoutingUpdate::getQoS(){
     return qos;
 }
 
@@ -32,7 +32,7 @@ linksStIt RoutingUpdate::entriesEnd(){
 
 
 //Flow inserted/removed
-void SimpleLS::insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric){
+void SimpleLS::insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric){
     neig[qos][addr] = metric;
     lastChanges[qos].insert(myAddr);
     secId++;
@@ -41,7 +41,7 @@ void SimpleLS::insertFlow(const Address &addr, const std::string &dst, const uns
     myEntry->links[dst] = metric;
     scheduleUpdate();
 }
-void SimpleLS::removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos){
+void SimpleLS::removeFlow(const Address &addr, const std::string &dst, const std::string& qos){
     neig[qos].erase(addr);
     if(neig[qos].size() <= 0){
         neig.erase(qos);
@@ -68,7 +68,7 @@ void SimpleLS::scheduleUpdate(){
 entries2Next SimpleLS::getChanges(){
     entries2Next ret;
     for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        unsigned short qos = qosIt->first;
+        std::string qos = qosIt->first;
         TreeNode t = constructTree(qosIt->second);
         for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
             ret[qosPaddr(qos, (*it)->addr)] = (*it)->addr;
@@ -92,7 +92,7 @@ entries2Next SimpleLS::getAll(){
     entries2Next ret;
 
     for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        unsigned short qos = qosIt->first;
+        std::string qos = qosIt->first;
         TreeNode t = constructTree(qosIt->second);
         for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
             ret[qosPaddr(qos, (*it)->addr)] = (*it)->addr;
@@ -161,7 +161,7 @@ TreeNode SimpleLS::constructTree(linksSt &ls){
 
     return t;
 }
-void SimpleLS::addRecursive(entries2Next &ret, const unsigned short &qos, const std::string &next, TreeNode * t){
+void SimpleLS::addRecursive(entries2Next &ret, const std::string& qos, const std::string &next, TreeNode * t){
     for(TreeNodeIt it = t->chl.begin(); it != t->chl.end(); it++){
         ret[qosPaddr(qos, (*it)->addr)] = next;
         addRecursive(ret, qos, next, *it);
@@ -172,7 +172,7 @@ void SimpleLS::addRecursive(entries2Next &ret, const unsigned short &qos, const 
 bool SimpleLS::processUpdate(IntRoutingUpdate * update){
     RoutingUpdate * up = check_and_cast<RoutingUpdate*>(update);
 
-    unsigned short qos = up->getQoS();
+    std::string qos = up->getQoS();
     linksSt * st = &(netState[qos]);
 
     for(linksStIt it = up->entriesBegin(); it != up->entriesEnd(); it++){
@@ -227,7 +227,7 @@ void SimpleLS::handleMessage(cMessage *msg){
     delete msg;
 }
 
-linksSt SimpleLS::getChangedEntries (const unsigned short &qos){
+linksSt SimpleLS::getChangedEntries (const std::string& qos){
     linksSt ret;
     addrSet * set = &lastChanges[qos];
     for(addrSetIt it = set->begin(); it != set->end(); it++){

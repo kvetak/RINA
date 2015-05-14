@@ -31,7 +31,7 @@ class IDPerNCU : public QueueIDGenBase
     virtual void onPolicyInit();
     virtual std::string generateID(PDU* pdu);
   protected:
-    std::map<unsigned short, std::string> qos2CU;
+    std::map<std::string, std::string> qos2CU;
 };
 
 #endif /* IDPerNQoS_H_ */

@@ -17,7 +17,7 @@ vector<RMTPort * > DomainTable::lookup(const PDU * pdu){
     return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
 }
 
-vector<RMTPort * > DomainTable::lookup(const Address &dst, const unsigned short &qos){
+vector<RMTPort * > DomainTable::lookup(const Address &dst, const std::string& qos){
     vector<RMTPort* > ret;
 
     pAddr pa = parseAddr(dst.getIpcAddress().getName());

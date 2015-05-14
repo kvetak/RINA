@@ -26,7 +26,6 @@
 #include "QoSCube.h"
 
 //Consts
-extern const unsigned short VAL_RESERVEDQOSID;
 extern const int VAL_UNDEF_CEPID;
 
 /**
@@ -63,13 +62,13 @@ class ConnectionId: public cObject {
      * @brief Getter of selected QoS-cube identifier
      * @return Returns QoS-cube identifier
      */
-    unsigned short getQoSId() const;
+    std::string getQoSId() const;
 
     /**
      * @brief Setter of selected QoS-cube identifier
      * @param qoSId A new QoS-cube id value
      */
-    void setQoSId(unsigned short qoSId);
+    void setQoSId(std::string qoSId);
 
     /**
      * @brief Getter of source Connection-Endpoint identifier
@@ -115,7 +114,7 @@ class ConnectionId: public cObject {
     /**
      * @brief QoS-cube identifier
      */
-    unsigned short qosId;
+    std::string qosId;
 
     /**
      * @brief Source Connection-Endpoint identifier

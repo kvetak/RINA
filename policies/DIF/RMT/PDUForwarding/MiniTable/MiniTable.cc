@@ -13,7 +13,7 @@ using namespace std;
 vector<RMTPort * > MiniTable::lookup(const PDU * pdu){
     return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
 }
-vector<RMTPort * > MiniTable::lookup(const Address &dst, const unsigned short &qos){
+vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos){
 
     vector<RMTPort* > ret;
     string dstAddr = dst.getIpcAddress().getName();

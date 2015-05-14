@@ -61,7 +61,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
             && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-            && flow->getConId().getQoSId() != VAL_MGMTQOSCUBE) {
+            && flow->getConId().getQoSId().compare(VAL_MGMTQOSID) ) {
         //EV << "-----\n" << flow->info() << endl;
         TFAIPtrs entries = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
@@ -70,7 +70,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     }
     else {
         if (!flow) { EV << "Received not a flow object!" << endl; }
-        else if (flow->getConId().getQoSId() == VAL_MGMTQOSCUBE) { EV << "Management flow allocated!" << endl; }
+        else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID)) { EV << "Management flow allocated!" << endl; }
         else { EV << "Flow not intended for my FA!" << endl; }
     }
 }

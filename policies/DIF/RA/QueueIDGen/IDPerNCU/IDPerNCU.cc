@@ -35,7 +35,7 @@ void IDPerNCU::onPolicyInit()
             EV << "Error parsing qos2cu. Its ID is missing!" << endl;
             continue;
         }
-        unsigned short qosId = (unsigned short)atoi(m->getAttribute("id"));
+        std::string qosId = m->getAttribute("id");
 
         if (!m->getAttribute("cu")) {
             EV << "Error parsing CU. Its ID is missing!" << endl;
@@ -53,7 +53,7 @@ void IDPerNCU::onPolicyInit()
 }
 std::string IDPerNCU::generateID(PDU* pdu)
 {
-    unsigned short qosId = pdu->getConnId().getQoSId();
+    std::string qosId = pdu->getConnId().getQoSId();
     if(qos2CU.find(qosId) != qos2CU.end()){
         return qos2CU[qosId];
     } else {

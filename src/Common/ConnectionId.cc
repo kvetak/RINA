@@ -18,11 +18,10 @@
 #include "ConnectionId.h"
 
 //Consts
-const unsigned short VAL_RESERVEDQOSID = 0;
 const int VAL_UNDEF_CEPID = -1;
 
 ConnectionId::ConnectionId() :
-    qosId(VAL_RESERVEDQOSID), srcCEPId(VAL_UNDEF_CEPID), dstCEPId(VAL_UNDEF_CEPID)
+    qosId(VAL_UNDEF_QOSID), srcCEPId(VAL_UNDEF_CEPID), dstCEPId(VAL_UNDEF_CEPID)
 {
 }
 
@@ -36,12 +35,12 @@ void ConnectionId::setDstCepId(int destCepId)
     dstCEPId = destCepId;
 }
 
-unsigned short ConnectionId::getQoSId() const
+std::string ConnectionId::getQoSId() const
 {
     return qosId;
 }
 
-void ConnectionId::setQoSId(unsigned short qoSId)
+void ConnectionId::setQoSId(std::string qoSId)
 {
     this->qosId = qoSId;
 }
@@ -58,7 +57,7 @@ void ConnectionId::setSrcCepId(int srcCepId)
 
 ConnectionId::~ConnectionId()
 {
-    qosId = 0;
+    qosId = VAL_UNDEF_QOSID;
     srcCEPId = 0;
     dstCEPId = 0;
 }

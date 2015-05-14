@@ -19,7 +19,7 @@
 #include <IntRouting.h>
 #include <string>
 
-typedef std::pair<unsigned short, std::string> qosPaddr;
+typedef std::pair<std::string, std::string> qosPaddr;
 typedef std::map<qosPaddr, std::string> entries2Next;
 typedef std::pair<qosPaddr, std::string> entries2NextItem;
 typedef entries2Next::iterator entries2NextIt;
@@ -31,8 +31,8 @@ public:
 
 
     //Flow inserted/removed
-    virtual void insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric) = 0;
-    virtual void removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos) = 0;
+    virtual void insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric) = 0;
+    virtual void removeFlow(const Address &addr, const std::string &dst, const std::string& qos) = 0;
 
     //Get Changes
     virtual entries2Next getChanges() = 0;

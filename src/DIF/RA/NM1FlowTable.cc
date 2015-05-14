@@ -52,13 +52,13 @@ NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
     return NULL;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, unsigned short qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, std::string qosId)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         NM1FlowTableItem a = *it;
         if ((a.getFlow()->getDstApni().getApn().getName() == addr) &&
-             a.getFlow()->getConId().getQoSId() == qosId)
+             !a.getFlow()->getConId().getQoSId().compare(qosId) )
         {
             return &(*it);
         }
@@ -66,13 +66,13 @@ NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, unsigned sho
     return NULL;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, unsigned short qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, std::string qosId)
 {
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         NM1FlowTableItem a = *it;
         if ((a.getFlow()->getDstAddr().getApname().getName() == addr) &&
-             a.getFlow()->getConId().getQoSId() == qosId)
+             !a.getFlow()->getConId().getQoSId().compare(qosId) )
         {
             return &(*it);
         }

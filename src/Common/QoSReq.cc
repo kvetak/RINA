@@ -90,6 +90,7 @@ QoSReq::QoSReq(int tavgBand, int tavgSDUBand, int tpeakBandDuration,
     if (costBits < 0)
         costBits = VAL_QOSPARDONOTCARE;
 }
+
 QoSReq::QoSReq(cXMLElementList& attrs) :
                 avgBand(VAL_DEFQOSREQ), avgSDUBand(VAL_DEFQOSREQ), peakBandDuration(VAL_DEFQOSREQ), peakSDUBandDuration(VAL_DEFQOSREQ),
                 burstPeriod(VAL_DEFQOSREQ), burstDuration(VAL_DEFQOSREQ), undetectedBitErr(VAL_DEFQOSREQ), pduDropProbability(VAL_DEFQOSREQ), maxSDUsize(VAL_DEFQOSREQ),
@@ -181,6 +182,17 @@ QoSReq::QoSReq(cXMLElementList& attrs) :
         }
     }
 }
+
+const QoSReq QoSReq::MANAGEMENT(
+                                  2048, 10,
+                                  4096, 20,
+                                  10000, 10000,
+                                  0.0, 0.0,
+                                  1500,
+                                  false, false, true,
+                                  0, 0, 0,
+                                  0, 0
+                                 );
 
 QoSReq::~QoSReq() {
     avgBand = VAL_DEFQOSREQ;
@@ -342,8 +354,8 @@ bool QoSReq::compare(const QoSReq& other) const {
             && other.getUndetectedBitErr() <= undetectedBitErr && other.getPduDropProbability() <= pduDropProbability
             && other.getMaxSduSize() <= maxSDUsize
             && other.isPartialDelivery() == partDeliv && other.isIncompleteDelivery() == incompleteDeliv && other.isForceOrder() == forceOrder
-            && other.getMaxAllowGap() <= maxAllowGap && other.getDelay() <= delay && other.getJitter()
-            && other.getCostTime() <= costTime && other.getCostBits() <= getCostBits()
+            && other.getMaxAllowGap() <= maxAllowGap && other.getDelay() <= delay && other.getJitter() <= jitter
+            && other.getCostTime() <= costTime && other.getCostBits() <= costBits
            ) ? true : false;
 }
 
@@ -444,10 +456,6 @@ std::string QoSReq::info() const {
 
     return os.str();
 }
-
-bool QoSReq::isDTCPNeeded()const {
-   return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
- }
 
 double QoSReq::getPduDropProbability() const {
      return pduDropProbability;

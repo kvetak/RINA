@@ -379,7 +379,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  * @param qosId qos-id
  * @return output port
  */
-RMTPort* RMT::fwTableLookup(const Address& destAddr, const unsigned short &qosId)
+RMTPort* RMT::fwTableLookup(const Address& destAddr, const std::string &qosId)
 {
     if (onWire)
     { // get the interface port
@@ -512,7 +512,7 @@ void RMT::ribToPort(CDAPMessage* cdap)
 {
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
+    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), VAL_MGMTQOSID);
     if (outPort != NULL)
     {
         outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
@@ -573,7 +573,7 @@ void RMT::portToPort(cMessage* msg)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(destAddr, 0);
+        outPort = fwTableLookup(destAddr, VAL_MGMTQOSID);
         if (outPort == NULL)
         {
             EV << getFullPath()

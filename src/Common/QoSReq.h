@@ -28,7 +28,7 @@
 extern const char* STR_DONOTCARE;
 extern const char* STR_YES;
 extern const char* STR_NO;
-extern const int   VAL_DEFQOS;
+extern const int   VAL_DEFAULT_QOS;
 
 /**
  * @brief Class representing QoSReq with all its properties that is primarily used by FA, RMT and RA
@@ -138,6 +138,8 @@ class QoSReq {
            unsigned int tmaxAllowGap, int tdelay, int tjitter, int tcosttime, int tcostbits);
 
     QoSReq(cXMLElementList& attrs);
+
+    static const QoSReq MANAGEMENT;
 
     /**
      * @brief Destructor assigning default uninitialized values
@@ -354,12 +356,6 @@ class QoSReq {
      * @param costBits A new value measured in $/bit
      */
     void setCostBits(double costBits);
-
-    /**
-     * @brief Returns true if DTCP module is needed in order to support this QoSReq
-     * @return
-     */
-    bool isDTCPNeeded() const;
 
     /**
      * @brief Prints QoSReq information as string

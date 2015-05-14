@@ -23,7 +23,7 @@ class ScoreComparer : public NewFlowRequestBase {
     virtual bool run(Flow& flow);
 
   private:
-    short countFeasibilityScore(const QoSReq requirements, const QoSCube cube) const;
+    short countFeasibilityScore(const QoSReq& requirements, const QoSCube& cube) const;
 };
 
 #endif /* QOSCUBECOMPARER_H_ */

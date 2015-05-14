@@ -25,7 +25,7 @@ Register_Class(SimpleGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void SimpleGenerator::insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port){
+void SimpleGenerator::insertedFlow(const Address &addr, const std::string &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst][qos].insert(port);
     if(neighbours[dst][qos].size() == 1){
@@ -33,7 +33,7 @@ void SimpleGenerator::insertedFlow(const Address &addr, const unsigned short &qo
         routingUpdated();
     }
 }
-void SimpleGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port){
+void SimpleGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst][qos].erase(port);
     if(neighbours[dst][qos].size() <= 0){

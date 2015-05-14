@@ -144,7 +144,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     {
         interfacePort = port;
     }
-    else if (flow->getConId().getQoSId() == 42)
+    else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID) )
     {
         portDisp.setTagArg("i2", 0, "status/execute");
     }

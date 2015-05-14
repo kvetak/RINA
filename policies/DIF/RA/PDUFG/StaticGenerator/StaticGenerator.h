@@ -25,8 +25,8 @@ namespace StaticGenerator {
 class StaticGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const std::string &qos, RMTPort * port);
+    virtual void removedFlow(const Address &addr, const std::string &qos, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();

@@ -234,7 +234,7 @@ void RA::initQoSCubes()
 
         cXMLElementList attrs = m->getChildren();
         QoSCube cube = QoSCube(attrs);
-        cube.setQosId((unsigned short) atoi(m->getAttribute(ATTR_ID)));
+        cube.setQosId(m->getAttribute(ATTR_ID));
 
         //Integrity check!!!
         if (cube.isDefined())
@@ -259,14 +259,20 @@ void RA::initQoSCubes()
     }
 
     // add a static QoS cube for management
-    // TODO: make a new constructor accepting precise values for this
-    QoSCube cube = QoSCube();
-    // <- fill it out here
-    QoSCubes.push_back(cube);
+    QoSCubes.push_back(QoSCube::MANAGEMENT);
 
     // add a QoS requirements object
-    mgmtReqs = new QoSReq();
-    // <- fill it out here
+    mgmtReqs = new QoSReq(
+            2048, 10,
+            4096, 20,
+            10000, 10000,
+            0.0, 0.0,
+            1500,
+            false, false, true,
+            0, 0, 0,
+            0, 0
+           );
+
 
 
 }
@@ -530,7 +536,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     Enter_Method("createNM1FlowWoAlloc()");
 
     const APN& dstAPN = flow->getDstApni().getApn();
-    unsigned short qosID = flow->getConId().getQoSId();
+    std::string qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
@@ -609,7 +615,7 @@ void RA::postNFlowAllocation(Flow* flow)
     else
     {
         const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
-        unsigned short qosId = flow->getConId().getQoSId();
+        std::string qosId = flow->getConId().getQoSId();
 
         NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
         if (item != NULL)
@@ -633,7 +639,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     ftItem->getRMTPort()->setInputReady();
 
     // if this is a management flow, allocate flows that were waiting for this
-    if (ftItem->getFlow()->getConId().getQoSId() == 42)
+    if (!ftItem->getFlow()->getConId().getQoSId().compare(VAL_MGMTQOSID))
     {
         std::list<Flow*>* flows = pendingFlows[ftItem->getFlow()->getDstApni().getApn().getName()];
 
@@ -711,7 +717,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
     std::string dstAddr = flow->getDstAddr().getApname().getName();
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
-    unsigned short qosID = flow->getConId().getQoSId();
+    std::string qosID = flow->getConId().getQoSId();
     EV << "\n\n\nrequesting flow from " << processName << " to " << dstAddr << " via " << neighAddr << "\n\n\n";
 
     APNamingInfo srcAPN = APNamingInfo(APN(processName));
@@ -759,7 +765,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         pendingFlows[neighAddr]->push_back(nm1Flow);
 
         // check if a management flow to given destination is already present
-        if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSCUBE) == NULL)
+        if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
         { // it isn't, we should allocate it first
             EV << "\n\n\nallocating a management flow\n\n\n" << endl;
             Flow *nm1Flow2 = new Flow(srcAPN, neighAPN);
@@ -768,7 +774,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         }
         else
         { // the management flow is in place
-            if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSCUBE) == NULL)
+            if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
             { // ...but still being allocated
                 EV << "\n\n\nwaiting for mgmt flow to finish allocating\n\n\n" << endl;
             }

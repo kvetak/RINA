@@ -109,7 +109,7 @@ class RMT : public RMTBase
     void ribToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    RMTPort* fwTableLookup(const Address& destAddr, const unsigned short &pduQosId);
+    RMTPort* fwTableLookup(const Address& destAddr, const std::string &pduQosId);
     RMTPort* fwTableLookup(const PDU * pdu);
     std::deque<cMessage*> invalidPDUs;
 

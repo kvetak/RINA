@@ -82,11 +82,17 @@ bool MinComparer::run(Flow& flow) {
         return false;
     }
 
+    //Always translate management traffic to appropriate management QoSCube
+    if (flow.getQosRequirements().compare(QoSReq::MANAGEMENT)) {
+        flow.getConnectionId().setQoSId(VAL_MGMTQOSID);
+        return true;
+    }
+
     //TODO: Compare QoS Parameters with available QoS cubes
     QoSCubeSet cubes = ResourceAllocator->getQoSCubes();
     //EV << ResourceAllocator->getQoSCubes();
 
-    unsigned short qosid = 0;
+    std::string qosid = VAL_UNDEF_QOSID;
     //XXX: Vesely->Gaixas: Please, check following cost variable value and overall functionality of this comparer
     double cost = DBL_MAX;
 
@@ -100,7 +106,7 @@ bool MinComparer::run(Flow& flow) {
         }
     }
     flow.getConnectionId().setQoSId(qosid);
-    return qosid ? true : false;
+    return qosid.compare(VAL_UNDEF_QOSID) ? true : false;
 
 }
 

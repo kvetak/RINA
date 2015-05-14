@@ -34,7 +34,7 @@ class MiniTable: public IntPDUForwarding {
 public:
     // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
     vector<RMTPort * > lookup(const PDU * pdu);
-    vector<RMTPort * > lookup(const Address &dst, const unsigned short &qos);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
 
     // Returns a representation of the Forwarding Knowledge
     string toString();

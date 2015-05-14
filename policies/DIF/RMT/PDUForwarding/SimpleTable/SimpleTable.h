@@ -26,8 +26,8 @@ namespace SimpleTable {
 
 using namespace std;
 
-typedef map<unsigned short, RMTPort*> qos2Port;
-typedef map<string, qos2Port> FWDTable;
+typedef map<std::string, RMTPort*> qos2Port;
+typedef map<std::string, qos2Port> FWDTable;
 
 typedef qos2Port::iterator qos2PortIt;
 typedef FWDTable::iterator FWDTableIt;
@@ -37,16 +37,16 @@ class SimpleTable: public IntPDUForwarding {
 public:
     // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
     vector<RMTPort * > lookup(const PDU * pdu);
-    vector<RMTPort * > lookup(const Address &dst, const unsigned short &qos);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
 
     // Returns a representation of the Forwarding Knowledge
     string toString();
 
     //Insert/Remove an entry
-    void insert(const std::string &addr, const unsigned short &qos, RMTPort * port);
-    void insert(const Address &addr, const unsigned short &qos, RMTPort * port);
-    void remove(const std::string &addr, const unsigned short &qos);
-    void remove(const Address &addr, const unsigned short &qos);
+    void insert(const std::string &addr, const std::string& qos, RMTPort * port);
+    void insert(const Address &addr, const std::string& qos, RMTPort * port);
+    void remove(const std::string &addr, const std::string& qos);
+    void remove(const Address &addr, const std::string& qos);
 
     void finish();
 

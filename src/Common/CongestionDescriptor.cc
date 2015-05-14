@@ -35,7 +35,7 @@ ConnectionId& CongestionDescriptor::getConnectionId() {
 }
 
 CongestionDescriptor::CongestionDescriptor(int srcCepId, int dstCepId,
-        unsigned short qosId)
+        std::string qosId)
 {
     ConId.setSrcCepId(srcCepId);
     ConId.setDstCepId(dstCepId);

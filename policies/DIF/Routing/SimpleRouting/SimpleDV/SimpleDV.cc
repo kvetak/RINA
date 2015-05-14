@@ -7,7 +7,7 @@ Register_Class(SimpleDV);
 using namespace std;
 
 
-RoutingUpdate::RoutingUpdate(const Address &_addr, const std::string &_src, const unsigned short &_qos):IntRoutingUpdate(_addr){
+RoutingUpdate::RoutingUpdate(const Address &_addr, const std::string &_src, const std::string&_qos):IntRoutingUpdate(_addr){
     src = _src;
     qos = _qos;
 }
@@ -15,7 +15,7 @@ RoutingUpdate::RoutingUpdate(const Address &_addr, const std::string &_src, cons
 std::string RoutingUpdate::getSrc(){
     return src;
 }
-unsigned short RoutingUpdate::getQoS(){
+std::string RoutingUpdate::getQoS(){
     return qos;
 }
 
@@ -32,7 +32,7 @@ entriesIt RoutingUpdate::entriesEnd(){
 
 
 //Flow inserted/removed
-void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const unsigned short &qos, const unsigned short &metric){
+void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric){
 
     neig[qos][addr] = metric;
 
@@ -57,7 +57,7 @@ void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const uns
         changes.insert(entries2NextItem(qosPaddr(qos, dst),dst));
     }
 }
-void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const unsigned short &qos){
+void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std::string& qos){
     neig[qos].erase(addr);
     if(neig[qos].size() <= 0){
         neig.erase(qos);
@@ -110,7 +110,7 @@ bool SimpleDV::processUpdate(IntRoutingUpdate * update){
         return false;
     }
 
-    unsigned short qos = up->getQoS();
+    std::string qos = up->getQoS();
 
     for(entriesIt it = up->entriesBegin(); it!= up->entriesEnd(); it++){
         if(it->addr == myAddr) {

@@ -15,7 +15,7 @@
 
 #include "Flow.h"
 
-const int VAL_UNDEFINED = -1;
+const int VAL_UNDEF_PORTID = -1;
 const int VAL_MAXHOPCOUNT = 16;
 const int VAL_MAXCREATERETRIES = 3;
 
@@ -23,7 +23,7 @@ Register_Class(Flow);
 
 Flow::Flow() :
     srcApni(APNamingInfo()), dstApni(APNamingInfo()),
-    srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
+    srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
     srcAddr(Address()), dstAddr(Address()),
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
@@ -35,7 +35,7 @@ Flow::Flow() :
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcApni(src), dstApni(dst),
-        srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
+        srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
         srcAddr(Address()), dstAddr(Address()),
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
@@ -48,13 +48,13 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
 Flow::~Flow() {
     this->srcApni = APNamingInfo();
     this->dstApni = APNamingInfo();
-    this->srcPortId = VAL_UNDEFINED;
-    this->dstPortId = VAL_UNDEFINED;
+    this->srcPortId = 0;
+    this->dstPortId = 0;
     this->srcAddr = Address();
     this->dstAddr = Address();
-    this->createFlowRetries = VAL_UNDEFINED;
-    this->maxCreateFlowRetries = VAL_UNDEFINED;
-    this->hopCount = VAL_UNDEFINED;
+    this->createFlowRetries = 0;
+    this->maxCreateFlowRetries = 0;
+    this->hopCount = 0;
     srcNeighbor = Address();
     dstNeighbor = Address();
     allocInvokeId = 0;
@@ -159,6 +159,8 @@ const QoSReq& Flow::getQosRequirements() const {
     return qosReqs;
 }
 
+
+
 Flow* Flow::dup() const {
     Flow* flow = new Flow();
     flow->setSrcApni(this->getSrcApni());
@@ -237,7 +239,7 @@ std::string Flow::infoOther() const {
 std::string Flow::infoQoS() const {
     std::stringstream os;
     os << "Chosen RA's QoS cube>" << conId.getQoSId();
-    //os << qosParameters.info();
+    os << endl << qosReqs.info();
     return os.str();
 }
 
@@ -271,6 +273,10 @@ bool Flow::isDdtFlag() const {
 
 void Flow::setDdtFlag(bool ddtFlag) {
     this->ddtFlag = ddtFlag;
+}
+
+QoSReq& Flow::getQosReqs() {
+    return qosReqs;
 }
 
 void Flow::swapApni() {

@@ -25,7 +25,7 @@ Register_Class(StaticGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void StaticGenerator::insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port){
+void StaticGenerator::insertedFlow(const Address &addr, const std::string &qos, RMTPort * port){
 
     fwd->insert(addr, qos, port);
 
@@ -39,7 +39,7 @@ void StaticGenerator::insertedFlow(const Address &addr, const unsigned short &qo
 
     EV << "Flow inserted to " << addr << endl;
 }
-void StaticGenerator::removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port){
+void StaticGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
 
     fwd->remove(addr, qos);
 

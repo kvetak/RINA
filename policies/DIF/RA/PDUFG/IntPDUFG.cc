@@ -17,7 +17,7 @@ void IntPDUFG::initialize(){
     onPolicyInit();
 }
 
-PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const unsigned short &qos){
+PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
 
     std::vector<RMTPort *> ports = fwd->lookup(destination, qos);
     if(ports.size() >= 0){
@@ -36,7 +36,7 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const unsi
     return NULL;
 }
 
-void IntPDUFG::insertFlowInfo(Address addr, unsigned short qos, RMTPort * port) {
+void IntPDUFG::insertFlowInfo(Address addr, std::string qos, RMTPort * port) {
     EV << "New flow -> <" << addr << " , " << qos << "> at " << port->getFullName()<<endl;
 
     //Insert Flow into neighbour state
@@ -53,7 +53,7 @@ void IntPDUFG::removeFlowInfo(RMTPort * port)
         PDUFGNeighbor * e = (*it);
         if(port == e->getPort()) {
             Address addr = e->getDestAddr();
-            unsigned short qos = e->getQosId();
+            std::string qos = e->getQosId();
             // Remove flow from neighbour state
             neiState.erase(it);
 
