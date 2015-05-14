@@ -176,8 +176,6 @@ void eDLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
 }
 
 void eDLMonitor::postQueueCreation(RMTQueue* queue){
-    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-
     if(queue->getType() == RMTQueue::OUTPUT) {
         std::string cu = "BE";
 
@@ -219,7 +217,6 @@ int eDLMonitor::getOutCount(RMTPort* port){
 }
 
 int eDLMonitor::getOutThreshold(RMTQueue * queue){
-    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     std::string cu = Q2CU[queue];
     return CUs[cu].threshold;
 }

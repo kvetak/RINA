@@ -117,8 +117,6 @@ void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
 }
 
 void DLMonitor::postQueueCreation(RMTQueue* queue){
-    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-
     std::string cu = "BE";
 
     for(cuRepoiterator it = CUs.begin(); it != CUs.end(); it++){
@@ -159,7 +157,6 @@ int DLMonitor::getOutCount(RMTPort* port){
 }
 
 int DLMonitor::getOutThreshold(RMTQueue * queue){
-    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     std::string cu = Q2CU[queue];
     return CUs[cu].threshold;
 }
