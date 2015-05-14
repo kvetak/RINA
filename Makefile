@@ -24,6 +24,8 @@ INCLUDE_PATH = \
     -Iexamples/AllNodes/results \
     -Iexamples/BigRandNet \
     -Iexamples/BigRandNet/results \
+    -Iexamples/CongestedNode \
+    -Iexamples/CongestedNode2 \
     -Iexamples/DC \
     -Iexamples/DC/results \
     -Iexamples/ExtendedPingTwoCSsSimple \
@@ -46,6 +48,7 @@ INCLUDE_PATH = \
     -Iexamples/SmallNetwork2/results \
     -Iexamples/SmallRandNet \
     -Iexamples/SmallRandNet/results \
+    -Iexamples/TreeCongestion \
     -Iexamples/TwoCSWithDelay \
     -Iexamples/TwoCSWithDelay/results \
     -Iexamples/TwoCSs \
@@ -54,6 +57,7 @@ INCLUDE_PATH = \
     -Iexamples/TwoCSsSimple/results \
     -Iexamples/TwoScheduling \
     -Iexamples/TwoScheduling/results \
+    -Iexamples/TwoScheduling9 \
     -Iexamples/randPrefNet \
     -Iexamples/treeBipart \
     -Iexamples/treeBipart/results \
@@ -113,6 +117,7 @@ INCLUDE_PATH = \
     -Ipolicies/DIF/RA/AddressComparator/PrefixMatch \
     -Ipolicies/DIF/RA/PDUFG \
     -Ipolicies/DIF/RA/PDUFG/BiDomainGenerator \
+    -Ipolicies/DIF/RA/PDUFG/QoSDomainGenerator \
     -Ipolicies/DIF/RA/PDUFG/SimpleGenerator \
     -Ipolicies/DIF/RA/PDUFG/SingleDomainGenerator \
     -Ipolicies/DIF/RA/PDUFG/StaticGenerator \
@@ -129,21 +134,28 @@ INCLUDE_PATH = \
     -Ipolicies/DIF/RMT \
     -Ipolicies/DIF/RMT/MaxQueue \
     -Ipolicies/DIF/RMT/MaxQueue/DLMaxQ \
+    -Ipolicies/DIF/RMT/MaxQueue/DumbMaxQ \
     -Ipolicies/DIF/RMT/MaxQueue/ECNMarker \
+    -Ipolicies/DIF/RMT/MaxQueue/PortMaxQ \
     -Ipolicies/DIF/RMT/MaxQueue/REDDropper \
     -Ipolicies/DIF/RMT/MaxQueue/ReadRateReducer \
     -Ipolicies/DIF/RMT/MaxQueue/TailDrop \
     -Ipolicies/DIF/RMT/MaxQueue/UpstreamNotifier \
     -Ipolicies/DIF/RMT/Monitor \
+    -Ipolicies/DIF/RMT/Monitor/BEMonitor \
     -Ipolicies/DIF/RMT/Monitor/DLMonitor \
     -Ipolicies/DIF/RMT/Monitor/REDMonitor \
     -Ipolicies/DIF/RMT/Monitor/SimpleMonitor \
+    -Ipolicies/DIF/RMT/Monitor/SmartMonitor \
+    -Ipolicies/DIF/RMT/Monitor/eDLMonitor \
     -Ipolicies/DIF/RMT/PDUForwarding \
     -Ipolicies/DIF/RMT/PDUForwarding/DomainTable \
     -Ipolicies/DIF/RMT/PDUForwarding/MiniTable \
+    -Ipolicies/DIF/RMT/PDUForwarding/QoSTable \
     -Ipolicies/DIF/RMT/PDUForwarding/SimpleTable \
     -Ipolicies/DIF/RMT/Scheduler \
     -Ipolicies/DIF/RMT/Scheduler/DL \
+    -Ipolicies/DIF/RMT/Scheduler/DumbSch \
     -Ipolicies/DIF/RMT/Scheduler/LongestQFirst \
     -Ipolicies/DIF/Routing \
     -Ipolicies/DIF/Routing/DomainRouting \
@@ -240,6 +252,7 @@ OBJS = \
     $O/policies/DIF/RA/PDUFG/IntPDUFG.o \
     $O/policies/DIF/RA/PDUFG/PDUFGNeighbor.o \
     $O/policies/DIF/RA/PDUFG/BiDomainGenerator/BiDomainGenerator.o \
+    $O/policies/DIF/RA/PDUFG/QoSDomainGenerator/QoSDomainGenerator.o \
     $O/policies/DIF/RA/PDUFG/SimpleGenerator/SimpleGenerator.o \
     $O/policies/DIF/RA/PDUFG/SingleDomainGenerator/SingleDomainGenerator.o \
     $O/policies/DIF/RA/PDUFG/StaticGenerator/StaticGenerator.o \
@@ -255,21 +268,27 @@ OBJS = \
     $O/policies/DIF/RA/QueueIDGen/SingleID/SingleID.o \
     $O/policies/DIF/RMT/MaxQueue/RMTMaxQBase.o \
     $O/policies/DIF/RMT/MaxQueue/DLMaxQ/DLMaxQ.o \
+    $O/policies/DIF/RMT/MaxQueue/DumbMaxQ/DumbMaxQ.o \
     $O/policies/DIF/RMT/MaxQueue/ECNMarker/ECNMarker.o \
+    $O/policies/DIF/RMT/MaxQueue/PortMaxQ/PortMaxQ.o \
     $O/policies/DIF/RMT/MaxQueue/REDDropper/REDDropper.o \
     $O/policies/DIF/RMT/MaxQueue/ReadRateReducer/ReadRateReducer.o \
     $O/policies/DIF/RMT/MaxQueue/TailDrop/TailDrop.o \
     $O/policies/DIF/RMT/MaxQueue/UpstreamNotifier/UpstreamNotifier.o \
     $O/policies/DIF/RMT/Monitor/RMTQMonitorBase.o \
+    $O/policies/DIF/RMT/Monitor/BEMonitor/BEMonitor.o \
     $O/policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.o \
     $O/policies/DIF/RMT/Monitor/REDMonitor/REDMonitor.o \
     $O/policies/DIF/RMT/Monitor/SimpleMonitor/SimpleMonitor.o \
+    $O/policies/DIF/RMT/Monitor/eDLMonitor/eDLMonitor.o \
     $O/policies/DIF/RMT/PDUForwarding/IntPDUForwarding.o \
     $O/policies/DIF/RMT/PDUForwarding/DomainTable/DomainTable.o \
     $O/policies/DIF/RMT/PDUForwarding/MiniTable/MiniTable.o \
+    $O/policies/DIF/RMT/PDUForwarding/QoSTable/QoSTable.o \
     $O/policies/DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.o \
     $O/policies/DIF/RMT/Scheduler/RMTSchedulingBase.o \
     $O/policies/DIF/RMT/Scheduler/DL/DL.o \
+    $O/policies/DIF/RMT/Scheduler/DumbSch/DumbSch.o \
     $O/policies/DIF/RMT/Scheduler/LongestQFirst/LongestQFirst.o \
     $O/policies/DIF/Routing/IntBbRouting.o \
     $O/policies/DIF/Routing/IntRouting.o \
@@ -471,6 +490,8 @@ clean:
 	$(Q)-rm -f examples/AllNodes/results/*_m.cc examples/AllNodes/results/*_m.h
 	$(Q)-rm -f examples/BigRandNet/*_m.cc examples/BigRandNet/*_m.h
 	$(Q)-rm -f examples/BigRandNet/results/*_m.cc examples/BigRandNet/results/*_m.h
+	$(Q)-rm -f examples/CongestedNode/*_m.cc examples/CongestedNode/*_m.h
+	$(Q)-rm -f examples/CongestedNode2/*_m.cc examples/CongestedNode2/*_m.h
 	$(Q)-rm -f examples/DC/*_m.cc examples/DC/*_m.h
 	$(Q)-rm -f examples/DC/results/*_m.cc examples/DC/results/*_m.h
 	$(Q)-rm -f examples/ExtendedPingTwoCSsSimple/*_m.cc examples/ExtendedPingTwoCSsSimple/*_m.h
@@ -493,6 +514,7 @@ clean:
 	$(Q)-rm -f examples/SmallNetwork2/results/*_m.cc examples/SmallNetwork2/results/*_m.h
 	$(Q)-rm -f examples/SmallRandNet/*_m.cc examples/SmallRandNet/*_m.h
 	$(Q)-rm -f examples/SmallRandNet/results/*_m.cc examples/SmallRandNet/results/*_m.h
+	$(Q)-rm -f examples/TreeCongestion/*_m.cc examples/TreeCongestion/*_m.h
 	$(Q)-rm -f examples/TwoCSWithDelay/*_m.cc examples/TwoCSWithDelay/*_m.h
 	$(Q)-rm -f examples/TwoCSWithDelay/results/*_m.cc examples/TwoCSWithDelay/results/*_m.h
 	$(Q)-rm -f examples/TwoCSs/*_m.cc examples/TwoCSs/*_m.h
@@ -501,6 +523,7 @@ clean:
 	$(Q)-rm -f examples/TwoCSsSimple/results/*_m.cc examples/TwoCSsSimple/results/*_m.h
 	$(Q)-rm -f examples/TwoScheduling/*_m.cc examples/TwoScheduling/*_m.h
 	$(Q)-rm -f examples/TwoScheduling/results/*_m.cc examples/TwoScheduling/results/*_m.h
+	$(Q)-rm -f examples/TwoScheduling9/*_m.cc examples/TwoScheduling9/*_m.h
 	$(Q)-rm -f examples/randPrefNet/*_m.cc examples/randPrefNet/*_m.h
 	$(Q)-rm -f examples/treeBipart/*_m.cc examples/treeBipart/*_m.h
 	$(Q)-rm -f examples/treeBipart/results/*_m.cc examples/treeBipart/results/*_m.h
@@ -560,6 +583,7 @@ clean:
 	$(Q)-rm -f policies/DIF/RA/AddressComparator/PrefixMatch/*_m.cc policies/DIF/RA/AddressComparator/PrefixMatch/*_m.h
 	$(Q)-rm -f policies/DIF/RA/PDUFG/*_m.cc policies/DIF/RA/PDUFG/*_m.h
 	$(Q)-rm -f policies/DIF/RA/PDUFG/BiDomainGenerator/*_m.cc policies/DIF/RA/PDUFG/BiDomainGenerator/*_m.h
+	$(Q)-rm -f policies/DIF/RA/PDUFG/QoSDomainGenerator/*_m.cc policies/DIF/RA/PDUFG/QoSDomainGenerator/*_m.h
 	$(Q)-rm -f policies/DIF/RA/PDUFG/SimpleGenerator/*_m.cc policies/DIF/RA/PDUFG/SimpleGenerator/*_m.h
 	$(Q)-rm -f policies/DIF/RA/PDUFG/SingleDomainGenerator/*_m.cc policies/DIF/RA/PDUFG/SingleDomainGenerator/*_m.h
 	$(Q)-rm -f policies/DIF/RA/PDUFG/StaticGenerator/*_m.cc policies/DIF/RA/PDUFG/StaticGenerator/*_m.h
@@ -576,21 +600,28 @@ clean:
 	$(Q)-rm -f policies/DIF/RMT/*_m.cc policies/DIF/RMT/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/*_m.cc policies/DIF/RMT/MaxQueue/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/DLMaxQ/*_m.cc policies/DIF/RMT/MaxQueue/DLMaxQ/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/MaxQueue/DumbMaxQ/*_m.cc policies/DIF/RMT/MaxQueue/DumbMaxQ/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/ECNMarker/*_m.cc policies/DIF/RMT/MaxQueue/ECNMarker/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/MaxQueue/PortMaxQ/*_m.cc policies/DIF/RMT/MaxQueue/PortMaxQ/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/REDDropper/*_m.cc policies/DIF/RMT/MaxQueue/REDDropper/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/ReadRateReducer/*_m.cc policies/DIF/RMT/MaxQueue/ReadRateReducer/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/TailDrop/*_m.cc policies/DIF/RMT/MaxQueue/TailDrop/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/MaxQueue/UpstreamNotifier/*_m.cc policies/DIF/RMT/MaxQueue/UpstreamNotifier/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Monitor/*_m.cc policies/DIF/RMT/Monitor/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/Monitor/BEMonitor/*_m.cc policies/DIF/RMT/Monitor/BEMonitor/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Monitor/DLMonitor/*_m.cc policies/DIF/RMT/Monitor/DLMonitor/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Monitor/REDMonitor/*_m.cc policies/DIF/RMT/Monitor/REDMonitor/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Monitor/SimpleMonitor/*_m.cc policies/DIF/RMT/Monitor/SimpleMonitor/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/Monitor/SmartMonitor/*_m.cc policies/DIF/RMT/Monitor/SmartMonitor/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/Monitor/eDLMonitor/*_m.cc policies/DIF/RMT/Monitor/eDLMonitor/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/PDUForwarding/*_m.cc policies/DIF/RMT/PDUForwarding/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/PDUForwarding/DomainTable/*_m.cc policies/DIF/RMT/PDUForwarding/DomainTable/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/PDUForwarding/MiniTable/*_m.cc policies/DIF/RMT/PDUForwarding/MiniTable/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/PDUForwarding/QoSTable/*_m.cc policies/DIF/RMT/PDUForwarding/QoSTable/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/PDUForwarding/SimpleTable/*_m.cc policies/DIF/RMT/PDUForwarding/SimpleTable/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Scheduler/*_m.cc policies/DIF/RMT/Scheduler/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Scheduler/DL/*_m.cc policies/DIF/RMT/Scheduler/DL/*_m.h
+	$(Q)-rm -f policies/DIF/RMT/Scheduler/DumbSch/*_m.cc policies/DIF/RMT/Scheduler/DumbSch/*_m.h
 	$(Q)-rm -f policies/DIF/RMT/Scheduler/LongestQFirst/*_m.cc policies/DIF/RMT/Scheduler/LongestQFirst/*_m.h
 	$(Q)-rm -f policies/DIF/Routing/*_m.cc policies/DIF/Routing/*_m.h
 	$(Q)-rm -f policies/DIF/Routing/DomainRouting/*_m.cc policies/DIF/Routing/DomainRouting/*_m.h
@@ -627,7 +658,7 @@ cleanall: clean
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc doc/*.cc doc/html/*.cc doc/html/search/*.cc examples/*.cc examples/AllNodes/*.cc examples/AllNodes/results/*.cc examples/BigRandNet/*.cc examples/BigRandNet/results/*.cc examples/DC/*.cc examples/DC/results/*.cc examples/ExtendedPingTwoCSsSimple/*.cc examples/ExtendedPingTwoCSsSimple/results/*.cc examples/FatTreeTopology/*.cc examples/FatTreeTopology/results/*.cc examples/FatTreeTopologyPref/*.cc examples/FatTreeTopologyPref/results/*.cc examples/SimpleRelay/*.cc examples/SimpleRelay/results/*.cc examples/SimpleRelayCongestion/*.cc examples/SimpleRelayCongestion/results/*.cc examples/SingleCS/*.cc examples/SingleCS/results/*.cc examples/SmallNetRouting/*.cc examples/SmallNetRouting/results/*.cc examples/SmallNetwork/*.cc examples/SmallNetwork/results/*.cc examples/SmallNetwork2/*.cc examples/SmallNetwork2/results/*.cc examples/SmallRandNet/*.cc examples/SmallRandNet/results/*.cc examples/TwoCSWithDelay/*.cc examples/TwoCSWithDelay/results/*.cc examples/TwoCSs/*.cc examples/TwoCSs/results/*.cc examples/TwoCSsSimple/*.cc examples/TwoCSsSimple/results/*.cc examples/TwoScheduling/*.cc examples/TwoScheduling/results/*.cc examples/randPrefNet/*.cc examples/treeBipart/*.cc examples/treeBipart/results/*.cc policies/*.cc policies/DAF/*.cc policies/DIF/*.cc policies/DIF/EFCP/*.cc policies/DIF/EFCP/DTCP/*.cc policies/DIF/EFCP/DTCP/ECN/*.cc policies/DIF/EFCP/DTCP/ECNSlowDown/*.cc policies/DIF/EFCP/DTCP/FCOverrun/*.cc policies/DIF/EFCP/DTCP/FCOverrun/FCOverrunPolicyDefault/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/LostControlPDUPolicyDefault/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/NoOverridePeakPolicyDefault/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/NoRateSlowDownPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RateReduction/*.cc policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrAck/*.cc policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrFC/*.cc policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RxTimerExpiry/*.cc policies/DIF/EFCP/DTCP/RxTimerExpiry/RxTimerExpiryPolicyDefault/*.cc policies/DIF/EFCP/DTCP/SenderAck/*.cc policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/SendingAck/*.cc policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/TxControl/*.cc policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyDefault/*.cc policies/DIF/EFCP/DTP/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyDefault/*.cc policies/DIF/EFCP/DTP/RTTEstimator/*.cc policies/DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyDefault/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyDefault/*.cc policies/DIF/EFCP/DTP/SenderInactivity/*.cc policies/DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyDefault/*.cc policies/DIF/FA/*.cc policies/DIF/FA/AllocateRetry/*.cc policies/DIF/FA/AllocateRetry/LimitedRetries/*.cc policies/DIF/FA/NewFlowRequest/*.cc policies/DIF/FA/NewFlowRequest/MinComparer/*.cc policies/DIF/FA/NewFlowRequest/ScoreComparer/*.cc policies/DIF/RA/*.cc policies/DIF/RA/AddressComparator/*.cc policies/DIF/RA/AddressComparator/ExactMatch/*.cc policies/DIF/RA/AddressComparator/PrefixMatch/*.cc policies/DIF/RA/PDUFG/*.cc policies/DIF/RA/PDUFG/BiDomainGenerator/*.cc policies/DIF/RA/PDUFG/SimpleGenerator/*.cc policies/DIF/RA/PDUFG/SingleDomainGenerator/*.cc policies/DIF/RA/PDUFG/StaticGenerator/*.cc policies/DIF/RA/QueueAlloc/*.cc policies/DIF/RA/QueueAlloc/QueuePerNCU/*.cc policies/DIF/RA/QueueAlloc/QueuePerNFlow/*.cc policies/DIF/RA/QueueAlloc/QueuePerNQoS/*.cc policies/DIF/RA/QueueAlloc/SingleQueue/*.cc policies/DIF/RA/QueueIDGen/*.cc policies/DIF/RA/QueueIDGen/IDPerNCU/*.cc policies/DIF/RA/QueueIDGen/IDPerNFlow/*.cc policies/DIF/RA/QueueIDGen/IDPerNQoS/*.cc policies/DIF/RA/QueueIDGen/SingleID/*.cc policies/DIF/RMT/*.cc policies/DIF/RMT/MaxQueue/*.cc policies/DIF/RMT/MaxQueue/DLMaxQ/*.cc policies/DIF/RMT/MaxQueue/ECNMarker/*.cc policies/DIF/RMT/MaxQueue/REDDropper/*.cc policies/DIF/RMT/MaxQueue/ReadRateReducer/*.cc policies/DIF/RMT/MaxQueue/TailDrop/*.cc policies/DIF/RMT/MaxQueue/UpstreamNotifier/*.cc policies/DIF/RMT/Monitor/*.cc policies/DIF/RMT/Monitor/DLMonitor/*.cc policies/DIF/RMT/Monitor/REDMonitor/*.cc policies/DIF/RMT/Monitor/SimpleMonitor/*.cc policies/DIF/RMT/PDUForwarding/*.cc policies/DIF/RMT/PDUForwarding/DomainTable/*.cc policies/DIF/RMT/PDUForwarding/MiniTable/*.cc policies/DIF/RMT/PDUForwarding/SimpleTable/*.cc policies/DIF/RMT/Scheduler/*.cc policies/DIF/RMT/Scheduler/DL/*.cc policies/DIF/RMT/Scheduler/LongestQFirst/*.cc policies/DIF/Routing/*.cc policies/DIF/Routing/DomainRouting/*.cc policies/DIF/Routing/DomainRouting/DV/*.cc policies/DIF/Routing/DomainRouting/LS/*.cc policies/DIF/Routing/DummyRouting/*.cc policies/DIF/Routing/SimpleRouting/*.cc policies/DIF/Routing/SimpleRouting/SimpleDV/*.cc policies/DIF/Routing/SimpleRouting/SimpleLS/*.cc scripts/*.cc src/*.cc src/CS/*.cc src/Common/*.cc src/DAF/*.cc src/DAF/AE/*.cc src/DAF/CDAP/*.cc src/DAF/DA/*.cc src/DAF/IRM/*.cc src/DIF/*.cc src/DIF/Delimiting/*.cc src/DIF/EFCP/*.cc src/DIF/EFCP/DTCP/*.cc src/DIF/EFCP/DTP/*.cc src/DIF/EFCP/EFCPTable/*.cc src/DIF/Enrollment/*.cc src/DIF/FA/*.cc src/DIF/NSM/*.cc src/DIF/RA/*.cc src/DIF/RIB/*.cc src/DIF/RMT/*.cc
+	$(Q)$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc doc/*.cc doc/html/*.cc doc/html/search/*.cc examples/*.cc examples/AllNodes/*.cc examples/AllNodes/results/*.cc examples/BigRandNet/*.cc examples/BigRandNet/results/*.cc examples/CongestedNode/*.cc examples/CongestedNode2/*.cc examples/DC/*.cc examples/DC/results/*.cc examples/ExtendedPingTwoCSsSimple/*.cc examples/ExtendedPingTwoCSsSimple/results/*.cc examples/FatTreeTopology/*.cc examples/FatTreeTopology/results/*.cc examples/FatTreeTopologyPref/*.cc examples/FatTreeTopologyPref/results/*.cc examples/SimpleRelay/*.cc examples/SimpleRelay/results/*.cc examples/SimpleRelayCongestion/*.cc examples/SimpleRelayCongestion/results/*.cc examples/SingleCS/*.cc examples/SingleCS/results/*.cc examples/SmallNetRouting/*.cc examples/SmallNetRouting/results/*.cc examples/SmallNetwork/*.cc examples/SmallNetwork/results/*.cc examples/SmallNetwork2/*.cc examples/SmallNetwork2/results/*.cc examples/SmallRandNet/*.cc examples/SmallRandNet/results/*.cc examples/TreeCongestion/*.cc examples/TwoCSWithDelay/*.cc examples/TwoCSWithDelay/results/*.cc examples/TwoCSs/*.cc examples/TwoCSs/results/*.cc examples/TwoCSsSimple/*.cc examples/TwoCSsSimple/results/*.cc examples/TwoScheduling/*.cc examples/TwoScheduling/results/*.cc examples/TwoScheduling9/*.cc examples/randPrefNet/*.cc examples/treeBipart/*.cc examples/treeBipart/results/*.cc policies/*.cc policies/DAF/*.cc policies/DIF/*.cc policies/DIF/EFCP/*.cc policies/DIF/EFCP/DTCP/*.cc policies/DIF/EFCP/DTCP/ECN/*.cc policies/DIF/EFCP/DTCP/ECNSlowDown/*.cc policies/DIF/EFCP/DTCP/FCOverrun/*.cc policies/DIF/EFCP/DTCP/FCOverrun/FCOverrunPolicyDefault/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/*.cc policies/DIF/EFCP/DTCP/LostControlPDU/LostControlPDUPolicyDefault/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/*.cc policies/DIF/EFCP/DTCP/NoOverridePeak/NoOverridePeakPolicyDefault/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/*.cc policies/DIF/EFCP/DTCP/NoRateSlowDown/NoRateSlowDownPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RateReduction/*.cc policies/DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrAck/*.cc policies/DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/*.cc policies/DIF/EFCP/DTCP/RcvrControlAck/RcvrControlAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RcvrFC/*.cc policies/DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/*.cc policies/DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/*.cc policies/DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyDefault/*.cc policies/DIF/EFCP/DTCP/RxTimerExpiry/*.cc policies/DIF/EFCP/DTCP/RxTimerExpiry/RxTimerExpiryPolicyDefault/*.cc policies/DIF/EFCP/DTCP/SenderAck/*.cc policies/DIF/EFCP/DTCP/SenderAck/SenderAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/SendingAck/*.cc policies/DIF/EFCP/DTCP/SendingAck/SendingAckPolicyDefault/*.cc policies/DIF/EFCP/DTCP/TxControl/*.cc policies/DIF/EFCP/DTCP/TxControl/TxControlPolicyDefault/*.cc policies/DIF/EFCP/DTP/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/*.cc policies/DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyDefault/*.cc policies/DIF/EFCP/DTP/RTTEstimator/*.cc policies/DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyDefault/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/*.cc policies/DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyDefault/*.cc policies/DIF/EFCP/DTP/SenderInactivity/*.cc policies/DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyDefault/*.cc policies/DIF/FA/*.cc policies/DIF/FA/AllocateRetry/*.cc policies/DIF/FA/AllocateRetry/LimitedRetries/*.cc policies/DIF/FA/NewFlowRequest/*.cc policies/DIF/FA/NewFlowRequest/MinComparer/*.cc policies/DIF/FA/NewFlowRequest/ScoreComparer/*.cc policies/DIF/RA/*.cc policies/DIF/RA/AddressComparator/*.cc policies/DIF/RA/AddressComparator/ExactMatch/*.cc policies/DIF/RA/AddressComparator/PrefixMatch/*.cc policies/DIF/RA/PDUFG/*.cc policies/DIF/RA/PDUFG/BiDomainGenerator/*.cc policies/DIF/RA/PDUFG/QoSDomainGenerator/*.cc policies/DIF/RA/PDUFG/SimpleGenerator/*.cc policies/DIF/RA/PDUFG/SingleDomainGenerator/*.cc policies/DIF/RA/PDUFG/StaticGenerator/*.cc policies/DIF/RA/QueueAlloc/*.cc policies/DIF/RA/QueueAlloc/QueuePerNCU/*.cc policies/DIF/RA/QueueAlloc/QueuePerNFlow/*.cc policies/DIF/RA/QueueAlloc/QueuePerNQoS/*.cc policies/DIF/RA/QueueAlloc/SingleQueue/*.cc policies/DIF/RA/QueueIDGen/*.cc policies/DIF/RA/QueueIDGen/IDPerNCU/*.cc policies/DIF/RA/QueueIDGen/IDPerNFlow/*.cc policies/DIF/RA/QueueIDGen/IDPerNQoS/*.cc policies/DIF/RA/QueueIDGen/SingleID/*.cc policies/DIF/RMT/*.cc policies/DIF/RMT/MaxQueue/*.cc policies/DIF/RMT/MaxQueue/DLMaxQ/*.cc policies/DIF/RMT/MaxQueue/DumbMaxQ/*.cc policies/DIF/RMT/MaxQueue/ECNMarker/*.cc policies/DIF/RMT/MaxQueue/PortMaxQ/*.cc policies/DIF/RMT/MaxQueue/REDDropper/*.cc policies/DIF/RMT/MaxQueue/ReadRateReducer/*.cc policies/DIF/RMT/MaxQueue/TailDrop/*.cc policies/DIF/RMT/MaxQueue/UpstreamNotifier/*.cc policies/DIF/RMT/Monitor/*.cc policies/DIF/RMT/Monitor/BEMonitor/*.cc policies/DIF/RMT/Monitor/DLMonitor/*.cc policies/DIF/RMT/Monitor/REDMonitor/*.cc policies/DIF/RMT/Monitor/SimpleMonitor/*.cc policies/DIF/RMT/Monitor/SmartMonitor/*.cc policies/DIF/RMT/Monitor/eDLMonitor/*.cc policies/DIF/RMT/PDUForwarding/*.cc policies/DIF/RMT/PDUForwarding/DomainTable/*.cc policies/DIF/RMT/PDUForwarding/MiniTable/*.cc policies/DIF/RMT/PDUForwarding/QoSTable/*.cc policies/DIF/RMT/PDUForwarding/SimpleTable/*.cc policies/DIF/RMT/Scheduler/*.cc policies/DIF/RMT/Scheduler/DL/*.cc policies/DIF/RMT/Scheduler/DumbSch/*.cc policies/DIF/RMT/Scheduler/LongestQFirst/*.cc policies/DIF/Routing/*.cc policies/DIF/Routing/DomainRouting/*.cc policies/DIF/Routing/DomainRouting/DV/*.cc policies/DIF/Routing/DomainRouting/LS/*.cc policies/DIF/Routing/DummyRouting/*.cc policies/DIF/Routing/SimpleRouting/*.cc policies/DIF/Routing/SimpleRouting/SimpleDV/*.cc policies/DIF/Routing/SimpleRouting/SimpleLS/*.cc scripts/*.cc src/*.cc src/CS/*.cc src/Common/*.cc src/DAF/*.cc src/DAF/AE/*.cc src/DAF/CDAP/*.cc src/DAF/DA/*.cc src/DAF/IRM/*.cc src/DIF/*.cc src/DIF/Delimiting/*.cc src/DIF/EFCP/*.cc src/DIF/EFCP/DTCP/*.cc src/DIF/EFCP/DTP/*.cc src/DIF/EFCP/EFCPTable/*.cc src/DIF/Enrollment/*.cc src/DIF/FA/*.cc src/DIF/NSM/*.cc src/DIF/RA/*.cc src/DIF/RIB/*.cc src/DIF/RMT/*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/policies/DIF/EFCP/EFCPPolicy.o: policies/DIF/EFCP/EFCPPolicy.cc \
@@ -2509,6 +2540,48 @@ $O/policies/DIF/RA/PDUFG/BiDomainGenerator/BiDomainGenerator.o: policies/DIF/RA/
 	src/DIF/FA/FAITableEntry.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RA/PDUFG/QoSDomainGenerator/QoSDomainGenerator.o: policies/DIF/RA/PDUFG/QoSDomainGenerator/QoSDomainGenerator.cc \
+	policies/DIF/RA/PDUFG/IntPDUFG.h \
+	policies/DIF/RA/PDUFG/PDUFGNeighbor.h \
+	policies/DIF/RA/PDUFG/QoSDomainGenerator/QoSDomainGenerator.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
+	policies/DIF/RMT/PDUForwarding/QoSTable/QoSTable.h \
+	policies/DIF/Routing/DomainRouting/Routing.h \
+	policies/DIF/Routing/DomainRouting/rModule.h \
+	policies/DIF/Routing/IntRouting.h \
+	policies/DIF/Routing/IntRoutingUpdate.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/ModuleAccess.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DAF/DA/DA.h \
+	src/DAF/DA/Directory.h \
+	src/DAF/DA/DirectoryEntry.h \
+	src/DAF/DA/NamingInformation.h \
+	src/DAF/DA/NamingInformationEntry.h \
+	src/DAF/DA/NeighborTable.h \
+	src/DAF/DA/NeighborTableEntry.h \
+	src/DAF/DA/SearchTable.h \
+	src/DAF/DA/SearchTableEntry.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/FA/FABase.h \
+	src/DIF/FA/FAIBase.h \
+	src/DIF/FA/FAITable.h \
+	src/DIF/FA/FAITableEntry.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
 $O/policies/DIF/RA/PDUFG/SimpleGenerator/SimpleGenerator.o: policies/DIF/RA/PDUFG/SimpleGenerator/SimpleGenerator.cc \
 	policies/DIF/RA/PDUFG/IntPDUFG.h \
 	policies/DIF/RA/PDUFG/PDUFGNeighbor.h \
@@ -2899,6 +2972,33 @@ $O/policies/DIF/RMT/MaxQueue/DLMaxQ/DLMaxQ.o: policies/DIF/RMT/MaxQueue/DLMaxQ/D
 	policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
 	policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.h \
 	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
+	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/MaxQueue/DumbMaxQ/DumbMaxQ.o: policies/DIF/RMT/MaxQueue/DumbMaxQ/DumbMaxQ.cc \
+	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/MaxQueue/DumbMaxQ/DumbMaxQ.h \
+	policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
+	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
 	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \
@@ -2924,6 +3024,32 @@ $O/policies/DIF/RMT/MaxQueue/ECNMarker/ECNMarker.o: policies/DIF/RMT/MaxQueue/EC
 	policies/DIF/RMT/MaxQueue/ECNMarker/ECNMarker.h \
 	policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
 	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/MaxQueue/PortMaxQ/PortMaxQ.o: policies/DIF/RMT/MaxQueue/PortMaxQ/PortMaxQ.cc \
+	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/MaxQueue/PortMaxQ/PortMaxQ.h \
+	policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
+	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
 	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \
@@ -3068,11 +3194,37 @@ $O/policies/DIF/RMT/Monitor/RMTQMonitorBase.o: policies/DIF/RMT/Monitor/RMTQMoni
 	src/DIF/RMT/RMTModuleAllocator.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/Monitor/BEMonitor/BEMonitor.o: policies/DIF/RMT/Monitor/BEMonitor/BEMonitor.cc \
+	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/Monitor/BEMonitor/BEMonitor.h \
+	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
+	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
 $O/policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.o: policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.cc \
 	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
 	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
 	policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.h \
 	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
 	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \
@@ -3121,6 +3273,31 @@ $O/policies/DIF/RMT/Monitor/SimpleMonitor/SimpleMonitor.o: policies/DIF/RMT/Moni
 	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
 	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
 	policies/DIF/RMT/Monitor/SimpleMonitor/SimpleMonitor.h \
+	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/Monitor/eDLMonitor/eDLMonitor.o: policies/DIF/RMT/Monitor/eDLMonitor/eDLMonitor.cc \
+	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
+	policies/DIF/RMT/Monitor/eDLMonitor/eDLMonitor.h \
 	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \
@@ -3203,6 +3380,27 @@ $O/policies/DIF/RMT/PDUForwarding/MiniTable/MiniTable.o: policies/DIF/RMT/PDUFor
 	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RMT/RMTPort.h \
 	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/PDUForwarding/QoSTable/QoSTable.o: policies/DIF/RMT/PDUForwarding/QoSTable/QoSTable.cc \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
+	policies/DIF/RMT/PDUForwarding/QoSTable/QoSTable.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
 $O/policies/DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.o: policies/DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.cc \
 	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
 	policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
@@ -3252,7 +3450,33 @@ $O/policies/DIF/RMT/Scheduler/DL/DL.o: policies/DIF/RMT/Scheduler/DL/DL.cc \
 	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
 	policies/DIF/RMT/Monitor/DLMonitor/DLMonitor.h \
 	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
 	policies/DIF/RMT/Scheduler/DL/DL.h \
+	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/PDU.h \
+	src/Common/PDU_m.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/Common/RINASignals.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/RMT/RMTModuleAllocator.h \
+	src/DIF/RMT/RMTPort.h \
+	src/DIF/RMT/RMTQueue.h
+$O/policies/DIF/RMT/Scheduler/DumbSch/DumbSch.o: policies/DIF/RMT/Scheduler/DumbSch/DumbSch.cc \
+	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
+	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
+	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
+	policies/DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h \
+	policies/DIF/RMT/Scheduler/DumbSch/DumbSch.h \
 	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
 	src/Common/APN.h \
 	src/Common/APNamingInfo.h \

@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,14 +13,27 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+package rina.examples.TwoScheduling;
 
-package rina.policies.DIF.RMT.Monitor.DLMonitor;
+import ned.DatarateChannel;
+import rina.src.CS.HostNAP;
+import rina.src.CS.InteriorRouter2Int;
 
-simple DLMonitor like IntRMTQMonitorPolicy 
+
+network TwoScheduling
 {
-    parameters:
-        @display("i=block/socket");
-        @class(DLMonitor::DLMonitor);
-        xml cuData = default(xml("<CU/>"));
+    @display("bgb=325,196");
+    submodules:
+        host1: HostNAP {
+            @display("p=82,92");
+        }
+        host2: HostNAP {
+            @display("p=231,92");
+        }
+        router: InteriorRouter2Int {
+            @display("p=154,121");
+        }
+    connections allowunconnected:
+        host1.medium <--> DatarateChannel{delay = 50ms; datarate = 100 Mbps;} <--> router.medium[0];
+        host2.medium <--> DatarateChannel{delay = 50ms; datarate = 100 Mbps;} <--> router.medium[1];
 }

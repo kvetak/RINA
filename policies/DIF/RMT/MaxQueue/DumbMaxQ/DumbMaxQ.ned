@@ -15,14 +15,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-package rina.policies.DIF.RMT.Monitor.DLMonitor;
+package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
 
-simple DLMonitor like IntRMTQMonitorPolicy 
+simple DumbMaxQ like IntRMTMaxQPolicy 
 {
     parameters:
         @display("i=block/socket");
-        @class(DLMonitor::DLMonitor);
-        xml cuData = default(xml("<CU/>"));
+
+        @signal[RMT-SlowDownRequest];
 }

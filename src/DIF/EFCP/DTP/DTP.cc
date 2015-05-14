@@ -1418,42 +1418,32 @@ void DTP::clearRxQ()
 void DTP::schedule(DTPTimers *timer, double time)
 {
 
+    double MPL = (state->getMPL() > 0)? state->getMPL() : 0;
+    unsigned int rxCount = ( state->isRxPresent() && dtcp->getDataReXmitMax() )? dtcp->getDataReXmitMax() : 1;
+    double R = (getRxTime() > 0 && rxCount>0)? getRxTime() * rxCount : 0;
+    double A = (state->getQoSCube()->getATime() > 0)? state->getQoSCube()->getATime()/1000 : 0;
+
   switch (timer->getType())
   {
 
-    case (DTP_SENDER_INACTIVITY_TIMER): {
-
+    case (DTP_SENDER_INACTIVITY_TIMER):
       //3(MPL+R+A)
-      unsigned int rxCount = 1;
-      if(state->isRxPresent()){
-        rxCount = dtcp->getDataReXmitMax();
-
-
-      scheduleAt(simTime() + 3 * (state->getMPL() + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000) , timer);
-      }
+        scheduleAt(simTime() + 3 * (MPL + R + A) , timer);
+        break;
+    case (DTP_RCVR_INACTIVITY_TIMER):
+      //2(MPL+R+A)
+        scheduleAt(simTime() + 3 * (MPL + R + A) , timer);
+        break;
+    case (DTP_A_TIMER):
+        //TODO B1 Tune it up.
+        /* The timer should be set to a quantity near A – (RTT/2 + ta + ),
+         * where RTT is the estimated Round Trip Time, ta is the time to
+         * generate and send an Ack/Flow PDU, and  is the standard deviation
+         * of these estimates.
+         */
+        //A
+          scheduleAt(simTime() + A , timer);
       break;
-    }
-    case (DTP_RCVR_INACTIVITY_TIMER): {
-
-
-      unsigned int rxCount = 1;
-      if(state->isRxPresent()){
-        rxCount = dtcp->getDataReXmitMax();
-
-        scheduleAt(simTime() + 2 *(state->getMPL() + (getRxTime() * rxCount) + state->getQoSCube()->getATime()/1000 ), timer);
-      }
-      break;
-    }
-    case (DTP_A_TIMER):{
-      //TODO B1 Tune it up.
-      /* The timer should be set to a quantity near A – (RTT/2 + ta + ),
-       * where RTT is the estimated Round Trip Time, ta is the time to
-       * generate and send an Ack/Flow PDU, and  is the standard deviation
-       * of these estimates.
-       */
-      scheduleAt(simTime() + getQoSCube()->getATime() , timer);
-      break;
-    }
   }
 }
 

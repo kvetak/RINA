@@ -17,12 +17,13 @@
 
 import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.Monitor.DLMonitor;
+package rina.policies.DIF.RMT.Monitor.eDLMonitor;
 
-simple DLMonitor like IntRMTQMonitorPolicy 
+simple eDLMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");
-        @class(DLMonitor::DLMonitor);
+        @class(eDLMonitor::eDLMonitor);
         xml cuData = default(xml("<CU/>"));
+        xml urgData = default(xml("<urgencySkip/>"));
 }

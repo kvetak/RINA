@@ -17,12 +17,11 @@
 
 import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.Monitor.DLMonitor;
+package rina.policies.DIF.RMT.Monitor.BEMonitor;
 
-simple DLMonitor like IntRMTQMonitorPolicy 
+simple BEMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");
-        @class(DLMonitor::DLMonitor);
-        xml cuData = default(xml("<CU/>"));
+        @class(BEMonitor::BEMonitor);
 }

@@ -15,8 +15,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef DLMonitor_H_
-#define DLMonitor_H_
+#ifndef eDLMonitor_H_
+#define eDLMonitor_H_
 
 #include "SmartMonitor.h"
 
@@ -25,7 +25,7 @@
 #include <vector>
 #include <list>
 
-namespace DLMonitor {
+namespace eDLMonitor {
 
 using namespace std;
 
@@ -34,15 +34,18 @@ typedef map<RMTPort*, RMTQueue* > port2Queue;
 typedef map<RMTPort*, QueuesList > port2Queues;
 typedef map<RMTPort*, unsigned int > port2Count;
 
+typedef map<int, double> i2d;
 
 struct dlCUInfo {
     std::string CUId, queue;
     int urgency;
     int threshold;
+    double dropProb;
+    int absThreshold;
 
     dlCUInfo();
     dlCUInfo(std::string id);
-    dlCUInfo(std::string id, std::string _queue, int urg, int thre);
+    dlCUInfo(std::string id, std::string _queue, int urg, int thre, double dropP, int absThre);
 };
 
 typedef std::map<std::string, dlCUInfo> cuRepo;
@@ -57,7 +60,7 @@ typedef PriorityQueuesList::reverse_iterator PQListRIterator;
 
 typedef std::map<RMTPort*, PriorityQueuesList> Port2PQ;
 
-class DLMonitor : public SmartMonitor
+class eDLMonitor : public SmartMonitor
 {
 public:
     void onPolicyInit();
@@ -86,6 +89,7 @@ public:
     Port2PQ outQs;
 
     port2Count inC, outC, lastInsertedUrgency;
+    i2d probs;
 };
 
 }

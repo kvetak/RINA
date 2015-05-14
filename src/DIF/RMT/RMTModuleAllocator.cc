@@ -103,8 +103,8 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     }
 
     queue->setType(type);
-    qMonPolicy->postQueueCreation(queue);
     queueToPort[queue] = port;
+    qMonPolicy->postQueueCreation(queue);
 
     return queue;
 }
