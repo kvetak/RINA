@@ -106,7 +106,7 @@ class RA : public RABase
     std::string processName;
     std::map<simtime_t, std::list<Flow*>*> preparedFlows;
     std::map<std::string, std::list<Flow*>*> pendingFlows;
-    QoSReq* mgmtReqs;
+    QoSReq mgmtReqs;
 
     void initQoSCubes();
     QoSReq* initQoSReqById(unsigned short id);

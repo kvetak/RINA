@@ -46,7 +46,6 @@ void RA::initialize(int stage)
     // retrieve pointers to other modules
     thisIPC = this->getParentModule()->getParentModule();
     rmtModule = thisIPC->getSubmodule("relayAndMux");
-    mgmtReqs = NULL;
 
     // Get access to the forwarding and routing functionalities...
     fwdtg = check_and_cast<IntPDUFG *>
@@ -262,19 +261,7 @@ void RA::initQoSCubes()
     QoSCubes.push_back(QoSCube::MANAGEMENT);
 
     // add a QoS requirements object
-    mgmtReqs = new QoSReq(
-            2048, 10,
-            4096, 20,
-            10000, 10000,
-            0.0, 0.0,
-            1500,
-            false, false, true,
-            0, 0, 0,
-            0, 0
-           );
-
-
-
+    mgmtReqs = QoSReq::MANAGEMENT;
 }
 
 /**
@@ -769,7 +756,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         { // it isn't, we should allocate it first
             EV << "\n\n\nallocating a management flow\n\n\n" << endl;
             Flow *nm1Flow2 = new Flow(srcAPN, neighAPN);
-            nm1Flow2->setQosRequirements(*mgmtReqs);
+            nm1Flow2->setQosRequirements(mgmtReqs);
             createNM1Flow(nm1Flow2);
         }
         else
