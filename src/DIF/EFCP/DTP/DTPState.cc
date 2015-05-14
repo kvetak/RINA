@@ -354,8 +354,9 @@ std::vector<DataTransferPDU*>* DTPState::getReassemblyPDUQ()
 
 void DTPState::pushBackToReassemblyPDUQ(DataTransferPDU* pdu)
 {
-//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+//TODO A2 check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
+  take(pdu);
   reassemblyPDUQ.push_back(pdu);
 }
 
@@ -363,43 +364,44 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
 {
 
   if (pdu != NULL)
-   {
-     if (reassemblyPDUQ.empty())
-     {
-       reassemblyPDUQ.push_back(pdu);
-     }
-     else
-     {
-       if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
-       {
-         reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
-       }
-       else
-       {
-         for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
-         {
-           if ((*it)->getSeqNum() == pdu->getSeqNum())
-           {
-             //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
-             //Throw Error.
-             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
-           }
-           else if ((*it)->getSeqNum() > pdu->getSeqNum())
-           {
-             /* Put the incoming PDU before one with bigger seqNum */
-             reassemblyPDUQ.insert(it, pdu);
-             break;
-           }
-           else if (it == --reassemblyPDUQ.end())
-           {
-             //'it' is last element
-             reassemblyPDUQ.insert(it + 1, pdu);
-             break;
-           }
-         }
-       }
-     }
-   }
+  {
+    take(pdu);
+    if (reassemblyPDUQ.empty())
+    {
+      reassemblyPDUQ.push_back(pdu);
+    }
+    else
+    {
+      if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
+      {
+        reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
+      }
+      else
+      {
+        for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+        {
+          if ((*it)->getSeqNum() == pdu->getSeqNum())
+          {
+            //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
+            //Throw Error.
+            throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
+          }
+          else if ((*it)->getSeqNum() > pdu->getSeqNum())
+          {
+            /* Put the incoming PDU before one with bigger seqNum */
+            reassemblyPDUQ.insert(it, pdu);
+            break;
+          }
+          else if (it == --reassemblyPDUQ.end())
+          {
+            //'it' is last element
+            reassemblyPDUQ.insert(it + 1, pdu);
+            break;
+          }
+        }
+      }
+    }
+  }
 }
 
 

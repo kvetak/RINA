@@ -476,22 +476,22 @@ void DTP::handleMsgFromRMT(PDU* msg){
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
 
-    /* This is here just for testing RX */
-    if (pduDroppingEnabled)
-    {
-      if (((deletePdu++ + 1) % 5) == 0)
-      {
-        std::ostringstream out;
-        out << "Dropping PDU number " << pdu->getSeqNum();
-        bubble(out.str().c_str());
-        EV << this->getFullPath() << "; " << out.str().c_str() << " in time: " << simTime() << endl;
-        delete pdu;
-        pduDroppingEnabled = false;
-        return;
-      }
-    }
-
-    /* End */
+//    /* This is here just for testing RX */
+//    if (pduDroppingEnabled)
+//    {
+//      if (((deletePdu++ + 1) % 5) == 0)
+//      {
+//        std::ostringstream out;
+//        out << "Dropping PDU number " << pdu->getSeqNum();
+//        bubble(out.str().c_str());
+//        EV << this->getFullPath() << "; " << out.str().c_str() << " in time: " << simTime() << endl;
+//        delete pdu;
+//        pduDroppingEnabled = false;
+//        return;
+//      }
+//    }
+//
+//    /* End */
 
     cancelEvent(rcvrInactivityTimer);
     handleDataTransferPDUFromRMT(pdu);
@@ -1293,7 +1293,12 @@ void DTP::notifyAboutInactivity()
 void DTP::runRcvrInactivityTimerPolicy()
 {
   Enter_Method("RcvrInactivityPolicy");
-  rcvrInactivityPolicy->call(state, dtcp->getDTCPState());
+  if(state->isDtcpPresent()){
+    rcvrInactivityPolicy->call(state, dtcp->getDTCPState());
+  }else{
+    rcvrInactivityPolicy->call(state, NULL);
+  }
+
 
 
     //XXX Why reset my sending direction when I am not receiving anything?
@@ -1325,7 +1330,12 @@ void DTP::runRcvrInactivityTimerPolicy()
 void DTP::runSenderInactivityTimerPolicy()
 {
   Enter_Method("SenderInactivityPolicy");
-  senderInactivityPolicy->call(state, dtcp->getDTCPState());
+
+  if(state->isDtcpPresent()){
+    senderInactivityPolicy->call(state, dtcp->getDTCPState());
+  }else{
+    senderInactivityPolicy->call(state, NULL);
+  }
 
 
 }

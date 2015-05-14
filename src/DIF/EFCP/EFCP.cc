@@ -156,7 +156,7 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 //  dtpModule->par("senderInactivityPolicy").setStringValue(par("senderInactivityPolicy").stringValue());
 //  dtpModule->par("initialSeqNumPolicy").setStringValue(par("initialSeqNumPolicy").stringValue());
 //  dtpModule->par("rttEstimatorPolicy").setStringValue(par("rttEstimatorPolicy").stringValue());
-  dtpModule->callInitialize(0);
+//  dtpModule->callInitialize(0);
   dtpModule->setFlow(flow);
 
 //  dtpModule->setPduDroppingEnabled(par("pduDroppingEnabled"));
