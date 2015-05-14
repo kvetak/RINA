@@ -190,14 +190,14 @@ void RA::setRMTMode()
     // identify the role of this IPC process in processing system
     std::string bottomGate = thisIPC->gate("southIo$o", 0)->getNextGate()->getName();
 
-    if (bottomGate == "medium$o")
+    if (bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
         rmt->setOnWire(true);
         // connect RMT to the medium
         bindMediumToRMT();
     }
-    else if (bottomGate == "northIo$i")
+        else if (bottomGate == "northIo$i")
     { // other IPC processes are below us
         rmt->setOnWire(false);
     }
@@ -740,6 +740,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     }
     else
     { // we need to allocate a new (N-1)-flow to suit our needs
+
         EV << "\n\n\nno suitable flow present!!!!!\n\n\n";
 
         // prepare the new flow specifics

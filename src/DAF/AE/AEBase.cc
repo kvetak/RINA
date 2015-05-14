@@ -55,6 +55,7 @@ const std::string& AEBase::getAuthName() const {
 const std::string& AEBase::getAuthPassword() const {
     return authPassword;
 }
+
 const std::string& AEBase::getAuthOther() const {
     return authOther;
 }
