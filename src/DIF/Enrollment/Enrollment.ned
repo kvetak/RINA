@@ -24,10 +24,10 @@ simple Enrollment
     	@display("i=block/arrival");
 	    
 	    //Authentication
-        int authType							= default(0);
+        int authType							= default(1);
         string authName							= default("0");
         string authPassword						= default("0");
         string authOther						= default("0");
         
-        int maxConRetries						= default(1);
+        int maxConRetries						= default(5);
 }

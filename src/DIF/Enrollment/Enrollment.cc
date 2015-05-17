@@ -1,17 +1,33 @@
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+/**
+ * @file Enrollment.cc
+ * @author Kamil Jerabek (xjerab18@stud.fit.vutbr.cz)
+ * @date Apr 1, 2015
+ * @brief Enrollment and CACE
+ * @detail
+ */
+
 
 #include "Enrollment.h"
 
@@ -160,7 +176,7 @@ void Enrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
 void Enrollment::receiveNegativeConnectResponse(CDAPMessage* msg) {
     Enter_Method("receiveNegativeConnectResponse()");
 
-    CDAP_M_Connect* cmsg = check_and_cast<CDAP_M_Connect*>(msg);
+    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(cmsg->getSrc().ApName.c_str()));
 
     //check appropriate state
@@ -169,8 +185,15 @@ void Enrollment::receiveNegativeConnectResponse(CDAPMessage* msg) {
         return;
     }
 
-    entry->setCACEConStatus(EnrollmentStateTableEntry::CON_CONNECTPENDING);
+    if (this->maxConRetries <= entry->getCurrentConnectRetries()) {
+        entry->setCACEConStatus(EnrollmentStateTableEntry::CON_NIL);
+        //TODO: send release and deallocate
+        return;
+    }
 
+
+    entry->setCACEConStatus(EnrollmentStateTableEntry::CON_CONNECTPENDING);
+    entry->increaseCurrentConnectRetries();
     //create and send new connect retry
     processNewConReq(entry);
 }
@@ -467,6 +490,8 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
     //send data to ribd to send
     signalizeCACESendData(msg);
 
+    //change state to auth after send retry
+    entry->setCACEConStatus(EnrollmentStateTableEntry::CON_AUTHENTICATING);
 }
 
 void Enrollment::processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
