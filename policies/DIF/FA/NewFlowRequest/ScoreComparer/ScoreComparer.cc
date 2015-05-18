@@ -81,7 +81,7 @@ bool ScoreComparer::run(Flow& flow) {
         return false;
     }
 
-    EV << flow.getQosRequirements().getAvgBand() << endl;
+    //EV << flow.getQosRequirements().getAvgBand() << endl;
 
     //Always translate management traffic to appropriate management QoSCube
     if (flow.getQosRequirements().compare(QoSReq::MANAGEMENT)) {

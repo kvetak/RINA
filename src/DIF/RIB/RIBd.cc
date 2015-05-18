@@ -264,7 +264,8 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     resultobj.resultValue = R_FAIL;
     mcref->setResult(resultobj);
 
-    //TODO: Vesely - Work more on InvokeId
+    //Generate InvokeId
+    mcref->setInvokeID(flow->getAllocInvokeId());
 
     //Append destination address for RMT "routing"
     mcref->setDstAddr(flow->getDstAddr());
