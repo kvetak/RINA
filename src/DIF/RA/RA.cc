@@ -406,8 +406,16 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     port->postInitialize();
 
     // 3) allocate queues
-    // apply queue allocation policy handler
-    qAllocPolicy->onNM1PortInit(port);    
+    // apply queue allocation policy handler (if applicable)
+    if (flow->getConId().getQoSId() != VAL_MGMTQOSID)
+    { // queue for EFCPI PDUs
+        qAllocPolicy->onNM1PortInit(port);
+    }
+    else
+    { // queue for management
+        rmtAllocator->addQueue(RMTQueue::INPUT, port, "mgmt");
+        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "mgmt");
+    }
 
     // 4) update the flow table
     flowTable->insert(flow, fab, port, thisIPCGate.str().c_str());

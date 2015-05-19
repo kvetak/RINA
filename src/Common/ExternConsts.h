@@ -52,6 +52,8 @@ extern const char* MOD_DTP_STATE_PATH;
 extern const char* MOD_DTCP_PATH;
 extern const char* MOD_DTCP_STATE_PATH;
 extern const char* MOD_DELIMITING_PATH;
+extern const char* MOD_RMT_PORTWRAPPER;
+extern const char* MOD_RMT_QUEUE;
 
 //Module parameters
 extern const char* PAR_IPCADDR;

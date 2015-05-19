@@ -49,6 +49,9 @@ const char* MOD_DTP_STATE_PATH  = "rina.src.DIF.EFCP.DTP.DTPState";
 const char* MOD_DTCP_PATH       = "rina.src.DIF.EFCP.DTCP.DTCP";
 const char* MOD_DTCP_STATE_PATH = "rina.src.DIF.EFCP.DTCP.DTCPState";
 const char* MOD_DELIMITING_PATH = "rina.src.DIF.Delimiting.Delimiting";
+const char* MOD_RMT_PORTWRAPPER = "rina.src.DIF.RMT.RMTPortWrapper";
+const char* MOD_RMT_QUEUE       = "rina.src.DIF.RMT.RMTQueue";
+
 
 
 //Module parameters
