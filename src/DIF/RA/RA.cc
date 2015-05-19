@@ -26,6 +26,7 @@
 
 Define_Module(RA);
 
+// QoS loader parameters
 const char* PAR_QOSDATA              = "qoscubesData";
 const char* ELEM_QOSCUBE             = "QoSCube";
 const char* PAR_QOSREQ               = "qosReqData";
@@ -39,6 +40,7 @@ void RA::initialize(int stage)
     {
         // determine and set RMT mode of operation
         setRMTMode();
+        // preallocate flows
         initFlowAlloc();
         return;
     }
@@ -103,6 +105,8 @@ void RA::initSignalsAndListeners()
     sigRACreFloNega = registerSignal(SIG_RA_CreateFlowNegative);
     sigRASDReqFromRMT = registerSignal(SIG_RA_InvokeSlowdown);
     sigRASDReqFromRIB = registerSignal(SIG_RA_ExecuteSlowdown);
+    sigRAMgmtAllocd = registerSignal(SIG_RA_MgmtFlowAllocated);
+    sigRAMgmtDeallocd = registerSignal(SIG_RA_MgmtFlowDeallocated);
 
     lisRAAllocResPos = new LisRAAllocResPos(this);
     thisIPC->subscribe(SIG_FAI_AllocateResponsePositive, lisRAAllocResPos);
@@ -169,15 +173,11 @@ void RA::initFlowAlloc()
             if (preparedFlows[time] == NULL)
             {
                 preparedFlows[time] = new std::list<Flow*>;
-                preparedFlows[time]->push_back(flow);
-
                 cMessage* msg = new cMessage("RA-CreateConnections");
                 scheduleAt(simTime() + time, msg);
             }
-            else
-            {
-                preparedFlows[time]->push_back(flow);
-            }
+
+            preparedFlows[time]->push_back(flow);
         }
     }
 }
@@ -243,7 +243,8 @@ void RA::initQoSCubes()
         else
         {
             EV << "QoSCube with ID " << cube.getQosId()
-                    << " contains DO-NOT-CARE parameter. It is not fully defined, thus it is not loaded into RA's QoS-cube set!"
+                    << " contains DO-NOT-CARE parameter. It is not fully defined,"
+                    << " thus it is not loaded into RA's QoS-cube set!"
                     << endl;
         }
     }
@@ -252,7 +253,8 @@ void RA::initQoSCubes()
     {
         std::ostringstream os;
         os << this->getFullPath()
-                << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!"
+                << " does not have any QoSCube in its set. "
+                << "It cannot work without at least one valid QoS cube!"
                 << endl;
         error(os.str().c_str());
     }
@@ -278,7 +280,6 @@ QoSReq* RA::initQoSReqById(unsigned short id)
     }
     else
     {
-//        error((std::string(PAR_QOSREQ) + std::string(" parameter not initialized!")).c_str());
         return NULL;
     }
 
@@ -407,7 +408,7 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 3) allocate queues
     // apply queue allocation policy handler (if applicable)
-    if (flow->getConId().getQoSId() != VAL_MGMTQOSID)
+    if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
     { // queue for EFCPI PDUs
         qAllocPolicy->onNM1PortInit(port);
     }
@@ -593,8 +594,12 @@ void RA::postNFlowAllocation(Flow* flow)
 {
     Enter_Method("postNFlowAllocation()");
 
-    // invoke QueueAlloc policy on relevant (N-1)-ports
-    if (rmt->isOnWire())
+    // invoke QueueAlloc policy on relevant (N-1)-ports (if applicable)
+    if (flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    {
+        return;
+    }
+    else if (rmt->isOnWire())
     {
         qAllocPolicy->onNFlowAlloc(rmtAllocator->getInterfacePort(), flow);
     }
@@ -624,11 +629,13 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     ftItem->getRMTPort()->setOutputReady();
     ftItem->getRMTPort()->setInputReady();
 
-    // if this is a management flow, allocate flows that were waiting for this
+    // if this is a management flow, notify the Enrollment module and
+    // allocate data flows that were waiting for this
     if (!ftItem->getFlow()->getConId().getQoSId().compare(VAL_MGMTQOSID))
     {
-        std::list<Flow*>* flows = pendingFlows[ftItem->getFlow()->getDstApni().getApn().getName()];
+        signalizeMgmtAllocToEnrollment(ftItem->getFlow());
 
+        std::list<Flow*>* flows = pendingFlows[ftItem->getFlow()->getDstApni().getApn().getName()];
         if (flows)
         {
             while (!flows->empty())
@@ -816,6 +823,18 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     Enter_Method("signalizeSlowdownRequestToEFCP()");
     CongestionDescriptor* congInfo = check_and_cast<CongestionDescriptor*>(obj);
     emit(sigRASDReqFromRIB, congInfo);
+}
+
+void RA::signalizeMgmtAllocToEnrollment(Flow* flow)
+{
+    Enter_Method("signalizeMgmtAllocToEnrollment()");
+    emit(sigRAMgmtAllocd, flow);
+}
+
+void RA::signalizeMgmtDeallocToEnrollment(Flow* flow)
+{
+    Enter_Method("signalizeMgmtDeallocToEnrollment()");
+    emit(sigRAMgmtDeallocd, flow);
 }
 
 NM1FlowTable* RA::getFlowTable()

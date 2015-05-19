@@ -70,16 +70,12 @@ extern const char* SIG_FAI_CreateFlowResponseNegative;
 extern const char* SIG_FAI_DeleteFlowResponse;
 
 //RA
-extern const char* SIG_RA_AllocateRequest;
-extern const char* SIG_RA_DeallocateRequest;
-extern const char* SIG_RA_AllocateResponsePositive;
-extern const char* SIG_RA_AllocateResponseNegative;
-extern const char* SIG_RA_FlowAllocated;
-extern const char* SIG_RA_FlowDeallocated;
 extern const char* SIG_RA_CreateFlowPositive;
 extern const char* SIG_RA_CreateFlowNegative;
 extern const char* SIG_RA_InvokeSlowdown;
 extern const char* SIG_RA_ExecuteSlowdown;
+extern const char* SIG_RA_MgmtFlowAllocated;
+extern const char* SIG_RA_MgmtFlowDeallocated;
 
 //RIB
 extern const char* SIG_RIB_CreateRequestFlow;

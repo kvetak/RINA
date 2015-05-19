@@ -63,16 +63,12 @@ const char* SIG_FAI_CreateFlowResponsePositive  = "FAI-CreateFlowResponsePositiv
 const char* SIG_FAI_CreateFlowResponseNegative  = "FAI-CreateFlowResponseNegative";
 const char* SIG_FAI_DeleteFlowResponse          = "FAI-DeleteFlowResponse";
 
-const char* SIG_RA_AllocateRequest              = "RA-AllocateRequest";
-const char* SIG_RA_DeallocateRequest            = "RA-DeallocateRequest";
-const char* SIG_RA_AllocateResponsePositive     = "RA-AllocateResponsePositive";
-const char* SIG_RA_AllocateResponseNegative     = "RA-AllocateResponseNegative";
-const char* SIG_RA_FlowAllocated                = "RA-FlowAllocated";
-const char* SIG_RA_FlowDeallocated              = "RA-FlowDeallocated";
 const char* SIG_RA_CreateFlowPositive           = "RA-CreateFlowPositive";
 const char* SIG_RA_CreateFlowNegative           = "RA-CreateFlowNegative";
 const char* SIG_RA_InvokeSlowdown               = "RA-InvokeSlowdown";
 const char* SIG_RA_ExecuteSlowdown              = "RA-ExecuteSlowdown";
+const char* SIG_RA_MgmtFlowAllocated            = "RA-MgmtFlowAllocated";
+const char* SIG_RA_MgmtFlowDeallocated          = "RA-MgmtFlowDellocated";
 
 const char* SIG_RIB_CreateRequestFlow           = "RIB-CreateRequestFlow";
 const char* SIG_RIB_CreateResponseFlow          = "RIB-CreateResponseFlow";

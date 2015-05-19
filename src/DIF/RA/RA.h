@@ -122,6 +122,8 @@ class RA : public RABase
     simsignal_t sigRACreFloNega;
     simsignal_t sigRASDReqFromRMT;
     simsignal_t sigRASDReqFromRIB;
+    simsignal_t sigRAMgmtAllocd;
+    simsignal_t sigRAMgmtDeallocd;
 
     LisRACreFlow* lisRACreFlow;
     LisRAAllocResPos* lisRAAllocResPos;
@@ -137,6 +139,8 @@ class RA : public RABase
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
     void signalizeSlowdownRequestToRIBd(cPacket* pdu);
     void signalizeSlowdownRequestToEFCP(cObject* obj);
+    void signalizeMgmtAllocToEnrollment(Flow* flow);
+    void signalizeMgmtDeallocToEnrollment(Flow* flow);
 
 };
     
