@@ -408,12 +408,12 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 3) allocate queues
     // apply queue allocation policy handler (if applicable)
-    if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
-    { // queue for EFCPI PDUs
+    if (flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    { // queues for EFCPI PDUs
         qAllocPolicy->onNM1PortInit(port);
     }
     else
-    { // queue for management
+    { // queues for management
         rmtAllocator->addQueue(RMTQueue::INPUT, port, "mgmt");
         rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "mgmt");
     }
@@ -595,11 +595,12 @@ void RA::postNFlowAllocation(Flow* flow)
     Enter_Method("postNFlowAllocation()");
 
     // invoke QueueAlloc policy on relevant (N-1)-ports (if applicable)
-    if (flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
     {
         return;
     }
-    else if (rmt->isOnWire())
+
+    if (rmt->isOnWire())
     {
         qAllocPolicy->onNFlowAlloc(rmtAllocator->getInterfacePort(), flow);
     }

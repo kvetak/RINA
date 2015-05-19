@@ -37,18 +37,25 @@ class QueueIDGenBase : public cSimpleModule
     virtual void onPolicyInit();
 
     /**
-     * Generates queue ID for given PDU (this is usually invoked by RMT).
+     * Generates input queue ID for given PDU (this is usually invoked by a port).
      *
      * @param pdu PDU
      */
-    virtual std::string generateID(PDU* pdu);
+    virtual std::string generateInputQueueID(PDU* pdu);
+
+    /**
+     * Generates output queue ID for given PDU (this is usually invoked by RMT).
+     *
+     * @param pdu PDU
+     */
+    virtual std::string generateOutputQueueID(PDU* pdu);
 
     /**
      * Generates queue ID for given flow object (this is usually invoked by QueueAlloc policy).
      *
      * @param flow flow object
      */
-    virtual std::string generateID(Flow* flow);
+    virtual std::string generateIDFromFlow(Flow* flow);
 
   protected:
     /**

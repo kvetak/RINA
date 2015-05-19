@@ -37,12 +37,17 @@ void QueueIDGenBase::handleMessage(cMessage *msg)
 {
 }
 
-std::string QueueIDGenBase::generateID(PDU* pdu)
+std::string QueueIDGenBase::generateInputQueueID(PDU* pdu)
 {
     return std::string("");
 }
 
-std::string QueueIDGenBase::generateID(Flow* flow)
+std::string QueueIDGenBase::generateOutputQueueID(PDU* pdu)
+{
+    return std::string("");
+}
+
+std::string QueueIDGenBase::generateIDFromFlow(Flow* flow)
 {
     return std::string("");
 }

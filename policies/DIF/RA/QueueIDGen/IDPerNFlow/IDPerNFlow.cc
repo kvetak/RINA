@@ -19,7 +19,7 @@
 
 Define_Module(IDPerNFlow);
 
-std::string IDPerNFlow::generateID(PDU* pdu)
+std::string IDPerNFlow::generateOutputQueueID(PDU* pdu)
 {
     std::ostringstream id;
     id << pdu->getSrcAddr().getIpcAddress().getName() << "_"
@@ -28,7 +28,12 @@ std::string IDPerNFlow::generateID(PDU* pdu)
     return id.str();
 }
 
-std::string IDPerNFlow::generateID(Flow* flow)
+std::string IDPerNFlow::generateInputQueueID(PDU* pdu)
+{
+    generateOutputQueueID(pdu);
+}
+
+std::string IDPerNFlow::generateIDFromFlow(Flow* flow)
 {
     std::ostringstream id;
     id << flow->getSrcAddr().getIpcAddress().getName() << "_"

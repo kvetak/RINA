@@ -19,12 +19,17 @@
 
 Define_Module(SingleID);
 
-std::string SingleID::generateID(PDU* pdu)
+std::string SingleID::generateOutputQueueID(PDU* pdu)
 {
     return std::string("0");
 }
 
-std::string SingleID::generateID(Flow* flow)
+std::string SingleID::generateInputQueueID(PDU* pdu)
+{
+    return generateOutputQueueID(pdu);
+}
+
+std::string SingleID::generateIDFromFlow(Flow* flow)
 {
     return std::string("0");
 }

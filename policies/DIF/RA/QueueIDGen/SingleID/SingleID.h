@@ -24,9 +24,9 @@
 class SingleID : public QueueIDGenBase
 {
   public:
-    // method selecting the proper available queue for a PDU
-    virtual std::string generateID(PDU* pdu);
-    virtual std::string generateID(Flow* flow);
+    virtual std::string generateInputQueueID(PDU* pdu);
+    virtual std::string generateOutputQueueID(PDU* pdu);
+    virtual std::string generateIDFromFlow(Flow* flow);
 };
 
 #endif /* SingleID_H_ */

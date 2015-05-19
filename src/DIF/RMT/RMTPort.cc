@@ -87,7 +87,7 @@ void RMTPort::handleMessage(cMessage* msg)
     else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-        { // this will go away when we figure out management flow pre-allocation
+        { // this will go away when management uses PDU headers as it should
             send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
             emit(sigStatRMTPortUp, true);
         }
@@ -95,7 +95,7 @@ void RMTPort::handleMessage(cMessage* msg)
         {
             // get a proper queue for this message
             RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateID((PDU*)msg).c_str());
+                                             queueIdGen->generateInputQueueID((PDU*)msg).c_str());
 
             if (inQueue != NULL)
             {

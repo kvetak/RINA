@@ -457,7 +457,7 @@ void RMT::efcpiToPort(PDU* pdu)
     RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
     if (outPort != NULL)
     {
-        const std::string& id = queueIdGenerator->generateID(pdu);
+        const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
     }
 
@@ -587,7 +587,7 @@ void RMT::portToPort(cMessage* msg)
             return;
         }
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateID((PDU*)msg).c_str());
+                queueIdGenerator->generateOutputQueueID((PDU*)msg).c_str());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {

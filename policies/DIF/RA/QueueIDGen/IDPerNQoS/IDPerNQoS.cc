@@ -19,9 +19,14 @@
 
 Define_Module(IDPerNQoS);
 
-std::string IDPerNQoS::generateID(PDU* pdu)
+std::string IDPerNQoS::generateOutputQueueID(PDU* pdu)
 {
     std::ostringstream id;
     id << pdu->getConnId().getQoSId();
     return id.str();
+}
+
+std::string IDPerNQoS::generateInputQueueID(PDU* pdu)
+{
+    return generateOutputQueueID(pdu);
 }

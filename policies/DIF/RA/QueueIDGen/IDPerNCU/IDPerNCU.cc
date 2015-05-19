@@ -51,7 +51,8 @@ void IDPerNCU::onPolicyInit()
         qos2CU[qosId] =  cu;
     }
 }
-std::string IDPerNCU::generateID(PDU* pdu)
+
+std::string IDPerNCU::generateOutputQueueID(PDU* pdu)
 {
     std::string qosId = pdu->getConnId().getQoSId();
     if(qos2CU.find(qosId) != qos2CU.end()){
@@ -59,4 +60,9 @@ std::string IDPerNCU::generateID(PDU* pdu)
     } else {
         return "BE";
     }
+}
+
+std::string IDPerNCU::generateInputQueueID(PDU* pdu)
+{
+    generateOutputQueueID(pdu);
 }
