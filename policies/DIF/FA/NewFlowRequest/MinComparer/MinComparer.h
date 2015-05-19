@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef QoSCubeComparerMin_H_
-#define QoSCubeComparerMin_H_
+#ifndef MinComparer_H_
+#define MinComparer_H_
 
 #include <NewFlowRequest/NewFlowRequestBase.h>
 
@@ -27,4 +27,4 @@ class MinComparer : public NewFlowRequestBase {
 
 };
 
-#endif /* QoSCubeComparerMin_H_ */
+#endif /* MinComparer_H_ */
