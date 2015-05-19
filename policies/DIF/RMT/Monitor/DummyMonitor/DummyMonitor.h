@@ -15,15 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef SIMPLEMONITOR_H_
-#define SIMPLEMONITOR_H_
+#ifndef DUMMYMONITOR_H_
+#define DUMMYMONITOR_H_
 
 #include "RMTQMonitorBase.h"
 
-class SimpleMonitor : public RMTQMonitorBase
+class DummyMonitor : public RMTQMonitorBase
 {
   public:
     virtual void onMessageArrival(RMTQueue* queue);
 };
 
-#endif /* SIMPLEMONITOR_H_ */
+#endif /* DUMMYMONITOR_H_ */

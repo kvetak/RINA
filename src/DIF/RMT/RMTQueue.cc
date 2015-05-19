@@ -53,7 +53,9 @@ void RMTQueue::initialize()
     outputGate = gate("outputGate");
     inputGate = gate("inputGate");
     // message retrieval signal handler
-    sigRMTPDURcvd = registerSignal(SIG_RMT_QueuePDURcvd);
+    sigRMTPDUPreRcvd = registerSignal(SIG_RMT_QueuePDUPreRcvd);
+    // message retrieval signal handler
+    sigRMTPDUPostRcvd = registerSignal(SIG_RMT_QueuePDUPostRcvd);
     // message pre-departure signal handler
     sigRMTPDUPreSend = registerSignal(SIG_RMT_QueuePDUPreSend);
     // message departure signal handler
@@ -137,8 +139,9 @@ void RMTQueue::handleMessage(cMessage* msg)
 
 void RMTQueue::enqueuePDU(cPacket* pdu)
 {
+    emit(sigRMTPDUPreRcvd, this);
     queue.push_back(pdu);
-    emit(sigRMTPDURcvd, this);
+    emit(sigRMTPDUPostRcvd, this);
     emit(sigStatRMTQueueLength, getLength());
     redrawGUI();
 }

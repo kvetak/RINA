@@ -76,7 +76,7 @@ RINA Simulator
 	            /BEMonitor
 	            /DLMonitor
 	            /REDMonitor            ... used with MaxQueue::REDDropper; Random Early Detection implementation
-	            /SimpleMonitor         ... noop
+	            /DummyMonitor          ... noop
 	            /SmartMonitor
 	        /PDUForwarding             ... policy used to decide where to forward a PDU
 	            /DomainTable

@@ -46,11 +46,19 @@ void RMTQMonitorBase::onPolicyInit()
 {
 }
 
-void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
+void RMTQMonitorBase::prePDUInsertion(RMTQueue* queue)
 {
 }
 
-void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
+void RMTQMonitorBase::postPDUInsertion(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::prePDURelease(RMTQueue* queue)
+{
+}
+
+void RMTQMonitorBase::postPDURelease(RMTQueue* queue)
 {
 }
 

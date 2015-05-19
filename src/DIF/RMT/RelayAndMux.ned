@@ -28,7 +28,7 @@ module RelayAndMux
         @display("i=block/classifier;bgb=700,230");
 
         string schedPolicyName = default("LongestQFirst");
-        string qMonitorPolicyName = default("SimpleMonitor");
+        string qMonitorPolicyName = default("DummyMonitor");
         string maxQPolicyName = default("TailDrop");
         string ForwardingPolicyName = default("SimpleTable");
 

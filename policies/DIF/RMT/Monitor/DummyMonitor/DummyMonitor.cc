@@ -15,11 +15,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <SimpleMonitor.h>
+#include <DummyMonitor.h>
 
-Define_Module(SimpleMonitor);
+Define_Module(DummyMonitor);
 
-void SimpleMonitor::onMessageArrival(RMTQueue* queue)
+void DummyMonitor::onMessageArrival(RMTQueue* queue)
 {
 }
 

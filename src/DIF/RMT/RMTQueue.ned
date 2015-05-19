@@ -22,7 +22,8 @@ simple RMTQueue
     parameters:
         @display("i=block/queue;is=vs");        
         
-        @signal[RMT-QueuePDURcvd](type=RMTQueue?);
+        @signal[RMT-QueuePDUPreRcvd](type=RMTQueue?);
+        @signal[RMT-QueuePDUPostRcvd](type=RMTQueue?);
         @signal[RMT-QueuePDUPreSend](type=RMTQueue?);
         @signal[RMT-QueuePDUSent](type=RMTQueue?);
         

@@ -17,9 +17,9 @@
 
 import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.Monitor.SimpleMonitor;
+package rina.policies.DIF.RMT.Monitor.DummyMonitor;
 
-simple SimpleMonitor like IntRMTQMonitorPolicy 
+simple DummyMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");

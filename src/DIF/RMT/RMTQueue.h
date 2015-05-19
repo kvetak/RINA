@@ -172,7 +172,8 @@ class RMTQueue : public cSimpleModule
 
     void redrawGUI();
 
-    simsignal_t sigRMTPDURcvd;
+    simsignal_t sigRMTPDUPreRcvd;
+    simsignal_t sigRMTPDUPostRcvd;
     simsignal_t sigRMTPDUPreSend;
     simsignal_t sigRMTPDUSent;
     simsignal_t sigStatRMTQueueLength;
