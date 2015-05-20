@@ -6,6 +6,6 @@ simple PortsLoadGenerator like IntPDUFG
 {
     parameters:
         @display("i=block/socket");
-        int rateInterval 	= default(2);
+        int rateInterval 	= default(0);
         int updateInterval	= default(10);
 }

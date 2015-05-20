@@ -29,7 +29,7 @@
 #define PORTSLOADGENERATOR_ENHANCED_DEBUG
 
 typedef std::set<RMTPort*> PortsSet;
-typedef std::map<unsigned short, PortsSet> Nentries;
+typedef std::map<std::string, PortsSet> Nentries;
 typedef std::map<std::string, Nentries> NTable;
 
 typedef PortsSet::iterator PortsSetIt;
@@ -41,7 +41,7 @@ typedef NTable::iterator NTableIt;
 // routing update.
 //
 
-typedef std::map<unsigned short, unsigned short> QosToRateMap;
+typedef std::map<std::string, unsigned short> QosToRateMap;
 typedef std::map<std::string, QosToRateMap> RateMap;
 
 typedef QosToRateMap::iterator QTRIter;
@@ -54,10 +54,10 @@ class PortsLoadGenerator : public IntPDUFG
 public:
 
     // A new port has been inserted to another node.
-    virtual void insertedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const std::string &qos, RMTPort * port);
 
     // A previous existing port has been deleted.
-    virtual void removedFlow(const Address &addr, const unsigned short &qos, RMTPort * port);
+    virtual void removedFlow(const Address &addr, const std::string &qos, RMTPort * port);
 
     // Routing policy signal an update.
     virtual void routingUpdated();
@@ -86,7 +86,7 @@ private:
     int upInt;
 
     // Does the entry in exists in cache?
-    bool rateCacheEntryExists(std::string dest, unsigned short qos);
+    bool rateCacheEntryExists(std::string dest, std::string qos);
 };
 
 #endif // __PORTSLOADGENERATOR_H

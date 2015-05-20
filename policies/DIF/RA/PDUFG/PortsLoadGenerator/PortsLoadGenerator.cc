@@ -114,7 +114,7 @@ void PortsLoadGenerator::handleMessage(cMessage *msg)
 
 void PortsLoadGenerator::insertedFlow(
     const Address &addr,
-    const unsigned short &qos,
+    const std::string &qos,
     RMTPort * port)
 {
     std::string dst = addr.getIpcAddress().getName();
@@ -155,10 +155,15 @@ void PortsLoadGenerator::onPolicyInit()
     // Obtain a pointer to the DIF allocator module.
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
 
-    // Start the rate updating timeout.
-    scheduleAt(
-        simTime() + rtInt,
-        new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
+    // 0 means do not do mix routing with local and remote info.
+    // Use only routing updates.
+    if(rtInt > 0)
+    {
+        // Start the rate updating timeout.
+        scheduleAt(
+            simTime() + rtInt,
+            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
+    }
 
     // Start the route update timeout.
     scheduleAt(
@@ -168,7 +173,7 @@ void PortsLoadGenerator::onPolicyInit()
 
 bool PortsLoadGenerator::rateCacheEntryExists(
     std::string dest,
-    unsigned short qos)
+    std::string qos)
 {
     RateIter ri = rateCache.find(dest);
 
@@ -189,7 +194,7 @@ bool PortsLoadGenerator::rateCacheEntryExists(
 
 void PortsLoadGenerator::removedFlow(
         const Address &addr,
-        const unsigned short &qos,
+        const std::string &qos,
         RMTPort * port)
 {
     std::string dst = addr.getIpcAddress().getName();

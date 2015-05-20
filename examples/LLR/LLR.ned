@@ -17,7 +17,7 @@
 
 package rina.examples.LLR;
 
-import rina.CS.*;
+import rina.src.CS.*;
 
 network LLR
 {
