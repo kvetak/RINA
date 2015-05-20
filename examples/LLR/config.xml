@@ -16,9 +16,9 @@
 	</ConnectionSets>
 	<QoSReqSet>
     	<QosReq id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageBandwidth>0</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakBandwidthDuration>-1</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
@@ -146,8 +146,8 @@
 	<!-- Quality of Service cubes -->
 	<QoSCubesSet>
 		<QoSCube id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<AverageBandwidth>0</AverageBandwidth>
+			<AverageSDUBandwidth>0</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
 			<BurstPeriod>10000000</BurstPeriod>

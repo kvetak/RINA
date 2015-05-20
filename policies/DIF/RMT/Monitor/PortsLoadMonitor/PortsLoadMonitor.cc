@@ -66,6 +66,7 @@ void PortsLoadMonitor::handleMessage(cMessage* msg)
         // Save the current rate and reset every entry in the accumulation map.
         for(PMIter i = acc.begin(); i != acc.end(); ++i)
         {
+            //EV << "New rate computed: " << i->first->info() << " have " << i->second << endl;
             rates[i->first] = i->second;
             i->second = 0;
         }
@@ -79,7 +80,7 @@ void PortsLoadMonitor::handleMessage(cMessage* msg)
     }
 }
 
-void PortsLoadMonitor::onMessageArrival(RMTQueue* queue)
+void PortsLoadMonitor::postPDUInsertion(RMTQueue* queue)
 {
     // Get the arrived message.
     const cPacket * pdu = queue->getLastPDU();
@@ -112,7 +113,7 @@ void PortsLoadMonitor::onMessageArrival(RMTQueue* queue)
 #endif
 }
 
-void PortsLoadMonitor::onMessageDeparture(RMTQueue* queue)
+void PortsLoadMonitor::prePDURelease(RMTQueue* queue)
 {
     // Get the departing message.
     const cPacket * pdu = queue->getFirstPDU();

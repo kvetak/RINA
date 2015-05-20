@@ -24,7 +24,7 @@
 #include <map>
 #include <set>
 
-#define SCALE_BYTES(x)   (x / 1024)
+#define SCALE_BYTES(x)   (x)
 // Comment it to remove the visual debugging.
 #define PORTSLOADGENERATOR_ENHANCED_DEBUG
 

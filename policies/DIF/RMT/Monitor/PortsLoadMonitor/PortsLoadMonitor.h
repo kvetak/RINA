@@ -46,7 +46,7 @@ private:
     // Rates map.
     PortsMap rates;
 
-#ifdef RATESMONITOR_ENHANCED_DEBUG
+#ifdef PORTSLOADMONITOR_ENHANCED_DEBUG
     void enhancedDebug();
 #endif
 
@@ -65,11 +65,11 @@ public:
     int64 getByteRate(RMTPort * port);
 
     // A PDU arrived.
-    virtual void onMessageArrival(RMTQueue* queue);
+    virtual void postPDUInsertion(RMTQueue* queue);
 
     // A PDU departed; when this procedure is invoked then the PDU has already
     // left the queue.
-    virtual void onMessageDeparture(RMTQueue* queue);
+    virtual void prePDURelease(RMTQueue* queue);
 };
 
 #endif // __PORTSLOADMONITOR_H
