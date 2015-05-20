@@ -18,7 +18,8 @@
 #include "APN.h"
 
 #define PORTSLOAD_GENERATOR_TIMEOUT     "PDUFG_RateGenerator"
-#define PORTSLOAD_GENERATOR_UPDATE      1
+#define PORTSLOAD_GENERATOR_UPDATE      0
+#define PORTSLOAD_GENERATOR_LOCAL       1
 
 Define_Module(PortsLoadGenerator);
 
@@ -27,15 +28,6 @@ void PortsLoadGenerator::handleMessage(cMessage *msg)
     // React to self message only.
     if(msg->isSelfMessage())
     {
-        if(msg->getKind() == PORTSLOAD_GENERATOR_UPDATE)
-        {
-            rt->scheduleUpdate();
-
-            // Schedule the next routing update.
-            scheduleAt(
-                simTime() + upInt,
-                new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
-        }
 
 #ifdef PORTSLOADGENERATOR_ENHANCED_DEBUG
         std::ostringstream str;
@@ -105,10 +97,22 @@ void PortsLoadGenerator::handleMessage(cMessage *msg)
         cs.setTagArg("t", 0, str.str().c_str());
 #endif
 
-        // Schedule the next rate update.
-        scheduleAt(
-            simTime() + rtInt,
-            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
+        if(msg->getKind() == PORTSLOAD_GENERATOR_UPDATE)
+        {
+            rt->scheduleUpdate();
+
+            // Schedule the next routing update.
+            scheduleAt(
+                simTime() + upInt,
+                new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
+        }
+        else if(msg->getKind() == PORTSLOAD_GENERATOR_LOCAL)
+        {
+            // Schedule the next rate update.
+            scheduleAt(
+                simTime() + rtInt,
+                new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_LOCAL));
+        }
     }
 }
 
@@ -155,6 +159,15 @@ void PortsLoadGenerator::onPolicyInit()
     // Obtain a pointer to the DIF allocator module.
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
 
+    // 0 means do not send periodic routing updates.
+    if(upInt > 0)
+    {
+        // Start the route update timeout.
+        scheduleAt(
+            simTime() + upInt,
+            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
+    }
+
     // 0 means do not do mix routing with local and remote info.
     // Use only routing updates.
     if(rtInt > 0)
@@ -162,13 +175,8 @@ void PortsLoadGenerator::onPolicyInit()
         // Start the rate updating timeout.
         scheduleAt(
             simTime() + rtInt,
-            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT));
+            new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_LOCAL));
     }
-
-    // Start the route update timeout.
-    scheduleAt(
-        simTime() + upInt,
-        new cMessage(PORTSLOAD_GENERATOR_TIMEOUT, PORTSLOAD_GENERATOR_UPDATE));
 }
 
 bool PortsLoadGenerator::rateCacheEntryExists(
