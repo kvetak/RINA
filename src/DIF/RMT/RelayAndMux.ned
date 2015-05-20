@@ -20,7 +20,7 @@ import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-package rina.DIF.RMT;
+package rina.src.DIF.RMT;
 
 module RelayAndMux
 {
@@ -28,7 +28,7 @@ module RelayAndMux
         @display("i=block/classifier;bgb=700,230");
 
         string schedPolicyName = default("LongestQFirst");
-        string qMonitorPolicyName = default("SimpleMonitor");
+        string qMonitorPolicyName = default("DummyMonitor");
         string maxQPolicyName = default("TailDrop");
         string ForwardingPolicyName = default("SimpleTable");
 

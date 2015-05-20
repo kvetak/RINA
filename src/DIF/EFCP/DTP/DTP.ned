@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.EFCP.DTP;
+package rina.src.DIF.EFCP.DTP;
 
 //
 // TODO auto-generated type
@@ -25,10 +25,10 @@ simple DTP
     
     parameters:
         @display("i=block/layer");
-        string rcvrInactivityPolicy = default("");
-        string senderInactivityPolicy = default("");
-        string initialSeqNumPolicy = default("");
-        string rttEstimatorPolicy = default("");
+//        string rcvrInactivityPolicy = default("");
+//        string senderInactivityPolicy = default("");
+//        string initialSeqNumPolicy = default("");
+//        string rttEstimatorPolicy = default("");
         
         @signal[EFCP-StopSending](type=Flow?);
         @signal[EFCP-StartSending](type=Flow?);

@@ -23,8 +23,9 @@
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
 #include "Address.h"
+#include "QoSReq.h"
 
-extern const int VAL_UNDEFINED;
+extern const int VAL_UNDEF_PORTID;
 extern const int VAL_MAXHOPCOUNT;
 extern const int VAL_MAXCREATERETRIES;
 
@@ -141,15 +142,17 @@ class Flow : public cObject
 
     /**
      * @brief Gets QoS parameters wanted by flow initiator
-     * @return Read-only QoSCube instance
+     * @return Read-only QoSReq instance
      */
-    const QoSCube& getQosParameters() const;
+    const QoSReq& getQosRequirements() const;
+
+    QoSReq& getQosReqs();
 
     /**
      * @brief Sets QoS parameters wanted by flow initiator
-     * @param qosParameters A new QoSCube instance that is accompanied with Flow
+     * @param qosParameters A new QoSReq instance that is accompanied with Flow
      */
-    void setQosParameters(const QoSCube& qosParameters);
+    void setQosRequirements(const QoSReq& qosReqs);
 
     /**
      * @brief Gets read-only source APNamingInfo
@@ -291,8 +294,6 @@ class Flow : public cObject
      */
     void setDstNeighbor(const Address& dstNeighbor);
 
-    //const long getPortCepId() const;
-
     /**
      * @brief Gets allocation InvokeId
      * Used inside M_CREATE(_R)(flow) messages
@@ -395,9 +396,9 @@ class Flow : public cObject
     uint32_t hopCount;
 
     /**
-     * @brief Attribute holding wanted QoS parameters in form of QoSCube
+     * @brief Attribute holding wanted QoS parameters in form of QoSReq
      */
-    QoSCube qosParameters;
+    QoSReq qosReqs;
 
     /**
      * @brief Attribute holding persistant InvokeId used for allocation

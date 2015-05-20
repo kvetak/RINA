@@ -69,27 +69,30 @@ void DTPState::initialize(int step)
     }
 
 
-//    winBased = par("winBased");
-//    rateBased = par("rateBased");
-    rateBased = false;
+////    winBased = par("winBased");
+////    rateBased = par("rateBased");
+//    rateBased = false;
+//
+////    rxPresent = par("rxPresent");
+//
+//    if(qoSCube->isRxOn()){
+//      rxPresent = true;
+//    }else{
+//      rxPresent = false;
+//    }
+    rxPresent = qoSCube->isRxOn();
+    winBased = qoSCube->isWindowFcOn();
+    rateBased = qoSCube->isRateFcOn();
 
-//    rxPresent = par("rxPresent");
-
-    if(qoSCube->isForceOrder()){
-      rxPresent = true;
-    }else{
-      rxPresent = false;
-    }
-
-    if(qoSCube->getAvgBand() > 0){
-      winBased = true;
-    }else{
-      winBased = false;
-    }
+//    if(qoSCube->getAvgBand() > 0){
+//      winBased = true;
+//    }else{
+//      winBased = false;
+//    }
 
     if(rxPresent || winBased || rateBased){
       dtcpPresent =  true;
-      //TODO A! create DTCP module here?
+
     }
   }
 }
@@ -351,8 +354,9 @@ std::vector<DataTransferPDU*>* DTPState::getReassemblyPDUQ()
 
 void DTPState::pushBackToReassemblyPDUQ(DataTransferPDU* pdu)
 {
-//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+//TODO A2 check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
+  take(pdu);
   reassemblyPDUQ.push_back(pdu);
 }
 
@@ -360,43 +364,44 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
 {
 
   if (pdu != NULL)
-   {
-     if (reassemblyPDUQ.empty())
-     {
-       reassemblyPDUQ.push_back(pdu);
-     }
-     else
-     {
-       if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
-       {
-         reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
-       }
-       else
-       {
-         for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
-         {
-           if ((*it)->getSeqNum() == pdu->getSeqNum())
-           {
-             //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
-             //Throw Error.
-             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
-           }
-           else if ((*it)->getSeqNum() > pdu->getSeqNum())
-           {
-             /* Put the incoming PDU before one with bigger seqNum */
-             reassemblyPDUQ.insert(it, pdu);
-             break;
-           }
-           else if (it == --reassemblyPDUQ.end())
-           {
-             //'it' is last element
-             reassemblyPDUQ.insert(it + 1, pdu);
-             break;
-           }
-         }
-       }
-     }
-   }
+  {
+    take(pdu);
+    if (reassemblyPDUQ.empty())
+    {
+      reassemblyPDUQ.push_back(pdu);
+    }
+    else
+    {
+      if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
+      {
+        reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
+      }
+      else
+      {
+        for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+        {
+          if ((*it)->getSeqNum() == pdu->getSeqNum())
+          {
+            //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
+            //Throw Error.
+            throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
+          }
+          else if ((*it)->getSeqNum() > pdu->getSeqNum())
+          {
+            /* Put the incoming PDU before one with bigger seqNum */
+            reassemblyPDUQ.insert(it, pdu);
+            break;
+          }
+          else if (it == --reassemblyPDUQ.end())
+          {
+            //'it' is last element
+            reassemblyPDUQ.insert(it + 1, pdu);
+            break;
+          }
+        }
+      }
+    }
+  }
 }
 
 
@@ -504,4 +509,15 @@ void DTPState::handleMessage(cMessage* msg)
 {
 }
 
+/* Dirty hacks */
+ATimer* DTPState::getTmpAtimer() const
+{
+  return tmpAtimer;
+}
 
+void DTPState::setTmpAtimer(ATimer* tmpAtimer)
+{
+  this->tmpAtimer = tmpAtimer;
+}
+
+/* End dirty hacks */

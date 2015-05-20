@@ -53,14 +53,6 @@ class RMTModuleAllocator : public cSimpleModule
     RMTQueue* addQueue(RMTQueueType type, RMTPort* port, const char* queueId = "0");
 
     /**
-     * Adds a pair of management queues.
-     * Note: this will go away soon when mgmt messages get their own flows
-     *
-     * @param port (N-1)-port
-     */
-    void addMgmtQueues(RMTPort* port);
-
-    /**
      * Removes the specified port.
      *
      * @param port (N-1)-port

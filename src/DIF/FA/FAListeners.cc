@@ -59,14 +59,19 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()) {
+    if (flow
+            && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
+            && flow->getConId().getQoSId().compare(VAL_MGMTQOSID) ) {
         //EV << "-----\n" << flow->info() << endl;
         TFAIPtrs entries = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->receiveNM1FlowCreated( (*it)->getFlow() );
         }
     }
-    else
-        EV << "Received not a flow object or signal is not for mine FA!" << endl;
+    else {
+        if (!flow) { EV << "Received not a flow object!" << endl; }
+        else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID)) { EV << "Management flow allocated!" << endl; }
+        else { EV << "Flow not intended for my FA!" << endl; }
+    }
 }
 

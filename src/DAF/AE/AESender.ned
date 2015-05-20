@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DAF.AE;
+package rina.src.DAF.AE;
 
 simple AESender extends AE like IAE
 {
@@ -31,7 +31,13 @@ simple AESender extends AE like IAE
         double rate = default(1);  
         double ratevar = default(0);    
         
+        int pduburst = default(1);   
+        
+        
         int size = default(1024);
         int sizevar = default(0);
+        
+        bool printAtEnd = default(false);
+        bool recTimes = default(false);
         
 }

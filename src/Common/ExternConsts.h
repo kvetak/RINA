@@ -43,15 +43,22 @@ extern const char* MOD_CDAPCACE;
 extern const char* MOD_CDAPAUTH;
 extern const char* MOD_CDAPCDAP;
 extern const char* MOD_EFCPTABLE;
+extern const char* MOD_DTP;
 extern const char* MOD_DTCP;
 extern const char* MOD_DTP_STATE;
 extern const char* MOD_DTCP_STATE;
 extern const char* MOD_EFCPI;
 
 //Module type paths
+extern const char* MOD_EFCP_PATH;
+extern const char* MOD_EFCPI_PATH;
 extern const char* MOD_DTP_PATH;
 extern const char* MOD_DTP_STATE_PATH;
 extern const char* MOD_DTCP_PATH;
+extern const char* MOD_DTCP_STATE_PATH;
+extern const char* MOD_DELIMITING_PATH;
+extern const char* MOD_RMT_PORTWRAPPER;
+extern const char* MOD_RMT_QUEUE;
 
 //Module parameters
 extern const char* PAR_IPCADDR;
@@ -92,14 +99,30 @@ extern const char* GATE_EFCPI_SOUTHIO;
 //XML attributes and elements
 extern const char* ELEM_APN;
 extern const char* ATTR_APN;
+extern const char* ELEM_AVGBW;
+extern const char* ELEM_AVGSDUBW;
+extern const char* ELEM_PEAKBWDUR;
+extern const char* ELEM_PEAKSDUBWDUR;
+extern const char* ELEM_BURSTPERIOD;
+extern const char* ELEM_BURSTDURATION;
+extern const char* ELEM_UNDETECTBITERR;
+extern const char* ELEM_PDUDROPPROBAB;
+extern const char* ELEM_MAXSDUSIZE;
+extern const char* ELEM_PARTIALDELIVER;
+extern const char* ELEM_INCOMPLETEDELIVER;
+extern const char* ELEM_FORCEORDER;
+extern const char* ELEM_MAXALLOWGAP;
+extern const char* ELEM_DELAY;
+extern const char* ELEM_JITTER;
+extern const char* ELEM_COSTTIME;
+extern const char* ELEM_COSTBITS;
 
 //Values
 extern const int    VAL_QOSPARDONOTCARE;
 extern const bool   VAL_QOSPARDEFBOOL;
 extern const int    UNINIT_INVOKEID;
 extern const int    DONTCARE_INVOKEID;
-extern const int    VAL_UNDEF_PORTID;
-
+//extern const int    VAL_UNDEF_PORTID;
 
 class ExternConsts {
   public:

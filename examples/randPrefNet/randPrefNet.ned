@@ -1,732 +1,488 @@
 package rina.examples.randPrefNet;
-import rina.CS.*;
-import rina.DAF.IRM.ConnectionTable;
-import rina.DIF.EFCP.DTCP.*;
 
-network randPrefNet {
-	submodules:
-		R1I1 : InteriorRouterNInt;
-		R1I2 : InteriorRouterNInt;
-		R1I3 : InteriorRouterNInt;
-		R1I4 : InteriorRouterNInt;
-		R1I5 : InteriorRouterNInt;
-		R1I6 : InteriorRouterNInt;
-		R1I7 : InteriorRouterNInt;
-		R1I8 : InteriorRouterNInt;
-		R1I9 : InteriorRouterNInt;
-		R1Ia : InteriorRouterNInt;
-		R1Ib : InteriorRouterNInt;
-		R1Ic : InteriorRouterNInt;
-		R1Id : InteriorRouterNInt;
-		R1Ie : InteriorRouterNInt;
-		R2I1 : InteriorRouterNInt;
-		R2I2 : InteriorRouterNInt;
-		R2I3 : InteriorRouterNInt;
-		R2I4 : InteriorRouterNInt;
-		R2I5 : InteriorRouterNInt;
-		R2I6 : InteriorRouterNInt;
-		R2I7 : InteriorRouterNInt;
-		R2I8 : InteriorRouterNInt;
-		R2I9 : InteriorRouterNInt;
-		R2Ia : InteriorRouterNInt;
-		R2Ib : InteriorRouterNInt;
-		R2Ic : InteriorRouterNInt;
-		R3I1 : InteriorRouterNInt;
-		R3I10 : InteriorRouterNInt;
-		R3I2 : InteriorRouterNInt;
-		R3I3 : InteriorRouterNInt;
-		R3I4 : InteriorRouterNInt;
-		R3I5 : InteriorRouterNInt;
-		R3I6 : InteriorRouterNInt;
-		R3I7 : InteriorRouterNInt;
-		R3I8 : InteriorRouterNInt;
-		R3I9 : InteriorRouterNInt;
-		R3Ia : InteriorRouterNInt;
-		R3Ib : InteriorRouterNInt;
-		R3Ic : InteriorRouterNInt;
-		R3Id : InteriorRouterNInt;
-		R3Ie : InteriorRouterNInt;
-		R3If : InteriorRouterNInt;
-		R4I1 : InteriorRouterNInt;
-		R4I2 : InteriorRouterNInt;
-		R4I3 : InteriorRouterNInt;
-		R4I4 : InteriorRouterNInt;
-		R4I5 : InteriorRouterNInt;
-		R4I6 : InteriorRouterNInt;
-		R4I7 : InteriorRouterNInt;
-		R4I8 : InteriorRouterNInt;
-		R4I9 : InteriorRouterNInt;
-		R4Ia : InteriorRouterNInt;
-		R4Ib : InteriorRouterNInt;
-		R4Ic : InteriorRouterNInt;
-		R4Id : InteriorRouterNInt;
-		R4Ie : InteriorRouterNInt;
-		R5I1 : InteriorRouterNInt;
-		R5I10 : InteriorRouterNInt;
-		R5I2 : InteriorRouterNInt;
-		R5I3 : InteriorRouterNInt;
-		R5I4 : InteriorRouterNInt;
-		R5I5 : InteriorRouterNInt;
-		R5I6 : InteriorRouterNInt;
-		R5I7 : InteriorRouterNInt;
-		R5I8 : InteriorRouterNInt;
-		R5I9 : InteriorRouterNInt;
-		R5Ia : InteriorRouterNInt;
-		R5Ib : InteriorRouterNInt;
-		R5Ic : InteriorRouterNInt;
-		R5Id : InteriorRouterNInt;
-		R5Ie : InteriorRouterNInt;
-		R5If : InteriorRouterNInt;
-		R6I1 : InteriorRouterNInt;
-		R6I2 : InteriorRouterNInt;
-		R6I3 : InteriorRouterNInt;
-		R6I4 : InteriorRouterNInt;
-		R6I5 : InteriorRouterNInt;
-		R6I6 : InteriorRouterNInt;
-		R6I7 : InteriorRouterNInt;
-		R6I8 : InteriorRouterNInt;
-		R6I9 : InteriorRouterNInt;
-		R6Ia : InteriorRouterNInt;
-		R6Ib : InteriorRouterNInt;
-		R6Ic : InteriorRouterNInt;
-		R7I1 : InteriorRouterNInt;
-		R7I2 : InteriorRouterNInt;
-		R7I3 : InteriorRouterNInt;
-		R7I4 : InteriorRouterNInt;
-		R7I5 : InteriorRouterNInt;
-		R7I6 : InteriorRouterNInt;
-		R7I7 : InteriorRouterNInt;
-		R7I8 : InteriorRouterNInt;
-		R7I9 : InteriorRouterNInt;
-		R7Ia : InteriorRouterNInt;
-		R7Ib : InteriorRouterNInt;
-		R7Ic : InteriorRouterNInt;
-		R8I1 : InteriorRouterNInt;
-		R8I2 : InteriorRouterNInt;
-		R8I3 : InteriorRouterNInt;
-		R8I4 : InteriorRouterNInt;
-		R8I5 : InteriorRouterNInt;
-		R8I6 : InteriorRouterNInt;
-		R8I7 : InteriorRouterNInt;
-		R8I8 : InteriorRouterNInt;
-		R8I9 : InteriorRouterNInt;
-		R8Ia : InteriorRouterNInt;
-		R8Ib : InteriorRouterNInt;
-		R8Ic : InteriorRouterNInt;
-		R9I1 : InteriorRouterNInt;
-		R9I2 : InteriorRouterNInt;
-		R9I3 : InteriorRouterNInt;
-		R9I4 : InteriorRouterNInt;
-		R9I5 : InteriorRouterNInt;
-		R9I6 : InteriorRouterNInt;
-		R9I7 : InteriorRouterNInt;
-		R9I8 : InteriorRouterNInt;
-		R9I9 : InteriorRouterNInt;
-		R9Ia : InteriorRouterNInt;
-		R9Ib : InteriorRouterNInt;
-		R9Ic : InteriorRouterNInt;
-		R9Id : InteriorRouterNInt;
-		R9Ie : InteriorRouterNInt;
-		RaI1 : InteriorRouterNInt;
-		RaI2 : InteriorRouterNInt;
-		RaI3 : InteriorRouterNInt;
-		RaI4 : InteriorRouterNInt;
-		RaI5 : InteriorRouterNInt;
-		RaI6 : InteriorRouterNInt;
-		RaI7 : InteriorRouterNInt;
-		RaI8 : InteriorRouterNInt;
-		RaI9 : InteriorRouterNInt;
-		RaIa : InteriorRouterNInt;
-		RaIb : InteriorRouterNInt;
-		RaIc : InteriorRouterNInt;
-		RaId : InteriorRouterNInt;
-		RaIe : InteriorRouterNInt;
-		RaIf : InteriorRouterNInt;
-		RbI1 : InteriorRouterNInt;
-		RbI2 : InteriorRouterNInt;
-		RbI3 : InteriorRouterNInt;
-		RbI4 : InteriorRouterNInt;
-		RbI5 : InteriorRouterNInt;
-		RbI6 : InteriorRouterNInt;
-		RbI7 : InteriorRouterNInt;
-		RbI8 : InteriorRouterNInt;
-		RbI9 : InteriorRouterNInt;
-		RbIa : InteriorRouterNInt;
-		RbIb : InteriorRouterNInt;
-		RbIc : InteriorRouterNInt;
-		RbId : InteriorRouterNInt;
-		RbIe : InteriorRouterNInt;
-		RbIf : InteriorRouterNInt;
-		RcI1 : InteriorRouterNInt;
-		RcI2 : InteriorRouterNInt;
-		RcI3 : InteriorRouterNInt;
-		RcI4 : InteriorRouterNInt;
-		RcI5 : InteriorRouterNInt;
-		RcI6 : InteriorRouterNInt;
-		RcI7 : InteriorRouterNInt;
-		RcI8 : InteriorRouterNInt;
-		RcI9 : InteriorRouterNInt;
-		RcIa : InteriorRouterNInt;
-		RcIb : InteriorRouterNInt;
-		RcIc : InteriorRouterNInt;
-		RcId : InteriorRouterNInt;
-		RcIe : InteriorRouterNInt;
-		RcIf : InteriorRouterNInt;
-		RdI1 : InteriorRouterNInt;
-		RdI10 : InteriorRouterNInt;
-		RdI11 : InteriorRouterNInt;
-		RdI2 : InteriorRouterNInt;
-		RdI3 : InteriorRouterNInt;
-		RdI4 : InteriorRouterNInt;
-		RdI5 : InteriorRouterNInt;
-		RdI6 : InteriorRouterNInt;
-		RdI7 : InteriorRouterNInt;
-		RdI8 : InteriorRouterNInt;
-		RdI9 : InteriorRouterNInt;
-		RdIa : InteriorRouterNInt;
-		RdIb : InteriorRouterNInt;
-		RdIc : InteriorRouterNInt;
-		RdId : InteriorRouterNInt;
-		RdIe : InteriorRouterNInt;
-		RdIf : InteriorRouterNInt;
-		ReI1 : InteriorRouterNInt;
-		ReI2 : InteriorRouterNInt;
-		ReI3 : InteriorRouterNInt;
-		ReI4 : InteriorRouterNInt;
-		ReI5 : InteriorRouterNInt;
-		ReI6 : InteriorRouterNInt;
-		ReI7 : InteriorRouterNInt;
-		ReI8 : InteriorRouterNInt;
-		ReI9 : InteriorRouterNInt;
-		ReIa : InteriorRouterNInt;
-		ReIb : InteriorRouterNInt;
-		ReIc : InteriorRouterNInt;
-		ReId : InteriorRouterNInt;
-		ReIe : InteriorRouterNInt;
-		RfI1 : InteriorRouterNInt;
-		RfI2 : InteriorRouterNInt;
-		RfI3 : InteriorRouterNInt;
-		RfI4 : InteriorRouterNInt;
-		RfI5 : InteriorRouterNInt;
-		RfI6 : InteriorRouterNInt;
-		RfI7 : InteriorRouterNInt;
-		RfI8 : InteriorRouterNInt;
-		RfI9 : InteriorRouterNInt;
-		RfIa : InteriorRouterNInt;
-		RfIb : InteriorRouterNInt;
-		RfIc : InteriorRouterNInt;
-		RfId : InteriorRouterNInt;
+import rina.src.CS.InteriorRouterNMInt;
+import rina.src.DAF.IRM.ConnectionTable;
+import rina.src.DIF.EFCP.DTCP.*;
 
-	connections:
-		R1I1.medium++ <--> R1I8.medium++;
-		R1I1.medium++ <--> R1Id.medium++;
-		R1I1.medium++ <--> R1Ie.medium++;
-		R1I2.medium++ <--> R1I4.medium++;
-		R1I2.medium++ <--> R1I5.medium++;
-		R1I2.medium++ <--> R1I7.medium++;
-		R1I2.medium++ <--> R1Ib.medium++;
-		R1I2.medium++ <--> R1Ic.medium++;
-		R1I3.medium++ <--> R1I4.medium++;
-		R1I3.medium++ <--> R1I6.medium++;
-		R1I3.medium++ <--> R1Ia.medium++;
-		R1I3.medium++ <--> R1Ib.medium++;
-		R1I3.medium++ <--> R1Id.medium++;
-		R1I4.medium++ <--> R1Ib.medium++;
-		R1I4.medium++ <--> R1Ic.medium++;
-		R1I4.medium++ <--> R1Id.medium++;
-		R1I4.medium++ <--> R1Ie.medium++;
-		R1I5.medium++ <--> R1I6.medium++;
-		R1I5.medium++ <--> R1I8.medium++;
-		R1I5.medium++ <--> R1Id.medium++;
-		R1I6.medium++ <--> R1I8.medium++;
-		R1I6.medium++ <--> R1Ia.medium++;
-		R1I8.medium++ <--> R1Ib.medium++;
-		R1I8.medium++ <--> R1Ic.medium++;
-		R1I8.medium++ <--> R1Id.medium++;
-		R1I8.medium++ <--> R1Ie.medium++;
-		R1I9.medium++ <--> R1Ia.medium++;
-		R1Ic.medium++ <--> R1Ie.medium++;
-		R2I1.medium++ <--> R2I2.medium++;
-		R2I1.medium++ <--> R2I3.medium++;
-		R2I1.medium++ <--> R2Ia.medium++;
-		R2I1.medium++ <--> R2Ic.medium++;
-		R2I2.medium++ <--> R2I3.medium++;
-		R2I2.medium++ <--> R2I5.medium++;
-		R2I2.medium++ <--> R2I7.medium++;
-		R2I2.medium++ <--> R2Ia.medium++;
-		R2I3.medium++ <--> R2I8.medium++;
-		R2I3.medium++ <--> R2Ia.medium++;
-		R2I3.medium++ <--> R2Ib.medium++;
-		R2I4.medium++ <--> R2I6.medium++;
-		R2I4.medium++ <--> R2I9.medium++;
-		R2I5.medium++ <--> R2I7.medium++;
-		R2I5.medium++ <--> R2I8.medium++;
-		R2I5.medium++ <--> R2I9.medium++;
-		R2I5.medium++ <--> R2Ib.medium++;
-		R2I5.medium++ <--> R2Ic.medium++;
-		R2I6.medium++ <--> R2I8.medium++;
-		R2I6.medium++ <--> R2Ib.medium++;
-		R2I7.medium++ <--> R2I9.medium++;
-		R2I7.medium++ <--> R2Ia.medium++;
-		R2I9.medium++ <--> R2Ia.medium++;
-		R2I9.medium++ <--> R2Ib.medium++;
-		R3I1.medium++ <--> R3I4.medium++;
-		R3I1.medium++ <--> R3I7.medium++;
-		R3I1.medium++ <--> R3I8.medium++;
-		R3I1.medium++ <--> R3If.medium++;
-		R3I10.medium++ <--> R3I2.medium++;
-		R3I10.medium++ <--> R3I4.medium++;
-		R3I10.medium++ <--> R3I8.medium++;
-		R3I10.medium++ <--> R3I9.medium++;
-		R3I10.medium++ <--> R3Ia.medium++;
-		R3I10.medium++ <--> R3Id.medium++;
-		R3I2.medium++ <--> R3I5.medium++;
-		R3I2.medium++ <--> R3I7.medium++;
-		R3I2.medium++ <--> R3Ia.medium++;
-		R3I2.medium++ <--> R3Ic.medium++;
-		R3I3.medium++ <--> R3I4.medium++;
-		R3I3.medium++ <--> R3Ic.medium++;
-		R3I4.medium++ <--> R3I8.medium++;
-		R3I4.medium++ <--> R3Id.medium++;
-		R3I4.medium++ <--> R3Ie.medium++;
-		R3I5.medium++ <--> R3Ia.medium++;
-		R3I5.medium++ <--> R3Id.medium++;
-		R3I6.medium++ <--> R3I7.medium++;
-		R3I8.medium++ <--> R3Ib.medium++;
-		R3I8.medium++ <--> R3If.medium++;
-		R3I9.medium++ <--> R3Ia.medium++;
-		R3I9.medium++ <--> R3Ib.medium++;
-		R3I9.medium++ <--> R3Id.medium++;
-		R3Ia.medium++ <--> R3Ib.medium++;
-		R3Ia.medium++ <--> R3Ie.medium++;
-		R3Ib.medium++ <--> R3Ic.medium++;
-		R3Id.medium++ <--> R3Ie.medium++;
-		R3Id.medium++ <--> R3If.medium++;
-		R4I1.medium++ <--> R4I3.medium++;
-		R4I1.medium++ <--> R4I5.medium++;
-		R4I1.medium++ <--> R4I6.medium++;
-		R4I1.medium++ <--> R4I7.medium++;
-		R4I1.medium++ <--> R4Id.medium++;
-		R4I1.medium++ <--> R4Ie.medium++;
-		R4I2.medium++ <--> R4I4.medium++;
-		R4I2.medium++ <--> R4Ib.medium++;
-		R4I2.medium++ <--> R4Id.medium++;
-		R4I3.medium++ <--> R4I6.medium++;
-		R4I3.medium++ <--> R4Ia.medium++;
-		R4I3.medium++ <--> R4Ic.medium++;
-		R4I4.medium++ <--> R4Ib.medium++;
-		R4I5.medium++ <--> R4I6.medium++;
-		R4I5.medium++ <--> R4I7.medium++;
-		R4I5.medium++ <--> R4Ib.medium++;
-		R4I5.medium++ <--> R4Id.medium++;
-		R4I6.medium++ <--> R4I8.medium++;
-		R4I6.medium++ <--> R4Ib.medium++;
-		R4I7.medium++ <--> R4Ia.medium++;
-		R4I7.medium++ <--> R4Ib.medium++;
-		R4I9.medium++ <--> R4Ia.medium++;
-		R4I9.medium++ <--> R4Ic.medium++;
-		R4I9.medium++ <--> R4Ie.medium++;
-		R4Ia.medium++ <--> R4Ic.medium++;
-		R4Ib.medium++ <--> R4Ic.medium++;
-		R4Ib.medium++ <--> R4Ie.medium++;
-		R4Ic.medium++ <--> R4Ie.medium++;
-		R5I1.medium++ <--> R5I7.medium++;
-		R5I1.medium++ <--> R5Ia.medium++;
-		R5I10.medium++ <--> R5I8.medium++;
-		R5I10.medium++ <--> R5Ib.medium++;
-		R5I10.medium++ <--> R5Id.medium++;
-		R5I2.medium++ <--> R5I9.medium++;
-		R5I2.medium++ <--> R5Ie.medium++;
-		R5I2.medium++ <--> R5If.medium++;
-		R5I3.medium++ <--> R5I7.medium++;
-		R5I3.medium++ <--> R5Ib.medium++;
-		R5I3.medium++ <--> R5Ic.medium++;
-		R5I3.medium++ <--> R5Ie.medium++;
-		R5I4.medium++ <--> R5I5.medium++;
-		R5I4.medium++ <--> R5I6.medium++;
-		R5I4.medium++ <--> R5Ic.medium++;
-		R5I4.medium++ <--> R5Id.medium++;
-		R5I5.medium++ <--> R5I7.medium++;
-		R5I5.medium++ <--> R5I9.medium++;
-		R5I5.medium++ <--> R5If.medium++;
-		R5I6.medium++ <--> R5I7.medium++;
-		R5I6.medium++ <--> R5Id.medium++;
-		R5I7.medium++ <--> R5Ib.medium++;
-		R5I7.medium++ <--> R5Ic.medium++;
-		R5I7.medium++ <--> R5Id.medium++;
-		R5I7.medium++ <--> R5If.medium++;
-		R5I8.medium++ <--> R5I9.medium++;
-		R5I8.medium++ <--> R5Ia.medium++;
-		R5Ia.medium++ <--> R5Ic.medium++;
-		R5Ia.medium++ <--> R5Ie.medium++;
-		R5Ic.medium++ <--> R5Id.medium++;
-		R5Id.medium++ <--> R5Ie.medium++;
-		R5Id.medium++ <--> R5If.medium++;
-		R6I1.medium++ <--> R6I2.medium++;
-		R6I1.medium++ <--> R6I4.medium++;
-		R6I1.medium++ <--> R6I6.medium++;
-		R6I1.medium++ <--> R6I8.medium++;
-		R6I1.medium++ <--> R6Ic.medium++;
-		R6I2.medium++ <--> R6I5.medium++;
-		R6I2.medium++ <--> R6I6.medium++;
-		R6I2.medium++ <--> R6I7.medium++;
-		R6I2.medium++ <--> R6I8.medium++;
-		R6I2.medium++ <--> R6Ic.medium++;
-		R6I3.medium++ <--> R6I5.medium++;
-		R6I3.medium++ <--> R6I9.medium++;
-		R6I3.medium++ <--> R6Ib.medium++;
-		R6I4.medium++ <--> R6I5.medium++;
-		R6I4.medium++ <--> R6I8.medium++;
-		R6I4.medium++ <--> R6I9.medium++;
-		R6I5.medium++ <--> R6I6.medium++;
-		R6I5.medium++ <--> R6I7.medium++;
-		R6I6.medium++ <--> R6I8.medium++;
-		R6I6.medium++ <--> R6Ic.medium++;
-		R6I7.medium++ <--> R6I8.medium++;
-		R6I8.medium++ <--> R6I9.medium++;
-		R6I9.medium++ <--> R6Ic.medium++;
-		R6Ia.medium++ <--> R6Ib.medium++;
-		R7I1.medium++ <--> R7I2.medium++;
-		R7I1.medium++ <--> R7I5.medium++;
-		R7I1.medium++ <--> R7I9.medium++;
-		R7I1.medium++ <--> R7Ia.medium++;
-		R7I1.medium++ <--> R7Ib.medium++;
-		R7I1.medium++ <--> R7Ic.medium++;
-		R7I2.medium++ <--> R7I3.medium++;
-		R7I2.medium++ <--> R7I9.medium++;
-		R7I2.medium++ <--> R7Ib.medium++;
-		R7I2.medium++ <--> R7Ic.medium++;
-		R7I3.medium++ <--> R7I5.medium++;
-		R7I3.medium++ <--> R7I6.medium++;
-		R7I3.medium++ <--> R7I7.medium++;
-		R7I3.medium++ <--> R7I8.medium++;
-		R7I3.medium++ <--> R7Ia.medium++;
-		R7I4.medium++ <--> R7I5.medium++;
-		R7I4.medium++ <--> R7Ic.medium++;
-		R7I5.medium++ <--> R7I7.medium++;
-		R7I5.medium++ <--> R7Ic.medium++;
-		R7I6.medium++ <--> R7I7.medium++;
-		R7I7.medium++ <--> R7I9.medium++;
-		R7I8.medium++ <--> R7Ib.medium++;
-		R7I9.medium++ <--> R7Ic.medium++;
-		R7Ia.medium++ <--> R7Ib.medium++;
-		R8I1.medium++ <--> R8I3.medium++;
-		R8I1.medium++ <--> R8I9.medium++;
-		R8I1.medium++ <--> R8Ic.medium++;
-		R8I2.medium++ <--> R8I7.medium++;
-		R8I2.medium++ <--> R8I8.medium++;
-		R8I3.medium++ <--> R8I4.medium++;
-		R8I3.medium++ <--> R8I5.medium++;
-		R8I3.medium++ <--> R8I8.medium++;
-		R8I4.medium++ <--> R8I5.medium++;
-		R8I4.medium++ <--> R8I7.medium++;
-		R8I4.medium++ <--> R8I9.medium++;
-		R8I4.medium++ <--> R8Ib.medium++;
-		R8I4.medium++ <--> R8Ic.medium++;
-		R8I5.medium++ <--> R8I7.medium++;
-		R8I5.medium++ <--> R8I8.medium++;
-		R8I5.medium++ <--> R8Ia.medium++;
-		R8I5.medium++ <--> R8Ib.medium++;
-		R8I6.medium++ <--> R8I7.medium++;
-		R8I6.medium++ <--> R8I8.medium++;
-		R8I6.medium++ <--> R8Ic.medium++;
-		R8I7.medium++ <--> R8I8.medium++;
-		R8I9.medium++ <--> R8Ia.medium++;
-		R8Ia.medium++ <--> R8Ic.medium++;
-		R8Ib.medium++ <--> R8Ic.medium++;
-		R9I1.medium++ <--> R9I8.medium++;
-		R9I1.medium++ <--> R9I9.medium++;
-		R9I1.medium++ <--> R9Ic.medium++;
-		R9I1.medium++ <--> R9Ie.medium++;
-		R9I2.medium++ <--> R9I3.medium++;
-		R9I2.medium++ <--> R9I9.medium++;
-		R9I3.medium++ <--> R9I8.medium++;
-		R9I3.medium++ <--> R9I9.medium++;
-		R9I4.medium++ <--> R9I5.medium++;
-		R9I5.medium++ <--> R9I7.medium++;
-		R9I5.medium++ <--> R9I8.medium++;
-		R9I5.medium++ <--> R9I9.medium++;
-		R9I5.medium++ <--> R9Id.medium++;
-		R9I6.medium++ <--> R9I7.medium++;
-		R9I6.medium++ <--> R9I9.medium++;
-		R9I6.medium++ <--> R9Ia.medium++;
-		R9I6.medium++ <--> R9Ib.medium++;
-		R9I7.medium++ <--> R9I9.medium++;
-		R9I7.medium++ <--> R9Ic.medium++;
-		R9I7.medium++ <--> R9Id.medium++;
-		R9I8.medium++ <--> R9Ib.medium++;
-		R9I8.medium++ <--> R9Ie.medium++;
-		R9I9.medium++ <--> R9Ic.medium++;
-		R9I9.medium++ <--> R9Id.medium++;
-		R9Ia.medium++ <--> R9Ic.medium++;
-		R9Ia.medium++ <--> R9Id.medium++;
-		R9Ib.medium++ <--> R9Ie.medium++;
-		R9Ic.medium++ <--> R9Id.medium++;
-		RaI1.medium++ <--> RaI5.medium++;
-		RaI1.medium++ <--> RaI7.medium++;
-		RaI2.medium++ <--> RaI6.medium++;
-		RaI2.medium++ <--> RaI7.medium++;
-		RaI2.medium++ <--> RaI8.medium++;
-		RaI2.medium++ <--> RaIa.medium++;
-		RaI3.medium++ <--> RaI6.medium++;
-		RaI3.medium++ <--> RaI9.medium++;
-		RaI3.medium++ <--> RaIe.medium++;
-		RaI4.medium++ <--> RaI5.medium++;
-		RaI5.medium++ <--> RaI7.medium++;
-		RaI5.medium++ <--> RaI8.medium++;
-		RaI5.medium++ <--> RaIa.medium++;
-		RaI5.medium++ <--> RaId.medium++;
-		RaI5.medium++ <--> RaIe.medium++;
-		RaI5.medium++ <--> RaIf.medium++;
-		RaI6.medium++ <--> RaI7.medium++;
-		RaI6.medium++ <--> RaI8.medium++;
-		RaI6.medium++ <--> RaIc.medium++;
-		RaI7.medium++ <--> RaIa.medium++;
-		RaI7.medium++ <--> RaId.medium++;
-		RaI7.medium++ <--> RaIf.medium++;
-		RaI8.medium++ <--> RaIc.medium++;
-		RaI8.medium++ <--> RaIf.medium++;
-		RaI9.medium++ <--> RaIa.medium++;
-		RaI9.medium++ <--> RaIe.medium++;
-		RaIa.medium++ <--> RaIe.medium++;
-		RaIb.medium++ <--> RaId.medium++;
-		RaId.medium++ <--> RaIe.medium++;
-		RaIe.medium++ <--> RaIf.medium++;
-		RbI1.medium++ <--> RbI4.medium++;
-		RbI1.medium++ <--> RbI5.medium++;
-		RbI1.medium++ <--> RbI7.medium++;
-		RbI1.medium++ <--> RbIe.medium++;
-		RbI2.medium++ <--> RbI8.medium++;
-		RbI2.medium++ <--> RbIe.medium++;
-		RbI3.medium++ <--> RbI9.medium++;
-		RbI3.medium++ <--> RbIa.medium++;
-		RbI3.medium++ <--> RbIc.medium++;
-		RbI3.medium++ <--> RbIe.medium++;
-		RbI4.medium++ <--> RbI7.medium++;
-		RbI4.medium++ <--> RbI9.medium++;
-		RbI4.medium++ <--> RbIb.medium++;
-		RbI4.medium++ <--> RbIf.medium++;
-		RbI5.medium++ <--> RbI7.medium++;
-		RbI6.medium++ <--> RbI7.medium++;
-		RbI6.medium++ <--> RbI9.medium++;
-		RbI7.medium++ <--> RbI8.medium++;
-		RbI7.medium++ <--> RbIa.medium++;
-		RbI7.medium++ <--> RbId.medium++;
-		RbI8.medium++ <--> RbIa.medium++;
-		RbI8.medium++ <--> RbIb.medium++;
-		RbI8.medium++ <--> RbIe.medium++;
-		RbI9.medium++ <--> RbIa.medium++;
-		RbIa.medium++ <--> RbId.medium++;
-		RbIa.medium++ <--> RbIe.medium++;
-		RbIb.medium++ <--> RbId.medium++;
-		RbIb.medium++ <--> RbIe.medium++;
-		RbIc.medium++ <--> RbIf.medium++;
-		RbId.medium++ <--> RbIf.medium++;
-		RcI1.medium++ <--> RcI3.medium++;
-		RcI1.medium++ <--> RcI4.medium++;
-		RcI1.medium++ <--> RcI5.medium++;
-		RcI1.medium++ <--> RcI7.medium++;
-		RcI1.medium++ <--> RcI9.medium++;
-		RcI1.medium++ <--> RcIa.medium++;
-		RcI1.medium++ <--> RcIe.medium++;
-		RcI2.medium++ <--> RcI5.medium++;
-		RcI2.medium++ <--> RcI6.medium++;
-		RcI2.medium++ <--> RcI9.medium++;
-		RcI2.medium++ <--> RcIc.medium++;
-		RcI3.medium++ <--> RcI4.medium++;
-		RcI3.medium++ <--> RcI7.medium++;
-		RcI3.medium++ <--> RcIc.medium++;
-		RcI3.medium++ <--> RcIe.medium++;
-		RcI4.medium++ <--> RcIa.medium++;
-		RcI5.medium++ <--> RcI8.medium++;
-		RcI5.medium++ <--> RcI9.medium++;
-		RcI5.medium++ <--> RcIa.medium++;
-		RcI6.medium++ <--> RcIa.medium++;
-		RcI6.medium++ <--> RcIb.medium++;
-		RcI7.medium++ <--> RcI8.medium++;
-		RcI7.medium++ <--> RcI9.medium++;
-		RcI7.medium++ <--> RcIe.medium++;
-		RcI7.medium++ <--> RcIf.medium++;
-		RcI8.medium++ <--> RcIe.medium++;
-		RcI9.medium++ <--> RcIe.medium++;
-		RcIb.medium++ <--> RcIc.medium++;
-		RcIb.medium++ <--> RcIe.medium++;
-		RcId.medium++ <--> RcIf.medium++;
-		RdI1.medium++ <--> RdI2.medium++;
-		RdI1.medium++ <--> RdI6.medium++;
-		RdI1.medium++ <--> RdI8.medium++;
-		RdI1.medium++ <--> RdIc.medium++;
-		RdI1.medium++ <--> RdId.medium++;
-		RdI10.medium++ <--> RdI2.medium++;
-		RdI10.medium++ <--> RdI4.medium++;
-		RdI10.medium++ <--> RdI7.medium++;
-		RdI10.medium++ <--> RdIf.medium++;
-		RdI11.medium++ <--> RdI3.medium++;
-		RdI11.medium++ <--> RdI7.medium++;
-		RdI11.medium++ <--> RdIa.medium++;
-		RdI2.medium++ <--> RdI4.medium++;
-		RdI2.medium++ <--> RdId.medium++;
-		RdI3.medium++ <--> RdI5.medium++;
-		RdI3.medium++ <--> RdI8.medium++;
-		RdI3.medium++ <--> RdId.medium++;
-		RdI3.medium++ <--> RdIe.medium++;
-		RdI4.medium++ <--> RdIf.medium++;
-		RdI5.medium++ <--> RdI6.medium++;
-		RdI5.medium++ <--> RdI7.medium++;
-		RdI5.medium++ <--> RdIa.medium++;
-		RdI5.medium++ <--> RdId.medium++;
-		RdI5.medium++ <--> RdIf.medium++;
-		RdI6.medium++ <--> RdIb.medium++;
-		RdI6.medium++ <--> RdIc.medium++;
-		RdI7.medium++ <--> RdIb.medium++;
-		RdI8.medium++ <--> RdIa.medium++;
-		RdI8.medium++ <--> RdIb.medium++;
-		RdI9.medium++ <--> RdIe.medium++;
-		RdIa.medium++ <--> RdId.medium++;
-		RdIb.medium++ <--> RdIf.medium++;
-		RdIc.medium++ <--> RdId.medium++;
-		RdIe.medium++ <--> RdIf.medium++;
-		ReI1.medium++ <--> ReI2.medium++;
-		ReI1.medium++ <--> ReI7.medium++;
-		ReI1.medium++ <--> ReIb.medium++;
-		ReI1.medium++ <--> ReIe.medium++;
-		ReI2.medium++ <--> ReI3.medium++;
-		ReI2.medium++ <--> ReI6.medium++;
-		ReI2.medium++ <--> ReI7.medium++;
-		ReI2.medium++ <--> ReI9.medium++;
-		ReI2.medium++ <--> ReIc.medium++;
-		ReI3.medium++ <--> ReI4.medium++;
-		ReI4.medium++ <--> ReI6.medium++;
-		ReI4.medium++ <--> ReI7.medium++;
-		ReI4.medium++ <--> ReI8.medium++;
-		ReI5.medium++ <--> ReIc.medium++;
-		ReI5.medium++ <--> ReId.medium++;
-		ReI6.medium++ <--> ReI7.medium++;
-		ReI6.medium++ <--> ReI8.medium++;
-		ReI6.medium++ <--> ReIa.medium++;
-		ReI6.medium++ <--> ReIb.medium++;
-		ReI6.medium++ <--> ReId.medium++;
-		ReI7.medium++ <--> ReIb.medium++;
-		ReI7.medium++ <--> ReIc.medium++;
-		ReI7.medium++ <--> ReId.medium++;
-		ReI8.medium++ <--> ReIa.medium++;
-		ReI8.medium++ <--> ReIb.medium++;
-		ReI8.medium++ <--> ReIc.medium++;
-		ReI8.medium++ <--> ReIe.medium++;
-		ReIa.medium++ <--> ReIb.medium++;
-		RfI1.medium++ <--> RfI2.medium++;
-		RfI1.medium++ <--> RfI7.medium++;
-		RfI1.medium++ <--> RfI8.medium++;
-		RfI2.medium++ <--> RfI3.medium++;
-		RfI2.medium++ <--> RfI4.medium++;
-		RfI2.medium++ <--> RfIa.medium++;
-		RfI2.medium++ <--> RfIb.medium++;
-		RfI2.medium++ <--> RfIc.medium++;
-		RfI3.medium++ <--> RfIb.medium++;
-		RfI3.medium++ <--> RfId.medium++;
-		RfI4.medium++ <--> RfIa.medium++;
-		RfI4.medium++ <--> RfIb.medium++;
-		RfI4.medium++ <--> RfIc.medium++;
-		RfI5.medium++ <--> RfI7.medium++;
-		RfI5.medium++ <--> RfIc.medium++;
-		RfI6.medium++ <--> RfI9.medium++;
-		RfI6.medium++ <--> RfIb.medium++;
-		RfI7.medium++ <--> RfI8.medium++;
-		RfI7.medium++ <--> RfI9.medium++;
-		RfI7.medium++ <--> RfIc.medium++;
-		RfI8.medium++ <--> RfI9.medium++;
-		RfI8.medium++ <--> RfIb.medium++;
-		RfI8.medium++ <--> RfIc.medium++;
-		RfI9.medium++ <--> RfIa.medium++;
-		RfIa.medium++ <--> RfIc.medium++;
-		RfIb.medium++ <--> RfId.medium++;
-		R1I1.medium++ <--> R4Id.medium++;
-		R1I1.medium++ <--> RbId.medium++;
-		R1I1.medium++ <--> RdI3.medium++;
-		R1I2.medium++ <--> RbI3.medium++;
-		R1I6.medium++ <--> R4I2.medium++;
-		R1I6.medium++ <--> RdI3.medium++;
-		R1I8.medium++ <--> RdI3.medium++;
-		R2I2.medium++ <--> R5I10.medium++;
-		R2I2.medium++ <--> R5Id.medium++;
-		R2I2.medium++ <--> R7Ic.medium++;
-		R2I6.medium++ <--> R7Ic.medium++;
-		R2I6.medium++ <--> RfI7.medium++;
-		R2I8.medium++ <--> RfI7.medium++;
-		R3I8.medium++ <--> R4Ib.medium++;
-		R3I8.medium++ <--> R8I1.medium++;
-		R3Ia.medium++ <--> R5I8.medium++;
-		R3Ic.medium++ <--> R4I5.medium++;
-		R3Ic.medium++ <--> R5I10.medium++;
-		R3Ic.medium++ <--> R8I8.medium++;
-		R3Ic.medium++ <--> R8Ic.medium++;
-		R3Ie.medium++ <--> R5I8.medium++;
-		R4I2.medium++ <--> R8I8.medium++;
-		R4I5.medium++ <--> R8Ic.medium++;
-		R4I5.medium++ <--> ReI4.medium++;
-		R4I5.medium++ <--> ReIb.medium++;
-		R4I5.medium++ <--> RfI7.medium++;
-		R4I8.medium++ <--> ReIc.medium++;
-		R4Ib.medium++ <--> R8I5.medium++;
-		R4Ib.medium++ <--> RfIa.medium++;
-		R5I10.medium++ <--> R8I1.medium++;
-		R5I10.medium++ <--> RaIe.medium++;
-		R5I8.medium++ <--> R8Ic.medium++;
-		R5Ib.medium++ <--> R7Ic.medium++;
-		R5Ib.medium++ <--> RaIe.medium++;
-		R5Id.medium++ <--> R7I8.medium++;
-		R5Id.medium++ <--> R8I1.medium++;
-		R6I7.medium++ <--> R7I8.medium++;
-		R6I7.medium++ <--> RcI9.medium++;
-		R6I7.medium++ <--> RcIe.medium++;
-		R6I7.medium++ <--> ReIc.medium++;
-		R6I8.medium++ <--> R7Ic.medium++;
-		R6I8.medium++ <--> RfIa.medium++;
-		R6Ia.medium++ <--> R7Ic.medium++;
-		R6Ia.medium++ <--> RfI2.medium++;
-		R6Ic.medium++ <--> RcI7.medium++;
-		R6Ic.medium++ <--> ReI4.medium++;
-		R7I2.medium++ <--> RaI2.medium++;
-		R7I6.medium++ <--> R9Id.medium++;
-		R7I6.medium++ <--> RcI2.medium++;
-		R7I6.medium++ <--> ReIb.medium++;
-		R7Ib.medium++ <--> RaI3.medium++;
-		R7Ib.medium++ <--> RcI7.medium++;
-		R7Ic.medium++ <--> R9I6.medium++;
-		R7Ic.medium++ <--> ReId.medium++;
-		R8I1.medium++ <--> RcI2.medium++;
-		R8I1.medium++ <--> RcI7.medium++;
-		R8I1.medium++ <--> RfI2.medium++;
-		R8I8.medium++ <--> RbIb.medium++;
-		R8I8.medium++ <--> RbId.medium++;
-		R8I8.medium++ <--> RfI2.medium++;
-		R8Ic.medium++ <--> RcIb.medium++;
-		R8Ic.medium++ <--> RfI7.medium++;
-		R9I4.medium++ <--> RaI2.medium++;
-		R9I4.medium++ <--> RfI5.medium++;
-		R9I6.medium++ <--> RaI1.medium++;
-		R9I6.medium++ <--> RcI9.medium++;
-		R9I6.medium++ <--> RfI5.medium++;
-		R9I8.medium++ <--> RaI2.medium++;
-		R9I8.medium++ <--> RcI9.medium++;
-		R9Id.medium++ <--> RfIa.medium++;
-		RaI1.medium++ <--> RbIb.medium++;
-		RaI1.medium++ <--> RfI5.medium++;
-		RaI2.medium++ <--> RbId.medium++;
-		RaI2.medium++ <--> RfI5.medium++;
-		RbI5.medium++ <--> RdI1.medium++;
-		RbI5.medium++ <--> RdI2.medium++;
-		RbI5.medium++ <--> ReId.medium++;
-		RbId.medium++ <--> ReI6.medium++;
-		RbId.medium++ <--> ReId.medium++;
-		RcI2.medium++ <--> RdI3.medium++;
-		RcI2.medium++ <--> RfIa.medium++;
-		RcI7.medium++ <--> RdI3.medium++;
-		RcIb.medium++ <--> RfI5.medium++;
-		RdI1.medium++ <--> ReId.medium++;
-		RdI1.medium++ <--> RfI2.medium++;
-		RdI2.medium++ <--> RfI2.medium++;
-		RdI3.medium++ <--> ReIb.medium++;
-		RdIc.medium++ <--> ReI4.medium++;
+
+network randPrefNet
+{
+    @display("bgb=1510,1265");
+    submodules:
+        R1I1: InteriorRouterNMInt {
+            @display("p=670,140");
+        }
+        R1I2: InteriorRouterNMInt {
+            @display("p=585,129");
+        }
+        R1I3: InteriorRouterNMInt {
+            @display("p=524,280");
+        }
+        R1I4: InteriorRouterNMInt {
+            @display("p=452,217");
+        }
+        R1I5: InteriorRouterNMInt {
+            @display("p=452,168");
+        }
+        R1I6: InteriorRouterNMInt {
+            @display("p=624,29");
+        }
+        R1I7: InteriorRouterNMInt {
+            @display("p=423,113");
+        }
+        R1I8: InteriorRouterNMInt {
+            @display("p=524,29");
+        }
+        R1I9: InteriorRouterNMInt {
+            @display("p=624,256");
+        }
+        R2I1: InteriorRouterNMInt {
+            @display("p=287,335");
+        }
+        R2I2: InteriorRouterNMInt {
+            @display("p=353,215");
+        }
+        R2I3: InteriorRouterNMInt {
+            @display("p=138,363");
+        }
+        R2I4: InteriorRouterNMInt {
+            @display("p=55,405");
+        }
+        R2I5: InteriorRouterNMInt {
+            @display("p=265,254");
+        }
+        R2I6: InteriorRouterNMInt {
+            @display("p=121,288");
+        }
+        R2I7: InteriorRouterNMInt {
+            @display("p=226,366");
+        }
+        R2I8: InteriorRouterNMInt {
+            @display("p=353,391");
+        }
+        R2I9: InteriorRouterNMInt {
+            @display("p=187,310");
+        }
+        R2Ia: InteriorRouterNMInt {
+            @display("p=258,191");
+        }
+        R2Ib: InteriorRouterNMInt {
+            @display("p=394,390");
+        }
+        R3I1: InteriorRouterNMInt {
+            @display("p=193,437");
+        }
+        R3I2: InteriorRouterNMInt {
+            @display("p=55,512");
+        }
+        R3I3: InteriorRouterNMInt {
+            @display("p=94,711");
+        }
+        R3I4: InteriorRouterNMInt {
+            @display("p=211,573");
+        }
+        R3I5: InteriorRouterNMInt {
+            @display("p=332,612");
+        }
+        R3I6: InteriorRouterNMInt {
+            @display("p=274,512");
+        }
+        R3I7: InteriorRouterNMInt {
+            @display("p=246,690");
+        }
+        R3I8: InteriorRouterNMInt {
+            @display("p=173,690");
+        }
+        R3I9: InteriorRouterNMInt {
+            @display("p=154,557");
+        }
+        R3Ia: InteriorRouterNMInt {
+            @display("p=81,651");
+        }
+        R4I1: InteriorRouterNMInt {
+            @display("p=291,942");
+        }
+        R4I2: InteriorRouterNMInt {
+            @display("p=210,958");
+        }
+        R4I3: InteriorRouterNMInt {
+            @display("p=140,896");
+        }
+        R4I4: InteriorRouterNMInt {
+            @display("p=330,842");
+        }
+        R4I5: InteriorRouterNMInt {
+            @display("p=171,799");
+        }
+        R4I6: InteriorRouterNMInt {
+            @display("p=101,825");
+        }
+        R4I7: InteriorRouterNMInt {
+            @display("p=313,739");
+        }
+        R4I8: InteriorRouterNMInt {
+            @display("p=235,881");
+        }
+        R5I1: InteriorRouterNMInt {
+            @display("p=508,951");
+        }
+        R5I2: InteriorRouterNMInt {
+            @display("p=284,1107");
+        }
+        R5I3: InteriorRouterNMInt {
+            @display("p=442,1013");
+        }
+        R5I4: InteriorRouterNMInt {
+            @display("p=403,1189");
+        }
+        R5I5: InteriorRouterNMInt {
+            @display("p=387,1006");
+        }
+        R5I6: InteriorRouterNMInt {
+            @display("p=547,1198");
+        }
+        R5I7: InteriorRouterNMInt {
+            @display("p=481,1140");
+        }
+        R5I8: InteriorRouterNMInt {
+            @display("p=606,991");
+        }
+        R5I9: InteriorRouterNMInt {
+            @display("p=403,1077");
+        }
+        R5Ia: InteriorRouterNMInt {
+            @display("p=547,1030");
+        }
+        R5Ib: InteriorRouterNMInt {
+            @display("p=403,912");
+        }
+        R6I1: InteriorRouterNMInt {
+            @display("p=888,996");
+        }
+        R6I2: InteriorRouterNMInt {
+            @display("p=820,1090");
+        }
+        R6I3: InteriorRouterNMInt {
+            @display("p=948,1123");
+        }
+        R6I4: InteriorRouterNMInt {
+            @display("p=898,919");
+        }
+        R6I5: InteriorRouterNMInt {
+            @display("p=1010,1188");
+        }
+        R6I6: InteriorRouterNMInt {
+            @display("p=759,1013");
+        }
+        R6I7: InteriorRouterNMInt {
+            @display("p=987,1035");
+        }
+        R6I8: InteriorRouterNMInt {
+            @display("p=898,1204");
+        }
+        R6I9: InteriorRouterNMInt {
+            @display("p=720,1149");
+        }
+        R6Ia: InteriorRouterNMInt {
+            @display("p=664,1204");
+        }
+        R6Ib: InteriorRouterNMInt {
+            @display("p=703,974");
+        }
+        R7I1: InteriorRouterNMInt {
+            @display("p=1273,1021");
+        }
+        R7I2: InteriorRouterNMInt {
+            @display("p=1082,857");
+        }
+        R7I3: InteriorRouterNMInt {
+            @display("p=1149,1060");
+        }
+        R7I4: InteriorRouterNMInt {
+            @display("p=1285,866");
+        }
+        R7I5: InteriorRouterNMInt {
+            @display("p=1133,967");
+        }
+        R7I6: InteriorRouterNMInt {
+            @display("p=1075,1013");
+        }
+        R7I7: InteriorRouterNMInt {
+            @display("p=986,912");
+        }
+        R7I8: InteriorRouterNMInt {
+            @display("p=1160,803");
+        }
+        R8I1: InteriorRouterNMInt {
+            @display("p=1388,496");
+        }
+        R8I2: InteriorRouterNMInt {
+            @display("p=1306,767");
+        }
+        R8I3: InteriorRouterNMInt {
+            @display("p=1420,655");
+        }
+        R8I4: InteriorRouterNMInt {
+            @display("p=1257,490");
+        }
+        R8I5: InteriorRouterNMInt {
+            @display("p=1201,722");
+        }
+        R8I6: InteriorRouterNMInt {
+            @display("p=1366,722");
+        }
+        R8I7: InteriorRouterNMInt {
+            @display("p=1381,574");
+        }
+        R8I8: InteriorRouterNMInt {
+            @display("p=1163,559");
+        }
+        R8I9: InteriorRouterNMInt {
+            @display("p=1317,661");
+        }
+        R8Ia: InteriorRouterNMInt {
+            @display("p=1162,667");
+        }
+        R8Ib: InteriorRouterNMInt {
+            @display("p=1240,584");
+        }
+        R9I1: InteriorRouterNMInt {
+            @display("p=1306,361");
+        }
+        R9I2: InteriorRouterNMInt {
+            @display("p=1230,322");
+        }
+        R9I3: InteriorRouterNMInt {
+            @display("p=1210,445");
+        }
+        R9I4: InteriorRouterNMInt {
+            @display("p=1316,428");
+        }
+        R9I5: InteriorRouterNMInt {
+            @display("p=1377,283");
+        }
+        R9I6: InteriorRouterNMInt {
+            @display("p=1125,283");
+        }
+        R9I7: InteriorRouterNMInt {
+            @display("p=1279,247");
+        }
+        R9I8: InteriorRouterNMInt {
+            @display("p=1136,389");
+        }
+        R9I9: InteriorRouterNMInt {
+            @display("p=1464,361");
+        }
+        RaI1: InteriorRouterNMInt {
+            @display("p=980,90");
+        }
+        RaI2: InteriorRouterNMInt {
+            @display("p=786,192");
+        }
+        RaI3: InteriorRouterNMInt {
+            @display("p=961,219");
+        }
+        RaI4: InteriorRouterNMInt {
+            @display("p=1085,146");
+        }
+        RaI5: InteriorRouterNMInt {
+            @display("p=901,138");
+        }
+        RaI6: InteriorRouterNMInt {
+            @display("p=1094,219");
+        }
+        RaI7: InteriorRouterNMInt {
+            @display("p=817,107");
+        }
+        RaI8: InteriorRouterNMInt {
+            @display("p=744,129");
+        }
+        RaI9: InteriorRouterNMInt {
+
+            @display("p=1026,217");
+        }
+    connections:
+        R1I1.mediumIntra++ <--> R1I9.mediumIntra++;
+        R1I2.mediumIntra++ <--> R1I3.mediumIntra++;
+        R1I2.mediumIntra++ <--> R1I4.mediumIntra++;
+        R1I2.mediumIntra++ <--> R1I6.mediumIntra++;
+        R1I2.mediumIntra++ <--> R1I7.mediumIntra++;
+        R1I2.mediumIntra++ <--> R1I8.mediumIntra++;
+        R1I3.mediumIntra++ <--> R1I4.mediumIntra++;
+        R1I3.mediumIntra++ <--> R1I8.mediumIntra++;
+        R1I3.mediumIntra++ <--> R1I9.mediumIntra++;
+        R1I4.mediumIntra++ <--> R1I5.mediumIntra++;
+        R1I5.mediumIntra++ <--> R1I7.mediumIntra++;
+        R1I6.mediumIntra++ <--> R1I9.mediumIntra++;
+        R1I7.mediumIntra++ <--> R1I8.mediumIntra++;
+        R2I1.mediumIntra++ <--> R2I3.mediumIntra++;
+        R2I1.mediumIntra++ <--> R2I5.mediumIntra++;
+        R2I1.mediumIntra++ <--> R2I7.mediumIntra++;
+        R2I1.mediumIntra++ <--> R2I8.mediumIntra++;
+        R2I2.mediumIntra++ <--> R2I5.mediumIntra++;
+        R2I2.mediumIntra++ <--> R2Ib.mediumIntra++;
+        R2I3.mediumIntra++ <--> R2I6.mediumIntra++;
+        R2I3.mediumIntra++ <--> R2I9.mediumIntra++;
+        R2I4.mediumIntra++ <--> R2I6.mediumIntra++;
+        R2I4.mediumIntra++ <--> R2I8.mediumIntra++;
+        R2I5.mediumIntra++ <--> R2I6.mediumIntra++;
+        R2I5.mediumIntra++ <--> R2Ib.mediumIntra++;
+        R2I6.mediumIntra++ <--> R2Ia.mediumIntra++;
+        R2I7.mediumIntra++ <--> R2I9.mediumIntra++;
+        R2I9.mediumIntra++ <--> R2Ib.mediumIntra++;
+        R2Ia.mediumIntra++ <--> R2Ib.mediumIntra++;
+        R3I1.mediumIntra++ <--> R3I2.mediumIntra++;
+        R3I1.mediumIntra++ <--> R3I6.mediumIntra++;
+        R3I2.mediumIntra++ <--> R3I6.mediumIntra++;
+        R3I2.mediumIntra++ <--> R3I8.mediumIntra++;
+        R3I2.mediumIntra++ <--> R3I9.mediumIntra++;
+        R3I2.mediumIntra++ <--> R3Ia.mediumIntra++;
+        R3I3.mediumIntra++ <--> R3Ia.mediumIntra++;
+        R3I4.mediumIntra++ <--> R3I5.mediumIntra++;
+        R3I4.mediumIntra++ <--> R3I7.mediumIntra++;
+        R3I4.mediumIntra++ <--> R3I9.mediumIntra++;
+        R3I5.mediumIntra++ <--> R3I7.mediumIntra++;
+        R3I5.mediumIntra++ <--> R3Ia.mediumIntra++;
+        R3I7.mediumIntra++ <--> R3I8.mediumIntra++;
+        R3I8.mediumIntra++ <--> R3I9.mediumIntra++;
+        R3I9.mediumIntra++ <--> R3Ia.mediumIntra++;
+        R4I1.mediumIntra++ <--> R4I2.mediumIntra++;
+        R4I1.mediumIntra++ <--> R4I4.mediumIntra++;
+        R4I1.mediumIntra++ <--> R4I8.mediumIntra++;
+        R4I2.mediumIntra++ <--> R4I3.mediumIntra++;
+        R4I2.mediumIntra++ <--> R4I5.mediumIntra++;
+        R4I2.mediumIntra++ <--> R4I8.mediumIntra++;
+        R4I3.mediumIntra++ <--> R4I5.mediumIntra++;
+        R4I3.mediumIntra++ <--> R4I6.mediumIntra++;
+        R4I4.mediumIntra++ <--> R4I5.mediumIntra++;
+        R4I4.mediumIntra++ <--> R4I7.mediumIntra++;
+        R4I5.mediumIntra++ <--> R4I7.mediumIntra++;
+        R4I7.mediumIntra++ <--> R4I8.mediumIntra++;
+        R5I1.mediumIntra++ <--> R5I3.mediumIntra++;
+        R5I1.mediumIntra++ <--> R5I4.mediumIntra++;
+        R5I1.mediumIntra++ <--> R5I7.mediumIntra++;
+        R5I2.mediumIntra++ <--> R5I3.mediumIntra++;
+        R5I2.mediumIntra++ <--> R5I4.mediumIntra++;
+        R5I2.mediumIntra++ <--> R5I6.mediumIntra++;
+        R5I2.mediumIntra++ <--> R5I7.mediumIntra++;
+        R5I2.mediumIntra++ <--> R5Ib.mediumIntra++;
+        R5I3.mediumIntra++ <--> R5I5.mediumIntra++;
+        R5I3.mediumIntra++ <--> R5I9.mediumIntra++;
+        R5I4.mediumIntra++ <--> R5I6.mediumIntra++;
+        R5I4.mediumIntra++ <--> R5I9.mediumIntra++;
+        R5I6.mediumIntra++ <--> R5I7.mediumIntra++;
+        R5I6.mediumIntra++ <--> R5I8.mediumIntra++;
+        R5I7.mediumIntra++ <--> R5Ia.mediumIntra++;
+        R5I8.mediumIntra++ <--> R5Ia.mediumIntra++;
+        R6I1.mediumIntra++ <--> R6I6.mediumIntra++;
+        R6I1.mediumIntra++ <--> R6I8.mediumIntra++;
+        R6I2.mediumIntra++ <--> R6I6.mediumIntra++;
+        R6I2.mediumIntra++ <--> R6I9.mediumIntra++;
+        R6I3.mediumIntra++ <--> R6I4.mediumIntra++;
+        R6I3.mediumIntra++ <--> R6I5.mediumIntra++;
+        R6I3.mediumIntra++ <--> R6I6.mediumIntra++;
+        R6I3.mediumIntra++ <--> R6I9.mediumIntra++;
+        R6I4.mediumIntra++ <--> R6I6.mediumIntra++;
+        R6I4.mediumIntra++ <--> R6I7.mediumIntra++;
+        R6I5.mediumIntra++ <--> R6I8.mediumIntra++;
+        R6I6.mediumIntra++ <--> R6Ib.mediumIntra++;
+        R6I8.mediumIntra++ <--> R6Ia.mediumIntra++;
+        R6I9.mediumIntra++ <--> R6Ia.mediumIntra++;
+        R6I9.mediumIntra++ <--> R6Ib.mediumIntra++;
+        R6Ia.mediumIntra++ <--> R6Ib.mediumIntra++;
+        R7I1.mediumIntra++ <--> R7I2.mediumIntra++;
+        R7I1.mediumIntra++ <--> R7I3.mediumIntra++;
+        R7I1.mediumIntra++ <--> R7I4.mediumIntra++;
+        R7I1.mediumIntra++ <--> R7I5.mediumIntra++;
+        R7I1.mediumIntra++ <--> R7I8.mediumIntra++;
+        R7I2.mediumIntra++ <--> R7I5.mediumIntra++;
+        R7I2.mediumIntra++ <--> R7I7.mediumIntra++;
+        R7I3.mediumIntra++ <--> R7I6.mediumIntra++;
+        R7I4.mediumIntra++ <--> R7I5.mediumIntra++;
+        R7I5.mediumIntra++ <--> R7I7.mediumIntra++;
+        R7I5.mediumIntra++ <--> R7I8.mediumIntra++;
+        R7I6.mediumIntra++ <--> R7I7.mediumIntra++;
+        R8I1.mediumIntra++ <--> R8I4.mediumIntra++;
+        R8I1.mediumIntra++ <--> R8I7.mediumIntra++;
+        R8I1.mediumIntra++ <--> R8I8.mediumIntra++;
+        R8I1.mediumIntra++ <--> R8Ib.mediumIntra++;
+        R8I2.mediumIntra++ <--> R8I5.mediumIntra++;
+        R8I2.mediumIntra++ <--> R8I9.mediumIntra++;
+        R8I3.mediumIntra++ <--> R8I7.mediumIntra++;
+        R8I3.mediumIntra++ <--> R8I9.mediumIntra++;
+        R8I4.mediumIntra++ <--> R8I8.mediumIntra++;
+        R8I5.mediumIntra++ <--> R8I7.mediumIntra++;
+        R8I5.mediumIntra++ <--> R8I9.mediumIntra++;
+        R8I6.mediumIntra++ <--> R8I7.mediumIntra++;
+        R8I6.mediumIntra++ <--> R8I9.mediumIntra++;
+        R8I7.mediumIntra++ <--> R8Ia.mediumIntra++;
+        R8I7.mediumIntra++ <--> R8Ib.mediumIntra++;
+        R8Ia.mediumIntra++ <--> R8Ib.mediumIntra++;
+        R9I1.mediumIntra++ <--> R9I2.mediumIntra++;
+        R9I2.mediumIntra++ <--> R9I3.mediumIntra++;
+        R9I2.mediumIntra++ <--> R9I6.mediumIntra++;
+        R9I3.mediumIntra++ <--> R9I6.mediumIntra++;
+        R9I3.mediumIntra++ <--> R9I9.mediumIntra++;
+        R9I4.mediumIntra++ <--> R9I5.mediumIntra++;
+        R9I4.mediumIntra++ <--> R9I7.mediumIntra++;
+        R9I4.mediumIntra++ <--> R9I8.mediumIntra++;
+        R9I5.mediumIntra++ <--> R9I6.mediumIntra++;
+        R9I5.mediumIntra++ <--> R9I7.mediumIntra++;
+        R9I6.mediumIntra++ <--> R9I8.mediumIntra++;
+        R9I6.mediumIntra++ <--> R9I9.mediumIntra++;
+        R9I7.mediumIntra++ <--> R9I8.mediumIntra++;
+        RaI1.mediumIntra++ <--> RaI6.mediumIntra++;
+        RaI1.mediumIntra++ <--> RaI7.mediumIntra++;
+        RaI2.mediumIntra++ <--> RaI7.mediumIntra++;
+        RaI2.mediumIntra++ <--> RaI8.mediumIntra++;
+        RaI2.mediumIntra++ <--> RaI9.mediumIntra++;
+        RaI3.mediumIntra++ <--> RaI5.mediumIntra++;
+        RaI3.mediumIntra++ <--> RaI6.mediumIntra++;
+        RaI3.mediumIntra++ <--> RaI9.mediumIntra++;
+        RaI4.mediumIntra++ <--> RaI6.mediumIntra++;
+        RaI5.mediumIntra++ <--> RaI6.mediumIntra++;
+        RaI5.mediumIntra++ <--> RaI9.mediumIntra++;
+        RaI6.mediumIntra++ <--> RaI9.mediumIntra++;
+        RaI7.mediumIntra++ <--> RaI9.mediumIntra++;
+        R1I3.mediumInter++ <--> R6I4.mediumInter++;
+        R1I3.mediumInter++ <--> R6Ib.mediumInter++;
+        R1I9.mediumInter++ <--> R6I4.mediumInter++;
+        R2I8.mediumInter++ <--> R5Ib.mediumInter++;
+        R2Ib.mediumInter++ <--> R5I1.mediumInter++;
+        R2Ib.mediumInter++ <--> R5I8.mediumInter++;
+        R3I5.mediumInter++ <--> R7I7.mediumInter++;
+        R3I5.mediumInter++ <--> R9I8.mediumInter++;
+        R3I6.mediumInter++ <--> R7I7.mediumInter++;
+        R3I6.mediumInter++ <--> R7I8.mediumInter++;
+        R3I6.mediumInter++ <--> R9I6.mediumInter++;
+        R4I4.mediumInter++ <--> R5Ib.mediumInter++;
+        R4I4.mediumInter++ <--> R6I4.mediumInter++;
+        R4I4.mediumInter++ <--> R6Ib.mediumInter++;
+        R4I7.mediumInter++ <--> R5Ib.mediumInter++;
+        R5I1.mediumInter++ <--> R6I4.mediumInter++;
+        R5I1.mediumInter++ <--> R8I8.mediumInter++;
+        R5I1.mediumInter++ <--> R9I6.mediumInter++;
+        R5I8.mediumInter++ <--> R8I8.mediumInter++;
+        R5I8.mediumInter++ <--> R9I8.mediumInter++;
+        R5Ib.mediumInter++ <--> R6I4.mediumInter++;
+        R5Ib.mediumInter++ <--> R6Ib.mediumInter++;
+        R5Ib.mediumInter++ <--> R9I8.mediumInter++;
+        R6I4.mediumInter++ <--> R7I2.mediumInter++;
+        R6I4.mediumInter++ <--> R7I7.mediumInter++;
+        R6I4.mediumInter++ <--> R7I8.mediumInter++;
+        R6I4.mediumInter++ <--> RaI2.mediumInter++;
+        R6I4.mediumInter++ <--> RaI9.mediumInter++;
+        R6Ib.mediumInter++ <--> R8I5.mediumInter++;
+        R6Ib.mediumInter++ <--> R8I8.mediumInter++;
+        R6Ib.mediumInter++ <--> R8Ia.mediumInter++;
+        R6Ib.mediumInter++ <--> RaI9.mediumInter++;
+        R7I2.mediumInter++ <--> R9I8.mediumInter++;
+        R7I7.mediumInter++ <--> R9I8.mediumInter++;
+        R7I8.mediumInter++ <--> R8I5.mediumInter++;
+        R7I8.mediumInter++ <--> R8Ia.mediumInter++;
+        R7I8.mediumInter++ <--> R9I3.mediumInter++;
+        R9I3.mediumInter++ <--> RaI9.mediumInter++;
+        R9I6.mediumInter++ <--> RaI2.mediumInter++;
+        R9I8.mediumInter++ <--> RaI2.mediumInter++;
 
 }

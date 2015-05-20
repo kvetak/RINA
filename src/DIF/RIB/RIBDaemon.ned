@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RIB;
+package rina.src.DIF.RIB;
 
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 
 module RIBDaemon
 {

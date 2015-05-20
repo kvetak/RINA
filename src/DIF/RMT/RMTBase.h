@@ -28,7 +28,8 @@ class RMTBase : public cSimpleModule
 
     virtual bool isOnWire() = 0;
     virtual bool getRelayStatus() = 0;
-    virtual void onQueueArrival(cObject* obj) = 0;
+    virtual void preQueueArrival(cObject* obj) = 0;
+    virtual void postQueueArrival(cObject* obj) = 0;
     virtual void preQueueDeparture(cObject* obj) = 0;
     virtual void postQueueDeparture(cObject* obj) = 0;
     virtual void writeToPort(cObject* obj) = 0;

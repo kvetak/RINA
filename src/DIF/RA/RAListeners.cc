@@ -34,10 +34,6 @@ void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     {
         ra->createNM1FlowWithoutAllocate(flow);
     }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
 }
 
 void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -47,11 +43,6 @@ void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* o
     {
         ra->postNFlowAllocation(flow);
     }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
-
 }
 
 void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -61,26 +52,18 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
     {
         ra->postNFlowAllocation(flow);
     }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
-    }
 }
 
 void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    unsigned short qosId = flow->getConId().getQoSId();
+    std::string qosId = flow->getConId().getQoSId();
 
     NM1FlowTableItem* item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
     if (item != NULL)
     {
         ra->postNM1FlowAllocation(item);
-    }
-    else
-    {
-        return;
     }
 }
 
@@ -112,10 +95,6 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
     if (pdu)
     {
         ra->signalizeSlowdownRequestToRIBd(pdu);
-    }
-    else
-    {
-        EV << "RAListener received unknown object!" << endl;
     }
 }
 

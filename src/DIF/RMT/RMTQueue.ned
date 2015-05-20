@@ -15,14 +15,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RMT;
+package rina.src.DIF.RMT;
 
 simple RMTQueue
 {
     parameters:
         @display("i=block/queue;is=vs");        
         
-        @signal[RMT-QueuePDURcvd](type=RMTQueue?);
+        @signal[RMT-QueuePDUPreRcvd](type=RMTQueue?);
+        @signal[RMT-QueuePDUPostRcvd](type=RMTQueue?);
         @signal[RMT-QueuePDUPreSend](type=RMTQueue?);
         @signal[RMT-QueuePDUSent](type=RMTQueue?);
         

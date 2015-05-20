@@ -27,15 +27,184 @@
 const char* STR_DONOTCARE = "do-not-care";
 const char* STR_YES = "yes";
 const char* STR_NO = "no";
-const int   VAL_DEFQOS = 0;
+const int   VAL_DEFAULT_QOS = 0;
+const std::string VAL_UNDEF_QOSID = "UNDEF-QoSCube";
+const std::string VAL_MGMTQOSID = "MGMT-QoSCube";
 
-QoSCube::QoSCube() : qoSId(VAL_DEFQOS),
-        avgBand(VAL_DEFQOS), avgSDUBand(VAL_DEFQOS), peakBandDuration(VAL_DEFQOS), peakSDUBandDuration(VAL_DEFQOS),
-        burstPeriod(VAL_DEFQOS), burstDuration(VAL_DEFQOS), undetectedBitErr(VAL_DEFQOS), pduDropProbability(VAL_DEFQOS), maxSDUsize(VAL_DEFQOS),
+const char* ELEM_ATIME               = "ATime";
+const char* ELEM_EFCPPOL             = "EFCPPolicySet";
+
+QoSCube::QoSCube() : qoSId(VAL_UNDEF_QOSID),
+        avgBand(VAL_DEFAULT_QOS), avgSDUBand(VAL_DEFAULT_QOS), peakBandDuration(VAL_DEFAULT_QOS), peakSDUBandDuration(VAL_DEFAULT_QOS),
+        burstPeriod(VAL_DEFAULT_QOS), burstDuration(VAL_DEFAULT_QOS), undetectedBitErr(VAL_DEFAULT_QOS), pduDropProbability(VAL_DEFAULT_QOS), maxSDUsize(VAL_DEFAULT_QOS),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
-        maxAllowGap(VAL_DEFQOS), delay(VAL_DEFQOS), jitter(VAL_DEFQOS),
-        costTime(VAL_DEFQOS), costBits(VAL_DEFQOS)
+        maxAllowGap(VAL_DEFAULT_QOS), delay(VAL_DEFAULT_QOS), jitter(VAL_DEFAULT_QOS),
+        costTime(VAL_DEFAULT_QOS), costBits(VAL_DEFAULT_QOS), aTime(VAL_DEFAULT_QOS),
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
 {
+}
+
+QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
+        avgBand(VAL_QOSPARDONOTCARE), avgSDUBand(VAL_QOSPARDONOTCARE), peakBandDuration(VAL_QOSPARDONOTCARE), peakSDUBandDuration(VAL_QOSPARDONOTCARE),
+        burstPeriod(VAL_QOSPARDONOTCARE), burstDuration(VAL_QOSPARDONOTCARE), undetectedBitErr(VAL_QOSPARDONOTCARE), pduDropProbability(VAL_QOSPARDONOTCARE), maxSDUsize(VAL_QOSPARDONOTCARE),
+        partDeliv(false), incompleteDeliv(false), forceOrder(false),
+        maxAllowGap(VAL_QOSPARDONOTCARE), delay(VAL_QOSPARDONOTCARE), jitter(VAL_QOSPARDONOTCARE),
+        costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFAULT_QOS),
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
+{
+    for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
+        cXMLElement* n = *jt;
+
+        if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
+            avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (avgBand < 0)
+                avgBand = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_AVGSDUBW)) {
+            avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (avgSDUBand < 0)
+                avgSDUBand = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_PEAKBWDUR)) {
+            peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (peakBandDuration < 0)
+                peakBandDuration = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_PEAKSDUBWDUR)) {
+            peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (peakSDUBandDuration < 0)
+                peakSDUBandDuration = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_BURSTPERIOD)) {
+            burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (burstPeriod < 0)
+                burstPeriod = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_BURSTDURATION)) {
+            burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (burstDuration < 0)
+                burstDuration = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
+            undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (undetectedBitErr < 0 || undetectedBitErr > 1 )
+                undetectedBitErr = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
+            pduDropProbability = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (pduDropProbability < 0 || pduDropProbability > 1 )
+                pduDropProbability = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
+            maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (maxSDUsize < 0)
+                maxSDUsize = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_PARTIALDELIVER)) {
+            partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_INCOMPLETEDELIVER)) {
+            incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_FORCEORDER)) {
+            forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_MAXALLOWGAP)) {
+            maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (maxAllowGap < 0)
+                maxAllowGap = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_DELAY)) {
+            delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (delay < 0)
+                delay = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_JITTER)) {
+            jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            if (jitter < 0)
+                jitter = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_COSTTIME)) {
+            costTime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+            if (costTime < 0)
+                costTime = VAL_QOSPARDONOTCARE;
+        }
+        else if (!strcmp(n->getTagName(), ELEM_COSTBITS)) {
+            costBits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+            if (costBits < 0)
+                costBits = VAL_QOSPARDONOTCARE;
+        }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
+          aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+          if (aTime < 0)
+              aTime = VAL_QOSPARDONOTCARE;
+       }else if(!strcmp(n->getTagName(), ELEM_EFCPPOL)) {
+         efcpPolicies->init(n);
+       }
+    }
+}
+
+QoSCube::QoSCube(std::string tqosid,
+        int tavgBand, int tavgSDUBand,
+        int tpeakBandDuration, int tpeakSDUBandDuration,
+        int tburstPeriod, int tburstDuration,
+        double tundetectedBitErr, double tpduDropProbab,
+        int tmaxSDUsize,
+        bool tpartDeliv, bool tincompleteDeliv, bool tforceOrder,
+        unsigned int tmaxAllowGap, int tdelay, int tjitter,
+        int tcosttime, int tcostbits,
+        double tatime, bool trxon, bool twinfcon, bool tratefcon) :
+                qoSId(tqosid),
+                avgBand(tavgBand), avgSDUBand(tavgSDUBand),
+                peakBandDuration(tpeakBandDuration), peakSDUBandDuration(tpeakSDUBandDuration),
+                burstPeriod(tburstPeriod), burstDuration(tburstDuration),
+                undetectedBitErr(tundetectedBitErr), pduDropProbability(tpduDropProbab),
+                maxSDUsize(tmaxSDUsize),
+                partDeliv(tpartDeliv), incompleteDeliv(tincompleteDeliv), forceOrder(tforceOrder),
+                maxAllowGap(tmaxAllowGap), delay(tdelay), jitter(tjitter),
+                costTime(tcosttime), costBits(tcostbits),
+                aTime(tatime), rxOn(trxon), windowFCOn(twinfcon), rateFCOn(tratefcon),
+                efcpPolicies(new EFCPPolicySet())
+{
+}
+
+QoSCube::~QoSCube() {
+  //TODO @Marek Uncomment line below (it does not compile on my machine)
+//    qoSId = VAL_DEFAULT_QOS;
+
+    avgBand = VAL_DEFAULT_QOS;
+    avgSDUBand = VAL_DEFAULT_QOS;             //Average SDU bandwidth (measured in SDUs/sec)
+    peakBandDuration = VAL_DEFAULT_QOS;       //Peak bandwidth-duration (measured in bits/sec);
+    peakSDUBandDuration = VAL_DEFAULT_QOS;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    burstPeriod = VAL_DEFAULT_QOS;            //Burst period measured in useconds
+    burstDuration = VAL_DEFAULT_QOS;          //Burst duration, measured in useconds fraction of Burst Period
+    undetectedBitErr = VAL_DEFAULT_QOS;    //Undetected bit error rate measured as a probability
+    pduDropProbability = VAL_DEFAULT_QOS;
+    maxSDUsize = VAL_DEFAULT_QOS;             //MaxSDUSize measured in bytes
+    partDeliv = false;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    incompleteDeliv = false;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    forceOrder = false;            //Must SDUs be delivered in-order bits
+    maxAllowGap = VAL_DEFAULT_QOS;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    delay = VAL_DEFAULT_QOS;                  //Delay in usecs
+    jitter = VAL_DEFAULT_QOS;                 //Jitter in usecs
+    costTime = VAL_DEFAULT_QOS;               //measured in $/ms
+    costBits = VAL_DEFAULT_QOS;               //measured in $/Mb
+    aTime = VAL_DEFAULT_QOS;
+}
+
+const QoSCube QoSCube::MANAGEMENT(VAL_MGMTQOSID,
+                                  2048, 10,
+                                  4096, 20,
+                                  10000, 10000,
+                                  0.0, 0.0,
+                                  1500,
+                                  false, false, true,
+                                  0, 0, 0,
+                                  0, 0,
+                                  0.0, true, true, false
+                                 );
+
+std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
+    return os << cube.info();
 }
 
 int QoSCube::getAvgBand() const {
@@ -150,28 +319,7 @@ void QoSCube::setUndetectedBitErr(double undetectedBitErr) {
     this->undetectedBitErr = undetectedBitErr;
 }
 
-QoSCube::~QoSCube() {
-    qoSId = VAL_DEFQOS;
-
-    avgBand = VAL_DEFQOS;
-    avgSDUBand = VAL_DEFQOS;             //Average SDU bandwidth (measured in SDUs/sec)
-    peakBandDuration = VAL_DEFQOS;       //Peak bandwidth-duration (measured in bits/sec);
-    peakSDUBandDuration = VAL_DEFQOS;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
-    burstPeriod = VAL_DEFQOS;            //Burst period measured in useconds
-    burstDuration = VAL_DEFQOS;          //Burst duration, measured in useconds fraction of Burst Period
-    undetectedBitErr = VAL_DEFQOS;    //Undetected bit error rate measured as a probability
-    maxSDUsize = VAL_DEFQOS;             //MaxSDUSize measured in bytes
-    partDeliv = false;             //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
-    incompleteDeliv = false;       //Incomplete Delivery - Can SDUs with missing pieces be delivered?
-    forceOrder = false;            //Must SDUs be delivered in-order bits
-    maxAllowGap = VAL_DEFQOS;   //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
-    delay = VAL_DEFQOS;                  //Delay in usecs
-    jitter = VAL_DEFQOS;                 //Jitter in usecs
-    costTime = VAL_DEFQOS;               //measured in $/ms
-    costBits = VAL_DEFQOS;               //measured in $/Mb
-}
-
-unsigned short QoSCube::getQosId() const {
+std::string QoSCube::getQosId() const {
     return qoSId;
 }
 
@@ -190,6 +338,7 @@ double QoSCube::getCostTime() const {
 void QoSCube::setCostTime(double costTime) {
     this->costTime = costTime;
 }
+
 double QoSCube::getATime() const {
     return aTime;
 }
@@ -198,150 +347,12 @@ void QoSCube::setATime(double aTime) {
     this->aTime = aTime;
 }
 
-void QoSCube::setQosId(unsigned short qoSId) {
+void QoSCube::setQosId(std::string qoSId) {
     this->qoSId = qoSId;
 }
 
-std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
-    return os << cube.info();
-}
-
-short QoSCube::countFeasibilityScore(const QoSCube other) const {
-    short score = 0;
-
-    /*
-    EV << "AvgBw> \t" << getAvgBand() << " / " << templ.getAvgBand() << endl;
-    EV << "AvgSduBw> \t" << getAvgSduBand() << " / " << templ.getAvgSduBand() << endl;
-    EV << "PeakAvgBw> \t" << getPeakBandDuration() << " / " << templ.getPeakBandDuration() << endl;
-    EV << "PeakAvgSduBw> \t" << getPeakSduBandDuration() << " / " << templ.getPeakSduBandDuration() << endl;
-    EV << "BurstPeriod> \t" << getBurstPeriod() << " / " << templ.getBurstPeriod() << endl;
-    EV << "BurstDuration> \t" << getBurstDuration() << " / " << templ.getBurstDuration() << endl;
-    EV << "UndetecBitErr> \t" << getUndetectedBitErr() << " / " << templ.getUndetectedBitErr() << endl;
-    EV << "MaxSduSize> \t" << getMaxSduSize() << " / " << templ.getMaxSduSize() << endl;
-    EV << "PartiDeliv> \t" << isPartialDelivery() << " / " << templ.isPartialDelivery() << endl;
-    EV << "IncomDeliv> \t" << isIncompleteDelivery() << " / " << templ.isIncompleteDelivery() << endl;
-    EV << "ForceOrder> \t" << isForceOrder() << " / " << templ.isForceOrder() << endl;
-    EV << "MaxAllowGap> \t" << getMaxAllowGap() << " / " << templ.getMaxAllowGap() << endl;
-    EV << "Delay> \t" << getDelay() << " / " << templ.getDelay() << endl;
-    EV << "Jitter> \t" << getJitter() << " / " << templ.getJitter() << endl;
-    EV << "CostTime> \t" << getCostTime() << " / " << templ.getCostTime() << endl;
-    EV << "CostBits> \t" << getCostBits() << " / " << templ.getCostBits() << endl;
-    */
-
-    if (getAvgBand() != VAL_QOSPARDONOTCARE)
-        (getAvgBand() <= other.getAvgBand()) ? score++ : score--;
-
-    if (getAvgSduBand() != VAL_QOSPARDONOTCARE)
-        (getAvgSduBand() <= other.getAvgSduBand()) ? score++ : score--;
-
-    if (getPeakBandDuration() != VAL_QOSPARDONOTCARE)
-        (getPeakBandDuration() <= other.getPeakBandDuration()) ? score++ : score--;
-
-    if (getPeakSduBandDuration() != VAL_QOSPARDONOTCARE)
-        (getPeakSduBandDuration() <= other.getPeakSduBandDuration()) ? score++ : score--;
-
-    if (getBurstPeriod() != VAL_QOSPARDONOTCARE)
-        (getBurstPeriod() <= other.getBurstPeriod()) ? score++ : score--;
-
-    if (getBurstDuration() != VAL_QOSPARDONOTCARE)
-        (getBurstDuration() <= other.getBurstDuration()) ? score++ : score--;
-
-    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
-        (getUndetectedBitErr() <= other.getUndetectedBitErr()) ? score++ : score--;
-
-    if (getPduDropProbability() != VAL_QOSPARDONOTCARE)
-        (getPduDropProbability() <= other.getPduDropProbability()) ? score++ : score--;
-
-    if (getMaxSduSize() != VAL_QOSPARDONOTCARE)
-        (getMaxSduSize() <= other.getMaxSduSize()) ? score++ : score--;
-
-    (isPartialDelivery() == other.isPartialDelivery()) ? score++ : score--;
-
-    (isIncompleteDelivery() == other.isIncompleteDelivery()) ? score++ : score--;
-
-    (isForceOrder() == other.isForceOrder()) ? score++ : score--;
-
-    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE)
-        (getMaxAllowGap() <= other.getMaxAllowGap()) ? score++ : score--;
-
-    if (getDelay() != VAL_QOSPARDONOTCARE)
-        (getDelay() <= other.getDelay()) ? score++ : score--;
-
-    if (getJitter() != VAL_QOSPARDONOTCARE)
-        (getJitter() <= other.getJitter()) ? score++ : score--;
-
-    if (getCostTime() != VAL_QOSPARDONOTCARE)
-        (getCostTime() <= other.getCostTime()) ? score++ : score--;
-
-    if (getCostBits() != VAL_QOSPARDONOTCARE)
-        (getCostBits() <= other.getCostBits()) ? score++ : score--;
-
-    if (getATime() != VAL_QOSPARDONOTCARE)
-            (getATime() <= other.getATime()) ? score++ : score--;
-
-    return score;
-}
-
-bool QoSCube::isFeasibility(const QoSCube other) const {
-    if (getAvgBand() != VAL_QOSPARDONOTCARE && getAvgBand() > other.getAvgBand())
-        return false;
-
-    if (getAvgSduBand() != VAL_QOSPARDONOTCARE && getAvgSduBand() > other.getAvgSduBand())
-        return false;
-
-    if (getPeakBandDuration() != VAL_QOSPARDONOTCARE && getPeakBandDuration() > other.getPeakBandDuration())
-        return false;
-
-    if (getPeakSduBandDuration() != VAL_QOSPARDONOTCARE && getPeakSduBandDuration() > other.getPeakSduBandDuration())
-        return false;
-
-    if (getBurstPeriod() != VAL_QOSPARDONOTCARE && getBurstPeriod() > other.getBurstPeriod())
-        return false;
-
-    if (getBurstDuration() != VAL_QOSPARDONOTCARE && getBurstDuration() > other.getBurstDuration())
-        return false;
-
-    if (getUndetectedBitErr() != VAL_QOSPARDONOTCARE && getUndetectedBitErr() > other.getUndetectedBitErr())
-        return false;
-
-    if (getPduDropProbability() != VAL_QOSPARDONOTCARE && getPduDropProbability() > other.getPduDropProbability())
-        return false;
-
-    if (getMaxSduSize() != VAL_QOSPARDONOTCARE && getMaxSduSize() > other.getMaxSduSize())
-        return false;
-
-    if(!other.isPartialDelivery() && isPartialDelivery())
-        return false;
-
-    if(!other.isIncompleteDelivery() && isIncompleteDelivery())
-        return false;
-
-    if(!other.isForceOrder() && isForceOrder())
-        return false;
-
-    if (getMaxAllowGap() != VAL_QOSPARDONOTCARE && getMaxAllowGap() > other.getMaxAllowGap())
-        return false;
-
-    if (getDelay() != VAL_QOSPARDONOTCARE && getDelay() > other.getDelay())
-        return false;
-
-    if (getJitter() != VAL_QOSPARDONOTCARE && getJitter() > other.getJitter())
-        return false;
-
-    if (getCostTime() != VAL_QOSPARDONOTCARE && getCostTime() > other.getCostTime())
-        return false;
-
-    if (getCostBits() != VAL_QOSPARDONOTCARE && getCostBits() > other.getCostBits())
-        return false;
-
-    if (getATime() != VAL_QOSPARDONOTCARE && getATime() > other.getATime())
-        return false;
-
-    return true;
-}
-
 bool QoSCube::isDTCPNeeded()const {
-  return isPartialDelivery() || isForceOrder() || isIncompleteDelivery() || avgBand >= 0;
+  return isRxOn() || isWindowFcOn() || isRateFcOn();
 }
 
 double QoSCube::getPduDropProbability() const {
@@ -355,63 +366,33 @@ void QoSCube::setPduDropProbability(double pduDropProbability) {
 std::string QoSCube::info() const {
     std::ostringstream os;
 
-    if (this->getQosId())
-        os << "QoSCube Id> " << this->getQosId();
-    else
-        os << "QoS Parameters List>";
+    os << "QoSCube Id> " << this->getQosId();
 
     os << "\n   average BW = ";
-    if ( this->getAvgBand() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getAvgBand() << " bit/s";
 
     os   << "\n   average SDU BW = ";
-    if (this->getAvgSduBand() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getAvgSduBand() << " SDU/s";
 
     os << "\n   peak BW duration = ";
-    if (this->getPeakBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getPeakBandDuration() << " bit/s";
 
     os << "\n   peak SDU BW duration = ";
-    if ( this->getPeakSduBandDuration() < 0)
-        os << STR_DONOTCARE;
-    else
         os << this->getPeakSduBandDuration() << " SDU/s";
 
     os << "\n   burst period = ";
-    if ( this->getBurstPeriod() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getBurstPeriod() << " usecs";
 
     os << "\n   burst duration = ";
-    if ( this->getBurstDuration() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getBurstDuration() << " usecs";
 
     os << "\n   undetect. bit errors = ";
-    if ( this->getUndetectedBitErr() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getUndetectedBitErr() << "%";
 
     os << "\n   PDU dropping probability = ";
-    if ( this->getPduDropProbability() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getPduDropProbability() << "%";
 
     os << "\n   max SDU Size = ";
-    if ( this->getMaxSduSize() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getMaxSduSize() << " B";
 
     os << "\n   partial delivery = " << (this->isPartialDelivery() ? STR_YES : STR_NO );
@@ -421,41 +402,76 @@ std::string QoSCube::info() const {
     os << "\n   force order = " << (this->isForceOrder() ? STR_YES : STR_NO );
 
     os << "\n   max allowed gap = ";
-    if ( this->getMaxAllowGap() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getMaxAllowGap() << " SDUs";
 
     os << "\n   delay = ";
-    if ( this->getDelay() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getDelay() << " usecs";
 
     os << "\n   jitter = ";
-    if ( this->getJitter() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getJitter() << " usecs";
 
     os << "\n   cost-time = ";
-    if ( this->getCostTime() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getCostTime() << " $/ms";
 
     os << "\n   cost-bits = ";
-    if ( this->getCostBits() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getCostBits() << " $/Mb";
 
     os << "\n   A-Time = ";
-    if ( this->getATime() < 0 )
-        os << STR_DONOTCARE;
-    else
         os << this->getATime() << "ms";
 
-
     return os.str();
+}
+
+const EFCPPolicySet* QoSCube::getEfcpPolicies() const
+{
+  return efcpPolicies;
+}
+
+bool QoSCube::isRateFcOn() const
+{
+return rateFCOn;
+}
+
+bool QoSCube::isRxOn() const
+{
+return rxOn;
+}
+
+bool QoSCube::isWindowFcOn() const
+{
+return windowFCOn;
+}
+
+bool QoSCube::isDefined() {
+    return avgBand != VAL_QOSPARDONOTCARE && avgSDUBand != VAL_QOSPARDONOTCARE
+            && peakBandDuration != VAL_QOSPARDONOTCARE && peakSDUBandDuration != VAL_QOSPARDONOTCARE
+            && burstPeriod != VAL_QOSPARDONOTCARE && burstDuration != VAL_QOSPARDONOTCARE
+            && undetectedBitErr != VAL_QOSPARDONOTCARE && pduDropProbability != VAL_QOSPARDONOTCARE
+            && maxSDUsize != VAL_QOSPARDONOTCARE && maxAllowGap != VAL_QOSPARDONOTCARE
+            && delay != VAL_QOSPARDONOTCARE && jitter != VAL_QOSPARDONOTCARE
+            && costTime != VAL_QOSPARDONOTCARE && costBits != VAL_QOSPARDONOTCARE
+            && aTime != VAL_QOSPARDONOTCARE && rxOn != VAL_QOSPARDONOTCARE
+            && windowFCOn != VAL_QOSPARDONOTCARE && rateFCOn!= VAL_QOSPARDONOTCARE
+            ;
+}
+
+void QoSCube::setEfcpPolicies(EFCPPolicySet* efcpPolicies)
+{
+  this->efcpPolicies = efcpPolicies;
+}
+
+
+void QoSCube::setRateFcOn(bool rateFcOn)
+{
+  rateFCOn = rateFcOn;
+}
+
+void QoSCube::setRxOn(bool rxOn)
+{
+  this->rxOn = rxOn;
+}
+
+void QoSCube::setWindowFcOn(bool windowFcOn)
+{
+  windowFCOn = windowFcOn;
 }

@@ -87,15 +87,15 @@ void RMTPort::handleMessage(cMessage* msg)
     else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
         if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-        { // this will go away when we figure out management flow pre-allocation
-            send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+        { // this will go away when management uses PDU headers as it should
+            send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
             emit(sigStatRMTPortUp, true);
         }
         else if (dynamic_cast<PDU*>(msg) != NULL)
         {
             // get a proper queue for this message
             RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateID((PDU*)msg).c_str());
+                                             queueIdGen->generateInputQueueID((PDU*)msg).c_str());
 
             if (inQueue != NULL)
             {
@@ -195,18 +195,11 @@ cGate* RMTPort::getSouthOutputGate() const
     return southOutputGate;
 }
 
-RMTQueue* RMTPort::getManagementQueue(RMTQueueType type) const
-{
-    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
-
-    return queueVect.front();
-}
-
 RMTQueue* RMTPort::getFirstQueue(RMTQueueType type) const
 {
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
-    return queueVect.at(1);
+    return queueVect.front();
 }
 
 RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const

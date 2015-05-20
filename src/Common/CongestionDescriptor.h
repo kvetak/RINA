@@ -21,7 +21,7 @@
 class CongestionDescriptor : public cObject {
   public:
     CongestionDescriptor();
-    CongestionDescriptor(int srcCepId, int dstCepId, unsigned short qosId);
+    CongestionDescriptor(int srcCepId, int dstCepId, std::string qosId);
     virtual ~CongestionDescriptor();
 
     virtual CongestionDescriptor* dup() const;

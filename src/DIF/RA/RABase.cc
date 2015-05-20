@@ -37,9 +37,9 @@ std::ostream& operator <<(std::ostream& os, const QoSCubeSet& cubes) {
     return os;
 }
 
-const QoSCube* RABase::getQoSCubeById(unsigned short qosId) const {
+const QoSCube* RABase::getQoSCubeById(std::string qosId) const {
     for (QCubeCItem it = QoSCubes.begin(); it != QoSCubes.end(); ++it) {
-        if (it->getQosId() == qosId)
+        if (it->getQosId().compare(qosId))
             return &(*it);
     }
     return NULL;

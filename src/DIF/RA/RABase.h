@@ -48,7 +48,7 @@ class RABase : public cSimpleModule
 
 
     const QoSCubeSet& getQoSCubes() const;
-    const QoSCube* getQoSCubeById(unsigned short qosId) const;
+    const QoSCube* getQoSCubeById(std::string qosId) const;
 
   protected:
     //SimpleModule overloads

@@ -16,7 +16,7 @@
 package rina.examples.TwoCSWithDelay;
 
 import ned.DatarateChannel;
-import rina.CS.Host1AP;
+import rina.src.CS.Host1AP;
 
 
 network TwoCSWithDelay

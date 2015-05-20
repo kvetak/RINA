@@ -13,17 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF;
+package rina.src.DIF;
 
-
-import rina.Common.Test;
-import rina.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.DIF.EFCP.EFCPModule;
-import rina.DIF.Enrollment.EnrollmentModule;
-import rina.DIF.FA.FlowAllocator;
-import rina.DIF.RA.ResourceAllocator;
-import rina.DIF.RIB.RIBDaemon;
-import rina.DIF.RMT.RelayAndMux;
+import rina.src.Common.Test;
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DIF.EFCP.EFCPModule;
+import rina.src.DIF.Enrollment.EnrollmentModule;
+import rina.src.DIF.FA.FlowAllocator;
+import rina.src.DIF.RA.ResourceAllocator;
+import rina.src.DIF.RIB.RIBDaemon;
+import rina.src.DIF.RMT.RelayAndMux;
 import rina.policies.DIF.Routing.IntRouting;
 
 module IPCProcess

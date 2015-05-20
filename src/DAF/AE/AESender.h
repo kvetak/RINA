@@ -21,6 +21,22 @@
 //RINASim libraries
 #include "AE.h"
 
+
+#include <map>
+
+
+class PingMsg : public CDAP_M_Read {
+public:
+    PingMsg();
+    simtime_t pingAt;
+};
+
+class PongMsg : public CDAP_M_Read_R {
+public:
+    PongMsg(simtime_t pingAt);
+    simtime_t pingAt, pongAt;
+};
+
 class AESender : public AE
 {
     //Consts
@@ -65,6 +81,10 @@ class AESender : public AE
     std::string dstAeName;
     std::string dstAeInstance;
 
+    int pduburst;
+
+    double recTimes;
+
     simtime_t startAt;
     simtime_t stopAt;
     simtime_t sendAfter;
@@ -93,6 +113,10 @@ class AESender : public AE
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
+
+
+    std::map<double, int> times;
+    double dround(double a, int ndigits);
 
 };
 

@@ -32,14 +32,13 @@
 
 
 /* Policies */
-#include "DTPRcvrInactivityPolicyBase.h"
-#include "DTPSenderInactivityPolicyBase.h"
-#include "DTPInitialSeqNumPolicyBase.h"
-#include "DTPRTTEstimatorPolicyBase.h"
+#include "RcvrInactivityPolicyBase.h"
+#include "SenderInactivityPolicyBase.h"
+#include "InitialSeqNumPolicyBase.h"
+#include "RTTEstimatorPolicyBase.h"
 
 //#include "SDUs.h"
 
-#define DTP_MODULE_NAME "dtp"
 #define DEFAULT_INIT_SEQUENCE_NUMBER 1
 
 
@@ -56,15 +55,15 @@ class DTP : public cSimpleModule
 
     DTPState* state; //state of this data-transfer
     DTCP* dtcp;
-    Flow* flow;
+    const Flow* flow;
 
 //    const QoSCube *qosCube;
 
     /* Policies */
-    DTPRcvrInactivityPolicyBase* rcvrInactivityPolicy;
-    DTPSenderInactivityPolicyBase* senderInactivityPolicy;
-    DTPInitialSeqNumPolicyBase* initialSeqNumPolicy;
-    DTPRTTEstimatorPolicyBase* rttEstimatorPolicy;
+    RcvrInactivityPolicyBase* rcvrInactivityPolicy;
+    SenderInactivityPolicyBase* senderInactivityPolicy;
+    InitialSeqNumPolicyBase* initialSeqNumPolicy;
+    RTTEstimatorPolicyBase* rttEstimatorPolicy;
 
     /* Various queues */
     /* Output queues - from App to RMT */
@@ -161,31 +160,31 @@ class DTP : public cSimpleModule
     void clearRxQ();
     void clearClosedWindowQ();
 
-    void sendToRMT(PDU *pdu);
+
 
     void schedule(DTPTimers* timer, double time =0.0);
 
 //    void handleSDUs(CDAPMessage* cdap);
-    void setPDUHeader(PDU* pdu);
+
     void initGates();
-    void delimitFromRMT(DataTransferPDU* pdu);
+
     bool commonRcvControl(ControlPDU* pdu);
-    void sendControlAckPDU();
-    void sendEmptyDTPDU();
-    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
+
+
+
+    void sendAckOnlyPDU(unsigned int seqNum);
     bool setDRFInPDU(bool override);
 
     void redrawGUI();
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
-    void sendFCOnlyPDU();
     void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
-    void sendAckOnlyPDU(unsigned int seqNum);
-    void resetSenderInactivTimer();
+
+
     void rcvrBufferStateChange();
     bool isDuplicate(unsigned int seqNum);
     void notifyAboutInactivity();
-    void notifyAboutUnableMaintain();
-    void notifyStopSending();
+
+
     void notifyStartSending();
 
   public:
@@ -196,7 +195,9 @@ class DTP : public cSimpleModule
 //    bool readImmediate(int portId, unsigned char* buffer, int len);
 //    bool write(int portId, unsigned char *buffer, int len);
 
-    void setFlow(Flow* flow);
+    void delimitFromRMT(DataTransferPDU* pdu);
+
+    void setFlow(const Flow* flow);
     void setDTCP(DTCP* dtcp);
     const QoSCube* getQoSCube() const;
     void setQoSCube(const QoSCube* qosCube);
@@ -206,7 +207,24 @@ class DTP : public cSimpleModule
     cModule* createPolicyModule(const char* prefix, const char* name);
     void startATimer(unsigned int seqNum);
 
+    void resetSenderInactivTimer();
+
+    void setPDUHeader(PDU* pdu);
+
+    void sendFCOnlyPDU();
+    void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
+    void sendControlAckPDU();
+      void sendEmptyDTPDU();
+
+    void sendToRMT(PDU *pdu);
+
+
+
+    void notifyStopSending();
+    void notifyAboutUnableMaintain();
+
     void runCongestionNotificationPolicy();
+    void setState(DTPState* state);
 
   protected:
     virtual void handleMessage(cMessage *msg);
@@ -217,7 +235,7 @@ class DTP : public cSimpleModule
     }
     void initSignalsAndListeners();
 
-    ;
+
 
     //Signals
 

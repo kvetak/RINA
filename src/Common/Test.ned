@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.Common;
+package rina.src.Common;
 
 //
 // TODO auto-generated module

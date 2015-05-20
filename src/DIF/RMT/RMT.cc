@@ -88,9 +88,13 @@ void RMT::initialize()
     // register a signal for notifying others about a packet bit error
     sigRMTPacketError = registerSignal(SIG_RMT_ErrornousPacket);
 
+    // listen for a signal indicating that a new message is to arrive into a queue
+    lisRMTQueuePDUPreRcvd = new LisRMTQueuePDUPreRcvd(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUPreRcvd, lisRMTQueuePDUPreRcvd);
+
     // listen for a signal indicating that a new message has arrived into a queue
-    lisRMTQueuePDURcvd = new LisRMTQueuePDURcvd(this);
-    getParentModule()->subscribe(SIG_RMT_QueuePDURcvd, lisRMTQueuePDURcvd);
+    lisRMTQueuePDUPostRcvd = new LisRMTQueuePDUPostRcvd(this);
+    getParentModule()->subscribe(SIG_RMT_QueuePDUPostRcvd, lisRMTQueuePDUPostRcvd);
 
     // listen for a signal indicating that a message is leaving a queue
     lisRMTQueuePDUPreSend = new LisRMTQueuePDUPreSend(this);
@@ -175,11 +179,25 @@ void RMT::tracePDUEvent(const cPacket* pkt, TraceEventType eventType)
 }
 
 /**
+ * Procedures executed when before a PDU arrives into a queue.
+ *
+ * @param obj RMT queue object
+ */
+void RMT::preQueueArrival(cObject* obj)
+{
+    Enter_Method("preQueueArrival()");
+    RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
+
+    // invoke monitor policy
+    qMonPolicy->prePDUInsertion(queue);
+}
+
+/**
  * Procedures executed when a PDU arrives into a queue.
  *
  * @param obj RMT queue object
  */
-void RMT::onQueueArrival(cObject* obj)
+void RMT::postQueueArrival(cObject* obj)
 {
     Enter_Method("onQueueArrival()");
 
@@ -210,7 +228,7 @@ void RMT::onQueueArrival(cObject* obj)
     }
 
     // invoke monitor policy
-    qMonPolicy->onMessageArrival(queue);
+    qMonPolicy->postPDUInsertion(queue);
 
     // invoke maxQueue policy if applicable
     if (queue->getLength() >= queue->getThreshLength())
@@ -243,6 +261,8 @@ void RMT::preQueueDeparture(cObject* obj)
     Enter_Method("preQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
 
+    qMonPolicy->prePDURelease(queue);
+
     if (tracing)
     {
         tracePDUEvent(queue->getFirstPDU(), MSG_DEQUEUE);
@@ -262,7 +282,7 @@ void RMT::postQueueDeparture(cObject* obj)
 {
     Enter_Method("postQueueDeparture()");
     RMTQueue* queue = check_and_cast<RMTQueue*>(obj);
-    qMonPolicy->onMessageDeparture(queue);
+    qMonPolicy->postPDURelease(queue);
 
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     port->substractWaiting(queue->getType());
@@ -379,7 +399,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  * @param qosId qos-id
  * @return output port
  */
-RMTPort* RMT::fwTableLookup(const Address& destAddr, const unsigned short &qosId)
+RMTPort* RMT::fwTableLookup(const Address& destAddr, const std::string &qosId)
 {
     if (onWire)
     { // get the interface port
@@ -437,7 +457,7 @@ void RMT::efcpiToPort(PDU* pdu)
     RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
     if (outPort != NULL)
     {
-        const std::string& id = queueIdGenerator->generateID(pdu);
+        const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
     }
 
@@ -512,10 +532,10 @@ void RMT::ribToPort(CDAPMessage* cdap)
 {
     cGate* outGate = NULL;
     RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), 0);
+    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), VAL_MGMTQOSID);
     if (outPort != NULL)
     {
-        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
     }
 
     if (outQueue != NULL)
@@ -567,20 +587,20 @@ void RMT::portToPort(cMessage* msg)
             return;
         }
         outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateID((PDU*)msg).c_str());
+                queueIdGenerator->generateOutputQueueID((PDU*)msg).c_str());
     }
     else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
     {
         destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(destAddr, 0);
+        outPort = fwTableLookup(destAddr, VAL_MGMTQOSID);
         if (outPort == NULL)
         {
             EV << getFullPath()
                << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
-        outQueue = outPort->getManagementQueue(RMTQueue::OUTPUT);
+        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
     }
     else
     {

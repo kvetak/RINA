@@ -31,11 +31,17 @@
 //RINASim libraries
 #include "Policy.h"
 #include "ExternConsts.h"
+#include "EFCPPolicySet.h"
 
-extern const char* STR_DONOTCARE;
-extern const char* STR_YES;
-extern const char* STR_NO;
-extern const int   VAL_DEFQOS;
+extern const char*          STR_DONOTCARE;
+extern const char*          STR_YES;
+extern const char*          STR_NO;
+extern const int            VAL_DEFAULT_QOS;
+extern const std::string    VAL_UNDEF_QOSID;
+extern const std::string    VAL_MGMTQOSID;
+
+extern const char*          ELEM_ATIME;
+extern const char*          ELEM_EFCPPOL;
 
 /**
  * @brief Class representing QoSCube with all its properties that is primarily used by FA, RMT and RA
@@ -49,7 +55,7 @@ class QoSCube {
     /**
      * @brief Attribute holding QoSCube identifier. Beaware, value 0 is reserved for Flow QoS demands!
      */
-    unsigned short qoSId;
+    std::string qoSId;
 
     /**
      * @brief Attribute holding average bandwidth
@@ -142,31 +148,61 @@ class QoSCube {
     double aTime;               //A-Timer in ms
 
     /**
+     * @brief Attribute holding whether Retransmission Control is active
+     */
+    bool rxOn;            //Is retransmission active
+
+    /**
+     * @brief Attribute holding whether Window-based Flow Control is active
+     */
+    bool windowFCOn;            //Is Window-based Flow Control active
+
+    /**
+     * @brief Attribute holding whether Rate-based Flow Control is active
+     */
+    bool rateFCOn;            //Is Rate-based Flow Control active
+
+    /**
      * @brief Vector of bound default policies
      */
-    std::vector<Policy*> policyList;
+    EFCPPolicySet* efcpPolicies;
+
   public:
     /**
      * @brief Constructor of QoSCube with undefined values
      */
     QoSCube();
 
+    QoSCube(cXMLElementList& attrs);
+
+    QoSCube(std::string tqosid,
+            int tavgBand, int tavgSDUBand, int tpeakBandDuration, int tpeakSDUBandDuration, int tburstPeriod, int tburstDuration,
+            double tundetectedBitErr, double tpduDropProbab,
+            int tmaxSDUsize, bool tpartDeliv, bool tincompleteDeliv, bool tforceOrder,
+            unsigned int tmaxAllowGap, int tdelay, int tjitter, int tcosttime, int tcostbits,
+            double tatime, bool trxon, bool twinfcon, bool tratefcon
+            );
+
     /**
      * @brief Destructor assigning default uninitialized values
      */
     virtual ~QoSCube();
 
+    static const QoSCube MANAGEMENT;
+
+    bool isDefined();
+
     /**
      * @brief Gets QoSCube identifier
      * @return QoSCube identifier as unsigned number, where value 0 is reserved for AE's Flow QoS parameters
      */
-    unsigned short getQosId() const;
+    std::string getQosId() const;
 
     /**
      * @brief Sets QoSCube identifier
      * @param qoSId A new QoSCube identifier
      */
-    void setQosId(unsigned short qoSId);
+    void setQosId(std::string qoSId);
 
     /**
      * @brief Gets Average Bandwidth parameter
@@ -383,6 +419,7 @@ class QoSCube {
      * @param aTime A new value measured in ms
      */
     void setATime(double aTime);
+
     /**
      * @brief Returns true if DTCP module is needed in order to support this QoScube
      * @return
@@ -390,27 +427,19 @@ class QoSCube {
     bool isDTCPNeeded() const;
 
     /**
-     * @brief Simple QoSCube comparator measuring feasibility score of this and other QoSCubes
-     * If QoS parameter could be satisfied then increment +1 to score. If not then decrement -1.
-     * If parameter has do-not-care value then add nothing to the score.
-     * Function should be reimplemented to more sophisticated one in case of inheritance.
-     * @param templ
-     */
-    virtual short countFeasibilityScore(const QoSCube other) const;
-
-    /**
-     * @brief Simple QoSCube comparator measuring if this is a feasibility QoSCube to other QoSCubes
-     * If any QoS parameter could not be satisfied then return false. If not return true.
-     * Function should be reimplemented to more sophisticated one in case of inheritance.
-     * @param templ
-     */
-    virtual bool isFeasibility(const QoSCube other) const;
-
-    /**
      * @brief Prints QoSCube information as string
      * @return String of QoSCube textual representation
      */
     std::string info() const;
+
+    const EFCPPolicySet* getEfcpPolicies() const;
+    void setEfcpPolicies(EFCPPolicySet* efcpPolicies);
+    bool isRateFcOn() const;
+    bool isRxOn() const;
+    bool isWindowFcOn() const;
+    void setRateFcOn(bool rateFcOn);
+    void setRxOn(bool rxOn);
+    void setWindowFcOn(bool windowFcOn);
 };
 
 //Free function

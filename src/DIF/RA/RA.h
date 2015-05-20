@@ -44,6 +44,9 @@
 //Consts
 extern const char* PAR_QOSDATA;
 extern const char* ELEM_QOSCUBE;
+extern const char* PAR_QOSREQ;
+extern const char* ELEM_QOSREQ;
+extern const char* ATTR_ID;
 extern const char* ELEM_AVGBW;
 extern const char* ELEM_AVGSDUBW;
 extern const char* ELEM_PEAKBWDUR;
@@ -62,6 +65,11 @@ extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
 extern const char* ELEM_ATIME;
+extern const char* ELEM_RXON;
+extern const char* ELEM_WINON;
+extern const char* ELEM_RATEON;
+extern const char* ELEM_EFCPPOL;
+
 
 class RA : public RABase
 {
@@ -97,8 +105,11 @@ class RA : public RABase
 
     std::string processName;
     std::map<simtime_t, std::list<Flow*>*> preparedFlows;
+    std::map<std::string, std::list<Flow*>*> pendingFlows;
+    QoSReq mgmtReqs;
 
     void initQoSCubes();
+    QoSReq* initQoSReqById(unsigned short id);
     void initSignalsAndListeners();
     void initFlowAlloc();
     void setRMTMode();
@@ -111,6 +122,8 @@ class RA : public RABase
     simsignal_t sigRACreFloNega;
     simsignal_t sigRASDReqFromRMT;
     simsignal_t sigRASDReqFromRIB;
+    simsignal_t sigRAMgmtAllocd;
+    simsignal_t sigRAMgmtDeallocd;
 
     LisRACreFlow* lisRACreFlow;
     LisRAAllocResPos* lisRAAllocResPos;
@@ -126,6 +139,8 @@ class RA : public RABase
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
     void signalizeSlowdownRequestToRIBd(cPacket* pdu);
     void signalizeSlowdownRequestToEFCP(cObject* obj);
+    void signalizeMgmtAllocToEnrollment(Flow* flow);
+    void signalizeMgmtDeallocToEnrollment(Flow* flow);
 
 };
     

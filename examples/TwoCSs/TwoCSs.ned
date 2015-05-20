@@ -16,7 +16,7 @@
 package rina.examples.TwoCSs;
 
 import ned.DatarateChannel;
-import rina.CS.Host1AP;
+import rina.src.CS.Host1AP;
 
 
 network TwoCSs
@@ -31,5 +31,5 @@ network TwoCSs
         }
     connections allowunconnected:
 //        host1.medium <--> host2.medium;
-        host1.medium <--> DatarateChannel {delay = 3s; ber = 0; } <--> host2.medium;
+        host1.medium <--> DatarateChannel {delay = 0.1s; ber = 0; } <--> host2.medium;
 }

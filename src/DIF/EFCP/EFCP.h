@@ -86,7 +86,8 @@ private:
     LisEFCPCongestFromRA* lisEFCPCongestFromRA;
 
     Delimiting* createDelimiting(cModule* efcpi, int portId);
-    DTCP* createDTCP(cModule* efcpi);
+    DTCP* createDTCP(cModule* efcpi, const EFCPPolicySet* efcpPolicySet);
+    cModule* createPolicyModule(const char* prefix, const char* name, const char* policy, cModule* parent);
 
 
 
@@ -108,7 +109,7 @@ public:
     virtual ~EFCP();
 
 
-    EFCPInstance* createEFCPI(Flow* flow, int cepId, int portId);
+    EFCPInstance* createEFCPI(const Flow* flow, int cepId, int portId);
     bool deleteEFCPI(Flow *flow);
 
 

@@ -22,13 +22,13 @@
 // Colors of the IPC reflect the use case layers.
 // Link: https://wiki.ict-pristine.eu/wp2/d21/D21-Datnet-RINA
 
-package rina.CS;
+package rina.src.CS;
 
-import rina.Common.Test;
-import rina.DAF.ApplicationProcess;
-import rina.DAF.DA.DIFAllocator;
-import rina.DIF.IPCProcess;
-import rina.DAF.IRM.IPCResourceManager;
+import rina.src.Common.Test;
+import rina.src.DAF.ApplicationProcess;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
+import rina.src.DAF.IRM.IPCResourceManager;
 
 module DC_VM
 {

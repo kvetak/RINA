@@ -17,6 +17,14 @@
 
 Define_Module(AESender);
 
+PingMsg::PingMsg(){
+    pingAt = simTime();
+}
+PongMsg::PongMsg(simtime_t _pingAt){
+    pingAt = _pingAt;
+    pongAt = simTime();
+}
+
 
 AESender::AESender() : AE() {
     S_TIM_START           = "StartCommunication";
@@ -117,6 +125,11 @@ void AESender::initialize()
     firstR = -1;
     lastR = 0;
 
+    recTimes = par("recTimes").boolValue();
+
+    pduburst = par("pduburst").longValue();
+    if(pduburst<1) { pduburst = 1; }
+
     //Watchers
     WATCH(FlowObject);
     WATCH(send);
@@ -131,13 +144,26 @@ void AESender::initialize()
 
 void AESender::finish()
 {
-    EV << "At "<<this->getApni()<<endl;
-    EV << send << " ("<<sendSize << ")"<<endl;
-    EV << received << " ("<<receivedSize << ")"<<endl;
-    EV << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
-    EV << minDelay << " / "<<maxDelay<<endl;
-    EV << firstR << " -> "<<lastR<<endl;
-    EV << "-----------------"<<endl;
+    if(par("printAtEnd").boolValue()){
+        EV << "At "<<this->getApni()<<endl;
+        if(FlowObject != NULL) {
+            EV << "With QoS " << FlowObject->getConId().getQoSId() <<endl;
+        }
+        EV << "send " << send << " ("<<sendSize << ")"<<endl;
+  //      EV << "pingsRcv "  << pingreceived << " ("<<pingreceivedSize << ")"<<endl;
+        EV << "pongsRcv "  << received << " ("<<receivedSize << ")"<<endl;
+        EV << "delay "  << minDelay << " / "<<maxDelay<<endl;
+        EV << "timestamps "  << firstR << " -> "<<lastR<<endl;
+
+        if(recTimes){
+            EV << "-----------------"<<endl;
+            for(std::map<double, int>::iterator it = times.begin(); it!=times.end(); it++) {
+                EV << "  " << it->first << " " << it->second <<endl;
+            }
+            EV << "-----------------"<<endl;
+        }
+        EV << "-----------------"<<endl;
+    }
 }
 
 void AESender::handleSelfMessage(cMessage *msg) {
@@ -151,7 +177,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
                                          this->dstAeName, this->dstAeInstance);
 
         FlowObject = new Flow(src, dst);
-        FlowObject->setQosParameters(this->getQoSRequirements());
+        FlowObject->setQosRequirements(this->getQoSRequirements());
 
         //Insert it to the Flows ADT
         insertFlow();
@@ -160,32 +186,29 @@ void AESender::handleSelfMessage(cMessage *msg) {
 
         //Schedule ComRequest
         cMessage* m = new cMessage(S_TIM_COM);
-        scheduleAt(simTime()+sendAfter, m);
+        scheduleAt(simTime()+sendAfter+uniform(0,rate), m);
     }
     else if ( !strcmp(msg->getName(), S_TIM_STOP) ) {
         sendDeallocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), S_TIM_COM) ) {
         if(stopAt > simTime()){
-            int msgSize = size + intuniform(-sizevar,sizevar);
-            double msgWait = rate + intuniform(-ratevar,ratevar);
+            int tburst = intuniform(1,pduburst);
 
-            //Create PING messsage
-            CDAP_M_Read* ping = new CDAP_M_Read(S_VAL_MODULEPATH);
-            object_t obj;
-            obj.objectName = S_VAL_MODULEPATH;
-            obj.objectClass = "string";
-            obj.objectInstance = -1;
-            obj.objectVal = (cObject*)(&myPath);
-            ping->setObject(obj);
+            double msgWait = tburst*rate;
+            for(int i = 0; i < tburst; i++){
+                int msgSize = size + intuniform(-sizevar,sizevar);
+                msgWait += uniform(-ratevar,ratevar);
+                //Create PING messsage
+                CDAP_M_Read* ping = new PingMsg();
 
-            ping->setByteLength(msgSize);
+                ping->setByteLength(msgSize);
 
-            //Send message
-            sendData(FlowObject, ping);
-            send++;
-            sendSize += msgSize;
-
+                //Send message
+                sendData(FlowObject, ping);
+                send++;
+                sendSize += msgSize;
+            }
             //Schedule ComRequest
             cMessage* m = new cMessage(S_TIM_COM);
             scheduleAt(simTime()+msgWait, m);
@@ -203,34 +226,16 @@ void AESender::handleMessage(cMessage *msg)
 }
 
 void AESender::processMRead(CDAPMessage* msg) {
-    CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
-
-    EV << "Received M_Read";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-    if ( strstr(object.objectName.c_str(), S_VAL_MODULEPATH) ) {
-        std::string* source = (std::string*)(object.objectVal);
-        std::ostringstream os;
-        os << "Ping requested by " <<  *source << endl;
-        bubble(os.str().c_str());
-        EV << os.str().c_str();
-
-        //Create PING response
-        CDAP_M_Read_R* pong = new CDAP_M_Read_R(S_VAL_MODULEPATH);
-        object_t obj;
-        obj.objectName = S_VAL_MODULEPATH;
-        obj.objectClass = "string";
-        obj.objectInstance = -1;
-        obj.objectVal = (cObject*)(&myPath);
-        pong->setObject(obj);
+    PingMsg* ping = check_and_cast<PingMsg*>(msg);
+    if(ping){
+        PongMsg* pong = new PongMsg(ping->pingAt);
         pong->setByteLength(msg->getByteLength());
 
         sendData(FlowObject, pong);
-
+/*
         pingreceived++;
         pingreceivedSize += msg->getByteLength();
-        simtime_t delay = simTime() - msg->getCreationTime();
+        simtime_t delay = simTime() - ping->pingAt;
         if(minDelay>delay){
             minDelay = delay;
         }
@@ -241,26 +246,16 @@ void AESender::processMRead(CDAPMessage* msg) {
             firstR = simTime();
         }
         lastR = simTime();
+*/
     }
 }
 
 void AESender::processMReadR(CDAPMessage* msg) {
-    CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
-
-    EV << "Received M_Read_R";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-    if ( strstr(object.objectName.c_str(), S_VAL_MODULEPATH) ) {
-        std::string* source = (std::string*)(object.objectVal);
-        std::ostringstream os;
-        os << "Ping replied by " <<  *source << endl;
-        bubble(os.str().c_str());
-        EV << os.str().c_str();
-
+    PongMsg* pong = check_and_cast<PongMsg*>(msg);
+    if(pong){
         received++;
         receivedSize += msg->getByteLength();
-        simtime_t delay = simTime() - msg->getCreationTime();
+        simtime_t delay = simTime() - pong->pingAt;
         if(minDelay>delay){
             minDelay = delay;
         }
@@ -271,5 +266,24 @@ void AESender::processMReadR(CDAPMessage* msg) {
             firstR = simTime();
         }
         lastR = simTime();
+
+        if(recTimes){
+            double dl = dround(delay.dbl(), 3);
+            times[dl]++;
+        }
     }
+}
+
+
+double AESender::dround(double a, int ndigits) {
+
+  int    exp_base10 = round(log10(a));
+  double man_base10 = a*pow(10.0,-exp_base10);
+  double factor     = pow(10.0,-ndigits+1);
+  double truncated_man_base10 = man_base10 - fmod(man_base10,factor);
+  double rounded_remainder    = fmod(man_base10,factor)/factor;
+
+  rounded_remainder = rounded_remainder > 0.5 ? 1.0*factor : 0.0;
+
+  return (truncated_man_base10 + rounded_remainder)*pow(10.0,exp_base10) ;
 }

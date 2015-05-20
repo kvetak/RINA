@@ -40,17 +40,24 @@ const char* MOD_CDAPCACE        = "cace";
 const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCDAP        = "cdap";
 const char* MOD_EFCPTABLE       = "efcpTable";
+const char* MOD_DTP             = "dtp";
 const char* MOD_DTCP            = "dtcp";
 const char* MOD_DTP_STATE       = "dtpState";
 const char* MOD_DTCP_STATE      = "dtcpState";
 const char* MOD_EFCPI           = "efcpi_";
 
-
 //Module type paths
-const char* MOD_EFCP_PATH        = "rina.DIF.EFCP";
-const char* MOD_DTP_PATH        = "rina.DIF.EFCP.DTP.DTP";
-const char* MOD_DTP_STATE_PATH  = "rina.DIF.EFCP.DTP.DTPState";
-const char* MOD_DTCP_PATH       = "rina.DIF.EFCP.DTCP.DTCP";
+const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";
+const char* MOD_EFCPI_PATH      = "rina.src.DIF.EFCP.EFCPI";
+const char* MOD_DTP_PATH        = "rina.src.DIF.EFCP.DTP.DTP";
+const char* MOD_DTP_STATE_PATH  = "rina.src.DIF.EFCP.DTP.DTPState";
+const char* MOD_DTCP_PATH       = "rina.src.DIF.EFCP.DTCP.DTCP";
+const char* MOD_DTCP_STATE_PATH = "rina.src.DIF.EFCP.DTCP.DTCPState";
+const char* MOD_DELIMITING_PATH = "rina.src.DIF.Delimiting.Delimiting";
+const char* MOD_RMT_PORTWRAPPER = "rina.src.DIF.RMT.RMTPortWrapper";
+const char* MOD_RMT_QUEUE       = "rina.src.DIF.RMT.RMTQueue";
+
+
 
 //Module parameters
 const char* PAR_IPCADDR         = "ipcAddress";
@@ -91,6 +98,24 @@ const char* GATE_EFCPI_SOUTHIO  = "southIo";
 //XML attributes and elements
 const char* ELEM_APN            = "APN";
 const char* ATTR_APN            = "apn";
+const char* ELEM_AVGBW               = "AverageBandwidth";
+const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
+const char* ELEM_PEAKBWDUR           = "PeakBandwidthDuration";
+const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
+const char* ELEM_BURSTPERIOD         = "BurstPeriod";
+const char* ELEM_BURSTDURATION       = "BurstDuration";
+const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
+const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
+const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
+const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
+const char* ELEM_FORCEORDER          = "ForceOrder";
+const char* ELEM_MAXALLOWGAP         = "MaxAllowableGap";
+const char* ELEM_DELAY               = "Delay";
+const char* ELEM_JITTER              = "Jitter";
+const char* ELEM_COSTTIME            = "CostTime";
+const char* ELEM_COSTBITS            = "CostBits";
+
 
 //Values
 //TODO: Vesely @Marek - What about -1 as default DoNotCare value
@@ -99,4 +124,4 @@ const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;
 const int   DONTCARE_INVOKEID   = 0;
-const int   VAL_UNDEF_PORTID   = -1;
+//const int   VAL_UNDEF_PORTID   = -1;

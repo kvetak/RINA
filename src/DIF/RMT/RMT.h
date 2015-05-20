@@ -64,7 +64,8 @@ class RMT : public RMTBase
     virtual bool getRelayStatus() { return relayOn; };
     virtual bool isOnWire() { return onWire; };
 
-    virtual void onQueueArrival(cObject* obj);
+    virtual void preQueueArrival(cObject* obj);
+    virtual void postQueueArrival(cObject* obj);
     virtual void preQueueDeparture(cObject* obj);
     virtual void postQueueDeparture(cObject* obj);
     virtual void writeToPort(cObject* obj);
@@ -109,7 +110,7 @@ class RMT : public RMTBase
     void ribToRIB(CDAPMessage* msg);
     void portToPort(cMessage* msg);
 
-    RMTPort* fwTableLookup(const Address& destAddr, const unsigned short &pduQosId);
+    RMTPort* fwTableLookup(const Address& destAddr, const std::string &pduQosId);
     RMTPort* fwTableLookup(const PDU * pdu);
     std::deque<cMessage*> invalidPDUs;
 
@@ -117,7 +118,8 @@ class RMT : public RMTBase
 
     simsignal_t sigRMTNoConnID;
     simsignal_t sigRMTPacketError;
-    LisRMTQueuePDURcvd* lisRMTQueuePDURcvd;
+    LisRMTQueuePDUPreRcvd* lisRMTQueuePDUPreRcvd;
+    LisRMTQueuePDUPostRcvd* lisRMTQueuePDUPostRcvd;
     LisRMTQueuePDUPreSend* lisRMTQueuePDUPreSend;
     LisRMTQueuePDUSent* lisRMTQueuePDUSent;
     LisRMTPortReadyToServe* lisRMTPortReadyToServe;

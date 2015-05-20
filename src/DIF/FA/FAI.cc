@@ -159,6 +159,7 @@ bool FAI::receiveAllocateResponsePositive() {
 }
 
 void FAI::receiveAllocateResponseNegative() {
+    Enter_Method("receiveAllocateResponseNegative()");
     //Check for proper FSM state
     FAITable* ft = FaModule->getFaiTable();
     FAITableEntry* fte = ft->findEntryByFlow(FlowObject);
@@ -471,7 +472,7 @@ void FAI::initSignalsAndListeners() {
     catcher3->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
     //  AllocationRespNegative
     this->lisAllocResNega   = new LisFAIAllocResNega(this);
-    catcher3->subscribe(SIG_toFAI_AllocateResponseNegative, this->lisAllocResNega);
+    catcher3->subscribe(SIG_AERIBD_AllocateResponseNegative, this->lisAllocResNega);
     //  AllocationRespPositive
     this->lisAllocResPosi   = new LisFAIAllocResPosi(this);
     catcher3->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);

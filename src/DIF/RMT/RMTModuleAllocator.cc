@@ -53,7 +53,7 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     }
 
     // instantiate a new module
-    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
+    cModuleType *moduleType = cModuleType::get(MOD_RMT_QUEUE);
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), portWrapper);
     queue = dynamic_cast<RMTQueue*>(newModule);
 
@@ -102,22 +102,10 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     }
 
     queue->setType(type);
-    qMonPolicy->postQueueCreation(queue);
     queueToPort[queue] = port;
+    qMonPolicy->postQueueCreation(queue);
 
     return queue;
-}
-
-void RMTModuleAllocator::addMgmtQueues(RMTPort* port)
-{
-    cModule* inQ = addQueue(RMTQueue::INPUT, port, "M");
-    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, "M");
-
-    cDisplayString& dispIn = inQ->getDisplayString();
-    cDisplayString& dispOut = outQ->getDisplayString();
-
-    dispIn.setTagArg("i2", 0, "status/execute");
-    dispOut.setTagArg("i2", 0, "status/execute");
 }
 
 RMTPort* RMTModuleAllocator::addPort(Flow* flow)
@@ -127,7 +115,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     portCount++;
 
     // initialize a wrapper with port inside it
-    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPortWrapper");
+    cModuleType* moduleType = cModuleType::get(MOD_RMT_PORTWRAPPER);
     cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
     RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
 
@@ -142,6 +130,10 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     if (flow == NULL)
     {
         interfacePort = port;
+    }
+    else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID) )
+    {
+        portDisp.setTagArg("i2", 0, "status/execute");
     }
 
     return port;

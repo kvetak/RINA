@@ -15,7 +15,7 @@
 
 #include "Flow.h"
 
-const int VAL_UNDEFINED = -1;
+const int VAL_UNDEF_PORTID = -1;
 const int VAL_MAXHOPCOUNT = 16;
 const int VAL_MAXCREATERETRIES = 3;
 
@@ -23,7 +23,7 @@ Register_Class(Flow);
 
 Flow::Flow() :
     srcApni(APNamingInfo()), dstApni(APNamingInfo()),
-    srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
+    srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
     srcAddr(Address()), dstAddr(Address()),
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
@@ -35,7 +35,7 @@ Flow::Flow() :
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcApni(src), dstApni(dst),
-        srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
+        srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
         srcAddr(Address()), dstAddr(Address()),
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
@@ -48,13 +48,13 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
 Flow::~Flow() {
     this->srcApni = APNamingInfo();
     this->dstApni = APNamingInfo();
-    this->srcPortId = VAL_UNDEFINED;
-    this->dstPortId = VAL_UNDEFINED;
+    this->srcPortId = 0;
+    this->dstPortId = 0;
     this->srcAddr = Address();
     this->dstAddr = Address();
-    this->createFlowRetries = VAL_UNDEFINED;
-    this->maxCreateFlowRetries = VAL_UNDEFINED;
-    this->hopCount = VAL_UNDEFINED;
+    this->createFlowRetries = 0;
+    this->maxCreateFlowRetries = 0;
+    this->hopCount = 0;
     srcNeighbor = Address();
     dstNeighbor = Address();
     allocInvokeId = 0;
@@ -155,9 +155,11 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
-const QoSCube& Flow::getQosParameters() const {
-    return qosParameters;
+const QoSReq& Flow::getQosRequirements() const {
+    return qosReqs;
 }
+
+
 
 Flow* Flow::dup() const {
     Flow* flow = new Flow();
@@ -171,7 +173,7 @@ Flow* Flow::dup() const {
     flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
-    flow->setQosParameters(this->getQosParameters());
+    flow->setQosRequirements(this->getQosRequirements());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());
     flow->setAllocInvokeId(this->getAllocInvokeId());
@@ -237,7 +239,7 @@ std::string Flow::infoOther() const {
 std::string Flow::infoQoS() const {
     std::stringstream os;
     os << "Chosen RA's QoS cube>" << conId.getQoSId();
-    //os << qosParameters.info();
+    os << endl << qosReqs.info();
     return os.str();
 }
 
@@ -248,14 +250,6 @@ bool Flow::compare(const Flow& other) const {
             && conId == other.conId
             );
 }
-
-/*
-const long Flow::getPortCepId() const {
-    int ports = getSrcPortId() xor getDstPortId();
-    int ceps = conId.getSrcCepId() xor conId.getDstCepId();
-    return (long) ((ports << sizeof(int)) xor ceps);
-}
-*/
 
 long Flow::getAllocInvokeId() const{
     return allocInvokeId;
@@ -281,6 +275,10 @@ void Flow::setDdtFlag(bool ddtFlag) {
     this->ddtFlag = ddtFlag;
 }
 
+QoSReq& Flow::getQosReqs() {
+    return qosReqs;
+}
+
 void Flow::swapApni() {
     APNamingInfo tmpapni = srcApni;
     srcApni = dstApni;
@@ -299,8 +297,8 @@ Flow& Flow::swapFlow() {
     return *this;
 }
 
-void Flow::setQosParameters(const QoSCube& qosParameters) {
-    this->qosParameters = qosParameters;
+void Flow::setQosRequirements(const QoSReq& qosParameters) {
+    this->qosReqs = qosParameters;
 }
 
 std::string Flow::info() const {

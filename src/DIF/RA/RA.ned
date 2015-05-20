@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.DIF.RA;
+package rina.src.DIF.RA;
 
 simple RA
 {
@@ -25,7 +25,10 @@ simple RA
         @signal[RA-CreateFlowPositive](type=Flow?);
         @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
         @signal[RA-InvokeSlowdown](type=cPacket?);
+        @signal[RA-MgmtFlowAllocated](type=Flow?);
+        @signal[RA-MgmtFlowDeallocated](type=Flow?);
 
         xml qoscubesData = default(xml("<QoSCube/>"));
+        xml qosReqData = default(xml("<QoSReq/>"));
         xml preallocation = default(xml("<root/>"));
 }

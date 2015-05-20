@@ -16,9 +16,9 @@
 // 
 
 
-package rina.DIF.EFCP;
+package rina.src.DIF.EFCP;
 
-import rina.DIF.EFCP.EFCPTable.EFCPTable;
+import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
 
 module EFCPModule
 {

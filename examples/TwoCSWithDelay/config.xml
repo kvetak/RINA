@@ -57,6 +57,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
@@ -76,6 +77,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>

@@ -26,9 +26,14 @@ RMTListeners::~RMTListeners()
     rmt = NULL;
 }
 
-void LisRMTQueuePDURcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUPreRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
-    rmt->onQueueArrival(obj);
+    rmt->preQueueArrival(obj);
+}
+
+void LisRMTQueuePDUPostRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    rmt->postQueueArrival(obj);
 }
 
 void LisRMTQueuePDUPreSend::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)

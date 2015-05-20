@@ -1,5 +1,16 @@
 <?xml version="1.0"?>
 <Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="11_Layer1" dst="22_Layer1" qosCube="42"/>
+            </SimTime>
+            <SimTime t="1">
+                <Connection src="11_Layer1" dst="22_Layer1" qosCube="2"/>
+            </SimTime>            
+        </ConnectionSet>
+    </ConnectionSets>   
+
 	<Host id="host1">
 		<DA>
 			<Directory>
@@ -57,6 +68,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
@@ -76,6 +88,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
 			<MaxSDUSize>1500</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
@@ -85,7 +98,10 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
-		</QoSCube>		
+			<ATime>0</ATime>
+			<EFCPPolicySet>
+			  <FCOverrun>Default</FCOverrun>   
+			</EFCPPolicySet>
+		</QoSCube>     				
 	</QoSCubesSet>
 </Configuration>

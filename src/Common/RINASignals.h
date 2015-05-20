@@ -87,16 +87,12 @@ extern const char* SIG_FAI_CreateFlowResponseNegative;
 extern const char* SIG_FAI_DeleteFlowResponse;
 
 //RA
-extern const char* SIG_RA_AllocateRequest;
-extern const char* SIG_RA_DeallocateRequest;
-extern const char* SIG_RA_AllocateResponsePositive;
-extern const char* SIG_RA_AllocateResponseNegative;
-extern const char* SIG_RA_FlowAllocated;
-extern const char* SIG_RA_FlowDeallocated;
 extern const char* SIG_RA_CreateFlowPositive;
 extern const char* SIG_RA_CreateFlowNegative;
 extern const char* SIG_RA_InvokeSlowdown;
 extern const char* SIG_RA_ExecuteSlowdown;
+extern const char* SIG_RA_MgmtFlowAllocated;
+extern const char* SIG_RA_MgmtFlowDeallocated;
 
 //RIB
 extern const char* SIG_RIB_CreateRequestFlow;
@@ -108,7 +104,8 @@ extern const char* SIG_RIB_DeleteResponseFlow;
 extern const char* SIG_RMT_NoConnId;
 extern const char* SIG_RMT_ErrornousPacket;
 extern const char* SIG_RMT_SlowdownRequest;
-extern const char* SIG_RMT_QueuePDURcvd;
+extern const char* SIG_RMT_QueuePDUPreRcvd;
+extern const char* SIG_RMT_QueuePDUPostRcvd;
 extern const char* SIG_RMT_QueuePDUPreSend;
 extern const char* SIG_RMT_QueuePDUSent;
 extern const char* SIG_RMT_PortPDURcvd;

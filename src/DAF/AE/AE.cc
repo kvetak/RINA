@@ -176,8 +176,7 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
     //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
 
-    //TODO: Vesely - More sophisticated decission
-    if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
+    if ( QoSRequirements.compare(flow->getQosRequirements()) ) {
         //Initialize flow within AE
         FlowObject = flow;
         insertFlow();
@@ -194,7 +193,8 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
         this->signalizeAllocateResponsePositive(FlowObject);
     }
     else {
-        this->signalizeAllocateResponseNegative(FlowObject);
+        EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
+        this->signalizeAllocateResponseNegative(flow);
     }
 }
 

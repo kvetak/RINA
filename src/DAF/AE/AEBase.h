@@ -22,6 +22,7 @@
 #include "APNamingInfo.h"
 #include "Flow.h"
 #include "ExternConsts.h"
+#include "QoSReq.h"
 
 typedef std::list<Flow> Flows;
 typedef Flows::iterator TFlowsIter;
@@ -86,7 +87,7 @@ class AEBase : public cSimpleModule
     std::string authPassword;
     std::string authOther;
 
-    QoSCube QoSRequirements;
+    QoSReq QoSRequirements;
 
     CDAPConnectionState connectionState;
 
@@ -101,8 +102,8 @@ class AEBase : public cSimpleModule
     void setSrcApName(const std::string& srcApName);
     void setApni(const APNamingInfo& apni);
     void setFlows(const Flows& flows);
-    const QoSCube& getQoSRequirements() const;
-    void setQoSRequirements(const QoSCube& qoSRequirements);
+    const QoSReq& getQoSRequirements() const;
+    void setQoSRequirements(const QoSReq& qoSRequirements);
 
     void initNamingInfo();
     void initQoSRequiremets();
