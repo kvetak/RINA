@@ -158,13 +158,22 @@ void RA::initFlowAlloc()
             }
 
             const char* dst = n->getAttribute("dst");
-            unsigned short qosReqId = static_cast<unsigned short>(
-                            atoi(n->getAttribute("qosReq")));
-
+            const char* qosReqID_s = n->getAttribute("qosReq");
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
 
-            QoSReq* qosReq = initQoSReqById(qosReqId);
+            QoSReq* qosReq = NULL;
+
+            if (!opp_strcmp(qosReqID_s, "mgmt"))
+            {
+                qosReq = &mgmtReqs;
+            }
+            else
+            {
+                qosReq = initQoSReqById(static_cast<unsigned short>
+                                        (atoi(qosReqID_s)));
+            }
+
             if (qosReq == NULL) continue;
 
             Flow *flow = new Flow(srcAPN, dstAPN);
