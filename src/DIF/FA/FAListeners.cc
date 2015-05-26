@@ -63,7 +63,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
             && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
             && flow->getConId().getQoSId().compare(VAL_MGMTQOSID) ) {
         //EV << "-----\n" << flow->info() << endl;
-        TFAIPtrs entries = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
+        TFAIPtrs entries = fa->getFaiTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->receiveNM1FlowCreated( (*it)->getFlow() );
         }

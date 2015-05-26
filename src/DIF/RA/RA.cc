@@ -645,6 +645,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     {
         signalizeMgmtAllocToEnrollment(ftItem->getFlow());
 
+        /*
         std::list<Flow*>* flows = pendingFlows[ftItem->getFlow()->getDstApni().getApn().getName()];
         if (flows)
         {
@@ -663,6 +664,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
                 flows->pop_front();
             }
         }
+        */
     }
 }
 
@@ -762,6 +764,9 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         // prepare the new flow specifics
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
         nm1Flow->setQosRequirements(flow->getQosRequirements());
+        createNM1Flow(nm1Flow);
+
+        /*
         if (pendingFlows[neighAddr] == NULL)
         {
             pendingFlows[neighAddr] = new std::list<Flow*>;
@@ -777,6 +782,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
             createNM1Flow(mgmtNM1Flow);
         }
         else
+
         { // the management flow is in place
             if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
             { // ...but still being allocated
@@ -795,6 +801,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
                 pendingFlows[neighAddr]->pop_back();
             }
         }
+        */
     }
 
     return false;

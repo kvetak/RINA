@@ -24,7 +24,7 @@ Define_Module(FAI);
 
 FAI::FAI() : FAIBase() {
     FaModule = NULL;
-    creReqTimer = NULL;
+    //creReqTimer = NULL;
 }
 
 FAI::~FAI() {
@@ -35,8 +35,8 @@ FAI::~FAI() {
     localCEPId      = VAL_UNDEF_CEPID;
     remotePortId    = VAL_UNDEF_PORTID;
     remoteCEPId     = VAL_UNDEF_CEPID;
-    if (creReqTimer)
-        cancelAndDelete(creReqTimer);
+    //if (creReqTimer)
+    //    cancelAndDelete(creReqTimer);
 }
 
 void FAI::initialize() {
@@ -45,7 +45,7 @@ void FAI::initialize() {
     remotePortId = par(PAR_REMOTEPORTID);
     remoteCEPId  = par(PAR_REMOTECEPID);
 
-    creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
+    //creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
 
     AllocRetryPolicy = check_and_cast<AllocateRetryBase*>(getParentModule()->getSubmodule(MOD_ALLOCRETRYPOLICY));
 
@@ -59,7 +59,7 @@ void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
     //Initialize pointers! It cannot be done during model creation :(
     this->FaModule = fa;
     this->FlowObject = fl;
-    this->efcp = efcp;
+    this->EfcpModule = efcp;
 }
 
 bool FAI::receiveAllocateRequest() {
@@ -199,7 +199,7 @@ bool FAI::receiveCreateRequest() {
     //Create IPC north gates
     createNorthGates();
 
-    //Pass AllocationRequest to AP or RMT
+    //Pass AllocationRequest to AP or RIBd
     this->signalizeAllocationRequestFromFai();
 
     //Everything went fine
@@ -280,7 +280,7 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     //TODO: Vesely - D-Base-2011-015.pdf, p.9
     //              Create bindings. WTF? Bindings should be already created!''
 
-    cancelEvent(creReqTimer);
+    //cancelEvent(creReqTimer);
 
     //Change dstCep-Id and dstPortId according to new information
     FlowObject->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
@@ -293,8 +293,17 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     //Change status
     FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
 
-    //Pass Allocate Response to AE or RIBd
-    this->signalizeAllocateResponsePositive();
+    if (FlowObject->isManagementFlowLocalToIPCP()) {
+        //Notify pending flows that mgmt flow is prepared
+        TFAIPtrs entries = FaModule->getFaiTable()->findEntriesAffectedByMgmt(FlowObject);
+        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
+            signalizeAllocateRequestToOtherFais( (*it)->getFlow() );
+        }
+    }
+    else {
+        //Pass Allocate Response to AE or RIBd
+        this->signalizeAllocateResponsePositive();
+    }
 
     //FIXME: Vesely - always true
     return true;
@@ -319,6 +328,7 @@ void FAI::receiveDeleteResponse() {
 }
 
 void FAI::handleMessage(cMessage *msg) {
+    /*
     //CreateRequest was not delivered in time
     if ( !strcmp(msg->getName(), TIM_CREREQ) ) {
         //Increment and resend
@@ -326,6 +336,7 @@ void FAI::handleMessage(cMessage *msg) {
         if (!status)
             EV << "CreateRequest retries reached its maximum!" << endl;
     }
+    */
 }
 
 std::string FAI::info() const {
@@ -344,24 +355,14 @@ std::ostream& operator<< (std::ostream& os, const FAI& fai) {
 bool FAI::createEFCPI() {
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
     //Create EFCPI for local bindings
-    EFCPInstance* efcpi = efcp->createEFCPI(FlowObject, localCEPId, localPortId);
+    EFCPInstance* efcpi = EfcpModule->createEFCPI(FlowObject, localCEPId, localPortId);
     return efcpi ? true : false;
 }
 
 bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP and RMT" << endl;
 
-    std::ostringstream nameIpcDown;
-    nameIpcDown << GATE_NORTHIO_ << localPortId;
     cModule* IPCModule = FaModule->getParentModule()->getParentModule();
-
-    //IF called as consequence of AllocateRequest then createNorthGate
-    //ELSE (called as consequence of CreateRequestFlow) skip
-    if (!IPCModule->hasGate(nameIpcDown.str().c_str()))
-        createNorthGates();
-
-    cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
-    cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
 
     std::ostringstream nameEfcpNorth;
     nameEfcpNorth << GATE_APPIO_ << localPortId;
@@ -369,9 +370,44 @@ bool FAI::createBindings() {
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
 
-    //IPCModule.northIo <--> Efcp.fai
-    gateEfcpUpOut->connectTo(gateIpcDownOut);
-    gateIpcDownIn->connectTo(gateEfcpUpIn);
+    //Management Flow should be connected with RIBd
+    if (FlowObject->isManagementFlowLocalToIPCP()) {
+        std::ostringstream ribdName;
+        ribdName << GATE_EFCPIO_ << localPortId;
+        cModule* ribdModule = IPCModule->getModuleByPath(".ribDaemon");
+        cModule* ribdSplitterModule = IPCModule->getModuleByPath(".ribDaemon.ribdSplitter");
+
+        if (!ribdModule->hasGate(ribdName.str().c_str()))
+            {createNorthGates();}
+
+        cGate* gateRibdIn  = ribdModule->gateHalf(ribdName.str().c_str(), cGate::INPUT);
+        cGate* gateRibdOut = ribdModule->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+        cGate* gateRibdSplitIn  = ribdSplitterModule->gateHalf(ribdName.str().c_str(), cGate::INPUT);
+        cGate* gateRibdSplitOut = ribdSplitterModule->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+
+        //EFCPi.efcpio <--> RIBDaemon.efcpIo_ <--> RIBDaemon.ribdSplitter.efcpIo_
+        gateEfcpUpOut->connectTo(gateRibdIn);
+        gateRibdIn->connectTo(gateRibdSplitIn);
+        gateRibdSplitOut->connectTo(gateRibdOut);
+        gateRibdOut->connectTo(gateEfcpUpIn);
+    }
+    //Data flow
+    else {
+        std::ostringstream nameIpcDown;
+        nameIpcDown << GATE_NORTHIO_ << localPortId;
+
+        //IF called as consequence of AllocateRequest then createNorthGate
+        //ELSE (called as consequence of CreateRequestFlow) skip
+        if (!IPCModule->hasGate(nameIpcDown.str().c_str()))
+            {createNorthGates();}
+
+        cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
+        cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
+
+        //IPCModule.northIo <--> Efcp.fai
+        gateEfcpUpOut->connectTo(gateIpcDownOut);
+        gateIpcDownIn->connectTo(gateEfcpUpIn);
+    }
 
     //Create bindings in RMT
     RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".relayAndMux.rmt");
@@ -400,29 +436,50 @@ bool FAI::createBindings() {
 bool FAI::deleteBindings() {
     EV << this->getFullPath() << " attempts to disconnect bindings between EFCP, IPC and RMT" << endl;
 
-    std::ostringstream nameIpcDown;
-    nameIpcDown << GATE_NORTHIO_ << localPortId;
-    cModule* IPCModule = FaModule->getParentModule()->getParentModule();
-    cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
-    cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
+    //Flush All messages in EFCPI
+    EfcpModule->deleteEFCPI(this->getFlow());
 
+    //Management flow
+    if (FlowObject->isManagementFlowLocalToIPCP()) {
+        std::ostringstream ribdName;
+        ribdName << GATE_EFCPIO_ << localPortId;
+        cModule* ribdModule = this->getModuleByPath("^.^.ribDaemon");
+        cModule* ribdSplitterModule = this->getModuleByPath("^.^.ribDaemon.ribdSplitter");
+
+        cGate* gateRibdIn  = ribdModule->gateHalf(ribdName.str().c_str(), cGate::INPUT);
+        cGate* gateRibdOut = ribdModule->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+        cGate* gateRibdSplitIn  = ribdSplitterModule->gateHalf(ribdName.str().c_str(), cGate::INPUT);
+        cGate* gateRibdSplitOut = ribdSplitterModule->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+
+        gateRibdIn->disconnect();
+        gateRibdOut->disconnect();
+        gateRibdSplitIn->disconnect();
+        gateRibdSplitOut->disconnect();
+    }
+    //Data flow
+    else {
+        cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+        std::ostringstream nameIpcDown;
+        nameIpcDown << GATE_NORTHIO_ << localPortId;
+        cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
+        cGate* gateIpcDownOut = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::OUTPUT);
+
+        //IPCModule.northIo
+        gateIpcDownOut->disconnect();
+        gateIpcDownIn->disconnect();
+    }
+
+    //Delete EFCP bindings
     std::ostringstream nameEfcpNorth;
     nameEfcpNorth << GATE_APPIO_ << localPortId;
-    cModule* efcpModule = IPCModule->getModuleByPath(".efcp");
+    cModule* efcpModule = this->getModuleByPath("^.^.efcp");
     cGate* gateEfcpUpIn = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::INPUT);
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
-
-    //Flush All messages in EFCPI
-    efcp->deleteEFCPI(this->getFlow());
-
-    //IPCModule.northIo <- XX -> Efcp.fai
     gateEfcpUpIn->disconnect();
     gateEfcpUpOut->disconnect();
-    gateIpcDownOut->disconnect();
-    gateIpcDownIn->disconnect();
 
     //Delete bindings in RMT
-    RMT* rmtModule = (RMT*) IPCModule->getModuleByPath(".relayAndMux.rmt");
+    RMT* rmtModule = (RMT*) this->getModuleByPath("^.^.relayAndMux.rmt");
 
     std::ostringstream nameRmtUp;
     nameRmtUp << GATE_EFCPIO_ << localCEPId;
@@ -447,7 +504,7 @@ bool FAI::deleteBindings() {
 
 bool FAI::invokeAllocateRetryPolicy() {
     //Increase CreateFlowRetries
-    cancelEvent(creReqTimer);
+    //cancelEvent(creReqTimer);
     return AllocRetryPolicy->run(*getFlow());
 }
 
@@ -465,6 +522,7 @@ void FAI::initSignalsAndListeners() {
     sigFAIDelRes        = registerSignal(SIG_FAI_DeleteFlowResponse);
     sigFAICreResNega    = registerSignal(SIG_FAI_CreateFlowResponseNegative);
     sigFAICreResPosi    = registerSignal(SIG_FAI_CreateFlowResponsePositive);
+    sigFAIAllocReqOwn   = registerSignal(SIG_toFAI_AllocateRequest);
 
     //Signals that module processes
     //  AllocationRequest
@@ -504,9 +562,9 @@ void FAI::initSignalsAndListeners() {
 }
 
 void FAI::signalizeCreateFlowRequest() {
-    creReqTimer = new cMessage(TIM_CREREQ);
+    //creReqTimer = new cMessage(TIM_CREREQ);
     //Start timer
-    scheduleAt(simTime() + creReqTimeout, creReqTimer);
+    //scheduleAt(simTime() + creReqTimeout, creReqTimer);
     //Signalize RIBd to send M_CREATE(flow)
     emit(this->sigFAICreReq, FlowObject);
 }
@@ -581,10 +639,22 @@ void FAI::signalizeAllocateResponsePositive() {
 }
 
 void FAI::createNorthGates() {
-    std::ostringstream nameIpcDown;
-    nameIpcDown << GATE_NORTHIO_ << localPortId;
-    cModule* IPCModule = FaModule->getParentModule()->getParentModule();
-    IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
+    //Management flow
+    if (FlowObject->isManagementFlowLocalToIPCP()) {
+        std::ostringstream ribdName;
+        ribdName << GATE_EFCPIO_ << localPortId;
+        cModule* ribdModule = this->getModuleByPath("^.^.ribDaemon");
+        cModule* ribdSplitterModule = this->getModuleByPath("^.^.ribDaemon.ribdSplitter");
+        ribdModule->addGate(ribdName.str().c_str(), cGate::INOUT, false);
+        ribdSplitterModule->addGate(ribdName.str().c_str(), cGate::INOUT, false);
+    }
+    //Data flow
+    else {
+        std::ostringstream nameIpcDown;
+        nameIpcDown << GATE_NORTHIO_ << localPortId;
+        cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+        IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
+    }
     return;
 }
 
@@ -598,3 +668,6 @@ void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {
     this->signalizeAllocateResponseNegative();
 }
 
+void FAI::signalizeAllocateRequestToOtherFais(Flow* flow) {
+    emit(sigFAIAllocReqOwn, flow);
+}

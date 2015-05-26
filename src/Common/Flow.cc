@@ -329,3 +329,21 @@ const Address& Flow::getSrcNeighbor() const {
 void Flow::setSrcNeighbor(const Address& srcNeighbor) {
     this->srcNeighbor = srcNeighbor;
 }
+
+Flow* Flow::dupToMgmt() const {
+    Flow* mgmtflow = this->dup();
+    mgmtflow->setQosRequirements(QoSReq::MANAGEMENT);
+    mgmtflow->setSrcApni(getSrcAddr().getApname());
+    mgmtflow->setDstApni(getDstAddr().getApname());
+    return mgmtflow;
+}
+
+bool Flow::isManagementFlow() const {
+    return getQosRequirements().compare(QoSReq::MANAGEMENT);
+}
+
+bool Flow::isManagementFlowLocalToIPCP() const {
+    return isManagementFlow()
+            && this->getSrcApni().getApn() == getSrcAddr().getApname()
+            && this->getDstApni().getApn() == getDstAddr().getApname();
+}

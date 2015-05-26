@@ -76,7 +76,7 @@ FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     return NULL;
 }
 
-TFAIPtrs FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
+TFAIPtrs FAITable::findEntriesByDstNeighborAndFwd(const APN& apname) {
     TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
@@ -96,9 +96,20 @@ FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
     return NULL;
 }
 
+TFAIPtrs FAITable::findEntriesAffectedByMgmt(const Flow* flow) {
+    TFAIPtrs list;
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getSrcAddr().getApname() == flow->getSrcApni().getApn()
+            && tft.getCFlow()->getDstAddr().getApname() == flow->getDstApni().getApn()
+            && tft.getAllocateStatus() == FAITableEntry::ALLOC_PEND)
+            list.push_back(&(*it));
+    }
+    return list;
+}
+
 void FAITable::handleMessage(cMessage *msg)
 {
-
 }
 
 void FAITable::insertNew(Flow* flow) {
@@ -171,4 +182,23 @@ void FAITable::updateDisplayString() {
 
 void FAITable::initSignalsAndListeners() {
     sigStatFTSize = registerSignal(SIG_STAT_FT_SIZE);
+}
+
+FAITableEntry* FAITable::findMgmtEntry(const Flow* flow) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
+FAITableEntry* FAITable::findMgmtEntryByDstAddr(const APN& apname) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstAddr().getApname() == apname
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
 }

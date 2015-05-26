@@ -100,9 +100,18 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Change allocation status to pending
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
-    //Add source and destination address
-    setOriginalAddresses(flow);
-    setNeighborAddresses(flow);
+    //Add source and destination address in case of data flow
+    if (flow->getSrcAddr() == Address::UNSPECIFIED_ADDRESS
+        && flow->getSrcNeighbor() == Address::UNSPECIFIED_ADDRESS) {
+        setOriginalAddresses(flow);
+        setNeighborAddresses(flow);
+    }
+
+    if ( !FaiTable->findMgmtEntry(flow) ) {
+        EV << "Management flow is not present, thus allocating one first!" << endl;
+        Flow* mgmtflow = flow->dupToMgmt();
+        receiveAllocateRequest(mgmtflow);
+    }
 
     //Is malformed?
     if (isMalformedFlow(flow)){
@@ -125,7 +134,13 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
     bool status;
-    status = fai->receiveAllocateRequest();
+
+    //Postpone allocation request until management flow is ready
+    FAITableEntry* fte = FaiTable->findMgmtEntry(flow);
+    if ( fte && (flow->isManagementFlowLocalToIPCP() || fte->getAllocateStatus() == FAITableEntry::TRANSFER) ) {
+        status = fai->receiveAllocateRequest();
+    }
+
     //Potentially wait for response from RA, after this continue with X
 
     return status;
@@ -149,8 +164,12 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
+
         //Change neighbor addresses
-        setNeighborAddresses(flow);
+        if (!flow->isManagementFlowLocalToIPCP()) {
+            setNeighborAddresses(flow);
+        }
+
         EV << "Processing M_CREATE(flow)" << endl;
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
@@ -256,7 +275,7 @@ FAI* FA::createFAI(Flow* flow) {
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
     module->par(PAR_LOCALPORTID) = portId;
     module->par(PAR_LOCALCEPID) = cepId;
-    module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
+    //module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
     module->finalizeParameters();
     module->buildInside();
 

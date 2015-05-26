@@ -85,7 +85,7 @@ class FAI : public FAIBase  {
     AllocateRetryBase* AllocRetryPolicy;
 
     cMessage* creReqTimer;
-    double creReqTimeout;
+    //double creReqTimeout;
 
     FABase* FaModule;
 
@@ -100,6 +100,7 @@ class FAI : public FAIBase  {
     simsignal_t sigFAIDelRes;
     simsignal_t sigFAICreResNega;
     simsignal_t sigFAICreResPosi;
+    simsignal_t sigFAIAllocReqOwn;
     //Listeners
     LisFAIAllocReq*      lisAllocReq;
     LisFAIAllocResNega*  lisAllocResNega;
@@ -115,7 +116,7 @@ class FAI : public FAIBase  {
     virtual void handleMessage(cMessage *msg);
 
   private:
-    EFCP* efcp;
+    EFCP* EfcpModule;
 
     void initSignalsAndListeners();
 
@@ -136,6 +137,7 @@ class FAI : public FAIBase  {
     void signalizeDeallocateResponseFromFai();
     void signalizeAllocateResponseNegative();
     void signalizeAllocateResponsePositive();
+    void signalizeAllocateRequestToOtherFais(Flow* flow);
 
 };
 
