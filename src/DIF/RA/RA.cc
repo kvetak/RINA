@@ -423,8 +423,8 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     }
     else
     { // queues for management
-        rmtAllocator->addQueue(RMTQueue::INPUT, port, "mgmt");
-        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "mgmt");
+        rmtAllocator->addQueue(RMTQueue::INPUT, port, "0");
+        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "0");
     }
 
     // 4) update the flow table

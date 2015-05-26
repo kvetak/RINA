@@ -476,6 +476,7 @@ void RMT::efcpiToPort(PDU* pdu)
         EV << getFullPath() << ": could not send out a PDU coming from EFCPI!" << endl;
         EV << "PDU dstAddr = " << pdu->getDstAddr().getApname().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl;
+        //EV << fwd->toString() << endl;
     }
 }
 
