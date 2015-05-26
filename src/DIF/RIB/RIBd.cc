@@ -238,14 +238,15 @@ void RIBd::initSignalsAndListeners() {
 
 void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
-    if (flow->isManagementFlowLocalToIPCP())
+    /*if (flow->isManagementFlowLocalToIPCP())
     {
         receiveCreateFlowPositiveFromRa(flow);
     }
     else {
+    */
         //Execute flow allocate
         signalizeCreateFlow(flow);
-    }
+    //}
 }
 
 void RIBd::sendCreateResponseNegative(Flow* flow) {

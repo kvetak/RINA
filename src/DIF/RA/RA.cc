@@ -555,27 +555,33 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
 
 
-    // Ask DA which IPC to use to reach dst App
-    const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
-    if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << dstAPN << endl;
-        signalizeCreateFlowNegativeToRIBd(flow);
-        return;
-    }
-    Address addr = *ad;
+    if (flow->isManagementFlowLocalToIPCP()) {
 
-    //TODO: Vesely - New IPC must be enrolled or DIF created
-    if (!difAllocator->isDifLocal(addr.getDifName()))
-    {
-        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
-        signalizeCreateFlowNegativeToRIBd(flow);
-        return;
+    }
+    else {
+        // Ask DA which IPC to use to reach dst App
+        const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
+        if (ad == NULL) {
+            EV << "DifAllocator returned NULL for resolving " << dstAPN << endl;
+            signalizeCreateFlowNegativeToRIBd(flow);
+            return;
+        }
+        Address addr = *ad;
+
+        //TODO: Vesely - New IPC must be enrolled or DIF created
+        if (!difAllocator->isDifLocal(addr.getDifName()))
+        {
+            EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
+            signalizeCreateFlowNegativeToRIBd(flow);
+            return;
+        }
+
+        // retrieve local IPC process enrolled in given DIF
+        cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
+        // retrieve the IPC process's Flow Allocator
+        FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
     }
 
-    // retrieve local IPC process enrolled in given DIF
-    cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
-    // retrieve the IPC process's Flow Allocator
-    FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
     // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
     // notify the PDUFG of the new flow
