@@ -114,7 +114,12 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         setNeighborAddresses(flow);
     }
 
-    if ( !FaiTable->findMgmtEntry(flow) ) {
+    //Are both Apps local? YES then Degenerate transfer
+    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+        flow->setDdtFlag(true);
+    }
+
+    if ( !FaiTable->findMgmtEntry(flow) && !flow->isDdtFlag() ) {
         EV << "Management flow is not present, thus allocating one first!" << endl;
         Flow* mgmtflow = flow->dupToMgmt();
         receiveAllocateRequest(mgmtflow);
@@ -130,21 +135,25 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 
     //Create FAI
     FAI* fai = this->createFAI(flow);
+    fai->setDegenerateDataTransfer(flow->isDdtFlag());
 
     //Update flow object
     flow->setSrcPortId(fai->getLocalPortId());
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    //Are both Apps local? YES then Degenerate transfer
-    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
-        fai->setDegenerateDataTransfer(true);
-        flow->setDdtFlag(true);
-    }
     bool status;
 
     //Postpone allocation request until management flow is ready
     FAITableEntry* fte = FaiTable->findMgmtEntry(flow);
-    if ( fte && (flow->isManagementFlowLocalToIPCP() || fte->getAllocateStatus() == FAITableEntry::TRANSFER) ) {
+    if ( flow->isDdtFlag()
+         ||
+         ( fte
+           &&
+           (flow->isManagementFlowLocalToIPCP()
+            || fte->getAllocateStatus() == FAITableEntry::TRANSFER
+           )
+         )
+       ){
         status = fai->receiveAllocateRequest();
     }
 
