@@ -119,7 +119,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     cDisplayString& portDisp = portWrapper->getDisplayString();
     portDisp.setTagArg("p", 0, portXCoord);
     portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 80;
+    portXCoord += 120;
 
     if (flow == NULL)
     {

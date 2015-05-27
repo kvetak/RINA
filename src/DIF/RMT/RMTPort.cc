@@ -342,7 +342,7 @@ void RMTPort::redrawGUI(bool redrawParent)
             cDisplayString& dStr = getParentModule()->getDisplayString();
 
             dStr.setTagArg("t", 0, ostr.str().c_str());
-            dStr.setTagArg("t", 1, "t");
+            dStr.setTagArg("t", 1, "r");
         }
     }
 }

@@ -81,7 +81,6 @@ void RA::initialize(int stage)
 
 void RA::handleMessage(cMessage *msg)
 {
-    /*
     if (msg->isSelfMessage())
     {
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
@@ -98,7 +97,6 @@ void RA::handleMessage(cMessage *msg)
             delete msg;
         }
     }
-    */
 }
 
 void RA::initSignalsAndListeners()

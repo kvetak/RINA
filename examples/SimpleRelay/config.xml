@@ -8,7 +8,7 @@
                 <Connection src="33_Layer11" dst="22_Layer11" qosReq="mgmt"/>
             </SimTime>
             <!-- Allocate data flows. -->
-            <SimTime t="1">
+            <SimTime t="10">
                 <Connection src="33_Layer11" dst="11_Layer11" qosReq="1"/>
                 <Connection src="33_Layer11" dst="22_Layer11" qosReq="1"/>
             </SimTime>            
