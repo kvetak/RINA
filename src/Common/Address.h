@@ -46,6 +46,8 @@ class Address {
      */
     Address(std::string composite);
 
+    Address(APN apname);
+
     /**
      * @brief Address constructor from both IPC address and DIF name
      * @param ipcaddr IPC Process address unambiguos inside a given DIF

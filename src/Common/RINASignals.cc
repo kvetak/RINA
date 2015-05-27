@@ -53,6 +53,7 @@ const char* SIG_toFAI_AllocateRequest           = "toFAI-AllocateRequest";
 const char* SIG_toFAI_AllocateResponsePositive  = "toFAI-AllocateResponsePositive";
 const char* SIG_toFAI_AllocateResponseNegative  = "toFAI-AllocateResponseNegative";
 const char* SIG_FAI_AllocateRequest             = "FAI-AllocateRequest";
+const char* SIG_FAI_AllocateFinishManagement    = "FAI-AllocateFinishManagement";
 const char* SIG_FAI_DeallocateRequest           = "FAI-DeallocateRequest";
 const char* SIG_FAI_DeallocateResponse          = "FAI-DeallocateResponse";
 const char* SIG_FAI_AllocateResponsePositive    = "FAI-AllocateResponsePositive";

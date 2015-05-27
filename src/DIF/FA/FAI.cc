@@ -294,11 +294,7 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
 
     if (FlowObject->isManagementFlowLocalToIPCP()) {
-        //Notify pending flows that mgmt flow is prepared
-        TFAIPtrs entries = FaModule->getFaiTable()->findEntriesAffectedByMgmt(FlowObject);
-        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
-            signalizeAllocateRequestToOtherFais( (*it)->getFlow() );
-        }
+        signalizeAllocateRequestToOtherFais( FlowObject );
     }
     else {
         //Pass Allocate Response to AE or RIBd
@@ -522,7 +518,7 @@ void FAI::initSignalsAndListeners() {
     sigFAIDelRes        = registerSignal(SIG_FAI_DeleteFlowResponse);
     sigFAICreResNega    = registerSignal(SIG_FAI_CreateFlowResponseNegative);
     sigFAICreResPosi    = registerSignal(SIG_FAI_CreateFlowResponsePositive);
-    sigFAIAllocReqOwn   = registerSignal(SIG_toFAI_AllocateRequest);
+    sigFAIAllocFinMgmt   = registerSignal(SIG_FAI_AllocateFinishManagement);
 
     //Signals that module processes
     //  AllocationRequest
@@ -669,5 +665,5 @@ void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {
 }
 
 void FAI::signalizeAllocateRequestToOtherFais(Flow* flow) {
-    emit(sigFAIAllocReqOwn, flow);
+    emit(sigFAIAllocFinMgmt, flow);
 }

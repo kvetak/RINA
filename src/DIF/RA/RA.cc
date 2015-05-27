@@ -81,6 +81,7 @@ void RA::initialize(int stage)
 
 void RA::handleMessage(cMessage *msg)
 {
+    /*
     if (msg->isSelfMessage())
     {
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
@@ -97,6 +98,7 @@ void RA::handleMessage(cMessage *msg)
             delete msg;
         }
     }
+    */
 }
 
 void RA::initSignalsAndListeners()
@@ -723,9 +725,15 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     std::string dstAddr = flow->getDstAddr().getApname().getName();
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     std::string qosID = flow->getConId().getQoSId();
-    EV << "\n\n\nrequesting flow from " << processName << " to " << dstAddr << " via " << neighAddr << "\n\n\n";
+    EV << "Requesting flow from " << processName << " to " << dstAddr << " via " << neighAddr << "\n";
 
-    APNamingInfo srcAPN = APNamingInfo(APN(processName));
+    APNamingInfo srcAPN;
+    //if (flow->isManagementFlow()) {
+      //  srcAPN = flow->getSrcApni().getApn(); }
+    //else
+    {
+        srcAPN = APNamingInfo(APN(processName)); }
+
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
@@ -743,12 +751,12 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     { // a flow exists
         if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
         {
-            EV << "\n\n\nA suitable (N-1)-flow is already present, using it.\n\n\n";
+            EV << "A suitable (N-1)-flow is already present, using it.\n";
             return true;
         }
         else if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_FLOWPENDING)
         { // the flow is currently being allocated
-            EV << "\n\n\nA suitable (N-1)-flow is already present but not finished allocating yet.\n\n\n";
+            EV << "A suitable (N-1)-flow is already present but not finished allocating yet.\n";
         }
         else
         {
@@ -759,7 +767,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     else
     { // we need to allocate a new (N-1)-flow to suit our needs
 
-        EV << "\n\n\nno suitable flow present!!!!!\n\n\n";
+        EV << "no suitable flow present!!!!!\n";
 
         // prepare the new flow specifics
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);

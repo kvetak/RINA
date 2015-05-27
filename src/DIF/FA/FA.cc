@@ -49,6 +49,13 @@ void FA::initialize() {
     initMyAddress();
 }
 
+bool FA::receiveMgmtAllocateFinish() {
+    Enter_Method("receiveAllocFinishMgmt()");
+    scheduleAt(simTime(), new cMessage(TIM_FAPENDFLOWS) );
+    //TODO: Vesely - Fix unused return value
+    return true;
+}
+
 bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
     //Add source...
     if (!useNeighbor) {
@@ -166,9 +173,9 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         FaiTable->insertNew(flow);
 
         //Change neighbor addresses
-        if (!flow->isManagementFlowLocalToIPCP()) {
+        //if (!flow->isManagementFlowLocalToIPCP()) {
             setNeighborAddresses(flow);
-        }
+        //}
 
         EV << "Processing M_CREATE(flow)" << endl;
         //Change allocation status to pending
@@ -301,14 +308,23 @@ void FA::deinstantiateFai(Flow* flow) {
 }
 
 void FA::handleMessage(cMessage *msg) {
-    //Rcv Allocate_Request
-
-    //Rcv M_Create(Flow)
-
-    //Rcv Deallocate_Request
-
-    //Deinstantiation
-    //deleteModule();
+    if ( msg->isSelfMessage() && !opp_strcmp(msg->getName(), TIM_FAPENDFLOWS) ) {
+        while (!PendingFlows.empty()) {
+            FAITableEntry* fte = FaiTable->findEntryByFlow(PendingFlows.front());
+            if (fte && fte->getFai()) {
+                FAIBase* fai = fte->getFai();
+                if (fai) {
+                    fai->receiveAllocateRequest();
+                }
+            }
+            PendingFlows.pop_front();
+        }
+        cancelAndDelete(msg);
+    }
+    else
+    {
+        EV << "Unsupported message received by FA " << getFullName() << endl;
+    }
 }
 
 bool FA::isMalformedFlow(Flow* flow) {
@@ -343,6 +359,10 @@ void FA::initSignalsAndListeners() {
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
+    //Allocate after management flow is prepared
+    lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
+    catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
+
 }
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
@@ -365,12 +385,12 @@ void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
 }
 
 bool FA::setOriginalAddresses(Flow* flow) {
-    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false);
+    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false, false);
     if (adr.isUnspecified())
         return false;
     flow->setSrcAddr(adr);
 
-    adr = getAddressFromDa(flow->getDstApni().getApn(), false);
+    adr = getAddressFromDa(flow->getDstApni().getApn(), false, false);
     if (adr.isUnspecified())
         return false;
     flow->setDstAddr(adr);
@@ -378,26 +398,35 @@ bool FA::setOriginalAddresses(Flow* flow) {
 }
 
 bool FA::setNeighborAddresses(Flow* flow) {
-    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), true);
-    if (adr.isUnspecified())
-        return false;
-    flow->setSrcNeighbor(adr);
+    Address adr;
+    if (!flow->isManagementFlowLocalToIPCP()) {
+        adr = getAddressFromDa(flow->getSrcApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
+        if (adr.isUnspecified())
+            return false;
+        flow->setSrcNeighbor(adr);
+    }
 
-    adr = getAddressFromDa(flow->getDstApni().getApn(), true);
+    adr = getAddressFromDa(flow->getDstApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
     if (adr.isUnspecified())
         return false;
     flow->setDstNeighbor(adr);
     return true;
 }
 
-const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
-    //Ask DA which IPC to use to reach src App
-    const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
-    if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << apn << endl;
-        return Address();
+const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
+    Address addr;
+    if (!isMgmtFlow) {
+        //Ask DA which IPC to use to reach src App
+        const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
+        if (ad == NULL) {
+            EV << "DifAllocator returned NULL for resolving " << apn << endl;
+            return Address();
+        }
+        addr = *ad;
     }
-    Address addr = *ad;
+    else {
+        addr = Address(apn);
+    }
     if (useNeighbor) {
         const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getApname());
         if (apnlist) {

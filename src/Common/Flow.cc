@@ -209,7 +209,7 @@ void Flow::swapCepIds() {
 
 std::string Flow::infoSource() const {
     std::stringstream os;
-    os << "SRC> " << srcApni
+    os << "SRC> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << srcApni
        << "\n   address:  " << srcAddr
        << "\n   neighbor: " << srcNeighbor
        << "\n   port: " << srcPortId
@@ -219,7 +219,7 @@ std::string Flow::infoSource() const {
 
 std::string Flow::infoDestination() const {
     std::stringstream os;
-    os << "DST> " << dstApni
+    os << "DST> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << dstApni
        << "\n   address:  " << dstAddr
        << "\n   neighbor: " << dstNeighbor
        << "\n   port: " << dstPortId
