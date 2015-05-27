@@ -61,7 +61,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
         && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-        && flow->isManagementFlowLocalToIPCP() )
+        && !flow->isManagementFlowLocalToIPCP() )
     {
         //EV << "-----\n" << flow->info() << endl;
         TFAIPtrs entries = fa->getFaiTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());

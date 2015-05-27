@@ -727,13 +727,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     std::string qosID = flow->getConId().getQoSId();
     EV << "Requesting flow from " << processName << " to " << dstAddr << " via " << neighAddr << "\n";
 
-    APNamingInfo srcAPN;
-    //if (flow->isManagementFlow()) {
-      //  srcAPN = flow->getSrcApni().getApn(); }
-    //else
-    {
-        srcAPN = APNamingInfo(APN(processName)); }
-
+    APNamingInfo srcAPN = APNamingInfo(APN(processName));
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
