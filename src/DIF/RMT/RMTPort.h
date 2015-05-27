@@ -169,6 +169,7 @@ class RMTPort : public cSimpleModule
     long inputReadRate;
     double postReadDelay;
     std::string dstAppAddr;
+    std::string dstAppQoS;
 
     Flow* flow;
     QueueIDGenBase* queueIdGen;

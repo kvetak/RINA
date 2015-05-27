@@ -636,10 +636,12 @@ void RA::postNFlowAllocation(Flow* flow)
 void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 {
     Enter_Method("postNM1FlowAllocation()");
-    // mark this flow as connected
+    // mark this flow as connected and update info
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    ftItem->getRMTPort()->setOutputReady();
-    ftItem->getRMTPort()->setInputReady();
+    RMTPort* port = ftItem->getRMTPort();
+    port->setOutputReady();
+    port->setInputReady();
+    port->setFlow(ftItem->getFlow());
 
     // if this is a management flow, notify the Enrollment module and
     // allocate data flows that were waiting for this

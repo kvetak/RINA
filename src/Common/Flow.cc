@@ -239,6 +239,10 @@ std::string Flow::infoOther() const {
 std::string Flow::infoQoS() const {
     std::stringstream os;
     os << "Chosen RA's QoS cube>" << conId.getQoSId();
+    if (this->isManagementFlow() && !this->isManagementFlowLocalToIPCP())
+    {
+        os << " (aggregated)";
+    }
     os << endl << qosReqs.info();
     return os.str();
 }
