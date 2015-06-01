@@ -39,6 +39,7 @@ simple Enrollment
         @signal[Enrollment-StopEnrollmentResponse];
         @signal[Enrollment-StartOperationRequest];
         @signal[Enrollment-StartOperationResponse];
+        @signal[Enrollment-Finished];
         
         
 }

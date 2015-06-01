@@ -50,6 +50,8 @@ extern const char* SIG_ENROLLMENT_StopEnrollmentResponse;
 extern const char* SIG_ENROLLMENT_StartOperationRequest;
 extern const char* SIG_ENROLLMENT_StartOperationResponse;
 
+extern const char* SIG_ENROLLMENT_Finished;
+
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
 extern const char* SIG_CDAP_SendData;

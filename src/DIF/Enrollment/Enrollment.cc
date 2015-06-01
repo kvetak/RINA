@@ -78,9 +78,10 @@ void Enrollment::initSignalsAndListeners() {
     sigEnrollmentStopEnrollRes  = registerSignal(SIG_ENROLLMENT_StopEnrollmentResponse);
     sigEnrollmentStartOperReq   = registerSignal(SIG_ENROLLMENT_StartOperationRequest);
     sigEnrollmentStartOperRes   = registerSignal(SIG_ENROLLMENT_StartOperationResponse);
+    sigEnrollmentFinish         = registerSignal(SIG_ENROLLMENT_Finished);
 
     lisEnrollmentAllResPosi = new LisEnrollmentAllResPosi(this);
-    catcher1->subscribe(SIG_FAI_AllocateResponsePositive, lisEnrollmentAllResPosi);
+    catcher1->subscribe(SIG_FAI_AllocateFinishManagement, lisEnrollmentAllResPosi);//SIG_FAI_AllocateResponsePositive, lisEnrollmentAllResPosi);
 
     lisEnrollmentGetFlowFromFaiCreResPosi = new LisEnrollmentGetFlowFromFaiCreResPosi(this);
     catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisEnrollmentGetFlowFromFaiCreResPosi);
@@ -318,7 +319,7 @@ void Enrollment::processStopEnrollmentResponse(EnrollmentStateTableEntry* entry)
 
     if (entry->getIsImmediateEnrollment()) {
         entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_ENROLLED);
-        //TODO: enrollment done --> emit signal somewhere!
+        signalizeEnrollmentFinished(entry);
     }
     else {
         entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_START_OPERATION);
@@ -600,6 +601,10 @@ void Enrollment::signalizeStartOperationRequest(OperationObj* obj) {
 
 void Enrollment::signalizeStartOperationResponse(OperationObj* obj) {
     emit(sigEnrollmentStartOperRes, obj);
+}
+
+void Enrollment::signalizeEnrollmentFinished(EnrollmentStateTableEntry* entry) {
+    emit(sigEnrollmentFinish, entry->getFlow());
 }
 
 void Enrollment::handleMessage(cMessage *msg)

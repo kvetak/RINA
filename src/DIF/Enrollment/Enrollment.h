@@ -105,6 +105,7 @@ class Enrollment : public cSimpleModule
     simsignal_t sigEnrollmentStopEnrollRes;
     simsignal_t sigEnrollmentStartOperReq;
     simsignal_t sigEnrollmentStartOperRes;
+    simsignal_t sigEnrollmentFinish;
 
     LisEnrollmentAllResPosi* lisEnrollmentAllResPosi;
     LisEnrollmentGetFlowFromFaiCreResPosi* lisEnrollmentGetFlowFromFaiCreResPosi;
@@ -129,6 +130,7 @@ class Enrollment : public cSimpleModule
     void signalizeStopEnrollmentResponse(EnrollmentObj* obj);
     void signalizeStartOperationRequest(OperationObj* obj);
     void signalizeStartOperationResponse(OperationObj* obj);
+    void signalizeEnrollmentFinished(EnrollmentStateTableEntry* entry);
 
     virtual void handleMessage(cMessage *msg);
 };

@@ -45,6 +45,7 @@ const char* SIG_ENROLLMENT_StopEnrollmentRequest = "Enrollment-StopEnrollmentReq
 const char* SIG_ENROLLMENT_StopEnrollmentResponse = "Enrollment-StopEnrollmentResponse";
 const char* SIG_ENROLLMENT_StartOperationRequest = "Enrollment-StartOperationRequest";
 const char* SIG_ENROLLMENT_StartOperationResponse = "Enrollment-StartOperationResponse";
+const char* SIG_ENROLLMENT_Finished      = "Enrollment-Finished";
 
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
 const char* SIG_CDAP_SendData                   = "CDAP-SendData";
