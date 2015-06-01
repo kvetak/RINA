@@ -40,9 +40,12 @@ EnrollmentListeners::~EnrollmentListeners() {
 
 void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
+        if (flow->getConnectionId().getQoSId() != VAL_MGMTQOSID){
+            return;
+        }
+        EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
         enrollment->startCACE(flow);
     }
     else
@@ -54,8 +57,12 @@ void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
 void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
+    if (flow){
+        if (flow->getConnectionId().getQoSId() != VAL_MGMTQOSID){
+            return;
+        }
         enrollment->insertStateTableEntry(flow);
+    }
     else
         EV << "EnrollmentListener received unknown object!" << endl;
 }
