@@ -30,4 +30,15 @@ simple Enrollment
         string authOther						= default("0");
         
         int maxConRetries						= default(5);
+        
+        //signals
+        @signal[Enrollment-CACEDataSend](type=CDAPMessage?);
+        @signal[Enrollment-StartEnrollmentRequest];
+        @signal[Enrollment-StartEnrollmentResponse];
+        @signal[Enrollment-StopEnrollmentRequest];
+        @signal[Enrollment-StopEnrollmentResponse];
+        @signal[Enrollment-StartOperationRequest];
+        @signal[Enrollment-StartOperationResponse];
+        
+        
 }

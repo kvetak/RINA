@@ -42,7 +42,7 @@ void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (flow->getConnectionId().getQoSId() != VAL_MGMTQOSID){
+        if (!flow->isManagementFlow()){
             return;
         }
         EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
@@ -58,7 +58,7 @@ void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsi
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow){
-        if (flow->getConnectionId().getQoSId() != VAL_MGMTQOSID){
+        if (!flow->isManagementFlow()){
             return;
         }
         enrollment->insertStateTableEntry(flow);
