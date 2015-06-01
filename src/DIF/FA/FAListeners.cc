@@ -60,10 +60,11 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
-            && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-            && flow->getConId().getQoSId().compare(VAL_MGMTQOSID) ) {
+        && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
+        && !flow->isManagementFlowLocalToIPCP() )
+    {
         //EV << "-----\n" << flow->info() << endl;
-        TFAIPtrs entries = fa->getFaiTable()->findEntryByDstNeighborAndFwd(flow->getDstApni().getApn());
+        TFAIPtrs entries = fa->getFaiTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->receiveNM1FlowCreated( (*it)->getFlow() );
         }
@@ -75,3 +76,27 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     }
 }
 
+void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocFinMgmt initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow
+        && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
+        && flow->isManagementFlowLocalToIPCP())
+    {
+        //Notify pending flows that mgmt flow is prepared
+        TFAIPtrs entries = fa->getFaiTable()->findEntriesAffectedByMgmt(flow);
+        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
+            fa->PendingFlows.push_back((*it)->getFlow());
+        }
+        fa->receiveMgmtAllocateFinish();
+
+    }
+    else {
+        if (!flow) { EV << "Received not a flow object!" << endl; }
+        else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID)) { EV << "Management flow allocated!" << endl; }
+        else { EV << "Flow not intended for my FA!" << endl; }
+    }
+
+
+}

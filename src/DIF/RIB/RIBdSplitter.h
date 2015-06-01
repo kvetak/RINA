@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,21 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DIF.RA;
+#ifndef __RINA_RIBDSPLITTER_H_
+#define __RINA_RIBDSPLITTER_H_
 
-simple RA
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "FAITable.h"
+#include "CDAPMessage_m.h"
+#include "ModuleAccess.h"
+
+class RIBdSplitter : public cSimpleModule
 {
-    parameters:
-        @display("i=block/segm");
-        
-        @signal[RA-CreateFlowPositive](type=Flow?);
-        @signal[RA-CreateFlowNegative](type=Flow?);
-        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
-        @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=Flow?);
-        @signal[RA-MgmtFlowDeallocated](type=Flow?);
+  protected:
+    FAITable* FaiTable;
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
-        xml qoscubesData = default(xml("<QoSCube/>"));
-        xml qosReqData = default(xml("<QoSReq/>"));
-        xml preallocation = default(xml("<root/>"));
-}
+    void initPointers();
+};
+
+#endif

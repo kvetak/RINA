@@ -328,20 +328,21 @@ void RMTPort::redrawGUI(bool redrawParent)
         if (redrawParent)
         {
             std::ostringstream ostr;
-            ostr << "dst app: " << dstAppAddr << endl;
+            ostr << "dstApp: " << endl << dstAppAddr << endl
+                 << "QoS-id: " << endl << dstAppQoS;
             if (blockedInput)
             {
-                ostr << "input blocked" << endl;
+                ostr << endl << "input blocked";
             }
             if (blockedOutput)
             {
-                ostr << "output blocked" << endl;
+                ostr << endl << "output blocked" << endl;
             }
 
             cDisplayString& dStr = getParentModule()->getDisplayString();
 
             dStr.setTagArg("t", 0, ostr.str().c_str());
-            dStr.setTagArg("t", 1, "t");
+            dStr.setTagArg("t", 1, "r");
         }
     }
 }
@@ -363,10 +364,12 @@ void RMTPort::setFlow(Flow* flow)
             // shitty temporary (yeah, right) hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();
             dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
+            dstAppQoS = flow->getConId().getQoSId();
         }
         else
         {
             dstAppAddr = "N/A (PHY)";
+            dstAppQoS = "N/A (medium)";
         }
         redrawGUI(true);
     }

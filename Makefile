@@ -378,6 +378,7 @@ OBJS = \
     $O/src/DIF/RIB/RIBd.o \
     $O/src/DIF/RIB/RIBdBase.o \
     $O/src/DIF/RIB/RIBdListeners.o \
+    $O/src/DIF/RIB/RIBdSplitter.o \
     $O/src/DIF/RMT/RMT.o \
     $O/src/DIF/RMT/RMTBase.o \
     $O/src/DIF/RMT/RMTListeners.o \
@@ -5895,6 +5896,24 @@ $O/src/DIF/RIB/RIBdListeners.o: src/DIF/RIB/RIBdListeners.cc \
 	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/RIB/RIBdBase.h \
 	src/DIF/RIB/RIBdListeners.h
+$O/src/DIF/RIB/RIBdSplitter.o: src/DIF/RIB/RIBdSplitter.cc \
+	src/Common/APN.h \
+	src/Common/APNamingInfo.h \
+	src/Common/Address.h \
+	src/Common/ConnectionId.h \
+	src/Common/DAP.h \
+	src/Common/ExternConsts.h \
+	src/Common/Flow.h \
+	src/Common/ModuleAccess.h \
+	src/Common/Policy.h \
+	src/Common/QoSCube.h \
+	src/Common/QoSReq.h \
+	src/DAF/CDAP/CDAPMessage_m.h \
+	src/DIF/EFCP/EFCPPolicySet.h \
+	src/DIF/FA/FAIBase.h \
+	src/DIF/FA/FAITable.h \
+	src/DIF/FA/FAITableEntry.h \
+	src/DIF/RIB/RIBdSplitter.h
 $O/src/DIF/RMT/RMT.o: src/DIF/RMT/RMT.cc \
 	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
 	policies/DIF/RA/QueueAlloc/QueueAllocBase.h \

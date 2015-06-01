@@ -49,6 +49,13 @@ void FA::initialize() {
     initMyAddress();
 }
 
+bool FA::receiveMgmtAllocateFinish() {
+    Enter_Method("receiveAllocFinishMgmt()");
+    scheduleAt(simTime(), new cMessage(TIM_FAPENDFLOWS) );
+    //TODO: Vesely - Fix unused return value
+    return true;
+}
+
 bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
     //Add source...
     if (!useNeighbor) {
@@ -100,9 +107,23 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Change allocation status to pending
     FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
 
-    //Add source and destination address
-    setOriginalAddresses(flow);
-    setNeighborAddresses(flow);
+    //Add source and destination address in case of data flow
+    if (flow->getSrcAddr() == Address::UNSPECIFIED_ADDRESS
+        && flow->getSrcNeighbor() == Address::UNSPECIFIED_ADDRESS) {
+        setOriginalAddresses(flow);
+        setNeighborAddresses(flow);
+    }
+
+    //Are both Apps local? YES then Degenerate transfer
+    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
+        flow->setDdtFlag(true);
+    }
+
+    if ( !FaiTable->findMgmtEntry(flow) && !flow->isDdtFlag() ) {
+        EV << "Management flow is not present, thus allocating one first!" << endl;
+        Flow* mgmtflow = flow->dupToMgmt();
+        receiveAllocateRequest(mgmtflow);
+    }
 
     //Is malformed?
     if (isMalformedFlow(flow)){
@@ -114,18 +135,28 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 
     //Create FAI
     FAI* fai = this->createFAI(flow);
+    fai->setDegenerateDataTransfer(flow->isDdtFlag());
 
     //Update flow object
     flow->setSrcPortId(fai->getLocalPortId());
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    //Are both Apps local? YES then Degenerate transfer
-    if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
-        fai->setDegenerateDataTransfer(true);
-        flow->setDdtFlag(true);
-    }
     bool status;
-    status = fai->receiveAllocateRequest();
+
+    //Postpone allocation request until management flow is ready
+    FAITableEntry* fte = FaiTable->findMgmtEntry(flow);
+    if ( flow->isDdtFlag()
+         ||
+         ( fte
+           &&
+           (flow->isManagementFlowLocalToIPCP()
+            || fte->getAllocateStatus() == FAITableEntry::TRANSFER
+           )
+         )
+       ){
+        status = fai->receiveAllocateRequest();
+    }
+
     //Potentially wait for response from RA, after this continue with X
 
     return status;
@@ -149,8 +180,12 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
 
         //Insert new Flow into FAITable
         FaiTable->insertNew(flow);
+
         //Change neighbor addresses
-        setNeighborAddresses(flow);
+        //if (!flow->isManagementFlowLocalToIPCP()) {
+            setNeighborAddresses(flow);
+        //}
+
         EV << "Processing M_CREATE(flow)" << endl;
         //Change allocation status to pending
         FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
@@ -256,7 +291,7 @@ FAI* FA::createFAI(Flow* flow) {
     cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule());
     module->par(PAR_LOCALPORTID) = portId;
     module->par(PAR_LOCALCEPID) = cepId;
-    module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
+    //module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
     module->finalizeParameters();
     module->buildInside();
 
@@ -282,14 +317,23 @@ void FA::deinstantiateFai(Flow* flow) {
 }
 
 void FA::handleMessage(cMessage *msg) {
-    //Rcv Allocate_Request
-
-    //Rcv M_Create(Flow)
-
-    //Rcv Deallocate_Request
-
-    //Deinstantiation
-    //deleteModule();
+    if ( msg->isSelfMessage() && !opp_strcmp(msg->getName(), TIM_FAPENDFLOWS) ) {
+        while (!PendingFlows.empty()) {
+            FAITableEntry* fte = FaiTable->findEntryByFlow(PendingFlows.front());
+            if (fte && fte->getFai()) {
+                FAIBase* fai = fte->getFai();
+                if (fai) {
+                    fai->receiveAllocateRequest();
+                }
+            }
+            PendingFlows.pop_front();
+        }
+        cancelAndDelete(msg);
+    }
+    else
+    {
+        EV << "Unsupported message received by FA " << getFullName() << endl;
+    }
 }
 
 bool FA::isMalformedFlow(Flow* flow) {
@@ -324,6 +368,10 @@ void FA::initSignalsAndListeners() {
     lisCreReq = new LisFACreReq(this);
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
+    //Allocate after management flow is prepared
+    lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
+    catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
+
 }
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
@@ -346,12 +394,12 @@ void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
 }
 
 bool FA::setOriginalAddresses(Flow* flow) {
-    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false);
+    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false, false);
     if (adr.isUnspecified())
         return false;
     flow->setSrcAddr(adr);
 
-    adr = getAddressFromDa(flow->getDstApni().getApn(), false);
+    adr = getAddressFromDa(flow->getDstApni().getApn(), false, false);
     if (adr.isUnspecified())
         return false;
     flow->setDstAddr(adr);
@@ -359,26 +407,35 @@ bool FA::setOriginalAddresses(Flow* flow) {
 }
 
 bool FA::setNeighborAddresses(Flow* flow) {
-    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), true);
-    if (adr.isUnspecified())
-        return false;
-    flow->setSrcNeighbor(adr);
+    Address adr;
+    if (!flow->isManagementFlowLocalToIPCP()) {
+        adr = getAddressFromDa(flow->getSrcApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
+        if (adr.isUnspecified())
+            return false;
+        flow->setSrcNeighbor(adr);
+    }
 
-    adr = getAddressFromDa(flow->getDstApni().getApn(), true);
+    adr = getAddressFromDa(flow->getDstApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
     if (adr.isUnspecified())
         return false;
     flow->setDstNeighbor(adr);
     return true;
 }
 
-const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor) {
-    //Ask DA which IPC to use to reach src App
-    const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
-    if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << apn << endl;
-        return Address();
+const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
+    Address addr;
+    if (!isMgmtFlow) {
+        //Ask DA which IPC to use to reach src App
+        const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
+        if (ad == NULL) {
+            EV << "DifAllocator returned NULL for resolving " << apn << endl;
+            return Address();
+        }
+        addr = *ad;
     }
-    Address addr = *ad;
+    else {
+        addr = Address(apn);
+    }
     if (useNeighbor) {
         const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getApname());
         if (apnlist) {

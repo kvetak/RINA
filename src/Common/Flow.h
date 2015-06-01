@@ -72,6 +72,8 @@ class Flow : public cObject
      */
     virtual Flow* dup() const;
 
+    Flow* dupToMgmt() const;
+
     //Various string output functions
     /**
      * @brief Prints Flow information as string
@@ -331,6 +333,10 @@ class Flow : public cObject
      * @param ddtFlag True if DDT otherwise false
      */
     void setDdtFlag(bool ddtFlag);
+
+    bool isManagementFlow() const;
+
+    bool isManagementFlowLocalToIPCP() const;
 
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6

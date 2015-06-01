@@ -417,14 +417,14 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
 
     // 3) allocate queues
     // apply queue allocation policy handler (if applicable)
-    if (flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    if (!flow->isManagementFlow())
     { // queues for EFCPI PDUs
         qAllocPolicy->onNM1PortInit(port);
     }
     else
     { // queues for management
-        rmtAllocator->addQueue(RMTQueue::INPUT, port, "mgmt");
-        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "mgmt");
+        rmtAllocator->addQueue(RMTQueue::INPUT, port, "0");
+        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "0");
     }
 
     // 4) update the flow table
@@ -503,7 +503,7 @@ void RA::createNM1Flow(Flow *flow)
     bool status = fab->receiveAllocateRequest(flow);
 
     if (status)
-    { // the Allocate procedure has sucessfully begun (and M_CREATE request has been sent)
+    { // the Allocate procedure has successfully begun (and M_CREATE request has been sent)
         // bind the new (N-1)-flow to an RMT port
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
         // notify the PDUFG of the new flow
@@ -604,7 +604,7 @@ void RA::postNFlowAllocation(Flow* flow)
     Enter_Method("postNFlowAllocation()");
 
     // invoke QueueAlloc policy on relevant (N-1)-ports (if applicable)
-    if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    if (flow->isManagementFlow())
     {
         return;
     }
@@ -634,35 +634,17 @@ void RA::postNFlowAllocation(Flow* flow)
 void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 {
     Enter_Method("postNM1FlowAllocation()");
-    // mark this flow as connected
+    // mark this flow as connected and update info
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    ftItem->getRMTPort()->setOutputReady();
-    ftItem->getRMTPort()->setInputReady();
+    RMTPort* port = ftItem->getRMTPort();
+    port->setOutputReady();
+    port->setInputReady();
+    port->setFlow(ftItem->getFlow());
 
-    // if this is a management flow, notify the Enrollment module and
-    // allocate data flows that were waiting for this
-    if (!ftItem->getFlow()->getConId().getQoSId().compare(VAL_MGMTQOSID))
+    // if this is a management flow, notify the Enrollment module
+    if (ftItem->getFlow()->isManagementFlow())
     {
         signalizeMgmtAllocToEnrollment(ftItem->getFlow());
-
-        std::list<Flow*>* flows = pendingFlows[ftItem->getFlow()->getDstApni().getApn().getName()];
-        if (flows)
-        {
-            while (!flows->empty())
-            { // we can't allocate from here due to OMNeT++ listener mechanism
-                Flow *flow = flows->front();
-
-                if (preparedFlows[simTime()] == NULL)
-                {
-                    cMessage* msg = new cMessage("RA-CreateConnections");
-                    scheduleAt(simTime(), msg);
-                    preparedFlows[simTime()] = new std::list<Flow*>;
-                }
-
-                preparedFlows[simTime()]->push_back(flow);
-                flows->pop_front();
-            }
-        }
     }
 }
 
@@ -713,15 +695,26 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 {
     Enter_Method("bindNFlowToNM1Flow()");
 
+    EV << "Received a request to bind an (N)-flow (dst "
+       << flow->getDstApni().getApn().getName() << ", QoS-id "
+       << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
+
     if (rmt->isOnWire())
-    { // nothing to be done, we're multiplexing onto a single medium
+    {
+        EV << "This is a bottommost IPCP, the (N)-flow is bound to a medium." << endl;
         return true;
     }
 
     std::string dstAddr = flow->getDstAddr().getApname().getName();
     std::string neighAddr = flow->getDstNeighbor().getApname().getName();
     std::string qosID = flow->getConId().getQoSId();
-    EV << "\n\n\nrequesting flow from " << processName << " to " << dstAddr << " via " << neighAddr << "\n\n\n";
+
+    EV << "Binding to an (N-1)-flow leading to " << dstAddr;
+    if (dstAddr != neighAddr)
+    {
+        EV << " through neighbor " << neighAddr;
+    }
+    EV << "." << endl;
 
     APNamingInfo srcAPN = APNamingInfo(APN(processName));
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
@@ -741,60 +734,21 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     { // a flow exists
         if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
         {
-            EV << "\n\n\nA suitable (N-1)-flow is already present, using it.\n\n\n";
+            EV << "Such (N-1)-flow is already present, using it." << endl;
             return true;
         }
         else if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_FLOWPENDING)
-        { // the flow is currently being allocated
-            EV << "\n\n\nA suitable (N-1)-flow is already present but not finished allocating yet.\n\n\n";
-        }
-        else
         {
-            EV << "\n\n\nsomething's fucked\n\n\n";
-            // ?
+            EV << "Such (N-1)-flow is already present but its allocation is not yet finished"
+               << endl;
         }
     }
     else
-    { // we need to allocate a new (N-1)-flow to suit our needs
-
-        EV << "\n\n\nno suitable flow present!!!!!\n\n\n";
-
-        // prepare the new flow specifics
+    { // no suitable flow exists
+        EV << "No such (N-1)-flow present, allocating a new one." << endl;
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
         nm1Flow->setQosRequirements(flow->getQosRequirements());
-        if (pendingFlows[neighAddr] == NULL)
-        {
-            pendingFlows[neighAddr] = new std::list<Flow*>;
-        }
-        pendingFlows[neighAddr]->push_back(nm1Flow);
-
-        // check if a management flow to given destination is already present
-        if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
-        { // it isn't, we should allocate it first
-            EV << "\n\n\nallocating a management flow\n\n\n" << endl;
-            Flow *mgmtNM1Flow = new Flow(srcAPN, neighAPN);
-            mgmtNM1Flow->setQosRequirements(mgmtReqs);
-            createNM1Flow(mgmtNM1Flow);
-        }
-        else
-        { // the management flow is in place
-            if (flowTable->findFlowByDstApni(neighAddr, VAL_MGMTQOSID) == NULL)
-            { // ...but still being allocated
-                EV << "\n\n\nwaiting for mgmt flow to finish allocating\n\n\n" << endl;
-            }
-            else
-            { // management flow ready, let's allocate the data flow
-                EV << "\n\n\nallocating a data flow\n\n\n" << endl;
-                if (preparedFlows[simTime()] == NULL)
-                {
-                    cMessage* msg = new cMessage("RA-CreateConnections");
-                    scheduleAt(simTime(), msg);
-                    preparedFlows[simTime()] = new std::list<Flow*>;
-                }
-                preparedFlows[simTime()]->push_back(pendingFlows[neighAddr]->back());
-                pendingFlows[neighAddr]->pop_back();
-            }
-        }
+        createNM1Flow(nm1Flow);
     }
 
     return false;

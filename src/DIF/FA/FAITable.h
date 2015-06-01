@@ -39,8 +39,11 @@ class FAITable : public cSimpleModule
     void removeByFlow(Flow* flow);
     FAITableEntry* findEntryByFlow(const Flow* flow);
     FAITableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
+    FAITableEntry* findMgmtEntry(const Flow* flow);
+    FAITableEntry* findMgmtEntryByDstAddr(const APN& apname);
     FAITableEntry* findEntryByDstAddressAndFwd(const APN& apname);
-    TFAIPtrs findEntryByDstNeighborAndFwd(const APN& apname);
+    TFAIPtrs findEntriesByDstNeighborAndFwd(const APN& apname);
+    TFAIPtrs findEntriesAffectedByMgmt(const Flow* flow);
     FAITableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     FAITableEntry* findEntryByFai(FAIBase* fai);
     FAITableEntry* findEntryByInvokeId(long invId);

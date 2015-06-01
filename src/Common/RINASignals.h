@@ -76,6 +76,7 @@ extern const char* SIG_toFAI_AllocateRequest;
 extern const char* SIG_toFAI_AllocateResponsePositive;
 extern const char* SIG_toFAI_AllocateResponseNegative;
 extern const char* SIG_FAI_AllocateRequest;
+extern const char* SIG_FAI_AllocateFinishManagement;
 extern const char* SIG_FAI_DeallocateRequest;
 extern const char* SIG_FAI_DeallocateResponse;
 extern const char* SIG_FAI_AllocateResponsePositive;
