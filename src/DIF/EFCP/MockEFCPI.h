@@ -37,6 +37,8 @@ class MockEFCPI : public cSimpleModule
     /* To RMT */
     cGate* southI;
     cGate* southO;
+
+    ConnectionId* connID;
 };
 
 #endif

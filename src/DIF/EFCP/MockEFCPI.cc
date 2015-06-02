@@ -24,6 +24,11 @@ void MockEFCPI::initialize()
     southI = this->gateHalf("southIo", cGate::INPUT);
     southO = this->gateHalf("southIo", cGate::OUTPUT);
 
+    connID = new ConnectionId();
+    connID->setSrcCepId(0);
+    connID->setDstCepId(0);
+    connID->setQoSId(VAL_MGMTQOSID);
+
 
 }
 
@@ -36,12 +41,12 @@ void MockEFCPI::handleMessage(cMessage *msg)
     CDAPMessage* cdap = (CDAPMessage*)msg;
     DataTransferPDU* pdu = new DataTransferPDU();
 
-//    pdu->setConnId(cdap. this->flow->getConId());
+    pdu->setConnId(*(connID->dup()));
 
 //    pdu->setSrcAddr(this->flow->getSrcAddr());
     pdu->setDstAddr(cdap->getDstAddr());
-//    pdu->setSrcApn(this->flow->getDstApni().getApn());
-//    pdu->setDstApn(cdap->getDstAddr());
+//    pdu->setSrcApn(flow->getDstApni().getApn());
+    pdu->setDstApn(cdap->getDstAddr().getApname());
 
     pdu->setSeqNum(0);
 
