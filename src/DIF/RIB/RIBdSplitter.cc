@@ -38,7 +38,7 @@ void RIBdSplitter::handleMessage(cMessage *msg)
             out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
         }
         else {
-            EV << "Message relayed directly to RMT!" << endl;
+            EV << "Message sent out via mock EFCP instance!" << endl;
             out = this->gateHalf("efcpIo", cGate::OUTPUT);
         }
     }
