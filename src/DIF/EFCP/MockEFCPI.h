@@ -39,6 +39,9 @@ class MockEFCPI : public cSimpleModule
     cGate* southO;
 
     ConnectionId* connID;
+
+    APN srcApn;
+    Address srcAddress;
 };
 
 #endif

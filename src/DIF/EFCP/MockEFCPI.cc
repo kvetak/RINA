@@ -29,6 +29,10 @@ void MockEFCPI::initialize()
     connID->setDstCepId(0);
     connID->setQoSId(VAL_MGMTQOSID);
 
+    srcApn = APN(getModuleByPath(".^.^")->par("apName"));
+    srcAddress = Address(srcApn);
+
+
 
 }
 
@@ -43,9 +47,9 @@ void MockEFCPI::handleMessage(cMessage *msg)
 
     pdu->setConnId(*(connID->dup()));
 
-//    pdu->setSrcAddr(this->flow->getSrcAddr());
+    pdu->setSrcAddr(srcAddress);
     pdu->setDstAddr(cdap->getDstAddr());
-//    pdu->setSrcApn(flow->getDstApni().getApn());
+    pdu->setSrcApn(srcApn);
     pdu->setDstApn(cdap->getDstAddr().getApname());
 
     pdu->setSeqNum(0);
@@ -75,7 +79,11 @@ void MockEFCPI::handleMessage(cMessage *msg)
     SDU* sdu = userData->getData();
     take(sdu);
 
-    send(sdu, northO);
+    cPacket* cdap = sdu->getUserData();
+    take(cdap);
+
+    send(cdap, northO);
+    delete sdu;
 
     delete pdu;
 
