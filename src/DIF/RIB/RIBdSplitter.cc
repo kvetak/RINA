@@ -34,12 +34,12 @@ void RIBdSplitter::handleMessage(cMessage *msg)
         FAITableEntry* tfe = FaiTable->findMgmtEntryByDstAddr(cdapmsg->getDstAddr().getApname());
         if (tfe && !dynamic_cast<CDAP_M_Create*>(msg)) {
             std::ostringstream ribdName;
-            ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
+            ribdName << "efcpIo" << tfe->getCFlow()->getSrcPortId();
             out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
         }
         else {
             EV << "Message relayed directly to RMT!" << endl;
-            out = this->gateHalf(GATE_RMTIO, cGate::OUTPUT);
+            out = this->gateHalf(GATE_EFCPIO_, cGate::OUTPUT);
         }
     }
     //From EFCP or RMT
