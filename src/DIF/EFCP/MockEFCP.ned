@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-
 package rina.src.DIF.EFCP;
 
-import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
-
-module EFCPModule
+//
+// TODO auto-generated module
+//
+simple MockEFCP
 {
-    @display("i=block/layer;bgb=305,170");
-    gates:
-        //        inout faIo[];
-        //        inout rmtIo[];
-        inout ribd;
-        inout mockToRMT;
-
-    submodules:
-        efcpTable: EFCPTable {
-            @display("p=175,44");
-        }
-        efcp: EFCP {
-            @display("p=52,44;i=block/circle");
-        }
-
-
-        mockEFCP: MockEFCP {
-            @display("p=261,44");
-        }
-    connections allowunconnected:
-        //        efcp.rmtIo <--> rmtIo++;
-        mockEFCP.northIo <--> ribd;
-        mockEFCP.southIo <--> mockToRMT;
-
+        gates:
+        inout northIo; //towards RIBd
+        inout southIo; //towards RMT
 }
