@@ -23,6 +23,8 @@ void MockEFCP::initialize()
     northO = this->gateHalf("northIo", cGate::OUTPUT);
     southI = this->gateHalf("southIo", cGate::INPUT);
     southO = this->gateHalf("southIo", cGate::OUTPUT);
+
+
 }
 
 void MockEFCP::handleMessage(cMessage *msg)

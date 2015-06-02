@@ -64,4 +64,5 @@ module IPCProcess
 
     connections allowunconnected:
         relayAndMux.ribdIo <--> ribDaemon.rmtIo;
+        ribDaemon.efcpIo <--> efcp.ribd;
 }
