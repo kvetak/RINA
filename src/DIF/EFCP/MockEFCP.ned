@@ -18,7 +18,7 @@ package rina.src.DIF.EFCP;
 //
 // TODO auto-generated module
 //
-simple MockEFCP
+simple MockEFCPI
 {
         gates:
         inout northIo; //towards RIBd

@@ -13,11 +13,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "MockEFCP.h"
+#include "MockEFCPI.h"
 
-Define_Module(MockEFCP);
+Define_Module(MockEFCPI);
 
-void MockEFCP::initialize()
+void MockEFCPI::initialize()
 {
     northI = this->gateHalf("northIo", cGate::INPUT);
     northO = this->gateHalf("northIo", cGate::OUTPUT);
@@ -27,7 +27,7 @@ void MockEFCP::initialize()
 
 }
 
-void MockEFCP::handleMessage(cMessage *msg)
+void MockEFCPI::handleMessage(cMessage *msg)
 {
 
   if (msg->arrivedOn(northI->getId()))

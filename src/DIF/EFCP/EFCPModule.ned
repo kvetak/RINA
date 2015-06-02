@@ -38,12 +38,12 @@ module EFCPModule
         }
 
 
-        mockEFCP: MockEFCP {
+        mockEFCPI: MockEFCPI {
             @display("p=261,44");
         }
     connections allowunconnected:
         //        efcp.rmtIo <--> rmtIo++;
-        mockEFCP.northIo <--> ribd;
-        mockEFCP.southIo <--> mockToRMT;
+        mockEFCPI.northIo <--> ribd;
+        mockEFCPI.southIo <--> mockToRMT;
 
 }

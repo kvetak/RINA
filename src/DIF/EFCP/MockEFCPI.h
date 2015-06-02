@@ -22,7 +22,7 @@
 /**
  * TODO - Generated class
  */
-class MockEFCP : public cSimpleModule
+class MockEFCPI : public cSimpleModule
 {
   protected:
     virtual void initialize();

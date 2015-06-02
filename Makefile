@@ -339,10 +339,10 @@ OBJS = \
     $O/src/DAF/IRM/ConnectionTable.o \
     $O/src/DAF/IRM/ConnectionTableEntry.o \
     $O/src/DIF/Delimiting/Delimiting.o \
-    $O/src/DIF/EFCP/MockEFCP.o \
     $O/src/DIF/EFCP/EFCP.o \
     $O/src/DIF/EFCP/EFCPListeners.o \
     $O/src/DIF/EFCP/EFCPInstance.o \
+    $O/src/DIF/EFCP/MockEFCPI.o \
     $O/src/DIF/EFCP/EFCPPolicySet.o \
     $O/src/DIF/EFCP/DTCP/DTCP.o \
     $O/src/DIF/EFCP/DTCP/RXControl.o \
@@ -4793,29 +4793,18 @@ $O/src/DIF/EFCP/EFCPListeners.o: src/DIF/EFCP/EFCPListeners.cc \
 	src/DIF/RMT/RMTQueue.h
 $O/src/DIF/EFCP/EFCPPolicySet.o: src/DIF/EFCP/EFCPPolicySet.cc \
 	src/DIF/EFCP/EFCPPolicySet.h
-$O/src/DIF/EFCP/MockEFCP.o: src/DIF/EFCP/MockEFCP.cc \
-	policies/DIF/RA/AddressComparator/AddressComparatorBase.h \
-	policies/DIF/RA/QueueAlloc/QueueAllocBase.h \
-	policies/DIF/RA/QueueIDGen/QueueIDGenBase.h \
-	policies/DIF/RMT/MaxQueue/RMTMaxQBase.h \
-	policies/DIF/RMT/Monitor/RMTQMonitorBase.h \
-	policies/DIF/RMT/PDUForwarding/IntPDUForwarding.h \
-	policies/DIF/RMT/Scheduler/RMTSchedulingBase.h \
+$O/src/DIF/EFCP/MockEFCPI.o: src/DIF/EFCP/MockEFCPI.cc \
 	src/Common/APN.h \
-	src/Common/APNamingInfo.h \
 	src/Common/Address.h \
 	src/Common/ConnectionId.h \
 	src/Common/DAP.h \
 	src/Common/Data.h \
 	src/Common/Data_m.h \
 	src/Common/ExternConsts.h \
-	src/Common/Flow.h \
 	src/Common/PDU.h \
 	src/Common/PDU_m.h \
 	src/Common/Policy.h \
 	src/Common/QoSCube.h \
-	src/Common/QoSReq.h \
-	src/Common/RINASignals.h \
 	src/Common/SDU.h \
 	src/Common/SDU_m.h \
 	src/DAF/CDAP/CDAPMessage_m.h \
@@ -4824,20 +4813,7 @@ $O/src/DIF/EFCP/MockEFCP.o: src/DIF/EFCP/MockEFCP.cc \
 	src/DIF/EFCP/DTP/UserDataField.h \
 	src/DIF/EFCP/EFCPPolicySet.h \
 	src/DIF/EFCP/EFCP_defs.h \
-	src/DIF/EFCP/MockEFCP.h \
-	src/DIF/FA/FABase.h \
-	src/DIF/FA/FAIBase.h \
-	src/DIF/FA/FAITable.h \
-	src/DIF/FA/FAITableEntry.h \
-	src/DIF/RA/NM1FlowTable.h \
-	src/DIF/RA/NM1FlowTableItem.h \
-	src/DIF/RA/RABase.h \
-	src/DIF/RMT/RMT.h \
-	src/DIF/RMT/RMTBase.h \
-	src/DIF/RMT/RMTListeners.h \
-	src/DIF/RMT/RMTModuleAllocator.h \
-	src/DIF/RMT/RMTPort.h \
-	src/DIF/RMT/RMTQueue.h
+	src/DIF/EFCP/MockEFCPI.h
 $O/src/DIF/EFCP/DTCP/ControlPDU_m.o: src/DIF/EFCP/DTCP/ControlPDU_m.cc \
 	src/Common/APN.h \
 	src/Common/Address.h \
