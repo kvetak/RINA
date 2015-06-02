@@ -44,4 +44,5 @@ module RIBDaemon
     connections allowunconnected:
         commonDistributedApplicationProtocol.southIo <--> ribdSplitter.cdapIo;
         ribdSplitter.rmtIo <--> rmtIo;
+        ribdSplitter.efcpIo <--> efcpIo;
 }

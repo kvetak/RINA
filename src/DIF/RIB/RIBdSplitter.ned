@@ -15,9 +15,6 @@
 
 package rina.src.DIF.RIB;
 
-//
-// TODO auto-generated module
-//
 simple RIBdSplitter
 {
     parameters:
@@ -25,4 +22,5 @@ simple RIBdSplitter
 	gates:	    
 	    inout cdapIo;
 	    inout rmtIo;
+	    inout efcpIo;
 }
