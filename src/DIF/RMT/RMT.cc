@@ -62,6 +62,8 @@ void RMT::initialize()
         }
     }
 
+    efcpiIn[0] = gateHalf("ribdIo", cGate::INPUT);
+    efcpiOut[0] = gateHalf("ribdIo", cGate::OUTPUT);
 
     // get pointers to other components
     fwd = check_and_cast<IntPDUForwarding*>
@@ -406,7 +408,7 @@ RMTPort* RMT::fwTableLookup(const Address& destAddr, const std::string &qosId)
         return rmtAllocator->getInterfacePort();
     }
     else
-    { // get a suitable ports from PDUF
+    { // get suitable ports from the Forwarding policy
         std::vector<RMTPort*> ports = fwd->lookup(destAddr, qosId);
         if (ports.size() > 0)
         {
@@ -457,8 +459,15 @@ void RMT::efcpiToPort(PDU* pdu)
     RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
     if (outPort != NULL)
     {
-        const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
-        outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
+        if (pdu->getConnId().getQoSId() != VAL_MGMTQOSID)
+        {
+            const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
+            outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
+        }
+        else
+        {
+            outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+        }
     }
 
     cGate* outGate = NULL;
@@ -501,7 +510,6 @@ void RMT::portToEfcpi(PDU* pdu)
         emit(sigRMTNoConnID, pdu);
         invalidPDUs.push_back(pdu);
     }
-
 }
 
 /**
@@ -513,58 +521,58 @@ void RMT::efcpiToEfcpi(PDU* pdu)
 {
     portToEfcpi(pdu);
 }
+//
+///**
+// * Passes a CDAP mesage from an (N-1)-port instance to RIB daemon.
+// *
+// * @param cdap CDAP message to be passed
+// */
+//void RMT::portToRIB(CDAPMessage* cdap)
+//{
+//    send(cdap, "ribdIo$o");
+//}
 
-/**
- * Passes a CDAP mesage from an (N-1)-port instance to RIB daemon.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::portToRIB(CDAPMessage* cdap)
-{
-    send(cdap, "ribdIo$o");
-}
+///**
+// * Passes a CDAP mesage from the RIB daemon to an appropriate output queue.
+// *
+// * @param cdap CDAP message to be passed
+// */
+//void RMT::ribToPort(CDAPMessage* cdap)
+//{
+//    cGate* outGate = NULL;
+//    RMTQueue* outQueue = NULL;
+//    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), VAL_MGMTQOSID);
+//    if (outPort != NULL)
+//    {
+//        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+//    }
+//
+//    if (outQueue != NULL)
+//    {
+//        outGate = outQueue->getRMTAccessGate();
+//    }
+//
+//    if (outGate != NULL)
+//    {
+//        send(cdap, outGate);
+//    }
+//    else
+//    {
+//        EV << getFullPath() << ": could not send out a CDAP message!" << endl;
+//        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
+//           << ", qosId = 0" << endl;
+//    }
+//}
 
-/**
- * Passes a CDAP mesage from the RIB daemon to an appropriate output queue.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::ribToPort(CDAPMessage* cdap)
-{
-    cGate* outGate = NULL;
-    RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), VAL_MGMTQOSID);
-    if (outPort != NULL)
-    {
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
-    }
-
-    if (outQueue != NULL)
-    {
-        outGate = outQueue->getRMTAccessGate();
-    }
-
-    if (outGate != NULL)
-    {
-        send(cdap, outGate);
-    }
-    else
-    {
-        EV << getFullPath() << ": could not send out a CDAP message!" << endl;
-        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
-           << ", qosId = 0" << endl;
-    }
-}
-
-/**
- * Bounces a CDAP mesage back to local RIB.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::ribToRIB(CDAPMessage* cdap)
-{
-    send(cdap, "ribdIo$o");
-}
+///**
+// * Bounces a CDAP mesage back to local RIB.
+// *
+// * @param cdap CDAP message to be passed
+// */
+//void RMT::ribToRIB(CDAPMessage* cdap)
+//{
+//    send(cdap, "ribdIo$o");
+//}
 
 /**
  * Relays incoming message to an output queue based on data from PDUFwTable.
@@ -587,22 +595,30 @@ void RMT::portToPort(cMessage* msg)
                << ": no suitable output (N-1)-flow present for relay!" << endl;
             return;
         }
-        outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateOutputQueueID((PDU*)msg).c_str());
-    }
-    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-    {
-        destAddr = ((CDAPMessage*)msg)->getDstAddr();
 
-        outPort = fwTableLookup(destAddr, VAL_MGMTQOSID);
-        if (outPort == NULL)
+        if (pdu->getConnId().getQoSId() == VAL_MGMTQOSID)
         {
-            EV << getFullPath()
-               << ": no suitable output (N-1)-flow present for relay!" << endl;
-            return;
+            outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
         }
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+        else
+        {
+            outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
+                    queueIdGenerator->generateOutputQueueID((PDU*)msg).c_str());
+        }
     }
+//    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+//    {
+//        destAddr = ((CDAPMessage*)msg)->getDstAddr();
+//
+//        outPort = fwTableLookup(destAddr, VAL_MGMTQOSID);
+//        if (outPort == NULL)
+//        {
+//            EV << getFullPath()
+//               << ": no suitable output (N-1)-flow present for relay!" << endl;
+//            return;
+//        }
+//        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
+//    }
     else
     {
         EV << "This message isn't supported by relaying application! Aborting." << endl;
@@ -659,7 +675,7 @@ void RMT::processMessage(cMessage* msg)
                 EV << getFullPath() << " This PDU isn't for me! Holding it here." << endl;
             }
         }
-        else if (gate.substr(0, 7) == GATE_EFCPIO_)
+        else
         { // from an EFCPI
             if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
@@ -668,33 +684,6 @@ void RMT::processMessage(cMessage* msg)
             else
             {
                 efcpiToPort(pdu);
-            }
-        }
-    }
-    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-    { // management message arrival
-        CDAPMessage* cdap = (CDAPMessage*) msg;
-
-        if (gate.substr(0, 1) == "p")
-        { // from a port
-            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
-            {
-                portToRIB(cdap);
-            }
-            else
-            {
-                portToPort(msg);
-            }
-        }
-        else
-        { // from the RIBd
-            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
-            {
-                ribToRIB(cdap);
-            }
-            else
-            {
-                ribToPort(cdap);
             }
         }
     }
