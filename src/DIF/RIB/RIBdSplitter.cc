@@ -39,7 +39,7 @@ void RIBdSplitter::handleMessage(cMessage *msg)
         }
         else {
             EV << "Message relayed directly to RMT!" << endl;
-            out = this->gateHalf(GATE_RMTIO, cGate::OUTPUT);
+            out = this->gateHalf("efcpIo", cGate::OUTPUT);
         }
     }
     //From EFCP or RMT

@@ -156,6 +156,10 @@ bool FA::receiveAllocateRequest(Flow* flow) {
        ){
         status = fai->receiveAllocateRequest();
     }
+    else
+    {
+        status = true;
+    }
 
     //Potentially wait for response from RA, after this continue with X
 

@@ -13,14 +13,35 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DIF.RIB;
+#ifndef __RINA_MOCKEFCP_H_
+#define __RINA_MOCKEFCP_H_
 
-simple RIBdSplitter
+#include <omnetpp.h>
+#include "DataTransferPDU.h"
+//#include "RMT.h"
+/**
+ * TODO - Generated class
+ */
+class MockEFCPI : public cSimpleModule
 {
-    parameters:
-    	@display("i=block/layer");
-	gates:	    
-	    inout cdapIo;
-	    inout rmtIo;
-	    inout efcpIo;
-}
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+
+  private:
+    /* To RIBd */
+    cGate* northI;
+    cGate* northO;
+
+    /* To RMT */
+    cGate* southI;
+    cGate* southO;
+
+    ConnectionId* connID;
+
+    APN srcApn;
+    Address srcAddress;
+};
+
+#endif

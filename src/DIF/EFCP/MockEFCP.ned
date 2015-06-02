@@ -13,14 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DIF.RIB;
+package rina.src.DIF.EFCP;
 
-simple RIBdSplitter
+//
+// TODO auto-generated module
+//
+simple MockEFCPI
 {
-    parameters:
-    	@display("i=block/layer");
-	gates:	    
-	    inout cdapIo;
-	    inout rmtIo;
-	    inout efcpIo;
+        gates:
+        inout northIo; //towards RIBd
+        inout southIo; //towards RMT
 }

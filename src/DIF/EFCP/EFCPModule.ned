@@ -22,10 +22,12 @@ import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
 
 module EFCPModule
 {
-    @display("i=block/layer");
+    @display("i=block/layer;bgb=305,170");
     gates:
-//        inout faIo[];
-//        inout rmtIo[];
+        //        inout faIo[];
+        //        inout rmtIo[];
+        inout ribd;
+        inout mockToRMT;
 
     submodules:
         efcpTable: EFCPTable {
@@ -36,8 +38,12 @@ module EFCPModule
         }
 
 
+        mockEFCPI: MockEFCPI {
+            @display("p=261,44");
+        }
     connections allowunconnected:
-//        efcp.rmtIo <--> rmtIo++;
-
+        //        efcp.rmtIo <--> rmtIo++;
+        mockEFCPI.northIo <--> ribd;
+        mockEFCPI.southIo <--> mockToRMT;
 
 }
