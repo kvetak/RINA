@@ -92,8 +92,10 @@ void RMTPort::handleMessage(cMessage* msg)
             if (msg->getArrivalGate() == southInputGate) // incoming message
             {
                 // get a proper queue for this message
-                RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                        queueIdGen->generateInputQueueID((PDU*)msg).c_str());
+                std::string queueID =
+                        queueIdGen->generateInputQueueID((PDU*)msg);
+
+                RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
 
                 if (inQueue != NULL)
                 {
@@ -102,7 +104,10 @@ void RMTPort::handleMessage(cMessage* msg)
                 }
                 else
                 {
-                    EV << "no input queue of such queue-id available!";
+                    EV << getFullPath()
+                       << ": no input queue of such queue-id (" << queueID
+                       << ") available!" << endl;
+                    EV << pdu->getConnId().getQoSId() << endl;
                 }
             }
             else if (northInputGates.count(msg->getArrivalGate())) // outgoing message

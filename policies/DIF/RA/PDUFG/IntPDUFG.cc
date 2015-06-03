@@ -19,9 +19,9 @@ void IntPDUFG::initialize(){
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
 
-    std::vector<RMTPort *> ports = fwd->lookup(destination, qos);
+    RMTPorts ports = fwd->lookup(destination, qos);
     if(ports.size() >= 0){
-        for(std::vector<RMTPort *>::iterator it = ports.begin(); it != ports.end(); it++){
+        for(RMTPorts::iterator it = ports.begin(); it != ports.end(); it++){
             RMTPort * p = (*it);
             for(EIter it2 = neiState.begin(); it2 != neiState.end(); ++it2 ){
                 PDUFGNeighbor * e = (*it2);

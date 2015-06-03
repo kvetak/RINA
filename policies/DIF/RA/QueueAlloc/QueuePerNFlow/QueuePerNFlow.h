@@ -26,6 +26,7 @@ class QueuePerNFlow : public QueueAllocBase
 {
   public:
     virtual void onNFlowAlloc(RMTPort* port, Flow* flow);
+    virtual void onNM1PortInit(RMTPort* port);
 };
 
 #endif /* QUEUEPERNFLOW_H_ */

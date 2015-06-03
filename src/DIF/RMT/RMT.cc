@@ -398,7 +398,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  * A wrapper for forwarding table lookup.
  *
  * @param pdu PDU to forward
- * @return output port
+ * @return output ports
  */
 std::vector<RMTPort*> RMT::fwTableLookup(const PDU * pdu)
 {
@@ -437,20 +437,18 @@ void RMT::relayPDUToPort(PDU* pdu)
     for (std::vector<RMTPort*>::iterator it = outPorts.begin(); it != outPorts.end(); ++it)
     {
         RMTPort* port = *it;
-        RMTQueue* outQueue = NULL;
 
-        if (pdu->getConnId().getQoSId() != VAL_MGMTQOSID)
+        const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
+        RMTQueue* outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
+        if (outQueue != NULL)
         {
-            const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
-            outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
+            cGate* outGate = outQueue->getRMTAccessGate();
+            send(pdu, outGate);
         }
         else
         {
-            outQueue = port->getFirstQueue(RMTQueue::OUTPUT);
+            EV << "Queue with ID \"" << id << "\" doesn't exist!" << endl;
         }
-
-        cGate* outGate = outQueue->getRMTAccessGate();
-        send(pdu, outGate);
     }
 }
 
