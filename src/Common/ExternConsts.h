@@ -77,6 +77,7 @@ extern const char* GATE_NORTHIO;
 extern const char* GATE_NORTHIO_;
 extern const char* GATE_SOUTHIO_;
 extern const char* GATE_EFCPIO_;
+extern const char* GATE_EFCPIO;
 extern const char* GATE_RMT_;
 extern const char* GATE_RMTIO;
 extern const char* GATE_APPIO_;

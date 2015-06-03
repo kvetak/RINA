@@ -88,6 +88,7 @@ TFAIPtrs FAITable::findEntriesByDstNeighborAndFwd(const APN& apname) {
 }
 
 FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
+    if (!invId) return NULL;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getCFlow()->getAllocInvokeId() == invId)
@@ -193,10 +194,10 @@ FAITableEntry* FAITable::findMgmtEntry(const Flow* flow) {
     return NULL;
 }
 
-FAITableEntry* FAITable::findMgmtEntryByDstAddr(const APN& apname) {
+FAITableEntry* FAITable::findMgmtEntryByDstAddr(const Address& addr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
-        if (tft.getCFlow()->getDstAddr().getApname() == apname
+        if (tft.getCFlow()->getDstAddr() == addr
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
     }

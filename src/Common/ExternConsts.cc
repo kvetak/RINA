@@ -76,6 +76,7 @@ const char* GATE_NORTHIO        = "northIo";
 const char* GATE_NORTHIO_       = "northIo_";
 const char* GATE_SOUTHIO_       = "southIo_";
 const char* GATE_EFCPIO_        = "efcpIo_";
+const char* GATE_EFCPIO         = "efcpIo";
 const char* GATE_RMT_           = "rmt_";
 const char* GATE_RMTIO          = "rmtIo";
 const char* GATE_APPIO_         = "appIo_";

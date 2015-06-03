@@ -137,7 +137,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     bool status;
 
     //Postpone allocation request until management flow is ready
-    FAITableEntry* fte = FaiTable->findMgmtEntry(flow);
+    FAITableEntry* fte = FaiTable->findMgmtEntryByDstAddr(flow->getDstAddr());
     if ( flow->isDdtFlag()
          ||
          ( fte && fte->getAllocateStatus() == FAITableEntry::TRANSFER )
