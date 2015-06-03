@@ -62,6 +62,9 @@ void RA::initialize(int stage)
         (getModuleByPath("^.^.relayAndMux.rmt"));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
         (getModuleByPath("^.^.relayAndMux.allocator"));
+    fa = check_and_cast<FABase*>
+            (getModuleByPath("^.^.flowAllocator.fa"));
+
 
     // retrieve pointers to policies
     qAllocPolicy = check_and_cast<QueueAllocBase*>
@@ -89,7 +92,23 @@ void RA::handleMessage(cMessage *msg)
 
             while (!flows->empty())
             {
-                createNM1Flow(flows->front());
+                // Data connections are carried by (N-1)-flows alone, whereas
+                // management connections use (N-1)-management flows ALONG WITH
+                // (N)-management flows. Thus, data flows are allocated via
+                // (N-1)-FA and management flows via (N)-FA.
+                // In addition to that, we can assume that (N-1)-data flows
+                // are going to require (N)-management, so it's allocated as well.
+
+                Flow* flow = flows->front();
+                if (!flow->getQosReqs().compare(mgmtReqs))
+                { // mgmt flow
+                    createNFlow(flow);
+                }
+                else
+                { // data flow
+                    createNM1Flow(flow);
+                }
+
                 flows->pop_front();
             }
 
@@ -438,6 +457,16 @@ std::string RA::normalizePortID(std::string ipcName, int flowPortID)
     std::ostringstream newPortID;
     newPortID << ipcName << '_' << flowPortID;
     return newPortID.str();
+}
+
+/**
+ * Invokes allocation of an (N)-flow (used for allocation of management flows).
+ *
+ * @param flow specified flow object
+ */
+void RA::createNFlow(Flow *flow)
+{
+    fa->receiveAllocateRequest(flow);
 }
 
 /**
