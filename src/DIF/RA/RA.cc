@@ -100,7 +100,7 @@ void RA::handleMessage(cMessage *msg)
                 // are going to require (N)-management, so it's allocated as well.
 
                 Flow* flow = flows->front();
-                if (!flow->getQosReqs().compare(mgmtReqs))
+                if (flow->isManagementFlow())
                 { // mgmt flow
                     createNFlow(flow);
                 }
