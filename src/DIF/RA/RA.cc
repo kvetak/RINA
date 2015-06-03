@@ -466,7 +466,7 @@ std::string RA::normalizePortID(std::string ipcName, int flowPortID)
  */
 void RA::createNFlow(Flow *flow)
 {
-    fa->receiveAllocateRequest(flow);
+    fa->receiveLocalMgmtAllocateRequest(flow);
 }
 
 /**

@@ -49,13 +49,6 @@ void FA::initialize() {
     initMyAddress();
 }
 
-bool FA::receiveMgmtAllocateFinish() {
-    Enter_Method("receiveAllocFinishMgmt()");
-    scheduleAt(simTime(), new cMessage(TIM_FAPENDFLOWS) );
-    //TODO: Vesely - Fix unused return value
-    return true;
-}
-
 bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
     //Add source...
     if (!useNeighbor) {
@@ -119,10 +112,10 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
 
-    if ( !FaiTable->findMgmtEntry(flow) && !flow->isDdtFlag() ) {
+    if ( !flow->isDdtFlag() && !FaiTable->findMgmtEntry(flow) ) {
         EV << "Management flow is not present, thus allocating one first!" << endl;
         Flow* mgmtflow = flow->dupToMgmt();
-        receiveAllocateRequest(mgmtflow);
+        receiveLocalMgmtAllocateRequest(mgmtflow);
     }
 
     //Is malformed?
@@ -147,12 +140,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     FAITableEntry* fte = FaiTable->findMgmtEntry(flow);
     if ( flow->isDdtFlag()
          ||
-         ( fte
-           &&
-           (flow->isManagementFlowLocalToIPCP()
-            || fte->getAllocateStatus() == FAITableEntry::TRANSFER
-           )
-         )
+         ( fte && fte->getAllocateStatus() == FAITableEntry::TRANSFER )
        ){
         status = fai->receiveAllocateRequest();
     }
@@ -164,6 +152,44 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //Potentially wait for response from RA, after this continue with X
 
     return status;
+}
+
+bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
+    Enter_Method("receiveLocalMgmtAllocateRequest()");
+    EV << this->getFullPath() << " received LocalMgmtAllocateRequest" << endl;
+
+    //Insert new Flow into FAITable
+    FaiTable->insertNew(flow);
+
+    //Change allocation status to pending
+    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+
+    //Add source and destination address in case of data flow
+
+    flow->setSrcAddr(Address(flow->getSrcApni().getApn()));
+    flow->setDstAddr(Address(flow->getDstApni().getApn()));
+    setNeighborAddresses(flow);
+    flow->setDdtFlag(false);
+
+
+    //Create FAI
+    FAI* fai = this->createFAI(flow);
+    fai->setDegenerateDataTransfer(flow->isDdtFlag());
+
+    //Update flow object
+    flow->setSrcPortId(fai->getLocalPortId());
+    flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
+
+    bool status = fai->receiveAllocateRequest();
+
+    return status;
+}
+
+bool FA::receiveMgmtAllocateFinish() {
+    Enter_Method("receiveAllocFinishMgmt()");
+    scheduleAt(simTime(), new cMessage(TIM_FAPENDFLOWS) );
+    //TODO: Vesely - Fix unused return value
+    return true;
 }
 
 bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
