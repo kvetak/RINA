@@ -31,6 +31,14 @@ entriesIt RoutingUpdate::entriesEnd(){
 }
 
 
+void SimpleDV::scheduleUpdate(){
+    Enter_Method_Silent();
+    if(!scheduledUpdate){
+        scheduledUpdate = true;
+        scheduleAt(simTime()+1, new cMessage("Time2Update"));
+    }
+}
+
 //Flow inserted/removed
 void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric){
     EV << "Insert Flow info" << endl;
@@ -110,35 +118,44 @@ bool SimpleDV::processUpdate(IntRoutingUpdate * update){
         return false;
     }
 
+    bool chan = false;
+
     std::string qos = up->getQoS();
 
     for(entriesIt it = up->entriesBegin(); it!= up->entriesEnd(); it++){
-        if(it->addr == myAddr) {
-            continue;
-        }
+        if(it->addr == myAddr) { continue; }
 
         rtEntry * newEntry = &(*it);
         rtEntry * oldEntry = &table[qos][newEntry->addr];
 
         bool entryChangedDst = false;
 
-        if(oldEntry->addr == newEntry->addr){
-            if(oldEntry->metric == newEntry->metric){
+        if(oldEntry->addr == src){
+            if(oldEntry->metric != newEntry->metric){
                 oldEntry->metric = newEntry->metric;
+                chan = true;
             }
-        } else if(oldEntry->metric >= newEntry->metric){
+        } else if(oldEntry->metric > newEntry->metric){
             oldEntry->addr = src;
             oldEntry->metric = newEntry->metric;
             entryChangedDst = true;
+            chan = true;
         }
 
         if(oldEntry->metric >= infMetric){
             changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),""));
             table[qos].erase(newEntry->addr);
+            chan = true;
         } else if(entryChangedDst){
             changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),src));
+            chan = true;
         }
     }
+
+    if(chan) {
+        scheduleUpdate();
+    }
+
     return ! changes.empty();
 }
 
@@ -151,7 +168,8 @@ void SimpleDV::onPolicyInit(){
 
     infMetric = par("infMetric").longValue();
 
-    scheduleAt(simTime()+30, new cMessage("Time2Update"));
+    scheduledUpdate = false;
+    scheduleUpdate();
 }
 
 
@@ -180,8 +198,9 @@ void SimpleDV::handleMessage(cMessage *msg){
             }
         }
 
-        scheduleAt(simTime()+30, msg);
+        scheduledUpdate = false;
     }
+    delete msg;
 }
 
 
