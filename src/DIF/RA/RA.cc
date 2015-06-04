@@ -86,6 +86,7 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
+
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
             std::list<Flow*>* flows = preparedFlows[simTime()];
@@ -98,6 +99,7 @@ void RA::handleMessage(cMessage *msg)
                 // (N-1)-FA and management flows via (N)-FA.
                 // In addition to that, we can assume that (N-1)-data flows
                 // are going to require (N)-management, so it's allocated as well.
+
 
                 Flow* flow = flows->front();
                 if (flow->isManagementFlow())
@@ -165,6 +167,8 @@ void RA::initFlowAlloc()
         cXMLElement* m = *it;
         simtime_t time = static_cast<simtime_t>(
                 atoi(m->getAttribute("t")));
+
+        if(time==1) error("t1");
 
         cXMLElementList connMap = m->getChildrenByTagName("Connection");
         for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
@@ -527,10 +531,13 @@ void RA::createNM1Flow(Flow *flow)
     { // the Allocate procedure has successfully begun (and M_CREATE request has been sent)
         // bind the new (N-1)-flow to an RMT port
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
+
+        fab->invokeNewFlowRequestPolicy(flow);
+
         // notify the PDUFG of the new flow
         fwdtg->insertFlowInfo(
             Address(flow->getDstApni().getApn().getName()),
-            flow->getConId().getQoSId(),
+            flow->getQosCube(),
             port);
     }
     else
@@ -602,9 +609,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // notify the PDUFG of the new flow
     fwdtg->insertFlowInfo(
         Address(flow->getDstApni().getApn().getName()),
-        flow->getConId().getQoSId(),
+        flow->getQosCube(),
         port);
-
     // answer the M_CREATE request
     signalizeCreateFlowPositiveToRIBd(flow);
 
@@ -736,11 +742,13 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
+
+
+
     PDUFGNeighbor * te =
         fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
-    if(te)
-    {
+    if(te) {
         neighAddr = te->getDestAddr().getApname().getName();
     }
 

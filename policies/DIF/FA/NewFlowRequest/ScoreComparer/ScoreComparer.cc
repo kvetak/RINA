@@ -95,19 +95,18 @@ bool ScoreComparer::run(Flow& flow) {
 
     std::string qosid = VAL_UNDEF_QOSID;
     short score = 0;
+    QoSCube qs;
 
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
         short tmpscore = countFeasibilityScore(flow.getQosRequirements(), *it);
-//        EV << "QosID: " << it->getQosId()
-//           << " tmpscore: " << tmpscore
-//           << " score: " << score << endl
-//           << " qosid: " << qosid << endl;
         if (score < tmpscore) {
             score = tmpscore;
             qosid = it->getQosId();
+            qs = *it;
         }
     }
     flow.getConnectionId().setQoSId(qosid);
+    flow.setQosCube(qs);
     return qosid.compare(VAL_UNDEF_QOSID) ? true : false;
 }
 

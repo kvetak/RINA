@@ -26,7 +26,7 @@ Register_Class(BiDomainGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void BiDomainGenerator::insertedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void BiDomainGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].insert(port);
     if(neighbours[dst].size() == 1){
@@ -41,7 +41,7 @@ void BiDomainGenerator::insertedFlow(const Address &addr, const std::string &qos
         routingUpdated();
     }
 }
-void BiDomainGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void BiDomainGenerator::removedFlow(const Address &addr, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){

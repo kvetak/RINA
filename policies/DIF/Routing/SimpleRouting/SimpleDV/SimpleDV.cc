@@ -33,7 +33,7 @@ entriesIt RoutingUpdate::entriesEnd(){
 
 //Flow inserted/removed
 void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric){
-
+    EV << "Insert Flow info" << endl;
     neig[qos][addr] = metric;
 
     rtEntry * oldEntry = &table[qos][dst];
@@ -149,7 +149,7 @@ void SimpleDV::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = 32;
+    infMetric = par("infMetric").longValue();
 
     scheduleAt(simTime()+30, new cMessage("Time2Update"));
 }
@@ -188,18 +188,19 @@ void SimpleDV::handleMessage(cMessage *msg){
 void SimpleDV::finish(){
     IntRouting::finish();
 
-    EV << "I'm " << myAddr<<endl;
+    if(par("printAtEnd").boolValue() ){
+        EV << "I'm " << myAddr<<endl;
 
-    for (rtTableIt it = table.begin(); it != table.end(); it++)
-    {
-        EV << "  QoS " << it->first << endl;
-        for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
+        for (rtTableIt it = table.begin(); it != table.end(); it++)
         {
-            EV << "    " << it2->first << " via " << it2->second.addr << " ("
-                    << it2->second.metric << " hops)" << endl;
+            EV << "  QoS " << it->first << endl;
+            for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
+            {
+                EV << "    " << it2->first << " via " << it2->second.addr << " ("
+                        << it2->second.metric << " hops)" << endl;
+            }
         }
     }
-
 }
 
 }

@@ -196,7 +196,7 @@ void SimpleLS::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = 32;
+    infMetric = par("infMetric").longValue();
     secId = 1;
 }
 
@@ -240,29 +240,19 @@ linksSt SimpleLS::getChangedEntries (const std::string& qos){
 void SimpleLS::finish(){
     IntRouting::finish();
 
-    EV << "I'm "<< myAddr<<endl;
+    if(par("printAtEnd").boolValue() ){
+        EV << "I'm "<< myAddr<<endl;
 
-    for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        EV << "  QoS " << qosIt->first<<endl;
-        TreeNode t = constructTree(qosIt->second);
+        for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
+            EV << "  QoS " << qosIt->first<<endl;
+            TreeNode t = constructTree(qosIt->second);
 
-        for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
-            printTreeNode(*it, (*it)->addr);
-        }
-
-    }
-/*
-    EV << "LS "<<endl;
-    for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        EV << "  QoS " << qosIt->first<<endl;
-        for(linksStIt lsIt = qosIt->second.begin(); lsIt != qosIt->second.end(); lsIt++){
-            EV<<"    " << lsIt->first << "("<<lsIt->second.sId << ")"<< ":"<<endl;
-            for(linksIt lIt = lsIt->second.links.begin(); lIt != lsIt->second.links.end(); lIt++){
-                EV<<"      " << lIt->first << "("<<lIt->second << ")"<<endl;
+            for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
+                printTreeNode(*it, (*it)->addr);
             }
+
         }
     }
-*/
 }
 
 void SimpleLS::printTreeNode(TreeNode *t, const std::string &next){

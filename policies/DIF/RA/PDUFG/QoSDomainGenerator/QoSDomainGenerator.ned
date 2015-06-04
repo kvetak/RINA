@@ -8,5 +8,4 @@ simple QoSDomainGenerator like IntPDUFG
         @class(QoSDomainGenerator::QoSDomainGenerator);
         @display("i=block/socket");
         string alg = default("DV");
-        int nDomains = default(4);
 }

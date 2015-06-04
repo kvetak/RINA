@@ -155,6 +155,16 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
+
+void Flow::setQosCube(const QoSCube& qosCube) {
+    this->qosCube = qosCube;
+}
+
+const QoSCube& Flow::getQosCube() const {
+    return qosCube;
+}
+
+
 const QoSReq& Flow::getQosRequirements() const {
     return qosReqs;
 }
@@ -173,6 +183,7 @@ Flow* Flow::dup() const {
     flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
+    flow->setQosCube(this->getQosCube());
     flow->setQosRequirements(this->getQosRequirements());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());

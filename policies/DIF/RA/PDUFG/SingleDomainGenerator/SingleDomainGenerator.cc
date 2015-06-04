@@ -25,7 +25,7 @@ Register_Class(SingleDomainGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void SingleDomainGenerator::insertedFlow(const Address &addr, const std::string& qos, RMTPort * port){
+void SingleDomainGenerator::insertedFlow(const Address &addr, const QoSCube & qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].insert(port);
     if(neighbours[dst].size() == 1){
@@ -33,7 +33,7 @@ void SingleDomainGenerator::insertedFlow(const Address &addr, const std::string&
         routingUpdated();
     }
 }
-void SingleDomainGenerator::removedFlow(const Address &addr, const std::string& qos, RMTPort * port){
+void SingleDomainGenerator::removedFlow(const Address &addr, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){

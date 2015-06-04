@@ -13,38 +13,76 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <SimpleGenerator/SimpleGenerator.h>
+#include <LatGenerator/LatGenerator.h>
 #include "APN.h"
 
 
 
-namespace SimpleGenerator {
+namespace LatGenerator {
 
-Register_Class(SimpleGenerator);
+Register_Class(LatGenerator);
 
 using namespace std;
 
+portMetric::portMetric(RMTPort* p, unsigned short m) :
+    port(p), metric(m){}
+
+bool portMetric::operator < (const portMetric &other) const {
+    return port < other.port;
+}
+
 // A new flow has been inserted/or removed
-void SimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
+void LatGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
-    neighbours[dst].insert(port);
+
+    unsigned short metric = qos.getDelay()/par("redLinkCost").longValue();
+
+    if(metric < par("minLinkCost").longValue()) {
+        metric = par("minLinkCost").longValue();
+    } else if(metric > par("maxLinkCost").longValue()) {
+        metric = par("maxLinkCost").longValue();
+    }
+
+    if(qos.getQosId() == qos.MANAGEMENT.getQosId() || qos.getQosId() == VAL_UNDEF_QOSID) {
+        metric = par("maxLinkCost").longValue();
+    } else {
+        error("Magia");
+    }
+
+    neighbours[dst].insert(portMetric(port, metric));
     if(neighbours[dst].size() == 1){
-        rt->insertFlow(addr, dst, "", 1);
+        rt->insertFlow(addr, dst, "", metric);
         routingUpdated();
+    } else {
+        bool lower = true;
+        for(portMetric mt : neighbours[dst]) {
+            if(metric >= mt.metric) { lower = false; }
+        }
+        if(lower) {
+            rt->insertFlow(addr, dst, "", metric);
+            routingUpdated();
+        }
     }
 }
-void SimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
+void LatGenerator::removedFlow(const Address &addr, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
-    neighbours[dst].erase(port);
+    neighbours[dst].erase(portMetric(port, 0));
     if(neighbours[dst].size() <= 0){
         rt->removeFlow(addr, dst, "");
         neighbours.erase(dst);
+        routingUpdated();
+    } else {
+        unsigned short min = par("maxLinkCost").longValue();
+        for(portMetric mt : neighbours[dst]) {
+            if(min >= mt.metric) { min = mt.metric; }
+        }
+        rt->insertFlow(addr, dst, "", min);
         routingUpdated();
     }
 }
 
 //Routing has processes a routing update
-void SimpleGenerator::routingUpdated(){
+void LatGenerator::routingUpdated(){
     entries2Next changes = rt->getChanges();
 
     for(entries2NextIt it = changes.begin(); it!= changes.end(); it++){
@@ -55,7 +93,7 @@ void SimpleGenerator::routingUpdated(){
             NTableIt n = neighbours.find(nextHop);
             if(n != neighbours.end()){
                 if(!n->second.empty()) {
-                    p = *(n->second.begin());
+                    p = n->second.begin()->port;
                 }
             }
         }
@@ -68,14 +106,12 @@ void SimpleGenerator::routingUpdated(){
 }
 
 // Called after initialize
-void SimpleGenerator::onPolicyInit(){
+void LatGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<MiniTable::MiniTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
     rt = check_and_cast<IntSimpleRouting *>
         (getModuleByPath("^.^.routingPolicy"));
-
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
 }
 
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<Configuration>
+  <CU>
+    <CUItem id="A1">
+    	<urgency>2</urgency>
+    	<cherishThreshold>100</cherishThreshold>
+    </CUItem>
+    <CUItem id="A2">
+    	<urgency>2</urgency>
+    	<cherishThreshold>66</cherishThreshold>
+    </CUItem>
+    <CUItem id="B1">
+    	<urgency>1</urgency>
+    	<cherishThreshold>100</cherishThreshold>
+    </CUItem>
+    <CUItem id="B2">
+    	<urgency>1</urgency>
+    	<cherishThreshold>66</cherishThreshold>
+    </CUItem>
+    <CUItem id="BE">
+    	<urgency>0</urgency>
+    	<cherishThreshold>33</cherishThreshold>
+    </CUItem>
+  </CU>
+  
+  <qos2CU>
+  	<qos id="0" cu="A1" />
+  	<qos id="1" cu="A1" />
+  	<qos id="2" cu="A2" />
+  	<qos id="3" cu="B1" />
+  	<qos id="4" cu="B2" />
+  </qos2CU>
+</Configuration>

@@ -25,29 +25,29 @@ Register_Class(StaticGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void StaticGenerator::insertedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
 
-    fwd->insert(addr, qos, port);
+    fwd->insert(addr, port);
 
     const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
 
     if (remoteApps) {
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it) {
-            fwd->insert(Address(it->getName()), qos, port);
+            fwd->insert(Address(it->getName()), port);
         }
     }
 
     EV << "Flow inserted to " << addr << endl;
 }
-void StaticGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
 
-    fwd->remove(addr, qos);
+    fwd->remove(addr);
 
     const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
 
     if (remoteApps) {
         for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
-            fwd->remove(Address(it->getName()), qos);
+            fwd->remove(Address(it->getName()));
         }
     }
 }
@@ -58,7 +58,7 @@ void StaticGenerator::routingUpdated(){}
 // Called after initialize
 void StaticGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<SimpleTable::SimpleTable *>
+    fwd = check_and_cast<MiniTable::MiniTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
