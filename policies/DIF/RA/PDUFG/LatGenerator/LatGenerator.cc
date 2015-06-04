@@ -16,6 +16,8 @@
 #include <LatGenerator/LatGenerator.h>
 #include "APN.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 
 
 namespace LatGenerator {
@@ -45,8 +47,6 @@ void LatGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort
 
     if(qos.getQosId() == qos.MANAGEMENT.getQosId() || qos.getQosId() == VAL_UNDEF_QOSID) {
         metric = par("maxLinkCost").longValue();
-    } else {
-        error("Magia");
     }
 
     neighbours[dst].insert(portMetric(port, metric));
@@ -56,7 +56,7 @@ void LatGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort
     } else {
         bool lower = true;
         for(portMetric mt : neighbours[dst]) {
-            if(metric >= mt.metric) { lower = false; }
+            if(metric >= mt.metric && port != mt.port) { lower = false; }
         }
         if(lower) {
             rt->insertFlow(addr, dst, "", metric);

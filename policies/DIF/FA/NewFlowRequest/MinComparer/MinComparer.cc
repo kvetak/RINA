@@ -107,7 +107,6 @@ bool MinComparer::run(Flow& flow) {
             }
         }
     }
-    error("Great MinComparer called");
     flow.getConnectionId().setQoSId(qosid);
     flow.setQosCube(qs);
     return qosid.compare(VAL_UNDEF_QOSID) ? true : false;

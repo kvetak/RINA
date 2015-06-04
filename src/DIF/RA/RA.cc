@@ -168,17 +168,18 @@ void RA::initFlowAlloc()
         simtime_t time = static_cast<simtime_t>(
                 atoi(m->getAttribute("t")));
 
-        if(time==1) error("t1");
 
         cXMLElementList connMap = m->getChildrenByTagName("Connection");
         for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
         {
+
             cXMLElement* n = *jt;
             const char* src = n->getAttribute("src");
             if (opp_strcmp(src, processName.c_str()))
             {
                 continue;
             }
+
 
             const char* dst = n->getAttribute("dst");
             const char* qosReqID_s = n->getAttribute("qosReq");
@@ -197,6 +198,7 @@ void RA::initFlowAlloc()
                                         (atoi(qosReqID_s)));
             }
 
+
             if (qosReq == NULL) continue;
 
             Flow *flow = new Flow(srcAPN, dstAPN);
@@ -207,6 +209,7 @@ void RA::initFlowAlloc()
                 preparedFlows[time] = new std::list<Flow*>;
                 cMessage* msg = new cMessage("RA-CreateConnections");
                 scheduleAt(simTime() + time, msg);
+
             }
 
             preparedFlows[time]->push_back(flow);
