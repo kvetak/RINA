@@ -256,7 +256,7 @@ void SimpleLS::finish(){
 }
 
 void SimpleLS::printTreeNode(TreeNode *t, const std::string &next){
-    EV<<"    " << t->addr << " -> "<<next << " ("<<t->metric<<") " << " c: "<< t->chl.size() << endl;
+    EV<<"    " << t->addr << " -> "<<next << " ("<<t->metric<<") " << " childs: "<< t->chl.size() << endl;
     for(TreeNodeIt it = t->chl.begin(); it != t->chl.end(); it++){
         printTreeNode(*it, next);
     }

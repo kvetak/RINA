@@ -216,7 +216,7 @@ void SimpleDV::finish(){
             for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
             {
                 EV << "    " << it2->first << " via " << it2->second.addr << " ("
-                        << it2->second.metric << " hops)" << endl;
+                        << it2->second.metric << ")" << endl;
             }
         }
     }
