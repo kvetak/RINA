@@ -112,7 +112,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
 
-    if ( !flow->isDdtFlag() && !FaiTable->findMgmtEntry(flow) ) {
+    if ( !flow->isDdtFlag() && !FaiTable->findMgmtEntryByDstAddr(flow->getDstAddr()) ) {
         EV << "Management flow is not present, thus allocating one first!" << endl;
         Flow* mgmtflow = flow->dupToMgmt();
         receiveLocalMgmtAllocateRequest(mgmtflow);
