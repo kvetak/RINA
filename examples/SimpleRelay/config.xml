@@ -4,8 +4,7 @@
         <ConnectionSet id="PingWithPreallocation">
             <!-- Allocate management flows. -->
             <SimTime t="0">
-                <Connection src="33_Layer11" dst="11_Layer11" qosReq="mgmt"/>
-                <Connection src="33_Layer11" dst="22_Layer11" qosReq="mgmt"/>
+                <Connection src="11_Layer11" dst="22_Layer11" qosReq="mgmt"/>                
             </SimTime>
             <!-- Allocate data flows. -->
             <SimTime t="10">

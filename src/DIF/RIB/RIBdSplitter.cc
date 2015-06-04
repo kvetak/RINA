@@ -31,7 +31,7 @@ void RIBdSplitter::handleMessage(cMessage *msg)
     //From CDAP
     if(strstr(msg->getArrivalGate()->getName(), GATE_CDAPIO) != NULL) {
         CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
-        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstAddr(cdapmsg->getDstAddr());
+        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
         if (tfe
                 //&& !dynamic_cast<CDAP_M_Create*>(msg)
                 && tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID

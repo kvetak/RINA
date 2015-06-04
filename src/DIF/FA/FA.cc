@@ -135,7 +135,6 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
     bool status;
-
     //Postpone allocation request until management flow is ready
     FAITableEntry* fte = FaiTable->findMgmtEntryByDstAddr(flow->getDstAddr());
     if ( flow->isDdtFlag()
@@ -147,6 +146,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     else
     {
         status = true;
+        EV << "Management flow is not ready!" << endl;
     }
 
     //Potentially wait for response from RA, after this continue with X
@@ -169,6 +169,7 @@ bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
     flow->setSrcAddr(Address(flow->getSrcApni().getApn()));
     flow->setDstAddr(Address(flow->getDstApni().getApn()));
     setNeighborAddresses(flow);
+    //flow->setSrcNeighbor(getMyAddress());
     flow->setDdtFlag(false);
 
 

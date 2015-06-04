@@ -41,6 +41,8 @@ class FAITable : public cSimpleModule
     FAITableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
     FAITableEntry* findMgmtEntry(const Flow* flow);
     FAITableEntry* findMgmtEntryByDstAddr(const Address& addr);
+    FAITableEntry* findMgmtEntryByDstNeighbor(const Address& addr);
+    FAITableEntry* findMgmtEntryByDstApni(const APN& dstApn);
     FAITableEntry* findEntryByDstAddressAndFwd(const APN& apname);
     TFAIPtrs findEntriesByDstNeighborAndFwd(const APN& apname);
     TFAIPtrs findEntriesAffectedByMgmt(const Flow* flow);

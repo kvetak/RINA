@@ -109,6 +109,17 @@ TFAIPtrs FAITable::findEntriesAffectedByMgmt(const Flow* flow) {
     return list;
 }
 
+//XXX: Vesely - This search does not yield exact intended match!
+FAITableEntry* FAITable::findMgmtEntryByDstNeighbor(const Address& addr) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstNeighbor() == addr
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
 void FAITable::handleMessage(cMessage *msg)
 {
 }
@@ -198,6 +209,16 @@ FAITableEntry* FAITable::findMgmtEntryByDstAddr(const Address& addr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getCFlow()->getDstAddr() == addr
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
+FAITableEntry* FAITable::findMgmtEntryByDstApni(const APN& dstApn) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstApni().getApn() == dstApn
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
     }
