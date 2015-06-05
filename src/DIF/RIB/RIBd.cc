@@ -637,7 +637,7 @@ void RIBd::signalizeStartOperationResponse(CDAPMessage* msg) {
 void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentRequest()");
 
-    CDAP_M_Start* msg = new CDAP_M_Start("Enrollment");
+    CDAP_M_Start* msg = new CDAP_M_Start("Start Enrollment");
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -661,7 +661,7 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentResponse()");
 
-    CDAP_M_Start_R* msg = new CDAP_M_Start_R("Enrollment");
+    CDAP_M_Start_R* msg = new CDAP_M_Start_R("Start_R Enrollment");
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -685,7 +685,7 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentRequest()");
 
-    CDAP_M_Stop* msg = new CDAP_M_Stop("Enrollment");
+    CDAP_M_Stop* msg = new CDAP_M_Stop("Stop Enrollment");
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -709,7 +709,7 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentResponse()");
 
-    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R("Enrollment");
+    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R("Stop_R Enrollment");
 
     //TODO: assign appropriate values
     std::ostringstream os;

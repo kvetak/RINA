@@ -23,7 +23,6 @@
 
 #include "RINASignals.h"
 #include "Flow.h"
-#include "CDAPMessage_m.h"
 #include "RMTQueue.h"
 #include "QueueIDGenBase.h"
 

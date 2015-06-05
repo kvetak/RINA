@@ -115,6 +115,7 @@ void Enrollment::initSignalsAndListeners() {
 }
 
 void Enrollment::startCACE(Flow* flow) {
+    Enter_Method("startCACE()");
     StateTable->insert(EnrollmentStateTableEntry(flow, EnrollmentStateTableEntry::CON_AUTHENTICATING, true));
 
     CDAP_M_Connect* msg = new CDAP_M_Connect("connect");
@@ -154,6 +155,11 @@ void Enrollment::startCACE(Flow* flow) {
 }
 
 void Enrollment::insertStateTableEntry(Flow* flow){
+    //insert only first flow created (management flow)
+    if(StateTable->findEntryByDstAPN(APN(flow->getDstAddr().getApname().getName().c_str())) != NULL) {
+        return;
+    }
+
     StateTable->insert(EnrollmentStateTableEntry(flow, EnrollmentStateTableEntry::CON_CONNECTPENDING, false));
 }
 

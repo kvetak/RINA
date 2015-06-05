@@ -54,6 +54,7 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
+    virtual bool receiveLocalMgmtAllocateRequest(Flow* flow);
     virtual bool receiveMgmtAllocateFinish();
     virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
