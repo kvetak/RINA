@@ -33,9 +33,9 @@ void RIBdSplitter::handleMessage(cMessage *msg)
         CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
         FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
         if (tfe
-                //&& !dynamic_cast<CDAP_M_Create*>(msg)
-                && tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
-                && tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
+                && !dynamic_cast<CDAP_M_Create*>(msg)
+                //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
+                //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
             ) {
             std::ostringstream ribdName;
             ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
