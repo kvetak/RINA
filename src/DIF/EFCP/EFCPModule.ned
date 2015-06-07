@@ -22,7 +22,7 @@ import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
 
 module EFCPModule
 {
-    @display("i=block/layer;bgb=305,170");
+    @display("i=block/layer;bgb=405,261");
     gates:
         //        inout faIo[];
         //        inout rmtIo[];

@@ -20,7 +20,8 @@ package rina.src.DIF.EFCP;
 //
 simple MockEFCPI
 {
-        gates:
+    @display("i=block/layer");
+    gates:
         inout northIo; //towards RIBd
         inout southIo; //towards RMT
 }
