@@ -21,6 +21,7 @@
 #include <DomainRouting/Routing.h>
 #include "QoSCube.h"
 #include "RA.h"
+#include "MultilevelQoS.h"
 
 
 #include <map>
@@ -59,6 +60,7 @@ private:
 
     QNTable neighbours;
     QoSCubeSet cubes;
+    MultilevelQoS * comparer;
 };
 
 }

@@ -30,7 +30,7 @@ module RelayAndMux
         string schedPolicyName = default("LongestQFirst");
         string qMonitorPolicyName = default("DummyMonitor");
         string maxQPolicyName = default("TailDrop");
-        string ForwardingPolicyName = default("MiniTable");
+        string ForwardingPolicyName = default("SimpleTable");
 
         int defaultMaxQLength = default(20);
         int defaultThreshQLength = default(10);

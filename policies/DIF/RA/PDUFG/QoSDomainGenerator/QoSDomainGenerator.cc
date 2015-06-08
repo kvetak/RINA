@@ -32,13 +32,13 @@ void QoSDomainGenerator::insertedFlow(const Address& addr, const QoSCube & qos, 
 
     //Iterate through all QoS cubes and check if qos is a valid
     for(QoSCube qosI : cubes) {
-        //if(qosI.validNminus(qos)){
+        if(comparer->isValid(qosI, qos)) {
             neighbours[qosI.getQosId()][dst].insert(port);
             if (neighbours[qosI.getQosId()][dst].size() == 1) {
                 rt->addFlow(addr, qosI.getQosId(), dst, 1);
                 routingUpdated();
             }
-        //}
+        }
     }
 }
 
@@ -113,6 +113,10 @@ void QoSDomainGenerator::onPolicyInit(){
     }
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+
+
+    comparer = check_and_cast<MultilevelQoS *>
+        (getModuleByPath("^.^.flowAllocator.qosComparerPolicy"));
 }
 
 }

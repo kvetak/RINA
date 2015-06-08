@@ -64,5 +64,5 @@ std::string IDPerNCU::generateOutputQueueID(PDU* pdu)
 
 std::string IDPerNCU::generateInputQueueID(PDU* pdu)
 {
-    generateOutputQueueID(pdu);
+    return generateOutputQueueID(pdu);
 }

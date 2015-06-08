@@ -17,7 +17,6 @@
 #include "APN.h"
 
 
-
 namespace StaticGenerator {
 
 Register_Class(StaticGenerator);
@@ -26,28 +25,30 @@ using namespace std;
 
 // A new flow has been inserted/or removed
 void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
-
-    fwd->insert(addr, port);
-
-    const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
-
-    if (remoteApps) {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it) {
-            fwd->insert(Address(it->getName()), port);
+    //Iterate through all QoS cubes and check if qos is a valid
+    for(QoSCube qosI : cubes) {
+        if(comparer->isValid(qosI, qos)) {
+            fwd->insert(addr, qosI.getQosId(), port);
+            const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
+            if (remoteApps) {
+                for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it) {
+                    fwd->insert(Address(it->getName()), qosI.getQosId(), port);
+                }
+            }
         }
     }
-
-    EV << "Flow inserted to " << addr << endl;
 }
 void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
-
-    fwd->remove(addr);
-
-    const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
-
-    if (remoteApps) {
-        for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
-            fwd->remove(Address(it->getName()));
+    //Iterate through all QoS cubes and check if exist an entry with qos
+    for(QoSCube qosI : cubes) {
+        if(!fwd->lookup(addr, qosI.getQosId()).empty()){
+            fwd->remove(addr, qosI.getQosId());
+            const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
+            if (remoteApps) {
+                for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
+                    fwd->remove(Address(it->getName()), qosI.getQosId());
+                }
+            }
         }
     }
 }
@@ -58,10 +59,17 @@ void StaticGenerator::routingUpdated(){}
 // Called after initialize
 void StaticGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<MiniTable::MiniTable *>
+    fwd = check_and_cast<SimpleTable::SimpleTable *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+
+
+    RABase* ResourceAllocator = check_and_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    cubes = ResourceAllocator->getQoSCubes();
+
+    comparer = check_and_cast<MultilevelQoS *>
+        (getModuleByPath("^.^.flowAllocator.qosComparerPolicy"));
 }
 
 }

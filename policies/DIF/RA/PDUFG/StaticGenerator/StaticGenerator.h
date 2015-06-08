@@ -17,7 +17,10 @@
 #define STATICGENERATOR_H_
 
 #include <IntPDUFG.h>
-#include <MiniTable/MiniTable.h>
+#include <SimpleTable.h>
+#include "MultilevelQoS/MultilevelQoS.h"
+#include "QoSCube.h"
+#include "RABase.h"
 
 namespace StaticGenerator {
 
@@ -37,7 +40,9 @@ protected:
 
 private:
     DA * difA;
-    MiniTable::MiniTable * fwd;
+    SimpleTable::SimpleTable * fwd;
+    QoSCubeSet cubes;
+    MultilevelQoS * comparer;
 };
 
 }
