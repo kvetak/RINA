@@ -111,7 +111,7 @@ void LisRIBDDelRes::receiveSignal(cComponent* src, simsignal_t id,
 
 void LisRIBDCreFloNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "CreateFlowNega initiated by " << src->getFullPath()
+    EV << "CreateFlowNegative initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
@@ -123,7 +123,7 @@ void LisRIBDCreFloNega::receiveSignal(cComponent* src, simsignal_t id,
 
 void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
-    EV << "CreateFlowNegative initiated by " << src->getFullPath()
+    EV << "CreateFlowPositive initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)

@@ -81,6 +81,7 @@ const char* GATE_NORTHIO        = "northIo";
 const char* GATE_NORTHIO_       = "northIo_";
 const char* GATE_SOUTHIO_       = "southIo_";
 const char* GATE_EFCPIO_        = "efcpIo_";
+const char* GATE_EFCPIO         = "efcpIo";
 const char* GATE_RMT_           = "rmt_";
 const char* GATE_RMTIO          = "rmtIo";
 const char* GATE_APPIO_         = "appIo_";
@@ -115,6 +116,11 @@ const char* ELEM_DELAY               = "Delay";
 const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
+const char* ELEM_RXON                = "RxOn";
+const char* ELEM_WINON               = "WinOn";
+const char* ELEM_RATEON              = "RateOn";
+const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 
 //Values

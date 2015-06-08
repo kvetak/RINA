@@ -31,15 +31,19 @@ void RIBdSplitter::handleMessage(cMessage *msg)
     //From CDAP
     if(strstr(msg->getArrivalGate()->getName(), GATE_CDAPIO) != NULL) {
         CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
-        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstAddr(cdapmsg->getDstAddr().getApname());
-        if (tfe && !dynamic_cast<CDAP_M_Create*>(msg)) {
+        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
+        if (tfe
+                && !dynamic_cast<CDAP_M_Create*>(msg)
+                //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
+                //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
+            ) {
             std::ostringstream ribdName;
             ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
             out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
         }
         else {
             EV << "Message sent out via mock EFCP instance!" << endl;
-            out = this->gateHalf("efcpIo", cGate::OUTPUT);
+            out = this->gateHalf(GATE_EFCPIO, cGate::OUTPUT);
         }
     }
     //From EFCP or RMT

@@ -13,15 +13,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DIF.EFCP;
+#ifndef __RINA_AEMYPING_H_
+#define __RINA_AEMYPING_H_
 
-//
-// TODO auto-generated module
-//
-simple MockEFCPI
+//Standard library
+#include <omnetpp.h>
+//RINASim library
+#include "AEPing.h"
+
+struct timestamps_t {
+    simtime_t t1;
+    simtime_t t2;
+    simtime_t t3;
+};
+
+class AEMyPing : public AEPing
 {
-    @display("i=block/layer");
-    gates:
-        inout northIo; //towards RIBd
-        inout southIo; //towards RMT
-}
+
+
+  protected:
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+    virtual void onStart();
+    virtual void onPing();
+    virtual void onStop();
+
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
+};
+
+#endif

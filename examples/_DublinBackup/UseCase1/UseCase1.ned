@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +13,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
+package rina.examples._DublinBackup.UseCase1;
 
-package rina.src.DIF.EFCP;
+import rina.src.CS.Host2AP;
 
-import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
 
-module EFCPModule
+//
+// TODO Auto-generated network
+//
+network UseCase1
 {
-    @display("i=block/layer;bgb=405,261");
-    gates:
-        //        inout faIo[];
-        //        inout rmtIo[];
-        inout ribd;
-        inout mockToRMT;
-
     submodules:
-        efcpTable: EFCPTable {
-            @display("p=151,44");
+        host: Host2AP {
+            @display("p=127,90");
         }
-        efcp: EFCP {
-            @display("p=52,44;i=block/circle");
-        }
-
-
-        mockEFCPI: MockEFCPI {
-            @display("p=261,44");
-        }
-    connections allowunconnected:
-        //        efcp.rmtIo <--> rmtIo++;
-        mockEFCPI.northIo <--> ribd;
-        mockEFCPI.southIo <--> mockToRMT;
-
 }

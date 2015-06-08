@@ -371,7 +371,7 @@ std::string QoSReq::info() const {
     else
         os << this->getAvgBand() << " bit/s";
 
-    os   << "\n   average SDU BW = ";
+    os   << ", average SDU BW = ";
     if (this->getAvgSduBand() < 0)
         os << STR_DONOTCARE;
     else
@@ -383,7 +383,7 @@ std::string QoSReq::info() const {
     else
         os << this->getPeakBandDuration() << " bit/s";
 
-    os << "\n   peak SDU BW duration = ";
+    os << ", peak SDU BW duration = ";
     if ( this->getPeakSduBandDuration() < 0)
         os << STR_DONOTCARE;
     else
@@ -395,7 +395,7 @@ std::string QoSReq::info() const {
     else
         os << this->getBurstPeriod() << " usecs";
 
-    os << "\n   burst duration = ";
+    os << ", burst duration = ";
     if ( this->getBurstDuration() < 0 )
         os << STR_DONOTCARE;
     else
@@ -407,7 +407,7 @@ std::string QoSReq::info() const {
     else
         os << this->getUndetectedBitErr() << "%";
 
-    os << "\n   PDU dropping probability = ";
+    os << ", PDU dropping probability = ";
     if ( this->getPduDropProbability() < 0 )
         os << STR_DONOTCARE;
     else
@@ -421,7 +421,7 @@ std::string QoSReq::info() const {
 
     os << "\n   partial delivery = " << (this->isPartialDelivery() ? STR_YES : STR_NO );
 
-    os << "\n   incomplete delivery = " << (this->isIncompleteDelivery() ? STR_YES : STR_NO );
+    os << ", incomplete delivery = " << (this->isIncompleteDelivery() ? STR_YES : STR_NO );
 
     os << "\n   force order = " << (this->isForceOrder() ? STR_YES : STR_NO );
 
@@ -437,7 +437,7 @@ std::string QoSReq::info() const {
     else
         os << this->getDelay() << " usecs";
 
-    os << "\n   jitter = ";
+    os << ", jitter = ";
     if ( this->getJitter() < 0 )
         os << STR_DONOTCARE;
     else
@@ -449,7 +449,7 @@ std::string QoSReq::info() const {
     else
         os << this->getCostTime() << " $/ms";
 
-    os << "\n   cost-bits = ";
+    os << ", cost-bits = ";
     if ( this->getCostBits() < 0 )
         os << STR_DONOTCARE;
     else

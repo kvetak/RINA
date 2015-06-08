@@ -211,7 +211,7 @@ std::string Flow::infoSource() const {
     std::stringstream os;
     os << "SRC> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << srcApni
        << "\n   address:  " << srcAddr
-       << "\n   neighbor: " << srcNeighbor
+       << ", neighbor: " << srcNeighbor
        << "\n   port: " << srcPortId
        << "\n   cep: " << conId.getSrcCepId();
     return os.str();
@@ -221,7 +221,7 @@ std::string Flow::infoDestination() const {
     std::stringstream os;
     os << "DST> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << dstApni
        << "\n   address:  " << dstAddr
-       << "\n   neighbor: " << dstNeighbor
+       << ", neighbor: " << dstNeighbor
        << "\n   port: " << dstPortId
        << "\n   cep: " << conId.getDstCepId();
     return os.str();
@@ -238,7 +238,7 @@ std::string Flow::infoOther() const {
 
 std::string Flow::infoQoS() const {
     std::stringstream os;
-    os << "Chosen RA's QoS cube>" << conId.getQoSId();
+    os << "Chosen RA's QoS cube: " << conId.getQoSId();
     if (this->isManagementFlow() && !this->isManagementFlowLocalToIPCP())
     {
         os << " (aggregated)";
