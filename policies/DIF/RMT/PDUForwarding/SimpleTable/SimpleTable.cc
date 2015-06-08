@@ -17,6 +17,8 @@ vector<RMTPort * > SimpleTable::lookup(const Address &dst, const std::string&qos
     vector<RMTPort* > ret;
     string dstAddr = dst.getIpcAddress().getName();
     qos2Port * t = &table[dstAddr];
+    if(t->empty()){ return ret; }
+
     if(t->find(qos) != t->end()){
         ret.push_back((*t)[qos]);
     } else if (!qos.compare(VAL_MGMTQOSID) && t->size() > 0){

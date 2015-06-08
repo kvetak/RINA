@@ -64,6 +64,7 @@ void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std
     } else if(entryChangedDst){
         changes.insert(entries2NextItem(qosPaddr(qos, dst),dst));
     }
+    scheduleUpdate();
 }
 void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std::string& qos){
     neig[qos].erase(addr);
@@ -83,6 +84,7 @@ void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std
             qosTable->erase(actIt);
         }
     }
+    scheduleUpdate();
 }
 
 //Get Changes

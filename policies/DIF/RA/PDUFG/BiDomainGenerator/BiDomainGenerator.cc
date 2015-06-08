@@ -27,6 +27,7 @@ using namespace std;
 
 // A new flow has been inserted/or removed
 void BiDomainGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
+
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].insert(port);
     if(neighbours[dst].size() == 1){
@@ -65,6 +66,7 @@ void BiDomainGenerator::routingUpdated(){
     DMRnms::dmUpdateM changes = rt->getChanges();
     for(DMRnms::dmUpdateMIt it = changes.begin(); it!= changes.end(); it++){
         for(DMRnms::s2AIt eIt = it->entries.begin(); eIt != it->entries.end(); eIt++){
+
             std::string dst = eIt->first;
             std::string nextHop = eIt->second.getIpcAddress().getName();
 
@@ -81,6 +83,7 @@ void BiDomainGenerator::routingUpdated(){
             } else {
                 fwd->insert(it->domain, dst, p);
             }
+
         }
     }
 }
