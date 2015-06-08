@@ -705,7 +705,10 @@ void DTCP::schedule(DTCPTimers* timer, double time){
       //TODO B1 (RTT + A + epsilon)
 //      double aTime = dtp->state->getQoSCube()->getATime();
 //      double rtt = dtp->state->getRtt();
-      scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
+      if(dynamic_cast<RTTEstimatorPolicyTCP*>(dtp->rttEstimatorPolicy)) {
+          scheduleAt(simTime() + ((RTTEstimatorPolicyTCP*)dtp->rttEstimatorPolicy)->RTO * 2, rxExpTimer);
+      } else
+          scheduleAt(simTime() + dtp->state->getRtt() + (double)dtp->state->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON, rxExpTimer);
       break;
     }
     case(DTCP_SENDING_RATE_TIMER):{

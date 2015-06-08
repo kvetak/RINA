@@ -54,6 +54,8 @@
 #include "DTCPECNSlowDownPolicyBase.h"
 #include "RxTimerExpiryPolicyBase.h"
 
+#include "RTTEstimatorPolicyTCP.h"
+
 class DTP;
 
 class DTCP: public cSimpleModule {
