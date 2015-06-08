@@ -401,7 +401,8 @@ void FA::initSignalsAndListeners() {
 
     //Allocate after management flow is prepared (enrollment done)
     lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
-    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
+    catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
+    //catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
 
 }
 
