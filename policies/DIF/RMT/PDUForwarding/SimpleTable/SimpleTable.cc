@@ -63,7 +63,9 @@ void SimpleTable::remove(const string &addr, const std::string&qos){
 void SimpleTable::onPolicyInit(){}
 
 void SimpleTable::finish(){
- //   EV << toString() <<endl;
+    if(par("printAtEnd").boolValue()){
+        EV << toString() <<endl;
+    }
 }
 
 }

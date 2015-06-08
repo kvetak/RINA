@@ -85,6 +85,7 @@ bool MinComparer::run(Flow& flow) {
     //Always translate management traffic to appropriate management QoSCube
     if (flow.isManagementFlow()) {
         flow.getConnectionId().setQoSId(VAL_MGMTQOSID);
+        flow.setQosCube(QoSCube::MANAGEMENT);
         return true;
     }
 
