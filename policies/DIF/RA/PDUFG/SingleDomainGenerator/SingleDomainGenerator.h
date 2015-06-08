@@ -17,7 +17,7 @@
 #define SingleDomainGenerator_H_
 
 #include <IntPDUFG.h>
-#include <MiniTable/MiniTable.h>
+#include <IntMiniForwarding.h>
 #include <DomainRouting/Routing.h>
 
 #include <map>
@@ -47,7 +47,7 @@ protected:
 
 private:
     DA * difA;
-    MiniTable::MiniTable * fwd;
+    IntMiniForwarding * fwd;
     DMRnms::Routing * rt;
 
     NTable neighbours;

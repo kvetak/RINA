@@ -71,7 +71,7 @@ void SingleDomainGenerator::routingUpdated(){
 // Called after initialize
 void SingleDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<MiniTable::MiniTable *>
+    fwd = check_and_cast<IntMiniForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
 
     rt = check_and_cast<DMRnms::Routing *>

@@ -37,6 +37,10 @@ void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
             }
         }
     }
+
+    if(qos.getQosId() == VAL_UNDEF_QOSID) {
+        error("Undef QoS");
+    }
 }
 void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
     //Iterate through all QoS cubes and check if exist an entry with qos

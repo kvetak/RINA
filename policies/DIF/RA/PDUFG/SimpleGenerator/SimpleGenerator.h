@@ -17,7 +17,7 @@
 #define SimpleGenerator_H_
 
 #include <IntPDUFG.h>
-#include <MiniTable/MiniTable.h>
+#include <IntMiniForwarding.h>
 #include <SimpleRouting/IntSimpleRouting.h>
 
 #include <map>
@@ -47,7 +47,7 @@ protected:
 
 private:
     DA * difA;
-    MiniTable::MiniTable * fwd;
+    IntMiniForwarding * fwd;
     IntSimpleRouting * rt;
 
     NTable neighbours;
