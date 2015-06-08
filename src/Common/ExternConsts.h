@@ -113,6 +113,12 @@ extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
 
+extern const char* ELEM_ATIME;
+extern const char* ELEM_RXON;
+extern const char* ELEM_WINON;
+extern const char* ELEM_RATEON;
+extern const char* ELEM_EFCPPOL;
+
 //Values
 extern const int    VAL_QOSPARDONOTCARE;
 extern const bool   VAL_QOSPARDEFBOOL;

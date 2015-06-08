@@ -111,6 +111,11 @@ const char* ELEM_DELAY               = "Delay";
 const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
+const char* ELEM_RXON                = "RxOn";
+const char* ELEM_WINON               = "WinOn";
+const char* ELEM_RATEON              = "RateOn";
+const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 
 //Values

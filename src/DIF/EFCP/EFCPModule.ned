@@ -31,7 +31,7 @@ module EFCPModule
 
     submodules:
         efcpTable: EFCPTable {
-            @display("p=175,44");
+            @display("p=151,44");
         }
         efcp: EFCP {
             @display("p=52,44;i=block/circle");
