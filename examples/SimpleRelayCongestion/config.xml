@@ -161,7 +161,7 @@
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
 			<ATime>0</ATime>	
-			<RxOn>1</RxOn>
+			<RxOn>0</RxOn>
 			<WinOn>1</WinOn>
 			<RateOn>0</RateOn>
 		</QoSCube>		

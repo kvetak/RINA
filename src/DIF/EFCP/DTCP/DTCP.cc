@@ -863,7 +863,7 @@ void DTCP::setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit)
 
 void DTCP::redrawGUI()
 {
-    return;
+//    return;
   Enter_Method_Silent();
   if (!ev.isGUI())
   {
