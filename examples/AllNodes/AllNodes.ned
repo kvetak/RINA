@@ -15,6 +15,7 @@
 
 package rina.examples.AllNodes;
 
+import ned.DelayChannel;
 import rina.src.CS.BorderRouter;
 import rina.src.CS.Host1AP;
 import rina.src.CS.InteriorRouterNInt;
@@ -49,10 +50,10 @@ network AllNodes
             @display("p=251,143");
         }
     connections:
-        HostA1.medium <--> BorderRouterA.medium[0];
-        HostA2.medium <--> BorderRouterA.medium[1];
-        BorderRouterA.medium[2] <--> InteriorRouter.medium++;
-        BorderRouterB.medium[2] <--> InteriorRouter.medium++;
-        HostB1.medium <--> BorderRouterB.medium[0];
-        HostB2.medium <--> BorderRouterB.medium[1];
+        HostA1.medium <--> DelayChannel{delay=1us;} <--> BorderRouterA.medium[0];
+        HostA2.medium <--> DelayChannel{delay=1us;} <--> BorderRouterA.medium[1];
+        BorderRouterA.medium[2] <--> DelayChannel{delay=1us;} <--> InteriorRouter.medium++;
+        BorderRouterB.medium[2] <--> DelayChannel{delay=1us;} <--> InteriorRouter.medium++;
+        HostB1.medium <--> DelayChannel{delay=1us;} <--> BorderRouterB.medium[0];
+        HostB2.medium <--> DelayChannel{delay=1us;} <--> BorderRouterB.medium[1];
 }

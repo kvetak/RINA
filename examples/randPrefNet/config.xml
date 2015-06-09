@@ -2,190 +2,194 @@
 <Configuration>
   <ConnectionSets>
     <ConnectionSet id="all">
-      <SimTime t="0">
-        <Connection src="1.1_Cloud" dst="1.9_Cloud" qosCube="1"/>
-        <Connection src="1.2_Cloud" dst="1.3_Cloud" qosCube="1"/>
-        <Connection src="1.2_Cloud" dst="1.4_Cloud" qosCube="1"/>
-        <Connection src="1.2_Cloud" dst="1.6_Cloud" qosCube="1"/>
-        <Connection src="1.2_Cloud" dst="1.7_Cloud" qosCube="1"/>
-        <Connection src="1.2_Cloud" dst="1.8_Cloud" qosCube="1"/>
-        <Connection src="1.3_Cloud" dst="1.4_Cloud" qosCube="1"/>
-        <Connection src="1.3_Cloud" dst="1.8_Cloud" qosCube="1"/>
-        <Connection src="1.3_Cloud" dst="1.9_Cloud" qosCube="1"/>
-        <Connection src="1.3_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="1.3_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="1.4_Cloud" dst="1.5_Cloud" qosCube="1"/>
-        <Connection src="1.5_Cloud" dst="1.7_Cloud" qosCube="1"/>
-        <Connection src="1.6_Cloud" dst="1.9_Cloud" qosCube="1"/>
-        <Connection src="1.7_Cloud" dst="1.8_Cloud" qosCube="1"/>
-        <Connection src="1.9_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="2.1_Cloud" dst="2.3_Cloud" qosCube="1"/>
-        <Connection src="2.1_Cloud" dst="2.5_Cloud" qosCube="1"/>
-        <Connection src="2.1_Cloud" dst="2.7_Cloud" qosCube="1"/>
-        <Connection src="2.1_Cloud" dst="2.8_Cloud" qosCube="1"/>
-        <Connection src="2.2_Cloud" dst="2.5_Cloud" qosCube="1"/>
-        <Connection src="2.2_Cloud" dst="2.b_Cloud" qosCube="1"/>
-        <Connection src="2.3_Cloud" dst="2.6_Cloud" qosCube="1"/>
-        <Connection src="2.3_Cloud" dst="2.9_Cloud" qosCube="1"/>
-        <Connection src="2.4_Cloud" dst="2.6_Cloud" qosCube="1"/>
-        <Connection src="2.4_Cloud" dst="2.8_Cloud" qosCube="1"/>
-        <Connection src="2.5_Cloud" dst="2.6_Cloud" qosCube="1"/>
-        <Connection src="2.5_Cloud" dst="2.b_Cloud" qosCube="1"/>
-        <Connection src="2.6_Cloud" dst="2.a_Cloud" qosCube="1"/>
-        <Connection src="2.7_Cloud" dst="2.9_Cloud" qosCube="1"/>
-        <Connection src="2.8_Cloud" dst="5.b_Cloud" qosCube="1"/>
-        <Connection src="2.9_Cloud" dst="2.b_Cloud" qosCube="1"/>
-        <Connection src="2.a_Cloud" dst="2.b_Cloud" qosCube="1"/>
-        <Connection src="2.b_Cloud" dst="5.1_Cloud" qosCube="1"/>
-        <Connection src="2.b_Cloud" dst="5.8_Cloud" qosCube="1"/>
-        <Connection src="3.1_Cloud" dst="3.2_Cloud" qosCube="1"/>
-        <Connection src="3.1_Cloud" dst="3.6_Cloud" qosCube="1"/>
-        <Connection src="3.2_Cloud" dst="3.6_Cloud" qosCube="1"/>
-        <Connection src="3.2_Cloud" dst="3.8_Cloud" qosCube="1"/>
-        <Connection src="3.2_Cloud" dst="3.9_Cloud" qosCube="1"/>
-        <Connection src="3.2_Cloud" dst="3.a_Cloud" qosCube="1"/>
-        <Connection src="3.3_Cloud" dst="3.a_Cloud" qosCube="1"/>
-        <Connection src="3.4_Cloud" dst="3.5_Cloud" qosCube="1"/>
-        <Connection src="3.4_Cloud" dst="3.7_Cloud" qosCube="1"/>
-        <Connection src="3.4_Cloud" dst="3.9_Cloud" qosCube="1"/>
-        <Connection src="3.5_Cloud" dst="3.7_Cloud" qosCube="1"/>
-        <Connection src="3.5_Cloud" dst="3.a_Cloud" qosCube="1"/>
-        <Connection src="3.5_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="3.5_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="3.6_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="3.6_Cloud" dst="7.8_Cloud" qosCube="1"/>
-        <Connection src="3.6_Cloud" dst="9.6_Cloud" qosCube="1"/>
-        <Connection src="3.7_Cloud" dst="3.8_Cloud" qosCube="1"/>
-        <Connection src="3.8_Cloud" dst="3.9_Cloud" qosCube="1"/>
-        <Connection src="3.9_Cloud" dst="3.a_Cloud" qosCube="1"/>
-        <Connection src="4.1_Cloud" dst="4.2_Cloud" qosCube="1"/>
-        <Connection src="4.1_Cloud" dst="4.4_Cloud" qosCube="1"/>
-        <Connection src="4.1_Cloud" dst="4.8_Cloud" qosCube="1"/>
-        <Connection src="4.2_Cloud" dst="4.3_Cloud" qosCube="1"/>
-        <Connection src="4.2_Cloud" dst="4.5_Cloud" qosCube="1"/>
-        <Connection src="4.2_Cloud" dst="4.8_Cloud" qosCube="1"/>
-        <Connection src="4.3_Cloud" dst="4.5_Cloud" qosCube="1"/>
-        <Connection src="4.3_Cloud" dst="4.6_Cloud" qosCube="1"/>
-        <Connection src="4.4_Cloud" dst="4.5_Cloud" qosCube="1"/>
-        <Connection src="4.4_Cloud" dst="4.7_Cloud" qosCube="1"/>
-        <Connection src="4.4_Cloud" dst="5.b_Cloud" qosCube="1"/>
-        <Connection src="4.4_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="4.4_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="4.5_Cloud" dst="4.7_Cloud" qosCube="1"/>
-        <Connection src="4.7_Cloud" dst="4.8_Cloud" qosCube="1"/>
-        <Connection src="4.7_Cloud" dst="5.b_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="5.3_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="5.4_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="5.7_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="8.8_Cloud" qosCube="1"/>
-        <Connection src="5.1_Cloud" dst="9.6_Cloud" qosCube="1"/>
-        <Connection src="5.2_Cloud" dst="5.3_Cloud" qosCube="1"/>
-        <Connection src="5.2_Cloud" dst="5.4_Cloud" qosCube="1"/>
-        <Connection src="5.2_Cloud" dst="5.6_Cloud" qosCube="1"/>
-        <Connection src="5.2_Cloud" dst="5.7_Cloud" qosCube="1"/>
-        <Connection src="5.2_Cloud" dst="5.b_Cloud" qosCube="1"/>
-        <Connection src="5.3_Cloud" dst="5.5_Cloud" qosCube="1"/>
-        <Connection src="5.3_Cloud" dst="5.9_Cloud" qosCube="1"/>
-        <Connection src="5.4_Cloud" dst="5.6_Cloud" qosCube="1"/>
-        <Connection src="5.4_Cloud" dst="5.9_Cloud" qosCube="1"/>
-        <Connection src="5.6_Cloud" dst="5.7_Cloud" qosCube="1"/>
-        <Connection src="5.6_Cloud" dst="5.8_Cloud" qosCube="1"/>
-        <Connection src="5.7_Cloud" dst="5.a_Cloud" qosCube="1"/>
-        <Connection src="5.8_Cloud" dst="5.a_Cloud" qosCube="1"/>
-        <Connection src="5.8_Cloud" dst="8.8_Cloud" qosCube="1"/>
-        <Connection src="5.8_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="5.b_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="5.b_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="5.b_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="6.1_Cloud" dst="6.6_Cloud" qosCube="1"/>
-        <Connection src="6.1_Cloud" dst="6.8_Cloud" qosCube="1"/>
-        <Connection src="6.2_Cloud" dst="6.6_Cloud" qosCube="1"/>
-        <Connection src="6.2_Cloud" dst="6.9_Cloud" qosCube="1"/>
-        <Connection src="6.3_Cloud" dst="6.4_Cloud" qosCube="1"/>
-        <Connection src="6.3_Cloud" dst="6.5_Cloud" qosCube="1"/>
-        <Connection src="6.3_Cloud" dst="6.6_Cloud" qosCube="1"/>
-        <Connection src="6.3_Cloud" dst="6.9_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="6.6_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="6.7_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="7.2_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="7.8_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="a.2_Cloud" qosCube="1"/>
-        <Connection src="6.4_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="6.5_Cloud" dst="6.8_Cloud" qosCube="1"/>
-        <Connection src="6.6_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="6.8_Cloud" dst="6.a_Cloud" qosCube="1"/>
-        <Connection src="6.9_Cloud" dst="6.a_Cloud" qosCube="1"/>
-        <Connection src="6.9_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="6.a_Cloud" dst="6.b_Cloud" qosCube="1"/>
-        <Connection src="6.b_Cloud" dst="8.5_Cloud" qosCube="1"/>
-        <Connection src="6.b_Cloud" dst="8.8_Cloud" qosCube="1"/>
-        <Connection src="6.b_Cloud" dst="8.a_Cloud" qosCube="1"/>
-        <Connection src="6.b_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="7.1_Cloud" dst="7.2_Cloud" qosCube="1"/>
-        <Connection src="7.1_Cloud" dst="7.3_Cloud" qosCube="1"/>
-        <Connection src="7.1_Cloud" dst="7.4_Cloud" qosCube="1"/>
-        <Connection src="7.1_Cloud" dst="7.5_Cloud" qosCube="1"/>
-        <Connection src="7.1_Cloud" dst="7.8_Cloud" qosCube="1"/>
-        <Connection src="7.2_Cloud" dst="7.5_Cloud" qosCube="1"/>
-        <Connection src="7.2_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="7.2_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="7.3_Cloud" dst="7.6_Cloud" qosCube="1"/>
-        <Connection src="7.4_Cloud" dst="7.5_Cloud" qosCube="1"/>
-        <Connection src="7.5_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="7.5_Cloud" dst="7.8_Cloud" qosCube="1"/>
-        <Connection src="7.6_Cloud" dst="7.7_Cloud" qosCube="1"/>
-        <Connection src="7.7_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="7.8_Cloud" dst="8.5_Cloud" qosCube="1"/>
-        <Connection src="7.8_Cloud" dst="8.a_Cloud" qosCube="1"/>
-        <Connection src="7.8_Cloud" dst="9.3_Cloud" qosCube="1"/>
-        <Connection src="8.1_Cloud" dst="8.4_Cloud" qosCube="1"/>
-        <Connection src="8.1_Cloud" dst="8.7_Cloud" qosCube="1"/>
-        <Connection src="8.1_Cloud" dst="8.8_Cloud" qosCube="1"/>
-        <Connection src="8.1_Cloud" dst="8.b_Cloud" qosCube="1"/>
-        <Connection src="8.2_Cloud" dst="8.5_Cloud" qosCube="1"/>
-        <Connection src="8.2_Cloud" dst="8.9_Cloud" qosCube="1"/>
-        <Connection src="8.3_Cloud" dst="8.7_Cloud" qosCube="1"/>
-        <Connection src="8.3_Cloud" dst="8.9_Cloud" qosCube="1"/>
-        <Connection src="8.4_Cloud" dst="8.8_Cloud" qosCube="1"/>
-        <Connection src="8.5_Cloud" dst="8.7_Cloud" qosCube="1"/>
-        <Connection src="8.5_Cloud" dst="8.9_Cloud" qosCube="1"/>
-        <Connection src="8.6_Cloud" dst="8.7_Cloud" qosCube="1"/>
-        <Connection src="8.6_Cloud" dst="8.9_Cloud" qosCube="1"/>
-        <Connection src="8.7_Cloud" dst="8.a_Cloud" qosCube="1"/>
-        <Connection src="8.7_Cloud" dst="8.b_Cloud" qosCube="1"/>
-        <Connection src="8.a_Cloud" dst="8.b_Cloud" qosCube="1"/>
-        <Connection src="9.1_Cloud" dst="9.2_Cloud" qosCube="1"/>
-        <Connection src="9.2_Cloud" dst="9.3_Cloud" qosCube="1"/>
-        <Connection src="9.2_Cloud" dst="9.6_Cloud" qosCube="1"/>
-        <Connection src="9.3_Cloud" dst="9.6_Cloud" qosCube="1"/>
-        <Connection src="9.3_Cloud" dst="9.9_Cloud" qosCube="1"/>
-        <Connection src="9.3_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="9.4_Cloud" dst="9.5_Cloud" qosCube="1"/>
-        <Connection src="9.4_Cloud" dst="9.7_Cloud" qosCube="1"/>
-        <Connection src="9.4_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="9.5_Cloud" dst="9.6_Cloud" qosCube="1"/>
-        <Connection src="9.5_Cloud" dst="9.7_Cloud" qosCube="1"/>
-        <Connection src="9.6_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="9.6_Cloud" dst="9.9_Cloud" qosCube="1"/>
-        <Connection src="9.6_Cloud" dst="a.2_Cloud" qosCube="1"/>
-        <Connection src="9.7_Cloud" dst="9.8_Cloud" qosCube="1"/>
-        <Connection src="9.8_Cloud" dst="a.2_Cloud" qosCube="1"/>
-        <Connection src="a.1_Cloud" dst="a.6_Cloud" qosCube="1"/>
-        <Connection src="a.1_Cloud" dst="a.7_Cloud" qosCube="1"/>
-        <Connection src="a.2_Cloud" dst="a.7_Cloud" qosCube="1"/>
-        <Connection src="a.2_Cloud" dst="a.8_Cloud" qosCube="1"/>
-        <Connection src="a.2_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="a.3_Cloud" dst="a.5_Cloud" qosCube="1"/>
-        <Connection src="a.3_Cloud" dst="a.6_Cloud" qosCube="1"/>
-        <Connection src="a.3_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="a.4_Cloud" dst="a.6_Cloud" qosCube="1"/>
-        <Connection src="a.5_Cloud" dst="a.6_Cloud" qosCube="1"/>
-        <Connection src="a.5_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="a.6_Cloud" dst="a.9_Cloud" qosCube="1"/>
-        <Connection src="a.7_Cloud" dst="a.9_Cloud" qosCube="1"/>
+      <SimTime t="1">
+        <Connection src="1.1_Cloud" dst="1.9_Cloud" qosReq="mgmt"/>
+        <Connection src="1.2_Cloud" dst="1.3_Cloud" qosReq="mgmt"/>
+        <Connection src="1.2_Cloud" dst="1.4_Cloud" qosReq="mgmt"/>
+        <Connection src="1.2_Cloud" dst="1.6_Cloud" qosReq="mgmt"/>
+        <Connection src="1.2_Cloud" dst="1.7_Cloud" qosReq="mgmt"/>
+        <Connection src="1.2_Cloud" dst="1.8_Cloud" qosReq="mgmt"/>
+        <Connection src="1.3_Cloud" dst="1.4_Cloud" qosReq="mgmt"/>
+        <Connection src="1.3_Cloud" dst="1.8_Cloud" qosReq="mgmt"/>
+        <Connection src="1.3_Cloud" dst="1.9_Cloud" qosReq="mgmt"/>
+        <Connection src="1.3_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="1.3_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="1.4_Cloud" dst="1.5_Cloud" qosReq="mgmt"/>
+        <Connection src="1.5_Cloud" dst="1.7_Cloud" qosReq="mgmt"/>
+        <Connection src="1.6_Cloud" dst="1.9_Cloud" qosReq="mgmt"/>
+        <Connection src="1.7_Cloud" dst="1.8_Cloud" qosReq="mgmt"/>
+        <Connection src="1.9_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="2.1_Cloud" dst="2.3_Cloud" qosReq="mgmt"/>
+        <Connection src="2.1_Cloud" dst="2.5_Cloud" qosReq="mgmt"/>
+        <Connection src="2.1_Cloud" dst="2.7_Cloud" qosReq="mgmt"/>
+        <Connection src="2.1_Cloud" dst="2.8_Cloud" qosReq="mgmt"/>
+        <Connection src="2.2_Cloud" dst="2.5_Cloud" qosReq="mgmt"/>
+        <Connection src="2.2_Cloud" dst="2.b_Cloud" qosReq="mgmt"/>
+        <Connection src="2.3_Cloud" dst="2.6_Cloud" qosReq="mgmt"/>
+        <Connection src="2.3_Cloud" dst="2.9_Cloud" qosReq="mgmt"/>
+        <Connection src="2.4_Cloud" dst="2.6_Cloud" qosReq="mgmt"/>
+        <Connection src="2.4_Cloud" dst="2.8_Cloud" qosReq="mgmt"/>
+        <Connection src="2.5_Cloud" dst="2.6_Cloud" qosReq="mgmt"/>
+        <Connection src="2.5_Cloud" dst="2.b_Cloud" qosReq="mgmt"/>
+        <Connection src="2.6_Cloud" dst="2.a_Cloud" qosReq="mgmt"/>
+        <Connection src="2.7_Cloud" dst="2.9_Cloud" qosReq="mgmt"/>
+        <Connection src="2.8_Cloud" dst="5.b_Cloud" qosReq="mgmt"/>
+        <Connection src="2.9_Cloud" dst="2.b_Cloud" qosReq="mgmt"/>
+        <Connection src="2.a_Cloud" dst="2.b_Cloud" qosReq="mgmt"/>
+        <Connection src="2.b_Cloud" dst="5.1_Cloud" qosReq="mgmt"/>
+        <Connection src="2.b_Cloud" dst="5.8_Cloud" qosReq="mgmt"/>
+        <Connection src="3.1_Cloud" dst="3.2_Cloud" qosReq="mgmt"/>
+        <Connection src="3.1_Cloud" dst="3.6_Cloud" qosReq="mgmt"/>
+        <Connection src="3.2_Cloud" dst="3.6_Cloud" qosReq="mgmt"/>
+        <Connection src="3.2_Cloud" dst="3.8_Cloud" qosReq="mgmt"/>
+        <Connection src="3.2_Cloud" dst="3.9_Cloud" qosReq="mgmt"/>
+        <Connection src="3.2_Cloud" dst="3.a_Cloud" qosReq="mgmt"/>
+        <Connection src="3.3_Cloud" dst="3.a_Cloud" qosReq="mgmt"/>
+        <Connection src="3.4_Cloud" dst="3.5_Cloud" qosReq="mgmt"/>
+        <Connection src="3.4_Cloud" dst="3.7_Cloud" qosReq="mgmt"/>
+        <Connection src="3.4_Cloud" dst="3.9_Cloud" qosReq="mgmt"/>
+        <Connection src="3.5_Cloud" dst="3.7_Cloud" qosReq="mgmt"/>
+        <Connection src="3.5_Cloud" dst="3.a_Cloud" qosReq="mgmt"/>
+        <Connection src="3.5_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+        <Connection src="3.5_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="3.6_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+        <Connection src="3.6_Cloud" dst="7.8_Cloud" qosReq="mgmt"/>
+        <Connection src="3.6_Cloud" dst="9.6_Cloud" qosReq="mgmt"/>
+        <Connection src="3.7_Cloud" dst="3.8_Cloud" qosReq="mgmt"/>
+        <Connection src="3.8_Cloud" dst="3.9_Cloud" qosReq="mgmt"/>
+        <Connection src="3.9_Cloud" dst="3.a_Cloud" qosReq="mgmt"/>
+        <Connection src="4.1_Cloud" dst="4.2_Cloud" qosReq="mgmt"/>
+        <Connection src="4.1_Cloud" dst="4.4_Cloud" qosReq="mgmt"/>
+        <Connection src="4.1_Cloud" dst="4.8_Cloud" qosReq="mgmt"/>
+        <Connection src="4.2_Cloud" dst="4.3_Cloud" qosReq="mgmt"/>
+        <Connection src="4.2_Cloud" dst="4.5_Cloud" qosReq="mgmt"/>
+        <Connection src="4.2_Cloud" dst="4.8_Cloud" qosReq="mgmt"/>
+        <Connection src="4.3_Cloud" dst="4.5_Cloud" qosReq="mgmt"/>
+        <Connection src="4.3_Cloud" dst="4.6_Cloud" qosReq="mgmt"/>
+        <Connection src="4.4_Cloud" dst="4.5_Cloud" qosReq="mgmt"/>
+        <Connection src="4.4_Cloud" dst="4.7_Cloud" qosReq="mgmt"/>
+        <Connection src="4.4_Cloud" dst="5.b_Cloud" qosReq="mgmt"/>
+        <Connection src="4.4_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="4.4_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="4.5_Cloud" dst="4.7_Cloud" qosReq="mgmt"/>
+        <Connection src="4.7_Cloud" dst="4.8_Cloud" qosReq="mgmt"/>
+        <Connection src="4.7_Cloud" dst="5.b_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="5.3_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="5.4_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="5.7_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="8.8_Cloud" qosReq="mgmt"/>
+        <Connection src="5.1_Cloud" dst="9.6_Cloud" qosReq="mgmt"/>
+        <Connection src="5.2_Cloud" dst="5.3_Cloud" qosReq="mgmt"/>
+        <Connection src="5.2_Cloud" dst="5.4_Cloud" qosReq="mgmt"/>
+        <Connection src="5.2_Cloud" dst="5.6_Cloud" qosReq="mgmt"/>
+        <Connection src="5.2_Cloud" dst="5.7_Cloud" qosReq="mgmt"/>
+        <Connection src="5.2_Cloud" dst="5.b_Cloud" qosReq="mgmt"/>
+        <Connection src="5.3_Cloud" dst="5.5_Cloud" qosReq="mgmt"/>
+        <Connection src="5.3_Cloud" dst="5.9_Cloud" qosReq="mgmt"/>
+        <Connection src="5.4_Cloud" dst="5.6_Cloud" qosReq="mgmt"/>
+        <Connection src="5.4_Cloud" dst="5.9_Cloud" qosReq="mgmt"/>
+        <Connection src="5.6_Cloud" dst="5.7_Cloud" qosReq="mgmt"/>
+        <Connection src="5.6_Cloud" dst="5.8_Cloud" qosReq="mgmt"/>
+        <Connection src="5.7_Cloud" dst="5.a_Cloud" qosReq="mgmt"/>
+        <Connection src="5.8_Cloud" dst="5.a_Cloud" qosReq="mgmt"/>
+        <Connection src="5.8_Cloud" dst="8.8_Cloud" qosReq="mgmt"/>
+        <Connection src="5.8_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="5.b_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="5.b_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="5.b_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="6.1_Cloud" dst="6.6_Cloud" qosReq="mgmt"/>
+        <Connection src="6.1_Cloud" dst="6.8_Cloud" qosReq="mgmt"/>
+        <Connection src="6.2_Cloud" dst="6.6_Cloud" qosReq="mgmt"/>
+        <Connection src="6.2_Cloud" dst="6.9_Cloud" qosReq="mgmt"/>
+        <Connection src="6.3_Cloud" dst="6.4_Cloud" qosReq="mgmt"/>
+        <Connection src="6.3_Cloud" dst="6.5_Cloud" qosReq="mgmt"/>
+        <Connection src="6.3_Cloud" dst="6.6_Cloud" qosReq="mgmt"/>
+        <Connection src="6.3_Cloud" dst="6.9_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="6.6_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="6.7_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="7.2_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="7.8_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="a.2_Cloud" qosReq="mgmt"/>
+        <Connection src="6.4_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="6.5_Cloud" dst="6.8_Cloud" qosReq="mgmt"/>
+        <Connection src="6.6_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="6.8_Cloud" dst="6.a_Cloud" qosReq="mgmt"/>
+        <Connection src="6.9_Cloud" dst="6.a_Cloud" qosReq="mgmt"/>
+        <Connection src="6.9_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="6.a_Cloud" dst="6.b_Cloud" qosReq="mgmt"/>
+        <Connection src="6.b_Cloud" dst="8.5_Cloud" qosReq="mgmt"/>
+        <Connection src="6.b_Cloud" dst="8.8_Cloud" qosReq="mgmt"/>
+        <Connection src="6.b_Cloud" dst="8.a_Cloud" qosReq="mgmt"/>
+        <Connection src="6.b_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="7.1_Cloud" dst="7.2_Cloud" qosReq="mgmt"/>
+        <Connection src="7.1_Cloud" dst="7.3_Cloud" qosReq="mgmt"/>
+        <Connection src="7.1_Cloud" dst="7.4_Cloud" qosReq="mgmt"/>
+        <Connection src="7.1_Cloud" dst="7.5_Cloud" qosReq="mgmt"/>
+        <Connection src="7.1_Cloud" dst="7.8_Cloud" qosReq="mgmt"/>
+        <Connection src="7.2_Cloud" dst="7.5_Cloud" qosReq="mgmt"/>
+        <Connection src="7.2_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="7.3_Cloud" dst="7.6_Cloud" qosReq="mgmt"/>
+        <Connection src="7.4_Cloud" dst="7.5_Cloud" qosReq="mgmt"/>
+        <Connection src="7.5_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+        <Connection src="7.5_Cloud" dst="7.8_Cloud" qosReq="mgmt"/>
+        <Connection src="7.6_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+        <Connection src="7.7_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="7.8_Cloud" dst="8.5_Cloud" qosReq="mgmt"/>
+        <Connection src="7.8_Cloud" dst="8.a_Cloud" qosReq="mgmt"/>
+        <Connection src="7.8_Cloud" dst="9.3_Cloud" qosReq="mgmt"/>
+        <Connection src="8.1_Cloud" dst="8.4_Cloud" qosReq="mgmt"/>
+        <Connection src="8.1_Cloud" dst="8.7_Cloud" qosReq="mgmt"/>
+        <Connection src="8.1_Cloud" dst="8.8_Cloud" qosReq="mgmt"/>
+        <Connection src="8.1_Cloud" dst="8.b_Cloud" qosReq="mgmt"/>
+        <Connection src="8.2_Cloud" dst="8.5_Cloud" qosReq="mgmt"/>
+        <Connection src="8.2_Cloud" dst="8.9_Cloud" qosReq="mgmt"/>
+        <Connection src="8.3_Cloud" dst="8.7_Cloud" qosReq="mgmt"/>
+        <Connection src="8.3_Cloud" dst="8.9_Cloud" qosReq="mgmt"/>
+        <Connection src="8.4_Cloud" dst="8.8_Cloud" qosReq="mgmt"/>
+        <Connection src="8.5_Cloud" dst="8.7_Cloud" qosReq="mgmt"/>
+        <Connection src="8.5_Cloud" dst="8.9_Cloud" qosReq="mgmt"/>
+        <Connection src="8.6_Cloud" dst="8.7_Cloud" qosReq="mgmt"/>
+        <Connection src="8.6_Cloud" dst="8.9_Cloud" qosReq="mgmt"/>
+        <Connection src="8.7_Cloud" dst="8.a_Cloud" qosReq="mgmt"/>
+        <Connection src="8.7_Cloud" dst="8.b_Cloud" qosReq="mgmt"/>
+        <Connection src="8.a_Cloud" dst="8.b_Cloud" qosReq="mgmt"/>
+        <Connection src="9.1_Cloud" dst="9.2_Cloud" qosReq="mgmt"/>
+        <Connection src="9.2_Cloud" dst="9.3_Cloud" qosReq="mgmt"/>
+        <Connection src="9.2_Cloud" dst="9.6_Cloud" qosReq="mgmt"/>
+        <Connection src="9.3_Cloud" dst="9.6_Cloud" qosReq="mgmt"/>
+        <Connection src="9.3_Cloud" dst="9.9_Cloud" qosReq="mgmt"/>
+        <Connection src="9.3_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="9.4_Cloud" dst="9.5_Cloud" qosReq="mgmt"/>
+        <Connection src="9.4_Cloud" dst="9.7_Cloud" qosReq="mgmt"/>
+        <Connection src="9.4_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="9.5_Cloud" dst="9.6_Cloud" qosReq="mgmt"/>
+        <Connection src="9.5_Cloud" dst="9.7_Cloud" qosReq="mgmt"/>
+        <Connection src="9.6_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="9.6_Cloud" dst="9.9_Cloud" qosReq="mgmt"/>
+        <Connection src="9.6_Cloud" dst="a.2_Cloud" qosReq="mgmt"/>
+        <Connection src="9.7_Cloud" dst="9.8_Cloud" qosReq="mgmt"/>
+        <Connection src="9.8_Cloud" dst="a.2_Cloud" qosReq="mgmt"/>
+        <Connection src="a.1_Cloud" dst="a.6_Cloud" qosReq="mgmt"/>
+        <Connection src="a.1_Cloud" dst="a.7_Cloud" qosReq="mgmt"/>
+        <Connection src="a.2_Cloud" dst="a.7_Cloud" qosReq="mgmt"/>
+        <Connection src="a.2_Cloud" dst="a.8_Cloud" qosReq="mgmt"/>
+        <Connection src="a.2_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="a.3_Cloud" dst="a.5_Cloud" qosReq="mgmt"/>
+        <Connection src="a.3_Cloud" dst="a.6_Cloud" qosReq="mgmt"/>
+        <Connection src="a.3_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="a.4_Cloud" dst="a.6_Cloud" qosReq="mgmt"/>
+        <Connection src="a.5_Cloud" dst="a.6_Cloud" qosReq="mgmt"/>
+        <Connection src="a.5_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="a.6_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
+        <Connection src="a.7_Cloud" dst="a.9_Cloud" qosReq="mgmt"/>
       </SimTime>
+      
+      <SimTime t ="3">
+        <Connection src="7.2_Cloud" dst="7.7_Cloud" qosReq="mgmt"/>
+      </SimTime>
+      
     </ConnectionSet>
   </ConnectionSets>
 
@@ -751,7 +755,48 @@
       </APN>
     </Directory>
   </DA>
-
+<QoSReqSet>
+		<QosReq id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosReq>
+		<QosReq id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosReq>		
+</QoSReqSet>
 <QoSCubesSet>
 		<QosCube id="1">
 			<AverageBandwidth>12000000</AverageBandwidth>

@@ -16,7 +16,7 @@
 #ifndef MiniTable_H_
 #define MiniTable_H_
 
-#include <IntPDUForwarding.h>
+#include <IntMiniForwarding.h>
 
 #include <map>
 #include <string>
@@ -29,7 +29,7 @@ using namespace std;
 typedef map<string, RMTPort*> FWDTable;
 typedef FWDTable::iterator FWDTableIt;
 
-class MiniTable: public IntPDUForwarding {
+class MiniTable: public IntMiniForwarding {
 
 public:
     // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.

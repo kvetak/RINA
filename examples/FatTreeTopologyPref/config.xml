@@ -39,6 +39,7 @@
       </SimTime>
     </ConnectionSet>
   </ConnectionSets>
+  
 	<QoSReqSet>
     	<QosReq id="1">
 			<AverageBandwidth>12000000</AverageBandwidth>

@@ -19,6 +19,10 @@
 #include <IntPDUFG.h>
 #include <QoSTable/QoSTable.h>
 #include <DomainRouting/Routing.h>
+#include "QoSCube.h"
+#include "RA.h"
+#include "MultilevelQoS.h"
+
 
 #include <map>
 #include <set>
@@ -38,19 +42,8 @@ class QoSDomainGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address& addr, const std::string & qos,
-            RMTPort* port) {
-        std::string dst = addr.getIpcAddress().getName();
-        neighbours[qos][dst].insert(port);
-        if (neighbours[qos][dst].size() == 1) {
-            //char intStr[10];
-            //sprintf(intStr, "%d", qos);
-            //string str = string(intStr);
-            rt->addFlow(addr, qos, dst, 1);
-            routingUpdated();
-        }
-    }
-    virtual void removedFlow(const Address &addr, const std::string &qos, RMTPort * port);
+    virtual void insertedFlow(const Address& addr, const QoSCube & qos, RMTPort* port);
+    virtual void removedFlow(const Address &addr, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();
@@ -66,6 +59,8 @@ private:
     int nDom;
 
     QNTable neighbours;
+    QoSCubeSet cubes;
+    MultilevelQoS * comparer;
 };
 
 }

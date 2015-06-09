@@ -20,23 +20,41 @@
 #include <stdlib.h>
 
 
+
 namespace QoSDomainGenerator {
 
 Register_Class(QoSDomainGenerator);
 
 using namespace std;
 
-void QoSDomainGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void QoSDomainGenerator::insertedFlow(const Address& addr, const QoSCube & qos, RMTPort* port) {
     std::string dst = addr.getIpcAddress().getName();
-    neighbours[qos][dst].erase(port);
 
-    if(neighbours[qos][dst].size() <= 0){
-        //char intStr[10];
-        //sprintf(intStr, "%d", qos);
-        //string str = string(intStr);
-        rt->removeFlow(addr,qos, dst);
-        neighbours[qos].erase(dst);
-        routingUpdated();
+    //Iterate through all QoS cubes and check if qos is a valid
+    for(QoSCube qosI : cubes) {
+        if(comparer->isValid(qosI, qos)) {
+            neighbours[qosI.getQosId()][dst].insert(port);
+            if (neighbours[qosI.getQosId()][dst].size() == 1) {
+                rt->addFlow(addr, qosI.getQosId(), dst, 1);
+                routingUpdated();
+            }
+        }
+    }
+}
+
+void QoSDomainGenerator::removedFlow(const Address &addr, RMTPort * port){
+    std::string dst = addr.getIpcAddress().getName();
+
+    //Iterate through all QoS cubes and remove is inserted
+    for(QoSCube qosI : cubes) {
+        if(neighbours[qosI.getQosId()].find(dst) != neighbours[qosI.getQosId()].end()){
+            neighbours[qosI.getQosId()][dst].erase(port);
+            if(neighbours[qosI.getQosId()][dst].size() <= 0){
+                rt->removeFlow(addr,qosI.getQosId(), dst);
+                neighbours[qosI.getQosId()].erase(dst);
+                routingUpdated();
+            }
+        }
     }
 }
 
@@ -44,11 +62,6 @@ void QoSDomainGenerator::removedFlow(const Address &addr, const std::string &qos
 void QoSDomainGenerator::routingUpdated(){
     DMRnms::dmUpdateM changes = rt->getChanges();
     for(DMRnms::dmUpdateMIt it = changes.begin(); it!= changes.end(); it++){
-        std::string QoS;
-        int value = atoi(it->domain.c_str());
-        if(value > 0 && value <= nDom) { QoS = it->domain; }
-        else { continue; }
-
         for(DMRnms::s2AIt eIt = it->entries.begin(); eIt != it->entries.end(); eIt++){
             std::string dst = eIt->first;
             std::string nextHop = eIt->second.getIpcAddress().getName();
@@ -56,15 +69,15 @@ void QoSDomainGenerator::routingUpdated(){
             EV << "Entry ::: "<< dst << " -> " << nextHop << " ("<< eIt->second<<")" <<endl;
             RMTPort * p = NULL;
 
-            NTableIt n = neighbours[QoS].find(nextHop);
-            if(n != neighbours[QoS].end()){
+            NTableIt n = neighbours[it->domain].find(nextHop);
+            if(n != neighbours[it->domain].end()){
                 p = *(n->second.begin());
             }
 
             if(p == NULL) {
-                fwd->remove(dst, QoS);
+                fwd->remove(dst, it->domain);
             } else {
-                fwd->insert(dst, QoS, p);
+                fwd->insert(dst, it->domain, p);
             }
         }
     }
@@ -81,27 +94,29 @@ void QoSDomainGenerator::onPolicyInit(){
 
     std::string alg = par("alg").stdstringValue();
 
-    nDom = par("nDomains").longValue();
+    fwd = check_and_cast<QoSTable::QoSTable *>
+        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+
+
+    RABase* ResourceAllocator = check_and_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+
+    cubes = ResourceAllocator->getQoSCubes();
 
     if(alg == "LS"){
-        char intStr[10];
-        string str;
-        for(int i = 1; i<= nDom; i++){
-            sprintf(intStr, "%d", i);
-            str = string(intStr);
-            rt->addDomain(str, getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
+        for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
+            rt->addDomain(it->getQosId(), getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
         }
     } else {
-        char intStr[10];
-        string str;
-        for(int i = 1; i<= nDom; i++){
-            sprintf(intStr, "%d", i);
-            str = string(intStr);
-            rt->addDomain(str, getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
+        for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
+            rt->addDomain(it->getQosId(), getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
         }
     }
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+
+
+    comparer = check_and_cast<MultilevelQoS *>
+        (getModuleByPath("^.^.flowAllocator.qosComparerPolicy"));
 }
 
 }
