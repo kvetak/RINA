@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<Configuration>
+
+	<DA>
+		<Directory>
+	    	<APN apn="App1">
+				<DIF difName="NET" ipcAddress="h1" />
+			</APN>
+			<APN apn="App2">
+				<DIF difName="NET" ipcAddress="h2" />
+			</APN>
+			<APN apn="h1_NET">
+				<DIF difName="shimHR1" ipcAddress="h1" />
+			</APN>
+			<APN apn="h2_NET">
+				<DIF difName="shimHR2" ipcAddress="h2" />
+			</APN>
+				
+			<APN apn="r1_NET">
+				<DIF difName="shimHR1" ipcAddress="r1" />
+				<DIF difName="shim12" ipcAddress="r1" />
+				<DIF difName="shim13" ipcAddress="r1" />
+			</APN>
+			<APN apn="r1_shimHR1">
+				<DIF difName="shimHR1" ipcAddress="r1" />
+				<DIF difName="shim12" ipcAddress="r1" />
+				<DIF difName="shim13" ipcAddress="r1" />
+			</APN>
+			<APN apn="r2_NET">
+				<DIF difName="shim12" ipcAddress="r2" />
+				<DIF difName="shim24" ipcAddress="r2" />
+			</APN>
+			<APN apn="r3_NET">
+				<DIF difName="shim13" ipcAddress="r3" />
+				<DIF difName="shim34" ipcAddress="r3" />
+			</APN>
+			<APN apn="r4_NET">
+				<DIF difName="shimHR2" ipcAddress="r4" />
+				<DIF difName="shim24" ipcAddress="r4" />
+				<DIF difName="shim34" ipcAddress="r4" />
+			</APN>
+			
+	    </Directory>
+	</DA>
+	<Host id="host1">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="h2_NET">
+				<Neighbor apn="r1_NET" />
+			</APN>		
+			<APN apn="r2_NET">
+				<Neighbor apn="r1_NET" />
+			</APN>
+			<APN apn="r3_NET">
+				<Neighbor apn="r1_NET" />
+			</APN>
+			<APN apn="r4_NET">				
+				<Neighbor apn="r1_NET" />
+			</APN>
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	
+	
+	<Host id="host2">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="h1_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>
+			<APN apn="r1_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>		
+			<APN apn="r2_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>
+			<APN apn="r3_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	
+	
+	<Host id="r1">
+	  <DA>
+	   
+	    <NeighborTable>
+			<APN apn="h2_NET">
+				<Neighbor apn="r2_NET" />
+			</APN>		
+			<APN apn="r4_NET">
+				<Neighbor apn="r2_NET" />
+			</APN>
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	
+	<Host id="r2">
+	  <DA>
+	    
+	    <NeighborTable>
+			<APN apn="h1_NET">
+				<Neighbor apn="r1_NET" />
+			</APN>
+			<APN apn="h2_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>			
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	<Host id="r3">
+	  <DA>
+	    
+	    <NeighborTable>
+			<APN apn="h1_NET">
+				<Neighbor apn="r1_NET" />
+			</APN>
+			<APN apn="h2_NET">
+				<Neighbor apn="r4_NET" />
+			</APN>			
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	<Host id="r4">
+	  <DA>
+	    
+	    <NeighborTable>
+			<APN apn="h1_NET">
+				<Neighbor apn="r2_NET" />
+			</APN>
+			<APN apn="r1_NET">
+				<Neighbor apn="r2_NET" />
+			</APN>			
+		</NeighborTable>
+	  </DA>
+	</Host>
+	
+	
+	
+	  
+</Configuration>
