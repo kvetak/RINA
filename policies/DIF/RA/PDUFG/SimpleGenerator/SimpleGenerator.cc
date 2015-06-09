@@ -25,23 +25,20 @@ Register_Class(SimpleGenerator);
 using namespace std;
 
 // A new flow has been inserted/or removed
-void SimpleGenerator::insertedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void SimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
-    neighbours[dst][qos].insert(port);
-    if(neighbours[dst][qos].size() == 1){
-        rt->insertFlow(addr, dst, qos, 1);
+    neighbours[dst].insert(port);
+    if(neighbours[dst].size() == 1){
+        rt->insertFlow(addr, dst, "", 1);
         routingUpdated();
     }
 }
-void SimpleGenerator::removedFlow(const Address &addr, const std::string &qos, RMTPort * port){
+void SimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
-    neighbours[dst][qos].erase(port);
-    if(neighbours[dst][qos].size() <= 0){
-        neighbours[dst].erase(qos);
-        rt->removeFlow(addr, dst, qos);
-        if(neighbours[dst].size() <= 0){
-            neighbours.erase(dst);
-        }
+    neighbours[dst].erase(port);
+    if(neighbours[dst].size() <= 0){
+        rt->removeFlow(addr, dst, "");
+        neighbours.erase(dst);
         routingUpdated();
     }
 }
@@ -52,23 +49,23 @@ void SimpleGenerator::routingUpdated(){
 
     for(entries2NextIt it = changes.begin(); it!= changes.end(); it++){
         qosPaddr dst = it->first;
-        std::string nextHop = it->second;
+        std::string nextHop = "";
+        if(!it->second.nh.empty()){
+            nextHop = *(it->second.nh.begin());
+        }
         RMTPort * p = NULL;
         if(nextHop != "") {
             NTableIt n = neighbours.find(nextHop);
             if(n != neighbours.end()){
-                NentriesIt pit = n->second.find(dst.first);
-                if(pit != n->second.end()){
-                    if(pit->second.size()>0){
-                        p = *(pit->second.begin());
-                    }
+                if(!n->second.empty()) {
+                    p = *(n->second.begin());
                 }
             }
         }
         if(p == NULL) {
-            fwd->remove(dst.second, dst.first);
+            fwd->remove(dst.second);
         } else {
-            fwd->insert(dst.second, dst.first, p);
+            fwd->insert(dst.second, p);
         }
     }
 }
@@ -76,7 +73,7 @@ void SimpleGenerator::routingUpdated(){
 // Called after initialize
 void SimpleGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<SimpleTable::SimpleTable *>
+    fwd = check_and_cast<IntMiniForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
     rt = check_and_cast<IntSimpleRouting *>
         (getModuleByPath("^.^.routingPolicy"));

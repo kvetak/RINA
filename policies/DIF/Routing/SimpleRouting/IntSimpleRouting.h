@@ -19,8 +19,13 @@
 #include <IntRouting.h>
 #include <string>
 
+
+struct entType{
+    unsigned short metric;
+    std::set<std::string> nh;
+};
 typedef std::pair<std::string, std::string> qosPaddr;
-typedef std::map<qosPaddr, std::string> entries2Next;
+typedef std::map<qosPaddr, entType> entries2Next;
 typedef std::pair<qosPaddr, std::string> entries2NextItem;
 typedef entries2Next::iterator entries2NextIt;
 

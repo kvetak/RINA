@@ -93,7 +93,9 @@ pAddr DomainTable::parseAddr(const string &addr){
 void DomainTable::onPolicyInit(){}
 
 void DomainTable::finish(){
-    EV << toString() <<endl;
+    if(par("printAtEnd").boolValue()){
+        EV << toString() <<endl;
+    }
 }
 
 }

@@ -31,9 +31,17 @@ entriesIt RoutingUpdate::entriesEnd(){
 }
 
 
+void SimpleDV::scheduleUpdate(){
+    Enter_Method_Silent();
+    if(!scheduledUpdate){
+        scheduledUpdate = true;
+        scheduleAt(simTime()+1, new cMessage("Time2Update"));
+    }
+}
+
 //Flow inserted/removed
 void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std::string& qos, const unsigned short &metric){
-
+    EV << "Insert Flow info" << endl;
     neig[qos][addr] = metric;
 
     rtEntry * oldEntry = &table[qos][dst];
@@ -50,12 +58,16 @@ void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std
         entryChangedDst = true;
     }
 
+    entType et;
     if(oldEntry->metric >= infMetric){
-        changes.insert(entries2NextItem(qosPaddr(qos, dst),""));
+        et.metric = infMetric;
         table[qos].erase(dst);
     } else if(entryChangedDst){
-        changes.insert(entries2NextItem(qosPaddr(qos, dst),dst));
+        et.metric = infMetric;
+        et.nh.insert(dst);
     }
+    changes[qosPaddr(qos, dst)] = et;
+    scheduleUpdate();
 }
 void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std::string& qos){
     neig[qos].erase(addr);
@@ -65,16 +77,20 @@ void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std
 
     tTable * qosTable = &table[qos];
 
+
     for(tTableIt it = qosTable->begin(); it != qosTable->end();){
         rtEntry * oldEntry = &it->second;
         tTableIt actIt = it;
         it++;
 
         if(oldEntry->addr == dst){
-            changes.insert(entries2NextItem(qosPaddr(qos, oldEntry->addr),""));
+            entType et;
+            et.metric = infMetric;
+            changes[qosPaddr(qos, oldEntry->addr)] = et;
             qosTable->erase(actIt);
         }
     }
+    scheduleUpdate();
 }
 
 //Get Changes
@@ -87,13 +103,17 @@ entries2Next SimpleDV::getChanges(){
 entries2Next SimpleDV::getAll(){
     entries2Next ret;
 
+
     for(rtTableIt it = table.begin(); it != table.end(); it++){
         for(tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++){
+            entType et;
             if(it2->second.metric < infMetric) {
-                ret[qosPaddr(it->first, it2->first)] = it2->second.addr;
+                et.metric = it2->second.metric;
+                et.nh.insert(it2->second.addr);
             } else {
-                ret[qosPaddr(it->first, it2->first)] = "";
+                et.metric = infMetric;
             }
+            ret[qosPaddr(it->first, it2->first)] = et;
         }
     }
     map<unsigned short, map<string, rtEntry> > table;
@@ -110,35 +130,49 @@ bool SimpleDV::processUpdate(IntRoutingUpdate * update){
         return false;
     }
 
+    bool chan = false;
+
     std::string qos = up->getQoS();
 
     for(entriesIt it = up->entriesBegin(); it!= up->entriesEnd(); it++){
-        if(it->addr == myAddr) {
-            continue;
-        }
+        if(it->addr == myAddr) { continue; }
 
         rtEntry * newEntry = &(*it);
         rtEntry * oldEntry = &table[qos][newEntry->addr];
 
         bool entryChangedDst = false;
 
-        if(oldEntry->addr == newEntry->addr){
-            if(oldEntry->metric == newEntry->metric){
+        if(oldEntry->addr == src){
+            if(oldEntry->metric != newEntry->metric){
                 oldEntry->metric = newEntry->metric;
+                chan = true;
             }
-        } else if(oldEntry->metric >= newEntry->metric){
+        } else if(oldEntry->metric > newEntry->metric){
             oldEntry->addr = src;
             oldEntry->metric = newEntry->metric;
             entryChangedDst = true;
+            chan = true;
         }
 
+        entType et;
+
         if(oldEntry->metric >= infMetric){
-            changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),""));
+            et.metric = infMetric;
+            changes[qosPaddr(qos, newEntry->addr)] = et;
             table[qos].erase(newEntry->addr);
+            chan = true;
         } else if(entryChangedDst){
-            changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),src));
+            et.metric = oldEntry->metric;
+            et.nh.insert(src);
+            changes[qosPaddr(qos, newEntry->addr)] = et;
+            chan = true;
         }
     }
+
+    if(chan) {
+        scheduleUpdate();
+    }
+
     return ! changes.empty();
 }
 
@@ -149,9 +183,10 @@ void SimpleDV::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = 32;
+    infMetric = par("infMetric").longValue();
 
-    scheduleAt(simTime()+30, new cMessage("Time2Update"));
+    scheduledUpdate = false;
+    scheduleUpdate();
 }
 
 
@@ -180,26 +215,28 @@ void SimpleDV::handleMessage(cMessage *msg){
             }
         }
 
-        scheduleAt(simTime()+30, msg);
+        scheduledUpdate = false;
     }
+    delete msg;
 }
 
 
 void SimpleDV::finish(){
     IntRouting::finish();
 
-    EV << "I'm " << myAddr<<endl;
+    if(par("printAtEnd").boolValue() ){
+        EV << "I'm " << myAddr<<endl;
 
-    for (rtTableIt it = table.begin(); it != table.end(); it++)
-    {
-        EV << "  QoS " << it->first << endl;
-        for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
+        for (rtTableIt it = table.begin(); it != table.end(); it++)
         {
-            EV << "    " << it2->first << " via " << it2->second.addr << " ("
-                    << it2->second.metric << " hops)" << endl;
+            EV << "  QoS " << it->first << endl;
+            for (tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++)
+            {
+                EV << "    " << it2->first << " via " << it2->second.addr << " ("
+                        << it2->second.metric << ")" << endl;
+            }
         }
     }
-
 }
 
 }

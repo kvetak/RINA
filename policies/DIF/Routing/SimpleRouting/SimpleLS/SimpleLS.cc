@@ -71,7 +71,9 @@ entries2Next SimpleLS::getChanges(){
         std::string qos = qosIt->first;
         TreeNode t = constructTree(qosIt->second);
         for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
-            ret[qosPaddr(qos, (*it)->addr)] = (*it)->addr;
+            entType * et = &ret[qosPaddr(qos, (*it)->addr)];
+            et->metric = (*it)->metric;
+            et->nh.insert((*it)->addr);
             addRecursive(ret, qos, (*it)->addr, *it);
         }
     }
@@ -79,7 +81,7 @@ entries2Next SimpleLS::getChanges(){
     entries2Next t = ret;
 
     for(entries2NextIt tIt = table.begin(); tIt != table.end(); tIt++){
-        if (ret[tIt->first]  == tIt->second){
+        if (ret[tIt->first].metric == tIt->second.metric && ret[tIt->first].nh == tIt->second.nh){
             ret.erase(tIt->first);
         }
     }
@@ -95,7 +97,9 @@ entries2Next SimpleLS::getAll(){
         std::string qos = qosIt->first;
         TreeNode t = constructTree(qosIt->second);
         for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
-            ret[qosPaddr(qos, (*it)->addr)] = (*it)->addr;
+            entType * et = &ret[qosPaddr(qos, (*it)->addr)];
+            et->metric = (*it)->metric;
+            et->nh.insert((*it)->addr);
             addRecursive(ret, qos, (*it)->addr, *it);
         }
     }
@@ -114,7 +118,6 @@ TreeNode SimpleLS::constructTree(linksSt &ls){
     for(linksIt it = links->begin(); it !=links->end(); it++){
         waiting[it->first] = psT(&t, it->second);
     }
-
 
     while(!waiting.empty()){
         unsigned short min = UINT16_MAX;
@@ -138,7 +141,15 @@ TreeNode SimpleLS::constructTree(linksSt &ls){
             waiting.erase(addr);
 
             TreeNode * nt = new TreeNode(addr, ps.metric);
-            ps.p->chl.insert(nt);
+            bool fPar = true;
+            for(TreeNode * par : ps.p){
+                if(fPar) {
+                    par->chldel.insert(nt);
+                    fPar = false;
+                }
+                par->chl.insert(nt);
+            }
+
 
             added[addr] = ps.metric;
 
@@ -150,9 +161,8 @@ TreeNode SimpleLS::constructTree(linksSt &ls){
                     wMapIt eI = waiting.find(daddr);
                     if(eI == waiting.end()){
                         waiting[daddr] = psT(nt, ps.metric + it->second);
-                    } else if(eI->second.metric > ps.metric + it->second){
-                        eI->second.metric = ps.metric + it->second;
-                        eI->second.p = nt;
+                    } else if(eI->second.metric >= ps.metric + it->second){
+                        eI->second.addParent(nt, ps.metric + it->second);
                     }
                 }
             }
@@ -163,7 +173,9 @@ TreeNode SimpleLS::constructTree(linksSt &ls){
 }
 void SimpleLS::addRecursive(entries2Next &ret, const std::string& qos, const std::string &next, TreeNode * t){
     for(TreeNodeIt it = t->chl.begin(); it != t->chl.end(); it++){
-        ret[qosPaddr(qos, (*it)->addr)] = next;
+        entType * et = &ret[qosPaddr(qos, (*it)->addr)];
+        et->metric = (*it)->metric;
+        et->nh.insert(next);
         addRecursive(ret, qos, next, *it);
     }
 }
@@ -196,7 +208,7 @@ void SimpleLS::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = 32;
+    infMetric = par("infMetric").longValue();
     secId = 1;
 }
 
@@ -240,33 +252,24 @@ linksSt SimpleLS::getChangedEntries (const std::string& qos){
 void SimpleLS::finish(){
     IntRouting::finish();
 
-    EV << "I'm "<< myAddr<<endl;
+    if(par("printAtEnd").boolValue() ){
+        EV << "I'm "<< myAddr<<endl;
 
-    for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        EV << "  QoS " << qosIt->first<<endl;
-        TreeNode t = constructTree(qosIt->second);
+        for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
+            EV << "  QoS " << qosIt->first<<endl;
+            TreeNode t = constructTree(qosIt->second);
 
-        for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
-            printTreeNode(*it, (*it)->addr);
-        }
-
-    }
-/*
-    EV << "LS "<<endl;
-    for(linksStColIt qosIt = netState.begin(); qosIt != netState.end(); qosIt++){
-        EV << "  QoS " << qosIt->first<<endl;
-        for(linksStIt lsIt = qosIt->second.begin(); lsIt != qosIt->second.end(); lsIt++){
-            EV<<"    " << lsIt->first << "("<<lsIt->second.sId << ")"<< ":"<<endl;
-            for(linksIt lIt = lsIt->second.links.begin(); lIt != lsIt->second.links.end(); lIt++){
-                EV<<"      " << lIt->first << "("<<lIt->second << ")"<<endl;
+            for(TreeNodeIt it = t.chl.begin(); it != t.chl.end(); it++){
+                printTreeNode(*it, (*it)->addr);
             }
+
         }
     }
-*/
 }
 
 void SimpleLS::printTreeNode(TreeNode *t, const std::string &next){
-    EV<<"    " << t->addr << " -> "<<next << " ("<<t->metric<<") " << " c: "<< t->chl.size() << endl;
+    for(int i = 0; i < t->metric; i++) { EV <<" ";}
+    EV<<"    " << t->addr << " -> "<<next << " ("<<t->metric<<") " << " childs: "<< t->chl.size() << endl;
     for(TreeNodeIt it = t->chl.begin(); it != t->chl.end(); it++){
         printTreeNode(*it, next);
     }

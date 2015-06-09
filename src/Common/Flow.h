@@ -142,6 +142,11 @@ class Flow : public cObject
      */
     void setConId(const ConnectionId& conId);
 
+
+    void setQosCube(const QoSCube& qosCube);
+
+    const QoSCube& getQosCube() const;
+
     /**
      * @brief Gets QoS parameters wanted by flow initiator
      * @return Read-only QoSReq instance
@@ -400,6 +405,12 @@ class Flow : public cObject
      * @brief Attribute holding flow's hop-count
      */
     uint32_t hopCount;
+
+
+    /**
+     * @brief Attribute holding the assigned QoSCube
+     */
+    QoSCube qosCube;
 
     /**
      * @brief Attribute holding wanted QoS parameters in form of QoSReq

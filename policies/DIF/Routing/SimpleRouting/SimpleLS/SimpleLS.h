@@ -62,6 +62,7 @@ typedef qos2addrSet::iterator qos2addrSetIt;
 struct TreeNode {
     std::string addr;
     unsigned short metric;
+    std::set<TreeNode*> chldel;
     std::set<TreeNode*> chl;
     TreeNode(){
             addr = "";
@@ -81,24 +82,33 @@ struct TreeNode {
     }
 
     ~TreeNode(){
-        for(std::set<TreeNode *>::iterator it = chl.begin(); it != chl.end(); it++){
-            TreeNode * c = *it;
+        for(TreeNode * c: chldel){
             delete c;
         }
     }
+
 };
 typedef std::set<TreeNode *>::iterator TreeNodeIt;
 
 struct psT {
-    TreeNode* p;
+    std::set<TreeNode*> p;
     unsigned short metric;
     psT(){
-        p = NULL;
         metric = UINT16_MAX;
     }
     psT(TreeNode* _p, const unsigned short _metric){
-        p = _p;
+        p.insert(_p);
         metric = _metric;
+    }
+
+    void addParent(TreeNode* _p, const unsigned short _metric){
+        if(metric > _metric) {
+            metric = _metric;
+            p.clear();
+        }
+        if(metric == _metric) {
+            p.insert(_p);
+        }
     }
 
     bool operator == (const psT &b) const

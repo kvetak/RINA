@@ -17,7 +17,7 @@
 #define SimpleGenerator_H_
 
 #include <IntPDUFG.h>
-#include <SimpleTable/SimpleTable.h>
+#include <IntMiniForwarding.h>
 #include <SimpleRouting/IntSimpleRouting.h>
 
 #include <map>
@@ -26,19 +26,17 @@
 namespace SimpleGenerator {
 
 typedef std::set<RMTPort*> PortsSet;
-typedef std::map<std::string, PortsSet> Nentries;
-typedef std::map<std::string, Nentries> NTable;
+typedef std::map<std::string, PortsSet> NTable;
 
 typedef PortsSet::iterator PortsSetIt;
-typedef Nentries::iterator NentriesIt;
 typedef NTable::iterator NTableIt;
 
 
 class SimpleGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const std::string& qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const std::string& qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
+    virtual void removedFlow(const Address &addr, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();
@@ -49,7 +47,7 @@ protected:
 
 private:
     DA * difA;
-    SimpleTable::SimpleTable * fwd;
+    IntMiniForwarding * fwd;
     IntSimpleRouting * rt;
 
     NTable neighbours;

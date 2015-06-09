@@ -95,6 +95,9 @@ private:
     rtTable table;
 
     entries2Next changes;
+
+    bool scheduledUpdate;
+    void scheduleUpdate();
 };
 
 }

@@ -7,4 +7,6 @@ simple SimpleTable like IntPDUForwarding
     parameters:
         @class(SimpleTable::SimpleTable);
         @display("i=block/socket");
+        
+        bool printAtEnd = default(false);
 }

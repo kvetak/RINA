@@ -7,4 +7,6 @@ simple DomainTable like IntPDUForwarding
     parameters:
         @class(DomainTable::DomainTable);
         @display("i=block/socket");
+        
+        bool printAtEnd = default(false);
 }
