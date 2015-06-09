@@ -28,17 +28,36 @@ extern const char* SIG_RIBD_ForwardingUpdateReceived;
 extern const char* SIG_RIBD_RoutingUpdateReceived;
 extern const char* SIG_RIBD_CongestionNotification;
 
+extern const char* SIG_RIBD_StartEnrollmentRequest;
+extern const char* SIG_RIBD_StartEnrollmentResponse;
+extern const char* SIG_RIBD_StopEnrollmentRequest;
+extern const char* SIG_RIBD_StopEnrollmentResponse;
+extern const char* SIG_RIBD_StartOperationRequest;
+extern const char* SIG_RIBD_StartOperationResponse;
+
+extern const char* SIG_RIBD_ConnectionResponsePositive;
+extern const char* SIG_RIBD_ConnectionResponseNegative;
+extern const char* SIG_RIBD_ConnectionRequest;
+extern const char* SIG_RIBD_CACESend;
+
+//Enrollment
+extern const char* SIG_ENROLLMENT_DataSend;
+extern const char* SIG_ENROLLMENT_CACEDataSend;
+extern const char* SIG_ENROLLMENT_StartEnrollmentRequest;
+extern const char* SIG_ENROLLMENT_StartEnrollmentResponse;
+extern const char* SIG_ENROLLMENT_StopEnrollmentRequest;
+extern const char* SIG_ENROLLMENT_StopEnrollmentResponse;
+extern const char* SIG_ENROLLMENT_StartOperationRequest;
+extern const char* SIG_ENROLLMENT_StartOperationResponse;
+
+extern const char* SIG_ENROLLMENT_Finished;
+
 //CDAP
 extern const char* SIG_CDAP_DateReceive;
+extern const char* SIG_CDAP_SendData;
 
 //CACE
-extern const char* SIG_CACE_ConnectionResponsePositive;
-extern const char* SIG_CACE_ConnectionResponseNegative;
-extern const char* SIG_CACE_ReleaseResponse;
-extern const char* SIG_CACE_AuthenticationRequest;
-
-//Auth
-extern const char* SIG_Auth_AuthenticationResponse;
+extern const char* SIG_CACE_DataReceive;
 
 //IRM
 extern const char* SIG_IRM_AllocateRequest;
@@ -59,6 +78,7 @@ extern const char* SIG_toFAI_AllocateRequest;
 extern const char* SIG_toFAI_AllocateResponsePositive;
 extern const char* SIG_toFAI_AllocateResponseNegative;
 extern const char* SIG_FAI_AllocateRequest;
+extern const char* SIG_FAI_AllocateFinishManagement;
 extern const char* SIG_FAI_DeallocateRequest;
 extern const char* SIG_FAI_DeallocateResponse;
 extern const char* SIG_FAI_AllocateResponsePositive;

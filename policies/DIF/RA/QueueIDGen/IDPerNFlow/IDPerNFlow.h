@@ -27,6 +27,10 @@ class IDPerNFlow : public QueueIDGenBase
     virtual std::string generateInputQueueID(PDU* pdu);
     virtual std::string generateOutputQueueID(PDU* pdu);
     virtual std::string generateIDFromFlow(Flow* flow);
+
+  private:
+    // utility method for ID generation
+    std::string constructQueueID(const std::string& ipcName, ConnectionId& connID);
 };
 
 #endif /* IDPerNQoS_H_ */

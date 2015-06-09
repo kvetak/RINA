@@ -63,8 +63,7 @@ void AEPing::prepareDeallocateRequest() {
     scheduleAt(stopAt, m3);
 }
 
-void AEPing::initialize()
-{
+void AEPing::initPing() {
     //Init pointers
     initPointers();
     //Source info
@@ -97,45 +96,29 @@ void AEPing::initialize()
     if (stopAt > 0)
         prepareDeallocateRequest();
 
-    myPath = this->getFullPath();
-
     //Watchers
     WATCH(FlowObject);
     WATCH(connectionState);
+
+}
+
+void AEPing::initialize()
+{
+    initPing();
+
+    myPath = this->getFullPath();
 }
 
 void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), TIM_START) ) {
-        //Flow
-        APNamingInfo src = this->getApni();
-        APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                         this->dstAeName, this->dstAeInstance);
-
-        FlowObject = new Flow(src, dst);
-        FlowObject->setQosRequirements(this->getQoSRequirements());
-
-        //Insert it to the Flows ADT
-        insertFlow();
-
-        sendAllocationRequest(FlowObject);
+        onStart();
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
-        sendDeallocationRequest(FlowObject);
+        onStop();
     }
     else if ( strstr(msg->getName(), MSG_PING) ) {
-        //Create PING messsage
-        CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
-        object_t obj;
-        obj.objectName = VAL_MODULEPATH;
-        obj.objectClass = "string";
-        obj.objectInstance = -1;
-        obj.objectVal = (cObject*)(&myPath);
-        ping->setObject(obj);
-        ping->setByteLength(size);
-
-        //Send message
-        sendData(FlowObject, ping);
+        onPing();
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -146,6 +129,45 @@ void AEPing::handleMessage(cMessage *msg)
 {
     if ( msg->isSelfMessage() )
             this->handleSelfMessage(msg);
+}
+
+void AEPing::onStart() {
+    //Prepare flow's source and destination
+    APNamingInfo src = this->getApni();
+    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
+                                     this->dstAeName, this->dstAeInstance);
+
+    //Create a flow
+    FlowObject = new Flow(src, dst);
+    FlowObject->setQosRequirements(this->getQoSRequirements());
+
+    //Notify IRM about a new flow
+    insertFlow();
+
+    //Call flow allocation request
+    sendAllocationRequest(FlowObject);
+
+}
+
+void AEPing::onPing() {
+    //Create PING messsage
+    CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
+    object_t obj;
+    obj.objectName = VAL_MODULEPATH;
+    obj.objectClass = "string";
+    obj.objectInstance = -1;
+    obj.objectVal = (cObject*)(&myPath);
+    ping->setObject(obj);
+    ping->setByteLength(size);
+
+    //Send message
+    sendData(FlowObject, ping);
+
+}
+
+void AEPing::onStop() {
+    //Call flow deallocation submit
+    sendDeallocationRequest(FlowObject);
 }
 
 void AEPing::processMRead(CDAPMessage* msg) {

@@ -57,12 +57,6 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), portWrapper);
     queue = dynamic_cast<RMTQueue*>(newModule);
 
-    // modify the position a little
-//    cDisplayString& disp = queue->getDisplayString();
-//    disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
-//    disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
-//    portQueueCount[port] += 1;
-
     // create bindings to other modules
     cModule* rmt = getModuleByPath("^.rmt");
     std::ostringstream combinedQueueName;
@@ -125,13 +119,13 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     cDisplayString& portDisp = portWrapper->getDisplayString();
     portDisp.setTagArg("p", 0, portXCoord);
     portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 80;
+    portXCoord += 120;
 
     if (flow == NULL)
     {
         interfacePort = port;
     }
-    else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID) )
+    else if (flow->isManagementFlow())
     {
         portDisp.setTagArg("i2", 0, "status/execute");
     }

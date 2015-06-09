@@ -41,6 +41,13 @@ class LisFAAllocReq : public FAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisFAAllocFinMgmt : public FAListeners
+{
+  public:
+    LisFAAllocFinMgmt(FABase* sfa) : FAListeners(sfa){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 
 class LisFACreFloPosi : public FAListeners
 {

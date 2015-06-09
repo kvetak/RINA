@@ -19,25 +19,42 @@
 
 Define_Module(IDPerNFlow);
 
+std::string IDPerNFlow::constructQueueID(const std::string& ipcName, ConnectionId& connID)
+{
+    // Currently (without CO routing), it's sufficient to identify distinct (N)-flow's
+    // traffic by a concatenation of the other endpoint's IPC address and CEP-id.
+    // However, we also need to accommodate management PDUs that may arrive without
+    // an allocated (N)-flow.
+
+    std::string id;
+
+    if (connID.getQoSId() == VAL_MGMTQOSID)
+    {
+        id = std::string("noflow");
+    }
+    else
+    {
+        std::ostringstream id_ostr;
+        id_ostr << ipcName << "_" << connID.getSrcCepId();
+        id = id_ostr.str();
+    }
+
+    return id;
+}
+
 std::string IDPerNFlow::generateOutputQueueID(PDU* pdu)
 {
-    std::ostringstream id;
-    id << pdu->getSrcAddr().getIpcAddress().getName() << "_"
-       << pdu->getConnId().getSrcCepId();
-
-    return id.str();
+    return constructQueueID(pdu->getSrcAddr().getIpcAddress().getName(),
+            pdu->getConnId());
 }
 
 std::string IDPerNFlow::generateInputQueueID(PDU* pdu)
 {
-    generateOutputQueueID(pdu);
+    return generateOutputQueueID(pdu);
 }
 
 std::string IDPerNFlow::generateIDFromFlow(Flow* flow)
 {
-    std::ostringstream id;
-    id << flow->getSrcAddr().getIpcAddress().getName() << "_"
-       << flow->getConId().getSrcCepId();
-
-    return id.str();
+    return constructQueueID(flow->getSrcAddr().getIpcAddress().getName(),
+            flow->getConnectionId());
 }

@@ -22,7 +22,7 @@ simple CACE
 {
 	parameters:
     	@display("i=block/triangle");
-    	
+    	@signal[CACE-DataReceive];
    	gates:
    	    inout splitterIo;
 }

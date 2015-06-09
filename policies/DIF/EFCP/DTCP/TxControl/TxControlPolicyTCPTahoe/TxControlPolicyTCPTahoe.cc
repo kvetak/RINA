@@ -42,7 +42,7 @@ void TxControlPolicyTCPTahoe::initialize(int step)
     }
     slowedDown = false;
     packetSize = par("packetSize").longValue();
-    ackPolicy = check_and_cast<SenderAckPolicyTCP *>(getModuleByPath("^.^.efcp.senderAckPolicy"));
+    ackPolicy = check_and_cast<SenderAckPolicyTCP *>(getModuleByPath("^.senderAckPolicy"));//^.^.efcp
 }
 
 void TxControlPolicyTCPTahoe::slowDown() {

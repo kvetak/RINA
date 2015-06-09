@@ -25,12 +25,4 @@ AuthListeners::~AuthListeners() {
     auth = NULL;
 }
 
-void LisAuthValidate::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
-    CDAPMessage *authResult = dynamic_cast<CDAPMessage*>(obj);
-    if (authResult)
-        auth->validate(authResult);
-    else
-        EV << "Received not a CDAPMessage!" << endl;
-}
-
 

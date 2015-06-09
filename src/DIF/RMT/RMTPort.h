@@ -23,7 +23,6 @@
 
 #include "RINASignals.h"
 #include "Flow.h"
-#include "CDAPMessage_m.h"
 #include "RMTQueue.h"
 #include "QueueIDGenBase.h"
 
@@ -169,6 +168,7 @@ class RMTPort : public cSimpleModule
     long inputReadRate;
     double postReadDelay;
     std::string dstAppAddr;
+    std::string dstAppQoS;
 
     Flow* flow;
     QueueIDGenBase* queueIdGen;

@@ -25,6 +25,10 @@ RIBdBase::~RIBdBase() {
 
 }
 
+void RIBdBase::setMyAddress(const Address& addr) {
+    MyAddress = addr;
+}
+
 const Address& RIBdBase::getMyAddress() const {
     return MyAddress;
 }

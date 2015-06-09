@@ -17,11 +17,6 @@
 #define __RINA_AUTH_H_
 
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "AuthListeners.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
-#include "AE.h"
 
 
 /**
@@ -30,22 +25,9 @@
 class LisAuthValidate;
 class Auth : public cSimpleModule
 {
-public:
-    void validate(CDAPMessage *cmsg);
   protected:
-    int authType;
-    std::string authName;
-    std::string authPassword;
-    std::string authOther;
-
-    simsignal_t sigAuthRes;
-
-    LisAuthValidate* lisAuthValidate;
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    void initSignalsAndListeners();
-    void initParameters();
-    void signalizeAuthResult(CDAPMessage *cmsg);
 };
 
 #endif

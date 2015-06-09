@@ -54,6 +54,8 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
+    virtual bool receiveLocalMgmtAllocateRequest(Flow* flow);
+    virtual bool receiveMgmtAllocateFinish();
     virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
@@ -72,6 +74,7 @@ class FA : public FABase
 
     //Listeners
     LisFAAllocReq*      lisAllocReq;
+    LisFAAllocFinMgmt*  lisAllocFinMgmt;
     LisFACreFloPosi*    lisCreFloPosi;
     LisFADeallocReq*    lisDeallocReq;
     LisFACreReq*        lisCreReq;
@@ -95,7 +98,7 @@ class FA : public FABase
     void signalizeCreateFlowRequestForward(Flow* flow);
     void signalizeCreateFlowResponseNegative(Flow* flow);
 
-    const Address getAddressFromDa(const APN& apn, bool useNeighbor);
+    const Address getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow);
 
     bool changeDstAddresses(Flow* flow, bool useNeighbor);
     bool changeSrcAddress(Flow* flow, bool useNeighbor);

@@ -35,9 +35,7 @@ bool ReadRateReducer::run(RMTQueue* queue)
 
             // this isn't optimal, but there doesn't seem to be a better way to
             // get output->input port mapping in connection-less forwarding
-            std::vector<RMTPort*> inputPorts = fwd->lookup(
-                    pdu->getSrcAddr(),
-                    pdu->getConnId().getQoSId());
+            RMTPorts inputPorts = fwd->lookup(pdu);
 
             if (!inputPorts.front()->hasBlockedInput())
             { // block read from the input port
@@ -53,9 +51,7 @@ bool ReadRateReducer::run(RMTQueue* queue)
 void ReadRateReducer::onQueueLengthDrop(RMTQueue* queue)
 {
     const PDU* pdu = dynamic_cast<const PDU*>(queue->getLastPDU());
-    std::vector<RMTPort*> inputPorts = fwd->lookup(
-                        pdu->getSrcAddr(),
-                        pdu->getConnId().getQoSId());
+    RMTPorts inputPorts = fwd->lookup(pdu);
 
     if (inputPorts.front()->hasBlockedInput())
     { // the output buffers are keeping up again, continue receiving on input

@@ -43,14 +43,6 @@ class AEPing : public AE
     virtual ~AEPing();
 
   protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-    void handleSelfMessage(cMessage* msg);
-
-  private:
-    std::string myPath;
-
     std::string dstApName;
     std::string dstApInstance;
     std::string dstAeName;
@@ -62,13 +54,28 @@ class AEPing : public AE
     int rate;
     unsigned int size;
 
+
+    void initPing();
+    void handleSelfMessage(cMessage* msg);
+
     void prepareAllocateRequest();
     void preparePing();
     void prepareDeallocateRequest();
 
+    //=== AEPing interface starts here ===
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
+    virtual void onStart();
+    virtual void onPing();
+    virtual void onStop();
+
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
+    //=== AEPing interface ends here ===
 
+  private:
+    std::string myPath;
 };
 
 #endif

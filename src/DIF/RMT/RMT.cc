@@ -62,6 +62,8 @@ void RMT::initialize()
         }
     }
 
+    efcpiIn[0] = gateHalf("ribdIo", cGate::INPUT);
+    efcpiOut[0] = gateHalf("ribdIo", cGate::OUTPUT);
 
     // get pointers to other components
     fwd = check_and_cast<IntPDUForwarding*>
@@ -396,87 +398,58 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
 /**
  * A wrapper for forwarding table lookup.
  *
- * @param destAddr destination address
- * @param qosId qos-id
- * @return output port
- */
-RMTPort* RMT::fwTableLookup(const Address& destAddr, const std::string &qosId)
-{
-    if (onWire)
-    { // get the interface port
-        return rmtAllocator->getInterfacePort();
-    }
-    else
-    { // get a suitable ports from PDUF
-        std::vector<RMTPort*> ports = fwd->lookup(destAddr, qosId);
-        if (ports.size() > 0)
-        {
-            return ports.front();
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-}
-
-/**
- * A wrapper for forwarding table lookup.
- *
  * @param pdu PDU to forward
- * @return output port
+ * @return output ports
  */
-RMTPort* RMT::fwTableLookup(const PDU * pdu)
+std::vector<RMTPort*> RMT::fwTableLookup(const PDU * pdu)
 {
+    std::vector<RMTPort*> ports;
+
     if (onWire)
     { // get the interface port
-        return rmtAllocator->getInterfacePort();
+        ports.push_back(rmtAllocator->getInterfacePort());
     }
     else
     { // get output ports from PDUFT
-        std::vector<RMTPort*> ports = fwd->lookup(pdu);
-        if(ports.size()>0)
-        {
-            return ports.front();
-        }
-        else
-        {
-            return NULL;
-        }
+        ports = fwd->lookup(pdu);
     }
+
+    return ports;
 }
 
 /**
- * Passes a PDU from an EFCP instance to an appropriate output queue.
+ * Passes a PDU from an EFCP instance to an appropriate output port.
  *
  * @param pdu PDU to be passed
  */
-void RMT::efcpiToPort(PDU* pdu)
+void RMT::relayPDUToPort(PDU* pdu)
 {
-    RMTQueue* outQueue = NULL;
+    std::vector<RMTPort*> outPorts = fwTableLookup(pdu);
 
-    RMTPort* outPort = fwTableLookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
-    if (outPort != NULL)
+    if (outPorts.empty())
     {
+        EV << "!!! Empty PDUForwarding policy lookup result!" << endl
+           << "PDU dstAddr = " << pdu->getDstAddr().getApname().getName()
+           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
+           << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+        invalidPDUs.push_back(pdu);
+    }
+
+    for (std::vector<RMTPort*>::iterator it = outPorts.begin(); it != outPorts.end(); ++it)
+    {
+        RMTPort* port = *it;
+
         const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
-        outQueue = outPort->getQueueById(RMTQueue::OUTPUT, id.c_str());
-    }
-
-    cGate* outGate = NULL;
-    if (outQueue != NULL)
-    {
-        outGate = outQueue->getRMTAccessGate();
-    }
-
-    if (outGate != NULL)
-    {
-        send(pdu, outGate);
-    }
-    else
-    {
-        EV << getFullPath() << ": could not send out a PDU coming from EFCPI!" << endl;
-        EV << "PDU dstAddr = " << pdu->getDstAddr().getApname().getName()
-           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl;
+        RMTQueue* outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
+        if (outQueue != NULL)
+        {
+            cGate* outGate = outQueue->getRMTAccessGate();
+            send(pdu, outGate);
+        }
+        else
+        {
+            EV << "Queue with ID \"" << id << "\" doesn't exist!" << endl;
+        }
     }
 }
 
@@ -485,7 +458,7 @@ void RMT::efcpiToPort(PDU* pdu)
  *
  * @param pdu PDU to be passed
  */
-void RMT::portToEfcpi(PDU* pdu)
+void RMT::relayPDUToEFCPI(PDU* pdu)
 {
     unsigned cepId = pdu->getConnId().getDstCepId();
     cGate* efcpiGate = efcpiOut[cepId];
@@ -501,131 +474,6 @@ void RMT::portToEfcpi(PDU* pdu)
         emit(sigRMTNoConnID, pdu);
         invalidPDUs.push_back(pdu);
     }
-
-}
-
-/**
- * Passes a PDU from an EFCP instance to another local EFCP instance.
- *
- * @param pdu PDU to be passed
- */
-void RMT::efcpiToEfcpi(PDU* pdu)
-{
-    portToEfcpi(pdu);
-}
-
-/**
- * Passes a CDAP mesage from an (N-1)-port instance to RIB daemon.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::portToRIB(CDAPMessage* cdap)
-{
-    send(cdap, "ribdIo$o");
-}
-
-/**
- * Passes a CDAP mesage from the RIB daemon to an appropriate output queue.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::ribToPort(CDAPMessage* cdap)
-{
-    cGate* outGate = NULL;
-    RMTQueue* outQueue = NULL;
-    RMTPort* outPort = fwTableLookup(cdap->getDstAddr(), VAL_MGMTQOSID);
-    if (outPort != NULL)
-    {
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
-    }
-
-    if (outQueue != NULL)
-    {
-        outGate = outQueue->getRMTAccessGate();
-    }
-
-    if (outGate != NULL)
-    {
-        send(cdap, outGate);
-    }
-    else
-    {
-        EV << getFullPath() << ": could not send out a CDAP message!" << endl;
-        EV << "CDAP dstAddr = " << cdap->getDstAddr().getApname().getName()
-           << ", qosId = 0" << endl;
-    }
-}
-
-/**
- * Bounces a CDAP mesage back to local RIB.
- *
- * @param cdap CDAP message to be passed
- */
-void RMT::ribToRIB(CDAPMessage* cdap)
-{
-    send(cdap, "ribdIo$o");
-}
-
-/**
- * Relays incoming message to an output queue based on data from PDUFwTable.
- *
- * @param msg either a PDU or a CDAP message to be relayed
- */
-void RMT::portToPort(cMessage* msg)
-{
-    Address destAddr;
-    RMTPort* outPort = NULL;
-    RMTQueue* outQueue = NULL;
-
-    PDU* pdu = dynamic_cast<PDU*>(msg);
-    if (pdu != NULL)
-    {
-        outPort = fwTableLookup(pdu);
-        if (outPort == NULL)
-        {
-            EV << getFullPath()
-               << ": no suitable output (N-1)-flow present for relay!" << endl;
-            return;
-        }
-        outQueue = outPort->getQueueById(RMTQueue::OUTPUT,
-                queueIdGenerator->generateOutputQueueID((PDU*)msg).c_str());
-    }
-    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-    {
-        destAddr = ((CDAPMessage*)msg)->getDstAddr();
-
-        outPort = fwTableLookup(destAddr, VAL_MGMTQOSID);
-        if (outPort == NULL)
-        {
-            EV << getFullPath()
-               << ": no suitable output (N-1)-flow present for relay!" << endl;
-            return;
-        }
-        outQueue = outPort->getFirstQueue(RMTQueue::OUTPUT);
-    }
-    else
-    {
-        EV << "This message isn't supported by relaying application! Aborting." << endl;
-        return;
-    }
-
-    cGate* outGate = NULL;
-
-    if (outQueue != NULL)
-    {
-        outGate = outQueue->getRMTAccessGate();
-    }
-
-    if (outGate != NULL)
-    {
-        send(msg, outGate);
-    }
-    else
-    {
-        EV << getFullPath()
-           << ": couldn't retrieve the proper queue for this message!" << endl;
-    }
-
 }
 
 /**
@@ -637,64 +485,36 @@ void RMT::portToPort(cMessage* msg)
  */
 void RMT::processMessage(cMessage* msg)
 {
-    std::string gate = msg->getArrivalGate()->getName();
+    PDU* pdu = NULL;
 
-    if (dynamic_cast<PDU*>(msg) != NULL)
+    if ((pdu = dynamic_cast<PDU*>(msg)) != NULL)
     { // PDU arrival
-        PDU* pdu = (PDU*) msg;
+        cModule* senderModule = msg->getArrivalGate()->getPathStartGate()->getOwnerModule();
 
-        // TODO: replace with something less dumb
-        if (gate.substr(0, 1) == "p")
-        { // from a port
+        if (dynamic_cast<RMTQueue*>(senderModule) != NULL)
+        { // message from a port
             if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
-                portToEfcpi(pdu);
+                relayPDUToEFCPI(pdu);
             }
             else if (relayOn)
             {
-                portToPort(msg);
+                relayPDUToPort(pdu);
             }
             else
             {
                 EV << getFullPath() << " This PDU isn't for me! Holding it here." << endl;
             }
         }
-        else if (gate.substr(0, 7) == GATE_EFCPIO_)
-        { // from an EFCPI
+        else
+        { // message from an EFCPI
             if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
-                efcpiToEfcpi(pdu);
+                relayPDUToEFCPI(pdu);
             }
             else
             {
-                efcpiToPort(pdu);
-            }
-        }
-    }
-    else if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-    { // management message arrival
-        CDAPMessage* cdap = (CDAPMessage*) msg;
-
-        if (gate.substr(0, 1) == "p")
-        { // from a port
-            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
-            {
-                portToRIB(cdap);
-            }
-            else
-            {
-                portToPort(msg);
-            }
-        }
-        else
-        { // from the RIBd
-            if (addrComparator->matchesThisIPC(cdap->getDstAddr()))
-            {
-                ribToRIB(cdap);
-            }
-            else
-            {
-                ribToPort(cdap);
+                relayPDUToPort(pdu);
             }
         }
     }

@@ -101,4 +101,53 @@ class LisRIBDCongesNotif: public RIBdListeners {
 };
 
 
+
+class LisRIBDRcvCACE: public RIBdListeners {
+  public:
+    LisRIBDRcvCACE(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDRcvEnrollCACE: public RIBdListeners {
+  public:
+    LisRIBDRcvEnrollCACE(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStaEnrolReq: public RIBdListeners {
+  public:
+    LisRIBDStaEnrolReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStaEnrolRes: public RIBdListeners {
+  public:
+    LisRIBDStaEnrolRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStoEnrolReq: public RIBdListeners {
+  public:
+    LisRIBDStoEnrolReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStoEnrolRes: public RIBdListeners {
+  public:
+    LisRIBDStoEnrolRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStaOperReq: public RIBdListeners {
+  public:
+    LisRIBDStaOperReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisRIBDStaOperRes: public RIBdListeners {
+  public:
+    LisRIBDStaOperRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 #endif /* RIBDLISTENERS_H_ */

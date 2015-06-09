@@ -76,7 +76,7 @@ FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     return NULL;
 }
 
-TFAIPtrs FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
+TFAIPtrs FAITable::findEntriesByDstNeighborAndFwd(const APN& apname) {
     TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
@@ -88,6 +88,7 @@ TFAIPtrs FAITable::findEntryByDstNeighborAndFwd(const APN& apname) {
 }
 
 FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
+    if (!invId) return NULL;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         FAITableEntry tft = *it;
         if (tft.getCFlow()->getAllocInvokeId() == invId)
@@ -96,9 +97,31 @@ FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
     return NULL;
 }
 
+TFAIPtrs FAITable::findEntriesAffectedByMgmt(const Flow* flow) {
+    TFAIPtrs list;
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getSrcAddr().getApname() == flow->getSrcApni().getApn()
+            && tft.getCFlow()->getDstAddr().getApname() == flow->getDstApni().getApn()
+            && tft.getAllocateStatus() == FAITableEntry::ALLOC_PEND)
+            list.push_back(&(*it));
+    }
+    return list;
+}
+
+//XXX: Vesely - This search does not yield exact intended match!
+FAITableEntry* FAITable::findMgmtEntryByDstNeighbor(const Address& addr) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstNeighbor() == addr
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
 void FAITable::handleMessage(cMessage *msg)
 {
-
 }
 
 void FAITable::insertNew(Flow* flow) {
@@ -171,4 +194,33 @@ void FAITable::updateDisplayString() {
 
 void FAITable::initSignalsAndListeners() {
     sigStatFTSize = registerSignal(SIG_STAT_FT_SIZE);
+}
+
+FAITableEntry* FAITable::findMgmtEntry(const Flow* flow) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
+FAITableEntry* FAITable::findMgmtEntryByDstAddr(const Address& addr) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstAddr() == addr
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
+}
+
+FAITableEntry* FAITable::findMgmtEntryByDstApni(const APN& dstApn) {
+    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+        FAITableEntry tft = *it;
+        if (tft.getCFlow()->getDstApni().getApn() == dstApn
+            && tft.getCFlow()->isManagementFlowLocalToIPCP())
+            return &(*it);
+    }
+    return NULL;
 }

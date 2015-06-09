@@ -134,6 +134,7 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
         //EV << "!!!!!!!!!Cube " << flow->getConId().getQoSId() << endl;
         if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn()
             && fai->getFlow()->getConId().getQoSId() == flow->getConId().getQoSId()
+            && !flow->isManagementFlowLocalToIPCP()
                 ) {
             //EV << "B!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateFlowResponsePositiveFromNminusOne();

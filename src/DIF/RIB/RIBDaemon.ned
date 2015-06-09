@@ -20,10 +20,11 @@ import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 module RIBDaemon
 {
     parameters:
-        @display("i=block/control;bgb=271,228");
+        @display("i=block/control;bgb=271,295");
 
     gates:
         inout rmtIo;
+        inout efcpIo;
 
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
@@ -37,6 +38,11 @@ module RIBDaemon
                 @display("p=135,52");
         }
 
+        ribdSplitter: RIBdSplitter {
+            @display("p=135,241");
+        }
     connections allowunconnected:
-        commonDistributedApplicationProtocol.southIo <--> rmtIo;
+        commonDistributedApplicationProtocol.southIo <--> ribdSplitter.cdapIo;
+        ribdSplitter.rmtIo <--> rmtIo;
+        ribdSplitter.efcpIo <--> efcpIo;
 }

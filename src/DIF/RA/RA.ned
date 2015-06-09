@@ -23,6 +23,7 @@ simple RA
         @display("i=block/segm");
         
         @signal[RA-CreateFlowPositive](type=Flow?);
+        @signal[RA-CreateFlowNegative](type=Flow?);
         @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
         @signal[RA-InvokeSlowdown](type=cPacket?);
         @signal[RA-MgmtFlowAllocated](type=Flow?);

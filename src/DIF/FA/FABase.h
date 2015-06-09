@@ -21,13 +21,19 @@
 //RINASim libraries
 #include "FAITable.h"
 
+extern const char* TIM_FAPENDFLOWS;
+
 class FABase : public cSimpleModule {
   public:
 
     FABase();
     virtual ~FABase();
 
+    std::list<Flow*> PendingFlows;
+
     virtual bool receiveAllocateRequest(Flow* flow) = 0;
+    virtual bool receiveLocalMgmtAllocateRequest(Flow* flow) = 0;
+    virtual bool receiveMgmtAllocateFinish() = 0;
     virtual void receiveNM1FlowCreated(Flow* flow) = 0;
     //virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow) = 0;
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow) = 0;

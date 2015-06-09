@@ -3,13 +3,16 @@
     <ConnectionSets>
         <ConnectionSet id="all">
             <SimTime t="0">
-                <Connection src="101_Layer11" dst="106_Layer11" qosReq="1"/>
-                <Connection src="102_Layer11" dst="106_Layer11" qosReq="1"/>
+                <Connection src="102_Layer11" dst="105_Layer11" qosReq="mgmt"/>                
+            </SimTime>
+            <SimTime t="1">
+                <Connection src="106_Layer11" dst="101_Layer11" qosReq="1"/>
+                <Connection src="106_Layer11" dst="102_Layer11" qosReq="1"/>
                 <Connection src="106_Layer11" dst="107_Layer11" qosReq="1"/>
                 <Connection src="107_Layer11" dst="108_Layer11" qosReq="1"/>
                 <Connection src="108_Layer11" dst="104_Layer11" qosReq="1"/>
-                <Connection src="108_Layer11" dst="105_Layer11" qosReq="2"/>
-                <Connection src="102_Layer11" dst="105_Layer11" qosReq="2"/>
+                <Connection src="108_Layer11" dst="105_Layer11" qosReq="1"/>
+                <Connection src="102_Layer11" dst="105_Layer11" qosReq="2"/>                
             </SimTime>
         </ConnectionSet>
     </ConnectionSets>

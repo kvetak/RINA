@@ -22,6 +22,8 @@
 #include "ExternConsts.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
+#include "EnrollmentObj.h"
+#include "OperationObj.h"
 #include "CongestionDescriptor.h"
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
@@ -35,9 +37,17 @@ class RIBdBase : public cSimpleModule {
     virtual void sendCreateRequestFlow(Flow* flow) = 0;
     virtual void sendCreateResponseNegative(Flow* flow) = 0;
     virtual void sendCreateResponsePostive(Flow* flow) = 0;
+    virtual void sendStartEnrollmentRequest(EnrollmentObj* obj) = 0;
+    virtual void sendStartEnrollmentResponse(EnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentRequest(EnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentResponse(EnrollmentObj* obj) = 0;
+    virtual void sendStartOperationRequest(OperationObj* obj) = 0;
+    virtual void sendStartOperationResponse(OperationObj* obj) = 0;
     virtual void sendDeleteRequestFlow(Flow* flow) = 0;
     virtual void sendDeleteResponseFlow(Flow* flow) = 0;
+    virtual void sendCACE(CDAPMessage* msg) = 0;
     virtual void receiveData(CDAPMessage* flow) = 0;
+    virtual void receiveCACE(CDAPMessage* msg) = 0;
     virtual void receiveAllocationRequestFromFai(Flow* flow) = 0;
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow) = 0;
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow) = 0;
@@ -46,6 +56,7 @@ class RIBdBase : public cSimpleModule {
 
     virtual void sendCongestionNotification(PDU* pdu) = 0;
 
+    void setMyAddress(const Address& addr);
     const Address& getMyAddress() const;
 
   protected:

@@ -36,6 +36,7 @@ class RABase : public cSimpleModule
 
     virtual void createNM1Flow(Flow *flow) = 0;
     virtual void createNM1FlowWithoutAllocate(Flow *flow) = 0;
+    virtual void createNFlow(Flow *flow) = 0;
     virtual void postNFlowAllocation(Flow* flow) = 0;
     virtual void postNM1FlowAllocation(NM1FlowTableItem* ftItem) = 0;
     virtual void removeNM1Flow(Flow *flow) = 0;

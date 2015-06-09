@@ -31,11 +31,4 @@ protected:
     Auth* auth;
 };
 
-class LisAuthValidate: public AuthListeners {
-public:
-    LisAuthValidate(Auth* nauth): AuthListeners(nauth){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-
-};
-
 #endif /* AUTHLISTENERS_H_ */

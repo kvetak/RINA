@@ -126,3 +126,7 @@ std::ostream& operator <<(std::ostream& os, const Addresses& dims)
         os << it->info() << endl;
     return os;
 }
+
+Address::Address(APN apname) : Address(apname.getName())
+{
+}

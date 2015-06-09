@@ -84,62 +84,58 @@ void RMTPort::handleMessage(cMessage* msg)
 
         delete msg;
     }
-    else if (msg->getArrivalGate() == southInputGate) // incoming message
+    else
     {
-        if (dynamic_cast<CDAPMessage*>(msg) != NULL)
-        { // this will go away when management uses PDU headers as it should
-            send(msg, getFirstQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
-            emit(sigStatRMTPortUp, true);
-        }
-        else if (dynamic_cast<PDU*>(msg) != NULL)
+        PDU* pdu = NULL;
+        if ((pdu = dynamic_cast<PDU*>(msg)) != NULL)
         {
-            // get a proper queue for this message
-            RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
-                                             queueIdGen->generateInputQueueID((PDU*)msg).c_str());
-
-            if (inQueue != NULL)
+            if (msg->getArrivalGate() == southInputGate) // incoming message
             {
-                send(msg, inQueue->getInputGate()->getPreviousGate());
-                emit(sigStatRMTPortUp, true);
-            }
-            else
-            {
-                EV << "no input queue with such ID is available!";
-            }
-        }
-        else
-        {
-            EV << "this type of message isn't supported!" << endl;
-        }
-    }
-    else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
-    {
-        cPacket* packet = NULL;
-        if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
-        {
-            setOutputBusy();
-            // start the transmission
-            send(packet, southOutputGate);
+                // get a proper queue for this message
+                std::string queueID =
+                        queueIdGen->generateInputQueueID((PDU*)msg);
 
-            // determine when should the port be ready to serve again
-            if (outputChannel != NULL)
-            { // we're using a channel, likely with some sort of data rate/delay
-                simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
-                if (transmitEnd > simTime())
-                { // transmit requires some simulation time
-                    scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
+                RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
+
+                if (inQueue != NULL)
+                {
+                    send(msg, inQueue->getInputGate()->getPreviousGate());
+                    emit(sigStatRMTPortUp, true);
                 }
                 else
                 {
-                    scheduleNextWrite();
-                    emit(sigStatRMTPortDown, true);
+                    EV << getFullPath()
+                       << ": no input queue of such queue-id (" << queueID
+                       << ") available!" << endl;
+                    EV << pdu->getConnId().getQoSId() << endl;
                 }
             }
-            else
-            { // there isn't any delay or rate control in place
-                scheduleNextWrite();
-                emit(sigStatRMTPortDown, true);
-                emit(sigRMTPortReadyToWrite, this);
+            else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
+            {
+                setOutputBusy();
+                // start the transmission
+                send(pdu, southOutputGate);
+
+                // determine when should the port be ready to serve again
+                if (outputChannel != NULL)
+                { // we're using a channel, likely with some sort of data rate/delay
+                    simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
+                    if (transmitEnd > simTime())
+                    { // transmit requires some simulation time
+                        scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
+                    }
+                    else
+                    {
+                        scheduleNextWrite();
+                        emit(sigStatRMTPortDown, true);
+                    }
+                }
+                else
+                { // there isn't any delay or rate control in place, the PDU is already sent
+                    scheduleNextWrite();
+                    emit(sigStatRMTPortDown, true);
+                    emit(sigRMTPortReadyToWrite, this);
+                }
             }
         }
         else
@@ -328,20 +324,21 @@ void RMTPort::redrawGUI(bool redrawParent)
         if (redrawParent)
         {
             std::ostringstream ostr;
-            ostr << "dst app: " << dstAppAddr << endl;
+            ostr << "dstApp: " << endl << dstAppAddr << endl
+                 << "QoS-id: " << endl << dstAppQoS;
             if (blockedInput)
             {
-                ostr << "input blocked" << endl;
+                ostr << endl << "input blocked";
             }
             if (blockedOutput)
             {
-                ostr << "output blocked" << endl;
+                ostr << endl << "output blocked" << endl;
             }
 
             cDisplayString& dStr = getParentModule()->getDisplayString();
 
             dStr.setTagArg("t", 0, ostr.str().c_str());
-            dStr.setTagArg("t", 1, "t");
+            dStr.setTagArg("t", 1, "r");
         }
     }
 }
@@ -363,10 +360,12 @@ void RMTPort::setFlow(Flow* flow)
             // shitty temporary (yeah, right) hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();
             dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
+            dstAppQoS = flow->getConId().getQoSId();
         }
         else
         {
             dstAppAddr = "N/A (PHY)";
+            dstAppQoS = "N/A (medium)";
         }
         redrawGUI(true);
     }

@@ -18,8 +18,8 @@ package rina.src.DIF.FA;
 simple FAI
 {
     parameters:
-    	@display("i=block/rxtx");
-    	
+    	@display("i=block/rxtx");    	
+    	@signal[FAI-AllocateFinishManagement](type=Flow?);
     	@signal[FAI-DeallocateRequest](type=Flow?);
     	@signal[FAI-AllocateRequest](type=Flow?);
     	@signal[FAI-AllocateResponsePositive](type=Flow?);
@@ -35,5 +35,5 @@ simple FAI
     	int remotePortId 	= default(-1);
     	int remoteCEPId 	= default(-1);
     	       	
-    	double createRequestTimeout @unit(s) = default(10s);   	  	
+    	//double createRequestTimeout @unit(s) = default(10s);   	  	
 }

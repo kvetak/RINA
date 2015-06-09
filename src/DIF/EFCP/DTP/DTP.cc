@@ -789,7 +789,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       }
       else
       {
-        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd() + 1);
 //        state->incRcvLeftWindowEdge();
         //start A-Timer (for this PDU)
         startATimer(pdu->getSeqNum());

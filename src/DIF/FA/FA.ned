@@ -26,7 +26,7 @@ simple FA
     	//@signal[FA-CreateFlowResponseNegative](type=Flow?);
     	//@signal[FA-CreateFlowResponsePositive](type=Flow?);    	
     	
-    	double createRequestTimeout @unit(s) = default(10s);   
+    	//double createRequestTimeout @unit(s) = default(10s);   
     	    	
     gates:        
 

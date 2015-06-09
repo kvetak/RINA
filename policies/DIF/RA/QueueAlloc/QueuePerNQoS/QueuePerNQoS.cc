@@ -19,24 +19,15 @@
 
 Define_Module(QueuePerNQoS);
 
-
 void QueuePerNQoS::onNM1PortInit(RMTPort* port)
 {
-    // get a list of QoS cubes
+    // get this IPCP's QoS cubes
     const QoSCubeSet& cubes = ra->getQoSCubes();
 
-    // create a pair of queues for each available data QoS cube
-    std::ostringstream idString;
+    // create a pair of queues for each available QoS cube (including management)
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
     {
-        // exclude management QoS, this is handled in a different way
-        if (it->getQosId() == VAL_MGMTQOSID) continue;
-
-        idString << it->getQosId();
-        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, idString.str().c_str());
-        rmtAllocator->addQueue(RMTQueue::INPUT, port, idString.str().c_str());
-        // clear the buffer
-        idString.str(std::string());
-        idString.clear();
+        rmtAllocator->addQueue(RMTQueue::OUTPUT, port, it->getQosId().c_str());
+        rmtAllocator->addQueue(RMTQueue::INPUT, port, it->getQosId().c_str());
     }
 }

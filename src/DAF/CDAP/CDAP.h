@@ -24,6 +24,8 @@
 #include "CDAPMessage_m.h"
 #include "ExternConsts.h"
 
+
+class LisCDAPSendData;
 class CDAP : public cSimpleModule
 {
   public:

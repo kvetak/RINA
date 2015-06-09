@@ -24,7 +24,7 @@ void CDAP::initialize()
 
 void CDAP::handleMessage(cMessage* msg)
 {
-    //Pass CDAP message to AE or RIBd
+    //Pass CDAP message to AE or RIBd or Enrollment
     if (dynamic_cast<CDAPMessage*>(msg)) {
         CDAPMessage* cmsg = check_and_cast<CDAPMessage*>(msg);
         signalizeReceiveData(cmsg);
@@ -36,6 +36,7 @@ void CDAP::handleMessage(cMessage* msg)
 
 void CDAP::initSignalsAndListeners() {
     cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_ENROLLMENTMODULE)->getSubmodule(MOD_ENROLLMENT);
 
     //Signals emmited by this module
     sigCDAPReceiveData = registerSignal(SIG_CDAP_DateReceive);
