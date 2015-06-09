@@ -1,5 +1,13 @@
 <?xml version="1.0"?>
 <Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="1">
+                <Connection src="A_LayerAB" dst="Z_LayerAB" qosReq="mgmt"/>
+                <Connection src="B_LayerAB" dst="Z_LayerAB" qosReq="mgmt"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
 
 	<Host id="HostA12">
 		<DA>
