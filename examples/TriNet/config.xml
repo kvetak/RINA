@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Configuration>
+	<ConnectionSets>
+		<ConnectionSet id="all">
+			<SimTime t="0">
+				<Connection src="A_NET" dst="B_NET" qosReq="mgmt"/>
+				<Connection src="A_NET" dst="C_NET" qosReq="mgmt"/>
+				<Connection src="D_NET" dst="B_NET" qosReq="mgmt"/>
+				<Connection src="D_NET" dst="C_NET" qosReq="mgmt"/>
+			</SimTime>
+		</ConnectionSet>
+	</ConnectionSets>
+	
+	<DA>
+		<Directory>
+			<APN apn="A_NET">
+				<DIF difName="AB" ipcAddress="A" />
+				<DIF difName="AC" ipcAddress="A" />
+			</APN>
+			<APN apn="B_NET">
+				<DIF difName="AB" ipcAddress="B" />
+				<DIF difName="BD" ipcAddress="B" />
+			</APN>
+			<APN apn="C_NET">
+				<DIF difName="AC" ipcAddress="C" />
+				<DIF difName="CD" ipcAddress="C" />
+			</APN>
+			<APN apn="D_NET">
+				<DIF difName="CD" ipcAddress="D" />
+				<DIF difName="BD" ipcAddress="D" />
+			</APN>
+		</Directory>
+		<NamingInfo>
+		</NamingInfo>
+	</DA>
+</Configuration>

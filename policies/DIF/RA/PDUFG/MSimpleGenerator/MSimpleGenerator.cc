@@ -13,19 +13,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <SimpleGenerator/SimpleGenerator.h>
+#include <MSimpleGenerator/MSimpleGenerator.h>
 #include "APN.h"
 
 
 
-namespace SimpleGenerator {
+namespace MSimpleGenerator {
 
-Register_Class(SimpleGenerator);
+Register_Class(MSimpleGenerator);
 
 using namespace std;
 
 // A new flow has been inserted/or removed
-void SimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
+void MSimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].insert(port);
     if(neighbours[dst].size() == 1){
@@ -33,7 +33,7 @@ void SimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
         routingUpdated();
     }
 }
-void SimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
+void MSimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){
@@ -44,36 +44,35 @@ void SimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
 }
 
 //Routing has processes a routing update
-void SimpleGenerator::routingUpdated(){
+void MSimpleGenerator::routingUpdated(){
     entries2Next changes = rt->getChanges();
 
     for(entries2NextIt it = changes.begin(); it!= changes.end(); it++){
         qosPaddr dst = it->first;
-        std::string nextHop = "";
-        if(!it->second.nh.empty()){
-            nextHop = *(it->second.nh.begin());
-        }
-        RMTPort * p = NULL;
-        if(nextHop != "") {
-            NTableIt n = neighbours.find(nextHop);
-            if(n != neighbours.end()){
-                if(!n->second.empty()) {
-                    p = *(n->second.begin());
+        std::vector< RMTPort * > ps;
+
+        for(std::string nextHop : it->second.nh){
+            RMTPort * p = NULL;
+            if(nextHop != "") {
+                NTableIt n = neighbours.find(nextHop);
+                if(n != neighbours.end()){
+                    if(!n->second.empty()) {
+                        p = *(n->second.begin());
+                    }
                 }
             }
-        }
-        if(p == NULL) {
-            fwd->remove(dst.second);
-        } else {
-            fwd->insert(dst.second, p);
+            if(p != NULL) {
+                ps.push_back(p);
+            }
+            fwd->addReplace(dst.second, ps);
         }
     }
 }
 
 // Called after initialize
-void SimpleGenerator::onPolicyInit(){
+void MSimpleGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<IntMiniForwarding *>
+    fwd = check_and_cast<IntMMForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
     rt = check_and_cast<IntSimpleRouting *>
         (getModuleByPath("^.^.routingPolicy"));

@@ -58,12 +58,15 @@ void SimpleDV::insertFlow(const Address &addr, const std::string &dst, const std
         entryChangedDst = true;
     }
 
+    entType et;
     if(oldEntry->metric >= infMetric){
-        changes.insert(entries2NextItem(qosPaddr(qos, dst),""));
+        et.metric = infMetric;
         table[qos].erase(dst);
     } else if(entryChangedDst){
-        changes.insert(entries2NextItem(qosPaddr(qos, dst),dst));
+        et.metric = infMetric;
+        et.nh.insert(dst);
     }
+    changes[qosPaddr(qos, dst)] = et;
     scheduleUpdate();
 }
 void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std::string& qos){
@@ -74,13 +77,16 @@ void SimpleDV::removeFlow(const Address &addr, const std::string &dst, const std
 
     tTable * qosTable = &table[qos];
 
+
     for(tTableIt it = qosTable->begin(); it != qosTable->end();){
         rtEntry * oldEntry = &it->second;
         tTableIt actIt = it;
         it++;
 
         if(oldEntry->addr == dst){
-            changes.insert(entries2NextItem(qosPaddr(qos, oldEntry->addr),""));
+            entType et;
+            et.metric = infMetric;
+            changes[qosPaddr(qos, oldEntry->addr)] = et;
             qosTable->erase(actIt);
         }
     }
@@ -97,13 +103,17 @@ entries2Next SimpleDV::getChanges(){
 entries2Next SimpleDV::getAll(){
     entries2Next ret;
 
+
     for(rtTableIt it = table.begin(); it != table.end(); it++){
         for(tTableIt it2 = it->second.begin(); it2 != it->second.end(); it2++){
+            entType et;
             if(it2->second.metric < infMetric) {
-                ret[qosPaddr(it->first, it2->first)] = it2->second.addr;
+                et.metric = it2->second.metric;
+                et.nh.insert(it2->second.addr);
             } else {
-                ret[qosPaddr(it->first, it2->first)] = "";
+                et.metric = infMetric;
             }
+            ret[qosPaddr(it->first, it2->first)] = et;
         }
     }
     map<unsigned short, map<string, rtEntry> > table;
@@ -144,12 +154,17 @@ bool SimpleDV::processUpdate(IntRoutingUpdate * update){
             chan = true;
         }
 
+        entType et;
+
         if(oldEntry->metric >= infMetric){
-            changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),""));
+            et.metric = infMetric;
+            changes[qosPaddr(qos, newEntry->addr)] = et;
             table[qos].erase(newEntry->addr);
             chan = true;
         } else if(entryChangedDst){
-            changes.insert(entries2NextItem(qosPaddr(qos, newEntry->addr),src));
+            et.metric = oldEntry->metric;
+            et.nh.insert(src);
+            changes[qosPaddr(qos, newEntry->addr)] = et;
             chan = true;
         }
     }

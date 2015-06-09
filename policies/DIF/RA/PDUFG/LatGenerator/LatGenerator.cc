@@ -87,7 +87,10 @@ void LatGenerator::routingUpdated(){
 
     for(entries2NextIt it = changes.begin(); it!= changes.end(); it++){
         qosPaddr dst = it->first;
-        std::string nextHop = it->second;
+        std::string nextHop = "";
+        if(!it->second.nh.empty()){
+            nextHop = *(it->second.nh.begin());
+        }
         RMTPort * p = NULL;
         if(nextHop != "") {
             NTableIt n = neighbours.find(nextHop);

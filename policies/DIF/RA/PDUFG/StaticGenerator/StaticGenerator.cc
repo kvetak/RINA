@@ -29,10 +29,12 @@ void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
     for(QoSCube qosI : cubes) {
         if(comparer->isValid(qosI, qos)) {
             fwd->insert(addr, qosI.getQosId(), port);
+            fwd->insert(addr, port);
             const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
             if (remoteApps) {
                 for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it) {
                     fwd->insert(Address(it->getName()), qosI.getQosId(), port);
+                    fwd->insert(Address(it->getName()), port);
                 }
             }
         }
@@ -41,16 +43,45 @@ void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
     if(qos.getQosId() == VAL_UNDEF_QOSID) {
         error("Undef QoS");
     }
+
 }
 void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
     //Iterate through all QoS cubes and check if exist an entry with qos
     for(QoSCube qosI : cubes) {
-        if(!fwd->lookup(addr, qosI.getQosId()).empty()){
-            fwd->remove(addr, qosI.getQosId());
-            const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
-            if (remoteApps) {
+        auto res = fwd->lookup(addr, qosI.getQosId());
+        if(!res.empty()){
+            RMTPort * tp = *res.begin();
+            if(tp == port){
+                fwd->remove(addr, qosI.getQosId());
+            }
+            if (const APNList* remoteApps = difA->findNeigborApns(addr.getApname())) {
                 for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
-                    fwd->remove(Address(it->getName()), qosI.getQosId());
+                    res = fwd->lookup(Address(it->getName()), qosI.getQosId());
+                    if(!res.empty()) {
+                        tp = *res.begin();
+                        if(tp == port){
+                            fwd->remove(Address(it->getName()), qosI.getQosId());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    auto res = fwd->lookup(addr, ANY_QOS);
+    if(!res.empty()){
+        RMTPort * tp = *res.begin();
+        if(tp == port){
+            fwd->remove(addr);
+        }
+        if (const APNList* remoteApps = difA->findNeigborApns(addr.getApname())) {
+            for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
+                res = fwd->lookup(Address(it->getName()), ANY_QOS);
+                if(!res.empty()) {
+                    tp = *res.begin();
+                    if(tp == port){
+                        fwd->remove(Address(it->getName()));
+                    }
                 }
             }
         }

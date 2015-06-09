@@ -37,7 +37,7 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
 }
 
 void IntPDUFG::insertFlowInfo(Address addr, QoSCube qos, RMTPort * port) {
-    EV << "New flow -> <" << addr << " , " << qos.getQosId() << "> at " << port->getFullName()<<endl;
+    EV << "New flow -> <" << addr << " , " << qos.getQosId() << "> at " << port->getFullPath()<<endl;
 
     //Insert Flow into neighbour state
     neiState.push_back(new PDUFGNeighbor(addr, qos.getQosId(), port));
