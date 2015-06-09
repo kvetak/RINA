@@ -36,7 +36,7 @@ void CDAP::handleMessage(cMessage* msg)
 
 void CDAP::initSignalsAndListeners() {
     cModule* catcher = this->getParentModule()->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_ENROLLMENTMODULE)->getSubmodule(MOD_ENROLLMENT);
+    //cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_ENROLLMENTMODULE)->getSubmodule(MOD_ENROLLMENT);
 
     //Signals emmited by this module
     sigCDAPReceiveData = registerSignal(SIG_CDAP_DateReceive);
