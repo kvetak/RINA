@@ -13,14 +13,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.policies.DIF.EFCP.DTCP.ReconcileFC.ReconcileFCPolicyDefault;
-import rina.policies.DIF.EFCP.DTCP.ReconcileFC.IntReconcileFCPolicy;
-//
-// TODO auto-generated type
-//
-simple ReconcileFCPolicyDefault like IntReconcileFCPolicy
+#include <DTCPECNSlowDownPolicyDefault/DTCPECNSlowDownPolicyDefault.h>
+
+DTCPECNSlowDownPolicyDefault::~DTCPECNSlowDownPolicyDefault() {
+    // TODO Auto-generated destructor stub
+}
+
+DTCPECNSlowDownPolicyDefault::DTCPECNSlowDownPolicyDefault() {
+    // TODO Auto-generated constructor stub
+
+}
+
+void DTCPECNSlowDownPolicyDefault::initialize(int step)
 {
-    parameters:
-        string policyName = "InitialSeqNum Default";
-        @display("i=block/socket");
+
+}
+
+bool DTCPECNSlowDownPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+    return false;
 }

@@ -20,6 +20,7 @@ RTTEstimatorPolicyTCP::RTTEstimatorPolicyTCP() {
     state = STATE_FIRST;
     k = 4;
     G = 0.1;
+    RTO = 1;
 
     sigStatTCPRTO = registerSignal("TCP_RTO");
 }
