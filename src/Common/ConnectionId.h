@@ -110,6 +110,13 @@ class ConnectionId: public cObject {
      */
     ConnectionId& swapCepIds();
 
+
+    /**
+     * @brief Info text outpu suitable for << strinng streams and WATCH
+     * @return
+     */
+    std::string info() const;
+
   protected:
     /**
      * @brief QoS-cube identifier
@@ -127,5 +134,8 @@ class ConnectionId: public cObject {
     int dstCEPId;
 
 };
+
+
+std::ostream& operator<< (std::ostream& os, const ConnectionId& connId);
 
 #endif /* CONNECTIONID_H_ */

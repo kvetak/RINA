@@ -17,7 +17,7 @@
 	  		<Connection src="r2_NET" dst="r1_NET" qosReq="1"/>
 	  		<Connection src="r3_NET" dst="r1_NET" qosReq="1"/>
 	  		<Connection src="h2_NET" dst="r4_NET" qosReq="1"/>
-	  		<Connection src="r2_NET" dst="r4_NET" qosReq="1"/>
+	  		<Connection src="r2_NET" dst="r4_NET" qosReq="15"/>
 	  		<Connection src="r3_NET" dst="r4_NET" qosReq="10"/>
 	  	</SimTime>
 	</ConnectionSet>
