@@ -17,7 +17,7 @@
 #define SingleDomainGenerator_H_
 
 #include <IntPDUFG.h>
-#include <MiniTable/MiniTable.h>
+#include <IntMiniForwarding.h>
 #include <DomainRouting/Routing.h>
 
 #include <map>
@@ -35,8 +35,8 @@ typedef NTable::iterator NTableIt;
 class SingleDomainGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const std::string& qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const std::string& qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
+    virtual void removedFlow(const Address &addr, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();
@@ -47,7 +47,7 @@ protected:
 
 private:
     DA * difA;
-    MiniTable::MiniTable * fwd;
+    IntMiniForwarding * fwd;
     DMRnms::Routing * rt;
 
     NTable neighbours;

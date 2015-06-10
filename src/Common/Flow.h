@@ -72,6 +72,8 @@ class Flow : public cObject
      */
     virtual Flow* dup() const;
 
+    Flow* dupToMgmt() const;
+
     //Various string output functions
     /**
      * @brief Prints Flow information as string
@@ -139,6 +141,11 @@ class Flow : public cObject
      * @param conId A new ConnectionId instance
      */
     void setConId(const ConnectionId& conId);
+
+
+    void setQosCube(const QoSCube& qosCube);
+
+    const QoSCube& getQosCube() const;
 
     /**
      * @brief Gets QoS parameters wanted by flow initiator
@@ -332,6 +339,10 @@ class Flow : public cObject
      */
     void setDdtFlag(bool ddtFlag);
 
+    bool isManagementFlow() const;
+
+    bool isManagementFlowLocalToIPCP() const;
+
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
 
@@ -394,6 +405,12 @@ class Flow : public cObject
      * @brief Attribute holding flow's hop-count
      */
     uint32_t hopCount;
+
+
+    /**
+     * @brief Attribute holding the assigned QoSCube
+     */
+    QoSCube qosCube;
 
     /**
      * @brief Attribute holding wanted QoS parameters in form of QoSReq

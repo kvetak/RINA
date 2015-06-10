@@ -55,8 +55,16 @@ class RIBd : public RIBdBase {
     virtual void sendCreateResponseNegative(Flow* flow);
     virtual void sendCreateResponsePostive(Flow* flow);
     virtual void sendDeleteRequestFlow(Flow* flow);
+    virtual void sendStartEnrollmentRequest(EnrollmentObj* obj);
+    virtual void sendStartEnrollmentResponse(EnrollmentObj* obj);
+    virtual void sendStopEnrollmentRequest(EnrollmentObj* obj);
+    virtual void sendStopEnrollmentResponse(EnrollmentObj* obj);
+    virtual void sendStartOperationRequest(OperationObj* obj);
+    virtual void sendStartOperationResponse(OperationObj* obj);
     virtual void sendDeleteResponseFlow(Flow* flow);
     virtual void receiveData(CDAPMessage* cimsg);
+    virtual void receiveCACE(CDAPMessage* msg);
+    virtual void sendCACE(CDAPMessage* msg);
     virtual void receiveAllocationRequestFromFai(Flow* flow);
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
@@ -75,6 +83,18 @@ class RIBd : public RIBdBase {
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative(Flow* flow);
     void signalizeCongestionNotification(CongestionDescriptor* congDesc);
+
+    void signalizeConnectResponsePositive(CDAPMessage* msg);
+    void signalizeConnectResponseNegative(CDAPMessage* msg);
+    void signalizeConnectRequest(CDAPMessage* msg);
+    void signalizeSendCACE(CDAPMessage* msg);
+
+    void signalizeStartEnrollmentRequest(CDAPMessage* msg);
+    void signalizeStartEnrollmentResponse(CDAPMessage* msg);
+    void signalizeStopEnrollmentRequest(CDAPMessage* msg);
+    void signalizeStopEnrollmentResponse(CDAPMessage* msg);
+    void signalizeStartOperationRequest(CDAPMessage* msg);
+    void signalizeStartOperationResponse(CDAPMessage* msg);
 
   protected:
 
@@ -96,9 +116,22 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDCreFlow;
     simsignal_t sigRIBDCongNotif;
 
+    simsignal_t sigRIBDStartEnrollReq;
+    simsignal_t sigRIBDStartEnrollRes;
+    simsignal_t sigRIBDStopEnrollReq;
+    simsignal_t sigRIBDStopEnrollRes;
+    simsignal_t sigRIBDStartOperationReq;
+    simsignal_t sigRIBDStartOperationRes;
+
+    simsignal_t sigRIBDConResPosi;
+    simsignal_t sigRIBDConResNega;
+    simsignal_t sigRIBDConReq;
+    simsignal_t sigRIBDCACESend;
+
     /* Emit update received signal. */
     //simsignal_t sigRIBDFwdUpdateRecv;
     simsignal_t sigRIBDRoutingUpdateRecv;
+
 
     //Listeners
     LisRIBDRcvData*             lisRIBDRcvData;
@@ -114,9 +147,20 @@ class RIBd : public RIBdBase {
     LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
     LisRIBDCongesNotif*         lisRIBDCongNotif;
+    LisRIBDRcvCACE*             lisRIBDRcvCACE;
+    LisRIBDRcvEnrollCACE*       lisRIBDRcvEnrollCACE;
+    LisRIBDStaEnrolReq*         lisRIBDStaEnrolReq;
+    LisRIBDStaEnrolRes*         lisRIBDStaEnrolRes;
+    LisRIBDStoEnrolReq*         lisRIBDStoEnrolReq;
+    LisRIBDStoEnrolRes*         lisRIBDStoEnrolRes;
+    LisRIBDStaOperReq*          lisRIBDStaOperReq;
+    LisRIBDStaOperRes*          lisRIBDStaOperRes;
 
     /* Listen for PDUFTG update messages. */
     LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
+
+    void processMConnect(CDAPMessage* msg);
+    void processMConnectR(CDAPMessage* msg);
 
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);
@@ -125,6 +169,9 @@ class RIBd : public RIBdBase {
     void processMWrite(CDAPMessage* msg);
 
     void processMStart(CDAPMessage* msg);
+    void processMStartR(CDAPMessage* msg);
+    void processMStop(CDAPMessage* msg);
+    void processMStopR(CDAPMessage* msg);
 
 };
 

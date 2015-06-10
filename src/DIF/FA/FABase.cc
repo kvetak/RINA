@@ -16,6 +16,8 @@
 
 #include "FABase.h"
 
+const char* TIM_FAPENDFLOWS = "FA-PendingFlows";
+
 FABase::FABase() {
     this->FaiTable = NULL;
 }

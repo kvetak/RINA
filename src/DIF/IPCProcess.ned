@@ -15,11 +15,10 @@
 
 package rina.src.DIF;
 
-
 import rina.src.Common.Test;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DIF.EFCP.EFCPModule;
-import rina.src.DIF.Enrollment.Enrollment;
+import rina.src.DIF.Enrollment.EnrollmentModule;
 import rina.src.DIF.FA.FlowAllocator;
 import rina.src.DIF.RA.ResourceAllocator;
 import rina.src.DIF.RIB.RIBDaemon;
@@ -52,7 +51,7 @@ module IPCProcess
         efcp: EFCPModule {
             @display("p=79,50");
         }
-        enrollment: Enrollment {
+        enrollmentModule: EnrollmentModule {
             @display("p=390,50");
         }
         routingPolicy: <routingPolicyName> like IntRouting {
@@ -63,5 +62,7 @@ module IPCProcess
         }
 
     connections allowunconnected:
-        relayAndMux.ribdIo <--> ribDaemon.rmtIo;
+        relayAndMux.ribdIo <--> efcp.mockToRMT;
+        ribDaemon.efcpIo <--> efcp.ribd;
+        
 }

@@ -77,6 +77,7 @@ class RA : public RABase
     virtual void createNM1Flow(Flow* flow);
     virtual void createNM1FlowWithoutAllocate(Flow* flow);
     virtual void removeNM1Flow(Flow* flow);
+    virtual void createNFlow(Flow *flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
     virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem);
     virtual void unblockNM1PortOutput(NM1FlowTableItem* ftItem);
@@ -97,6 +98,7 @@ class RA : public RABase
     cModule* rmtModule;
     RMT* rmt;
     RMTModuleAllocator* rmtAllocator;
+    FABase* fa;
     NM1FlowTable* flowTable;
     QueueAllocBase* qAllocPolicy;
 

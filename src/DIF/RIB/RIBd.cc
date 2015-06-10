@@ -168,9 +168,36 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Write*>(msg)) {
         processMWrite(msg);
     }
-    //M_START
+    //M_START_Request
     else if (dynamic_cast<CDAP_M_Start*>(msg)) {
         processMStart(msg);
+    }
+    //M_START_Response
+    else if (dynamic_cast<CDAP_M_Start_R*>(msg)) {
+        processMStartR(msg);
+    }
+    //M_Stop_Request
+    else if (dynamic_cast<CDAP_M_Stop*>(msg)) {
+        processMStop(msg);
+    }
+    //M_Stop_Response
+    else if (dynamic_cast<CDAP_M_Stop_R*>(msg)) {
+        processMStopR(msg);
+    }
+
+    delete msg;
+}
+
+void RIBd::receiveCACE(CDAPMessage* msg) {
+    Enter_Method("receiveCACE()");
+
+    //M_CONNECT_Request
+    if (dynamic_cast<CDAP_M_Connect*>(msg)) {
+        processMConnect(msg);
+    }
+    //M_CONNECT_Response
+    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)) {
+        processMConnectR(msg);
     }
 
     delete msg;
@@ -194,6 +221,19 @@ void RIBd::initSignalsAndListeners() {
    // sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
     sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
     sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
+
+    sigRIBDStartEnrollReq = registerSignal(SIG_RIBD_StartEnrollmentRequest);
+    sigRIBDStartEnrollRes = registerSignal(SIG_RIBD_StartEnrollmentResponse);
+    sigRIBDStopEnrollReq  = registerSignal(SIG_RIBD_StopEnrollmentRequest);
+    sigRIBDStopEnrollRes  = registerSignal(SIG_RIBD_StopEnrollmentResponse);
+    sigRIBDStartOperationReq = registerSignal(SIG_RIBD_StartOperationRequest);
+    sigRIBDStartOperationRes = registerSignal(SIG_RIBD_StartOperationResponse);
+
+    sigRIBDConResPosi    = registerSignal(SIG_RIBD_ConnectionResponsePositive);
+    sigRIBDConResNega    = registerSignal(SIG_RIBD_ConnectionResponseNegative);
+    sigRIBDConReq        = registerSignal(SIG_RIBD_ConnectionRequest);
+    sigRIBDCACESend      = registerSignal(SIG_RIBD_CACESend);
+
 
     //Signals that this module is processing
 
@@ -234,12 +274,43 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDCongNotif = new LisRIBDCongesNotif(this);
     catcher2->subscribe(SIG_RA_InvokeSlowdown, lisRIBDCongNotif);
 
+
+    lisRIBDRcvCACE = new LisRIBDRcvCACE(this);
+    catcher1->subscribe(SIG_CACE_DataReceive, lisRIBDRcvCACE);
+
+    lisRIBDRcvEnrollCACE = new LisRIBDRcvEnrollCACE(this);
+    catcher2->subscribe(SIG_ENROLLMENT_CACEDataSend, lisRIBDRcvEnrollCACE);
+
+    lisRIBDStaEnrolReq = new LisRIBDStaEnrolReq(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StartEnrollmentRequest, lisRIBDStaEnrolReq);
+
+    lisRIBDStaEnrolRes = new LisRIBDStaEnrolRes(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StartEnrollmentResponse, lisRIBDStaEnrolRes);
+
+    lisRIBDStoEnrolReq = new LisRIBDStoEnrolReq(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentRequest, lisRIBDStoEnrolReq);
+
+    lisRIBDStoEnrolRes = new LisRIBDStoEnrolRes(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StopEnrollmentResponse, lisRIBDStoEnrolRes);
+
+    lisRIBDStaOperReq = new LisRIBDStaOperReq(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StartOperationRequest, lisRIBDStaOperReq);
+
+    lisRIBDStaOperRes = new LisRIBDStaOperRes(this);
+    catcher2->subscribe(SIG_ENROLLMENT_StartOperationResponse, lisRIBDStaOperRes);
+
 }
 
 void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
-    //Execute flow allocate
-    signalizeCreateFlow(flow);
+    if (flow->isManagementFlowLocalToIPCP())
+    {
+        receiveCreateFlowPositiveFromRa(flow);
+    }
+    else {
+        //Execute flow allocate
+        signalizeCreateFlow(flow);
+    }
 }
 
 void RIBd::sendCreateResponseNegative(Flow* flow) {
@@ -513,6 +584,185 @@ void RIBd::signalizeCongestionNotification(CongestionDescriptor* congDesc) {
     emit(sigRIBDCongNotif, congDesc);
 }
 
+void RIBd::signalizeConnectResponsePositive(CDAPMessage* msg) {
+    EV << "Emits ConnectResponsePositive to enrollment" << endl;
+    emit(sigRIBDConResPosi, msg);
+}
+
+void RIBd::signalizeConnectResponseNegative(CDAPMessage* msg) {
+    EV << "Emits ConnectResponseNegative to enrollment" << endl;
+    emit(sigRIBDConResNega, msg);
+}
+
+void RIBd::signalizeConnectRequest(CDAPMessage* msg) {
+    EV << "Emits ConnectRequest to enrollment" << endl;
+    emit(sigRIBDConReq, msg);
+}
+
+void RIBd::signalizeSendCACE(CDAPMessage* msg) {
+    EV << "Emits CACE data to CACE module" << endl;
+    emit(sigRIBDCACESend, msg);
+}
+
+void RIBd::signalizeStartEnrollmentRequest(CDAPMessage* msg) {
+    EV << "Emits StartEnrollmentRequest to enrollment" << endl;
+    emit(sigRIBDStartEnrollReq, msg);
+}
+
+void RIBd::signalizeStartEnrollmentResponse(CDAPMessage* msg) {
+    EV << "Emits StartEnrollmentResponse to enrollment" << endl;
+    emit(sigRIBDStartEnrollRes, msg);
+}
+
+void RIBd::signalizeStopEnrollmentRequest(CDAPMessage* msg) {
+    EV << "Emits StopEnrollmentRequest to enrollment" << endl;
+    emit(sigRIBDStopEnrollReq, msg);
+}
+
+void RIBd::signalizeStopEnrollmentResponse(CDAPMessage* msg) {
+    EV << "Emits StopEnrollmentResponse to enrollment" << endl;
+    emit(sigRIBDStopEnrollRes, msg);
+}
+
+void RIBd::signalizeStartOperationRequest(CDAPMessage* msg) {
+    EV << "Emits StartOperationRequest to enrollment" << endl;
+    emit(sigRIBDStartOperationReq, msg);
+}
+
+void RIBd::signalizeStartOperationResponse(CDAPMessage* msg) {
+    EV << "Emits StartOperationResponse to enrollment" << endl;
+    emit(sigRIBDStartOperationRes, msg);
+}
+
+void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
+    Enter_Method("sendStartEnrollmentRequest()");
+
+    CDAP_M_Start* msg = new CDAP_M_Start("Start Enrollment");
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+    msg->setOpCode(M_START);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeSendData(msg);
+}
+
+void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
+    Enter_Method("sendStartEnrollmentResponse()");
+
+    CDAP_M_Start_R* msg = new CDAP_M_Start_R("Start_R Enrollment");
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+    msg->setOpCode(M_START_R);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeSendData(msg);
+}
+
+void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
+    Enter_Method("sendStopEnrollmentRequest()");
+
+    CDAP_M_Stop* msg = new CDAP_M_Stop("Stop Enrollment");
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+    msg->setOpCode(M_STOP);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeSendData(msg);
+}
+
+void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
+    Enter_Method("sendStopEnrollmentResponse()");
+
+    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R("Stop_R Enrollment");
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+    msg->setOpCode(M_STOP_R);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeSendData(msg);
+}
+
+void RIBd::sendStartOperationRequest(OperationObj* obj) {
+    Enter_Method("sendStartOperationRequest()");
+}
+
+void RIBd::sendStartOperationResponse(OperationObj* obj) {
+    Enter_Method("sendStartOperationResponse()");
+}
+
+void RIBd::processMConnect(CDAPMessage* msg) {
+    CDAP_M_Connect* msg1 = check_and_cast<CDAP_M_Connect*>(msg);
+
+    EV << "Received M_Connect";
+
+    if (msg1) {
+        signalizeConnectRequest(msg);
+    }
+}
+
+void RIBd::processMConnectR(CDAPMessage* msg) {
+    CDAP_M_Connect_R* msg1 = check_and_cast<CDAP_M_Connect_R*>(msg);
+
+    EV << "Received M_Connect_R";
+
+    if (msg1) {
+        if (!msg1->getResult().resultValue) {
+            signalizeConnectResponsePositive(msg);
+        }
+        else {
+            signalizeConnectResponseNegative(msg);
+        }
+    }
+}
+
 void RIBd::processMStart(CDAPMessage* msg) {
     CDAP_M_Start* msg1 = check_and_cast<CDAP_M_Start*>(msg);
 
@@ -528,4 +778,56 @@ void RIBd::processMStart(CDAPMessage* msg) {
         signalizeCongestionNotification(congdesc);
     }
 
+    //Enrollment
+    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+       signalizeStartEnrollmentRequest(msg);
+    }
+
+}
+
+void RIBd::processMStartR(CDAPMessage* msg) {
+    CDAP_M_Start_R* msg1 = check_and_cast<CDAP_M_Start_R*>(msg);
+
+    EV << "Received M_Start_R";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //Enrollment
+    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+        signalizeStartEnrollmentResponse(msg);
+    }
+}
+
+void RIBd::processMStop(CDAPMessage* msg) {
+    CDAP_M_Stop* msg1 = check_and_cast<CDAP_M_Stop*>(msg);
+
+    EV << "Received M_Stop";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //Enrollment
+    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+        signalizeStopEnrollmentRequest(msg);
+    }
+}
+
+void RIBd::processMStopR(CDAPMessage* msg) {
+    CDAP_M_Stop_R* msg1 = check_and_cast<CDAP_M_Stop_R*>(msg);
+
+    EV << "Received M_Stop_R";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+    //Enrollment
+    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+        signalizeStopEnrollmentResponse(msg);
+    }
+}
+
+void RIBd::sendCACE(CDAPMessage* msg) {
+    Enter_Method("sendCACE()");
+
+    //TODO: add invoke id
+
+    signalizeSendCACE(msg);
 }

@@ -155,6 +155,16 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
+
+void Flow::setQosCube(const QoSCube& qosCube) {
+    this->qosCube = qosCube;
+}
+
+const QoSCube& Flow::getQosCube() const {
+    return qosCube;
+}
+
+
 const QoSReq& Flow::getQosRequirements() const {
     return qosReqs;
 }
@@ -173,6 +183,7 @@ Flow* Flow::dup() const {
     flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
+    flow->setQosCube(this->getQosCube());
     flow->setQosRequirements(this->getQosRequirements());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());
@@ -209,9 +220,9 @@ void Flow::swapCepIds() {
 
 std::string Flow::infoSource() const {
     std::stringstream os;
-    os << "SRC> " << srcApni
+    os << "SRC> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << srcApni
        << "\n   address:  " << srcAddr
-       << "\n   neighbor: " << srcNeighbor
+       << ", neighbor: " << srcNeighbor
        << "\n   port: " << srcPortId
        << "\n   cep: " << conId.getSrcCepId();
     return os.str();
@@ -219,9 +230,9 @@ std::string Flow::infoSource() const {
 
 std::string Flow::infoDestination() const {
     std::stringstream os;
-    os << "DST> " << dstApni
+    os << "DST> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << dstApni
        << "\n   address:  " << dstAddr
-       << "\n   neighbor: " << dstNeighbor
+       << ", neighbor: " << dstNeighbor
        << "\n   port: " << dstPortId
        << "\n   cep: " << conId.getDstCepId();
     return os.str();
@@ -238,7 +249,11 @@ std::string Flow::infoOther() const {
 
 std::string Flow::infoQoS() const {
     std::stringstream os;
-    os << "Chosen RA's QoS cube>" << conId.getQoSId();
+    os << "Chosen RA's QoS cube: " << conId.getQoSId();
+    if (this->isManagementFlow() && !this->isManagementFlowLocalToIPCP())
+    {
+        os << " (aggregated)";
+    }
     os << endl << qosReqs.info();
     return os.str();
 }
@@ -328,4 +343,22 @@ const Address& Flow::getSrcNeighbor() const {
 
 void Flow::setSrcNeighbor(const Address& srcNeighbor) {
     this->srcNeighbor = srcNeighbor;
+}
+
+Flow* Flow::dupToMgmt() const {
+    Flow* mgmtflow = this->dup();
+    mgmtflow->setQosRequirements(QoSReq::MANAGEMENT);
+    mgmtflow->setSrcApni(getSrcAddr().getApname());
+    mgmtflow->setDstApni(getDstAddr().getApname());
+    return mgmtflow;
+}
+
+bool Flow::isManagementFlow() const {
+    return getQosRequirements().compare(QoSReq::MANAGEMENT);
+}
+
+bool Flow::isManagementFlowLocalToIPCP() const {
+    return isManagementFlow()
+            && this->getSrcApni().getApn() == getSrcAddr().getApname()
+            && this->getDstApni().getApn() == getDstAddr().getApname();
 }

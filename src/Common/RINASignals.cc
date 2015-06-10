@@ -25,14 +25,32 @@ const char* SIG_RIBD_RoutingUpdateReceived      = "Routing-UpdateReceived";
 
 const char* SIG_RIBD_CongestionNotification     = "RIBd-CongestionNotification";
 
+const char* SIG_RIBD_StartEnrollmentRequest     = "RIBd-StartEnrollmentRequest";
+const char* SIG_RIBD_StartEnrollmentResponse    = "RIBd-StartEnrollmentResponse";
+const char* SIG_RIBD_StopEnrollmentRequest      = "RIBd-StopEnrollmentRequest";
+const char* SIG_RIBD_StopEnrollmentResponse     = "RIBd-StopEnrollmentResponse";
+const char* SIG_RIBD_StartOperationRequest      = "RIBd-StartOperationRequest";
+const char* SIG_RIBD_StartOperationResponse     = "RIBd-StartOperationResponse";
+
+const char* SIG_RIBD_ConnectionResponsePositive = "RIBd-ConnectionResponsePositive";
+const char* SIG_RIBD_ConnectionResponseNegative = "RIBd-ConnectionResponseNegative";
+const char* SIG_RIBD_ConnectionRequest          = "RIBd-ConnectionRequest";
+const char* SIG_RIBD_CACESend                   = "RIBd-CACEDataSend";
+
+const char* SIG_ENROLLMENT_DataSend             = "Enrollment-DataSend";
+const char* SIG_ENROLLMENT_CACEDataSend         = "Enrollment-CACEDataSend";
+const char* SIG_ENROLLMENT_StartEnrollmentRequest = "Enrollment-StartEnrollmentRequest";
+const char* SIG_ENROLLMENT_StartEnrollmentResponse = "Enrollment-StartEnrollmentResponse";
+const char* SIG_ENROLLMENT_StopEnrollmentRequest = "Enrollment-StopEnrollmentRequest";
+const char* SIG_ENROLLMENT_StopEnrollmentResponse = "Enrollment-StopEnrollmentResponse";
+const char* SIG_ENROLLMENT_StartOperationRequest = "Enrollment-StartOperationRequest";
+const char* SIG_ENROLLMENT_StartOperationResponse = "Enrollment-StartOperationResponse";
+const char* SIG_ENROLLMENT_Finished      = "Enrollment-Finished";
+
 const char* SIG_CDAP_DateReceive                = "CDAP-DataReceive";
+const char* SIG_CDAP_SendData                   = "CDAP-SendData";
 
-const char* SIG_CACE_ConnectionResponsePositive = "CACE-ConnectionResponsePositive";
-const char* SIG_CACE_ConnectionResponseNegative = "CACE-ConnectionResponseNegative";
-const char* SIG_CACE_ReleaseResponse            = "CACE-ReleaseResponse";
-const char* SIG_CACE_AuthenticationRequest      = "CACE-AuthenticationRequest";
-
-const char* SIG_Auth_AuthenticationResponse     = "Auth-AuthenticationResponse";
+const char* SIG_CACE_DataReceive                = "CACE-DataReceive";
 
 const char* SIG_IRM_AllocateRequest             = "IRM-AllocateRequest";
 const char* SIG_IRM_DeallocateRequest           = "IRM-DeallocateRequest";
@@ -53,6 +71,7 @@ const char* SIG_toFAI_AllocateRequest           = "toFAI-AllocateRequest";
 const char* SIG_toFAI_AllocateResponsePositive  = "toFAI-AllocateResponsePositive";
 const char* SIG_toFAI_AllocateResponseNegative  = "toFAI-AllocateResponseNegative";
 const char* SIG_FAI_AllocateRequest             = "FAI-AllocateRequest";
+const char* SIG_FAI_AllocateFinishManagement    = "FAI-AllocateFinishManagement";
 const char* SIG_FAI_DeallocateRequest           = "FAI-DeallocateRequest";
 const char* SIG_FAI_DeallocateResponse          = "FAI-DeallocateResponse";
 const char* SIG_FAI_AllocateResponsePositive    = "FAI-AllocateResponsePositive";

@@ -65,17 +65,6 @@ void AE::initSignalsAndListeners() {
 
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
-
-    lisAEConResPosi = new LisAEConResPosi(this);
-    catcher1->subscribe(SIG_CACE_ConnectionResponsePositive, lisAEConResPosi);
-
-    lisAEConResNega = new LisAEConResNega(this);
-    catcher1->subscribe(SIG_CACE_ConnectionResponseNegative, lisAEConResNega);
-
-    lisAERelRes = new LisAERelRes(this);
-    catcher1->subscribe(SIG_CACE_ReleaseResponse, lisAERelRes);
-
-
 }
 
 void AE::initialize() {

@@ -24,33 +24,12 @@ CACEListeners::~CACEListeners() {
     cace = NULL;
 }
 
-void LisCACEConReq::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
+void LisCACESendData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cace->getFullPath() << endl;
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
-        cace->processMConnect(msg);
+        cace->sendData(msg);
     else
-        EV << "Received not a CDAPMessage!" << endl;
+        EV << "Received not a CACEMessage!" << endl;
 }
-
-void LisCACERelReq::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
-    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
-    if (msg)
-        cace->processMRelease(msg);
-    else
-        EV << "Received not a CDAPMessage!" << endl;
-
-}
-
-void LisCACEAuthRes::receiveSignal(cComponent *src, simsignal_t id,  cObject *obj){
-    CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
-
-    if (msg)
-        cace->treatAuthRes(msg);
-    else
-        EV << "Received not a CDAPMessage!" << endl;
-
-
-
-}
-
-

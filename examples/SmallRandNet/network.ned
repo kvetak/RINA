@@ -1,5 +1,6 @@
 package rina.examples.SmallRandNet;
 
+import ned.DelayChannel;
 import rina.src.CS.BorderRouter;
 import rina.src.CS.HostNAP;
 import rina.src.CS.InteriorRouterNInt;
@@ -92,23 +93,23 @@ network SmallRandNet
 
     connections:
 
-        H0.medium <--> R12.medium++;
-        H1.medium <--> R13.medium++;
-        H2.medium <--> R14.medium++;
-        H3.medium <--> R15.medium++;
-        H4.medium <--> R16.medium++;
-        H5.medium <--> R17.medium++;
-        H6.medium <--> R18.medium++;
-        H7.medium <--> R19.medium++;
-        H8.medium <--> R12.medium++;
-        H9.medium <--> R13.medium++;
-        H10.medium <--> R14.medium++;
-        H11.medium <--> R15.medium++;
-        R12.medium++ <--> R17.medium++;
-        R13.medium++ <--> R18.medium++;
-        R14.medium++ <--> R19.medium++;
-        R15.medium++ <--> R12.medium++;
-        R16.medium++ <--> R13.medium++;
-        R17.medium++ <--> R14.medium++;
-        R18.medium++ <--> R15.medium++;
+        H0.medium <--> DelayChannel{delay=1us;} <--> R12.medium++;
+        H1.medium <--> DelayChannel{delay=1us;} <--> R13.medium++;
+        H2.medium <--> DelayChannel{delay=1us;} <--> R14.medium++;
+        H3.medium <--> DelayChannel{delay=1us;} <--> R15.medium++;
+        H4.medium <--> DelayChannel{delay=1us;} <--> R16.medium++;
+        H5.medium <--> DelayChannel{delay=1us;} <--> R17.medium++;
+        H6.medium <--> DelayChannel{delay=1us;} <--> R18.medium++;
+        H7.medium <--> DelayChannel{delay=1us;} <--> R19.medium++;
+        H8.medium <--> DelayChannel{delay=1us;} <--> R12.medium++;
+        H9.medium <--> DelayChannel{delay=1us;} <--> R13.medium++;
+        H10.medium <--> DelayChannel{delay=1us;} <--> R14.medium++;
+        H11.medium <--> DelayChannel{delay=1us;} <--> R15.medium++;
+        R12.medium++ <--> DelayChannel{delay=1us;} <--> R17.medium++;
+        R13.medium++ <--> DelayChannel{delay=1us;} <--> R18.medium++;
+        R14.medium++ <--> DelayChannel{delay=1us;} <--> R19.medium++;
+        R15.medium++ <--> DelayChannel{delay=1us;} <--> R12.medium++;
+        R16.medium++ <--> DelayChannel{delay=1us;} <--> R13.medium++;
+        R17.medium++ <--> DelayChannel{delay=1us;} <--> R14.medium++;
+        R18.medium++ <--> DelayChannel{delay=1us;} <--> R15.medium++;
 }

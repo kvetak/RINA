@@ -8,4 +8,7 @@ simple SimpleLS like IntRouting
         @class(SimpleLS::SimpleLS);
         @display("i=block/socket");
         string myAddr = default("");
+        int infMetric = default(32);
+        
+        bool printAtEnd = default(false);
 }

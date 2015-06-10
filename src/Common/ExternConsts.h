@@ -31,6 +31,11 @@ extern const char* MOD_RA;
 extern const char* MOD_IAE;
 extern const char* MOD_IRM;
 extern const char* MOD_IPCRESMANAGER;
+extern const char* MOD_RIBDAEMON;
+extern const char* MOD_RIBD;
+extern const char* MOD_ENROLLMENTMODULE;
+extern const char* MOD_ENROLLMENT;
+extern const char* MOD_ENROLLMENTTABLE;
 extern const char* MOD_CDAP;
 extern const char* MOD_CDAPMSGLOG;
 extern const char* MOD_CDAPSPLIT;
@@ -77,6 +82,7 @@ extern const char* GATE_NORTHIO;
 extern const char* GATE_NORTHIO_;
 extern const char* GATE_SOUTHIO_;
 extern const char* GATE_EFCPIO_;
+extern const char* GATE_EFCPIO;
 extern const char* GATE_RMT_;
 extern const char* GATE_RMTIO;
 extern const char* GATE_APPIO_;
@@ -111,6 +117,12 @@ extern const char* ELEM_DELAY;
 extern const char* ELEM_JITTER;
 extern const char* ELEM_COSTTIME;
 extern const char* ELEM_COSTBITS;
+
+extern const char* ELEM_ATIME;
+extern const char* ELEM_RXON;
+extern const char* ELEM_WINON;
+extern const char* ELEM_RATEON;
+extern const char* ELEM_EFCPPOL;
 
 //Values
 extern const int    VAL_QOSPARDONOTCARE;

@@ -33,21 +33,9 @@ public:
         CACE* cace;
 };
 
-class LisCACEConReq : public CACEListeners {
+class LisCACESendData : public CACEListeners {
 public:
-    LisCACEConReq(CACE* ncace): CACEListeners(ncace){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-};
-
-class LisCACERelReq : public CACEListeners {
-public:
-    LisCACERelReq(CACE* ncace): CACEListeners(ncace){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
-};
-
-class LisCACEAuthRes : public CACEListeners {
-public:
-    LisCACEAuthRes(CACE* ncace): CACEListeners(ncace){};
+    LisCACESendData(CACE* ncace): CACEListeners(ncace){};
     virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
 };
 

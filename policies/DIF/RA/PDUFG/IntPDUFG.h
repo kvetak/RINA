@@ -21,6 +21,7 @@
 #include "PDUFGNeighbor.h"
 #include "IntPDUForwarding.h"
 #include "DA.h"
+#include "QoSCube.h"
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
 typedef std::list<PDUFGNeighbor *> NeighborState;
@@ -42,13 +43,13 @@ public:
     //
 
     // Inserts a new flow through which a neighbor can be reached.
-    void insertFlowInfo(Address addr, std::string qos, RMTPort * port);
+    void insertFlowInfo(Address addr, QoSCube qos, RMTPort * port);
     // Removes an existing flow from the existing ones.
     void removeFlowInfo(RMTPort * port);
 
     // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const std::string &qos, RMTPort * port) = 0;
-    virtual void removedFlow(const Address &addr, const std::string &qos, RMTPort * port) = 0;
+    virtual void insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port) = 0;
+    virtual void removedFlow(const Address &addr, RMTPort * port) = 0;
 
     //Routing has processes a routing update
     virtual void routingUpdated() = 0;

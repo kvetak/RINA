@@ -28,6 +28,11 @@ const char* MOD_RA              = "ra";
 const char* MOD_IAE             = "iae";
 const char* MOD_IRM             = "irm";
 const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
+const char* MOD_RIBDAEMON       = "ribDaemon";
+const char* MOD_RIBD            = "ribd";
+const char* MOD_ENROLLMENTMODULE= "enrollmentModule";
+const char* MOD_ENROLLMENT      = "enrollment";
+const char* MOD_ENROLLMENTTABLE = "enrollmentStateTable";
 const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
 const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
 const char* MOD_CDAPSPLIT       = "cdapSplitter";
@@ -76,6 +81,7 @@ const char* GATE_NORTHIO        = "northIo";
 const char* GATE_NORTHIO_       = "northIo_";
 const char* GATE_SOUTHIO_       = "southIo_";
 const char* GATE_EFCPIO_        = "efcpIo_";
+const char* GATE_EFCPIO         = "efcpIo";
 const char* GATE_RMT_           = "rmt_";
 const char* GATE_RMTIO          = "rmtIo";
 const char* GATE_APPIO_         = "appIo_";
@@ -110,6 +116,11 @@ const char* ELEM_DELAY               = "Delay";
 const char* ELEM_JITTER              = "Jitter";
 const char* ELEM_COSTTIME            = "CostTime";
 const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
+const char* ELEM_RXON                = "RxOn";
+const char* ELEM_WINON               = "WinOn";
+const char* ELEM_RATEON              = "RateOn";
+const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 
 //Values

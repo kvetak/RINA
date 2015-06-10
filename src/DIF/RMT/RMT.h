@@ -33,7 +33,6 @@
 #include "ExternConsts.h"
 #include "Address.h"
 #include "PDU.h"
-#include "CDAPMessage_m.h"
 
 #include "IntPDUForwarding.h"
 #include "QueueAllocBase.h"
@@ -102,16 +101,10 @@ class RMT : public RMTBase
     bool tracing;
 
     void processMessage(cMessage* msg);
-    void efcpiToPort(PDU* msg);
-    void portToEfcpi(PDU* msg);
-    void efcpiToEfcpi(PDU* msg);
-    void ribToPort(CDAPMessage* msg);
-    void portToRIB(CDAPMessage* msg);
-    void ribToRIB(CDAPMessage* msg);
-    void portToPort(cMessage* msg);
+    void relayPDUToPort(PDU* msg);
+    void relayPDUToEFCPI(PDU* msg);
 
-    RMTPort* fwTableLookup(const Address& destAddr, const std::string &pduQosId);
-    RMTPort* fwTableLookup(const PDU * pdu);
+    std::vector<RMTPort*> fwTableLookup(const PDU * pdu);
     std::deque<cMessage*> invalidPDUs;
 
     void tracePDUEvent(const cPacket* pkt, TraceEventType eventType);
