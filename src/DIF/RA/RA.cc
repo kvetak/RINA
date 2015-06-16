@@ -120,6 +120,19 @@ void RA::handleMessage(cMessage *msg)
     }
 }
 
+void RA::reqFlows(std::list<Flow*> flows){
+    Enter_Method("reqFlows()");
+    while (!flows.empty()) {
+        Flow* flow = flows.front();
+        if (flow->isManagementFlow()) { // mgmt flow
+            createNFlow(flow);
+        } else { // data flow
+            createNM1Flow(flow);
+        }
+        flows.pop_front();
+    }
+}
+
 void RA::initSignalsAndListeners()
 {
     sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
@@ -633,13 +646,17 @@ void RA::postNFlowAllocation(Flow* flow)
 {
     Enter_Method("postNFlowAllocation()");
 
+    EV << "postNFlowAllocation() enter with flow : "<< *flow << endl;
+
     // invoke QueueAlloc policy on relevant (N-1)-ports
     if (rmt->isOnWire())
     {
+        EV << "Wire" << endl;
         qAllocPolicy->onNFlowAlloc(rmtAllocator->getInterfacePort(), flow);
     }
     else
     {
+        EV << "OVER" << endl;
         const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
         std::string qosId = flow->getConId().getQoSId();
 
