@@ -3,12 +3,15 @@
 *_m.cc
 *_sm.h
 *_sm.cc
+Makefile
+Makefile.vc
+policies/Makefile
+policies/Makefile.vc
 src/Makefile
 src/Makefile.vc
 
 # Doxygen documentation
 /doc/
-/doxy.cfg
 /doc/doxy/
 /doc/neddoc/
 
