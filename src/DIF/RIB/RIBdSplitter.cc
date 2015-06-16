@@ -30,21 +30,31 @@ void RIBdSplitter::handleMessage(cMessage *msg)
 
     //From CDAP
     if(strstr(msg->getArrivalGate()->getName(), GATE_CDAPIO) != NULL) {
-        CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
-        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
-        if (tfe
-                && !dynamic_cast<CDAP_M_Create*>(msg)
-                //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
-                //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
-            ) {
-            std::ostringstream ribdName;
-            ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
-            out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
-        }
-        else {
-            EV << "Message sent out via mock EFCP instance!" << endl;
+        /*
+         * FIXME: Vesely
+         * After huge debate with John, we understand now, that reliability of management
+         * traffic is done by N-1 flow. Thus, N-management flow exist WITHOUT dedicated
+         * exchange of M_CREATE messages. This implies that all mgmt traffic is sent
+         * through MockEFCPI. However, one day there may be use-case when we will do not
+         * trust N-1 flow and want to provide additional reliability or encryption. Hence,
+         * I am just commenting out the code instead of removing it.
+         */
+
+        //CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
+        //FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
+        //if (tfe
+        //        && !dynamic_cast<CDAP_M_Create*>(msg)
+        //        //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
+        //        //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
+        //    ) {
+        //    std::ostringstream ribdName;
+        //    ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
+        //    out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+        //}
+        //else {
+        //    EV << "Message sent out via mock EFCP instance!" << endl;
             out = this->gateHalf(GATE_EFCPIO, cGate::OUTPUT);
-        }
+        //}
     }
     //From EFCP or RMT
     else {

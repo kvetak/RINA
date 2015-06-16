@@ -27,6 +27,7 @@
 
 //Consts
 extern const int VAL_UNDEF_CEPID;
+extern const int VAL_MGMT_CEPID;
 
 /**
  * @brief Connection identifier as defined in specifications

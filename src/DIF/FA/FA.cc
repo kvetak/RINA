@@ -49,6 +49,9 @@ void FA::initialize() {
     initMyAddress();
 }
 
+FAI* FA::createMgmtFAI(Flow* flow) {
+}
+
 bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
     //Add source...
     if (!useNeighbor) {
@@ -175,6 +178,7 @@ bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
 
     //Create FAI
     FAI* fai = this->createFAI(flow);
+
     fai->setDegenerateDataTransfer(flow->isDdtFlag());
 
     //Update flow object
@@ -402,7 +406,7 @@ void FA::initSignalsAndListeners() {
     //Allocate after management flow is prepared (enrollment done)
     lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
     catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
-    //catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
+    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
 
 }
 

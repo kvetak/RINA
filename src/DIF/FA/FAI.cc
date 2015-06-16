@@ -293,13 +293,13 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     //Change status
     FaModule->getFaiTable()->changeAllocStatus(FlowObject, FAITableEntry::TRANSFER);
 
-    if (FlowObject->isManagementFlowLocalToIPCP()) {
-        signalizeAllocateRequestToOtherFais( FlowObject );
-    }
-    else {
+    //if (FlowObject->isManagementFlowLocalToIPCP()) {
+    //    signalizeAllocateRequestToOtherFais( FlowObject );
+    //}
+    //else {
         //Pass Allocate Response to AE or RIBd
         this->signalizeAllocateResponsePositive();
-    }
+    //}
 
     //FIXME: Vesely - always true
     return true;
@@ -657,7 +657,12 @@ void FAI::createNorthGates() {
 void FAI::receiveCreateFlowResponsePositiveFromNminusOne() {
     Enter_Method("receiveCreFlowResPositiveFromNminusOne()");
     //Schedule M_Create(Flow)
-    this->signalizeCreateFlowRequest();
+    if (FlowObject->isManagementFlowLocalToIPCP()) {
+        signalizeAllocateRequestToOtherFais( FlowObject );
+    }
+    else {
+        signalizeCreateFlowRequest();
+    }
 }
 
 void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {

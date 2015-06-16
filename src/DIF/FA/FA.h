@@ -91,6 +91,7 @@ class FA : public FABase
     NewFlowRequestBase* NFloReqPolicy;
 
     bool isMalformedFlow(Flow* flow);
+    FAI* createMgmtFAI(Flow* flow);
     FAI* createFAI(Flow* flow);
 
     void initSignalsAndListeners();

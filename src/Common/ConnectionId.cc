@@ -19,6 +19,7 @@
 
 //Consts
 const int VAL_UNDEF_CEPID = -1;
+const int VAL_MGMT_CEPID = 0;
 
 ConnectionId::ConnectionId() :
     qosId(VAL_UNDEF_QOSID), srcCEPId(VAL_UNDEF_CEPID), dstCEPId(VAL_UNDEF_CEPID)

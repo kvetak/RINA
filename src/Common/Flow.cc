@@ -16,6 +16,7 @@
 #include "Flow.h"
 
 const int VAL_UNDEF_PORTID = -1;
+const int VAL_MGMT_PORTID = 0;
 const int VAL_MAXHOPCOUNT = 16;
 const int VAL_MAXCREATERETRIES = 3;
 

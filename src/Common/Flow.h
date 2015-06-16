@@ -26,6 +26,7 @@
 #include "QoSReq.h"
 
 extern const int VAL_UNDEF_PORTID;
+extern const int VAL_MGMT_PORTID;
 extern const int VAL_MAXHOPCOUNT;
 extern const int VAL_MAXCREATERETRIES;
 
