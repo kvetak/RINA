@@ -87,6 +87,8 @@ class RA : public RABase
     virtual void postNFlowAllocation(Flow* flow);
     virtual void postNM1FlowAllocation(NM1FlowTableItem* ftItem);
 
+    virtual void reqFlows(std::list<Flow*> flows);
+
   protected:
     virtual void initialize(int stage);
     int numInitStages() const { return 2; };
