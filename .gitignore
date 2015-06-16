@@ -61,4 +61,4 @@ src/RINA
 # ignore backup and temp files
 *.bak
 *~
-Makefile
+*Makefile*
