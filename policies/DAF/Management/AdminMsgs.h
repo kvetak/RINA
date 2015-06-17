@@ -22,3 +22,12 @@ public:
 
     reqFlowMsg(string _src, string _dif) : src(_src), dif(_dif) {}
 };
+
+class reqDelFlowMsg : public CDAP_M_Read {
+public:
+    string src;
+    string dif;
+    vector<string> flowsDstAppName;
+
+    reqDelFlowMsg(string _src, string _dif) : src(_src), dif(_dif) {}
+};

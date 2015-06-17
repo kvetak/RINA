@@ -2,12 +2,20 @@
 
 //Standard libraries
 #include <omnetpp.h>
+
+#include <string>
+#include <map>
+
 //RINASim libraries
 #include "AE.h"
 #include "RA.h"
+#include "FA.h"
 #include "DA.h"
 
+using namespace std;
+
 #include "AdminMsgs.h"
+
 
 class AdmT : public AE
 {
@@ -29,6 +37,8 @@ protected:
 
     DA * DifAllocator;
 
+    map<string, Flow *> reqFlows;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
@@ -39,8 +49,11 @@ protected:
 
     void allocateFlows(string dif, string src, vector<string> dstVec);
 
+    void deallocateFlows(string dif, string src, vector<string> dstVec);
+
     void processMRead(CDAPMessage* msg);
     void processMReadR(CDAPMessage* msg);
+
 
 
     virtual void action(cMessage *msg, bool del);

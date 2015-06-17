@@ -46,8 +46,7 @@ void IntPDUFG::insertFlowInfo(Address addr, QoSCube qos, RMTPort * port) {
     insertedFlow(addr, qos, port);
 }
 
-void IntPDUFG::removeFlowInfo(RMTPort * port)
-{
+void IntPDUFG::removeFlowInfo(RMTPort * port) {
     for(EIter it = neiState.begin(); it != neiState.end(); ++it )
     {
         PDUFGNeighbor * e = (*it);

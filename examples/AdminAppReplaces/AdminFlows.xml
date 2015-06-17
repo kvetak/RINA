@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<Flows>
+	<time t="10">
+		<add src="00" dif="NET">
+			<flow dst="A" />
+			<flow dst="01" />
+		</add> 
+		<add src="01" dif="NET">
+			<flow dst="02" />
+		</add> 
+		<add src="02" dif="NET">
+			<flow dst="03" />
+		</add> 
+		<add src="03" dif="NET">
+			<flow dst="B" />
+		</add> 
+	</time>
+		
+	<time t="15">
+		<add src="30" dif="NET">
+			<flow dst="C" />
+			<flow dst="31" />
+		</add> 
+		<add src="31" dif="NET">
+			<flow dst="32" />
+		</add> 
+		<add src="32" dif="NET">
+			<flow dst="33" />
+		</add> 
+		<add src="33" dif="NET">
+			<flow dst="D" />
+		</add>
+	</time> 
+	
+	<time t="19">
+		<add src="31" dif="NET">
+			<flow dst="21" />
+		</add> 
+		<add src="21" dif="NET">
+			<flow dst="22" />
+		</add> 
+		<add src="22" dif="NET">
+			<flow dst="32" />
+		</add> 
+		<add src="32" dif="NET">
+			<flow dst="33" />
+		</add> 
+	</time> 
+	
+	<time t="20">
+		<rm src="31" dif="NET">
+			<flow dst="32" />
+		</rm> 
+		<rm src="32" dif="NET">
+			<flow dst="33" />
+		</rm> 
+	</time> 
+</Flows>

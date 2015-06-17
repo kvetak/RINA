@@ -5,8 +5,6 @@ Define_Module(AdmT);
 #include <list>
 #include "Utils.h"
 
-#include "RA.h"
-
 using namespace std;
 
 AdmT::AdmT() {
@@ -90,12 +88,15 @@ void AdmT::allocateFlows(string dif, string src, vector<string> dstVec){
     cModule* targetIpc = DifAllocator->getDifMember(DAP(dif));
 
     RA * ra = dynamic_cast<RA*>(targetIpc->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    FA * fa = dynamic_cast<FA*>(targetIpc->getSubmodule(MOD_FLOWALLOC)->getSubmodule(MOD_FA));
 
     if(!ra) {
         error( "Local IPC RA not found");
     }
+    if(!fa) {
+        error( "Local IPC FA not found");
+    }
 
-    list<Flow*> flowsReq;
 
     src.append("_").append(dif);
 
@@ -109,11 +110,45 @@ void AdmT::allocateFlows(string dif, string src, vector<string> dstVec){
 
         Flow * flow   = new Flow(srcAPN, dstAPN);
 
-        flowsReq.push_back(flow);
+        if (flow->isManagementFlow()) { // mgmt flow
+            ra->createNFlow(flow);
+        } else { // data flow
+            ra->createNM1Flow(flow);
+        }
+        reqFlows[dst] = flow;
+    }
+}
+
+
+void AdmT::deallocateFlows(string dif, string src, vector<string> dstVec){
+    if(dif == "" || src == "" || dstVec.empty()) { return; }
+
+    if (!DifAllocator->isDifLocal(DAP(dif))) {
+        error( "Local CS does not have any IPC in DIF ");
     }
 
-    if(!flowsReq.empty()) {
-        ra->reqFlows(flowsReq);
+    //Retrieve DIF's local IPC member
+    cModule* targetIpc = DifAllocator->getDifMember(DAP(dif));
+
+    RA * ra = dynamic_cast<RA*>(targetIpc->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    if(!ra) { error( "Local IPC RA not found"); }
+
+    FA * fa = dynamic_cast<FA*>(targetIpc->getSubmodule(MOD_FLOWALLOC)->getSubmodule(MOD_FA));
+    if(!fa) { error( "Local IPC FA not found"); }
+
+    for(string & dst : dstVec) {
+        if(dst == "") { continue; }
+
+
+        dst.append("_").append(dif);
+
+        if(reqFlows.find(dst) != reqFlows.end()) {
+            //fa->receiveDeallocateRequest(reqFlows[dst]);
+            //Irm->receiveDeallocationRequestFromAe(reqFlows[dst]);
+            ra->removeNM1Flow(reqFlows[dst]);
+            reqFlows.erase(dst);
+        }
+
     }
 }
 
@@ -151,6 +186,10 @@ void AdmT::action(cMessage *msg, bool del) {
         if(reqFlowMsg * m = dynamic_cast<reqFlowMsg*>(msg)){
             if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
                 allocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
+            }
+        } else if(reqDelFlowMsg * m = dynamic_cast<reqDelFlowMsg*>(msg)){
+            if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
+                deallocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
             }
         }
     }
