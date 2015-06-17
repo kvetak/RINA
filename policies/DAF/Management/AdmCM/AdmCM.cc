@@ -38,6 +38,12 @@ void AdmCM::action(cMessage *msg, bool del) {
             } else if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
                 allocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
             }
+        } else if(reqDelFlowMsg * m = dynamic_cast<reqDelFlowMsg*>(msg)){
+            if(m->src == src && m->dif == dif) {
+                sendData(FlowObject, m);
+            } else if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
+                deallocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
+            }
         }
     }
     if(del) { delete msg; }
@@ -49,6 +55,12 @@ void AdmCM::receiveSignal(cComponent *_src, simsignal_t id, cObject *obj) {
             sendData(FlowObject, m);
         } else if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
             allocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
+        }
+    } else if(reqDelFlowMsg * m = dynamic_cast<reqDelFlowMsg*>(obj)){
+        if(m->src == src && m->dif == dif) {
+            sendData(FlowObject, m);
+        } else if(m->src == par("src").stdstringValue() && m->dif == par("DIF").stdstringValue()) {
+            deallocateFlows(m->dif, par("src").stdstringValue(), m->flowsDstAppName);
         }
     }
 

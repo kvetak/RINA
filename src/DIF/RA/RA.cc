@@ -120,19 +120,6 @@ void RA::handleMessage(cMessage *msg)
     }
 }
 
-void RA::reqFlows(std::list<Flow*> flows){
-    Enter_Method("reqFlows()");
-    while (!flows.empty()) {
-        Flow* flow = flows.front();
-        if (flow->isManagementFlow()) { // mgmt flow
-            createNFlow(flow);
-        } else { // data flow
-            createNM1Flow(flow);
-        }
-        flows.pop_front();
-    }
-}
-
 void RA::initSignalsAndListeners()
 {
     sigRACreFloPosi = registerSignal(SIG_RA_CreateFlowPositive);
@@ -698,6 +685,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
+    Enter_Method("removeNM1Flow()");
     NM1FlowTableItem* flowItem = flowTable->lookup(flow);
     ASSERT(flowItem != NULL);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
