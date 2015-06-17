@@ -3,6 +3,8 @@
 *_m.cc
 *_sm.h
 *_sm.cc
+
+#Remove hot makefiles
 Makefile
 Makefile.vc
 policies/Makefile
@@ -43,7 +45,6 @@ out/
 *.dylib
 *.dll
 *.tmp*
-sta*
 *.a
 *.lib
 *.exe
@@ -53,12 +54,8 @@ sta*
 *.idb
 *.manifest
 *.out
-src/rina
-src/RINA
-/rina
 
 
 # ignore backup and temp files
 *.bak
 *~
-*Makefile*
