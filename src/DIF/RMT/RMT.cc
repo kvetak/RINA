@@ -265,6 +265,8 @@ void RMT::preQueueDeparture(cObject* obj)
             tracePDUEvent(queue->getFirstPDU(), MSG_SEND);
         }
     }
+
+    qMonPolicy->onMessagePreDeparture(queue);
 }
 
 /**

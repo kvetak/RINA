@@ -50,6 +50,13 @@ class RMTQMonitorBase : public cSimpleModule
      *
      * @param queue pointer to the queue
      */
+    virtual void onMessagePreDeparture(RMTQueue* queue);
+
+    /**
+     * A hook method invoked after a PDU gets released from a queue & sent.
+     *
+     * @param queue pointer to the queue
+     */
     virtual void onMessageDeparture(RMTQueue* queue);
 
     /**

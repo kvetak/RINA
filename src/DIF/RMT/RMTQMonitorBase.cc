@@ -50,6 +50,10 @@ void RMTQMonitorBase::onMessageArrival(RMTQueue* queue)
 {
 }
 
+void RMTQMonitorBase::onMessagePreDeparture(RMTQueue* queue)
+{
+}
+
 void RMTQMonitorBase::onMessageDeparture(RMTQueue* queue)
 {
 }
