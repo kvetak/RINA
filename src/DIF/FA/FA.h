@@ -32,7 +32,7 @@
 #include "FAListeners.h"
 #include "FAI.h"
 #include "Flow.h"
-#include "FAITable.h"
+#include "NFlowTable.h"
 #include "RINASignals.h"
 #include "ModuleAccess.h"
 #include "EFCP.h"
@@ -91,7 +91,6 @@ class FA : public FABase
     NewFlowRequestBase* NFloReqPolicy;
 
     bool isMalformedFlow(Flow* flow);
-    FAI* createMgmtFAI(Flow* flow);
     FAI* createFAI(Flow* flow);
 
     void initSignalsAndListeners();

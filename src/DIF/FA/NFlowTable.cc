@@ -13,14 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "FAITable.h"
+#include "NFlowTable.h"
 
 //Statistic collextion
 const char* SIG_STAT_FT_SIZE             = "FT_FlowTableSize";
 
-Define_Module(FAITable);
+Define_Module(NFlowTable);
 
-void FAITable::initialize()
+void NFlowTable::initialize()
 {
     //Inits
     initSignalsAndListeners();
@@ -28,7 +28,7 @@ void FAITable::initialize()
     WATCH_LIST(FaiTable);
 }
 
-std::string FAITable::info() const {
+std::string NFlowTable::info() const {
     std::ostringstream os;
     os << "id=" << this->getId() << endl;
     /*
@@ -41,78 +41,78 @@ std::string FAITable::info() const {
     return os.str();
 }
 
-FAITableEntry* FAITable::findEntryByDstAddressAndFwd(const APN& apname) {
+NFlowTableEntry* NFlowTable::findEntryByDstAddressAndFwd(const APN& apname) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstAddr().getApname() == apname
-                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+                && tft.getAllocateStatus() == NFlowTableEntry::FORWARDED)
             return &(*it);
     }
     return NULL;
 }
 
-FAITableEntry* FAITable::findEntryBySrcAddressAndFwd(const APN& apname) {
+NFlowTableEntry* NFlowTable::findEntryBySrcAddressAndFwd(const APN& apname) {
     //EV << "Look APN> " << ipcAddr << endl;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         //EV << "XXXX " << tft.getCFlow()->getSrcAddr().getIpcAddress() << endl
         //   << "YYYY " << (tft.getAllocateStatus() == FAITableEntry::FORWARDED) << endl;
         if (tft.getCFlow()->getSrcAddr().getIpcAddress() == apname
-                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+                && tft.getAllocateStatus() == NFlowTableEntry::FORWARDED)
             return &(*it);
     }
     return NULL;
 
 }
 
-FAITableEntry* FAITable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
+NFlowTableEntry* NFlowTable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getSrcApni().getApn() == srcApn
                 && tft.getCFlow()->getDstApni().getApn() == dstApn
-                && tft.getAllocateStatus() == FAITableEntry::FORWARDED)
+                && tft.getAllocateStatus() == NFlowTableEntry::FORWARDED)
             return &(*it);
     }
     return NULL;
 }
 
-TFAIPtrs FAITable::findEntriesByDstNeighborAndFwd(const APN& apname) {
+TFAIPtrs NFlowTable::findEntriesByDstNeighborAndFwd(const APN& apname) {
     TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstNeighbor().getApname() == apname
-                && tft.getAllocateStatus() == FAITableEntry::FORWARDING)
+                && tft.getAllocateStatus() == NFlowTableEntry::FORWARDING)
             list.push_back(&(*it));
     }
     return list;
 }
 
-FAITableEntry* FAITable::findEntryByInvokeId(long invId) {
+NFlowTableEntry* NFlowTable::findEntryByInvokeId(long invId) {
     if (!invId) return NULL;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getAllocInvokeId() == invId)
             return &(*it);
     }
     return NULL;
 }
 
-TFAIPtrs FAITable::findEntriesAffectedByMgmt(const Flow* flow) {
+TFAIPtrs NFlowTable::findEntriesAffectedByMgmt(const Flow* flow) {
     TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getSrcAddr().getApname() == flow->getSrcApni().getApn()
             && tft.getCFlow()->getDstAddr().getApname() == flow->getDstApni().getApn()
-            && tft.getAllocateStatus() == FAITableEntry::ALLOC_PEND)
+            && tft.getAllocateStatus() == NFlowTableEntry::ALLOC_PEND)
             list.push_back(&(*it));
     }
     return list;
 }
 
 //XXX: Vesely - This search does not yield exact intended match!
-FAITableEntry* FAITable::findMgmtEntryByDstNeighbor(const Address& addr) {
+NFlowTableEntry* NFlowTable::findMgmtEntryByDstNeighbor(const Address& addr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstNeighbor() == addr
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
@@ -120,49 +120,49 @@ FAITableEntry* FAITable::findMgmtEntryByDstNeighbor(const Address& addr) {
     return NULL;
 }
 
-void FAITable::handleMessage(cMessage *msg)
+void NFlowTable::handleMessage(cMessage *msg)
 {
 }
 
-void FAITable::insertNew(Flow* flow) {
-    this->insert(FAITableEntry(flow));
+void NFlowTable::insertNew(Flow* flow) {
+    this->insert(NFlowTableEntry(flow));
     updateDisplayString();
     //EV << "FT emits signal " << (long)FaiTable.size() << endl;
     emit(sigStatFTSize, (long)FaiTable.size());
 }
 
-void FAITable::insert(const FAITableEntry& entry) {
+void NFlowTable::insert(const NFlowTableEntry& entry) {
     Enter_Method("insertFlow()");
     FaiTable.push_back(entry);
 }
 
-void FAITable::removeByFlow(Flow* flow) {
+void NFlowTable::removeByFlow(Flow* flow) {
     Enter_Method("removeFlow()");
-    FAITableEntry* entry = findEntryByFlow(flow);
+    NFlowTableEntry* entry = findEntryByFlow(flow);
     if (entry)
         FaiTable.remove(*entry);
 }
 
-FAITableEntry* FAITable::findEntryByFlow(const Flow* flow) {
+NFlowTableEntry* NFlowTable::findEntryByFlow(const Flow* flow) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (*(tft.getCFlow()) == *flow)
             return &(*it);
     }
     return NULL;
 }
 
-FAITableEntry* FAITable::findEntryByFai(FAIBase* fai) {
+NFlowTableEntry* NFlowTable::findEntryByFai(FAIBase* fai) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getFai() == fai)
             return &(*it);
     }
     return NULL;
 }
 
-void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::EAllocateStatus status) {
-    FAITableEntry* fte = findEntryByFlow(flow);
+void NFlowTable::changeAllocStatus(Flow* flow, NFlowTableEntry::EAllocateStatus status) {
+    NFlowTableEntry* fte = findEntryByFlow(flow);
     if (fte) {
         fte->setAllocateStatus(status);
     }
@@ -170,44 +170,44 @@ void FAITable::changeAllocStatus(Flow* flow, FAITableEntry::EAllocateStatus stat
         EV << "findByFlow() returned NULL" << endl;
 }
 
-void FAITable::changeAllocStatus(FAIBase* fai, FAITableEntry::EAllocateStatus status) {
-    FAITableEntry* fte = findEntryByFai(fai);
+void NFlowTable::changeAllocStatus(FAIBase* fai, NFlowTableEntry::EAllocateStatus status) {
+    NFlowTableEntry* fte = findEntryByFai(fai);
     if (fte)
         fte->setAllocateStatus(status);
     else
         EV << "findByFai() returned NULL" << endl;
 }
 
-void FAITable::setFaiToFlow(FAIBase* fai, Flow* flow) {
-    FAITableEntry* fte = findEntryByFlow(flow);
+void NFlowTable::setFaiToFlow(FAIBase* fai, Flow* flow) {
+    NFlowTableEntry* fte = findEntryByFlow(flow);
     fte->setFai(fai);
 }
 
-void FAITable::updateDisplayString() {
+void NFlowTable::updateDisplayString() {
     // display number of flows
     cDisplayString& disp = getDisplayString();
     disp.setTagArg("t", 1, "t");
     std::ostringstream os;
-    os << "records: " << FaiTable.size();
+    os << "records: " << getSize();
     disp.setTagArg("t", 0, os.str().c_str());
 }
 
-void FAITable::initSignalsAndListeners() {
+void NFlowTable::initSignalsAndListeners() {
     sigStatFTSize = registerSignal(SIG_STAT_FT_SIZE);
 }
 
-FAITableEntry* FAITable::findMgmtEntry(const Flow* flow) {
+NFlowTableEntry* NFlowTable::findMgmtEntry(const Flow* flow) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
     }
     return NULL;
 }
 
-FAITableEntry* FAITable::findMgmtEntryByDstAddr(const Address& addr) {
+NFlowTableEntry* NFlowTable::findMgmtEntryByDstAddr(const Address& addr) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstAddr() == addr
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
@@ -215,12 +215,16 @@ FAITableEntry* FAITable::findMgmtEntryByDstAddr(const Address& addr) {
     return NULL;
 }
 
-FAITableEntry* FAITable::findMgmtEntryByDstApni(const APN& dstApn) {
+NFlowTableEntry* NFlowTable::findMgmtEntryByDstApni(const APN& dstApn) {
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
-        FAITableEntry tft = *it;
+        NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstApni().getApn() == dstApn
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
     }
     return NULL;
+}
+
+const unsigned int NFlowTable::getSize() const {
+    return FaiTable.size();
 }

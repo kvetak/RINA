@@ -25,7 +25,7 @@ extern const char* MOD_CONNTABLE;
 extern const char* MOD_DA;
 extern const char* MOD_DIFALLOC;
 extern const char* MOD_EFCP;
-extern const char* MOD_FAITABLE;
+extern const char* MOD_NFLOWTABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
 extern const char* MOD_IAE;

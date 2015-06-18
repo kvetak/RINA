@@ -15,7 +15,7 @@
 
 package rina.src.DIF.FA;
 
-simple FAITable
+simple NFlowTable
 {
     parameters:
     	@display("i=block/table2");

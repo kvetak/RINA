@@ -66,5 +66,5 @@ void RIBdSplitter::handleMessage(cMessage *msg)
 }
 
 void RIBdSplitter::initPointers() {
-    FaiTable = ModuleAccess<FAITable>(MOD_FAITABLE).get();
+    FaiTable = ModuleAccess<NFlowTable>(MOD_NFLOWTABLE).get();
 }

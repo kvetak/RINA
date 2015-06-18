@@ -19,7 +19,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "FAITable.h"
+#include "NFlowTable.h"
 
 extern const char* TIM_FAPENDFLOWS;
 
@@ -44,11 +44,11 @@ class FABase : public cSimpleModule {
     virtual bool setOriginalAddresses(Flow* flow) = 0;
     virtual bool setNeighborAddresses(Flow* flow) = 0;
 
-    FAITable* getFaiTable() const;
+    NFlowTable* getNFlowTable() const;
     const Address& getMyAddress() const;
 
   protected:
-    FAITable* FaiTable;
+    NFlowTable* N_flowTable;
     Address MyAddress;
 
     //SimpleModule overloads

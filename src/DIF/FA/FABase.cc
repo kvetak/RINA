@@ -19,15 +19,15 @@
 const char* TIM_FAPENDFLOWS = "FA-PendingFlows";
 
 FABase::FABase() {
-    this->FaiTable = NULL;
+    this->N_flowTable = NULL;
 }
 
 FABase::~FABase() {
-    this->FaiTable = NULL;
+    this->N_flowTable = NULL;
 }
 
-FAITable* FABase::getFaiTable() const {
-    return FaiTable;
+NFlowTable* FABase::getNFlowTable() const {
+    return N_flowTable;
 }
 
 void FABase::initMyAddress() {

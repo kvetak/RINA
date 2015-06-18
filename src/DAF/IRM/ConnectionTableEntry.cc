@@ -131,3 +131,7 @@ const APNamingInfo& ConnectionTableEntry::getApni() const {
 void ConnectionTableEntry::setApni(const APNamingInfo& apni) {
     this->apni = apni;
 }
+
+ConnectionTableEntry::ConnectionStatus ConnectionTableEntry::getConStatus() const {
+    return conStatus;
+}

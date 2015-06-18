@@ -22,7 +22,7 @@
 //RINASim libraries
 #include "FAIBase.h"
 
-class FAITableEntry {
+class NFlowTableEntry {
   public:
     enum EAllocateStatus {UNKNOWN,
         ALLOC_PEND, ALLOC_NEGA, ALLOC_ERR,
@@ -31,11 +31,11 @@ class FAITableEntry {
         DEALLOC_PEND, DEALLOCATED,
         DEINST_PEND, DEINSTANTIATED};
 
-    FAITableEntry();
-    FAITableEntry(Flow* nflow);
-    virtual ~FAITableEntry();
+    NFlowTableEntry();
+    NFlowTableEntry(Flow* nflow);
+    virtual ~NFlowTableEntry();
 
-    bool operator== (const FAITableEntry& other) const;
+    bool operator== (const NFlowTableEntry& other) const;
 
     std::string info() const;
 
@@ -44,8 +44,8 @@ class FAITableEntry {
     const simtime_t& getTimeCreated() const;
     const simtime_t& getTimeDeleted() const;
     void setTimeDeleted(const simtime_t& timDel);
-    void setAllocateStatus(FAITableEntry::EAllocateStatus allocateStatus);
-    FAITableEntry::EAllocateStatus getAllocateStatus() const;
+    void setAllocateStatus(NFlowTableEntry::EAllocateStatus allocateStatus);
+    NFlowTableEntry::EAllocateStatus getAllocateStatus() const;
     void setFai(FAIBase* nfai);
     const Flow* getCFlow() const;
     Flow* getFlow();
@@ -59,6 +59,6 @@ class FAITableEntry {
 };
 
 //Free function
-std::ostream& operator<< (std::ostream& os, const FAITableEntry& fte);
+std::ostream& operator<< (std::ostream& os, const NFlowTableEntry& fte);
 
 #endif /* FLOWTABLEENTRY_H_ */

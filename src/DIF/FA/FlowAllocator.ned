@@ -1,6 +1,5 @@
 package rina.src.DIF.FA;
 
-import rina.src.DIF.NSM.NameSpaceManager;
 import rina.policies.DIF.FA.AllocateRetry.IAllocateRetry;
 import rina.policies.DIF.FA.NewFlowRequest.INewFlowRequest;
 import rina.policies.DIF.FA.MultilevelQoS.IAMultilevelQoS;
@@ -9,7 +8,7 @@ import rina.policies.DIF.FA.MultilevelQoS.IAMultilevelQoS;
 module FlowAllocator
 {
     parameters:
-        @display("i=block/fork;bgb=386,234");
+        @display("i=block/fork;bgb=424,357");
         string newFlowReqPolicyType = default("ScoreComparer");
         string allocRetryPolicyType = default("LimitedRetries");
         string qosComparerPolicyType = default("QoSIdComparer");
@@ -20,20 +19,20 @@ module FlowAllocator
             @display("p=75,64");
         }
 
-        faiTable: FAITable {
+        nFlowTable: NFlowTable {
             @display("p=167,64");
         }
 
         newFlowRequestPolicy: <newFlowReqPolicyType> like INewFlowRequest {
-            @display("p=290,64");
+            @display("p=357,64");
         }
 
         allocateRetryPolicy: <allocRetryPolicyType> like IAllocateRetry {
-            @display("p=102,155");
+            @display("p=357,154");
         }
 
         qosComparerPolicy: <qosComparerPolicyType> like IAMultilevelQoS {
-            @display("p=240,155");
+            @display("p=357,245");
         }
     connections:
 

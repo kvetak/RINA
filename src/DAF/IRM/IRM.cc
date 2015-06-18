@@ -192,12 +192,17 @@ bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     bool status = false;
 
     if (fab) {
+        if (ConTable->getStatus(flow) == ConnectionTableEntry::CON_ESTABLISHED) {
         //signalizeDeallocateRequest(fl);
         status = fab->receiveDeallocateRequest(flow);
+        }
+        else {
+            EV << "FA could not be found in ConnectionTable!" << endl;
+        }
     }
-    else
+    else {
         EV << "FA could not be found in ConnectionTable!" << endl;
-
+    }
     return status;
 }
 

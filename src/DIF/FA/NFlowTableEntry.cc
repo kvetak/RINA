@@ -13,22 +13,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "FAITableEntry.h"
+#include "NFlowTableEntry.h"
 
-FAITableEntry::FAITableEntry() :
+NFlowTableEntry::NFlowTableEntry() :
     fai(NULL), flow(NULL),
     allocStatus(this->UNKNOWN),
     timeCreated(0), timeDeleted(0)
 {
 }
 
-FAITableEntry::FAITableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN) {
+NFlowTableEntry::NFlowTableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN) {
     this->flow           = nflow;
     this->timeCreated    = simTime();
     this->timeDeleted    = 0;
 }
 
-FAITableEntry::~FAITableEntry() {
+NFlowTableEntry::~NFlowTableEntry() {
     this->fai       = NULL;
     this->flow      = NULL;
     allocStatus     = this->UNKNOWN;
@@ -36,7 +36,7 @@ FAITableEntry::~FAITableEntry() {
     timeDeleted     = 0;
 }
 
-std::string FAITableEntry::info() const {
+std::string NFlowTableEntry::info() const {
     std::ostringstream os;
     os << "STATUS: " << this->getAllocateStatusString() << endl;
     if ( this->getFai() )
@@ -52,23 +52,23 @@ std::string FAITableEntry::info() const {
     return os.str();
 }
 
-std::ostream& operator <<(std::ostream& os, const FAITableEntry& fte) {
+std::ostream& operator <<(std::ostream& os, const NFlowTableEntry& fte) {
     return os << fte.info();
 }
 
-FAIBase* FAITableEntry::getFai() const {
+FAIBase* NFlowTableEntry::getFai() const {
     return fai;
 }
 
-const simtime_t& FAITableEntry::getTimeCreated() const {
+const simtime_t& NFlowTableEntry::getTimeCreated() const {
 return timeCreated;
 }
 
-const simtime_t& FAITableEntry::getTimeDeleted() const {
+const simtime_t& NFlowTableEntry::getTimeDeleted() const {
 return timeDeleted;
 }
 
-std::string FAITableEntry::getAllocateStatusString() const {
+std::string NFlowTableEntry::getAllocateStatusString() const {
     switch(this->allocStatus)
     {
         case ALLOC_PEND:        return "allocation pending";
@@ -87,33 +87,33 @@ std::string FAITableEntry::getAllocateStatusString() const {
 //    return AllocateStatusStrings[];
 }
 
-void FAITableEntry::setAllocateStatus(EAllocateStatus allocateStatus) {
+void NFlowTableEntry::setAllocateStatus(EAllocateStatus allocateStatus) {
     this->allocStatus = allocateStatus;
 }
 
-void FAITableEntry::setTimeDeleted(const simtime_t& timDel) {
+void NFlowTableEntry::setTimeDeleted(const simtime_t& timDel) {
     this->timeDeleted = timDel;
 }
 
-void FAITableEntry::setFai(FAIBase* nfai) {
+void NFlowTableEntry::setFai(FAIBase* nfai) {
     this->fai = nfai;
 }
 
-const Flow* FAITableEntry::getCFlow() const {
+const Flow* NFlowTableEntry::getCFlow() const {
     return flow;
 }
 
-bool FAITableEntry::operator ==(const FAITableEntry& other) const {
+bool NFlowTableEntry::operator ==(const NFlowTableEntry& other) const {
     return this->fai == other.fai
             && this->flow == other.flow
             && this->allocStatus == other.allocStatus
             && this->timeCreated == other.timeCreated;
 }
 
-FAITableEntry::EAllocateStatus FAITableEntry::getAllocateStatus() const {
+NFlowTableEntry::EAllocateStatus NFlowTableEntry::getAllocateStatus() const {
     return allocStatus;
 }
 
-Flow* FAITableEntry::getFlow() {
+Flow* NFlowTableEntry::getFlow() {
     return flow;
 }

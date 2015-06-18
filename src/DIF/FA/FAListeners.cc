@@ -64,7 +64,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         && !flow->isManagementFlowLocalToIPCP() )
     {
         //EV << "-----\n" << flow->info() << endl;
-        TFAIPtrs entries = fa->getFaiTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->receiveNM1FlowCreated( (*it)->getFlow() );
         }
@@ -85,7 +85,7 @@ void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         && flow->isManagementFlowLocalToIPCP())
     {
         //Notify pending flows that mgmt flow is prepared
-        TFAIPtrs entries = fa->getFaiTable()->findEntriesAffectedByMgmt(flow);
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesAffectedByMgmt(flow);
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->PendingFlows.push_back((*it)->getFlow());
         }

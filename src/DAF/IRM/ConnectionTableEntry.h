@@ -42,6 +42,7 @@ class ConnectionTableEntry {
 
     //Getters and Setters
     void setConStatus(ConnectionStatus conStatus);
+    ConnectionTableEntry::ConnectionStatus getConStatus() const;
     FABase* getFlowAlloc() const;
     void setFlowAlloc(FABase* flowAlloc);
     cGate* getNorthGateIn() const;

@@ -126,3 +126,10 @@ FABase* ConnectionTable::getFa(Flow* flow) {
     return cte ? cte->getFlowAlloc() : NULL;
 }
 
+ConnectionTableEntry::ConnectionStatus ConnectionTable::getStatus(Flow* flow) {
+    ConnectionTableEntry* cte = findEntryByAPNI(flow->getSrcApni());
+    if (cte) {
+        return cte->getConStatus();
+    }
+    return ConnectionTableEntry::CON_NIL;
+}

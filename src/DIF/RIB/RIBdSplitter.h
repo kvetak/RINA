@@ -19,14 +19,14 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "FAITable.h"
+#include "NFlowTable.h"
 #include "CDAPMessage_m.h"
 #include "ModuleAccess.h"
 
 class RIBdSplitter : public cSimpleModule
 {
   protected:
-    FAITable* FaiTable;
+    NFlowTable* FaiTable;
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
