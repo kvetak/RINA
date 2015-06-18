@@ -5,8 +5,8 @@
 *_sm.cc
 
 #Remove hot makefiles
-Makefile
-Makefile.vc
+#Makefile
+#Makefile.vc
 policies/Makefile
 policies/Makefile.vc
 src/Makefile
