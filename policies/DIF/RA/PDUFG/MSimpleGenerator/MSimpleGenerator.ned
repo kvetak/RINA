@@ -1,6 +1,6 @@
 package rina.policies.DIF.RA.PDUFG.MSimpleGenerator;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.DIF.RA.PDUFG.IntPDUFG;
 
 simple MSimpleGenerator like IntPDUFG
 {

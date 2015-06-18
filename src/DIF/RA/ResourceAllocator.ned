@@ -20,7 +20,7 @@ package rina.src.DIF.RA;
 import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.DIF.RA.PDUFG.IntPDUFG;
 
 
 module ResourceAllocator

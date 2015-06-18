@@ -1,4 +1,4 @@
-package rina.policies.DIF.Routing;
+package rina.src.DIF.Routing;
 
 moduleinterface IntRouting
 {

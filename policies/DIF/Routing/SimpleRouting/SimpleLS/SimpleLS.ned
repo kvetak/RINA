@@ -1,6 +1,6 @@
 package rina.policies.DIF.Routing.SimpleRouting.SimpleLS;
 
-import rina.policies.DIF.Routing.IntRouting;
+import rina.src.DIF.Routing.IntRouting;
 
 simple SimpleLS like IntRouting
 {
