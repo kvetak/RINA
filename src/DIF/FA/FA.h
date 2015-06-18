@@ -38,6 +38,7 @@
 #include "EFCP.h"
 #include "ExternConsts.h"
 #include "DA.h"
+#include "RABase.h"
 #include "NewFlowRequestBase.h"
 
 //Constants
@@ -45,7 +46,7 @@
 extern const int RANDOM_NUMBER_GENERATOR;
 extern const int MAX_PORTID;
 extern const int MAX_CEPID;
-extern const char* MOD_NEFFLOWREQPOLICY;
+extern const char* MOD_NEWFLOWREQPOLICY;
 
 class FA : public FABase
 {

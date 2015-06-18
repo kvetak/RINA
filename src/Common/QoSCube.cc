@@ -31,8 +31,6 @@ const int   VAL_DEFAULT_QOS = 0;
 const std::string VAL_UNDEF_QOSID = "UNDEF-QoSCube";
 const std::string VAL_MGMTQOSID = "MGMT-QoSCube";
 
-
-
 QoSCube::QoSCube() : qoSId(VAL_UNDEF_QOSID),
         avgBand(VAL_DEFAULT_QOS), avgSDUBand(VAL_DEFAULT_QOS), peakBandDuration(VAL_DEFAULT_QOS), peakSDUBandDuration(VAL_DEFAULT_QOS),
         burstPeriod(VAL_DEFAULT_QOS), burstDuration(VAL_DEFAULT_QOS), undetectedBitErr(VAL_DEFAULT_QOS), pduDropProbability(VAL_DEFAULT_QOS), maxSDUsize(VAL_DEFAULT_QOS),

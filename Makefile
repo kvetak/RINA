@@ -71,7 +71,7 @@ msgheaders:
 clean:
 	$(qecho) Cleaning...
 	$(Q)-rm -rf $O
-	$(Q)-rm -f rina rinasim.exe librinasim.so librinasimcore.a librinasim.dll librinasim.dylib
+	$(Q)-rm -f rina rinasim rinasim.exe librinasim.so librinasimcore.a librinasim.dll librinasim.dylib
 
 	-$(Q)cd src && $(MAKE) clean
 	-$(Q)cd policies && $(MAKE) clean	

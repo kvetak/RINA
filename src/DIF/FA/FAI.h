@@ -31,7 +31,6 @@
 #include "RINASignals.h"
 #include "EFCP.h"
 #include "ModuleAccess.h"
-#include "RABase.h"
 #include "AllocateRetryBase.h"
 
 //#include "PushBackChannel.h"
