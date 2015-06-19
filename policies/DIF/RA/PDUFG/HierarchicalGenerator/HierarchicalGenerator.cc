@@ -73,6 +73,11 @@ void HierarchicalGenerator::routingUpdated(){
                 if(p != NULL) {
                     ps.push_back(p);
                 }
+            }
+            if(entry.first == "*") {
+                fwd->addReplace("0", "", ps);
+             //   fwd->addReplace(domain.first, "", ps);
+            } else {
                 fwd->addReplace(domain.first, entry.first, ps);
             }
         }
