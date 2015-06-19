@@ -48,8 +48,10 @@ endif
 
 # Main target
 
-all:  
+all:
+	$(qecho) Creating static library "librinasimcore" ...  
 	cd src && $(MAKE) all
+	$(qecho) Creating dynamic library "librinasim" ...
 	cd policies && $(MAKE) all
 
 submakedirs:  src_dir policies_dir
@@ -69,14 +71,15 @@ msgheaders:
 	$(Q)cd policies && $(MAKE) msgheaders	
 
 clean:
-	$(qecho) Cleaning local...		
-	$(Q)-rm -f rina rinasim rinasim.exe librinasimcore.a librinasim.so librinasim.dll librinasim.dylib .tmp* .last-copts
+	$(qecho) Cleaning local ...		
+	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.so" -exec rm -rf {} \;
+	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.dll" -exec rm -rf {} \;
+	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.a" -exec rm -rf {} \;
+	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.lib" -exec rm -rf {} \;
 
-cleanall: clean
-	$(qecho) Cleaning global...
-	$(Q)-rm -rf $O
-	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)
-	
+cleanall: 
+	$(qecho) Cleaning global ...
+	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)	
 	-$(Q)cd src && $(MAKE) clean
 	-$(Q)cd policies && $(MAKE) clean	
 
