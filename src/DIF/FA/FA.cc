@@ -39,6 +39,7 @@ void FA::initPointers() {
 
     DifAllocator = ModuleAccess<DA>(MOD_DA).get();
     NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
+    RaModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
 }
 
 void FA::initialize() {
@@ -112,10 +113,17 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
 
-    if ( !flow->isDdtFlag() && !N_flowTable->findMgmtEntryByDstAddr(flow->getDstAddr()) ) {
+    //Check for management flow
+    bool status = true;
+    Flow* mgmtflow = flow->dupToMgmt();
+    if ( !flow->isDdtFlag() && !RaModule->hasFlow(flow->getDstAddr().getApname().getName(), VAL_MGMTQOSID) ) {
         EV << "Management flow is not present, thus allocating one first!" << endl;
-        Flow* mgmtflow = flow->dupToMgmt();
-        receiveLocalMgmtAllocateRequest(mgmtflow);
+        status = receiveLocalMgmtAllocateRequest(mgmtflow);
+    }
+
+    //Are IPCPs enrolled?
+    if (status) {
+        emit(sigFAIAllocFinMgmt, mgmtflow);
     }
 
     //Is malformed?
@@ -134,7 +142,6 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     flow->setSrcPortId(fai->getLocalPortId());
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    bool status;
     //Postpone allocation request until management flow is ready
     NFlowTableEntry* fte = N_flowTable->findMgmtEntryByDstAddr(flow->getDstAddr());
     if ( flow->isDdtFlag()
@@ -158,31 +165,7 @@ bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
     Enter_Method("receiveLocalMgmtAllocateRequest()");
     EV << this->getFullPath() << " received LocalMgmtAllocateRequest" << endl;
 
-    //Insert new Flow into FAITable
-    N_flowTable->insertNew(flow);
-
-    //Change allocation status to pending
-    N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
-
-    //Add source and destination address in case of data flow
-
-    flow->setSrcAddr(Address(flow->getSrcApni().getApn()));
-    flow->setDstAddr(Address(flow->getDstApni().getApn()));
-    setNeighborAddresses(flow);
-    //flow->setSrcNeighbor(getMyAddress());
-    flow->setDdtFlag(false);
-
-
-    //Create FAI
-    FAI* fai = this->createFAI(flow);
-
-    fai->setDegenerateDataTransfer(flow->isDdtFlag());
-
-    //Update flow object
-    flow->setSrcPortId(fai->getLocalPortId());
-    flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
-
-    bool status = fai->receiveAllocateRequest();
+    bool status = RaModule->bindNFlowToNM1Flow(flow);
 
     return status;
 }
@@ -391,6 +374,7 @@ void FA::initSignalsAndListeners() {
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
     sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
+    sigFAIAllocFinMgmt   = registerSignal(SIG_FAI_AllocateFinishManagement);
 
     //Signals that this module is processing
     //  AllocateRequest

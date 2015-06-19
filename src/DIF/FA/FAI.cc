@@ -293,13 +293,13 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     //Change status
     FaModule->getNFlowTable()->changeAllocStatus(FlowObject, NFlowTableEntry::TRANSFER);
 
-    if (FlowObject->isManagementFlowLocalToIPCP()) {
-        signalizeAllocateRequestToOtherFais( FlowObject );
-    }
-    else {
+    //if (FlowObject->isManagementFlowLocalToIPCP()) {
+    //    signalizeAllocateRequestToOtherFais( FlowObject );
+    //}
+    //else {
         //Pass Allocate Response to AE or RIBd
         this->signalizeAllocateResponsePositive();
-    }
+    //}
 
     //FIXME: Vesely - always true
     return true;

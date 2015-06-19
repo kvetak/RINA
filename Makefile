@@ -65,19 +65,20 @@ src_dir:
 	cd src && $(MAKE) all
 
 msgheaders:
-	$(Q)cd policies && $(MAKE) msgheaders
 	$(Q)cd src && $(MAKE) msgheaders
+	$(Q)cd policies && $(MAKE) msgheaders	
 
 clean:
-	$(qecho) Cleaning...
-	$(Q)-rm -rf $O
-	$(Q)-rm -f rina rinasim rinasim.exe librinasim.so librinasimcore.a librinasim.dll librinasim.dylib
-
-	-$(Q)cd src && $(MAKE) clean
-	-$(Q)cd policies && $(MAKE) clean	
+	$(qecho) Cleaning local...		
+	$(Q)-rm -f rina rinasim rinasim.exe librinasimcore.a librinasim.so librinasim.dll librinasim.dylib .tmp* .last-copts
 
 cleanall: clean
+	$(qecho) Cleaning global...
+	$(Q)-rm -rf $O
 	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)
+	
+	-$(Q)cd src && $(MAKE) clean
+	-$(Q)cd policies && $(MAKE) clean	
 
 depend:
 	$(qecho) Creating dependencies...

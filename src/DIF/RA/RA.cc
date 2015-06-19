@@ -832,3 +832,7 @@ NM1FlowTable* RA::getFlowTable()
 {
     return flowTable;
 }
+
+bool RA::hasFlow(std::string addr, std::string qosId) {
+    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != NULL);
+}

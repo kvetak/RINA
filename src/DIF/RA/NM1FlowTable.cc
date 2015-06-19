@@ -26,6 +26,7 @@ void NM1FlowTable::initialize()
 
 void NM1FlowTable::handleMessage(cMessage *msg)
 {
+
 }
 
 void NM1FlowTable::insert(const NM1FlowTableItem* entry)
@@ -95,3 +96,4 @@ void NM1FlowTable::remove(Flow* flow)
         }
     }
 }
+

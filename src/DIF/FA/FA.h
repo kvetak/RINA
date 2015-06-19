@@ -72,6 +72,7 @@ class FA : public FABase
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
     simsignal_t sigFACreResPosiFwd;
+    simsignal_t sigFAIAllocFinMgmt;
 
     //Listeners
     LisFAAllocReq*      lisAllocReq;
@@ -89,6 +90,7 @@ class FA : public FABase
   private:
     EFCP* Efcp;
     DA* DifAllocator;
+    RABase* RaModule;
     NewFlowRequestBase* NFloReqPolicy;
 
     bool isMalformedFlow(Flow* flow);
