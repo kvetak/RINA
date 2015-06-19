@@ -31,6 +31,7 @@ protected:
 
 public:
     Routing_Alg(){};
+    virtual ~Routing_Alg(){};
 
     Routing_Alg(Routing_Module * p, const Address &_nAddr, const string &_addr, T inf) :
         parent(p), myNAddr(_nAddr), myAddr(_addr), infinite(inf), updateW(1), scheduledUpdate(false){};
