@@ -43,6 +43,7 @@ vector<RMTPort * > HierarchicalTable::lookup(const PDU * pdu){
     return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
 }
 vector<RMTPort * > HierarchicalTable::lookup(const Address &dst, const std::string& qos){
+
     string domId;
     string dstAddr = dst.getIpcAddress().getName();
     vector<RMTPort* >* found = NULL;
@@ -50,6 +51,7 @@ vector<RMTPort * > HierarchicalTable::lookup(const Address &dst, const std::stri
 
     for(auto & addrP : domains) {
         if(!isPrefix(addrP.first, dstAddr)){ continue; }
+        found = NULL;
         bool foundAtQoS = false;
         bool foundAtAddr = false;
         if(addrP.second.find(qos) != addrP.second.end()) {
