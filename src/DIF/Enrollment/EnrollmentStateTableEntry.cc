@@ -43,6 +43,8 @@ EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) {
     this->connectRetries = 0;
     this->isInitiator = false;
     this->enrollStatus = this->ENROLL_NIL;
+    Local = flow->getSrcApni();
+    Remote = flow->getDstApni();
 }
 
 EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) {
@@ -51,6 +53,8 @@ EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentState
     this->connectRetries = 0;
     this->isInitiator = isInitiator;
     this->enrollStatus = this->ENROLL_NIL;
+    Local = flow->getSrcApni();
+    Remote = flow->getDstApni();
 }
 
 EnrollmentStateTableEntry::~EnrollmentStateTableEntry() {
@@ -97,10 +101,6 @@ EnrollmentStateTableEntry::EnrollmentStatus EnrollmentStateTableEntry::getEnroll
     return enrollStatus;
 }
 
-
-
-
-
 std::string EnrollmentStateTableEntry::getCACEConnectionStatus() const {
     switch(this->conStatus) {
         case CON_ERROR: return "error";
@@ -134,9 +134,10 @@ std::string EnrollmentStateTableEntry::getEnrollmentStatusInfo() const {
 
 std::string EnrollmentStateTableEntry::info() const {
     std::ostringstream os;
+    os << "Src> " << Local  << endl
+       << "Dst> " << Remote << endl;
     os << "CACEConnectionStatus: " << this->getCACEConnectionStatus() << endl;
     os << "EnrollmentStatus: " << this->getEnrollmentStatusInfo() << endl;
-
     return os.str();
 }
 
@@ -146,3 +147,18 @@ std::ostream& operator <<(std::ostream& os, const EnrollmentStateTableEntry& est
     return os << este.info();
 }
 
+const APNamingInfo& EnrollmentStateTableEntry::getLocal() const {
+    return Local;
+}
+
+void EnrollmentStateTableEntry::setLocal(const APNamingInfo& local) {
+    Local = local;
+}
+
+const APNamingInfo& EnrollmentStateTableEntry::getRemote() const {
+    return Remote;
+}
+
+void EnrollmentStateTableEntry::setRemote(const APNamingInfo& remote) {
+    Remote = remote;
+}

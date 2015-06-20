@@ -54,7 +54,6 @@ void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
 
 }
 
-
 void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "GetFlowFromFaiCreResPosi initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
@@ -68,7 +67,6 @@ void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsi
     else
         EV << "EnrollmentListener received unknown object!" << endl;
 }
-
 
 void LisEnrollmentStartEnrollReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {

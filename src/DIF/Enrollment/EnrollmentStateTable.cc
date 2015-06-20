@@ -45,7 +45,7 @@ void EnrollmentStateTable::insert(EnrollmentStateTableEntry entry) {
 EnrollmentStateTableEntry* EnrollmentStateTable::findEntryByDstAPN(const APN& apn) {
     for(EnrollStateTableIter it = StateTable.begin(); it != StateTable.end(); ++it) {
         EnrollmentStateTableEntry est = *it;
-        if (est.getFlow()->getDstAddr().getApname() == apn)
+        if (est.getRemote().getApn() == apn)
             return &(*it);
     }
     return NULL;

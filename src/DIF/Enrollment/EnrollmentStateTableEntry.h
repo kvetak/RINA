@@ -78,6 +78,10 @@ public:
     std::string info() const;
     std::string getCACEConnectionStatus() const;
     std::string getEnrollmentStatusInfo() const;
+    const APNamingInfo& getLocal() const;
+    void setLocal(const APNamingInfo& local);
+    const APNamingInfo& getRemote() const;
+    void setRemote(const APNamingInfo& remote);
 
 private:
     CACEConnectionStatus conStatus;
@@ -86,6 +90,8 @@ private:
     bool immediateEnrollment;
     bool isInitiator;
     Flow *flow;
+    APNamingInfo Local;
+    APNamingInfo Remote;
 };
 
 //Free function

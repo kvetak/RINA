@@ -46,13 +46,13 @@ endif
 # <<<
 #------------------------------------------------------------------------------
 
-# Main target
-
+# Main target when "Build Project" is invoked
 all:
-	$(qecho) Creating static library "librinasimcore" ...  
-	cd src && $(MAKE) all
-	$(qecho) Creating dynamic library "librinasim" ...
-	cd policies && $(MAKE) all
+	$(qecho) Creating library librinasimcore ...  
+	$(Q)cd src && $(MAKE) all
+	$(qecho) Creating library librinasim ...
+	$(Q)cd policies && $(MAKE) all
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;
 
 submakedirs:  src_dir policies_dir
 
@@ -70,22 +70,27 @@ msgheaders:
 	$(Q)cd src && $(MAKE) msgheaders
 	$(Q)cd policies && $(MAKE) msgheaders	
 
-clean:
-	$(qecho) Cleaning local ...		
-	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.so" -exec rm -rf {} \;
-	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.dll" -exec rm -rf {} \;
-	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.a" -exec rm -rf {} \;
-	$(Q)-find $(PROJECT_OUTPUT_DIR) -type f -name "*.lib" -exec rm -rf {} \;
+cleanlibs:
+	$(qecho) Cleaning libraries ...		
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.so" -exec rm -rf {} \;
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.dll" -exec rm -rf {} \;
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.a" -exec rm -rf {} \;
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.lib" -exec rm -rf {} \;
 
-cleanall: 
-	$(qecho) Cleaning global ...
-	$(Q)-rm -rf $(PROJECT_OUTPUT_DIR)	
-	-$(Q)cd src && $(MAKE) clean
-	-$(Q)cd policies && $(MAKE) clean	
+# When "Clean Local/Project" is invoked
+clean:
+	$(qecho) Cleaning project ...  
+	$(Q)rm -rf $(O)  
+	$(Q)rm -f librinasim.so librinasim.dll librinasimcore.a librinasimcore.lib  
+	$(Q)cd src && $(MAKE) clean && rm -f .tmp* 
+	$(Q)cd policies && $(MAKE) clean && rm -f .tmp*	  
+
+cleanall: clean
+	$(Q)rm -rf $(PROJECT_OUTPUT_DIR) 	
 
 depend:
 	$(qecho) Creating dependencies...
-	$(Q)-cd src && if [ -f Makefile ]; then $(MAKE) depend; fi
-	$(Q)-cd policies && if [ -f Makefile ]; then $(MAKE) depend; fi
+	$(Q)cd src && if [ -f Makefile ]; then $(MAKE) depend; fi
+	$(Q)cd policies && if [ -f Makefile ]; then $(MAKE) depend; fi
 	
 
