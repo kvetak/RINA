@@ -29,8 +29,8 @@ Define_Module(DTCPState);
 
 void DTCPState::initFC()
 {
-  rcvRtWinEdge = rcvCredit;
-  sndRtWinEdge = sndCredit;
+  rcvRightWinEdge = rcvCredit;
+  sndRightWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
 //  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
@@ -56,9 +56,9 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
-  rcvRtWinEdgeSent = 0;
+  rcvRightWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
-  senderLeftWinEdge = 0;
+  sndLeftWinEdge = 0;
 
   //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
   immediate = true;
@@ -84,30 +84,30 @@ void DTCPState::setImmediate(bool immediate)
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
-  return rcvRtWinEdgeSent;
+  return rcvRightWinEdgeSent;
 }
 
 void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
-  this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
+  this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
 }
 
 unsigned int DTCPState::getSenderLeftWinEdge() const {
-    return senderLeftWinEdge;
+    return sndLeftWinEdge;
 }
 
 void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
-    this->senderLeftWinEdge = senderLeftWinEdge;
+    this->sndLeftWinEdge = senderLeftWinEdge;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const
 {
-  return sndRtWinEdge;
+  return sndRightWinEdge;
 }
 
 void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
-  this->sndRtWinEdge = senderRightWinEdge;
+  this->sndRightWinEdge = senderRightWinEdge;
 }
 
 DTCPState::~DTCPState()
@@ -138,17 +138,17 @@ void DTCPState::setSndCredit(unsigned int sndCredit)
 
 unsigned int DTCPState::getRcvRtWinEdge() const
 {
-  return rcvRtWinEdge;
+  return rcvRightWinEdge;
 }
 
 void DTCPState::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 {
-  this->rcvRtWinEdge = rcvRtWinEdge;
+  this->rcvRightWinEdge = rcvRtWinEdge;
 }
 
 void DTCPState::incRcvRtWinEdge()
 {
-  rcvRtWinEdge++;
+  rcvRightWinEdge++;
 }
 
 void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)

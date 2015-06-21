@@ -37,9 +37,10 @@ class DTCPState : public cSimpleModule
   private:
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
-    unsigned int senderLeftWinEdge;
-    unsigned int sndRtWinEdge;
-    unsigned int rcvRtWinEdgeSent;
+    unsigned int sndLeftWinEdge;
+    unsigned int sndRightWinEdge;
+    unsigned int rcvRightWinEdge; //The absolute value of the credit on this flow.
+    unsigned int rcvRightWinEdgeSent;
 //    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
@@ -70,7 +71,7 @@ class DTCPState : public cSimpleModule
     unsigned int sendBufferPercentThreshold; //The percent of free buffers at which flow control blocks the user from doing any more Writes.
     /* End without getters/setters */
 
-    unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
+
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
 
     /* Without getters/setters */
