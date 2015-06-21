@@ -18,8 +18,7 @@ package rina.src.DIF.FA;
 simple FAI
 {
     parameters:
-    	@display("i=block/rxtx");    	
-    	@signal[FAI-AllocateFinishManagement](type=Flow?);
+    	@display("i=block/rxtx");    	    	
     	@signal[FAI-DeallocateRequest](type=Flow?);
     	@signal[FAI-AllocateRequest](type=Flow?);
     	@signal[FAI-AllocateResponsePositive](type=Flow?);

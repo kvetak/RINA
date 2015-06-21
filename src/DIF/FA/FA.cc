@@ -40,6 +40,7 @@ void FA::initPointers() {
     DifAllocator = ModuleAccess<DA>(MOD_DA).get();
     NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
     RaModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
+    Enrollment = (EnrollmentStateTable*) getModuleByPath("^.^.enrollment.enrollmentStateTable");
 }
 
 void FA::initialize() {
@@ -113,17 +114,13 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
 
-    //Check for management flow
-    bool status = true;
-    Flow* mgmtflow = flow->dupToMgmt();
-    if ( !flow->isDdtFlag() && !RaModule->hasFlow(flow->getDstAddr().getApname().getName(), VAL_MGMTQOSID) ) {
-        EV << "Management flow is not present, thus allocating one first!" << endl;
-        status = receiveLocalMgmtAllocateRequest(mgmtflow);
-    }
-
-    //Are IPCPs enrolled?
-    if (status) {
-        emit(sigFAIAllocFinMgmt, mgmtflow);
+    //Check whether local IPCP is enrolled into DIF
+    //Successful enrollment implies existence of N-1 mgmt-flow, if not then
+    //FA needs to init allocation of N-1 mgmt-flow
+    if (!flow->isDdtFlag() && !Enrollment->isEnrolled(MyAddress.getApname())) {
+        EV << "IPCP not enrolled to DIF, thus executing enrollment!" << endl;
+        Flow* mgmtflow = flow->dupToMgmt();
+        receiveLocalMgmtAllocateRequest(mgmtflow);
     }
 
     //Is malformed?
@@ -143,6 +140,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
     //Postpone allocation request until management flow is ready
+    bool status;
     NFlowTableEntry* fte = N_flowTable->findMgmtEntryByDstAddr(flow->getDstAddr());
     if ( flow->isDdtFlag()
          ||
@@ -161,11 +159,20 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     return status;
 }
 
-bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
+bool FA::receiveLocalMgmtAllocateRequest(Flow* mgmtflow) {
     Enter_Method("receiveLocalMgmtAllocateRequest()");
     EV << this->getFullPath() << " received LocalMgmtAllocateRequest" << endl;
 
-    bool status = RaModule->bindNFlowToNM1Flow(flow);
+    bool status = true;
+    //If N-1 mgmt-flow not ready, then allocate
+    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApname().getName(), VAL_MGMTQOSID)) {
+        status = RaModule->bindNFlowToNM1Flow(mgmtflow);
+    }
+
+    //If N-1 mgmt ready, then starting enrollment procedure
+    if (status) {
+        emit(sigFAIAllocFinMgmt, mgmtflow);
+    }
 
     return status;
 }
@@ -374,7 +381,7 @@ void FA::initSignalsAndListeners() {
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
     sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
-    sigFAIAllocFinMgmt   = registerSignal(SIG_FAI_AllocateFinishManagement);
+    sigFAIAllocFinMgmt   = registerSignal(SIG_FA_MgmtFlowAllocated);
 
     //Signals that this module is processing
     //  AllocateRequest
@@ -393,9 +400,9 @@ void FA::initSignalsAndListeners() {
     catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
 
     //Allocate after management flow is prepared (enrollment done)
-    lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
+    lisEnrollFin = new LisFAAllocFinMgmt(this);
     //catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
-    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
+    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisEnrollFin);
 
 }
 

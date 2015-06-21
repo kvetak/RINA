@@ -86,10 +86,11 @@ void Enrollment::initSignalsAndListeners() {
     sigEnrollmentFinish         = registerSignal(SIG_ENROLLMENT_Finished);
 
     lisEnrollmentAllResPosi = new LisEnrollmentAllResPosi(this);
-    catcher1->subscribe(SIG_FAI_AllocateFinishManagement, lisEnrollmentAllResPosi);
+    catcher1->subscribe(SIG_FA_MgmtFlowAllocated, lisEnrollmentAllResPosi);
+    catcher1->subscribe(SIG_RA_MgmtFlowAllocated, lisEnrollmentAllResPosi);
 
-    lisEnrollmentGetFlowFromFaiCreResPosi = new LisEnrollmentGetFlowFromFaiCreResPosi(this);
-    catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisEnrollmentGetFlowFromFaiCreResPosi);
+    //lisEnrollmentGetFlowFromFaiCreResPosi = new LisEnrollmentGetFlowFromFaiCreResPosi(this);
+    //catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisEnrollmentGetFlowFromFaiCreResPosi);
 
     lisEnrollmentStartEnrollReq = new LisEnrollmentStartEnrollReq(this);
     catcher1->subscribe(SIG_RIBD_StartEnrollmentRequest, lisEnrollmentStartEnrollReq);
@@ -138,7 +139,6 @@ void Enrollment::startCACE(Flow* flow) {
 
     msg->setAuth(auth);
     msg->setAbsSyntax(GPB);
-    msg->setOpCode(M_CONNECT);
 
     APNamingInfo src = APNamingInfo(entry.getLocal().getApn(),
                 entry.getLocal().getApinstance(),
@@ -165,8 +165,8 @@ void Enrollment::startCACE(Flow* flow) {
     src.ApName = entry.getLocal().getApn().getName();
     */
 
-    msg->setDst(dst);
     msg->setSrc(src);
+    msg->setDst(dst);
 
     msg->setSrcAddr(Address(entry.getLocal().getApn()));
     msg->setDstAddr(Address(entry.getRemote().getApn()));
@@ -180,7 +180,6 @@ void Enrollment::insertStateTableEntry(Flow* flow){
     if(StateTable->findEntryByDstAPN(APN(flow->getDstAddr().getApname().getName().c_str())) != NULL) {
         return;
     }
-
     StateTable->insert(EnrollmentStateTableEntry(flow, EnrollmentStateTableEntry::CON_CONNECTPENDING, false));
 }
 
@@ -250,8 +249,7 @@ void Enrollment::receiveConnectRequest(CDAPMessage* msg) {
     }
 
     //check if message is valid
-    if (cmsg->getAbsSyntax() != GPB ||
-            cmsg->getOpCode() != M_CONNECT) {
+    if (cmsg->getAbsSyntax() != GPB) {
         this->processConResNega(entry, cmsg);
         return;
     }
@@ -497,7 +495,6 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
 
     msg->setAuth(auth);
     msg->setAbsSyntax(GPB);
-    msg->setOpCode(M_CONNECT);
 
     APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
                 entry->getLocal().getApinstance(),
@@ -509,9 +506,10 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
             entry->getRemote().getAename(),
             entry->getRemote().getAeinstance());
 
-    msg->setDst(dst);
     msg->setSrc(src);
+    msg->setDst(dst);
 
+    msg->setSrcAddr(Address(entry->getLocal().getApn()));
     msg->setDstAddr(Address(entry->getRemote().getApn()));
 
     //send data to ribd to send
@@ -543,12 +541,13 @@ void Enrollment::processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage
     auth.authValue = cmsg1->getAuth().authValue;
 
     msg->setAbsSyntax(GPB);
-    msg->setOpCode(M_CONNECT_R);
     msg->setResult(result);
     msg->setAuth(auth);
-    msg->setDst(dst);
-    msg->setSrc(src);
 
+    msg->setSrc(src);
+    msg->setDst(dst);
+
+    msg->setSrcAddr(Address(entry->getLocal().getApn()));
     msg->setDstAddr(Address(entry->getRemote().getApn()));
 
     //send data to ribd to send
@@ -580,12 +579,13 @@ void Enrollment::processConResNega(EnrollmentStateTableEntry* entry, CDAPMessage
     auth.authValue = cmsg1->getAuth().authValue;
 
     msg->setAbsSyntax(GPB);
-    msg->setOpCode(M_CONNECT_R);
     msg->setResult(result);
     msg->setAuth(auth);
-    msg->setDst(dst);
-    msg->setSrc(src);
 
+    msg->setSrc(src);
+    msg->setDst(dst);
+
+    msg->setSrcAddr(Address(entry->getLocal().getApn()));
     msg->setDstAddr(Address(entry->getRemote().getApn()));
 
     //send data to send to ribd

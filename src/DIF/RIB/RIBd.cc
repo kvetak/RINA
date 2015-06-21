@@ -654,7 +654,6 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_START);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -680,7 +679,6 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_START_R);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -707,7 +705,6 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_STOP);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -733,7 +730,6 @@ void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_STOP_R);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());

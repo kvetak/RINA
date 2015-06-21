@@ -79,6 +79,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocFinMgmt initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
         && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()

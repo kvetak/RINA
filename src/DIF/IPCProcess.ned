@@ -51,7 +51,7 @@ module IPCProcess
         efcp: EFCPModule {
             @display("p=79,50");
         }
-        enrollmentModule: EnrollmentModule {
+        enrollment: EnrollmentModule {
             @display("p=390,50");
         }
         routingPolicy: <routingPolicyName> like IntRouting {
@@ -64,5 +64,5 @@ module IPCProcess
     connections allowunconnected:
         relayAndMux.ribdIo <--> efcp.mockToRMT;
         ribDaemon.efcpIo <--> efcp.ribd;
-        
+
 }

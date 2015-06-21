@@ -518,7 +518,6 @@ void FAI::initSignalsAndListeners() {
     sigFAIDelRes        = registerSignal(SIG_FAI_DeleteFlowResponse);
     sigFAICreResNega    = registerSignal(SIG_FAI_CreateFlowResponseNegative);
     sigFAICreResPosi    = registerSignal(SIG_FAI_CreateFlowResponsePositive);
-    sigFAIAllocFinMgmt   = registerSignal(SIG_FAI_AllocateFinishManagement);
 
     //Signals that module processes
     //  AllocationRequest
@@ -664,6 +663,3 @@ void FAI::receiveCreateFlowResponseNegativeFromNminusOne() {
     this->signalizeAllocateResponseNegative();
 }
 
-void FAI::signalizeAllocateRequestToOtherFais(Flow* flow) {
-    emit(sigFAIAllocFinMgmt, flow);
-}

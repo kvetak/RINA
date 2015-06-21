@@ -40,6 +40,7 @@
 #include "DA.h"
 #include "RABase.h"
 #include "NewFlowRequestBase.h"
+#include "EnrollmentStateTable.h"
 
 //Constants
 
@@ -76,7 +77,7 @@ class FA : public FABase
 
     //Listeners
     LisFAAllocReq*      lisAllocReq;
-    LisFAAllocFinMgmt*  lisAllocFinMgmt;
+    LisFAAllocFinMgmt*  lisEnrollFin;
     LisFACreFloPosi*    lisCreFloPosi;
     LisFADeallocReq*    lisDeallocReq;
     LisFACreReq*        lisCreReq;
@@ -92,6 +93,7 @@ class FA : public FABase
     DA* DifAllocator;
     RABase* RaModule;
     NewFlowRequestBase* NFloReqPolicy;
+    EnrollmentStateTable* Enrollment;
 
     bool isMalformedFlow(Flow* flow);
     FAI* createFAI(Flow* flow);
