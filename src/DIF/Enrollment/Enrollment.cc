@@ -39,6 +39,11 @@ const char* PAR_AUTH_OTHER      = "authOther";
 const char* PAR_AUTH_PASS       = "authPassword";
 const char* PAR_CON_RETRIES     = "maxConRetries";
 
+const char* MSG_CONREQ                = "Connect/Auth";
+const char* MSG_CONREQRETRY           = "ConnectRetry/Auth";
+const char* MSG_CONRESPOS             = "Connect+/Auth";
+const char* MSG_CONRESNEG             = "Connect-/Auth";
+
 Enrollment::Enrollment() :
         StateTable(NULL), ribd(NULL)
 {
@@ -120,7 +125,7 @@ void Enrollment::startCACE(Flow* flow) {
     auto entry = EnrollmentStateTableEntry(flow, EnrollmentStateTableEntry::CON_AUTHENTICATING, true);
     StateTable->insert(entry);
 
-    CDAP_M_Connect* msg = new CDAP_M_Connect("connect");
+    CDAP_M_Connect* msg = new CDAP_M_Connect(MSG_CONREQ);
 
     authValue_t aValue;
     aValue.authName = authName;
@@ -135,6 +140,18 @@ void Enrollment::startCACE(Flow* flow) {
     msg->setAbsSyntax(GPB);
     msg->setOpCode(M_CONNECT);
 
+    APNamingInfo src = APNamingInfo(entry.getLocal().getApn(),
+                entry.getLocal().getApinstance(),
+                entry.getLocal().getAename(),
+                entry.getLocal().getAeinstance());
+
+    APNamingInfo dst = APNamingInfo(entry.getRemote().getApn(),
+            entry.getRemote().getApinstance(),
+            entry.getRemote().getAename(),
+            entry.getRemote().getAeinstance());
+    /*
+     * XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
+     *                      exactly the same ADT in RINASim source codes.
     naming_t dst;
     dst.AEInst = entry.getRemote().getAeinstance();
     dst.AEName = entry.getRemote().getAename();
@@ -146,10 +163,12 @@ void Enrollment::startCACE(Flow* flow) {
     src.AEName = entry.getLocal().getAename();
     src.ApInst = entry.getLocal().getApinstance();
     src.ApName = entry.getLocal().getApn().getName();
+    */
 
     msg->setDst(dst);
     msg->setSrc(src);
 
+    msg->setSrcAddr(Address(entry.getLocal().getApn()));
     msg->setDstAddr(Address(entry.getRemote().getApn()));
 
     //send data to ribd to send
@@ -169,7 +188,7 @@ void Enrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     Enter_Method("receivePositiveConnectResponse()");
 
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
-    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(cmsg->getSrc().ApName.c_str()));
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
     if (entry->getCACEConStatus() != EnrollmentStateTableEntry::CON_AUTHENTICATING) {
@@ -186,7 +205,7 @@ void Enrollment::receiveNegativeConnectResponse(CDAPMessage* msg) {
     Enter_Method("receiveNegativeConnectResponse()");
 
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
-    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(cmsg->getSrc().ApName.c_str()));
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
     if (entry->getCACEConStatus() != EnrollmentStateTableEntry::CON_AUTHENTICATING) {
@@ -211,7 +230,18 @@ void Enrollment::receiveConnectRequest(CDAPMessage* msg) {
     Enter_Method("receiveConnectRequest()");
 
     CDAP_M_Connect* cmsg = check_and_cast<CDAP_M_Connect*>(msg);
-    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(cmsg->getSrc().ApName.c_str()));
+
+    auto ent = EnrollmentStateTableEntry(
+            cmsg->getDst(), cmsg->getSrc(), EnrollmentStateTableEntry::CON_CONNECTPENDING, false);
+    StateTable->insert(ent);
+
+    EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
+
+    if (!entry) {
+        EV << "Enrollment status not found for "
+           << cmsg->getSrc().getApn() << endl;
+        return;
+    }
 
     //check appropriate state
     if (entry->getCACEConStatus() != EnrollmentStateTableEntry::CON_CONNECTPENDING) {
@@ -454,7 +484,7 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
 
     //TODO: probably change values, this is retry
 
-    CDAP_M_Connect* msg = new CDAP_M_Connect("connectRetry");
+    CDAP_M_Connect* msg = new CDAP_M_Connect(MSG_CONREQRETRY);
 
     authValue_t aValue;
     aValue.authName = authName;
@@ -469,17 +499,15 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
     msg->setAbsSyntax(GPB);
     msg->setOpCode(M_CONNECT);
 
-    naming_t dst;
-    dst.AEInst = entry->getRemote().getAeinstance();
-    dst.AEName = entry->getRemote().getAename();
-    dst.ApInst = entry->getRemote().getApinstance();
-    dst.ApName = entry->getRemote().getApn().getName();
+    APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
+                entry->getLocal().getApinstance(),
+                entry->getLocal().getAename(),
+                entry->getLocal().getAeinstance());
 
-    naming_t src;
-    src.AEInst = entry->getLocal().getAeinstance();
-    src.AEName = entry->getLocal().getAename();
-    src.ApInst = entry->getLocal().getApinstance();
-    src.ApName = entry->getLocal().getApn().getName();
+    APNamingInfo dst = APNamingInfo(entry->getRemote().getApn(),
+            entry->getRemote().getApinstance(),
+            entry->getRemote().getAename(),
+            entry->getRemote().getAeinstance());
 
     msg->setDst(dst);
     msg->setSrc(src);
@@ -494,20 +522,18 @@ void Enrollment::processNewConReq(EnrollmentStateTableEntry* entry) {
 }
 
 void Enrollment::processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
-    CDAP_M_Connect_R* msg = new CDAP_M_Connect_R("positiveConnectResponse");
+    CDAP_M_Connect_R* msg = new CDAP_M_Connect_R(MSG_CONRESPOS);
     CDAP_M_Connect* cmsg1 = check_and_cast<CDAP_M_Connect*>(cmsg);
 
-    naming_t dst;
-    dst.AEInst = entry->getRemote().getAeinstance();
-    dst.AEName = entry->getRemote().getAename();
-    dst.ApInst = entry->getRemote().getApinstance();
-    dst.ApName = entry->getRemote().getApn().getName();
+    APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
+                entry->getLocal().getApinstance(),
+                entry->getLocal().getAename(),
+                entry->getLocal().getAeinstance());
 
-    naming_t src;
-    src.AEInst = entry->getLocal().getAeinstance();
-    src.AEName = entry->getLocal().getAename();
-    src.ApInst = entry->getLocal().getApinstance();
-    src.ApName = entry->getLocal().getApn().getName();
+    APNamingInfo dst = APNamingInfo(entry->getRemote().getApn(),
+            entry->getRemote().getApinstance(),
+            entry->getRemote().getAename(),
+            entry->getRemote().getAeinstance());
 
     result_t result;
     result.resultValue = R_SUCCESS;
@@ -533,20 +559,18 @@ void Enrollment::processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage
 }
 
 void Enrollment::processConResNega(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
-    CDAP_M_Connect_R* msg = new CDAP_M_Connect_R("negativeConnectResponse");
+    CDAP_M_Connect_R* msg = new CDAP_M_Connect_R(MSG_CONRESNEG);
     CDAP_M_Connect* cmsg1 = check_and_cast<CDAP_M_Connect*>(cmsg);
 
-    naming_t dst;
-    dst.AEInst = entry->getRemote().getAeinstance();
-    dst.AEName = entry->getRemote().getAename();
-    dst.ApInst = entry->getRemote().getApinstance();
-    dst.ApName = entry->getRemote().getApn().getName();
+    APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
+                entry->getLocal().getApinstance(),
+                entry->getLocal().getAename(),
+                entry->getLocal().getAeinstance());
 
-    naming_t src;
-    src.AEInst = entry->getLocal().getAeinstance();
-    src.AEName = entry->getLocal().getAename();
-    src.ApInst = entry->getLocal().getApinstance();
-    src.ApName = entry->getLocal().getApn().getName();
+    APNamingInfo dst = APNamingInfo(entry->getRemote().getApn(),
+            entry->getRemote().getApinstance(),
+            entry->getRemote().getAename(),
+            entry->getRemote().getAeinstance());
 
     result_t result;
     result.resultValue = R_FAIL;

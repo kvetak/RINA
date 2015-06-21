@@ -31,30 +31,35 @@
 
 #include <EnrollmentStateTableEntry.h>
 
+const int VAL_NOCONRETRY    = 0;
+
 EnrollmentStateTableEntry::EnrollmentStateTableEntry() :
-    conStatus(this->CON_NIL), enrollStatus(this->ENROLL_NIL), connectRetries(0),
-    immediateEnrollment(false), isInitiator(false),flow(NULL)
+    Local(APNamingInfo()), Remote(APNamingInfo()),
+    conStatus(this->CON_NIL), isInitiator(false),
+    enrollStatus(this->ENROLL_NIL), connectRetries(VAL_NOCONRETRY),
+    immediateEnrollment(false), flow(NULL)
 {
 }
 
-EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) {
-    this->flow = flow;
-    this->conStatus = this->CON_CONNECTPENDING;
-    this->connectRetries = 0;
-    this->isInitiator = false;
-    this->enrollStatus = this->ENROLL_NIL;
-    Local = flow->getSrcApni();
-    Remote = flow->getDstApni();
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(APNamingInfo src, APNamingInfo dst, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInit) :
+        Local(src), Remote(dst),
+        conStatus(status), isInitiator(isInit),
+        enrollStatus(ENROLL_NIL), connectRetries(VAL_NOCONRETRY)
+{
 }
 
-EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) {
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) :
+        EnrollmentStateTableEntry(flow->getSrcApni(), flow->getDstApni(),
+                CON_CONNECTPENDING, false)
+{
     this->flow = flow;
-    this->conStatus = status;
-    this->connectRetries = 0;
-    this->isInitiator = isInitiator;
-    this->enrollStatus = this->ENROLL_NIL;
-    Local = flow->getSrcApni();
-    Remote = flow->getDstApni();
+}
+
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) :
+        EnrollmentStateTableEntry(flow->getSrcApni(), flow->getDstApni(),
+                status, isInitiator)
+{
+    this->flow = flow;
 }
 
 EnrollmentStateTableEntry::~EnrollmentStateTableEntry() {
@@ -134,8 +139,8 @@ std::string EnrollmentStateTableEntry::getEnrollmentStatusInfo() const {
 
 std::string EnrollmentStateTableEntry::info() const {
     std::ostringstream os;
-    os << "Src> " << Local  << endl
-       << "Dst> " << Remote << endl;
+    os << "Local> " << Local  << endl
+       << "Remote> " << Remote << endl;
     os << "CACEConnectionStatus: " << this->getCACEConnectionStatus() << endl;
     os << "EnrollmentStatus: " << this->getEnrollmentStatusInfo() << endl;
     return os.str();
