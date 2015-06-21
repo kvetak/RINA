@@ -28,7 +28,6 @@
 //RINASim libraries
 #include "IRMListeners.h"
 #include "ConnectionTable.h"
-#include "ModuleAccess.h"
 #include "RINASignals.h"
 #include "DA.h"
 #include "FABase.h"

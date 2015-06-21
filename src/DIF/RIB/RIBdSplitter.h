@@ -28,7 +28,6 @@
 //RINASim libraries
 #include "NFlowTable.h"
 #include "CDAPMessage_m.h"
-#include "ModuleAccess.h"
 
 class RIBdSplitter : public cSimpleModule
 {

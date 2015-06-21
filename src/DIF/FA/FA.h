@@ -39,7 +39,6 @@
 #include "Flow.h"
 #include "NFlowTable.h"
 #include "RINASignals.h"
-#include "ModuleAccess.h"
 #include "EFCP.h"
 #include "ExternConsts.h"
 #include "DA.h"

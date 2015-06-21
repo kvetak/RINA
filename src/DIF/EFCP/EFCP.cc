@@ -102,7 +102,9 @@ EFCP::~EFCP() {
 void EFCP::initialize(int step){
 //  if(step == 3){
     efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
-    resourceAllocator = ModuleAccess<RA>(MOD_RA).get();
+    resourceAllocator = check_and_cast<RA*>
+        (getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+
 //  }
 
 

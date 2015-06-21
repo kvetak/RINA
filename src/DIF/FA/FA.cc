@@ -42,7 +42,8 @@ void FA::initPointers() {
     N_flowTable = check_and_cast<NFlowTable*>(getParentModule()->getSubmodule(MOD_NFLOWTABLE));
     Efcp = (EFCP*) ((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
 
-    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
+    DifAllocator = check_and_cast<DA*>
+        (getModuleByPath("^.^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
     NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
     RaModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
 }

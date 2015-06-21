@@ -36,7 +36,6 @@
 #include "FAIListeners.h"
 #include "RINASignals.h"
 #include "EFCP.h"
-#include "ModuleAccess.h"
 #include "AllocateRetryBase.h"
 
 //#include "PushBackChannel.h"

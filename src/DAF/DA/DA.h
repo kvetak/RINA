@@ -30,7 +30,6 @@
 #include "NamingInformation.h"
 #include "NeighborTable.h"
 #include "SearchTable.h"
-#include "ModuleAccess.h"
 #include "FABase.h"
 #include "ExternConsts.h"
 
