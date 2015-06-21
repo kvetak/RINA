@@ -28,14 +28,14 @@ const char* MSG_CONGEST         = "Congestion";
 const char* MSG_FLO             = "Flow";
 const char* MSG_FLOPOSI         = "Flow+";
 const char* MSG_FLONEGA         = "Flow-";
-const char* CLS_FLOW            = "Flow";
 const int   VAL_DEFINSTANCE     = -1;
 const int   VAL_FLOWPOSI        = 1;
 const int   VAL_FLOWNEGA        = 0;
 const char* VAL_FLREQ           = "Request  ";
 const char* VAL_FLREQPOSI       = "Response+  ";
 const char* VAL_FLREQNEGA       = "Response-  ";
-const char* MSG_ROUTINGUPDATE       = "RoutingUpdate";
+const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
+const char* MSG_ENROLLMENT      = "Enrollment";
 
 Define_Module(RIBd);
 
@@ -67,7 +67,8 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     flowobj.objectInstance = VAL_DEFINSTANCE;
     mcref->setObject(flowobj);
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
     mcref->setDstAddr(flow->getDstNeighbor());
 
     //Generate InvokeId
@@ -113,8 +114,9 @@ void RIBd::sendDeleteRequestFlow(Flow* flow) {
     flowobj.objectInstance = VAL_DEFINSTANCE;
     mdereqf->setObject(flowobj);
 
-    //Append destination address for RMT "routing"
-    mdereqf->setDstAddr(flow->getDstAddr());
+    //Append src/dst address for RMT "routing"
+    mdereqf->setSrcAddr(flow->getSrcNeighbor());
+    mdereqf->setDstAddr(flow->getDstNeighbor());
 
     //Generate InvokeId
     if (!flow->getDeallocInvokeId())
@@ -338,8 +340,9 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     //Generate InvokeId
     mcref->setInvokeID(flow->getAllocInvokeId());
 
-    //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getDstAddr());
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
+    mcref->setDstAddr(flow->getDstNeighbor());
 
     //Send it
     signalizeSendData(mcref);
@@ -370,8 +373,9 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     //Generate InvokeId
     mcref->setInvokeID(flow->getAllocInvokeId());
 
-    //Append destination address for RMT "routing"
-    mcref->setDstAddr(flow->getDstAddr());
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
+    mcref->setDstAddr(flow->getDstNeighbor());
 
     //Send it
     signalizeSendData(mcref);
@@ -461,8 +465,9 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     //Generate InvokeId
     mderesf->setInvokeID(flow->getDeallocInvokeId());
 
-    //Append destination address for RMT "routing"
-    mderesf->setDstAddr(flow->getDstAddr());
+    //Append src/dst address for RMT "routing"
+    mderesf->setSrcAddr(flow->getSrcNeighbor());
+    mderesf->setDstAddr(flow->getDstNeighbor());
 
     //Send it
     signalizeSendData(mderesf);
@@ -523,7 +528,8 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
     //Generate InvokeId
     mstarcon->setInvokeID(DONTCARE_INVOKEID);
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mstarcon->setSrcAddr(pdu->getDstAddr());
     mstarcon->setDstAddr(pdu->getSrcAddr());
 
     //Send it
@@ -637,7 +643,7 @@ void RIBd::signalizeStartOperationResponse(CDAPMessage* msg) {
 void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentRequest()");
 
-    CDAP_M_Start* msg = new CDAP_M_Start("Start Enrollment");
+    CDAP_M_Start* msg = new CDAP_M_Start(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -653,6 +659,8 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);
@@ -661,7 +669,7 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentResponse()");
 
-    CDAP_M_Start_R* msg = new CDAP_M_Start_R("Start_R Enrollment");
+    CDAP_M_Start_R* msg = new CDAP_M_Start_R(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -677,7 +685,10 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
+
 
     signalizeSendData(msg);
 }
@@ -685,7 +696,7 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentRequest()");
 
-    CDAP_M_Stop* msg = new CDAP_M_Stop("Stop Enrollment");
+    CDAP_M_Stop* msg = new CDAP_M_Stop(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -701,6 +712,8 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);
@@ -709,7 +722,7 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentResponse()");
 
-    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R("Stop_R Enrollment");
+    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -725,6 +738,8 @@ void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);

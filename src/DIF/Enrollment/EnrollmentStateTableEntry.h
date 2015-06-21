@@ -36,6 +36,8 @@
 #include <string>
 #include "Flow.h"
 
+extern const int VAL_NOCONRETRY;
+
 class EnrollmentStateTableEntry {
 public:
     enum CACEConnectionStatus {CON_ERROR,
@@ -58,6 +60,7 @@ public:
                             ENROLL_ENROLLED};
 
     EnrollmentStateTableEntry();
+    EnrollmentStateTableEntry(APNamingInfo src, APNamingInfo dst, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInit);
     EnrollmentStateTableEntry(Flow* flow);
     EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator);
     virtual ~EnrollmentStateTableEntry();
@@ -84,14 +87,15 @@ public:
     void setRemote(const APNamingInfo& remote);
 
 private:
+    APNamingInfo Local;
+    APNamingInfo Remote;
     CACEConnectionStatus conStatus;
+    bool isInitiator;
     EnrollmentStatus enrollStatus;
     int connectRetries;
     bool immediateEnrollment;
-    bool isInitiator;
     Flow *flow;
-    APNamingInfo Local;
-    APNamingInfo Remote;
+
 };
 
 //Free function

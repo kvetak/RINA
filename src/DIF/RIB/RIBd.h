@@ -38,7 +38,6 @@
 //Constants
 extern const char* MSG_CONGEST;
 extern const char* MSG_FLO;
-extern const char* CLS_FLOW;
 extern const char* MSG_FLOPOSI;
 extern const char* MSG_FLONEGA;
 extern const int   VAL_DEFINSTANCE;
@@ -48,6 +47,7 @@ extern const char* VAL_FLREQ;
 extern const char* VAL_FLREQPOSI;
 extern const char* VAL_FLREQNEGA;
 extern const char* MSG_ROUTINGUPDATE;
+extern const char* MSG_ENROLLMENT;
 
 class RIBd : public RIBdBase {
   public:

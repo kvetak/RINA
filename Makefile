@@ -70,24 +70,26 @@ msgheaders:
 	$(Q)cd src && $(MAKE) msgheaders
 	$(Q)cd policies && $(MAKE) msgheaders	
 
-cleanlibs:
-	$(qecho) Cleaning libraries ...		
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.so" -exec rm -rf {} \;
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.dll" -exec rm -rf {} \;
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.a" -exec rm -rf {} \;
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "*.lib" -exec rm -rf {} \;
-
 # When "Clean Local/Project" is invoked
-clean:
+clean: cleansrc cleanpolicies
 	$(qecho) Cleaning project ...  
 	$(Q)rm -rf $(O)  
 	$(Q)rm -f librinasim.so librinasim.dll librinasimcore.a librinasimcore.lib  
-	$(Q)cd src && $(MAKE) clean && rm -f .tmp* 
-	$(Q)cd policies && $(MAKE) clean && rm -f .tmp*	  
-
+	 		  
 cleanall: clean
-	$(Q)rm -rf $(PROJECT_OUTPUT_DIR) 	
-
+	$(Q)rm -rf $(PROJECT_OUTPUT_DIR)
+	
+cleanlibs:
+	$(qecho) Cleaning libraries ...		
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasimcore.*" -exec rm -rf {} \;	
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;
+	
+cleansrc:
+	$(Q)cd src && $(MAKE) clean && rm -f .tmp*
+	
+cleanpolicies:	 	
+	$(Q)cd policies && $(MAKE) clean && rm -f .tmp*
+	
 depend:
 	$(qecho) Creating dependencies...
 	$(Q)cd src && if [ -f Makefile ]; then $(MAKE) depend; fi

@@ -44,6 +44,10 @@
 #include "EnrollmentObj.h"
 #include "OperationObj.h"
 
+extern const char* MSG_CONREQ;
+extern const char* MSG_CONREQRETRY;
+extern const char* MSG_CONRESPOS;
+extern const char* MSG_CONRESNEG;
 
 class LisEnrollmentAllResPosi;
 class LisEnrollmentGetFlowFromFaiCreResPosi;
