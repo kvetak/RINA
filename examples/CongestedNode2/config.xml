@@ -2,27 +2,34 @@
 <Configuration>
   <ConnectionSets>
     <ConnectionSet id="all">
-      <SimTime t="0">
-<Connection src="1_Over" dst="0_Over" qosCube="1"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="2"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="3"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="4"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="5"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="6"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="7"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="8"/>
-				<Connection src="1_Over" dst="0_Over" qosCube="9"/>
-				
-				<Connection src="2_Over" dst="0_Over" qosCube="1"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="2"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="3"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="4"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="5"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="6"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="7"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="8"/>
-				<Connection src="2_Over" dst="0_Over" qosCube="9"/>
-      </SimTime>
+            <!-- Allocate management flows. -->
+            <SimTime t="0">
+                <Connection src="1_Over" dst="0_Over" qosReq="mgmt"/>
+                <Connection src="2_Over" dst="0_Over" qosReq="mgmt"/>
+            </SimTime>
+            
+            <!-- Allocate data flows. -->
+            <SimTime t="1">
+				<Connection src="1_Over" dst="0_Over" qosReq="1"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="2"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="3"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="4"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="5"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="6"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="7"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="8"/>
+				<Connection src="1_Over" dst="0_Over" qosReq="9"/>
+					
+				<Connection src="2_Over" dst="0_Over" qosReq="1"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="2"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="3"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="4"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="5"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="6"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="7"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="8"/>
+				<Connection src="2_Over" dst="0_Over" qosReq="9"/>
+            </SimTime>   
     </ConnectionSet>
   </ConnectionSets>
 

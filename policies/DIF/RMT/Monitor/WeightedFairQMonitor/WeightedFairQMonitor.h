@@ -15,44 +15,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef DLMonitor_H_
-#define DLMonitor_H_
+#ifndef WeightedFairQMonitor_H_
+#define WeightedFairQMonitor_H_
 
-#include "SmartMonitor.h"
-
-#include <string>
 #include <map>
-#include <vector>
-#include <list>
 
-namespace BEMonitor {
+#include "RMTQMonitorBase.h"
+#include <WeightedFairQMonitor/FlowParams.h>
+
+
+namespace FWQ {
 
 using namespace std;
 
-typedef list<RMTQueue*> QueuesList;
-typedef map<RMTPort*, RMTQueue* > port2Queue;
-typedef map<RMTPort*, QueuesList > port2Queues;
-typedef map<RMTPort*, unsigned int > port2Count;
+typedef map<RMTQueue*, FlowParams> queue2Fp;
+typedef queue2Fp::iterator queue2FpIt;
 
-
-class BEMonitor : public SmartMonitor
+class WeightedFairQMonitor : public RMTQMonitorBase
 {
-public:
-    void onPolicyInit();
-    void postPDUInsertion(RMTQueue* queue);
-    void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
+  public:
+    virtual void onPolicyInit();
+    virtual void onMessageArrival(RMTQueue* queue);
+    virtual void onMessageDeparture(RMTQueue* queue);
+    virtual void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
+    virtual void postQueueCreation(RMTQueue* queue);
+    virtual void preQueueRemoval(RMTQueue* queue);
 
-    RMTQueue* getNextInput(RMTPort* port);
-    RMTQueue* getNextOutput(RMTPort* port);
-
-    double getInDropProb(RMTQueue * queue);
-    double getOutDropProb(RMTQueue * queue);
+    virtual RMTQueue * getNextQueue();
 
   protected:
-    port2Queues inQ, outQ;
-    port2Count inC, outC;
+    queue2Fp queueTimes;
+    int defBW;
+    int stopQAt, startQAt;
 };
 
-}
+} /* namespace FWQ */
 
 #endif /* SIMPLEMONITOR_H_ */

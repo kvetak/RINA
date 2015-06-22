@@ -15,43 +15,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#ifndef eDLMonitor_H_
-#define eDLMonitor_H_
+#ifndef DQMonitor_H_
+#define DQMonitor_H_
 
 #include "SmartMonitor.h"
+
+#include "dlCUInfo.h"
 
 #include <string>
 #include <map>
 #include <vector>
 #include <list>
 
-namespace eDLMonitor {
+namespace DQMonitor {
 
 using namespace std;
+
+typedef std::map<std::string, L> lRepo;
+typedef std::map<std::string, C> cRepo;
+typedef std::map<std::string, U> uRepo;
+typedef std::map<std::string, dlCUInfo> cuRepo;
+
+
+typedef std::map<RMTQueue*, dlCUInfo*> queue2CU;
+
 
 typedef list<RMTQueue*> QueuesList;
 typedef map<RMTPort*, RMTQueue* > port2Queue;
 typedef map<RMTPort*, QueuesList > port2Queues;
-typedef map<RMTPort*, unsigned int > port2Count;
 
-typedef map<int, double> i2d;
-
-struct dlCUInfo {
-    std::string CUId, queue;
-    int urgency;
-    int threshold;
-    double dropProb;
-    int absThreshold;
-
-    dlCUInfo();
-    dlCUInfo(std::string id);
-    dlCUInfo(std::string id, std::string _queue, int urg, int thre, double dropP, int absThre);
-};
-
-typedef std::map<std::string, dlCUInfo> cuRepo;
+/*
 typedef cuRepo::iterator cuRepoiterator;
 
-typedef std::map<RMTQueue*, std::string> queue2CU;
 
 
 typedef std::map<int, QueuesList> PriorityQueuesList;
@@ -59,8 +54,9 @@ typedef PriorityQueuesList::iterator PQListIterator;
 typedef PriorityQueuesList::reverse_iterator PQListRIterator;
 
 typedef std::map<RMTPort*, PriorityQueuesList> Port2PQ;
+*/
 
-class eDLMonitor : public SmartMonitor
+class DQMonitor : public SmartMonitor
 {
 public:
     void onPolicyInit();
@@ -68,21 +64,42 @@ public:
     void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
     void postQueueCreation(RMTQueue* queue);
 
-    RMTQueue* getNextInput(RMTPort* port);
-    RMTQueue* getNextOutput(RMTPort* port);
+//    int getInCount(RMTPort* port);
+//    int getInThreshold(RMTQueue * queue);
 
     double getInDropProb(RMTQueue * queue);
+    RMTQueue* getNextInput(RMTPort* port);
+    simtime_t getNextInputTime(RMTPort* port);
+
+//    int getOutCount(RMTPort* port);
+//    int getOutThreshold(RMTQueue * queue);
+
     double getOutDropProb(RMTQueue * queue);
+    RMTQueue* getNextOutput(RMTPort* port);
 
   protected:
+    lRepo Ls;
+    cRepo Cs;
+    uRepo Us;
     cuRepo CUs;
     queue2CU Q2CU;
 
-    port2Queues inQ;
-    Port2PQ outQs;
+    map< RMTPort*, map<L*, list<simtime_t> > > LTimes;
+    map< RMTPort*, map<L*, list<simtime_t> > > SpaceTimes;
+    map< RMTPort*, simtime_t> nextServe;
 
-    port2Count inC, outC, lastInsertedUrgency;
-    i2d probs;
+    map< RMTPort*, map<L*, list<RMTQueue*> > > LQueues;
+
+    map< RMTQueue*, list<simtime_t> > UTimes;
+    map< RMTQueue*, int > lastUrgency;
+
+    map< RMTPort*, map<int, list<RMTQueue*> > > UQueues;
+
+    map<RMTPort*, unsigned int > outC;
+
+    void parseL(cXMLElement* xml);
+    void parseC(cXMLElement* xml);
+    void parseU(cXMLElement* xml);
 };
 
 }

@@ -1,6 +1,4 @@
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +13,32 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "IDPerNQoS.h"
+#ifndef __RINA_WeightedFairQ_H_
+#define __RINA_WeightedFairQ_H_
 
-Define_Module(IDPerNQoS);
+#include <omnetpp.h>
 
-std::string IDPerNQoS::generateOutputQueueID(PDU* pdu)
+#include "RMTSchedulingBase.h"
+
+#include <WeightedFairQMonitor/WeightedFairQMonitor.h>
+
+namespace FWQ {
+
+using namespace std;
+
+class WeightedFairQ : public RMTSchedulingBase
 {
-    if(pdu->getConnId().getQoSId() == VAL_MGMTQOSID){ return "M";}
-    return pdu->getConnId().getQoSId();
-}
+public:
+    virtual void onPolicyInit();
 
-std::string IDPerNQoS::generateInputQueueID(PDU* pdu)
-{
-    return generateOutputQueueID(pdu);
-}
+private:
+    virtual void processQueues(RMTPort* port, RMTQueueType direction);
+
+protected:
+    WeightedFairQMonitor * monitor;
+};
+
+
+} /* namespace FWQ */
+
+#endif

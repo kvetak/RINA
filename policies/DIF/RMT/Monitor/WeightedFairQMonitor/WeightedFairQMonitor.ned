@@ -15,14 +15,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.PortMaxQ;
+package rina.policies.DIF.RMT.Monitor.WeightedFairQMonitor;
 
-simple PortMaxQ like IntRMTMaxQPolicy 
+simple WeightedFairQMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");
-
-        @signal[RMT-SlowDownRequest];
+        @class(FWQ::WeightedFairQMonitor);
+        
+        int defBW = default(100);
+        int stopQAt = default(3);
+        int restartQAt = default(1);
 }

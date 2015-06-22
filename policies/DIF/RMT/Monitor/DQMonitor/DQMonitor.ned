@@ -1,6 +1,6 @@
 //
 // Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +15,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "IDPerNQoS.h"
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-Define_Module(IDPerNQoS);
+package rina.policies.DIF.RMT.Monitor.DQMonitor;
 
-std::string IDPerNQoS::generateOutputQueueID(PDU* pdu)
+simple DQMonitor like IntRMTQMonitorPolicy 
 {
-    if(pdu->getConnId().getQoSId() == VAL_MGMTQOSID){ return "M";}
-    return pdu->getConnId().getQoSId();
-}
-
-std::string IDPerNQoS::generateInputQueueID(PDU* pdu)
-{
-    return generateOutputQueueID(pdu);
+    parameters:
+        @display("i=block/socket");
+        @class(DQMonitor::DQMonitor);
+        xml lData = default(xml("<Ls/>"));
+        xml cData = default(xml("<Cs/>"));
+        xml uData = default(xml("<Us/>"));
+        xml cuData = default(xml("<CU/>"));
 }

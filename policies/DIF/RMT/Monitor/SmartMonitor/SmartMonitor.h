@@ -25,17 +25,11 @@ struct queueStat {
 
 class SmartMonitor : public RMTQMonitorBase {
 public:
-    virtual int getInCount(RMTPort* port) = 0;
     virtual RMTQueue* getNextInput(RMTPort* port) = 0;
-
-    virtual int getOutCount(RMTPort* port) = 0;
     virtual RMTQueue* getNextOutput(RMTPort* port) = 0;
 
-    virtual int getInThreshold(RMTQueue * queue) = 0;
-    virtual int getOutThreshold(RMTQueue * queue) = 0;
-
-    virtual queueStat getInStat(RMTQueue * queue) = 0;
-    virtual queueStat getOutStat(RMTQueue * queue) = 0;
+    virtual double getInDropProb(RMTQueue * queue) = 0;
+    virtual double getOutDropProb(RMTQueue * queue) = 0;
 };
 
 

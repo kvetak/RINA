@@ -143,7 +143,7 @@ void eDLMonitor::onPolicyInit(){
     }
 }
 
-void eDLMonitor::onMessageArrival(RMTQueue* queue) {
+void eDLMonitor::postPDUInsertion(RMTQueue* queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
@@ -159,8 +159,6 @@ void eDLMonitor::onMessageArrival(RMTQueue* queue) {
         }
     }
 }
-
-void eDLMonitor::onMessageDeparture(RMTQueue* queue) {}
 
 void eDLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
@@ -188,13 +186,6 @@ void eDLMonitor::postQueueCreation(RMTQueue* queue){
     }
 }
 
-int eDLMonitor::getInCount(RMTPort* port) {
-    return inC[port];
-}
-
-int eDLMonitor::getInThreshold(RMTQueue * queue){
-    return queue->getMaxLength();
-}
 
 RMTQueue* eDLMonitor::getNextInput(RMTPort* port){
     RMTQueue* q = NULL;
@@ -210,15 +201,6 @@ RMTQueue* eDLMonitor::getNextInput(RMTPort* port){
     }
 
     return q;
-}
-
-int eDLMonitor::getOutCount(RMTPort* port){
-    return outC[port];
-}
-
-int eDLMonitor::getOutThreshold(RMTQueue * queue){
-    std::string cu = Q2CU[queue];
-    return CUs[cu].threshold;
 }
 
 RMTQueue* eDLMonitor::getNextOutput(RMTPort* port){
@@ -251,20 +233,24 @@ RMTQueue* eDLMonitor::getNextOutput(RMTPort* port){
 }
 
 
-queueStat eDLMonitor::getInStat(RMTQueue * queue){
+double eDLMonitor::getInDropProb(RMTQueue * queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
-    return queueStat(inC[port],queue->getMaxLength(),1,queue->getMaxLength());
+    return ( (int)inC[port] < queue->getMaxLength() )? 0 : 1;
 }
-queueStat eDLMonitor::getOutStat(RMTQueue * queue){
+
+double eDLMonitor::getOutDropProb(RMTQueue * queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
     dlCUInfo din = CUs[Q2CU[queue]];
-    return queueStat(outC[port],din.threshold,din.dropProb, din.absThreshold);
-}
+    int count = outC[port];
 
+    return ( count < din.threshold )? 0 : ( ( count < din.absThreshold )? din.dropProb : 1) ;
+
+
+}
 
 
 }

@@ -32,20 +32,15 @@ void DumbMaxQ::onPolicyInit()
 bool DumbMaxQ::run(RMTQueue* queue)
 {
     bool drop = false;
-    queueStat qs;
+    double dp;
     switch (queue->getType()) {
-        case RMTQueue::INPUT:
-            qs = monitor->getInStat(queue);
-            break;
-        case RMTQueue::OUTPUT:
-            qs = monitor->getOutStat(queue);
-            break;
+        case RMTQueue::INPUT: dp = monitor->getInDropProb(queue); break;
+        case RMTQueue::OUTPUT: dp = monitor->getOutDropProb(queue); break;
     }
-    if(qs.ocupation > qs.absThreshold) {
-        drop = true;
-    } else if (qs.ocupation > qs.threshold) {
-        drop = qs.dropProb >= uniform(0,1);
-    }
+
+    if( dp <= 0 ) { return false; }
+    if( dp >= 1 ) { drop = true; }
+    else { drop = dp >= uniform(0,1); }
 
     if(drop) {
         std::string qos = ((PDU*)queue->getLastPDU())->getConnId().getQoSId();
