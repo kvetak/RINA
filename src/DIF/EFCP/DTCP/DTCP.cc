@@ -37,7 +37,7 @@ DTCP::DTCP() {
   lostControlPDUPolicy = NULL;
   rcvrControlAckPolicy = NULL;
   senderAckPolicy = NULL;
-  fcOverrunPolicy = NULL;
+  sndFcOverrunPolicy = NULL;
   noOverridePeakPolicy = NULL;
   txControlPolicy = NULL;
   noRateSlowDownPolicy = NULL;
@@ -424,10 +424,10 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 }
 
 
-bool DTCP::runFCOverrunPolicy(DTPState* dtpState)
+bool DTCP::runSndFCOverrunPolicy(DTPState* dtpState)
 {
   Enter_Method("FCOverrunPolicy");
-  fcOverrunPolicy->call(dtpState, dtcpState);
+  sndFcOverrunPolicy->call(dtpState, dtcpState);
 //    /* Default */
 //    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
 //    //Block further Write API calls on this port-id
@@ -954,9 +954,9 @@ void DTCP::updateSenderLWE(unsigned int seqNum)
   dtcpState->updateSndLWE(seqNum);
 }
 
-void DTCP::setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy)
+void DTCP::setSndFcOverrunPolicy(SndFCOverrunPolicyBase* sndFcOverrunPolicy)
 {
-  this->fcOverrunPolicy = fcOverrunPolicy;
+  this->sndFcOverrunPolicy = sndFcOverrunPolicy;
 }
 
 void DTCP::setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy)

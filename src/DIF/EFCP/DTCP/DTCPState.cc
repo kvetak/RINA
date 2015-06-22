@@ -61,6 +61,9 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
+  winBased = false;
+  rateBased = false;
+
   rcvRightWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
   sndLeftWinEdge = 0;
@@ -410,6 +413,11 @@ void DTCPState::handleMessage(cMessage* msg)
 void DTCPState::initialize(int step)
 {
   if(step == 1){
+
+      rxPresent = qoSCube->isRxOn();
+          winBased = qoSCube->isWindowFcOn();
+          rateBased = qoSCube->isRateFcOn();
+
     if(par("aTime").doubleValue() != 0){
       immediate = false;
     }
@@ -434,6 +442,10 @@ void DTCPState::initialize(int step)
     timeUnit = par("timeUnit");
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
+
+
+
+
     initFC();
   }
 }
@@ -441,6 +453,14 @@ void DTCPState::initialize(int step)
 unsigned int DTCPState::getRxSent() const
 {
   return rxSent;
+}
+
+const QoSCube* DTCPState::getQoSCube() const {
+    return qoSCube;
+}
+
+void DTCPState::setQoSCube(const QoSCube*& qoSCube) {
+    this->qoSCube = qoSCube;
 }
 
 void DTCPState::initFromQoS(const QoSCube* qosCube)
@@ -453,3 +473,26 @@ unsigned int DTCPState::getRxQLen()
   return rxQ.size();
 }
 
+bool DTCPState::isRateBased() const {
+    return rateBased;
+}
+
+void DTCPState::setRateBased(bool rateBased) {
+    this->rateBased = rateBased;
+}
+
+bool DTCPState::isRxPresent() const {
+    return rxPresent;
+}
+
+void DTCPState::setRxPresent(bool rxPresent) {
+    this->rxPresent = rxPresent;
+}
+
+bool DTCPState::isWinBased() const {
+    return winBased;
+}
+
+void DTCPState::setWinBased(bool winBased) {
+    this->winBased = winBased;
+}

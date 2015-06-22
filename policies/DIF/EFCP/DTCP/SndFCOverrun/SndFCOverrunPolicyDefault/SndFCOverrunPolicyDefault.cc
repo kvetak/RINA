@@ -19,15 +19,34 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SndFCOverrunPolicyDefault.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Flow Control Overrun behavior
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.FCOverrun.FCOverrunPolicyDefault;
-import rina.policies.DIF.EFCP.DTCP.FCOverrun.IntFCOverrunPolicy;
-//
-// TODO auto-generated type
-//
-simple FCOverrunPolicyDefault like IntFCOverrunPolicy
+#include <SndFCOverrunPolicyDefault.h>
+
+Register_Class(SndFCOverrunPolicyDefault);
+
+SndFCOverrunPolicyDefault::SndFCOverrunPolicyDefault()
 {
-    parameters:
-        string policyName = "FCOverun Default";
-        @display("i=block/socket");
+  // TODO Auto-generated constructor stub
+
+}
+
+SndFCOverrunPolicyDefault::~SndFCOverrunPolicyDefault()
+{
+  // TODO Auto-generated destructor stub
+}
+
+bool SndFCOverrunPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("SndFCOverRunPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
 }

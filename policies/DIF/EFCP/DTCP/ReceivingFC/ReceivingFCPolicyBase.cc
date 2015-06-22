@@ -41,7 +41,7 @@ ReceivingFCPolicyBase::~ReceivingFCPolicyBase()
 void ReceivingFCPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
-  if (dtpState->isWinBased())
+  if (dtcpState->isWinBased())
   {
 
     //Send FlowControl PDU /* Already updated the window and not sending Ack */

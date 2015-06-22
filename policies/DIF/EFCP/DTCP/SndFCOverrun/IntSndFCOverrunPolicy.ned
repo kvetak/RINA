@@ -1,3 +1,4 @@
+//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -19,36 +20,12 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file DTCPFCOverrunPolicyBase.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 8, 2015
- * @brief
- * @detail
- */
 
-#ifndef DTCPFCOVERRUNPOLICYBASE_H_
-#define DTCPFCOVERRUNPOLICYBASE_H_
+package rina.policies.DIF.EFCP.DTCP.SndFCOverrun;
 
-#include <omnetpp.h>
-
-#include "EFCPPolicy.h"
-
-/*
- *
- */
-class FCOverrunPolicyBase : public EFCPPolicy
+moduleinterface IntSndFCOverrunPolicy
 {
-  public:
-    FCOverrunPolicyBase();
-    virtual ~FCOverrunPolicyBase();
-    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
-
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
-};
-
-#endif /* DTCPFCOVERRUNPOLICYBASE_H_ */
+    parameters:
+        @display("i=block/socket");
+        string policyName;
+}

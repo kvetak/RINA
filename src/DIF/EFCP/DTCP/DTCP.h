@@ -49,7 +49,7 @@
 #include "LostControlPDUPolicyBase.h"
 #include "RcvrControlAckPolicyBase.h"
 #include "SenderAckPolicyBase.h"
-#include "FCOverrunPolicyBase.h"
+#include "SndFCOverrunPolicyBase.h"
 #include "NoOverridePeakPolicyBase.h"
 #include "TxControlPolicyBase.h"
 #include "NoRateSlowDownPolicyBase.h"
@@ -77,7 +77,7 @@ class DTCP: public cSimpleModule {
     LostControlPDUPolicyBase* lostControlPDUPolicy;
     RcvrControlAckPolicyBase* rcvrControlAckPolicy;
     SenderAckPolicyBase* senderAckPolicy;
-    FCOverrunPolicyBase* fcOverrunPolicy;
+    SndFCOverrunPolicyBase* sndFcOverrunPolicy;
     NoOverridePeakPolicyBase* noOverridePeakPolicy;
     TxControlPolicyBase* txControlPolicy;
     NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
@@ -169,7 +169,7 @@ public:
     bool runLostControlPDUPolicy(DTPState* dtpState);
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
-    bool runFCOverrunPolicy(DTPState* dtpState);
+    bool runSndFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
     bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
     bool runNoRateSlowDownPolicy(DTPState* dtpState);
@@ -187,7 +187,7 @@ public:
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
     void scheduleRxTimerExpiry();
-    void setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy);
+    void setSndFcOverrunPolicy(SndFCOverrunPolicyBase* sndFcOverrunPolicy);
     void setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy);
     void setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy);
     void setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy);

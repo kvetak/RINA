@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,11 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.EFCP.DTCP.FCOverrun;
-
-moduleinterface IntFCOverrunPolicy
+package rina.policies.DIF.EFCP.DTCP.SndFCOverrun.SndFCOverrunPolicyDefault;
+import rina.policies.DIF.EFCP.DTCP.SndFCOverrun.IntSndFCOverrunPolicy;
+//
+// TODO auto-generated type
+//
+simple SndFCOverrunPolicyDefault like IntSndFCOverrunPolicy
 {
     parameters:
+        string policyName = "SndFCOverun Default";
         @display("i=block/socket");
-        string policyName;
 }

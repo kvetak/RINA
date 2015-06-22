@@ -20,33 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file FCOverrunPolicyDefault.cc
+ * @file SndFCOverrunPolicyBase.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2015
- * @brief This is an example policy class implementing default Flow Control Overrun behavior
+ * @date Jan 8, 2015
+ * @brief
  * @detail
  */
 
-#include <FCOverrunPolicyDefault.h>
+#ifndef SNDFCOVERRUNPOLICYBASE_H_
+#define SNDFCOVERRUNPOLICYBASE_H_
 
-Register_Class(FCOverrunPolicyDefault);
+#include <omnetpp.h>
 
-FCOverrunPolicyDefault::FCOverrunPolicyDefault()
+#include "EFCPPolicy.h"
+
+/*
+ *
+ */
+class SndFCOverrunPolicyBase : public EFCPPolicy
 {
-  // TODO Auto-generated constructor stub
+  public:
+    SndFCOverrunPolicyBase();
+    virtual ~SndFCOverrunPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
-}
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
 
-FCOverrunPolicyDefault::~FCOverrunPolicyDefault()
-{
-  // TODO Auto-generated destructor stub
-}
+};
 
-bool FCOverrunPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  Enter_Method("FCOverRunPolicyDefault");
-
-  defaultAction(dtpState, dtcpState);
-
-  return false;
-}
+#endif /* SNDFCOVERRUNPOLICYBASE_H_ */

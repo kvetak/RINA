@@ -71,9 +71,6 @@ private:
     unsigned int seqNumRollOverThresh;
     int state;
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
-    bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
-    bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
-    bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
 
     /* Move to DTCPState! */
 
@@ -132,7 +129,7 @@ public:
     void incDropDup(){dropDup++;}
     unsigned int getDropDup() const;
 
-    bool isFCPresent(){ return winBased || rateBased;}
+//    bool isFCPresent(){ return winBased || rateBased;}
 
     bool isDtcpPresent() const;
     void setDtcpPresent(bool dtcpPresent);
@@ -152,20 +149,20 @@ public:
     void incNextSeqNumToSend();
     bool isPartDeliv() const;
     void setPartDeliv(bool partDeliv);
-    bool isRateBased() const;
-    void setRateBased(bool rateBased);
+//    bool isRateBased() const;
+//    void setRateBased(bool rateBased);
     bool isRateFullfilled() const;
     void setRateFullfilled(bool rateFullfilled);
     unsigned int getRcvLeftWinEdge() const;
     void setRcvLeftWinEdge(unsigned int rcvLeftWinEdge);
-    bool isRxPresent() const;
-    void setRxPresent(bool rxPresent);
+//    bool isRxPresent() const;
+//    void setRxPresent(bool rxPresent);
     unsigned int getSeqNumRollOverThresh() const;
     void setSeqNumRollOverThresh(unsigned int seqNumRollOverThresh);
     int getState() const;
     void setState(int state);
-    bool isWinBased() const;
-    void setWinBased(bool winBased);
+//    bool isWinBased() const;
+//    void setWinBased(bool winBased);
     bool isSetDrfFlag() const;
     void setSetDrfFlag(bool setDrfFlag);
     double getRtt() const;

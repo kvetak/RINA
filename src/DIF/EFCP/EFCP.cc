@@ -54,8 +54,8 @@ Define_Module(EFCP);
 #define SENDER_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SenderAck."
 #define SENDER_ACK_POLICY_NAME "senderAckPolicy"
 
-#define FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
-#define FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
+#define SND_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SndFCOverrun."
+#define SND_FC_OVERRUN_POLICY_NAME "sndFcOverrunPolicy"
 
 #define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
 #define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"
@@ -174,7 +174,7 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
   //2. If necessary create DTCP module
   if(qosCube->isDTCPNeeded()){
-      efcpi->setDtcp(this->createDTCP(efcpiModule, efcpPolicySet));
+      efcpi->setDtcp(this->createDTCP(efcpiModule, efcpPolicySet, qosCube));
   }else{
     efcpi->setDtcp(NULL);
   }
@@ -237,7 +237,7 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   return efcpi;
 }
 
-DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
+DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet, const QoSCube* qosCube)
 {
     cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
     DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
@@ -266,7 +266,7 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
     dtcpModule->setLostControlPduPolicy((LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, efcpPolicySet->getLostControlPdu(), LOST_CONTROL_PDU_POLICY_NAME, efcpiModule));
     dtcpModule->setRcvrControlAckPolicy((RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrControlAck(), RCVR_CONTROL_ACK_POLICY_NAME, efcpiModule));
     dtcpModule->setSenderAckPolicy((SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, efcpPolicySet->getSenderAck(), SENDER_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setFcOverrunPolicy((FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getFcOverrun(), FC_OVERRUN_POLICY_NAME, efcpiModule));
+    dtcpModule->setSndFcOverrunPolicy((SndFCOverrunPolicyBase*) createPolicyModule(SND_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getFcOverrun(), SND_FC_OVERRUN_POLICY_NAME, efcpiModule));
     dtcpModule->setNoOverridePeakPolicy((NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, efcpPolicySet->getNoOverridePeak(), NO_OVERRIDE_PEAK_POLICY_NAME, efcpiModule));
     dtcpModule->setTxControlPolicy((TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, efcpPolicySet->getTxControl(), TX_CONTROL_POLICY_NAME, efcpiModule));
     dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule));
@@ -291,6 +291,7 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
     cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
 
     DTCPState* dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, efcpiModule);
+    dtcpState->setQoSCube(qosCube);
     dtcpState->finalizeParameters();
     dtcpState->buildInside();
     dtcpState->scheduleStart(simTime());

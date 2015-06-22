@@ -20,24 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file FCOverrunPolicyDefault.h
+ * @file SndFCOverrunPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2015
- * @brief This is an example policy class implementing default Flow Control Overrun behavior
+ * @date Jan 8, 2015
+ * @brief
  * @detail
  */
 
-#ifndef FCOVERRUNPOLICYDEFAULT_H_
-#define FCOVERRUNPOLICYDEFAULT_H_
-
-#include <FCOverrunPolicyBase.h>
-
-class FCOverrunPolicyDefault : public FCOverrunPolicyBase
+#include "SndFCOverrunPolicyBase.h"
+#include "DTP.h"
+SndFCOverrunPolicyBase::SndFCOverrunPolicyBase()
 {
-  public:
-    FCOverrunPolicyDefault();
-    virtual ~FCOverrunPolicyDefault();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
-};
 
-#endif /* FCOVERRUNPOLICYDEFAULT_H_ */
+
+}
+
+SndFCOverrunPolicyBase::~SndFCOverrunPolicyBase()
+{
+
+}
+
+void SndFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  /* Default */
+  dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+  //Block further Write API calls on this port-id
+  dtp->notifyStopSending();
+  /* End default */
+}

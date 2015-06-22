@@ -40,6 +40,10 @@
 class DTCPState : public cSimpleModule
 {
   private:
+    bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
+    bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
+    bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
+
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
     unsigned int sndLeftWinEdge;
@@ -108,6 +112,8 @@ class DTCPState : public cSimpleModule
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
 
     void clearPDUQ(PDUQ_t* pduQ);
+
+    const QoSCube* qoSCube; //We'll see how this work out.
 
 
   public:
@@ -190,7 +196,17 @@ class DTCPState : public cSimpleModule
     bool isClosedWinQClosed() const;
     void incRxSent();
     unsigned int getRxSent() const;
+    bool isRateBased() const;
+    void setRateBased(bool rateBased);
+    bool isRxPresent() const;
+    void setRxPresent(bool rxPresent);
+    bool isWinBased() const;
+    void setWinBased(bool winBased);
 
+    bool isFCPresent(){ return winBased || rateBased;}
+
+    const QoSCube* getQoSCube() const;
+    void setQoSCube(const QoSCube*& qoSCube);
 
   protected:
     virtual void handleMessage(cMessage *msg);
