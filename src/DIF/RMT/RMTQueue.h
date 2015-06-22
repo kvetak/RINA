@@ -24,6 +24,7 @@
 #include "RINASignals.h"
 #include "PDU.h"
 
+#include "Flow.h"
 
 class RMTQueue : public cSimpleModule
 {
@@ -142,6 +143,9 @@ class RMTQueue : public cSimpleModule
      */
     std::string info() const;
 
+    void setFlow(Flow *);
+    const Flow* getFlow() const;
+
   protected:
     virtual void initialize();
     virtual void finish();
@@ -159,6 +163,8 @@ class RMTQueue : public cSimpleModule
     cGate* rmtAccessGate;
     cGate* outputGate;
     cGate* inputGate;
+
+    Flow  * flow;
 
     void setType(queueType type);
 
