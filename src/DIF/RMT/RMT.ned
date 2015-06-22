@@ -24,6 +24,8 @@ simple RMT
 		@signal[RMT-NoConnId](type=PDU?);  
 		@signal[RMT-ErrornousPacket](type=cObject?);
 		
+		bool printAtEnd = default(false);
+		
     gates:
         //inout efcpIo;
         inout southIo[];
