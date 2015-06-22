@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Ls>
+		<L id="management"></L>
+		
+		<L id="urgent">
+			<limit />
+			<space />
+			
+			<limVals wt="0">
+				<rate>10000000</rate>
+				<spaceRate>30000000</spaceRate>
+				<spaceVar>0.01</spaceVar>
+				<dropProb>0</dropProb>
+			</limVals>
+			
+			<limVals wt="0.0003">
+				<rate>10000000</rate>
+				<spaceRate>20000000</spaceRate>
+				<spaceVar>0.01</spaceVar>
+				<dropProb>0.05</dropProb>
+			</limVals>
+			
+			<limVals wt="0.0006">
+				<rate>12000000</rate>
+				<spaceRate>12000000</spaceRate>
+				<spaceVar>0.01</spaceVar>
+				<dropProb>0.5</dropProb>
+			</limVals>
+			
+			<limVals wt="0.0009">
+				<rate>10000000</rate>
+				<spaceRate>10000000</spaceRate>
+				<spaceVar>0.01</spaceVar>
+				<dropProb>1</dropProb>
+			</limVals>
+			
+			<dropProb ws="0" prob="0.0" />
+			
+			<dropProb ws="4" prob="0.05" />
+			
+			<dropProb ws="5" prob="0.5" />
+			
+			<dropProb ws="10" prob="1.0" />
+			
+		</L>
+		
+		<L id="no urgent"></L>
+	</Ls>
+	
+	<Cs>
+		<C id="management" defaultDropProb="0.0">
+			<dropProb ws="0" prob="0.0" />
+			
+			<dropProb ws="100" prob="1.0" />
+		</C>
+		<C id="cherished" defaultDropProb="0.0">
+			<dropProb ws="0" prob="0.0" />
+			
+			<dropProb ws="70" prob="0.3" />
+			
+			<dropProb ws="80" prob="1.0" />
+		</C>
+		<C id="low cherish" defaultDropProb="0.0">
+			<dropProb ws="0" prob="0.0" />
+			
+			<dropProb ws="30" prob="0.01" />
+			
+			<dropProb ws="50" prob="0.1" />
+			
+			<dropProb ws="60" prob="0.3" />
+			
+			<dropProb ws="70" prob="1.0" />
+		</C>
+		<C id="uncherish" defaultDropProb="0.0">
+			<dropProb ws="0" prob="0.0" />
+			
+			<dropProb ws="30" prob="0.03" />
+			
+			<dropProb ws="50" prob="0.2" />
+			
+			<dropProb ws="60" prob="0.5" />
+			
+			<dropProb ws="65" prob="1.0" />
+		</C>
+	</Cs>
+
+	<Us>
+		<U id="management" defaultPriority="10" />
+		
+		<U id="urgent" defaultPriority="9" />
+		
+		<U id="low urgency" defaultPriority="8">
+			<degraded />
+			<rate>40000000</rate>
+			
+			<degradList wt="0.0">
+				<PP priority="9" probability="0.8" />
+				<PP priority="7" probability="0.2" />
+			</degradList>
+			
+			<degradList wt="0.0003">
+				<PP priority="9" probability="0.5" />
+				<PP priority="7" probability="0.3" />
+				<PP priority="3" probability="0.2" />
+			</degradList>
+			
+			<degradList wt="0.0008">
+				<PP priority="9" probability="0.5" />
+				<PP priority="7" probability="0.2" />
+				<PP priority="3" probability="0.3" />
+			</degradList>
+		</U>
+		<U id="no urgent" defaultPriority="5">
+			
+			<degraded />
+			
+			<rate>50000000</rate>
+			
+			<degradList wt="0.0">
+				<PP priority="7" probability="0.7" />
+				<PP priority="3" probability="0.3" />
+			</degradList>
+			
+			<degradList wt="0.0002">
+				<PP priority="7" probability="0.5" />
+				<PP priority="3" probability="0.3" />
+				<PP priority="2" probability="0.2" />
+			</degradList>
+			
+			<degradList wt="0.0008">
+				<PP priority="7" probability="0.2" />
+				<PP priority="3" probability="0.4" />
+				<PP priority="2" probability="0.4" />
+			</degradList>
+		</U>
+	</Us>
+	
+	<CU>
+    	<CUItem id="M">
+	    	<queue>outQ_M</queue>
+	    	<limit>management</limit>
+	    	<cherish>management</cherish>
+	    	<urgency>management</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="A1">
+	    	<queue>outQ_A1</queue>
+	    	<limit>urgent</limit>
+	    	<cherish>cherished</cherish>
+	    	<urgency>urgent</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="A2">
+	    	<queue>outQ_A2</queue>
+	    	<limit>urgent</limit>
+	    	<cherish>low cherish</cherish>
+	    	<urgency>urgent</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="A3">
+	    	<queue>outQ_A3</queue>
+	    	<limit>urgent</limit>
+	    	<cherish>uncherish</cherish>
+	    	<urgency>urgent</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="B1">
+	    	<queue>outQ_A1</queue>
+	    	<limit>low urgency</limit>
+	    	<cherish>cherished</cherish>
+	    	<urgency>low urgency</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="B2">
+	    	<queue>outQ_A2</queue>
+	    	<limit>low urgency</limit>
+	    	<cherish>low cherish</cherish>
+	    	<urgency>low urgency</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="C3">
+	    	<queue>outQ_A3</queue>
+	    	<limit>low urgency</limit>
+	    	<cherish>uncherish</cherish>
+	    	<urgency>low urgency</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="C1">
+	    	<queue>outQ_A1</queue>
+	    	<limit>no urgent</limit>
+	    	<cherish>cherished</cherish>
+	    	<urgency>no urgent</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="C2">
+	    	<queue>outQ_A2</queue>
+	    	<limit>no urgent</limit>
+	    	<cherish>low cherish</cherish>
+	    	<urgency>no urgent</urgency>
+	    </CUItem>
+	    
+	    <CUItem id="C3">
+	    	<queue>outQ_A3</queue>
+	    	<limit>no urgent</limit>
+	    	<cherish>uncherish</cherish>
+	    	<urgency>no urgent</urgency>
+	    </CUItem>
+	</CU>
+</Configuration>

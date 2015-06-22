@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <Configuration>
   <CU>
+    <CUItem id="M">
+    	<queue>outQ_M</queue>
+    	<urgency>4</urgency>
+    	<cherishThreshold>100</cherishThreshold>
+    	<cherishAbsThreshold>100</cherishAbsThreshold>
+    	<cherishDropProbability>1</cherishDropProbability>
+    </CUItem>
     <CUItem id="A1">
     	<queue>outQ_A1</queue>
     	<urgency>3</urgency>
@@ -77,6 +84,7 @@
   </CU>
   
   <qos2CU>
+  	<qos id="MGMT-QoSCube" cu="M" />
   	<qos id="1" cu="A1" />
   	<qos id="2" cu="A2" />
   	<qos id="3" cu="A3" />
@@ -93,5 +101,6 @@
   	<urgency val="1" prob="0" />
   	<urgency val="2" prob="0.48" />
   	<urgency val="3" prob="0" />
+  	<urgency val="4" prob="0" />
   </urgencySkip>
 </Configuration>
