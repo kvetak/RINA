@@ -50,6 +50,7 @@
 #include "RcvrControlAckPolicyBase.h"
 #include "SenderAckPolicyBase.h"
 #include "SndFCOverrunPolicyBase.h"
+#include "RcvFCOverrunPolicyBase.h"
 #include "NoOverridePeakPolicyBase.h"
 #include "TxControlPolicyBase.h"
 #include "NoRateSlowDownPolicyBase.h"
@@ -78,6 +79,7 @@ class DTCP: public cSimpleModule {
     RcvrControlAckPolicyBase* rcvrControlAckPolicy;
     SenderAckPolicyBase* senderAckPolicy;
     SndFCOverrunPolicyBase* sndFcOverrunPolicy;
+    RcvFCOverrunPolicyBase* rcvFcOverrunPolicy;
     NoOverridePeakPolicyBase* noOverridePeakPolicy;
     TxControlPolicyBase* txControlPolicy;
     NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
@@ -202,8 +204,9 @@ public:
     void setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy);
     void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
     void setDtcpState(DTCPState* dtcpState);
+    void setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy);
 
-protected:
+  protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
     int numInitStages() const

@@ -94,6 +94,11 @@ void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)
   dtcpState->setSenderLeftWinEdge(senderLeftWinEdge);
 }
 
+void DTCP::setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy)
+{
+  this->rcvFcOverrunPolicy = rcvFcOverrunPolicy;
+}
+
 void DTCP::initSignalsAndListeners()
 {
   sigStatDTCPRxCount = registerSignal(SIG_STAT_DTCP_RX_SENT);

@@ -40,8 +40,10 @@ const char* ELEM_RTTESTIMAT            = "RTTEstimator";
 const char* DEFAULT_RTTESTIMAT         = "RTTEstimatorPolicyDefault";
 const char* ELEM_SENDERINACTIV         = "SenderInactivity";
 const char* DEFAULT_SENDERINACTIV      = "SenderInactivityPolicyDefault";
-const char* ELEM_FCOVERRUN             = "FCOverrun";
-const char* DEFAULT_FCOVERRUN          = "FCOverrunPolicyDefault";
+const char* ELEM_SNDFCOVERRUN          = "SndFCOverrun";
+const char* DEFAULT_SNDFCOVERRUN       = "SndFCOverrunPolicyDefault";
+const char* ELEM_RCVFCOVERRUN          = "RcvFCOverrun";
+const char* DEFAULT_RCVFCOVERRUN       = "RcvFCOverrunPolicyDefault";
 const char* ELEM_LOSTCONTROLPDU        = "LostControlPDU";
 const char* DEFAULT_LOSTCONTROLPDU     = "LostControlPDUPolicyDefault";
 const char* ELEM_NOOVERRIDEPEAK        = "NoOverridePeak";
@@ -70,7 +72,8 @@ const char* ELEM_RXTIMEREXPIRY         = "RxTimerExpiry";
 const char* DEFAULT_RXTIMEREXPIRY      = "RxTimerExpiryPolicyDefault";
 
 EFCPPolicySet::EFCPPolicySet() : initialSeqNum(DEFAULT_INITSEQNUM), rcvrInactiv(DEFAULT_RCVRINACTIV),
-    rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), fcOverrun(DEFAULT_FCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
+    rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), sndFcOverrun(DEFAULT_SNDFCOVERRUN),
+    rcvFcOverrun(DEFAULT_SNDFCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
     noOverridePeak(DEFAULT_NOOVERRIDEPEAK), noRateSlowDown(DEFAULT_NORATESLOWDOWN),
     rateReduction(DEFAULT_RATEREDUCTION), rcvrAck(DEFAULT_RCVRACK), rcvrControlAck(DEFAULT_RCVRCONTROLACK),
     rcvrFC(DEFAULT_RCVRFC), receivingFC(DEFAULT_RECEIVINGFC), reconcileFC(DEFAULT_RECONCILEFC),
@@ -105,9 +108,9 @@ const char* EFCPPolicySet::getSenderInactiv() const
   return senderInactiv;
 }
 
-const char* EFCPPolicySet::getFcOverrun() const
+const char* EFCPPolicySet::getSndFcOverrun() const
 {
-  return fcOverrun;
+  return sndFcOverrun;
 }
 
 const char* EFCPPolicySet::getLostControlPdu() const
@@ -199,9 +202,13 @@ bool EFCPPolicySet::init(cXMLElement* parent)
     {
       senderInactiv = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_SENDERINACTIV;
     }
-    else if (!strcmp(policyTag->getTagName(), ELEM_FCOVERRUN))
+    else if (!strcmp(policyTag->getTagName(), ELEM_SNDFCOVERRUN))
     {
-      fcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_FCOVERRUN;
+      sndFcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_SNDFCOVERRUN;
+    }
+    else if (!strcmp(policyTag->getTagName(), ELEM_RCVFCOVERRUN))
+    {
+      rcvFcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_RCVFCOVERRUN;
     }
     else if (!strcmp(policyTag->getTagName(), ELEM_LOSTCONTROLPDU))
     {
@@ -257,4 +264,9 @@ bool EFCPPolicySet::init(cXMLElement* parent)
     }
   }
   return true;
+}
+
+const char* EFCPPolicySet::getRcvFcOverrun() const
+{
+  return rcvFcOverrun;
 }

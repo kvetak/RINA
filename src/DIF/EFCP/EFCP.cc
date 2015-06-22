@@ -57,6 +57,9 @@ Define_Module(EFCP);
 #define SND_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SndFCOverrun."
 #define SND_FC_OVERRUN_POLICY_NAME "sndFcOverrunPolicy"
 
+#define RCV_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvFCOverrun."
+#define RCV_FC_OVERRUN_POLICY_NAME "rcvFcOverrunPolicy"
+
 #define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
 #define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"
 
@@ -266,7 +269,8 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet,
     dtcpModule->setLostControlPduPolicy((LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, efcpPolicySet->getLostControlPdu(), LOST_CONTROL_PDU_POLICY_NAME, efcpiModule));
     dtcpModule->setRcvrControlAckPolicy((RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrControlAck(), RCVR_CONTROL_ACK_POLICY_NAME, efcpiModule));
     dtcpModule->setSenderAckPolicy((SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, efcpPolicySet->getSenderAck(), SENDER_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setSndFcOverrunPolicy((SndFCOverrunPolicyBase*) createPolicyModule(SND_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getFcOverrun(), SND_FC_OVERRUN_POLICY_NAME, efcpiModule));
+    dtcpModule->setSndFcOverrunPolicy((SndFCOverrunPolicyBase*) createPolicyModule(SND_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getSndFcOverrun(), SND_FC_OVERRUN_POLICY_NAME, efcpiModule));
+    dtcpModule->setRcvFcOverrunPolicy((RcvFCOverrunPolicyBase*) createPolicyModule(RCV_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getRcvFcOverrun(), RCV_FC_OVERRUN_POLICY_NAME, efcpiModule));
     dtcpModule->setNoOverridePeakPolicy((NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, efcpPolicySet->getNoOverridePeak(), NO_OVERRIDE_PEAK_POLICY_NAME, efcpiModule));
     dtcpModule->setTxControlPolicy((TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, efcpPolicySet->getTxControl(), TX_CONTROL_POLICY_NAME, efcpiModule));
     dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule));
