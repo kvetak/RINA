@@ -88,12 +88,12 @@ const char* SIG_FA_CreateFlowRequestForward     = "FA-CreateFlowRequestForward";
 const char* SIG_FA_CreateFlowResponseForward    = "FA-CreateFlowResponseForward";
 const char* SIG_FA_AllocateResponsePositive     = "FA-AllocateResponsePositive";
 const char* SIG_FA_AllocateResponseNegative     = "FA-AllocateResponseNegative";
+const char* SIG_FA_MgmtFlowAllocated            = "FA-AllocateFinishManagement";
 
 const char* SIG_toFAI_AllocateRequest           = "toFAI-AllocateRequest";
 const char* SIG_toFAI_AllocateResponsePositive  = "toFAI-AllocateResponsePositive";
 const char* SIG_toFAI_AllocateResponseNegative  = "toFAI-AllocateResponseNegative";
 const char* SIG_FAI_AllocateRequest             = "FAI-AllocateRequest";
-const char* SIG_FA_MgmtFlowAllocated    = "FAI-AllocateFinishManagement";
 const char* SIG_FAI_DeallocateRequest           = "FAI-DeallocateRequest";
 const char* SIG_FAI_DeallocateResponse          = "FAI-DeallocateResponse";
 const char* SIG_FAI_AllocateResponsePositive    = "FAI-AllocateResponsePositive";

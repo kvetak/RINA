@@ -25,5 +25,8 @@ package rina.src.DIF.Enrollment;
 
 simple EnrollmentStateTable
 {
-    @display("i=block/table2");
+    parameters:
+    	@display("i=block/table2");
+        xml enrolConfigData = default(xml("<Enrollment></Enrollment>"));
+    	xml configData = default(enrolConfigData);
 }

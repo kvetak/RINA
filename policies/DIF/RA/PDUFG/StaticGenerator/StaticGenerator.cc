@@ -37,7 +37,7 @@ void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
         if(comparer->isValid(qosI, qos)) {
             fwd->insert(addr, qosI.getQosId(), port);
             fwd->insert(addr, port);
-            const APNList* remoteApps = difA->findNeigborApns(addr.getApname());
+            const APNList* remoteApps = difA->findNeigborApns(addr.getApn());
             if (remoteApps) {
                 for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it) {
                     fwd->insert(Address(it->getName()), qosI.getQosId(), port);
@@ -61,7 +61,7 @@ void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
             if(tp == port){
                 fwd->remove(addr, qosI.getQosId());
             }
-            if (const APNList* remoteApps = difA->findNeigborApns(addr.getApname())) {
+            if (const APNList* remoteApps = difA->findNeigborApns(addr.getApn())) {
                 for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
                     res = fwd->lookup(Address(it->getName()), qosI.getQosId());
                     if(!res.empty()) {
@@ -81,7 +81,7 @@ void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
         if(tp == port){
             fwd->remove(addr);
         }
-        if (const APNList* remoteApps = difA->findNeigborApns(addr.getApname())) {
+        if (const APNList* remoteApps = difA->findNeigborApns(addr.getApn())) {
             for (ApnCItem it = remoteApps->begin(); it != remoteApps->end(); ++it){
                 res = fwd->lookup(Address(it->getName()), ANY_QOS);
                 if(!res.empty()) {

@@ -139,7 +139,7 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //EV << "!!!!!!!!!Cube " << flow->getConId().getQoSId() << endl;
-        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn()
+        if (fai->getFa()->getMyAddress().getApn() == flow->getSrcApni().getApn()
             && fai->getFlow()->getConId().getQoSId() == flow->getConId().getQoSId()
             && !flow->isManagementFlowLocalToIPCP()
                 ) {
@@ -156,7 +156,7 @@ void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() )
+        if (fai->getFa()->getMyAddress().getApn() == flow->getSrcApni().getApn() )
             fai->receiveCreateFlowResponseNegativeFromNminusOne();
     }
     else

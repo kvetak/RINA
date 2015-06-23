@@ -77,7 +77,7 @@ NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, std::string 
     for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
     {
         NM1FlowTableItem a = *it;
-        if ((a.getFlow()->getDstAddr().getApname().getName() == addr) &&
+        if ((a.getFlow()->getDstAddr().getApn().getName() == addr) &&
              !a.getFlow()->getConId().getQoSId().compare(qosId) )
         {
             return &(*it);

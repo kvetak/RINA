@@ -100,7 +100,7 @@ class Address {
      * @brief Getter of unique APN which is initialized during object construction
      * @return Returns APN in form of @<ipcaddress@>_@<difname@>
      */
-    const APN& getApname() const;
+    const APN& getApn() const;
 
     /**
      * @brief Getter of common DIF name

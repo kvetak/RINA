@@ -67,7 +67,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
-        && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
+        && fa->getMyAddress().getApn() == flow->getSrcApni().getApn()
         && !flow->isManagementFlowLocalToIPCP() )
     {
         //EV << "-----\n" << flow->info() << endl;
@@ -87,10 +87,12 @@ void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocFinMgmt initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
 
+    /*
     Flow* flow = dynamic_cast<Flow*>(obj);
+    EV << flow->info() << endl;
     if (flow
         && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-        && flow->isManagementFlowLocalToIPCP())
+        && flow->isManagementFlow())
     {
         //Notify pending flows that mgmt flow is prepared
         TFAIPtrs entries = fa->getNFlowTable()->findEntriesAffectedByMgmt(flow);
@@ -105,6 +107,20 @@ void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID)) { EV << "Management flow allocated!" << endl; }
         else { EV << "Flow not intended for my FA!" << endl; }
     }
+    */
+    APNIPair* apnip = dynamic_cast<APNIPair*>(obj);
+    if (apnip && fa->getMyAddress().getApn() == apnip->first.getApn()) {
+        //Notify pending flows that mgmt flow is prepared
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesAffectedByMgmt(apnip);
+        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
+            fa->PendingFlows.push_back((*it)->getFlow());
+        }
+        fa->receiveMgmtAllocateFinish();
+    }
+    else {
+        EV << "FA received unknown object!" << endl;
+    }
+
 
 
 }

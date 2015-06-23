@@ -53,7 +53,7 @@ class NFlowTable : public cSimpleModule
     NFlowTableEntry* findMgmtEntryByDstApni(const APN& dstApn);
     NFlowTableEntry* findEntryByDstAddressAndFwd(const APN& apname);
     TFAIPtrs findEntriesByDstNeighborAndFwd(const APN& apname);
-    TFAIPtrs findEntriesAffectedByMgmt(const Flow* flow);
+    TFAIPtrs findEntriesAffectedByMgmt(const APNIPair* apnip);
     NFlowTableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     NFlowTableEntry* findEntryByFai(FAIBase* fai);
     NFlowTableEntry* findEntryByInvokeId(long invId);
@@ -71,7 +71,7 @@ class NFlowTable : public cSimpleModule
     simsignal_t sigStatFTSize;
 
   private:
-    TFAITable FaiTable;
+    TFAITable NFlowTab;
 };
 
 //Free functions

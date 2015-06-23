@@ -30,7 +30,7 @@ simple FA
     	//@signal[FA-AllocateResponseNegative](type=Flow?);
     	//@signal[FA-AllocateResponsePositive](type=Flow?);
     	@signal[FA-CreateFlowRequestForward](type=Flow?);
-    	@signal[FAI-AllocateFinishManagement](type=Flow?);
+    	@signal[FA-AllocateFinishManagement](type=APNIPair?);
     	//@signal[FA-CreateFlowResponseNegative](type=Flow?);
     	//@signal[FA-CreateFlowResponsePositive](type=Flow?);    	
     	

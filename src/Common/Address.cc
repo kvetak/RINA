@@ -112,7 +112,7 @@ bool Address::isUnspecified() const
     return ipcAddress.getName().empty() && difName.getName().empty();
 }
 
-const APN& Address::getApname() const
+const APN& Address::getApn() const
 {
     return apname;
 }

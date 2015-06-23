@@ -187,4 +187,21 @@ class APNI: public APNamingInfo {};
  */
 std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni);
 
+class APNIPair : public cObject
+{
+  public:
+    APNIPair();
+    APNIPair(APNamingInfo src, APNamingInfo dst);
+    APNIPair(const char* src, const char* dst);
+    virtual ~APNIPair();
+
+    std::string info() const;
+
+    APNamingInfo first;
+    APNamingInfo second;
+
+};
+
+std::ostream& operator<< (std::ostream& os, const APNIPair& apnip);
+
 #endif /* APNAMINGINFO_H_ */

@@ -68,3 +68,34 @@ std::ostream& operator<< (std::ostream& os, const APNamingInfo& apni)
     return os << apni.info();
 }
 
+Register_Class(APNIPair);
+
+APNIPair::APNIPair(APNamingInfo src, APNamingInfo dst) {
+    first = src;
+    second = dst;
+}
+
+APNIPair::APNIPair() {
+    first = APNamingInfo();
+    second = APNamingInfo();
+}
+
+APNIPair::APNIPair(const char* src, const char* dst) :
+        APNIPair(APNamingInfo(APN( std::string(src) ) ), APNamingInfo(APN( std::string(src) ) ))
+{
+}
+
+APNIPair::~APNIPair() {
+    first = APNamingInfo();
+    second = APNamingInfo();
+}
+
+std::ostream& operator <<(std::ostream& os, const APNIPair& apnip) {
+    return os << apnip.info();
+}
+
+std::string APNIPair::info() const {
+    std::ostringstream os;
+    os << "SRC> "<< first << "\tDST> " << second;
+    return os.str();
+}

@@ -194,21 +194,22 @@ bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocationRequest" << endl;
 
-    //Command target FA to allocate flow
-    FABase* fab = ConTable->getFa(flow);
+    auto cte = ConTable->findEntryByFlow(flow);
     bool status = false;
 
-    if (fab) {
-        if (ConTable->getStatus(flow) == ConnectionTableEntry::CON_ESTABLISHED) {
-        //signalizeDeallocateRequest(fl);
-        status = fab->receiveDeallocateRequest(flow);
+    if (cte) {
+        //TODO: Vesely - Change CONNECT_PENDING to establish ASAP when AE Enrollment
+        //               implementation is finished
+        if (cte->getConStatus() == ConnectionTableEntry::CON_CONNECTPENDING
+                && cte->getSouthGateOut() && cte->getSouthGateIn() ) {
+            status = cte->getFlowAlloc()->receiveDeallocateRequest(flow);
         }
         else {
-            EV << "FA could not be found in ConnectionTable!" << endl;
+            EV << "Connection not in proper state or south gates are missing!" << endl;
         }
     }
     else {
-        EV << "FA could not be found in ConnectionTable!" << endl;
+        EV << "There is no valid entry in Connection Table!" << endl;
     }
     return status;
 }
@@ -265,6 +266,11 @@ ConnectionTable* IRM::getConTable() const {
 bool IRM::receiveAllocationResponsePositiveFromIpc(Flow* flow) {
     Enter_Method("allocationResponsePositive()");
     bool status = createBindings(flow);
+
+    status ?
+    changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING)
+    :
+    changeStatus(flow, ConnectionTableEntry::CON_ERROR);
     return status;
 }
 
@@ -331,7 +337,7 @@ int IRM::getApGateHandle(Flow* flow) const {
     ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
     if (cte && cte->getNorthGateIn()) {
         std::string desc = cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getFullName();
-        EV << "!!!!!!!!!!!!!!" << desc << endl;
+        //EV << "!!!!!!!!!!!!!!" << desc << endl;
         return cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getIndex();
     }
     return VAL_UNDEF_HANDLE;

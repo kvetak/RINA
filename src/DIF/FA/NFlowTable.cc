@@ -32,7 +32,7 @@ void NFlowTable::initialize()
     //Inits
     initSignalsAndListeners();
     //Watchers
-    WATCH_LIST(FaiTable);
+    WATCH_LIST(NFlowTab);
 }
 
 std::string NFlowTable::info() const {
@@ -49,9 +49,9 @@ std::string NFlowTable::info() const {
 }
 
 NFlowTableEntry* NFlowTable::findEntryByDstAddressAndFwd(const APN& apname) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
-        if (tft.getCFlow()->getDstAddr().getApname() == apname
+        if (tft.getCFlow()->getDstAddr().getApn() == apname
                 && tft.getAllocateStatus() == NFlowTableEntry::FORWARDED)
             return &(*it);
     }
@@ -60,7 +60,7 @@ NFlowTableEntry* NFlowTable::findEntryByDstAddressAndFwd(const APN& apname) {
 
 NFlowTableEntry* NFlowTable::findEntryBySrcAddressAndFwd(const APN& apname) {
     //EV << "Look APN> " << ipcAddr << endl;
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         //EV << "XXXX " << tft.getCFlow()->getSrcAddr().getIpcAddress() << endl
         //   << "YYYY " << (tft.getAllocateStatus() == FAITableEntry::FORWARDED) << endl;
@@ -73,7 +73,7 @@ NFlowTableEntry* NFlowTable::findEntryBySrcAddressAndFwd(const APN& apname) {
 }
 
 NFlowTableEntry* NFlowTable::findEntryByApns(const APN& srcApn, const APN& dstApn) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getSrcApni().getApn() == srcApn
                 && tft.getCFlow()->getDstApni().getApn() == dstApn
@@ -85,9 +85,9 @@ NFlowTableEntry* NFlowTable::findEntryByApns(const APN& srcApn, const APN& dstAp
 
 TFAIPtrs NFlowTable::findEntriesByDstNeighborAndFwd(const APN& apname) {
     TFAIPtrs list;
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
-        if (tft.getCFlow()->getDstNeighbor().getApname() == apname
+        if (tft.getCFlow()->getDstNeighbor().getApn() == apname
                 && tft.getAllocateStatus() == NFlowTableEntry::FORWARDING)
             list.push_back(&(*it));
     }
@@ -96,7 +96,7 @@ TFAIPtrs NFlowTable::findEntriesByDstNeighborAndFwd(const APN& apname) {
 
 NFlowTableEntry* NFlowTable::findEntryByInvokeId(long invId) {
     if (!invId) return NULL;
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getAllocInvokeId() == invId)
             return &(*it);
@@ -104,21 +104,23 @@ NFlowTableEntry* NFlowTable::findEntryByInvokeId(long invId) {
     return NULL;
 }
 
+/*
 TFAIPtrs NFlowTable::findEntriesAffectedByMgmt(const Flow* flow) {
     TFAIPtrs list;
     for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
         NFlowTableEntry tft = *it;
-        if (tft.getCFlow()->getSrcAddr().getApname() == flow->getSrcApni().getApn()
-            && tft.getCFlow()->getDstAddr().getApname() == flow->getDstApni().getApn()
+        if (tft.getCFlow()->getSrcNeighbor().getApname() == flow->getSrcApni().getApn()
+            && tft.getCFlow()->getDstNeighbor().getApname() == flow->getDstApni().getApn()
             && tft.getAllocateStatus() == NFlowTableEntry::ALLOC_PEND)
             list.push_back(&(*it));
     }
     return list;
 }
+*/
 
 //XXX: Vesely - This search does not yield exact intended match!
 NFlowTableEntry* NFlowTable::findMgmtEntryByDstNeighbor(const Address& addr) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstNeighbor() == addr
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
@@ -135,23 +137,23 @@ void NFlowTable::insertNew(Flow* flow) {
     this->insert(NFlowTableEntry(flow));
     updateDisplayString();
     //EV << "FT emits signal " << (long)FaiTable.size() << endl;
-    emit(sigStatFTSize, (long)FaiTable.size());
+    emit(sigStatFTSize, (long)NFlowTab.size());
 }
 
 void NFlowTable::insert(const NFlowTableEntry& entry) {
     Enter_Method("insertFlow()");
-    FaiTable.push_back(entry);
+    NFlowTab.push_back(entry);
 }
 
 void NFlowTable::removeByFlow(Flow* flow) {
     Enter_Method("removeFlow()");
     NFlowTableEntry* entry = findEntryByFlow(flow);
     if (entry)
-        FaiTable.remove(*entry);
+        NFlowTab.remove(*entry);
 }
 
 NFlowTableEntry* NFlowTable::findEntryByFlow(const Flow* flow) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (*(tft.getCFlow()) == *flow)
             return &(*it);
@@ -160,7 +162,7 @@ NFlowTableEntry* NFlowTable::findEntryByFlow(const Flow* flow) {
 }
 
 NFlowTableEntry* NFlowTable::findEntryByFai(FAIBase* fai) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getFai() == fai)
             return &(*it);
@@ -204,7 +206,7 @@ void NFlowTable::initSignalsAndListeners() {
 }
 
 NFlowTableEntry* NFlowTable::findMgmtEntry(const Flow* flow) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->isManagementFlowLocalToIPCP())
             return &(*it);
@@ -213,7 +215,7 @@ NFlowTableEntry* NFlowTable::findMgmtEntry(const Flow* flow) {
 }
 
 NFlowTableEntry* NFlowTable::findMgmtEntryByDstAddr(const Address& addr) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstAddr() == addr
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
@@ -223,7 +225,7 @@ NFlowTableEntry* NFlowTable::findMgmtEntryByDstAddr(const Address& addr) {
 }
 
 NFlowTableEntry* NFlowTable::findMgmtEntryByDstApni(const APN& dstApn) {
-    for(TFTIter it = FaiTable.begin(); it != FaiTable.end(); ++it) {
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (tft.getCFlow()->getDstApni().getApn() == dstApn
             && tft.getCFlow()->isManagementFlowLocalToIPCP())
@@ -233,5 +235,17 @@ NFlowTableEntry* NFlowTable::findMgmtEntryByDstApni(const APN& dstApn) {
 }
 
 const unsigned int NFlowTable::getSize() const {
-    return FaiTable.size();
+    return NFlowTab.size();
+}
+
+TFAIPtrs NFlowTable::findEntriesAffectedByMgmt(const APNIPair* apnip) {
+    TFAIPtrs list;
+    for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
+        NFlowTableEntry tft = *it;
+        if (tft.getCFlow()->getSrcNeighbor().getApn() == apnip->first.getApn()
+            && tft.getCFlow()->getDstNeighbor().getApn() == apnip->second.getApn()
+            && tft.getAllocateStatus() == NFlowTableEntry::ALLOC_PEND)
+            list.push_back(&(*it));
+    }
+    return list;
 }

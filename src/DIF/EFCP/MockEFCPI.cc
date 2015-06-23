@@ -57,7 +57,7 @@ void MockEFCPI::handleMessage(cMessage *msg)
     pdu->setSrcAddr(srcAddress);
     pdu->setDstAddr(cdap->getDstAddr());
     pdu->setSrcApn(srcApn);
-    pdu->setDstApn(cdap->getDstAddr().getApname());
+    pdu->setDstApn(cdap->getDstAddr().getApn());
 
     pdu->setSeqNum(0);
 

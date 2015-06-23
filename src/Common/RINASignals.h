@@ -93,13 +93,13 @@ extern const char* SIG_FA_CreateFlowRequestForward;
 extern const char* SIG_FA_CreateFlowResponseForward;
 extern const char* SIG_FA_AllocateResponsePositive;
 extern const char* SIG_FA_AllocateResponseNegative;
+extern const char* SIG_FA_MgmtFlowAllocated;
 
 //FAI
 extern const char* SIG_toFAI_AllocateRequest;
 extern const char* SIG_toFAI_AllocateResponsePositive;
 extern const char* SIG_toFAI_AllocateResponseNegative;
 extern const char* SIG_FAI_AllocateRequest;
-extern const char* SIG_FA_MgmtFlowAllocated;
 extern const char* SIG_FAI_DeallocateRequest;
 extern const char* SIG_FAI_DeallocateResponse;
 extern const char* SIG_FAI_AllocateResponsePositive;

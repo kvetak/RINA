@@ -32,7 +32,7 @@ simple RA
         @signal[RA-CreateFlowNegative](type=Flow?);
         @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
         @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=Flow?);
+        @signal[RA-MgmtFlowAllocated](type=APNIPair?);
         @signal[RA-MgmtFlowDeallocated](type=Flow?);
 
         xml qoscubesData = default(xml("<QoSCube/>"));
