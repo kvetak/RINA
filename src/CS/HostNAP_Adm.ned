@@ -30,7 +30,7 @@ module HostNAP_Adm
         @node;
 
         int nofAP = default(1);
-        int numOfAdminAPs = 1;
+        int numOfAdminAPs = default(1);
 
     gates:
         inout medium @loose;
