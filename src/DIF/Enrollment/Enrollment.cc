@@ -451,7 +451,6 @@ void Enrollment::receiveStartOperationResponse(CDAPMessage* msg) {
 }
 
 void Enrollment::processStopEnrollmentImmediate(EnrollmentStateTableEntry* entry) {
-
     auto enrollObj = new EnrollmentObj(Address(entry->getLocal().getApn()), Address(entry->getRemote().getApn()));
 
     //set immediate
@@ -464,7 +463,6 @@ void Enrollment::processStopEnrollmentImmediate(EnrollmentStateTableEntry* entry
 
     entry->setEnrollmentStatus(EnrollmentStateTableEntry::ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT);
 }
-
 
 void Enrollment::authenticate(EnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
     Enter_Method("authenticate()");

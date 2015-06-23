@@ -3,80 +3,41 @@
 	<Host id="hostA">
 		<DA>
 			<Directory>
-				<APN apn="SourceA">
-					<DIF difName="Layer11" ipcAddress="11" />
+				<APN apn="SourceA">					
+					<DIF difName="Layer1" ipcAddress="11" />
 				</APN>
+				<APN apn="11_Layer1">
+					<DIF difName="Layer0" ipcAddress="1" />
+				</APN>					
 				<APN apn="DestinationB">
-					<DIF difName="Layer11" ipcAddress="22" />
-				</APN>				
-				<APN apn="11_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="22_Layer11">
-					<DIF difName="Layer02" ipcAddress="2" />
-				</APN>									
-				<APN apn="33_Layer11">
-					<DIF difName="Layer01" ipcAddress="3" />				
-					<DIF difName="Layer02" ipcAddress="4" />
+					<DIF difName="Layer1" ipcAddress="22" />
+				</APN>
+				<APN apn="22_Layer1">
+					<DIF difName="Layer0" ipcAddress="2" />
 				</APN>				
 			</Directory>
-			<NeighborTable>
-				<APN apn="22_Layer11">
-					<Neighbor apn="33_Layer11" />
-				</APN>			
-			</NeighborTable>
-		</DA>	
-	</Host>
-	<Host id="hostB">
-		<DA>
-			<Directory>
-				<APN apn="SourceA">
-					<DIF difName="Layer11" ipcAddress="11" />
-				</APN>
-				<APN apn="DestinationB">
-					<DIF difName="Layer11" ipcAddress="22" />
-				</APN>				
-				<APN apn="11_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="22_Layer11">
-					<DIF difName="Layer02" ipcAddress="2" />
-				</APN>									
-				<APN apn="33_Layer11">
-					<DIF difName="Layer01" ipcAddress="3" />				
-					<DIF difName="Layer02" ipcAddress="4" />
-				</APN>				
-			</Directory>
-			<NeighborTable>
-				<APN apn="11_Layer11">
-					<Neighbor apn="33_Layer11" />
-				</APN>			
-			</NeighborTable>
-			
-		</DA>	
-	</Host>
-	<Router id="switch">
-		<DA>
-			<Directory>
-				<APN apn="SourceA">
-					<DIF difName="Layer11" ipcAddress="11" />
-				</APN>
-				<APN apn="DestinationB">
-					<DIF difName="Layer11" ipcAddress="22" />
-				</APN>			
-				<APN apn="11_Layer11">
-					<DIF difName="Layer01" ipcAddress="1" />
-				</APN>	
-				<APN apn="22_Layer11">
-					<DIF difName="Layer02" ipcAddress="2" />
-				</APN>									
-				<APN apn="33_Layer11">
-					<DIF difName="Layer01" ipcAddress="3" />				
-					<DIF difName="Layer02" ipcAddress="4" />
-				</APN>								
-			</Directory>			
 		</DA>
-	</Router>
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="11_Layer1" dst="22_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>	
+	<Host id="hostB">
+		<Enrollment id="ipcProcess0">  
+			<EnrollmentStateTable>
+				<State src="2_Layer0" dst="2_Layer0" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+		<Enrollment id="ipcProcess1">  
+			<EnrollmentStateTable>
+				<State src="22_Layer0" dst="22_Layer0" cace="CON_ESTABLISHED" enroll="ENROLL_ENROLLED" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+	</Host>
+	
 	<QoSCubesSet>
 		<QoSCube id="QoSCube_WithoutDTCP">
 			<AverageBandwidth>10000000</AverageBandwidth>
