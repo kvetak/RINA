@@ -193,6 +193,7 @@ class DTP : public cSimpleModule
 
 
     void notifyStartSending();
+    void handleControlPDUFromRMT(ControlPDU* pdu);
 
   public:
     DTP();

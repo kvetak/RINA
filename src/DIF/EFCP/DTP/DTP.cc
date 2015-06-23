@@ -470,6 +470,131 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 
 }
 
+void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
+{
+
+  if(!commonRcvControl(pdu)){
+    //The Control PDU has been deleted because of duplicate
+    return;
+  }
+
+  if (dynamic_cast<ControlAckPDU*>(pdu))
+  {
+    dtcp->runRcvrControlAckPolicy(state);
+  }
+  else
+  {
+
+    if (pdu->getType() & PDU_SEL_BIT)
+    {
+      /*
+       SELECT_ACK_PDU        = 0x8806;
+       SELECT_NACK_PDU       = 0x8807;
+       SELECT_ACK_FLOW_PDU   = 0x880E;
+       SELECT_NACK_FLOW_PDU  = 0x880F;
+       */
+
+      //RTT estimator
+      runRTTEstimatorPolicy();
+
+      if (pdu->getType() & PDU_NACK_BIT)
+      {
+        SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
+
+        for (unsigned int i = 0; i < selNackPdu->getNackListLen(); i++)
+        {
+          unsigned int startSeqNum = selNackPdu->getNackList(i * 2);
+          unsigned int endSeqNum = selNackPdu->getNackList((i * 2) + 1);
+
+          dtcp->nackPDU(startSeqNum, endSeqNum);
+
+        }
+      }
+      else if (pdu->getType() & PDU_ACK_BIT)
+      {
+
+        //TODO B1 Shoudn't this be a policy?
+        SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
+        unsigned int tempSLWE = 0;
+        for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
+        {
+          unsigned int startSeqNum = selAckPdu->getNackList(i * 2);
+          unsigned int endSeqNum = selAckPdu->getNackList((i * 2) + 1);
+
+          tempSLWE = std::max(endSeqNum, tempSLWE);
+
+          dtcp->ackPDU(startSeqNum, endSeqNum);
+
+          // min = dtcp->getSmallestSeqNumFromRxQOrNextSeqNumToSend - 1
+          //state->setSenderLeftWinEdge(std::min(min, state->getSenderLeftWinEdge);
+
+          //            state->setSenderLeftWinEdge(tempSLWE);
+          //TODO B2 O'really? Shouldn't it always be nextSeqNum -1?
+          dtcp->updateSenderLWE(tempSLWE + 1);
+
+        }
+      }
+
+    }
+    else
+
+    if (pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
+    {
+
+      //Retrieve the Time of this Ack - RTT estimator policy
+      runRTTEstimatorPolicy();
+
+      if (pdu->getType() & PDU_NACK_BIT)
+      {
+
+        NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
+
+        dtcp->nackPDU(nackPdu->getAckNackSeqNum());
+
+      }
+      else if (pdu->getType() & PDU_ACK_BIT)
+      {
+
+        AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
+        EV << getFullPath() << ": PDU number: " << ackPdu->getAckNackSeqNum() << " Acked" << endl;
+
+        dtcp->runSenderAckPolicy(state);
+
+      }
+      /* End of Ack/Nack */
+
+    }
+
+    if ((pdu->getType() & PDU_FC_BIT))
+    {
+      FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
+
+      //Update RightWindowEdge and SendingRate.
+      dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
+      dtcp->setSendingRate(flowPdu->getNewRate());
+
+      if (dtcp->getDTCPState()->getClosedWinQueLen() > 0)
+      {
+        /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
+        dtcp->getDTCPState()->setClosedWindow(false);
+        trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
+
+        //TODO A4 Verify and update specs
+        if (dtcp->dtcpState->isWinBased())
+        {
+          if (!dtcp->isClosedWinQClosed())
+          {
+            notifyStartSending();
+          }
+
+        }
+      }
+    }
+
+  }
+  delete pdu;
+}
+
 void DTP::handleMsgFromRMT(PDU* msg){
 
   state->setCurrentPdu(msg);
@@ -494,126 +619,10 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
 
     //Putting it before ControlAckPDU might be an issue
-    if(!commonRcvControl(pdu)){
-      //The Control PDU has been deleted because of duplicate
-      return;
-    }
 
 
-    if(dynamic_cast<ControlAckPDU*>(pdu))
-    {
-      dtcp->runRcvrControlAckPolicy(state);
-    }
-    else
-    {
 
-      if (pdu->getType() & PDU_SEL_BIT)
-      {
-        /*
-         SELECT_ACK_PDU        = 0x8806;
-         SELECT_NACK_PDU       = 0x8807;
-         SELECT_ACK_FLOW_PDU   = 0x880E;
-         SELECT_NACK_FLOW_PDU  = 0x880F;
-         */
-
-        //RTT estimator
-        runRTTEstimatorPolicy();
-
-        if (pdu->getType() & PDU_NACK_BIT)
-        {
-          SelectiveNackPDU* selNackPdu = (SelectiveNackPDU*) pdu;
-
-          for (unsigned int i = 0; i < selNackPdu->getNackListLen(); i++)
-          {
-            unsigned int startSeqNum = selNackPdu->getNackList(i * 2);
-            unsigned int endSeqNum = selNackPdu->getNackList((i * 2) + 1);
-
-            dtcp->nackPDU(startSeqNum, endSeqNum);
-
-          }
-        }
-        else if (pdu->getType() & PDU_ACK_BIT)
-        {
-
-          //TODO B1 Shoudn't this be a policy?
-          SelectiveAckPDU* selAckPdu = (SelectiveAckPDU*) pdu;
-          unsigned int tempSLWE = 0;
-          for (unsigned int i = 0; i < selAckPdu->getNackListLen(); i++)
-          {
-            unsigned int startSeqNum = selAckPdu->getNackList(i * 2);
-            unsigned int endSeqNum = selAckPdu->getNackList((i * 2) + 1);
-
-            tempSLWE = std::max(endSeqNum, tempSLWE);
-
-            dtcp->ackPDU(startSeqNum, endSeqNum);
-
-            // min = dtcp->getSmallestSeqNumFromRxQOrNextSeqNumToSend - 1
-            //state->setSenderLeftWinEdge(std::min(min, state->getSenderLeftWinEdge);
-
-//            state->setSenderLeftWinEdge(tempSLWE);
-            //TODO B2 O'really? Shouldn't it always be nextSeqNum -1?
-            dtcp->updateSenderLWE(tempSLWE + 1);
-
-          }
-        }
-
-      }
-      else
-
-      if (pdu->getType() & (PDU_ACK_BIT | PDU_NACK_BIT))
-      {
-
-
-        //Retrieve the Time of this Ack - RTT estimator policy
-        runRTTEstimatorPolicy();
-
-        if (pdu->getType() & PDU_NACK_BIT)
-        {
-
-          NackOnlyPDU *nackPdu = (NackOnlyPDU*) pdu;
-
-          dtcp->nackPDU(nackPdu->getAckNackSeqNum());
-
-        }
-        else if (pdu->getType() & PDU_ACK_BIT)
-        {
-
-          AckOnlyPDU *ackPdu = (AckOnlyPDU*) pdu;
-          EV << getFullPath() <<": PDU number: " << ackPdu->getAckNackSeqNum() <<" Acked"<<endl;
-
-          dtcp->runSenderAckPolicy(state);
-
-        }
-        /* End of Ack/Nack */
-
-      }
-
-      if ((pdu->getType() & PDU_FC_BIT))
-      {
-        FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
-
-        //Update RightWindowEdge and SendingRate.
-        dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
-        dtcp->setSendingRate(flowPdu->getNewRate());
-
-        if (dtcp->getDTCPState()->getClosedWinQueLen() > 0)
-        {
-          /* Note: The ClosedWindow flag could get set back to true immediately in trySendGenPDUs */
-          dtcp->getDTCPState()->setClosedWindow(false);
-          trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
-
-          //TODO A4 Verify and update specs
-          if(dtcp->dtcpState->isWinBased()){
-            if(!dtcp->isClosedWinQClosed()){
-              notifyStartSending();
-            }
-
-          }
-        }
-      }
-
-    }
-    delete pdu;
+    handleControlPDUFromRMT(pdu);
   }else{
 
     throw cRuntimeError("Unexptected PDU Type");
@@ -687,6 +696,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       }
     }
   }
+
   if (dtcp->dtcpState->isFCPresent())
   {
 //    dtcp->resetWindowTimer();
@@ -695,6 +705,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     dtcp->runECNPolicy(state);
 
   }
+
   // if PDU.DRF == true
   if (pdu->getFlags() & DRF_FLAG)
   {
@@ -736,7 +747,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
   {
 
     /* Not the start of a run */
-    if (pdu->getSeqNum() < state->getRcvLeftWinEdge())
+    if (pdu->getSeqNum() <= state->getRcvLeftWinEdge() || pdu->getSeqNum() == state->getMaxSeqNumRcvd())
     {
       bubble("Dropping duplicate PDU");
       EV << getFullPath() << ":Duplicated PDU number: " << pdu->getSeqNum() << " received - DROPPING!" << endl;
@@ -751,8 +762,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
       return;
     }
-    if (state->getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() <= state->getMaxSeqNumRcvd())
-//    if (state->getRcvLeftWinEdge() < pdu->getSeqNum())
+    if (state->getRcvLeftWinEdge() < pdu->getSeqNum() && pdu->getSeqNum() < state->getMaxSeqNumRcvd())
     {
       /* Not a true duplicate. (Might be a duplicate among the gaps) */
       if (isDuplicate(pdu->getSeqNum()))
@@ -772,18 +782,15 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       {
         /* Case 3) This goes in a gap */
         /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
-
-//      reassemblyPDUQ.push_back(pdu);
         addPDUToReassemblyQ(pdu);
+
         if (state->isDtcpPresent())
         {
           svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
-//          svUpdate(state->getRcvLeftWinEdge() - 1); /* Update left edge, etc */
         }
         else
         {
           state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-//          state->setRcvLeftWinEdge(pdu->getSeqNum());
           /* No A-Timer necessary, already running */
         }
 
@@ -795,22 +802,18 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     if (pdu->getSeqNum() == state->getMaxSeqNumRcvd() + 1)
 //    if (pdu->getSeqNum() == state->getRcvLeftWinEdge())
     {
-    state->incMaxSeqNumRcvd();
-      //XXX This is not mentioned in the specs. IMHO this is the most important part ;)
+      state->incMaxSeqNumRcvd();
       addPDUToReassemblyQ(pdu);
 
       if (state->isDtcpPresent())
       {
         svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-//        svUpdate(pdu->getSeqNum()); /* Update Left Edge, etc. */
       }
       else
       {
-        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd() + 1);
-//        state->incRcvLeftWindowEdge();
+        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
         //start A-Timer (for this PDU)
         startATimer(pdu->getSeqNum());
-
       }
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
@@ -822,23 +825,16 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     {
       /* Case 5) it is out of order */
       if (pdu->getSeqNum() > state->getMaxSeqNumRcvd() + 1)
-//      if (pdu->getSeqNum() > state->getRcvLeftWinEdge() + 1)
       {
-        //TODO A! Mention it to others - confirmation pending
-        /* NOT IN SPECS */
+        state->setMaxSeqNumRcvd(pdu->getSeqNum());
         addPDUToReassemblyQ(pdu);
 
-        state->setMaxSeqNumRcvd(pdu->getSeqNum());
         if (state->isDtcpPresent())
         {
           svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-//          svUpdate(state->getRcvLeftWinEdge()); /* Update Left Edge, etc. */
         }
         else
         {
-//          state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-//          state->setMaxSeqNumRcvd(pdu->getSeqNum());
-
           startATimer(state->getMaxSeqNumRcvd());
         }
 
