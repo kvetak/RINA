@@ -730,7 +730,7 @@ void Enrollment::handleMessage(cMessage *msg)
                 APNIPair pair = apnip->front();
                 auto entry = StateTable->findEntryByDstAPN(pair.second.getApn());
                 if (entry && entry->getEnrollmentStatus() == EnrollmentStateTableEntry::ENROLL_ENROLLED ) {
-                    FlowAlloc->receiveMgmtAllocateRequest(pair.first, pair.second);
+                    //FIXME: Vesely->Jerabek: Here goes release part of Enrollment
                 }
                 apnip->pop_front();
             }

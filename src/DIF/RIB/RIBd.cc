@@ -477,7 +477,6 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
 
     //Send it
     signalizeSendData(mderesf);
-
 }
 
 void RIBd::signalizeDeleteResponseFlow(Flow* flow) {
