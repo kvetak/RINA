@@ -28,5 +28,5 @@ simple EnrollmentStateTable
     parameters:
     	@display("i=block/table2");
         xml enrolConfigData = default(xml("<Enrollment></Enrollment>"));
-    	xml configData = default(enrolConfigData);
+    	xml configData = default(enrolConfigData);    	
 }

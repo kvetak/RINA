@@ -38,6 +38,7 @@ const char* PAR_AUTH_NAME       = "authName";
 const char* PAR_AUTH_OTHER      = "authOther";
 const char* PAR_AUTH_PASS       = "authPassword";
 const char* PAR_CON_RETRIES     = "maxConRetries";
+const char* PAR_ISSELFENROL     = "isSelfEnrolled";
 
 const char* MSG_CONREQ                = "Connect/Auth";
 const char* MSG_CONREQRETRY           = "ConnectRetry/Auth";
@@ -69,6 +70,16 @@ void Enrollment::initialize()
 
     initSignalsAndListeners();
     initPointers();
+
+    //Perform self-enrollment
+    bool isSelfEnrol = par(PAR_ISSELFENROL).boolValue();
+    if (isSelfEnrol) {
+        StateTable->insert(EnrollmentStateTableEntry(
+                APNamingInfo(FlowAlloc->getMyAddress().getApn()),
+                APNamingInfo(FlowAlloc->getMyAddress().getApn()),
+                EnrollmentStateTableEntry::CON_ESTABLISHED,
+                EnrollmentStateTableEntry::ENROLL_ENROLLED));
+    }
 
     authType = par(PAR_AUTH_TYPE);
     authName = this->par(PAR_AUTH_NAME).stringValue();
@@ -706,7 +717,7 @@ void Enrollment::handleMessage(cMessage *msg)
             {
                 APNIPair pair = apnip->front();
                 auto entry = StateTable->findEntryByDstAPN(pair.second.getApn());
-                if (entry && entry->getEnrollmentStatus() != EnrollmentStateTableEntry::ENROLL_ENROLLED ) {
+                if (!entry) {
                     FlowAlloc->receiveMgmtAllocateRequest(pair.first, pair.second);
                 }
                 apnip->pop_front();

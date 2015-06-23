@@ -81,7 +81,7 @@ APNIPair::APNIPair() {
 }
 
 APNIPair::APNIPair(const char* src, const char* dst) :
-        APNIPair(APNamingInfo(APN( std::string(src) ) ), APNamingInfo(APN( std::string(src) ) ))
+        APNIPair(APNamingInfo(APN( std::string(src) ) ), APNamingInfo(APN( std::string(dst) ) ))
 {
 }
 

@@ -27,7 +27,7 @@ network EnrollmentModule
 {
     parameters:
         @display("i=block/arrival;bgb=281,170");
-        xml configData = default(xml("<Enrollment></Enrollment>"));
+        xml configData = default(xml("<Enrollment></Enrollment>"));        
 
     submodules:
         enrollment: Enrollment {

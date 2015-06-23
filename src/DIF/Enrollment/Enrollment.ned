@@ -28,6 +28,8 @@ package rina.src.DIF.Enrollment;
     	@display("i=block/arrival");
     	xml enrolConfigData = default(xml("<Enrollment></Enrollment>"));
     	xml configData = default(enrolConfigData);
+    	
+    	bool isSelfEnrolled = default(false);
 	    
 	    //Authentication
         int authType							= default(1);

@@ -243,7 +243,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     //FA needs to init allocation of N-1 mgmt-flow
     if (!flow->isDdtFlag() && !Enrollment->isEnrolled(MyAddress.getApn())) {
         EV << "IPCP not enrolled to DIF, thus executing enrollment!" << endl;
-        receiveMgmtAllocateRequest(APNamingInfo(APN(MyAddress.getApn())), APNamingInfo(APN(flow->getDstNeighbor().getApn())));
+        receiveMgmtAllocateRequest(APNamingInfo(MyAddress.getApn()), APNamingInfo(flow->getDstNeighbor().getApn()));
     }
 
     //Is malformed?

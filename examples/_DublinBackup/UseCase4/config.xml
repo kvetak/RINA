@@ -52,8 +52,14 @@
 					<Neighbor apn="33_Layer11" />
 				</APN>			
 			</NeighborTable>
-			
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="22_Layer11" dst="33_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>		
 	</Host>
 	<Router id="switch">
 		<DA>
@@ -75,7 +81,7 @@
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>								
 			</Directory>			
-		</DA>
+		</DA>		
 	</Router>
 	<QoSCubesSet>
 		<QoSCube id="QoSCube_WithoutDTCP">
