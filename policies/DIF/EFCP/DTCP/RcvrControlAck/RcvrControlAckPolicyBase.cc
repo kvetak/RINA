@@ -66,7 +66,7 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
      }
 
      //unsigned int sndRtWinEdge;
-     if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
+     if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRightWinEdge()){
  //      sendFC = true;
      }
 

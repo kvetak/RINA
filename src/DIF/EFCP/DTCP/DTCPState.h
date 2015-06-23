@@ -83,8 +83,9 @@ class DTCPState : public cSimpleModule
 
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
 
-    /* Without getters/setters */
     unsigned int pdusRcvdinTimeUnit; //This variable contains the number of PDUs received in this Time Unit. When PDUsRcvdinTimeUnit equals RcvrRate, the receiver is allowed to discard any PDUs received until a new time unit begins.
+
+    /* Without getters/setters */
     unsigned int rcvBytesFree; //The number of bytes that this flow can assume it has available for incoming PDUs on this connection.
     unsigned int rcvBytesPercentFree; //The percent of bytes that are free for incoming PDUs on this connection.
     unsigned int rcvBytesThreshold; //The number of free bytes at which flow control does not move the Right Window Edge.
@@ -144,7 +145,7 @@ class DTCPState : public cSimpleModule
     void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
     void incRcvRtWinEdge();
     void initFC();
-    unsigned int getRcvRtWinEdge() const;
+    unsigned int getRcvRightWinEdge() const;
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
     unsigned int getRcvBufferPercentThreshold() const;
     void setRcvBufferPercentThreshold(unsigned int rcvBufferPercentThreshold);
@@ -207,6 +208,9 @@ class DTCPState : public cSimpleModule
 
     const QoSCube* getQoSCube() const;
     void setQoSCube(const QoSCube*& qoSCube);
+
+    unsigned int getPdusRcvdInTimeUnit() const;
+    void setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit);
 
   protected:
     virtual void handleMessage(cMessage *msg);

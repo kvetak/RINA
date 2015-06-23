@@ -431,7 +431,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 
 bool DTCP::runSndFCOverrunPolicy(DTPState* dtpState)
 {
-  Enter_Method("FCOverrunPolicy");
+  Enter_Method("SndFCOverrunPolicy");
   sndFcOverrunPolicy->call(dtpState, dtcpState);
 //    /* Default */
 //    dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
@@ -440,6 +440,13 @@ bool DTCP::runSndFCOverrunPolicy(DTPState* dtpState)
 //    /* End default */
 //
 //  }
+  return false;
+}
+
+bool DTCP::runRcvFCOverrunPolicy(DTPState* dtpState)
+{
+  Enter_Method("RcvFCOverrunPolicy");
+  rcvFcOverrunPolicy->call(dtpState, dtcpState);
   return false;
 }
 
@@ -829,9 +836,9 @@ void DTCP::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 
 }
 
-unsigned int DTCP::getRcvRtWinEdge()
+unsigned int DTCP::getRcvRightWinEdge()
 {
-  return dtcpState->getRcvRtWinEdge();
+  return dtcpState->getRcvRightWinEdge();
 }
 
 unsigned int DTCP::getRcvCredit()
@@ -859,6 +866,11 @@ void DTCP::setSendingRateFullfilled(bool rateFullfilled)
 unsigned int DTCP::getPdusSentInTimeUnit() const
 {
   return dtcpState->getPdusSentInTimeUnit();
+}
+
+unsigned int DTCP::getPdusRcvdInTimeUnit() const
+{
+  return dtcpState->getPdusRcvdInTimeUnit();
 }
 
 void DTCP::incPdusSentInTimeUnit()

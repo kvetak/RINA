@@ -203,7 +203,7 @@ void DTP::redrawGUI()
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";
-  desc << "rRWE: " << dtcp->getRcvRtWinEdge() << "\n";
+  desc << "rRWE: " << dtcp->getRcvRightWinEdge() << "\n";
   desc << "maxSeqNumRcvd: " << state->getMaxSeqNumRcvd() <<"\n";
 
 
@@ -425,7 +425,7 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 {
 
   //      unsigned int newRightWinEdge;
-  flowControlPdu->setNewRightWinEdge(dtcp->getRcvRtWinEdge());
+  flowControlPdu->setNewRightWinEdge(dtcp->getRcvRightWinEdge());
   //        unsigned int newRate;
   flowControlPdu->setNewRate(dtcp->getRcvrRate());
   //          unsigned int timeUnit;
@@ -437,7 +437,7 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
   //          unsigned int myRcvRate;
   flowControlPdu->setMyRcvRate(dtcp->getSendingRate());
 
-  dtcp->getDTCPState()->setRcvRtWinEdgeSent(dtcp->getDTCPState()->getRcvRtWinEdge());
+  dtcp->getDTCPState()->setRcvRtWinEdgeSent(dtcp->getDTCPState()->getRcvRightWinEdge());
 }
 
 void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
@@ -658,10 +658,34 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
   EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " received" << endl;
 
-  if(state->isDtcpPresent()){
-      if(dtcp->dtcpState->isWinBased()){
-
+  /*
+   * What to do when you want to discard the incomming PDU?
+   * How to handle both cases - you want to keep it for further processing/ you want to drop it.
+   */
+  if (state->isDtcpPresent())
+  {
+    if (dtcp->dtcpState->isWinBased())
+    {
+      if (pdu->getSeqNum() > dtcp->getRcvRightWinEdge())
+      {
+        dtcp->runRcvFCOverrunPolicy(state);
+        if (state->getCurrentPdu() == NULL)
+        {
+          return;
+        }
       }
+    }
+    else if (dtcp->dtcpState->isRateBased())
+    {
+      if (dtcp->getPdusRcvdInTimeUnit() + 1 > dtcp->getRcvrRate())
+      {
+        dtcp->runRcvFCOverrunPolicy(state);
+        if (state->getCurrentPdu() == NULL)
+        {
+          return;
+        }
+      }
+    }
   }
   if (dtcp->dtcpState->isFCPresent())
   {
@@ -1190,7 +1214,7 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSndLtWinEdge(dtcp->getSenderLeftWinEdge());
   ctrlAckPdu->setSndRtWinEdge(dtcp->getSndRtWinEdge());
   ctrlAckPdu->setMyLtWinEdge(state->getRcvLeftWinEdge());
-  ctrlAckPdu->setMyRtWinEdge(dtcp->getRcvRtWinEdge());
+  ctrlAckPdu->setMyRtWinEdge(dtcp->getRcvRightWinEdge());
 
   ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());
 

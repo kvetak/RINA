@@ -125,7 +125,7 @@ public:
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
     unsigned int getSndRtWinEdge();
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
-    unsigned int getRcvRtWinEdge();
+    unsigned int getRcvRightWinEdge();
 
     unsigned int getRcvCredit();
 
@@ -146,6 +146,9 @@ public:
     unsigned int getPdusSentInTimeUnit() const;
     void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
     void incPdusSentInTimeUnit();
+
+    unsigned int getPdusRcvdInTimeUnit() const;
+
 
     unsigned int getSendingRate() const;
     void setSendingRate(unsigned int sendingRate);
@@ -172,6 +175,7 @@ public:
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
     bool runSndFCOverrunPolicy(DTPState* dtpState);
+    bool runRcvFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
     bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
     bool runNoRateSlowDownPolicy(DTPState* dtpState);

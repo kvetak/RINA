@@ -46,8 +46,7 @@ void RcvFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
   //TODO A! Implement the default action, the text below is from SndFCOverrun policy
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
   /* Default */
-//  dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-//  //Block further Write API calls on this port-id
-//  dtp->notifyStopSending();
+  delete dtpState->getCurrentPdu();
+  dtp->sendAckFlowPDU();
   /* End default */
 }

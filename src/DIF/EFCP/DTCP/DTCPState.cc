@@ -144,7 +144,7 @@ void DTCPState::setSndCredit(unsigned int sndCredit)
   this->sndCredit = sndCredit;
 }
 
-unsigned int DTCPState::getRcvRtWinEdge() const
+unsigned int DTCPState::getRcvRightWinEdge() const
 {
   return rcvRightWinEdge;
 }
@@ -495,4 +495,14 @@ bool DTCPState::isWinBased() const {
 
 void DTCPState::setWinBased(bool winBased) {
     this->winBased = winBased;
+}
+
+unsigned int DTCPState::getPdusRcvdInTimeUnit() const
+{
+  return pdusRcvdinTimeUnit;
+}
+
+void DTCPState::setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit)
+{
+  this->pdusRcvdinTimeUnit = pdusRcvdinTimeUnit;
 }
