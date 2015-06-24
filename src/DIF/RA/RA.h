@@ -149,7 +149,7 @@ class RA : public RABase
     void signalizeCreateFlowNegativeToRIBd(Flow* flow);
     void signalizeSlowdownRequestToRIBd(cPacket* pdu);
     void signalizeSlowdownRequestToEFCP(cObject* obj);
-    void signalizeMgmtAllocToEnrollment(Flow* flow);
+    void signalizeMgmtAllocToEnrollment(APNIPair* apnip);
     void signalizeMgmtDeallocToEnrollment(Flow* flow);
 
 };

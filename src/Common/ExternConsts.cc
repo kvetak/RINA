@@ -106,6 +106,8 @@ const char* GATE_EFCPI_SOUTHIO  = "southIo";
 //XML attributes and elements
 const char* ELEM_APN            = "APN";
 const char* ATTR_APN            = "apn";
+const char* ATTR_SRC            = "src";
+const char* ATTR_DST            = "dst";
 const char* ELEM_AVGBW               = "AverageBandwidth";
 const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
 const char* ELEM_PEAKBWDUR           = "PeakBandwidthDuration";

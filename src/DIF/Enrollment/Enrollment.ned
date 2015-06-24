@@ -22,13 +22,14 @@
 
 package rina.src.DIF.Enrollment;
 
-//
-// TODO auto-generated module
-//
-simple Enrollment
+ simple Enrollment
 {
     parameters:
     	@display("i=block/arrival");
+    	xml enrolConfigData = default(xml("<Enrollment></Enrollment>"));
+    	xml configData = default(enrolConfigData);
+    	
+    	bool isSelfEnrolled = default(false);
 	    
 	    //Authentication
         int authType							= default(1);

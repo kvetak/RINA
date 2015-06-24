@@ -43,11 +43,14 @@
 #include "RIBd.h"
 #include "EnrollmentObj.h"
 #include "OperationObj.h"
+#include "FABase.h"
 
 extern const char* MSG_CONREQ;
 extern const char* MSG_CONREQRETRY;
 extern const char* MSG_CONRESPOS;
 extern const char* MSG_CONRESNEG;
+extern const char* MSG_ENRLCON;
+extern const char* MSG_ENRLREL;
 
 class LisEnrollmentAllResPosi;
 class LisEnrollmentGetFlowFromFaiCreResPosi;
@@ -60,12 +63,16 @@ class LisEnrollmentStartOperationRes;
 class LisEnrollmentConResPosi;
 class LisEnrollmentConResNega;
 class LisEnrollmentConReq;
+
+typedef std::list<APNIPair> APNIPairs;
+typedef std::map<simtime_t, APNIPairs*> EnrollCommands;
+
 class Enrollment : public cSimpleModule
 {
   public:
     Enrollment();
     virtual ~Enrollment();
-    void startCACE(Flow* flow);
+    void startCACE(APNIPair* apnip);
     void startEnrollment(EnrollmentStateTableEntry* entry);
     void insertStateTableEntry(Flow* flow);
     void receivePositiveConnectResponse(CDAPMessage* msg);
@@ -85,6 +92,8 @@ class Enrollment : public cSimpleModule
     void initSignalsAndListeners();
     virtual void initialize();
 
+    void parseConfig(cXMLElement* config);
+
     void authenticate(EnrollmentStateTableEntry* entry, CDAP_M_Connect* msg);
     void processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
     void processConResNega(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
@@ -92,7 +101,10 @@ class Enrollment : public cSimpleModule
     void processStopEnrollmentImmediate(EnrollmentStateTableEntry* entry);
     void processStopEnrollmentResponse(EnrollmentStateTableEntry* entry);
 
+    FABase* FlowAlloc;
 
+    EnrollCommands PreenrollConnects;
+    EnrollCommands PreenrollReleases;
 
     int authType;
     std::string authName;
@@ -125,7 +137,7 @@ class Enrollment : public cSimpleModule
     LisEnrollmentConReq* lisEnrollmentConReq;
 
     EnrollmentStateTable* StateTable;
-    RIBd* ribd;
+    RIBd* RibDaemon;
 
     void signalizeCACESendData(CDAPMessage* cmsg);
     void signalizeStartEnrollmentRequest(EnrollmentObj* obj);

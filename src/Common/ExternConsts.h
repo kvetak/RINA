@@ -107,6 +107,8 @@ extern const char* GATE_EFCPI_SOUTHIO;
 //XML attributes and elements
 extern const char* ELEM_APN;
 extern const char* ATTR_APN;
+extern const char* ATTR_SRC;
+extern const char* ATTR_DST;
 extern const char* ELEM_AVGBW;
 extern const char* ELEM_AVGSDUBW;
 extern const char* ELEM_PEAKBWDUR;

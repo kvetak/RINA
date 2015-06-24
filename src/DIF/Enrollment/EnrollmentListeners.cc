@@ -41,7 +41,7 @@ EnrollmentListeners::~EnrollmentListeners() {
 void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
-    Flow* flow = dynamic_cast<Flow*>(obj);
+    /*Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         if (!flow->isManagementFlow()){
             return;
@@ -50,7 +50,15 @@ void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         enrollment->startCACE(flow);
     }
     else
+        EV << "EnrollmentListener reeived unknown object!" << endl;
+    */
+    APNIPair* apnip = dynamic_cast<APNIPair*>(obj);
+    if (apnip) {
+        enrollment->startCACE(apnip);
+    }
+    else {
         EV << "EnrollmentListener received unknown object!" << endl;
+    }
 
 }
 

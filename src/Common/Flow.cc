@@ -356,8 +356,10 @@ void Flow::setSrcNeighbor(const Address& srcNeighbor) {
 Flow* Flow::dupToMgmt() const {
     Flow* mgmtflow = this->dup();
     mgmtflow->setQosRequirements(QoSReq::MANAGEMENT);
-    mgmtflow->setSrcApni(getSrcAddr().getApname());
-    mgmtflow->setDstApni(getDstAddr().getApname());
+    mgmtflow->setSrcApni(getSrcAddr().getApn());
+    mgmtflow->setDstApni(getDstNeighbor().getApn());
+    mgmtflow->setDstAddr(getDstNeighbor().getApn());
+    //EV << mgmtflow->info() << endl;
     return mgmtflow;
 }
 
@@ -367,6 +369,6 @@ bool Flow::isManagementFlow() const {
 
 bool Flow::isManagementFlowLocalToIPCP() const {
     return isManagementFlow()
-            && this->getSrcApni().getApn() == getSrcAddr().getApname()
-            && this->getDstApni().getApn() == getDstAddr().getApname();
+            && this->getSrcApni().getApn() == getSrcAddr().getApn()
+            && this->getDstApni().getApn() == getDstAddr().getApn();
 }

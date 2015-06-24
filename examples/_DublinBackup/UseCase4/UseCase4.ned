@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DIF.RA;
+package rina.examples._DublinBackup.UseCase4;
 
-simple RA
+import ned.DatarateChannel;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
+
+network UseCase4
 {
-    parameters:
-        @display("i=block/segm");
-        
-        @signal[RA-CreateFlowPositive](type=Flow?);
-        @signal[RA-CreateFlowNegative](type=Flow?);
-        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
-        @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=APNIPair?);
-        @signal[RA-MgmtFlowDeallocated](type=Flow?);
-
-        xml qoscubesData = default(xml("<QoSCube/>"));
-        xml qosReqData = default(xml("<QoSReq/>"));
-        xml preallocation = default(xml("<root/>"));
+    @display("bgb=338,200");
+    submodules:
+        hostA: Host1AP {
+            @display("p=66,98");
+        }
+        hostB: Host1AP {
+            @display("p=270,98");
+        }
+        switch: InteriorRouter2Int {
+            @display("p=167,98");
+        }
+    connections:
+        hostA.medium <--> DatarateChannel {  datarate = 100Mbps; delay = 100us; ber = 0; } <--> switch.medium[0];
+        switch.medium[1] <--> DatarateChannel {  datarate = 100Mbps; delay = 100us; ber = 0; } <--> hostB.medium;
 }

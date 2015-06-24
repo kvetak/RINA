@@ -433,7 +433,7 @@ void RMT::relayPDUToPort(PDU* pdu)
     if (outPorts.empty())
     {
         EV << "!!! Empty PDUForwarding policy lookup result!" << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApname().getName()
+           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
         invalidPDUs.push_back(pdu);

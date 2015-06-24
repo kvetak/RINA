@@ -60,7 +60,8 @@ class FA : public FABase
     virtual ~FA();
 
     virtual bool receiveAllocateRequest(Flow* flow);
-    virtual bool receiveLocalMgmtAllocateRequest(Flow* flow);
+    virtual bool receiveMgmtAllocateRequest(Flow* mgmtflow);
+    virtual bool receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst);
     virtual bool receiveMgmtAllocateFinish();
     virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
@@ -77,7 +78,7 @@ class FA : public FABase
     simsignal_t sigFACreReqFwd;
     simsignal_t sigFACreResNega;
     simsignal_t sigFACreResPosiFwd;
-    simsignal_t sigFAIAllocFinMgmt;
+    simsignal_t sigFAAllocFinMgmt;
 
     //Listeners
     LisFAAllocReq*      lisAllocReq;

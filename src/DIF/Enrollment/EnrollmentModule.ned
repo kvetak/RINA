@@ -27,12 +27,15 @@ network EnrollmentModule
 {
     parameters:
         @display("i=block/arrival;bgb=281,170");
+        xml configData = default(xml("<Enrollment></Enrollment>"));        
 
     submodules:
         enrollment: Enrollment {
             @display("p=82,83");
+            enrolConfigData = configData;
         }
         enrollmentStateTable: EnrollmentStateTable {
             @display("p=197,83");
+            enrolConfigData = configData;
         }
 }

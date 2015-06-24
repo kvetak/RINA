@@ -190,14 +190,16 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
 
-        Irm->receiveAllocationResponsePositiveFromIpc(flow) ?
-                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_CONNECTPENDING)
-                :
-                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_ERROR);
+        bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
         //Change connection status
-        changeConStatus(CONNECTION_PENDING);
-        this->signalizeAllocateResponsePositive(FlowObject);
+        if (status) {
+            changeConStatus(CONNECTION_PENDING);
+            this->signalizeAllocateResponsePositive(FlowObject);
+        }
+        else {
+            EV << "IRM was unable to create bindings!" << endl;
+        }
     }
     else {
         EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
@@ -229,9 +231,6 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     Enter_Method("receiveAllocationResponsePositive()");
     //Interconnect IRM and IPC
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
-
-    //Change allocation status
-    Irm->changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
 
     //Change connection status
     changeConStatus(CONNECTION_PENDING);

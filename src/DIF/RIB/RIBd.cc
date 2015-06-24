@@ -122,7 +122,7 @@ void RIBd::sendDeleteRequestFlow(Flow* flow) {
 
     //Append src/dst address for RMT "routing"
     mdereqf->setSrcAddr(flow->getSrcNeighbor());
-    mdereqf->setDstAddr(flow->getDstNeighbor());
+    mdereqf->setDstAddr(flow->getDstAddr());
 
     //Generate InvokeId
     if (!flow->getDeallocInvokeId())
@@ -348,7 +348,7 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
 
     //Append src/dst address for RMT "routing"
     mcref->setSrcAddr(flow->getSrcNeighbor());
-    mcref->setDstAddr(flow->getDstNeighbor());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -381,7 +381,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
 
     //Append src/dst address for RMT "routing"
     mcref->setSrcAddr(flow->getSrcNeighbor());
-    mcref->setDstAddr(flow->getDstNeighbor());
+    mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mcref);
@@ -473,11 +473,10 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
 
     //Append src/dst address for RMT "routing"
     mderesf->setSrcAddr(flow->getSrcNeighbor());
-    mderesf->setDstAddr(flow->getDstNeighbor());
+    mderesf->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mderesf);
-
 }
 
 void RIBd::signalizeDeleteResponseFlow(Flow* flow) {

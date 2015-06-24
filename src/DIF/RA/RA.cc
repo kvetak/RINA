@@ -478,7 +478,7 @@ std::string RA::normalizePortID(std::string ipcName, int flowPortID)
  */
 void RA::createNFlow(Flow *flow)
 {
-    fa->receiveLocalMgmtAllocateRequest(flow);
+    fa->receiveMgmtAllocateRequest(flow);
 }
 
 /**
@@ -500,7 +500,7 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApname().getName(),
+            e->getDestAddr().getApn().getName(),
             flow->getConId().getQoSId());
 
         if(fi)
@@ -578,7 +578,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApname().getName(),
+            e->getDestAddr().getApn().getName(),
             flow->getConId().getQoSId());
 
         if(fi)
@@ -645,7 +645,7 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
-        const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
+        const std::string& neighApn = flow->getDstNeighbor().getApn().getName();
         std::string qosId = flow->getConId().getQoSId();
 
         NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
@@ -674,7 +674,8 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     // if this is a management flow, notify the Enrollment module
     if (ftItem->getFlow()->isManagementFlow())
     {
-        signalizeMgmtAllocToEnrollment(ftItem->getFlow());
+        APNIPair* apnip = new APNIPair(ftItem->getFlow()->getSrcApni(), ftItem->getFlow()->getDstApni());
+        signalizeMgmtAllocToEnrollment(apnip);
     }
 }
 
@@ -735,8 +736,8 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         return true;
     }
 
-    std::string dstAddr = flow->getDstAddr().getApname().getName();
-    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
+    std::string dstAddr = flow->getDstAddr().getApn().getName();
+    std::string neighAddr = flow->getDstNeighbor().getApn().getName();
     std::string qosID = flow->getConId().getQoSId();
 
     EV << "Binding to an (N-1)-flow leading to " << dstAddr;
@@ -757,7 +758,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(te) {
-        neighAddr = te->getDestAddr().getApname().getName();
+        neighAddr = te->getDestAddr().getApn().getName();
     }
 
     NM1FlowTableItem* nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
@@ -821,10 +822,10 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     emit(sigRASDReqFromRIB, congInfo);
 }
 
-void RA::signalizeMgmtAllocToEnrollment(Flow* flow)
+void RA::signalizeMgmtAllocToEnrollment(APNIPair* apnip)
 {
     Enter_Method("signalizeMgmtAllocToEnrollment()");
-    emit(sigRAMgmtAllocd, flow);
+    emit(sigRAMgmtAllocd, apnip);
 }
 
 void RA::signalizeMgmtDeallocToEnrollment(Flow* flow)
