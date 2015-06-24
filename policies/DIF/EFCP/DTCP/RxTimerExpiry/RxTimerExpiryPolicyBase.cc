@@ -33,13 +33,12 @@
 
 RxTimerExpiryPolicyBase::RxTimerExpiryPolicyBase()
 {
-  // TODO Auto-generated constructor stub
 
 }
 
 RxTimerExpiryPolicyBase::~RxTimerExpiryPolicyBase()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 void RxTimerExpiryPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)

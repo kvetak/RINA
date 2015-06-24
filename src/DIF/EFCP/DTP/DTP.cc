@@ -150,12 +150,19 @@ void DTP::initGates()
   southI = this->gateHalf(GATE_DTP_SOUTHIO, cGate::INPUT);
   southO = this->gateHalf(GATE_DTP_SOUTHIO, cGate::OUTPUT);
 }
-
+/**
+ * Get reference to the QoSCube active on this flow.
+ * @return Reference to the QoSCube active on this flow.
+ */
 const QoSCube* DTP::getQoSCube() const
 {
   return state->getQoSCube();
 }
 
+/**
+ * Set QoSCube for this flow.
+ * @param qosCube QoSCube to be used on this connection.
+ */
 void DTP::setQoSCube(const QoSCube* qosCube)
 {
   //TODO A2 Make copy
@@ -163,11 +170,20 @@ void DTP::setQoSCube(const QoSCube* qosCube)
 
 }
 
+/**
+ * Sets flag for activating PDU dropping capabilities used purely for testing Retransmission
+ * This flag is currently obsolete.
+ * @param pduDroppingEnabled
+ */
 void DTP::setPduDroppingEnabled(bool pduDroppingEnabled)
 {
   this->pduDroppingEnabled = pduDroppingEnabled;
 }
 
+/**
+ * This method is called upon deletion of DTP module.
+ * All dynamically components belonging to DTP should be deallocated here.
+ */
 void DTP::flushAllQueuesAndPrepareToDie()
 {
     cancelAndDelete(senderInactivityTimer);
@@ -182,6 +198,9 @@ void DTP::flushAllQueuesAndPrepareToDie()
 
 }
 
+/**
+ * Prints important variables on the simulation pane next to the module.
+ */
 void DTP::redrawGUI()
 {
   if (!ev.isGUI())
@@ -236,7 +255,7 @@ void DTP::redrawGUI()
 
 
 /**
- *
+ * Sets Connection-ID of this connection.
  * @param connId
  */
 void DTP::setConnId(const ConnectionId& connId)
@@ -307,6 +326,11 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
+/**
+ * Handles message processing from upper module (delimiting) and
+ * tries to send it to RMT.
+ * @param sdu
+ */
 void DTP::handleMsgFromDelimiting(SDU* sdu){
   cancelEvent(senderInactivityTimer);
 
@@ -319,13 +343,21 @@ void DTP::handleMsgFromDelimiting(SDU* sdu){
   schedule(senderInactivityTimer);
 }
 
+/**
+ * Invokes method of same name in DTPState to add @param pdu
+ * to Reassembly Queue for further processing.
+ * @param pdu PDU to be put on the Reassembly Queue.
+ */
 void DTP::addPDUToReassemblyQ(DataTransferPDU* pdu)
 {
-
  state->addPDUToReassemblyQ(pdu);
 }
 
-
+/**
+ * Invokes delimiting upon finishing processing incoming PDU from RMT.
+ * For now, this method passes only complete, in-order SDUs to the upper flow.
+ * @param pdu Can be NULL.
+ */
 void DTP::delimitFromRMT(DataTransferPDU* pdu)
 {
   Enter_Method_Silent();
@@ -378,6 +410,12 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
   }
 }
 
+
+/**
+ * Invokes Common checks on incomming Control PDUs.
+ * @param pdu Control PDU to be checked.
+ * @return Return false if the check fails signaling to stop processing this Control PDU.
+ */
 bool DTP::commonRcvControl(ControlPDU* pdu)
 {
   if (pdu->getSeqNum() <= dtcp->getLastCtrlSeqNumRcv())/* Duplicate ControlPDU */
@@ -406,6 +444,9 @@ bool DTP::commonRcvControl(ControlPDU* pdu)
   return true;
 }
 
+/**
+ * This method sends ControlPDU containing only Flow Control information.
+ */
 void DTP::sendFCOnlyPDU()
 {
   Enter_Method_Silent();
@@ -421,6 +462,11 @@ void DTP::sendFCOnlyPDU()
   sendToRMT(fcOnlyPdu);
 }
 
+/**
+ * This methods fill all Flow Control information related fields in Control PDU
+ * and updates last sent RRWE.
+ * @param flowControlPdu
+ */
 void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 {
 
@@ -440,16 +486,26 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
   dtcp->getDTCPState()->setRcvRtWinEdgeSent(dtcp->getDTCPState()->getRcvRightWinEdge());
 }
 
+
+/**
+ * This method sends Ack and Flow Control information based on the presence
+ * of Flow Control and Retransmission Control.
+ * @param seqNum Explicitly specify the seqNum to be Acked, otherwise the RLWE is Acked.
+ * @param seqNumValid Specifies if the seqNum is valid,
+ *  or if it is just "default and the RLWE should be used instead.
+ */
 void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 {
   Enter_Method_Silent();
 
-
-  if(!seqNumValid){
+  if (!seqNumValid)
+  {
+    //TODO A! Remove the "-1" to get in sync with specs.
     seqNum = state->getRcvLeftWinEdge() - 1;
   }
 
-  if(dtcp->dtcpState->isFCPresent() && dtcp->dtcpState->isRxPresent()){
+  if (dtcp->dtcpState->isFCPresent() && dtcp->dtcpState->isRxPresent())
+  {
     // Send Ack/Flow Control PDU with LWE and RWE
     AckFlowPDU* ackFlowPdu = new AckFlowPDU();
     setPDUHeader(ackFlowPdu);
@@ -459,14 +515,15 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 
     fillFlowControlPDU(ackFlowPdu);
     sendToRMT(ackFlowPdu);
-  }else if(dtcp->dtcpState->isFCPresent()){
-    // send FC
-
+  }
+  else if (dtcp->dtcpState->isFCPresent())
+  {
     sendFCOnlyPDU();
-  }else if(dtcp->dtcpState->isRxPresent()){
+  }
+  else if (dtcp->dtcpState->isRxPresent())
+  {
     sendAckOnlyPDU(seqNum);
   }
-
 
 }
 
@@ -595,6 +652,12 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
   delete pdu;
 }
 
+/**
+ * This method handles incomming PDUs from RMT
+ * and passes them to specific methods for further processing.
+ * @param msg Incomming msg is either DataTransferPDU or ControllPDU.
+ * If it is neither of those, Error is raised.
+ */
 void DTP::handleMsgFromRMT(PDU* msg){
 
   state->setCurrentPdu(msg);
@@ -619,8 +682,6 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
 
     //Putting it before ControlAckPDU might be an issue
-
-
 
     handleControlPDUFromRMT(pdu);
   }else{
