@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.AllNodes;
+package rina.examples.Basics.AllNodes;
 
 import ned.DelayChannel;
 import rina.src.CS.BorderRouter;
