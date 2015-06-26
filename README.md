@@ -16,6 +16,12 @@ RINA Simulator
 * November 2014 - Brussels RV1 with AllNodes examples
 * October 2014  - Madrid F2F meeting with working SimpleRelay and TwoCSs scenarios
 
+###Links
+* [OpenSourceProject Git with archived RINASim releases](https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/)
+* [Out-of-the-box Virtual Machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
+* [PRISTINE webpage](http://ict-pristine.eu/)	 
+* [Developer's mailing-list](https://www.fit.vutbr.cz/mailman/listinfo/rinasim)
+
 ###Directory structure
 
 	/examples					... scenarios testing RINA stack
@@ -30,7 +36,7 @@ RINA Simulator
 		/DAF					... DAF components
 		/DIF 					... DIF component
 	
-	/policies				... all programable RINA policies
+	/policies				    ... all programable RINA policies
 
 ###Policies
 	/DAF                           ... DAF policies
@@ -110,6 +116,6 @@ RINA Simulator
 	            /SimpleDV              ... a simple distance vector-like protocol
 	            /SimpleLS              ... a simple link-state-like protocol
 	        
-	           
+          
 	
 	
