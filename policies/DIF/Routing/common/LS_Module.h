@@ -32,6 +32,7 @@ protected:
 
     map<string, linksU> netState;
     set<string> changed;
+    set<string> newNeigh;
 
     map<string, nhLMetric<T>  > currentTable;
 
@@ -68,6 +69,10 @@ public:
         changed.insert(Routing_Alg<T>::myAddr);
         secId++;
         netState[Routing_Alg<T>::myAddr].sId = secId;
+
+        if(netState[Routing_Alg<T>::myAddr].links[_addr] == 0) {
+            newNeigh.insert(_addr);
+        }
         netState[Routing_Alg<T>::myAddr].links[_addr] = _metric;
 
         Routing_Alg<T>::scheduleUpdate();
@@ -86,14 +91,18 @@ public:
 
     virtual bool processUpdate(Routing_Update * update) {
         if(LS_Update * up = dynamic_cast<LS_Update*>(update)) {
+            //cout<<"I'm "<< Routing_Alg<T>::myNAddr <<"<"<< Routing_Alg<T>::descriptor << "> receiving update" << endl;
             for(auto & entry : up->entries){
+                if(entry.first == Routing_Alg<T>::myAddr) { continue; }
                 if(netState[entry.first].sId < entry.second.sId){
                     netState[entry.first] = entry.second;
                     changed.insert(entry.first);
+           //         cout << "\t"<<entry.first<< " updated to sId : "<<netState[entry.first].sId<<endl;
                 }
             }
             if(!changed.empty()) {
                 Routing_Alg<T>::scheduleUpdate();
+            //    cout << "--Schedule a new update" << endl;
                 return true;
             }
         }
@@ -102,6 +111,7 @@ public:
     };
 
     virtual void sendUpdate() {
+
         Routing_Alg<T>::sendUpdate();
 
         map<string, linksU> entries;
@@ -111,9 +121,17 @@ public:
 
         for(auto neig : Routing_Alg<T>::invNeigTable){
             LS_Update * update = new LS_Update();
-            update->entries = entries;
+            if(newNeigh.find(neig.second) == newNeigh.end()){
+                update->entries = entries;
+            //    cout<<"I'm "<< Routing_Alg<T>::myNAddr << " sending partial to "<< neig.first << endl;
+            } else {
+                update->entries = netState;
+            //    cout<<"I'm "<< Routing_Alg<T>::myNAddr << " sending full to "<< neig.first << endl;
+            }
             Routing_Alg<T>::parent->chSendUpdate(update, neig.first, this);
         }
+        changed.clear();
+        newNeigh.clear();
 
     }
 

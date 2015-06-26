@@ -60,7 +60,9 @@ private:
     HierarchicalTable::HierarchicalTable * fwd;
     tDomain::TDomainRouting<mType> * rt;
 
+    string myAddr;
     vector<string> parsStr;
+    vector<string> domains;
     pAddr parseAddr(const string &addr);
 
     map<string,NTable> domNeighbours;

@@ -22,18 +22,22 @@ import rina.src.DIF.IPCProcess;
 import rina.src.DAF.ApplicationProcess;
 import rina.src.DAF.IRM.IPCResourceManager;
 
-module ViFIB
+module ViFIB_MGM
 {
     parameters:
         @display("i=abstract/switch;bgb=355,537");
         @node;
+        int numOfAdminAPs = default(1);
 
     gates:
         inout medium[];
 
     submodules:
-        controller : ApplicationProcess {
-            @display("p=185,71;i=,#FF7000");
+        controller: ApplicationProcess {
+            @display("p=171,49;i=,#FF7000");
+        }
+        agents[numOfAdminAPs]: ApplicationProcess {
+            @display("p=171,190;i=,#FF7000");
         }
 
         ipcProcess[sizeof(medium)]: IPCProcess {
@@ -45,10 +49,10 @@ module ViFIB
         }
 
         difAllocator: DIFAllocator {
-            @display("p=277,205");
+            @display("p=284,133");
         }
         ipcResourceManager: IPCResourceManager {
-            @display("p=82,205");
+            @display("p=83,133");
         }
     connections allowunconnected:
 

@@ -19,6 +19,7 @@ class Routing_Alg : public Routing_Alg_I{
 protected:
     Routing_Module * parent;
     Address myNAddr;
+    string descriptor;
     string myAddr;
     set<string> synonyms;
     T infinite;
@@ -67,6 +68,8 @@ public:
     virtual void sendUpdate() { scheduledUpdate = false; }
 
     virtual void print() = 0;
+
+    void setDescriptor(const string & des) { descriptor = des; }
 };
 
 } /* namespace common_Routing */

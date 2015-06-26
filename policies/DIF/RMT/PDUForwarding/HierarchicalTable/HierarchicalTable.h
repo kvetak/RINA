@@ -51,8 +51,15 @@ public:
 
     void finish();
 
+    void setAddr(const Address & addr);
+
+    void setTmp(const Address & dst, RMTPort *p);
+    void removeTmp(const Address & dst, RMTPort *p);
+
 protected:
     string anyQoS;
+
+    Address myAddr;
 
     struct domData {
         string domId;
@@ -66,6 +73,10 @@ protected:
 
     // prefix -> qos -> domain
     map<string, map<string, domData> > domains;
+
+    // Address port / temporal links
+    map<Address, RMTPort* > direct;
+
 
     // Called after initialize
     void onPolicyInit();

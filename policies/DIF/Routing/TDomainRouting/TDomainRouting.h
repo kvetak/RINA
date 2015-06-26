@@ -40,12 +40,13 @@ protected:
     };
 
 public:
-    virtual void addDomain(const string & domId, const Address &_nAddr, const string &_addr, T infinite, ModuleAlgs alg) {
+    virtual void addDomain(const string & domId, const string &_addr, T infinite, ModuleAlgs alg) {
         if(modules[domId] == NULL) {
             switch(alg) {
-                case DV : modules[domId] = new DV_Module<T>(this, _nAddr, _addr, infinite); break;
-                case LS : modules[domId] = new LS_Module<T>(this, _nAddr, _addr, infinite); break;
+                case DV : modules[domId] = new DV_Module<T>(this, myAddress, _addr, infinite); break;
+                case LS : modules[domId] = new LS_Module<T>(this, myAddress, _addr, infinite); break;
             }
+            modules[domId]->setDescriptor(domId);
         }
     }
     virtual void removeDomain(const string & domId) {

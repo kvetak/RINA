@@ -15,8 +15,12 @@ HierarchicalTable::HierarchicalTable() : anyQoS ("*"){}
 
 void HierarchicalTable::addDomain(const string & domId, const string & qos, const string & prefix) {
     table[domId];
-    vector<string> parsed = split(prefix, '.');
-    domains[prefix][qos] = domData(domId, parsed.size());
+    if(prefix == "") {
+        domains[prefix][qos] = domData(domId, 0);
+    } else {
+        vector<string> parsed = split(prefix, '.');
+        domains[prefix][qos] = domData(domId, parsed.size());
+    }
 }
 
 void HierarchicalTable::addDomain(const string & domId, const string & prefix) {
@@ -44,8 +48,10 @@ vector<RMTPort * > HierarchicalTable::lookup(const PDU * pdu){
 }
 vector<RMTPort * > HierarchicalTable::lookup(const Address &dst, const std::string& qos){
 
+    vector<RMTPort* > ret;
     string domId;
     string dstAddr = dst.getIpcAddress().getName();
+    if(dstAddr == "") { return ret; };
     vector<RMTPort* >* found = NULL;
     vector<string> parsed = split(dstAddr, '.');
 
@@ -54,34 +60,37 @@ vector<RMTPort * > HierarchicalTable::lookup(const Address &dst, const std::stri
         found = NULL;
         bool foundAtQoS = false;
         bool foundAtAddr = false;
+
         if(addrP.second.find(qos) != addrP.second.end()) {
             domData dd = addrP.second[qos];
-            if(dd.prefLen < parsed.size() && table[dd.domId].find(parsed[dd.prefLen]) != table[dd.domId].end()) {
-                found = &table[dd.domId][parsed[dd.prefLen]];
+            string val = parsed[dd.prefLen];
+            if(table[dd.domId].find(val) != table[dd.domId].end()){
+                found = &table[dd.domId][val];
                 foundAtQoS = true;
                 foundAtAddr = true;
-            }
-            if(!foundAtAddr && table[dd.domId].find("") != table[dd.domId].end()) {
-                found = &table[dd.domId][""];
+            } else if(table[dd.domId].find("*") != table[dd.domId].end()) {
+                found = &table[dd.domId]["*"];
                 foundAtQoS = true;
             }
         }
-        if(!foundAtQoS && addrP.second.find(anyQoS) != addrP.second.end()) {
+        if(!foundAtAddr && addrP.second.find(anyQoS) != addrP.second.end()) {
             domData dd = addrP.second[anyQoS];
-            if(!foundAtAddr && dd.prefLen < parsed.size() && table[dd.domId].find(parsed[dd.prefLen]) != table[dd.domId].end()) {
-                found = &table[dd.domId][parsed[dd.prefLen]];
-                foundAtAddr = true;
-            }
-            if(!foundAtQoS && !foundAtAddr && table[dd.domId].find("") != table[dd.domId].end()) {
-                found = &table[dd.domId][""];
+
+            string val = parsed[dd.prefLen];
+            if(table[dd.domId].find(val) != table[dd.domId].end()){
+                found = &table[dd.domId][val];
+            } else if(!foundAtQoS && table[dd.domId].find("*") != table[dd.domId].end()) {
+                found = &table[dd.domId]["*"];
             }
         }
     }
 
-    vector<RMTPort* > ret;
     if(found != NULL && !found->empty()) {
         ret.push_back((*found)[intuniform(0, found->size()-1)]);
+    } else if(direct.find(dst) != direct.end()) {
+        ret.push_back(direct[dst]);
     }
+
     return ret;
 }
 
@@ -116,7 +125,28 @@ void HierarchicalTable::addReplace(const string &domId, const string &addr, vect
 }
 
 // Called after initialize
-void HierarchicalTable::onPolicyInit(){}
+void HierarchicalTable::onPolicyInit(){
+    // IPCProcess module.
+    cModule * ipcModule = getParentModule()->getParentModule();
+
+    myAddr   = Address(
+        ipcModule->par("ipcAddress").stringValue(),
+        ipcModule->par("difName").stringValue());
+}
+
+void HierarchicalTable::setAddr(const Address & addr) {
+    myAddr = addr;
+}
+
+void HierarchicalTable::setTmp(const Address & dst, RMTPort *p) {
+    direct[dst] = p;
+}
+
+void HierarchicalTable::removeTmp(const Address & dst, RMTPort *p) {
+    if(direct[dst]== NULL || direct[dst]==p) {
+        direct.erase(dst);
+    }
+}
 
 void HierarchicalTable::finish(){
     if(par("printAtEnd").boolValue()){
@@ -124,6 +154,9 @@ void HierarchicalTable::finish(){
         EV << "Forwarding table::" << endl;
         EV << toString() <<endl;
         EV << "-----------------" << endl;
+        for(auto tmp : direct){
+            EV << "\t" << tmp.first << " -> " << tmp.second->getFullPath() << endl;
+        }
     }
 }
 

@@ -111,3 +111,12 @@ const char* SIG_RIBD_RoutingUpdate              = "Routing-Update";
 const char* SIG_EFCP_StopSending                = "EFCP-StopSending";
 const char* SIG_EFCP_StartSending               = "EFCP-StartSending";
 
+
+//VAR
+const char* SIG_VAR_ViFIB_Slave2Master          = "VAR-ViFIB-Slave2Master";
+const char* SIG_VAR_ViFIB_Master2Slave          = "VAR-ViFIB-Master2Slave";
+const char* SIG_VAR_AddedFlow                   = "VAR-AddedFlow";
+const char* SIG_VAR_RemovedFlow                 = "VAR-RemovedFlow";
+const char* SIG_VAR_MasterHello                 = "VAR-MasterHello";
+const char* SIG_VAR_MasterNewBorder             = "VAR-MasterNewBorder";
+const char* SIG_VAR_MasterRemovedBorder         = "VAR-MasteremovedBorder";

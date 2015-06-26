@@ -264,6 +264,8 @@ public:
         Routing_Alg<T>::sendUpdate();
         secId++;
 
+        cout<<"I'm "<< Routing_Alg<T>::myNAddr << " : Sending "<< secId << endl;
+
         for(auto neig : Routing_Alg<T>::neigTable){
             T linkM = Routing_Alg<T>::nei[neig.first];
 

@@ -38,6 +38,7 @@ void HierarchicalGenerator::insertedFlow(const Address &addr, const QoSCube &qos
         rt->insertFlow(addr, parsedA.addr, parsedA.domId, 1);
         routingUpdated();
     }
+    fwd->setTmp(addr, port);
 }
 
 void HierarchicalGenerator::removedFlow(const Address &addr, RMTPort * port){
@@ -51,6 +52,7 @@ void HierarchicalGenerator::removedFlow(const Address &addr, RMTPort * port){
         domNeighbours[parsedA.domId].erase(dst);
         routingUpdated();
     }
+    fwd->removeTmp(addr, port);
 }
 
 //Routing has processes a routing update
@@ -75,7 +77,10 @@ void HierarchicalGenerator::routingUpdated(){
                 }
             }
             if(entry.first == "*") {
-                fwd->addReplace("0", "", ps);
+                for(auto domain : domains){
+                    fwd->addReplace(domain, "*", ps);
+                    //fwd->addReplace("0", "", ps);
+                }
              //   fwd->addReplace(domain.first, "", ps);
             } else {
                 fwd->addReplace(domain.first, entry.first, ps);
@@ -93,7 +98,7 @@ void HierarchicalGenerator::onPolicyInit(){
     rt = check_and_cast<tDomain::TDomainRouting<mType> *>
         (getModuleByPath("^.^.routingPolicy"));
 
-    string myAddr = getParentModule()->getParentModule()->par("ipcAddress").stringValue();
+    myAddr = getParentModule()->getParentModule()->par("ipcAddress").stringValue();
     parsStr = split(myAddr, '.');
 
     string alg = par("alg").stdstringValue();
@@ -102,14 +107,23 @@ void HierarchicalGenerator::onPolicyInit(){
     int k = 0;
     for(string tAddr : parsStr){
         string domId = to_string(k);
-        fwd->addDomain(domId,join(parsStr, k, '.'));
-        rt->addDomain(domId, myAddr, tAddr, 32, algT);
+        string pref = "";
+        if(k > 0) {
+            pref = join(parsStr, k, '.');
+            pref.append(".");
+        }
+        fwd->addDomain(domId,pref);
+        rt->addDomain(domId, tAddr, 32, algT);
+        domains.push_back(domId);
         k++;
     }
+    domains.pop_back();
 
     string domId = to_string(k);
-    fwd->addDomain(domId,join(parsStr, k, '.'));
-    rt->addDomain(domId, myAddr, "*", 32, algT);
+    string pref = join(parsStr, k, '.');
+    pref.append(".");
+    fwd->addDomain(domId,pref);
+    rt->addDomain(domId, "*", 32, algT);
     k++;
 
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
@@ -124,7 +138,7 @@ pAddr HierarchicalGenerator::parseAddr(const string &addr){
         }
     }
     if(i < (int)sep.size()) {
-        return pAddr(to_string(i), sep[1]);
+        return pAddr(to_string(i), sep[i]);
     } else {
         return pAddr(to_string(i), "*");
     }
