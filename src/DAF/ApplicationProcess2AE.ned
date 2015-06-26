@@ -20,7 +20,14 @@ import rina.src.DAF.AE.ApplicationEntity;
 
 module ApplicationProcess2AE
 {
-    @display("i=misc/node,yellow");
+    parameters:
+    	@display("i=misc/node,yellow");
+        string apName = default("App");
+        string apInstance = default("0");
+    
+    gates:
+        inout southIo[];
+    
     submodules:
         applicationEntity2: ApplicationEntity {
             @display("p=202,80");

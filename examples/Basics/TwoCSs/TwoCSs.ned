@@ -25,7 +25,6 @@ package rina.examples.Basics.TwoCSs;
 import ned.DatarateChannel;
 import rina.src.CS.Host1AP;
 
-
 network TwoCSs
 {
     @display("bgb=325,196");

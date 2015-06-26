@@ -13,26 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DAF;
+package rina.examples.Basics.TwoCSsMultipleAEs;
 
-import rina.src.DAF.AE.ApplicationEntity;
+import ned.DatarateChannel;
+import rina.src.CS.HostNAPNAE;
 
-module ApplicationProcessNAE
+network TwoCSsMultipleAEs
 {
-    parameters:
-        @display("i=misc/node,#FFFF80");
-        int numOfAE = default(1);
-        string apName = default("App");
-        string apInstance = default("0");
-    
-    gates:
-        inout southIo[];
-        
+    @display("bgb=325,196");
     submodules:
-
-        applicationEntity[numOfAE]: ApplicationEntity {
-            @display("p=112,81,c");
+        hostA: HostNAPNAE {
+            @display("p=82,92");
+            numOfAPs = 1;
+            numOfAEs = 2;
         }
-    
+        hostB: HostNAPNAE {
+            @display("p=231,92");
+			numOfAPs = 1;
+            numOfAEs = 2;
+        }
     connections allowunconnected:
+        hostA.medium <--> DatarateChannel {delay = 0.1s; ber = 0; } <--> hostB.medium;
 }
