@@ -1,17 +1,24 @@
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #include "RIBdSplitter.h"
 
@@ -30,21 +37,31 @@ void RIBdSplitter::handleMessage(cMessage *msg)
 
     //From CDAP
     if(strstr(msg->getArrivalGate()->getName(), GATE_CDAPIO) != NULL) {
-        CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
-        FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
-        if (tfe
-                && !dynamic_cast<CDAP_M_Create*>(msg)
-                //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
-                //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
-            ) {
-            std::ostringstream ribdName;
-            ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
-            out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
-        }
-        else {
-            EV << "Message sent out via mock EFCP instance!" << endl;
+        /*
+         * FIXME: Vesely
+         * After huge debate with John, we understand now, that reliability of management
+         * traffic is done by N-1 flow. Thus, N-management flow exist WITHOUT dedicated
+         * exchange of M_CREATE messages. This implies that all mgmt traffic is sent
+         * through MockEFCPI. However, one day there may be use-case when we will do not
+         * trust N-1 flow and want to provide additional reliability or encryption. Hence,
+         * I am just commenting out the code instead of removing it.
+         */
+
+        //CDAPMessage* cdapmsg = check_and_cast<CDAPMessage*>(msg);
+        //FAITableEntry* tfe = FaiTable->findMgmtEntryByDstNeighbor(cdapmsg->getDstAddr());
+        //if (tfe
+        //        && !dynamic_cast<CDAP_M_Create*>(msg)
+        //        //&& tfe->getCFlow()->getSrcPortId() != VAL_UNDEF_PORTID
+        //        //&& tfe->getCFlow()->getDstPortId() != VAL_UNDEF_PORTID
+        //    ) {
+        //    std::ostringstream ribdName;
+        //    ribdName << GATE_EFCPIO_ << tfe->getCFlow()->getSrcPortId();
+        //    out = this->gateHalf(ribdName.str().c_str(), cGate::OUTPUT);
+        //}
+        //else {
+        //    EV << "Message sent out via mock EFCP instance!" << endl;
             out = this->gateHalf(GATE_EFCPIO, cGate::OUTPUT);
-        }
+        //}
     }
     //From EFCP or RMT
     else {
@@ -56,5 +73,6 @@ void RIBdSplitter::handleMessage(cMessage *msg)
 }
 
 void RIBdSplitter::initPointers() {
-    FaiTable = ModuleAccess<FAITable>(MOD_FAITABLE).get();
+    FaiTable = check_and_cast<NFlowTable*>
+        (getModuleByPath("^.^")->getSubmodule(MOD_FLOWALLOC)->getSubmodule(MOD_NFLOWTABLE));
 }

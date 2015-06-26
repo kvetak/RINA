@@ -41,13 +41,16 @@ typedef EnrollStateTable::const_iterator EnrollStateTableConstIter;
 
 class EnrollmentStateTable : public cSimpleModule
 {
-public:
+  public:
     void insert(EnrollmentStateTableEntry entry);
     EnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
+    bool isEnrolled(const APN& myApn);
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    void parseConfig(cXMLElement* config);
 
   private:
     EnrollStateTable StateTable;

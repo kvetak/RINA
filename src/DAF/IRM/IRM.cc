@@ -1,17 +1,24 @@
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 
 #include "IRM.h"
@@ -187,17 +194,23 @@ bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocationRequest" << endl;
 
-    //Command target FA to allocate flow
-    FABase* fab = ConTable->getFa(flow);
+    auto cte = ConTable->findEntryByFlow(flow);
     bool status = false;
 
-    if (fab) {
-        //signalizeDeallocateRequest(fl);
-        status = fab->receiveDeallocateRequest(flow);
+    if (cte) {
+        //TODO: Vesely - Change CONNECT_PENDING to establish ASAP when AE Enrollment
+        //               implementation is finished
+        if (cte->getConStatus() == ConnectionTableEntry::CON_CONNECTPENDING
+                && cte->getSouthGateOut() && cte->getSouthGateIn() ) {
+            status = cte->getFlowAlloc()->receiveDeallocateRequest(flow);
+        }
+        else {
+            EV << "Connection not in proper state or south gates are missing!" << endl;
+        }
     }
-    else
-        EV << "FA could not be found in ConnectionTable!" << endl;
-
+    else {
+        EV << "There is no valid entry in Connection Table!" << endl;
+    }
     return status;
 }
 
@@ -253,6 +266,11 @@ ConnectionTable* IRM::getConTable() const {
 bool IRM::receiveAllocationResponsePositiveFromIpc(Flow* flow) {
     Enter_Method("allocationResponsePositive()");
     bool status = createBindings(flow);
+
+    status ?
+    changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING)
+    :
+    changeStatus(flow, ConnectionTableEntry::CON_ERROR);
     return status;
 }
 
@@ -319,7 +337,7 @@ int IRM::getApGateHandle(Flow* flow) const {
     ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
     if (cte && cte->getNorthGateIn()) {
         std::string desc = cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getFullName();
-        EV << "!!!!!!!!!!!!!!" << desc << endl;
+        //EV << "!!!!!!!!!!!!!!" << desc << endl;
         return cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getIndex();
     }
     return VAL_UNDEF_HANDLE;

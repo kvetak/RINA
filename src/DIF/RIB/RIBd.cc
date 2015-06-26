@@ -1,19 +1,25 @@
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 /**
  * @file RIBd.cc
  * @author Vladimir Vesely (ivesely@fit.vutbr.cz)
@@ -28,14 +34,14 @@ const char* MSG_CONGEST         = "Congestion";
 const char* MSG_FLO             = "Flow";
 const char* MSG_FLOPOSI         = "Flow+";
 const char* MSG_FLONEGA         = "Flow-";
-const char* CLS_FLOW            = "Flow";
 const int   VAL_DEFINSTANCE     = -1;
 const int   VAL_FLOWPOSI        = 1;
 const int   VAL_FLOWNEGA        = 0;
 const char* VAL_FLREQ           = "Request  ";
 const char* VAL_FLREQPOSI       = "Response+  ";
 const char* VAL_FLREQNEGA       = "Response-  ";
-const char* MSG_ROUTINGUPDATE       = "RoutingUpdate";
+const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
+const char* MSG_ENROLLMENT      = "Enrollment";
 
 Define_Module(RIBd);
 
@@ -67,7 +73,8 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     flowobj.objectInstance = VAL_DEFINSTANCE;
     mcref->setObject(flowobj);
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
     mcref->setDstAddr(flow->getDstNeighbor());
 
     //Generate InvokeId
@@ -113,7 +120,8 @@ void RIBd::sendDeleteRequestFlow(Flow* flow) {
     flowobj.objectInstance = VAL_DEFINSTANCE;
     mdereqf->setObject(flowobj);
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mdereqf->setSrcAddr(flow->getSrcNeighbor());
     mdereqf->setDstAddr(flow->getDstAddr());
 
     //Generate InvokeId
@@ -338,7 +346,8 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     //Generate InvokeId
     mcref->setInvokeID(flow->getAllocInvokeId());
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
     mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
@@ -370,7 +379,8 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     //Generate InvokeId
     mcref->setInvokeID(flow->getAllocInvokeId());
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mcref->setSrcAddr(flow->getSrcNeighbor());
     mcref->setDstAddr(flow->getDstAddr());
 
     //Send it
@@ -461,12 +471,12 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     //Generate InvokeId
     mderesf->setInvokeID(flow->getDeallocInvokeId());
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mderesf->setSrcAddr(flow->getSrcNeighbor());
     mderesf->setDstAddr(flow->getDstAddr());
 
     //Send it
     signalizeSendData(mderesf);
-
 }
 
 void RIBd::signalizeDeleteResponseFlow(Flow* flow) {
@@ -523,7 +533,8 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
     //Generate InvokeId
     mstarcon->setInvokeID(DONTCARE_INVOKEID);
 
-    //Append destination address for RMT "routing"
+    //Append src/dst address for RMT "routing"
+    mstarcon->setSrcAddr(pdu->getDstAddr());
     mstarcon->setDstAddr(pdu->getSrcAddr());
 
     //Send it
@@ -637,7 +648,7 @@ void RIBd::signalizeStartOperationResponse(CDAPMessage* msg) {
 void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentRequest()");
 
-    CDAP_M_Start* msg = new CDAP_M_Start("Start Enrollment");
+    CDAP_M_Start* msg = new CDAP_M_Start(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -648,11 +659,12 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_START);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);
@@ -661,7 +673,7 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentResponse()");
 
-    CDAP_M_Start_R* msg = new CDAP_M_Start_R("Start_R Enrollment");
+    CDAP_M_Start_R* msg = new CDAP_M_Start_R(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -672,12 +684,14 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_START_R);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
+
 
     signalizeSendData(msg);
 }
@@ -685,7 +699,7 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentRequest()");
 
-    CDAP_M_Stop* msg = new CDAP_M_Stop("Stop Enrollment");
+    CDAP_M_Stop* msg = new CDAP_M_Stop(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -696,11 +710,12 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_STOP);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);
@@ -709,7 +724,7 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
 void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentResponse()");
 
-    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R("Stop_R Enrollment");
+    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R(MSG_ENROLLMENT);
 
     //TODO: assign appropriate values
     std::ostringstream os;
@@ -720,11 +735,12 @@ void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
     msg->setObject(enrollobj);
-    msg->setOpCode(M_STOP_R);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
 
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
     msg->setDstAddr(obj->getDstAddress());
 
     signalizeSendData(msg);

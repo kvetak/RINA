@@ -1,17 +1,24 @@
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #ifndef EXTERNCONSTS_H_
 #define EXTERNCONSTS_H_
@@ -25,7 +32,7 @@ extern const char* MOD_CONNTABLE;
 extern const char* MOD_DA;
 extern const char* MOD_DIFALLOC;
 extern const char* MOD_EFCP;
-extern const char* MOD_FAITABLE;
+extern const char* MOD_NFLOWTABLE;
 extern const char* MOD_RESALLOC;
 extern const char* MOD_RA;
 extern const char* MOD_IAE;
@@ -100,6 +107,8 @@ extern const char* GATE_EFCPI_SOUTHIO;
 //XML attributes and elements
 extern const char* ELEM_APN;
 extern const char* ATTR_APN;
+extern const char* ATTR_SRC;
+extern const char* ATTR_DST;
 extern const char* ELEM_AVGBW;
 extern const char* ELEM_AVGSDUBW;
 extern const char* ELEM_PEAKBWDUR;

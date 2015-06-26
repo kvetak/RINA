@@ -36,6 +36,8 @@
 #include <string>
 #include "Flow.h"
 
+extern const int VAL_NOCONRETRY;
+
 class EnrollmentStateTableEntry {
 public:
     enum CACEConnectionStatus {CON_ERROR,
@@ -58,15 +60,16 @@ public:
                             ENROLL_ENROLLED};
 
     EnrollmentStateTableEntry();
-    EnrollmentStateTableEntry(Flow* flow);
-    EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator);
+    EnrollmentStateTableEntry(APNamingInfo src, APNamingInfo dst, EnrollmentStateTableEntry::CACEConnectionStatus status);
+    EnrollmentStateTableEntry(APNamingInfo src, APNamingInfo dst, EnrollmentStateTableEntry::CACEConnectionStatus status, EnrollmentStateTableEntry::EnrollmentStatus enrstat);
+    //EnrollmentStateTableEntry(Flow* flow);
+    //EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator);
     virtual ~EnrollmentStateTableEntry();
 
-    Flow* getFlow();
+    //Flow* getFlow();
     int getCurrentConnectRetries();
     EnrollmentStateTableEntry::CACEConnectionStatus getCACEConStatus() const;
     EnrollmentStateTableEntry::EnrollmentStatus getEnrollmentStatus() const;
-    bool getIsInitiator();
     bool getIsImmediateEnrollment();
 
     void setIsImmediateEnrollment(bool immediate);
@@ -76,16 +79,22 @@ public:
     void setEnrollmentStatus(EnrollmentStateTableEntry::EnrollmentStatus status);
 
     std::string info() const;
-    std::string getCACEConnectionStatus() const;
-    std::string getEnrollmentStatusInfo() const;
+    std::string getCACEConnectionStatusString() const;
+    std::string getEnrollmentStatusString() const;
+    const APNamingInfo& getLocal() const;
+    void setLocal(const APNamingInfo& local);
+    const APNamingInfo& getRemote() const;
+    void setRemote(const APNamingInfo& remote);
 
 private:
+    APNamingInfo Source;
+    APNamingInfo Destination;
     CACEConnectionStatus conStatus;
     EnrollmentStatus enrollStatus;
     int connectRetries;
     bool immediateEnrollment;
-    bool isInitiator;
-    Flow *flow;
+    //Flow *flow;
+
 };
 
 //Free function

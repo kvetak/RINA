@@ -31,42 +31,65 @@
 
 #include <EnrollmentStateTableEntry.h>
 
+const int VAL_NOCONRETRY    = 0;
+
 EnrollmentStateTableEntry::EnrollmentStateTableEntry() :
-    conStatus(this->CON_NIL), enrollStatus(this->ENROLL_NIL), connectRetries(0),
-    immediateEnrollment(false), isInitiator(false),flow(NULL)
+    Source(APNamingInfo()), Destination(APNamingInfo()),
+    conStatus(this->CON_NIL),
+    enrollStatus(this->ENROLL_NIL), connectRetries(VAL_NOCONRETRY),
+    immediateEnrollment(false)
 {
 }
 
-EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) {
-    this->flow = flow;
-    this->conStatus = this->CON_CONNECTPENDING;
-    this->connectRetries = 0;
-    this->isInitiator = false;
-    this->enrollStatus = this->ENROLL_NIL;
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(APNamingInfo src, APNamingInfo dst, EnrollmentStateTableEntry::CACEConnectionStatus status) :
+        Source(src), Destination(dst),
+        conStatus(status),
+        enrollStatus(ENROLL_NIL), connectRetries(VAL_NOCONRETRY)
+{
 }
 
-EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) {
-    this->flow = flow;
-    this->conStatus = status;
-    this->connectRetries = 0;
-    this->isInitiator = isInitiator;
-    this->enrollStatus = this->ENROLL_NIL;
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(APNamingInfo src,
+        APNamingInfo dst,
+        EnrollmentStateTableEntry::CACEConnectionStatus status,
+        EnrollmentStateTableEntry::EnrollmentStatus enrstat) :
+                Source(src), Destination(dst),
+                conStatus(status),
+                enrollStatus(enrstat), connectRetries(VAL_NOCONRETRY)
+{
 }
+
+/*
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow) :
+        EnrollmentStateTableEntry(flow->getSrcApni(), flow->getDstApni(),
+                CON_CONNECTPENDING, false)
+{
+    this->flow = flow;
+}
+
+EnrollmentStateTableEntry::EnrollmentStateTableEntry(Flow* flow, EnrollmentStateTableEntry::CACEConnectionStatus status, bool isInitiator) :
+        EnrollmentStateTableEntry(flow->getSrcApni(), flow->getDstApni(),
+                status, isInitiator)
+{
+    this->flow = flow;
+}
+*/
 
 EnrollmentStateTableEntry::~EnrollmentStateTableEntry() {
-    this->flow = NULL;
+    //this->flow = NULL;
+    Source = APNamingInfo();
+    Destination = APNamingInfo();
+    conStatus = CON_NIL;
+    enrollStatus = ENROLL_NIL;
+    connectRetries = VAL_NOCONRETRY;
 }
-
+/*
 Flow* EnrollmentStateTableEntry::getFlow() {
     return flow;
 }
+*/
 
 int EnrollmentStateTableEntry::getCurrentConnectRetries() {
     return connectRetries;
-}
-
-bool EnrollmentStateTableEntry::getIsInitiator() {
-    return isInitiator;
 }
 
 bool EnrollmentStateTableEntry::getIsImmediateEnrollment() {
@@ -97,46 +120,49 @@ EnrollmentStateTableEntry::EnrollmentStatus EnrollmentStateTableEntry::getEnroll
     return enrollStatus;
 }
 
-
-
-
-
-std::string EnrollmentStateTableEntry::getCACEConnectionStatus() const {
+std::string EnrollmentStateTableEntry::getCACEConnectionStatusString() const {
     switch(this->conStatus) {
-        case CON_ERROR: return "error";
-        case CON_NIL: return "nil";
-        case CON_FLOWPENDING: return "flow pending";
-        case CON_CONNECTPENDING: return "connect pending";
-        case CON_AUTHENTICATING: return "authenticating";
-        case CON_ESTABLISHED: return "established";
-        case CON_RELEASING: return "releasing";
+        case CON_ERROR:             return "error";
+        case CON_NIL:               return "nil";
+        case CON_FLOWPENDING:       return "flow pending";
+        case CON_CONNECTPENDING:    return "connect pending";
+        case CON_AUTHENTICATING:    return "authenticating";
+        case CON_ESTABLISHED:       return "established";
+        case CON_RELEASING:         return "releasing";
 
-        default: return "UNKNOWN";
+        default:                    return "UNKNOWN";
     }
 }
 
-std::string EnrollmentStateTableEntry::getEnrollmentStatusInfo() const {
+std::string EnrollmentStateTableEntry::getEnrollmentStatusString() const {
     switch(this->enrollStatus) {
-        case ENROLL_ERROR: return "error";
-        case ENROLL_NIL: return "nil";
-        case ENROLL_WAIT_START_ENROLLMENT: return "wait start enrollment";
+        case ENROLL_ERROR:                          return "error";
+        case ENROLL_NIL:                            return "nil";
+        case ENROLL_WAIT_START_ENROLLMENT:          return "wait start enrollment";
         case ENROLL_WAIT_START_RESPONSE_ENROLLMENT: return "wait start response enrollment";
-        case ENROLL_WAIT_STOP_ENROLLMENT: return "wait stop enrollment";
-        case ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT: return "wait stop response enrollment";
-        case ENROLL_WAIT_READ_RESPONSE: return "wait read response";
-        case ENROLL_WAIT_START_OPERATION: return "wait start operation";
-        case ENROLL_CREATING_OBJ: return "creating obj";
-        case ENROLL_ENROLLED: return "enrolled";
+        case ENROLL_WAIT_STOP_ENROLLMENT:           return "wait stop enrollment";
+        case ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT:  return "wait stop response enrollment";
+        case ENROLL_WAIT_READ_RESPONSE:             return "wait read response";
+        case ENROLL_WAIT_START_OPERATION:           return "wait start operation";
+        case ENROLL_CREATING_OBJ:                   return "creating obj";
+        case ENROLL_ENROLLED:                       return "enrolled";
 
-        default: return "UNKNOWN";
+        default:                                    return "UNKNOWN";
     }
 }
 
 std::string EnrollmentStateTableEntry::info() const {
     std::ostringstream os;
-    os << "CACEConnectionStatus: " << this->getCACEConnectionStatus() << endl;
-    os << "EnrollmentStatus: " << this->getEnrollmentStatusInfo() << endl;
-
+    if ( !(Source == Destination) ) {
+        os << "Local> " << Source  << endl
+           << "Remote> " << Destination << endl;
+    }
+    else {
+        os << Source << " is self-enrolled" << endl;
+    }
+    os << "CACEConnectionStatus: " << this->getCACEConnectionStatusString() << endl;
+    os << "EnrollmentStatus: " << this->getEnrollmentStatusString() << endl;
+    //os << flow->info() <<  endl;
     return os.str();
 }
 
@@ -144,5 +170,21 @@ std::string EnrollmentStateTableEntry::info() const {
 
 std::ostream& operator <<(std::ostream& os, const EnrollmentStateTableEntry& este) {
     return os << este.info();
+}
+
+const APNamingInfo& EnrollmentStateTableEntry::getLocal() const {
+    return Source;
+}
+
+void EnrollmentStateTableEntry::setLocal(const APNamingInfo& local) {
+    Source = local;
+}
+
+const APNamingInfo& EnrollmentStateTableEntry::getRemote() const {
+    return Destination;
+}
+
+void EnrollmentStateTableEntry::setRemote(const APNamingInfo& remote) {
+    Destination = remote;
 }
 

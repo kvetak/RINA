@@ -1,3 +1,3 @@
 package rina.examples;
 
-@license(LGPL);
+@license(MIT);

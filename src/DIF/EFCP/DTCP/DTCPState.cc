@@ -1,19 +1,24 @@
+// The MIT License (MIT)
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 /*
  * @file DTCPState.cc
@@ -29,8 +34,8 @@ Define_Module(DTCPState);
 
 void DTCPState::initFC()
 {
-  rcvRtWinEdge = rcvCredit;
-  sndRtWinEdge = sndCredit;
+  rcvRightWinEdge = rcvCredit;
+  sndRightWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
 //  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
@@ -56,9 +61,9 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
-  rcvRtWinEdgeSent = 0;
+  rcvRightWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
-  senderLeftWinEdge = 0;
+  sndLeftWinEdge = 0;
 
   //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
   immediate = true;
@@ -84,30 +89,30 @@ void DTCPState::setImmediate(bool immediate)
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
-  return rcvRtWinEdgeSent;
+  return rcvRightWinEdgeSent;
 }
 
 void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
-  this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
+  this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
 }
 
 unsigned int DTCPState::getSenderLeftWinEdge() const {
-    return senderLeftWinEdge;
+    return sndLeftWinEdge;
 }
 
 void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
-    this->senderLeftWinEdge = senderLeftWinEdge;
+    this->sndLeftWinEdge = senderLeftWinEdge;
 }
 
 unsigned int DTCPState::getSenderRightWinEdge() const
 {
-  return sndRtWinEdge;
+  return sndRightWinEdge;
 }
 
 void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
-  this->sndRtWinEdge = senderRightWinEdge;
+  this->sndRightWinEdge = senderRightWinEdge;
 }
 
 DTCPState::~DTCPState()
@@ -138,17 +143,17 @@ void DTCPState::setSndCredit(unsigned int sndCredit)
 
 unsigned int DTCPState::getRcvRtWinEdge() const
 {
-  return rcvRtWinEdge;
+  return rcvRightWinEdge;
 }
 
 void DTCPState::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 {
-  this->rcvRtWinEdge = rcvRtWinEdge;
+  this->rcvRightWinEdge = rcvRtWinEdge;
 }
 
 void DTCPState::incRcvRtWinEdge()
 {
-  rcvRtWinEdge++;
+  rcvRightWinEdge++;
 }
 
 void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)

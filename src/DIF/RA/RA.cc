@@ -1,19 +1,24 @@
+// The MIT License (MIT)
 //
-// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 /**
  * @file RA.cc
@@ -473,7 +478,7 @@ std::string RA::normalizePortID(std::string ipcName, int flowPortID)
  */
 void RA::createNFlow(Flow *flow)
 {
-    fa->receiveLocalMgmtAllocateRequest(flow);
+    fa->receiveMgmtAllocateRequest(flow);
 }
 
 /**
@@ -495,7 +500,7 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApname().getName(),
+            e->getDestAddr().getApn().getName(),
             flow->getConId().getQoSId());
 
         if(fi)
@@ -573,7 +578,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApname().getName(),
+            e->getDestAddr().getApn().getName(),
             flow->getConId().getQoSId());
 
         if(fi)
@@ -640,7 +645,7 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
-        const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
+        const std::string& neighApn = flow->getDstNeighbor().getApn().getName();
         std::string qosId = flow->getConId().getQoSId();
 
         NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
@@ -669,7 +674,8 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     // if this is a management flow, notify the Enrollment module
     if (ftItem->getFlow()->isManagementFlow())
     {
-        signalizeMgmtAllocToEnrollment(ftItem->getFlow());
+        APNIPair* apnip = new APNIPair(ftItem->getFlow()->getSrcApni(), ftItem->getFlow()->getDstApni());
+        signalizeMgmtAllocToEnrollment(apnip);
     }
 }
 
@@ -730,8 +736,8 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         return true;
     }
 
-    std::string dstAddr = flow->getDstAddr().getApname().getName();
-    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
+    std::string dstAddr = flow->getDstAddr().getApn().getName();
+    std::string neighAddr = flow->getDstNeighbor().getApn().getName();
     std::string qosID = flow->getConId().getQoSId();
 
     EV << "Binding to an (N-1)-flow leading to " << dstAddr;
@@ -752,7 +758,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(te) {
-        neighAddr = te->getDestAddr().getApname().getName();
+        neighAddr = te->getDestAddr().getApn().getName();
     }
 
     NM1FlowTableItem* nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
@@ -816,10 +822,10 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     emit(sigRASDReqFromRIB, congInfo);
 }
 
-void RA::signalizeMgmtAllocToEnrollment(Flow* flow)
+void RA::signalizeMgmtAllocToEnrollment(APNIPair* apnip)
 {
     Enter_Method("signalizeMgmtAllocToEnrollment()");
-    emit(sigRAMgmtAllocd, flow);
+    emit(sigRAMgmtAllocd, apnip);
 }
 
 void RA::signalizeMgmtDeallocToEnrollment(Flow* flow)
@@ -831,4 +837,8 @@ void RA::signalizeMgmtDeallocToEnrollment(Flow* flow)
 NM1FlowTable* RA::getFlowTable()
 {
     return flowTable;
+}
+
+bool RA::hasFlow(std::string addr, std::string qosId) {
+    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != NULL);
 }

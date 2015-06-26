@@ -1,19 +1,24 @@
+// The MIT License (MIT)
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 /*
  * @file DTCPState.h
@@ -37,9 +42,10 @@ class DTCPState : public cSimpleModule
   private:
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
     bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
-    unsigned int senderLeftWinEdge;
-    unsigned int sndRtWinEdge;
-    unsigned int rcvRtWinEdgeSent;
+    unsigned int sndLeftWinEdge;
+    unsigned int sndRightWinEdge;
+    unsigned int rcvRightWinEdge; //The absolute value of the credit on this flow.
+    unsigned int rcvRightWinEdgeSent;
 //    unsigned int rtt;
     unsigned int rcvCredit; // Size of the receiver's window (local value)
     unsigned int sndCredit; // Size of the sender's window (desired value from remote end)
@@ -70,7 +76,7 @@ class DTCPState : public cSimpleModule
     unsigned int sendBufferPercentThreshold; //The percent of free buffers at which flow control blocks the user from doing any more Writes.
     /* End without getters/setters */
 
-    unsigned int rcvRtWinEdge; //The absolute value of the credit on this flow.
+
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
 
     /* Without getters/setters */

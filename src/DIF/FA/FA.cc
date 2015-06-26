@@ -1,19 +1,24 @@
+// The MIT License (MIT)
 //
-// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// 
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #include "FA.h"
 
@@ -26,19 +31,55 @@ const char* MOD_NEFFLOWREQPOLICY = "newFlowRequestPolicy";
 Define_Module(FA);
 
 FA::FA() {
-    this->FaiTable = NULL;
+    N_flowTable = NULL;
 }
 
 FA::~FA() {
-    this->FaiTable = NULL;
+    N_flowTable = NULL;
 }
 
 void FA::initPointers() {
-    FaiTable = ModuleAccess<FAITable>(MOD_FAITABLE).get();
-    Efcp = (EFCP*) ((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
+    N_flowTable = check_and_cast<NFlowTable*>(getParentModule()->getSubmodule(MOD_NFLOWTABLE));
+    Efcp = check_and_cast<EFCP*>((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
 
-    DifAllocator = ModuleAccess<DA>(MOD_DA).get();
+    DifAllocator = check_and_cast<DA*>
+        (getModuleByPath("^.^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
     NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
+    RaModule = check_and_cast<RABase*>( getModuleByPath("^.^.resourceAllocator.ra") );
+    Enrollment = check_and_cast<EnrollmentStateTable*>( getModuleByPath("^.^.enrollment.enrollmentStateTable") );
+}
+
+void FA::initSignalsAndListeners() {
+    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getParentModule()->getParentModule();
+
+    //Signals that this module is emitting
+    sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
+    sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
+    sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
+    sigFAAllocFinMgmt   = registerSignal(SIG_FA_MgmtFlowAllocated);
+
+    //Signals that this module is processing
+    //  AllocateRequest
+    this->lisAllocReq = new LisFAAllocReq(this);
+    catcher3->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
+    //  DeallocateRequest
+    this->lisDeallocReq = new LisFADeallocReq(this);
+    catcher3->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
+
+    //AllocateResponsePositive
+    lisCreFloPosi = new LisFACreFloPosi(this);
+    catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisCreFloPosi);
+
+    //CreateRequestFlow
+    lisCreReq = new LisFACreReq(this);
+    catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
+
+    //Allocate after management flow is prepared (enrollment done)
+    lisEnrollFin = new LisFAAllocFinMgmt(this);
+    //catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
+    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisEnrollFin);
+
 }
 
 void FA::initialize() {
@@ -47,6 +88,62 @@ void FA::initialize() {
 
     //Setup MyAddress
     initMyAddress();
+}
+//XXX: Vesely - Dirty! Needs refactoring...
+const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
+    Address addr;
+    if (!isMgmtFlow) {
+        //Ask DA which IPC to use to reach src App
+        const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
+        if (ad == NULL) {
+            EV << "DifAllocator returned NULL for resolving " << apn << endl;
+            return Address();
+        }
+        addr = *ad;
+    }
+    else {
+        addr = Address(apn);
+    }
+    if (useNeighbor) {
+        const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getApn());
+        if (apnlist) {
+            for (ApnCItem it = apnlist->begin(); it != apnlist->end(); ++it) {
+                Address tmp = Address(it->getName());
+                //EV << "!!!!!" << tmp << endl;
+                if (addr.getDifName() == tmp.getDifName()) {
+                    addr = tmp;
+                    break;
+                }
+            }
+        }
+    }
+    return addr;
+}
+bool FA::isMalformedFlow(Flow* flow) {
+    //TODO: Vesely - Simulate malformed
+    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "AppERR") )
+        return true;
+    return false;
+}
+
+void FA::handleMessage(cMessage *msg) {
+    if ( msg->isSelfMessage() && !opp_strcmp(msg->getName(), TIM_FAPENDFLOWS) ) {
+        while (!PendingFlows.empty()) {
+            NFlowTableEntry* fte = N_flowTable->findEntryByFlow(PendingFlows.front());
+            if (fte && fte->getFai()) {
+                FAIBase* fai = fte->getFai();
+                if (fai) {
+                    fai->receiveAllocateRequest();
+                }
+            }
+            PendingFlows.pop_front();
+        }
+        cancelAndDelete(msg);
+    }
+    else
+    {
+        EV << "Unsupported message received by FA " << getFullName() << endl;
+    }
 }
 
 bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
@@ -90,21 +187,53 @@ bool FA::changeDstAddresses(Flow* flow, bool useNeighbor) {
     return true;
 }
 
+//XXX: Vesely - Dirty! Needs refactoring...
+bool FA::setOriginalAddresses(Flow* flow) {
+    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false, false);
+    if (adr.isUnspecified())
+        return false;
+    flow->setSrcAddr(adr);
+
+    adr = getAddressFromDa(flow->getDstApni().getApn(), false, false);
+    if (adr.isUnspecified())
+        return false;
+    flow->setDstAddr(adr);
+    return true;
+}
+//XXX: Vesely - Dirty! Needs refactoring...
+bool FA::setNeighborAddresses(Flow* flow) {
+    Address adr;
+    if (!flow->isManagementFlowLocalToIPCP()) {
+        adr = getAddressFromDa(flow->getSrcApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
+        if (adr.isUnspecified())
+            return false;
+        flow->setSrcNeighbor(adr);
+    }
+
+    adr = getAddressFromDa(flow->getDstApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
+    if (adr.isUnspecified())
+        return false;
+    flow->setDstNeighbor(adr);
+    return true;
+}
+
 bool FA::receiveAllocateRequest(Flow* flow) {
     Enter_Method("receiveAllocateRequest()");
     EV << this->getFullPath() << " received AllocateRequest" << endl;
 
     //Insert new Flow into FAITable
-    FaiTable->insertNew(flow);
+    N_flowTable->insertNew(flow);
 
     //Change allocation status to pending
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+    N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
 
     //Add source and destination address in case of data flow
     if (flow->getSrcAddr() == Address::UNSPECIFIED_ADDRESS
         && flow->getSrcNeighbor() == Address::UNSPECIFIED_ADDRESS) {
         setOriginalAddresses(flow);
         setNeighborAddresses(flow);
+        //XXX: Vesely - Dirty! Needs refactoring...
+        flow->setSrcNeighbor(flow->getSrcAddr());
     }
 
     //Are both Apps local? YES then Degenerate transfer
@@ -112,15 +241,17 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         flow->setDdtFlag(true);
     }
 
-    if ( !flow->isDdtFlag() && !FaiTable->findMgmtEntryByDstAddr(flow->getDstAddr()) ) {
-        EV << "Management flow is not present, thus allocating one first!" << endl;
-        Flow* mgmtflow = flow->dupToMgmt();
-        receiveLocalMgmtAllocateRequest(mgmtflow);
+    //Check whether local IPCP is enrolled into DIF
+    //Successful enrollment implies existence of N-1 mgmt-flow, if not then
+    //FA needs to init allocation of N-1 mgmt-flow
+    if (!flow->isDdtFlag() && !Enrollment->isEnrolled(MyAddress.getApn())) {
+        EV << "IPCP not enrolled to DIF, thus executing enrollment!" << endl;
+        receiveMgmtAllocateRequest(APNamingInfo(MyAddress.getApn()), APNamingInfo(flow->getDstNeighbor().getApn()));
     }
 
     //Is malformed?
     if (isMalformedFlow(flow)){
-        FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_ERR);
+        N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_ERR);
         //TODO: Vesely - What about special signal for errors????
         //this->signalizeAllocateResponseNegative(fl);
         return false;
@@ -134,12 +265,9 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     flow->setSrcPortId(fai->getLocalPortId());
     flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
 
-    bool status;
     //Postpone allocation request until management flow is ready
-    FAITableEntry* fte = FaiTable->findMgmtEntryByDstAddr(flow->getDstAddr());
-    if ( flow->isDdtFlag()
-         ||
-         ( fte && fte->getAllocateStatus() == FAITableEntry::TRANSFER )
+    bool status;
+    if ( flow->isDdtFlag() || Enrollment->isEnrolled(MyAddress.getApn())
        ){
         status = fai->receiveAllocateRequest();
     }
@@ -154,34 +282,44 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     return status;
 }
 
-bool FA::receiveLocalMgmtAllocateRequest(Flow* flow) {
+bool FA::receiveMgmtAllocateRequest(Flow* mgmtflow) {
+    bool status = true;
+    //If N-1 mgmt-flow not ready, then allocate
+    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), VAL_MGMTQOSID)) {
+        status = RaModule->bindNFlowToNM1Flow(mgmtflow);
+    }
+
+    //If N-1 mgmt ready, then starting enrollment procedure
+    APNIPair* apnip = new APNIPair(mgmtflow->getSrcApni(), mgmtflow->getDstApni());
+    if (status) {
+        emit(sigFAAllocFinMgmt, apnip);
+    }
+
+    return status;
+}
+
+bool FA::receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst) {
     Enter_Method("receiveLocalMgmtAllocateRequest()");
     EV << this->getFullPath() << " received LocalMgmtAllocateRequest" << endl;
 
-    //Insert new Flow into FAITable
-    FaiTable->insertNew(flow);
+    Flow* mgmtflow = new Flow(src, dst);
+    mgmtflow->setQosRequirements(QoSReq::MANAGEMENT);
+    mgmtflow->setSrcAddr(Address(src.getApn()));
+    mgmtflow->setDstAddr(Address(dst.getApn()));
+    mgmtflow->setSrcNeighbor(Address(src.getApn()));
+    mgmtflow->setDstNeighbor(Address(dst.getApn()));
 
-    //Change allocation status to pending
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+    bool status = true;
+    //If N-1 mgmt-flow not ready, then allocate
+    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), VAL_MGMTQOSID)) {
+        status = RaModule->bindNFlowToNM1Flow(mgmtflow);
+    }
 
-    //Add source and destination address in case of data flow
-
-    flow->setSrcAddr(Address(flow->getSrcApni().getApn()));
-    flow->setDstAddr(Address(flow->getDstApni().getApn()));
-    setNeighborAddresses(flow);
-    //flow->setSrcNeighbor(getMyAddress());
-    flow->setDdtFlag(false);
-
-
-    //Create FAI
-    FAI* fai = this->createFAI(flow);
-    fai->setDegenerateDataTransfer(flow->isDdtFlag());
-
-    //Update flow object
-    flow->setSrcPortId(fai->getLocalPortId());
-    flow->getConnectionId().setSrcCepId(fai->getLocalCepId());
-
-    bool status = fai->receiveAllocateRequest();
+    //If N-1 mgmt ready, then starting enrollment procedure
+    APNIPair* apnip = new APNIPair(mgmtflow->getSrcApni(), mgmtflow->getDstApni());
+    if (status) {
+        emit(sigFAAllocFinMgmt, apnip);
+    }
 
     return status;
 }
@@ -203,23 +341,25 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
         //Check for duplicity
         if (!DifAllocator->isAppLocal(flow->getDstApni().getApn())
-            && FaiTable->findEntryByInvokeId(flow->getAllocInvokeId())
+            && N_flowTable->findEntryByInvokeId(flow->getAllocInvokeId())
             ) {
             EV << "Duplicit M_CREATE received thus ignoring!" << endl;
             return false;
         }
 
         //Insert new Flow into FAITable
-        FaiTable->insertNew(flow);
+        N_flowTable->insertNew(flow);
 
         //Change neighbor addresses
         //if (!flow->isManagementFlowLocalToIPCP()) {
             setNeighborAddresses(flow);
+            //XXX: Vesely - Dirty! Needs refactoring...
+            flow->setSrcNeighbor(flow->getSrcAddr());
         //}
 
         EV << "Processing M_CREATE(flow)" << endl;
         //Change allocation status to pending
-        FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+        N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
 
         //Create FAI
         FAI* fai = this->createFAI(flow);
@@ -245,17 +385,17 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //Before that reverse SRC-DST information back
         flow->swapFlow();
         //Insert new Flow into FAITable
-        FaiTable->insertNew(flow);
+        N_flowTable->insertNew(flow);
         //Change neighbor addresses
         setNeighborAddresses(flow);
         //Change status to forward
-        FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDING);
+        N_flowTable->changeAllocStatus(flow, NFlowTableEntry::FORWARDING);
 
         //Decrement HopCount
         flow->setHopCount(flow->getHopCount() - 1);
         if (!flow->getHopCount()) {
             //TODO: Vesely - More granular error
-            FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_ERR);
+            N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_ERR);
             //Schedule M_Create_R(Flow)
             this->signalizeCreateFlowResponseNegative(flow);
             return false;
@@ -283,11 +423,11 @@ bool FA::receiveDeallocateRequest(Flow* flow) {
     EV << this->getFullPath() << " received DeallocateRequest" << endl;
 
     //Check flow in table
-    FAITableEntry* fte = FaiTable->findEntryByFlow(flow);
+    NFlowTableEntry* fte = N_flowTable->findEntryByFlow(flow);
     if (fte && fte->getFai()) {
         //Pass the request to appropriate FAI
         FAIBase* fai = fte->getFai();
-        FaiTable->changeAllocStatus(fai, FAITableEntry::DEALLOC_PEND);
+        N_flowTable->changeAllocStatus(fai, NFlowTableEntry::DEALLOC_PEND);
 
         fai->receiveDeallocateRequest();
         return true;
@@ -295,10 +435,21 @@ bool FA::receiveDeallocateRequest(Flow* flow) {
     else {
         if (!fte)
             EV << "Flow or FAI not found in FAITable!" << endl;
-        else if (fte->getAllocateStatus() != FAITableEntry::TRANSFER)
+        else if (fte->getAllocateStatus() != NFlowTableEntry::TRANSFER)
             EV << "Cannot deallocate flow which is not in tranfer phase!" << endl;
         return false;
     }
+}
+
+void FA::receiveNM1FlowCreated(Flow* flow) {
+    Enter_Method("receiveNM1FlowCreated()");
+    EV << "Continue M_CREATE(flow) forward!" << endl;
+
+    Flow* tmpfl = flow->dup();
+    N_flowTable->changeAllocStatus(flow, NFlowTableEntry::FORWARDED);
+    setNeighborAddresses(tmpfl);
+
+    this->signalizeCreateFlowRequestForward(tmpfl);
 }
 
 bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
@@ -330,156 +481,36 @@ FAI* FA::createFAI(Flow* flow) {
     module->scheduleStart(simTime());
     module->callInitialize();
 
+    //Layouting
+    /*
+    module->getDisplayString().setTagArg("p", 0, "100");
+    std::ostringstream os;
+    os << (70 + N_flowTable->getSize() * 50);
+    module->getDisplayString().setTagArg("p", 1, os.str().c_str());
+    */
+
     //Prepare return pointer and setup internal FAI pointers
     FAI* fai = dynamic_cast<FAI*>(module);
     fai->postInitialize(this, flow, Efcp);
 
     //Change state in FAITable
-    FaiTable->setFaiToFlow(fai, flow);
-    FaiTable->changeAllocStatus(flow, FAITableEntry::ALLOC_PEND);
+    N_flowTable->setFaiToFlow(fai, flow);
+    N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
 
     return fai;
 }
 
 void FA::deinstantiateFai(Flow* flow) {
-    FaiTable->changeAllocStatus(flow, FAITableEntry::DEINSTANTIATED);
+    N_flowTable->changeAllocStatus(flow, NFlowTableEntry::DEINSTANTIATED);
     //TODO: Vesely
     //Prepare deinstantitation self-message
-}
-
-void FA::handleMessage(cMessage *msg) {
-    if ( msg->isSelfMessage() && !opp_strcmp(msg->getName(), TIM_FAPENDFLOWS) ) {
-        while (!PendingFlows.empty()) {
-            FAITableEntry* fte = FaiTable->findEntryByFlow(PendingFlows.front());
-            if (fte && fte->getFai()) {
-                FAIBase* fai = fte->getFai();
-                if (fai) {
-                    fai->receiveAllocateRequest();
-                }
-            }
-            PendingFlows.pop_front();
-        }
-        cancelAndDelete(msg);
-    }
-    else
-    {
-        EV << "Unsupported message received by FA " << getFullName() << endl;
-    }
-}
-
-bool FA::isMalformedFlow(Flow* flow) {
-    //TODO: Vesely - Simulate malformed
-    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "AppERR") )
-        return true;
-    return false;
-}
-
-void FA::initSignalsAndListeners() {
-    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
-
-    //Signals that this module is emitting
-    sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
-    sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
-    sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
-
-    //Signals that this module is processing
-    //  AllocateRequest
-    this->lisAllocReq = new LisFAAllocReq(this);
-    catcher3->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
-    //  DeallocateRequest
-    this->lisDeallocReq = new LisFADeallocReq(this);
-    catcher3->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
-
-    //AllocateResponsePositive
-    lisCreFloPosi = new LisFACreFloPosi(this);
-    catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisCreFloPosi);
-
-    //CreateRequestFlow
-    lisCreReq = new LisFACreReq(this);
-    catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
-
-    //Allocate after management flow is prepared (enrollment done)
-    lisAllocFinMgmt = new LisFAAllocFinMgmt(this);
-    catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
-    //catcher2->subscribe(SIG_ENROLLMENT_Finished, lisAllocFinMgmt);
-
 }
 
 void FA::signalizeCreateFlowRequestForward(Flow* flow) {
     emit(this->sigFACreReqFwd, flow);
 }
 
-void FA::receiveNM1FlowCreated(Flow* flow) {
-    Enter_Method("receiveNM1FlowCreated()");
-    EV << "Continue M_CREATE(flow) forward!" << endl;
-
-    Flow* tmpfl = flow->dup();
-    FaiTable->changeAllocStatus(flow, FAITableEntry::FORWARDED);
-    setNeighborAddresses(tmpfl);
-
-    this->signalizeCreateFlowRequestForward(tmpfl);
-}
-
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
 
-bool FA::setOriginalAddresses(Flow* flow) {
-    Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false, false);
-    if (adr.isUnspecified())
-        return false;
-    flow->setSrcAddr(adr);
-
-    adr = getAddressFromDa(flow->getDstApni().getApn(), false, false);
-    if (adr.isUnspecified())
-        return false;
-    flow->setDstAddr(adr);
-    return true;
-}
-
-bool FA::setNeighborAddresses(Flow* flow) {
-    Address adr;
-    if (!flow->isManagementFlowLocalToIPCP()) {
-        adr = getAddressFromDa(flow->getSrcApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
-        if (adr.isUnspecified())
-            return false;
-        flow->setSrcNeighbor(adr);
-    }
-
-    adr = getAddressFromDa(flow->getDstApni().getApn(), true, flow->isManagementFlowLocalToIPCP());
-    if (adr.isUnspecified())
-        return false;
-    flow->setDstNeighbor(adr);
-    return true;
-}
-
-const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
-    Address addr;
-    if (!isMgmtFlow) {
-        //Ask DA which IPC to use to reach src App
-        const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
-        if (ad == NULL) {
-            EV << "DifAllocator returned NULL for resolving " << apn << endl;
-            return Address();
-        }
-        addr = *ad;
-    }
-    else {
-        addr = Address(apn);
-    }
-    if (useNeighbor) {
-        const APNList* apnlist = DifAllocator->findApnNeigbors(addr.getApname());
-        if (apnlist) {
-            for (ApnCItem it = apnlist->begin(); it != apnlist->end(); ++it) {
-                Address tmp = Address(it->getName());
-                //EV << "!!!!!" << tmp << endl;
-                if (addr.getDifName() == tmp.getDifName()) {
-                    addr = tmp;
-                    break;
-                }
-            }
-        }
-    }
-    return addr;
-}

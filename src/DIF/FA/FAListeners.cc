@@ -1,17 +1,24 @@
+// The MIT License (MIT)
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Lesser General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Lesser General Public License for more details.
-// 
-// You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #include "FAListeners.h"
 
@@ -60,11 +67,11 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
     EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
-        && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
+        && fa->getMyAddress().getApn() == flow->getSrcApni().getApn()
         && !flow->isManagementFlowLocalToIPCP() )
     {
         //EV << "-----\n" << flow->info() << endl;
-        TFAIPtrs entries = fa->getFaiTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->receiveNM1FlowCreated( (*it)->getFlow() );
         }
@@ -79,13 +86,16 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocFinMgmt initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
+
+    /*
     Flow* flow = dynamic_cast<Flow*>(obj);
+    EV << flow->info() << endl;
     if (flow
         && fa->getMyAddress().getApname() == flow->getSrcApni().getApn()
-        && flow->isManagementFlowLocalToIPCP())
+        && flow->isManagementFlow())
     {
         //Notify pending flows that mgmt flow is prepared
-        TFAIPtrs entries = fa->getFaiTable()->findEntriesAffectedByMgmt(flow);
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesAffectedByMgmt(flow);
         for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
             fa->PendingFlows.push_back((*it)->getFlow());
         }
@@ -97,6 +107,23 @@ void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
         else if (!flow->getConId().getQoSId().compare(VAL_MGMTQOSID)) { EV << "Management flow allocated!" << endl; }
         else { EV << "Flow not intended for my FA!" << endl; }
     }
+    */
+    APNIPair* apnip = dynamic_cast<APNIPair*>(obj);
+    EV << "!!!!!" << apnip->info() << endl;
+    if (apnip && fa->getMyAddress().getApn() == apnip->first.getApn()) {
+        EV << "!!!!!Uvnitr" << endl;
+        //Notify pending flows that mgmt flow is prepared
+        TFAIPtrs entries = fa->getNFlowTable()->findEntriesAffectedByMgmt(apnip);
+        for (TFTPtrsIter it = entries.begin(); it != entries.end(); ++it) {
+            fa->PendingFlows.push_back((*it)->getFlow());
+        }
+        EV << "!!!!!Venku" << endl;
+        fa->receiveMgmtAllocateFinish();
+    }
+    else {
+        EV << "FA received unknown object!" << endl;
+    }
+
 
 
 }

@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="1">
+                <Connection src="A_LayerAB" dst="Z_LayerAB" qosReq="mgmt"/>
+                <Connection src="B_LayerAB" dst="Z_LayerAB" qosReq="mgmt"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
+	<Host id="HostA12">
+		<DA>
+			<Directory>
+				<APN apn="AppA1">
+					<DIF difName="LayerX" ipcAddress="A1" />
+				</APN>
+				<APN apn="AppA2">
+					<DIF difName="LayerX" ipcAddress="A2" />
+				</APN>
+				<APN apn="AppB1">
+					<DIF difName="LayerX" ipcAddress="B1" />
+				</APN>
+				<APN apn="AppB2">
+					<DIF difName="LayerX" ipcAddress="B2" />
+				</APN>
+				
+				<APN apn="A1_LayerX">
+					<DIF difName="LayerA1" ipcAddress="a1" />
+				</APN>
+				<APN apn="A2_LayerX">
+					<DIF difName="LayerA2" ipcAddress="a2" />
+				</APN>
+				<APN apn="B1_LayerX">
+					<DIF difName="LayerB1" ipcAddress="b1" />
+				</APN>
+				<APN apn="B2_LayerX">
+					<DIF difName="LayerB2" ipcAddress="b2" />
+				</APN>
+				
+				<APN apn="BRA_LayerX">
+					<DIF difName="LayerA1" ipcAddress="bra1" />
+					<DIF difName="LayerA2" ipcAddress="bra2" />
+					<DIF difName="LayerAB" ipcAddress="A" />										
+				</APN>
+				<APN apn="BRB_LayerX">
+					<DIF difName="LayerB1" ipcAddress="brb1" />
+					<DIF difName="LayerB2" ipcAddress="brb2" />
+					<DIF difName="LayerAB" ipcAddress="B" />										
+				</APN>
+
+				<APN apn="A_LayerAB">
+					<DIF difName="LayerYA" ipcAddress="ya" />
+				</APN>
+				<APN apn="B_LayerAB">
+					<DIF difName="LayerYB" ipcAddress="yb" />
+				</APN>
+				<APN apn="Z_LayerAB">
+					<DIF difName="LayerYA" ipcAddress="yza" />
+					<DIF difName="LayerYB" ipcAddress="yzb" />
+				</APN>
+			</Directory>
+			<NeighborTable>
+				<APN apn="A1_LayerX">
+					<Neighbor apn="BRA_LayerX" />
+				</APN>						
+				<APN apn="A2_LayerX">
+					<Neighbor apn="BRA_LayerX" />
+				</APN>
+				<APN apn="B1_LayerX">
+					<Neighbor apn="BRA_LayerX" />
+				</APN>			
+				<APN apn="B2_LayerX">
+					<Neighbor apn="BRA_LayerX" />
+				</APN>										
+			</NeighborTable>
+		</DA>	
+	</Host>
+
+	<Host id="HostB12">
+		<DA>
+			<NeighborTable>
+				<APN apn="A1_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>						
+				<APN apn="A2_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>
+				<APN apn="B1_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>			
+				<APN apn="B2_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>										
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="B1_LayerX" dst="BRB_LayerX" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	
+	<Router id="BorderRouterA">
+		<DA>
+			<NeighborTable>
+				<APN apn="B1_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>	
+				<APN apn="B_LayerAB">
+					<Neighbor apn="Z_LayerAB" />
+				</APN>									
+			</NeighborTable>			
+		</DA>
+		<Enrollment id='ipcProcess2'>
+			<Preenrollment>
+	            <SimTime t="1">
+	                <Connect src="A_LayerAB" dst="Z_LayerAB" />
+	            </SimTime>	            
+			</Preenrollment>
+		</Enrollment>	
+	</Router>
+
+	<Router id="BorderRouterB">
+		<DA>
+			<NeighborTable>
+				<APN apn="A1_LayerX">
+					<Neighbor apn="BRA_LayerX" />
+				</APN>		
+				<APN apn="A_LayerAB">
+					<Neighbor apn="Z_LayerAB" />
+				</APN>																	
+			</NeighborTable>						
+		</DA>
+		<Enrollment id='relayIpc'>
+			<Preenrollment>
+	            <SimTime t="2">
+	                <Connect src="BRB_LayerX" dst="BRA_LayerX" />	                
+	            </SimTime>	            
+			</Preenrollment>
+		</Enrollment>	
+	</Router>
+
+	<Router id="InteriorRouter">
+		<DA>
+			<NeighborTable>
+				<APN apn="A1_LayerX">
+					<Neighbor apn="BRB_LayerX" />
+				</APN>						
+			</NeighborTable>			
+		</DA>
+	</Router>
+
+
+	<QoSCubesSet>
+		<QoSCube id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QoSCube>
+		<QoSCube id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QoSCube>		
+	</QoSCubesSet>
+</Configuration>

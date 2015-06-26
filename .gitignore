@@ -3,12 +3,17 @@
 *_m.cc
 *_sm.h
 *_sm.cc
+
+#Remove hot makefiles
+#Makefile
+#Makefile.vc
+policies/Makefile
+policies/Makefile.vc
 src/Makefile
 src/Makefile.vc
 
 # Doxygen documentation
 /doc/
-/doxy.cfg
 /doc/doxy/
 /doc/neddoc/
 
@@ -40,7 +45,6 @@ out/
 *.dylib
 *.dll
 *.tmp*
-sta*
 *.a
 *.lib
 *.exe
@@ -50,9 +54,6 @@ sta*
 *.idb
 *.manifest
 *.out
-src/rina
-src/RINA
-/rina
 
 
 # ignore backup and temp files

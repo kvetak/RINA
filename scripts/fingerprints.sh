@@ -8,15 +8,21 @@ exclude_scenarios=(BigRandNet DC)
 # initialize the mandatory stuff
 rina_root="$( readlink -f "$( dirname $0 )/.." )"
 rina_scenarios="${rina_root}/examples"
+rina_lib="${rina_root}/policies/librinasim"
 glob='*'
 
-# locate the executable
-if [ -f "${rina_root}/out/gcc-debug/rina" ]; then
-    rina_bin=${rina_root}/out/gcc-debug/rina
-elif [ -f "${rina_root}/out/gcc-debug/rina.exe" ]; then
-    rina_bin=${rina_root}/out/gcc-debug/rina.exe
+if ! type opp_run >/dev/null 2>/dev/null; then
+    echo "opp_run isn't present in \$PATH!"
+    exit 1
+fi
+
+
+if [ -f "${rina_lib}.so" ]; then
+    rina_lib="${rina_lib}.so"
+elif [ -f "${rina_lib}.dll" ]; then
+    rina_lib="${rina_lib}.dll"
 else
-    echo "Cannot find the RINA executable!"
+    echo "Cannot find the RINASim dynamic library! Forgot to compile?"
     exit 1
 fi
 
@@ -127,7 +133,7 @@ for i in $glob/; do
 
     grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
         printf "  $j: "
-        output="$( $rina_bin -u Cmdenv -c "$j" -n "$rina_root" omnetpp.ini 2>&1 )"
+        output="$( opp_run -u Cmdenv -c "$j" -n "$rina_root" -l "$rina_lib" omnetpp.ini 2>&1 )"
         ret=$?
 
         if [ $mode = "check" ]; then
