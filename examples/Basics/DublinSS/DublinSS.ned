@@ -1,7 +1,7 @@
-package rina.examples.DublinSS.LatEx;
+package rina.examples.Basics.DublinSS;
 import rina.src.CS.*;
 
-network LatEx
+network DublinSS
 {
     @display("bgb=388,718");
     submodules:
