@@ -3,7 +3,7 @@
 # TODO: remove bashisms
 
 # scenarios to exclude (e.g. if they're too resource-expensive)
-exclude_scenarios=(BigRandNet DC)
+# exclude_scenarios=(BigRandNet DC)
 
 # initialize the mandatory stuff
 rina_root="$( readlink -f "$( dirname $0 )/.." )"
@@ -119,8 +119,11 @@ process_args $@
 
 cd $rina_scenarios
 
+# retrieve scenarios by the given directory glob
+scenarios="$( find . -type f -path "*${glob}/omnetpp.ini" -exec dirname {} \; )"
+
 # run the main loop
-for i in $glob/; do
+echo "$scenarios" | while read i; do
     # exclude the scenario if this is wanted
     for scen in "${exclude_scenarios[@]}"; do
         if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
@@ -142,6 +145,6 @@ for i in $glob/; do
             update_fingerprint "$output" omnetpp.ini "$j"
         fi
     done
-    cd ..
+    cd $rina_scenarios
 done
 
