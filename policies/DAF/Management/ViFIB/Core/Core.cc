@@ -30,8 +30,6 @@ void Core::initialize() {
     //Init QoSRequirements
     initQoSRequiremets();
 
-    baseIPC =  getModuleByPath(par("baseIPC").stringValue());
-
     sig2slaves = registerSignal(SIG_VAR_ViFIB_Master2Slave);
     Node->subscribe(SIG_VAR_ViFIB_Slave2Master, this);
 }

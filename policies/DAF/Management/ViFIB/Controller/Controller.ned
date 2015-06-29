@@ -10,7 +10,7 @@ simple Controller extends AE like IAE
         
         //ViFIB node info
         string vifibId = default("");
-		string baseIPC = default("^.^.^.relayIPC");
+		string baseIPC = default("^.^.^.relayIpc");
         
         //Master Agent
         string dstApName = default("AppErr");
