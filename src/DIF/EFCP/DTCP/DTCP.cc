@@ -535,7 +535,7 @@ unsigned int DTCP::getSndRtWinEdge()
 {
 
 //  return flowControl->getSendRightWindowEdge();
-  return dtcpState->getSenderRightWinEdge();
+  return dtcpState->getSndRightWinEdge();
 
 }
 

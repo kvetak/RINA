@@ -115,7 +115,7 @@ void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
     this->sndLeftWinEdge = senderLeftWinEdge;
 }
 
-unsigned int DTCPState::getSenderRightWinEdge() const
+unsigned int DTCPState::getSndRightWinEdge() const
 {
   return sndRightWinEdge;
 }

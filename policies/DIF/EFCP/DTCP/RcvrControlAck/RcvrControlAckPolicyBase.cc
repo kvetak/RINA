@@ -43,12 +43,16 @@ RcvrControlAckPolicyBase::~RcvrControlAckPolicyBase()
 
 void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+
+  //TODO A1: Update it according to the new specs update.
+
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
   DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
   /* Default */
 
  //    bool sendAck = false;
  //    bool sendFC = true;
+
      /* RcvrControlAck Policy with Default: */
      //"adjust as necessary" :D great advice
      ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
@@ -81,7 +85,7 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
      }
 
      //      unsigned int myRtWinEdge;
-     if(ctrlAckPDU->getSndRightWinEdge() != dtcpState->getSenderRightWinEdge()){
+     if(ctrlAckPDU->getSndRightWinEdge() != dtcpState->getSndRightWinEdge()){
        dtcpState->setSenderRightWinEdge(ctrlAckPDU->getSndRightWinEdge());
      }
 
