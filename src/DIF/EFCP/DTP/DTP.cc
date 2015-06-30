@@ -655,7 +655,7 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
 /**
  * This method handles incomming PDUs from RMT
  * and passes them to specific methods for further processing.
- * @param msg Incomming msg is either DataTransferPDU or ControllPDU.
+ * @param msg Incomming msg is either DataTransferPDU or ControlPDU.
  * If it is neither of those, Error is raised.
  */
 void DTP::handleMsgFromRMT(PDU* msg){
@@ -1325,10 +1325,7 @@ void DTP::notifyStartSending()
 //  //FIX A2 - activate when CDAP Splitter is ready
 //      return;
 //  // Notify User Flow there has been no activity for awhile.
-//  CDAPMessage* cdapMsg = new CDAP_M_START_SENDING();
-//  SDU* sdu = new SDU();
-//  sdu->addUserData(cdapMsg);
-//  send(sdu, northO);
+
 
   if(state->isBlockingPort()){
     emit(sigEFCPStartSending, flow);
@@ -1340,10 +1337,6 @@ void DTP::notifyStopSending()
 {
 
   // Notify User Flow to Stop sending due to closed window and full closedWindowQ.
-//  CDAPMessage* cdapMsg = new CDAP_M_STOP_SENDING();
-//  SDU* sdu = new SDU();
-//  sdu->addUserData(cdapMsg);
-//  send(sdu, northO);
 
   if(!state->isBlockingPort()){
     emit(sigEFCPStahpSending, flow);
@@ -1372,33 +1365,6 @@ void DTP::runRcvrInactivityTimerPolicy()
   }else{
     rcvrInactivityPolicy->call(state, NULL);
   }
-
-
-
-    //XXX Why reset my sending direction when I am not receiving anything?
-    // I can still be sending load of PDUs
-    /* Default */
-//    state->setSetDrfFlag(true);
-//    runInitialSeqNumPolicy();
-
-    //Discard any PDUs on the PDUretransmissionQueue
-//    clearRxQ();
-//
-//    //Discard any PDUs on the ClosedWindowQueue
-//    clearClosedWindowQ();
-
-//    if(state->isDtcpPresent()){
-    //XXX Ok, we can send ControlAck. It won't hurt.
-    //Send Control Ack PDU
-//    sendControlAckPDU();
-    //TODO RcvRates
-//    }
-    //Send Transfer PDU With Zero length
-//    sendEmptyDTPDU();
-
-    // Notify User Flow there has been no activity for awhile.
-//    notifyAboutInactivity();
-
 }
 
 void DTP::runSenderInactivityTimerPolicy()
@@ -1419,6 +1385,8 @@ void DTP::sendToRMT(PDU* pdu)
   Enter_Method("SendToRMT");
   take(pdu);
   if(pdu->getType() == DATA_TRANSFER_PDU){
+
+    //TODO B1 What to do in case of retransmission?
     state->setLastSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() <<": PDU number: " << pdu->getSeqNum() <<" sent in time: " << simTime() << endl;
   }else{

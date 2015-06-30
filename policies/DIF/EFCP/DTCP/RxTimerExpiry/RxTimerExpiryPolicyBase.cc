@@ -43,55 +43,53 @@ RxTimerExpiryPolicyBase::~RxTimerExpiryPolicyBase()
 
 void RxTimerExpiryPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
-  DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
+  DTP* dtp = (DTP*) getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  DTCP* dtcp = (DTCP*) getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
   DTCPRxExpiryTimer* timer;
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
   std::vector<DTCPRxExpiryTimer*>::iterator it;
 
-  for(it = rxQ->begin(); it != rxQ->end(); ++it){
-    if(!(*it)->isScheduled()){
+  for (it = rxQ->begin(); it != rxQ->end(); ++it)
+  {
+    if (!(*it)->isScheduled())
+    {
       timer = (*it);
       break;
     }
   }
 
-  if(timer == NULL){
+  if (timer == NULL)
+  {
     throw cRuntimeError("Error, couldn't find RxTimerExpiry");
   }
 
-
   DataTransferPDU* pdu = timer->getPdu();
 
+  if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
+  {
+    dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+    // Notify User Flow that we were unable to maintain the QoS for this connection
+    dtp->notifyAboutUnableMaintain();
+    //    throw cRuntimeError("Unable to maintain the QoS for this connection");
+    ASSERT2(true, "Unable to maintain the QoS for this connection. Continue at your own risk.");
+  }
+  else
+  {
 
+    DataTransferPDU* dup = pdu->dup();
+    dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
+    std::ostringstream out;
+    out << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
 
-    if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
-    {
-      dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
-      // Notify User Flow that we were unable to maintain the QoS for this connection
-      dtp->notifyAboutUnableMaintain();
-  //    throw cRuntimeError("Unable to maintain the QoS for this connection");
-      ASSERT2(true,"Unable to maintain the QoS for this connection. Continue at your own risk.");
-    }
-    else
-    {
+    bubble(out.str().c_str());
+    EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
+    dtp->sendToRMT(dup);
 
-      DataTransferPDU* dup = pdu->dup();
-      dup->setDisplayString("b=15,15,oval,#0099FF,#0099FF,0");
-      std::ostringstream out;
-      out  << "Sending PDU number " << pdu->getSeqNum() << " from RX Queue";
+    dtcpState->incRxSent();
 
-      bubble(out.str().c_str());
-      EV << this->getFullPath() << ": " << out.str().c_str() << " in time " << simTime() << endl;
-      dtp->sendToRMT(dup);
+    timer->setExpiryCount(timer->getExpiryCount() + 1);
+    dtcp->scheduleRxTimerExpiry();
 
-      dtcpState->incRxSent();
-
-      timer->setExpiryCount(timer->getExpiryCount() + 1);
-      dtcp->scheduleRxTimerExpiry();
-
-
-
-    }
+  }
 }
