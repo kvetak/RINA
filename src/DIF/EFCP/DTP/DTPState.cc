@@ -50,6 +50,11 @@ void DTPState::setBlockingPort(bool blockingPort)
   this->blockingPort = blockingPort;
 }
 
+void DTPState::resetRcvVars()
+{
+  rcvLeftWinEdge = 0;
+}
+
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -72,26 +77,6 @@ void DTPState::initialize(int step)
       mpl = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("mpl");
 
     }
-
-
-////    winBased = par("winBased");
-////    rateBased = par("rateBased");
-//    rateBased = false;
-//
-////    rxPresent = par("rxPresent");
-//
-//    if(qoSCube->isRxOn()){
-//      rxPresent = true;
-//    }else{
-//      rxPresent = false;
-//    }
-
-
-//    if(qoSCube->getAvgBand() > 0){
-//      winBased = true;
-//    }else{
-//      winBased = false;
-//    }
 
     if(qoSCube->isRxOn() || qoSCube->isWindowFcOn() || qoSCube->isRateFcOn()){
       dtcpPresent =  true;
@@ -453,6 +438,8 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
+  //TODO A! Needs deeper examination.
+
   //TODO A3
   //Update LeftWindowEdge removing allowed gaps;
   unsigned int sduGap = qoSCube->getMaxAllowGap();

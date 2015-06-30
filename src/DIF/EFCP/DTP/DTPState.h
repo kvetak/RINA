@@ -202,6 +202,8 @@ public:
     /* Dirty hacks */
     ATimer* getTmpAtimer() const;
     void setTmpAtimer(ATimer* tmpAtimer);
+    void resetRcvVars();
+
     /* End dirty hacks */
 
 protected:

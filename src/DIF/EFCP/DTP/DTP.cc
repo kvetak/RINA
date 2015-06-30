@@ -666,13 +666,7 @@ void DTP::handleMsgFromRMT(PDU* msg){
   {
     DataTransferPDU* pdu = (DataTransferPDU*) msg;
 
-
-    cancelEvent(rcvrInactivityTimer);
     handleDataTransferPDUFromRMT(pdu);
-
-    //TODO A! It should not be rescheduled always! Scheduling has to go to appropriate places in handleDTPDU method.
-    schedule(rcvrInactivityTimer);
-
 
   }
   else if (dynamic_cast<ControlPDU*>(msg))
@@ -700,6 +694,7 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
 void DTP::startATimer(unsigned int seqNum)
 {
+  //TODO A1 Make a vector in DTPState of all active ATimers.
   Enter_Method_Silent();
   ATimer* aTimer = new ATimer();
   aTimer->setSeqNum(seqNum);
@@ -728,6 +723,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
   EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " received" << endl;
 
+  cancelEvent(rcvrInactivityTimer);
   /*
    * What to do when you want to discard the incomming PDU?
    * How to handle both cases - you want to keep it for further processing/ you want to drop it.
@@ -783,13 +779,11 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //Put PDU on ReassemblyQ
     addPDUToReassemblyQ(pdu);
 
-    //XXX Setting DRF would create infinity loop of setting DRF for every PDU, right?
-    /* Initialize the other direction */
-//    state->setSetDrfFlag(true);
 
+    //TODO A!
     //s check if this is needed to uncomment
     /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
-    state->setRcvLeftWinEdge(pdu->getSeqNum() + 1);
+//    state->setRcvLeftWinEdge(pdu->getSeqNum());
 
     // WHY??? -> Then don't.
 //    runInitialSequenceNumberPolicy();
@@ -799,10 +793,14 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       svUpdate(pdu->getSeqNum());
 
     }
+    else
+    {
+      state->setRcvLeftWinEdge(pdu->getSeqNum());
+    }
     delimitFromRMT(NULL);
 
-    //XXX!!!!
-    return;
+    //
+//    return;
   }
   else
   {
@@ -879,7 +877,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
       //XXX!!!!
-          return;
+//          return;
 
     }
     else
@@ -901,11 +899,12 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
         delimitFromRMT(pdu);
         //XXX!!!!
-            return;
+//            return;
       }
       //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
+      schedule(rcvrInactivityTimer);
     }
-//    schedule(rcvrInactivityTimer);
+
     //TODO A1 DIF.integrity
     /* If we are encrypting, we can't let PDU sequence numbers roll over */
 
@@ -915,7 +914,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //Fi
   }
   //XXX hotfix
-delete pdu;
+//delete pdu;
 }
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)

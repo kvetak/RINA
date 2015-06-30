@@ -42,5 +42,11 @@ RcvrInactivityPolicyBase::~RcvrInactivityPolicyBase()
 
 void RcvrInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  //TODO A! Reset Rcv* variables to default state
+
+  dtpState->resetRcvVars();
+
+  if(dtpState->isDtcpPresent()){
+    dtcpState->resetRcvVars();
+  }
+
 }

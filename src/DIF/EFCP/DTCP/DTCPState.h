@@ -212,6 +212,8 @@ class DTCPState : public cSimpleModule
     unsigned int getPdusRcvdInTimeUnit() const;
     void setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit);
 
+    void resetRcvVars();
+
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);

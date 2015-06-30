@@ -32,6 +32,13 @@
 
 Define_Module(DTCPState);
 
+void DTCPState::resetRcvVars()
+{
+  rcvRightWinEdge = INTMAX_MAX;
+//  rcvRate = ??
+
+}
+
 void DTCPState::initFC()
 {
   rcvRightWinEdge = rcvCredit;
