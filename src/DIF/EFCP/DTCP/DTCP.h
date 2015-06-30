@@ -161,7 +161,7 @@ public:
     void incDupFC();
     unsigned int getDupFC() const;
 
-    unsigned int getSenderLeftWinEdge() const;
+    unsigned int getSndLeftWinEdge() const;
     void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
     void updateSenderLWE(unsigned int seqNum);
 

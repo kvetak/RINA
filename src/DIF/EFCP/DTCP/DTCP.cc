@@ -84,9 +84,9 @@ cModule* DTCP::createPolicyModule(const char* prefix, const char* name)
   }
 }
 
-unsigned int DTCP::getSenderLeftWinEdge() const
+unsigned int DTCP::getSndLeftWinEdge() const
 {
-  return dtcpState->getSenderLeftWinEdge();
+  return dtcpState->getSndLeftWinEdge();
 }
 
 void DTCP::setSenderLeftWinEdge(unsigned int senderLeftWinEdge)

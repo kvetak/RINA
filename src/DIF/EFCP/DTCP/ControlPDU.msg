@@ -36,12 +36,12 @@ message NAckPDU extends ControlPDU{
     
 }
 message FlowControlPDU extends NAckPDU {
-    unsigned int newRightWinEdge;
-	unsigned int newRate;
+    unsigned int rcvRightWinEdge;
+	unsigned int rcvRate;
     unsigned long timeUnit;
-    unsigned int myLeftWinEdge;
-    unsigned int myRightWinEdge;
-    unsigned int myRcvRate;
+    unsigned int sndLeftWinEdge;
+    unsigned int sndRightWinEdge;
+    unsigned int sndRate;
 }
 
 
@@ -95,9 +95,9 @@ message ControlAckPDU extends ControlPDU{
     type = CONTROL_ACK_PDU;
     
 	unsigned int lastCtrlSeqNumRcv;
-	unsigned int sndLtWinEdge;
-	unsigned int sndRtWinEdge;
-	unsigned int myLtWinEdge;
-	unsigned int myRtWinEdge;
-	unsigned int myRcvRate;
+	unsigned int rcvLeftWinEdge;
+	unsigned int rcvRightWinEdge;
+	unsigned int sndLeftWinEdge;
+	unsigned int sndRightWinEdge;
+	unsigned int rcvRate;
 }

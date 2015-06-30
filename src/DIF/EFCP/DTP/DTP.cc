@@ -218,7 +218,7 @@ void DTP::redrawGUI()
   desc << "nextSeqNum: " << state->getNextSeqNumToSendWithoutIncrement() <<"\n";
 
   if(state->isDtcpPresent() && dtcp->dtcpState->isFCPresent()){
-    desc << "sLWE: " << dtcp->dtcpState->getSenderLeftWinEdge() <<"\n";
+    desc << "sLWE: " << dtcp->dtcpState->getSndLeftWinEdge() <<"\n";
     desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
   }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";
@@ -470,18 +470,18 @@ void DTP::sendFCOnlyPDU()
 void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 {
 
-  //      unsigned int newRightWinEdge;
-  flowControlPdu->setNewRightWinEdge(dtcp->getRcvRightWinEdge());
-  //        unsigned int newRate;
-  flowControlPdu->setNewRate(dtcp->getRcvrRate());
-  //          unsigned int timeUnit;
+
+  flowControlPdu->setRcvRightWinEdge(dtcp->getRcvRightWinEdge());
+
+  flowControlPdu->setRcvRate(dtcp->getRcvrRate());
+
   flowControlPdu->setTimeUnit(dtcp->getSendingTimeUnit());
-  //          unsigned int myLeftWinEdge;
-  flowControlPdu->setMyLeftWinEdge(state->getRcvLeftWinEdge());
-  //          unsigned int myRightWinEdge;
-  flowControlPdu->setMyRightWinEdge(dtcp->getSndRtWinEdge());
-  //          unsigned int myRcvRate;
-  flowControlPdu->setMyRcvRate(dtcp->getSendingRate());
+
+  flowControlPdu->setSndLeftWinEdge(dtcp->getSndLeftWinEdge());
+
+  flowControlPdu->setSndRightWinEdge(dtcp->getSndRtWinEdge());
+
+  flowControlPdu->setSndRate(dtcp->getSendingRate());
 
   dtcp->getDTCPState()->setRcvRtWinEdgeSent(dtcp->getDTCPState()->getRcvRightWinEdge());
 }
@@ -583,7 +583,7 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
           dtcp->ackPDU(startSeqNum, endSeqNum);
 
           // min = dtcp->getSmallestSeqNumFromRxQOrNextSeqNumToSend - 1
-          //state->setSenderLeftWinEdge(std::min(min, state->getSenderLeftWinEdge);
+          //state->setSenderLeftWinEdge(std::min(min, state->getSndLeftWinEdge);
 
           //            state->setSenderLeftWinEdge(tempSLWE);
           //TODO B2 O'really? Shouldn't it always be nextSeqNum -1?
@@ -627,8 +627,8 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
       FlowControlOnlyPDU *flowPdu = (FlowControlOnlyPDU*) pdu;
 
       //Update RightWindowEdge and SendingRate.
-      dtcp->setSndRtWinEdge(flowPdu->getNewRightWinEdge());
-      dtcp->setSendingRate(flowPdu->getNewRate());
+      dtcp->setSndRtWinEdge(flowPdu->getRcvRightWinEdge());
+      dtcp->setSendingRate(flowPdu->getRcvRate());
 
       if (dtcp->getDTCPState()->getClosedWinQueLen() > 0)
       {
@@ -1267,12 +1267,12 @@ void DTP::sendControlAckPDU()
   ctrlAckPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
   ctrlAckPdu->setLastCtrlSeqNumRcv(dtcp->getLastCtrlSeqNumRcv());
 
-  ctrlAckPdu->setSndLtWinEdge(dtcp->getSenderLeftWinEdge());
-  ctrlAckPdu->setSndRtWinEdge(dtcp->getSndRtWinEdge());
-  ctrlAckPdu->setMyLtWinEdge(state->getRcvLeftWinEdge());
-  ctrlAckPdu->setMyRtWinEdge(dtcp->getRcvRightWinEdge());
+  ctrlAckPdu->setRcvLeftWinEdge(dtcp->getSndLeftWinEdge());
+  ctrlAckPdu->setRcvRightWinEdge(dtcp->getSndRtWinEdge());
+  ctrlAckPdu->setSndLeftWinEdge(state->getRcvLeftWinEdge());
+  ctrlAckPdu->setSndRightWinEdge(dtcp->getRcvRightWinEdge());
 
-  ctrlAckPdu->setMyRcvRate(dtcp->getRcvrRate());
+  ctrlAckPdu->setRcvRate(dtcp->getRcvrRate());
 
   sendToRMT(ctrlAckPdu);
 }

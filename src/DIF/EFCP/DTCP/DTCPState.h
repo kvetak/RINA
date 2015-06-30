@@ -128,7 +128,7 @@ class DTCPState : public cSimpleModule
     void setRcvRtWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
     unsigned int getSenderRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
-    unsigned int getSenderLeftWinEdge() const;
+    unsigned int getSndLeftWinEdge() const;
     void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
 //    bool isSetDrfFlag() const;
 //    void setSetDrfFlag(bool setDrfFlag);
