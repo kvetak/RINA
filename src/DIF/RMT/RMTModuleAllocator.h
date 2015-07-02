@@ -97,7 +97,7 @@ class RMTModuleAllocator : public cSimpleModule
     /**
      * Returns the mock inteface (N-1)-port. Only to be used in the bottom DIFs.
      *
-     * @return (N-1)-port (NULL if this isn't the bottom DIF)
+     * @return (N-1)-port (nullptr if this isn't the bottom DIF)
      */
     RMTPort* getInterfacePort();
 

@@ -132,7 +132,7 @@ void RMTQueue::redrawGUI()
 
 void RMTQueue::handleMessage(cMessage* msg)
 {
-    if (dynamic_cast<cPacket*>(msg) != NULL)
+    if (dynamic_cast<cPacket*>(msg) != nullptr)
     {
         enqueuePDU((cPacket*)msg);
     }
@@ -187,7 +187,7 @@ void RMTQueue::markCongestionOnLast()
 {
     cPacket* msg = queue.back();
 
-    if (dynamic_cast<PDU*>(msg) != NULL)
+    if (dynamic_cast<PDU*>(msg) != nullptr)
     {
         PDU* pdu = (PDU*) msg;
         pdu->setFlags(pdu->getFlags() | 0x01);

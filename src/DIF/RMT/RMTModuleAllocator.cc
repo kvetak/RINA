@@ -30,7 +30,7 @@ void RMTModuleAllocator::initialize()
         (getModuleByPath("^.queueMonitorPolicy"));
 
     portCount = 0;
-    interfacePort = NULL;
+    interfacePort = nullptr;
 
     // TODO: purge this crap and think of something smarter
     // port module coordinates
@@ -51,7 +51,7 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     queueName << strType << queueId;
 
     RMTQueue* queue = lookup(port, type, queueName.str().c_str());
-    if (queue)
+    if (queue != nullptr)
     {
         EV << "addQueue(): Queue with this ID already exists!";
         return queue;
@@ -126,7 +126,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     portDisp.setTagArg("p", 1, portYCoord);
     portXCoord += 120;
 
-    if (flow == NULL)
+    if (flow == nullptr)
     {
         interfacePort = port;
     }
@@ -172,24 +172,24 @@ void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 
 void RMTModuleAllocator::removeQueues(const RMTQueues& queues)
 {
-    for(RMTQueues::const_iterator it = queues.begin(); it != queues.end(); ++it )
+    for(auto const q : queues)
     {
-        removeQueue((RMTQueue*)*it);
+        removeQueue(q);
     }
 }
 
 RMTQueue* RMTModuleAllocator::lookup(RMTPort* port, RMTQueueType type, const char* queueName)
 {
     RMTQueues queues = (type == RMTQueue::OUTPUT ? port->getOutputQueues() : port->getInputQueues());
-    for(RMTQueuesIter it = queues.begin(); it != queues.end(); ++it )
+
+    for(auto const q : queues)
     {
-        RMTQueue* a = *it;
-        if (!opp_strcmp(a->getName(), queueName))
+        if (!opp_strcmp(q->getName(), queueName))
         {
-            return a;
+            return q;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void RMTModuleAllocator::removePort(RMTPort* port)
@@ -220,7 +220,7 @@ RMTPort* RMTModuleAllocator::getPort(const char* name)
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 
 }

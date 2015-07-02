@@ -28,7 +28,7 @@ RMTListeners::RMTListeners(RMTBase* rmt) : rmt(rmt)
 
 RMTListeners::~RMTListeners()
 {
-    rmt = NULL;
+    rmt = nullptr;
 }
 
 void LisRMTQueuePDUPreRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)

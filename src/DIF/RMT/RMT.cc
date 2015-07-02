@@ -134,9 +134,8 @@ void RMT::finish()
         EV << "RMT " << this->getFullPath() << " still contains " << pduCount
            << " unprocessed PDUs!" << endl;
 
-        for (std::deque<cMessage*>::iterator it = invalidPDUs.begin(); it != invalidPDUs.end(); ++it)
+        for (auto const& m : invalidPDUs)
         {
-            cMessage* m = *it;
             EV << m->getClassName() << " received at " << m->getArrivalTime()
                << " from " << m->getSenderModule()->getFullPath() << endl;
         }
@@ -158,7 +157,7 @@ void RMT::finish()
 void RMT::tracePDUEvent(const cPacket* pkt, TraceEventType eventType)
 {
     const PDU* pdu = dynamic_cast<const PDU*>(pkt);
-    if (pdu == NULL)
+    if (pdu == nullptr)
     {
         return;
     }
@@ -247,7 +246,7 @@ void RMT::postQueueArrival(cObject* obj)
             {
                 tracePDUEvent(queue->getLastPDU(), MSG_DROP);
             }
-            const cPacket* dropped = queue->dropLast();
+            const auto dropped = queue->dropLast();
             qMonPolicy->onMessageDrop(queue, dropped);
             delete dropped;
             return;
@@ -407,7 +406,7 @@ void RMT::deleteEfcpiGate(unsigned int efcpiId)
  */
 std::vector<RMTPort*> RMT::fwTableLookup(const PDU * pdu)
 {
-    std::vector<RMTPort*> ports;
+    RMTPorts ports;
 
     if (onWire)
     { // get the interface port
@@ -428,7 +427,7 @@ std::vector<RMTPort*> RMT::fwTableLookup(const PDU * pdu)
  */
 void RMT::relayPDUToPort(PDU* pdu)
 {
-    std::vector<RMTPort*> outPorts = fwTableLookup(pdu);
+    auto outPorts = fwTableLookup(pdu);
 
     if (outPorts.empty())
     {
@@ -439,13 +438,12 @@ void RMT::relayPDUToPort(PDU* pdu)
         invalidPDUs.push_back(pdu);
     }
 
-    for (std::vector<RMTPort*>::iterator it = outPorts.begin(); it != outPorts.end(); ++it)
+    for (auto const& port : outPorts)
     {
-        RMTPort* port = *it;
-
         const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
         RMTQueue* outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
-        if (outQueue != NULL)
+
+        if (outQueue != nullptr)
         {
             cGate* outGate = outQueue->getRMTAccessGate();
             send(pdu, outGate);
@@ -467,7 +465,7 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
     unsigned cepId = pdu->getConnId().getDstCepId();
     cGate* efcpiGate = efcpiOut[cepId];
 
-    if (efcpiGate != NULL)
+    if (efcpiGate != nullptr)
     {
         send(pdu, efcpiGate);
     }
@@ -489,13 +487,13 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
  */
 void RMT::processMessage(cMessage* msg)
 {
-    PDU* pdu = NULL;
+    PDU* pdu = dynamic_cast<PDU*>(msg);
 
-    if ((pdu = dynamic_cast<PDU*>(msg)) != NULL)
+    if (pdu != nullptr)
     { // PDU arrival
         cModule* senderModule = msg->getArrivalGate()->getPathStartGate()->getOwnerModule();
 
-        if (dynamic_cast<RMTQueue*>(senderModule) != NULL)
+        if (dynamic_cast<RMTQueue*>(senderModule) != nullptr)
         { // message from a port
             if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
             {
