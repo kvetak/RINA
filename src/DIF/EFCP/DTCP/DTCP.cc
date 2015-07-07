@@ -337,7 +337,6 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
-    unsigned int gap = dtp->state->getQoSCube()->getMaxAllowGap();
 
     if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum)
     {
