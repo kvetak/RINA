@@ -25,9 +25,7 @@
 
 #include <omnetpp.h>
 
-/**
- * TODO - Generated class
- */
+
 class DumbGate : public cSimpleModule
 {
   protected:
