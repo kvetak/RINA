@@ -29,7 +29,7 @@ RAListeners::RAListeners(RABase* nra) : ra(nra)
 
 RAListeners::~RAListeners()
 {
-    ra = NULL;
+    ra = nullptr;
 }
 
 void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -63,10 +63,10 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    std::string qosId = flow->getConId().getQoSId();
+    const std::string& qosId = flow->getConId().getQoSId();
 
-    NM1FlowTableItem* item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
-    if (item != NULL)
+    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    if (item != nullptr)
     {
         ra->postNM1FlowAllocation(item);
     }
@@ -75,7 +75,7 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
 void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
+    auto item = ra->getFlowTable()->lookup(flow);
 
     if (item)
     {
@@ -86,7 +86,7 @@ void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject*
 void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
+    auto item = ra->getFlowTable()->lookup(flow);
 
     if (item)
     {

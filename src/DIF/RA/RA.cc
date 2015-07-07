@@ -94,7 +94,7 @@ void RA::handleMessage(cMessage *msg)
 
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            std::list<Flow*>* flows = preparedFlows[simTime()];
+            auto flows = preparedFlows[simTime()];
 
             while (!flows->empty())
             {
@@ -104,7 +104,6 @@ void RA::handleMessage(cMessage *msg)
                 // (N-1)-FA and management flows via (N)-FA.
                 // In addition to that, we can assume that (N-1)-data flows
                 // are going to require (N)-management, so it's allocated as well.
-
 
                 Flow* flow = flows->front();
                 if (flow->isManagementFlow())
@@ -165,20 +164,16 @@ void RA::initSignalsAndListeners()
 void RA::initFlowAlloc()
 {
     cXMLElement* dirXml = par("preallocation").xmlValue();
-    cXMLElementList timeMap = dirXml->getChildrenByTagName("SimTime");
+    const cXMLElementList& timeMap = dirXml->getChildrenByTagName("SimTime");
 
-    for (cXMLElementList::const_iterator it = timeMap.begin(); it != timeMap.end(); ++it)
+    for (auto const m : timeMap)
     {
-        cXMLElement* m = *it;
-        simtime_t time = static_cast<simtime_t>(
-                atoi(m->getAttribute("t")));
+        simtime_t time = static_cast<simtime_t>(atoi(m->getAttribute("t")));
 
+        const cXMLElementList& connMap = m->getChildrenByTagName("Connection");
 
-        cXMLElementList connMap = m->getChildrenByTagName("Connection");
-        for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
+        for (auto const n : connMap)
         {
-
-            cXMLElement* n = *jt;
             const char* src = n->getAttribute("src");
             if (opp_strcmp(src, processName.c_str()))
             {
@@ -191,7 +186,7 @@ void RA::initFlowAlloc()
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
 
-            QoSReq* qosReq = NULL;
+            QoSReq* qosReq = nullptr;
 
             if (!opp_strcmp(qosReqID_s, "mgmt"))
             {
@@ -204,12 +199,12 @@ void RA::initFlowAlloc()
             }
 
 
-            if (qosReq == NULL) continue;
+            if (qosReq == nullptr) continue;
 
             Flow *flow = new Flow(srcAPN, dstAPN);
             flow->setQosRequirements(*qosReq);
 
-            if (preparedFlows[time] == NULL)
+            if (preparedFlows[time] == nullptr)
             {
                 preparedFlows[time] = new std::list<Flow*>;
                 cMessage* msg = new cMessage("RA-CreateConnections");
@@ -253,8 +248,8 @@ void RA::setRMTMode()
  */
 void RA::initQoSCubes()
 {
-    cXMLElement* qosXml = NULL;
-    if (par(PAR_QOSDATA).xmlValue() != NULL
+    cXMLElement* qosXml = nullptr;
+    if (par(PAR_QOSDATA).xmlValue() != nullptr
             && par(PAR_QOSDATA).xmlValue()->hasChildren())
         qosXml = par(PAR_QOSDATA).xmlValue();
     else
@@ -262,9 +257,8 @@ void RA::initQoSCubes()
 
     // load cubes from XML
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSCUBE);
-    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it)
+    for (auto const m : cubes)
     {
-        cXMLElement* m = *it;
         if (!m->getAttribute(ATTR_ID))
         {
             EV << "Error parsing QoSCube. Its ID is missing!" << endl;
@@ -312,21 +306,20 @@ void RA::initQoSCubes()
  */
 QoSReq* RA::initQoSReqById(unsigned short id)
 {
-    cXMLElement* qosXml = NULL;
-    if (par(PAR_QOSREQ).xmlValue() != NULL
+    cXMLElement* qosXml = nullptr;
+    if (par(PAR_QOSREQ).xmlValue() != nullptr
             && par(PAR_QOSREQ).xmlValue()->hasChildren())
     {
         qosXml = par(PAR_QOSREQ).xmlValue();
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSREQ);
-    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it)
+    for (auto const m : cubes)
     {
-        cXMLElement* m = *it;
         if (!m->getAttribute(ATTR_ID))
         {
             EV << "Error parsing QoSReq. Its ID is missing!" << endl;
@@ -342,7 +335,7 @@ QoSReq* RA::initQoSReqById(unsigned short id)
 
         return new QoSReq(attrs);
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -406,7 +399,7 @@ void RA::bindMediumToRMT()
     thisIPCIn->connectTo(rmtModuleIn);
 
     // create a mock "(N-1)-port" for interface
-    RMTPort* port = rmtAllocator->addPort(NULL);
+    RMTPort* port = rmtAllocator->addPort(nullptr);
     // connect the port to the bottom
     interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
@@ -491,6 +484,7 @@ void RA::createNM1Flow(Flow *flow)
     Enter_Method("createNM1Flow()");
 
     const APN& dstApn = flow->getDstApni().getApn();
+    const std::string& qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
@@ -500,8 +494,7 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(),
-            flow->getConId().getQoSId());
+            e->getDestAddr().getApn().getName(), qosID);
 
         if(fi)
         {
@@ -514,9 +507,9 @@ void RA::createNM1Flow(Flow *flow)
 
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
-    if (ad == NULL)
+    if (ad == nullptr)
     {
-        EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
+        EV << "DifAllocator returned nullptr for resolving " << dstApn << endl;
         return;
     }
     Address addr = *ad;
@@ -568,7 +561,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     Enter_Method("createNM1FlowWoAlloc()");
 
     const APN& dstAPN = flow->getDstApni().getApn();
-    std::string qosID = flow->getConId().getQoSId();
+    const std::string& qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
@@ -578,8 +571,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(),
-            flow->getConId().getQoSId());
+            e->getDestAddr().getApn().getName(), qosID);
 
         if(fi)
         {
@@ -593,8 +585,9 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
 
     // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
-    if (ad == NULL) {
-        EV << "DifAllocator returned NULL for resolving " << dstAPN << endl;
+    if (ad == nullptr)
+    {
+        EV << "DifAllocator returned nullptr for resolving " << dstAPN << endl;
         signalizeCreateFlowNegativeToRIBd(flow);
         return;
     }
@@ -603,7 +596,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //TODO: Vesely - New IPC must be enrolled or DIF created
     if (!difAllocator->isDifLocal(addr.getDifName()))
     {
-        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
+        EV << "Local CS does not have any IPC in DIF " << addr.getDifName()
+                << endl;
         signalizeCreateFlowNegativeToRIBd(flow);
         return;
     }
@@ -645,11 +639,10 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
-        const std::string& neighApn = flow->getDstNeighbor().getApn().getName();
-        std::string qosId = flow->getConId().getQoSId();
-
-        NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
-        if (item != NULL)
+        auto neighApn = flow->getDstNeighbor().getApn().getName();
+        auto qosId = flow->getConId().getQoSId();
+        auto item = flowTable->findFlowByDstApni(neighApn, qosId);
+        if (item != nullptr)
         {
             qAllocPolicy->onNFlowAlloc(item->getRMTPort(), flow);
         }
@@ -687,8 +680,8 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
-    NM1FlowTableItem* flowItem = flowTable->lookup(flow);
-    ASSERT(flowItem != NULL);
+    auto flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != nullptr);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
     flowItem->getFABase()->receiveDeallocateRequest(flow);
 
@@ -751,21 +744,20 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
+    PDUFGNeighbor * te = fwdtg->getNextNeighbor(flow->getDstAddr(),
+            flow->getConId().getQoSId());
 
-
-
-    PDUFGNeighbor * te =
-        fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
-
-    if(te) {
+    if (te)
+    {
         neighAddr = te->getDestAddr().getApn().getName();
     }
 
-    NM1FlowTableItem* nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
+    auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
 
-    if (nm1FlowItem != NULL)
+    if (nm1FlowItem != nullptr)
     { // a flow exists
-        if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
+        if (nm1FlowItem->getConnectionStatus()
+                == NM1FlowTableItem::CON_ESTABLISHED)
         {
             EV << "Such (N-1)-flow is already present, using it." << endl;
             return true;
@@ -840,5 +832,5 @@ NM1FlowTable* RA::getFlowTable()
 }
 
 bool RA::hasFlow(std::string addr, std::string qosId) {
-    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != NULL);
+    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != nullptr);
 }

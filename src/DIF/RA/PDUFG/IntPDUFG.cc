@@ -55,7 +55,8 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
         }
     }
 
-    return NULL;
+    return nullptr;
+
 }
 
 void IntPDUFG::insertFlowInfo(Address addr, QoSCube qos, RMTPort * port) {

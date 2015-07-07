@@ -50,9 +50,11 @@ void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //Check whether dstApp is local...
-        const APN dstApn = flow->getSrcApni().getApn();
-        if (ae->getApni().getApn() == dstApn)
-            ae->receiveAllocationRequestFromFAI(flow);
+        //const APN dstApn = flow->getSrcApni().getApn();
+        //if (ae->getApni().getApn() == dstApn)
+        const APNamingInfo dstApni = flow->getSrcApni();
+        if (ae->getApni() == dstApni)
+            { ae->receiveAllocationRequestFromFAI(flow); }
     }
     else
         EV << "AEListener received unknown object!" << endl;
@@ -91,14 +93,15 @@ void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //Check whether dstApp is local...
-        const APN dstApn = flow->getSrcApni().getApn();
-        if (ae->getApni().getApn() == dstApn && ae->hasFlow(flow))
-            ae->receiveDeallocationRequestFromFAI(flow);
+        //const APN dstApn = flow->getSrcApni().getApn();
+        //if (ae->getApni().getApn() == dstApn && ae->hasFlow(flow))
+        const APNamingInfo dstApni = flow->getSrcApni();
+        if (ae->getApni() == dstApni && ae->hasFlow(flow))
+            { ae->receiveDeallocationRequestFromFAI(flow); }
     }
     else
         EV << "AEListener received unknown object!" << endl;
 }
-
 
 void LisAEConResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {

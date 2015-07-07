@@ -47,43 +47,42 @@ void NM1FlowTable::insert(Flow* flow, FABase* fa, RMTPort* port, std::string gat
 
 NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
 {
-    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    for(auto& item : flows)
     {
-        NM1FlowTableItem a = *it;
-        if (a.getFlow() == flow)
+        if (item.getFlow() == flow)
         {
-            return &(*it);
+            return &item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(std::string addr, std::string qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(const std::string& addr,
+        const std::string& qosId)
 {
-    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    for (auto& item : flows)
     {
-        NM1FlowTableItem a = *it;
-        if ((a.getFlow()->getDstApni().getApn().getName() == addr) &&
-             !a.getFlow()->getConId().getQoSId().compare(qosId) )
+        if ((item.getFlow()->getDstApni().getApn().getName() == addr)
+                && !item.getFlow()->getConId().getQoSId().compare(qosId))
         {
-            return &(*it);
+            return &item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
-NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(std::string addr, std::string qosId)
+NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(const std::string& addr,
+        const std::string& qosId)
 {
-    for(FlTableIter it = flows.begin(); it != flows.end(); ++it )
+    for(auto& item : flows)
     {
-        NM1FlowTableItem a = *it;
-        if ((a.getFlow()->getDstAddr().getApn().getName() == addr) &&
-             !a.getFlow()->getConId().getQoSId().compare(qosId) )
+        if ((item.getFlow()->getDstAddr().getApn().getName() == addr) &&
+             !item.getFlow()->getConId().getQoSId().compare(qosId) )
         {
-            return &(*it);
+            return &item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void NM1FlowTable::remove(Flow* flow)
@@ -101,4 +100,3 @@ void NM1FlowTable::remove(Flow* flow)
         }
     }
 }
-

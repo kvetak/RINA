@@ -209,7 +209,7 @@ void DTP::redrawGUI()
   }
 
   if(state->isDtcpPresent()){
-  dtcp->redrawGUI();
+    dtcp->redrawGUI();
   }
 
   cDisplayString& disp = getDisplayString();

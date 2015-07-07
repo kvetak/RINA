@@ -89,7 +89,7 @@ void FA::initialize() {
     //Setup MyAddress
     initMyAddress();
 }
-
+//XXX: Vesely - Dirty! Needs refactoring...
 const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
     Address addr;
     if (!isMgmtFlow) {
@@ -187,6 +187,7 @@ bool FA::changeDstAddresses(Flow* flow, bool useNeighbor) {
     return true;
 }
 
+//XXX: Vesely - Dirty! Needs refactoring...
 bool FA::setOriginalAddresses(Flow* flow) {
     Address adr = getAddressFromDa(flow->getSrcApni().getApn(), false, false);
     if (adr.isUnspecified())
@@ -199,7 +200,7 @@ bool FA::setOriginalAddresses(Flow* flow) {
     flow->setDstAddr(adr);
     return true;
 }
-
+//XXX: Vesely - Dirty! Needs refactoring...
 bool FA::setNeighborAddresses(Flow* flow) {
     Address adr;
     if (!flow->isManagementFlowLocalToIPCP()) {
@@ -231,6 +232,8 @@ bool FA::receiveAllocateRequest(Flow* flow) {
         && flow->getSrcNeighbor() == Address::UNSPECIFIED_ADDRESS) {
         setOriginalAddresses(flow);
         setNeighborAddresses(flow);
+        //XXX: Vesely - Dirty! Needs refactoring...
+        flow->setSrcNeighbor(flow->getSrcAddr());
     }
 
     //Are both Apps local? YES then Degenerate transfer
@@ -350,6 +353,8 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         //Change neighbor addresses
         //if (!flow->isManagementFlowLocalToIPCP()) {
             setNeighborAddresses(flow);
+            //XXX: Vesely - Dirty! Needs refactoring...
+            flow->setSrcNeighbor(flow->getSrcAddr());
         //}
 
         EV << "Processing M_CREATE(flow)" << endl;
@@ -508,4 +513,3 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
-

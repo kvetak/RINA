@@ -242,7 +242,7 @@ TFAIPtrs NFlowTable::findEntriesAffectedByMgmt(const APNIPair* apnip) {
     TFAIPtrs list;
     for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
-        if (tft.getCFlow()->getSrcNeighbor().getApn() == apnip->first.getApn()
+        if (tft.getCFlow()->getSrcAddr().getApn() == apnip->first.getApn()
             && tft.getCFlow()->getDstNeighbor().getApn() == apnip->second.getApn()
             && tft.getAllocateStatus() == NFlowTableEntry::ALLOC_PEND)
             list.push_back(&(*it));

@@ -95,20 +95,6 @@ class RMTQueue : public cSimpleModule
      * @param value new threshold
      */
     void setThreshLength(int value);
-//
-//    /**
-//     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
-//     *
-//     * @return queue ID
-//     */
-//    const char* getQueueId() const;
-//
-//    /**
-//     * Sets the queue ID.
-//     *
-//     * @param queueId new queue ID
-//     */
-//    void setQueueId(const char* queueId);
 
     /**
      * Returns a pointer to the first PDU in the queue.
@@ -186,8 +172,6 @@ class RMTQueue : public cSimpleModule
 
 typedef RMTQueue::queueType RMTQueueType;
 typedef std::vector<RMTQueue*>  RMTQueues;
-typedef RMTQueues::iterator  RMTQueuesIter;
-typedef RMTQueues::const_iterator  RMTQueuesConstIter;
 
 std::ostream& operator<< (std::ostream& os, const RMTQueue& cte);
 

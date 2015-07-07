@@ -46,7 +46,7 @@ std::string NM1FlowTableItem::info() const {
 std::string NM1FlowTableItem::getConnectionStatusString() const {
     switch(this->conStatus)
     {
-        case CON_NIL:               return "NULL";
+        case CON_NIL:               return "null";
         case CON_FLOWPENDING:       return "flowpending";
         case CON_CONNECTPENDING:    return "connectpending";
         case CON_AUTHENTICATING:    return "authenticating";

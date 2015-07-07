@@ -105,3 +105,17 @@ ConnectionId& ConnectionId::swapCepIds()
     dstCEPId = tmp;
     return *this;
 }
+
+std::string ConnectionId::info() const
+{
+  std::ostringstream os;
+
+  os << srcCEPId << ":" << dstCEPId << ":"  << qosId;
+  return os.str();
+}
+
+std::ostream& operator <<(std::ostream& os, const ConnectionId& connId)
+{
+    return os << connId.info();
+}
+

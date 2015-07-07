@@ -450,9 +450,6 @@ void DTCPState::initialize(int step)
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
 
-
-
-
     initFC();
   }
 }

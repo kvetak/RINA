@@ -28,13 +28,13 @@ CongestionDescriptor::CongestionDescriptor()
 {
     ConId.setSrcCepId(-1);
     ConId.setDstCepId(-1);
-    ConId.setQoSId(0);
+    ConId.setQoSId(VAL_UNDEF_QOSID);
 }
 
 CongestionDescriptor::~CongestionDescriptor() {
     ConId.setSrcCepId(-1);
     ConId.setDstCepId(-1);
-    ConId.setQoSId(0);
+    ConId.setQoSId("");
 }
 
 ConnectionId& CongestionDescriptor::getConnectionId() {

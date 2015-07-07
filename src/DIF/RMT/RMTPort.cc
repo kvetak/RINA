@@ -65,7 +65,7 @@ void RMTPort::initialize()
 
 void RMTPort::postInitialize()
 {
-    // this will be NULL if this IPC doesn't use a channel
+    // this will be nullptr if this IPC doesn't use a channel
     outputChannel = southOutputGate->findTransmissionChannel();
 }
 
@@ -91,8 +91,8 @@ void RMTPort::handleMessage(cMessage* msg)
     }
     else
     {
-        PDU* pdu = NULL;
-        if ((pdu = dynamic_cast<PDU*>(msg)) != NULL)
+        PDU* pdu = dynamic_cast<PDU*>(msg);
+        if (pdu != nullptr)
         {
             if (msg->getArrivalGate() == southInputGate) // incoming message
             {
@@ -102,7 +102,7 @@ void RMTPort::handleMessage(cMessage* msg)
 
                 RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
 
-                if (inQueue != NULL)
+                if (inQueue != nullptr)
                 {
                     send(msg, inQueue->getInputGate()->getPreviousGate());
                     emit(sigStatRMTPortUp, true);
@@ -122,7 +122,7 @@ void RMTPort::handleMessage(cMessage* msg)
                 send(pdu, southOutputGate);
 
                 // determine when should the port be ready to serve again
-                if (outputChannel != NULL)
+                if (outputChannel != nullptr)
                 { // we're using a channel, likely with some sort of data rate/delay
                     simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
                     if (transmitEnd > simTime())
@@ -208,11 +208,10 @@ RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     int longest = 0;
-    RMTQueue* result = NULL;
+    RMTQueue* result = nullptr;
 
-    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    for(auto const q : queueVect)
     {
-        RMTQueue* q = *it;
         if (q->getLength() > longest)
         {
             longest = q->getLength();
@@ -229,15 +228,14 @@ RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId) const
     std::ostringstream fullId;
     fullId << (type == RMTQueue::INPUT ? "inQ_" : "outQ_") << queueId;
 
-    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
+    for(auto const q : queueVect)
     {
-        RMTQueue* q = *it;
         if (!opp_strcmp(q->getFullName(), fullId.str().c_str()))
         {
             return q;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool RMTPort::isOutputReady()
@@ -360,7 +358,7 @@ void RMTPort::setFlow(Flow* flow)
     // display address of the remote IPC on top of the module
     if (ev.isGUI())
     {
-        if (flow != NULL)
+        if (flow != nullptr)
         {
             // shitty temporary (yeah, right) hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();

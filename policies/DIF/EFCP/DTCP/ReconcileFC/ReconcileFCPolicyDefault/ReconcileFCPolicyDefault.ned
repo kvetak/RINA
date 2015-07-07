@@ -25,7 +25,7 @@ import rina.policies.DIF.EFCP.DTCP.ReconcileFC.IntReconcileFCPolicy;
 //
 // TODO auto-generated type
 //
-module ReconcileFCPolicyDefault like IntReconcileFCPolicy
+simple ReconcileFCPolicyDefault like IntReconcileFCPolicy
 {
     parameters:
         string policyName = "InitialSeqNum Default";
