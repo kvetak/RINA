@@ -42,8 +42,6 @@ RcvFCOverrunPolicyBase::~RcvFCOverrunPolicyBase()
 
 void RcvFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-
-  //TODO A! Implement the default action, the text below is from SndFCOverrun policy
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
   /* Default */
   delete dtpState->getCurrentPdu();

@@ -33,7 +33,7 @@ Register_Class(RateReductionPolicyDefault);
 
 RateReductionPolicyDefault::RateReductionPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 

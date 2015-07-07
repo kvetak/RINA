@@ -75,9 +75,6 @@ DTCPState::DTCPState()
   lastControlSeqNumRcv = 0;
   sndLeftWinEdge = 0;
 
-  //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
-  immediate = true;
-
   rxSent = 0;
 }
 
@@ -87,22 +84,22 @@ void DTCPState::incRxSent()
 }
 
 
-bool DTCPState::isImmediate() const
-{
-  return immediate;
-}
+//bool DTCPState::isImmediate() const
+//{
+//  return immediate;
+//}
 
-void DTCPState::setImmediate(bool immediate)
-{
-  this->immediate = immediate;
-}
+//void DTCPState::setImmediate(bool immediate)
+//{
+//  this->immediate = immediate;
+//}
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
   return rcvRightWinEdgeSent;
 }
 
-void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
+void DTCPState::setRcvRightWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
   this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
 }
@@ -280,7 +277,7 @@ void DTCPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
 //TODO A3 Check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
   take(pdu);
-    closedWindowQ.push_back(pdu);
+  closedWindowQ.push_back(pdu);
 }
 
 std::vector<DataTransferPDU*>* DTCPState::getClosedWindowQ()
@@ -426,7 +423,7 @@ void DTCPState::initialize(int step)
           rateBased = qoSCube->isRateFcOn();
 
     if(par("aTime").doubleValue() != 0){
-      immediate = false;
+//      immediate = false;
     }
 
     rcvCredit = par("rcvCredit");

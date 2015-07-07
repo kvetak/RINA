@@ -33,11 +33,11 @@
 Define_Module(DirectoryForwardingTable);
 
 DirectoryForwardingTable::DirectoryForwardingTable() {
-    // TODO Auto-generated constructor stub
+
 }
 
 DirectoryForwardingTable::~DirectoryForwardingTable() {
-    // TODO Auto-generated destructor stub
+
 }
 
 void DirectoryForwardingTable::initialize() {

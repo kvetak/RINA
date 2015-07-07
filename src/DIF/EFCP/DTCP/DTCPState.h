@@ -45,7 +45,7 @@ class DTCPState : public cSimpleModule
     bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
 
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
-    bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
+//    bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
     unsigned int sndLeftWinEdge;
     unsigned int sndRightWinEdge;
     unsigned int rcvRightWinEdge; //The absolute value of the credit on this flow.
@@ -122,10 +122,10 @@ class DTCPState : public cSimpleModule
     virtual ~DTCPState();
 //    unsigned int getRtt() const;
 //    void setRtt(unsigned int rtt);
-    bool isImmediate() const;
-    void setImmediate(bool immediate);
+//    bool isImmediate() const;
+//    void setImmediate(bool immediate);
     unsigned int getRcvrRightWinEdgeSent() const;
-    void setRcvRtWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
+    void setRcvRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
     unsigned int getSndRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
     unsigned int getSndLeftWinEdge() const;

@@ -29,7 +29,7 @@ class noncobject DTPDU_p;
 
 enum DTCPTimerType
 {
-  DTCP_WINDOW_TIMER = 1;
+//  DTCP_WINDOW_TIMER = 1;
   DTCP_RX_EXPIRY_TIMER = 2;
   DTCP_SENDING_RATE_TIMER = 3;
 }
@@ -37,9 +37,9 @@ message DTCPTimers {
 	int type enum(DTCPTimerType);
 }
 
-message WindowTimer extends DTCPTimers{
-    type = DTCP_WINDOW_TIMER;
-}
+//message WindowTimer extends DTCPTimers{
+//    type = DTCP_WINDOW_TIMER;
+//}
 
 
 message DTCPRxExpiryTimer extends DTCPTimers{

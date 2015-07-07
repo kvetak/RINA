@@ -90,11 +90,11 @@ class DTCP: public cSimpleModule {
 
 
     /*Timers*/
-    WindowTimer* windowTimer;
+//    WindowTimer* windowTimer;
     DTCPSendingRateTimer sendingRateTimer;
 
     void schedule(DTCPTimers *timer, double time = 0.0);
-    void resetWindowTimer();
+//    void resetWindowTimer();
 
     void sendAckPDU();
     void flushAllQueuesAndPrepareToDie();
@@ -111,7 +111,7 @@ public:
     DTCPState* getDTCPState() const;
 
 
-    void handleWindowTimer(WindowTimer* timer);
+//    void handleWindowTimer(WindowTimer* timer);
     void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
 
 
@@ -183,7 +183,6 @@ public:
     bool runRateReductionPolicy(DTPState* dtpState);
     bool runECNSlowDownPolicy(DTPState* dtpState);
 
-    //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
 
 

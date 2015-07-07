@@ -112,32 +112,8 @@ void DTCP::initialize(int step)
         disp.setTagArg("p", 0, 340);
         disp.setTagArg("p", 1, 140);
 
-        //TODO A1 Not necessary DTP reference is set during DTCP creation.
-        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
-
-        //  dtcpState = new DTCPState();
-
-        //  dtcpState->callInitialize();
-
-
-
-
-        //TODO A1 Load list of policies
-//        ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-//        rcvrFCPolicy          = (RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, RCVR_FC_POLICY_NAME);
-//        rcvrAckPolicy         = (RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, RCVR_ACK_POLICY_NAME);
-//        receivingFCPolicy     = (ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, RECEIVING_FC_POLICY_NAME);
-//        sendingAckPolicy      = (SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, SENDING_ACK_POLICY_NAME);
-//        lostControlPDUPolicy  = (LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, LOST_CONTROL_PDU_POLICY_NAME);
-//        rcvrControlAckPolicy  = (RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, RCVR_CONTROL_ACK_POLICY_NAME);
-//        senderAckPolicy       = (SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, SENDER_ACK_POLICY_NAME);
-//        fcOverrunPolicy       = (FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, FC_OVERRUN_POLICY_NAME);
-//        noOverridePeakPolicy  = (NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, NO_OVERRIDE_PEAK_POLICY_NAME);
-//        txControlPolicy       = (TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, TX_CONTROL_POLICY_NAME);
-//        noRateSlowDownPolicy  = (NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, NO_RATE_SLOW_DOWN_POLICY_NAME);
-//        reconcileFCPolicy     = (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, RECONCILE_FC_POLICY_NAME);
-//        rateReductionPolicy   = (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, RATE_REDUCTION_POLICY_NAME);
-//  			ecnSlowDownPolicy			= (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+//        //TODO B1 Not necessary DTP reference is set during DTCP creation. -> IF IT WILL WORK THEN DELETE THE COMMENTED LINES
+//        dtp = (DTP*)this->getParentModule()->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
 
 
   			initSignalsAndListeners();
@@ -328,9 +304,9 @@ void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   for (unsigned int index = 0; index < rxQ->size(); )
   {
     DTCPRxExpiryTimer* timer = rxQ->at(index);
-    unsigned int seqNum =(timer->getPdu())->getSeqNum();
-    //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum )
+    unsigned int seqNum = (timer->getPdu())->getSeqNum();
+
+    if (seqNum >= startSeqNum  && (seqNum <= endSeqNum || startTrue) )
     {
       handleDTCPRxExpiryTimer(timer);
 
@@ -362,8 +338,8 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
     DTCPRxExpiryTimer* timer = rxQ->at(index);
     unsigned int seqNum =(timer->getPdu())->getSeqNum();
     unsigned int gap = dtp->state->getQoSCube()->getMaxAllowGap();
-    //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
-    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
+
+    if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum)
     {
       dtcpState->deleteRxTimer(seqNum);
 
@@ -385,7 +361,7 @@ void DTCP::handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer)
   runRxTimerExpiryPolicy(timer);
 
 }
-//TODO A! Make it Module-based policy
+
 void DTCP::runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer)
 {
 
@@ -419,12 +395,7 @@ void DTCP::schedule(DTCPTimers* timer, double time){
   Enter_Method_Silent();
   switch (timer->getType())
   {
-    case (DTCP_WINDOW_TIMER): {
-      time = 0;
-      // TODO B1 Make #define for "3"
-      scheduleAt(simTime() + (1 / dtcpState->getSendingRate()) + 3, timer);
-      break;
-    }
+
     case (DTCP_RX_EXPIRY_TIMER): {
       DTCPRxExpiryTimer* rxExpTimer = (DTCPRxExpiryTimer*)timer;
       if(rxExpTimer->getExpiryCount() == 0){
@@ -458,11 +429,11 @@ void DTCP::scheduleRxTimerExpiry()
   }
 }
 
-void DTCP::resetWindowTimer(){
-  Enter_Method_Silent();
-  cancelEvent(windowTimer);
-      schedule(windowTimer);
-}
+//void DTCP::resetWindowTimer(){
+//  Enter_Method_Silent();
+//  cancelEvent(windowTimer);
+//      schedule(windowTimer);
+//}
 
 void DTCP::updateRcvRtWinEdge(DTPState* dtpState)
 {
@@ -475,10 +446,10 @@ void DTCP::handleMessage(cMessage *msg){
     DTCPTimers* timer = static_cast<DTCPTimers*>(msg);
 
     switch(timer->getType()){
-      case(DTCP_WINDOW_TIMER):{
-        handleWindowTimer(static_cast<WindowTimer*>(timer));
-        break;
-      }
+//      case(DTCP_WINDOW_TIMER):{
+//        handleWindowTimer(static_cast<WindowTimer*>(timer));
+//        break;
+//      }
       case(DTCP_RX_EXPIRY_TIMER):{
         handleDTCPRxExpiryTimer(static_cast<DTCPRxExpiryTimer*>(timer));
         break;
@@ -496,11 +467,11 @@ void DTCP::handleMessage(cMessage *msg){
 
 }
 
-void DTCP::handleWindowTimer(WindowTimer* timer){
-  resetWindowTimer();
-  dtp->sendControlAckPDU();
-
-}
+//void DTCP::handleWindowTimer(WindowTimer* timer){
+//  resetWindowTimer();
+//  dtp->sendControlAckPDU();
+//
+//}
 
 void DTCP::handleSendingRateTimer(DTCPSendingRateTimer* timer)
 {

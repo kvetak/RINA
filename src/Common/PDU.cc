@@ -88,7 +88,7 @@ Register_Class(PDU);
 //  if(sduSeqNum != -1){
 //    //SDU Sequence Number present
 //
-//    //TODO B2 add support for SDU Seq Number
+//
 //  }
 //
 //  flags_var |= 0x08 & (sduSeqNum == -1) ? 0x00: 0xFF;

@@ -33,12 +33,10 @@
 
 RxTimerExpiryPolicyBase::RxTimerExpiryPolicyBase()
 {
-
 }
 
 RxTimerExpiryPolicyBase::~RxTimerExpiryPolicyBase()
 {
-
 }
 
 void RxTimerExpiryPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)

@@ -33,13 +33,13 @@ Register_Class(RcvrFCPolicyDefault);
 
 RcvrFCPolicyDefault::RcvrFCPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 RcvrFCPolicyDefault::~RcvrFCPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool RcvrFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

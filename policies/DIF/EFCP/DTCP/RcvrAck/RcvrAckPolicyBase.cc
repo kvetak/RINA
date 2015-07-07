@@ -52,7 +52,7 @@ void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
         seqNum = 0;
       }
 
-      if (dtcpState->isImmediate())
+      if (dtp->getQoSCube()->getATime() < 0)
       {
         //Update LeftWindowEdge removing allowed gaps;
         dtpState->updateRcvLWE(seqNum);

@@ -82,7 +82,6 @@ extern const char* PAR_CONFIGDATA;
 extern const char* PAR_CREREQTIMEOUT;
 extern const char* PAR_CURINVOKEID;
 
-//TODO:Marek @Vesely Your naming scheme seems little bit ambiguous to me. Modules usually have two inout gates.
 //Gate names
 extern const char* GATE_SOUTHIO;
 extern const char* GATE_NORTHIO;

@@ -33,13 +33,12 @@ Register_Class(SndFCOverrunPolicyDefault);
 
 SndFCOverrunPolicyDefault::SndFCOverrunPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
 
 }
 
 SndFCOverrunPolicyDefault::~SndFCOverrunPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool SndFCOverrunPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

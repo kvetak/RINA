@@ -26,10 +26,10 @@ Define_Module(NSM);
 
 void NSM::initialize()
 {
-    // TODO - Generated method body
+
 }
 
 void NSM::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }

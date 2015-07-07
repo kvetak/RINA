@@ -165,9 +165,8 @@ const QoSCube* DTP::getQoSCube() const
  */
 void DTP::setQoSCube(const QoSCube* qosCube)
 {
-  //TODO A2 Make copy
+  //TODO A2 Make copy; ... Why?
   state->setQoSCube(qosCube);
-
 }
 
 /**
@@ -483,7 +482,7 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
 
   flowControlPdu->setSndRate(dtcp->getSendingRate());
 
-  dtcp->getDTCPState()->setRcvRtWinEdgeSent(dtcp->getDTCPState()->getRcvRightWinEdge());
+  dtcp->getDTCPState()->setRcvRightWinEdgeSent(dtcp->getDTCPState()->getRcvRightWinEdge());
 }
 
 
@@ -492,7 +491,7 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
  * of Flow Control and Retransmission Control.
  * @param seqNum Explicitly specify the seqNum to be Acked, otherwise the RLWE is Acked.
  * @param seqNumValid Specifies if the seqNum is valid,
- *  or if it is just "default and the RLWE should be used instead.
+ *  or if it is just "default and the RLWE should be used instead".
  */
 void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 {
@@ -500,8 +499,7 @@ void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 
   if (!seqNumValid)
   {
-    //TODO A! Remove the "-1" to get in sync with specs.
-    seqNum = state->getRcvLeftWinEdge() - 1;
+    seqNum = state->getRcvLeftWinEdge();
   }
 
   if (dtcp->dtcpState->isFCPresent() && dtcp->dtcpState->isRxPresent())
@@ -636,7 +634,7 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
         dtcp->getDTCPState()->setClosedWindow(false);
         trySendGenPDUs(dtcp->getDTCPState()->getClosedWindowQ());
 
-        //TODO A4 Verify and update specs
+
         if (dtcp->dtcpState->isWinBased())
         {
           if (!dtcp->isClosedWinQClosed())
@@ -682,12 +680,6 @@ void DTP::handleMsgFromRMT(PDU* msg){
 
     throw cRuntimeError("Unexptected PDU Type");
   }
-
-
-
-  //TODO A1 not sure about this scheduling; yeah it will be deleted
-//  schedule(rcvrInactivityTimer);
-
 
   state->setCurrentPdu(NULL);
 }
@@ -780,14 +772,6 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     addPDUToReassemblyQ(pdu);
 
 
-    //TODO A!
-    //s check if this is needed to uncomment
-    /* If this is a new run then I should set my rcvrLeftWindowEdge to pdu->seqNum +1 */
-//    state->setRcvLeftWinEdge(pdu->getSeqNum());
-
-    // WHY??? -> Then don't.
-//    runInitialSequenceNumberPolicy();
-
     if (state->isDtcpPresent())
     {
       svUpdate(pdu->getSeqNum());
@@ -799,8 +783,6 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     }
     delimitFromRMT(NULL);
 
-    //
-//    return;
   }
   else
   {
@@ -876,8 +858,6 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       }
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
-      //XXX!!!!
-//          return;
 
     }
     else
@@ -898,14 +878,13 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         }
 
         delimitFromRMT(pdu);
-        //XXX!!!!
-//            return;
+
       }
-      //TODO Find out why there is sequenceNumber -> Start RcvrInactivityTimer(PDU.SequenceNumber) /* Backstop timer */
+      /* Backstop timer */
       schedule(rcvrInactivityTimer);
     }
 
-    //TODO A1 DIF.integrity
+    //TODO C1 DIF.integrity
     /* If we are encrypting, we can't let PDU sequence numbers roll over */
 
     //If DIF.Integrity and PDU.SeqNum > SequenceNumberRollOverThreshhold Then
@@ -913,8 +892,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //RequestFAICreateNewConnection( PDU.FlowID )
     //Fi
   }
-  //XXX hotfix
-//delete pdu;
+
 }
 
 void DTP::handleDTPRcvrInactivityTimer(RcvrInactivityTimer* timer)
@@ -1025,7 +1003,7 @@ void DTP::generatePDUsnew()
   setPDUHeader(baseDataPDU);
 
   //invoke SDU protection so we don't have to bother with it afterwards; EDIT: sduQ is not used anymore!!!
-  for (std::vector<SDU*>::iterator it = sduQ.begin(); it != sduQ.end(); ++it){
+  for (std::vector<SDU*>::iterator it = dataQ.begin(); it != dataQ.end(); ++it){
     sduProtection(*it);
   }
 
@@ -1162,15 +1140,6 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
         it = pduQ->erase(it);
       }
-      //TODO A4 Report change in specs
-      //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
-      //but if this is the first PDU we send, we have to update it here
-      if(dtcp->getDTCPState()->getRxQLen()){
-        dtcp->updateSenderLWE(dtcp->getDTCPState()->getRxQ()->front()->getPdu()->getSeqNum());
-      }else{
-        dtcp->updateSenderLWE(state->getLastSeqNumSent());
-      }
-
 
     }
     else
@@ -1185,11 +1154,6 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
         sendToRMT((*it));
         it = pduQ->erase(it);
       }
-
-      //TODO A4 Report change in specs
-      //Normally this is not necessary if Rx is present, because SenderLWE is updated upon Ack reception
-      //but if RX is not used we have to update it here
-      dtcp->updateSenderLWE(state->getLastSeqNumSent());
 
     }
 
@@ -1206,10 +1170,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       sendToRMT((*it));
       it = pduQ->erase(it);
     }
-//    TODO A4 Report change in specs -> O'really?
-//    state->setSenderLeftWinEdge(state->getNextSeqNumToSendWithoutIncrement());
   }
-
 }
 
 
@@ -1223,7 +1184,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
  */
 void DTP::sduProtection(SDU *sdu)
 {
-  //TODO A1
+  //TODO C1
 
 }
 
@@ -1318,20 +1279,23 @@ void DTP::notifyAboutUnableMaintain()
 }
 
 
-//TODO A! Find a spot to call this method
+/**
+ * This methods is invoked when number of PDUs on closedWindowQueue
+ * gets reduced under maxClosedWinQLen. It indicates to the upper flow
+ * that it can start sending again.
+ */
 void DTP::notifyStartSending()
 {
-//  //FIX A2 - activate when CDAP Splitter is ready
-//      return;
-//  // Notify User Flow there has been no activity for awhile.
-
-
   if(state->isBlockingPort()){
     emit(sigEFCPStartSending, flow);
     state->setBlockingPort(false);
   }
 }
 
+/**
+ * This method is invoked upon reaching limit on closedWindowQueue
+ * and causes the upper flow (whether it is AE or another IPCP).
+ */
 void DTP::notifyStopSending()
 {
 
@@ -1411,7 +1375,7 @@ unsigned int DTP::getAllowableGap()
   return 4;
 }
 
-//TODO A! When to call it?
+//TODO B! When to call it?
 void DTP::rcvrBufferStateChange()
 {
   if (dtcp->dtcpState->isRateBased())
@@ -1422,35 +1386,26 @@ void DTP::rcvrBufferStateChange()
 
 void DTP::svUpdate(unsigned int seqNum)
 {
-//  state->setRcvLeftWinEdge(seqNum);
-//  uint ackSeqNum = state->getRcvLeftWinEdge();
-  /* XXX Don't know where else to put */
 
-  // TODO A1 Get approval for this change
   //update RcvLeftWindoEdge
-  // if there is FC, but no RX then updateRcvLWE would not be called, right?
-    state->updateRcvLWE(seqNum);
+  state->updateRcvLWE(seqNum);
 
 
   if (dtcp->dtcpState->isFCPresent())
   {
     if (dtcp->dtcpState->isWinBased())
     {
-//      runRcvrFlowControlPolicy();
-
      dtcp->runRcvrFCPolicy(state);
     }
   }
 
   if (dtcp->dtcpState->isRxPresent())
   {
-//    runRcvrAckPolicy(state->getRcvLeftWinEdge() - 1);
     dtcp->runRcvrAckPolicy(state);
   }
 
   if (dtcp->dtcpState->isFCPresent() && !dtcp->dtcpState->isRxPresent())
   {
-//    runReceivingFlowControlPolicy();
     dtcp->runReceivingFCPolicy(state);
   }
 

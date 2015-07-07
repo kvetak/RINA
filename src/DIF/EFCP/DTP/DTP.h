@@ -74,7 +74,6 @@ class DTP : public cSimpleModule
 
     /* Various queues */
     /* Output queues - from App to RMT */
-    std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
 

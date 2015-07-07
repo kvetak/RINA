@@ -34,13 +34,13 @@ Register_Class(RTTEstimatorPolicyDefault);
 
 RTTEstimatorPolicyDefault::RTTEstimatorPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 RTTEstimatorPolicyDefault::~RTTEstimatorPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool RTTEstimatorPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

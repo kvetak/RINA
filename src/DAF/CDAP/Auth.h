@@ -27,7 +27,7 @@
 
 
 /**
- * TODO - Generated class
+ *
  */
 class LisAuthValidate;
 class Auth : public cSimpleModule
