@@ -575,6 +575,11 @@ void DTCP::redrawGUI()
   std::ostringstream desc;
 
 
+  desc << "rRWE: " << getRcvRightWinEdge() << "\n";
+  desc << "sLWE: " << getSndLeftWinEdge() << "\n";
+  desc << "sRWE: " << getSndRtWinEdge() << "\n";
+
+
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
 
   if (rxQ->empty())

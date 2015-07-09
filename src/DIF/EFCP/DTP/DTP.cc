@@ -216,12 +216,8 @@ void DTP::redrawGUI()
   std::ostringstream desc;
   desc << "nextSeqNum: " << state->getNextSeqNumToSendWithoutIncrement() <<"\n";
 
-  if(state->isDtcpPresent() && dtcp->dtcpState->isFCPresent()){
-    desc << "sLWE: " << dtcp->dtcpState->getSndLeftWinEdge() <<"\n";
-    desc << "sRWE: " << dtcp->getSndRtWinEdge() << "\n";
-  }
   desc << "rLWE: " << state->getRcvLeftWinEdge() <<"\n";
-  desc << "rRWE: " << dtcp->getRcvRightWinEdge() << "\n";
+
   desc << "maxSeqNumRcvd: " << state->getMaxSeqNumRcvd() <<"\n";
 
 
