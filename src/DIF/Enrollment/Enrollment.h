@@ -94,9 +94,9 @@ class Enrollment : public cSimpleModule
     void initSignalsAndListeners();
     virtual void initialize();
 
-    void parseConfig(cXMLElement* config);
-
     void updateEnrollmentDisplay(Enrollment::IconEnrolStatus status);
+
+    void parseConfig(cXMLElement* config);
 
     void authenticate(EnrollmentStateTableEntry* entry, CDAP_M_Connect* msg);
     void processConResPosi(EnrollmentStateTableEntry* entry, CDAPMessage* cmsg);

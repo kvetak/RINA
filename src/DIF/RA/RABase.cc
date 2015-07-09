@@ -37,15 +37,21 @@ const QoSCubeSet& RABase::getQoSCubes() const {
 }
 
 std::ostream& operator <<(std::ostream& os, const QoSCubeSet& cubes) {
-    for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
-        os << *it;
+    for (auto const& it : cubes)
+    {
+        os << it;
+    }
     return os;
 }
 
-const QoSCube* RABase::getQoSCubeById(std::string qosId) const {
-    for (QCubeCItem it = QoSCubes.begin(); it != QoSCubes.end(); ++it) {
-        if (!it->getQosId().compare(qosId))
-            return &(*it);
+const QoSCube* RABase::getQoSCubeById(std::string qosId) const
+{
+    for (auto const& it : QoSCubes)
+    {
+        if (!it.getQosId().compare(qosId))
+        {
+            return &it;
+        }
     }
-    return NULL;
+    return nullptr;
 }

@@ -191,7 +191,6 @@ void Enrollment::startCACE(APNIPair* apnip) {
     dst.AEName = entry.getRemote().getAename();
     dst.ApInst = entry.getRemote().getApinstance();
     dst.ApName = entry.getRemote().getApn().getName();
-
     naming_t src;
     src.AEInst = entry.getLocal().getAeinstance();
     src.AEName = entry.getLocal().getAename();
@@ -718,11 +717,26 @@ void Enrollment::parseConfig(cXMLElement* config) {
     }
 }
 
+void Enrollment::updateEnrollmentDisplay(Enrollment::IconEnrolStatus status) {
+    cModule* ipc = this->getParentModule()->getParentModule();
+    std::string ico, col;
+    switch (status) {
+        case ENICON_ENROLLED: {ico="status/check"; col="green"; break;}
+        case ENICON_FLOWMIS: {ico="status/excl"; col="yellow";break;}
+        case ENICON_NOTENROLLED:
+        default:              {ico="status/cross"; col="red"; break;}
+
+    }
+    ipc->getDisplayString().setTagArg("i2", 0, ico.c_str());
+    ipc->getDisplayString().setTagArg("i2", 1, col.c_str());
+}
+
 void Enrollment::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         if ( !opp_strcmp(msg->getName(), MSG_ENRLCON) ) {
             APNIPairs* apnip = PreenrollConnects[simTime()];
+
             while (!apnip->empty())
             {
                 APNIPair pair = apnip->front();
