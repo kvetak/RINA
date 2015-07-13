@@ -49,7 +49,8 @@ endif
 # Main target when "Build Project" is invoked
 all:
 	$(qecho) Creating library librinasimcore ...
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;  
+	$(Q)if [ -d $(PROJECT_OUTPUT_DIR) ]; then \
+		find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;; fi
 	$(Q)cd src && $(MAKE) all
 	$(qecho) Creating library librinasim ...
 	$(Q)cd policies && $(MAKE) all	
