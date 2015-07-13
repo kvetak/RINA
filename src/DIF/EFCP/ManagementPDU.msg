@@ -20,37 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __RINA_MOCKEFCP_H_
-#define __RINA_MOCKEFCP_H_
 
-#include <omnetpp.h>
-//#include "DataTransferPDU.h"
-#include "CDAPMessage_m.h"
-#include "ManagementPDU_m.h"
+cplusplus {{
+#include "PDU.h"
+//#include "UserDataField.h"
 
-
-
-
-class MockEFCPI : public cSimpleModule
-{
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-
-
-  private:
-    /* To RIBd */
-    cGate* northI;
-    cGate* northO;
-
-    /* To RMT */
-    cGate* southI;
-    cGate* southO;
-
-    ConnectionId* connID;
-
-    APN srcApn;
-    Address srcAddress;
-};
-
-#endif
+//typedef UserDataField* UserDataFieldPtr;
+}}
+packet PDU;
+//class noncobject UserDataFieldPtr;
+//
+// TODO generated message class
+//
+packet ManagementPDU extends PDU {
+//    @customize(true);
+    type = MANAGEMENT_PDU;
+    displayString = "b=15,15,oval,#2066CC,#2066CC,0";
+    
+}

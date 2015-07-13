@@ -55,6 +55,7 @@ enum PDUType{
         NACK_FLOW_PDU 			= 0x880D;
         SELECT_ACK_FLOW_PDU 	= 0x880E;
         SELECT_NACK_FLOW_PDU 	= 0x880F;
+        MANAGEMENT_PDU			= 0x4000;
 
 }
 
@@ -94,6 +95,12 @@ packet PDU {
     
     
 }
+
+//packet ManagemtPDU extends PDU {
+//
+//	type = MANAGEMENT_PDU;
+//   
+//}
 
 //packet DataTransferPDU extends PDU{
 //    type = DATA_TRANSFER_PDU;

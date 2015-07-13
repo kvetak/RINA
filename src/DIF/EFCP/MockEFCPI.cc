@@ -50,7 +50,7 @@ void MockEFCPI::handleMessage(cMessage *msg)
   {
 
     CDAPMessage* cdap = (CDAPMessage*)msg;
-    DataTransferPDU* pdu = new DataTransferPDU();
+    ManagementPDU* pdu = new ManagementPDU();
 
     pdu->setConnId(*(connID->dup()));
 
@@ -61,15 +61,17 @@ void MockEFCPI::handleMessage(cMessage *msg)
 
     pdu->setSeqNum(0);
 
-    SDU* sdu = new SDU();
-    sdu->setDataType(SDU_COMPLETE_TYPE);
-    sdu->addUserData((cPacket*) msg);
-    sdu->setSeqNum(0);
+    pdu->encapsulate(cdap);
 
-    UserDataField* userData = new UserDataField();
-    userData->addData(sdu);
-    pdu->setUserDataField(userData);
-    pdu->updatePacketSize();
+//    SDU* sdu = new SDU();
+//    sdu->setDataType(SDU_COMPLETE_TYPE);
+//    sdu->addUserData((cPacket*) msg);
+//    sdu->setSeqNum(0);
+//
+//    UserDataField* userData = new UserDataField();
+//    userData->addData(sdu);
+//    pdu->setUserDataField(userData);
+//    pdu->updatePacketSize();
 
 
     send(pdu, southO);
@@ -79,20 +81,24 @@ void MockEFCPI::handleMessage(cMessage *msg)
   else if (msg->arrivedOn(southI->getId()))
   {
 
-    DataTransferPDU* pdu = (DataTransferPDU*) msg;
+    cPacket* packet = (cPacket*)msg;
+    send(packet->decapsulate(), northO);
+    delete packet;
 
-    UserDataField* userData = pdu->getUserDataField();
-
-    SDU* sdu = userData->getData();
-    take(sdu);
-
-    cPacket* cdap = sdu->getUserData();
-    take(cdap);
-
-    send(cdap, northO);
-    delete sdu;
-
-    delete pdu;
+//    DataTransferPDU* pdu = (DataTransferPDU*) msg;
+//
+//    UserDataField* userData = pdu->getUserDataField();
+//
+//    SDU* sdu = userData->getData();
+//    take(sdu);
+//
+//    cPacket* cdap = sdu->getUserData();
+//    take(cdap);
+//
+//    send(cdap, northO);
+//    delete sdu;
+//
+//    delete pdu;
 
 
   }
