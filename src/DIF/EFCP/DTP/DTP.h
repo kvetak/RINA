@@ -194,6 +194,8 @@ class DTP : public cSimpleModule
     void notifyStartSending();
     void handleControlPDUFromRMT(ControlPDU* pdu);
 
+    double getATime();
+
   public:
     DTP();
     virtual ~DTP();

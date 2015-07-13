@@ -440,9 +440,17 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
 {
   //TODO A! Needs deeper examination.
 
+
   //TODO A3
   //Update LeftWindowEdge removing allowed gaps;
   unsigned int sduGap = qoSCube->getMaxAllowGap();
+
+  if(seqNum == rcvLeftWinEdge + 1 || seqNum <= rcvLeftWinEdge + sduGap){
+    rcvLeftWinEdge = seqNum;
+  }
+
+  return;
+
 
   if (isDtcpPresent())
   {

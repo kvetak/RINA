@@ -51,7 +51,7 @@ void SendingAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpStat
 
 
 
-  dtp->svUpdate(dtpState->getTmpAtimer()->getSeqNum());
+  dtp->svUpdate(dtpState->getMaxSeqNumRcvd());
 //  //Update RcvLetWindowEdge
 //  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
 

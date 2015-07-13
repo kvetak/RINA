@@ -364,7 +364,7 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
     //TODO B1 add support for out of order SDU delivery
     // negative implication
     unsigned int seqNum = (*it)->getSeqNum();
-    if((getQoSCube()->isForceOrder() && ! (seqNum < state->getRcvLeftWinEdge()))){
+    if((getQoSCube()->isForceOrder() && ! (seqNum <= state->getRcvLeftWinEdge()))){
       return;
     }
 
@@ -706,6 +706,11 @@ bool DTP::isDuplicate(unsigned int seqNum)
   return dup;
 }
 
+double DTP::getATime()
+{
+  return state->getQoSCube()->getATime();
+}
+
 void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
 
@@ -768,16 +773,24 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //Put PDU on ReassemblyQ
     addPDUToReassemblyQ(pdu);
 
-
-    if (state->isDtcpPresent())
+    if (getATime() > 0)
     {
-      svUpdate(pdu->getSeqNum());
-
+      startATimer(pdu->getSeqNum());
     }
     else
     {
-      state->setRcvLeftWinEdge(pdu->getSeqNum());
+      svUpdate(pdu->getSeqNum());
     }
+
+//    if (state->isDtcpPresent())
+//    {
+//      svUpdate(pdu->getSeqNum());
+//
+//    }
+//    else
+//    {
+//      state->setRcvLeftWinEdge(pdu->getSeqNum());
+//    }
     delimitFromRMT(NULL);
 
   }
@@ -822,15 +835,15 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
         addPDUToReassemblyQ(pdu);
 
-        if (state->isDtcpPresent())
-        {
-          svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
-        }
-        else
-        {
-          state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-          /* No A-Timer necessary, already running */
-        }
+//        if (state->isDtcpPresent())
+//        {
+//          svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
+//        }
+//        else
+//        {
+//          state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+//          /* No A-Timer necessary, already running */
+//        }
 
         delimitFromRMT(NULL);
         return;
@@ -843,16 +856,27 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
       state->incMaxSeqNumRcvd();
       addPDUToReassemblyQ(pdu);
 
-      if (state->isDtcpPresent())
+
+
+      if (getATime() > 0)
       {
-        svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+        startATimer(pdu->getSeqNum());
       }
       else
       {
-        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-        //start A-Timer (for this PDU)
-        startATimer(pdu->getSeqNum());
+        svUpdate(state->getMaxSeqNumRcvd());
       }
+
+//      if (state->isDtcpPresent())
+//      {
+//        svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//      }
+//      else
+//      {
+//        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+//        //start A-Timer (for this PDU)
+//        startATimer(pdu->getSeqNum());
+//      }
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
 
@@ -865,14 +889,26 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         state->setMaxSeqNumRcvd(pdu->getSeqNum());
         addPDUToReassemblyQ(pdu);
 
-        if (state->isDtcpPresent())
-        {
-          svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-        }
-        else
+
+
+        if (getATime() > 0)
         {
           startATimer(state->getMaxSeqNumRcvd());
         }
+        else
+        {
+          svUpdate(state->getMaxSeqNumRcvd());
+        }
+
+
+//        if (state->isDtcpPresent())
+//        {
+//          svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//        }
+//        else
+//        {
+//          startATimer(state->getMaxSeqNumRcvd());
+//        }
 
         delimitFromRMT(pdu);
 
@@ -1383,6 +1419,11 @@ void DTP::rcvrBufferStateChange()
 
 void DTP::svUpdate(unsigned int seqNum)
 {
+
+  if(!state->isDtcpPresent()){
+    state->setRcvLeftWinEdge(seqNum);
+    return;
+  }
 
   //update RcvLeftWindoEdge
   state->updateRcvLWE(seqNum);
