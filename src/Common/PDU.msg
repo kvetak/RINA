@@ -84,6 +84,7 @@ packet PDU {
     int flags = 0; //8bits
     unsigned int pduLen = PDU_HEADER_LEN;
     unsigned int seqNum;
+    unsigned int hopCount = 255;
     byteLength = 10;
     schedulingPriority = -1;
 //    cObject userData; //unsigned char []? string?
