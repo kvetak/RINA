@@ -763,6 +763,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     flushReassemblyPDUQ();
 
     state->setMaxSeqNumRcvd(pdu->getSeqNum());
+    state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
 
     //Put PDU on ReassemblyQ
     addPDUToReassemblyQ(pdu);

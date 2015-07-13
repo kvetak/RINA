@@ -46,14 +46,21 @@ void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
   /* Default */
 
-      unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
+      unsigned int seqNum = dtpState->getRcvLeftWinEdge();
 
-      if(dtpState->getRcvLeftWinEdge() == 0){
-        seqNum = 0;
-      }
+//      if(dtpState->getRcvLeftWinEdge() == 0){
+//        seqNum = 0;
+//      }
 
-      if (dtp->getQoSCube()->getATime() < 0)
+      if (dtp->getQoSCube()->getATime() > 0)
       {
+        //set A-timer for this PDU
+        dtp->startATimer(seqNum);
+
+      }
+      else
+      {
+
         //Update LeftWindowEdge removing allowed gaps;
         dtpState->updateRcvLWE(seqNum);
   //      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
@@ -86,11 +93,6 @@ void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
         //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
         //XXX How could there be any A-Timer when isImmediate returned true?
 
-      }
-      else
-      {
-        //set A-timer for this PDU
-        dtp->startATimer(seqNum);
       }
 
       /* End default */

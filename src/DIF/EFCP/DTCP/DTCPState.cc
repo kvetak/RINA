@@ -41,7 +41,8 @@ void DTCPState::resetRcvVars()
 
 void DTCPState::initFC()
 {
-  rcvRightWinEdge = rcvCredit;
+//  rcvRightWinEdge = rcvCredit;
+  resetRcvVars();
   sndRightWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
@@ -60,7 +61,7 @@ void DTCPState::initFC()
   rcvrRate = configRcvrRate;
 
   sendingRate = 0;
-  rcvrRate = 0;
+//  rcvrRate = 0;
 
 }
 

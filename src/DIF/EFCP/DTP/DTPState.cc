@@ -450,7 +450,7 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
     PDUQ_t* pduQ = &reassemblyPDUQ;
     for (it = pduQ->begin(); it != pduQ->end(); ++it)
     {
-      if ((*it)->getSeqNum() == getRcvLeftWinEdge())
+      if ((*it)->getSeqNum() == (getRcvLeftWinEdge() + 1))
       {
         incRcvLeftWindowEdge();
 

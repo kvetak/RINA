@@ -47,9 +47,13 @@ void SendingAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpStat
   /* You wish your wife was this dirty, don't you? */
   /* Default */
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+//  DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
 
-  //Update RcvLetWindowEdge
-  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
+
+
+  dtp->svUpdate(dtpState->getTmpAtimer()->getSeqNum());
+//  //Update RcvLetWindowEdge
+//  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
 
   //Invoke Delimiting
   dtp->delimitFromRMT(NULL);

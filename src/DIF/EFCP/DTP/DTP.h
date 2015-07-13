@@ -160,7 +160,7 @@ class DTP : public cSimpleModule
 
     unsigned int getAllowableGap();
 
-    void svUpdate(unsigned int seqNum);
+
 
     void flushReassemblyPDUQ();
     void clearRxQ();
@@ -203,6 +203,7 @@ class DTP : public cSimpleModule
 //    bool write(int portId, unsigned char *buffer, int len);
 
     void delimitFromRMT(DataTransferPDU* pdu);
+    void svUpdate(unsigned int seqNum);
 
     void setFlow(const Flow* flow);
     void setDTCP(DTCP* dtcp);
