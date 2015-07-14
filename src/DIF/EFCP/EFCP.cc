@@ -233,7 +233,15 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
   efcpiModule->callInitialize();
 
-  efcpi->getDtcp()->getDisplayString();
+  DTCP* dtcp = efcpi->getDtcp();
+  if(dtcp != NULL){
+    cDisplayString& disp = dtcp->getDisplayString();
+
+    disp.setTagArg("p", 0, 131);
+    disp.setTagArg("p", 1, 80);
+
+  }
+
   return efcpi;
 }
 
