@@ -727,6 +727,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     {
       if (pdu->getSeqNum() > dtcp->getRcvRightWinEdge())
       {
+        schedule(rcvrInactivityTimer);
         dtcp->runRcvFCOverrunPolicy(state);
         if (state->getCurrentPdu() == NULL)
         {
@@ -738,6 +739,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     {
       if (dtcp->getPdusRcvdInTimeUnit() + 1 > dtcp->getRcvrRate())
       {
+        schedule(rcvrInactivityTimer);
         dtcp->runRcvFCOverrunPolicy(state);
         if (state->getCurrentPdu() == NULL)
         {
@@ -745,16 +747,19 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
         }
       }
     }
+
+    if (dtcp->dtcpState->isFCPresent())
+    {
+      //    dtcp->resetWindowTimer();
+
+      /* Run ECN policy */
+      dtcp->runECNPolicy(state);
+
+    }
   }
 
-  if (dtcp->dtcpState->isFCPresent())
-  {
-//    dtcp->resetWindowTimer();
 
-    /* Run ECN policy */
-    dtcp->runECNPolicy(state);
 
-  }
 
   // if PDU.DRF == true
   if (pdu->getFlags() & DRF_FLAG)
@@ -792,6 +797,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 //      state->setRcvLeftWinEdge(pdu->getSeqNum());
 //    }
     delimitFromRMT(NULL);
+
+    schedule(rcvrInactivityTimer);
 
   }
   else
@@ -846,6 +853,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 //        }
 
         delimitFromRMT(NULL);
+        schedule(rcvrInactivityTimer);
         return;
       }
     }
@@ -880,6 +888,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
 
+      schedule(rcvrInactivityTimer);
+
     }
     else
     {
@@ -911,10 +921,11 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
 //        }
 
         delimitFromRMT(pdu);
+        schedule(rcvrInactivityTimer);
 
       }
-      /* Backstop timer */
-      schedule(rcvrInactivityTimer);
+//  /* Backstop timer */
+//  schedule(rcvrInactivityTimer);
     }
 
     //TODO C1 DIF.integrity
@@ -925,6 +936,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu){
     //RequestFAICreateNewConnection( PDU.FlowID )
     //Fi
   }
+
 
 }
 
@@ -1463,8 +1475,10 @@ void DTP::schedule(DTPTimers *timer, double time)
 {
 
     double MPL = (state->getMPL() > 0)? state->getMPL() : 0;
-    unsigned int rxCount = (dtcp->dtcpState->isRxPresent() && dtcp->getDataReXmitMax() )? dtcp->getDataReXmitMax() : 1;
-    double R = (getRxTime() > 0 && rxCount>0)? getRxTime() * rxCount : 0;
+
+//    (state->isDtcpPresent() && dtcp->dtcpState->isRxPresent() )? dtcp->getDataReXmitMax() : 0;
+    unsigned int rxCount = (state->isDtcpPresent() && dtcp->dtcpState->isRxPresent() )? dtcp->getDataReXmitMax() : 0;
+    double R = (state->getRtt() > 0 && rxCount > 0) ? state->getRtt() * rxCount : 0;
     double A = (state->getQoSCube()->getATime() > 0)? state->getQoSCube()->getATime()/1000 : 0;
 
   switch (timer->getType())
@@ -1476,16 +1490,10 @@ void DTP::schedule(DTPTimers *timer, double time)
         break;
     case (DTP_RCVR_INACTIVITY_TIMER):
       //2(MPL+R+A)
-        scheduleAt(simTime() + 3 * (MPL + R + A) , timer);
+        scheduleAt(simTime() + 2 * (MPL + R + A) , timer);
         break;
     case (DTP_A_TIMER):
-        //TODO B1 Tune it up.
-        /* The timer should be set to a quantity near A â€“ (RTT/2 + ta + ï�¥),
-         * where RTT is the estimated Round Trip Time, ta is the time to
-         * generate and send an Ack/Flow PDU, and ï�¥ is the standard deviation
-         * of these estimates.
-         */
-        //A
+
           scheduleAt(simTime() + A , timer);
       break;
   }
