@@ -77,10 +77,10 @@ void Delimiting::processMsgFromFAI(cPacket* msg){
    * 3. Go through Data vector and send them to EFCPI
    */
 
-
   SDU* sdu = new SDU();
   sdu->setDataType(SDU_COMPLETE_TYPE);
-  sdu->addUserData(msg);
+//  sdu->addUserData(msg);
+  sdu->encapsulate(msg);
   sdu->setSeqNum(seqNum);
 
   //TODO A1 handle multiple gates -> change to cGate*
@@ -91,7 +91,7 @@ void Delimiting::handleMsgFromEfcpi(Data* msg){
 
   SDU* sdu = (SDU*) msg;
 //  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
-  cPacket* cdap = sdu->getUserData();
+  cPacket* cdap = sdu->decapsulate();
   take(cdap);
 
   send(cdap, northO);

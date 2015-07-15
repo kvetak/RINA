@@ -40,8 +40,8 @@ DataTransferPDU::DataTransferPDU(const char *name, int kind): DataTransferPDU_Ba
 void DataTransferPDU::copy(const DataTransferPDU& other){
   if(other.userDataField_var != NULL){
 
-    this->userDataField_var = other.userDataField_var->dup();
-    take(userDataField_var);
+//    this->userDataField_var = other.userDataField_var->dup();
+//    take(userDataField_var);
   }
 }
 
@@ -53,8 +53,8 @@ unsigned int DataTransferPDU::getSize(){
 DataTransferPDU::~DataTransferPDU()
 {
   if(userDataField_var != NULL){
-    drop(userDataField_var);
-    delete userDataField_var;
+//    drop(userDataField_var);
+//    delete userDataField_var;
   }
 }
 

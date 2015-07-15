@@ -30,9 +30,10 @@ enum DataType{
 }
 
 
-message Data {
+packet Data {
     @customize(true);  // see the generated C++ header for more info
     int dataType enum(DataType);
+    byteLength = 10;
     
 //    abstract int anotherField;Register_Class(Data);
 }

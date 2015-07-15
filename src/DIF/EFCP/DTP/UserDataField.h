@@ -33,6 +33,7 @@
 #include <omnetpp.h>
 #include <vector>
 #include "SDU.h"
+#include "UserDataField_m.h"
 
 
 
@@ -40,7 +41,7 @@ typedef std::vector<SDU*> PDUData;
 /*
  *
  */
-class UserDataField: public cOwnedObject
+class UserDataField: public UserDataField_Base
 {
   private:
     unsigned int sduDelimitFlags;
@@ -51,8 +52,10 @@ class UserDataField: public cOwnedObject
     void copy(const UserDataField& other);
 
   public:
-    UserDataField();
+//    UserDataField();
+    UserDataField(const char *name=NULL, int kind=0);
     UserDataField(const UserDataField& other);
+//    UserDataField(const UserDataField& other) : UserDataField_Base(other) {copy(other);}
     virtual ~UserDataField();
     void addData(SDU* data);
     /**
@@ -61,13 +64,21 @@ class UserDataField: public cOwnedObject
      * @return SDU
      */
     SDU* getData();
+//    UserDataField* dup() const {return new UserDataField();}
     virtual UserDataField* dup() const {return new UserDataField(*this);}
+
 
     unsigned int getSize();
     unsigned int getSduDelimitFlags() const;
     void setSduDelimitFlags(unsigned int sduDelimitFlags);
     unsigned int getSduSeqNum() const;
     void setSduSeqNum(unsigned int sduSeqNum);
+
+
+
+    UserDataField& operator=(const UserDataField& other) {if (this==&other) return *this; UserDataField_Base::operator=(other); copy(other); return *this;}
+
+
 };
 
 #endif /* USERDATAFIELD_H_ */
