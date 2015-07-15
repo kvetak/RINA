@@ -1,7 +1,7 @@
 RINA Simulator
 ====
 
-###Version progress
+###Version changelog
 
 * May/June 2015 - Enrollment, (N-1)-data/management separation, MIT relicensing,
                   EFCPv4+ updates, separation of QoSCubes and QoS requirements,
@@ -18,7 +18,7 @@ RINA Simulator
 
 ###Links
 * [OpenSourceProject Git with archived RINASim releases](https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/)
-* [Out-of-the-box Virtual Machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
+* [VMWare Out-of-the-box virtual machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
 * [PRISTINE webpage](http://ict-pristine.eu/)	 
 * [Developer's mailing-list](https://www.fit.vutbr.cz/mailman/listinfo/rinasim)
 
@@ -38,7 +38,7 @@ RINA Simulator
 	
 	/policies				    ... all programable RINA policies
 
-###Policies
+###Available policies
 	/DAF                           ... DAF policies
 	/DIF                           ... DIF policies
 	    /FA                        ... policies related to FA modules
