@@ -45,7 +45,7 @@ import rina.src.DIF.IPCProcess;
 module Host2AP
 {
     parameters:
-        @display("i=device/pc;bgb=340,422");
+        @display("i=device/pc;bgb=311,400");
         @node;
 
     gates:
@@ -53,27 +53,27 @@ module Host2AP
 
     submodules:
         applicationProcess1: ApplicationProcess {
-            @display("p=72,57");
+            @display("p=56,56");
         }
 
         applicationProcess2: ApplicationProcess {
-            @display("p=268,57");
+            @display("p=252,56");
         }
 
         difAllocator: DIFAllocator {
-            @display("p=170,57");
+            @display("p=154,56");
         }
 
         ipcProcess0: IPCProcess {
-            @display("p=170,342");
+            @display("p=154,323");
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=170,260");
+            @display("p=154,241");
         }
 
         ipcResourceManager: IPCResourceManager {
-            @display("p=170,168");
+            @display("p=154,141");
         }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;

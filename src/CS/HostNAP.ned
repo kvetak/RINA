@@ -33,7 +33,7 @@ import rina.src.DIF.IPCProcess;
 module HostNAP
 {
     parameters:
-        @display("i=device/pc;bgb=257,442");
+        @display("i=device/pc;bgb=255,400");
         @node;
 
         int nofAP = default(1);
@@ -43,23 +43,23 @@ module HostNAP
 
     submodules:
         AP[nofAP]: ApplicationProcess {
-            @display("p=64,68");
+            @display("p=70,56");
         }
 
         difAllocator: DIFAllocator {
-            @display("p=195,68");
+            @display("p=210,56");
         }
 
         ipcProcess0: IPCProcess {
-            @display("p=117,358");
+            @display("p=133,323");
         }
 
         ipcProcess1: IPCProcess {
-            @display("p=117,276");
+            @display("p=132,241");
         }
 
         ipcResourceManager: IPCResourceManager {
-            @display("p=117,180");
+            @display("p=132,141");
         }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium;

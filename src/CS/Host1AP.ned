@@ -47,7 +47,7 @@ import rina.src.DIF.IPCProcess;
 module Host1AP
 {
     parameters:
-        @display("i=device/pc;bgb=255,410");
+        @display("i=device/pc;bgb=255,400");
         @node;
         //int numOfDIFs = 1;
         //int numOfAPs = 1;

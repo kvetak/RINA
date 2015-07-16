@@ -41,26 +41,26 @@ import rina.src.DIF.IPCProcess;
 
 module InteriorRouter3Int
 {
-    @display("i=abstract/switch;bgb=282,267");
+    @display("i=abstract/switch;bgb=360,230");
     @node;
     gates:
         inout medium[3];
     submodules:
         ipcProcess0: IPCProcess {
-            @display("p=65,145");
+            @display("p=65,165");
         }
         ipcProcess1: IPCProcess {
-            @display("p=205,145");
+            @display("p=295,165");
         }
         relayIpc: IPCProcess {
-            @display("p=135,53;i=,#FFB000");
+            @display("p=180,77;i=,#FFB000");
             relay = true;
         }
         difAllocator: DIFAllocator {
             @display("p=65,53");
         }
         ipcProcess2: IPCProcess {
-            @display("p=135,201");
+            @display("p=180,165");
         }
     connections allowunconnected:
         ipcProcess0.southIo++ <--> medium[0];

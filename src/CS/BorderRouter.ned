@@ -40,26 +40,26 @@ import rina.src.DIF.IPCProcess;
 
 module BorderRouter
 {
-    @display("i=abstract/router;bgb=281,341");
+    @display("i=abstract/router;bgb=360,303");
     @node;
     gates:
         inout medium[3];
     submodules:
         ipcProcess1: IPCProcess {
-            @display("p=66,160");
+            @display("p=65,165");
         }
         ipcProcess2: IPCProcess {
-            @display("p=223,160");
+            @display("p=295,165");
         }
         bottomIpc: IPCProcess {
-            @display("p=146,280;i=,#FF4000");
+            @display("p=180,253;i=,#FF4000");
         }
         relayIpc: IPCProcess {
-            @display("p=146,39;i=,#FFB000");
+            @display("p=180,77;i=,#FFB000");
             relay = true;
         }
         ipcProcess3: IPCProcess {
-            @display("p=146,192");
+            @display("p=180,165");
         }
         difAllocator: DIFAllocator {
             @display("p=66,39");

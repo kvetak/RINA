@@ -37,7 +37,7 @@ module InteriorRouterNInt
 
     submodules:
         ipcProcess[sizeof(medium)]: IPCProcess {
-            @display("p=104,245");
+            @display("p=104,245,r");
         }
         relayIpc: IPCProcess {
             @display("p=104,141;i=,#FFB000");
