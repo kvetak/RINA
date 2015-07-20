@@ -29,15 +29,16 @@ import rina.src.DIF.IPCProcess;
 
 module InteriorRouterNInt
 {
-    @display("i=abstract/switch;bgb=206,325");
-    @node;
+    parameters:
+    	@display("i=abstract/switch;bgb=600,325");
+    	@node;
     
     gates:
         inout medium[];
 
     submodules:
         ipcProcess[sizeof(medium)]: IPCProcess {
-            @display("p=104,245,r");
+            @display("p=104,245,r,150");
         }
         relayIpc: IPCProcess {
             @display("p=104,141;i=,#FFB000");
