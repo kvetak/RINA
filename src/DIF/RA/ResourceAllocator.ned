@@ -32,7 +32,7 @@ import rina.src.DIF.RA.PDUFG.IntPDUFG;
 module ResourceAllocator
 {
     parameters:
-        @display("i=block/segm;bgb=470,352");
+        @display("i=block/segm;bgb=503,223");
         string queueAllocPolicyName = default("SingleQueue");
         string pduftType = default("SimplePDUForwardingTable");
         string pdufgPolicyName = default("StaticGenerator");
@@ -41,21 +41,21 @@ module ResourceAllocator
 
     submodules:
         ra: RA {
-            @display("p=55,55");
+            @display("p=69,55");
         }
         nm1FlowTable: NM1FlowTable {
-            @display("p=175,55");
+            @display("p=189,55");
         }
         pduFwdGenerator: <pdufgPolicyName> like IntPDUFG {
-            @display("p=55,150");
+            @display("p=69,150");
         }
         queueAllocPolicy: <queueAllocPolicyName> like IntRAQueueAlloc {
-            @display("p=175,150");
+            @display("p=189,150");
         }
         queueIdGenerator: <queueIdGenName> like IntRAQueueIDGen {
-            @display("p=295,150");
+            @display("p=309,150");
         }
         addressComparator: <addrComparatorName> like IntAddressComparator {
-            @display("p=415,150");
+            @display("p=429,150");
         }
 }

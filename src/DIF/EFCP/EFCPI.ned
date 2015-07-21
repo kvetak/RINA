@@ -33,7 +33,7 @@ import rina.src.DIF.EFCP.DTP.DumbGate;
 module EFCPI
 {
     parameters:
-        @display("i=block/layer;bgb=506,241");
+        @display("i=block/layer;bgb=403,241");
         string initialSeqNumPolicyName;
         string rcvrInactivityPolicyName;
         string senderInactivityPolicyName;
@@ -52,19 +52,19 @@ module EFCPI
             @display("p=41,201;is=vs");
         }
         dtpState: DTPState {
-            @display("p=131,41");
+            @display("p=217,112");
         }
         initialSeqNumPolicy: <initialSeqNumPolicyName> like IntInitialSeqNumPolicy {
-            @display("p=387,29;is=vs");
+            @display("p=329,60;is=vs");
         }
         rttEstimatorPolicy: <rttEstimatorPolicyName> like IntRTTEstimatorPolicy {
-            @display("p=387,100;is=vs");
+            @display("p=329,131;is=vs");
         }
         senderInactivityPolicy: <senderInactivityPolicyName> like IntSenderInactivityPolicy {
-            @display("p=387,68;is=vs");
+            @display("p=329,99;is=vs");
         }
         rcvrInactivityPolicy: <rcvrInactivityPolicyName> like IntRcvrInactivityPolicy {
-            @display("p=387,133;is=vs");
+            @display("p=329,164;is=vs");
         }
     connections allowunconnected:
         northG.northIo <--> northIo;

@@ -31,7 +31,7 @@ module ApplicationProcessNAE
     submodules:
 
         applicationEntity[numOfAE]: ApplicationEntity {
-            @display("p=112,81,c");
+            @display("p=112,81,r,150");
         }
     
     connections allowunconnected:

@@ -25,7 +25,7 @@ package rina.src.DAF.IRM;
 module IPCResourceManager
 {
     parameters:
-        @display("i=misc/node2,#0080C0;bgb=281,170");
+        @display("i=misc/node2,#0080C0;bgb=262,132");
 
     gates:
         //Dynamically created
@@ -34,10 +34,10 @@ module IPCResourceManager
 
     submodules:
         irm: IRM {
-            @display("p=82,83");
+            @display("p=70,60");
         }
         connectionTable: ConnectionTable {
-            @display("p=197,83");
+            @display("p=185,60");
         }
 
     connections allowunconnected:
