@@ -1,69 +1,69 @@
 <?xml version="1.0"?>
 <Configuration>
 
-	<Host id="HostA12">
+	<Host id="HostA">
 		<DA>
 			<Directory>
 				<APN apn="SourceA">
-					<DIF difName="LayerX" ipcAddress="A1" />
+					<DIF difName="TopLayer" ipcAddress="hA" />
 				</APN>
 				<APN apn="DestinationB">
-					<DIF difName="LayerX" ipcAddress="B1" />
+					<DIF difName="TopLayer" ipcAddress="hB" />
 				</APN>
 				
-				<APN apn="A1_LayerX">
-					<DIF difName="LayerA1" ipcAddress="a1" />
+				<APN apn="hA_TopLayer">
+					<DIF difName="MediumLayerA" ipcAddress="ha" />
 				</APN>
-				<APN apn="B1_LayerX">
-					<DIF difName="LayerB1" ipcAddress="b1" />
+				<APN apn="hB_TopLayer">
+					<DIF difName="MediumLayerB" ipcAddress="hb" />
 				</APN>
 				
-				<APN apn="BRA_LayerX">
-					<DIF difName="LayerA1" ipcAddress="bra1" />					
-					<DIF difName="LayerAB" ipcAddress="A" />										
+				<APN apn="rA_TopLayer">
+					<DIF difName="MediumLayerA" ipcAddress="ra" />					
+					<DIF difName="MediumLayerAB" ipcAddress="rA" />										
 				</APN>
-				<APN apn="BRB_LayerX">
-					<DIF difName="LayerB1" ipcAddress="brb1" />					
-					<DIF difName="LayerAB" ipcAddress="B" />										
+				<APN apn="rB_TopLayer">
+					<DIF difName="MediumLayerB" ipcAddress="rb" />					
+					<DIF difName="MediumLayerAB" ipcAddress="rB" />										
 				</APN>
 
-				<APN apn="A_LayerAB">
-					<DIF difName="LayerYA" ipcAddress="ya" />
+				<APN apn="rA_MediumLayerAB">
+					<DIF difName="BottomLayerA" ipcAddress="ra" />
 				</APN>
-				<APN apn="B_LayerAB">
-					<DIF difName="LayerYB" ipcAddress="yb" />
+				<APN apn="rB_MediumLayerAB">
+					<DIF difName="BottomLayerB" ipcAddress="rb" />
 				</APN>
-				<APN apn="Z_LayerAB">
-					<DIF difName="LayerYA" ipcAddress="yza" />
-					<DIF difName="LayerYB" ipcAddress="yzb" />
+				<APN apn="rC_MediumLayerAB">
+					<DIF difName="BottomLayerA" ipcAddress="rc" />
+					<DIF difName="BottomLayerB" ipcAddress="rc" />
 				</APN>
 			</Directory>
 			<NeighborTable>
-				<APN apn="A1_LayerX">
-					<Neighbor apn="BRA_LayerX" />
+				<APN apn="hA_TopLayer">
+					<Neighbor apn="rA_TopLayer" />
 				</APN>						
-				<APN apn="B1_LayerX">
-					<Neighbor apn="BRA_LayerX" />
+				<APN apn="hB_TopLayer">
+					<Neighbor apn="rA_TopLayer" />
 				</APN>			
 			</NeighborTable>
 		</DA>	
 	</Host>
 
-	<Host id="HostB12">
+	<Host id="HostB">
 		<DA>
 			<NeighborTable>
-				<APN apn="A1_LayerX">
-					<Neighbor apn="BRB_LayerX" />
+				<APN apn="hA_TopLayer">
+					<Neighbor apn="rB_TopLayer" />
 				</APN>						
-				<APN apn="B1_LayerX">
-					<Neighbor apn="BRB_LayerX" />
+				<APN apn="hB_TopLayer">
+					<Neighbor apn="rB_TopLayer" />
 				</APN>													
 			</NeighborTable>
 		</DA>	
 		<Enrollment>
 			<Preenrollment>
 	            <SimTime t="5">
-	                <Connect src="B1_LayerX" dst="BRB_LayerX" />
+	                <Connect src="hB_TopLayer" dst="rB_TopLayer" />
 	            </SimTime>
 			</Preenrollment>
 		</Enrollment>	
@@ -72,18 +72,18 @@
 	<Router id="BorderRouterA">
 		<DA>
 			<NeighborTable>
-				<APN apn="B1_LayerX">
-					<Neighbor apn="BRB_LayerX" />
+				<APN apn="hB_TopLayer">
+					<Neighbor apn="rB_TopLayer" />
 				</APN>	
-				<APN apn="B_LayerAB">
-					<Neighbor apn="Z_LayerAB" />
+				<APN apn="rB_MediumLayerAB">
+					<Neighbor apn="rC_MediumLayerAB" />
 				</APN>									
 			</NeighborTable>			
 		</DA>
 		<Enrollment id='ipcProcess2'>
 			<Preenrollment>
 	            <SimTime t="1">
-	                <Connect src="A_LayerAB" dst="Z_LayerAB" />
+	                <Connect src="rA_MediumLayerAB" dst="rC_MediumLayerAB" />
 	            </SimTime>	            
 			</Preenrollment>
 		</Enrollment>			
@@ -92,18 +92,18 @@
 	<Router id="BorderRouterB">
 		<DA>
 			<NeighborTable>
-				<APN apn="A1_LayerX">
-					<Neighbor apn="BRA_LayerX" />
+				<APN apn="hA_TopLayer">
+					<Neighbor apn="rA_TopLayer" />
 				</APN>		
-				<APN apn="A_LayerAB">
-					<Neighbor apn="Z_LayerAB" />
+				<APN apn="rA_MediumLayerAB">
+					<Neighbor apn="rC_MediumLayerAB" />
 				</APN>																	
 			</NeighborTable>						
 		</DA>
 		<Enrollment id='relayIpc'>
 			<Preenrollment>
 	            <SimTime t="2">
-	                <Connect src="BRB_LayerX" dst="BRA_LayerX" />	                
+	                <Connect src="rB_TopLayer" dst="rA_TopLayer" />	                
 	            </SimTime>	            
 			</Preenrollment>
 		</Enrollment>				
@@ -112,8 +112,8 @@
 	<Router id="InteriorRouter">
 		<DA>
 			<NeighborTable>
-				<APN apn="A1_LayerX">
-					<Neighbor apn="BRB_LayerX" />
+				<APN apn="hA_TopLayer">
+					<Neighbor apn="rB_TopLayer" />
 				</APN>						
 			</NeighborTable>			
 		</DA>				
@@ -121,7 +121,7 @@
 
 
 	<QoSCubesSet>
-		<QoSCube id="1">
+		<QoSCube id="QoSCube-UNRELIABLE">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
@@ -141,7 +141,7 @@
 			<CostBits>0</CostBits>
 			<ATime>0</ATime>						
 		</QoSCube>
-		<QoSCube id="2">
+		<QoSCube id="QoSCube-RELIABLE">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
