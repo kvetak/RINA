@@ -5,7 +5,7 @@ network DublinSS
 {
     @display("bgb=388,718");
     submodules:
-        host1: HostNAP {
+        host1: Host1AP {
             @display("p=189,51");
         }
         host2: Host1AP {

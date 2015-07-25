@@ -29,9 +29,15 @@ void QueuePerNQoS::onNM1PortInit(RMTPort* port)
     // get this IPCP's QoS cubes
     const QoSCubeSet& cubes = ra->getQoSCubes();
 
+    rmtAllocator->addQueue(RMTQueue::OUTPUT, port, "M");
+    rmtAllocator->addQueue(RMTQueue::INPUT, port, "M");
+
     // create a pair of queues for each available QoS cube (including management)
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it)
     {
+        // exclude management QoS, this is handled in a different way
+        if (it->getQosId() == VAL_MGMTQOSID) continue;
+
         rmtAllocator->addQueue(RMTQueue::OUTPUT, port, it->getQosId().c_str());
         rmtAllocator->addQueue(RMTQueue::INPUT, port, it->getQosId().c_str());
     }

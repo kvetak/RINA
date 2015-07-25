@@ -70,21 +70,15 @@ class eDLMonitor : public SmartMonitor
 {
 public:
     void onPolicyInit();
-    void onMessageArrival(RMTQueue* queue);
-    void onMessageDeparture(RMTQueue* queue);
+    void postPDUInsertion(RMTQueue* queue);
     void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
     void postQueueCreation(RMTQueue* queue);
 
-    int getInCount(RMTPort* port);
-    int getInThreshold(RMTQueue * queue);
     RMTQueue* getNextInput(RMTPort* port);
-
-    int getOutCount(RMTPort* port);
-    int getOutThreshold(RMTQueue * queue);
     RMTQueue* getNextOutput(RMTPort* port);
 
-    queueStat getInStat(RMTQueue * queue);
-    queueStat getOutStat(RMTQueue * queue);
+    double getInDropProb(RMTQueue * queue);
+    double getOutDropProb(RMTQueue * queue);
 
   protected:
     cuRepo CUs;

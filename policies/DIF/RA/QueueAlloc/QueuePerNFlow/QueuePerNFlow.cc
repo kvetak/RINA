@@ -26,9 +26,9 @@ Define_Module(QueuePerNFlow);
 
 void QueuePerNFlow::onNFlowAlloc(RMTPort* port, Flow* flow)
 {
-    rmtAllocator->addQueue(RMTQueue::OUTPUT, port, idGenerator->generateIDFromFlow(flow).c_str());
+    rmtAllocator->addQueue(RMTQueue::OUTPUT, port, idGenerator->generateIDFromFlow(flow).c_str())->setFlow(flow);
     flow->swapFlow();
-    rmtAllocator->addQueue(RMTQueue::INPUT, port, idGenerator->generateIDFromFlow(flow).c_str());
+    rmtAllocator->addQueue(RMTQueue::INPUT, port, idGenerator->generateIDFromFlow(flow).c_str())->setFlow(flow);
     flow->swapFlow();
 }
 

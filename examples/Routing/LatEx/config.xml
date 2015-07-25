@@ -30,10 +30,10 @@
 		
 		
 		<APN apn="Snd">
-			<DIF difName="NET" ipcAddress="1" />
+			<DIF difName="NET" ipcAddress="h1" />
 		</APN>
 		<APN apn="Rcv">
-			<DIF difName="NET" ipcAddress="2" />
+			<DIF difName="NET" ipcAddress="h2" />
 		</APN>
     </Directory>
   </DA>

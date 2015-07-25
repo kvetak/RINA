@@ -90,7 +90,7 @@ void DLMonitor::onPolicyInit(){
     }
 }
 
-void DLMonitor::onMessageArrival(RMTQueue* queue) {
+void DLMonitor::postPDUInsertion(RMTQueue* queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port != NULL){
         if(queue->getType() == RMTQueue::INPUT){
@@ -106,8 +106,6 @@ void DLMonitor::onMessageArrival(RMTQueue* queue) {
         }
     }
 }
-
-void DLMonitor::onMessageDeparture(RMTQueue* queue) {}
 
 void DLMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
@@ -134,14 +132,6 @@ void DLMonitor::postQueueCreation(RMTQueue* queue){
     Q2CU[queue] = cu;
 }
 
-int DLMonitor::getInCount(RMTPort* port) {
-    return inC[port];
-}
-
-int DLMonitor::getInThreshold(RMTQueue * queue){
-    return queue->getMaxLength();
-}
-
 RMTQueue* DLMonitor::getNextInput(RMTPort* port){
     RMTQueue* q = NULL;
 
@@ -156,15 +146,6 @@ RMTQueue* DLMonitor::getNextInput(RMTPort* port){
     }
 
     return q;
-}
-
-int DLMonitor::getOutCount(RMTPort* port){
-    return outC[port];
-}
-
-int DLMonitor::getOutThreshold(RMTQueue * queue){
-    std::string cu = Q2CU[queue];
-    return CUs[cu].threshold;
 }
 
 RMTQueue* DLMonitor::getNextOutput(RMTPort* port){
@@ -185,25 +166,18 @@ RMTQueue* DLMonitor::getNextOutput(RMTPort* port){
     return q;
 }
 
-
-queueStat DLMonitor::getInStat(RMTQueue * queue){
+double DLMonitor::getInDropProb(RMTQueue * queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
-    if((int)inC[port] > queue->getMaxLength()+5) {
-        error("no esta dropeando entrada");
-    }
-
-    return queueStat(inC[port],queue->getMaxLength(),1,queue->getMaxLength());
+    return ( (int)inC[port] < queue->getMaxLength() )? 0 : 1;
 }
-queueStat DLMonitor::getOutStat(RMTQueue * queue){
+
+double DLMonitor::getOutDropProb(RMTQueue * queue) {
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
     if(port == NULL){ error("RMTPort for RMTQueue not found."); }
 
-    int th = CUs[Q2CU[queue]].threshold;
-    return queueStat(outC[port],th,1,th);
+    return ( (int)outC[port] < CUs[Q2CU[queue]].threshold )? 0 : 1;
 }
-
-
 
 }

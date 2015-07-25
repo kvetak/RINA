@@ -680,6 +680,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
+	Enter_Method("removeNM1Flow()");
     auto flowItem = flowTable->lookup(flow);
     ASSERT(flowItem != nullptr);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);

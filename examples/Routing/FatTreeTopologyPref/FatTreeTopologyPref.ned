@@ -24,6 +24,7 @@
 
 package rina.examples.Routing.FatTreeTopologyPref;
 
+import ned.DatarateChannel;
 import rina.src.CS.*;
 import rina.src.DAF.IRM.ConnectionTable;
 import rina.src.DIF.EFCP.DTCP.*;
@@ -108,38 +109,38 @@ network FatTreeTopologyPref
         }
     connections:
 
-        AS1.medium++ <--> TOR1.medium++;
-        AS1.medium++ <--> TOR2.medium++;
-        AS1.medium++ <--> AS5.medium++;
+        AS1.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR1.medium++;
+        AS1.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR2.medium++;
+        AS1.medium++ <--> DatarateChannel{delay = 1ms;} <--> AS5.medium++;
 
-        AS2.medium++ <--> TOR1.medium++;
-        AS2.medium++ <--> TOR2.medium++;
-        AS2.medium++ <--> AS6.medium++;
+        AS2.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR1.medium++;
+        AS2.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR2.medium++;
+        AS2.medium++ <--> DatarateChannel{delay = 1ms;} <--> AS6.medium++;
 
-        AS3.medium++ <--> TOR3.medium++;
-        AS3.medium++ <--> TOR4.medium++;
-        AS3.medium++ <--> AS5.medium++;
+        AS3.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR3.medium++;
+        AS3.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR4.medium++;
+        AS3.medium++ <--> DatarateChannel{delay = 1ms;} <--> AS5.medium++;
 
-        AS4.medium++ <--> TOR3.medium++;
-        AS4.medium++ <--> TOR4.medium++;
-        AS4.medium++ <--> AS6.medium++;
+        AS4.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR3.medium++;
+        AS4.medium++ <--> DatarateChannel{delay = 1ms;} <--> TOR4.medium++;
+        AS4.medium++ <--> DatarateChannel{delay = 1ms;} <--> AS6.medium++;
 
-        AS5.medium++ <--> AS6.medium++;
+        AS5.medium++ <--> DatarateChannel{delay = 1ms;} <--> AS6.medium++;
 
-        Server11.medium <--> TOR1.medium++;
-        Server12.medium <--> TOR1.medium++;
-        Server13.medium <--> TOR1.medium++;
+        Server11.medium <--> DatarateChannel{delay = 1ms;} <--> TOR1.medium++;
+        Server12.medium <--> DatarateChannel{delay = 1ms;} <--> TOR1.medium++;
+        Server13.medium <--> DatarateChannel{delay = 1ms;} <--> TOR1.medium++;
 
-        Server21.medium <--> TOR2.medium++;
-        Server22.medium <--> TOR2.medium++;
-        Server23.medium <--> TOR2.medium++;
+        Server21.medium <--> DatarateChannel{delay = 1ms;} <--> TOR2.medium++;
+        Server22.medium <--> DatarateChannel{delay = 1ms;} <--> TOR2.medium++;
+        Server23.medium <--> DatarateChannel{delay = 1ms;} <--> TOR2.medium++;
 
-        Server31.medium <--> TOR3.medium++;
-        Server32.medium <--> TOR3.medium++;
-        Server33.medium <--> TOR3.medium++;
+        Server31.medium <--> DatarateChannel{delay = 1ms;} <--> TOR3.medium++;
+        Server32.medium <--> DatarateChannel{delay = 1ms;} <--> TOR3.medium++;
+        Server33.medium <--> DatarateChannel{delay = 1ms;} <--> TOR3.medium++;
 
-        Server41.medium <--> TOR4.medium++;
-        Server42.medium <--> TOR4.medium++;
-        Server43.medium <--> TOR4.medium++;
+        Server41.medium <--> DatarateChannel{delay = 1ms;} <--> TOR4.medium++;
+        Server42.medium <--> DatarateChannel{delay = 1ms;} <--> TOR4.medium++;
+        Server43.medium <--> DatarateChannel{delay = 1ms;} <--> TOR4.medium++;
 
 }

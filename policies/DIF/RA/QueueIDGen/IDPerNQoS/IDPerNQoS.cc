@@ -26,6 +26,7 @@ Define_Module(IDPerNQoS);
 
 std::string IDPerNQoS::generateOutputQueueID(PDU* pdu)
 {
+    if(pdu->getConnId().getQoSId() == VAL_MGMTQOSID){ return "M";}
     return pdu->getConnId().getQoSId();
 }
 

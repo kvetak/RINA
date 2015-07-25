@@ -29,4 +29,6 @@ simple MiniTable like IntPDUForwarding
     parameters:
         @class(MiniTable::MiniTable);
         @display("i=block/socket");
+        
+        bool printAtEnd = default (false);
 }

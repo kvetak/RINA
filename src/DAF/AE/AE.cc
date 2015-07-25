@@ -129,6 +129,7 @@ bool AE::createBindings(Flow& flow) {
     //Set north-half of the routing in ConnectionTable
     Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
+
     //Return true if all dynamically created gates have same index
     return gIrmIn->isConnected()
            && gAeIn->isConnected()
@@ -140,6 +141,8 @@ void AE::initPointers() {
     Irm = dynamic_cast<IRM*>(this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM));
     Cdap = this->getParentModule()->getSubmodule(MOD_CDAP);
 
+    if (!Cdap)
+        error("Pointers to Cdap !");
     if (!Irm || !Cdap)
         error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
 }

@@ -78,6 +78,14 @@ void RMTQueue::initialize()
     WATCH(qTime);
 }
 
+void RMTQueue::setFlow(Flow * f){
+    flow = f;
+}
+const Flow* RMTQueue::getFlow() const{
+    return flow;
+}
+
+
 std::string RMTQueue::info() const
 {
     std::ostringstream os;

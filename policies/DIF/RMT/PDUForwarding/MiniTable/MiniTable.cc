@@ -86,7 +86,9 @@ void MiniTable::clean(){
 void MiniTable::onPolicyInit(){}
 
 void MiniTable::finish(){
- //   EV << toString() <<endl;
+    if(par("printAtEnd").boolValue()){
+        EV << toString() <<endl;
+    }
 }
 
 }
