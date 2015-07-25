@@ -41,6 +41,10 @@ fi
 # process command line arguments
 process_args()
 {
+    glob_scenario="*"
+    glob_group="*"
+    glob_config="*"
+
     case "$1" in
         check)
             mode="check"
@@ -50,19 +54,21 @@ process_args()
             mode="update"
             ;;
         *)
-            echo "Usage: fingerprints.sh check|update [scenario name glob]"
+            echo "Usage: fingerprints.sh check|update [-g group] [-s scenario] [-c configuration]"
             exit 0
             ;;
     esac
 
-    if [ -n "$2" ]; then
-        if [ -n "$( find . -name "$2" -type d)" ]; then
-            glob=$2
-        else
-            echo "No matching scenarios!"
-            exit 1
-        fi
-    fi
+    shift
+
+    while getopts ":g:s:c:" opt; do
+      case $opt in
+        "g") glob_group="$OPTARG" ;;
+        "s") glob_scenario="$OPTARG" ;;
+        "c") glob_config="$OPTARG" ;;
+        *) ;;
+      esac
+    done
 }
 
 # analyze output of a simulation run
@@ -120,19 +126,22 @@ process_args $@
 cd $rina_scenarios
 
 # retrieve scenarios by the given directory glob
-scenarios="$( find . -type f -path "*${glob}/omnetpp.ini" -exec dirname {} \; )"
+scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" -exec dirname {} \; )"
+if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
 
 # run the main loop
 echo "$scenarios" | while read i; do
     # exclude the scenario if this is wanted
-    for scen in "${exclude_scenarios[@]}"; do
-        if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
-    done
+    # for scen in "${exclude_scenarios[@]}"; do
+    #     if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
+    # done
 
     echo "Processing $i..."
     cd "$i"
 
     grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
+        if [[ "$j" != $glob_config ]]; then continue; fi
+
         printf "  $j: "
         output="$( opp_run -u Cmdenv -c "$j" -n "$rina_root" -l "$rina_lib" omnetpp.ini 2>&1 )"
         ret=$?
