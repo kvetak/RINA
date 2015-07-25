@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.FlyIPC;
+package rina.examples.Misc.FlyIPC;
 
 import ned.DatarateChannel;
 import rina.src.CS.HostNAP_Adm;

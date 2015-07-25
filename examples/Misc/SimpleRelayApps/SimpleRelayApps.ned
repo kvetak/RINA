@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.SimpleRelayApps;
+package rina.examples.Misc.SimpleRelayApps;
 import ned.DatarateChannel;
 import rina.src.CS.Host1AP;
 import rina.src.CS.InteriorRouter2Int;

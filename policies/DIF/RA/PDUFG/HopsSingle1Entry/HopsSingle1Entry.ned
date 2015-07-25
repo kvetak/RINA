@@ -1,6 +1,6 @@
 package rina.policies.DIF.RA.PDUFG.HopsSingle1Entry;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.DIF.RA.PDUFG.IntPDUFG;
 
 simple HopsSingle1Entry like IntPDUFG
 {

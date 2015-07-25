@@ -132,8 +132,6 @@ echo "$scenarios" | while read i; do
     echo "Processing $i..."
     cd "$i"
 
-    if [ ! -f omnetpp.ini ]; then echo "  omnetpp.ini not present!" && cd .. && continue; fi
-
     grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
         printf "  $j: "
         output="$( opp_run -u Cmdenv -c "$j" -n "$rina_root" -l "$rina_lib" omnetpp.ini 2>&1 )"

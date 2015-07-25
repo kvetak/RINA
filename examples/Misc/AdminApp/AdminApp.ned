@@ -1,8 +1,8 @@
-package rina.examples.AdminAppReplaces;
+package rina.examples.Misc.AdminApp;
 import ned.DatarateChannel;
 import rina.src.CS.*;
 
-network AdminAppReplaces
+network AdminApp
 {
     @display("bgb=609,634");
     submodules:

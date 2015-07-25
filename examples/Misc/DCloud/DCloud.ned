@@ -1,4 +1,4 @@
-package rina.examples.DCloud;
+package rina.examples.Misc.DCloud;
 import ned.DatarateChannel;
 import rina.src.CS.*;
 network DCloud {

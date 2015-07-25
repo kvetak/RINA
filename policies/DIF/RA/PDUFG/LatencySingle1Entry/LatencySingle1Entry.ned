@@ -1,6 +1,6 @@
 package rina.policies.DIF.RA.PDUFG.LatencySingle1Entry;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.DIF.RA.PDUFG.IntPDUFG;
 
 simple LatencySingle1Entry like IntPDUFG
 {

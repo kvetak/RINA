@@ -1,6 +1,6 @@
 package rina.policies.DIF.Routing.TDomainRouting;
 
-import rina.policies.DIF.Routing.IntRouting;
+import rina.src.DIF.Routing.IntRouting;
 
 simple TDomainRouting like IntRouting
 {

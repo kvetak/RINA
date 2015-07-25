@@ -1,6 +1,6 @@
 package rina.policies.DIF.Routing.TSimpleRouting.TSimpleDV;
 
-import rina.policies.DIF.Routing.IntRouting;
+import rina.src.DIF.Routing.IntRouting;
 
 simple TSimpleDV like IntRouting
 {

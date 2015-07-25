@@ -1,4 +1,4 @@
-package rina.examples.SimpleAdmin;
+package rina.examples.Misc.SimpleAdmin;
 import ned.DatarateChannel;
 import rina.src.CS.*;
 
