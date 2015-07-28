@@ -38,7 +38,7 @@ package rina.src.CS;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DIF.IPCProcess;
 
-module BorderRouter2n1nm
+module BorderRouter2n1nmLeft
 {
     @display("i=abstract/router;bgb=281,317");
     @node;
@@ -46,17 +46,17 @@ module BorderRouter2n1nm
         inout medium[2];
     submodules:
         ipcProcess1: IPCProcess {
-            @display("p=65,165");
+            @display("p=214,165");
         }
         bottomIpc: IPCProcess {
-            @display("p=214,248;i=,#FF4000");
+            @display("p=65,248;i=,#FF4000");
         }
         relayIpc: IPCProcess {
             @display("p=144,78;i=,#FFB000");
             relay = true;
         }
         ipcProcess2: IPCProcess {
-            @display("p=214,160");
+            @display("p=65,160");
         }
         difAllocator: DIFAllocator {
             @display("p=66,39");
