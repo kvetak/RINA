@@ -117,7 +117,7 @@ RINA Simulator
 	            /LongestQFirst         ... pick the queue which contains the most PDUs 
 	    /Routing                       ... routing policies
 	        /DomainRouting	           ... routing policy based on domains. A domain is defined as a sub-set                                                    of the DIF, with its own metrics and routing algorithm.
-	        	/DV                       ... simple distance vector algorithm for DomainRouting
+	        	/DV                    ... simple distance vector algorithm for DomainRouting
 	        	/LS                    ... simple link-state algorithm for DomainRouting
 	        /DummyRouting              ... noop
 	        /SimpleRouting
