@@ -46,7 +46,7 @@ RINA Simulator
 	            /LimitedRetries        ... when retransmit treshold is met, allocation is 
 	            						   discontinued
 	        /MultilevelQoS             ... when a flow request a new n-1 flow, how its requirements are 
-	                                                           mapped to n-1 requirements *not used yet
+	        							   mapped to n-1 requirements *not used yet
 	        /NewFlowRequest            ... when new flow is being allocated, how are its 
 	        							   requirements mapped to RA QoSCubes
 	            /ScoreComparer         ... QoSCube with best score wins
@@ -83,7 +83,7 @@ RINA Simulator
 	        /MaxQueue                  ... policy invoked when a queue size grows over its
 	        							   threshold 
 	            /DumbMaxQ              ... request drop probability to monitor, drop random on that.
-	                                                           used with "SmartMonitor"s 
+	        							   used with "SmartMonitor"s 
 	            /ECNMarker             ... if queue size >= threshold, apply ECN marking on 
 	            						   new PDUs; if size >= max, drop
 	            **/PortMaxQ              ...  to remove!!**
@@ -102,7 +102,7 @@ RINA Simulator
 	            					       implementation
 	            /DummyMonitor          ... noop
 	            /SmartMonitor          ... monitor interface for use with dumbMaxQ/dumbSch.
-	                                               can be queried for drop probability and next queue
+	        							   can be queried for drop probability and next queue
 	        /PDUForwarding             ... policy used to decide where to forward a PDU
 	            /DomainTabl            ... a table with {domain:{prefix, QoS} -> 
 	        							   { Table:{dstAddr -> port}, default:port } }
@@ -113,7 +113,7 @@ RINA Simulator
 	        /Scheduler                 ... policy deciding which (N-1)-port queue should be 
 	        							   processed next
 	            /DumbSch               ... query the monitor for the next queue to serve.
-	                                                           used with "SmartMonitor"s
+	        							   used with "SmartMonitor"s
 	            /LongestQFirst         ... pick the queue which contains the most PDUs 
 	    /Routing                       ... routing policies
 	        /DomainRouting	           ... routing policy based on domains. A domain is defined as a sub-set                                                    of the DIF, with its own metrics and routing algorithm.
