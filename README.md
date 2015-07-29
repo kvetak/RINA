@@ -45,7 +45,8 @@ RINA Simulator
 	        /AllocateRetry             ... what happen when M_CREATE is resend by Flow Allocator
 	            /LimitedRetries        ... when retransmit treshold is met, allocation is 
 	            						   discontinued
-	        /MultilevelQoS             ...
+	        /MultilevelQoS             ... when a flow request a new n-1 flow, how its requirements are 
+	                                                           mapped to n-1 requirements *not used yet
 	        /NewFlowRequest            ... when new flow is being allocated, how are its 
 	        							   requirements mapped to RA QoSCubes
 	            /ScoreComparer         ... QoSCube with best score wins
@@ -57,15 +58,18 @@ RINA Simulator
 	            /PrefixMatch           ... matching based on address prefix
 	        /PDUFG                     ... PDU Forwarding Generator providing data used by the 
 	        							   PDU Forwarding policy 
-	            /BiDomainGenerator     ...
-	            /LatGenerator          ... 
-	            /MSimpleGenerator      ...
-	            /QoSDomainGenerator    ...
-	            /SimpleGenerator       ...
-	            /SingleDomainGenerator ...
+	            /BiDomainGenerator     ... populates forwarding policy with entries on the form samePrefix.Id -> port and distinctPrefix.* -> port
+	            /LatGenerator          ... inform of flow metrics to routing as latency (based on n-1 
+	                                                                   QoS cube) instead of hops
+	            /MSimpleGenerator      ... inform of flow metrics to routing as hops, populates forwarding
+	                                                                   policy with all existing best next hops
+	            /QoSDomainGenerator    ... populates forwarding policy with best next hop per dst + QoS
+	            /SimpleGenerator       ... inform of flow metrics to routing as hops
+	            /SingleDomainGenerator ... inform of flow metrics to routing as hops, 
+	                                                                   variation using Domain based routing
 	            /StaticGenerator       ... load forwarding information from XML configuration 
 	        /QueueAlloc                ... (N-1)-port queue allocation strategy
-	            /QueuePerNCU           
+	            /QueuePerNCU           ... one queue per (N)-Cherish/Urgency class
 	            /QueuePerNFlow         ... one queue per (N)-flow 
 	            /QueuePerNQoS          ... one queue per (N)-QoS cube
 	            /SingleQueue           ... one queue for all
@@ -78,10 +82,11 @@ RINA Simulator
 	    /RMT                           ... policies related to RMT modules
 	        /MaxQueue                  ... policy invoked when a queue size grows over its
 	        							   threshold 
-	            /DumbMaxQ              ...
+	            /DumbMaxQ              ... request drop probability to monitor, drop random on that.
+	                                                           used with "SmartMonitor"s 
 	            /ECNMarker             ... if queue size >= threshold, apply ECN marking on 
 	            						   new PDUs; if size >= max, drop
-	            /PortMaxQ              ...           
+	            **/PortMaxQ              ...  to remove!!**
 	            /ReadRateReducer       ... if queue size >= allowed maximum, stop receiving data
 	            						   from input ports 
 	            /REDDropper            ... used with Monitor::REDMonitor; Random Early Detection
@@ -90,27 +95,30 @@ RINA Simulator
 	            /UpstreamNotifier      ... if queue size >= allowed maximum, send a notification 
 	            						   to the PDU sender
 	        /Monitor                   ... state-keeping policy invoked on various queue events 
-	            /BEMonitor             ...	
-	            /DLMonitor             ...
-	            /eDLMonitor            ...
+	            /BEMonitor             ... Best-effort as SmartMonitor using multiple queues
+	            /DLMonitor             ... Dela/Loss monitor implementation as SmartMonitor
+	            /eDLMonitor            ... enhanced-Dela/Loss monitor implementation as SmartMonitor
 	            /REDMonitor            ... used with MaxQueue::REDDropper; Random Early Detection 
 	            					       implementation
 	            /DummyMonitor          ... noop
-	            /SmartMonitor
+	            /SmartMonitor          ... monitor interface for use with dumbMaxQ/dumbSch.
+	                                               can be queried for drop probability and next queue
 	        /PDUForwarding             ... policy used to decide where to forward a PDU
-	            /DomainTable
+	            /DomainTabl            ... a table with {domain:{prefix, QoS} -> 
+	                                                    { Table:{dstAddr -> port}, default:port } }
 	            /MiniTable             ... a table with {dstAddr -> port} mappings
-	            /MultiMiniTable
-	            /QoSTable
+	            /MultiMiniTable        ... a table with {dstAddr -> vectior<port>} mappings
+	            /QoSTable              ... a table with {(dstAddr, QoS) -> port} mappings
 	            /SimpleTable           ... a table with {(dstAddr, QoS) -> port} mappings
 	        /Scheduler                 ... policy deciding which (N-1)-port queue should be 
 	        							   processed next
-	            /DumbSch 
+	            /DumbSch               ... query the monitor for the next queue to serve.
+	                                                           used with "SmartMonitor"s
 	            /LongestQFirst         ... pick the queue which contains the most PDUs 
 	    /Routing                       ... routing policies
-	        /DomainRouting			   ...
-	        	/DV					   ...
-	        	/LS					   ...
+	        /DomainRouting	           ... routing policy based on domains. A domain is defined as a sub-set                                                    of the DIF, with its own metrics and routing algorithm.
+	        	/DV	               ... simple distance vector algorithm for DomainRouting
+	        	/LS                    ... simple link-state algorithm for DomainRouting
 	        /DummyRouting              ... noop
 	        /SimpleRouting
 	            /SimpleDV              ... a simple distance vector-like protocol
