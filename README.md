@@ -60,13 +60,13 @@ RINA Simulator
 	        							   PDU Forwarding policy 
 	            /BiDomainGenerator     ... populates forwarding policy with entries on the form samePrefix.Id -> port and distinctPrefix.* -> port
 	            /LatGenerator          ... inform of flow metrics to routing as latency (based on n-1 
-	                                                                   QoS cube) instead of hops
+	        							   QoS cube) instead of hops
 	            /MSimpleGenerator      ... inform of flow metrics to routing as hops, populates forwarding
-	                                                                   policy with all existing best next hops
+	        							   policy with all existing best next hops
 	            /QoSDomainGenerator    ... populates forwarding policy with best next hop per dst + QoS
 	            /SimpleGenerator       ... inform of flow metrics to routing as hops
 	            /SingleDomainGenerator ... inform of flow metrics to routing as hops, 
-	                                                                   variation using Domain based routing
+	        							   variation using Domain based routing
 	            /StaticGenerator       ... load forwarding information from XML configuration 
 	        /QueueAlloc                ... (N-1)-port queue allocation strategy
 	            /QueuePerNCU           ... one queue per (N)-Cherish/Urgency class
@@ -105,7 +105,7 @@ RINA Simulator
 	                                               can be queried for drop probability and next queue
 	        /PDUForwarding             ... policy used to decide where to forward a PDU
 	            /DomainTabl            ... a table with {domain:{prefix, QoS} -> 
-	                                                    { Table:{dstAddr -> port}, default:port } }
+	        							   { Table:{dstAddr -> port}, default:port } }
 	            /MiniTable             ... a table with {dstAddr -> port} mappings
 	            /MultiMiniTable        ... a table with {dstAddr -> vectior<port>} mappings
 	            /QoSTable              ... a table with {(dstAddr, QoS) -> port} mappings
