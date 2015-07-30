@@ -539,9 +539,20 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
     return;
   }
 
-  if (dynamic_cast<ControlAckPDU*>(pdu))
+  if (pdu->getType() == CONTROL_ACK_PDU)
   {
     dtcp->runRcvrControlAckPolicy(state);
+  }
+  else if (pdu->getType() == RENDEZVOUS_PDU)
+  {
+    RendezvousPDU* rendezPDU = (RendezvousPDU*) pdu;
+    if(rendezPDU->getLastCtrlSeqNumRcv() == dtcp->dtcpState->getLastControlSeqNumSent()){
+      /* The sender sent this RendezvousPDU based on up-to-date information
+       * so this C-PDU can be assumed valid.
+       */
+      dtcp->dtcpState->setRcvRendez(true);
+      sendControlAckPDU();
+    }
   }
   else
   {
@@ -549,10 +560,10 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
     if (pdu->getType() & PDU_SEL_BIT)
     {
       /*
-       SELECT_ACK_PDU        = 0x8806;
-       SELECT_NACK_PDU       = 0x8807;
-       SELECT_ACK_FLOW_PDU   = 0x880E;
-       SELECT_NACK_FLOW_PDU  = 0x880F;
+        SELECT_ACK_PDU        = 0xC9;
+        SELECT_NACK_PDU       = 0xCA;
+        SELECT_ACK_FLOW_PDU   = 0xCD;
+        SELECT_NACK_FLOW_PDU  = 0xCE;
        */
 
       //RTT estimator
@@ -1422,6 +1433,7 @@ void DTP::sendToRMT(PDU* pdu)
   else
   {
     //This should be controlPDU so do not have to increment LastSeqNumSent
+    dtcp->dtcpState->setLastControlSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() << ": Control PDU number: " << pdu->getSeqNum() << " sent in time: " << simTime() << endl;
   }
 

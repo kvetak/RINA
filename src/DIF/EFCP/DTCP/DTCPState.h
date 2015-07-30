@@ -59,6 +59,7 @@ class DTCPState : public cSimpleModule
     /* Moved from RX */
     unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
     unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
+    unsigned int lastControlSeqNumSent;
 
     unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgment that will be tried before declaring an error.
 
@@ -221,6 +222,8 @@ class DTCPState : public cSimpleModule
     void setRcvRendez(bool rcvRendez);
     bool isSndRendez() const;
     void setSndRendez(bool sndRendez);
+    unsigned int getLastControlSeqNumSent() const;
+    void setLastControlSeqNumSent(unsigned int lastControlSeqNumSent);
 
   protected:
     virtual void handleMessage(cMessage *msg);

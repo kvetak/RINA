@@ -531,3 +531,13 @@ void DTCPState::setSndRendez(bool sndRendez)
 {
   this->sndRendez = sndRendez;
 }
+
+unsigned int DTCPState::getLastControlSeqNumSent() const
+{
+  return lastControlSeqNumSent;
+}
+
+void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
+{
+  this->lastControlSeqNumSent = lastControlSeqNumSent;
+}
