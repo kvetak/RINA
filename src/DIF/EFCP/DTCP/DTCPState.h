@@ -110,6 +110,10 @@ class DTCPState : public cSimpleModule
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
+    bool sndRendez; //Rendezvous-at-sender state
+    bool rcvRendez; //Rendezvous-at-receiver state
+
+
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
 
     void clearPDUQ(PDUQ_t* pduQ);
@@ -213,6 +217,10 @@ class DTCPState : public cSimpleModule
     void setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit);
 
     void resetRcvVars();
+    bool isRcvRendez() const;
+    void setRcvRendez(bool rcvRendez);
+    bool isSndRendez() const;
+    void setSndRendez(bool sndRendez);
 
   protected:
     virtual void handleMessage(cMessage *msg);

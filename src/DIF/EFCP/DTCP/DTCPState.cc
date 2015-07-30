@@ -77,6 +77,9 @@ DTCPState::DTCPState()
   sndLeftWinEdge = 0;
 
   rxSent = 0;
+
+  sndRendez = false;
+  rcvRendez = false;
 }
 
 void DTCPState::incRxSent()
@@ -507,4 +510,24 @@ unsigned int DTCPState::getPdusRcvdInTimeUnit() const
 void DTCPState::setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit)
 {
   this->pdusRcvdinTimeUnit = pdusRcvdinTimeUnit;
+}
+
+bool DTCPState::isRcvRendez() const
+{
+  return rcvRendez;
+}
+
+void DTCPState::setRcvRendez(bool rcvRendez)
+{
+  this->rcvRendez = rcvRendez;
+}
+
+bool DTCPState::isSndRendez() const
+{
+  return sndRendez;
+}
+
+void DTCPState::setSndRendez(bool sndRendez)
+{
+  this->sndRendez = sndRendez;
 }
