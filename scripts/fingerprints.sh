@@ -126,7 +126,7 @@ process_args $@
 cd $rina_scenarios
 
 # retrieve scenarios by the given directory glob
-scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" -exec dirname {} \; )"
+scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" -exec dirname {} \; | sort )"
 if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
 
 # run the main loop
