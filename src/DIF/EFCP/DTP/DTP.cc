@@ -539,7 +539,7 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
     return;
   }
 
-  if (dynamic_cast<ControlAckPDU*>(pdu))
+  if (pdu->getType() == CONTROL_ACK_PDU)
   {
     dtcp->runRcvrControlAckPolicy(state);
   }
@@ -549,10 +549,10 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
     if (pdu->getType() & PDU_SEL_BIT)
     {
       /*
-       SELECT_ACK_PDU        = 0x8806;
-       SELECT_NACK_PDU       = 0x8807;
-       SELECT_ACK_FLOW_PDU   = 0x880E;
-       SELECT_NACK_FLOW_PDU  = 0x880F;
+        SELECT_ACK_PDU        = 0xC9;
+        SELECT_NACK_PDU       = 0xCA;
+        SELECT_ACK_FLOW_PDU   = 0xCD;
+        SELECT_NACK_FLOW_PDU  = 0xCE;
        */
 
       //RTT estimator
@@ -787,24 +787,26 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
     //Put PDU on ReassemblyQ
     addPDUToReassemblyQ(pdu);
 
-    if (getATime() > 0)
-    {
-      startATimer(pdu->getSeqNum());
-    }
-    else
-    {
-      svUpdate(pdu->getSeqNum());
-    }
-
-//    if (state->isDtcpPresent())
+    /* I guess i did not think this through (will be removed) */
+//    if (getATime() > 0)
 //    {
-//      svUpdate(pdu->getSeqNum());
-//
+//      startATimer(pdu->getSeqNum());
 //    }
 //    else
 //    {
-//      state->setRcvLeftWinEdge(pdu->getSeqNum());
+//      svUpdate(pdu->getSeqNum());
 //    }
+
+    if (state->isDtcpPresent())
+    {
+      svUpdate(pdu->getSeqNum());
+
+    }
+    else
+    {
+      state->setRcvLeftWinEdge(pdu->getSeqNum());
+      //TODO A2: No A-Timer?
+    }
     delimitFromRMT(NULL);
 
     schedule(rcvrInactivityTimer);
@@ -850,15 +852,17 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
         /* Put at least the User-Data of the PDU with its Sequence Number on PDUReassemblyQueue in Sequence Number order */
         addPDUToReassemblyQ(pdu);
 
-//        if (state->isDtcpPresent())
-//        {
-//          svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
-//        }
-//        else
-//        {
-//          state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-//          /* No A-Timer necessary, already running */
-//        }
+//        svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
+
+        if (state->isDtcpPresent())
+        {
+          svUpdate(state->getMaxSeqNumRcvd()); /* Update left edge, etc */
+        }
+        else
+        {
+          state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+          /* No A-Timer necessary, already running */
+        }
 
         delimitFromRMT(NULL);
         schedule(rcvrInactivityTimer);
@@ -872,25 +876,25 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
       state->incMaxSeqNumRcvd();
       addPDUToReassemblyQ(pdu);
 
-      if (getATime() > 0)
-      {
-        startATimer(pdu->getSeqNum());
-      }
-      else
-      {
-        svUpdate(state->getMaxSeqNumRcvd());
-      }
-
-//      if (state->isDtcpPresent())
+//      if (getATime() > 0)
 //      {
-//        svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+//        startATimer(pdu->getSeqNum());
 //      }
 //      else
 //      {
-//        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
-//        //start A-Timer (for this PDU)
-//        startATimer(pdu->getSeqNum());
+//        svUpdate(state->getMaxSeqNumRcvd());
 //      }
+
+      if (state->isDtcpPresent())
+      {
+        svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+      }
+      else
+      {
+        state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
+        //start A-Timer (for this PDU)
+        startATimer(pdu->getSeqNum());
+      }
 
       delimitFromRMT(NULL);/* Create as many whole SDUs as possible */
 
@@ -905,23 +909,23 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
         state->setMaxSeqNumRcvd(pdu->getSeqNum());
         addPDUToReassemblyQ(pdu);
 
-        if (getATime() > 0)
-        {
-          startATimer(state->getMaxSeqNumRcvd());
-        }
-        else
-        {
-          svUpdate(state->getMaxSeqNumRcvd());
-        }
-
-//        if (state->isDtcpPresent())
-//        {
-//          svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
-//        }
-//        else
+//        if (getATime() > 0)
 //        {
 //          startATimer(state->getMaxSeqNumRcvd());
 //        }
+//        else
+//        {
+//          svUpdate(state->getMaxSeqNumRcvd());
+//        }
+
+        if (state->isDtcpPresent())
+        {
+          svUpdate(state->getMaxSeqNumRcvd()); /* Update Left Edge, etc. */
+        }
+        else
+        {
+          startATimer(state->getMaxSeqNumRcvd());
+        }
 
         delimitFromRMT(pdu);
         schedule(rcvrInactivityTimer);
@@ -1418,6 +1422,7 @@ void DTP::sendToRMT(PDU* pdu)
   else
   {
     //This should be controlPDU so do not have to increment LastSeqNumSent
+    dtcp->dtcpState->setLastControlSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() << ": Control PDU number: " << pdu->getSeqNum() << " sent in time: " << simTime() << endl;
   }
 
@@ -1451,11 +1456,11 @@ void DTP::rcvrBufferStateChange()
 void DTP::svUpdate(unsigned int seqNum)
 {
 
-  if (!state->isDtcpPresent())
-  {
-    state->setRcvLeftWinEdge(seqNum);
-    return;
-  }
+//  if (!state->isDtcpPresent())
+//  {
+//    state->setRcvLeftWinEdge(seqNum);
+//    return;
+//  }
 
   //update RcvLeftWindoEdge
   state->updateRcvLWE(seqNum);

@@ -508,3 +508,13 @@ void DTCPState::setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit)
 {
   this->pdusRcvdinTimeUnit = pdusRcvdinTimeUnit;
 }
+
+unsigned int DTCPState::getLastControlSeqNumSent() const
+{
+  return lastControlSeqNumSent;
+}
+
+void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
+{
+  this->lastControlSeqNumSent = lastControlSeqNumSent;
+}
