@@ -24,6 +24,7 @@ package rina.src.DAF;
 
 import rina.src.Common.Test;
 import rina.src.DAF.AE.AEPing;
+import rina.src.DAF.AEManagement.AEManagement;
 import rina.src.DAF.AE.ApplicationEntity;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;
@@ -35,7 +36,7 @@ import rina.src.DIF.RMT.RMT;
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=174,180;i=misc/node,yellow,30");
+        @display("bgb=340,180;i=misc/node,yellow,30");
         string apName = default("App");
         string apInstance = default("0");
     gates:
@@ -43,6 +44,10 @@ module ApplicationProcess
     submodules:
         applicationEntity: ApplicationEntity {
             @display("p=89,60");
+        }
+        
+        managementApplicationEntity: AEManagement {
+            @display("p=240,60");
         }
     connections allowunconnected:
 }
