@@ -1,0 +1,159 @@
+// The MIT License (MIT)
+//
+// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+/**
+ * @file DAFEnrollment.h
+ * @author Kamil Jerabek (xjerab18@stud.fit.vutbr.cz)
+ * @date Apr 1, 2015
+ * @brief DAFEnrollment and CACE
+ * @detail
+ */
+
+#ifndef __RINA_DAFENROLLMENT_H_
+#define __RINA_DAFENROLLMENT_H_
+
+#include <omnetpp.h>
+#include "RINASignals.h"
+#include "Flow.h"
+#include "CDAPMessage_m.h"
+#include "ConnectionTable.h"
+#include "ExternConsts.h"
+#include "DAFEnrollmentListeners.h"
+#include "DAFEnrollmentStateTable.h"
+#include "Address.h"
+#include "AEMgmt.h"
+#include "DAFEnrollmentObj.h"
+#include "DAFOperationObj.h"
+#include "FABase.h"
+#include "DAFEnrollmentBase.h"
+
+extern const char* DAF_MSG_CONREQ;
+extern const char* DAF_MSG_CONREQRETRY;
+extern const char* DAF_MSG_CONRESPOS;
+extern const char* DAF_MSG_CONRESNEG;
+extern const char* DAF_MSG_ENRLCON;
+extern const char* DAF_MSG_ENRLREL;
+
+class LisDAFEnrollmentAllResPosi;
+class LisDAFEnrollmentGetFlowFromFaiCreResPosi;
+class LisDAFEnrollmentStartEnrollReq;
+class LisDAFEnrollmentStartEnrollRes;
+class LisDAFEnrollmentStopEnrollReq;
+class LisDAFEnrollmentStopEnrollRes;
+class LisDAFEnrollmentStopOperationReq;
+class LisDAFEnrollmentStartOperationRes;
+class LisDAFEnrollmentConResPosi;
+class LisDAFEnrollmentConResNega;
+class LisDAFEnrollmentConReq;
+
+typedef std::list<APNIPair> APNIPairs;
+typedef std::map<simtime_t, APNIPairs*> DAFEnrollCommands;
+
+class DAFEnrollment : public DAFEnrollmentBase
+{
+  public:
+    enum IconEnrolStatus {ENICON_ENROLLED, ENICON_FLOWMIS, ENICON_NOTENROLLED};
+
+    DAFEnrollment();
+    virtual ~DAFEnrollment();
+    void startCACE(APNIPair* apnip);
+    void startEnrollment(DAFEnrollmentStateTableEntry* entry);
+    void insertStateTableEntry(Flow* flow);
+    void receivePositiveConnectResponse(CDAPMessage* msg);
+    void receiveNegativeConnectResponse(CDAPMessage* msg);
+    void receiveConnectRequest(CDAPMessage* msg);
+
+    void receiveStartEnrollmentRequest(CDAPMessage* msg);
+    void receiveStartEnrollmentResponse(CDAPMessage* msg);
+    void receiveStopEnrollmentRequest(CDAPMessage* msg);
+    void receiveStopEnrollmentResponse(CDAPMessage* msg);
+    void receiveStartOperationRequest(CDAPMessage* msg);
+    void receiveStartOperationResponse(CDAPMessage* msg);
+
+
+  protected:
+    void initPointers();
+    void initSignalsAndListeners();
+    virtual void initialize();
+
+    void updateEnrollmentDisplay(DAFEnrollment::IconEnrolStatus status);
+
+    void parseConfig(cXMLElement* config);
+
+    void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg);
+    void processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processNewConReq(DAFEnrollmentStateTableEntry* entry);
+    void processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry* entry);
+    void processStopEnrollmentResponse(DAFEnrollmentStateTableEntry* entry);
+
+    FABase* FlowAlloc;
+
+    DAFEnrollCommands PreenrollConnects;
+    DAFEnrollCommands PreenrollReleases;
+
+    int authType;
+    std::string authName;
+    std::string authPassword;
+    std::string authOther;
+    int maxConRetries;
+    int numOfConnects;
+
+    simsignal_t sigDAFEnrollmentCACESendData;
+    simsignal_t sigDAFEnrollmentSendData;
+    simsignal_t sigDAFEnrollmentStartEnrollReq;
+    simsignal_t sigDAFEnrollmentStartEnrollRes;
+    simsignal_t sigDAFEnrollmentStopEnrollReq;
+    simsignal_t sigDAFEnrollmentStopEnrollRes;
+    simsignal_t sigDAFEnrollmentStartOperReq;
+    simsignal_t sigDAFEnrollmentStartOperRes;
+    simsignal_t sigDAFEnrollmentFinish;
+
+    LisDAFEnrollmentAllResPosi* lisDAFEnrollmentAllResPosi;
+    LisDAFEnrollmentGetFlowFromFaiCreResPosi* lisDAFEnrollmentGetFlowFromFaiCreResPosi;
+
+    LisDAFEnrollmentStartEnrollReq* lisDAFEnrollmentStartEnrollReq;
+    LisDAFEnrollmentStartEnrollRes* lisDAFEnrollmentStartEnrollRes;
+    LisDAFEnrollmentStopEnrollReq* lisDAFEnrollmentStopEnrollReq;
+    LisDAFEnrollmentStopEnrollRes* lisDAFEnrollmentStopEnrollRes;
+    LisDAFEnrollmentStopOperationReq* lisDAFEnrollmentStartOperationReq;
+    LisDAFEnrollmentStartOperationRes* lisDAFEnrollmentStartOperationRes;
+    LisDAFEnrollmentConResPosi* lisDAFEnrollmentConResPosi;
+    LisDAFEnrollmentConResNega* lisDAFEnrollmentConResNega;
+    LisDAFEnrollmentConReq* lisDAFEnrollmentConReq;
+
+    DAFEnrollmentStateTable* StateTable;
+    AEMgmt* aemgmt;
+
+    void signalizeCACESendData(CDAPMessage* cmsg);
+    void signalizeStartEnrollmentRequest(DAFEnrollmentObj* obj);
+    void signalizeStartEnrollmentResponse(DAFEnrollmentObj* obj);
+    void signalizeStopEnrollmentRequest(DAFEnrollmentObj* obj);
+    void signalizeStopEnrollmentResponse(DAFEnrollmentObj* obj);
+    void signalizeStartOperationRequest(DAFOperationObj* obj);
+    void signalizeStartOperationResponse(DAFOperationObj* obj);
+    void signalizeEnrollmentFinished(DAFEnrollmentStateTableEntry* entry);
+
+    virtual void handleMessage(cMessage *msg);
+};
+
+#endif
