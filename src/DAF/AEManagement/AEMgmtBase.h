@@ -29,8 +29,8 @@
 #include "ExternConsts.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
-#include "EnrollmentObj.h"
-#include "OperationObj.h"
+#include "DAFEnrollmentObj.h"
+#include "DAFOperationObj.h"
 #include "CongestionDescriptor.h"
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
@@ -41,12 +41,12 @@ class AEMgmtBase : public cSimpleModule {
     AEMgmtBase();
     virtual ~AEMgmtBase();
 
-    virtual void sendStartEnrollmentRequest(EnrollmentObj* obj) = 0;
-    virtual void sendStartEnrollmentResponse(EnrollmentObj* obj) = 0;
-    virtual void sendStopEnrollmentRequest(EnrollmentObj* obj) = 0;
-    virtual void sendStopEnrollmentResponse(EnrollmentObj* obj) = 0;
-    virtual void sendStartOperationRequest(OperationObj* obj) = 0;
-    virtual void sendStartOperationResponse(OperationObj* obj) = 0;
+    virtual void sendStartEnrollmentRequest(DAFEnrollmentObj* obj) = 0;
+    virtual void sendStartEnrollmentResponse(DAFEnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentRequest(DAFEnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentResponse(DAFEnrollmentObj* obj) = 0;
+    virtual void sendStartOperationRequest(DAFOperationObj* obj) = 0;
+    virtual void sendStartOperationResponse(DAFOperationObj* obj) = 0;
     virtual void sendCACE(CDAPMessage* msg) = 0;
     virtual void receiveData(CDAPMessage* flow) = 0;
     virtual void receiveCACE(CDAPMessage* msg) = 0;

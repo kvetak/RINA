@@ -201,7 +201,7 @@ void AEMgmt::signalizeStartOperationResponse(CDAPMessage* msg) {
     emit(sigRIBDStartOperationRes, msg);
 }
 
-void AEMgmt::sendStartEnrollmentRequest(EnrollmentObj* obj) {
+void AEMgmt::sendStartEnrollmentRequest(DAFEnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentRequest()");
 
     CDAP_M_Start* msg = new CDAP_M_Start(DAF_MSG_ENROLLMENT);
@@ -226,7 +226,7 @@ void AEMgmt::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     signalizeSendData(msg);
 }
 
-void AEMgmt::sendStartEnrollmentResponse(EnrollmentObj* obj) {
+void AEMgmt::sendStartEnrollmentResponse(DAFEnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentResponse()");
 
     CDAP_M_Start_R* msg = new CDAP_M_Start_R(DAF_MSG_ENROLLMENT);
@@ -252,7 +252,7 @@ void AEMgmt::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     signalizeSendData(msg);
 }
 
-void AEMgmt::sendStopEnrollmentRequest(EnrollmentObj* obj) {
+void AEMgmt::sendStopEnrollmentRequest(DAFEnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentRequest()");
 
     CDAP_M_Stop* msg = new CDAP_M_Stop(DAF_MSG_ENROLLMENT);
@@ -277,7 +277,7 @@ void AEMgmt::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     signalizeSendData(msg);
 }
 
-void AEMgmt::sendStopEnrollmentResponse(EnrollmentObj* obj) {
+void AEMgmt::sendStopEnrollmentResponse(DAFEnrollmentObj* obj) {
     Enter_Method("sendStopEnrollmentResponse()");
 
     CDAP_M_Stop_R* msg = new CDAP_M_Stop_R(DAF_MSG_ENROLLMENT);
@@ -302,11 +302,11 @@ void AEMgmt::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     signalizeSendData(msg);
 }
 
-void AEMgmt::sendStartOperationRequest(OperationObj* obj) {
+void AEMgmt::sendStartOperationRequest(DAFOperationObj* obj) {
     Enter_Method("sendStartOperationRequest()");
 }
 
-void AEMgmt::sendStartOperationResponse(OperationObj* obj) {
+void AEMgmt::sendStartOperationResponse(DAFOperationObj* obj) {
     Enter_Method("sendStartOperationResponse()");
 }
 
@@ -343,7 +343,7 @@ void AEMgmt::processMStart(CDAPMessage* msg) {
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
-    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+    if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
        signalizeStartEnrollmentRequest(msg);
     }
 
@@ -357,7 +357,7 @@ void AEMgmt::processMStartR(CDAPMessage* msg) {
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
-    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+    if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStartEnrollmentResponse(msg);
     }
 }
@@ -370,7 +370,7 @@ void AEMgmt::processMStop(CDAPMessage* msg) {
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
-    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+    if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentRequest(msg);
     }
 }
@@ -383,7 +383,7 @@ void AEMgmt::processMStopR(CDAPMessage* msg) {
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
-    if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
+    if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentResponse(msg);
     }
 }

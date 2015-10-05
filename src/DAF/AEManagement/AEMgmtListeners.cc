@@ -72,7 +72,7 @@ void LisAEMgmtStaEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StartEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
+    DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
     if (enroll)
         aemgmt->sendStartEnrollmentRequest(enroll);
     else
@@ -84,7 +84,7 @@ void LisAEMgmtStaEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StartEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
+    DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
     if (enroll)
         aemgmt->sendStartEnrollmentResponse(enroll);
     else
@@ -96,7 +96,7 @@ void LisAEMgmtStoEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StopEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
+    DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
     if (enroll)
         aemgmt->sendStopEnrollmentRequest(enroll);
     else
@@ -108,7 +108,7 @@ void LisAEMgmtStoEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StopEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
+    DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
     if (enroll)
         aemgmt->sendStopEnrollmentResponse(enroll);
     else
@@ -120,7 +120,7 @@ void LisAEMgmtStaOperReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StartOperationRequest initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    OperationObj* oper = dynamic_cast<OperationObj*>(obj);
+    DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);
     if (oper)
         aemgmt->sendStartOperationRequest(oper);
     else
@@ -132,7 +132,7 @@ void LisAEMgmtStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "StartOperationResponse initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
-    OperationObj* oper = dynamic_cast<OperationObj*>(obj);
+    DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);
     if (oper)
         aemgmt->sendStartOperationResponse(oper);
     else

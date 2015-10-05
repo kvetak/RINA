@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 /**
  * @file AEMgmt.h
- * @author Vladimir Vesely, Kamil Jerabek (ivesely@fit.vutbr.cz, Kamil Jerabek)
+ * @author Vladimir Vesely, Kamil Jerabek (ivesely@fit.vutbr.cz, xjerab18@stud.fit.vutbr.cz)
  * @date Oct 2, 2014
  * @brief Kind of a Notification Board for DAF
  * @detail
@@ -57,12 +57,12 @@ extern const char* DAF_MSG_ENROLLMENT;
 
 class AEMgmt : public AEMgmtBase {
   public:
-    virtual void sendStartEnrollmentRequest(EnrollmentObj* obj);
-    virtual void sendStartEnrollmentResponse(EnrollmentObj* obj);
-    virtual void sendStopEnrollmentRequest(EnrollmentObj* obj);
-    virtual void sendStopEnrollmentResponse(EnrollmentObj* obj);
-    virtual void sendStartOperationRequest(OperationObj* obj);
-    virtual void sendStartOperationResponse(OperationObj* obj);
+    virtual void sendStartEnrollmentRequest(DAFEnrollmentObj* obj);
+    virtual void sendStartEnrollmentResponse(DAFEnrollmentObj* obj);
+    virtual void sendStopEnrollmentRequest(DAFEnrollmentObj* obj);
+    virtual void sendStopEnrollmentResponse(DAFEnrollmentObj* obj);
+    virtual void sendStartOperationRequest(DAFOperationObj* obj);
+    virtual void sendStartOperationResponse(DAFOperationObj* obj);
     virtual void receiveData(CDAPMessage* cimsg);
     virtual void receiveCACE(CDAPMessage* msg);
     virtual void sendCACE(CDAPMessage* msg);
