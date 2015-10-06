@@ -128,7 +128,7 @@ void ConnectionTableEntry::setSouthGateOut(cGate* southGateOut) {
 }
 
 cModule* ConnectionTableEntry::getIpc() const {
-    return FlowAlloc->getParentModule()->getParentModule();
+    return FlowAlloc->getModuleByPath("^.^");
 }
 
 const APNamingInfo& ConnectionTableEntry::getApni() const {

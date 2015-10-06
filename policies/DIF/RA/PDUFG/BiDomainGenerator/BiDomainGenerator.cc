@@ -104,7 +104,7 @@ void BiDomainGenerator::onPolicyInit(){
     rt = check_and_cast<DMRnms::Routing *>
         (getModuleByPath("^.^.routingPolicy"));
 
-    string myAddr = getParentModule()->getParentModule()->par("ipcAddress").stringValue();
+    string myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
 
     vector<string> parsStr = split(myAddr, '.');
     if(parsStr.size() != 2) {

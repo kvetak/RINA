@@ -116,7 +116,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     // initialize a wrapper with port inside it
     cModuleType* moduleType = cModuleType::get(MOD_RMT_PORTWRAPPER);
     cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
-    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
+    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
 
     port->setFlow(flow);
 
@@ -216,11 +216,8 @@ RMTPort* RMTModuleAllocator::getPort(const char* name)
     cModule* portWrapper = getParentModule()->getSubmodule(name);
     if (portWrapper)
     {
-        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule("port"));
-    }
-    else
-    {
-        return nullptr;
+        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
     }
 
+    return nullptr;
 }

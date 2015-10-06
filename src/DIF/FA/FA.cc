@@ -40,7 +40,7 @@ FA::~FA() {
 
 void FA::initPointers() {
     N_flowTable = check_and_cast<NFlowTable*>(getParentModule()->getSubmodule(MOD_NFLOWTABLE));
-    Efcp = check_and_cast<EFCP*>((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
+    Efcp = check_and_cast<EFCP*>((getModuleByPath("^.^")->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
 
     DifAllocator = check_and_cast<DA*>
         (getModuleByPath("^.^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
@@ -50,8 +50,8 @@ void FA::initPointers() {
 }
 
 void FA::initSignalsAndListeners() {
-    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^");
 
     //Signals that this module is emitting
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);

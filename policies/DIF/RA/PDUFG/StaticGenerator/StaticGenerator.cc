@@ -107,7 +107,7 @@ void StaticGenerator::onPolicyInit(){
     difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
 
 
-    RABase* ResourceAllocator = check_and_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    RABase* ResourceAllocator = check_and_cast<RABase*>(getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
     cubes = ResourceAllocator->getQoSCubes();
 
     comparer = check_and_cast<MultilevelQoS *>

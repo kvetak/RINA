@@ -39,7 +39,7 @@ Controller::Controller() {
 }
 
 void Controller::initialize() {
-    cModule * Node = this->getParentModule()->getParentModule()->getParentModule();
+    cModule * Node = this->getModuleByPath("^.^.^");
 
 
     DifAllocator = dynamic_cast<DA*>(Node->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
@@ -191,7 +191,7 @@ void Controller::createVifiBIPC_Simple(string cloudAddr, string cloudDIF) {
     dir->addNewDif(cloudAPN.getApn(), Address(substrateAddr));
 
 
-    cModule * node = this->getParentModule()->getParentModule()->getParentModule();
+    cModule * node = this->getModuleByPath("^.^.^");
     cModuleType* ipcType = cModuleType::get("rina.src.DIF.IPCProcess");
 
     cModule *cloudIPC = ipcType->create("CloudIPC", node);
@@ -218,17 +218,17 @@ void Controller::createVifiBIPC_Simple(string cloudAddr, string cloudDIF) {
     cloudIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     cloudIPC->buildInside();
 
-    cloudIPC->getSubmodule("routingPolicy")->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    cloudIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
     cModule * modgen, * modfor;
 
-    cloudIPC->getSubmodule("resourceAllocator")->getSubmodule("pduFwdGenerator")->deleteModule();
+    cloudIPC->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
-        ->create("pduFwdGenerator", cloudIPC->getSubmodule("resourceAllocator"));
+        ->create(MOD_PDUFWDGEN, cloudIPC->getSubmodule(MOD_RESALLOC));
 
-    cloudIPC->getSubmodule("relayAndMux")->getSubmodule("pduForwardingPolicy")->deleteModule();
+    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create("pduForwardingPolicy", cloudIPC->getSubmodule("relayAndMux"));
+        ->create(MOD_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();
@@ -263,7 +263,7 @@ void Controller::createVifiBIPC_Double(string cloudAddr, string cloudDIF, string
     dir->addNewDif(backboneAPN.getApn(), Address(substrateAddr));
 
 
-    cModule * node = this->getParentModule()->getParentModule()->getParentModule();
+    cModule * node = this->getModuleByPath("^.^.^");
     cModuleType* ipcType = cModuleType::get("rina.src.DIF.IPCProcess");
 
     cGate * modIn, * modOut, * baseIn, * baseOut;
@@ -289,16 +289,16 @@ void Controller::createVifiBIPC_Double(string cloudAddr, string cloudDIF, string
     backboneIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     backboneIPC->buildInside();
 
-    backboneIPC->getSubmodule("routingPolicy")->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    backboneIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
 
-    backboneIPC->getSubmodule("resourceAllocator")->getSubmodule("pduFwdGenerator")->deleteModule();
+    backboneIPC->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
-        ->create("pduFwdGenerator", backboneIPC->getSubmodule("resourceAllocator"));
+        ->create(MOD_PDUFWDGEN, backboneIPC->getSubmodule(MOD_RESALLOC));
 
-    backboneIPC->getSubmodule("relayAndMux")->getSubmodule("pduForwardingPolicy")->deleteModule();
+    backboneIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create("pduForwardingPolicy", backboneIPC->getSubmodule("relayAndMux"));
+        ->create(MOD_PDUFWD, backboneIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();
@@ -339,16 +339,16 @@ void Controller::createVifiBIPC_Double(string cloudAddr, string cloudDIF, string
     cloudIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     cloudIPC->buildInside();
 
-    cloudIPC->getSubmodule("routingPolicy")->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    cloudIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
 
-    cloudIPC->getSubmodule("resourceAllocator")->getSubmodule("pduFwdGenerator")->deleteModule();
+    cloudIPC->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
-        ->create("pduFwdGenerator", cloudIPC->getSubmodule("resourceAllocator"));
+        ->create(MOD_PDUFWDGEN, cloudIPC->getSubmodule(MOD_RESALLOC));
 
-    cloudIPC->getSubmodule("relayAndMux")->getSubmodule("pduForwardingPolicy")->deleteModule();
+    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create("pduForwardingPolicy", cloudIPC->getSubmodule("relayAndMux"));
+        ->create(MOD_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();

@@ -98,7 +98,7 @@ void HierarchicalGenerator::onPolicyInit(){
     rt = check_and_cast<tDomain::TDomainRouting<mType> *>
         (getModuleByPath("^.^.routingPolicy"));
 
-    myAddr = getParentModule()->getParentModule()->par("ipcAddress").stringValue();
+    myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
     parsStr = split(myAddr, '.');
 
     string alg = par("alg").stdstringValue();

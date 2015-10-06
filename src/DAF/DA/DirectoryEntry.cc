@@ -126,6 +126,6 @@ void DirectoryEntry::setAddr(const Address& addr) {
 }
 
 cModule* DirectoryEntry::getIpc() {
-    return  getFlowAlloc() ? getFlowAlloc()->getParentModule()->getParentModule() : NULL;
+    return  getFlowAlloc() ? getFlowAlloc()->getModuleByPath("^.^") : NULL;
 }
 */

@@ -32,7 +32,7 @@ AdmTimedCore::AdmTimedCore() {
 
 void AdmTimedCore::initialize() {
     sig = registerSignal("LISTENER_SLAVE");
-    this->getParentModule()->getParentModule()->getParentModule()->subscribe(
+    this->getModuleByPath("^.^.^")->subscribe(
             "LISTENER_MASTER", this);
 
     cXMLElement* Xml = NULL;

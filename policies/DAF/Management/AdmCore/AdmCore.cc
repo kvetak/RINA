@@ -28,7 +28,7 @@ using namespace std;
 
 void AdmCore::initialize() {
     sig = registerSignal("LISTENER_SLAVE");
-    this->getParentModule()->getParentModule()->getParentModule()->subscribe("LISTENER_MASTER", this);
+    this->getModuleByPath("^.^.^")->subscribe("LISTENER_MASTER", this);
 
 
     cXMLElement* Xml = NULL;

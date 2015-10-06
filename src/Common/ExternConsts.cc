@@ -23,35 +23,42 @@
 #include <ExternConsts.h>
 
 //Module names
-const char* MOD_FLOWALLOC       = "flowAllocator";
-const char* MOD_FA              = "fa";
+const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
+const char* MOD_CDAPAUTH        = "auth";
+const char* MOD_CDAPCACE        = "cace";
+const char* MOD_CDAPCDAP        = "cdap";
+const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
+const char* MOD_CDAPSPLIT       = "cdapSplitter";
 const char* MOD_CONNTABLE       = "connectionTable";
 const char* MOD_DA              = "da";
 const char* MOD_DIFALLOC        = "difAllocator";
-const char* MOD_NFLOWTABLE      = "nFlowTable";
-const char* MOD_EFCP            = "efcp";
-const char* MOD_RESALLOC        = "resourceAllocator";
-const char* MOD_RA              = "ra";
-const char* MOD_IAE             = "iae";
-const char* MOD_IRM             = "irm";
-const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
-const char* MOD_RIBDAEMON       = "ribDaemon";
-const char* MOD_RIBD            = "ribd";
-const char* MOD_ENROLLMENTMODULE= "enrollmentModule";
-const char* MOD_ENROLLMENT      = "enrollment";
-const char* MOD_ENROLLMENTTABLE = "enrollmentStateTable";
-const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
-const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
-const char* MOD_CDAPSPLIT       = "cdapSplitter";
-const char* MOD_CDAPCACE        = "cace";
-const char* MOD_CDAPAUTH        = "auth";
-const char* MOD_CDAPCDAP        = "cdap";
-const char* MOD_EFCPTABLE       = "efcpTable";
-const char* MOD_DTP             = "dtp";
 const char* MOD_DTCP            = "dtcp";
-const char* MOD_DTP_STATE       = "dtpState";
 const char* MOD_DTCP_STATE      = "dtcpState";
+const char* MOD_DTP             = "dtp";
+const char* MOD_DTP_STATE       = "dtpState";
+const char* MOD_EFCP            = "efcp";
 const char* MOD_EFCPI           = "efcpi_";
+const char* MOD_EFCPTABLE       = "efcpTable";
+const char* MOD_ENROLLMENT      = "enrollment";
+const char* MOD_ENROLLMENTMODULE= "enrollmentModule";
+const char* MOD_ENROLLMENTTABLE = "enrollmentStateTable";
+const char* MOD_FA              = "fa";
+const char* MOD_FLOWALLOC       = "flowAllocator";
+const char* MOD_IAE             = "iae";
+const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
+const char* MOD_IRM             = "irm";
+const char* MOD_NFLOWTABLE      = "nFlowTable";
+const char* MOD_PDUFWDGEN       = "pduFwdGenerator";
+const char* MOD_PDUFWD          = "pduForwardingPolicy";
+const char* MOD_RA              = "ra";
+const char* MOD_RESALLOC        = "resourceAllocator";
+const char* MOD_ROUTING         = "routingPolicy";
+const char* MOD_RIBD            = "ribd";
+const char* MOD_RIBDAEMON       = "ribDaemon";
+const char* MOD_RELAYANDMUX     = "relayAndMux";
+const char* MOD_RMT             = "rmt";
+const char* MOD_RMTPORT         = "port";
+
 
 //Module type paths
 const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";

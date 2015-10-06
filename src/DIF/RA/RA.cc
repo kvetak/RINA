@@ -51,8 +51,8 @@ void RA::initialize(int stage)
     }
 
     // retrieve pointers to other modules
-    thisIPC = this->getParentModule()->getParentModule();
-    rmtModule = thisIPC->getSubmodule("relayAndMux");
+    thisIPC = this->getModuleByPath("^.^");
+    rmtModule = thisIPC->getSubmodule(MOD_RELAYANDMUX);
 
     // Get access to the forwarding and routing functionalities...
     fwdtg = check_and_cast<IntPDUFG *>

@@ -26,7 +26,7 @@ Define_Module(AddressComparatorBase);
 
 void AddressComparatorBase::initialize()
 {
-    cModule* ipcModule = getParentModule()->getParentModule();
+    cModule* ipcModule = getModuleByPath("^.^");
     thisIPCAddr = Address(ipcModule->par(PAR_IPCADDR).stringValue(),
                           ipcModule->par(PAR_DIFNAME).stringValue());
 

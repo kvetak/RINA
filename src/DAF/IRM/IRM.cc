@@ -47,7 +47,7 @@ void IRM::initPointers() {
     ConTable = dynamic_cast<ConnectionTable*>(this->getParentModule()->getSubmodule(MOD_CONNTABLE));
     if (!ConTable)
             error("ConTab is NULL!");
-    DifAllocator = dynamic_cast<DA*>(this->getParentModule()->getParentModule()->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
+    DifAllocator = dynamic_cast<DA*>(this->getModuleByPath("^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
 }
 
 void IRM::initialize() {
@@ -89,7 +89,7 @@ void IRM::handleMessage(cMessage* msg) {
 }
 
 void IRM::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher = this->getModuleByPath("^.^");
 
     //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);

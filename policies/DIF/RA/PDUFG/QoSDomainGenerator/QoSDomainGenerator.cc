@@ -105,17 +105,17 @@ void QoSDomainGenerator::onPolicyInit(){
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
 
 
-    RABase* ResourceAllocator = check_and_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    RABase* ResourceAllocator = check_and_cast<RABase*>(getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
 
     cubes = ResourceAllocator->getQoSCubes();
 
     if(alg == "LS"){
         for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
-            rt->addDomain(it->getQosId(), getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
+            rt->addDomain(it->getQosId(), getModuleByPath("^.^")->par("ipcAddress").stringValue(), DMRnms::LS);
         }
     } else {
         for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
-            rt->addDomain(it->getQosId(), getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
+            rt->addDomain(it->getQosId(), getModuleByPath("^.^")->par("ipcAddress").stringValue(), DMRnms::DV);
         }
     }
 

@@ -363,7 +363,7 @@ bool FAI::createEFCPI() {
 bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP and RMT" << endl;
 
-    cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+    cModule* IPCModule = FaModule->getModuleByPath("^.^");
 
     std::ostringstream nameEfcpNorth;
     nameEfcpNorth << GATE_APPIO_ << localPortId;
@@ -459,7 +459,7 @@ bool FAI::deleteBindings() {
     }
     //Data flow
     else {
-        cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+        cModule* IPCModule = FaModule->getModuleByPath("^.^");
         std::ostringstream nameIpcDown;
         nameIpcDown << GATE_NORTHIO_ << localPortId;
         cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
@@ -510,8 +510,8 @@ bool FAI::invokeAllocateRetryPolicy() {
 }
 
 void FAI::initSignalsAndListeners() {
-    cModule* catcher2 = this->getParentModule()->getParentModule();
-    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
     //Signals that module emits
     sigFAIAllocReq      = registerSignal(SIG_FAI_AllocateRequest);
     sigFAIDeallocReq    = registerSignal(SIG_FAI_DeallocateRequest);
@@ -652,7 +652,7 @@ void FAI::createNorthGates() {
     else {
         std::ostringstream nameIpcDown;
         nameIpcDown << GATE_NORTHIO_ << localPortId;
-        cModule* IPCModule = FaModule->getParentModule()->getParentModule();
+        cModule* IPCModule = FaModule->getModuleByPath("^.^");
         IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     }
     return;

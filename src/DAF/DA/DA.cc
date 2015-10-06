@@ -127,7 +127,7 @@ bool DA::isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY) {
 }
 
 bool DA::isAppLocal(const APN& apn) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if ( (submodp->hasPar(PAR_APNAME)
@@ -142,7 +142,7 @@ bool DA::isAppLocal(const APN& apn) {
 }
 
 bool DA::isDifLocal(const DAP& difName) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
@@ -156,7 +156,7 @@ bool DA::isDifLocal(const DAP& difName) {
 }
 
 bool DA::isIpcLocal(cModule* ipc) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp == ipc)
@@ -166,7 +166,7 @@ bool DA::isIpcLocal(cModule* ipc) {
 }
 
 cModule* DA::getDifMember(const DAP& difName) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
@@ -178,7 +178,7 @@ cModule* DA::getDifMember(const DAP& difName) {
 }
 
 cModule* DA::findIpc(const Address& addr) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule *submodp = j();
         if (submodp->hasPar(PAR_IPCADDR) && submodp->hasPar(PAR_DIFNAME)) {
@@ -212,7 +212,7 @@ void DA::handleMessage(cMessage *msg)
 }
 
 cModule* DA::findApp(const APN& apn) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule *submodp = j();
         if (submodp->hasPar(PAR_APNAME) && !strcmp(submodp->par(PAR_APNAME), apn.getName().c_str()) ) {

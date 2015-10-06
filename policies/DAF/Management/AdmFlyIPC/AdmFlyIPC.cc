@@ -51,7 +51,7 @@ void AdmFlyIPC::initialize(){
 void AdmFlyIPC::handleMessage(cMessage *msg){
     if(strcmp(msg->getName(), "createIPC") == 0){
         cModuleType* moduleType = cModuleType::get("rina.src.DIF.IPCProcess");
-        cModule *mod = moduleType->create("flyIPC", this->getParentModule()->getParentModule()->getParentModule());
+        cModule *mod = moduleType->create("flyIPC", this->getModuleByPath("^.^.^"));
         mod->par("ipcAddress").setStringValue(addr);
         mod->par("difName").setStringValue(dif);
 
@@ -74,15 +74,15 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
 
         mod->buildInside();
 
-        mod->getSubmodule("routingPolicy")->par("printAtEnd").setBoolValue(true);
+        mod->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(true);
 
-        mod->getSubmodule("resourceAllocator")->getSubmodule("pduFwdGenerator")->deleteModule();
+        mod->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
         cModule *modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
-            ->create("pduFwdGenerator",mod->getSubmodule("resourceAllocator"));
+            ->create(MOD_PDUFWDGEN,mod->getSubmodule(MOD_RESALLOC));
 
-        mod->getSubmodule("relayAndMux")->getSubmodule("pduForwardingPolicy")->deleteModule();
+        mod->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
         cModule *modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-            ->create("pduForwardingPolicy",mod->getSubmodule("relayAndMux"));
+            ->create(MOD_PDUFWD,mod->getSubmodule(MOD_RELAYANDMUX));
 
         modfor->finalizeParameters();
         modgen->finalizeParameters();

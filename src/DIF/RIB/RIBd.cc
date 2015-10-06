@@ -213,8 +213,8 @@ void RIBd::receiveCACE(CDAPMessage* msg) {
 
 void RIBd::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
-    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
 
     //Signals that this module is emitting
     sigRIBDSendData      = registerSignal(SIG_RIBD_DataSend);
