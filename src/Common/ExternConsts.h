@@ -144,6 +144,8 @@ extern const int    VAL_QOSPARDONOTCARE;
 extern const bool   VAL_QOSPARDEFBOOL;
 extern const int    UNINIT_INVOKEID;
 extern const int    DONTCARE_INVOKEID;
+extern const int   VAL_DEFINSTANCE;
+
 //extern const int    VAL_UNDEF_PORTID;
 
 class ExternConsts {

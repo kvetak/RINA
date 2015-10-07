@@ -24,7 +24,6 @@
 
 RIBdBase::RIBdBase() {
     // TODO Auto-generated constructor stub
-
 }
 
 RIBdBase::~RIBdBase() {

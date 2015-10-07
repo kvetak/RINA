@@ -23,11 +23,13 @@
 package rina.src.DIF.RIB;
 
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DIF.FA.FANotifier;
+
 
 module RIBDaemon
 {
     parameters:
-        @display("i=block/control;bgb=271,295");
+        @display("i=block/control;bgb=271,360");
 
     gates:
         inout rmtIo;
@@ -36,17 +38,20 @@ module RIBDaemon
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             parameters:
-                @display("p=135,148");
+                @display("p=135,211");
             gates:
                 southIo;
         }
         ribd: RIBd {
             parameters:
-                @display("p=135,52");
+                @display("p=135,118");
         }
 
         ribdSplitter: RIBdSplitter {
-            @display("p=135,241");
+            @display("p=135,304");
+        }
+        faNotifier: FANotifier {
+            @display("p=61,50");
         }
     connections allowunconnected:
         commonDistributedApplicationProtocol.southIo <--> ribdSplitter.cdapIo;

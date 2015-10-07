@@ -28,13 +28,6 @@ simple RIBd
     	@display("i=block/control");
     	
     	@signal[RIBd-DataSend](type=CDAPMessage?);
-    	@signal[RIBd-CreateFlow](type=Flow?);    	
-    	@signal[RIBd-CreateRequestFlow](type=Flow?);
-    	@signal[RIBd-CreateFlowResponsePositive](type=Flow?);
-    	@signal[RIBd-CreateFlowResponseNegative](type=Flow?);
-    	@signal[RIBd-DeleteRequestFlow](type=Flow?);
-    	@signal[RIBd-DeleteResponseFlow](type=Flow?);
-    	@signal[AEorRIBd-AllocateResponsePositive](type=Flow?);
     	@signal[RIBd-CongestionNotification](type=CongestionDescriptor?);
     	
         @signal[RIBd-StartEnrollmentRequest](type=CDAPMessage?);

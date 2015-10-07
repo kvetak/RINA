@@ -146,4 +146,5 @@ const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;
 const int   DONTCARE_INVOKEID   = 0;
+const int   VAL_DEFINSTANCE     = -1;
 //const int   VAL_UNDEF_PORTID   = -1;

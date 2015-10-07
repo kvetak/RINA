@@ -34,52 +34,49 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
+#include "CDAPProcessingBase.h"
 #include "RIBdBase.h"
 #include "ExternConsts.h"
 #include "RIBdListeners.h"
 #include "RINASignals.h"
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
+#include "FANotifier.h"
 
 //Constants
 extern const char* MSG_CONGEST;
-extern const char* MSG_FLO;
-extern const char* MSG_FLOPOSI;
-extern const char* MSG_FLONEGA;
-extern const int   VAL_DEFINSTANCE;
-extern const int   VAL_FLOWPOSI;
-extern const int   VAL_FLOWNEGA;
-extern const char* VAL_FLREQ;
-extern const char* VAL_FLREQPOSI;
-extern const char* VAL_FLREQNEGA;
+
 extern const char* MSG_ROUTINGUPDATE;
 extern const char* MSG_ENROLLMENT;
 
 class RIBd : public RIBdBase {
   public:
+    /*
     virtual void sendCreateRequestFlow(Flow* flow);
     virtual void sendCreateResponseNegative(Flow* flow);
     virtual void sendCreateResponsePostive(Flow* flow);
     virtual void sendDeleteRequestFlow(Flow* flow);
+    virtual void sendDeleteResponseFlow(Flow* flow);
+    virtual void receiveAllocationRequestFromFai(Flow* flow);
+    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
+    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
+    */
     virtual void sendStartEnrollmentRequest(EnrollmentObj* obj);
     virtual void sendStartEnrollmentResponse(EnrollmentObj* obj);
     virtual void sendStopEnrollmentRequest(EnrollmentObj* obj);
     virtual void sendStopEnrollmentResponse(EnrollmentObj* obj);
     virtual void sendStartOperationRequest(OperationObj* obj);
     virtual void sendStartOperationResponse(OperationObj* obj);
-    virtual void sendDeleteResponseFlow(Flow* flow);
     virtual void receiveData(CDAPMessage* cimsg);
     virtual void receiveCACE(CDAPMessage* msg);
     virtual void sendCACE(CDAPMessage* msg);
-    virtual void receiveAllocationRequestFromFai(Flow* flow);
-    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
-    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
     /* Handles information coming from PDUFTG module. */
     virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * update);
 
     virtual void sendCongestionNotification(PDU* pdu);
 
-    void signalizeSendData(CDAPMessage* msg);
+    virtual void signalizeSendData(CDAPMessage* msg);
+    /*
     void signalizeCreateRequestFlow(Flow* flow);
     void signalizeDeleteRequestFlow(Flow* flow);
     void signalizeDeleteResponseFlow(Flow* flow);
@@ -88,6 +85,7 @@ class RIBd : public RIBdBase {
     void signalizeCreateFlow(Flow* flow);
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative(Flow* flow);
+    */
     void signalizeCongestionNotification(CongestionDescriptor* congDesc);
 
     void signalizeConnectResponsePositive(CDAPMessage* msg);
@@ -107,8 +105,8 @@ class RIBd : public RIBdBase {
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    void initCdapBindings();
     void initSignalsAndListeners();
+    void initPointers();
 
     //Signals
     simsignal_t sigRIBDSendData;
@@ -141,6 +139,7 @@ class RIBd : public RIBdBase {
 
     //Listeners
     LisRIBDRcvData*             lisRIBDRcvData;
+    /*
     LisRIBDCreReq*              lisRIBDCreReq;
     LisRIBDCreReq*              lisRIBDCreReqByForward;
     LisRIBDAllReqFromFai*       lisRIBDAllReqFromFai;
@@ -152,6 +151,7 @@ class RIBd : public RIBdBase {
     LisRIBDDelRes*              lisRIBDDelRes;
     LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
+    */
     LisRIBDCongesNotif*         lisRIBDCongNotif;
     LisRIBDRcvCACE*             lisRIBDRcvCACE;
     LisRIBDRcvEnrollCACE*       lisRIBDRcvEnrollCACE;
@@ -178,6 +178,8 @@ class RIBd : public RIBdBase {
     void processMStartR(CDAPMessage* msg);
     void processMStop(CDAPMessage* msg);
     void processMStopR(CDAPMessage* msg);
+
+    FANotifierBase* FANotif;
 
 };
 
