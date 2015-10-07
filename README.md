@@ -2,7 +2,9 @@ RINA Simulator
 ====
 
 ###Version changelog
-
+* July-September 2015 - RIBd notifiers, pre-EFCPv6 updates, CDAPProcessingBase interface,
+						merging partner's contribution (namely routing and congestion control),
+						added Hop Count to PDU header  
 * May/June 2015 - Enrollment, (N-1)-data/management separation, MIT relicensing,
                   EFCPv4+ updates, separation of QoSCubes and QoS requirements,
                   change of QoSCube-id datatype, source code split between
@@ -16,11 +18,15 @@ RINA Simulator
 * November 2014 - Brussels RV1 with AllNodes examples
 * October 2014  - Madrid F2F meeting with working SimpleRelay and TwoCSs scenarios
 
-###Links
+###Resources
 * [OpenSourceProject Git with archived RINASim releases](https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/)
 * [VMWare Out-of-the-box virtual machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
 * [PRISTINE webpage](http://ict-pristine.eu/)	 
 * [Developer's mailing-list](https://www.fit.vutbr.cz/mailman/listinfo/rinasim)
+* [Deliverable 2.4 describing RINASim basics](http://ict-pristine.eu/wp-content/uploads/2013/12/PRISTINE-D24-RINASim-draft.pdf)
+
+###Papers
+* [V.Vesely, M.Marek, T.Hykel, O.Rysavy; Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator](http://arxiv.org/abs/1509.03550)
 
 ###Directory structure
 
@@ -37,6 +43,10 @@ RINA Simulator
 		/DIF 					... DIF component
 	
 	/policies				    ... all programable RINA policies
+	
+	/scripts
+		fingerprints.sh			... batch for checking/updating fingerprints
+		slocstats.sh			... counts source lines of code
 
 ###Available policies
 	/DAF                           ... DAF policies
