@@ -294,11 +294,9 @@ void FANotifier::signalizeDeleteResponseFlow(Flow* flow) {
 }
 
 void FANotifier::processMCreate(CDAP_M_Create* msg) {
-
-    EV << "Received M_Create";
+//    EV << "Received M_Create";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
         //EV << fl->info();
@@ -309,10 +307,9 @@ void FANotifier::processMCreate(CDAP_M_Create* msg) {
 }
 
 void FANotifier::processMCreateR(CDAP_M_Create_R* msg) {
-    EV << "Received M_Create_R";
+//    EV << "Received M_Create_R";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //CreateResponseFlow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
@@ -328,25 +325,21 @@ void FANotifier::processMCreateR(CDAP_M_Create_R* msg) {
 }
 
 void FANotifier::processMDelete(CDAP_M_Delete* msg) {
-    EV << "Received M_Delete";
+//    EV << "Received M_Delete";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //DeleteRequest Flow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
         fl->swapFlow();
         signalizeDeleteRequestFlow(fl);
     }
-
 }
 
 void FANotifier::processMDeleteR(CDAP_M_Delete_R* msg) {
-
-    EV << "Received M_Delete_R";
+//    EV << "Received M_Delete_R";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //DeleteResponseFlow
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();

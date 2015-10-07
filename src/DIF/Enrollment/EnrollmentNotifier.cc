@@ -259,9 +259,9 @@ void EnrollmentNotifier::processMConnectR(CDAP_M_Connect_R* msg) {
 }
 
 void EnrollmentNotifier::processMStart(CDAP_M_Start* msg) {
-    EV << "Received M_Start";
+//    EV << "Received M_Start";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
        signalizeStartEnrollmentRequest(msg);
@@ -269,9 +269,9 @@ void EnrollmentNotifier::processMStart(CDAP_M_Start* msg) {
 }
 
 void EnrollmentNotifier::processMStartR(CDAP_M_Start_R* msg) {
-    EV << "Received M_Start_R";
+//    EV << "Received M_Start_R";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
         signalizeStartEnrollmentResponse(msg);
@@ -279,10 +279,9 @@ void EnrollmentNotifier::processMStartR(CDAP_M_Start_R* msg) {
 }
 
 void EnrollmentNotifier::processMStop(CDAP_M_Stop* msg) {
-    EV << "Received M_Stop";
+//    EV << "Received M_Stop";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentRequest(msg);
@@ -290,10 +289,9 @@ void EnrollmentNotifier::processMStop(CDAP_M_Stop* msg) {
 }
 
 void EnrollmentNotifier::processMStopR(CDAP_M_Stop_R* msg) {
-    EV << "Received M_Stop_R";
+//    EV << "Received M_Stop_R";
     object_t object = msg->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentResponse(msg);

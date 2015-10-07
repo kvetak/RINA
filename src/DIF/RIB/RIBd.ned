@@ -30,4 +30,7 @@ simple RIBd
     	@signal[RIBd-DataSend](type=CDAPMessage?);
     	@signal[RIBd-CongestionNotification](type=CongestionDescriptor?);
     	
+    	bool useFANotifier = default(false);
+    	bool useEnrollmentNotifier = default(false);
+    	
 }

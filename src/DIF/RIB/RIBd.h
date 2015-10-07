@@ -106,6 +106,9 @@ class RIBd : public RIBdBase {
     FANotifierBase* FANotif;
     EnrollmentNotifierBase* EnrollNotif;
 
+    bool useFANotifier;
+    bool useEnrollmentNotifier;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 

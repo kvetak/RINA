@@ -33,6 +33,9 @@
 const char* MSG_CONGEST         = "Congestion";
 
 const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
+
+const char* PAR_USEFANOTIF          = "useFANotifier";
+const char* PAR_USEENROLLNOTIF      = "useEnrollmentNotifier";
 //const char* MSG_ENROLLMENT      = "Enrollment";
 
 Define_Module(RIBd);
@@ -49,8 +52,17 @@ void RIBd::initialize() {
 }
 
 void RIBd::initPointers() {
-    FANotif = check_and_cast<FANotifierBase*>( getModuleByPath("^.faNotifier") );
-    EnrollNotif = check_and_cast<EnrollmentNotifierBase*>( getModuleByPath("^.enrollmentNotifier") );
+    FANotif = dynamic_cast<FANotifierBase*>( getModuleByPath("^.faNotifier") );
+    if (FANotif) {
+        useFANotifier = true;
+        this->par(PAR_USEFANOTIF) = true;
+    }
+    EnrollNotif = dynamic_cast<EnrollmentNotifierBase*>( getModuleByPath("^.enrollmentNotifier") );
+    if (EnrollNotif) {
+        useEnrollmentNotifier = true;
+        this->par(PAR_USEENROLLNOTIF) = true;
+    }
+
 }
 
 void RIBd::handleMessage(cMessage *msg) {
@@ -282,13 +294,14 @@ void RIBd::receiveData(CDAPMessage* msg) {
     //std::string xxx = FANotif->getFullPath();
 
     //EnrollmentNotifier processing
-    if (EnrollNotif->isMessageProcessable(msg)) {
+    if (useEnrollmentNotifier && EnrollNotif->isMessageProcessable(msg)) {
         EnrollNotif->receiveMessage(msg);
     }
     //FANotifier processing
-    else if (FANotif->isMessageProcessable(msg)) {
+    else if (useFANotifier && FANotif->isMessageProcessable(msg)) {
         FANotif->receiveMessage(msg);
     }
+    //TODO: Vesely - Hardcoded message processing should be removed!
     //M_WRITE_Request
     else if (dynamic_cast<CDAP_M_Write*>(msg)) {
         processMWrite(msg);

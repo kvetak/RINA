@@ -16,8 +16,6 @@
 #include <CDAPProcessingBase.h>
 
 void CDAPProcessingBase::receiveMessage(CDAPMessage* msg) {
-
-    EV << "receiveMessage() of CDAPProcessingBase" << endl;
     //M_CONNECT_Request
     if (dynamic_cast<CDAP_M_Connect*>(msg)) {
         processMConnect(check_and_cast<CDAP_M_Connect*>(msg));
@@ -151,7 +149,6 @@ std::string CDAPProcessingBase::infoMessage(CDAPMessage* msg) {
     std::ostringstream os;
     os << "MESSAGE PROCESSING NOT DEFINED!" << endl
        << "OpCode: "  << msg->getOpCode();
-
     std::string type;
     switch (msg->getOpCode()) {
         case 1:     type = "M_CONNECT";     break;
@@ -189,3 +186,6 @@ bool CDAPProcessingBase::isMessageProcessable(CDAPMessage* msg) {
     return false;
 }
 
+std::string CDAPProcessingBase::infoObject(object_t obj) {
+    EV << "Object: '" << obj.objectClass << "'" << endl;
+}

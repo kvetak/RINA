@@ -151,6 +151,7 @@ class CDAPProcessingBase {
      * @return String representing header of general CDAP message
      */
     std::string infoMessage(CDAPMessage* msg);
+    std::string infoObject(object_t obj);
 };
 
 #endif /* CDAPPROCESSING_H_ */
