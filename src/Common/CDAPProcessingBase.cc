@@ -149,7 +149,8 @@ void CDAPProcessingBase::processMStopR(CDAP_M_Stop_R* msg) {
 
 std::string CDAPProcessingBase::infoMessage(CDAPMessage* msg) {
     std::ostringstream os;
-    os << "OpCode: "  << msg->getOpCode();
+    os << "MESSAGE PROCESSING NOT DEFINED!" << endl
+       << "OpCode: "  << msg->getOpCode();
 
     std::string type;
     switch (msg->getOpCode()) {

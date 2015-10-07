@@ -13,22 +13,24 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DIF.FA;
+package rina.src.DIF.Enrollment;
 
 //
 // TODO auto-generated module
 //
-simple FANotifier
+simple EnrollmentNotifier
 {
     parameters:
-        @display("i=block/rxtx;is=s");
-
-        @signal[RIBd-CreateFlow](type=Flow?);
-        @signal[RIBd-CreateRequestFlow](type=Flow?);
-        @signal[RIBd-CreateFlowResponsePositive](type=Flow?);
-        @signal[RIBd-CreateFlowResponseNegative](type=Flow?);
-        @signal[RIBd-DeleteRequestFlow](type=Flow?);
-        @signal[RIBd-DeleteResponseFlow](type=Flow?);
-        @signal[AEorRIBd-AllocateResponsePositive](type=Flow?);
-
+    	@display("i=block/departure;is=s");
+	    
+	    @signal[RIBd-StartEnrollmentRequest](type=CDAPMessage?);
+		@signal[RIBd-StartEnrollmentResponse](type=CDAPMessage?);
+		@signal[RIBd-StopEnrollmentRequest](type=CDAPMessage?);
+		@signal[RIBd-StopEnrollmentResponse](type=CDAPMessage?);
+		@signal[RIBd-StartOperationRequest](type=CDAPMessage?);
+		@signal[RIBd-StartOperationResponse](type=CDAPMessage?);        
+		@signal[RIBd-ConnectionResponsePositive](type=CDAPMessage?);
+		@signal[RIBd-ConnectionResponseNegative](type=CDAPMessage?);
+		@signal[RIBd-ConnectionRequest](type=CDAPMessage?);
+		@signal[RIBd-CACEDataSend](type=CDAPMessage?);
 }

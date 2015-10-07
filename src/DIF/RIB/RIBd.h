@@ -42,6 +42,7 @@
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
 #include "FANotifier.h"
+#include "EnrollmentNotifier.h"
 
 //Constants
 extern const char* MSG_CONGEST;
@@ -60,16 +61,17 @@ class RIBd : public RIBdBase {
     virtual void receiveAllocationRequestFromFai(Flow* flow);
     virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
     virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
-    */
+
     virtual void sendStartEnrollmentRequest(EnrollmentObj* obj);
     virtual void sendStartEnrollmentResponse(EnrollmentObj* obj);
     virtual void sendStopEnrollmentRequest(EnrollmentObj* obj);
     virtual void sendStopEnrollmentResponse(EnrollmentObj* obj);
     virtual void sendStartOperationRequest(OperationObj* obj);
     virtual void sendStartOperationResponse(OperationObj* obj);
-    virtual void receiveData(CDAPMessage* cimsg);
     virtual void receiveCACE(CDAPMessage* msg);
     virtual void sendCACE(CDAPMessage* msg);
+    */
+    virtual void receiveData(CDAPMessage* cimsg);
     /* Handles information coming from PDUFTG module. */
     virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * update);
 
@@ -88,19 +90,21 @@ class RIBd : public RIBdBase {
     */
     void signalizeCongestionNotification(CongestionDescriptor* congDesc);
 
+    /*
     void signalizeConnectResponsePositive(CDAPMessage* msg);
     void signalizeConnectResponseNegative(CDAPMessage* msg);
     void signalizeConnectRequest(CDAPMessage* msg);
     void signalizeSendCACE(CDAPMessage* msg);
-
     void signalizeStartEnrollmentRequest(CDAPMessage* msg);
     void signalizeStartEnrollmentResponse(CDAPMessage* msg);
     void signalizeStopEnrollmentRequest(CDAPMessage* msg);
     void signalizeStopEnrollmentResponse(CDAPMessage* msg);
     void signalizeStartOperationRequest(CDAPMessage* msg);
     void signalizeStartOperationResponse(CDAPMessage* msg);
-
+    */
   protected:
+    FANotifierBase* FANotif;
+    EnrollmentNotifierBase* EnrollNotif;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -109,7 +113,9 @@ class RIBd : public RIBdBase {
     void initPointers();
 
     //Signals
+
     simsignal_t sigRIBDSendData;
+    /*
     simsignal_t sigRIBDCreReqFlo;
     simsignal_t sigRIBDDelReqFlo;
     simsignal_t sigRIBDDelResFlo;
@@ -118,19 +124,21 @@ class RIBd : public RIBdBase {
     simsignal_t sigRIBDAllocResPosi;
     simsignal_t sigRIBDAllocResNega;
     simsignal_t sigRIBDCreFlow;
+    */
     simsignal_t sigRIBDCongNotif;
 
+    /*
     simsignal_t sigRIBDStartEnrollReq;
     simsignal_t sigRIBDStartEnrollRes;
     simsignal_t sigRIBDStopEnrollReq;
     simsignal_t sigRIBDStopEnrollRes;
     simsignal_t sigRIBDStartOperationReq;
     simsignal_t sigRIBDStartOperationRes;
-
     simsignal_t sigRIBDConResPosi;
     simsignal_t sigRIBDConResNega;
     simsignal_t sigRIBDConReq;
     simsignal_t sigRIBDCACESend;
+    */
 
     /* Emit update received signal. */
     //simsignal_t sigRIBDFwdUpdateRecv;
@@ -153,6 +161,7 @@ class RIBd : public RIBdBase {
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
     */
     LisRIBDCongesNotif*         lisRIBDCongNotif;
+    /*
     LisRIBDRcvCACE*             lisRIBDRcvCACE;
     LisRIBDRcvEnrollCACE*       lisRIBDRcvEnrollCACE;
     LisRIBDStaEnrolReq*         lisRIBDStaEnrolReq;
@@ -161,25 +170,25 @@ class RIBd : public RIBdBase {
     LisRIBDStoEnrolRes*         lisRIBDStoEnrolRes;
     LisRIBDStaOperReq*          lisRIBDStaOperReq;
     LisRIBDStaOperRes*          lisRIBDStaOperRes;
-
+     */
     /* Listen for PDUFTG update messages. */
     LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
 
-    void processMConnect(CDAPMessage* msg);
-    void processMConnectR(CDAPMessage* msg);
-
+    /*
     void processMCreate(CDAPMessage* msg);
     void processMCreateR(CDAPMessage* msg);
     void processMDelete(CDAPMessage* msg);
     void processMDeleteR(CDAPMessage* msg);
-    void processMWrite(CDAPMessage* msg);
 
+    void processMConnect(CDAPMessage* msg);
+    void processMConnectR(CDAPMessage* msg);
     void processMStart(CDAPMessage* msg);
     void processMStartR(CDAPMessage* msg);
     void processMStop(CDAPMessage* msg);
     void processMStopR(CDAPMessage* msg);
-
-    FANotifierBase* FANotif;
+    */
+    void processMStart(CDAPMessage* msg);
+    void processMWrite(CDAPMessage* msg);
 
 };
 

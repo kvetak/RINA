@@ -23,6 +23,7 @@
 package rina.src.DIF.RIB;
 
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DIF.Enrollment.EnrollmentNotifier;
 import rina.src.DIF.FA.FANotifier;
 
 
@@ -51,7 +52,10 @@ module RIBDaemon
             @display("p=135,304");
         }
         faNotifier: FANotifier {
-            @display("p=61,50");
+            @display("p=73,50");
+        }
+        enrollmentNotifier: EnrollmentNotifier {
+            @display("p=203,50");
         }
     connections allowunconnected:
         commonDistributedApplicationProtocol.southIo <--> ribdSplitter.cdapIo;

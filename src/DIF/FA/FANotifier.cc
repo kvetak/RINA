@@ -26,15 +26,6 @@ const char* VAL_FLREQNEGA       = "Response-  ";
 
 Define_Module(FANotifier);
 
-FANotifier::FANotifier()
-{
-
-}
-
-FANotifier::~FANotifier() {
-
-}
-
 void FANotifier::initSignalsAndListeners() {
     cModule* catcher2 = this->getModuleByPath("^.^");
     cModule* catcher3 = this->getModuleByPath("^.^.^");

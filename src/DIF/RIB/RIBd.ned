@@ -30,15 +30,4 @@ simple RIBd
     	@signal[RIBd-DataSend](type=CDAPMessage?);
     	@signal[RIBd-CongestionNotification](type=CongestionDescriptor?);
     	
-        @signal[RIBd-StartEnrollmentRequest](type=CDAPMessage?);
-        @signal[RIBd-StartEnrollmentResponse](type=CDAPMessage?);
-        @signal[RIBd-StopEnrollmentRequest](type=CDAPMessage?);
-        @signal[RIBd-StopEnrollmentResponse](type=CDAPMessage?);
-        @signal[RIBd-StartOperationRequest](type=CDAPMessage?);
-        @signal[RIBd-StartOperationResponse](type=CDAPMessage?);
-        
-        @signal[RIBd-ConnectionResponsePositive](type=CDAPMessage?);
-        @signal[RIBd-ConnectionResponseNegative](type=CDAPMessage?);
-        @signal[RIBd-ConnectionRequest](type=CDAPMessage?);
-        @signal[RIBd-CACEDataSend](type=CDAPMessage?);
 }

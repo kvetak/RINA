@@ -25,16 +25,26 @@
 
 class FANotifier : public FANotifierBase {
   public:
-    FANotifier();
-    virtual ~FANotifier();
 
-    void initPointers();
-    void initSignalsAndListeners();
+    virtual void sendCreateRequestFlow(Flow* flow);
+    virtual void sendCreateResponseNegative(Flow* flow);
+    virtual void sendCreateResponsePostive(Flow* flow);
+    virtual void sendDeleteRequestFlow(Flow* flow);
+    virtual void sendDeleteResponseFlow(Flow* flow);
+    virtual void receiveAllocationRequestFromFai(Flow* flow);
+    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
+    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
 
-    virtual void processMCreate(CDAP_M_Create* msg);
-    virtual void processMCreateR(CDAP_M_Create_R* msg);
-    virtual void processMDelete(CDAP_M_Delete* msg);
-    virtual void processMDeleteR(CDAP_M_Delete_R* msg);
+  protected:
+    //Signals
+    simsignal_t sigRIBDCreReqFlo;
+    simsignal_t sigRIBDDelReqFlo;
+    simsignal_t sigRIBDDelResFlo;
+    simsignal_t sigRIBDCreResFloPosi;
+    simsignal_t sigRIBDCreResFloNega;
+    simsignal_t sigRIBDAllocResPosi;
+    simsignal_t sigRIBDAllocResNega;
+    simsignal_t sigRIBDCreFlow;
 
     //Listeners
     LisRIBDCreReq*              lisRIBDCreReq;
@@ -49,29 +59,6 @@ class FANotifier : public FANotifierBase {
     LisRIBDCreFloPosi*          lisRIBDCreFloPosi;
     LisRIBDCreFloNega*          lisRIBDCreFloNega;
 
-    virtual void sendCreateRequestFlow(Flow* flow);
-    virtual void sendCreateResponseNegative(Flow* flow);
-    virtual void sendCreateResponsePostive(Flow* flow);
-    virtual void sendDeleteRequestFlow(Flow* flow);
-    virtual void sendDeleteResponseFlow(Flow* flow);
-    virtual void receiveAllocationRequestFromFai(Flow* flow);
-    virtual void receiveCreateFlowPositiveFromRa(Flow* flow);
-    virtual void receiveCreateFlowNegativeFromRa(Flow* flow);
-
-    virtual void signalizeMessage(CDAPMessage* msg);
-
-  protected:
-    //Signals
-    //simsignal_t sigRIBDSendData;
-    simsignal_t sigRIBDCreReqFlo;
-    simsignal_t sigRIBDDelReqFlo;
-    simsignal_t sigRIBDDelResFlo;
-    simsignal_t sigRIBDCreResFloPosi;
-    simsignal_t sigRIBDCreResFloNega;
-    simsignal_t sigRIBDAllocResPosi;
-    simsignal_t sigRIBDAllocResNega;
-    simsignal_t sigRIBDCreFlow;
-
     void signalizeCreateRequestFlow(Flow* flow);
     void signalizeDeleteRequestFlow(Flow* flow);
     void signalizeDeleteResponseFlow(Flow* flow);
@@ -81,11 +68,22 @@ class FANotifier : public FANotifierBase {
     void signalizeCreateResponseFlowPositive(Flow* flow);
     void signalizeCreateResponseFlowNegative( Flow* flow);
 
+    void initPointers();
+    void initSignalsAndListeners();
+
     //SimpleModule overloads
     virtual void initialize();
     virtual void handleMessage(cMessage *msg){};
 
+    //CDAPProcessingBase overload
+    virtual void signalizeMessage(CDAPMessage* msg);
+
     long getNewInvokeId();
+
+    virtual void processMCreate(CDAP_M_Create* msg);
+    virtual void processMCreateR(CDAP_M_Create_R* msg);
+    virtual void processMDelete(CDAP_M_Delete* msg);
+    virtual void processMDeleteR(CDAP_M_Delete_R* msg);
 
     RIBdBase* RIBd;
 

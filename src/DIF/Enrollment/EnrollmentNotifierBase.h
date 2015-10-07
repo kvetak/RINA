@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef FANOTIFIERBASE_H_
-#define FANOTIFIERBASE_H_
+#ifndef ENROLLMENTNOTIFIERBASE_H_
+#define ENROLLMENTNOTIFIERBASE_H_
 
 //Standard libraries
 #include <omnetpp.h>
@@ -22,36 +22,25 @@
 #include "CDAPProcessingBase.h"
 #include "ExternConsts.h"
 #include "RINASignals.h"
-#include "Flow.h"
+#include "EnrollmentObj.h"
+#include "OperationObj.h"
 
-
-class FANotifierBase : public cSimpleModule, public CDAPProcessingBase {
+class EnrollmentNotifierBase : public cSimpleModule, public CDAPProcessingBase {
   public:
 
-    virtual void sendCreateRequestFlow(Flow* flow) = 0;
-    virtual void sendCreateResponseNegative(Flow* flow) = 0;
-    virtual void sendCreateResponsePostive(Flow* flow) = 0;
-    virtual void sendDeleteRequestFlow(Flow* flow) = 0;
-    virtual void sendDeleteResponseFlow(Flow* flow) = 0;
-    virtual void receiveAllocationRequestFromFai(Flow* flow) = 0;
-    virtual void receiveCreateFlowPositiveFromRa(Flow* flow) = 0;
-    virtual void receiveCreateFlowNegativeFromRa(Flow* flow) = 0;
+    virtual void sendStartEnrollmentRequest(EnrollmentObj* obj) = 0;
+    virtual void sendStartEnrollmentResponse(EnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentRequest(EnrollmentObj* obj) = 0;
+    virtual void sendStopEnrollmentResponse(EnrollmentObj* obj) = 0;
+    virtual void sendStartOperationRequest(OperationObj* obj) = 0;
+    virtual void sendStartOperationResponse(OperationObj* obj) = 0;
+    virtual void sendCACE(CDAPMessage* msg) = 0;
 
     //CDAPProcessingBase interface
     virtual bool isMessageProcessable(CDAPMessage* msg);
     virtual void receiveMessage(CDAPMessage* msg);
     virtual void signalizeMessage(CDAPMessage* msg) = 0;
 
-    const Address& getMyAddress() const;
-
-  protected:
-    Address MyAddress;
-
-    //SimpleModule overloads
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg) = 0;
-
-    void initMyAddress();
 };
 
-#endif /* FANOTIFIERBASE_H_ */
+#endif /* ENROLLMENTNOTIFIERBASE_H_ */

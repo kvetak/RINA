@@ -106,7 +106,7 @@ class LisRIBDCongesNotif: public RIBdListeners {
     LisRIBDCongesNotif(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-
+/*
 class LisRIBDRcvCACE: public RIBdListeners {
   public:
     LisRIBDRcvCACE(RIBdBase* nribd) : RIBdListeners(nribd) {};
@@ -154,5 +154,5 @@ class LisRIBDStaOperRes: public RIBdListeners {
     LisRIBDStaOperRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-
+*/
 #endif /* RIBDLISTENERS_H_ */

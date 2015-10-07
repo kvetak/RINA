@@ -168,7 +168,7 @@ void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
     else
        EV << "RIBdListener received unknown object!" << endl;
 }
-
+/*
 void LisRIBDRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
@@ -263,4 +263,4 @@ void LisRIBDStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
         EV << "RIBdListener received unknown object!" << endl;
 
 }
-
+*/

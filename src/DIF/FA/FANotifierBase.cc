@@ -15,13 +15,6 @@
 
 #include <FANotifierBase.h>
 
-FANotifierBase::FANotifierBase() {
-}
-
-FANotifierBase::~FANotifierBase() {
-    // TODO Auto-generated destructor stub
-}
-
 const Address& FANotifierBase::getMyAddress() const {
     return MyAddress;
 }

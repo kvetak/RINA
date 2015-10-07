@@ -33,14 +33,14 @@
 const char* MSG_CONGEST         = "Congestion";
 
 const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
-const char* MSG_ENROLLMENT      = "Enrollment";
+//const char* MSG_ENROLLMENT      = "Enrollment";
 
 Define_Module(RIBd);
 
 void RIBd::initialize() {
     //Init signals and listeners
-
     initSignalsAndListeners();
+
     //Init MyAddress
     initMyAddress();
 
@@ -48,9 +48,15 @@ void RIBd::initialize() {
     initPointers();
 }
 
+void RIBd::initPointers() {
+    FANotif = check_and_cast<FANotifierBase*>( getModuleByPath("^.faNotifier") );
+    EnrollNotif = check_and_cast<EnrollmentNotifierBase*>( getModuleByPath("^.enrollmentNotifier") );
+}
+
 void RIBd::handleMessage(cMessage *msg) {
 
 }
+
 /*
 void RIBd::receiveAllocationRequestFromFai(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
@@ -271,66 +277,17 @@ void RIBd::signalizeDeleteResponseFlow(Flow* flow) {
     emit(sigRIBDDelResFlo, flow);
 }
 */
-void RIBd::processMCreate(CDAPMessage* msg) {
-    CDAP_M_Create* msg1 = check_and_cast<CDAP_M_Create*>(msg);
-
-    EV << "Received M_Create";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-//    //CreateRequest Flow
-//    if (dynamic_cast<Flow*>(object.objectVal)) {
-//        Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
-//        //EV << fl->info();
-//        fl->swapFlow();
-//        //EV << "\n===========\n" << fl->info();
-//        signalizeCreateRequestFlow(fl);
-//    }
-}
-
-void RIBd::processMCreateR(CDAPMessage* msg) {
-    CDAP_M_Create_R* msg1 = check_and_cast<CDAP_M_Create_R*>(msg);
-
-    EV << "Received M_Create_R";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-//    //CreateResponseFlow
-//    if (dynamic_cast<Flow*>(object.objectVal)) {
-//        Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
-//        flow->swapFlow();
-//        //Positive response
-//        if (!msg1->getResult().resultValue) {
-//            signalizeCreateResponseFlowPositive(flow);
-//        }
-//        //Negative response
-//        else
-//            signalizeCreateResponseFlowNegative(flow);
-//    }
-}
-
 void RIBd::receiveData(CDAPMessage* msg) {
     Enter_Method("receiveData()");
     //std::string xxx = FANotif->getFullPath();
 
-    if (FANotif->isMessageProcessable(msg)) {
+    //EnrollmentNotifier processing
+    if (EnrollNotif->isMessageProcessable(msg)) {
+        EnrollNotif->receiveMessage(msg);
+    }
+    //FANotifier processing
+    else if (FANotif->isMessageProcessable(msg)) {
         FANotif->receiveMessage(msg);
-    }
-    //M_CREATE_Request
-    else if (dynamic_cast<CDAP_M_Create*>(msg)) {
-        processMCreate(msg);
-    }
-    //M_CREATE_Response
-    else if (dynamic_cast<CDAP_M_Create_R*>(msg)) {
-        processMCreateR(msg);
-    }
-    //M_DELETE_Request
-    else if (dynamic_cast<CDAP_M_Delete*>(msg)) {
-        processMDelete(msg);
-    }
-    //M_DELETE_Request
-    else if (dynamic_cast<CDAP_M_Delete_R*>(msg)) {
-        processMDeleteR(msg);
     }
     //M_WRITE_Request
     else if (dynamic_cast<CDAP_M_Write*>(msg)) {
@@ -340,6 +297,7 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Start*>(msg)) {
         processMStart(msg);
     }
+    /*
     //M_START_Response
     else if (dynamic_cast<CDAP_M_Start_R*>(msg)) {
         processMStartR(msg);
@@ -352,23 +310,8 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (dynamic_cast<CDAP_M_Stop_R*>(msg)) {
         processMStopR(msg);
     }
-
+    */
     //delete msg;
-}
-
-void RIBd::receiveCACE(CDAPMessage* msg) {
-    Enter_Method("receiveCACE()");
-
-    //M_CONNECT_Request
-    if (dynamic_cast<CDAP_M_Connect*>(msg)) {
-        processMConnect(msg);
-    }
-    //M_CONNECT_Response
-    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)) {
-        processMConnectR(msg);
-    }
-
-    delete msg;
 }
 
 void RIBd::initSignalsAndListeners() {
@@ -378,6 +321,7 @@ void RIBd::initSignalsAndListeners() {
 
     //Signals that this module is emitting
     sigRIBDSendData      = registerSignal(SIG_RIBD_DataSend);
+    /*
     sigRIBDCreReqFlo     = registerSignal(SIG_RIBD_CreateRequestFlow);
     sigRIBDDelReqFlo     = registerSignal(SIG_RIBD_DeleteRequestFlow);
     sigRIBDDelResFlo     = registerSignal(SIG_RIBD_DeleteResponseFlow);
@@ -386,22 +330,23 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreFlow       = registerSignal(SIG_RIBD_CreateFlow);
     sigRIBDCreResFloPosi = registerSignal(SIG_RIBD_CreateFlowResponsePositive);
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
-   // sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
+    */
+    // sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
     sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
     sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
 
+    /*
     sigRIBDStartEnrollReq = registerSignal(SIG_RIBD_StartEnrollmentRequest);
     sigRIBDStartEnrollRes = registerSignal(SIG_RIBD_StartEnrollmentResponse);
     sigRIBDStopEnrollReq  = registerSignal(SIG_RIBD_StopEnrollmentRequest);
     sigRIBDStopEnrollRes  = registerSignal(SIG_RIBD_StopEnrollmentResponse);
     sigRIBDStartOperationReq = registerSignal(SIG_RIBD_StartOperationRequest);
     sigRIBDStartOperationRes = registerSignal(SIG_RIBD_StartOperationResponse);
-
     sigRIBDConResPosi    = registerSignal(SIG_RIBD_ConnectionResponsePositive);
     sigRIBDConResNega    = registerSignal(SIG_RIBD_ConnectionResponseNegative);
     sigRIBDConReq        = registerSignal(SIG_RIBD_ConnectionRequest);
     sigRIBDCACESend      = registerSignal(SIG_RIBD_CACESend);
-
+    */
 
     //Signals that this module is processing
     /*
@@ -442,7 +387,7 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDCongNotif = new LisRIBDCongesNotif(this);
     catcher2->subscribe(SIG_RA_InvokeSlowdown, lisRIBDCongNotif);
 
-
+    /*
     lisRIBDRcvCACE = new LisRIBDRcvCACE(this);
     catcher1->subscribe(SIG_CACE_DataReceive, lisRIBDRcvCACE);
 
@@ -466,7 +411,7 @@ void RIBd::initSignalsAndListeners() {
 
     lisRIBDStaOperRes = new LisRIBDStaOperRes(this);
     catcher2->subscribe(SIG_ENROLLMENT_StartOperationResponse, lisRIBDStaOperRes);
-
+    */
 }
 
 void RIBd::signalizeSendData(CDAPMessage* msg) {
@@ -482,36 +427,6 @@ void RIBd::signalizeSendData(CDAPMessage* msg) {
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
     emit(sigRIBDSendData, msg);
-}
-
-void RIBd::processMDelete(CDAPMessage* msg) {
-    //CDAP_M_Delete* msg1 = check_and_cast<CDAP_M_Delete*>(msg);
-
-    EV << "Received M_Delete";
-    /*
-    //DeleteRequest Flow
-    if (dynamic_cast<Flow*>(object.objectVal)) {
-        Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
-        fl->swapFlow();
-        signalizeDeleteRequestFlow(fl);
-    }
-     */
-}
-
-void RIBd::processMDeleteR(CDAPMessage* msg) {
-    CDAP_M_Delete_R* msg1 = check_and_cast<CDAP_M_Delete_R*>(msg);
-
-    EV << "Received M_Delete_R";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-//    //DeleteResponseFlow
-//    if (dynamic_cast<Flow*>(object.objectVal)) {
-//        Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
-//        flow->swapFlow();
-//        signalizeDeleteResponseFlow(flow);
-//    }
-
 }
 
 void RIBd::sendCongestionNotification(PDU* pdu) {
@@ -540,24 +455,6 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
 
     //Send it
     signalizeSendData(mstarcon);
-}
-
-void RIBd::processMWrite(CDAPMessage* msg)
-{
-    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
-
-    EV << "Received M_Write";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-    //CreateRequest Flow
-    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
-    {
-        IntRoutingUpdate * update = (check_and_cast<IntRoutingUpdate *>(object.objectVal));
-
-        /* Signal that an update obj has been received. */
-        emit(sigRIBDRoutingUpdateRecv, update);
-    }
 }
 
 void RIBd::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
@@ -595,7 +492,7 @@ void RIBd::signalizeCongestionNotification(CongestionDescriptor* congDesc) {
     EV << "Emits CongestionNotification" << endl;
     emit(sigRIBDCongNotif, congDesc);
 }
-
+/*
 void RIBd::signalizeConnectResponsePositive(CDAPMessage* msg) {
     EV << "Emits ConnectResponsePositive to enrollment" << endl;
     emit(sigRIBDConResPosi, msg);
@@ -645,7 +542,8 @@ void RIBd::signalizeStartOperationResponse(CDAPMessage* msg) {
     EV << "Emits StartOperationResponse to enrollment" << endl;
     emit(sigRIBDStartOperationRes, msg);
 }
-
+*/
+/*
 void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     Enter_Method("sendStartEnrollmentRequest()");
 
@@ -755,6 +653,99 @@ void RIBd::sendStartOperationResponse(OperationObj* obj) {
     Enter_Method("sendStartOperationResponse()");
 }
 
+void RIBd::sendCACE(CDAPMessage* msg) {
+    Enter_Method("sendCACE()");
+
+    //TODO: add invoke id
+
+    signalizeSendCACE(msg);
+}
+void RIBd::receiveCACE(CDAPMessage* msg) {
+    Enter_Method("receiveCACE()");
+
+    //M_CONNECT_Request
+    if (dynamic_cast<CDAP_M_Connect*>(msg)) {
+        processMConnect(msg);
+    }
+    //M_CONNECT_Response
+    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)) {
+        processMConnectR(msg);
+    }
+
+    delete msg;
+}
+*/
+/*
+void RIBd::processMCreate(CDAPMessage* msg) {
+    CDAP_M_Create* msg1 = check_and_cast<CDAP_M_Create*>(msg);
+
+    EV << "Received M_Create";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+//    //CreateRequest Flow
+//    if (dynamic_cast<Flow*>(object.objectVal)) {
+//        Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
+//        //EV << fl->info();
+//        fl->swapFlow();
+//        //EV << "\n===========\n" << fl->info();
+//        signalizeCreateRequestFlow(fl);
+//    }
+}
+
+void RIBd::processMCreateR(CDAPMessage* msg) {
+    CDAP_M_Create_R* msg1 = check_and_cast<CDAP_M_Create_R*>(msg);
+
+    EV << "Received M_Create_R";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+//    //CreateResponseFlow
+//    if (dynamic_cast<Flow*>(object.objectVal)) {
+//        Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
+//        flow->swapFlow();
+//        //Positive response
+//        if (!msg1->getResult().resultValue) {
+//            signalizeCreateResponseFlowPositive(flow);
+//        }
+//        //Negative response
+//        else
+//            signalizeCreateResponseFlowNegative(flow);
+//    }
+}
+
+void RIBd::processMDelete(CDAPMessage* msg) {
+    //CDAP_M_Delete* msg1 = check_and_cast<CDAP_M_Delete*>(msg);
+
+    EV << "Received M_Delete";
+
+    //DeleteRequest Flow
+    if (dynamic_cast<Flow*>(object.objectVal)) {
+        Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
+        fl->swapFlow();
+        signalizeDeleteRequestFlow(fl);
+    }
+
+}
+
+void RIBd::processMDeleteR(CDAPMessage* msg) {
+    CDAP_M_Delete_R* msg1 = check_and_cast<CDAP_M_Delete_R*>(msg);
+
+    EV << "Received M_Delete_R";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
+
+//    //DeleteResponseFlow
+//    if (dynamic_cast<Flow*>(object.objectVal)) {
+//        Flow* flow = (check_and_cast<Flow*>(object.objectVal))->dup();
+//        flow->swapFlow();
+//        signalizeDeleteResponseFlow(flow);
+//    }
+
+}
+*/
+
+/*
 void RIBd::processMConnect(CDAPMessage* msg) {
     CDAP_M_Connect* msg1 = check_and_cast<CDAP_M_Connect*>(msg);
 
@@ -779,7 +770,7 @@ void RIBd::processMConnectR(CDAPMessage* msg) {
         }
     }
 }
-
+*/
 void RIBd::processMStart(CDAPMessage* msg) {
     CDAP_M_Start* msg1 = check_and_cast<CDAP_M_Start*>(msg);
 
@@ -794,14 +785,14 @@ void RIBd::processMStart(CDAPMessage* msg) {
         EV << "\n===========\n" << congdesc->getConnectionId().info();
         signalizeCongestionNotification(congdesc);
     }
-
+    /*
     //Enrollment
     if (dynamic_cast<EnrollmentObj*>(object.objectVal)) {
        signalizeStartEnrollmentRequest(msg);
     }
-
+    */
 }
-
+/*
 void RIBd::processMStartR(CDAPMessage* msg) {
     CDAP_M_Start_R* msg1 = check_and_cast<CDAP_M_Start_R*>(msg);
 
@@ -828,10 +819,6 @@ void RIBd::processMStop(CDAPMessage* msg) {
     }
 }
 
-void RIBd::initPointers() {
-    FANotif = check_and_cast<FANotifierBase*>( getModuleByPath("^.faNotifier") );
-}
-
 void RIBd::processMStopR(CDAPMessage* msg) {
     CDAP_M_Stop_R* msg1 = check_and_cast<CDAP_M_Stop_R*>(msg);
 
@@ -844,11 +831,21 @@ void RIBd::processMStopR(CDAPMessage* msg) {
         signalizeStopEnrollmentResponse(msg);
     }
 }
+*/
+void RIBd::processMWrite(CDAPMessage* msg)
+{
+    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
 
-void RIBd::sendCACE(CDAPMessage* msg) {
-    Enter_Method("sendCACE()");
+    EV << "Received M_Write";
+    object_t object = msg1->getObject();
+    EV << " with object '" << object.objectClass << "'" << endl;
 
-    //TODO: add invoke id
+    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
+    {
+        IntRoutingUpdate * update = (check_and_cast<IntRoutingUpdate *>(object.objectVal));
 
-    signalizeSendCACE(msg);
+        /* Signal that an update obj has been received. */
+        emit(sigRIBDRoutingUpdateRecv, update);
+    }
 }
+
