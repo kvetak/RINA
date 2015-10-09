@@ -27,7 +27,7 @@ void AdmFlyIPC::initialize(){
 
 
     Directory * dir = check_and_cast<Directory*>
-        (getRINAModule(this, 1, {MOD_DIFALLOC, MOD_DA}));
+        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
 
     if(addr != "" && myAddr != ""){
         string addrAppName = addr;
