@@ -28,11 +28,11 @@ void QueueAllocBase::initialize()
 {
     // connect to other modules
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.relayAndMux.allocator"));
+        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_RMTALLOC}));
     idGenerator = check_and_cast<QueueIDGenBase*>
-        (getModuleByPath("^.queueIdGenerator"));
+        (getRINAModule(this, 1, {MOD_POL_RA_IDGENERATOR}));
     ra = check_and_cast<RABase*>
-        (getModuleByPath("^.ra"));
+        (getRINAModule(this, 1, {MOD_RA}));
 
     // display active policy name
     cDisplayString& disp = getDisplayString();

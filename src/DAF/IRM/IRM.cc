@@ -44,10 +44,12 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = dynamic_cast<ConnectionTable*>(this->getParentModule()->getSubmodule(MOD_CONNTABLE));
+    ConTable = check_and_cast<ConnectionTable*>
+        (getRINAModule(this, 1, {MOD_CONNTABLE}));
     if (!ConTable)
             error("ConTab is NULL!");
-    DifAllocator = dynamic_cast<DA*>(this->getModuleByPath("^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
+    DifAllocator = check_and_cast<DA*>
+        (getRINAModule(this, 2, {MOD_DIFALLOC, MOD_DA}));
 }
 
 void IRM::initialize() {

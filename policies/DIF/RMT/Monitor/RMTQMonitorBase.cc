@@ -32,13 +32,13 @@ void RMTQMonitorBase::initialize()
     disp.setTagArg("t", 0, getClassName());
 
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
+        (getRINAModule(this, 1, {MOD_RMTALLOC}));
 
     schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getModuleByPath("^.schedulingPolicy"));
+        (getRINAModule(this, 1, {MOD_POL_RMT_SCHEDULER}));
 
     addrComparator = check_and_cast<AddressComparatorBase*>
-        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR}));
 
     onPolicyInit();
 }

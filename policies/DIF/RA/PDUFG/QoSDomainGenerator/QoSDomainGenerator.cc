@@ -94,18 +94,15 @@ void QoSDomainGenerator::routingUpdated(){
 void QoSDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<QoSTable::QoSTable *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
 
     rt = check_and_cast<DMRnms::Routing *>
-        (getModuleByPath("^.^.routingPolicy"));
+        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
 
     std::string alg = par("alg").stdstringValue();
 
-    fwd = check_and_cast<QoSTable::QoSTable *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
-
-
-    RABase* ResourceAllocator = check_and_cast<RABase*>(getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    RABase* ResourceAllocator = check_and_cast<RABase*>
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_RA}));
 
     cubes = ResourceAllocator->getQoSCubes();
 
@@ -119,11 +116,12 @@ void QoSDomainGenerator::onPolicyInit(){
         }
     }
 
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+    difA = check_and_cast<DA *>
+        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
 
 
     comparer = check_and_cast<MultilevelQoS *>
-        (getModuleByPath("^.^.flowAllocator.qosComparerPolicy"));
+        (getRINAModule(this, 2, {MOD_FLOWALLOC, MOD_POL_RA_QOSCOMPARER}));
 }
 
 }

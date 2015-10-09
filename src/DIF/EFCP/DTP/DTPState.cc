@@ -62,14 +62,14 @@ void DTPState::initialize(int step)
     maxFlowPDUSize = par("maxPDUSize");
 
     rtt = par("rtt");
-    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rtt")){
-      rtt = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rtt");
+    if(getRINAModule(this, 2, {MOD_EFCP})->hasPar("rtt")){
+      rtt = getRINAModule(this, 2, {MOD_EFCP})->par("rtt");
 
     }
 
     mpl = par("mpl");
-    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("mpl")){
-      mpl = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("mpl");
+    if(getRINAModule(this, 2, {MOD_EFCP})->hasPar("mpl")){
+      mpl = getRINAModule(this, 2, {MOD_EFCP})->par("mpl");
 
     }
 

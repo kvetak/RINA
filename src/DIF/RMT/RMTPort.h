@@ -26,6 +26,7 @@
 #include <omnetpp.h>
 #include <algorithm>
 
+#include "Utils.h"
 #include "RINASignals.h"
 #include "Flow.h"
 #include "RMTQueue.h"

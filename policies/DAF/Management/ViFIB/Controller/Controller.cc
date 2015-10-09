@@ -63,7 +63,8 @@ void Controller::initialize() {
     int connT = par("connectAt").doubleValue();
     if(connT >= 0) { scheduleAt(simTime()+connT, new cMessage(TIM_CONNECT)); }
 
-    dir = dynamic_cast<Directory*>( getModuleByPath("^.^.^.difAllocator.directory") );
+    dir = check_and_cast<Directory*>
+        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
 
     baseIPC =  getModuleByPath(par("baseIPC").stringValue());
     substrateAddr = baseIPC->par("apName").stdstringValue();
@@ -218,7 +219,7 @@ void Controller::createVifiBIPC_Simple(string cloudAddr, string cloudDIF) {
     cloudIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     cloudIPC->buildInside();
 
-    cloudIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    cloudIPC->getSubmodule(MOD_POL_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
     cModule * modgen, * modfor;
 
@@ -226,9 +227,9 @@ void Controller::createVifiBIPC_Simple(string cloudAddr, string cloudDIF) {
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
         ->create(MOD_PDUFWDGEN, cloudIPC->getSubmodule(MOD_RESALLOC));
 
-    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
+    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_POL_RMT_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create(MOD_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
+        ->create(MOD_POL_RMT_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();
@@ -289,16 +290,16 @@ void Controller::createVifiBIPC_Double(string cloudAddr, string cloudDIF, string
     backboneIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     backboneIPC->buildInside();
 
-    backboneIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    backboneIPC->getSubmodule(MOD_POL_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
 
     backboneIPC->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
         ->create(MOD_PDUFWDGEN, backboneIPC->getSubmodule(MOD_RESALLOC));
 
-    backboneIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
+    backboneIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_POL_RMT_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create(MOD_PDUFWD, backboneIPC->getSubmodule(MOD_RELAYANDMUX));
+        ->create(MOD_POL_RMT_PDUFWD, backboneIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();
@@ -339,16 +340,16 @@ void Controller::createVifiBIPC_Double(string cloudAddr, string cloudDIF, string
     cloudIPC->par("routingPolicyName").setStringValue("TDomainRouting");
     cloudIPC->buildInside();
 
-    cloudIPC->getSubmodule(MOD_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
+    cloudIPC->getSubmodule(MOD_POL_ROUTING)->par("printAtEnd").setBoolValue(par("printAtEnd").boolValue());
 
 
     cloudIPC->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
     modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
         ->create(MOD_PDUFWDGEN, cloudIPC->getSubmodule(MOD_RESALLOC));
 
-    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_PDUFWD)->deleteModule();
+    cloudIPC->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_POL_RMT_PDUFWD)->deleteModule();
     modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-        ->create(MOD_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
+        ->create(MOD_POL_RMT_PDUFWD, cloudIPC->getSubmodule(MOD_RELAYANDMUX));
 
     modfor->finalizeParameters();
     modgen->finalizeParameters();

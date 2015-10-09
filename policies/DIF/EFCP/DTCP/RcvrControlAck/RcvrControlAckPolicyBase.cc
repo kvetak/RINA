@@ -43,8 +43,8 @@ RcvrControlAckPolicyBase::~RcvrControlAckPolicyBase()
 
 void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
-  DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
+  DTP* dtp = check_and_cast<DTP*>(getRINAModule(this, 1, {MOD_DTP}));
+  DTCP* dtcp = check_and_cast<DTCP*>(getRINAModule(this, 1, {MOD_DTCP}));
   /* Default */
 
  //    bool sendAck = false;

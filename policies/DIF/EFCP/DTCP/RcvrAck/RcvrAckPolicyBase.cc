@@ -43,7 +43,7 @@ RcvrAckPolicyBase::~RcvrAckPolicyBase()
 
 void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  DTP* dtp = check_and_cast<DTP*>(getRINAModule(this, 1, {MOD_DTP}));
   /* Default */
 
       unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;

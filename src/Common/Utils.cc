@@ -65,3 +65,23 @@ bool isPrefix(std::string prefix, std::string s) {
     }
     return std::mismatch(prefix.begin(), prefix.end(), s.begin()).first == prefix.end();
 }
+
+cModule* getRINAModule(cModule* curMod, int parentLevel, std::initializer_list<const char*> modPath)
+{
+    std::ostringstream modulePath;
+
+    while (parentLevel)
+    {
+        modulePath << ".^";
+        --parentLevel;
+    }
+
+    for (auto elem : modPath)
+    {
+        modulePath << "." << elem;
+    }
+
+    cModule* ret = curMod->getModuleByPath(modulePath.str().c_str());
+    ASSERT(ret != NULL);
+    return ret;
+}

@@ -35,7 +35,7 @@ void IntPDUFG::initialize(){
 
     //Set Forwarding policy
     fwd = check_and_cast<IntPDUForwarding *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
     onPolicyInit();
 }
 

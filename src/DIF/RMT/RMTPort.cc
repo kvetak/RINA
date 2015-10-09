@@ -44,7 +44,7 @@ void RMTPort::initialize()
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     queueIdGen = check_and_cast<QueueIDGenBase*>
-            (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
+            (getRINAModule(this, 3, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR}));
 
     sigStatRMTPortUp = registerSignal(SIG_STAT_RMTPORT_UP);
     sigStatRMTPortDown = registerSignal(SIG_STAT_RMTPORT_DOWN);

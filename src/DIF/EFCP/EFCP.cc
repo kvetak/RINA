@@ -103,7 +103,7 @@ void EFCP::initialize(int step){
 //  if(step == 3){
     efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
     resourceAllocator = check_and_cast<RA*>
-        (getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_RA}));
 
 //  }
 
@@ -154,8 +154,11 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   }
 
 
-  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
-  DTPState* dtpState = (DTPState*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP_STATE)).c_str());
+  DTP* dtpModule = check_and_cast<DTP*>
+      (getRINAModule(efcpiModule, 0, {MOD_DTP}));
+  DTPState* dtpState = check_and_cast<DTPState*>
+      (getRINAModule(efcpiModule, 0, {MOD_DTP_STATE}));
+
   dtpState->setQoSCube(qosCube);
   dtpModule->setState(dtpState);
 

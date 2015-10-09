@@ -22,12 +22,6 @@
 
 #include "DA.h"
 
-//Constants
-const char* MOD_DIRECTORY       = "^.directory";
-const char* MOD_NAMINFO         = "^.namingInformation";
-const char* MOD_NEIGHBORTAB     = "^.neighborTable";
-const char* MOD_SEARCHTAB       = "^.searchTable";
-
 Define_Module(DA);
 
 const APNList* DA::findApnNeigbors(const APN& apn) {
@@ -79,13 +73,13 @@ const APNList* DA::findNeigborApns(const APN& neighbor) {
 void DA::initPointers() {
     //Retrieve pointers to submodules
     Dir = check_and_cast<Directory*>
-        (getModuleByPath(MOD_DIRECTORY));
+        (getRINAModule(this, 1, {MOD_DIRECTORY}));
     NamInfo = check_and_cast<NamingInformation*>
-        (getModuleByPath(MOD_NAMINFO));
+        (getRINAModule(this, 1, {MOD_NAMINFO}));
     NeighborTab = check_and_cast<NeighborTable*>
-        (getModuleByPath(MOD_NEIGHBORTAB));
+        (getRINAModule(this, 1, {MOD_NEIGHBORTABLE}));
     SearchTab = check_and_cast<SearchTable*>
-        (getModuleByPath(MOD_SEARCHTAB));
+        (getRINAModule(this, 1, {MOD_SEARCHTAB}));
 }
 
 void DA::initialize()

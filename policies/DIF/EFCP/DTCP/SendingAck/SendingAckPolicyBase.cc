@@ -46,7 +46,7 @@ void SendingAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpStat
   /* Oh my, oh my, oh my */
   /* You wish your wife was this dirty, don't you? */
   /* Default */
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  DTP* dtp = check_and_cast<DTP*>(getRINAModule(this, 1, {MOD_DTP}));
 
   //Update RcvLetWindowEdge
   dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());

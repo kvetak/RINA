@@ -43,7 +43,7 @@ FCOverrunPolicyBase::~FCOverrunPolicyBase()
 void FCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
 
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  DTP* dtp = check_and_cast<DTP*>(getRINAModule(this, 1, {MOD_DTP}));
   /* Default */
   dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
   //Block further Write API calls on this port-id

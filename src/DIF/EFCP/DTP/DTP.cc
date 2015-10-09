@@ -101,10 +101,14 @@ void DTP::initialize(int step)
   if(step == 0){
 
     initGates();
-    initialSeqNumPolicy = (InitialSeqNumPolicyBase*) getModuleByPath((std::string(".^.") + std::string(INITIAL_SEQ_NUM_POLICY_NAME)).c_str());
-    rcvrInactivityPolicy = (RcvrInactivityPolicyBase*) getModuleByPath((std::string(".^.") + std::string(RCVR_INACTIVITY_POLICY_NAME)).c_str());
-    senderInactivityPolicy = (SenderInactivityPolicyBase*) getModuleByPath((std::string(".^.") + std::string(SENDER_INACTIVITY_POLICY_NAME)).c_str());
-    rttEstimatorPolicy = (RTTEstimatorPolicyBase*) getModuleByPath((std::string(".^.") + std::string(RTT_ESTIMATOR_POLICY_NAME)).c_str());
+    initialSeqNumPolicy = check_and_cast<InitialSeqNumPolicyBase*>
+        (getRINAModule(this, 1, {INITIAL_SEQ_NUM_POLICY_NAME}));
+    rcvrInactivityPolicy = check_and_cast<RcvrInactivityPolicyBase*>
+        (getRINAModule(this, 1, {RCVR_INACTIVITY_POLICY_NAME}));
+    senderInactivityPolicy = check_and_cast<SenderInactivityPolicyBase*>
+        (getRINAModule(this, 1, {SENDER_INACTIVITY_POLICY_NAME}));
+    rttEstimatorPolicy = check_and_cast<RTTEstimatorPolicyBase*>
+        (getRINAModule(this, 1, {RTT_ESTIMATOR_POLICY_NAME}));
 
     senderInactivityTimer = new SenderInactivityTimer();
     rcvrInactivityTimer = new RcvrInactivityTimer();

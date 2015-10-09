@@ -93,10 +93,10 @@ void HierarchicalGenerator::routingUpdated(){
 void HierarchicalGenerator::onPolicyInit(){
     //Set Forwarding policy
     fwd = check_and_cast<HierarchicalTable::HierarchicalTable *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
 
     rt = check_and_cast<tDomain::TDomainRouting<mType> *>
-        (getModuleByPath("^.^.routingPolicy"));
+        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
 
     myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
     parsStr = split(myAddr, '.');
@@ -126,7 +126,7 @@ void HierarchicalGenerator::onPolicyInit(){
     rt->addDomain(domId, "*", 32, algT);
     k++;
 
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+    difA = check_and_cast<DA *>(getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
 }
 
 pAddr HierarchicalGenerator::parseAddr(const string &addr){

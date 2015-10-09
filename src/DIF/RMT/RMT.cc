@@ -72,22 +72,21 @@ void RMT::initialize()
 
     // get pointers to other components
     fwd = check_and_cast<IntPDUForwarding*>
-        (getModuleByPath("^.pduForwardingPolicy"));
+        (getRINAModule(this, 1, {MOD_POL_RMT_PDUFWD}));
     rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
-
+        (getRINAModule(this, 1, {MOD_RMTALLOC}));
     schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getModuleByPath("^.schedulingPolicy"));
+        (getRINAModule(this, 1, {MOD_POL_RMT_SCHEDULER}));
     maxQPolicy = check_and_cast<RMTMaxQBase*>
-        (getModuleByPath("^.maxQueuePolicy"));
+        (getRINAModule(this, 1, {MOD_POL_RMT_MAXQ}));
     qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
+        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
     qAllocPolicy = check_and_cast<QueueAllocBase*>
-        (getModuleByPath("^.^.resourceAllocator.queueAllocPolicy"));
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_QUEUEALLOC}));
     queueIdGenerator = check_and_cast<QueueIDGenBase*>
-        (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR}));
     addrComparator = check_and_cast<AddressComparatorBase*>
-        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR}));
 
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);

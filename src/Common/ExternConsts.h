@@ -25,7 +25,7 @@
 
 #include <sstream>
 
-//Module names
+//Static module names
 extern const char* MOD_CDAP;
 extern const char* MOD_CDAPAUTH;
 extern const char* MOD_CDAPCACE;
@@ -35,6 +35,7 @@ extern const char* MOD_CDAPSPLIT;
 extern const char* MOD_CONNTABLE;
 extern const char* MOD_DA;
 extern const char* MOD_DIFALLOC;
+extern const char* MOD_DIRECTORY;
 extern const char* MOD_DTCP;
 extern const char* MOD_DTCP_STATE;
 extern const char* MOD_DTP;
@@ -50,17 +51,33 @@ extern const char* MOD_FLOWALLOC;
 extern const char* MOD_IAE;
 extern const char* MOD_IPCRESMANAGER;
 extern const char* MOD_IRM;
+extern const char* MOD_NAMINFO;
+extern const char* MOD_NEIGHBORTABLE;
 extern const char* MOD_NFLOWTABLE;
 extern const char* MOD_PDUFWDGEN;
-extern const char* MOD_PDUFWD;
 extern const char* MOD_RA;
+extern const char* MOD_RANM1FLOWTABLE;
+extern const char* MOD_RELAYANDMUX;
 extern const char* MOD_RESALLOC;
-extern const char* MOD_ROUTING;
 extern const char* MOD_RIBD;
 extern const char* MOD_RIBDAEMON;
-extern const char* MOD_RELAYANDMUX;
+extern const char* MOD_RIBDSPLITTER;
 extern const char* MOD_RMT;
+extern const char* MOD_RMTALLOC;
 extern const char* MOD_RMTPORT;
+extern const char* MOD_SEARCHTAB;
+
+//Policy module names
+extern const char* MOD_POL_RA_ADDRCOMPARATOR;
+extern const char* MOD_POL_RA_IDGENERATOR;
+extern const char* MOD_POL_RA_QOSCOMPARER;
+extern const char* MOD_POL_RA_QUEUEALLOC;
+extern const char* MOD_POL_RMT_MAXQ;
+extern const char* MOD_POL_RMT_PDUFWD;
+extern const char* MOD_POL_RMT_QMONITOR;
+extern const char* MOD_POL_RMT_SCHEDULER;
+extern const char* MOD_POL_QUEUEALLOC;
+extern const char* MOD_POL_ROUTING;
 
 //Module type paths
 extern const char* MOD_EFCP_PATH;

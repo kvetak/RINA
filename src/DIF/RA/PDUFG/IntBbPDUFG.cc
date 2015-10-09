@@ -25,9 +25,11 @@
 void IntBbPDUFG::onPolicyInit(){
 
     //Set Forwarding policy
-    fwd = check_and_cast<IntBbPDUForwarding *>(getModuleByPath("^.pduForwardingPolicy"));
+    fwd = check_and_cast<IntBbPDUForwarding *>
+        (getRINAModule(this, 1, {MOD_RESALLOC, MOD_POL_RMT_PDUFWD}));
     //Set Routing policy
-    routing = check_and_cast<IntBbRouting *>(getModuleByPath("^.routingPolicy"));
+    routing = check_and_cast<IntBbRouting *>
+        (getRINAModule(this, 1, {MOD_POL_ROUTING}));
 
     onBIni();
 }

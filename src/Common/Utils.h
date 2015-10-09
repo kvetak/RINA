@@ -34,6 +34,8 @@
 #include <sstream>
 #include <vector>
 
+#include "omnetpp.h"
+
 /*
  * Explode a string into a vector of strings, given a delimiter
  *
@@ -53,5 +55,16 @@ std::string join(const std::vector<std::string> &elems, const unsigned int n, co
  *
  */
 bool isPrefix(std::string prefix, std::string s);
+
+/**
+ * A getModuleByPath wrapper accepting individual modules in the path as variables.
+ * e.g. this->getModuleByPath("^.^.a.b") == getRINAModule(this, 2, {"a", "b"})
+ *
+ * @param curMod starting module
+ * @param parentLevel initial getParentModule() invocation count
+ * @param modPath path of modules to descent into
+ * @return pointer to the retrieved module
+ */
+cModule* getRINAModule(cModule* curMod, int parentLevel, std::initializer_list<const char*> modPath);
 
 #endif /* UTILS_H_ */

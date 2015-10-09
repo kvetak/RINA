@@ -21,7 +21,9 @@ AdmT::AdmT() {
 
 void AdmT::initialize()
 {
-    DifAllocator = dynamic_cast<DA*>(this->getModuleByPath("^.^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
+    DifAllocator = check_and_cast<DA*>
+        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+
     if (!DifAllocator)
         error("Pointer to DifAllocator is not initialized!");
 
