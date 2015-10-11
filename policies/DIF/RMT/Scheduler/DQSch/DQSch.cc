@@ -19,8 +19,7 @@ Define_Module(DQSch);
 
 void DQSch::onPolicyInit()
 {
-    monitor= check_and_cast<DQMonitor::DQMonitor*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
+    monitor= getRINAModule<DQMonitor::DQMonitor*>(this, 1, {MOD_POL_RMT_QMONITOR});
     if (monitor == NULL)
     {
         EV << "!!! DQMonitor has to be used in conjecture with DQSch!" << endl;

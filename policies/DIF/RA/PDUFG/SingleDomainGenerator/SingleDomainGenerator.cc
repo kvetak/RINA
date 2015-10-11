@@ -78,11 +78,8 @@ void SingleDomainGenerator::routingUpdated(){
 // Called after initialize
 void SingleDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<IntMiniForwarding *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
-
-    rt = check_and_cast<DMRnms::Routing *>
-        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
+    fwd = getRINAModule<IntMiniForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    rt = getRINAModule<DMRnms::Routing *>(this, 2, {MOD_POL_ROUTING});
 
     std::string alg = par("alg").stdstringValue();
 
@@ -93,8 +90,7 @@ void SingleDomainGenerator::onPolicyInit(){
     }
 
 
-    difA = check_and_cast<DA *>
-        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 }
 
 }

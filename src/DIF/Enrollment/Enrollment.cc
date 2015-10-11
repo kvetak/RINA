@@ -101,12 +101,9 @@ void Enrollment::initialize()
 }
 
 void Enrollment::initPointers(){
-    StateTable = check_and_cast<EnrollmentStateTable*>
-        (getRINAModule(this, 1, {MOD_ENROLLMENTTABLE}));
-    RibDaemon = check_and_cast<RIBd*>
-        (getRINAModule(this, 2, {MOD_RIBDAEMON, MOD_RIBD}));
-    FlowAlloc = check_and_cast<FABase*>
-        (getRINAModule(this, 2, {MOD_FLOWALLOC, MOD_FA}));
+    StateTable = getRINAModule<EnrollmentStateTable*>(this, 1, {MOD_ENROLLMENTTABLE});
+    RibDaemon = getRINAModule<RIBd*>(this, 2, {MOD_RIBDAEMON, MOD_RIBD});
+    FlowAlloc = getRINAModule<FABase*>(this, 2, {MOD_FLOWALLOC, MOD_FA});
 }
 
 void Enrollment::initSignalsAndListeners() {

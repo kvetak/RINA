@@ -43,7 +43,7 @@ RateReductionPolicyBase::~RateReductionPolicyBase()
 
 void RateReductionPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = check_and_cast<DTP*>(getRINAModule(this, 1, {MOD_DTP}));
+  DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
   /* Default */
   if (dtcpState->getRcvBuffersPercentFree() <= dtcpState->getRcvBufferPercentThreshold())
   {

@@ -101,14 +101,10 @@ void DTP::initialize(int step)
   if(step == 0){
 
     initGates();
-    initialSeqNumPolicy = check_and_cast<InitialSeqNumPolicyBase*>
-        (getRINAModule(this, 1, {INITIAL_SEQ_NUM_POLICY_NAME}));
-    rcvrInactivityPolicy = check_and_cast<RcvrInactivityPolicyBase*>
-        (getRINAModule(this, 1, {RCVR_INACTIVITY_POLICY_NAME}));
-    senderInactivityPolicy = check_and_cast<SenderInactivityPolicyBase*>
-        (getRINAModule(this, 1, {SENDER_INACTIVITY_POLICY_NAME}));
-    rttEstimatorPolicy = check_and_cast<RTTEstimatorPolicyBase*>
-        (getRINAModule(this, 1, {RTT_ESTIMATOR_POLICY_NAME}));
+    initialSeqNumPolicy = getRINAModule<InitialSeqNumPolicyBase*>(this, 1, {INITIAL_SEQ_NUM_POLICY_NAME});
+    rcvrInactivityPolicy = getRINAModule<RcvrInactivityPolicyBase*>(this, 1, {RCVR_INACTIVITY_POLICY_NAME});
+    senderInactivityPolicy = getRINAModule<SenderInactivityPolicyBase*>(this, 1, {SENDER_INACTIVITY_POLICY_NAME});
+    rttEstimatorPolicy = getRINAModule<RTTEstimatorPolicyBase*>(this, 1, {RTT_ESTIMATOR_POLICY_NAME});
 
     senderInactivityTimer = new SenderInactivityTimer();
     rcvrInactivityTimer = new RcvrInactivityTimer();

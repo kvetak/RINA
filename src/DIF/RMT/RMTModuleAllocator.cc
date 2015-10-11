@@ -26,8 +26,7 @@ Define_Module(RMTModuleAllocator);
 
 void RMTModuleAllocator::initialize()
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
 
     portCount = 0;
     interfacePort = nullptr;
@@ -63,7 +62,7 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     queue = dynamic_cast<RMTQueue*>(newModule);
 
     // create bindings to other modules
-    cModule* rmt = getRINAModule(this, 1, {MOD_RMT});
+    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
     std::ostringstream combinedQueueName;
     combinedQueueName << portWrapper->getFullName() << queueName.str();
     if (type == RMTQueue::OUTPUT)
@@ -140,7 +139,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
 
 void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 {
-    cModule* rmt = getRINAModule(this, 1, {MOD_RMT});
+    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
     RMTPort* port = queueToPort[queue];
     cGate* rmtGate = queue->getRMTAccessGate();
     cGate* qOutputGate = queue->getOutputGate();

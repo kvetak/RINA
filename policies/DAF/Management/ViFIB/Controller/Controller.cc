@@ -63,8 +63,7 @@ void Controller::initialize() {
     int connT = par("connectAt").doubleValue();
     if(connT >= 0) { scheduleAt(simTime()+connT, new cMessage(TIM_CONNECT)); }
 
-    dir = check_and_cast<Directory*>
-        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    dir = getRINAModule<Directory*>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
     baseIPC =  getModuleByPath(par("baseIPC").stringValue());
     substrateAddr = baseIPC->par("apName").stdstringValue();

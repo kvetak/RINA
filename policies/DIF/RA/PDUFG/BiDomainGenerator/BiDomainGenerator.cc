@@ -98,11 +98,9 @@ void BiDomainGenerator::routingUpdated(){
 // Called after initialize
 void BiDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<DomainTable::DomainTable *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
+    fwd = getRINAModule<DomainTable::DomainTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
 
-    rt = check_and_cast<DMRnms::Routing *>
-        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
+    rt = getRINAModule<DMRnms::Routing *>(this, 2, {MOD_POL_ROUTING});
 
     string myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
 
@@ -132,8 +130,7 @@ void BiDomainGenerator::onPolicyInit(){
     }
 
 
-    difA = check_and_cast<DA *>
-        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 }
 
 pAddr BiDomainGenerator::parseAddr(const string &addr){

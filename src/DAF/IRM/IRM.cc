@@ -44,12 +44,10 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = check_and_cast<ConnectionTable*>
-        (getRINAModule(this, 1, {MOD_CONNTABLE}));
+    ConTable = getRINAModule<ConnectionTable*>(this, 1, {MOD_CONNTABLE});
     if (!ConTable)
             error("ConTab is NULL!");
-    DifAllocator = check_and_cast<DA*>
-        (getRINAModule(this, 2, {MOD_DIFALLOC, MOD_DA}));
+    DifAllocator = getRINAModule<DA*>(this, 2, {MOD_DIFALLOC, MOD_DA});
 }
 
 void IRM::initialize() {

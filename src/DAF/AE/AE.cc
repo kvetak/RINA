@@ -138,9 +138,8 @@ bool AE::createBindings(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = check_and_cast<IRM*>
-        (getRINAModule(this, 3, {MOD_IPCRESMANAGER, MOD_IRM}));
-    Cdap = getRINAModule(this, 1, {MOD_CDAP});
+    Irm = getRINAModule<IRM*>(this, 3, {MOD_IPCRESMANAGER, MOD_IRM});
+    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
 
     if (!Cdap)
         error("Pointers to Cdap !");

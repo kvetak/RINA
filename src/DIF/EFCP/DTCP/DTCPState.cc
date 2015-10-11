@@ -415,20 +415,20 @@ void DTCPState::initialize(int step)
     }
 
     rcvCredit = par("rcvCredit");
-    if(getRINAModule(this, 2, {MOD_EFCP})->hasPar("rcvCredit")){
-          rcvCredit = getRINAModule(this, 2, {MOD_EFCP})->par("rcvCredit");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rcvCredit")){
+          rcvCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("rcvCredit");
     }
     sndCredit = par("initialSenderCredit");
-    if(getRINAModule(this, 2, {MOD_EFCP})->hasPar("initialSenderCredit")){
-          sndCredit = getRINAModule(this, 2, {MOD_EFCP})->par("initialSenderCredit");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("initialSenderCredit")){
+          sndCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("initialSenderCredit");
     }
     nextSenderControlSeqNum = par("nextSenderControlSeqNum");
     dataReXmitMax = par("dataReXmitMax");
 
 
     maxClosedWinQueLen = par("maxClosedWinQueLen");
-    if(getRINAModule(this, 2, {MOD_EFCP})->hasPar("maxClosedWinQueLen")){
-          maxClosedWinQueLen = getRINAModule(this, 2, {MOD_EFCP})->par("maxClosedWinQueLen");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("maxClosedWinQueLen")){
+          maxClosedWinQueLen = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("maxClosedWinQueLen");
 
     }
     

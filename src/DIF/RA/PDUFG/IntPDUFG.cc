@@ -34,8 +34,7 @@ void IntPDUFG::initialize(){
     disp.setTagArg("t", 0, getClassName());
 
     //Set Forwarding policy
-    fwd = check_and_cast<IntPDUForwarding *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
+    fwd = getRINAModule<IntPDUForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
     onPolicyInit();
 }
 

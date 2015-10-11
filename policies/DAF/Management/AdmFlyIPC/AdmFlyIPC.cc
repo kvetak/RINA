@@ -26,8 +26,7 @@ void AdmFlyIPC::initialize(){
     int conAtTime = par("conAtTime").longValue();
 
 
-    Directory * dir = check_and_cast<Directory*>
-        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    Directory * dir = getRINAModule<Directory*>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
     if(addr != "" && myAddr != ""){
         string addrAppName = addr;
@@ -60,7 +59,7 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
         cGate * modIn = mod->gateHalf("southIo", cGate::INPUT, 0);
         cGate * modOut = mod->gateHalf("southIo", cGate::OUTPUT, 0);
 
-        cModule *minus =  getRINAModule(this, 3, {"ipcProcess1"});
+        cModule *minus =  getRINAModule<cModule*>(this, 3, {"ipcProcess1"});
         minus->setGateSize("northIo", minus->gateSize("northIo")+1);
         cGate * minusIn = minus->gateHalf("northIo", cGate::INPUT, minus->gateSize("northIo")-1);
         cGate * minusOut = minus->gateHalf("northIo", cGate::OUTPUT, minus->gateSize("northIo")-1);
@@ -98,11 +97,9 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
     } else if(strcmp(msg->getName(), "connect") == 0){
 
         //Retrieve DIF's local IPC member
-        DA * DifAllocator = check_and_cast<DA*>
-            (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+        DA * DifAllocator = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});
         cModule* targetIpc = DifAllocator->getDifMember(DAP(dif));
-        RA * ra = dynamic_cast<RA*>
-            (getRINAModule(targetIpc, 0, {MOD_RESALLOC, MOD_RA}));
+        RA * ra = getRINAModule<RA*>(targetIpc, 0, {MOD_RESALLOC, MOD_RA});
         if(!ra) { error( "Local IPC RA not found"); }
 
         string srcN = addr;

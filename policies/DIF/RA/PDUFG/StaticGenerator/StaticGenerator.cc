@@ -101,19 +101,15 @@ void StaticGenerator::routingUpdated(){}
 // Called after initialize
 void StaticGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<SimpleTable::SimpleTable *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
+    fwd = getRINAModule<SimpleTable::SimpleTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
 
-    difA = check_and_cast<DA *>
-        (getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
 
-    RABase* ResourceAllocator = check_and_cast<RABase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_RA}));
+    RABase* ResourceAllocator = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
     cubes = ResourceAllocator->getQoSCubes();
 
-    comparer = check_and_cast<MultilevelQoS *>
-        (getRINAModule(this, 2, {MOD_FLOWALLOC, MOD_POL_RA_QOSCOMPARER}));
+    comparer = getRINAModule<MultilevelQoS *>(this, 2, {MOD_FLOWALLOC, MOD_POL_RA_QOSCOMPARER});
 }
 
 }

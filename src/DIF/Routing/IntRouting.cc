@@ -38,12 +38,10 @@ void IntRouting::initialize(){
         ipcModule->par("ipcAddress").stringValue(),
         ipcModule->par("difName").stringValue());
 
-    check_and_cast<cObject *>
-        (getRINAModule(this, 1, {MOD_RESALLOC, MOD_PDUFWDGEN}));
+    getRINAModule<cObject *>(this, 1, {MOD_RESALLOC, MOD_PDUFWDGEN});
 
     //Set FWDGenerator
-    fwdg = check_and_cast<IntPDUFG *>
-        (getRINAModule(this, 1, {MOD_RESALLOC, MOD_PDUFWDGEN}));
+    fwdg = getRINAModule<IntPDUFG *>(this, 1, {MOD_RESALLOC, MOD_PDUFWDGEN});
 
     // Display active policy name.
     cDisplayString& disp = getDisplayString();

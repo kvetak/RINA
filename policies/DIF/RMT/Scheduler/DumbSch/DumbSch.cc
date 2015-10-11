@@ -26,8 +26,7 @@ Define_Module(DumbSch);
 
 void DumbSch::onPolicyInit()
 {
-    monitor= check_and_cast<SmartMonitor*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
+    monitor= getRINAModule<SmartMonitor*>(this, 1, {MOD_POL_RMT_QMONITOR});
     if (monitor == NULL)
     {
         EV << "!!! SmartMonitor has to be used in conjecture with DumbSch!" << endl;

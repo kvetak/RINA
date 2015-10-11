@@ -71,22 +71,14 @@ void RMT::initialize()
     efcpiOut[0] = gateHalf("ribdIo", cGate::OUTPUT);
 
     // get pointers to other components
-    fwd = check_and_cast<IntPDUForwarding*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_PDUFWD}));
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getRINAModule(this, 1, {MOD_RMTALLOC}));
-    schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_SCHEDULER}));
-    maxQPolicy = check_and_cast<RMTMaxQBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_MAXQ}));
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
-    qAllocPolicy = check_and_cast<QueueAllocBase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_QUEUEALLOC}));
-    queueIdGenerator = check_and_cast<QueueIDGenBase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR}));
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR}));
+    fwd = getRINAModule<IntPDUForwarding*>(this, 1, {MOD_POL_RMT_PDUFWD});
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
+    schedPolicy = getRINAModule<RMTSchedulingBase*>(this, 1, {MOD_POL_RMT_SCHEDULER});
+    maxQPolicy = getRINAModule<RMTMaxQBase*>(this, 1, {MOD_POL_RMT_MAXQ});
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
+    qAllocPolicy = getRINAModule<QueueAllocBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_QUEUEALLOC});
+    queueIdGenerator = getRINAModule<QueueIDGenBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR});
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
 
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);

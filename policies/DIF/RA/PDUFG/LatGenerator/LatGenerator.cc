@@ -118,10 +118,8 @@ void LatGenerator::routingUpdated(){
 // Called after initialize
 void LatGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<MiniTable::MiniTable *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
-    rt = check_and_cast<IntSimpleRouting *>
-        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
+    fwd = getRINAModule<MiniTable::MiniTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    rt = getRINAModule<IntSimpleRouting *>(this, 2, {MOD_POL_ROUTING});
 }
 
 }

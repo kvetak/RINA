@@ -71,12 +71,10 @@ void HopsSingleMEntries::routingUpdated(){
 // Called after initialize
 void HopsSingleMEntries::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<IntMMForwarding *>
-        (getRINAModule(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD}));
-    rt = check_and_cast<IntTSimpleRouting<mType> *>
-        (getRINAModule(this, 2, {MOD_POL_ROUTING}));
+    fwd = getRINAModule<IntMMForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    rt = getRINAModule<IntTSimpleRouting<mType> *>(this, 2, {MOD_POL_ROUTING});
 
-    difA = check_and_cast<DA *>(getRINAModule(this, 3, {MOD_DIFALLOC, MOD_DA}));
+    difA = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
     mType infMetric = par("infinite");
     rt->setInfinite(infMetric);

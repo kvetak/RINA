@@ -27,14 +27,11 @@ Define_Module(RMTMaxQBase);
 
 void RMTMaxQBase::initialize()
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_QMONITOR}));
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
 
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR}));
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
 
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getRINAModule(this, 1, {MOD_RMTALLOC}));
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
 
     // register slowdown signal for RA
     sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);

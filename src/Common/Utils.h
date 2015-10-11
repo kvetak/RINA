@@ -58,13 +58,24 @@ bool isPrefix(std::string prefix, std::string s);
 
 /**
  * A getModuleByPath wrapper accepting individual modules in the path as variables.
- * e.g. this->getModuleByPath("^.^.a.b") == getRINAModule(this, 2, {"a", "b"})
+ * e.g. TMod* newMod = (TMod*)parentMod->getModuleByPath("^.^.a.b")
+ *      ==
+ *      getRINAModule<TMod*>(parentMod, 2, {"a", "b"})
  *
+ * @tparam target module type
  * @param curMod starting module
  * @param parentLevel initial getParentModule() invocation count
  * @param modPath path of modules to descent into
  * @return pointer to the retrieved module
  */
-cModule* getRINAModule(cModule* curMod, int parentLevel, std::initializer_list<const char*> modPath);
+template<typename modType>
+modType getRINAModule(cModule* curMod, int parentLevel, std::initializer_list<const char*> modPath)
+{
+    std::ostringstream modulePath;
+    while (parentLevel--) { modulePath << ".^"; }
+    for (auto elem : modPath) { modulePath << "." << elem; }
+    return check_and_cast<modType>(curMod->getModuleByPath(modulePath.str().c_str()));
+}
+
 
 #endif /* UTILS_H_ */

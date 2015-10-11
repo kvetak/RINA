@@ -31,14 +31,11 @@ void RMTQMonitorBase::initialize()
     disp.setTagArg("t", 1, "t");
     disp.setTagArg("t", 0, getClassName());
 
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getRINAModule(this, 1, {MOD_RMTALLOC}));
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
 
-    schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getRINAModule(this, 1, {MOD_POL_RMT_SCHEDULER}));
+    schedPolicy = getRINAModule<RMTSchedulingBase*>(this, 1, {MOD_POL_RMT_SCHEDULER});
 
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getRINAModule(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR}));
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
 
     onPolicyInit();
 }

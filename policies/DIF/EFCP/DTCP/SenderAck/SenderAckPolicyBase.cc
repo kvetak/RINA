@@ -43,7 +43,7 @@ SenderAckPolicyBase::~SenderAckPolicyBase()
 
 void SenderAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTCP* dtcp = check_and_cast<DTCP*>(getRINAModule(this, 1, {MOD_DTCP}));
+  DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
   /* Default */
   unsigned int seqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
   dtcp->ackPDU(seqNum);

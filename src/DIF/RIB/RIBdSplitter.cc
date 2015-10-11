@@ -73,6 +73,5 @@ void RIBdSplitter::handleMessage(cMessage *msg)
 }
 
 void RIBdSplitter::initPointers() {
-    FaiTable = check_and_cast<NFlowTable*>
-        (getRINAModule(this, 2, {MOD_FLOWALLOC, MOD_NFLOWTABLE}));
+    FaiTable = getRINAModule<NFlowTable*>(this, 2, {MOD_FLOWALLOC, MOD_NFLOWTABLE});
 }
