@@ -44,7 +44,7 @@ void LisAEMgmtRcvData::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "AEMgmtListener received unknown object!" << endl;
 }
-
+/*
 void LisAEMgmtRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
@@ -139,4 +139,4 @@ void LisAEMgmtStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
         EV << "AEMgmtListener received unknown object!" << endl;
 
 }
-
+*/

@@ -38,7 +38,7 @@ class AEMgmtListeners : public cListener {
   protected:
     AEMgmtBase* aemgmt;
 };
-
+/*
 class LisAEMgmtCreReq : public AEMgmtListeners {
   public:
     LisAEMgmtCreReq(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt){};
@@ -56,13 +56,13 @@ class LisAEMgmtDelRes : public AEMgmtListeners {
     LisAEMgmtDelRes(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-
+*/
 class LisAEMgmtRcvData : public AEMgmtListeners {
   public:
     LisAEMgmtRcvData(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-
+/*
 class LisAEMgmtAllReqFromFai : public AEMgmtListeners {
   public:
     LisAEMgmtAllReqFromFai(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt) {};
@@ -93,7 +93,7 @@ class LisAEMgmtCreFloPosi: public AEMgmtListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
-/* Listen for Forwarding info updates from PDUFTG and handle them. */
+/* Listen for Forwarding info updates from PDUFTG and handle them.
 class LisAEMgmtRoutingUpdate: public AEMgmtListeners
 {
   public:
@@ -156,5 +156,5 @@ class LisAEMgmtStaOperRes: public AEMgmtListeners {
     LisAEMgmtStaOperRes(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-
+*/
 #endif /* AEMgmtLISTENERS_H_ */

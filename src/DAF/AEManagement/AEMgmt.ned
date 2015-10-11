@@ -28,24 +28,7 @@ simple AEMgmt
     	@display("i=block/control");
     	
     	@signal[RIBd-DataSend](type=CDAPMessage?);
-    	@signal[RIBd-CreateFlow](type=Flow?);    	
-    	@signal[RIBd-CreateRequestFlow](type=Flow?);
-    	@signal[RIBd-CreateFlowResponsePositive](type=Flow?);
-    	@signal[RIBd-CreateFlowResponseNegative](type=Flow?);
-    	@signal[RIBd-DeleteRequestFlow](type=Flow?);
-    	@signal[RIBd-DeleteResponseFlow](type=Flow?);
-    	@signal[AEorRIBd-AllocateResponsePositive](type=Flow?);
-    	@signal[RIBd-CongestionNotification](type=CongestionDescriptor?);
-    	
-        @signal[RIBd-StartEnrollmentRequest](type=CDAPMessage?);
-        @signal[RIBd-StartEnrollmentResponse](type=CDAPMessage?);
-        @signal[RIBd-StopEnrollmentRequest](type=CDAPMessage?);
-        @signal[RIBd-StopEnrollmentResponse](type=CDAPMessage?);
-        @signal[RIBd-StartOperationRequest](type=CDAPMessage?);
-        @signal[RIBd-StartOperationResponse](type=CDAPMessage?);
         
-        @signal[RIBd-ConnectionResponsePositive](type=CDAPMessage?);
-        @signal[RIBd-ConnectionResponseNegative](type=CDAPMessage?);
-        @signal[RIBd-ConnectionRequest](type=CDAPMessage?);
-        @signal[RIBd-CACEDataSend](type=CDAPMessage?);
+        bool useFANotifier = default(false);
+    	bool useEnrollmentNotifier = default(false);
 }

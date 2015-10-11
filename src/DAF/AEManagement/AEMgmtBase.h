@@ -40,17 +40,8 @@ class AEMgmtBase : public cSimpleModule {
   public:
     AEMgmtBase();
     virtual ~AEMgmtBase();
-
-    virtual void sendStartEnrollmentRequest(DAFEnrollmentObj* obj) = 0;
-    virtual void sendStartEnrollmentResponse(DAFEnrollmentObj* obj) = 0;
-    virtual void sendStopEnrollmentRequest(DAFEnrollmentObj* obj) = 0;
-    virtual void sendStopEnrollmentResponse(DAFEnrollmentObj* obj) = 0;
-    virtual void sendStartOperationRequest(DAFOperationObj* obj) = 0;
-    virtual void sendStartOperationResponse(DAFOperationObj* obj) = 0;
-    virtual void sendCACE(CDAPMessage* msg) = 0;
-    virtual void receiveData(CDAPMessage* flow) = 0;
-    virtual void receiveCACE(CDAPMessage* msg) = 0;
-
+    virtual void signalizeSendData(CDAPMessage* msg) = 0;
+    virtual void receiveData(CDAPMessage* cimsg) = 0;
     void setMyAddress(const Address& addr);
     const Address& getMyAddress() const;
 

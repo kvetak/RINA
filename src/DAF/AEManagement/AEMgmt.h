@@ -37,95 +37,42 @@
 #include "AEMgmtBase.h"
 #include "ExternConsts.h"
 #include "AEMgmtListeners.h"
+#include "DAFEnrollmentNotifierBase.h"
+#include "FANotifier.h"
+#include "CDAPProcessingBase.h"
 #include "RINASignals.h"
 #include "PDU.h"
 #include "IntRoutingUpdate.h"
 
 //Constants
-extern const char* DAF_MSG_CONGEST;
-extern const char* DAF_MSG_FLO;
-extern const char* DAF_MSG_FLOPOSI;
-extern const char* DAF_MSG_FLONEGA;
-extern const int   DAF_VAL_DEFINSTANCE;
-extern const int   DAF_VAL_FLOWPOSI;
-extern const int   DAF_VAL_FLOWNEGA;
-extern const char* DAF_VAL_FLREQ;
-extern const char* DAF_VAL_FLREQPOSI;
-extern const char* DAF_VAL_FLREQNEGA;
-extern const char* DAF_MSG_ROUTINGUPDATE;
-extern const char* DAF_MSG_ENROLLMENT;
+//extern const char* DAF_MSG_ENROLLMENT;
 
 class AEMgmt : public AEMgmtBase {
   public:
-    virtual void sendStartEnrollmentRequest(DAFEnrollmentObj* obj);
-    virtual void sendStartEnrollmentResponse(DAFEnrollmentObj* obj);
-    virtual void sendStopEnrollmentRequest(DAFEnrollmentObj* obj);
-    virtual void sendStopEnrollmentResponse(DAFEnrollmentObj* obj);
-    virtual void sendStartOperationRequest(DAFOperationObj* obj);
-    virtual void sendStartOperationResponse(DAFOperationObj* obj);
+    virtual void signalizeSendData(CDAPMessage* msg);
     virtual void receiveData(CDAPMessage* cimsg);
-    virtual void receiveCACE(CDAPMessage* msg);
-    virtual void sendCACE(CDAPMessage* msg);
-
-    void signalizeSendData(CDAPMessage* msg);
-
-    void signalizeConnectResponsePositive(CDAPMessage* msg);
-    void signalizeConnectResponseNegative(CDAPMessage* msg);
-    void signalizeConnectRequest(CDAPMessage* msg);
-    void signalizeSendCACE(CDAPMessage* msg);
-
-    void signalizeStartEnrollmentRequest(CDAPMessage* msg);
-    void signalizeStartEnrollmentResponse(CDAPMessage* msg);
-    void signalizeStopEnrollmentRequest(CDAPMessage* msg);
-    void signalizeStopEnrollmentResponse(CDAPMessage* msg);
-    void signalizeStartOperationRequest(CDAPMessage* msg);
-    void signalizeStartOperationResponse(CDAPMessage* msg);
 
   protected:
+    FANotifierBase* FANotif;
+    DAFEnrollmentNotifierBase* DAFEnrollNotif;
+
+    bool useFANotifier;
+    bool useEnrollmentNotifier;
 
     virtual void initialize();
+    virtual void initPointers();
     virtual void handleMessage(cMessage *msg);
 
-    void initCdapBindings();
     void initSignalsAndListeners();
 
     //Signals
     simsignal_t sigRIBDSendData;
-    simsignal_t sigRIBDStartEnrollReq;
-    simsignal_t sigRIBDStartEnrollRes;
-    simsignal_t sigRIBDStopEnrollReq;
-    simsignal_t sigRIBDStopEnrollRes;
-    simsignal_t sigRIBDStartOperationReq;
-    simsignal_t sigRIBDStartOperationRes;
 
-    simsignal_t sigRIBDConResPosi;
-    simsignal_t sigRIBDConResNega;
-    simsignal_t sigRIBDConReq;
-    simsignal_t sigRIBDCACESend;
 
     /* Emit update received signal. */
-    //simsignal_t sigRIBDFwdUpdateRecv;
-    simsignal_t sigRIBDRoutingUpdateRecv;
 
     //Listeners
     LisAEMgmtRcvData*             lisAEMgmtRcvData;
-    LisAEMgmtRcvCACE*             lisAEMgmtRcvCACE;
-    LisAEMgmtRcvEnrollCACE*       lisAEMgmtRcvEnrollCACE;
-    LisAEMgmtStaEnrolReq*         lisAEMgmtStaEnrolReq;
-    LisAEMgmtStaEnrolRes*         lisAEMgmtStaEnrolRes;
-    LisAEMgmtStoEnrolReq*         lisAEMgmtStoEnrolReq;
-    LisAEMgmtStoEnrolRes*         lisAEMgmtStoEnrolRes;
-    LisAEMgmtStaOperReq*          lisAEMgmtStaOperReq;
-    LisAEMgmtStaOperRes*          lisAEMgmtStaOperRes;
-
-    void processMConnect(CDAPMessage* msg);
-    void processMConnectR(CDAPMessage* msg);
-
-    void processMStart(CDAPMessage* msg);
-    void processMStartR(CDAPMessage* msg);
-    void processMStop(CDAPMessage* msg);
-    void processMStopR(CDAPMessage* msg);
-
 };
 
 #endif /* AEMGMT_H_ */
