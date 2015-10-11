@@ -31,11 +31,7 @@ void QueueAllocBase::initialize()
     idGenerator = getRINAModule<QueueIDGenBase*>(this, 1, {MOD_POL_RA_IDGENERATOR});
     ra = getRINAModule<RABase*>(this, 1, {MOD_RA});
 
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
+    setPolicyDisplayString(this);
     onPolicyInit();
 }
 

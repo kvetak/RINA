@@ -44,9 +44,7 @@ void IntRouting::initialize(){
     fwdg = getRINAModule<IntPDUFG *>(this, 1, {MOD_RESALLOC, MOD_PDUFWDGEN});
 
     // Display active policy name.
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
+    setPolicyDisplayString(this);
 
     cModule* catcher = this->getParentModule();
 

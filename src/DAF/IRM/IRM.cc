@@ -248,11 +248,9 @@ void IRM::newFlow(Flow* flow) {
 }
 
 void IRM::updateDisplayString() {
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
     std::ostringstream os;
     os << "up: " << statPassUp << endl << "down: " << statPassDown << endl << "discard: " << statDiscarded;
-    disp.setTagArg("t", 0, os.str().c_str());
+    setPolicyDisplayString(this, os.str().c_str());
 }
 
 void IRM::signalizeDeallocateRequest(Flow* flow) {
