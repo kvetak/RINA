@@ -259,6 +259,14 @@ void DTP::setConnId(const ConnectionId& connId)
   this->connId = connId;
 }
 
+void DTP::handleRendezvousTimer(DTCPRendezvousTimer* timer)
+{
+//  timer->setCounter(timer->getCounter() + 1);
+  //TODO A2 increment counter to indicate retransmission of RendezvousPDU
+  rendezvousCondition();
+
+}
+
 void DTP::handleMessage(cMessage *msg)
 {
   if (msg->isSelfMessage())
@@ -282,6 +290,13 @@ void DTP::handleMessage(cMessage *msg)
         delete msg;
         break;
       }
+
+      //TODO A! Move it to DTCP
+//      case (DTCP_RENDEZVOUS_TIMER): {
+//        handleRendezvousTimer(static_cast<DTCPRendezvousTimer*>(timer));
+//        delete msg;
+//        break;
+//      }
     }
   }
   else
@@ -542,6 +557,15 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
   if (pdu->getType() == CONTROL_ACK_PDU)
   {
     dtcp->runRcvrControlAckPolicy(state);
+    if(dtcp->getDTCPState()->isSndRendez()){
+      ControlAckPDU* controlAckPDU = static_cast<ControlAckPDU*>(pdu);
+      if(dtcp->getDTCPState()->getRendezvousTimer()->getSeqNum() == controlAckPDU->getLastCtrlSeqNumRcv()){
+        cancelAndDelete(dtcp->getDTCPState()->getRendezvousTimer());
+      }
+
+
+    }
+
   }
   else if (pdu->getType() == RENDEZVOUS_PDU)
   {
@@ -660,6 +684,8 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
 
         }
       }
+
+      rendezvousCondition();
     }
 
   }
@@ -1107,6 +1133,50 @@ void DTP::generatePDUsnew()
   delete baseDataPDU;
 }
 
+void DTP::fillRendezvousPDU(RendezvousPDU* rendezPDU)
+{
+  /* Fill in Rendezvous PDU */
+  fillControlAckPDU(rendezPDU);
+  rendezPDU->setNextSeqNumToSend(state->getNextSeqNumToSendWithoutIncrement());
+}
+
+void* DTP::sendRendezvousPDU()
+{
+  /* Send Rendezvous PDU */
+  RendezvousPDU* rendezPDU = new RendezvousPDU();
+  setPDUHeader(rendezPDU);
+  /* Fill in Rendezvous PDU */
+  fillRendezvousPDU(rendezPDU);
+  sendToRMT(rendezPDU);
+}
+
+void DTP::rendezvousCondition()
+{
+  /* Rendezvous condition */
+  if (dtcp->getDTCPState()->isSndRendez())
+  {
+//    if (((state->isDtcpPresent() && dtcp->getDTCPState()->isRxPresent() && dtcp->getDTCPState()->getRxQLen() == 0) || (!dtcp->getDTCPState()->isRxPresent())) && (dtcp->getDTCPState()->getClosedWinQueLen() != 0))
+    if ((state->isDtcpPresent() && (!dtcp->getDTCPState()->isRxPresent() || dtcp->getDTCPState()->getRxQLen() == 0)) && (dtcp->getDTCPState()->getClosedWinQueLen() != 0))
+    {//condition is satisfied if all DT-PDUs are Acked or Retransmission is not present; AND there is DT-PDU on closedWindowQ (we have something to send)
+
+
+      if (dtcp->getDTCPState()->getSndRightWinEdge() < state->getNextSeqNumToSendWithoutIncrement())
+      {
+        /* Send Rendezvous PDU */
+        sendRendezvousPDU();
+        dtcp->getDTCPState()->setSndRendez(true);
+
+        DTCPRendezvousTimer* rendezvousTimer = new DTCPRendezvousTimer();
+        rendezvousTimer->setSeqNum(dtcp->getDTCPState()->getLastControlSeqNumSent());
+        rendezvousTimer->setCounter(0);
+        scheduleAt(simTime() + (state->getRtt() + state->getMPL())/2, rendezvousTimer);
+        dtcp->getDTCPState()->setRendezvousTimer(rendezvousTimer);
+
+      }
+    }
+  }
+}
+
 /**
  *
  */
@@ -1138,8 +1208,13 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
 
             if (pduQ == dtcp->getDTCPState()->getClosedWindowQ())
             {
+              /* It indicates that trySendGenPDUs method has been called for closedWindowQ
+               * So no point of trying to put the DT-PDU on closedWindowQ (again).
+               */
               break;
             }
+
+
 
             if (dtcp->getDTCPState()->getClosedWinQueLen() < dtcp->getDTCPState()->getMaxClosedWinQueLen() - 1)
             {
@@ -1157,6 +1232,9 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
               dtcp->runSndFCOverrunPolicy(state);
 
             }
+
+            /* Rendezvous condition */
+            rendezvousCondition();
           }
         }    // end of Window based
 
@@ -1285,6 +1363,17 @@ void DTP::sendAckOnlyPDU(unsigned int seqNum)
   sendToRMT(ackPDU);
 }
 
+void DTP::fillControlAckPDU(ControlAckPDU* ctrlAckPdu)
+{
+  ctrlAckPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
+  ctrlAckPdu->setLastCtrlSeqNumRcv(dtcp->getLastCtrlSeqNumRcv());
+  ctrlAckPdu->setRcvLeftWinEdge(dtcp->getSndLeftWinEdge());
+  ctrlAckPdu->setRcvRightWinEdge(dtcp->getSndRtWinEdge());
+  ctrlAckPdu->setSndLeftWinEdge(state->getRcvLeftWinEdge());
+  ctrlAckPdu->setSndRightWinEdge(dtcp->getRcvRightWinEdge());
+  ctrlAckPdu->setRcvRate(dtcp->getRcvrRate());
+}
+
 void DTP::sendControlAckPDU()
 {
   Enter_Method_Silent
@@ -1292,15 +1381,7 @@ void DTP::sendControlAckPDU()
 
   ControlAckPDU* ctrlAckPdu = new ControlAckPDU();
   setPDUHeader(ctrlAckPdu);
-  ctrlAckPdu->setSeqNum(dtcp->getNextSndCtrlSeqNum());
-  ctrlAckPdu->setLastCtrlSeqNumRcv(dtcp->getLastCtrlSeqNumRcv());
-
-  ctrlAckPdu->setRcvLeftWinEdge(dtcp->getSndLeftWinEdge());
-  ctrlAckPdu->setRcvRightWinEdge(dtcp->getSndRtWinEdge());
-  ctrlAckPdu->setSndLeftWinEdge(state->getRcvLeftWinEdge());
-  ctrlAckPdu->setSndRightWinEdge(dtcp->getRcvRightWinEdge());
-
-  ctrlAckPdu->setRcvRate(dtcp->getRcvrRate());
+  fillControlAckPDU(ctrlAckPdu);
 
   sendToRMT(ctrlAckPdu);
 }

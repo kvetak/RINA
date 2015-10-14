@@ -113,6 +113,7 @@ class DTCPState : public cSimpleModule
 
     bool sndRendez; //Rendezvous-at-sender state
     bool rcvRendez; //Rendezvous-at-receiver state
+    DTCPRendezvousTimer* rendezvousTimer;
 
 
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
@@ -224,6 +225,8 @@ class DTCPState : public cSimpleModule
     void setSndRendez(bool sndRendez);
     unsigned int getLastControlSeqNumSent() const;
     void setLastControlSeqNumSent(unsigned int lastControlSeqNumSent);
+    DTCPRendezvousTimer* getRendezvousTimer();
+    void setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer);
 
   protected:
     virtual void handleMessage(cMessage *msg);

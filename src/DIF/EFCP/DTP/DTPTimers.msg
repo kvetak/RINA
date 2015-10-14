@@ -36,6 +36,7 @@ enum DTPTimerType
 //  DTP_WINDOW_TIMER = 4;
 //  DTP_SENDING_RATE_TIMER = 5;
   DTP_A_TIMER = 6;
+//  DTCP_SND_RENDEZ_TIMER = 7;
   
 }
 message DTPTimers {
@@ -75,5 +76,7 @@ message ATimer extends DTPTimers{
  	DTPDU_p pdu = NULL;
  	unsigned int seqNum;
 }
+
+
 
 

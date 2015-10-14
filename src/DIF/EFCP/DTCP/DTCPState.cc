@@ -80,6 +80,8 @@ DTCPState::DTCPState()
 
   sndRendez = false;
   rcvRendez = false;
+
+  rendezvousTimer = nullptr;
 }
 
 void DTCPState::incRxSent()
@@ -540,4 +542,14 @@ unsigned int DTCPState::getLastControlSeqNumSent() const
 void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
 {
   this->lastControlSeqNumSent = lastControlSeqNumSent;
+}
+
+DTCPRendezvousTimer* DTCPState::getRendezvousTimer()
+{
+  return rendezvousTimer;
+}
+
+void DTCPState::setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer)
+{
+  this->rendezvousTimer = rendezvousTimer;
 }

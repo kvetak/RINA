@@ -195,6 +195,11 @@ class DTP : public cSimpleModule
     void handleControlPDUFromRMT(ControlPDU* pdu);
 
     double getATime();
+    void fillControlAckPDU(ControlAckPDU* ctrlAckPdu);
+    void fillRendezvousPDU(RendezvousPDU* rendezPDU);
+    void* sendRendezvousPDU();
+    void rendezvousCondition();
+    void handleRendezvousTimer(DTCPRendezvousTimer* timer);
 
   public:
     DTP();

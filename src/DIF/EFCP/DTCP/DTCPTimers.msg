@@ -34,6 +34,8 @@ enum DTCPTimerType
   DTCP_SENDING_RATE_TIMER = 3;
   DTCP_RENDEZVOUS_TIMER = 4;
   DTCP_REL_C_PDU_TIMER = 5;
+//  DTCP_SND_RENDEZ_TIMER = 6;
+//  DTCP_RCV_RENDEZ_TIMER = 7;
 }
 message DTCPTimers {
 	int type enum(DTCPTimerType);
@@ -57,9 +59,16 @@ message DTCPSendingRateTimer extends DTCPTimers{
 
 message DTCPRendezvousTimer extends DTCPTimers{
   type = DTCP_RENDEZVOUS_TIMER;
+  unsigned int seqNum = 0;
+  unsigned int counter = 0;
     
 }
 
-message DTCPReliableControlPDUTImer extends DTCPTimers{
+message DTCPReliableControlPDUTimer extends DTCPTimers{
   type = DTCP_REL_C_PDU_TIMER;  
 }
+
+//message DTCPSndRendezTimer extends DTCPTimers{
+//  type = DTCP_SND_RENDEZ_TIMER;
+//  unsigned int seqNum = 0;  
+//}
