@@ -80,9 +80,16 @@
 				</APN>									
 			</NeighborTable>			
 		</DA>
-		<Enrollment id='ipcProcess2'>
+		<Enrollment id='bottomIpc'>
 			<Preenrollment>
 	            <SimTime t="1">
+	                <Connect src="ra_BottomLayerA" dst="rc_BottomLayerA" />
+	            </SimTime>	            
+			</Preenrollment>
+		</Enrollment>			
+		<Enrollment id='ipcProcess2'>
+			<Preenrollment>
+	            <SimTime t="1.5">
 	                <Connect src="rA_MediumLayerAB" dst="rC_MediumLayerAB" />
 	            </SimTime>	            
 			</Preenrollment>
