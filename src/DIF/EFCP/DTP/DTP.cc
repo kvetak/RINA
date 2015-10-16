@@ -145,8 +145,13 @@ void DTP::initialize(int step)
 //    runInitialSeqNumPolicy();
 
 
+    bool interrupter = false;
+    interrupter = getModuleByPath(".^.^.")->par("interrupter").boolValue();
+    if(interrupter){
 
-    scheduleAt(80, new TheInterrupterTimer());
+
+      scheduleAt(120, new TheInterrupterTimer());
+    }
 
   }
 
@@ -1152,7 +1157,7 @@ void DTP::fillRendezvousPDU(RendezvousPDU* rendezPDU)
   rendezPDU->setNextSeqNumToSend(state->getNextSeqNumToSendWithoutIncrement());
 }
 
-void* DTP::sendRendezvousPDU()
+void DTP::sendRendezvousPDU()
 {
   /* Send Rendezvous PDU */
   RendezvousPDU* rendezPDU = new RendezvousPDU();
@@ -1165,7 +1170,7 @@ void* DTP::sendRendezvousPDU()
 void DTP::rendezvousCondition()
 {
   /* Rendezvous condition */
-  if (dtcp->getDTCPState()->isSndRendez())
+  if (!dtcp->getDTCPState()->isSndRendez())
   {
 //    if (((state->isDtcpPresent() && dtcp->getDTCPState()->isRxPresent() && dtcp->getDTCPState()->getRxQLen() == 0) || (!dtcp->getDTCPState()->isRxPresent())) && (dtcp->getDTCPState()->getClosedWinQueLen() != 0))
     if ((state->isDtcpPresent() && (!dtcp->getDTCPState()->isRxPresent() || dtcp->getDTCPState()->getRxQLen() == 0)) && (dtcp->getDTCPState()->getClosedWinQueLen() != 0))

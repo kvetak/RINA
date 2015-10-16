@@ -34,7 +34,7 @@ Define_Module(DTCPState);
 
 void DTCPState::resetRcvVars()
 {
-  rcvRightWinEdge = INTMAX_MAX;
+  rcvRightWinEdge = UINT_MAX;
 //  rcvRate = ??
 
 }
