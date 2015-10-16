@@ -178,7 +178,7 @@ std::string CDAPProcessingBase::infoMessage(CDAPMessage* msg) {
        << "DstAddr: " << msg->getDstAddr() << endl
        << "InvokeId: " << msg->getInvokeID() << endl
        << "Size: " << msg->getHeaderBitLength() << " bits" << endl;
-    EV << os;
+    EV << os.str();
     return os.str();
 }
 
@@ -187,5 +187,8 @@ bool CDAPProcessingBase::isMessageProcessable(CDAPMessage* msg) {
 }
 
 std::string CDAPProcessingBase::infoObject(object_t obj) {
-    EV << "Object: '" << obj.objectClass << "'" << endl;
+    std::ostringstream os;
+    os << "Object: '" << obj.objectClass << "'" << endl;
+    EV << os.str();
+    return os.str();
 }

@@ -24,7 +24,7 @@
 #define QUEUEIDGENBASE_H_
 
 #include <omnetpp.h>
-
+#include "Utils.h"
 #include "Flow.h"
 #include "PDU.h"
 

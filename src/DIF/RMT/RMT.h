@@ -38,6 +38,7 @@
 #include "ExternConsts.h"
 #include "Address.h"
 #include "PDU.h"
+#include "Utils.h"
 
 #include "IntPDUForwarding.h"
 #include "QueueAllocBase.h"

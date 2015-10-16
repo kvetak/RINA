@@ -26,6 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
+#include "Utils.h"
 #include "NFlowTable.h"
 #include "CDAPMessage_m.h"
 

@@ -27,8 +27,7 @@ Define_Module(ReadRateReducer);
 
 void ReadRateReducer::onPolicyInit()
 {
-    fwd = check_and_cast<IntPDUForwarding*>
-        (getModuleByPath("^.pduForwardingPolicy"));
+    fwd = getRINAModule<IntPDUForwarding*>(this, 1, {MOD_POL_RMT_PDUFWD});
 }
 
 bool ReadRateReducer::run(RMTQueue* queue)

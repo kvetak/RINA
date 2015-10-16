@@ -22,7 +22,7 @@
 
 #include <ExternConsts.h>
 
-//Module names
+//Static module names
 const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
 const char* MOD_CDAPAUTH        = "auth";
 const char* MOD_CDAPCACE        = "cace";
@@ -32,6 +32,7 @@ const char* MOD_CDAPSPLIT       = "cdapSplitter";
 const char* MOD_CONNTABLE       = "connectionTable";
 const char* MOD_DA              = "da";
 const char* MOD_DIFALLOC        = "difAllocator";
+const char* MOD_DIRECTORY       = "directory";
 const char* MOD_DTCP            = "dtcp";
 const char* MOD_DTCP_STATE      = "dtcpState";
 const char* MOD_DTP             = "dtp";
@@ -47,18 +48,33 @@ const char* MOD_FLOWALLOC       = "flowAllocator";
 const char* MOD_IAE             = "iae";
 const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
 const char* MOD_IRM             = "irm";
+const char* MOD_NAMINFO         = "namingInformation";
+const char* MOD_NEIGHBORTABLE   = "neighborTable";
 const char* MOD_NFLOWTABLE      = "nFlowTable";
 const char* MOD_PDUFWDGEN       = "pduFwdGenerator";
-const char* MOD_PDUFWD          = "pduForwardingPolicy";
 const char* MOD_RA              = "ra";
+const char* MOD_RANM1FLOWTABLE  = "nm1FlowTable";
+const char* MOD_RELAYANDMUX     = "relayAndMux";
 const char* MOD_RESALLOC        = "resourceAllocator";
-const char* MOD_ROUTING         = "routingPolicy";
 const char* MOD_RIBD            = "ribd";
 const char* MOD_RIBDAEMON       = "ribDaemon";
-const char* MOD_RELAYANDMUX     = "relayAndMux";
+const char* MOD_RIBDSPLITTER    = "ribdSplitter";
 const char* MOD_RMT             = "rmt";
+const char* MOD_RMTALLOC        = "allocator";
 const char* MOD_RMTPORT         = "port";
+const char* MOD_SEARCHTAB       = "searchTable";
 
+//Policy module names
+const char* MOD_POL_RA_ADDRCOMPARATOR   = "addressComparator";
+const char* MOD_POL_RA_IDGENERATOR      = "queueIdGenerator";
+const char* MOD_POL_RA_QOSCOMPARER      = "qosComparerPolicy";
+const char* MOD_POL_RA_QUEUEALLOC       = "queueAllocPolicy";
+const char* MOD_POL_RMT_MAXQ            = "maxQueuePolicy";
+const char* MOD_POL_RMT_PDUFWD          = "pduForwardingPolicy";
+const char* MOD_POL_RMT_QMONITOR        = "queueMonitorPolicy";
+const char* MOD_POL_RMT_SCHEDULER       = "schedulingPolicy";
+const char* MOD_POL_QUEUEALLOC          = "queueAllocPolicy";
+const char* MOD_POL_ROUTING             = "routingPolicy";
 
 //Module type paths
 const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";

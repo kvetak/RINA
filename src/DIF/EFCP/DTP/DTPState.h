@@ -34,6 +34,7 @@
 #include <cobject.h>
 #include <queue>
 #include <vector>
+#include "Utils.h"
 #include "EFCP_defs.h"
 #include "DataTransferPDU.h"
 

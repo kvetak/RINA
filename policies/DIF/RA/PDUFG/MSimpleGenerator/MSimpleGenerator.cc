@@ -79,12 +79,10 @@ void MSimpleGenerator::routingUpdated(){
 // Called after initialize
 void MSimpleGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<IntMMForwarding *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
-    rt = check_and_cast<IntSimpleRouting *>
-        (getModuleByPath("^.^.routingPolicy"));
+    fwd = getRINAModule<IntMMForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    rt = getRINAModule<IntSimpleRouting *>(this, 2, {MOD_POL_ROUTING});
 
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 }
 
 }

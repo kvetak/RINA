@@ -26,20 +26,10 @@ Define_Module(RMTQMonitorBase);
 
 void RMTQMonitorBase::initialize()
 {
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
-
-    schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getModuleByPath("^.schedulingPolicy"));
-
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
-
+    setPolicyDisplayString(this);
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
+    schedPolicy = getRINAModule<RMTSchedulingBase*>(this, 1, {MOD_POL_RMT_SCHEDULER});
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
     onPolicyInit();
 }
 

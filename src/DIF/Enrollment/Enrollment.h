@@ -32,6 +32,7 @@
 #define __RINA_ENROLLMENT_H_
 
 #include <omnetpp.h>
+#include "Utils.h"
 #include "RINASignals.h"
 #include "Flow.h"
 #include "CDAPMessage_m.h"
