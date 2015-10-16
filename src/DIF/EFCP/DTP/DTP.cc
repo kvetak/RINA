@@ -143,6 +143,11 @@ void DTP::initialize(int step)
 //        RTT_ESTIMATOR_POLICY_NAME);
 
 //    runInitialSeqNumPolicy();
+
+
+
+    scheduleAt(80, new TheInterrupterTimer());
+
   }
 
 }
@@ -289,6 +294,13 @@ void DTP::handleMessage(cMessage *msg)
         handleDTPATimer(static_cast<ATimer*>(timer));
         delete msg;
         break;
+      }
+
+      case (DTP_INTERRUPTER_TIMER): {
+        dtcp->getDTCPState()->setRcvCredit(0);
+        delete msg;
+        break;
+
       }
 
       //TODO A! Move it to DTCP

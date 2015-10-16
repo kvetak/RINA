@@ -37,6 +37,7 @@ enum DTPTimerType
 //  DTP_SENDING_RATE_TIMER = 5;
   DTP_A_TIMER = 6;
 //  DTCP_SND_RENDEZ_TIMER = 7;
+  DTP_INTERRUPTER_TIMER = 8;
   
 }
 message DTPTimers {
@@ -77,6 +78,8 @@ message ATimer extends DTPTimers{
  	unsigned int seqNum;
 }
 
-
+message TheInterrupterTimer extends DTPTimers{
+ type = DTP_INTERRUPTER_TIMER;    
+}
 
 
