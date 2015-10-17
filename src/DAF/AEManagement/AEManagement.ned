@@ -22,7 +22,7 @@ module AEManagement
     parameters:
         @display("bgb=200,250;i=block/cogwheel,#888A85,50");
     gates:
-        inout southIo[];
+        inout southIo;
     submodules:
         aemanagement: AEmanagement {
             parameters:
@@ -32,4 +32,5 @@ module AEManagement
             parameters:
                 @display("p=100,50");
         }
+    connections allowunconnected:
 }

@@ -54,7 +54,7 @@ const char* DAF_ELEM_RELEASE      = "Release";
 const char* DAF_ATTR_TIME         = "t";
 
 DAFEnrollment::DAFEnrollment() :
-        StateTable(NULL), aemgmt(NULL)
+        StateTable(NULL), aemgmt(NULL), test(true)
 {
 }
 
@@ -100,14 +100,62 @@ void DAFEnrollment::initialize()
     WATCH_MAP(PreenrollReleases);
 }
 
+void DAFEnrollment::createBindings(Flow& flow) {
+    cModule* Cdap = this->getModuleByPath("^.^.aemanagement.commonDistributedApplicationProtocol");
+    cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+
+    cModule* aeMgmt = this->getModuleByPath("^.^.aemanagement");
+    cGate* gaeMgmtIn = aeMgmt->gateHalf("aeIo", cGate::INPUT);
+    cGate* gaeMgmtOut = aeMgmt->gateHalf("aeIo", cGate::OUTPUT);
+
+    cModule* aeMgmtParent = this->getModuleByPath("^.^");
+    cGate* gaeMgmtParentIn = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gaeMgmtParentOut = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+
+    //Create new gates
+    cGate* gIrmIn;
+    cGate* gIrmOut;
+    Irm->getOrCreateFirstUnconnectedGatePair(GATE_AEIO, false, true, *&gIrmIn, *&gIrmOut);
+
+    cModule* IrmMod = Irm->getParentModule();
+    cGate* gIrmModIn;
+    cGate* gIrmModOut;
+    IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
+
+    cModule* ApMon = this->getModuleByPath("^.^.^");
+    cGate* gApIn;
+    cGate* gApOut;
+    ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
+
+    //Connect gates together
+    gIrmOut->connectTo(gIrmModOut);
+    gIrmModOut->connectTo(gApIn);
+    gApIn->connectTo(gaeMgmtParentIn);
+    gaeMgmtParentIn->connectTo(gaeMgmtIn);
+    gaeMgmtIn->connectTo(gCdapIn);
+
+    gCdapOut->connectTo(gaeMgmtOut);
+    gaeMgmtOut->connectTo(gaeMgmtParentOut);
+    gaeMgmtParentOut->connectTo(gApOut);
+    gApOut->connectTo(gIrmModIn);
+    gIrmModIn->connectTo(gIrmIn);
+
+    //Set north-half of the routing in ConnectionTable
+    Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
+}
+
 void DAFEnrollment::initPointers(){
     StateTable = check_and_cast<DAFEnrollmentStateTable*>(getModuleByPath("^.enrollmentStateTable"));
     aemgmt = check_and_cast<AEMgmt*>( getModuleByPath("^.^.aemanagement.aemgmt") );
+    Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
     //FlowAlloc = check_and_cast<FABase*>( getModuleByPath("^.^.flowAllocator.fa") );
 }
 
 void DAFEnrollment::initSignalsAndListeners() {
-    cModule* catcher1 = this->getParentModule()->getParentModule();
+    cModule* catcher1 = this->getModuleByPath("^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^.^");
 
     sigDAFEnrollmentCACESendData   = registerSignal(SIG_ENROLLMENT_CACEDataSend);
     sigDAFEnrollmentSendData       = registerSignal(SIG_ENROLLMENT_DataSend);
@@ -118,10 +166,15 @@ void DAFEnrollment::initSignalsAndListeners() {
     sigDAFEnrollmentStartOperReq   = registerSignal(SIG_ENROLLMENT_StartOperationRequest);
     sigDAFEnrollmentStartOperRes   = registerSignal(SIG_ENROLLMENT_StartOperationResponse);
     sigDAFEnrollmentFinish         = registerSignal(SIG_ENROLLMENT_Finished);
+    sigDAFEnrollmentEnrollPosi     = registerSignal(SIG_AEMGMT_ConnectionResponsePositive);
 
     lisDAFEnrollmentAllResPosi = new LisDAFEnrollmentAllResPosi(this);
-    catcher1->subscribe(SIG_FA_MgmtFlowAllocated, lisDAFEnrollmentAllResPosi);
-    catcher1->subscribe(SIG_RA_MgmtFlowAllocated, lisDAFEnrollmentAllResPosi);
+    catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisDAFEnrollmentAllResPosi);
+    //catcher1->subscribe(SIG_RA_MgmtFlowAllocated, lisDAFEnrollmentAllResPosi);
+
+
+    lisDAFEnrollmentRequest = new LisDAFEnrollmentRequest(this);
+    catcher2->subscribe(SIG_AE_Enrolled, lisDAFEnrollmentRequest);
 
     //lisDAFEnrollmentGetFlowFromFaiCreResPosi = new LisDAFEnrollmentGetFlowFromFaiCreResPosi(this);
     //catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisDAFEnrollmentGetFlowFromFaiCreResPosi);
@@ -762,4 +815,22 @@ void DAFEnrollment::handleMessage(cMessage *msg)
         }
         delete msg;
     }
+}
+
+void DAFEnrollment::signalizeEnrolled() {
+    emit(sigDAFEnrollmentEnrollPosi, 0);
+}
+
+void DAFEnrollment::checkEnrolled() {
+    Enter_Method("checkEnrolled()");
+//    if (StateTable.isEmpty()) {
+//        createFlow();
+//    }
+//    else {
+        signalizeEnrolled();
+//    }
+}
+
+void DAFEnrollment::createFlow() {
+    //TODO: continue here
 }

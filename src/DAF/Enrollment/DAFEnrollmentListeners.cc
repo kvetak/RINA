@@ -52,8 +52,17 @@ void LisDAFEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "DAFEnrollmentListener reeived unknown object!" << endl;
     */
-    APNIPair* apnip = dynamic_cast<APNIPair*>(obj);
-    if (apnip) {
+
+
+    // TODO: refactor this stuff
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    APNIPair* apnip = new APNIPair(flow->getSrcApni(),flow->getDstApni());
+    if (flow) {
+        if (enrollment->test) {
+            enrollment->test = false;
+            enrollment->createBindings(*flow);
+        }
+
         enrollment->startCACE(apnip);
     }
     else {
@@ -155,4 +164,10 @@ void LisDAFEnrollmentConReq::receiveSignal(cComponent* src, simsignal_t id,
         enrollment->receiveConnectRequest(msg);
     else
         EV << "Received not a CDAPMessage!" << endl;
+}
+
+void LisDAFEnrollmentRequest::receiveSignal(cComponent* src, simsignal_t id,
+        long obj) {
+    //TODO: add checks
+    enrollment->checkEnrolled();
 }

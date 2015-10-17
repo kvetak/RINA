@@ -48,6 +48,7 @@ class AEPing : public AE
   public:
     AEPing();
     virtual ~AEPing();
+    void afterConnect();
 
   protected:
     std::string dstApName;

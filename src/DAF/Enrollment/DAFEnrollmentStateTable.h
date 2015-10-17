@@ -45,6 +45,7 @@ class DAFEnrollmentStateTable : public cSimpleModule
     void insert(DAFEnrollmentStateTableEntry entry);
     DAFEnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
     bool isEnrolled(const APN& myApn);
+    bool isEmpty();
 
   protected:
     virtual void initialize();

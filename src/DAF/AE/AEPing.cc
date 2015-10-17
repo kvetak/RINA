@@ -143,6 +143,11 @@ void AEPing::handleMessage(cMessage *msg)
 }
 
 void AEPing::onStart() {
+    connect();
+}
+
+void AEPing::afterConnect() {
+    Enter_Method("afterConnect()");
     //Prepare flow's source and destination
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
@@ -157,7 +162,6 @@ void AEPing::onStart() {
 
     //Call flow allocation request
     sendAllocationRequest(FlowObject);
-
 }
 
 void AEPing::onPing() {

@@ -44,6 +44,7 @@
 #include "DAFEnrollmentObj.h"
 #include "DAFOperationObj.h"
 #include "FABase.h"
+#include "IRM.h"
 #include "DAFEnrollmentBase.h"
 
 extern const char* DAF_MSG_CONREQ;
@@ -64,6 +65,7 @@ class LisDAFEnrollmentStartOperationRes;
 class LisDAFEnrollmentConResPosi;
 class LisDAFEnrollmentConResNega;
 class LisDAFEnrollmentConReq;
+class LisDAFEnrollmentRequest;
 
 typedef std::list<APNIPair> APNIPairs;
 typedef std::map<simtime_t, APNIPairs*> DAFEnrollCommands;
@@ -89,7 +91,12 @@ class DAFEnrollment : public DAFEnrollmentBase
     void receiveStartOperationRequest(CDAPMessage* msg);
     void receiveStartOperationResponse(CDAPMessage* msg);
 
+    void createBindings(Flow &flow);
 
+    void checkEnrolled();
+
+
+    bool test;
   protected:
     void initPointers();
     void initSignalsAndListeners();
@@ -105,8 +112,10 @@ class DAFEnrollment : public DAFEnrollmentBase
     void processNewConReq(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentResponse(DAFEnrollmentStateTableEntry* entry);
+    void createFlow();
 
     FABase* FlowAlloc;
+    IRM* Irm;
 
     DAFEnrollCommands PreenrollConnects;
     DAFEnrollCommands PreenrollReleases;
@@ -127,6 +136,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     simsignal_t sigDAFEnrollmentStartOperReq;
     simsignal_t sigDAFEnrollmentStartOperRes;
     simsignal_t sigDAFEnrollmentFinish;
+    simsignal_t sigDAFEnrollmentEnrollPosi;
 
     LisDAFEnrollmentAllResPosi* lisDAFEnrollmentAllResPosi;
     LisDAFEnrollmentGetFlowFromFaiCreResPosi* lisDAFEnrollmentGetFlowFromFaiCreResPosi;
@@ -140,6 +150,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     LisDAFEnrollmentConResPosi* lisDAFEnrollmentConResPosi;
     LisDAFEnrollmentConResNega* lisDAFEnrollmentConResNega;
     LisDAFEnrollmentConReq* lisDAFEnrollmentConReq;
+    LisDAFEnrollmentRequest* lisDAFEnrollmentRequest;
 
     DAFEnrollmentStateTable* StateTable;
     AEMgmt* aemgmt;
@@ -152,6 +163,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     void signalizeStartOperationRequest(DAFOperationObj* obj);
     void signalizeStartOperationResponse(DAFOperationObj* obj);
     void signalizeEnrollmentFinished(DAFEnrollmentStateTableEntry* entry);
+    void signalizeEnrolled();
 
     virtual void handleMessage(cMessage *msg);
 };

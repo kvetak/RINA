@@ -53,6 +53,8 @@ class AE : public AEBase
     void receiveAllocationResponseNegative(Flow* flow);
     void receiveAllocationResponsePositive(Flow* flow);
 
+    virtual void afterConnect();
+
   protected:
     IRM* Irm;
     cModule* Cdap;
@@ -75,6 +77,7 @@ class AE : public AEBase
     simsignal_t sigAEAllocResNega;
     simsignal_t sigAEConReq;
     simsignal_t sigAERelReq;
+    simsignal_t sigAEEnrolled;
 
     //Listeners
     LisAEReceiveData* lisAERcvData;
@@ -86,6 +89,7 @@ class AE : public AEBase
     LisAEConResPosi* lisAEConResPosi;
     LisAEConResNega* lisAEConResNega;
     LisAERelRes* lisAERelRes;
+    LisAEEnrolled* lisAEEnrolled;
 
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
@@ -95,6 +99,7 @@ class AE : public AEBase
     void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeConnectionRequest(CDAPMessage* msg);
     void signalizeReleaseRequest(CDAPMessage* msg);
+    void connect();
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);

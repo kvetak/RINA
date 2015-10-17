@@ -29,27 +29,21 @@ import rina.src.DIF.FA.FANotifier;
 module AEmanagement
 {
     parameters:
-        @display("i=block/control;bgb=271,360");
+        @display("i=block/control;bgb=271,300");
 
     gates:
-        //inout rmtIo;
-        //inout efcpIo;
+        inout aeIo;
 
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             parameters:
                 @display("p=135,211");
-            gates:
-                southIo;
         }
         aemgmt: AEMgmt {
             parameters:
                 @display("p=135,118");
         }
 
-        aemgmtSplitter: AEMgmtSplitter {
-            @display("p=135,304");
-        }
         //faNotifier: FANotifier {
         //    @display("p=73,50");
         //}
@@ -57,7 +51,4 @@ module AEmanagement
             @display("p=203,50");
         }
     connections allowunconnected:
-        commonDistributedApplicationProtocol.southIo <--> aemgmtSplitter.cdapIo;
-        //aemgmtSplitter.rmtIo <--> rmtIo;
-        //aemgmtSplitter.efcpIo <--> efcpIo;
 }

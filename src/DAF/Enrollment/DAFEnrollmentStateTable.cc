@@ -47,6 +47,10 @@ void DAFEnrollmentStateTable::initialize()
     WATCH_LIST(StateTable);
 }
 
+bool DAFEnrollmentStateTable::isEmpty() {
+    return StateTable.empty();
+}
+
 void DAFEnrollmentStateTable::insert(DAFEnrollmentStateTableEntry entry) {
     StateTable.push_back(entry);
 }

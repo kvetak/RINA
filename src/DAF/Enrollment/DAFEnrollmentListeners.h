@@ -115,5 +115,11 @@ public:
     virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
 };
 
+class LisDAFEnrollmentRequest : public DAFEnrollmentListeners {
+public:
+    LisDAFEnrollmentRequest(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  long obj);
+};
+
 
 #endif /* ENROLLMENTLISTENERS_H_ */
