@@ -40,6 +40,14 @@ enum DTPTimerType
   DTP_INTERRUPTER_TIMER = 8;
   
 }
+
+enum InterrupterActionType
+{
+  INTERRUPTER_ZERO_RCV_CREDIT = 1;
+  INTERRUPTER_INFLATE_RCV_CREDIT = 2;   
+
+  
+}
 message DTPTimers {
 	int type enum(DTPTimerType);
 }
@@ -79,7 +87,8 @@ message ATimer extends DTPTimers{
 }
 
 message TheInterrupterTimer extends DTPTimers{
- type = DTP_INTERRUPTER_TIMER;    
+ type = DTP_INTERRUPTER_TIMER;
+ int action enum(InterrupterActionType);
 }
 
 

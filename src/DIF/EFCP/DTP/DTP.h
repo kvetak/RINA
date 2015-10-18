@@ -200,6 +200,7 @@ class DTP : public cSimpleModule
     void sendRendezvousPDU();
     void rendezvousCondition();
     void handleRendezvousTimer(DTCPRendezvousTimer* timer);
+    void handleInterrupterTimer(TheInterrupterTimer* msg);
 
   public:
     DTP();

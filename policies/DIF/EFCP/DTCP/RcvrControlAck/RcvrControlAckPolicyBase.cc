@@ -112,7 +112,8 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
      dataPdu->setSeqNum(seqNum);
      UserDataField* userData = new UserDataField();
 
-     dataPdu->setUserDataField(userData);
+//     dataPdu->setUserDataField(userData);
+     dataPdu->encapsulate(userData);
 
      dtp->sendToRMT(dataPdu);
 

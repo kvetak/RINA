@@ -82,6 +82,7 @@ DTCPState::DTCPState()
   rcvRendez = false;
 
   rendezvousTimer = nullptr;
+  reliableCPDUTimer = nullptr;
 }
 
 void DTCPState::incRxSent()
@@ -468,6 +469,16 @@ const QoSCube* DTCPState::getQoSCube() const {
 
 void DTCPState::setQoSCube(const QoSCube*& qoSCube) {
     this->qoSCube = qoSCube;
+}
+
+DTCPReliableControlPDUTimer* DTCPState::getReliableCpduTimer()
+{
+  return reliableCPDUTimer;
+}
+
+void DTCPState::setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer)
+{
+  reliableCPDUTimer = reliableCpduTimer;
 }
 
 void DTCPState::initFromQoS(const QoSCube* qosCube)

@@ -149,8 +149,14 @@ void DTP::initialize(int step)
     interrupter = getModuleByPath(".^.^.")->par("interrupter").boolValue();
     if(interrupter){
 
+      TheInterrupterTimer* startR = new TheInterrupterTimer();
+      startR->setAction(INTERRUPTER_ZERO_RCV_CREDIT);
+      scheduleAt(120, startR);
 
-      scheduleAt(120, new TheInterrupterTimer());
+      TheInterrupterTimer* stopR = new TheInterrupterTimer();
+      stopR->setAction(INTERRUPTER_INFLATE_RCV_CREDIT);
+      scheduleAt(140, stopR);
+
     }
 
   }
@@ -277,6 +283,26 @@ void DTP::handleRendezvousTimer(DTCPRendezvousTimer* timer)
 
 }
 
+void DTP::handleInterrupterTimer(TheInterrupterTimer* interrupter)
+{
+  switch(interrupter->getAction()){
+    case INTERRUPTER_ZERO_RCV_CREDIT:{
+      dtcp->getDTCPState()->setRcvCredit(0);
+      break;
+    }
+    case INTERRUPTER_INFLATE_RCV_CREDIT:{
+      dtcp->getDTCPState()->setRcvCredit(10);
+      dtcp->updateRcvRtWinEdge(state);
+
+      sendAckFlowPDU();
+
+      dtcp->startReliableCPDUTimer();
+    }
+  }
+
+  delete interrupter;
+}
+
 void DTP::handleMessage(cMessage *msg)
 {
   if (msg->isSelfMessage())
@@ -302,18 +328,12 @@ void DTP::handleMessage(cMessage *msg)
       }
 
       case (DTP_INTERRUPTER_TIMER): {
-        dtcp->getDTCPState()->setRcvCredit(0);
-        delete msg;
+        handleInterrupterTimer(static_cast<TheInterrupterTimer*>(msg));
         break;
 
       }
 
-      //TODO A! Move it to DTCP
-//      case (DTCP_RENDEZVOUS_TIMER): {
-//        handleRendezvousTimer(static_cast<DTCPRendezvousTimer*>(timer));
-//        delete msg;
-//        break;
-//      }
+
     }
   }
   else
@@ -1169,6 +1189,7 @@ void DTP::sendRendezvousPDU()
 
 void DTP::rendezvousCondition()
 {
+  Enter_Method_Silent();
   /* Rendezvous condition */
   if (!dtcp->getDTCPState()->isSndRendez())
   {
@@ -1183,11 +1204,7 @@ void DTP::rendezvousCondition()
         sendRendezvousPDU();
         dtcp->getDTCPState()->setSndRendez(true);
 
-        DTCPRendezvousTimer* rendezvousTimer = new DTCPRendezvousTimer();
-        rendezvousTimer->setSeqNum(dtcp->getDTCPState()->getLastControlSeqNumSent());
-        rendezvousTimer->setCounter(0);
-        scheduleAt(simTime() + (state->getRtt() + state->getMPL())/2, rendezvousTimer);
-        dtcp->getDTCPState()->setRendezvousTimer(rendezvousTimer);
+        dtcp->startRendezvousTimer();
 
       }
     }
@@ -1419,7 +1436,8 @@ void DTP::sendEmptyDTPDU()
     dataPdu->setFlags(dataPdu->getFlags() | DRF_FLAG);
   }
   UserDataField* userData = new UserDataField();
-  dataPdu->setUserDataField(userData);
+//  dataPdu->setUserDataField(userData);
+  dataPdu->encapsulate(userData);
 
   if (dtcp->dtcpState->isRxPresent())
   {
@@ -1571,6 +1589,10 @@ void DTP::svUpdate(unsigned int seqNum)
 //    return;
 //  }
 
+  if(dtcp->dtcpState->isRcvRendez()){
+    dtcp->stopReliableCPDUTimer();
+    dtcp->dtcpState->setRcvRendez(false);
+  }
   //update RcvLeftWindoEdge
   state->updateRcvLWE(seqNum);
 
