@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,58 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+#ifndef __RINA_AEConstantClient_H_
+#define __RINA_AEConstantClient_H_
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "AE.h"
 
-simple DumbMaxQ like IntRMTMaxQPolicy 
-{
-    parameters:
-        @display("i=block/socket");
+#include "AEConstantMsgs.h"
 
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
-}
+#include <map>
+
+class AEConstantClient : public AE {
+  public:
+    AEConstantClient();
+    virtual ~AEConstantClient();
+
+  protected:
+    virtual void initialize();
+    virtual void finish();
+    virtual void handleMessage(cMessage *msg);
+
+    void handleSelfMessage(cMessage* msg);
+
+  private:
+    std::string myPath;
+
+    std::string dstApName;
+    std::string dstApInstance;
+    std::string dstAeName;
+    std::string dstAeInstance;
+/*
+    bool printAtEnd, recTimes;
+*/
+    simsignal_t signal;
+/*
+    long send, rcv, sendSize, rcvSize;
+
+
+    simtime_t minDelay;
+    simtime_t maxDelay;
+    simtime_t firstR;
+    simtime_t lastR;
+    std::map<double, int> times;
+    double dround(double a, int ndigits);
+*/
+    virtual void processMRead(CDAPMessage* msg);
+    virtual void processMReadR(CDAPMessage* msg);
+
+
+
+};
+
+
+#endif

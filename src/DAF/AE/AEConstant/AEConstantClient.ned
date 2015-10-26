@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+package rina.src.DAF.AE.AEConstant;
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
+import rina.src.DAF.AE.AE;
+import rina.src.DAF.AE.IAE;
 
-simple DumbMaxQ like IntRMTMaxQPolicy 
+simple AEConstantClient extends AE like IAE
 {
     parameters:
-        @display("i=block/socket");
-
-        @signal[RMT-SlowDownRequest];
+        @class(AEConstantClient);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
+        
+        int startAt  = default(0);
         
         bool printAtEnd = default(false);
+        bool recTimes = default(false);
+        
 }

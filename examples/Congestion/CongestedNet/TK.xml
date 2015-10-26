@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Configuration>
+  <TK>
+    <TKItem id="outQ_M">
+    	<tokensTic>1000</tokensTic>
+    	<maxTokens>1000</maxTokens>
+    </TKItem>
+    <TKItem id="outQ_A1">
+    	<tokensTic>10</tokensTic>
+    	<maxTokens>100</maxTokens>
+    </TKItem>
+    <TKItem id="outQ_B2">
+    	<tokensTic>5</tokensTic>
+    	<maxTokens>50</maxTokens>
+    </TKItem>
+    <TKItem id="outQ_C3">
+    	<tokensTic>4</tokensTic>
+    	<maxTokens>50</maxTokens>
+    </TKItem>
+    <TKItem id="outQ_BE">
+    	<tokensTic>1</tokensTic>
+    	<maxTokens>20</maxTokens>
+    </TKItem>
+  </TK>
+</Configuration>

@@ -100,6 +100,7 @@ void DLMonitor::postPDUInsertion(RMTQueue* queue) {
         if(queue->getType() == RMTQueue::OUTPUT){
             outC[port] ++;
             std::string cu = Q2CU[queue];
+
             int urgency = CUs[cu].urgency;
             outQs[port][urgency].push_back(queue);
             lastInsertedUrgency[port] = urgency;
