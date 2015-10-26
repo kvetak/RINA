@@ -21,16 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
+package rina.policies.DIF.RMT.Monitor.TKMonitor;
 
-simple DumbMaxQ like IntRMTMaxQPolicy 
+simple TKMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");
-
-        @signal[RMT-SlowDownRequest];
+        @class(TKMonitor::TKMonitor);
+        xml tkData = default(xml("<TK/>"));
         
-        bool printAtEnd = default(false);
+        int tokensPDU = default(5);
 }

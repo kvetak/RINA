@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+    <ConnectionSet>
+            <!-- Allocate management flows. -->
+            <SimTime t="0">
+                
+                <Connection src="1_backbone" dst="2_backbone" qosReq="1"/>
+                <Connection src="1_backbone" dst="3_backbone" qosReq="1"/>
+                <Connection src="1_backbone" dst="4_backbone" qosReq="1"/>
+                <Connection src="2_backbone" dst="3_backbone" qosReq="1"/>
+                <Connection src="2_backbone" dst="5_backbone" qosReq="1"/>
+                <Connection src="3_backbone" dst="a_backbone" qosReq="1"/>
+                <Connection src="4_backbone" dst="5_backbone" qosReq="1"/>
+                <Connection src="4_backbone" dst="6_backbone" qosReq="1"/>
+                <Connection src="4_backbone" dst="8_backbone" qosReq="1"/>
+                <Connection src="5_backbone" dst="a_backbone" qosReq="1"/>
+                <Connection src="6_backbone" dst="7_backbone" qosReq="1"/>
+                <Connection src="6_backbone" dst="9_backbone" qosReq="1"/>
+                <Connection src="7_backbone" dst="9_backbone" qosReq="1"/>
+                <Connection src="8_backbone" dst="9_backbone" qosReq="1"/>
+                <Connection src="8_backbone" dst="a_backbone" qosReq="1"/>
+                
+                <Connection src="1_backbone" dst="2_backbone" qosReq="5"/>
+                <Connection src="1_backbone" dst="3_backbone" qosReq="5"/>
+                <Connection src="1_backbone" dst="4_backbone" qosReq="5"/>
+                <Connection src="2_backbone" dst="3_backbone" qosReq="5"/>
+                <Connection src="2_backbone" dst="5_backbone" qosReq="5"/>
+                <Connection src="3_backbone" dst="a_backbone" qosReq="5"/>
+                <Connection src="4_backbone" dst="5_backbone" qosReq="5"/>
+                <Connection src="4_backbone" dst="6_backbone" qosReq="5"/>
+                <Connection src="4_backbone" dst="8_backbone" qosReq="5"/>
+                <Connection src="5_backbone" dst="a_backbone" qosReq="5"/>
+                <Connection src="6_backbone" dst="7_backbone" qosReq="5"/>
+                <Connection src="6_backbone" dst="9_backbone" qosReq="5"/>
+                <Connection src="7_backbone" dst="9_backbone" qosReq="5"/>
+                <Connection src="8_backbone" dst="9_backbone" qosReq="5"/>
+                <Connection src="8_backbone" dst="a_backbone" qosReq="5"/>
+                
+                <Connection src="1_backbone" dst="2_backbone" qosReq="9"/>
+                <Connection src="1_backbone" dst="3_backbone" qosReq="9"/>
+                <Connection src="1_backbone" dst="4_backbone" qosReq="9"/>
+                <Connection src="2_backbone" dst="3_backbone" qosReq="9"/>
+                <Connection src="2_backbone" dst="5_backbone" qosReq="9"/>
+                <Connection src="3_backbone" dst="a_backbone" qosReq="9"/>
+                <Connection src="4_backbone" dst="5_backbone" qosReq="9"/>
+                <Connection src="4_backbone" dst="6_backbone" qosReq="9"/>
+                <Connection src="4_backbone" dst="8_backbone" qosReq="9"/>
+                <Connection src="5_backbone" dst="a_backbone" qosReq="9"/>
+                <Connection src="6_backbone" dst="7_backbone" qosReq="9"/>
+                <Connection src="6_backbone" dst="9_backbone" qosReq="9"/>
+                <Connection src="7_backbone" dst="9_backbone" qosReq="9"/>
+                <Connection src="8_backbone" dst="9_backbone" qosReq="9"/>
+                <Connection src="8_backbone" dst="a_backbone" qosReq="9"/>
+                
+                <Connection src="S1_backbone" dst="1_backbone" qosReq="1"/>
+                <Connection src="S2_backbone" dst="8_backbone" qosReq="1"/>
+                <Connection src="S3_backbone" dst="7_backbone" qosReq="1"/>
+                <Connection src="C1_backbone" dst="2_backbone" qosReq="1"/>
+                <Connection src="C2_backbone" dst="3_backbone" qosReq="1"/>
+                <Connection src="C3_backbone" dst="4_backbone" qosReq="1"/>
+                <Connection src="C4_backbone" dst="5_backbone" qosReq="1"/>
+                <Connection src="C5_backbone" dst="6_backbone" qosReq="1"/>
+                <Connection src="C6_backbone" dst="a_backbone" qosReq="1"/>
+                <Connection src="C7_backbone" dst="9_backbone" qosReq="1"/>
+				
+                <Connection src="S1_backbone" dst="1_backbone" qosReq="5"/>
+                <Connection src="S2_backbone" dst="8_backbone" qosReq="5"/>
+                <Connection src="S3_backbone" dst="7_backbone" qosReq="5"/>
+                <Connection src="C1_backbone" dst="2_backbone" qosReq="5"/>
+                <Connection src="C2_backbone" dst="3_backbone" qosReq="5"/>
+                <Connection src="C3_backbone" dst="4_backbone" qosReq="5"/>
+                <Connection src="C4_backbone" dst="5_backbone" qosReq="5"/>
+                <Connection src="C5_backbone" dst="6_backbone" qosReq="5"/>
+                <Connection src="C6_backbone" dst="a_backbone" qosReq="5"/>
+                <Connection src="C7_backbone" dst="9_backbone" qosReq="5"/>
+				
+                <Connection src="S1_backbone" dst="1_backbone" qosReq="9"/>
+                <Connection src="S2_backbone" dst="8_backbone" qosReq="9"/>
+                <Connection src="S3_backbone" dst="7_backbone" qosReq="9"/>
+                <Connection src="C1_backbone" dst="2_backbone" qosReq="9"/>
+                <Connection src="C2_backbone" dst="3_backbone" qosReq="9"/>
+                <Connection src="C3_backbone" dst="4_backbone" qosReq="9"/>
+                <Connection src="C4_backbone" dst="5_backbone" qosReq="9"/>
+                <Connection src="C5_backbone" dst="6_backbone" qosReq="9"/>
+                <Connection src="C6_backbone" dst="a_backbone" qosReq="9"/>
+                <Connection src="C7_backbone" dst="9_backbone" qosReq="9"/>
+            </SimTime>
+            
+            <!-- Allocate data flows. -->
+            <SimTime t="1">
+            
+            </SimTime>   
+    </ConnectionSet>

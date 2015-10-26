@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
+package rina.src.Other.Infection;
 
-simple DumbMaxQ like IntRMTMaxQPolicy 
+import rina.src.DAF.AE.AEVideo.AEVideo;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
+
+module InfectedRouter
 {
     parameters:
-        @display("i=block/socket");
+        @display("i=abstract/switch;bgb=391,325");
+        @node;
 
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
+    gates:
+        inout medium[];
+
+    submodules:
+        ipcProcess[sizeof(medium)]: IPCProcess {
+            @display("p=104,245,r,150");
+        }
+        relayIpc: IPCProcess {
+            @display("p=104,141;i=,#FFB000");
+            relay = true;
+        }
+        difAllocator: DIFAllocator {
+            @display("p=104,53");
+        }
+        infection: Infection {
+            @display("p=260,245");
+            infectedIPC = default("relayIpc");
+        }
+    connections allowunconnected:
+
+        // Every IPC Process is connected to its medium and the Relay IPC.
+        for i=0..sizeof(medium)-1 {
+            relayIpc.southIo++ <--> ipcProcess[i].northIo++;
+            ipcProcess[i].southIo++ <--> medium[i];
+        }
 }

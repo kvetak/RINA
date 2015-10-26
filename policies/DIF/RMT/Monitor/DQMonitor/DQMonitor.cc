@@ -26,7 +26,7 @@ void DQMonitor::onPolicyInit() {
     //Parsing L data
     if (par("lData").xmlValue() != NULL
             && par("lData").xmlValue()->hasChildren()) {
-        parseL(par("lsData").xmlValue());
+        parseL(par("lData").xmlValue());
     } else {
         error("lData parameter not initialized!");
     }
@@ -70,9 +70,9 @@ void DQMonitor::onPolicyInit() {
         }
 
         string qn = "";
-        L * l;
-        U * u;
-        C * c;
+        L * l = NULL;
+        U * u = NULL;
+        C * c = NULL;
 
         cXMLElementList attrs = m->getChildren();
         for(cXMLElement * n : attrs ){
@@ -80,19 +80,30 @@ void DQMonitor::onPolicyInit() {
             if (!strcmp(n->getTagName(), "limit")) {
                 if (Ls.find(val) != Ls.end()) {
                     l = &Ls[val];
+                } else {
+                    std::cout << "Limit " << val << "not found" <<endl;
                 }
             } else if (!strcmp(n->getTagName(), "cherish")) {
                 if (Cs.find(val) != Cs.end()) {
                     c = &Cs[val];
+                } else {
+                    std::cout << "Cherish " << val << "not found" <<endl;
                 }
             } else if (!strcmp(n->getTagName(), "urgency")) {
                 if (Us.find(val) != Us.end()) {
                     u = &Us[val];
+                } else {
+                    std::cout << "Urgency " << val << "not found" <<endl;
                 }
             } else if (!strcmp(n->getTagName(), "queue")) {
                 qn = val;
             }
         }
+        if(l == NULL || u == NULL || c == NULL) {
+            std::cout << l << " " << c << " " << u <<endl;
+            error("L/C/U missing");
+        }
+
         CUs[id] = dlCUInfo(qn, l, c, u);
     }
 
@@ -110,7 +121,7 @@ void DQMonitor::parseL(cXMLElement* xml) {
         }
 
         bool limit = (m->getChildrenByTagName("limit").size() > 0);
-        bool space = (m->getChildrenByTagName("limit").size() > 0);
+        bool space = (m->getChildrenByTagName("space").size() > 0);
 
         ILimValsList v;
         IDropProbList p;
@@ -129,7 +140,7 @@ void DQMonitor::parseL(cXMLElement* xml) {
                 }
                 index = atof(n->getAttribute("wt"));
                 if (index < 0.0 ) {
-                    error("Error parsing limVals. rate cannot be negative");
+                    error("Error parsing limVals. wt cannot be negative");
                 }
 
                 //Rate
@@ -147,33 +158,29 @@ void DQMonitor::parseL(cXMLElement* xml) {
                 }
                 spaceRate = atoll((*n->getChildrenByTagName("spaceRate").begin())->getNodeValue());
                 if (spaceRate <= 0) {
-                    error(
-                            "Error parsing limVals. spaceRate cannot be 0 or negative");
+                    error( "Error parsing limVals. spaceRate cannot be 0 or negative");
                 }
 
                 //Space Rate Variation
                 if (n->getChildrenByTagName("spaceVar").size() != 1) {
-                        error(
-                                "Error parsing limVals. There must be one an only one spaceVar per limVals");
-                    }
+                    error( "Error parsing limVals. There must be one an only one spaceVar per limVals");
+                }
                 spaceVar = atof((*n->getChildrenByTagName("spaceVar").begin())->getNodeValue());
-                if (spaceRate < 0 || spaceRate > 1) {
-                    error(
-                            "Error parsing limVals. spaceVar must be between 0 and 1");
+                if (spaceVar < 0 || spaceVar > 1) {
+                    error( "Error parsing limVals. spaceVar must be between 0 and 1");
                 }
 
                 if (limit) {
                     //Drop Probability
                     if (n->getChildrenByTagName("dropProb").size() != 1) {
-                            error(
-                                    "Error parsing limVals. There must be one an only one dropProb per limVals");
-                        }
+                            error( "Error parsing limVals. There must be one an only one dropProb per limVals");
+                    }
                     dropProb = atof((*n->getChildrenByTagName("dropProb").begin())->getNodeValue());
-                    if (dropProb < 0 || spaceRate > 1) {
-                        error(
-                                "Error parsing limVals. dropProb must be between 0 and 1");
+                    if (dropProb < 0 || dropProb > 1) {
+                        error( "Error parsing limVals. dropProb must be between 0 and 1");
                     }
                 }
+
                 v.push_back(ILimVals(index, rate, spaceRate, spaceVar, dropProb));
             }
         }
@@ -184,12 +191,12 @@ void DQMonitor::parseL(cXMLElement* xml) {
                 double index;
                 double dropProb; //[0..1]
 
-                if (!n->getAttribute("wt")) {
-                    error("Error parsing dropProb. Its wt is missing!");
+                if (!n->getAttribute("ws")) {
+                    error("Error parsing dropProb. Its ws is missing!");
                 }
-                index = atof(n->getAttribute("wt"));
+                index = atof(n->getAttribute("ws"));
                 if (index < 0 ) {
-                    error("Error parsing dropProb. rate cannot be negative");
+                    error("Error parsing dropProb. ws cannot be negative");
                 }
 
 
@@ -206,6 +213,7 @@ void DQMonitor::parseL(cXMLElement* xml) {
             }
         }
         Ls[id] = L(limit, space, v, p);
+        std::cout << "L :: "<< id << " => "<< &Ls[id] << endl;
     }
 
 }
@@ -236,12 +244,12 @@ void DQMonitor::parseC(cXMLElement* xml){
                 double index;
                 double dropProb; //[0..1]
 
-                if (!n->getAttribute("wt")) {
-                    error("Error parsing dropProb. Its wt is missing!");
+                if (!n->getAttribute("ws")) {
+                    error("Error parsing dropProb. Its ws is missing!");
                 }
-                index = atof(n->getAttribute("wt"));
+                index = atof(n->getAttribute("ws"));
                 if (index < 0 ) {
-                    error("Error parsing dropProb. wt cannot be negative");
+                    error("Error parsing dropProb. ws cannot be negative");
                 }
 
                 //Drop Probability
@@ -310,16 +318,17 @@ void DQMonitor::parseU(cXMLElement* xml) {
                     double prob;
 
                     //Priority
-                    if (w->getChildrenByTagName("priority").size() != 1) {
+                    if (!w->getAttribute("priority")) {
                         error(  "Error parsing PP. There must be one an only one priority per PP");
                     }
-                    prior = atoi((*w->getChildrenByTagName("rate").begin())->getNodeValue());
+
+                    prior = atoi(w->getAttribute("priority"));
 
                     //Probability
-                    if (w->getChildrenByTagName("probability").size() != 1) {
+                    if (!w->getAttribute("probability")) {
                         error(  "Error parsing PP. There must be one an only one probability per PP");
                     }
-                    prob = atof((*w->getChildrenByTagName("rate").begin())->getNodeValue());
+                    prob = atof(w->getAttribute("probability"));
                     if (prob <= 0) {
                         error( "Error parsing PP. probability  must be between 0 and 1");
                     }
@@ -357,6 +366,7 @@ void DQMonitor::postPDUInsertion(RMTQueue* queue) {
                 // Get serve and space times
                 Times t;
                 if(times->empty()){
+                    std::cout << cu->limit << endl;
                     t = Times( cu->limit->getTimes(0.0, queue->getLastPDU()->getBitLength()) );
                 } else {
                     t = Times( cu->limit->getTimes( (times->back() - simTime()).dbl(), queue->getLastPDU()->getBitLength()) );
@@ -469,6 +479,8 @@ void DQMonitor::postQueueCreation(RMTQueue* queue) {
     }
 
     Q2CU[queue] = &CUs[cu];
+
+    std::cout << queue->getName() << " => "<< cu<<endl;
 }
 
 double DQMonitor::getInDropProb(RMTQueue * queue) {

@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+#ifndef __RINA_AEConstantMsg_H_
+#define __RINA_AEConstantMsg_H_
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "AE.h"
 
-simple DumbMaxQ like IntRMTMaxQPolicy 
-{
-    parameters:
-        @display("i=block/socket");
+class PingMsg : public CDAP_M_Read {
+public:
+    PingMsg(bool _counted);
+    simtime_t pingAt;
+    bool counted;
+};
 
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
-}
+class PongMsg : public CDAP_M_Read_R {
+public:
+    PongMsg(simtime_t _pingAt, bool _counted);
+    simtime_t pingAt, pongAt;
+    bool counted;
+};
+
+class StartMsg : public CDAP_M_Read {
+public:
+    StartMsg();
+};
+
+
+class SignalMsg : public cObject {
+    public:
+    std::string qos;
+    simtime_t delay, rtt;
+    char type;
+
+    SignalMsg(std::string _qos);
+    SignalMsg(std::string _qos, simtime_t _delay);
+    SignalMsg(std::string _qos, simtime_t _delay, simtime_t _rtt);
+};
+
+#endif

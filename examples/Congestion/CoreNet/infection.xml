@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+	<Infection>	
+		<flow 
+			dstAddr = "1"
+			qos = "A1"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "10" />
+		<flow 
+			dstAddr = "2"
+			qos = "A1"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "10" />
+		<flow 
+			dstAddr = "3"
+			qos = "A1"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "10" />
+		<flow 
+			dstAddr = "4"
+			qos = "A1"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "10" />
+		<flow 
+			dstAddr = "5"
+			qos = "A1"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "10" />
+			
+		<flow 
+			dstAddr = "1"
+			qos = "B2"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "20" />
+		<flow 
+			dstAddr = "2"
+			qos = "B2"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "20" />
+		<flow 
+			dstAddr = "3"
+			qos = "B2"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "20" />
+		<flow 
+			dstAddr = "4"
+			qos = "B2"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "20" />
+		<flow 
+			dstAddr = "5"
+			qos = "B2"
+			pduSize = "1024"
+			pduSizeVar = "500"
+			bitRate = "20" />
+	</Infection>
+	

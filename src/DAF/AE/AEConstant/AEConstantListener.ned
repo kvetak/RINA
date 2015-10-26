@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+package rina.src.DAF.AE.AEConstant;
 
-package rina.policies.DIF.RMT.MaxQueue.DumbMaxQ;
-
-simple DumbMaxQ like IntRMTMaxQPolicy 
-{
+simple AEConstantListener {
     parameters:
-        @display("i=block/socket");
-
-        @signal[RMT-SlowDownRequest];
+        @class(AEConstantListener);
+        @display("i=device/antennatower");
         
-        bool printAtEnd = default(false);
+        string configname = default("");
+        string runname = default("");
 }

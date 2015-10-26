@@ -44,16 +44,22 @@ bool DumbMaxQ::run(RMTQueue* queue)
         case RMTQueue::OUTPUT: dp = monitor->getOutDropProb(queue); break;
     }
 
-    if( dp <= 0 ) { return false; }
+    if( dp <= 0 ) { drop = false; }
     if( dp >= 1 ) { drop = true; }
     else { drop = dp >= uniform(0,1); }
 
+    std::string qos = ((PDU*)queue->getLastPDU())->getConnId().getQoSId();
     if(drop) {
-        std::string qos = ((PDU*)queue->getLastPDU())->getConnId().getQoSId();
         if(queue->getType() == RMTQueue::INPUT){
             dropIn[qos]++;
         } else {
             dropOut[qos]++;
+        }
+    } else {
+        if(queue->getType() == RMTQueue::INPUT){
+            okIn[qos]++;
+        } else {
+            okOut[qos]++;
         }
     }
 
@@ -62,23 +68,14 @@ bool DumbMaxQ::run(RMTQueue* queue)
 
 
 void  DumbMaxQ::finish(){
-    if(!dropIn.empty() || !dropOut.empty()) {
+    if(par("printAtEnd").boolValue()) {
         EV << "--------"<< endl;
         EV << "At " << getFullPath()<< endl;
         std::map<std::string, unsigned int>::iterator it;
 
-        if(!dropIn.empty() ) {
-            EV << "On input:" <<endl;
-            for(it = dropIn.begin(); it!= dropIn.end(); it++){
-                EV << "QoS " << it->first << " - Dropped "<< it->second << endl;
-            }
-        }
-
-        if(!dropOut.empty() ) {
-            EV << "On output:" <<endl;
-            for(it = dropOut.begin(); it!= dropOut.end(); it++){
-                EV << "QoS " << it->first << " - Dropped "<< it->second << endl;
-            }
+        EV << "On output:" <<endl;
+        for(it = okOut.begin(); it!= okOut.end(); it++){
+            EV << "QoS " << it->first << " - Processed " << okOut[it->first] << " - Dropped "<< dropOut[it->first] << endl;
         }
         EV << "--------"<< endl;
     }

@@ -25,6 +25,9 @@
 Define_Module(MinComparer);
 
 bool MinComparer::isFeasibility(const QoSReq requirements, const QoSCube cube) const {
+
+  //  std::cout << requirements.getDelay() << "/" << requirements.getPduDropProbability() << " vs " << cube.getDelay() << "/" << cube.getPduDropProbability()<<endl;
+
     if (requirements.getAvgBand() != VAL_QOSPARDONOTCARE && requirements.getAvgBand() > cube.getAvgBand())
         return false;
 
@@ -43,10 +46,10 @@ bool MinComparer::isFeasibility(const QoSReq requirements, const QoSCube cube) c
     if (requirements.getBurstDuration() != VAL_QOSPARDONOTCARE && requirements.getBurstDuration() > cube.getBurstDuration())
         return false;
 
-    if (requirements.getUndetectedBitErr() != VAL_QOSPARDONOTCARE && requirements.getUndetectedBitErr() > cube.getUndetectedBitErr())
+    if (requirements.getUndetectedBitErr() != VAL_QOSPARDONOTCARE && requirements.getUndetectedBitErr() < cube.getUndetectedBitErr())
         return false;
 
-    if (requirements.getPduDropProbability() != VAL_QOSPARDONOTCARE && requirements.getPduDropProbability() > cube.getPduDropProbability())
+    if (requirements.getPduDropProbability() != VAL_QOSPARDONOTCARE && requirements.getPduDropProbability() < cube.getPduDropProbability())
         return false;
 
     if (requirements.getMaxSduSize() != VAL_QOSPARDONOTCARE && requirements.getMaxSduSize() > cube.getMaxSduSize())
@@ -64,18 +67,18 @@ bool MinComparer::isFeasibility(const QoSReq requirements, const QoSCube cube) c
     if (requirements.getMaxAllowGap() != VAL_QOSPARDONOTCARE && requirements.getMaxAllowGap() > cube.getMaxAllowGap())
         return false;
 
-    if (requirements.getDelay() != VAL_QOSPARDONOTCARE && requirements.getDelay() > cube.getDelay())
+    if (requirements.getDelay() != VAL_QOSPARDONOTCARE && requirements.getDelay() < cube.getDelay())
         return false;
 
     if (requirements.getJitter() != VAL_QOSPARDONOTCARE && requirements.getJitter() > cube.getJitter())
         return false;
 
-    if (requirements.getCostTime() != VAL_QOSPARDONOTCARE && requirements.getCostTime() > cube.getCostTime())
+    if (requirements.getCostTime() != VAL_QOSPARDONOTCARE && requirements.getCostTime() < cube.getCostTime())
         return false;
 
-    if (requirements.getCostBits() != VAL_QOSPARDONOTCARE && requirements.getCostBits() > cube.getCostBits())
+    if (requirements.getCostBits() != VAL_QOSPARDONOTCARE && requirements.getCostBits() < cube.getCostBits())
         return false;
-
+   // std::cout << "OK" << endl;
     return true;
 
 }
@@ -109,7 +112,7 @@ bool MinComparer::run(Flow& flow) {
         if(it->getQosId() == VAL_MGMTQOSID) { continue; }
 
         if( isFeasibility(flow.getQosRequirements(), *it) ){
-            double tmpscore = flow.getQosRequirements().getCostBits();
+            double tmpscore = it->getCostBits();
             if (cost > tmpscore) {
                 cost = tmpscore;
                 qosid = it->getQosId();
