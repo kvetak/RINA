@@ -498,6 +498,7 @@ void DTCP::handleMessage(cMessage *msg){
       case (DTCP_REL_C_PDU_TIMER): {
         dtp->sendAckFlowPDU();
         startReliableCPDUTimer();
+        //TODO A! restart SenderInactivity Timer
         delete msg;
         break;
       }

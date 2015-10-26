@@ -598,6 +598,7 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
       ControlAckPDU* controlAckPDU = static_cast<ControlAckPDU*>(pdu);
       if(dtcp->getDTCPState()->getRendezvousTimer()->getSeqNum() == controlAckPDU->getLastCtrlSeqNumRcv()){
         cancelAndDelete(dtcp->getDTCPState()->getRendezvousTimer());
+        dtcp->getDTCPState()->setRendezvousTimer(nullptr);
       }
 
 
@@ -1185,6 +1186,7 @@ void DTP::sendRendezvousPDU()
   /* Fill in Rendezvous PDU */
   fillRendezvousPDU(rendezPDU);
   sendToRMT(rendezPDU);
+  //TODO A! restart SenderInactivity Timer
 }
 
 void DTP::rendezvousCondition()
@@ -1207,6 +1209,13 @@ void DTP::rendezvousCondition()
         dtcp->startRendezvousTimer();
 
       }
+    }
+  }else{
+    /* Sender is in rendez_at_sender state */
+    if(dtcp->getDTCPState()->getSndRightWinEdge() > state->getLastSeqNumSent()){
+      dtcp->getDTCPState()->setSndRendez(false);
+      cancelAndDelete(dtcp->getDTCPState()->getRendezvousTimer());
+      dtcp->getDTCPState()->setRendezvousTimer(nullptr);
     }
   }
 }
