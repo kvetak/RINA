@@ -429,15 +429,28 @@ void RMT::relayPDUToPort(PDU* pdu)
         invalidPDUs.push_back(pdu);
     }
 
-    for (auto const& port : outPorts)
+    PDU* outPDU = nullptr;
+
+    for (auto it = outPorts.begin(); it != outPorts.end(); ++it)
     {
+        RMTPort* port = *it;
+
+        if (it != (outPorts.end() - 1))
+        { // clone the message if sending via multiple ports
+            outPDU = pdu->dup();
+        }
+        else
+        {
+            outPDU = pdu;
+        }
+
         const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
         RMTQueue* outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
 
         if (outQueue != nullptr)
         {
             cGate* outGate = outQueue->getRMTAccessGate();
-            send(pdu, outGate);
+            send(outPDU, outGate);
         }
         else
         {
