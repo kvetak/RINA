@@ -209,6 +209,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
                 //Create PING messsage
                 CDAP_M_Read* ping = new PingMsg();
 
+            //    std::cout << "sendPing"<<endl;
                 ping->setByteLength(msgSize);
 
                 //Send message

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Configuration>
+  	<ConnectionSet>
+  		<!-- Allocate management flows. -->
+	  	<SimTime t="0">
+	  		<Connection src="h1_NET" dst="r1_NET" qosReq="1"/>
+	  		<Connection src="h2_NET" dst="r2_NET" qosReq="1"/>
+	  		<Connection src="h3_NET" dst="r3_NET" qosReq="1"/>
+	  		<Connection src="h4_NET" dst="r4_NET" qosReq="1"/>
+	  		
+	  		<Connection src="r1_NET" dst="r2_NET" qosReq="1"/>
+	  		<Connection src="r2_NET" dst="r3_NET" qosReq="1"/>
+	  		<Connection src="r3_NET" dst="r4_NET" qosReq="1"/>
+	  		<Connection src="r4_NET" dst="r1_NET" qosReq="1"/>
+	  	</SimTime>
+	</ConnectionSet>
+</Configuration>

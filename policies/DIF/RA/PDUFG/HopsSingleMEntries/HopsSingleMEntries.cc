@@ -63,8 +63,8 @@ void HopsSingleMEntries::routingUpdated(){
             if(p != NULL) {
                 ps.push_back(p);
             }
-            fwd->addReplace(entry.first, ps);
         }
+        fwd->addReplace(entry.first, ps);
     }
 }
 

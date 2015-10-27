@@ -59,7 +59,8 @@ protected:
                     } else if( m > m1) {
                         insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                     } else {
-                        insert1(dst, m); return  (op1.size() > 2)? NOCH : CHMET;
+                        insert1(dst, m);
+                        return  CH1OPT;
                     }
                 }
             } else if(op1.find(dst) != op1.end()){
@@ -264,7 +265,6 @@ public:
         Routing_Alg<T>::sendUpdate();
         secId++;
 
-        cout<<"I'm "<< Routing_Alg<T>::myNAddr << " : Sending "<< secId << endl;
 
         for(auto neig : Routing_Alg<T>::neigTable){
             T linkM = Routing_Alg<T>::nei[neig.first];

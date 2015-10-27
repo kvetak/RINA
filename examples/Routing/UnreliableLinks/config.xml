@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<Configuration>
+  <DA>
+    <Directory>
+		<APN apn="h1_NET">
+			<DIF difName="shim1" ipcAddress="0" />
+		</APN>
+		<APN apn="h2_NET">
+			<DIF difName="shim2" ipcAddress="0" />
+		</APN>
+		<APN apn="h3_NET">
+			<DIF difName="shim3" ipcAddress="0" />
+		</APN>
+		<APN apn="h4_NET">
+			<DIF difName="shim4" ipcAddress="0" />
+		</APN>
+		
+		<APN apn="r1_NET">
+			<DIF difName="shim1" ipcAddress="1" />
+			<DIF difName="shimA" ipcAddress="1" />
+			<DIF difName="shimD" ipcAddress="1" />
+		</APN>
+		<APN apn="r2_NET">
+			<DIF difName="shim2" ipcAddress="2" />
+			<DIF difName="shimA" ipcAddress="2" />
+			<DIF difName="shimB" ipcAddress="2" />
+		</APN>
+		<APN apn="r3_NET">
+			<DIF difName="shim3" ipcAddress="3" />
+			<DIF difName="shimB" ipcAddress="3" />
+			<DIF difName="shimC" ipcAddress="3" />
+		</APN>
+		<APN apn="r4_NET">
+			<DIF difName="shim4" ipcAddress="4" />
+			<DIF difName="shimC" ipcAddress="4" />
+			<DIF difName="shimD" ipcAddress="4" />
+		</APN>
+		
+		
+		<APN apn="App1">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="App2">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="App3">
+			<DIF difName="NET" ipcAddress="h3" />
+		</APN>
+		<APN apn="App4">
+			<DIF difName="NET" ipcAddress="h4" />
+		</APN>
+    </Directory>
+  </DA>
+</Configuration>
