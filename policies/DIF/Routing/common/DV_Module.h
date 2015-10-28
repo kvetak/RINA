@@ -65,13 +65,7 @@ protected:
 
                         insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                     } else {
-<<<<<<< HEAD
-
                         insert1(dst, m); return  CH1OPT;
-=======
-                        insert1(dst, m);
-                        return  CH1OPT;
->>>>>>> dfae5e0358e3749fbfcb4fbe85ee597156bae411
                     }
                 }
             } else if(op1.find(dst) != op1.end()){
