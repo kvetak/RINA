@@ -61,7 +61,7 @@ class RIBdBase : public cSimpleModule {
     */
     virtual void receiveData(CDAPMessage* flow) = 0;
     /* Handles information coming from PDUFTG module. */
-    virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * flow) = 0;
+//    virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * flow) = 0;
 
     virtual void sendCongestionNotification(PDU* pdu) = 0;
 

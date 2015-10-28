@@ -31,16 +31,21 @@
 #include "RIBd.h"
 
 const char* MSG_CONGEST         = "Congestion";
-
-const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
+//const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";
+//const char* MSG_ENROLLMENT      = "Enrollment";
 
 const char* PAR_USEFANOTIF          = "useFANotifier";
 const char* PAR_USEENROLLNOTIF      = "useEnrollmentNotifier";
-//const char* MSG_ENROLLMENT      = "Enrollment";
+const char* PAR_USEROUTINGNOTIF      = "useRoutingNotifier";
 
 Define_Module(RIBd);
 
 void RIBd::initialize() {
+
+    useFANotifier = false;
+    useEnrollmentNotifier = false;
+    useRoutingNotifier = false;
+
     //Init signals and listeners
     initSignalsAndListeners();
 
@@ -52,17 +57,21 @@ void RIBd::initialize() {
 }
 
 void RIBd::initPointers() {
-    FANotif = dynamic_cast<FANotifierBase*>( getModuleByPath("^.faNotifier") );
+    FANotif = getRINAModule<FANotifierBase*>(this, 1, {"faNotifier"}, false);
     if (FANotif) {
         useFANotifier = true;
         this->par(PAR_USEFANOTIF) = true;
     }
-    EnrollNotif = dynamic_cast<EnrollmentNotifierBase*>( getModuleByPath("^.enrollmentNotifier") );
+    EnrollNotif = getRINAModule<EnrollmentNotifierBase*>(this, 1, {"enrollmentNotifier"}, false);
     if (EnrollNotif) {
         useEnrollmentNotifier = true;
         this->par(PAR_USEENROLLNOTIF) = true;
     }
-
+    RoutingNotif = getRINAModule<RoutingNotifierBase*>(this, 1, {"routingNotifier"}, false);
+    if (RoutingNotif) {
+        useRoutingNotifier = true;
+        this->par(PAR_USEROUTINGNOTIF) = true;
+    }
 }
 
 void RIBd::handleMessage(cMessage *msg) {
@@ -301,11 +310,16 @@ void RIBd::receiveData(CDAPMessage* msg) {
     else if (useFANotifier && FANotif->isMessageProcessable(msg)) {
         FANotif->receiveMessage(msg);
     }
+    //RoutingNotifier processing
+    else if (useRoutingNotifier && RoutingNotif->isMessageProcessable(msg)) {
+        RoutingNotif->receiveMessage(msg);
+    }
+
     //TODO: Vesely - Hardcoded message processing should be removed!
     //M_WRITE_Request
-    else if (dynamic_cast<CDAP_M_Write*>(msg)) {
-        processMWrite(msg);
-    }
+//    else if (dynamic_cast<CDAP_M_Write*>(msg)) {
+//        processMWrite(msg);
+//    }
     //M_START_Request
     else if (dynamic_cast<CDAP_M_Start*>(msg)) {
         processMStart(msg);
@@ -345,7 +359,7 @@ void RIBd::initSignalsAndListeners() {
     sigRIBDCreResFloNega = registerSignal(SIG_RIBD_CreateFlowResponseNegative);
     */
     // sigRIBDFwdUpdateRecv = registerSignal(SIG_RIBD_ForwardingUpdateReceived);
-    sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
+    //sigRIBDRoutingUpdateRecv = registerSignal(SIG_RIBD_RoutingUpdateReceived);
     sigRIBDCongNotif     = registerSignal(SIG_RIBD_CongestionNotification);
 
     /*
@@ -394,8 +408,8 @@ void RIBd::initSignalsAndListeners() {
     lisRIBDRcvData = new LisRIBDRcvData(this);
     catcher1->subscribe(SIG_CDAP_DateReceive, lisRIBDRcvData);
 
-    lisRIBDRoutingUpdate = new LisRIBDRoutingUpdate(this);
-    catcher2->subscribe(SIG_RIBD_RoutingUpdate, lisRIBDRoutingUpdate);
+//    lisRIBDRoutingUpdate = new LisRIBDRoutingUpdate(this);
+//    catcher2->subscribe(SIG_RIBD_RoutingUpdate, lisRIBDRoutingUpdate);
 
     lisRIBDCongNotif = new LisRIBDCongesNotif(this);
     catcher2->subscribe(SIG_RA_InvokeSlowdown, lisRIBDCongNotif);
@@ -470,36 +484,36 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
     signalizeSendData(mstarcon);
 }
 
-void RIBd::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
-{
-    EV << getFullPath() << " Forwarding update to send to " << info->getDestination();
-
-    /* Emits the CDAP message. */
-
-    CDAP_M_Write * cdapm = new CDAP_M_Write(MSG_ROUTINGUPDATE);
-    std::ostringstream os;
-    object_t flowobj;
-
-    /* Prepare the object to send. */
-
-    os << "RoutingUpdateTo" << info->getDestination();
-
-    flowobj.objectClass = info->getClassName();
-    flowobj.objectName  = os.str();
-    flowobj.objectVal   = info;
-    //TODO: Vesely - Assign appropriate values
-    flowobj.objectInstance = VAL_DEFINSTANCE;
-
-    cdapm->setObject(flowobj);
-
-    //TODO: Vesely - Work more on InvokeId
-
-    /* This message will be sent to... */
-    cdapm->setDstAddr(info->getDestination());
-
-    /* Finally order to send the data... */
-    signalizeSendData(cdapm);
-}
+//void RIBd::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
+//{
+//    EV << getFullPath() << " Forwarding update to send to " << info->getDestination();
+//
+//    /* Emits the CDAP message. */
+//
+//    CDAP_M_Write * cdapm = new CDAP_M_Write(MSG_ROUTINGUPDATE);
+//    std::ostringstream os;
+//    object_t flowobj;
+//
+//    /* Prepare the object to send. */
+//
+//    os << "RoutingUpdateTo" << info->getDestination();
+//
+//    flowobj.objectClass = info->getClassName();
+//    flowobj.objectName  = os.str();
+//    flowobj.objectVal   = info;
+//    //TODO: Vesely - Assign appropriate values
+//    flowobj.objectInstance = VAL_DEFINSTANCE;
+//
+//    cdapm->setObject(flowobj);
+//
+//    //TODO: Vesely - Work more on InvokeId
+//
+//    /* This message will be sent to... */
+//    cdapm->setDstAddr(info->getDestination());
+//
+//    /* Finally order to send the data... */
+//    signalizeSendData(cdapm);
+//}
 
 void RIBd::signalizeCongestionNotification(CongestionDescriptor* congDesc) {
     EV << "Emits CongestionNotification" << endl;
@@ -845,20 +859,20 @@ void RIBd::processMStopR(CDAPMessage* msg) {
     }
 }
 */
-void RIBd::processMWrite(CDAPMessage* msg)
-{
-    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
-
-    EV << "Received M_Write";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
-    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
-    {
-        IntRoutingUpdate * update = (check_and_cast<IntRoutingUpdate *>(object.objectVal));
-
-        /* Signal that an update obj has been received. */
-        emit(sigRIBDRoutingUpdateRecv, update);
-    }
-}
+//void RIBd::processMWrite(CDAPMessage* msg)
+//{
+//    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
+//
+//    EV << "Received M_Write";
+//    object_t object = msg1->getObject();
+//    EV << " with object '" << object.objectClass << "'" << endl;
+//
+//    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
+//    {
+//        IntRoutingUpdate * update = (check_and_cast<IntRoutingUpdate *>(object.objectVal));
+//
+//        /* Signal that an update obj has been received. */
+//        emit(sigRIBDRoutingUpdateRecv, update);
+//    }
+//}
 

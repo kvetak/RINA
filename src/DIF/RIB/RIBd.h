@@ -34,6 +34,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
+#include "Utils.h"
 #include "CDAPProcessingBase.h"
 #include "RIBdBase.h"
 #include "ExternConsts.h"
@@ -43,12 +44,12 @@
 #include "IntRoutingUpdate.h"
 #include "FANotifier.h"
 #include "EnrollmentNotifier.h"
+#include "RoutingNotifier.h"
 
 //Constants
 extern const char* MSG_CONGEST;
-
-extern const char* MSG_ROUTINGUPDATE;
-extern const char* MSG_ENROLLMENT;
+//extern const char* MSG_ROUTINGUPDATE;
+//extern const char* MSG_ENROLLMENT;
 
 class RIBd : public RIBdBase {
   public:
@@ -73,7 +74,7 @@ class RIBd : public RIBdBase {
     */
     virtual void receiveData(CDAPMessage* cimsg);
     /* Handles information coming from PDUFTG module. */
-    virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * update);
+    //virtual void receiveRoutingUpdateFromRouting(IntRoutingUpdate * update);
 
     virtual void sendCongestionNotification(PDU* pdu);
 
@@ -105,9 +106,11 @@ class RIBd : public RIBdBase {
   protected:
     FANotifierBase* FANotif;
     EnrollmentNotifierBase* EnrollNotif;
+    RoutingNotifierBase* RoutingNotif;
 
     bool useFANotifier;
     bool useEnrollmentNotifier;
+    bool useRoutingNotifier;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -145,7 +148,7 @@ class RIBd : public RIBdBase {
 
     /* Emit update received signal. */
     //simsignal_t sigRIBDFwdUpdateRecv;
-    simsignal_t sigRIBDRoutingUpdateRecv;
+    //simsignal_t sigRIBDRoutingUpdateRecv;
 
 
     //Listeners
@@ -175,7 +178,7 @@ class RIBd : public RIBdBase {
     LisRIBDStaOperRes*          lisRIBDStaOperRes;
      */
     /* Listen for PDUFTG update messages. */
-    LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
+    //LisRIBDRoutingUpdate*       lisRIBDRoutingUpdate;
 
     /*
     void processMCreate(CDAPMessage* msg);
@@ -191,7 +194,7 @@ class RIBd : public RIBdBase {
     void processMStopR(CDAPMessage* msg);
     */
     void processMStart(CDAPMessage* msg);
-    void processMWrite(CDAPMessage* msg);
+//    void processMWrite(CDAPMessage* msg);
 
 };
 
