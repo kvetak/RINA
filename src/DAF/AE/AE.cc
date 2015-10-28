@@ -40,7 +40,7 @@ AE::~AE() {
 
 void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^.^");
 
 
     //Signals that this module is emitting
@@ -102,7 +102,7 @@ bool AE::createBindings(Flow& flow) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getParentModule()->getParentModule();
+    cModule* ApMon = this->getModuleByPath("^.^");
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
@@ -138,8 +138,8 @@ bool AE::createBindings(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = dynamic_cast<IRM*>(this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM));
-    Cdap = this->getParentModule()->getSubmodule(MOD_CDAP);
+    Irm = getRINAModule<IRM*>(this, 3, {MOD_IPCRESMANAGER, MOD_IRM});
+    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
 
     if (!Cdap)
         error("Pointers to Cdap !");
@@ -322,7 +322,7 @@ bool AE::deleteBindings(Flow& flow) {
     cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle1);
     cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle1);
 
-    cModule* ApMon = this->getParentModule()->getParentModule();
+    cModule* ApMon = this->getModuleByPath("^.^");
     cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle2);
     cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle2);
 

@@ -36,12 +36,7 @@ void NewFlowRequestBase::handleMessage(cMessage* msg) {
 
 void NewFlowRequestBase::initialize() {
     // Get RA
-    ResourceAllocator = check_and_cast<RABase*>(getParentModule()->getParentModule()->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
-
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
+    ResourceAllocator = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
+    setPolicyDisplayString(this);
     return;
 }

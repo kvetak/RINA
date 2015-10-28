@@ -31,6 +31,8 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
+#include "Utils.h"
+#include "ExternConsts.h"
 #include "RINASignals.h"
 #include "DA.h"
 #include "FABase.h"

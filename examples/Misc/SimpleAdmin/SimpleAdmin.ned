@@ -1,6 +1,9 @@
 package rina.examples.Misc.SimpleAdmin;
 import ned.DatarateChannel;
-import rina.src.CS.*;
+import rina.src.CS.InteriorRouterNInt;
+import rina.src.CS.InteriorRouterNInt_Adm;
+import rina.src.CS.Shim_M_Adm;
+
 
 network SimpleAdmin
 {

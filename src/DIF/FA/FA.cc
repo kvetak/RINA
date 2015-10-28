@@ -40,18 +40,17 @@ FA::~FA() {
 
 void FA::initPointers() {
     N_flowTable = check_and_cast<NFlowTable*>(getParentModule()->getSubmodule(MOD_NFLOWTABLE));
-    Efcp = check_and_cast<EFCP*>((getParentModule()->getParentModule()->getSubmodule(MOD_EFCP)->getSubmodule(MOD_EFCP)));
+    Efcp = getRINAModule<EFCP*>(this, 2, {MOD_EFCP, MOD_EFCP});
 
-    DifAllocator = check_and_cast<DA*>
-        (getModuleByPath("^.^.^")->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
-    NFloReqPolicy = check_and_cast<NewFlowRequestBase*>(getParentModule()->getSubmodule(MOD_NEFFLOWREQPOLICY));
-    RaModule = check_and_cast<RABase*>( getModuleByPath("^.^.resourceAllocator.ra") );
-    Enrollment = check_and_cast<EnrollmentStateTable*>( getModuleByPath("^.^.enrollment.enrollmentStateTable") );
+    DifAllocator = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});
+    NFloReqPolicy = getRINAModule<NewFlowRequestBase*>(this, 1, {MOD_NEFFLOWREQPOLICY});
+    RaModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
+    Enrollment = getRINAModule<EnrollmentStateTable*>(this, 2, {MOD_ENROLLMENT, MOD_ENROLLMENTTABLE});
 }
 
 void FA::initSignalsAndListeners() {
-    cModule* catcher3 = this->getParentModule()->getParentModule()->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^");
 
     //Signals that this module is emitting
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
@@ -402,7 +401,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         }
 
         // bind this flow to a suitable (N-1)-flow
-        RABase* raModule = (RABase*) getModuleByPath("^.^.resourceAllocator.ra");
+        RABase* raModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
         status = raModule->bindNFlowToNM1Flow(flow);
 
         //EV << "status: " << status << endl;

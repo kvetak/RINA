@@ -101,13 +101,13 @@ void Enrollment::initialize()
 }
 
 void Enrollment::initPointers(){
-    StateTable = check_and_cast<EnrollmentStateTable*>(this->getParentModule()->getSubmodule(MOD_ENROLLMENTTABLE));
-    RibDaemon = check_and_cast<RIBd*>(this->getParentModule()->getParentModule()->getSubmodule(MOD_RIBDAEMON)->getSubmodule(MOD_RIBD));
-    FlowAlloc = check_and_cast<FABase*>( getModuleByPath("^.^.flowAllocator.fa") );
+    StateTable = getRINAModule<EnrollmentStateTable*>(this, 1, {MOD_ENROLLMENTTABLE});
+    RibDaemon = getRINAModule<RIBd*>(this, 2, {MOD_RIBDAEMON, MOD_RIBD});
+    FlowAlloc = getRINAModule<FABase*>(this, 2, {MOD_FLOWALLOC, MOD_FA});
 }
 
 void Enrollment::initSignalsAndListeners() {
-    cModule* catcher1 = this->getParentModule()->getParentModule();
+    cModule* catcher1 = this->getModuleByPath("^.^");
 
     sigEnrollmentCACESendData   = registerSignal(SIG_ENROLLMENT_CACEDataSend);
     sigEnrollmentSendData       = registerSignal(SIG_ENROLLMENT_DataSend);
@@ -719,7 +719,7 @@ void Enrollment::parseConfig(cXMLElement* config) {
 }
 
 void Enrollment::updateEnrollmentDisplay(Enrollment::IconEnrolStatus status) {
-    cModule* ipc = this->getParentModule()->getParentModule();
+    cModule* ipc = this->getModuleByPath("^.^");
     std::string ico, col;
     switch (status) {
         case ENICON_ENROLLED: {ico="status/check"; col="green"; break;}

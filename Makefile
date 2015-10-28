@@ -86,10 +86,10 @@ cleanlibs:
 	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;
 	
 cleansrc:
-	$(Q)cd src && $(MAKE) clean && rm -f .tmp*
+	$(Q)cd src && $(MAKE) clean && rm -f .tmp* sta*
 	
 cleanpolicies:	 	
-	$(Q)cd policies && $(MAKE) clean && rm -f .tmp*
+	$(Q)cd policies && $(MAKE) clean && rm -f .tmp* sta*
 	
 depend:
 	$(qecho) Creating dependencies...

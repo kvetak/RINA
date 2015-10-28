@@ -51,29 +51,19 @@ void RA::initialize(int stage)
     }
 
     // retrieve pointers to other modules
-    thisIPC = this->getParentModule()->getParentModule();
-    rmtModule = thisIPC->getSubmodule("relayAndMux");
+    thisIPC = this->getModuleByPath("^.^");
+    rmtModule = (getRINAModule<cModule*>(this, 2, {MOD_RELAYANDMUX}));
 
     // Get access to the forwarding and routing functionalities...
-    fwdtg = check_and_cast<IntPDUFG *>
-        (getModuleByPath("^.pduFwdGenerator"));
-
-
-    difAllocator = check_and_cast<DA*>
-        (getModuleByPath("^.^.^.difAllocator.da"));
-    flowTable = check_and_cast<NM1FlowTable*>
-        (getModuleByPath("^.nm1FlowTable"));
-    rmt = check_and_cast<RMT*>
-        (getModuleByPath("^.^.relayAndMux.rmt"));
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.^.relayAndMux.allocator"));
-    fa = check_and_cast<FABase*>
-            (getModuleByPath("^.^.flowAllocator.fa"));
-
+    fwdtg = getRINAModule<IntPDUFG *>(this, 1, {MOD_PDUFWDGEN});
+    difAllocator = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});;
+    flowTable = getRINAModule<NM1FlowTable*>(this, 1, {MOD_RANM1FLOWTABLE});
+    rmt = getRINAModule<RMT*>(this, 2, {MOD_RELAYANDMUX, MOD_RMT});
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 2, {MOD_RELAYANDMUX, MOD_RMTALLOC});
+    fa = getRINAModule<FABase*>(this, 2, {MOD_FLOWALLOC, MOD_FA});
 
     // retrieve pointers to policies
-    qAllocPolicy = check_and_cast<QueueAllocBase*>
-        (getModuleByPath("^.queueAllocPolicy"));
+    qAllocPolicy = getRINAModule<QueueAllocBase*>(this, 1, {MOD_POL_QUEUEALLOC});
 
     // initialize attributes
     std::ostringstream os;

@@ -23,7 +23,7 @@ using namespace std;
 
 
 void WeightedFairQ::onPolicyInit() {
-    monitor= check_and_cast<WeightedFairQMonitor*> (getModuleByPath("^.queueMonitorPolicy"));
+    monitor = getRINAModule<WeightedFairQMonitor*>(this, 1, {MOD_POL_RMT_QMONITOR});
     if (monitor == NULL) {
         EV << "!!! WeightedFairQMaxQ has to be used in conjecture with WeightedFairQ!" << endl;
     }

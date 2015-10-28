@@ -78,22 +78,19 @@ void SingleDomainGenerator::routingUpdated(){
 // Called after initialize
 void SingleDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<IntMiniForwarding *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
-
-    rt = check_and_cast<DMRnms::Routing *>
-        (getModuleByPath("^.^.routingPolicy"));
+    fwd = getRINAModule<IntMiniForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    rt = getRINAModule<DMRnms::Routing *>(this, 2, {MOD_POL_ROUTING});
 
     std::string alg = par("alg").stdstringValue();
 
     if(alg == "LS"){
-        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::LS);
+        rt->addDomain("", getModuleByPath("^.^")->par("ipcAddress").stringValue(), DMRnms::LS);
     } else {
-        rt->addDomain("", getParentModule()->getParentModule()->par("ipcAddress").stringValue(), DMRnms::DV);
+        rt->addDomain("", getModuleByPath("^.^")->par("ipcAddress").stringValue(), DMRnms::DV);
     }
 
 
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 }
 
 }

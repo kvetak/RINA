@@ -22,36 +22,59 @@
 
 #include <ExternConsts.h>
 
-//Module names
-const char* MOD_FLOWALLOC       = "flowAllocator";
-const char* MOD_FA              = "fa";
+//Static module names
+const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
+const char* MOD_CDAPAUTH        = "auth";
+const char* MOD_CDAPCACE        = "cace";
+const char* MOD_CDAPCDAP        = "cdap";
+const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
+const char* MOD_CDAPSPLIT       = "cdapSplitter";
 const char* MOD_CONNTABLE       = "connectionTable";
 const char* MOD_DA              = "da";
 const char* MOD_DIFALLOC        = "difAllocator";
-const char* MOD_NFLOWTABLE      = "nFlowTable";
-const char* MOD_EFCP            = "efcp";
-const char* MOD_RESALLOC        = "resourceAllocator";
-const char* MOD_RA              = "ra";
-const char* MOD_IAE             = "iae";
-const char* MOD_IRM             = "irm";
-const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
-const char* MOD_RIBDAEMON       = "ribDaemon";
-const char* MOD_RIBD            = "ribd";
-const char* MOD_ENROLLMENTMODULE= "enrollmentModule";
-const char* MOD_ENROLLMENT      = "enrollment";
-const char* MOD_ENROLLMENTTABLE = "enrollmentStateTable";
-const char* MOD_CDAP            = "commonDistributedApplicationProtocol";
-const char* MOD_CDAPMSGLOG      = "cdapMsgLog";
-const char* MOD_CDAPSPLIT       = "cdapSplitter";
-const char* MOD_CDAPCACE        = "cace";
-const char* MOD_CDAPAUTH        = "auth";
-const char* MOD_CDAPCDAP        = "cdap";
-const char* MOD_EFCPTABLE       = "efcpTable";
-const char* MOD_DTP             = "dtp";
+const char* MOD_DIRECTORY       = "directory";
 const char* MOD_DTCP            = "dtcp";
-const char* MOD_DTP_STATE       = "dtpState";
 const char* MOD_DTCP_STATE      = "dtcpState";
+const char* MOD_DTP             = "dtp";
+const char* MOD_DTP_STATE       = "dtpState";
+const char* MOD_EFCP            = "efcp";
 const char* MOD_EFCPI           = "efcpi_";
+const char* MOD_EFCPTABLE       = "efcpTable";
+const char* MOD_ENROLLMENT      = "enrollment";
+const char* MOD_ENROLLMENTMODULE= "enrollmentModule";
+const char* MOD_ENROLLMENTTABLE = "enrollmentStateTable";
+const char* MOD_FA              = "fa";
+const char* MOD_FLOWALLOC       = "flowAllocator";
+const char* MOD_IAE             = "iae";
+const char* MOD_IPCRESMANAGER   = "ipcResourceManager";
+const char* MOD_IRM             = "irm";
+const char* MOD_NAMINFO         = "namingInformation";
+const char* MOD_NEIGHBORTABLE   = "neighborTable";
+const char* MOD_NFLOWTABLE      = "nFlowTable";
+const char* MOD_PDUFWDGEN       = "pduFwdGenerator";
+const char* MOD_RA              = "ra";
+const char* MOD_RANM1FLOWTABLE  = "nm1FlowTable";
+const char* MOD_RELAYANDMUX     = "relayAndMux";
+const char* MOD_RESALLOC        = "resourceAllocator";
+const char* MOD_RIBD            = "ribd";
+const char* MOD_RIBDAEMON       = "ribDaemon";
+const char* MOD_RIBDSPLITTER    = "ribdSplitter";
+const char* MOD_RMT             = "rmt";
+const char* MOD_RMTALLOC        = "allocator";
+const char* MOD_RMTPORT         = "port";
+const char* MOD_SEARCHTAB       = "searchTable";
+
+//Policy module names
+const char* MOD_POL_RA_ADDRCOMPARATOR   = "addressComparator";
+const char* MOD_POL_RA_IDGENERATOR      = "queueIdGenerator";
+const char* MOD_POL_RA_QOSCOMPARER      = "qosComparerPolicy";
+const char* MOD_POL_RA_QUEUEALLOC       = "queueAllocPolicy";
+const char* MOD_POL_RMT_MAXQ            = "maxQueuePolicy";
+const char* MOD_POL_RMT_PDUFWD          = "pduForwardingPolicy";
+const char* MOD_POL_RMT_QMONITOR        = "queueMonitorPolicy";
+const char* MOD_POL_RMT_SCHEDULER       = "schedulingPolicy";
+const char* MOD_POL_QUEUEALLOC          = "queueAllocPolicy";
+const char* MOD_POL_ROUTING             = "routingPolicy";
 
 //Module type paths
 const char* MOD_EFCP_PATH       = "rina.src.DIF.EFCP";
@@ -139,4 +162,5 @@ const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;
 const int   DONTCARE_INVOKEID   = 0;
+const int   VAL_DEFINSTANCE     = -1;
 //const int   VAL_UNDEF_PORTID   = -1;

@@ -26,8 +26,7 @@ Define_Module(RMTModuleAllocator);
 
 void RMTModuleAllocator::initialize()
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
 
     portCount = 0;
     interfacePort = nullptr;
@@ -63,7 +62,7 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     queue = dynamic_cast<RMTQueue*>(newModule);
 
     // create bindings to other modules
-    cModule* rmt = getModuleByPath("^.rmt");
+    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
     std::ostringstream combinedQueueName;
     combinedQueueName << portWrapper->getFullName() << queueName.str();
     if (type == RMTQueue::OUTPUT)
@@ -116,7 +115,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     // initialize a wrapper with port inside it
     cModuleType* moduleType = cModuleType::get(MOD_RMT_PORTWRAPPER);
     cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
-    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
+    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
 
     port->setFlow(flow);
 
@@ -140,7 +139,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
 
 void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 {
-    cModule* rmt = getModuleByPath("^.rmt");
+    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
     RMTPort* port = queueToPort[queue];
     cGate* rmtGate = queue->getRMTAccessGate();
     cGate* qOutputGate = queue->getOutputGate();
@@ -216,11 +215,8 @@ RMTPort* RMTModuleAllocator::getPort(const char* name)
     cModule* portWrapper = getParentModule()->getSubmodule(name);
     if (portWrapper)
     {
-        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule("port"));
-    }
-    else
-    {
-        return nullptr;
+        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
     }
 
+    return nullptr;
 }

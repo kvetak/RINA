@@ -25,6 +25,7 @@
 
 //Standard libraries
 #include <omnetpp.h>
+#include "Utils.h"
 //RINASim libraries
 #include "Directory.h"
 #include "NamingInformation.h"

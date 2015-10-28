@@ -120,7 +120,7 @@ void Directory::parseConfig(cXMLElement* config) {
 
     cXMLElementList map = dirXml->getChildrenByTagName(ELEM_DIRMAPPING);
     cModule* top =
-            this->getParentModule()->getParentModule()->getParentModule();
+            this->getModuleByPath("^.^.^");
     for (cXMLElementList::iterator i = map.begin(); i != map.end(); ++i) {
         cXMLElement* m = *i;
 

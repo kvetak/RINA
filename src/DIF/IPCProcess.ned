@@ -22,8 +22,6 @@
 
 package rina.src.DIF;
 
-import rina.src.Common.Test;
-import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DIF.EFCP.EFCPModule;
 import rina.src.DIF.Enrollment.EnrollmentModule;
 import rina.src.DIF.FA.FlowAllocator;

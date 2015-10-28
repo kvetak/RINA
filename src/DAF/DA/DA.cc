@@ -22,12 +22,6 @@
 
 #include "DA.h"
 
-//Constants
-const char* MOD_DIRECTORY       = "^.directory";
-const char* MOD_NAMINFO         = "^.namingInformation";
-const char* MOD_NEIGHBORTAB     = "^.neighborTable";
-const char* MOD_SEARCHTAB       = "^.searchTable";
-
 Define_Module(DA);
 
 const APNList* DA::findApnNeigbors(const APN& apn) {
@@ -78,14 +72,10 @@ const APNList* DA::findNeigborApns(const APN& neighbor) {
 
 void DA::initPointers() {
     //Retrieve pointers to submodules
-    Dir = check_and_cast<Directory*>
-        (getModuleByPath(MOD_DIRECTORY));
-    NamInfo = check_and_cast<NamingInformation*>
-        (getModuleByPath(MOD_NAMINFO));
-    NeighborTab = check_and_cast<NeighborTable*>
-        (getModuleByPath(MOD_NEIGHBORTAB));
-    SearchTab = check_and_cast<SearchTable*>
-        (getModuleByPath(MOD_SEARCHTAB));
+    Dir = getRINAModule<Directory*>(this, 1, {MOD_DIRECTORY});
+    NamInfo = getRINAModule<NamingInformation*>(this, 1, {MOD_NAMINFO});
+    NeighborTab = getRINAModule<NeighborTable*>(this, 1, {MOD_NEIGHBORTABLE});
+    SearchTab = getRINAModule<SearchTable*>(this, 1, {MOD_SEARCHTAB});
 }
 
 void DA::initialize()
@@ -127,7 +117,7 @@ bool DA::isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY) {
 }
 
 bool DA::isAppLocal(const APN& apn) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if ( (submodp->hasPar(PAR_APNAME)
@@ -142,7 +132,7 @@ bool DA::isAppLocal(const APN& apn) {
 }
 
 bool DA::isDifLocal(const DAP& difName) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
@@ -156,7 +146,7 @@ bool DA::isDifLocal(const DAP& difName) {
 }
 
 bool DA::isIpcLocal(cModule* ipc) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp == ipc)
@@ -166,7 +156,7 @@ bool DA::isIpcLocal(cModule* ipc) {
 }
 
 cModule* DA::getDifMember(const DAP& difName) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule* submodp = j();
         if (submodp->hasPar(PAR_DIFNAME)
@@ -178,7 +168,7 @@ cModule* DA::getDifMember(const DAP& difName) {
 }
 
 cModule* DA::findIpc(const Address& addr) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule *submodp = j();
         if (submodp->hasPar(PAR_IPCADDR) && submodp->hasPar(PAR_DIFNAME)) {
@@ -212,7 +202,7 @@ void DA::handleMessage(cMessage *msg)
 }
 
 cModule* DA::findApp(const APN& apn) {
-    cModule* top = this->getParentModule()->getParentModule();
+    cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
         cModule *submodp = j();
         if (submodp->hasPar(PAR_APNAME) && !strcmp(submodp->par(PAR_APNAME), apn.getName().c_str()) ) {

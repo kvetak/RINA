@@ -16,7 +16,7 @@ ManagementAgent::ManagementAgent() {}
 void ManagementAgent::initialize() {
     clientId = "";
 
-    cModule * Node = this->getParentModule()->getParentModule()->getParentModule();
+    cModule * Node = this->getModuleByPath("^.^.^");
 
     //Init pointers
     initPointers();

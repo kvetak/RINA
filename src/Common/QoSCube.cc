@@ -234,8 +234,8 @@ QoSCube::~QoSCube() {
 }
 
 const QoSCube QoSCube::MANAGEMENT(VAL_MGMTQOSID,
-                                  2048, 10,
-                                  4096, 20,
+                                  12000, 10,
+                                  24000, 20,
                                   10000, 10000,
                                   0.0, 0.0,
                                   1500,
@@ -413,25 +413,25 @@ std::string QoSCube::info() const {
     os << "\n   average BW = ";
         os << this->getAvgBand() << " bit/s";
 
-    os   << "\n   average SDU BW = ";
+    os   << ", average SDU BW = ";
         os << this->getAvgSduBand() << " SDU/s";
 
     os << "\n   peak BW duration = ";
         os << this->getPeakBandDuration() << " bit/s";
 
-    os << "\n   peak SDU BW duration = ";
+    os << ", peak SDU BW duration = ";
         os << this->getPeakSduBandDuration() << " SDU/s";
 
     os << "\n   burst period = ";
         os << this->getBurstPeriod() << " usecs";
 
-    os << "\n   burst duration = ";
+    os << ", burst duration = ";
         os << this->getBurstDuration() << " usecs";
 
     os << "\n   undetect. bit errors = ";
         os << this->getUndetectedBitErr() << "%";
 
-    os << "\n   PDU dropping probability = ";
+    os << ", PDU dropping probability = ";
         os << this->getPduDropProbability() << "%";
 
     os << "\n   max SDU Size = ";
@@ -439,7 +439,7 @@ std::string QoSCube::info() const {
 
     os << "\n   partial delivery = " << (this->isPartialDelivery() ? STR_YES : STR_NO );
 
-    os << "\n   incomplete delivery = " << (this->isIncompleteDelivery() ? STR_YES : STR_NO );
+    os << ", incomplete delivery = " << (this->isIncompleteDelivery() ? STR_YES : STR_NO );
 
     os << "\n   force order = " << (this->isForceOrder() ? STR_YES : STR_NO );
 
@@ -449,13 +449,13 @@ std::string QoSCube::info() const {
     os << "\n   delay = ";
         os << this->getDelay() << " usecs";
 
-    os << "\n   jitter = ";
+    os << ", jitter = ";
         os << this->getJitter() << " usecs";
 
     os << "\n   cost-time = ";
         os << this->getCostTime() << " $/ms";
 
-    os << "\n   cost-bits = ";
+    os << ", cost-bits = ";
         os << this->getCostBits() << " $/Mb";
 
     os << "\n   A-Time = ";

@@ -20,22 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Basics.TwoCSWithDelay;
+#ifndef FloodMiniTable_H_
+#define FloodMiniTable_H_
 
-import ned.DatarateChannel;
-import rina.src.CS.Host1AP;
+#include <IntMMForwarding.h>
 
+#include <map>
+#include <string>
+#include <vector>
 
-network TwoCSWithDelay
-{
-    @display("bgb=325,196");
-    submodules:
-        host1: Host1AP {
-            @display("p=82,92");
-        }
-        host2: Host1AP {
-            @display("p=231,92");
-        }
-    connections allowunconnected:
-        host1.medium <--> DatarateChannel {datarate = 100Mbps; delay = 100us; ber = 0; } <--> host2.medium;
+namespace FloodMiniTable {
+
+using namespace std;
+
+typedef map<string, vector<RMTPort*> > FWDTable;
+typedef FWDTable::iterator FWDTableIt;
+
+class FloodMiniTable: public IntMMForwarding {
+
+public:
+    // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+    vector<RMTPort * > lookup(const PDU * pdu);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+
+    // Returns a representation of the Forwarding Knowledge
+    string toString();
+
+    //Insert/Remove an entry
+    void addReplace(const std::string &addr, vector<RMTPort *> ports);
+
+    void finish();
+
+protected:
+    FWDTable table;
+
+    // Called after initialize
+    void onPolicyInit();
+};
+
 }
+
+#endif /* FloodMiniTable_H_ */

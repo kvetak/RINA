@@ -21,7 +21,10 @@
 // THE SOFTWARE.
 
 package rina.examples.Routing.LatEx;
-import rina.src.CS.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.HostNAP;
+import rina.src.CS.InteriorRouterNInt;
+
 
 network LatEx
 {

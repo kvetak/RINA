@@ -23,6 +23,7 @@
 #ifndef QoSDomainGenerator_H_
 #define QoSDomainGenerator_H_
 
+#include "Utils.h"
 #include <IntPDUFG.h>
 #include <QoSTable/QoSTable.h>
 #include <DomainRouting/Routing.h>

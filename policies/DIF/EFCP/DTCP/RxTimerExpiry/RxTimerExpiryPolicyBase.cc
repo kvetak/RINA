@@ -44,8 +44,8 @@ RxTimerExpiryPolicyBase::~RxTimerExpiryPolicyBase()
 
 void RxTimerExpiryPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
-  DTCP* dtcp = (DTCP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTCP)).c_str());
+  DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
+  DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
   DTCPRxExpiryTimer* timer;
 
   std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();

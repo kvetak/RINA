@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 
 package rina.examples.Basics.SmallNetwork;
-import rina.src.CS.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter3Int;
 
 
 network SmallNetwork

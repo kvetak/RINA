@@ -415,22 +415,23 @@ void DTCPState::initialize(int step)
     }
 
     rcvCredit = par("rcvCredit");
-    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rcvCredit")){
-          rcvCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rcvCredit");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rcvCredit")){
+          rcvCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("rcvCredit");
     }
     sndCredit = par("initialSenderCredit");
-    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("initialSenderCredit")){
-          sndCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("initialSenderCredit");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("initialSenderCredit")){
+          sndCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("initialSenderCredit");
     }
     nextSenderControlSeqNum = par("nextSenderControlSeqNum");
     dataReXmitMax = par("dataReXmitMax");
 
 
     maxClosedWinQueLen = par("maxClosedWinQueLen");
-    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("maxClosedWinQueLen")){
-          maxClosedWinQueLen = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("maxClosedWinQueLen");
+    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("maxClosedWinQueLen")){
+          maxClosedWinQueLen = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("maxClosedWinQueLen");
 
     }
+    
     timeUnit = par("timeUnit");
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");

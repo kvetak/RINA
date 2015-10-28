@@ -26,14 +26,9 @@ Define_Module(RMTSchedulingBase);
 
 void RMTSchedulingBase::initialize()
 {
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
 
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
+    setPolicyDisplayString(this);
     onPolicyInit();
 }
 

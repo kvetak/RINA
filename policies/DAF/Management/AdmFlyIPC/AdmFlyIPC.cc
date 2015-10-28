@@ -26,7 +26,7 @@ void AdmFlyIPC::initialize(){
     int conAtTime = par("conAtTime").longValue();
 
 
-    Directory * dir = dynamic_cast<Directory*>( getModuleByPath("^.^.^.difAllocator.directory") );
+    Directory * dir = getRINAModule<Directory*>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
     if(addr != "" && myAddr != ""){
         string addrAppName = addr;
@@ -51,7 +51,7 @@ void AdmFlyIPC::initialize(){
 void AdmFlyIPC::handleMessage(cMessage *msg){
     if(strcmp(msg->getName(), "createIPC") == 0){
         cModuleType* moduleType = cModuleType::get("rina.src.DIF.IPCProcess");
-        cModule *mod = moduleType->create("flyIPC", this->getParentModule()->getParentModule()->getParentModule());
+        cModule *mod = moduleType->create("flyIPC", this->getModuleByPath("^.^.^"));
         mod->par("ipcAddress").setStringValue(addr);
         mod->par("difName").setStringValue(dif);
 
@@ -59,7 +59,7 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
         cGate * modIn = mod->gateHalf("southIo", cGate::INPUT, 0);
         cGate * modOut = mod->gateHalf("southIo", cGate::OUTPUT, 0);
 
-        cModule *minus =  getModuleByPath("^.^.^.ipcProcess1");
+        cModule *minus =  getRINAModule<cModule*>(this, 3, {"ipcProcess1"});
         minus->setGateSize("northIo", minus->gateSize("northIo")+1);
         cGate * minusIn = minus->gateHalf("northIo", cGate::INPUT, minus->gateSize("northIo")-1);
         cGate * minusOut = minus->gateHalf("northIo", cGate::OUTPUT, minus->gateSize("northIo")-1);
@@ -74,15 +74,15 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
 
         mod->buildInside();
 
-        mod->getSubmodule("routingPolicy")->par("printAtEnd").setBoolValue(true);
+        mod->getSubmodule(MOD_POL_ROUTING)->par("printAtEnd").setBoolValue(true);
 
-        mod->getSubmodule("resourceAllocator")->getSubmodule("pduFwdGenerator")->deleteModule();
+        mod->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_PDUFWDGEN)->deleteModule();
         cModule *modgen = cModuleType::get("rina.policies.DIF.RA.PDUFG.HierarchicalGenerator.HierarchicalGenerator")
-            ->create("pduFwdGenerator",mod->getSubmodule("resourceAllocator"));
+            ->create(MOD_PDUFWDGEN,mod->getSubmodule(MOD_RESALLOC));
 
-        mod->getSubmodule("relayAndMux")->getSubmodule("pduForwardingPolicy")->deleteModule();
+        mod->getSubmodule(MOD_RELAYANDMUX)->getSubmodule(MOD_POL_RMT_PDUFWD)->deleteModule();
         cModule *modfor = cModuleType::get("rina.policies.DIF.RMT.PDUForwarding.HierarchicalTable.HierarchicalTable")
-            ->create("pduForwardingPolicy",mod->getSubmodule("relayAndMux"));
+            ->create(MOD_POL_RMT_PDUFWD,mod->getSubmodule(MOD_RELAYANDMUX));
 
         modfor->finalizeParameters();
         modgen->finalizeParameters();
@@ -97,9 +97,9 @@ void AdmFlyIPC::handleMessage(cMessage *msg){
     } else if(strcmp(msg->getName(), "connect") == 0){
 
         //Retrieve DIF's local IPC member
-        DA * DifAllocator = dynamic_cast<DA*>( getModuleByPath("^.^.^.difAllocator.da") );
+        DA * DifAllocator = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});
         cModule* targetIpc = DifAllocator->getDifMember(DAP(dif));
-        RA * ra = dynamic_cast<RA*>(targetIpc->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+        RA * ra = getRINAModule<RA*>(targetIpc, 0, {MOD_RESALLOC, MOD_RA});
         if(!ra) { error( "Local IPC RA not found"); }
 
         string srcN = addr;

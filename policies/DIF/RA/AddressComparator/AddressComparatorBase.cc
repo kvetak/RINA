@@ -26,15 +26,11 @@ Define_Module(AddressComparatorBase);
 
 void AddressComparatorBase::initialize()
 {
-    cModule* ipcModule = getParentModule()->getParentModule();
+    cModule* ipcModule = getModuleByPath("^.^");
     thisIPCAddr = Address(ipcModule->par(PAR_IPCADDR).stringValue(),
                           ipcModule->par(PAR_DIFNAME).stringValue());
 
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
+    setPolicyDisplayString(this);
     onPolicyInit();
 }
 

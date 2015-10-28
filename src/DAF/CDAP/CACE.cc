@@ -39,7 +39,7 @@ void CACE::handleMessage(cMessage *msg)
 }
 
 void CACE::initSignalsAndListeners(){
-    cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher = this->getModuleByPath("^.^");
 
     //Signals emitted by this module
     sigCACEReceiveData = registerSignal(SIG_CACE_DataReceive);

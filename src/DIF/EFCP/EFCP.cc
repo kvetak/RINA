@@ -102,14 +102,13 @@ EFCP::~EFCP() {
 void EFCP::initialize(int step){
 //  if(step == 3){
     efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
-    resourceAllocator = check_and_cast<RA*>
-        (getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
+    resourceAllocator = getRINAModule<RA*>(this, 2, {MOD_RESALLOC, MOD_RA});
 
 //  }
 
 
     lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
-    getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
+    getModuleByPath("^.^")->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
 
 }
 
@@ -154,8 +153,9 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   }
 
 
-  DTP* dtpModule = (DTP*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP)).c_str());
-  DTPState* dtpState = (DTPState*)efcpiModule->getModuleByPath((std::string(".") + std::string(MOD_DTP_STATE)).c_str());
+  DTP* dtpModule = getRINAModule<DTP*>(efcpiModule, 0, {MOD_DTP});
+  DTPState* dtpState = getRINAModule<DTPState*>(efcpiModule, 0, {MOD_DTP_STATE});
+
   dtpState->setQoSCube(qosCube);
   dtpModule->setState(dtpState);
 

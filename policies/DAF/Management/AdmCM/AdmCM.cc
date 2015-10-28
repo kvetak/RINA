@@ -15,7 +15,7 @@ void AdmCM::initialize(){
     AdmT::initialize();
 
     sig = registerSignal("LISTENER_MASTER");
-    this->getParentModule()->getParentModule()->getParentModule()->subscribe("LISTENER_SLAVE", this);
+    this->getModuleByPath("^.^.^")->subscribe("LISTENER_SLAVE", this);
 }
 
 void AdmCM::action(cMessage *msg, bool del) {

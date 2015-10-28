@@ -194,11 +194,9 @@ void NFlowTable::setFaiToFlow(FAIBase* fai, Flow* flow) {
 
 void NFlowTable::updateDisplayString() {
     // display number of flows
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
     std::ostringstream os;
     os << "records: " << getSize();
-    disp.setTagArg("t", 0, os.str().c_str());
+    setPolicyDisplayString(this, os.str().c_str());
 }
 
 void NFlowTable::initSignalsAndListeners() {

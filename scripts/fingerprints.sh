@@ -97,11 +97,6 @@ analyze_output()
 # args: simulation output, config file, configuration ID
 update_fingerprint()
 {
-    if [ -z "$( sed -n "/^\[Config $3/,/^\[Config/p" omnetpp.ini | grep '^fingerprint[ =]')" ]; then
-        echo -e "${txtred}NO FINGERPRINT SPECIFIED${txtrst}"
-        return
-    fi
-
     fingerprint=$(
         echo "$1" | \
         grep '<!> Fingerprint mismatch!' | \
@@ -119,6 +114,14 @@ update_fingerprint()
     if $colorize; then printf "${txtrst}"; fi
 }
 
+# run given simulation in the console mode
+# args: simulation folder (with the omnetpp.ini file), configuration ID
+run_simulation()
+{
+    cd "$1"
+    opp_run -u Cmdenv -c "$2" -n "$rina_root" -l "$rina_lib" omnetpp.ini 2>&1
+}
+
 # begin!
 
 process_args $@
@@ -126,32 +129,35 @@ process_args $@
 cd $rina_scenarios
 
 # retrieve scenarios by the given directory glob
-scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" -exec dirname {} \; | sort )"
+scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" | sort )"
 if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
 
 # run the main loop
-echo "$scenarios" | while read i; do
+echo "$scenarios" | while read simfile; do
     # exclude the scenario if this is wanted
     # for scen in "${exclude_scenarios[@]}"; do
     #     if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
     # done
 
-    echo "Processing $i..."
-    cd "$i"
+    simdir="$( dirname $simfile)"
+    echo "Processing $simdir..."
 
-    grep '^\[Config ' omnetpp.ini | sed 's/\[Config \(.*\)].*/\1/' | while read j; do
-        if [[ "$j" != $glob_config ]]; then continue; fi
+    grep '^\[Config ' "$simfile" | sed 's/\[Config \(.*\)].*/\1/' | while read simconf; do
+        if [[ "$simconf" != $glob_config ]]; then continue; fi
 
-        printf "  $j: "
-        output="$( opp_run -u Cmdenv -c "$j" -n "$rina_root" -l "$rina_lib" omnetpp.ini 2>&1 )"
-        ret=$?
+        printf "  $simconf: "
 
         if [ $mode = "check" ]; then
-            analyze_output "$output" $ret
+            output=$( run_simulation "$simdir" "$simconf" )
+            analyze_output "$output" $?
         elif [ $mode = "update" ]; then
-            update_fingerprint "$output" omnetpp.ini "$j"
+            if [ -z "$( sed -n "/^\[Config $simconf/,/^\[Config/p" "$simfile" | grep '^fingerprint[ =]')" ]; then
+                echo -e "${txtred}NO FINGERPRINT SPECIFIED${txtrst}"
+            else
+                output=$( run_simulation "$simdir" "$simconf" )
+                update_fingerprint "$output" "$simfile" "$simconf"
+            fi
         fi
     done
-    cd $rina_scenarios
 done
 

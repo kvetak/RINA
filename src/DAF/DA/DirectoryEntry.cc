@@ -52,7 +52,7 @@ std::ostream& operator <<(std::ostream& os, const DirectoryEntry& dte) {
 
 std::string DirectoryEntry::info() const {
     std::ostringstream os;
-    os << "APN: " << Apn << ", supported DIFs: ";
+    os << "APN: " << Apn << " is available via: ";
     for (AddrCItem it = SupportedDifs.begin(); it != SupportedDifs.end(); ++it)
         os << "\n    DIF: " << it->getDifName() << ", IPCaddress: " << it->getIpcAddress();
     return os.str();
@@ -126,6 +126,6 @@ void DirectoryEntry::setAddr(const Address& addr) {
 }
 
 cModule* DirectoryEntry::getIpc() {
-    return  getFlowAlloc() ? getFlowAlloc()->getParentModule()->getParentModule() : NULL;
+    return  getFlowAlloc() ? getFlowAlloc()->getModuleByPath("^.^") : NULL;
 }
 */

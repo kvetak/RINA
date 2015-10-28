@@ -36,7 +36,6 @@
 
 package rina.src.CS;
 
-import rina.src.Common.Test;
 import rina.src.DAF.ApplicationProcess;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.IPCResourceManager;

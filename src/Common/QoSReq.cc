@@ -189,8 +189,8 @@ QoSReq::QoSReq(cXMLElementList& attrs) :
 }
 
 const QoSReq QoSReq::MANAGEMENT(
-                                  2048, 10,
-                                  4096, 20,
+                                  12000, 10,
+                                  24000, 20,
                                   10000, 10000,
                                   0.0, 0.0,
                                   1500,

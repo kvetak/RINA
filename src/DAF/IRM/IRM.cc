@@ -44,10 +44,10 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = dynamic_cast<ConnectionTable*>(this->getParentModule()->getSubmodule(MOD_CONNTABLE));
+    ConTable = getRINAModule<ConnectionTable*>(this, 1, {MOD_CONNTABLE});
     if (!ConTable)
             error("ConTab is NULL!");
-    DifAllocator = dynamic_cast<DA*>(this->getParentModule()->getParentModule()->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
+    DifAllocator = getRINAModule<DA*>(this, 2, {MOD_DIFALLOC, MOD_DA});
 }
 
 void IRM::initialize() {
@@ -89,7 +89,7 @@ void IRM::handleMessage(cMessage* msg) {
 }
 
 void IRM::initSignalsAndListeners() {
-    cModule* catcher = this->getParentModule()->getParentModule();
+    cModule* catcher = this->getModuleByPath("^.^");
 
     //Signals that this module emits
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
@@ -248,11 +248,9 @@ void IRM::newFlow(Flow* flow) {
 }
 
 void IRM::updateDisplayString() {
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
     std::ostringstream os;
     os << "up: " << statPassUp << endl << "down: " << statPassDown << endl << "discard: " << statDiscarded;
-    disp.setTagArg("t", 0, os.str().c_str());
+    setPolicyDisplayString(this, os.str().c_str());
 }
 
 void IRM::signalizeDeallocateRequest(Flow* flow) {

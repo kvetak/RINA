@@ -22,7 +22,9 @@
 
 package rina.examples.Basics.SmallNetwork2;
 import ned.DatarateChannel;
-import rina.src.CS.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
+import rina.src.CS.InteriorRouter3Int;
 
 
 network SmallNetwork2
@@ -35,9 +37,9 @@ network SmallNetwork2
         host2: Host1AP {
             @display("p=92,252");
         }
-//        host3: Host1AP {
-//            @display("p=275,83");
-//        }
+        //        host3: Host1AP {
+        //            @display("p=275,83");
+        //        }
         host4: Host1AP {
             @display("p=473,83");
         }

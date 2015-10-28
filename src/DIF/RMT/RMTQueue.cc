@@ -68,8 +68,8 @@ void RMTQueue::initialize()
     // length for vector stats
     sigStatRMTQueueLength = registerSignal(SIG_STAT_RMTQUEUE_LENGTH);
 
-    maxQLength = getParentModule()->getParentModule()->par("defaultMaxQLength");
-    thresholdQLength = getParentModule()->getParentModule()->par("defaultThreshQLength");
+    maxQLength = getModuleByPath("^.^")->par("defaultMaxQLength");
+    thresholdQLength = getModuleByPath("^.^")->par("defaultThreshQLength");
     qTime = simTime();
     redrawGUI();
 

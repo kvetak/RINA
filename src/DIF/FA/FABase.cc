@@ -39,7 +39,7 @@ NFlowTable* FABase::getNFlowTable() const {
 
 void FABase::initMyAddress() {
     //Setup MyAddress
-    cModule* ipc = this->getParentModule()->getParentModule();
+    cModule* ipc = this->getModuleByPath("^.^");
     MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
     EV << "SrcAddress that this FA will use is " << MyAddress << endl;
 

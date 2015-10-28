@@ -110,6 +110,10 @@ void AESender::initialize()
     dstAeName     = this->par(S_PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(S_PAR_DSTAEINSTANCE).stringValue();
 
+    if (!dstAeName.compare("AeErr")) {
+        EV << "Destination AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
+    }
+
     //Schedule AllocateRequest
     if (startAt > 0)
         prepareAllocateRequest();
@@ -209,6 +213,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
                 //Create PING messsage
                 CDAP_M_Read* ping = new PingMsg();
 
+            //    std::cout << "sendPing"<<endl;
                 ping->setByteLength(msgSize);
 
                 //Send message

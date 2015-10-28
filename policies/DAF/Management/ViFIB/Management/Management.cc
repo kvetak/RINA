@@ -28,7 +28,7 @@ Management::Management() {
 }
 
 void Management::initialize() {
-    cModule * Node = this->getParentModule()->getParentModule()->getParentModule();
+    cModule * Node = this->getModuleByPath("^.^.^");
 
 
     DifAllocator = dynamic_cast<DA*>(Node->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));

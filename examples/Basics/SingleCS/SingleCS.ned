@@ -31,6 +31,5 @@ network SingleCS
         host: Host2AP {
             @display("p=138,82");
         }
-        
-    connections:
+
 }

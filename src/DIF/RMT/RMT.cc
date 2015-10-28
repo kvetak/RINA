@@ -71,23 +71,14 @@ void RMT::initialize()
     efcpiOut[0] = gateHalf("ribdIo", cGate::OUTPUT);
 
     // get pointers to other components
-    fwd = check_and_cast<IntPDUForwarding*>
-        (getModuleByPath("^.pduForwardingPolicy"));
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
-
-    schedPolicy = check_and_cast<RMTSchedulingBase*>
-        (getModuleByPath("^.schedulingPolicy"));
-    maxQPolicy = check_and_cast<RMTMaxQBase*>
-        (getModuleByPath("^.maxQueuePolicy"));
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
-    qAllocPolicy = check_and_cast<QueueAllocBase*>
-        (getModuleByPath("^.^.resourceAllocator.queueAllocPolicy"));
-    queueIdGenerator = check_and_cast<QueueIDGenBase*>
-        (getModuleByPath("^.^.resourceAllocator.queueIdGenerator"));
-    addrComparator = check_and_cast<AddressComparatorBase*>
-        (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+    fwd = getRINAModule<IntPDUForwarding*>(this, 1, {MOD_POL_RMT_PDUFWD});
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
+    schedPolicy = getRINAModule<RMTSchedulingBase*>(this, 1, {MOD_POL_RMT_SCHEDULER});
+    maxQPolicy = getRINAModule<RMTMaxQBase*>(this, 1, {MOD_POL_RMT_MAXQ});
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
+    qAllocPolicy = getRINAModule<QueueAllocBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_QUEUEALLOC});
+    queueIdGenerator = getRINAModule<QueueIDGenBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR});
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
 
     // register a signal for notifying others about a missing local EFCP instance
     sigRMTNoConnID = registerSignal(SIG_RMT_NoConnId);
@@ -438,15 +429,28 @@ void RMT::relayPDUToPort(PDU* pdu)
         invalidPDUs.push_back(pdu);
     }
 
-    for (auto const& port : outPorts)
+    PDU* outPDU = nullptr;
+
+    for (auto it = outPorts.begin(); it != outPorts.end(); ++it)
     {
+        RMTPort* port = *it;
+
+        if (it != (outPorts.end() - 1))
+        { // clone the message if sending via multiple ports
+            outPDU = pdu->dup();
+        }
+        else
+        {
+            outPDU = pdu;
+        }
+
         const std::string& id = queueIdGenerator->generateOutputQueueID(pdu);
         RMTQueue* outQueue = port->getQueueById(RMTQueue::OUTPUT, id.c_str());
 
         if (outQueue != nullptr)
         {
             cGate* outGate = outQueue->getRMTAccessGate();
-            send(pdu, outGate);
+            send(outPDU, outGate);
         }
         else
         {

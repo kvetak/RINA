@@ -32,16 +32,6 @@ RIBdListeners::~RIBdListeners() {
     ribd = NULL;
 }
 
-void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
-    EV << "CreateRequest initiated by " << src->getFullPath()
-       << " and processed by " << ribd->getFullPath() << endl;
-    Flow* flow = dynamic_cast<Flow*>(obj);
-    if (flow)
-        ribd->sendCreateRequestFlow(flow);
-    else
-        EV << "RIBdListener received unknown object!" << endl;
-}
-
 void LisRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveData initiated by " << src->getFullPath()
@@ -50,6 +40,16 @@ void LisRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
     if (cimsg) {
         ribd->receiveData(cimsg);
     }
+    else
+        EV << "RIBdListener received unknown object!" << endl;
+}
+/*
+void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+    EV << "CreateRequest initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow)
+        ribd->sendCreateRequestFlow(flow);
     else
         EV << "RIBdListener received unknown object!" << endl;
 }
@@ -139,24 +139,23 @@ void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
         EV << "RIBdListener received unknown object!" << endl;
 
 }
-
-void LisRIBDRoutingUpdate::receiveSignal(
-        cComponent* src, simsignal_t id, cObject* obj)
-{
-    EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
-       << " and processed by " << ribd->getFullPath() << endl;
-
-    IntRoutingUpdate * info = dynamic_cast<IntRoutingUpdate *>(obj);
-
-    if (info)
-    {
-        ribd->receiveRoutingUpdateFromRouting(info);
-    }
-    else
-    {
-        EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
-    }
-}
+*/
+//void LisRIBDRoutingUpdate::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+//{
+//    EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
+//       << " and processed by " << ribd->getFullPath() << endl;
+//
+//    IntRoutingUpdate * info = dynamic_cast<IntRoutingUpdate *>(obj);
+//
+//    if (info)
+//    {
+//        ribd->receiveRoutingUpdateFromRouting(info);
+//    }
+//    else
+//    {
+//        EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
+//    }
+//}
 
 void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
@@ -169,7 +168,7 @@ void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
     else
        EV << "RIBdListener received unknown object!" << endl;
 }
-
+/*
 void LisRIBDRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
@@ -264,4 +263,4 @@ void LisRIBDStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
         EV << "RIBdListener received unknown object!" << endl;
 
 }
-
+*/

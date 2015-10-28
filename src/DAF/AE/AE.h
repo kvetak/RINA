@@ -27,6 +27,7 @@
 #include <omnetpp.h>
 #include <sstream>
 //RINASim libraries
+#include "Utils.h"
 #include "AEBase.h"
 #include "AEListeners.h"
 #include "RINASignals.h"

@@ -48,7 +48,9 @@ void EnrollmentStateTable::initialize()
 }
 
 void EnrollmentStateTable::insert(EnrollmentStateTableEntry entry) {
-    StateTable.push_back(entry);
+    if (!findEntryByDstAPN(entry.getRemote().getApn())) {
+        StateTable.push_back(entry);
+    }
 }
 
 EnrollmentStateTableEntry* EnrollmentStateTable::findEntryByDstAPN(const APN& apn) {
@@ -61,14 +63,17 @@ EnrollmentStateTableEntry* EnrollmentStateTable::findEntryByDstAPN(const APN& ap
     return NULL;
 }
 
+
 void EnrollmentStateTable::handleMessage(cMessage *msg)
 {
 
 }
 
+
 bool EnrollmentStateTable::isEnrolled(const APN& myApn) {
     for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {
         EnrollmentStateTableEntry est = *it;
+        //EV << est.getLocal().getApn()  << " " << est.getEnrollmentStatusString() << endl;
         if (est.getLocal().getApn() == myApn
                 && est.getEnrollmentStatus() == EnrollmentStateTableEntry::ENROLL_ENROLLED) {
             return true;

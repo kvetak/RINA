@@ -27,23 +27,16 @@ Define_Module(RMTMaxQBase);
 
 void RMTMaxQBase::initialize()
 {
-    qMonPolicy = check_and_cast<RMTQMonitorBase*>
-        (getModuleByPath("^.queueMonitorPolicy"));
+    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
 
-    addrComparator = check_and_cast<AddressComparatorBase*>
-            (getModuleByPath("^.^.resourceAllocator.addressComparator"));
+    addrComparator = getRINAModule<AddressComparatorBase*>(this, 2, {MOD_RESALLOC, MOD_POL_RA_ADDRCOMPARATOR});
 
-    rmtAllocator = check_and_cast<RMTModuleAllocator*>
-        (getModuleByPath("^.allocator"));
+    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 1, {MOD_RMTALLOC});
 
     // register slowdown signal for RA
     sigRMTSDReq = registerSignal(SIG_RMT_SlowdownRequest);
 
-    // display active policy name
-    cDisplayString& disp = getDisplayString();
-    disp.setTagArg("t", 1, "t");
-    disp.setTagArg("t", 0, getClassName());
-
+    setPolicyDisplayString(this);
     onPolicyInit();
 }
 

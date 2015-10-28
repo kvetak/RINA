@@ -98,13 +98,11 @@ void BiDomainGenerator::routingUpdated(){
 // Called after initialize
 void BiDomainGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<DomainTable::DomainTable *>
-        (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
+    fwd = getRINAModule<DomainTable::DomainTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
 
-    rt = check_and_cast<DMRnms::Routing *>
-        (getModuleByPath("^.^.routingPolicy"));
+    rt = getRINAModule<DMRnms::Routing *>(this, 2, {MOD_POL_ROUTING});
 
-    string myAddr = getParentModule()->getParentModule()->par("ipcAddress").stringValue();
+    string myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
 
     vector<string> parsStr = split(myAddr, '.');
     if(parsStr.size() != 2) {
@@ -132,7 +130,7 @@ void BiDomainGenerator::onPolicyInit(){
     }
 
 
-    difA = check_and_cast<DA *>(getModuleByPath("^.^.^.difAllocator.da"));
+    difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 }
 
 pAddr BiDomainGenerator::parseAddr(const string &addr){

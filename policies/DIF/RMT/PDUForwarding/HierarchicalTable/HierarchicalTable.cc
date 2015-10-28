@@ -127,7 +127,7 @@ void HierarchicalTable::addReplace(const string &domId, const string &addr, vect
 // Called after initialize
 void HierarchicalTable::onPolicyInit(){
     // IPCProcess module.
-    cModule * ipcModule = getParentModule()->getParentModule();
+    cModule * ipcModule = getModuleByPath("^.^");
 
     myAddr   = Address(
         ipcModule->par("ipcAddress").stringValue(),

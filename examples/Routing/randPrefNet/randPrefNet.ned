@@ -24,10 +24,6 @@ package rina.examples.Routing.randPrefNet;
 
 import ned.DelayChannel;
 import rina.src.CS.InteriorRouterNMInt;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DIF.EFCP.DTCP.*;
-
-
 
 
 network randPrefNet

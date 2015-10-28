@@ -21,9 +21,9 @@
 // THE SOFTWARE.
 
 package rina.examples.Routing.treeBipart;
-import rina.src.CS.*;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DIF.EFCP.DTCP.*;
+import rina.src.CS.HostNAP;
+import rina.src.CS.InteriorRouterNInt;
+
 
 network treeBipart
 {

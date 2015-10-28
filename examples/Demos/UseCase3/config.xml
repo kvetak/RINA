@@ -33,7 +33,7 @@
 		</Enrollment>	
 		<Enrollment id="ipcProcess1">  
 			<EnrollmentStateTable>
-				<State src="22_Layer0" dst="22_Layer0" cace="CON_ESTABLISHED" enroll="ENROLL_ENROLLED" />
+				<State src="22_Layer1" dst="22_Layer1" cace="CON_ESTABLISHED" enroll="ENROLL_ENROLLED" />
 			</EnrollmentStateTable>                      
 		</Enrollment>	
 	</Host>

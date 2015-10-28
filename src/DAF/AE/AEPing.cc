@@ -93,6 +93,10 @@ void AEPing::initPing() {
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+    if (!dstAeName.compare("AeErr")) {
+        EV << "AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
+    }
+
     //Schedule AllocateRequest
     if (startAt > 0)
         prepareAllocateRequest();

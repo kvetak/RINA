@@ -22,9 +22,6 @@
 
 package rina.src.DIF.NSM;
 
-import rina.src.DIF.FA.FAI;
-
-
 module NameSpaceManager
 {
     @display("i=block/rx;bgb=317,261");
