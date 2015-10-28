@@ -87,7 +87,7 @@ protected:
                         erase1(dst); return  (op1.size() > 2)? CHBOTH : CH1OPT;
                     }
                 }
-            } else if(op2.find(dst) != op1.end()){
+            } else if(op2.find(dst) != op2.end()){
                 if(op2.size() == 1) {
                     if(m < m1){
                         swap(); return CHBOTH;
