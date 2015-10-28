@@ -137,7 +137,7 @@ namespace Infection {
 
     void Infection::finish() {
         for(InfectionFlow * inf : infs) {
-            EV << "Flow : " << inf->srcAddr << " -> " << inf->dstAddr << " (" << inf->QoS<< ") : " << inf->count << endl;
+      //      EV << "Flow : " << inf->srcAddr << " -> " << inf->dstAddr << " (" << inf->QoS<< ") : " << inf->count << endl;
             delete inf;
         }
     }

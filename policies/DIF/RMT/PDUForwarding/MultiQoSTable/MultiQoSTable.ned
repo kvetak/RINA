@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,23 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DIF.RA;
+package rina.policies.DIF.RMT.PDUForwarding.MultiQoSTable;
 
-simple RA
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+
+simple MultiQoSTable like IntPDUForwarding
 {
     parameters:
-        @display("i=block/segm");
+        @class(MultiQoSTable::MultiQoSTable);
+        @display("i=block/socket");
         
-        @signal[RA-CreateFlowPositive](type=Flow?);
-        @signal[RA-CreateFlowNegative](type=Flow?);
-        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
-        @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=APNIPair?);
-        @signal[RA-MgmtFlowDeallocated](type=Flow?);
-
-        xml qoscubesData = default(xml("<QoSCube/>"));
-        xml qosReqData = default(xml("<QoSReq/>"));
-        xml preallocation = default(xml("<root/>"));
-        
-        bool onWire = default(false);
+        bool printAtEnd = default(false);
 }

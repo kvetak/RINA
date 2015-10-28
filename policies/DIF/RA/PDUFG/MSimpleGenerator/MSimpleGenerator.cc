@@ -71,8 +71,8 @@ void MSimpleGenerator::routingUpdated(){
             if(p != NULL) {
                 ps.push_back(p);
             }
-            fwd->addReplace(dst.second, ps);
         }
+        fwd->addReplace(dst.second, ps);
     }
 }
 

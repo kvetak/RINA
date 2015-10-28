@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,23 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DIF.RA;
+#ifndef IntMMForwarding_H_
+#define IntMMForwarding_H_
 
-simple RA
-{
-    parameters:
-        @display("i=block/segm");
-        
-        @signal[RA-CreateFlowPositive](type=Flow?);
-        @signal[RA-CreateFlowNegative](type=Flow?);
-        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
-        @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=APNIPair?);
-        @signal[RA-MgmtFlowDeallocated](type=Flow?);
+#include <omnetpp.h>
+#include "IntPDUForwarding.h"
+#include <vector>
 
-        xml qoscubesData = default(xml("<QoSCube/>"));
-        xml qosReqData = default(xml("<QoSReq/>"));
-        xml preallocation = default(xml("<root/>"));
-        
-        bool onWire = default(false);
-}
+class IntQoSMForwarding  : public IntPDUForwarding {
+public:
+
+    //Insert/Remove an entry
+    virtual void addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports) = 0;
+};
+
+#endif /* IntMMForwarding_H_ */

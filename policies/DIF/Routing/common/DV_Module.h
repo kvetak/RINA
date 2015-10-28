@@ -35,19 +35,23 @@ protected:
 
         unsigned char addEntry(const string & dst, const T &m) {
             if(op1.empty()){
+
                 insert1(dst, m); return CHBOTH;
             }else if(op2.empty()){
                 if(op1.find(dst) != op1.end()){
                     if(op1.size() == 1){
                         if(m != m1){
+
                             insert1(dst, m); return CHBOTH;
                         } else {
                             return  NOCH;
                         }
                     } else {
                         if(m < m1){
+
                             erase1(dst); swap(); insert1(dst, m); return CHBOTH;
                         } else if( m > m1) {
+
                             erase1(dst); insert2(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                         } else {
                             return  NOCH;
@@ -55,12 +59,13 @@ protected:
                     }
                 } else {
                     if(m < m1){
+
                         swap(); insert1(dst, m); return CHBOTH;
                     } else if( m > m1) {
+
                         insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                     } else {
-                        insert1(dst, m);
-                        return  CH1OPT;
+                        insert1(dst, m); return  CH1OPT;
                     }
                 }
             } else if(op1.find(dst) != op1.end()){
@@ -68,57 +73,75 @@ protected:
                     if( m == m1) {
                         return  NOCH;
                     } else if( m < m2) {
+
                         erase1(dst); insert1(dst, m); return CHBOTH;
                     } else if( m == m2) {
+
                         clear1();  swap(); insert1(dst, m); return CHBOTH;
                     } else {
+
                         swap(); return CHBOTH;
                     }
                 } else {
                     if(m < m1){
+
                         erase1(dst); clear2(); swap(); insert1(dst, m); return CHBOTH;
                     } else if( m == m1) {
                         return  NOCH;
                     } else if( m < m2) {
+
                         erase1(dst); clear2(); insert2(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                     } else if( m == m2) {
+
                         erase1(dst); insert2(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                     } else {
+
                         erase1(dst); return  (op1.size() > 2)? CHBOTH : CH1OPT;
                     }
                 }
             } else if(op2.find(dst) != op2.end()){
                 if(op2.size() == 1) {
                     if(m < m1){
+
                         swap(); return CHBOTH;
                     } else if( m == m1) {
+
                         clear2(); insert1(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                     } else if( m != m2) {
+
                         insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                     } else {
                         return  NOCH;
                     }
                 } else {
                     if(m < m1){
+
                         clear2(); swap(); insert1(dst, m); return CHBOTH;
                     } else if( m == m1) {
+
                         erase2(dst); insert1(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                     } else if( m < m2) {
+
                         clear2(); insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                     } else if( m == m2) {
                         return  NOCH;
                     } else {
-                        erase2(dst); return  (op1.size()+op2.size() > 2)? NOCH : CHMET;
+
+                        erase2(dst); return NOCH;
                     }
                 }
             } else {
                 if(m < m1){
+
                     clear2(); swap(); insert1(dst, m); return CHBOTH;
                 } else if( m == m1) {
+
                     insert1(dst, m); return (op1.size() > 2)? CH1OPT : CHBOTH;
                 } else if( m < m2) {
+
                     clear2(); insert2(dst, m); return (op1.size() > 1)? NOCH : CHMET;
                 } else if( m == m2) {
+
                     insert2(dst, m); return NOCH;
                 } else {
                     return  NOCH;
@@ -230,13 +253,16 @@ public:
                 return false;
             }
 
+
+
             rtEntry oldE = neiState[up->src];
             if(oldE.sId >= up->entries.sId) { return false; }
 
-            unsigned char result;
+            unsigned char result = 0;
 
             for(const auto & entry : up->entries.entries){
                 if(entry.first == Routing_Alg<T>::myAddr) { continue; }
+
                 unsigned char eResult = table[entry.first].addEntry(up->src, entry.second);
                 if(eResult & CH1OPT) { changed.insert(entry.first); }
 
@@ -265,6 +291,10 @@ public:
         Routing_Alg<T>::sendUpdate();
         secId++;
 
+<<<<<<< HEAD
+=======
+       //
+>>>>>>> Updated CoreNet example.
 
         for(auto neig : Routing_Alg<T>::neigTable){
             T linkM = Routing_Alg<T>::nei[neig.first];
