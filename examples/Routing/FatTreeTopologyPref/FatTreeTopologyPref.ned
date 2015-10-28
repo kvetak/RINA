@@ -25,16 +25,14 @@
 package rina.examples.Routing.FatTreeTopologyPref;
 
 import ned.DatarateChannel;
-import rina.src.CS.*;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DIF.EFCP.DTCP.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouterNInt;
 
 
 network FatTreeTopologyPref
 {
     @display("bgb=1060,668");
 
-    types:
     submodules:
 
         AS1: InteriorRouterNInt {

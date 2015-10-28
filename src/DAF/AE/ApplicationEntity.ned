@@ -22,7 +22,6 @@
 
 package rina.src.DAF.AE;
 
-import rina.src.Common.Test;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 
 

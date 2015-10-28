@@ -22,8 +22,8 @@
 
 package rina.examples.Routing.SmallNetRouting;
 
-import rina.src.CS.*;
-import rina.src.DAF.IRM.ConnectionTable;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter3Int;
 
 
 network SmallNetRouting

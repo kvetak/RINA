@@ -24,9 +24,9 @@
 
 package rina.examples.Routing.FatTreeTopology;
 
-import rina.src.CS.*;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DIF.EFCP.DTCP.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
+import rina.src.CS.InteriorRouter4Int;
 
 
 network FatTreeTopology

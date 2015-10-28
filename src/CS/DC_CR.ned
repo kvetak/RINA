@@ -31,9 +31,9 @@
 
 package rina.src.CS;
 
-import rina.src.Common.Test;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DIF.IPCProcess;
+
 
 module DC_CR
 {

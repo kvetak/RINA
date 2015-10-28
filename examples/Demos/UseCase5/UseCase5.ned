@@ -23,11 +23,14 @@
 package rina.examples.Demos.UseCase5;
 
 import ned.DelayChannel;
-import rina.src.CS.*;
+import rina.src.CS.BorderRouter2n1nm;
+import rina.src.CS.BorderRouter2n1nmLeft;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
+
 
 network UseCase5
 {
-    
     submodules:
         BorderRouterA: BorderRouter2n1nm {
             @display("p=147,145");

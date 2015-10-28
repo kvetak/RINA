@@ -53,9 +53,9 @@ network SimpleRelayCongestion
         }
         host2: Host1AP {
             @display("p=290,101");
-        }        
+        }
 
-        connections allowunconnected:
+    connections allowunconnected:
         host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
         host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
 
