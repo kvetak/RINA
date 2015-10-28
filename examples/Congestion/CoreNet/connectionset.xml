@@ -3,19 +3,76 @@
     <ConnectionSet>
             <!-- Allocate management flows. -->
             <SimTime t="0">
-                <Connection src="1_Test" dst="2_Test" qosReq="1"/>
-                <Connection src="2_Test" dst="3_Test" qosReq="1"/>
-                <Connection src="3_Test" dst="4_Test" qosReq="1"/>
-                <Connection src="4_Test" dst="5_Test" qosReq="1"/>
-                
-                <Connection src="1_Test" dst="2_Test" qosReq="5"/>
-                <Connection src="2_Test" dst="3_Test" qosReq="5"/>
-                <Connection src="3_Test" dst="4_Test" qosReq="5"/>
-                <Connection src="4_Test" dst="5_Test" qosReq="5"/>
+                <Connection src="1_Core" dst="2_Core" qosReq="mgmt"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="mgmt"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="mgmt"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="mgmt"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="mgmt"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="mgmt"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="mgmt"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="mgmt"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="mgmt"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="mgmt"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="mgmt"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="mgmt"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="mgmt"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="mgmt"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="mgmt"/>
             </SimTime>
+            <SimTime t="10">
+                <Connection src="1_iDCA" dst="gw1_iDCA" qosReq="mgmt"/>
+                <Connection src="2_iDCA" dst="gw2_iDCA" qosReq="mgmt"/>
+                <Connection src="3_iDCA" dst="gw3_iDCA" qosReq="mgmt"/>
+                
+                <Connection src="gw1_iDCA" dst="gw2_iDCA" qosReq="mgmt"/>
+                <Connection src="gw1_iDCA" dst="gw3_iDCA" qosReq="mgmt"/>
+                <Connection src="gw2_iDCA" dst="gw3_iDCA" qosReq="mgmt"/>
+                
+                
+                <Connection src="1_iDCB" dst="gw1_iDCB" qosReq="mgmt"/>
+                <Connection src="2_iDCB" dst="gw2_iDCB" qosReq="mgmt"/>
+                <Connection src="3_iDCB" dst="gw3_iDCB" qosReq="mgmt"/>
+                
+                <Connection src="gw1_iDCB" dst="gw2_iDCB" qosReq="mgmt"/>
+                <Connection src="gw1_iDCB" dst="gw3_iDCB" qosReq="mgmt"/>
+                <Connection src="gw2_iDCB" dst="gw3_iDCB" qosReq="mgmt"/>
+            </SimTime>
+            
             
             <!-- Allocate data flows. -->
             <SimTime t="1">
-            
-            </SimTime>   
+                <Connection src="1_Core" dst="2_Core" qosReq="1"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="1"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="1"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="1"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="1"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="1"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="1"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="1"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="1"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="1"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="1"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="1"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="1"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="1"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="1"/>
+            </SimTime>
+            <SimTime t="11">
+                <Connection src="1_iDCA" dst="gw1_iDCA" qosReq="1"/>
+                <Connection src="2_iDCA" dst="gw2_iDCA" qosReq="1"/>
+                <Connection src="3_iDCA" dst="gw3_iDCA" qosReq="1"/>
+                
+                <Connection src="gw1_iDCA" dst="gw2_iDCA" qosReq="1"/>
+                <Connection src="gw1_iDCA" dst="gw3_iDCA" qosReq="1"/>
+                <Connection src="gw2_iDCA" dst="gw3_iDCA" qosReq="1"/>
+                
+                
+                <Connection src="1_iDCB" dst="gw1_iDCB" qosReq="1"/>
+                <Connection src="2_iDCB" dst="gw2_iDCB" qosReq="1"/>
+                <Connection src="3_iDCB" dst="gw3_iDCB" qosReq="1"/>
+                
+                <Connection src="gw1_iDCB" dst="gw2_iDCB" qosReq="1"/>
+                <Connection src="gw1_iDCB" dst="gw3_iDCB" qosReq="1"/>
+                <Connection src="gw2_iDCB" dst="gw3_iDCB" qosReq="1"/>
+            </SimTime>
     </ConnectionSet>

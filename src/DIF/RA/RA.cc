@@ -108,6 +108,8 @@ void RA::handleMessage(cMessage *msg)
                 Flow* flow = flows->front();
                 if (flow->isManagementFlow())
                 { // mgmt flow
+                    //std::cout << "prepare MGMT flow" << endl;
+                    //createNM1Flow(flow);
                     createNFlow(flow);
                 }
                 else
@@ -225,7 +227,7 @@ void RA::setRMTMode()
     // identify the role of this IPC process in processing system
     std::string bottomGate = thisIPC->gate("southIo$o", 0)->getNextGate()->getName();
 
-    if (bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
+    if (par("onWire").boolValue() || bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
         rmt->setOnWire(true);

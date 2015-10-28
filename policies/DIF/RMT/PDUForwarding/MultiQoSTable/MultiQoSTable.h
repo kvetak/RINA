@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,23 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DIF.RA;
+#ifndef MultiQoSTable_H_
+#define MultiQoSTable_H_
 
-simple RA
-{
-    parameters:
-        @display("i=block/segm");
-        
-        @signal[RA-CreateFlowPositive](type=Flow?);
-        @signal[RA-CreateFlowNegative](type=Flow?);
-        @signal[RA-ExecuteSlowdown](type=CongestionDescriptor?);
-        @signal[RA-InvokeSlowdown](type=cPacket?);
-        @signal[RA-MgmtFlowAllocated](type=APNIPair?);
-        @signal[RA-MgmtFlowDeallocated](type=Flow?);
+#include <IntQoSMForwarding.h>
 
-        xml qoscubesData = default(xml("<QoSCube/>"));
-        xml qosReqData = default(xml("<QoSReq/>"));
-        xml preallocation = default(xml("<root/>"));
-        
-        bool onWire = default(false);
+#include <map>
+#include <string>
+#include <vector>
+
+namespace MultiQoSTable {
+
+using namespace std;
+
+//QoS, Dst, Ports
+typedef map<string, map<string, vector<RMTPort*> > > FWDTable;
+
+class MultiQoSTable: public IntQoSMForwarding {
+
+public:
+    // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+    vector<RMTPort * > lookup(const PDU * pdu);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+
+    // Returns a representation of the Forwarding Knowledge
+    string toString();
+
+    //Insert/Remove an entry
+    void addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports);
+
+    void finish();
+
+protected:
+    FWDTable table;
+
+    // Called after initialize
+    void onPolicyInit();
+};
+
 }
+
+#endif /* MultiQoSTable_H_ */

@@ -13,16 +13,16 @@ Define_Module(Controller);
 
 Controller::AddedFlowListener::AddedFlowListener(Controller * p) : parent(p) {}
 void Controller::AddedFlowListener::receiveSignal(cComponent *src, simsignal_t id, cObject *obj){
-    Flow * f;
+    //Flow * f;
     //Do something - get flow
-    parent->addedFlow(f);
+    //parent->addedFlow(f);
 }
 
 Controller::RemovedFlowListener::RemovedFlowListener(Controller * p) : parent(p) {}
 void Controller::RemovedFlowListener::receiveSignal(cComponent *src, simsignal_t id, cObject *obj){
-    Flow * f;
+    //Flow * f;
     //Do something - get flow
-    parent->removedFlow(f);
+    //parent->removedFlow(f);
 }
 
 
