@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 	<QoSCubesSet>
-		<QosCube id="A1">
+		<QosCube id="DC1">
 			<Delay>10</Delay>	
-			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
-			<CostTime>10000</CostTime>
-			<CostBits>10000</CostBits>
+			<PDUDroppingProbability>0.0</PDUDroppingProbability>			
+			<CostTime>4</CostTime>
+			<CostBits>4</CostBits>
 			
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
@@ -24,11 +24,11 @@
 			<WinOn>0</WinOn>
 			<RateOn>0</RateOn>				
 		</QosCube>
-		<QosCube id="A2">	
-			<Delay>10</Delay>	
-			<PDUDroppingProbability>0.01</PDUDroppingProbability>		
-			<CostTime>1000</CostTime>
-			<CostBits>1000</CostBits>
+		<QosCube id="DC2">	
+			<Delay>500</Delay>	
+			<PDUDroppingProbability>0.001</PDUDroppingProbability>		
+			<CostTime>3</CostTime>
+			<CostBits>3</CostBits>
 			
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
@@ -48,11 +48,11 @@
 			<WinOn>0</WinOn>
 			<RateOn>0</RateOn>		
 		</QosCube>		
-		<QosCube id="A3">	
-			<Delay>10</Delay>	
-			<PDUDroppingProbability>0.1</PDUDroppingProbability>		
-			<CostTime>100</CostTime>
-			<CostBits>100</CostBits>
+		<QosCube id="IP1">	
+			<Delay>100</Delay>	
+			<PDUDroppingProbability>0.01</PDUDroppingProbability>		
+			<CostTime>2</CostTime>
+			<CostBits>2</CostBits>
 			
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
@@ -73,130 +73,9 @@
 			<RateOn>0</RateOn>		
 		</QosCube>		
 		
-		<QosCube id="B1">
-			<Delay>100</Delay>	
-			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
-			<CostTime>1000</CostTime>
-			<CostBits>1000</CostBits>
-			
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>
-		<QosCube id="B2">	
-			<Delay>100</Delay>	
-			<PDUDroppingProbability>0.01</PDUDroppingProbability>		
-			<CostTime>100</CostTime>
-			<CostBits>100</CostBits>
-			
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>		
-		<QosCube id="B3">	
-			<Delay>100</Delay>	
-			<PDUDroppingProbability>0.1</PDUDroppingProbability>		
-			<CostTime>10</CostTime>
-			<CostBits>10</CostBits>
-			
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>		
-		
-		<QosCube id="C1">
+		<QosCube id="IP2">
 			<Delay>1000</Delay>	
-			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
-			<CostTime>100</CostTime>
-			<CostBits>100</CostBits>
-			
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>
-		<QosCube id="C2">	
-			<Delay>1000</Delay>	
-			<PDUDroppingProbability>0.01</PDUDroppingProbability>		
-			<CostTime>10</CostTime>
-			<CostBits>10</CostBits>
-			
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>		
-		<QosCube id="C3">	
-			<Delay>1000</Delay>	
-			<PDUDroppingProbability>0.1</PDUDroppingProbability>		
+			<PDUDroppingProbability>0.01</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
 			
@@ -217,5 +96,5 @@
 			<RxOn>0</RxOn>
 			<WinOn>0</WinOn>
 			<RateOn>0</RateOn>		
-		</QosCube>		
+		</QosCube>
 	</QoSCubesSet>

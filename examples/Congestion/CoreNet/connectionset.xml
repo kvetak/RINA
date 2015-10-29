@@ -18,6 +18,11 @@
                 <Connection src="8_Core" dst="9_Core" qosReq="mgmt"/>
                 <Connection src="8_Core" dst="a_Core" qosReq="mgmt"/>
                 <Connection src="9_Core" dst="a_Core" qosReq="mgmt"/>
+               
+                <Connection src="ip1_Core" dst="2_Core" qosReq="mgmt"/>
+                <Connection src="ip2_Core" dst="8_Core" qosReq="mgmt"/>
+                <Connection src="ip3_Core" dst="7_Core" qosReq="mgmt"/>
+                <Connection src="ip4_Core" dst="3_Core" qosReq="mgmt"/>
             </SimTime>
             <SimTime t="10">
                 <Connection src="1_iDCA" dst="gw1_iDCA" qosReq="mgmt"/>
@@ -36,6 +41,15 @@
                 <Connection src="gw1_iDCB" dst="gw2_iDCB" qosReq="mgmt"/>
                 <Connection src="gw1_iDCB" dst="gw3_iDCB" qosReq="mgmt"/>
                 <Connection src="gw2_iDCB" dst="gw3_iDCB" qosReq="mgmt"/>
+                
+                
+                <Connection src="h1_iDCA" dst="1_iDCA" qosReq="mgmt"/>
+                <Connection src="h2_iDCA" dst="2_iDCA" qosReq="mgmt"/>
+                <Connection src="h3_iDCA" dst="3_iDCA" qosReq="mgmt"/>
+                
+                <Connection src="h1_iDCB" dst="1_iDCB" qosReq="mgmt"/>
+                <Connection src="h2_iDCB" dst="2_iDCB" qosReq="mgmt"/>
+                <Connection src="h3_iDCB" dst="3_iDCB" qosReq="mgmt"/>
             </SimTime>
             
             
@@ -56,6 +70,74 @@
                 <Connection src="8_Core" dst="9_Core" qosReq="1"/>
                 <Connection src="8_Core" dst="a_Core" qosReq="1"/>
                 <Connection src="9_Core" dst="a_Core" qosReq="1"/>
+               
+                <Connection src="ip1_Core" dst="2_Core" qosReq="1"/>
+                <Connection src="ip2_Core" dst="8_Core" qosReq="1"/>
+                <Connection src="ip3_Core" dst="7_Core" qosReq="1"/>
+                <Connection src="ip4_Core" dst="3_Core" qosReq="1"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="2"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="2"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="2"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="2"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="2"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="2"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="2"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="2"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="2"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="2"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="2"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="2"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="2"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="2"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="2"/>
+               
+                <Connection src="ip1_Core" dst="2_Core" qosReq="2"/>
+                <Connection src="ip2_Core" dst="8_Core" qosReq="2"/>
+                <Connection src="ip3_Core" dst="7_Core" qosReq="2"/>
+                <Connection src="ip4_Core" dst="3_Core" qosReq="2"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="3"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="3"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="3"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="3"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="3"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="3"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="3"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="3"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="3"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="3"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="3"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="3"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="3"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="3"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="3"/>
+               
+                <Connection src="ip1_Core" dst="2_Core" qosReq="3"/>
+                <Connection src="ip2_Core" dst="8_Core" qosReq="3"/>
+                <Connection src="ip3_Core" dst="7_Core" qosReq="3"/>
+                <Connection src="ip4_Core" dst="3_Core" qosReq="3"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="4"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="4"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="4"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="4"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="4"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="4"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="4"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="4"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="4"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="4"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="4"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="4"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="4"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="4"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="4"/>
+               
+                <Connection src="ip1_Core" dst="2_Core" qosReq="4"/>
+                <Connection src="ip2_Core" dst="8_Core" qosReq="4"/>
+                <Connection src="ip3_Core" dst="7_Core" qosReq="4"/>
+                <Connection src="ip4_Core" dst="3_Core" qosReq="4"/>
             </SimTime>
             <SimTime t="11">
                 <Connection src="1_iDCA" dst="gw1_iDCA" qosReq="1"/>
@@ -74,5 +156,40 @@
                 <Connection src="gw1_iDCB" dst="gw2_iDCB" qosReq="1"/>
                 <Connection src="gw1_iDCB" dst="gw3_iDCB" qosReq="1"/>
                 <Connection src="gw2_iDCB" dst="gw3_iDCB" qosReq="1"/>
+                
+                
+                <Connection src="h1_iDCA" dst="1_iDCA" qosReq="1"/>
+                <Connection src="h2_iDCA" dst="2_iDCA" qosReq="1"/>
+                <Connection src="h3_iDCA" dst="3_iDCA" qosReq="1"/>
+                
+                <Connection src="h1_iDCB" dst="1_iDCB" qosReq="1"/>
+                <Connection src="h2_iDCB" dst="2_iDCB" qosReq="1"/>
+                <Connection src="h3_iDCB" dst="3_iDCB" qosReq="1"/>
+                
+                <Connection src="1_iDCA" dst="gw1_iDCA" qosReq="2"/>
+                <Connection src="2_iDCA" dst="gw2_iDCA" qosReq="2"/>
+                <Connection src="3_iDCA" dst="gw3_iDCA" qosReq="2"/>
+                
+                <Connection src="gw1_iDCA" dst="gw2_iDCA" qosReq="2"/>
+                <Connection src="gw1_iDCA" dst="gw3_iDCA" qosReq="2"/>
+                <Connection src="gw2_iDCA" dst="gw3_iDCA" qosReq="2"/>
+                
+                
+                <Connection src="1_iDCB" dst="gw1_iDCB" qosReq="2"/>
+                <Connection src="2_iDCB" dst="gw2_iDCB" qosReq="2"/>
+                <Connection src="3_iDCB" dst="gw3_iDCB" qosReq="2"/>
+                
+                <Connection src="gw1_iDCB" dst="gw2_iDCB" qosReq="2"/>
+                <Connection src="gw1_iDCB" dst="gw3_iDCB" qosReq="2"/>
+                <Connection src="gw2_iDCB" dst="gw3_iDCB" qosReq="2"/>
+                
+                
+                <Connection src="h1_iDCA" dst="1_iDCA" qosReq="2"/>
+                <Connection src="h2_iDCA" dst="2_iDCA" qosReq="2"/>
+                <Connection src="h3_iDCA" dst="3_iDCA" qosReq="2"/>
+                
+                <Connection src="h1_iDCB" dst="1_iDCB" qosReq="2"/>
+                <Connection src="h2_iDCB" dst="2_iDCB" qosReq="2"/>
+                <Connection src="h3_iDCB" dst="3_iDCB" qosReq="2"/>
             </SimTime>
     </ConnectionSet>
