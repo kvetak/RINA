@@ -107,7 +107,8 @@ void AEConstantClient::handleMessage(cMessage *msg) {
         r->setByteLength(m->getByteLength());
         sendData(FlowObject, r);
     } else {
-        error ("Unknown msg received");
+        std::cout << "Unknown msg received" << endl;
+ //       error ("Unknown msg received");
     }
 }
 

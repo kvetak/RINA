@@ -11,11 +11,15 @@
 			<DIF difName="shim12" ipcAddress="2" />
 			<DIF difName="shim23" ipcAddress="2" />
 			<DIF difName="shim25" ipcAddress="2" />
+			
+			<DIF difName="shimIP1" ipcAddress="2" />
 		</APN>
 		<APN apn="3_Core">
 			<DIF difName="shim13" ipcAddress="3" />
 			<DIF difName="shim23" ipcAddress="3" />
 			<DIF difName="shim34" ipcAddress="3" />
+			
+			<DIF difName="shimIP4" ipcAddress="3" />
 		</APN>
 		<APN apn="4_Core">
 			<DIF difName="shim34" ipcAddress="4" />
@@ -37,11 +41,15 @@
 			<DIF difName="shim57" ipcAddress="7" />
 			<DIF difName="shim67" ipcAddress="7" />
 			<DIF difName="shim79" ipcAddress="7" />
+			
+			<DIF difName="shimIP3" ipcAddress="7" />
 		</APN>
 		<APN apn="8_Core">
 			<DIF difName="shim68" ipcAddress="8" />
 			<DIF difName="shim89" ipcAddress="8" />
 			<DIF difName="shim8a" ipcAddress="8" />
+			
+			<DIF difName="shimIP2" ipcAddress="8" />
 		</APN>
 		<APN apn="9_Core">
 			<DIF difName="shim79" ipcAddress="9" />
@@ -56,12 +64,18 @@
 		
 		<APN apn="1_iDCA">
 			<DIF difName="shimA1" ipcAddress="2" />
+			
+			<DIF difName="shimHA1" ipcAddress="2" />
 		</APN>
 		<APN apn="2_iDCA">
 			<DIF difName="shimA2" ipcAddress="2" />
+			
+			<DIF difName="shimHA2" ipcAddress="2" />
 		</APN>
 		<APN apn="3_iDCA">
 			<DIF difName="shimA3" ipcAddress="2" />
+			
+			<DIF difName="shimHA3" ipcAddress="2" />
 		</APN>
 		
 		<APN apn="gw1_iDCA">
@@ -81,12 +95,18 @@
 		
 		<APN apn="1_iDCB">
 			<DIF difName="shimB1" ipcAddress="2" />
+			
+			<DIF difName="shimHB1" ipcAddress="2" />
 		</APN>
 		<APN apn="2_iDCB">
 			<DIF difName="shimB2" ipcAddress="2" />
+		
+			<DIF difName="shimHB2" ipcAddress="2" />
 		</APN>
 		<APN apn="3_iDCB">
 			<DIF difName="shimB3" ipcAddress="2" />
+			
+			<DIF difName="shimHB3" ipcAddress="2" />
 		</APN>
 		
 		<APN apn="gw1_iDCB">
@@ -100,6 +120,149 @@
 		<APN apn="gw3_iDCB">
 			<DIF difName="shimB3" ipcAddress="1" />
 			<DIF difName="Core" ipcAddress="9" />
+		</APN>
+		
+		
+		
+		<APN apn="ip1_Core">
+			<DIF difName="shimIP1" ipcAddress="ip" />
+		</APN>
+		<APN apn="ip2_Core">
+			<DIF difName="shimIP2" ipcAddress="ip" />
+		</APN>
+		<APN apn="ip3_Core">
+			<DIF difName="shimIP3" ipcAddress="ip" />
+		</APN>
+		<APN apn="ip4_Core">
+			<DIF difName="shimIP4" ipcAddress="ip" />
+		</APN>
+		
+		
+		<APN apn="h1_iDCA">
+			<DIF difName="shimHA1" ipcAddress="h" />
+		</APN>
+		<APN apn="h2_iDCA">
+			<DIF difName="shimHA2" ipcAddress="h" />
+		</APN>
+		<APN apn="h3_iDCA">
+			<DIF difName="shimHA3" ipcAddress="h" />
+		</APN>
+		
+		<APN apn="h1_iDCB">
+			<DIF difName="shimHB1" ipcAddress="h" />
+		</APN>
+		<APN apn="h2_iDCB">
+			<DIF difName="shimHB2" ipcAddress="h" />
+		</APN>
+		<APN apn="h3_iDCB">
+			<DIF difName="shimHB3" ipcAddress="h" />
+		</APN>
+		
+		
+		<APN apn="S1-0">
+			<DIF difName="Core" ipcAddress="ip1" />
+		</APN>
+		<APN apn="S1-1">
+			<DIF difName="Core" ipcAddress="ip1" />
+		</APN>
+		<APN apn="S2-0">
+			<DIF difName="Core" ipcAddress="ip2" />
+		</APN>
+		<APN apn="S2-1">
+			<DIF difName="Core" ipcAddress="ip2" />
+		</APN>
+		
+		<APN apn="C1-0">
+			<DIF difName="Core" ipcAddress="ip3" />
+		</APN>
+		<APN apn="C1-1">
+			<DIF difName="Core" ipcAddress="ip3" />
+		</APN>
+		<APN apn="C2-0">
+			<DIF difName="Core" ipcAddress="ip4" />
+		</APN>
+		<APN apn="C2-1">
+			<DIF difName="Core" ipcAddress="ip4" />
+		</APN>
+		
+		<APN apn="AS1-0">
+			<DIF difName="iDCA" ipcAddress="h1" />
+		</APN>
+		<APN apn="AS1-1">
+			<DIF difName="iDCA" ipcAddress="h1" />
+		</APN>
+		<APN apn="AC1-0">
+			<DIF difName="iDCA" ipcAddress="h1" />
+		</APN>
+		<APN apn="AC1-1">
+			<DIF difName="iDCA" ipcAddress="h1" />
+		</APN>
+		
+		<APN apn="AS2-0">
+			<DIF difName="iDCA" ipcAddress="h2" />
+		</APN>
+		<APN apn="AS2-1">
+			<DIF difName="iDCA" ipcAddress="h2" />
+		</APN>
+		<APN apn="AC2-0">
+			<DIF difName="iDCA" ipcAddress="h2" />
+		</APN>
+		<APN apn="AC2-1">
+			<DIF difName="iDCA" ipcAddress="h2" />
+		</APN>
+		
+		<APN apn="AS3-0">
+			<DIF difName="iDCA" ipcAddress="h3" />
+		</APN>
+		<APN apn="AS3-1">
+			<DIF difName="iDCA" ipcAddress="h3" />
+		</APN>
+		<APN apn="AC3-0">
+			<DIF difName="iDCA" ipcAddress="h3" />
+		</APN>
+		<APN apn="AC3-1">
+			<DIF difName="iDCA" ipcAddress="h3" />
+		</APN>
+		
+		
+		
+		<APN apn="BS1-0">
+			<DIF difName="iDCB" ipcAddress="h1" />
+		</APN>
+		<APN apn="BS1-1">
+			<DIF difName="iDCB" ipcAddress="h1" />
+		</APN>
+		<APN apn="BC1-0">
+			<DIF difName="iDCB" ipcAddress="h1" />
+		</APN>
+		<APN apn="BC1-1">
+			<DIF difName="iDCB" ipcAddress="h1" />
+		</APN>
+		
+		<APN apn="BS2-0">
+			<DIF difName="iDCB" ipcAddress="h2" />
+		</APN>
+		<APN apn="BS2-1">
+			<DIF difName="iDCB" ipcAddress="h2" />
+		</APN>
+		<APN apn="BC2-0">
+			<DIF difName="iDCB" ipcAddress="h2" />
+		</APN>
+		<APN apn="BC2-1">
+			<DIF difName="iDCB" ipcAddress="h2" />
+		</APN>
+		
+		<APN apn="BS3-0">
+			<DIF difName="iDCB" ipcAddress="h3" />
+		</APN>
+		<APN apn="BS3-1">
+			<DIF difName="iDCB" ipcAddress="h3" />
+		</APN>
+		<APN apn="BC3-0">
+			<DIF difName="iDCB" ipcAddress="h3" />
+		</APN>
+		<APN apn="BC3-1">
+			<DIF difName="iDCB" ipcAddress="h3" />
 		</APN>
 		
     </Directory>
