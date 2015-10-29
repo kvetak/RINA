@@ -44,7 +44,7 @@ void NoRateSlowDownPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
 {
 
   /* Default */
-  //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ
+  //TODO A1 Do I need to propagate the pduQ (gneratedPDUs vs closedWindowQ)?
   /* Default */
 
   dtpState->pushBackToPostablePDUQ(dtpState->getGeneratedPDUQ()->front());

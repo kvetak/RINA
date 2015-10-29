@@ -79,43 +79,43 @@ unsigned int SDU::getRestSize()const
   return size_var - offset_var;
 }
 
-void SDU::setSize(unsigned int size)
-{
-  if(userData !=NULL){
-    unsigned char *tmp = new unsigned char[size];
-    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
-    this->size_var = size;
-    free(userData);
-    userData = tmp;
-  }else{
-    this->size_var = size;
-    userData = new unsigned char[size];
-  }
+//void SDU::setSize(unsigned int size)
+//{
+//  if(userData !=NULL){
+//    unsigned char *tmp = new unsigned char[size];
+//    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
+//    this->size_var = size;
+//    free(userData);
+//    userData = tmp;
+//  }else{
+//    this->size_var = size;
+//    userData = new unsigned char[size];
+//  }
+//
+//}
 
-}
+//unsigned char* SDU::getUserData() const
+//{
+//  return &userData[offset_var];
+//}
 
-unsigned char* SDU::getUserData() const
-{
-  return &userData[offset_var];
-}
+//const unsigned char* SDU::getUserData(unsigned int size)
+//{
+//  offset_var += size;
+//  return &userData[offset_var - size];
+//}
 
-const unsigned char* SDU::getUserData(unsigned int size)
-{
-  offset_var += size;
-  return &userData[offset_var - size];
-}
-
-void SDU::setUserData(unsigned char* userData, unsigned int size)
-{
-  if(this->userData != NULL){
-    free(this->userData);
-    this->offset_var = 0;
-  }
-  this->size_var = size;
-  this->userData = new unsigned char[size];
-  memcpy(this->userData, userData, size);
-//    this->userData = userData;
-}
+//void SDU::setUserData(unsigned char* userData, unsigned int size)
+//{
+//  if(this->userData != NULL){
+//    free(this->userData);
+//    this->offset_var = 0;
+//  }
+//  this->size_var = size;
+//  this->userData = new unsigned char[size];
+//  memcpy(this->userData, userData, size);
+////    this->userData = userData;
+//}
 
 bool SDU::addUserData(cPacket* msg){
 

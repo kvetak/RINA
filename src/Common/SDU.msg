@@ -27,7 +27,7 @@ cplusplus {{
 typedef std::vector<cPacket*> mUserDataType;
 }}
 
-message Data;
+packet Data;
 class noncobject mUserDataType;
 
 enum FragmentType{
@@ -50,4 +50,5 @@ packet SDU extends Data {
     
     int fragType enum(FragmentType) = 0	;
     schedulingPriority = -1;
+    byteLength = 10;
 }

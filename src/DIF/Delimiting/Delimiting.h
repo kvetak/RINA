@@ -47,7 +47,6 @@ class Delimiting : public cSimpleModule
 
     cGate* northI;
     cGate* northO;
-    //TODO A2 Change to [] of gates
     cGate* southI;
     cGate* southO;
 

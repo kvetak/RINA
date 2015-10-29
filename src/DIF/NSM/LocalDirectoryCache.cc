@@ -26,10 +26,10 @@ Define_Module(LocalDirectoryCache);
 
 void LocalDirectoryCache::initialize()
 {
-    // TODO - Generated method body
+
 }
 
 void LocalDirectoryCache::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }

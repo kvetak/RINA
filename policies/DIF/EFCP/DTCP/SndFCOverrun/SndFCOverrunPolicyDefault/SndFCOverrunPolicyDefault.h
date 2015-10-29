@@ -19,17 +19,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SndFCOverrunPolicyDefault.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Sender Flow Control Overrun behavior
+ * @detail
+ */
 
-#include "NSM.h"
+#ifndef SNDFCOVERRUNPOLICYDEFAULT_H_
+#define SNDFCOVERRUNPOLICYDEFAULT_H_
 
-Define_Module(NSM);
+#include <SndFCOverrunPolicyBase.h>
 
-void NSM::initialize()
+class SndFCOverrunPolicyDefault : public SndFCOverrunPolicyBase
 {
+  public:
+    SndFCOverrunPolicyDefault();
+    virtual ~SndFCOverrunPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-}
-
-void NSM::handleMessage(cMessage *msg)
-{
-
-}
+#endif /* SNDFCOVERRUNPOLICYDEFAULT_H_ */

@@ -25,12 +25,12 @@
 Define_Module(CDAPMsgLog);
 
 CDAPMsgLog::CDAPMsgLog() {
-    // TODO Auto-generated constructor stub
+
 
 }
 
 CDAPMsgLog::~CDAPMsgLog() {
-    // TODO Auto-generated destructor stub
+
 
 }
 

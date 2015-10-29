@@ -43,12 +43,16 @@ RcvrControlAckPolicyBase::~RcvrControlAckPolicyBase()
 
 void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+
+  //TODO A1: Update it according to the new specs update.
+
   DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
   DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
   /* Default */
 
  //    bool sendAck = false;
  //    bool sendFC = true;
+
      /* RcvrControlAck Policy with Default: */
      //"adjust as necessary" :D great advice
      ControlAckPDU* ctrlAckPDU = (ControlAckPDU*)dtpState->getCurrentPdu();
@@ -58,36 +62,36 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
 
      }
      //unsigned int sndLtWinEdge;
-     if(ctrlAckPDU->getSndLtWinEdge() > dtpState->getRcvLeftWinEdge()){
+     if(ctrlAckPDU->getRcvLeftWinEdge() > dtpState->getRcvLeftWinEdge()){
        bubble("ControlAckPDU: Missing PDU on the receiver end.");
  //      throw cRuntimeError("ControlAckPDU: Missing PDU on the receiver end.");
-     }else if(ctrlAckPDU->getSndLtWinEdge() < dtpState->getRcvLeftWinEdge()){
+     }else if(ctrlAckPDU->getRcvLeftWinEdge() < dtpState->getRcvLeftWinEdge()){
  //      sendAck = true;
      }
 
      //unsigned int sndRtWinEdge;
-     if(ctrlAckPDU->getSndRtWinEdge() != dtcpState->getRcvRtWinEdge()){
+     if(ctrlAckPDU->getRcvRightWinEdge() != dtcpState->getRcvRightWinEdge()){
  //      sendFC = true;
      }
 
      //unsigned int myLtWinEdge;
-     if(ctrlAckPDU->getMyLtWinEdge() > dtcpState->getSenderLeftWinEdge()){
+     if(ctrlAckPDU->getSndLeftWinEdge() > dtcpState->getSndLeftWinEdge()){
        //serves as an ack -> remove PDUs from RxQ
-       dtcp->ackPDU(ctrlAckPDU->getMyLtWinEdge() - 1);
-       dtcp->updateSenderLWE(ctrlAckPDU->getMyLtWinEdge());
-     }else if(ctrlAckPDU->getMyLtWinEdge() < dtcpState->getSenderLeftWinEdge()){
+       dtcp->ackPDU(ctrlAckPDU->getSndLeftWinEdge() - 1);
+       dtcp->updateSenderLWE(ctrlAckPDU->getSndLeftWinEdge());
+     }else if(ctrlAckPDU->getSndLeftWinEdge() < dtcpState->getSndLeftWinEdge()){
        bubble("ControlAckPDU: Missing PDU on the sender's end.");
  //      throw cRuntimeError("ControlAckPDU: Missing PDU on the sender's end.");
      }
 
      //      unsigned int myRtWinEdge;
-     if(ctrlAckPDU->getMyRtWinEdge() != dtcpState->getSenderRightWinEdge()){
-       dtcpState->setSenderRightWinEdge(ctrlAckPDU->getMyRtWinEdge());
+     if(ctrlAckPDU->getSndRightWinEdge() != dtcpState->getSndRightWinEdge()){
+       dtcpState->setSenderRightWinEdge(ctrlAckPDU->getSndRightWinEdge());
      }
 
      //unsigned int myRcvRate;
-     if(ctrlAckPDU->getMyRcvRate() != dtcpState->getSendingRate()){
-       dtcpState->setSendingRate(ctrlAckPDU->getMyRcvRate());
+     if(ctrlAckPDU->getRcvRate() != dtcpState->getSendingRate()){
+       dtcpState->setSendingRate(ctrlAckPDU->getRcvRate());
      }
 
      //TODO A2 Verify it one more time
@@ -108,7 +112,8 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
      dataPdu->setSeqNum(seqNum);
      UserDataField* userData = new UserDataField();
 
-     dataPdu->setUserDataField(userData);
+//     dataPdu->setUserDataField(userData);
+     dataPdu->encapsulate(userData);
 
      dtp->sendToRMT(dataPdu);
 

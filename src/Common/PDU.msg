@@ -43,26 +43,33 @@ class noncobject ConnectionId;
 
 
 enum PDUType{
-    	EFCP_PDU 				= 0x8000;
-    	DATA_TRANSFER_PDU 		= 0x8001;
-    	CONTROL_ACK_PDU 		= 0x8003;
-        ACK_ONLY_PDU 			= 0x8804;
-        NACK_ONLY_PDU 			= 0x8805;
-        SELECT_ACK_PDU 			= 0x8806;
-        SELECT_NACK_PDU 		= 0x8807;
-        FLOW_ONLY_PDU 			= 0x8808;
-        ACK_FLOW_PDU 			= 0x880C;
-        NACK_FLOW_PDU 			= 0x880D;
-        SELECT_ACK_FLOW_PDU 	= 0x880E;
-        SELECT_NACK_FLOW_PDU 	= 0x880F;
+//    	EFCP_PDU 				= 0x80;
+		MANAGEMENT_PDU			= 0x40;
+    	
+    	DATA_TRANSFER_PDU 		= 0x80;
+    	
+    	CONTROL_ACK_PDU 		= 0xC0;
+        ACK_ONLY_PDU 			= 0xC1;
+        NACK_ONLY_PDU 			= 0xC2;
+        FLOW_ONLY_PDU 			= 0xC4;
+        ACK_FLOW_PDU 			= 0xC5;
+        NACK_FLOW_PDU 			= 0xC6;
+        SELECT_ACK_PDU          = 0xC9;
+        SELECT_NACK_PDU         = 0xCA;
+        SELECT_ACK_FLOW_PDU     = 0xCD;
+        SELECT_NACK_FLOW_PDU    = 0xCE;
+  
+        
+        RENDEZVOUS_PDU			= 0xE0;
+        
 
 }
 
 enum PDUTypeBits{
-    	PDU_NACK_BIT	= 0x01;
-    	PDU_SEL_BIT		= 0x02;
-    	PDU_ACK_BIT		= 0x04;
-    	PDU_FC_BIT		= 0x08;
+    	PDU_ACK_BIT		= 0x01;
+    	PDU_NACK_BIT	= 0x02;
+    	PDU_FC_BIT		= 0x04;
+    	PDU_SEL_BIT		= 0x08;
 }
 
 //TODO A1
@@ -94,6 +101,12 @@ packet PDU {
     
     
 }
+
+//packet ManagemtPDU extends PDU {
+//
+//	type = MANAGEMENT_PDU;
+//   
+//}
 
 //packet DataTransferPDU extends PDU{
 //    type = DATA_TRANSFER_PDU;

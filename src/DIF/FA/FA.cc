@@ -512,4 +512,3 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
-

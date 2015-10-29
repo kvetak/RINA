@@ -100,4 +100,3 @@ void NM1FlowTable::remove(Flow* flow)
         }
     }
 }
-

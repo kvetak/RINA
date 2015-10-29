@@ -33,13 +33,13 @@ Register_Class(ReconcileFCPolicyDefault);
 
 ReconcileFCPolicyDefault::ReconcileFCPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 ReconcileFCPolicyDefault::~ReconcileFCPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool ReconcileFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

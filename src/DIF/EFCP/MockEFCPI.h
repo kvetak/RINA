@@ -24,11 +24,13 @@
 #define __RINA_MOCKEFCP_H_
 
 #include <omnetpp.h>
-#include "DataTransferPDU.h"
-//#include "RMT.h"
-/**
- * TODO - Generated class
- */
+//#include "DataTransferPDU.h"
+#include "CDAPMessage_m.h"
+#include "ManagementPDU_m.h"
+
+
+
+
 class MockEFCPI : public cSimpleModule
 {
   protected:

@@ -27,7 +27,11 @@ import rina.src.DIF.EFCP.EFCPTable.EFCPTable;
 
 module EFCPModule
 {
-    @display("i=block/layer;bgb=405,261");
+    
+    parameters:
+        @display("i=block/layer;bgb=405,261");
+        bool interrupter = default(false);
+        
     gates:
         //        inout faIo[];
         //        inout rmtIo[];

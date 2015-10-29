@@ -1,3 +1,4 @@
+//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,16 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "NSM.h"
+package rina.policies.DIF.EFCP.DTCP.SndFCOverrun;
 
-Define_Module(NSM);
-
-void NSM::initialize()
+moduleinterface IntSndFCOverrunPolicy
 {
-
-}
-
-void NSM::handleMessage(cMessage *msg)
-{
-
+    parameters:
+        @display("i=block/socket");
+        string policyName;
 }

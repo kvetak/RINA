@@ -100,7 +100,6 @@ void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
             fa->PendingFlows.push_back((*it)->getFlow());
         }
         fa->receiveMgmtAllocateFinish();
-
     }
     else {
         if (!flow) { EV << "Received not a flow object!" << endl; }

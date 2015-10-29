@@ -55,7 +55,7 @@ void TxControlPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState
   PDUQ_t::iterator it;
 //    PDUQ_t* pduQ = dtpState->getGeneratedPDUQ();
   for (it = pduQ->begin();
-      it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSenderRightWinEdge();)
+      it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSndRightWinEdge();)
   {
 
     dtpState->pushBackToPostablePDUQ((*it));

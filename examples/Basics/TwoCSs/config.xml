@@ -100,7 +100,7 @@
 			<CostBits>0</CostBits>
 			<ATime>0</ATime>
 			<EFCPPolicySet>
-			  <FCOverrun>Default</FCOverrun>   
+			  <SndFCOverrun>Default</SndFCOverrun>   
 			</EFCPPolicySet>
 		</QoSCube>     				
 	</QoSCubesSet>

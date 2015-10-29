@@ -50,6 +50,11 @@ void DTPState::setBlockingPort(bool blockingPort)
   this->blockingPort = blockingPort;
 }
 
+void DTPState::resetRcvVars()
+{
+  rcvLeftWinEdge = 0;
+}
+
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -73,29 +78,7 @@ void DTPState::initialize(int step)
 
     }
 
-
-////    winBased = par("winBased");
-////    rateBased = par("rateBased");
-//    rateBased = false;
-//
-////    rxPresent = par("rxPresent");
-//
-//    if(qoSCube->isRxOn()){
-//      rxPresent = true;
-//    }else{
-//      rxPresent = false;
-//    }
-    rxPresent = qoSCube->isRxOn();
-    winBased = qoSCube->isWindowFcOn();
-    rateBased = qoSCube->isRateFcOn();
-
-//    if(qoSCube->getAvgBand() > 0){
-//      winBased = true;
-//    }else{
-//      winBased = false;
-//    }
-
-    if(rxPresent || winBased || rateBased){
+    if(qoSCube->isRxOn() || qoSCube->isWindowFcOn() || qoSCube->isRateFcOn()){
       dtcpPresent =  true;
 
     }
@@ -109,8 +92,7 @@ void DTPState::initDefaults(){
   dropDup = 0;
   setDRFFlag = true;
   dtcpPresent = false;
-  winBased = false;
-  rateBased = false;
+
   incompDeliv = false;
 
 
@@ -243,13 +225,13 @@ void DTPState::setPartDeliv(bool partDeliv) {
     this->partDeliv = partDeliv;
 }
 
-bool DTPState::isRateBased() const {
-    return rateBased;
-}
-
-void DTPState::setRateBased(bool rateBased) {
-    this->rateBased = rateBased;
-}
+//bool DTPState::isRateBased() const {
+//    return rateBased;
+//}
+//
+//void DTPState::setRateBased(bool rateBased) {
+//    this->rateBased = rateBased;
+//}
 
 //bool DTPState::isRateFullfilled() const {
 //    return rateFullfilled;
@@ -267,13 +249,13 @@ void DTPState::setRcvLeftWinEdge(unsigned int rcvLeftWinEdge) {
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
-bool DTPState::isRxPresent() const {
-    return rxPresent;
-}
-
-void DTPState::setRxPresent(bool rexmsnPresent) {
-    this->rxPresent = rexmsnPresent;
-}
+//bool DTPState::isRxPresent() const {
+//    return rxPresent;
+//}
+//
+//void DTPState::setRxPresent(bool rexmsnPresent) {
+//    this->rxPresent = rexmsnPresent;
+//}
 
 unsigned int DTPState::getSeqNumRollOverThresh() const {
     return seqNumRollOverThresh;
@@ -291,13 +273,13 @@ void DTPState::setState(int state) {
     this->state = state;
 }
 
-bool DTPState::isWinBased() const {
-    return winBased;
-}
-
-void DTPState::setWinBased(bool winBased) {
-    this->winBased = winBased;
-}
+//bool DTPState::isWinBased() const {
+//    return winBased;
+//}
+//
+//void DTPState::setWinBased(bool winBased) {
+//    this->winBased = winBased;
+//}
 
 bool DTPState::isSetDrfFlag() const
 {
@@ -456,9 +438,19 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
+  //TODO A! Needs deeper examination.
+
+
   //TODO A3
   //Update LeftWindowEdge removing allowed gaps;
   unsigned int sduGap = qoSCube->getMaxAllowGap();
+
+  if(seqNum == rcvLeftWinEdge + 1 || seqNum <= rcvLeftWinEdge + sduGap){
+    rcvLeftWinEdge = seqNum;
+  }
+
+  return;
+
 
   if (isDtcpPresent())
   {
@@ -466,7 +458,7 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
     PDUQ_t* pduQ = &reassemblyPDUQ;
     for (it = pduQ->begin(); it != pduQ->end(); ++it)
     {
-      if ((*it)->getSeqNum() == getRcvLeftWinEdge())
+      if ((*it)->getSeqNum() == (getRcvLeftWinEdge() + 1))
       {
         incRcvLeftWindowEdge();
 

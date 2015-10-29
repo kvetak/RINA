@@ -19,17 +19,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file RcvFCOverrunPolicyDefault.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jun 22, 2015
+ * @brief This is an example policy class implementing default Receiver Flow Control Overrun behavior
+ * @detail
+ */
 
-#include "NSM.h"
+#ifndef RCVFCOVERRUNPOLICYDEFAULT_H_
+#define RCVFCOVERRUNPOLICYDEFAULT_H_
 
-Define_Module(NSM);
+#include <RcvFCOverrunPolicyBase.h>
 
-void NSM::initialize()
+class RcvFCOverrunPolicyDefault : public RcvFCOverrunPolicyBase
 {
+  public:
+    RcvFCOverrunPolicyDefault();
+    virtual ~RcvFCOverrunPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-}
-
-void NSM::handleMessage(cMessage *msg)
-{
-
-}
+#endif /* RCVFCOVERRUNPOLICYDEFAULT_H_ */

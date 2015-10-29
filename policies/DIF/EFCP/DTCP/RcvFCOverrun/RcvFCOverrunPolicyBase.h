@@ -19,12 +19,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file RcvFCOverrunPolicyBase.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jun 22, 2015
+ * @brief
+ * @detail
+ */
 
+#ifndef RCVFCOVERRUNPOLICYBASE_H_
+#define RCVFCOVERRUNPOLICYBASE_H_
 
-package rina.src.DIF.EFCP.DTP;
+#include <omnetpp.h>
 
-import ned.IdealChannel;
+#include "EFCPPolicy.h"
 
-channel PushBackChannel extends IdealChannel{
-    
-}
+/*
+ *
+ */
+class RcvFCOverrunPolicyBase : public EFCPPolicy
+{
+  public:
+    RcvFCOverrunPolicyBase();
+    virtual ~RcvFCOverrunPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+
+};
+
+#endif /* RCVFCOVERRUNPOLICYBASE_H_ */

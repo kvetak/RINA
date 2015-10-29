@@ -210,8 +210,8 @@ QoSCube::QoSCube(std::string tqosid,
 }
 
 QoSCube::~QoSCube() {
-  //TODO @Marek Uncomment line below (it does not compile on my machine)
-//    qoSId = VAL_DEFAULT_QOS;
+
+    qoSId = VAL_DEFAULT_QOS;
 
     avgBand = VAL_DEFAULT_QOS;
     avgSDUBand = VAL_DEFAULT_QOS;             //Average SDU bandwidth (measured in SDUs/sec)

@@ -19,34 +19,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-/*
- * PushBackChannel.cpp
- *
- *  Created on: Jan 30, 2015
- *      Author: imarek
+/**
+ * @file RcvFCOverrunPolicyBase.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jun 22, 2015
+ * @brief
+ * @detail
  */
 
-#include <PushBackChannel.h>
-Define_Channel(PushBackChannel);
-
-PushBackChannel::PushBackChannel()
+#include "RcvFCOverrunPolicyBase.h"
+#include "DTP.h"
+RcvFCOverrunPolicyBase::RcvFCOverrunPolicyBase()
 {
-  txfinishtime = SIMTIME_ZERO;
 
 
 }
 
-PushBackChannel::~PushBackChannel()
+RcvFCOverrunPolicyBase::~RcvFCOverrunPolicyBase()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
-void PushBackChannel::setBusy(bool busy)
+void RcvFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  if(busy){
-    txfinishtime = SimTime::getMaxTime();
-  }else{
-    txfinishtime = 0;
-  }
+  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  /* Default */
+  delete dtpState->getCurrentPdu();
+  dtpState->setCurrentPdu(nullptr);
+  dtp->sendAckFlowPDU();
+  /* End default */
 }

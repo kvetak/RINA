@@ -54,8 +54,11 @@ Define_Module(EFCP);
 #define SENDER_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SenderAck."
 #define SENDER_ACK_POLICY_NAME "senderAckPolicy"
 
-#define FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
-#define FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
+#define SND_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SndFCOverrun."
+#define SND_FC_OVERRUN_POLICY_NAME "sndFcOverrunPolicy"
+
+#define RCV_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.RcvFCOverrun."
+#define RCV_FC_OVERRUN_POLICY_NAME "rcvFcOverrunPolicy"
 
 #define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
 #define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"
@@ -100,15 +103,12 @@ EFCP::~EFCP() {
 }
 
 void EFCP::initialize(int step){
-//  if(step == 3){
-    efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
-    resourceAllocator = getRINAModule<RA*>(this, 2, {MOD_RESALLOC, MOD_RA});
 
-//  }
+  efcpTable = (EFCPTable*) getParentModule()->getSubmodule(MOD_EFCPTABLE);
+  resourceAllocator = check_and_cast<RA*>(getModuleByPath("^.^")->getSubmodule(MOD_RESALLOC)->getSubmodule(MOD_RA));
 
-
-    lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
-    getModuleByPath("^.^")->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
+  lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
+  getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
 
 }
 
@@ -174,7 +174,7 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
   //2. If necessary create DTCP module
   if(qosCube->isDTCPNeeded()){
-      efcpi->setDtcp(this->createDTCP(efcpiModule, efcpPolicySet));
+      efcpi->setDtcp(this->createDTCP(efcpiModule, efcpPolicySet, qosCube));
   }else{
     efcpi->setDtcp(NULL);
   }
@@ -234,74 +234,63 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
   efcpiModule->callInitialize();
 
+  DTCP* dtcp = efcpi->getDtcp();
+  if(dtcp != NULL){
+    cDisplayString& disp = dtcp->getDisplayString();
+
+    disp.setTagArg("p", 0, 131);
+    disp.setTagArg("p", 1, 80);
+
+  }
+
   return efcpi;
 }
 
-DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
+DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet, const QoSCube* qosCube)
 {
-    cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
-    DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
-//    dtcpModule->par("ecnPolicy").setStringValue(par("ecnPolicy").stringValue());
-//    dtcpModule->par("rcvrFCPolicy").setStringValue(par("rcvrFCPolicy").stringValue());
-//    dtcpModule->par("rcvrAckPolicy").setStringValue(par("rcvrAckPolicy").stringValue());
-//    dtcpModule->par("receivingFCPolicy").setStringValue(par("receivingFCPolicy").stringValue());
-//    dtcpModule->par("sendingAckPolicy").setStringValue(par("sendingAckPolicy").stringValue());
-//    dtcpModule->par("lostControlPDUPolicy").setStringValue(par("lostControlPDUPolicy").stringValue());
-//    dtcpModule->par("rcvrControlAckPolicy").setStringValue(par("rcvrControlAckPolicy").stringValue());
-//    dtcpModule->par("senderAckPolicy").setStringValue(par("senderAckPolicy").stringValue());
-//    dtcpModule->par("fcOverrunPolicy").setStringValue(par("fcOverrunPolicy").stringValue());
-//    dtcpModule->par("noOverridePeakPolicy").setStringValue(par("noOverridePeakPolicy").stringValue());
-//    dtcpModule->par("txControlPolicy").setStringValue(par("txControlPolicy").stringValue());
-//    dtcpModule->par("noRateSlowDownPolicy").setStringValue(par("noRateSlowDownPolicy").stringValue());
-//    dtcpModule->par("reconcileFCPolicy").setStringValue(par("reconcileFCPolicy").stringValue());
-//    dtcpModule->par("rateReductionPolicy").setStringValue(par("rateReductionPolicy").stringValue());
-//    dtcpModule->par("ecnSlowDownPolicy").setStringValue(par("ecnSlowDownPolicy").stringValue());
-//
+  cModuleType* dtcpType = cModuleType::get(MOD_DTCP_PATH);
+  DTCP* dtcpModule = (DTCP*) dtcpType->create(MOD_DTCP, efcpiModule);
 
-//    ecnPolicy             = (DTCPECNPolicyBase*) createPolicyModule(ECN_POLICY_PREFIX, ECN_POLICY_NAME);
-    dtcpModule->setRcvrFcPolicy((RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, efcpPolicySet->getRcvrFc(), RCVR_FC_POLICY_NAME, efcpiModule));
-    dtcpModule->setRcvrAckPolicy((RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrAck(), RCVR_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setReceivingFcPolicy((ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, efcpPolicySet->getReceivingFc(), RECEIVING_FC_POLICY_NAME, efcpiModule));
-    dtcpModule->setSendingAckPolicy((SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, efcpPolicySet->getSendingAck(), SENDING_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setLostControlPduPolicy((LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, efcpPolicySet->getLostControlPdu(), LOST_CONTROL_PDU_POLICY_NAME, efcpiModule));
-    dtcpModule->setRcvrControlAckPolicy((RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrControlAck(), RCVR_CONTROL_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setSenderAckPolicy((SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, efcpPolicySet->getSenderAck(), SENDER_ACK_POLICY_NAME, efcpiModule));
-    dtcpModule->setFcOverrunPolicy((FCOverrunPolicyBase*) createPolicyModule(FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getFcOverrun(), FC_OVERRUN_POLICY_NAME, efcpiModule));
-    dtcpModule->setNoOverridePeakPolicy((NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, efcpPolicySet->getNoOverridePeak(), NO_OVERRIDE_PEAK_POLICY_NAME, efcpiModule));
-    dtcpModule->setTxControlPolicy((TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, efcpPolicySet->getTxControl(), TX_CONTROL_POLICY_NAME, efcpiModule));
-    dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule));
-    dtcpModule->setReconcileFcPolicy( (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, efcpPolicySet->getReconcileFc(), RECONCILE_FC_POLICY_NAME, efcpiModule));
-    dtcpModule->setRateReductionPolicy( (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, efcpPolicySet->getRateReduction(), RATE_REDUCTION_POLICY_NAME, efcpiModule));
-    dtcpModule->setRxTimerExpiryPolicy( (RxTimerExpiryPolicyBase*) createPolicyModule(RX_TIMER_EXPIRY_POLICY_PREFIX, efcpPolicySet->getRxTimerExpiry(), RX_TIMER_EXPIRY_POLICY_NAME, efcpiModule));
-//    dtcpModule->setEcnSlowDownPolicy( (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
+  int verticalIndex = 4;
+  dtcpModule->setRcvrFcPolicy((RcvrFCPolicyBase*) createPolicyModule(RCVR_FC_POLICY_PREFIX, efcpPolicySet->getRcvrFc(), RCVR_FC_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setRcvrAckPolicy((RcvrAckPolicyBase*) createPolicyModule(RCVR_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrAck(), RCVR_ACK_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setReceivingFcPolicy((ReceivingFCPolicyBase*) createPolicyModule(RECEIVING_FC_POLICY_PREFIX, efcpPolicySet->getReceivingFc(), RECEIVING_FC_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setSendingAckPolicy((SendingAckPolicyBase*) createPolicyModule(SENDING_ACK_POLICY_PREFIX, efcpPolicySet->getSendingAck(), SENDING_ACK_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setLostControlPduPolicy((LostControlPDUPolicyBase*) createPolicyModule(LOST_CONTROL_PDU_POLICY_PREFIX, efcpPolicySet->getLostControlPdu(), LOST_CONTROL_PDU_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setRcvrControlAckPolicy((RcvrControlAckPolicyBase*) createPolicyModule(RCVR_CONTROL_ACK_POLICY_PREFIX, efcpPolicySet->getRcvrControlAck(), RCVR_CONTROL_ACK_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setSenderAckPolicy((SenderAckPolicyBase*) createPolicyModule(SENDER_ACK_POLICY_PREFIX, efcpPolicySet->getSenderAck(), SENDER_ACK_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setSndFcOverrunPolicy((SndFCOverrunPolicyBase*) createPolicyModule(SND_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getSndFcOverrun(), SND_FC_OVERRUN_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setRcvFcOverrunPolicy((RcvFCOverrunPolicyBase*) createPolicyModule(RCV_FC_OVERRUN_POLICY_PREFIX, efcpPolicySet->getRcvFcOverrun(), RCV_FC_OVERRUN_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setNoOverridePeakPolicy((NoOverridePeakPolicyBase*) createPolicyModule(NO_OVERRIDE_PEAK_POLICY_PREFIX, efcpPolicySet->getNoOverridePeak(), NO_OVERRIDE_PEAK_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setTxControlPolicy((TxControlPolicyBase*) createPolicyModule(TX_CONTROL_POLICY_PREFIX, efcpPolicySet->getTxControl(), TX_CONTROL_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setNoRateSlowDownPolicy((NoRateSlowDownPolicyBase*) createPolicyModule(NO_RATE_SLOW_DOWN_POLICY_PREFIX, efcpPolicySet->getNoRateSlowDown(), NO_RATE_SLOW_DOWN_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setReconcileFcPolicy( (ReconcileFCPolicyBase*) createPolicyModule(RECONCILE_FC_POLICY_PREFIX, efcpPolicySet->getReconcileFc(), RECONCILE_FC_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setRateReductionPolicy( (RateReductionPolicyBase*) createPolicyModule(RATE_REDUCTION_POLICY_PREFIX, efcpPolicySet->getRateReduction(), RATE_REDUCTION_POLICY_NAME, efcpiModule, verticalIndex++));
+  dtcpModule->setRxTimerExpiryPolicy( (RxTimerExpiryPolicyBase*) createPolicyModule(RX_TIMER_EXPIRY_POLICY_PREFIX, efcpPolicySet->getRxTimerExpiry(), RX_TIMER_EXPIRY_POLICY_NAME, efcpiModule, verticalIndex++));
+  //    dtcpModule->setEcnSlowDownPolicy( (DTCPECNSlowDownPolicyBase*) createPolicyModule(ECN_SLOW_DOWN_POLICY_PREFIX, ECN_SLOW_DOWN_POLICY_NAME);
 
 
+  //    efcpiModule->par("rttEstimatorPolicyName").setStringValue(efcpPolicySet->getRttEstimat());
 
 
+  dtcpModule->finalizeParameters();
+  dtcpModule->buildInside();
+  dtcpModule->scheduleStart(simTime());
 
-//    efcpiModule->par("rttEstimatorPolicyName").setStringValue(efcpPolicySet->getRttEstimat());
+  cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
 
+  DTCPState* dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, efcpiModule);
+  dtcpState->setQoSCube(qosCube);
+  dtcpState->finalizeParameters();
+  dtcpState->buildInside();
+  dtcpState->scheduleStart(simTime());
 
-    dtcpModule->finalizeParameters();
-    dtcpModule->buildInside();
-    dtcpModule->scheduleStart(simTime());
-
-
-
-    cModuleType* dtcpStateType = cModuleType::get(MOD_DTCP_STATE_PATH);
-
-    DTCPState* dtcpState = (DTCPState*)dtcpStateType->create(MOD_DTCP_STATE, efcpiModule);
-    dtcpState->finalizeParameters();
-    dtcpState->buildInside();
-    dtcpState->scheduleStart(simTime());
-
-    dtcpModule->setDtcpState(dtcpState);
+  dtcpModule->setDtcpState(dtcpState);
 
 
-//    dtcpModule->callInitialize();
+  //    dtcpModule->callInitialize();
 
-
-    return dtcpModule;
+  return dtcpModule;
 }
 
 /**
@@ -312,41 +301,42 @@ DTCP* EFCP::createDTCP(cModule* efcpiModule, const EFCPPolicySet* efcpPolicySet)
  * @param parent Parent module in which the policy will be created.
  * @return returns pointer to newly created module
  */
-cModule* EFCP::createPolicyModule(const char* prefix, const char* name, const char* policy, cModule* parent)
+cModule* EFCP::createPolicyModule(const char* prefix, const char* name, const char* policy, cModule* parent, int verticalIndex)
 {
 
-    std::stringstream modulePath;
-    modulePath << prefix << name <<"."<< name;
-    cModuleType* policyType = cModuleType::get(modulePath.str().c_str());
-    cModule* module =  policyType->create(policy, parent);
-    module->finalizeParameters();
-    module->buildInside();
-    module->scheduleStart(simTime());
+  std::stringstream modulePath;
+  modulePath << prefix << name << "." << name;
+  cModuleType* policyType = cModuleType::get(modulePath.str().c_str());
+  cModule* module = policyType->create(policy, parent);
+  module->finalizeParameters();
+  module->buildInside();
+  module->scheduleStart(simTime());
 
-    cDisplayString& disp = module->getDisplayString();
-    disp.setTagArg("is", 0, "vs");
+  cDisplayString& disp = module->getDisplayString();
+  disp.setTagArg("is", 0, "vs");
+  disp.setTagArg("p", 0, (verticalIndex / 7) * 250 + 387);
+  disp.setTagArg("p", 1, 40 * (verticalIndex % 7) + 25);
 
 //    return policyType->createScheduleInit(policy, parent);
-    return module;
+  return module;
 
 }
 
 
 Delimiting* EFCP::createDelimiting(cModule* efcpiModule, int portId){
 
+  std::ostringstream name;
+  name << DELIMITING_MODULE_NAME << "_" << portId;
+  //0. Create Delimiting module within EFCPModule
+  cModuleType* delimitType = cModuleType::get(MOD_DELIMITING_PATH);
 
-    std::ostringstream name;
-    name << DELIMITING_MODULE_NAME << "_" << portId;
-    //0. Create Delimiting module within EFCPModule
-    cModuleType* delimitType = cModuleType::get(MOD_DELIMITING_PATH);
+  Delimiting* delimit = (Delimiting*) delimitType->create(name.str().c_str(), this->getParentModule());
+  delimit->finalizeParameters();
+  delimit->buildInside();
+  delimit->scheduleStart(simTime());
+  delimit->callInitialize();
 
-    Delimiting* delimit = (Delimiting*)delimitType->create(name.str().c_str(), this->getParentModule());
-    delimit->finalizeParameters();
-    delimit->buildInside();
-    delimit->scheduleStart(simTime());
-    delimit->callInitialize();
-
-    return delimit;
+  return delimit;
 }
 /**
  *

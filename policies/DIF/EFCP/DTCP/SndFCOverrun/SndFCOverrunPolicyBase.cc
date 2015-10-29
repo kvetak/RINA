@@ -20,35 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file DTCPFCOverrunPolicyBase.h
+ * @file SndFCOverrunPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 8, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPFCOVERRUNPOLICYBASE_H_
-#define DTCPFCOVERRUNPOLICYBASE_H_
-
-#include <omnetpp.h>
-
-#include "EFCPPolicy.h"
-
-/*
- *
- */
-class FCOverrunPolicyBase : public EFCPPolicy
+#include "SndFCOverrunPolicyBase.h"
+#include "DTP.h"
+SndFCOverrunPolicyBase::SndFCOverrunPolicyBase()
 {
-  public:
-    FCOverrunPolicyBase();
-    virtual ~FCOverrunPolicyBase();
-    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTCPFCOVERRUNPOLICYBASE_H_ */
+SndFCOverrunPolicyBase::~SndFCOverrunPolicyBase()
+{
+
+}
+
+void SndFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+  /* Default */
+  dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
+  //Block further Write API calls on this port-id
+  dtp->notifyStopSending();
+  /* End default */
+}

@@ -23,12 +23,12 @@
 #include <RABase.h>
 
 RABase::RABase() {
-    // TODO Auto-generated constructor stub
+
 
 }
 
 RABase::~RABase() {
-    // TODO Auto-generated destructor stub
+
 
 }
 

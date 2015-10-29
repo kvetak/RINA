@@ -48,7 +48,7 @@ class SDU : public SDU_Base
 {
 
   private:
-    unsigned char * userData; //Deprecated
+//    unsigned char * userData; //Deprecated
 //    unsigned int size;
 //    unsigned int offset;
     mUserDataType mUserData_var;
@@ -75,10 +75,10 @@ public:
     unsigned int getSize() const;
     unsigned int getAbsoluteSize() const;
     unsigned int getRestSize() const;
-    void setSize(unsigned int size);
-    unsigned char* getUserData() const;
-    const unsigned char* getUserData(unsigned int offset);
-    void setUserData(unsigned char* userData, unsigned int size);
+//    void setSize(unsigned int size);
+//    unsigned char* getUserData() const;
+//    const unsigned char* getUserData(unsigned int offset);
+//    void setUserData(unsigned char* userData, unsigned int size);
 
     bool addUserData(cPacket* msg);
     cPacket* getUserData();

@@ -19,32 +19,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-/*
- * PushBackChannel.h
- *
- *  Created on: Jan 30, 2015
- *      Author: imarek
+/**
+ * @file SndFCOverrunPolicyBase.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jan 8, 2015
+ * @brief
+ * @detail
  */
 
-#ifndef PUSHBACKCHANNEL_H_
-#define PUSHBACKCHANNEL_H_
+#ifndef SNDFCOVERRUNPOLICYBASE_H_
+#define SNDFCOVERRUNPOLICYBASE_H_
 
 #include <omnetpp.h>
-//#include <cchannel.h>
-#include "simtime.h"
 
-class PushBackChannel : public cIdealChannel
+#include "EFCPPolicy.h"
+
+/*
+ *
+ */
+class SndFCOverrunPolicyBase : public EFCPPolicy
 {
-  private:
-    // stores the end of the last transmission; used if there is a datarate
-    simtime_t txfinishtime;
   public:
-    PushBackChannel();
-    virtual ~PushBackChannel();
-    virtual bool isBusy() const {return true;}
-    static PushBackChannel *create(const char *name);
-    void setBusy(bool busy);
+    SndFCOverrunPolicyBase();
+    virtual ~SndFCOverrunPolicyBase();
+    //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+
 };
 
-#endif /* PUSHBACKCHANNEL_H_ */
+#endif /* SNDFCOVERRUNPOLICYBASE_H_ */

@@ -48,8 +48,9 @@ void SendingAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpStat
   /* Default */
   DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
 
-  //Update RcvLetWindowEdge
-  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
+  dtp->svUpdate(dtpState->getMaxSeqNumRcvd());
+//  //Update RcvLetWindowEdge
+//  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
 
   //Invoke Delimiting
   dtp->delimitFromRMT(NULL);

@@ -19,25 +19,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file FCOverrunPolicyDefault.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date May 3, 2015
- * @brief This is an example policy class implementing default Flow Control Overrun behavior
- * @detail
- */
 
-#ifndef FCOVERRUNPOLICYDEFAULT_H_
-#define FCOVERRUNPOLICYDEFAULT_H_
-
-#include <FCOverrunPolicyBase.h>
-
-class FCOverrunPolicyDefault : public FCOverrunPolicyBase
+package rina.policies.DIF.EFCP.DTCP.RcvFCOverrun.RcvFCOverrunPolicyDefault;
+import rina.policies.DIF.EFCP.DTCP.RcvFCOverrun.IntRcvFCOverrunPolicy;
+//
+// TODO auto-generated type
+//
+simple RcvFCOverrunPolicyDefault like IntRcvFCOverrunPolicy
 {
-  public:
-    FCOverrunPolicyDefault();
-    virtual ~FCOverrunPolicyDefault();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
-};
-
-#endif /* FCOVERRUNPOLICYDEFAULT_H_ */
+    parameters:
+        string policyName = "RcvFCOverun Default";
+        @display("i=block/socket");
+}

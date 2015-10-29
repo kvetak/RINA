@@ -29,8 +29,9 @@
  */
 
 #include <UserDataField.h>
+//Register_Class(UserDataField);
 
-UserDataField::UserDataField()
+UserDataField::UserDataField(const char *name, int kind) : UserDataField_Base(name,kind)
 {
   size = 0;
   sduDelimitFlags = 0;
@@ -38,18 +39,24 @@ UserDataField::UserDataField()
 
 }
 
-UserDataField::UserDataField(const UserDataField& other){
+UserDataField::UserDataField(const UserDataField& other): ::UserDataField_Base(other){
   sduDelimitFlags = other.sduDelimitFlags;
   sduSeqNum = other.sduSeqNum;
   size = other.size;
-  PDUData::const_iterator it;
-
-  for(it = other.pduData.begin(); it != other.pduData.end(); ++it){
-    SDU* sdu = (*it)->dup();
-    take(sdu);
-    pduData.push_back(sdu);
-  }
+//  PDUData::const_iterator it;
+//
+//  for(it = other.pduData.begin(); it != other.pduData.end(); ++it){
+//    SDU* sdu = (*it)->dup();
+//    take(sdu);
+//    pduData.push_back(sdu);
+//  }
 }
+
+void copy(const UserDataField& other){
+
+}
+
+
 /**
  *
  * @param sdu

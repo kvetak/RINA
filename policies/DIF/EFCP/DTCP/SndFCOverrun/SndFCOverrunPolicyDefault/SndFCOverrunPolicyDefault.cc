@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,12 +19,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SndFCOverrunPolicyDefault.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing default Flow Control Overrun behavior
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.FCOverrun;
+#include <SndFCOverrunPolicyDefault.h>
 
-moduleinterface IntFCOverrunPolicy
+Register_Class(SndFCOverrunPolicyDefault);
+
+SndFCOverrunPolicyDefault::SndFCOverrunPolicyDefault()
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
+
+}
+
+SndFCOverrunPolicyDefault::~SndFCOverrunPolicyDefault()
+{
+
+}
+
+bool SndFCOverrunPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("SndFCOverRunPolicyDefault");
+
+  defaultAction(dtpState, dtcpState);
+
+  return false;
 }

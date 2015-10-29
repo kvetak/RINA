@@ -46,38 +46,21 @@ void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
   DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
   /* Default */
 
-      unsigned int seqNum = dtpState->getRcvLeftWinEdge() - 1;
+      unsigned int seqNum = dtpState->getRcvLeftWinEdge();
 
-      if(dtpState->getRcvLeftWinEdge() == 0){
-        seqNum = 0;
-      }
 
-      if (dtcpState->isImmediate())
-      {
+
+//      if (dtp->getQoSCube()->getATime() > 0)
+//      {
+//        //set A-timer for this PDU
+//        dtp->startATimer(seqNum);
+//
+//      }
+//      else
+//      {
+
         //Update LeftWindowEdge removing allowed gaps;
-        dtpState->updateRcvLWE(seqNum);
-  //      unsigned int sduGap =  dtpState->getQoSCube()->getMaxAllowGap();
-  //
-  //      PDUQ_t::iterator it;
-  //      PDUQ_t* pduQ = dtpState->getReassemblyPDUQ();
-  //      for (it = pduQ->begin(); it != pduQ->end(); ++it)
-  //      {
-  //        if((*it)->getSeqNum() == dtpState->getRcvLeftWinEdge()){
-  //          dtpState->incRcvLeftWindowEdge();
-  //
-  //        }else if((*it)->getSeqNum() < dtpState->getRcvLeftWinEdge()){
-  //          continue;
-  //        }else {
-  //          if(pduQ->size() == 1 || it == pduQ->begin()){
-  //            if((*it)->getSDUSeqNum() <= dtpState->getLastSduDelivered() + sduGap){
-  //              dtpState->setRcvLeftWinEdge((*it)->getSeqNum());
-  //            }
-  //          }else{
-  //            (*(it-1))->getSDUGap((*it));
-  //          }
-  //          break;
-  //        }
-  //      }
+//        dtpState->updateRcvLWE(seqNum);
 
         //send an Ack/FlowControlPDU
         dtp->sendAckFlowPDU(seqNum, true);
@@ -86,12 +69,7 @@ void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
         //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
         //XXX How could there be any A-Timer when isImmediate returned true?
 
-      }
-      else
-      {
-        //set A-timer for this PDU
-        dtp->startATimer(seqNum);
-      }
+//      }
 
       /* End default */
 }

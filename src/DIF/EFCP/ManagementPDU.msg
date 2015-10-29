@@ -19,34 +19,22 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file FCOverrunPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 8, 2015
- * @brief
- * @detail
- */
-
-#include "FCOverrunPolicyBase.h"
-#include "DTP.h"
-FCOverrunPolicyBase::FCOverrunPolicyBase()
-{
 
 
-}
+cplusplus {{
+#include "PDU.h"
+//#include "UserDataField.h"
 
-FCOverrunPolicyBase::~FCOverrunPolicyBase()
-{
-
-}
-
-void FCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
-{
-
-  DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
-  /* Default */
-  dtcpState->pushBackToClosedWinQ((DataTransferPDU*) dtpState->getCurrentPdu());
-  //Block further Write API calls on this port-id
-  dtp->notifyStopSending();
-  /* End default */
+//typedef UserDataField* UserDataFieldPtr;
+}}
+packet PDU;
+//class noncobject UserDataFieldPtr;
+//
+// TODO generated message class
+//
+packet ManagementPDU extends PDU {
+//    @customize(true);
+    type = MANAGEMENT_PDU;
+    displayString = "b=15,15,oval,#2066CC,#2066CC,0";
+    
 }

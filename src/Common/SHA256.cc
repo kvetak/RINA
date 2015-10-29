@@ -23,12 +23,12 @@
 #include <SHA256.h>
 
 SHA256::SHA256() {
-    // TODO Auto-generated constructor stub
+
 
 }
 
 SHA256::~SHA256() {
-    // TODO Auto-generated destructor stub
+
 }
 
 const unsigned int SHA256::sha256_k[64] = //UL = uint32

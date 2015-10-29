@@ -69,8 +69,8 @@
 #define SENDER_ACK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.SenderAck."
 #define SENDER_ACK_POLICY_NAME "senderAckPolicy"
 
-#define FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
-#define FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
+#define SND_FC_OVERRUN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.FCOverrun."
+#define SND_FC_OVERRUN_POLICY_NAME "fcOverrunPolicy"
 
 #define NO_OVERRIDE_PEAK_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.NoOverridePeak."
 #define NO_OVERRIDE_PEAK_POLICY_NAME "noOverridePeakPolicy"

@@ -26,13 +26,13 @@ Register_Class(ReceivingFCPolicyDefault);
 
 ReceivingFCPolicyDefault::ReceivingFCPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 ReceivingFCPolicyDefault::~ReceivingFCPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool ReceivingFCPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

@@ -59,6 +59,7 @@ class DTP : public cSimpleModule
 
     int deletePdu;
     bool pduDroppingEnabled;
+    bool rendezvousEnabled;
 
     DTPState* state; //state of this data-transfer
     DTCP* dtcp;
@@ -74,7 +75,6 @@ class DTP : public cSimpleModule
 
     /* Various queues */
     /* Output queues - from App to RMT */
-    std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
 
@@ -161,7 +161,7 @@ class DTP : public cSimpleModule
 
     unsigned int getAllowableGap();
 
-    void svUpdate(unsigned int seqNum);
+
 
     void flushReassemblyPDUQ();
     void clearRxQ();
@@ -193,6 +193,16 @@ class DTP : public cSimpleModule
 
 
     void notifyStartSending();
+    void handleControlPDUFromRMT(ControlPDU* pdu);
+
+    double getATime();
+    void fillControlAckPDU(ControlAckPDU* ctrlAckPdu);
+    void fillRendezvousPDU(RendezvousPDU* rendezPDU);
+    void sendRendezvousPDU();
+    void rendezvousCondition();
+    void handleRendezvousTimer(DTCPRendezvousTimer* timer);
+    void handleInterrupterTimer(TheInterrupterTimer* msg);
+    void changeInBuffers();
 
   public:
     DTP();
@@ -203,6 +213,7 @@ class DTP : public cSimpleModule
 //    bool write(int portId, unsigned char *buffer, int len);
 
     void delimitFromRMT(DataTransferPDU* pdu);
+    void svUpdate(unsigned int seqNum);
 
     void setFlow(const Flow* flow);
     void setDTCP(DTCP* dtcp);
@@ -232,6 +243,7 @@ class DTP : public cSimpleModule
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);
+    void sendReliableControlPDU();
 
   protected:
     virtual void handleMessage(cMessage *msg);

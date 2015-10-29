@@ -20,14 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.EFCP.DTCP.FCOverrun.FCOverrunPolicyDefault;
-import rina.policies.DIF.EFCP.DTCP.FCOverrun.IntFCOverrunPolicy;
+package rina.policies.DIF.EFCP.DTCP.SndFCOverrun.SndFCOverrunPolicyDefault;
+import rina.policies.DIF.EFCP.DTCP.SndFCOverrun.IntSndFCOverrunPolicy;
 //
 // TODO auto-generated type
 //
-simple FCOverrunPolicyDefault like IntFCOverrunPolicy
+simple SndFCOverrunPolicyDefault like IntSndFCOverrunPolicy
 {
     parameters:
-        string policyName = "FCOverun Default";
+        string policyName = "SndFCOverun Default";
         @display("i=block/socket");
 }
