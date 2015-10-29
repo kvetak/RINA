@@ -105,6 +105,6 @@ packet ControlAckPDU extends ControlPDU{
 packet RendezvousPDU extends ControlAckPDU{
     type = RENDEZVOUS_PDU;
     
-    unsigned int nextSeqNumToSend;
+    unsigned int rendezSeqNum;
     
 }

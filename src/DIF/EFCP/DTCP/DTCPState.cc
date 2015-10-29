@@ -62,6 +62,7 @@ void DTCPState::initFC()
 
   sendingRate = 0;
 //  rcvrRate = 0;
+  rendezSeqNum = 0;
 
 }
 
@@ -563,4 +564,14 @@ DTCPRendezvousTimer* DTCPState::getRendezvousTimer()
 void DTCPState::setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer)
 {
   this->rendezvousTimer = rendezvousTimer;
+}
+
+unsigned int DTCPState::getRendezSeqNum() const
+{
+  return rendezSeqNum;
+}
+
+void DTCPState::setRendezSeqNum(unsigned int rendezSeqNum)
+{
+  this->rendezSeqNum = rendezSeqNum;
 }

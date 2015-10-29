@@ -41,6 +41,8 @@ DTP::DTP()
 
   state = NULL;
 
+  pduDroppingEnabled = false;
+
   //intentionally left out callInitialize
 
 }
@@ -114,6 +116,8 @@ void DTP::initialize(int step)
 
     senderInactivityTimer = new SenderInactivityTimer();
     rcvrInactivityTimer = new RcvrInactivityTimer();
+
+    rendezvousEnabled = getModuleByPath(".^.^.efcp")->par("rendezvousEnabled").boolValue();
 
   }
   else if (step == 1)
@@ -283,6 +287,24 @@ void DTP::handleRendezvousTimer(DTCPRendezvousTimer* timer)
 
 }
 
+void DTP::changeInBuffers()
+{
+  dtcp->updateRcvRtWinEdge(state);
+
+  if(state->isDtcpPresent()){
+    if(dtcp->dtcpState->isRcvRendez() && (dtcp->dtcpState->getRcvRightWinEdge() >= dtcp->dtcpState->getRendezSeqNum())){
+      sendReliableControlPDU();
+    }
+  }
+
+}
+
+void DTP::sendReliableControlPDU()
+{
+  sendAckFlowPDU();
+  dtcp->startReliableCPDUTimer();
+}
+
 void DTP::handleInterrupterTimer(TheInterrupterTimer* interrupter)
 {
   switch(interrupter->getAction()){
@@ -292,11 +314,9 @@ void DTP::handleInterrupterTimer(TheInterrupterTimer* interrupter)
     }
     case INTERRUPTER_INFLATE_RCV_CREDIT:{
       dtcp->getDTCPState()->setRcvCredit(10);
-      dtcp->updateRcvRtWinEdge(state);
+      changeInBuffers();
 
-      sendAckFlowPDU();
 
-      dtcp->startReliableCPDUTimer();
     }
   }
 
@@ -608,13 +628,14 @@ void DTP::handleControlPDUFromRMT(ControlPDU* pdu)
   else if (pdu->getType() == RENDEZVOUS_PDU)
   {
     RendezvousPDU* rendezPDU = (RendezvousPDU*) pdu;
-    if(rendezPDU->getLastCtrlSeqNumRcv() == dtcp->dtcpState->getLastControlSeqNumSent()){
+    dtcp->dtcpState->setRendezSeqNum(rendezPDU->getRendezSeqNum());
+//    if(rendezPDU->getLastCtrlSeqNumRcv() == dtcp->dtcpState->getLastControlSeqNumSent()){
       /* The sender sent this RendezvousPDU based on up-to-date information
        * so this C-PDU can be assumed valid.
        */
       dtcp->dtcpState->setRcvRendez(true);
       sendControlAckPDU();
-    }
+//    }
   }
   else
   {
@@ -1175,7 +1196,11 @@ void DTP::fillRendezvousPDU(RendezvousPDU* rendezPDU)
 {
   /* Fill in Rendezvous PDU */
   fillControlAckPDU(rendezPDU);
-  rendezPDU->setNextSeqNumToSend(state->getNextSeqNumToSendWithoutIncrement());
+  if(dtcp->dtcpState->isRxPresent()){
+    rendezPDU->setRendezSeqNum(dtcp->dtcpState->getSndLeftWinEdge() + 1);
+  }else{
+    rendezPDU->setRendezSeqNum(state->getNextSeqNumToSendWithoutIncrement());
+  }
 }
 
 void DTP::sendRendezvousPDU()
@@ -1192,6 +1217,12 @@ void DTP::sendRendezvousPDU()
 void DTP::rendezvousCondition()
 {
   Enter_Method_Silent();
+
+  //TODO A1 Remove after sucessfull testing
+  if(!rendezvousEnabled){
+    return;
+  }
+
   /* Rendezvous condition */
   if (!dtcp->getDTCPState()->isSndRendez())
   {
