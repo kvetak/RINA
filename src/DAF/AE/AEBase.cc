@@ -174,7 +174,7 @@ void AEBase::initQoSRequiremets() {
 
 void AEBase::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }
 
 Flow* AEBase::getFlowObject() const {

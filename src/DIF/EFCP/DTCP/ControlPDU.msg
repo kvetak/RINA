@@ -101,3 +101,10 @@ packet ControlAckPDU extends ControlPDU{
 	unsigned int sndRightWinEdge;
 	unsigned int rcvRate;
 }
+
+packet RendezvousPDU extends ControlAckPDU{
+    type = RENDEZVOUS_PDU;
+    
+    unsigned int rendezSeqNum;
+    
+}

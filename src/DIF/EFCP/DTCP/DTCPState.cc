@@ -34,7 +34,7 @@ Define_Module(DTCPState);
 
 void DTCPState::resetRcvVars()
 {
-  rcvRightWinEdge = INTMAX_MAX;
+  rcvRightWinEdge = UINT_MAX;
 //  rcvRate = ??
 
 }
@@ -62,6 +62,7 @@ void DTCPState::initFC()
 
   sendingRate = 0;
 //  rcvrRate = 0;
+  rendezSeqNum = 0;
 
 }
 
@@ -77,6 +78,12 @@ DTCPState::DTCPState()
   sndLeftWinEdge = 0;
 
   rxSent = 0;
+
+  sndRendez = false;
+  rcvRendez = false;
+
+  rendezvousTimer = nullptr;
+  reliableCPDUTimer = nullptr;
 }
 
 void DTCPState::incRxSent()
@@ -465,6 +472,16 @@ void DTCPState::setQoSCube(const QoSCube*& qoSCube) {
     this->qoSCube = qoSCube;
 }
 
+DTCPReliableControlPDUTimer* DTCPState::getReliableCpduTimer()
+{
+  return reliableCPDUTimer;
+}
+
+void DTCPState::setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer)
+{
+  reliableCPDUTimer = reliableCpduTimer;
+}
+
 void DTCPState::initFromQoS(const QoSCube* qosCube)
 {
 
@@ -517,4 +534,44 @@ unsigned int DTCPState::getLastControlSeqNumSent() const
 void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
 {
   this->lastControlSeqNumSent = lastControlSeqNumSent;
+}
+
+bool DTCPState::isRcvRendez() const
+{
+  return rcvRendez;
+}
+
+void DTCPState::setRcvRendez(bool rcvRendez)
+{
+  this->rcvRendez = rcvRendez;
+}
+
+bool DTCPState::isSndRendez() const
+{
+  return sndRendez;
+}
+
+void DTCPState::setSndRendez(bool sndRendez)
+{
+  this->sndRendez = sndRendez;
+}
+
+DTCPRendezvousTimer* DTCPState::getRendezvousTimer()
+{
+  return rendezvousTimer;
+}
+
+void DTCPState::setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer)
+{
+  this->rendezvousTimer = rendezvousTimer;
+}
+
+unsigned int DTCPState::getRendezSeqNum() const
+{
+  return rendezSeqNum;
+}
+
+void DTCPState::setRendezSeqNum(unsigned int rendezSeqNum)
+{
+  this->rendezSeqNum = rendezSeqNum;
 }

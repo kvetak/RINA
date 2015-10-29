@@ -111,6 +111,14 @@ class DTCPState : public cSimpleModule
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
+    bool sndRendez; //Rendezvous-at-sender state
+    bool rcvRendez; //Rendezvous-at-receiver state
+    DTCPRendezvousTimer* rendezvousTimer;
+    DTCPReliableControlPDUTimer* reliableCPDUTimer;
+
+    unsigned int rendezSeqNum;
+
+
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
 
     void clearPDUQ(PDUQ_t* pduQ);
@@ -214,9 +222,19 @@ class DTCPState : public cSimpleModule
     void setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit);
 
     void resetRcvVars();
+    bool isRcvRendez() const;
+    void setRcvRendez(bool rcvRendez);
+    bool isSndRendez() const;
+    void setSndRendez(bool sndRendez);
     unsigned int getLastControlSeqNumSent() const;
     void setLastControlSeqNumSent(unsigned int lastControlSeqNumSent);
-    
+    DTCPRendezvousTimer* getRendezvousTimer();
+    void setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer);
+    DTCPReliableControlPDUTimer* getReliableCpduTimer();
+    void setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer);
+    unsigned int getRendezSeqNum() const;
+    void setRendezSeqNum(unsigned int rendezSeqNum);
+
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);

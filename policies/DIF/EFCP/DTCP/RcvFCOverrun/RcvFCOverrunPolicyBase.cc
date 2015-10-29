@@ -45,6 +45,7 @@ void RcvFCOverrunPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
   /* Default */
   delete dtpState->getCurrentPdu();
+  dtpState->setCurrentPdu(nullptr);
   dtp->sendAckFlowPDU();
   /* End default */
 }

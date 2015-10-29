@@ -60,7 +60,7 @@ enum PDUType{
         SELECT_NACK_FLOW_PDU    = 0xCE;
   
         
-//        RENDEZVOUS_PDU			= 0xE0;
+        RENDEZVOUS_PDU			= 0xE0;
         
 
 }

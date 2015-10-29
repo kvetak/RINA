@@ -59,6 +59,7 @@ class DTP : public cSimpleModule
 
     int deletePdu;
     bool pduDroppingEnabled;
+    bool rendezvousEnabled;
 
     DTPState* state; //state of this data-transfer
     DTCP* dtcp;
@@ -195,6 +196,13 @@ class DTP : public cSimpleModule
     void handleControlPDUFromRMT(ControlPDU* pdu);
 
     double getATime();
+    void fillControlAckPDU(ControlAckPDU* ctrlAckPdu);
+    void fillRendezvousPDU(RendezvousPDU* rendezPDU);
+    void sendRendezvousPDU();
+    void rendezvousCondition();
+    void handleRendezvousTimer(DTCPRendezvousTimer* timer);
+    void handleInterrupterTimer(TheInterrupterTimer* msg);
+    void changeInBuffers();
 
   public:
     DTP();
@@ -235,6 +243,7 @@ class DTP : public cSimpleModule
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);
+    void sendReliableControlPDU();
 
   protected:
     virtual void handleMessage(cMessage *msg);

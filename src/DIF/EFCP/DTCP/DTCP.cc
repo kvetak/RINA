@@ -104,6 +104,16 @@ void DTCP::initSignalsAndListeners()
   sigStatDTCPRxCount = registerSignal(SIG_STAT_DTCP_RX_SENT);
 }
 
+void DTCP::startRendezvousTimer()
+{
+  Enter_Method_Silent();
+  DTCPRendezvousTimer* rendezvousTimer = new DTCPRendezvousTimer();
+  rendezvousTimer->setSeqNum(dtcpState->getLastControlSeqNumSent());
+  rendezvousTimer->setCounter(0);
+  scheduleAt(simTime() + (dtp->state->getRtt() + dtp->state->getMPL()) / 2, rendezvousTimer);
+  dtcpState->setRendezvousTimer(rendezvousTimer);
+}
+
 void DTCP::initialize(int step)
 {
     Enter_Method("initialize");
@@ -439,6 +449,27 @@ void DTCP::updateRcvRtWinEdge(DTPState* dtpState)
   dtcpState->updateRcvRtWinEdge(dtpState->getRcvLeftWinEdge());
 }
 
+void DTCP::handleRendezvousTimer(DTCPRendezvousTimer* rendezTimer)
+{
+  //        handleRendezvousTimer(static_cast<DTCPRendezvousTimer*>(timer));
+  dtp->rendezvousCondition();
+}
+
+void DTCP::stopReliableCPDUTimer()
+{
+  cancelAndDelete(dtcpState->getReliableCpduTimer());
+}
+
+void DTCP::startReliableCPDUTimer()
+{
+  Enter_Method_Silent();
+  DTCPReliableControlPDUTimer* reliableCPDUTimer = new DTCPReliableControlPDUTimer();
+  dtcpState->setReliableCpduTimer(reliableCPDUTimer);
+  scheduleAt(simTime() + (dtp->state->getMPL() + dtp->state->getRtt()) / 2, dtcpState->getReliableCpduTimer());
+
+
+}
+
 void DTCP::handleMessage(cMessage *msg){
   if(msg->isSelfMessage()){
     /* Self message */
@@ -455,6 +486,20 @@ void DTCP::handleMessage(cMessage *msg){
       }
       case(DTCP_SENDING_RATE_TIMER):{
         handleSendingRateTimer((DTCPSendingRateTimer*)timer);
+        break;
+      }
+
+      case (DTCP_RENDEZVOUS_TIMER): {
+        handleRendezvousTimer(static_cast<DTCPRendezvousTimer*>(timer));
+        delete msg;
+        break;
+      }
+
+      case (DTCP_REL_C_PDU_TIMER): {
+        dtp->sendAckFlowPDU();
+        startReliableCPDUTimer();
+        //TODO A! restart SenderInactivity Timer
+        delete msg;
         break;
       }
 

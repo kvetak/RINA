@@ -100,6 +100,9 @@ class DTCP: public cSimpleModule {
     void flushAllQueuesAndPrepareToDie();
 
     void handleSendingRateTimer(DTCPSendingRateTimer* timer);
+    void handleRendezvousTimer(DTCPRendezvousTimer* rendezTimer);
+    void startReliableCPDUTimer();
+    void stopReliableCPDUTimer();
 
 public:
 
@@ -208,6 +211,7 @@ public:
     void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
     void setDtcpState(DTCPState* dtcpState);
     void setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy);
+    void startRendezvousTimer();
 
   protected:
     virtual void handleMessage(cMessage *msg);
