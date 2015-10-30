@@ -355,13 +355,11 @@ void DTP::handleMessage(cMessage *msg)
   else
   {
 
-    /* Either PDUs from RMT or SDUs from AP */
+    /* Either PDUs from RMT or UserDataField from Delimiting */
     if (msg->arrivedOn(northI->getId()))
     {
-      //handle SDUs
-//          handleSDUs((CDAPMessage*) msg);
-//      handleMsgFromDelimiting((Data*) msg);
-      handleMsgFromDelimiting((SDU*) msg);
+
+      handleMsgFromDelimiting(static_cast<UserDataField*>(msg));
 
     }
     else if (msg->arrivedOn(southI->getId()))
@@ -392,18 +390,34 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
+void DTP::generateDTPDU(UserDataField* userDataField)
+{
+  DataTransferPDU* dataPDU = new DataTransferPDU();
+  setPDUHeader(dataPDU);
+  dataPDU->setSeqNum(state->getNextSeqNumToSend());
+  /* Set DRF flag in PDU */
+  if (setDRFInPDU(false))
+  {
+    dataPDU->setFlags(dataPDU->getFlags() | DRF_FLAG);
+  }
+  dataPDU->encapsulate(userDataField);
+  state->pushBackToGeneratedPDUQ(dataPDU);
+}
+
 /**
  * Handles message processing from upper module (delimiting) and
  * tries to send it to RMT.
  * @param sdu
  */
-void DTP::handleMsgFromDelimiting(SDU* sdu)
+void DTP::handleMsgFromDelimiting(UserDataField* userDataField)
 {
   cancelEvent(senderInactivityTimer);
 
-  delimit(sdu);
+//  delimit(sdu);
 
-  generatePDUsnew();
+//  generatePDUsnew();
+
+  generateDTPDU(userDataField);
 
   trySendGenPDUs(state->getGeneratedPDUQ());
 

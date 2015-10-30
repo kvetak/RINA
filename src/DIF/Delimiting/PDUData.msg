@@ -11,12 +11,10 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-// 
+//
 
-//
-// TODO generated message class
-//
-packet UserDataField {
-    @customize(true);  // see the generated C++ header for more info
-	byteLength = 10;
+
+packet PDUData{
+@customize(true);    
+    
 }

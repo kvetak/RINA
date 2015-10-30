@@ -19,54 +19,60 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file Delimiting.h
+
+/*
+ * @file PDUData.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Oct 30, 2015
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
+#include <PDUData.h>
 
-#include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "SDU.h"
-#include "DataTransferPDU_m.h"
-#include "SDUData_m.h"
-#include "PDUData.h"
-//#include <csimplemodule.h>
-
-#define DELIMITING_MODULE_NAME "delimiting"
-
-#define GATE_DELIMIT_NORTHIO "northIo"
-#define GATE_DELIMIT_SOUTHIO "southIo"
-
-class Delimiting : public cSimpleModule
+PDUData::PDUData(const char* name, int kind): PDUData_Base(name, kind)
 {
-  private:
 
-    cGate* northI;
-    cGate* northO;
-    cGate* southI;
-    cGate* southO;
+}
 
-    unsigned int seqNum;
+PDUData::~PDUData()
+{
 
-    void processMsgFromFAI(SDUData* msg);
-    void handleMsgFromEfcpi(UserDataField* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-    void initGates();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-    virtual void initialize(int step);
+}
 
 
-};
+void PDUData::copy(const PDUData& other){
 
-#endif /* DELIMITING_H_ */
+}
+
+void PDUData::encapsulate(Data* data)
+{
+  take(data);
+  encapData.push_back(data);
+  addByteLength(data->getByteLength());
+
+}
+
+Data* PDUData::decapsulate(void)
+{
+  if(encapData.size() > 0){
+    Data* data = encapData.front();
+    addByteLength(0 - data->getByteLength());
+    drop(data);
+    return data;
+  }else{
+    return nullptr;
+  }
+
+
+}
+
+void PDUData::forEachChild(cVisitor *v)
+{
+  for (auto it = encapData.begin(); it != encapData.end(); ++it)
+  {
+    v->visit(*it);
+  }
+
+
+}

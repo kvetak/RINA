@@ -25,14 +25,16 @@
 //
 
 enum DataType{
-    	SDU_COMPLETE_TYPE		= 1;
-    	SDU_FRAGMENT_TYPE		= 2;
+    	DATA_SDU_COMPLETE = 0;
+    	DATA_FIRST_FRAG = 1;
+    	DATA_MIDDLE_FRAG = 2;
+    	DATA_LAST_FRAG = 3;
 }
 
 
 packet Data {
     @customize(true);  // see the generated C++ header for more info
-    int dataType enum(DataType);
+    int dataType enum(DataType) = DATA_SDU_COMPLETE;
     byteLength = 10;
     
 //    abstract int anotherField;Register_Class(Data);

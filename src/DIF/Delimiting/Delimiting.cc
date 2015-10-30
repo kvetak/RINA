@@ -51,24 +51,52 @@ void Delimiting::initGates(){
 
 
 void Delimiting::handleMessage(cMessage* msg){
-  if(msg->isSelfMessage()){
+  if (msg->isSelfMessage())
+  {
     //self-message
-  }else{
-    if(msg->arrivedOn(northI->getId())){
-      processMsgFromFAI((cPacket*)(msg));
-    }else if(msg->arrivedOn(southI->getId())){
-      handleMsgFromEfcpi((Data*)(msg));
-    }else{
+  }
+  else
+  {
+    if (msg->arrivedOn(northI->getId()))
+    {
+      processMsgFromFAI(static_cast<SDUData*>(msg));
+    }
+    else if (msg->arrivedOn(southI->getId()))
+    {
+      handleMsgFromEfcpi(static_cast<UserDataField*>(msg));
+    }
+    else
+    {
       //A2 panic!
     }
 
-
   }
-
 
 }
 
-void Delimiting::processMsgFromFAI(cPacket* msg){
+void Delimiting::processMsgFromFAI(SDUData* sduData)
+{
+
+  /* TODO A3 Omitting possible fragmentation step for now  (ie sduData.size() > max_PDU_Size) */
+
+  Data* data = new Data();
+  data->setDataType(DATA_SDU_COMPLETE);
+  data->encapsulate(sduData);
+
+  PDUData* pduData = new PDUData();
+  pduData->encapsulate(data);
+
+  UserDataField* userDataField = new UserDataField();
+  userDataField->encapsulate(pduData);
+  userDataField->setCompleteSDU(true);
+  userDataField->setNoLength(false);
+  userDataField->setSduSeqNumPresent(true);
+  userDataField->setSduSeqNum(seqNum++);
+
+  send(userDataField, southO);
+
+
+
 
   /*
    * 1. Create new SDU and put msg to this new SDU.
@@ -77,25 +105,39 @@ void Delimiting::processMsgFromFAI(cPacket* msg){
    * 3. Go through Data vector and send them to EFCPI
    */
 
-  SDU* sdu = new SDU();
-  sdu->setDataType(SDU_COMPLETE_TYPE);
+//  SDU* sdu = new SDU();
+//  sdu->setDataType(SDU_COMPLETE_TYPE);
 //  sdu->addUserData(msg);
-  sdu->encapsulate(msg);
-  sdu->setSeqNum(seqNum);
+//  sdu->encapsulate(msg);
+//  sdu->setSeqNum(seqNum);
 
   //TODO A1 handle multiple gates -> change to cGate*
-  send(sdu, southO);
+//  send(sdu, southO);
 }
 
-void Delimiting::handleMsgFromEfcpi(Data* msg){
+void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
+{
+  /* simpliest implementation without delimiting queue, etc. */
+  PDUData* pduData = static_cast<PDUData*>(userDataField->decapsulate());
+  Data* data = pduData->decapsulate();
+  SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
 
-  SDU* sdu = (SDU*) msg;
-//  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
-  cPacket* cdap = sdu->decapsulate();
-  take(cdap);
+  send(sduData, northO);
 
-  send(cdap, northO);
-  delete sdu;
+  delete pduData;
+  delete data;
+  delete sduData;
+
+
+
+
+//  SDU* sdu = (SDU*) msg;
+////  std::vector<CDAPMessage*> &msgVector = sdu->getMUserData();
+//  cPacket* cdap = sdu->decapsulate();
+//  take(cdap);
+//
+//  send(cdap, northO);
+//  delete sdu;
 }
 
 Delimiting::~Delimiting()

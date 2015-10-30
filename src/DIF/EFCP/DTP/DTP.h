@@ -109,7 +109,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromDelimiting(SDU* sdu);
+    void handleMsgFromDelimiting(UserDataField* userDataField);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -167,7 +167,7 @@ class DTP : public cSimpleModule
     void clearRxQ();
     void clearClosedWindowQ();
 
-
+    void generateDTPDU(UserDataField* userDataField);
 
     void schedule(DTPTimers* timer, double time =0.0);
 
@@ -228,6 +228,7 @@ class DTP : public cSimpleModule
     void resetSenderInactivTimer();
 
     void setPDUHeader(PDU* pdu);
+
 
     void sendFCOnlyPDU();
     void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);

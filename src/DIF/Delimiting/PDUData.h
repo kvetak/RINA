@@ -19,54 +19,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file Delimiting.h
+
+/*
+ * @file PDUData.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
+ * @date Oct 30, 2015
  * @brief
  * @detail
  */
 
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
-
+#ifndef PDUDATA_H_
+#define PDUDATA_H_
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "SDU.h"
-#include "DataTransferPDU_m.h"
-#include "SDUData_m.h"
-#include "PDUData.h"
-//#include <csimplemodule.h>
+#include <PDUData_m.h>
+#include <vector>
+#include <Data.h>
 
-#define DELIMITING_MODULE_NAME "delimiting"
-
-#define GATE_DELIMIT_NORTHIO "northIo"
-#define GATE_DELIMIT_SOUTHIO "southIo"
-
-class Delimiting : public cSimpleModule
+class PDUData : public PDUData_Base
 {
+
   private:
+    std::vector<Data*> encapData;
 
-    cGate* northI;
-    cGate* northO;
-    cGate* southI;
-    cGate* southO;
-
-    unsigned int seqNum;
-
-    void processMsgFromFAI(SDUData* msg);
-    void handleMsgFromEfcpi(UserDataField* msg);
+    void copy(const PDUData& other);
   public:
-    Delimiting();
-    virtual ~Delimiting();
+    PDUData(const char *name=nullptr, int kind=0);
+    PDUData(const PDUData& other);
+    virtual ~PDUData();
+    virtual void encapsulate(Data* data);
+    virtual Data *decapsulate();
+    virtual void forEachChild(cVisitor *v);
 
-    void initGates();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-    virtual void initialize(int step);
-
-
+    PDUData& operator=(const PDUData& other) {if (this==&other) return *this; PDUData_Base::operator=(other); copy(other); return *this;}
 };
 
-#endif /* DELIMITING_H_ */
+#endif /* PDUDATA_H_ */

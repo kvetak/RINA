@@ -19,54 +19,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file Delimiting.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jul 31, 2014
- * @brief
- * @detail
- */
-
-#ifndef DELIMITING_H_
-#define DELIMITING_H_
-
-#include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "SDU.h"
-#include "DataTransferPDU_m.h"
-#include "SDUData_m.h"
-#include "PDUData.h"
-//#include <csimplemodule.h>
-
-#define DELIMITING_MODULE_NAME "delimiting"
-
-#define GATE_DELIMIT_NORTHIO "northIo"
-#define GATE_DELIMIT_SOUTHIO "southIo"
-
-class Delimiting : public cSimpleModule
-{
-  private:
-
-    cGate* northI;
-    cGate* northO;
-    cGate* southI;
-    cGate* southO;
-
-    unsigned int seqNum;
-
-    void processMsgFromFAI(SDUData* msg);
-    void handleMsgFromEfcpi(UserDataField* msg);
-  public:
-    Delimiting();
-    virtual ~Delimiting();
-
-    void initGates();
-
-  protected:
-    virtual void handleMessage(cMessage *msg);
-    virtual void initialize(int step);
 
 
-};
 
-#endif /* DELIMITING_H_ */
+packet SDUData{
+    
+}

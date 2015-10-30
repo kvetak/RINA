@@ -54,14 +54,14 @@ void SDU::copy(const SDU& other){
  */
 unsigned int SDU::getSize() const
 {
-  if (dataType_var == SDU_COMPLETE_TYPE)
+//  if (dataType_var == SDU_COMPLETE_TYPE)
   {
     return size_var;
   }
-  else if (dataType_var == SDU_FRAGMENT_TYPE)
+//  else if (dataType_var == SDU_FRAGMENT_TYPE)
   {
     return fSize_var;
-  }else{
+//  }else{
     return 0; //PANIC!
   }
 }
@@ -175,7 +175,7 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
   fSize_var = fSize;
   fSeqNum_var = fSeqNum;
   fOffset_var = fOffset;
-  dataType_var = SDU_FRAGMENT_TYPE;
+//  dataType_var = SDU_FRAGMENT_TYPE;
   if(fSeqNum == 0){
     fragType_var = SDU_FRAG_FIRST;
   }else if(fSize + fOffset == this->size_var){

@@ -37,16 +37,20 @@
 
 
 
-typedef std::vector<SDU*> PDUData;
+//typedef std::vector<SDU*> PDUData;
 /*
  *
  */
 class UserDataField: public UserDataField_Base
 {
   private:
-    unsigned int sduDelimitFlags;
+//    unsigned int sduDelimitFlags;
+    /* SDU delimiter flags */
+    bool sduSeqNumPresent;
+
+
     unsigned int sduSeqNum;
-    PDUData pduData;
+//    PDUData pduData;
     unsigned int size;
 
     void copy(const UserDataField& other);
@@ -57,13 +61,13 @@ class UserDataField: public UserDataField_Base
     UserDataField(const UserDataField& other);
 //    UserDataField(const UserDataField& other) : UserDataField_Base(other) {copy(other);}
     virtual ~UserDataField();
-    void addData(SDU* data);
+//    void addData(SDU* data);
     /**
      * This method removes first SDU from userDataField and returns it.
      * Also updates remaining size of UserDataField
      * @return SDU
      */
-    SDU* getData();
+//    SDU* getData();
 //    UserDataField* dup() const {return new UserDataField();}
     virtual UserDataField* dup() const {return new UserDataField(*this);}
 

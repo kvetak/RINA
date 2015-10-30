@@ -34,13 +34,13 @@
 UserDataField::UserDataField(const char *name, int kind) : UserDataField_Base(name,kind)
 {
   size = 0;
-  sduDelimitFlags = 0;
+//  sduDelimitFlags = 0;
   sduSeqNum = 0;
 
 }
 
 UserDataField::UserDataField(const UserDataField& other): ::UserDataField_Base(other){
-  sduDelimitFlags = other.sduDelimitFlags;
+//  sduDelimitFlags = other.sduDelimitFlags;
   sduSeqNum = other.sduSeqNum;
   size = other.size;
 //  PDUData::const_iterator it;
@@ -61,59 +61,59 @@ void copy(const UserDataField& other){
  *
  * @param sdu
  */
-void UserDataField::addData(SDU* data){
+//void UserDataField::addData(SDU* data){
+//
+//
+//  if(pduData.empty()){
+//    //sduSeqnum is set only for first SDU/fragment in UserDataField
+//    sduSeqNum = data->getSeqNum();
+//    sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
+//  }
+//  take(data);
+//  pduData.push_back(data);
+//  size += data->getSize();
+//  sduDelimitFlags |= data->getFragType();
+//
+//
+//
+//  //TOOD A2 Handle all delimitFlags (eg noLength)
+// /* The code below is weird. Left it here for future decryption.
+//  if(data->getDataType() == SDU_COMPLETE_TYPE || (data->getDataType() == SDU_FRAGMENT_TYPE && data->getFragType() == SDU_FRAG_FIRST)){
+//    //TODO B1 SduSeqNum is the first SDU/fragment in userDataField, so it should be set only once.
+//    sduSeqNum = data->getSeqNum();
+//    sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
+//  }
+//  */
+//}
 
+//SDU* UserDataField::getData(){
+//
+//  if(pduData.empty()){
+//    return NULL;
+//  }
+//  //TODO B1 What if it is SDU fragment? (fragType_var != 0)
+//  SDU* tmp = pduData.front();
+//  tmp->getFragType();
+//  pduData.erase(pduData.begin());
+//  size -= tmp->getSize();
+//  drop(tmp);
+//  return tmp;
+//}
 
-  if(pduData.empty()){
-    //sduSeqnum is set only for first SDU/fragment in UserDataField
-    sduSeqNum = data->getSeqNum();
-    sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
-  }
-  take(data);
-  pduData.push_back(data);
-  size += data->getSize();
-  sduDelimitFlags |= data->getFragType();
-
-
-
-  //TOOD A2 Handle all delimitFlags (eg noLength)
- /* The code below is weird. Left it here for future decryption.
-  if(data->getDataType() == SDU_COMPLETE_TYPE || (data->getDataType() == SDU_FRAGMENT_TYPE && data->getFragType() == SDU_FRAG_FIRST)){
-    //TODO B1 SduSeqNum is the first SDU/fragment in userDataField, so it should be set only once.
-    sduSeqNum = data->getSeqNum();
-    sduDelimitFlags |= SDU_SEQ_NUM_PRESENT;
-  }
-  */
-}
-
-SDU* UserDataField::getData(){
-
-  if(pduData.empty()){
-    return NULL;
-  }
-  //TODO B1 What if it is SDU fragment? (fragType_var != 0)
-  SDU* tmp = pduData.front();
-  tmp->getFragType();
-  pduData.erase(pduData.begin());
-  size -= tmp->getSize();
-  drop(tmp);
-  return tmp;
-}
-
-unsigned int UserDataField::getSduDelimitFlags() const
-{
-  return sduDelimitFlags;
-}
+//unsigned int UserDataField::getSduDelimitFlags() const
+//{
+//  return sduDelimitFlags;
+//}
 
 unsigned int UserDataField::getSduSeqNum() const
 {
   return sduSeqNum;
 }
 
-void UserDataField::setSduDelimitFlags(unsigned int sduDelimitFlags)
-{
-  this->sduDelimitFlags = sduDelimitFlags;
-}
+//void UserDataField::setSduDelimitFlags(unsigned int sduDelimitFlags)
+//{
+//  this->sduDelimitFlags = sduDelimitFlags;
+//}
 
 unsigned int UserDataField::getSize(){
   return size;
@@ -121,13 +121,13 @@ unsigned int UserDataField::getSize(){
 
 UserDataField::~UserDataField()
 {
-  std::vector<SDU*>::iterator it;
-  for(it = pduData.begin(); it != pduData.end();){
-    drop(*it);
-    delete (*it);
-    it = pduData.erase(it);
-
-  }
+//  std::vector<SDU*>::iterator it;
+//  for(it = pduData.begin(); it != pduData.end();){
+//    drop(*it);
+//    delete (*it);
+//    it = pduData.erase(it);
+//
+//  }
 
 }
 
