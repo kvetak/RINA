@@ -124,9 +124,10 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
 
   send(sduData, northO);
 
+  delete userDataField;
   delete pduData;
   delete data;
-  delete sduData;
+//  delete sduData;
 
 
 

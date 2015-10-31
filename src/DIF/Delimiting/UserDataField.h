@@ -44,7 +44,7 @@
 class UserDataField: public UserDataField_Base
 {
   private:
-//    unsigned int sduDelimitFlags;
+    unsigned int sduDelimitFlags;
     /* SDU delimiter flags */
     bool sduSeqNumPresent;
 
@@ -81,6 +81,9 @@ class UserDataField: public UserDataField_Base
 
 
     UserDataField& operator=(const UserDataField& other) {if (this==&other) return *this; UserDataField_Base::operator=(other); copy(other); return *this;}
+//    bool operator<(const UserDataField& other) const;
+
+
 
 
 };

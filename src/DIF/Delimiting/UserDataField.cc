@@ -29,18 +29,18 @@
  */
 
 #include <UserDataField.h>
-//Register_Class(UserDataField);
+Register_Class(UserDataField);
 
 UserDataField::UserDataField(const char *name, int kind) : UserDataField_Base(name,kind)
 {
   size = 0;
-//  sduDelimitFlags = 0;
+  sduDelimitFlags = 0;
   sduSeqNum = 0;
 
 }
 
 UserDataField::UserDataField(const UserDataField& other): ::UserDataField_Base(other){
-//  sduDelimitFlags = other.sduDelimitFlags;
+  sduDelimitFlags = other.sduDelimitFlags;
   sduSeqNum = other.sduSeqNum;
   size = other.size;
 //  PDUData::const_iterator it;
@@ -100,10 +100,10 @@ void copy(const UserDataField& other){
 //  return tmp;
 //}
 
-//unsigned int UserDataField::getSduDelimitFlags() const
-//{
-//  return sduDelimitFlags;
-//}
+unsigned int UserDataField::getSduDelimitFlags() const
+{
+  return sduDelimitFlags;
+}
 
 unsigned int UserDataField::getSduSeqNum() const
 {
@@ -134,3 +134,24 @@ UserDataField::~UserDataField()
 void UserDataField::setSduSeqNum(unsigned int sduSeqNum) {
     this->sduSeqNum = sduSeqNum;
 }
+
+//bool UserDataField::operator<(const UserDataField& other) const
+//{
+//  if(this->getSduSeqNumPresent() && other.getSduSeqNumPresent())
+//  {
+//    if(this->getSduSeqNum() < other.getSduSeqNum){
+//      return true;
+//    }else if(this->getSduSeqNum() > other.getSduSeqNum){
+//      return false;
+//    }else {
+//      if(this->getFirstFragmen()){
+//        return true;
+//      }else if(other.getFirstFragmen()){
+//        return true;
+//      }else if(this->is)
+//    }
+//
+//  }
+//
+//
+//}

@@ -31,6 +31,7 @@
 #include "Flow.h"
 #include "RMTQueue.h"
 #include "QueueIDGenBase.h"
+#include "SDUData_m.h"
 
 class RMTPort : public cSimpleModule
 {

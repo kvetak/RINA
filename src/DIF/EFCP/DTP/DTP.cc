@@ -43,6 +43,7 @@ DTP::DTP()
 
   pduDroppingEnabled = false;
 
+  sduSeqNum = 0;
   //intentionally left out callInitialize
 
 }
@@ -359,7 +360,7 @@ void DTP::handleMessage(cMessage *msg)
     if (msg->arrivedOn(northI->getId()))
     {
 
-      handleMsgFromDelimiting(static_cast<UserDataField*>(msg));
+      handleMsgFromUp(static_cast<SDUData*>(msg));
 
     }
     else if (msg->arrivedOn(southI->getId()))
@@ -390,6 +391,11 @@ void DTP::setPDUHeader(PDU* pdu)
   pdu->setDstApn(this->flow->getSrcApni().getApn());
 }
 
+
+/**   !!!!!!!!!!!!!!!!!!!!!!  Deprecated  !!!!!!!!!!!!!!!
+ * Generates new DT-PDU with @param userDataField and puts it on generatedPDUsQ.
+ * @param userDataField
+ */
 void DTP::generateDTPDU(UserDataField* userDataField)
 {
   DataTransferPDU* dataPDU = new DataTransferPDU();
@@ -409,15 +415,15 @@ void DTP::generateDTPDU(UserDataField* userDataField)
  * tries to send it to RMT.
  * @param sdu
  */
-void DTP::handleMsgFromDelimiting(UserDataField* userDataField)
+void DTP::handleMsgFromUp(SDUData* sduData)
 {
   cancelEvent(senderInactivityTimer);
 
-//  delimit(sdu);
+  delimit(sduData);
 
-//  generatePDUsnew();
+  generatePDUsnew();
 
-  generateDTPDU(userDataField);
+//  generateDTPDU(userDataField);
 
   trySendGenPDUs(state->getGeneratedPDUQ());
 
@@ -444,56 +450,38 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
   Enter_Method_Silent();
   PDUQ_t* pduQ = state->getReassemblyPDUQ();
 
-  for (PDUQ_t::iterator it = pduQ->begin(); it != pduQ->end();)
+  for (auto it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= state->getRcvLeftWinEdge();)
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
 
-    //TODO B1 add support for out of order SDU delivery
-    // negative implication
-//    unsigned int seqNum = (*it)->getSeqNum();
-//    if((getQoSCube()->isForceOrder() && ! (seqNum <= state->getRcvLeftWinEdge()))){
-//      return;
-//    }
-//
-//
-//    unsigned int delimitFlags = (*it)->getUserDataField()->getSduDelimitFlags();
-//    if((delimitFlags & SDU_NO_LENGTH) == SDU_NO_LENGTH){
-////      if(delimitFlags & SDU_)
-//      EV << getFullPath() << ": Unhandled condition in delimiting !!!!!!!!!!!!!!!!!!!!!!!!!!!!" <<endl;
-//    }else{
-//      if((delimitFlags & SDU_L_COMP_SDU) == SDU_L_COMP_SDU){
-//        /* PDU contain ZERO or more complete SDUs */
-//        /*  TODO PUT this in separate method */
-//
-//        UserDataField* userData = (*it)->getUserDataField();
-//
-//        SDU* sdu;
-//        if(userData != NULL){
-//          while ((sdu = userData->getData()) != NULL)
-//          {
-//            (*it)->updatePacketSize();
-//          //TODO Delimiting/de-fragmentation
-//
-//            take(sdu);
-//
-//            //XXX We assume that every SDU is numbered.
-//            state->setLastSduDelivered(sdu->getSeqNum());
-//
-//            send(sdu, northO);
-//          }
-//        }
-////        delete userData;
-//
-//        delete (*it);
-//
-//        it = pduQ->erase(it);
-//      }
-//    }
-    cPacket* userData = (*it)->decapsulate();
-    send(userData->decapsulate(), northO);
-    delete userData;
+
+    userDataFieldQ.push_back(static_cast<UserDataField*>((*it)->decapsulate()));
+//    send(userData->decapsulate(), northO);
+//    delete userData;
     delete (*it);
     it = pduQ->erase(it);
   }
+
+  for(auto it = userDataFieldQ.begin(); it != userDataFieldQ.end();){
+    PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
+    Data* data = pduData->decapsulate();
+    SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
+
+    sduDataQ.push_back(sduData);
+
+    delete (*it);
+    delete pduData;
+    delete data;
+//    delete sduData;
+
+    it = userDataFieldQ.erase(it);
+  }
+
+  //TODO A1: This is only if immediate = true, otherwise we should wait for some kind of read()
+  for(auto it = sduDataQ.begin(); it != sduDataQ.end(); it = sduDataQ.erase(it)){
+    send((*it), northO);
+  }
+
+
 }
 
 /**
@@ -1106,31 +1094,53 @@ void DTP::handleDTPATimer(ATimer* timer)
   }
 }
 
-unsigned int DTP::delimit(SDU* sdu)
+unsigned int DTP::delimit(SDUData* sduData)
 {
 
-  //TODO B2 Does PDU header counts to MaxFlowPDUSize? edit: yes, it does!
-  if (sdu->getSize() > state->getMaxFlowPduSize())
-  {
-    unsigned int size = state->getMaxFlowPduSize();
-    //SDU is bigger than Max Allowed PDU
-    //S/DUFrag *frag = new SDUFrag
 
-    SDU* tmp;
-    unsigned int i;
-    for (i = 0; i * size < sdu->getSize(); i++)
-    {
-      tmp = sdu->genFragment(size, i, i * size);
-      dataQ.push_back(tmp);
+  /* TODO A3 Omitting possible fragmentation step for now  (ie sduData.size() > max_PDU_Size) */
 
-    }
-    return i;
-  }
-  else
-  {
-    dataQ.push_back(sdu);
-    return 1;
-  }
+  Data* data = new Data();
+  data->setDataType(DATA_SDU_COMPLETE);
+  data->encapsulate(sduData);
+
+  PDUData* pduData = new PDUData();
+  pduData->encapsulate(data);
+
+  UserDataField* userDataField = new UserDataField();
+  userDataField->encapsulate(pduData);
+  userDataField->setCompleteSDU(true);
+  userDataField->setNoLength(false);
+  userDataField->setSduSeqNumPresent(true);
+  userDataField->setSduSeqNum(sduSeqNum++);
+
+  userDataFieldQ.push_back(userDataField);
+
+
+
+
+//  //TODO B2 Does PDU header counts to MaxFlowPDUSize? edit: yes, it does!
+//  if (sdu->getSize() > state->getMaxFlowPduSize())
+//  {
+//    unsigned int size = state->getMaxFlowPduSize();
+//    //SDU is bigger than Max Allowed PDU
+//    //S/DUFrag *frag = new SDUFrag
+//
+//    SDU* tmp;
+//    unsigned int i;
+//    for (i = 0; i * size < sdu->getSize(); i++)
+//    {
+//      tmp = sdu->genFragment(size, i, i * size);
+//      dataQ.push_back(tmp);
+//
+//    }
+//    return i;
+//  }
+//  else
+//  {
+//    dataQ.push_back(sdu);
+//    return 1;
+//  }
 
 }
 
@@ -1161,13 +1171,13 @@ void DTP::generatePDUsnew()
   DataTransferPDU* baseDataPDU = new DataTransferPDU();
   setPDUHeader(baseDataPDU);
 
-  //invoke SDU protection so we don't have to bother with it afterwards; EDIT: sduQ is not used anymore!!!
-  for (std::vector<SDU*>::iterator it = dataQ.begin(); it != dataQ.end(); ++it)
-  {
-    sduProtection(*it);
-  }
+//  //invoke SDU protection so we don't have to bother with it afterwards; EDIT: sduQ is not used anymore!!!
+//  for (std::vector<SDU*>::iterator it = dataQ.begin(); it != dataQ.end(); ++it)
+//  {
+//    sduProtection(*it);
+//  }
 
-  while (!dataQ.empty())
+  while (!userDataFieldQ.empty())
   {
     DataTransferPDU* genPDU = baseDataPDU->dup();
     genPDU->setSeqNum(state->getNextSeqNumToSend());
@@ -1178,22 +1188,8 @@ void DTP::generatePDUsnew()
       genPDU->setFlags(genPDU->getFlags() | DRF_FLAG);
     }
 
-    UserDataField* userData = new UserDataField();
-
-    while (!dataQ.empty() && dataQ.front()->getSize() <= MAX_PDU_SIZE - userData->getSize())
-    {
-//      userData->addData((dataQ.front()));
-//      dataQ.erase(dataQ.begin());
-
-      userData->encapsulate(dataQ.front());
-      dataQ.erase(dataQ.begin());
-
-    }
-
-//    genPDU->setUserDataField(userData);
-    genPDU->encapsulate(userData);
-//    send(genPDU, southO);
-//    return;
+    genPDU->encapsulate(userDataFieldQ.front());
+    userDataFieldQ.erase(userDataFieldQ.begin());
 
     state->pushBackToGeneratedPDUQ(genPDU);
   }

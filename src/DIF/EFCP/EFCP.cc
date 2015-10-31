@@ -144,8 +144,9 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   if((tmpEfcpEntry = efcpTable->getEntryByFlow(flow)) ==NULL){
     tmpEfcpEntry = new EFCPTableEntry();
 
+    //TODO A! If it works, delete Delimiting
    //Flow is not in EFCPTable -> create delimiting
-    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, portId));
+//    tmpEfcpEntry->setDelimit(this->createDelimiting(efcpiModule, portId));
 
     //Add tmpEFCPEntry to efcpTable
     efcpTable->insertEntry(tmpEfcpEntry);
@@ -183,40 +184,38 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
 
   /* Connect EFCPi module with delimiting */
-  int size = tmpEfcpEntry->getDelimit()->gateSize(GATE_DELIMIT_SOUTHIO);
-  tmpEfcpEntry->getDelimit()->setGateSize(GATE_DELIMIT_SOUTHIO, size + 1);
-
-  tmpEfcpEntry->getDelimit()->initGates();
-
-
-
-  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
-  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, size);
-
-  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
-  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
+//  int size = tmpEfcpEntry->getDelimit()->gateSize(GATE_DELIMIT_SOUTHIO);
+//  tmpEfcpEntry->getDelimit()->setGateSize(GATE_DELIMIT_SOUTHIO, size + 1);
+//
+//  tmpEfcpEntry->getDelimit()->initGates();
 
 
-  cGate* efcpiToDelI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
-  cGate* efcpiToDelO = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::OUTPUT);
 
-  delToEfcpiO->connectTo(efcpiToDelI);
-  efcpiToDelO->connectTo(delToEfcpiI);
+//  cGate* delToEfcpiI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::INPUT, size);
+//  cGate* delToEfcpiO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_SOUTHIO, cGate::OUTPUT, size);
+
+//  cGate* delToFaI = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::INPUT);
+//  cGate* delToFaO = (cGate*) tmpEfcpEntry->getDelimit()->gateHalf(GATE_DELIMIT_NORTHIO, cGate::OUTPUT);
 
 
-  /* Create gate in EFCPModule for Delimiting <--> FAI */
+  cGate* efcpiNorthI = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::INPUT);
+  cGate* efcpiNorthO = efcpiModule->gateHalf(std::string(GATE_EFCPI_NORTHIO).c_str(), cGate::OUTPUT);
+
+//  delToEfcpiO->connectTo(efcpiToDelI);
+//  efcpiToDelO->connectTo(delToEfcpiI);
+
+
+  /* Create gate in EFCPModule for EFCPi <--> FAI */
   std::ostringstream gateName_str;
   gateName_str << GATE_APPIO_ << portId;
-
-
 
   efcpModule->addGate(gateName_str.str().c_str(), cGate::INOUT);
   cGate* efcpToFaI = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::INPUT);
   cGate* efcpToFaO = efcpModule->gateHalf(gateName_str.str().c_str(), cGate::OUTPUT);
 
   /* Connect Delimiting with compound module's gates */
-  delToFaO->connectTo(efcpToFaO);
-  efcpToFaI->connectTo(delToFaI);
+  efcpiNorthO->connectTo(efcpToFaO);
+  efcpToFaI->connectTo(efcpiNorthI);
 
   /* Create gate in EFCPModule for EFCPi <--> RMT */
   gateName_str.str(std::string());

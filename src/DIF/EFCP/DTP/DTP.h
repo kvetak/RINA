@@ -36,6 +36,7 @@
 #include "RMT.h"
 
 #include "RA.h"
+#include "SDUData_m.h"
 
 
 /* Policies */
@@ -57,6 +58,9 @@ class DTP : public cSimpleModule
     friend class DTCP;
   private:
 
+    unsigned int sduSeqNum;
+    std::set<unsigned int> sequencingQ;
+    std::vector<SDUData*> sduDataQ;
     int deletePdu;
     bool pduDroppingEnabled;
     bool rendezvousEnabled;
@@ -76,6 +80,8 @@ class DTP : public cSimpleModule
     /* Various queues */
     /* Output queues - from App to RMT */
     std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
+
+    std::vector<UserDataField*> userDataFieldQ;
 
 
 
@@ -109,7 +115,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromDelimiting(UserDataField* userDataField);
+    void handleMsgFromUp(SDUData* sduData);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -117,7 +123,7 @@ class DTP : public cSimpleModule
 
 
     /** Delimits content of buffer from application */
-    unsigned int delimit(SDU* sdu);
+    unsigned int delimit(SDUData* sduData);
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
 
 
