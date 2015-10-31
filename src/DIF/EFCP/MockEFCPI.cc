@@ -63,15 +63,6 @@ void MockEFCPI::handleMessage(cMessage *msg)
 
     pdu->encapsulate(cdap);
 
-//    SDU* sdu = new SDU();
-//    sdu->setDataType(SDU_COMPLETE_TYPE);
-//    sdu->addUserData((cPacket*) msg);
-//    sdu->setSeqNum(0);
-//
-//    UserDataField* userData = new UserDataField();
-//    userData->addData(sdu);
-//    pdu->setUserDataField(userData);
-//    pdu->updatePacketSize();
 
 
     send(pdu, southO);
@@ -84,22 +75,6 @@ void MockEFCPI::handleMessage(cMessage *msg)
     cPacket* packet = (cPacket*)msg;
     send(packet->decapsulate(), northO);
     delete packet;
-
-//    DataTransferPDU* pdu = (DataTransferPDU*) msg;
-//
-//    UserDataField* userData = pdu->getUserDataField();
-//
-//    SDU* sdu = userData->getData();
-//    take(sdu);
-//
-//    cPacket* cdap = sdu->getUserData();
-//    take(cdap);
-//
-//    send(cdap, northO);
-//    delete sdu;
-//
-//    delete pdu;
-
 
   }
 

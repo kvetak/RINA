@@ -98,6 +98,7 @@ void RMTPort::handleMessage(cMessage* msg)
               SDUData* sduData = dynamic_cast<SDUData*>(msg);
               if(sduData == nullptr){
                 delete msg;
+                EV << "this type of message isn't supported!" << endl;
                 return;
               }
               PDU* pdu = static_cast<PDU*>(sduData->decapsulate());
@@ -126,6 +127,7 @@ void RMTPort::handleMessage(cMessage* msg)
                 PDU* pdu = dynamic_cast<PDU*>(msg);
                 if (pdu == nullptr){
                   delete msg;
+                  EV << "this type of message isn't supported!" << endl;
                   return;
                 }
                 setOutputBusy();
