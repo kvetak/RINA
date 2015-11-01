@@ -1106,7 +1106,6 @@ unsigned int DTP::delimit(SDUData* sduData)
 
   PDUData* pduData = new PDUData();
   pduData->encapsulate(data);
-  pduData->encapsulate(new Data());
 
   UserDataField* userDataField = new UserDataField();
   userDataField->encapsulate(pduData);
