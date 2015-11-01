@@ -49,6 +49,7 @@ class PDUData : public PDUData_Base
     virtual void encapsulate(Data* data);
     virtual Data *decapsulate();
     virtual void forEachChild(cVisitor *v);
+    virtual PDUData* dup() const{return new PDUData(*this);}
 
     PDUData& operator=(const PDUData& other) {if (this==&other) return *this; PDUData_Base::operator=(other); copy(other); return *this;}
 };

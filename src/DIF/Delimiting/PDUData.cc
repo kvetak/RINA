@@ -29,7 +29,7 @@
  */
 
 #include <PDUData.h>
-
+Register_Class(PDUData);
 PDUData::PDUData(const char* name, int kind): PDUData_Base(name, kind)
 {
 
@@ -40,13 +40,25 @@ PDUData::~PDUData()
 
 }
 
+PDUData::PDUData(const PDUData& other): ::PDUData_Base(other)
+{
+  copy(other);
+}
 
-void PDUData::copy(const PDUData& other){
+void PDUData::copy(const PDUData& other)
+{
+  for(auto it = other.encapData.begin(); it != other.encapData.end(); ++it)
+  {
+    Data* tmpData = (*it)->dup();
+    take(tmpData);
+    encapData.push_back(tmpData);
+  }
 
 }
 
 void PDUData::encapsulate(Data* data)
 {
+
   take(data);
   encapData.push_back(data);
   addByteLength(data->getByteLength());
@@ -55,10 +67,14 @@ void PDUData::encapsulate(Data* data)
 
 Data* PDUData::decapsulate(void)
 {
+
   if(encapData.size() > 0){
     Data* data = encapData.front();
+    encapData.erase(encapData.begin());
     addByteLength(0 - data->getByteLength());
+
     drop(data);
+
     return data;
   }else{
     return nullptr;

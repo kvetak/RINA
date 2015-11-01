@@ -111,7 +111,7 @@ void RMTPort::handleMessage(cMessage* msg)
 
                 if (inQueue != nullptr)
                 {
-                    send(msg, inQueue->getInputGate()->getPreviousGate());
+                    send(pdu, inQueue->getInputGate()->getPreviousGate());
                     emit(sigStatRMTPortUp, true);
                 }
                 else
