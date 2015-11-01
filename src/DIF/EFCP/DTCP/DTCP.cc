@@ -150,7 +150,8 @@ void DTCP::setDTP(DTP* dtp)
 
 bool DTCP::runECNPolicy(DTPState* dtpState)
 {
-  Enter_Method("ECNPolicy");
+  //TODO A1 Make it module based policy
+  Enter_Method_Silent("ECNPolicy");
   if(ecnPolicy == NULL || ecnPolicy->run(dtpState, dtcpState)){
     /* Default */
     if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
@@ -171,21 +172,21 @@ void DTCP::incRcvRtWinEdge()
 
 bool DTCP::runRcvrFCPolicy(DTPState* dtpState)
 {
-  Enter_Method("RcvrFCPolicy");
+  Enter_Method_Silent("RcvrFCPolicy");
   rcvrFCPolicy->call(dtpState, dtcpState);
   return false;
 }
 
 bool DTCP::runRcvrAckPolicy(DTPState* dtpState)
 {
-  Enter_Method("RcvrAckPolicy");
+  Enter_Method_Silent("RcvrAckPolicy");
   rcvrAckPolicy->call(dtpState, dtcpState);
   return false;
 }
 
 bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 {
-  Enter_Method("ReceivingFCPolicy");
+  Enter_Method_Silent("ReceivingFCPolicy");
   receivingFCPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -195,7 +196,7 @@ bool DTCP::runReceivingFCPolicy(DTPState* dtpState)
 
 bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 {
-  Enter_Method("SendingAckPolicy");
+  Enter_Method_Silent("SendingAckPolicy");
   sendingAckPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -203,7 +204,7 @@ bool DTCP::runSendingAckPolicy(DTPState* dtpState, ATimer* timer)
 
 bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 {
-  Enter_Method("LostControlPDUPolicy");
+  Enter_Method_Silent("LostControlPDUPolicy");
   lostControlPDUPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -211,7 +212,7 @@ bool DTCP::runLostControlPDUPolicy(DTPState* dtpState)
 
 bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 {
-  Enter_Method("RcvrControlAckPolicy");
+  Enter_Method_Silent("RcvrControlAckPolicy");
   rcvrControlAckPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -219,7 +220,7 @@ bool DTCP::runRcvrControlAckPolicy(DTPState* dtpState)
 
 bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 {
-  Enter_Method("SenderAckPolicy");
+  Enter_Method_Silent("SenderAckPolicy");
   senderAckPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -228,7 +229,7 @@ bool DTCP::runSenderAckPolicy(DTPState* dtpState)
 
 bool DTCP::runSndFCOverrunPolicy(DTPState* dtpState)
 {
-  Enter_Method("SndFCOverrunPolicy");
+  Enter_Method_Silent("SndFCOverrunPolicy");
   sndFcOverrunPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -236,14 +237,14 @@ bool DTCP::runSndFCOverrunPolicy(DTPState* dtpState)
 
 bool DTCP::runRcvFCOverrunPolicy(DTPState* dtpState)
 {
-  Enter_Method("RcvFCOverrunPolicy");
+  Enter_Method_Silent("RcvFCOverrunPolicy");
   rcvFcOverrunPolicy->call(dtpState, dtcpState);
   return false;
 }
 
 bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 {
-  Enter_Method("NoOverridePeakPolicy");
+  Enter_Method_Silent("NoOverridePeakPolicy");
   noOverridePeakPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -252,7 +253,7 @@ bool DTCP::runNoOverridePeakPolicy(DTPState* dtpState)
 
 bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 {
-  Enter_Method("TxControlPolicy");
+  Enter_Method_Silent("TxControlPolicy");
   txControlPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -260,7 +261,7 @@ bool DTCP::runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ)
 
 bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
 {
-  Enter_Method("NoRateSlowDownPolicy");
+  Enter_Method_Silent("NoRateSlowDownPolicy");
   noRateSlowDownPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -268,7 +269,7 @@ bool DTCP::runNoRateSlowDownPolicy(DTPState* dtpState)
 
 bool DTCP::runReconcileFCPolicy(DTPState* dtpState)
 {
-  Enter_Method("ReconcileFCPolicy");
+  Enter_Method_Silent("ReconcileFCPolicy");
 reconcileFCPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -276,7 +277,7 @@ reconcileFCPolicy->call(dtpState, dtcpState);
 
 bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 {
-  Enter_Method("RateReductionPolicy");
+  Enter_Method_Silent("RateReductionPolicy");
   rateReductionPolicy->call(dtpState, dtcpState);
 
   return false;
@@ -285,7 +286,7 @@ bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 
 bool DTCP::runECNSlowDownPolicy(DTPState* dtpState)
 {
-  Enter_Method("ECNSlowDownPolicy");
+  Enter_Method_Silent("ECNSlowDownPolicy");
   if (ecnSlowDownPolicy == NULL || ecnSlowDownPolicy->run(dtpState, dtcpState))
   {
     /* Default */

@@ -469,9 +469,11 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
 
       PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
       Data* data = pduData->decapsulate();
-      SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
-
-      sduDataQ.push_back(sduData);
+      SDUData* sduData = dynamic_cast<SDUData*>(data->decapsulate());
+      if (sduData != nullptr)
+      {
+        sduDataQ.push_back(sduData);
+      }
 
       delete (*it);
       delete pduData;
@@ -499,9 +501,11 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
         PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
         Data* data = pduData->decapsulate();
         data->setByteLength(data->getEncapMsgLength());
-        SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
-
-        sduDataQ.push_back(sduData);
+        SDUData* sduData = dynamic_cast<SDUData*>(data->decapsulate());
+        if (sduData != nullptr)
+        {
+          sduDataQ.push_back(sduData);
+        }
 
         delete (*it);
         delete pduData;
@@ -1592,8 +1596,17 @@ void DTP::sendEmptyDTPDU()
   {
     dataPdu->setFlags(dataPdu->getFlags() | DRF_FLAG);
   }
+  Data* data = new Data();
+  data->setDataType(DATA_SDU_COMPLETE);
+
+  PDUData* pduData = new PDUData();
+  pduData->encapsulate(data);
+
+
   UserDataField* userData = new UserDataField();
-//  dataPdu->setUserDataField(userData);
+  userData->encapsulate(pduData);
+  userData->setCompleteSDU(true);
+
   dataPdu->encapsulate(userData);
 
   if (dtcp->dtcpState->isRxPresent())

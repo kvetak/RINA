@@ -43,7 +43,7 @@ module EFCPI
         inout southIo; //to RMT
     submodules:
         dtp: DTP {
-            @display("p=41,112");
+            @display("p=41,92");
         }
         northG: DumbGate {
             @display("p=41,29;is=vs");
