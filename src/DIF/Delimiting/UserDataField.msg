@@ -28,9 +28,9 @@ packet UserDataField {
     // SDU delimiter flags
     bool sduSeqNumPresent = false;
     bool noLength = true;
-    
+   
     bool midFragment = false;
-    bool firstFragmen = false;
+    bool firstFragment = false;
     bool lastFragment = false;
     bool completeSDU = false;
     

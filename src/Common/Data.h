@@ -44,11 +44,6 @@ class Data : public Data_Base
      virtual Data *dup() const {return new Data(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from Data_Base
   };
-//class Data
-//{
-//    public:
-//        Data();
-//        virtual ~Data();
-//};
+
 
 #endif /* DATA_H_ */

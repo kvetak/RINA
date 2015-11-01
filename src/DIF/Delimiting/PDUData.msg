@@ -14,7 +14,12 @@
 //
 
 
-packet PDUData{
-@customize(true);    
+packet PDUData
+{
+	@customize(true);
+	bool midFragment = false;
+    bool firstFragment = false;
+    bool lastFragment = false;
+    bool completeSDU = false;    
     
 }

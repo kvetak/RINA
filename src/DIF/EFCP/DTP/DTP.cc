@@ -461,19 +461,70 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
     it = pduQ->erase(it);
   }
 
-  for(auto it = userDataFieldQ.begin(); it != userDataFieldQ.end();){
-    PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
-    Data* data = pduData->decapsulate();
-    SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
+  for(auto it = userDataFieldQ.begin(); it != userDataFieldQ.end();)
+  {
+    if((*it)->getCompleteSDU() && !((*it)->getFirstFragment() || (*it)->getMidFragment() || (*it)->getLastFragment()))
+    {
+      /* One PDUData = one complete SDU */
 
-    sduDataQ.push_back(sduData);
+      PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
+      Data* data = pduData->decapsulate();
+      SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
 
-    delete (*it);
-    delete pduData;
-    delete data;
-//    delete sduData;
+      sduDataQ.push_back(sduData);
 
-    it = userDataFieldQ.erase(it);
+      delete (*it);
+      delete pduData;
+      delete data;
+
+
+      it = userDataFieldQ.erase(it);
+      continue;
+
+    }
+    else if((*it)->getFirstFragment())
+    {
+      /* Try to find lastFragment */
+      auto tmpIt = it;
+      tmpIt++;
+      bool found = false;
+      for(; tmpIt != userDataFieldQ.end(); ++tmpIt){
+        if((*tmpIt)->getLastFragment()){
+          found = true;
+          break;
+        }
+      }
+
+      if(found){
+        PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
+        Data* data = pduData->decapsulate();
+        data->setByteLength(data->getEncapMsgLength());
+        SDUData* sduData = static_cast<SDUData*>(data->decapsulate());
+
+        sduDataQ.push_back(sduData);
+
+        delete (*it);
+        delete pduData;
+        delete data;
+        it = userDataFieldQ.erase(it);
+
+        for(; it != userDataFieldQ.end() && ((*it)->getMidFragment() || (*it)->getLastFragment()); it = userDataFieldQ.erase(it))
+        {
+          /* All the middle and the last fragments are empty */
+          delete (*it);
+
+        }
+      }
+      else
+      {
+        break;
+      }
+    }
+    else
+    {
+      /* Currently no other combination is supported */
+      throw cRuntimeError("Unsupported fragment combination");
+    }
   }
 
   //TODO A1: This is only if immediate = true, otherwise we should wait for some kind of read()
@@ -1100,24 +1151,89 @@ unsigned int DTP::delimit(SDUData* sduData)
 
   /* TODO A3 Omitting possible fragmentation step for now  (ie sduData.size() > max_PDU_Size) */
 
-  Data* data = new Data();
-  data->setDataType(DATA_SDU_COMPLETE);
-  data->encapsulate(sduData);
+  /* Fragment, if necessary */
+  std::vector<Data*> dataQ;
+  if(sduData->getByteLength() > state->getMaxFlowPduSize())
+  {
+    int64 length = sduData->getByteLength();
+    Data* data = new Data;
+    data->setDataType(DATA_FIRST_FRAG);
+    data->encapsulate(sduData);
+    data->setEncapMsgLength(length);
+    length -= state->getMaxFlowPduSize();
+    data->setByteLength(state->getMaxFlowPduSize());
+    dataQ.push_back(data);
 
-  PDUData* pduData = new PDUData();
-  pduData->encapsulate(data);
+    for(;length - state->getMaxFlowPduSize() > 0; length -= state->getMaxFlowPduSize())
+    {
+      /* Only the first fragment contains the actual SDUData, other fragments are there only for purpose of modelling */
+      data = new Data;
+      data->setDataType(DATA_MIDDLE_FRAG);
+//      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
+      data->setByteLength(state->getMaxFlowPduSize());
+      dataQ.push_back(data);
+    }
 
-  UserDataField* userDataField = new UserDataField();
-  userDataField->encapsulate(pduData);
-  userDataField->setCompleteSDU(true);
-  userDataField->setNoLength(false);
-  userDataField->setSduSeqNumPresent(true);
-  userDataField->setSduSeqNum(sduSeqNum++);
-
-  userDataFieldQ.push_back(userDataField);
+    data = new Data;
+    data->setDataType(DATA_LAST_FRAG);
+    //      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
+    data->setByteLength(length);
+    dataQ.push_back(data);
 
 
 
+    PDUData* pduData;
+    std::vector<PDUData*> pduDataQ;
+    for(auto it = dataQ.begin(); it != dataQ.end(); it = dataQ.erase(it))
+    {
+      pduData = new PDUData();
+      pduData->encapsulate((*it));
+      pduDataQ.push_back(pduData);
+
+    }
+
+    UserDataField* userDataField;
+    for(auto it = pduDataQ.begin(); it != pduDataQ.end(); it = pduDataQ.erase(it))
+    {
+      userDataField = new UserDataField();
+      userDataField->encapsulate((*it));
+      userDataField->setCompleteSDU((*it)->getCompleteSDU());
+      userDataField->setFirstFragment((*it)->getFirstFragment());
+      userDataField->setMidFragment((*it)->getMidFragment());
+      userDataField->setLastFragment((*it)->getLastFragment());
+      userDataField->setNoLength(false);
+      userDataField->setSduSeqNumPresent(true);
+      userDataField->setSduSeqNum(sduSeqNum);
+      userDataFieldQ.push_back(userDataField);
+    }
+    sduSeqNum++;
+
+  }
+  else
+  {
+
+    Data* data = new Data();
+    data->setDataType(DATA_SDU_COMPLETE);
+    data->encapsulate(sduData);
+
+    PDUData* pduData = new PDUData();
+    pduData->encapsulate(data);
+
+    UserDataField* userDataField = new UserDataField();
+    userDataField->encapsulate(pduData);
+    userDataField->setCompleteSDU(true);
+    userDataField->setNoLength(false);
+    userDataField->setSduSeqNumPresent(true);
+    userDataField->setSduSeqNum(sduSeqNum++);
+
+    userDataFieldQ.push_back(userDataField);
+  }
+
+
+
+
+  //TODO A1 update return statement
+return 1;
 
 //  //TODO B2 Does PDU header counts to MaxFlowPDUSize? edit: yes, it does!
 //  if (sdu->getSize() > state->getMaxFlowPduSize())

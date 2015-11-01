@@ -106,11 +106,11 @@ void RcvrControlAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcp
      dtp->sendAckFlowPDU();
 
      // Send empty Transfer PDU with NextSeqNumToSend-1
-     DataTransferPDU* dataPdu = new DataTransferPDU();
+     DataTransferPDU* dataPdu = new DataTransferPDU("Empty DTPDU");
      dtp->setPDUHeader(dataPdu);
      unsigned int seqNum = dtpState->getNextSeqNumToSendWithoutIncrement() - 1;
      dataPdu->setSeqNum(seqNum);
-     UserDataField* userData = new UserDataField();
+     UserDataField* userData = new UserDataField("Empty UserDataField");
 
 //     dataPdu->setUserDataField(userData);
      dataPdu->encapsulate(userData);

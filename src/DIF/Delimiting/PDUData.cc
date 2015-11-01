@@ -62,6 +62,28 @@ void PDUData::encapsulate(Data* data)
   take(data);
   encapData.push_back(data);
   addByteLength(data->getByteLength());
+  switch(data->getDataType()){
+    case DATA_SDU_COMPLETE:
+    {
+      completeSDU_var = true;
+      break;
+    }
+    case DATA_FIRST_FRAG:
+    {
+      firstFragment_var = true;
+      break;
+    }
+    case DATA_MIDDLE_FRAG:
+    {
+      midFragment_var = true;
+      break;
+    }
+    case DATA_LAST_FRAG:
+    {
+      lastFragment_var = true;
+      break;
+    }
+  }
 
 }
 
