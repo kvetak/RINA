@@ -2,6 +2,8 @@ RINA Simulator
 ====
 
 ###Version changelog
+* <yet-to-be-named 2015> Added support for fragmentation/concatenation in delimiting.
+
 * July-September 2015 - RIBd notifiers, pre-EFCPv6 updates, CDAPProcessingBase interface,
 						merging partner's contribution (namely routing and congestion control),
 						added Hop Count to PDU header  
