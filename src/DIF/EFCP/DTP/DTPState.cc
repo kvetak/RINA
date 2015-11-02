@@ -63,8 +63,8 @@ void DTPState::initialize(int step)
     disp.setTagArg("p", 0, 240);
     disp.setTagArg("p", 1, 50);
 
-    maxFlowSDUSize = par("maxSDUSize");
-    maxFlowPDUSize = par("maxPDUSize");
+    maxFlowSDUSize = getRINAModule<cModule*>(this, 3, {"efcp"})->par("maxSDUSize");
+    maxFlowPDUSize = getRINAModule<cModule*>(this, 3, {"efcp"})->par("maxPDUSize");
 
     rtt = par("rtt");
     if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rtt")){

@@ -60,7 +60,7 @@ class DTP : public cSimpleModule
 
     unsigned int sduSeqNum;
     std::set<unsigned int> sequencingQ;
-    std::vector<SDUData*> sduDataQ;
+    std::vector<SDUData*> sduDataQOut;
     int deletePdu;
     bool pduDroppingEnabled;
     bool rendezvousEnabled;
@@ -79,15 +79,19 @@ class DTP : public cSimpleModule
 
     /* Various queues */
     /* Output queues - from App to RMT */
-    std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
+//    std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
 
-    std::vector<UserDataField*> userDataFieldQ;
+    std::vector<UserDataField*> userDataFieldQOut;
+    std::vector<PDUData*> pduDataQIn;
+//    std::vector<PDUData*> pduDataQOut;
+    std::vector<Data*> dataQOut;
 
 
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
+    DelimitingTimer* delimitingTimer;
 
     /**************** Moved rateFulfilled to FC together with sendingRatetimer **************************/
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */

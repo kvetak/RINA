@@ -38,6 +38,7 @@ enum DTPTimerType
   DTP_A_TIMER = 6;
 //  DTCP_SND_RENDEZ_TIMER = 7;
   DTP_INTERRUPTER_TIMER = 8;
+  DTP_DELIMITING_TIMER = 9;
   
 }
 
@@ -64,6 +65,9 @@ message RcvrInactivityTimer extends InactivityTimer{
     type = DTP_RCVR_INACTIVITY_TIMER;
 }
 
+message DelimitingTimer extends DTPTimers{
+    type = DTP_DELIMITING_TIMER;
+}
 
 //message RxExpiryTimer extends DTPTimers{
 //    type = DTP_RX_EXPIRY_TIMER;

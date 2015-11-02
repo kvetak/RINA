@@ -31,6 +31,8 @@ module EFCPModule
     parameters:
         @display("i=block/layer;bgb=405,261");
         bool interrupter = default(false);
+        int maxSDUSize @unit(B) = default(150000B);
+        int maxPDUSize @unit(B) = default(1500B);
         
     gates:
         //        inout faIo[];
