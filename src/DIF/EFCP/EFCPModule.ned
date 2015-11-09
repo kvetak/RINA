@@ -33,6 +33,7 @@ module EFCPModule
         bool interrupter = default(false);
         int maxSDUSize @unit(B) = default(150000B);
         int maxPDUSize @unit(B) = default(1500B);
+        double delimitDelay @unit(s) = default (0s);
         
     gates:
         //        inout faIo[];

@@ -1306,10 +1306,11 @@ unsigned int DTP::delimit(SDUData* sduData)
       pduData->encapsulate(data);
       pduDataQIn.push_back(pduData);
 
-      if(!delimitingTimer->isScheduled())
-      {
-        scheduleAt(simTime() + 0.15, delimitingTimer);
-      }
+      schedule(delimitingTimer);
+//      if(!delimitingTimer->isScheduled())
+//      {
+//        scheduleAt(simTime() + 0.15, delimitingTimer);
+//      }
 
       return 0;
 
@@ -1385,10 +1386,12 @@ unsigned int DTP::delimit(SDUData* sduData)
 
 //        pduDataQIn.push_back(pduData);
 
-        if(!delimitingTimer->isScheduled())
-        {
-          scheduleAt(simTime() + 0.15, delimitingTimer);
-        }
+        schedule(delimitingTimer);
+
+//        if(!delimitingTimer->isScheduled())
+//        {
+//          scheduleAt(simTime() + 0.15, delimitingTimer);
+//        }
 
 
 
@@ -2003,7 +2006,7 @@ void DTP::clearRxQ()
 
 void DTP::schedule(DTPTimers *timer, double time)
 {
-
+  //TODO A1 Can't have MPL = 0
   double MPL = (state->getMPL() > 0) ? state->getMPL() : 0;
 
 //    (state->isDtcpPresent() && dtcp->dtcpState->isRxPresent() )? dtcp->getDataReXmitMax() : 0;
@@ -2026,6 +2029,11 @@ void DTP::schedule(DTPTimers *timer, double time)
 
       scheduleAt(simTime() + A, timer);
       break;
+    case (DTP_DELIMITING_TIMER):
+        if(!timer->isScheduled()){
+          scheduleAt(simTime() + state->getDelimitDelay(), timer);
+        }
+     break;
   }
 }
 
