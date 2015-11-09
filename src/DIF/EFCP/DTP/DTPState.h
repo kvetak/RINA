@@ -72,6 +72,7 @@ private:
     unsigned int seqNumRollOverThresh;
     int state;
     bool dtcpPresent; /*!<a Boolean that indicates whether this connection is using DTCP. */
+    double delimitDelay;
 
     /* Move to DTCPState! */
 
@@ -204,6 +205,8 @@ public:
     ATimer* getTmpAtimer() const;
     void setTmpAtimer(ATimer* tmpAtimer);
     void resetRcvVars();
+    double getDelimitDelay() const;
+    void setDelimitDelay(double delimitDelay);
 
     /* End dirty hacks */
 

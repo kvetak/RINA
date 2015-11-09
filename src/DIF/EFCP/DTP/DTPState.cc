@@ -63,8 +63,9 @@ void DTPState::initialize(int step)
     disp.setTagArg("p", 0, 240);
     disp.setTagArg("p", 1, 50);
 
-    maxFlowSDUSize = getRINAModule<cModule*>(this, 3, {"efcp"})->par("maxSDUSize");
-    maxFlowPDUSize = getRINAModule<cModule*>(this, 3, {"efcp"})->par("maxPDUSize");
+    maxFlowSDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxSDUSize");
+    maxFlowPDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxPDUSize");
+    delimitDelay = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("delimitDelay");
 
     rtt = par("rtt");
     if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rtt")){
@@ -107,6 +108,7 @@ void DTPState::initDefaults(){
   ecnSet = false;
 
   blockingPort = false;
+  delimitDelay = 0.0;
 
 }
 
@@ -517,4 +519,13 @@ void DTPState::setTmpAtimer(ATimer* tmpAtimer)
   this->tmpAtimer = tmpAtimer;
 }
 
+double DTPState::getDelimitDelay() const
+{
+  return delimitDelay;
+}
+
+void DTPState::setDelimitDelay(double delimitDelay)
+{
+  this->delimitDelay = delimitDelay;
+}
 /* End dirty hacks */
