@@ -105,7 +105,7 @@ void RMTPort::handleMessage(cMessage* msg)
               delete sduData;
                 // get a proper queue for this message
                 std::string queueID =
-                        queueIdGen->generateInputQueueID((PDU*)msg);
+                        queueIdGen->generateInputQueueID(pdu);
 
                 RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
 
