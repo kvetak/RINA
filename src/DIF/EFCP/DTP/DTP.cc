@@ -701,13 +701,17 @@ void DTP::fillFlowControlPDU(FlowControlPDU* flowControlPdu)
  */
 void DTP::sendAckFlowPDU(unsigned int seqNum, bool seqNumValid)
 {
-  Enter_Method_Silent
-  ();
+  Enter_Method_Silent();
+
+  if(!state->isDtcpPresent()){
+    return;
+  }
 
   if (!seqNumValid)
   {
     seqNum = state->getRcvLeftWinEdge();
   }
+
 
   if (dtcp->dtcpState->isFCPresent() && dtcp->dtcpState->isRxPresent())
   {
@@ -1229,10 +1233,6 @@ void DTP::handleDTPATimer(ATimer* timer)
 
 unsigned int DTP::delimit(SDUData* sduData)
 {
-
-
-
-
   /* Fragment, if necessary */
   std::vector<Data*> dataQ;
   if(sduData->getByteLength() > state->getMaxFlowPduSize())
@@ -1307,10 +1307,6 @@ unsigned int DTP::delimit(SDUData* sduData)
       pduDataQIn.push_back(pduData);
 
       schedule(delimitingTimer);
-//      if(!delimitingTimer->isScheduled())
-//      {
-//        scheduleAt(simTime() + 0.15, delimitingTimer);
-//      }
 
       return 0;
 
@@ -1388,20 +1384,12 @@ unsigned int DTP::delimit(SDUData* sduData)
 
         schedule(delimitingTimer);
 
-//        if(!delimitingTimer->isScheduled())
-//        {
-//          scheduleAt(simTime() + 0.15, delimitingTimer);
-//        }
-
-
-
-
       }
     }
   }
   else
   {
-
+    cancelEvent(delimitingTimer);
 
     UserDataField* userDataField;
     for(auto it = pduDataQIn.begin(); it != pduDataQIn.end(); it = pduDataQIn.erase(it))
@@ -1417,8 +1405,6 @@ unsigned int DTP::delimit(SDUData* sduData)
       userDataField->setSduSeqNum(sduSeqNum);
       userDataFieldQOut.push_back(userDataField);
 
-
-      trySendGenPDUs(state->getGeneratedPDUQ());
     }
     sduSeqNum++;
 
@@ -1429,7 +1415,7 @@ unsigned int DTP::delimit(SDUData* sduData)
     PDUData* pduData = new PDUData();
     pduData->encapsulate(data);
 
-    pduDataQIn.push_back(pduData);
+//    pduDataQIn.push_back(pduData);
 
     userDataField = new UserDataField();
     userDataField->encapsulate(pduData);
@@ -1439,6 +1425,8 @@ unsigned int DTP::delimit(SDUData* sduData)
     userDataField->setSduSeqNum(sduSeqNum++);
 
     userDataFieldQOut.push_back(userDataField);
+
+    trySendGenPDUs(state->getGeneratedPDUQ());
   }
 
 
