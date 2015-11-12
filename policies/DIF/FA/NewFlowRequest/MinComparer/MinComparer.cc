@@ -104,12 +104,11 @@ bool MinComparer::run(Flow& flow) {
     //XXX: Vesely->Gaixas: Please, check following cost variable value and overall functionality of this comparer
     double cost = DBL_MAX;
     QoSCube qs;
-
     for (QCubeCItem it = cubes.begin(); it != cubes.end(); ++it) {
         if(it->getQosId() == VAL_MGMTQOSID) { continue; }
 
         if( isFeasibility(flow.getQosRequirements(), *it) ){
-            double tmpscore = flow.getQosRequirements().getCostBits();
+            double tmpscore = it->getCostBits();
             if (cost > tmpscore) {
                 cost = tmpscore;
                 qosid = it->getQosId();
@@ -117,6 +116,7 @@ bool MinComparer::run(Flow& flow) {
             }
         }
     }
+
     flow.getConnectionId().setQoSId(qosid);
     flow.setQosCube(qs);
     return qosid.compare(VAL_UNDEF_QOSID) ? true : false;

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+    <ConnectionSet>
+            <!-- Allocate management flows. -->
+            <SimTime t="0">
+                <Connection src="0_NET" dst="1_NET" qosReq="10"/>
+                <Connection src="0_NET" dst="2_NET" qosReq="9"/>
+                <Connection src="1_NET" dst="3_NET" qosReq="10"/>
+                <Connection src="1_NET" dst="4_NET" qosReq="8"/>
+                <Connection src="2_NET" dst="3_NET" qosReq="9"/>
+                <Connection src="2_NET" dst="6_NET" qosReq="10"/>
+                <Connection src="3_NET" dst="4_NET" qosReq="7"/>
+                <Connection src="3_NET" dst="5_NET" qosReq="8"/>
+                <Connection src="3_NET" dst="6_NET" qosReq="10"/>
+                <Connection src="4_NET" dst="5_NET" qosReq="9"/>
+                <Connection src="5_NET" dst="6_NET" qosReq="10"/>
+                <Connection src="5_NET" dst="7_NET" qosReq="7"/>
+                <Connection src="6_NET" dst="7_NET" qosReq="9"/>
+            </SimTime>
+    </ConnectionSet>

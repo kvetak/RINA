@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+	<QOS_BW>	
+		<QoS id="A1-1" bw="1000" />
+		<QoS id="A1-2" bw="2000" />
+		<QoS id="A1-3" bw="3000" />
+		<QoS id="A1-4" bw="4000" />
+		<QoS id="A1-5" bw="5000" />
+		<QoS id="A1-6" bw="6000" />
+		<QoS id="A1-7" bw="7000" />
+		<QoS id="A1-8" bw="8000" />
+		<QoS id="A1-9" bw="9000" />
+		<QoS id="A1-10" bw="10000" />
+	</QOS_BW>

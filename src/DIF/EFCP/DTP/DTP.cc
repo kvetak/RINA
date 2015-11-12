@@ -166,6 +166,15 @@ void DTP::initialize(int step)
 
 }
 
+
+void DTP::finish()
+{
+    if(delimitingTimer->getOwner() == this) {
+        delete delimitingTimer;
+    }
+}
+
+
 void DTP::initGates()
 {
   northI = this->gateHalf(GATE_DTP_NORTHIO, cGate::INPUT);

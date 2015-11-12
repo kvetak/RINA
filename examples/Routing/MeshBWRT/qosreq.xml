@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+	<QoSReqSet>	
+		<QosReq id="1">
+			<AverageBandwidth>1000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="2">
+			<AverageBandwidth>2000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="3">
+			<AverageBandwidth>3000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="4">
+			<AverageBandwidth>4000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="5">
+			<AverageBandwidth>5000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="6">
+			<AverageBandwidth>6000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="7">
+			<AverageBandwidth>7000</AverageBandwidth>	
+		</QosReq>
+		
+		<QosReq id="8">
+			<AverageBandwidth>8000</AverageBandwidth>	
+		</QosReq>
+	
+		<QosReq id="9">
+			<AverageBandwidth>9000</AverageBandwidth>	
+		</QosReq>
+	
+		<QosReq id="10">
+			<AverageBandwidth>10000</AverageBandwidth>	
+		</QosReq>
+	</QoSReqSet>
+	

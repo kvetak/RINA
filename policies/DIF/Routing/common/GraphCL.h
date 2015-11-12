@@ -65,21 +65,21 @@ public:
 
         map<string, nhLMetric<T>  > res = getNextHops (root, infMetric);
 
-        EV << "Print tree : " << endl;
-        EV << "" << root << " (0) " << endl;
+        cout << "Print tree : " << endl;
+        cout << "" << root << " (0) " << endl;
 
         for(TNode * n : nodes[root].childs){
             printRecursive(n->name, 0);
         }
 
-        EV << endl;
-        EV << "Print nextHops : "<< endl;
+        cout << endl;
+        cout << "Print nextHops : "<< endl;
         for(auto n : res) {
-            EV << n.first << " (" << n.second.metric << ") ::";
+            cout << n.first << " (" << n.second.metric << ") ::";
             for (string d : n.second.nh) {
-                EV << " <" << d << ">";
+                cout << " <" << d << ">";
             }
-            EV << endl;
+            cout << endl;
         }
     }
 
@@ -152,7 +152,7 @@ protected:
     void printRecursive(const string & node, const int & index) {
         for(int i = 0; i< index; i++) { EV << "  "; }
 
-        EV << "|-" << node << " ("<< nodes[node].metric << ") " << endl;
+        cout << "|-" << node << " ("<< nodes[node].metric << ") " << endl;
 
         for(TNode * n : nodes[node].childs){
             printRecursive(n->name, index + 1);

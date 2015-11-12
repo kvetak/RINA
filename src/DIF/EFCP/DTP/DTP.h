@@ -259,6 +259,7 @@ class DTP : public cSimpleModule
   protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
+    virtual void finish();
     int numInitStages() const
     {
       return 2;
