@@ -61,17 +61,27 @@ void IRM::handleMessage(cMessage* msg) {
         bool isGoingUp = false;
         cGate* g = ConTable->findOutputGate(msg->getArrivalGate(), isGoingUp);
         //Send out if gate exist
-
+        cPacket* packet = dynamic_cast<cPacket*>(msg);
+        cPacket* outPacket;
         if (g) {
             if (isGoingUp) {
                 statPassUp++;
                 emit(sigStatIRMPassUp, true);
+                outPacket = packet->decapsulate();
+                delete packet;
             }
-            else {
+            else
+            {
                 statPassDown++;
                 emit(sigStatIRMPassDown, true);
+                SDUData* sduData = new SDUData();
+                sduData->encapsulate(packet);
+                outPacket = sduData;
             }
-            send(msg, g);
+
+
+            send(outPacket, g);
+
         }
         else {
             EV << "Received message but destination gate is not in the ConnectionTable!" << endl;

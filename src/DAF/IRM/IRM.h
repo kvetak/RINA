@@ -32,6 +32,7 @@
 #include "DA.h"
 #include "FABase.h"
 #include "ExternConsts.h"
+#include "SDUData_m.h"
 
 extern const int VAL_UNDEF_HANDLE;
 extern const char* SIG_STAT_IRM_UP;
