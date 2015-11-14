@@ -99,7 +99,7 @@ class RA : public RABase
     QoSReq mgmtReqs;
 
     void initQoSCubes();
-    QoSReq* initQoSReqById(unsigned short id);
+    QoSReq* initQoSReqById(const char* id);
     void initSignalsAndListeners();
     void initFlowAlloc();
     void setRMTMode();
