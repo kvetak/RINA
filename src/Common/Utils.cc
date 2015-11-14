@@ -65,3 +65,13 @@ bool isPrefix(std::string prefix, std::string s) {
     }
     return std::mismatch(prefix.begin(), prefix.end(), s.begin()).first == prefix.end();
 }
+
+void setPolicyDisplayString(cModule* mod, const char* str)
+{
+    if (ev.isGUI())
+    {
+        cDisplayString& disp = mod->getDisplayString();
+        disp.setTagArg("t", 1, "t");
+        disp.setTagArg("t", 0, (str == nullptr ? mod->getClassName() : str));
+    }
+}
