@@ -60,7 +60,6 @@ class DTP : public cSimpleModule
 
     unsigned int sduSeqNum;
     std::set<unsigned int> sequencingQ;
-    std::vector<SDUData*> sduDataQOut;
     int deletePdu;
     bool pduDroppingEnabled;
     bool rendezvousEnabled;
@@ -78,20 +77,18 @@ class DTP : public cSimpleModule
     RTTEstimatorPolicyBase* rttEstimatorPolicy;
 
     /* Various queues */
-    /* Output queues - from App to RMT */
-//    std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
+
 
     std::vector<UserDataField*> userDataFieldQOut;
-    std::vector<PDUData*> pduDataQIn;
-//    std::vector<PDUData*> pduDataQOut;
-    std::vector<Data*> dataQOut;
+
+
 
 
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
-    DelimitingTimer* delimitingTimer;
+
 
     /**************** Moved rateFulfilled to FC together with sendingRatetimer **************************/
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */
@@ -119,7 +116,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromUp(SDUData* sduData);
+    void handleMsgFromUp(UserDataField* userDataField);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -222,7 +219,7 @@ class DTP : public cSimpleModule
 //    bool readImmediate(int portId, unsigned char* buffer, int len);
 //    bool write(int portId, unsigned char *buffer, int len);
 
-    void delimitFromRMT(DataTransferPDU* pdu);
+    void delimitFromRMT();
     void svUpdate(unsigned int seqNum);
 
     void setFlow(const Flow* flow);

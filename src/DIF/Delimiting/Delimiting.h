@@ -31,12 +31,11 @@
 #define DELIMITING_H_
 
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
-#include "SDU.h"
-#include "DataTransferPDU_m.h"
 #include "SDUData_m.h"
-#include "PDUData.h"
-//#include <csimplemodule.h>
+#include "UserDataField.h"
+#include "Utils.h"
+#include "ExternConsts.h"
+#include "DelimitingTimers_m.h"
 
 #define DELIMITING_MODULE_NAME "delimiting"
 
@@ -52,10 +51,31 @@ class Delimiting : public cSimpleModule
     cGate* southI;
     cGate* southO;
 
-    unsigned int seqNum;
+    /* Timers */
+    DelimitingDelimitTimer* delimitingTimer;
+
+    /* Queues for data passing from EFCPI (down) to FAI (up) */
+    std::vector<UserDataField*> userDataFieldQIn;
+    std::vector<Data*> dataQIn;
+    std::vector<SDUData*> sduDataQIn;
+
+
+    /* Queues for data passing from FAI (up) to EFCPI (down) */
+    std::vector<PDUData*> pduDataQOut;
+
+
+
+    unsigned int sduSeqNum;
+    unsigned int maxFlowSDUSize;
+    unsigned int maxFlowPDUSize;
+    double delimitDelay;
+
+
 
     void processMsgFromFAI(SDUData* msg);
     void handleMsgFromEfcpi(UserDataField* msg);
+
+    void schedule(DelimitingTimers* timer);
   public:
     Delimiting();
     virtual ~Delimiting();

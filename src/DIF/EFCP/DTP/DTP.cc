@@ -33,7 +33,7 @@ DTP::DTP()
 
   rcvrInactivityTimer = nullptr;
   senderInactivityTimer = nullptr;
-  delimitingTimer = nullptr;
+
 
   rcvrInactivityPolicy = nullptr;
   senderInactivityPolicy = nullptr;
@@ -114,7 +114,7 @@ void DTP::initialize(int step)
 
     senderInactivityTimer = new SenderInactivityTimer();
     rcvrInactivityTimer = new RcvrInactivityTimer();
-    delimitingTimer = new DelimitingTimer();
+
 
     rendezvousEnabled = getModuleByPath(".^.^.efcp")->par("rendezvousEnabled").boolValue();
 
@@ -213,12 +213,6 @@ void DTP::flushAllQueuesAndPrepareToDie()
   cancelAndDelete(rcvrInactivityTimer);
   rcvrInactivityTimer = nullptr;
 
-  cancelAndDelete(delimitingTimer);
-  delimitingTimer = nullptr;
-
-//    if(state->isDtcpPresent()){
-//      delete dtcp;
-//    }
 
 }
 
@@ -355,28 +349,6 @@ void DTP::handleMessage(cMessage *msg)
 
       }
 
-      case (DTP_DELIMITING_TIMER): {
-
-        UserDataField* userDataField;
-        for(auto it = pduDataQIn.begin(); it != pduDataQIn.end(); it = pduDataQIn.erase(it))
-        {
-          userDataField = new UserDataField();
-          userDataField->encapsulate((*it));
-          userDataField->setCompleteSDU((*it)->getCompleteSDU());
-          userDataField->setFirstFragment((*it)->getFirstFragment());
-          userDataField->setMidFragment((*it)->getMidFragment());
-          userDataField->setLastFragment((*it)->getLastFragment());
-          userDataField->setNoLength(false);
-          userDataField->setSduSeqNumPresent(true);
-          userDataField->setSduSeqNum(sduSeqNum);
-          userDataFieldQOut.push_back(userDataField);
-
-          generatePDUsnew();
-          trySendGenPDUs(state->getGeneratedPDUQ());
-        }
-        break;
-      }
-
     }
   }
   else
@@ -386,7 +358,7 @@ void DTP::handleMessage(cMessage *msg)
     if (msg->arrivedOn(northI->getId()))
     {
 
-      handleMsgFromUp(static_cast<SDUData*>(msg));
+      handleMsgFromUp(static_cast<UserDataField*>(msg));
 
     }
     else if (msg->arrivedOn(southI->getId()))
@@ -441,11 +413,12 @@ void DTP::generateDTPDU(UserDataField* userDataField)
  * tries to send it to RMT.
  * @param sdu
  */
-void DTP::handleMsgFromUp(SDUData* sduData)
+void DTP::handleMsgFromUp(UserDataField* userDataField)
 {
   cancelEvent(senderInactivityTimer);
 
-  delimit(sduData);
+//  delimit(sduData);
+  userDataFieldQOut.push_back(userDataField);
 
   generatePDUsnew();
 
@@ -471,7 +444,7 @@ void DTP::addPDUToReassemblyQ(DataTransferPDU* pdu)
  * For now, this method passes only complete, in-order SDUs to the upper flow.
  * @param pdu Can be nullptr.
  */
-void DTP::delimitFromRMT(DataTransferPDU* pdu)
+void DTP::delimitFromRMT()
 {
   Enter_Method_Silent();
   PDUQ_t* pduQ = state->getReassemblyPDUQ();
@@ -480,143 +453,10 @@ void DTP::delimitFromRMT(DataTransferPDU* pdu)
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
 
 
-    userDataFieldQOut.push_back(static_cast<UserDataField*>((*it)->decapsulate()));
-//    send(userData->decapsulate(), northO);
-//    delete userData;
+    send((*it)->decapsulate(), northO);
     delete (*it);
     it = pduQ->erase(it);
   }
-
-  PDUData* pduData;
-  for(auto it = userDataFieldQOut.begin(); it != userDataFieldQOut.end(); it = userDataFieldQOut.erase(it))
-  {
-    pduData = static_cast<PDUData*>((*it)->decapsulate());
-    Data* data;
-    for(; (data = pduData->decapsulate()) != nullptr; ){
-      dataQOut.push_back(data);
-    }
-    delete (*it);
-    delete pduData;
-  }
-
-  for(auto it = dataQOut.begin(); it != dataQOut.end(); it = dataQOut.erase(it))
-  {
-    if((*it)->getDataType() == DATA_SDU_COMPLETE)
-    {
-      SDUData* sduData = dynamic_cast<SDUData*>((*it)->decapsulate());
-      if (sduData != nullptr)
-      {
-        sduDataQOut.push_back(sduData);
-      }
-      delete (*it);
-    }
-    else if ((*it)->getDataType() == DATA_FIRST_FRAG)
-    {
-      /* Try to find lastFragment */
-      auto tmpIt = it;
-      tmpIt++;
-      bool found = false;
-      for(; tmpIt != dataQOut.end(); ++tmpIt){
-        if((*tmpIt)->getDataType() == DATA_LAST_FRAG){
-          found = true;
-          break;
-        }
-      }
-
-      if(found){
-        SDUData* sduData = dynamic_cast<SDUData*>((*it)->decapsulate());
-        if (sduData != nullptr)
-        {
-          sduDataQOut.push_back(sduData);
-        }
-        delete (*it);
-        it = dataQOut.erase(it);
-
-        for(; it != dataQOut.end() && ((*it)->getDataType() == DATA_MIDDLE_FRAG || (*it)->getDataType() == DATA_LAST_FRAG); it = dataQOut.erase(it))
-        {
-          /* All the middle and the last fragments are empty */
-          delete (*it);
-        }
-      }
-
-    }
-  }
-//
-//  for(auto it = userDataFieldQOut.begin(); it != userDataFieldQOut.end();)
-//  {
-//    if((*it)->getCompleteSDU() && !((*it)->getFirstFragment() || (*it)->getMidFragment() || (*it)->getLastFragment()))
-//    {
-//      /* One PDUData = one complete SDU */
-//
-//      PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
-//      Data* data = pduData->decapsulate();
-//      SDUData* sduData = dynamic_cast<SDUData*>(data->decapsulate());
-//      if (sduData != nullptr)
-//      {
-//        sduDataQOut.push_back(sduData);
-//      }
-//
-//      delete (*it);
-//      delete pduData;
-//      delete data;
-//
-//
-//      it = userDataFieldQOut.erase(it);
-//      continue;
-//
-//    }
-//    else if((*it)->getFirstFragment())
-//    {
-//      /* Try to find lastFragment */
-//      auto tmpIt = it;
-//      tmpIt++;
-//      bool found = false;
-//      for(; tmpIt != userDataFieldQOut.end(); ++tmpIt){
-//        if((*tmpIt)->getLastFragment()){
-//          found = true;
-//          break;
-//        }
-//      }
-//
-//      if(found){
-//        PDUData* pduData = static_cast<PDUData*>((*it)->decapsulate());
-//        Data* data = pduData->decapsulate();
-//        data->setByteLength(data->getEncapMsgLength());
-//        SDUData* sduData = dynamic_cast<SDUData*>(data->decapsulate());
-//        if (sduData != nullptr)
-//        {
-//          sduDataQOut.push_back(sduData);
-//        }
-//
-//        delete (*it);
-//        delete pduData;
-//        delete data;
-//        it = userDataFieldQOut.erase(it);
-//
-//        for(; it != userDataFieldQOut.end() && ((*it)->getMidFragment() || (*it)->getLastFragment()); it = userDataFieldQOut.erase(it))
-//        {
-//          /* All the middle and the last fragments are empty */
-//          delete (*it);
-//
-//        }
-//      }
-//      else
-//      {
-//        break;
-//      }
-//    }
-//    else
-//    {
-//      /* Currently no other combination is supported */
-//      throw cRuntimeError("Unsupported fragment combination");
-//    }
-//  }
-
-  //TODO A1: This is only if immediate = true, otherwise we should wait for some kind of read()
-  for(auto it = sduDataQOut.begin(); it != sduDataQOut.end(); it = sduDataQOut.erase(it)){
-    send((*it), northO);
-  }
-
 
 }
 
@@ -1010,7 +850,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
     bubble("Received PDU with DRF set");
     /* Case 1) DRF is set - either first PDU or new run */
 
-    delimitFromRMT(nullptr);
+    delimitFromRMT();
 
     //Flush the PDUReassemblyQueue
     flushReassemblyPDUQ();
@@ -1041,7 +881,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
       state->setRcvLeftWinEdge(pdu->getSeqNum());
       //TODO A2: No A-Timer?
     }
-    delimitFromRMT(nullptr);
+    delimitFromRMT();
 
     schedule(rcvrInactivityTimer);
 
@@ -1098,7 +938,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
           /* No A-Timer necessary, already running */
         }
 
-        delimitFromRMT(nullptr);
+        delimitFromRMT();
         schedule(rcvrInactivityTimer);
         return;
       }
@@ -1130,7 +970,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
         startATimer(pdu->getSeqNum());
       }
 
-      delimitFromRMT(nullptr);/* Create as many whole SDUs as possible */
+      delimitFromRMT();/* Create as many whole SDUs as possible */
 
       schedule(rcvrInactivityTimer);
 
@@ -1161,7 +1001,7 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
           startATimer(state->getMaxSeqNumRcvd());
         }
 
-        delimitFromRMT(pdu);
+        delimitFromRMT();
         schedule(rcvrInactivityTimer);
 
       }
@@ -1227,7 +1067,7 @@ void DTP::handleDTPATimer(ATimer* timer)
     }
 
     //Invoke delimiting
-    delimitFromRMT(nullptr);
+    delimitFromRMT();
 
     //reset SenderInactivity timer
     resetSenderInactivTimer();
@@ -1236,203 +1076,6 @@ void DTP::handleDTPATimer(ATimer* timer)
 
 unsigned int DTP::delimit(SDUData* sduData)
 {
-  /* Fragment, if necessary */
-  std::vector<Data*> dataQ;
-  if(sduData->getByteLength() > state->getMaxFlowPduSize())
-  {
-    int64 length = sduData->getByteLength();
-    Data* data = new Data;
-    data->setDataType(DATA_FIRST_FRAG);
-    data->encapsulate(sduData);
-    data->setEncapMsgLength(length);
-    length -= state->getMaxFlowPduSize();
-    data->setByteLength(state->getMaxFlowPduSize());
-    dataQ.push_back(data);
-
-    for(;length - state->getMaxFlowPduSize() > 0; length -= state->getMaxFlowPduSize())
-    {
-      /* Only the first fragment contains the actual SDUData, other fragments are there only for purpose of modelling */
-      data = new Data;
-      data->setDataType(DATA_MIDDLE_FRAG);
-//      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
-      data->setByteLength(state->getMaxFlowPduSize());
-      dataQ.push_back(data);
-    }
-
-    data = new Data;
-    data->setDataType(DATA_LAST_FRAG);
-    //      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
-    data->setByteLength(length);
-    dataQ.push_back(data);
-
-
-
-    PDUData* pduData;
-//    std::vector<PDUData*> pduDataQIn;
-    for(auto it = dataQ.begin(); it != dataQ.end(); it = dataQ.erase(it))
-    {
-      pduData = new PDUData();
-      pduData->encapsulate((*it));
-      pduDataQIn.push_back(pduData);
-
-    }
-
-    UserDataField* userDataField;
-    for(auto it = pduDataQIn.begin(); it != pduDataQIn.end(); it = pduDataQIn.erase(it))
-    {
-      userDataField = new UserDataField();
-      userDataField->encapsulate((*it));
-      userDataField->setCompleteSDU((*it)->getCompleteSDU());
-      userDataField->setFirstFragment((*it)->getFirstFragment());
-      userDataField->setMidFragment((*it)->getMidFragment());
-      userDataField->setLastFragment((*it)->getLastFragment());
-      userDataField->setNoLength(false);
-      userDataField->setSduSeqNumPresent(true);
-      userDataField->setSduSeqNum(sduSeqNum);
-      userDataFieldQOut.push_back(userDataField);
-    }
-    sduSeqNum++;
-
-  }
-  else if(sduData->getByteLength() < state->getMaxFlowPduSize() * 0.8)
-  {
-    /* Concatenation */
-
-
-    if (pduDataQIn.empty())
-    {
-      Data* data = new Data();
-      data->setDataType(DATA_SDU_COMPLETE);
-      data->encapsulate(sduData);
-
-      PDUData* pduData = new PDUData();
-      pduData->encapsulate(data);
-      pduDataQIn.push_back(pduData);
-
-      schedule(delimitingTimer);
-
-      return 0;
-
-    }else{
-
-      PDUData* pduData = pduDataQIn.back();
-      int64 pduDatalength = pduData->getByteLength();
-      int64 restLength = state->getMaxFlowPduSize() - pduDatalength;
-
-      if(restLength < sduData->getByteLength())
-      {
-        //We need to fragment
-        int64 length = sduData->getByteLength();
-        Data* data = new Data();
-        data->setDataType(DATA_FIRST_FRAG);
-        data->encapsulate(sduData);
-        data->setEncapMsgLength(length);
-        data->setByteLength(restLength);
-
-        length -= restLength;
-
-        pduData->encapsulate(data);
-
-        for(;length - state->getMaxFlowPduSize() > 0; length -= state->getMaxFlowPduSize())
-        {
-          data = new Data;
-          data->setDataType(DATA_MIDDLE_FRAG);
-          //      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
-          data->setByteLength(state->getMaxFlowPduSize());
-          dataQ.push_back(data);
-        }
-
-        data = new Data;
-        data->setDataType(DATA_LAST_FRAG);
-        //      data->encapsulate(sduData->dup()); // Uncomment this line if you want copy of SDUData in every fragment
-        data->setByteLength(length);
-        dataQ.push_back(data);
-
-        for(auto it = dataQ.begin(); it != dataQ.end(); it = dataQ.erase(it))
-        {
-          pduData = new PDUData();
-          pduData->encapsulate((*it));
-          pduDataQIn.push_back(pduData);
-
-        }
-
-        UserDataField* userDataField;
-        for(auto it = pduDataQIn.begin(); it != pduDataQIn.end() && ((*it)->getByteLength() > state->getMaxFlowPduSize() * 0.8 && pduDataQIn.size() > 1); it = pduDataQIn.erase(it))
-        {
-          userDataField = new UserDataField();
-          userDataField->encapsulate((*it));
-          userDataField->setCompleteSDU((*it)->getCompleteSDU());
-          userDataField->setFirstFragment((*it)->getFirstFragment());
-          userDataField->setMidFragment((*it)->getMidFragment());
-          userDataField->setLastFragment((*it)->getLastFragment());
-          userDataField->setNoLength(false);
-          userDataField->setSduSeqNumPresent(true);
-          userDataField->setSduSeqNum(sduSeqNum);
-          userDataFieldQOut.push_back(userDataField);
-        }
-//        sduSeqNum++; //
-
-      }
-      else
-      {
-        //It fits!
-        Data* data = new Data();
-        data->setDataType(DATA_SDU_COMPLETE);
-        data->encapsulate(sduData);
-
-//        pduData = new PDUData();
-        pduData->encapsulate(data);
-
-//        pduDataQIn.push_back(pduData);
-
-        schedule(delimitingTimer);
-
-      }
-    }
-  }
-  else
-  {
-    cancelEvent(delimitingTimer);
-
-    UserDataField* userDataField;
-    for(auto it = pduDataQIn.begin(); it != pduDataQIn.end(); it = pduDataQIn.erase(it))
-    {
-      userDataField = new UserDataField();
-      userDataField->encapsulate((*it));
-      userDataField->setCompleteSDU((*it)->getCompleteSDU());
-      userDataField->setFirstFragment((*it)->getFirstFragment());
-      userDataField->setMidFragment((*it)->getMidFragment());
-      userDataField->setLastFragment((*it)->getLastFragment());
-      userDataField->setNoLength(false);
-      userDataField->setSduSeqNumPresent(true);
-      userDataField->setSduSeqNum(sduSeqNum);
-      userDataFieldQOut.push_back(userDataField);
-
-    }
-    sduSeqNum++;
-
-    Data* data = new Data();
-    data->setDataType(DATA_SDU_COMPLETE);
-    data->encapsulate(sduData);
-
-    PDUData* pduData = new PDUData();
-    pduData->encapsulate(data);
-
-//    pduDataQIn.push_back(pduData);
-
-    userDataField = new UserDataField();
-    userDataField->encapsulate(pduData);
-    userDataField->setCompleteSDU(true);
-    userDataField->setNoLength(false);
-    userDataField->setSduSeqNumPresent(true);
-    userDataField->setSduSeqNum(sduSeqNum++);
-
-    userDataFieldQOut.push_back(userDataField);
-
-    trySendGenPDUs(state->getGeneratedPDUQ());
-  }
-
-
 
 
   //TODO A1 update return statement
@@ -2020,11 +1663,11 @@ void DTP::schedule(DTPTimers *timer, double time)
 
       scheduleAt(simTime() + A, timer);
       break;
-    case (DTP_DELIMITING_TIMER):
-        if(!timer->isScheduled()){
-          scheduleAt(simTime() + state->getDelimitDelay(), timer);
-        }
-     break;
+//    case (DTP_DELIMITING_TIMER):
+//        if(!timer->isScheduled()){
+//          scheduleAt(simTime() + state->getDelimitDelay(), timer);
+//        }
+//     break;
   }
 }
 

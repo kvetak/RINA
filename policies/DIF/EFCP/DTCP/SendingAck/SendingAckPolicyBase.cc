@@ -53,7 +53,7 @@ void SendingAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpStat
 //  dtpState->updateRcvLWE(dtpState->getTmpAtimer()->getSeqNum());
 
   //Invoke Delimiting
-  dtp->delimitFromRMT(NULL);
+  dtp->delimitFromRMT();
 
   //resetSenderInactivity
   dtp->resetSenderInactivTimer();
