@@ -25,7 +25,7 @@
 
 Define_Module(DummyMonitor);
 
-void DummyMonitor::onMessageArrival(RMTQueue* queue)
+void DummyMonitor::postPDUInsertion(RMTQueue* queue)
 {
 }
 

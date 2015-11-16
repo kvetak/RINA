@@ -29,7 +29,7 @@
 class DummyMonitor : public RMTQMonitorBase
 {
   public:
-    virtual void onMessageArrival(RMTQueue* queue);
+    virtual void postPDUInsertion(RMTQueue* queue);
 };
 
 #endif /* DUMMYMONITOR_H_ */
