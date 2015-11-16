@@ -33,14 +33,14 @@ network DCCongestion
     types:
         channel FastChannel extends ned.DatarateChannel {
             @defaultname(FChan);            
-            datarate = 100Mbps;
-            delay = 100us;
+            datarate = 2Mbps;
+            delay = 1ms;
             ber = 0;
         }
         channel SlowChannel extends ned.DatarateChannel {
             @defaultname(SChan);
-            datarate = 100Mbps;
-            delay = 10us;
+            datarate = 1Mbps;
+            delay = 1ms;
             ber = 0;
         }
         	
