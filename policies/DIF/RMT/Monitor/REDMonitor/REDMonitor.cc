@@ -41,7 +41,7 @@ void REDMonitor::preQueueRemoval(RMTQueue* queue)
 }
 
 
-void REDMonitor::onMessageArrival(RMTQueue* queue)
+void REDMonitor::postPDUInsertion(RMTQueue* queue)
 {
     int length = queue->getLength();
 

@@ -35,8 +35,8 @@ class WeightedFairQMonitor : public RMTQMonitorBase
 {
   public:
     virtual void onPolicyInit();
-    virtual void onMessageArrival(RMTQueue* queue);
-    virtual void onMessageDeparture(RMTQueue* queue);
+    virtual void postPDUInsertion(RMTQueue* queue);
+    virtual void postPDURelease(RMTQueue* queue);
     virtual void onMessageDrop(RMTQueue* queue, const cPacket* pdu);
     virtual void postQueueCreation(RMTQueue* queue);
     virtual void preQueueRemoval(RMTQueue* queue);
