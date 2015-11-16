@@ -159,37 +159,48 @@ void RA::initFlowAlloc()
     for (auto const m : timeMap)
     {
         simtime_t time = static_cast<simtime_t>(atoi(m->getAttribute("t")));
-
         const cXMLElementList& connMap = m->getChildrenByTagName("Connection");
 
         for (auto const n : connMap)
         {
+            // retrieve the parameters
             const char* src = n->getAttribute("src");
+            const char* dst = n->getAttribute("dst");
+            const char* qosReqID = n->getAttribute("qosReq");
+
+            if (!src || !dst || !qosReqID)
+            {
+                throw cRuntimeError("Invalid preallocation parameter(s) for SimTime %s",
+                        time.str().c_str());
+            }
+
+            // keep going only if this is a configuration meant for this IPC process
             if (opp_strcmp(src, processName.c_str()))
             {
                 continue;
             }
 
-
-            const char* dst = n->getAttribute("dst");
-            const char* qosReqID_s = n->getAttribute("qosReq");
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
 
             QoSReq* qosReq = nullptr;
-
-            if (!opp_strcmp(qosReqID_s, "mgmt"))
+            if (!opp_strcmp(qosReqID, "mgmt"))
             {
                 qosReq = &mgmtReqs;
             }
             else
             {
-                qosReq = initQoSReqById(static_cast<unsigned short>
-                                        (atoi(qosReqID_s)));
+                qosReq = initQoSReqById(qosReqID);
             }
 
-
-            if (qosReq == nullptr) continue;
+            if (!qosReq)
+            {
+                throw cRuntimeError("Invalid QoSReqId %s for SimTime=%s, src=\"%s\", dst=\"%s\"",
+                        qosReqID,
+                        time.str().c_str(),
+                        src,
+                        dst);
+            }
 
             Flow *flow = new Flow(srcAPN, dstAPN);
             flow->setQosRequirements(*qosReq);
@@ -291,10 +302,10 @@ void RA::initQoSCubes()
 }
 
 /**
- * Initializes QoS requirement identified by give id
+ * Initializes QoS requirement identified by given id
  * @param id ID of the QoSReq to be initialized
  */
-QoSReq* RA::initQoSReqById(unsigned short id)
+QoSReq* RA::initQoSReqById(const char* id)
 {
     cXMLElement* qosXml = nullptr;
     if (par(PAR_QOSREQ).xmlValue() != nullptr
@@ -307,25 +318,15 @@ QoSReq* RA::initQoSReqById(unsigned short id)
         return nullptr;
     }
 
-    cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSREQ);
-    for (auto const m : cubes)
+    cXMLElement* reqs = qosXml->getFirstChildWithAttribute(ELEM_QOSREQ, ATTR_ID, id);
+    cXMLElementList attrs;
+
+    if (reqs)
     {
-        if (!m->getAttribute(ATTR_ID))
-        {
-            EV << "Error parsing QoSReq. Its ID is missing!" << endl;
-            continue;
-        }
-        //Skipping QoSReqs with wrong ID
-        else if ((unsigned short) atoi(m->getAttribute(ATTR_ID)) != id)
-        {
-            continue;
-        }
-
-        cXMLElementList attrs = m->getChildren();
-
-        return new QoSReq(attrs);
+        attrs = reqs->getChildren();
     }
-    return nullptr;
+
+    return (reqs ? new QoSReq(attrs) : nullptr);
 }
 
 

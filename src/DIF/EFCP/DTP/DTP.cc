@@ -213,6 +213,9 @@ void DTP::flushAllQueuesAndPrepareToDie()
   cancelAndDelete(rcvrInactivityTimer);
   rcvrInactivityTimer = nullptr;
 
+  cancelAndDelete(delimitingTimer);
+  delimitingTimer = nullptr;
+
 //    if(state->isDtcpPresent()){
 //      delete dtcp;
 //    }
