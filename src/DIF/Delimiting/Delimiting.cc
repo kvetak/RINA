@@ -66,24 +66,24 @@ void Delimiting::handleMessage(cMessage* msg){
     DelimitingTimers* timer = static_cast<DelimitingTimers*>(msg);
     switch (timer->getType())
     {
-            case (DELIMITING_DELIMIT_TIMER): {
+      case (DELIMITING_DELIMIT_TIMER): {
 
-              UserDataField* userDataField;
-              for(auto it = pduDataQOut.begin(); it != pduDataQOut.end(); it = pduDataQOut.erase(it))
-              {
-                userDataField = new UserDataField();
-                userDataField->encapsulate((*it));
-                userDataField->setCompleteSDU((*it)->getCompleteSDU());
-                userDataField->setFirstFragment((*it)->getFirstFragment());
-                userDataField->setMidFragment((*it)->getMidFragment());
-                userDataField->setLastFragment((*it)->getLastFragment());
-                userDataField->setNoLength(false);
-                userDataField->setSduSeqNumPresent(true);
-                userDataField->setSduSeqNum(sduSeqNum);
-                send(userDataField, southO);
-              }
-              break;
-            }
+        UserDataField* userDataField;
+        for(auto it = pduDataQOut.begin(); it != pduDataQOut.end(); it = pduDataQOut.erase(it))
+        {
+          userDataField = new UserDataField();
+          userDataField->encapsulate((*it));
+          userDataField->setCompleteSDU((*it)->getCompleteSDU());
+          userDataField->setFirstFragment((*it)->getFirstFragment());
+          userDataField->setMidFragment((*it)->getMidFragment());
+          userDataField->setLastFragment((*it)->getLastFragment());
+          userDataField->setNoLength(false);
+          userDataField->setSduSeqNumPresent(true);
+          userDataField->setSduSeqNum(sduSeqNum);
+          send(userDataField, southO);
+        }
+        break;
+      }
     }
   }
   else
@@ -259,10 +259,6 @@ void Delimiting::processMsgFromFAI(SDUData* sduData)
         //        pduData = new PDUData();
         pduData->encapsulate(data);
 
-        //        pduDataQOut.push_back(pduData);
-
-
-
         schedule(delimitingTimer);
 
       }
@@ -332,7 +328,7 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
     delete pduData;
   }
 
-  for(auto it = dataQIn.begin(); it != dataQIn.end(); it = dataQIn.erase(it))
+  for(auto it = dataQIn.begin(); it != dataQIn.end(); )
   {
     if((*it)->getDataType() == DATA_SDU_COMPLETE)
     {
@@ -342,6 +338,7 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
         sduDataQIn.push_back(sduData);
       }
       delete (*it);
+      it = dataQIn.erase(it);
     }
     else if ((*it)->getDataType() == DATA_FIRST_FRAG)
     {
@@ -357,6 +354,8 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
       }
 
       if(found){
+        //restore original length
+        (*it)->setByteLength((*it)->getEncapMsgLength());
         SDUData* sduData = dynamic_cast<SDUData*>((*it)->decapsulate());
         if (sduData != nullptr)
         {
@@ -370,8 +369,14 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
           /* All the middle and the last fragments are empty */
           delete (*it);
         }
+      }else{
+        break;
       }
 
+    }
+    else
+    {
+      break;
     }
   }
 
@@ -403,5 +408,13 @@ void Delimiting::schedule(DelimitingTimers* timer)
 Delimiting::~Delimiting()
 {
   cancelAndDelete(delimitingTimer);
+
+  for(auto it = dataQIn.begin(); it != dataQIn.end();)
+  {
+    delete (*it);
+    it = dataQIn.erase(it);
+  }
+
+
 }
 

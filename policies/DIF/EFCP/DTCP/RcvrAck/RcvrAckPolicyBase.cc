@@ -43,33 +43,41 @@ RcvrAckPolicyBase::~RcvrAckPolicyBase()
 
 void RcvrAckPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
-  DTP* dtp = getRINAModule<DTP*>(this, 1, {MOD_DTP});
+  DTP* dtp = getRINAModule<DTP*>(this, 1, { MOD_DTP });
   /* Default */
 
-      unsigned int seqNum = dtpState->getRcvLeftWinEdge();
+  unsigned int seqNum;
+  if (dtp->getQoSCube()->getATime() > 0)
+  {
+    if (!dtpState->getTmpAtimer())
+    {
+      if(!dtp->isATimerQEmpty()){
+        return;
+      }
+      seqNum = dtpState->getCurrentPdu()->getSeqNum();
+      //set A-timer for this PDU
+      dtp->startATimer(seqNum);
+    }
+    else
+    {
 
+      seqNum = dtpState->getTmpAtimer()->getSeqNum();
+      //send an Ack/FlowControlPDU
+      dtp->sendAckFlowPDU();
 
+      //stop any A-Timers asscociated with this PDU and earlier ones.
+      dtp->cancelATimer(seqNum);
+      dtpState->setTmpAtimer(nullptr);
+    }
 
-//      if (dtp->getQoSCube()->getATime() > 0)
-//      {
-//        //set A-timer for this PDU
-//        dtp->startATimer(seqNum);
-//
-//      }
-//      else
-//      {
+  }
+  else
+  {
 
-        //Update LeftWindowEdge removing allowed gaps;
-//        dtpState->updateRcvLWE(seqNum);
+    //send an Ack/FlowControlPDU
+    dtp->sendAckFlowPDU();
 
-        //send an Ack/FlowControlPDU
-        dtp->sendAckFlowPDU(seqNum, true);
+  }
 
-
-        //stop any A-Timers asscociated with !!! this PDU !!! and earlier ones.
-        //XXX How could there be any A-Timer when isImmediate returned true?
-
-//      }
-
-      /* End default */
+  /* End default */
 }

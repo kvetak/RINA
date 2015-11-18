@@ -81,7 +81,7 @@ class DTP : public cSimpleModule
 
     std::vector<UserDataField*> userDataFieldQOut;
 
-
+    std::vector<ATimer*> aTimerQ;
 
 
 
@@ -252,6 +252,8 @@ class DTP : public cSimpleModule
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);
     void sendReliableControlPDU();
+    void cancelATimer(unsigned int seqNum);
+    bool isATimerQEmpty();
 
   protected:
     virtual void handleMessage(cMessage *msg);
