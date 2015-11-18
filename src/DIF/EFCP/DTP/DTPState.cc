@@ -101,13 +101,15 @@ void DTPState::initDefaults(){
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-  qoSCube = NULL;
+  qoSCube = nullptr;
 
   seqNumRollOverThresh = INT_MAX - 1;
   lastSeqNumSent = 0;
   ecnSet = false;
 
   blockingPort = false;
+
+  tmpAtimer = nullptr;
 
 
 }
@@ -440,68 +442,22 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
-  //TODO A! Needs deeper examination.
 
 
-  //TODO A3
-  //Update LeftWindowEdge removing allowed gaps;
   unsigned int sduGap = qoSCube->getMaxAllowGap();
 
-  if(seqNum == rcvLeftWinEdge + 1 || seqNum <= rcvLeftWinEdge + sduGap){
-    rcvLeftWinEdge = seqNum;
+  PDUQ_t* pduQ = &reassemblyPDUQ;
+
+  for (auto it = pduQ->begin(); it != pduQ->end(); ++it)
+  {
+    if((rcvLeftWinEdge + 1) + sduGap >= (*it)->getSeqNum())
+    {
+      rcvLeftWinEdge = (*it)->getSeqNum();
+    }
+
   }
 
   return;
-
-
-  if (isDtcpPresent())
-  {
-    PDUQ_t::iterator it;
-    PDUQ_t* pduQ = &reassemblyPDUQ;
-    for (it = pduQ->begin(); it != pduQ->end(); ++it)
-    {
-      if ((*it)->getSeqNum() == (getRcvLeftWinEdge() + 1))
-      {
-        incRcvLeftWindowEdge();
-
-      }
-      else if ((*it)->getSeqNum() < getRcvLeftWinEdge())
-      {
-        continue;
-      }
-      else
-      {
-        if (pduQ->size() == 1 || it == pduQ->begin())
-        {
-          if ((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap)
-          {
-            setRcvLeftWinEdge((*it)->getSeqNum());
-          }
-        }
-        else
-        {
-          (*(it - 1))->getSDUGap((*it));
-        }
-        break;
-      }
-    }
-  }
-  else
-  {
-    setRcvLeftWinEdge(std::max(getRcvLeftWinEdge(), seqNum));
-//    if(state.getRcvLeftWinEdge() > timer->getSeqNum()){
-//         throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
-//       }else{
-//         state.setRcvLeftWinEdge(timer->getSeqNum());
-//       }
-  }
-
-
-
-  if(getRcvLeftWinEdge() < seqNum){
-    //TODO B1 Is it correct?
-    //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
-  }
 }
 
 void DTPState::handleMessage(cMessage* msg)

@@ -45,23 +45,23 @@ void RcvrFCPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 
   /* Default */
 
-      /* This policy has to be the one to impose the condition to set WindowClosed to True */
-      /* Default */
-      //TODO A2 Where else are these variables updated?
-      if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
-      {
+  /* This policy has to be the one to impose the condition to set WindowClosed to True */
+  /* Default */
+  //TODO A2 Where else are these variables updated?
+  if (dtcpState->getRcvBuffersPercentFree() > dtcpState->getRcvBufferPercentThreshold())
+  {
 
-//        if(dtcpState->getRcvRightWinEdge() == UINT_MAX){
-          //This SHOULD happen only upon flow initialization
-          dtcpState->setRcvRtWinEdge(dtpState->getRcvLeftWinEdge() + dtcpState->getRcvCredit());
+    //        if(dtcpState->getRcvRightWinEdge() == UINT_MAX){
+    //This SHOULD happen only upon flow initialization
+    dtcpState->setRcvRtWinEdge(dtpState->getRcvLeftWinEdge() + dtcpState->getRcvCredit());
 
-//        }
-//        dtcpState->incRcvRtWinEdge();
-      }
-      else
-      {
-        /* Buffers are getting low */
-        //Leave RightWindowEdge unchanged.
-      }
-      /* End default */
+    //        }
+    //        dtcpState->incRcvRtWinEdge();
+  }
+  else
+  {
+    /* Buffers are getting low */
+    //Leave RightWindowEdge unchanged.
+  }
+  /* End default */
 }

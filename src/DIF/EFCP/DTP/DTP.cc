@@ -213,6 +213,11 @@ void DTP::flushAllQueuesAndPrepareToDie()
   cancelAndDelete(rcvrInactivityTimer);
   rcvrInactivityTimer = nullptr;
 
+  for(auto it = aTimerQ.begin(); it != aTimerQ.end(); )
+  {
+    cancelAndDelete((*it));
+    it = aTimerQ.erase(it);
+  }
 
 }
 
@@ -339,7 +344,7 @@ void DTP::handleMessage(cMessage *msg)
 
       case (DTP_A_TIMER): {
         handleDTPATimer(static_cast<ATimer*>(timer));
-        delete msg;
+//        delete msg;
         break;
       }
 
@@ -764,15 +769,57 @@ void DTP::handleMsgFromRMT(PDU* msg)
   state->setCurrentPdu(nullptr);
 }
 
+
+
+bool DTP::isATimerQEmpty()
+{
+
+  return aTimerQ.empty();
+}
+
+
+/**
+ * This method cancels and deletes all A-Timers from aTimerQ up to @param seqNum
+ * @param seqNum Maximum sequence number associated with ATimer that will be deleted.
+ */
+void DTP::cancelATimer(unsigned int seqNum)
+{
+  Enter_Method_Silent();
+  for (auto it = aTimerQ.begin(); it != aTimerQ.end() && (*it)->getSeqNum() <= seqNum;)
+  {
+    cancelAndDelete((*it));
+    it = aTimerQ.erase(it);
+  }
+
+
+}
+
 void DTP::startATimer(unsigned int seqNum)
 {
+
+  if(!state->getQoSCube()->getATime() > 0.0)
+  {
+    return;
+  }
   //TODO A1 Make a vector in DTPState of all active ATimers.
-  //TODO A1 Make a vector in DTPState of all active ATimers.
-  Enter_Method_Silent
-  ();
+  Enter_Method_Silent();
   ATimer* aTimer = new ATimer();
   aTimer->setSeqNum(seqNum);
   schedule(aTimer);
+
+
+
+  auto it = aTimerQ.begin();
+  for(; it != aTimerQ.end(); ++it)
+  {
+    if((*it)->getSeqNum() > seqNum)
+    {
+      break;
+    }
+  }
+  aTimerQ.insert(it, aTimer);
+
+
 }
 
 bool DTP::isDuplicate(unsigned int seqNum)
@@ -1047,31 +1094,61 @@ void DTP::handleDTPATimer(ATimer* timer)
 
   if (state->isDtcpPresent())
   {
-//    runSendingAckPolicy(timer);
+    //    runSendingAckPolicy(timer);
     dtcp->runSendingAckPolicy(state, timer);
   }
   else
   {
 
-    //TODO A1
     //Update RcvLeftWindowEdge
+    PDUQ_t* pduQ = state->getReassemblyPDUQ();
+
+    // Advance RLWE as much as possible
+    for (auto it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= timer->getSeqNum(); ++it)
+    {
+      if((state->getRcvLeftWinEdge() + 1) + state->getQoSCube()->getMaxAllowGap() >= (*it)->getSeqNum())
+      {
+        state->setRcvLeftWinEdge((*it)->getSeqNum());
+      }
+      else
+      {
+        break;
+      }
+    }
+    //Discard any PDUs that are bigger than RLWE but smaller than A-Timer seqNum
+    for (auto it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= timer->getSeqNum();)
+    {
+      if((*it)->getSeqNum() > state->getRcvLeftWinEdge())
+      {
+        delete (*it);
+        it = pduQ->erase(it);
+      }
+
+    }
 
     if (state->getRcvLeftWinEdge() > timer->getSeqNum())
     {
       bubble("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
-//      throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+      //      throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
     }
-    else
-    {
-      state->setRcvLeftWinEdge(timer->getSeqNum());
-    }
+
+
+    state->setRcvLeftWinEdge(timer->getSeqNum());
+
+    cancelATimer(timer->getSeqNum());
+
 
     //Invoke delimiting
     delimitFromRMT();
 
+
     //reset SenderInactivity timer
-    resetSenderInactivTimer();
+    //    resetSenderInactivTimer();
+
+
   }
+
+  state->setTmpAtimer(nullptr);
 }
 
 unsigned int DTP::delimit(SDUData* sduData)
@@ -1595,18 +1672,13 @@ void DTP::rcvrBufferStateChange()
 void DTP::svUpdate(unsigned int seqNum)
 {
 
-//  if (!state->isDtcpPresent())
-//  {
-//    state->setRcvLeftWinEdge(seqNum);
-//    return;
-//  }
 
   if(dtcp->dtcpState->isRcvRendez()){
     dtcp->stopReliableCPDUTimer();
     dtcp->dtcpState->setRcvRendez(false);
   }
   //update RcvLeftWindoEdge
-  state->updateRcvLWE(seqNum);
+   state->updateRcvLWE(seqNum);
 
   if (dtcp->dtcpState->isFCPresent())
   {
@@ -1623,6 +1695,7 @@ void DTP::svUpdate(unsigned int seqNum)
 
   if (dtcp->dtcpState->isFCPresent() && !dtcp->dtcpState->isRxPresent())
   {
+
     dtcp->runReceivingFCPolicy(state);
   }
 
