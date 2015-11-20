@@ -22,7 +22,7 @@
 
 #include "AEConstantListener.h"
 #include "AEConstantMsgs.h"
-#include "HopDelayMsg.h"
+#include "ModularMonitorSignals.h"
 
 #include <iostream>
 #include <fstream>
@@ -35,7 +35,7 @@ void AEConstantListener::initialize() {
     this->getParentModule()->subscribe("AEConstantPing-SND", &module);
     this->getParentModule()->subscribe("AEConstantPing-RCV", &module);
     this->getParentModule()->subscribe("AEConstantPong-RCV", &module);
-    this->getParentModule()->subscribe("HopDelaySignal", &module);
+    this->getParentModule()->subscribe("ModularSignal", &module);
 }
 
 AEConstantListenerModule::AEConstantListenerModule() {}
@@ -50,6 +50,10 @@ void AEConstantListenerModule::receiveSignal(cComponent *source, simsignal_t sig
            }
     } else  if(HopDelayMsg * m = dynamic_cast<HopDelayMsg*>(obj)) {
         record_hop_delay(m->qos, m->t);
+    } else  if(HopLossMsg * m = dynamic_cast<HopLossMsg*>(obj)) {
+        //cout << "OK" << m->qos << endl;
+        record_hop_loss(m->qos);
+        //exit(1);
     }
 }
 
@@ -59,14 +63,17 @@ void AEConstantListenerModule::record_send(string qos) {
 }
 
 void AEConstantListenerModule::record_prcv(string qos){
+    QoS.insert(qos);
     count_prcv[qos]++;
 }
 
 void AEConstantListenerModule::record_rcv(string qos){
+    QoS.insert(qos);
     count_rcv[qos]++;
 }
 
 void AEConstantListenerModule::record_hop_delay(string qos, simtime_t t) {
+    QoS.insert(qos);
     if(max_hop.find(qos) == max_hop.end()) {
         max_hop[qos] = t;
     } else  if(max_hop[qos] < t) {
@@ -74,8 +81,14 @@ void AEConstantListenerModule::record_hop_delay(string qos, simtime_t t) {
     }
 }
 
+void AEConstantListenerModule::record_hop_loss(string qos) {
+    QoS.insert(qos);
+    hop_loss[qos]++;
+}
+
 
 void AEConstantListenerModule::record_delay(string qos, simtime_t t) {
+    QoS.insert(qos);
     if(sum_delay.find(qos) == sum_delay.end()) {
         sum_delay[qos] = t;
         max_delay[qos] = t;
@@ -88,6 +101,7 @@ void AEConstantListenerModule::record_delay(string qos, simtime_t t) {
 }
 
 void AEConstantListenerModule::record_rtt(string qos, simtime_t t){
+    QoS.insert(qos);
     if(sum_rtt.find(qos) == sum_rtt.end()) {
         sum_rtt[qos] = t;
         max_rtt[qos] = t;
@@ -120,6 +134,10 @@ void AEConstantListenerModule::print() {
             tt = 1000*max_hop[qos];
             EV << "\tMAX Hop Delay : " << dround(tt.dbl(), 3) << " ms" <<  endl;
         }
+        if(hop_loss.find(qos) != hop_loss.end()) {
+            int losst = hop_loss[qos];
+            EV << "\tHop Lost : " << losst << " pdus" <<  endl;
+        }
         EV << " --------- " <<endl << endl;
     }
 }
@@ -143,6 +161,10 @@ void AEConstantListenerModule::print(ofstream &out) {
         if(max_hop.find(qos) != max_hop.end()) {
             tt = 1000*max_hop[qos];
             out << "\tMAX Hop Delay : " << dround(tt.dbl(), 3) << " ms" <<  endl;
+        }
+        if(hop_loss.find(qos) != hop_loss.end()) {
+            int losst = hop_loss[qos];
+            out << "\tHop Lost : " << losst << " pdus" <<  endl;
         }
         out << " --------- " <<endl << endl;
     }

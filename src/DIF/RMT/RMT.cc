@@ -438,6 +438,7 @@ void RMT::relayPDUToPort(PDU* pdu)
         if (it != (outPorts.end() - 1))
         { // clone the message if sending via multiple ports
             outPDU = pdu->dup();
+            std::cout << "CLONEDDDDD!!!!!!!" << endl;
         }
         else
         {
@@ -499,7 +500,7 @@ void RMT::processMessage(cMessage* msg)
 
         if (dynamic_cast<RMTQueue*>(senderModule) != nullptr)
         { // message from a port
-            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr(), pdu) )
             {
                 relayPDUToEFCPI(pdu);
             }
@@ -514,7 +515,7 @@ void RMT::processMessage(cMessage* msg)
         }
         else
         { // message from an EFCPI
-            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr(), pdu) )
             {
                 relayPDUToEFCPI(pdu);
             }

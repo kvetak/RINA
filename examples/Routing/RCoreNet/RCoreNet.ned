@@ -13,56 +13,49 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.Congestion.CoreNet;
+package rina.examples.Routing.RCoreNet;
 
 
 import ned.DatarateChannel;
 import rina.src.CS.HostNAP;
-import rina.src.Other.Infection.InfectedRouter;
 import rina.src.CS.InteriorRouterNInt;
 
 import rina.src.Other.Infection.IListener;
 import rina.src.DAF.AE.AEConstant.AEConstantListener;
 
-network CoreNet
+network RCoreNet
 {
     @display("bgb=838,510");
     submodules:
-        r1: InfectedRouter {
+        r1: InteriorRouterNInt {
             @display("p=117,112");
         }
-        r2: InfectedRouter {
+        r2: InteriorRouterNInt {
             @display("p=156,301");
         }
-        r3: InfectedRouter {
+        r3: InteriorRouterNInt {
             @display("p=215,202");
         }
-        r4: InfectedRouter {
+        r4: InteriorRouterNInt {
             @display("p=395,231");
         }
-        r5: InfectedRouter {
+        r5: InteriorRouterNInt {
             @display("p=441,364");
         }
-        r6: InfectedRouter {
+        r6: InteriorRouterNInt {
             @display("p=518,192");
         }
-        r7: InfectedRouter {
+        r7: InteriorRouterNInt {
             @display("p=599,311");
         }
-        r8: InfectedRouter {
+        r8: InteriorRouterNInt {
             @display("p=629,131");
         }
-        r9: InfectedRouter {
+        r9: InteriorRouterNInt {
             @display("p=715,221");
         }
-        ra: InfectedRouter {
+        ra: InteriorRouterNInt {
             @display("p=767,105");
-        }
-        B2: InfectedRouter {
-            @display("p=321,286");
-        }
-        listener: IListener {
-            @display("p=240,415");
         }
     connections:
         r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 6.5ms; } <--> r2.medium++;

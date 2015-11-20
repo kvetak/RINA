@@ -5,25 +5,26 @@
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-//
+// 
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
-//
-#pragma once
+// 
 
-#include <omnetpp.h>
+import rina.policies.DIF.RMT.Monitor.ModularMonitor.Int_MM_Drop_Module;
 
-class HopDelayMsg  : public cObject {
-public:
+package rina.policies.DIF.RMT.Monitor.ModularMonitor.MM_WFQ_Drop;
 
-    std::string qos;
-    simtime_t t;
-
-    HopDelayMsg(std::string _qos, simtime_t _t) : qos(_qos), t(_t) {}
-    ~HopDelayMsg(){}
-};
+simple MM_WFQ_Drop like Int_MM_Drop_Module 
+{
+    parameters:
+        @display("i=block/socket");
+        @class(MM_WFQ_Drop::MM_WFQ_Drop);
+        
+        int defThreshold = default(10);
+        xml data = default(xml("<QueueThreshold/>"));
+}

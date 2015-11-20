@@ -29,7 +29,7 @@ module ModularMonitor like IntRMTQMonitorPolicy
         string outputOutSubModule_Type = default("MM_Simple_Out");
         string outputDropSubModule_Type = default("MM_Simple_Drop");
         
-        bool signalOutDelay = default(true);
+        bool signal = default(true);
 
     submodules:
 

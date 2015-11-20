@@ -33,8 +33,24 @@ namespace MultiQoSTable {
 
 using namespace std;
 
-//QoS, Dst, Ports
-typedef map<string, map<string, vector<RMTPort*> > > FWDTable;
+struct FlowIdent {
+    string qosId;
+    string srcAddr, dstAddr;
+    int srcCepId, dstCepId;
+
+    FlowIdent(const string & _qosId, const string & _srcAddr, const string & _dstAddr, const int & _srcCepId, const int & _dstCepId);
+
+    bool operator<( const FlowIdent & n ) const;
+};
+
+struct CacheData {
+    RMTPort * next;
+    simtime_t expiration;
+
+    CacheData(RMTPort *  _next, const simtime_t & _expiration);
+    CacheData();
+};
+
 
 class MultiQoSTable: public IntQoSMForwarding {
 
@@ -42,6 +58,8 @@ public:
     // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
     vector<RMTPort * > lookup(const PDU * pdu);
     vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+
+    RMTPort * search(const string & dst, const string & qos);
 
     // Returns a representation of the Forwarding Knowledge
     string toString();
@@ -52,10 +70,16 @@ public:
     void finish();
 
 protected:
-    FWDTable table;
+    //QoS, Dst, Ports
+    map<string, map<string, vector<RMTPort*> > > table;
+
+    map<FlowIdent, CacheData> cache;
 
     // Called after initialize
     void onPolicyInit();
+
+    string MA2QoS;
+    double exTime;
 };
 
 }

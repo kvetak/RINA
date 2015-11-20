@@ -32,7 +32,7 @@
 class PrefixMatch : public AddressComparatorBase
 {
     public:
-        virtual bool matchesThisIPC(const Address& addr);
+        virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
     protected:
         std::vector<std::string> thisIPCAddrParsed;
         std::string any;

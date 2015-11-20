@@ -30,5 +30,9 @@ simple MultiQoSTable like IntPDUForwarding
         @class(MultiQoSTable::MultiQoSTable);
         @display("i=block/socket");
         
+        double exTime = default(1000);
+        
         bool printAtEnd = default(false);
+        string MA2QoS = default("*");
+        
 }

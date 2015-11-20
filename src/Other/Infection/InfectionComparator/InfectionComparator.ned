@@ -1,4 +1,6 @@
-// The MIT License (MIT)
+//
+
+// // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
 //
@@ -20,17 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __EXACTMATCH_H_
-#define __EXACTMATCH_H_
+import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 
-#include <omnetpp.h>
+package rina.src.Other.Infection.InfectionComparator;
 
-#include "AddressComparatorBase.h"
-
-class ExactMatch : public AddressComparatorBase
+simple InfectionComparator like IntAddressComparator
 {
-  public:
-    virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
-};
-
-#endif
+    parameters:
+        @display("i=block/socket");
+}

@@ -27,6 +27,7 @@
 #include "Utils.h"
 #include "ExternConsts.h"
 #include "Address.h"
+#include "PDU.h"
 
 /**
  * Noop base class for the RA address comparator policy
@@ -35,7 +36,7 @@
 class AddressComparatorBase : public cSimpleModule
 {
   public:
-    virtual bool matchesThisIPC(const Address& addr);
+    virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
 
   protected:
     /**

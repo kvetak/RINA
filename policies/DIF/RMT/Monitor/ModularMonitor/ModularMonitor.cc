@@ -16,7 +16,7 @@
 //
 
 #include <ModularMonitor.h>
-#include "HopDelayMsg.h"
+#include "ModularMonitorSignals.h"
 #include "AEConstantMsgs.h"
 
 namespace ModularMonitor {
@@ -29,9 +29,9 @@ void ModularMonitor::onPolicyInit(){
     outOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("outputOutSubModule"));
     outDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("outputDropSubModule"));
 
-    signalOutDelay = par("signalOutDelay").boolValue();
-    if(signalOutDelay) {
-        signal_hopDelay = registerSignal("HopDelaySignal");
+    emitSignals = par("signal").boolValue();
+    if(emitSignals) {
+        signal = registerSignal("ModularSignal");
     }
 }
 
@@ -48,7 +48,7 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
             break;
     }
 
-    if(signalOutDelay) {
+    if(emitSignals) {
         const cPacket * pdu = queue->getLastPDU();
         if(inTime.find(pdu) == inTime.end()) {
             inTime[pdu] = simTime();
@@ -69,7 +69,10 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             break;
     }
 
-    if(signalOutDelay) {
+    if(emitSignals) {
+        if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+            emit(signal, new HopLossMsg(p->getConnId().getQoSId()));
+        }
         inTime.erase(pdu);
     }
 }
@@ -87,14 +90,14 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
             break;
     }
 
-    if(signalOutDelay) {
+    if(emitSignals) {
         if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
             if(inTime.find(pdu) != inTime.end()) {
 
                 simtime_t hdel = simTime()-inTime[pdu];
                 std::string qos = pdu->getConnId().getQoSId();
                 inTime.erase(pdu);
-                emit(signal_hopDelay, new HopDelayMsg(qos, hdel));
+                emit(signal, new HopDelayMsg(qos, hdel));
             }
         }
     }
