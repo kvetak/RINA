@@ -53,56 +53,5 @@
 			<DIF difName="shim8a" ipcAddress="a" />
 			<DIF difName="shim9a" ipcAddress="a" />
 		</APN>
-		
-		
-		<APN apn="1_iDCA">
-			<DIF difName="shimA1" ipcAddress="2" />
-		</APN>
-		<APN apn="2_iDCA">
-			<DIF difName="shimA2" ipcAddress="2" />
-		</APN>
-		<APN apn="3_iDCA">
-			<DIF difName="shimA3" ipcAddress="2" />
-		</APN>
-		
-		<APN apn="gw1_iDCA">
-			<DIF difName="shimA1" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="1" />
-		</APN>
-		<APN apn="gw2_iDCA">
-			<DIF difName="shimA2" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="5" />
-		</APN>
-		<APN apn="gw3_iDCA">
-			<DIF difName="shimA3" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="a" />
-		</APN>
-		
-		
-		
-		<APN apn="1_iDCB">
-			<DIF difName="shimB1" ipcAddress="2" />
-		</APN>
-		<APN apn="2_iDCB">
-			<DIF difName="shimB2" ipcAddress="2" />
-		</APN>
-		<APN apn="3_iDCB">
-			<DIF difName="shimB3" ipcAddress="2" />
-		</APN>
-		
-		<APN apn="gw1_iDCB">
-			<DIF difName="shimB1" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="2" />
-		</APN>
-		<APN apn="gw2_iDCB">
-			<DIF difName="shimB2" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="4" />
-		</APN>
-		<APN apn="gw3_iDCB">
-			<DIF difName="shimB3" ipcAddress="1" />
-			<DIF difName="Core" ipcAddress="9" />
-		</APN>
-		
-		
     </Directory>
   </DA>

@@ -48,8 +48,8 @@ protected:
     Int_MM_Out_Module  * outOutModule;
     Int_MM_Drop_Module * outDropModule;
 
-    bool signalOutDelay;
-    simsignal_t signal_hopDelay;
+    bool emitSignals;
+    simsignal_t signal;
     map<const cPacket *, simtime_t> inTime;
 };
 

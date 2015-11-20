@@ -24,7 +24,7 @@
 
 Define_Module(ExactMatch);
 
-bool ExactMatch::matchesThisIPC(const Address& addr)
+bool ExactMatch::matchesThisIPC(const Address& addr, PDU * pdu)
 {
     return (addr == thisIPCAddr);
 }

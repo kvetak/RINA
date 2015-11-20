@@ -38,7 +38,7 @@ void PrefixMatch::onPolicyInit()
     thisIPCAddrParsed = split(thisIPCAddr.getIpcAddress().getName(), delimiter);
 }
 
-bool PrefixMatch::matchesThisIPC(const Address& addr)
+bool PrefixMatch::matchesThisIPC(const Address& addr, PDU * pdu)
 {
     if(addr == thisIPCAddr){
         return true;
