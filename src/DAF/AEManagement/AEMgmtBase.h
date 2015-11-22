@@ -43,13 +43,30 @@ class AEMgmtBase : public cSimpleModule {
     virtual void signalizeSendData(CDAPMessage* msg) = 0;
     virtual void receiveData(CDAPMessage* cimsg) = 0;
     void setMyAddress(const Address& addr);
+    const APNamingInfo& getSrcNamingInfo() const;
+    const APNamingInfo& getDstNamingInfo() const;
     const Address& getMyAddress() const;
 
   protected:
     Address MyAddress;
 
+    std::string srcApName;
+    std::string srcApInstance;
+    std::string srcAeName;
+    std::string srcAeInstance;
+
+    std::string dstApName;
+    std::string dstApInstance;
+    std::string dstAeName;
+    std::string dstAeInstance;
+
+    APNamingInfo srcApni;
+    APNamingInfo dstApni;
+
+
     //SimpleModule overloads
     virtual void initialize() = 0;
+    void initNamingInfo();
     virtual void handleMessage(cMessage *msg) = 0;
 
     void initMyAddress();

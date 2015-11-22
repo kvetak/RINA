@@ -29,6 +29,7 @@
 #include "Flow.h"
 #include "CDAPMessage_m.h"
 #include "DAFEnrollmentStateTableEntry.h"
+#include "QoSReq.h"
 
 class DAFEnrollmentBase : public cSimpleModule {
 public:

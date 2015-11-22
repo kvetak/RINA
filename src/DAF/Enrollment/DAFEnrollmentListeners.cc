@@ -38,6 +38,13 @@ DAFEnrollmentListeners::~DAFEnrollmentListeners() {
     enrollment = NULL;
 }
 
+
+
+
+
+
+
+
 void LisDAFEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
@@ -57,19 +64,54 @@ void LisDAFEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
     // TODO: refactor this stuff
     Flow* flow = dynamic_cast<Flow*>(obj);
     APNIPair* apnip = new APNIPair(flow->getSrcApni(),flow->getDstApni());
-    if (flow) {
-        if (enrollment->test) {
-            enrollment->test = false;
-            enrollment->createBindings(*flow);
+    if (flow){
+        if (flow == enrollment->FlowObj) {
+            //enrollment->createBindings(*flow);
+            enrollment->Irm->receiveAllocationResponsePositiveFromIpc(flow);
+            enrollment->startCACE(apnip);
         }
-
-        enrollment->startCACE(apnip);
     }
     else {
         EV << "DAFEnrollmentListener received unknown object!" << endl;
     }
 
 }
+
+void LisDAFEnrollmentAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
+       << " and processed by " << enrollment->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        if(flow->getQosRequirements().compare(QoSReq::MANAGEMENT))
+            enrollment->receiveAllocationRequestFromFAI(flow);
+    }
+    else
+        EV << "DAFEnrollmentListener received unknown object!" << endl;
+}
+
+void LisDAFEnrollmentAllResNega::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocateResponseNegative initiated by " << src->getFullPath()
+       << " and processed by " << enrollment->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        //if (ae->hasFlow(flow))
+            //ae->receiveAllocationResponseNegative(flow);
+    }
+    else
+        EV << "DAFEnrollmentListener received unknown object!" << endl;
+}
+
+
+
+
+
+
+
+
+
+
 
 void LisDAFEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {

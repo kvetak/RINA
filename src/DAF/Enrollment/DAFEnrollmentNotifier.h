@@ -17,15 +17,16 @@
 #define DAFENROLLMENTNOTIFIER_H_
 
 #include <omnetpp.h>
-#include "AEMgmt.h"
+#include "AEMgmtBase.h"
 #include "DAFEnrollmentNotifierListeners.h"
 #include "DAFEnrollmentNotifierBase.h"
 
 extern const char* DAF_MSG_ENROLLMENT;
 extern const int DAF_VAL_DEFINSTANCE;
 
-class DAFEnrollmentNotifier : public DAFEnrollmentNotifierBase {
-public:
+class DAFEnrollmentNotifier : public DAFEnrollmentNotifierBase
+{
+  public:
     virtual void sendStartEnrollmentRequest(DAFEnrollmentObj* obj);
     virtual void sendStartEnrollmentResponse(DAFEnrollmentObj* obj);
     virtual void sendStopEnrollmentRequest(DAFEnrollmentObj* obj);
@@ -35,7 +36,7 @@ public:
     virtual void sendCACE(CDAPMessage* msg);
 
   protected:
-    AEMgmt* RIBd;
+    AEMgmtBase* RIBd;
 
     simsignal_t sigRIBDStartEnrollReq;
     simsignal_t sigRIBDStartEnrollRes;
@@ -68,12 +69,12 @@ public:
     //CDAPProcessingBase overload
     virtual void signalizeMessage(CDAPMessage* msg);
 
-    virtual void processMConnect(CDAPMessage* msg);
-    virtual void processMConnectR(CDAPMessage* msg);
-    virtual void processMStart(CDAPMessage* msg);
-    virtual void processMStartR(CDAPMessage* msg);
-    virtual void processMStop(CDAPMessage* msg);
-    virtual void processMStopR(CDAPMessage* msg);
+    virtual void processMConnect(CDAP_M_Connect* msg);
+    virtual void processMConnectR(CDAP_M_Connect_R* msg);
+    virtual void processMStart(CDAP_M_Start* msg);
+    virtual void processMStartR(CDAP_M_Start_R* msg);
+    virtual void processMStop(CDAP_M_Stop* msg);
+    virtual void processMStopR(CDAP_M_Stop_R* msg);
 
     void signalizeConnectResponsePositive(CDAPMessage* msg);
     void signalizeConnectResponseNegative(CDAPMessage* msg);

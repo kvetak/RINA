@@ -166,18 +166,25 @@ void DAFEnrollment::initSignalsAndListeners() {
     sigDAFEnrollmentStartOperReq   = registerSignal(SIG_ENROLLMENT_StartOperationRequest);
     sigDAFEnrollmentStartOperRes   = registerSignal(SIG_ENROLLMENT_StartOperationResponse);
     sigDAFEnrollmentFinish         = registerSignal(SIG_ENROLLMENT_Finished);
+
     sigDAFEnrollmentEnrollPosi     = registerSignal(SIG_AEMGMT_ConnectionResponsePositive);
+
+    sigDAFEnrollmentAllocResNega   = registerSignal(SIG_AERIBD_AllocateResponseNegative);
+    sigDAFEnrollmentAllocResPosi   = registerSignal(SIG_AERIBD_AllocateResponsePositive);
 
     lisDAFEnrollmentAllResPosi = new LisDAFEnrollmentAllResPosi(this);
     catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisDAFEnrollmentAllResPosi);
     //catcher1->subscribe(SIG_RA_MgmtFlowAllocated, lisDAFEnrollmentAllResPosi);
 
+    //  AllocationRequest from FAI
+    lisDAFEnrollmentAllReqFromFai = new LisDAFEnrollmentAllReqFromFai(this);
+    catcher3->subscribe(SIG_FAI_AllocateRequest, lisDAFEnrollmentAllReqFromFai);
+
 
     lisDAFEnrollmentRequest = new LisDAFEnrollmentRequest(this);
     catcher2->subscribe(SIG_AE_Enrolled, lisDAFEnrollmentRequest);
 
-    //lisDAFEnrollmentGetFlowFromFaiCreResPosi = new LisDAFEnrollmentGetFlowFromFaiCreResPosi(this);
-    //catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisDAFEnrollmentGetFlowFromFaiCreResPosi);
+
 
     lisDAFEnrollmentStartEnrollReq = new LisDAFEnrollmentStartEnrollReq(this);
     catcher1->subscribe(SIG_RIBD_StartEnrollmentRequest, lisDAFEnrollmentStartEnrollReq);
@@ -273,6 +280,9 @@ void DAFEnrollment::insertStateTableEntry(Flow* flow){
 void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     Enter_Method("receivePositiveConnectResponse()");
 
+    signalizeEnrolled();
+
+    /* this is commented only for testing ---> refactoring of adress is need to be done
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
@@ -285,6 +295,7 @@ void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     entry->setCACEConStatus(DAFEnrollmentStateTableEntry::CON_ESTABLISHED);
 
     startEnrollment(entry);
+    */
 }
 
 void DAFEnrollment::receiveNegativeConnectResponse(CDAPMessage* msg) {
@@ -353,7 +364,8 @@ void DAFEnrollment::startEnrollment(DAFEnrollmentStateTableEntry* entry) {
 
     auto enrollObj = new DAFEnrollmentObj(Address(entry->getLocal().getApn()), Address(entry->getRemote().getApn()));
 
-    enrollObj->setAddress(APN(aemgmt->getMyAddress().getIpcAddress().getName()));
+    //TODO: assign address to new one to send it
+    //enrollObj->setAddress(APN(aemgmt->getMyAddress().getIpcAddress().getName()));
 
     //TODO: add other necessary information
 
@@ -476,7 +488,7 @@ void DAFEnrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
     auto enrollObj = new DAFEnrollmentObj(Address(entry->getLocal().getApn()), Address(entry->getRemote().getApn()));
 
     //TODO: repair this dummy address assign
-    enrollObj->setAddress(APN(enrollRec->getAddress().getName()));
+    //enrollObj->setAddress(APN(enrollRec->getAddress().getName()));
 
     //TODO: add other necessary information
 
@@ -823,14 +835,81 @@ void DAFEnrollment::signalizeEnrolled() {
 
 void DAFEnrollment::checkEnrolled() {
     Enter_Method("checkEnrolled()");
-//    if (StateTable.isEmpty()) {
-//        createFlow();
-//    }
-//    else {
+    if (StateTable->isEmpty()) {
+        createFlow();
+        //signalizeEnrolled();
+        //TODO: continue here
+    }
+    else {
         signalizeEnrolled();
-//    }
+    }
 }
 
 void DAFEnrollment::createFlow() {
-    //TODO: continue here
+    //Create a flow
+    APNamingInfo dst = aemgmt->getDstNamingInfo();
+    APNamingInfo src = aemgmt->getSrcNamingInfo();
+
+    FlowObj = new Flow(src, dst);
+    FlowObj->setQosRequirements(QoSReq::MANAGEMENT);
+
+    Irm->newFlow(FlowObj);
+
+    //Interconnect IRM and AE
+    //bool status =
+    createBindings(*FlowObj);
+    //if (!status) {
+    //    error("Gate inconsistency during creation of a new flow!");
+    //}
+
+    Irm->receiveAllocationRequestFromAe(FlowObj);
+}
+
+void DAFEnrollment::receiveAllocationRequestFromFAI(Flow* flow) {
+    Enter_Method("receiveAllocationRequestFromFai()");
+    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+
+    if ( flow->getQosRequirements().compare(QoSReq::MANAGEMENT) ) {
+        //Initialize flow within AE
+        FlowObj = flow;
+        insertFlow();
+        //EV << "======================" << endl << flow->info() << endl;
+        //Interconnect IRM and IPC
+
+        bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
+
+        //Change connection status
+        if (status) {
+            this->signalizeAllocateResponsePositive(FlowObj);
+        }
+        else {
+            EV << "IRM was unable to create bindings!" << endl;
+        }
+    }
+    else {
+        EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
+        this->signalizeAllocateResponseNegative(flow);
+    }
+}
+
+void DAFEnrollment::insertFlow() {
+    //Add a new flow to
+
+    //Prepare flow
+    Irm->newFlow(FlowObj);
+
+    //Interconnect IRM and AE
+    //bool status =
+    createBindings(*FlowObj);
+    //if (!status) {
+    //    error("Gate inconsistency during creation of a new flow!");
+    //}
+}
+
+void DAFEnrollment::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigDAFEnrollmentAllocResPosi, flow);
+}
+
+void DAFEnrollment::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigDAFEnrollmentAllocResNega, flow);
 }

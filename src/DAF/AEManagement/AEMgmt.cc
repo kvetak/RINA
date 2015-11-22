@@ -41,6 +41,8 @@ void AEMgmt::initialize() {
 
     //Init pointers
     initPointers();
+
+    initNamingInfo();
 }
 
 void AEMgmt::handleMessage(cMessage *msg) {
@@ -69,17 +71,12 @@ void AEMgmt::receiveData(CDAPMessage* msg) {
     if (useEnrollmentNotifier && DAFEnrollNotif->isMessageProcessable(msg)) {
         DAFEnrollNotif->receiveMessage(msg);
     }
-    //FANotifier processing
-    //else if (useFANotifier && FANotif->isMessageProcessable(msg)) {
-    //    FANotif->receiveMessage(msg);
-    //}
 
     //delete msg;
 }
 
 void AEMgmt::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
 
     //Signals that this module is emitting
     sigRIBDSendData      = registerSignal(SIG_RIBD_DataSend);

@@ -23,13 +23,9 @@
 #include <AEMgmtBase.h>
 
 AEMgmtBase::AEMgmtBase() {
-    // TODO Auto-generated constructor stub
-
 }
 
 AEMgmtBase::~AEMgmtBase() {
-    // TODO Auto-generated destructor stub
-
 }
 
 void AEMgmtBase::setMyAddress(const Address& addr) {
@@ -51,4 +47,31 @@ long AEMgmtBase::getNewInvokeId() {
     long newinvoke = getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID).longValue() + 1;
     getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID) = newinvoke;
     return newinvoke;
+}
+
+void AEMgmtBase::initNamingInfo() {
+    //Source info
+    srcApName = this->getModuleByPath("^.^.^")->par("apName").stdstringValue();
+    srcApInstance = this->getModuleByPath("^.^.^")->par("apInstance").stdstringValue();
+    srcAeName = this->par("aeName").stdstringValue();
+    srcAeInstance = this->par("aeInstance").stdstringValue();
+
+    dstApName = this->par("dstApName").stdstringValue();
+    dstApInstance = this->par("dstApName").stdstringValue();
+    dstAeName = this->par("dstAeName").stdstringValue();
+    dstAeInstance = this->par("dstAeInstance").stdstringValue();
+
+    srcApni = APNamingInfo(APN(this->srcApName), this->srcApInstance,
+            this->srcAeName, this->srcAeInstance);
+
+    dstApni = APNamingInfo(APN(this->dstApName), this->dstApInstance,
+            this->dstAeName, this->dstAeInstance);
+}
+
+const APNamingInfo& AEMgmtBase::getSrcNamingInfo() const {
+    return srcApni;
+}
+
+const APNamingInfo& AEMgmtBase::getDstNamingInfo() const {
+    return dstApni;
 }

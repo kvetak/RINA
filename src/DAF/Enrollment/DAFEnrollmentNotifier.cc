@@ -27,7 +27,7 @@ void DAFEnrollmentNotifier::initialize() {
 }
 
 void DAFEnrollmentNotifier::initPointers() {
-    RIBd = check_and_cast<AEMgmt*>( getModuleByPath("^.aemgmt") );
+    RIBd = check_and_cast<AEMgmtBase*>( getModuleByPath("^.aemgmt") );
 }
 
 void DAFEnrollmentNotifier::initSignalsAndListeners() {
@@ -75,12 +75,131 @@ void DAFEnrollmentNotifier::initSignalsAndListeners() {
 
 }
 
-void DAFEnrollmentNotifier::handleMessage(cMessage *msg) {
+void DAFEnrollmentNotifier::handleMessage(cMessage *msg)
+{
 
 }
 
 void DAFEnrollmentNotifier::signalizeMessage(CDAPMessage* msg) {
     RIBd->signalizeSendData(msg);
+}
+
+
+void DAFEnrollmentNotifier::sendStartEnrollmentRequest(DAFEnrollmentObj* obj) {
+    Enter_Method("sendStartEnrollmentRequest()");
+
+    CDAP_M_Start* msg = new CDAP_M_Start(DAF_MSG_ENROLLMENT);
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeMessage(msg);
+}
+
+void DAFEnrollmentNotifier::sendStartEnrollmentResponse(DAFEnrollmentObj* obj) {
+    Enter_Method("sendStartEnrollmentResponse()");
+
+    CDAP_M_Start_R* msg = new CDAP_M_Start_R(DAF_MSG_ENROLLMENT);
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
+    msg->setDstAddr(obj->getDstAddress());
+
+
+    signalizeMessage(msg);
+}
+
+void DAFEnrollmentNotifier::sendStopEnrollmentRequest(DAFEnrollmentObj* obj) {
+    Enter_Method("sendStopEnrollmentRequest()");
+
+    CDAP_M_Stop* msg = new CDAP_M_Stop(DAF_MSG_ENROLLMENT);
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeMessage(msg);
+}
+
+void DAFEnrollmentNotifier::sendStopEnrollmentResponse(DAFEnrollmentObj* obj) {
+    Enter_Method("sendStopEnrollmentResponse()");
+
+    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R(DAF_MSG_ENROLLMENT);
+
+    //TODO: assign appropriate values
+    std::ostringstream os;
+    os << "Enrollment";
+    object_t enrollobj;
+    enrollobj.objectClass = obj->getClassName();
+    enrollobj.objectName = os.str();
+    enrollobj.objectVal = obj;
+    enrollobj.objectInstance = VAL_DEFINSTANCE;
+    msg->setObject(enrollobj);
+
+    //TODO: check and rework generate invoke id
+    //msg->setInvokeID(getNewInvokeId());
+
+    //Append src/dst address for RMT "routing"
+    msg->setSrcAddr(obj->getSrcAddress());
+    msg->setDstAddr(obj->getDstAddress());
+
+    signalizeMessage(msg);
+}
+
+void DAFEnrollmentNotifier::sendStartOperationRequest(DAFOperationObj* obj) {
+    Enter_Method("sendStartOperationRequest()");
+}
+
+void DAFEnrollmentNotifier::sendStartOperationResponse(DAFOperationObj* obj) {
+    Enter_Method("sendStartOperationResponse()");
+}
+
+void DAFEnrollmentNotifier::sendCACE(CDAPMessage* msg) {
+    Enter_Method("sendCACE()");
+
+    //TODO: add invoke id
+
+    signalizeSendCACE(msg);
 }
 
 void DAFEnrollmentNotifier::signalizeConnectResponsePositive(CDAPMessage* msg) {
@@ -128,202 +247,62 @@ void DAFEnrollmentNotifier::signalizeStartOperationRequest(CDAPMessage* msg) {
     emit(sigRIBDStartOperationReq, msg);
 }
 
-void DAFEnrollmentNotifier::signalizeStartOperationResponse(CDAPMessage* msg) {
-    EV << "Emits StartOperationResponse to enrollment" << endl;
-    emit(sigRIBDStartOperationRes, msg);
-}
-
-void DAFEnrollmentNotifier::sendStartEnrollmentRequest(DAFEnrollmentObj* obj) {
-    Enter_Method("sendStartEnrollmentRequest()");
-
-    CDAP_M_Start* msg = new CDAP_M_Start(DAF_MSG_ENROLLMENT);
-
-    //TODO: assign appropriate values
-    std::ostringstream os;
-    os << "Enrollment";
-    object_t enrollobj;
-    enrollobj.objectClass = obj->getClassName();
-    enrollobj.objectName = os.str();
-    enrollobj.objectVal = obj;
-    enrollobj.objectInstance = DAF_VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
-
-    //TODO: check and rework generate invoke id
-    //msg->setInvokeID(getNewInvokeId());
-
-    //Append src/dst address for RMT "routing"
-    msg->setSrcAddr(obj->getSrcAddress());
-    msg->setDstAddr(obj->getDstAddress());
-
-    RIBd->signalizeSendData(msg);
-}
-
-void DAFEnrollmentNotifier::sendStartEnrollmentResponse(DAFEnrollmentObj* obj) {
-    Enter_Method("sendStartEnrollmentResponse()");
-
-    CDAP_M_Start_R* msg = new CDAP_M_Start_R(DAF_MSG_ENROLLMENT);
-
-    //TODO: assign appropriate values
-    std::ostringstream os;
-    os << "Enrollment";
-    object_t enrollobj;
-    enrollobj.objectClass = obj->getClassName();
-    enrollobj.objectName = os.str();
-    enrollobj.objectVal = obj;
-    enrollobj.objectInstance = DAF_VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
-
-    //TODO: check and rework generate invoke id
-    //msg->setInvokeID(getNewInvokeId());
-
-    //Append src/dst address for RMT "routing"
-    msg->setSrcAddr(obj->getSrcAddress());
-    msg->setDstAddr(obj->getDstAddress());
-
-
-    RIBd->signalizeSendData(msg);
-}
-
-void DAFEnrollmentNotifier::sendStopEnrollmentRequest(DAFEnrollmentObj* obj) {
-    Enter_Method("sendStopEnrollmentRequest()");
-
-    CDAP_M_Stop* msg = new CDAP_M_Stop(DAF_MSG_ENROLLMENT);
-
-    //TODO: assign appropriate values
-    std::ostringstream os;
-    os << "Enrollment";
-    object_t enrollobj;
-    enrollobj.objectClass = obj->getClassName();
-    enrollobj.objectName = os.str();
-    enrollobj.objectVal = obj;
-    enrollobj.objectInstance = DAF_VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
-
-    //TODO: check and rework generate invoke id
-    //msg->setInvokeID(getNewInvokeId());
-
-    //Append src/dst address for RMT "routing"
-    msg->setSrcAddr(obj->getSrcAddress());
-    msg->setDstAddr(obj->getDstAddress());
-
-    RIBd->signalizeSendData(msg);
-}
-
-void DAFEnrollmentNotifier::sendStopEnrollmentResponse(DAFEnrollmentObj* obj) {
-    Enter_Method("sendStopEnrollmentResponse()");
-
-    CDAP_M_Stop_R* msg = new CDAP_M_Stop_R(DAF_MSG_ENROLLMENT);
-
-    //TODO: assign appropriate values
-    std::ostringstream os;
-    os << "Enrollment";
-    object_t enrollobj;
-    enrollobj.objectClass = obj->getClassName();
-    enrollobj.objectName = os.str();
-    enrollobj.objectVal = obj;
-    enrollobj.objectInstance = DAF_VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
-
-    //TODO: check and rework generate invoke id
-    //msg->setInvokeID(getNewInvokeId());
-
-    //Append src/dst address for RMT "routing"
-    msg->setSrcAddr(obj->getSrcAddress());
-    msg->setDstAddr(obj->getDstAddress());
-
-    RIBd->signalizeSendData(msg);
-}
-
-void DAFEnrollmentNotifier::sendStartOperationRequest(DAFOperationObj* obj) {
-    Enter_Method("sendStartOperationRequest()");
-}
-
-void DAFEnrollmentNotifier::sendStartOperationResponse(DAFOperationObj* obj) {
-    Enter_Method("sendStartOperationResponse()");
-}
-
-void DAFEnrollmentNotifier::processMConnect(CDAPMessage* msg) {
-    CDAP_M_Connect* msg1 = check_and_cast<CDAP_M_Connect*>(msg);
-
+void DAFEnrollmentNotifier::processMConnect(CDAP_M_Connect* msg) {
     EV << "Received M_Connect";
-
-    if (msg1) {
-        signalizeConnectRequest(msg);
-    }
+    signalizeConnectRequest(msg);
 }
 
-void DAFEnrollmentNotifier::processMConnectR(CDAPMessage* msg) {
-    CDAP_M_Connect_R* msg1 = check_and_cast<CDAP_M_Connect_R*>(msg);
-
+void DAFEnrollmentNotifier::processMConnectR(CDAP_M_Connect_R* msg) {
     EV << "Received M_Connect_R";
-
-    if (msg1) {
-        if (!msg1->getResult().resultValue) {
-            signalizeConnectResponsePositive(msg);
-        }
-        else {
-            signalizeConnectResponseNegative(msg);
-        }
+    if (!msg->getResult().resultValue) {
+       signalizeConnectResponsePositive(msg);
+    }
+    else {
+       signalizeConnectResponseNegative(msg);
     }
 }
 
-void DAFEnrollmentNotifier::processMStart(CDAPMessage* msg) {
-    CDAP_M_Start* msg1 = check_and_cast<CDAP_M_Start*>(msg);
-
-    EV << "Received M_Start";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+void DAFEnrollmentNotifier::processMStart(CDAP_M_Start* msg) {
+//    EV << "Received M_Start";
+    object_t object = msg->getObject();
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
        signalizeStartEnrollmentRequest(msg);
     }
-
 }
 
-void DAFEnrollmentNotifier::processMStartR(CDAPMessage* msg) {
-    CDAP_M_Start_R* msg1 = check_and_cast<CDAP_M_Start_R*>(msg);
-
-    EV << "Received M_Start_R";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+void DAFEnrollmentNotifier::processMStartR(CDAP_M_Start_R* msg) {
+//    EV << "Received M_Start_R";
+    object_t object = msg->getObject();
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStartEnrollmentResponse(msg);
     }
 }
 
-void DAFEnrollmentNotifier::processMStop(CDAPMessage* msg) {
-    CDAP_M_Stop* msg1 = check_and_cast<CDAP_M_Stop*>(msg);
-
-    EV << "Received M_Stop";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+void DAFEnrollmentNotifier::processMStop(CDAP_M_Stop* msg) {
+//    EV << "Received M_Stop";
+    object_t object = msg->getObject();
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentRequest(msg);
     }
 }
 
-void DAFEnrollmentNotifier::processMStopR(CDAPMessage* msg) {
-    CDAP_M_Stop_R* msg1 = check_and_cast<CDAP_M_Stop_R*>(msg);
-
-    EV << "Received M_Stop_R";
-    object_t object = msg1->getObject();
-    EV << " with object '" << object.objectClass << "'" << endl;
-
+void DAFEnrollmentNotifier::processMStopR(CDAP_M_Stop_R* msg) {
+//    EV << "Received M_Stop_R";
+    object_t object = msg->getObject();
+//    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
         signalizeStopEnrollmentResponse(msg);
     }
 }
 
-void DAFEnrollmentNotifier::sendCACE(CDAPMessage* msg) {
-    Enter_Method("sendCACE()");
-
-    //TODO: add invoke id
-
-    signalizeSendCACE(msg);
+void DAFEnrollmentNotifier::signalizeStartOperationResponse(CDAPMessage* msg) {
+    EV << "Emits StartOperationResponse to enrollment" << endl;
+    emit(sigRIBDStartOperationRes, msg);
 }

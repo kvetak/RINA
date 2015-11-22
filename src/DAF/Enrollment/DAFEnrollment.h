@@ -66,6 +66,7 @@ class LisDAFEnrollmentConResPosi;
 class LisDAFEnrollmentConResNega;
 class LisDAFEnrollmentConReq;
 class LisDAFEnrollmentRequest;
+class LisDAFEnrollmentAllReqFromFai;
 
 typedef std::list<APNIPair> APNIPairs;
 typedef std::map<simtime_t, APNIPairs*> DAFEnrollCommands;
@@ -91,11 +92,16 @@ class DAFEnrollment : public DAFEnrollmentBase
     void receiveStartOperationRequest(CDAPMessage* msg);
     void receiveStartOperationResponse(CDAPMessage* msg);
 
+    void receiveAllocationRequestFromFAI(Flow* flow);
+    void insertFlow();
+
     void createBindings(Flow &flow);
 
     void checkEnrolled();
 
 
+    Flow* FlowObj;
+    IRM* Irm;
     bool test;
   protected:
     void initPointers();
@@ -115,7 +121,6 @@ class DAFEnrollment : public DAFEnrollmentBase
     void createFlow();
 
     FABase* FlowAlloc;
-    IRM* Irm;
 
     DAFEnrollCommands PreenrollConnects;
     DAFEnrollCommands PreenrollReleases;
@@ -137,6 +142,8 @@ class DAFEnrollment : public DAFEnrollmentBase
     simsignal_t sigDAFEnrollmentStartOperRes;
     simsignal_t sigDAFEnrollmentFinish;
     simsignal_t sigDAFEnrollmentEnrollPosi;
+    simsignal_t sigDAFEnrollmentAllocResNega;
+    simsignal_t sigDAFEnrollmentAllocResPosi;
 
     LisDAFEnrollmentAllResPosi* lisDAFEnrollmentAllResPosi;
     LisDAFEnrollmentGetFlowFromFaiCreResPosi* lisDAFEnrollmentGetFlowFromFaiCreResPosi;
@@ -151,6 +158,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     LisDAFEnrollmentConResNega* lisDAFEnrollmentConResNega;
     LisDAFEnrollmentConReq* lisDAFEnrollmentConReq;
     LisDAFEnrollmentRequest* lisDAFEnrollmentRequest;
+    LisDAFEnrollmentAllReqFromFai* lisDAFEnrollmentAllReqFromFai;
 
     DAFEnrollmentStateTable* StateTable;
     AEMgmt* aemgmt;
@@ -164,6 +172,10 @@ class DAFEnrollment : public DAFEnrollmentBase
     void signalizeStartOperationResponse(DAFOperationObj* obj);
     void signalizeEnrollmentFinished(DAFEnrollmentStateTableEntry* entry);
     void signalizeEnrolled();
+
+
+    void signalizeAllocateResponsePositive(Flow* flow);
+    void signalizeAllocateResponseNegative(Flow* flow);
 
     virtual void handleMessage(cMessage *msg);
 };

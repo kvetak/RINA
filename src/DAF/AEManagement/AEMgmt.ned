@@ -29,6 +29,15 @@ simple AEMgmt
     	
     	@signal[RIBd-DataSend](type=CDAPMessage?);
         
-        bool useFANotifier = default(false);
+        //bool useFANotifier = default(false);
     	bool useEnrollmentNotifier = default(false);
+    	
+        string aeName = default("mgmt");
+        string aeInstance = default("0");
+        
+        
+        string dstApName = default("ErrorApp");
+        string dstApInstance = default("0");
+        string dstAeName = default("mgmt");
+        string dstAeInstance = default("0");
 }

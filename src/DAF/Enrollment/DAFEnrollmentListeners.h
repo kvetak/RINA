@@ -54,6 +54,23 @@ public:
 };
 
 
+class LisDAFEnrollmentAllReqFromFai : public DAFEnrollmentListeners {
+  public:
+    LisDAFEnrollmentAllReqFromFai(DAFEnrollment* nenrollment) : DAFEnrollmentListeners(nenrollment){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+class LisDAFEnrollmentAllResNega : public DAFEnrollmentListeners {
+  public:
+    LisDAFEnrollmentAllResNega(DAFEnrollment* nenrollment) : DAFEnrollmentListeners(nenrollment){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+
+
+
+
+
 class LisDAFEnrollmentGetFlowFromFaiCreResPosi : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentGetFlowFromFaiCreResPosi(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
