@@ -5,19 +5,18 @@ simple Infection {
     parameters:
         @class(Infection::Infection);
         
-        string infectedIPC  = default("");
+        string infectedIPC;
         
-        xml data = default(xml("<flows></flows>"));
+        xml data;
+        
+        
+        double linkRate = default(1048576); // 1Mbps
+        double usage = default(1.0);
+        
+        bool signal = default(true);
         
         double iniTime = default(10);
         double finTime = default(20);
-        
-        double linkRate = default(1048576); // 1Mbps
-        double usage = default(1);
-        
-        int inPorts = default(1);
-        
-        bool signal = default(true);
         
         double markIniT = default(12);
         double markFinT = default(18);

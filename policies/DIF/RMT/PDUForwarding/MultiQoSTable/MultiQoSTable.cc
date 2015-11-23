@@ -66,19 +66,39 @@ vector<RMTPort * > MultiQoSTable::lookup(const PDU * pdu){
     FlowIdent fId = FlowIdent(cId.getQoSId(), srcAddr, dstAddr, cId.getSrcCepId(), cId.getDstCepId());
 
     CacheData & cd = cache[fId];
+    //bool fromCache = true;
 
-    simtime_t ex = simTime() + exTime;
+    simtime_t now = simTime();
+    simtime_t ex = now + exTime;
 
-    if(cd.next == nullptr || cd.expiration < ex) {
+    if(cd.next == nullptr || cd.expiration < now) {
         cd.next = search(dstAddr, fId.qosId);
+    //    fromCache = false;
     }
 
     vector<RMTPort * > ret;
     if(cd.next != nullptr) {
         ret.push_back(cd.next);
         cd.expiration = ex;
+/*
+        if(cId.getQoSId() != QoSCube::MANAGEMENT.getQosId()) {
+
+           if(fromCache) {
+                cout << "+ from cache "<< dstAddr<<" -> " << cd.next->getParentModule()->getName() << endl;
+                cout << "\texpires at "<< cd.expiration << endl;
+            } else {
+                cout << "- searched " << dstAddr<<" -> " << cd.next->getParentModule()->getName() << endl;
+                cout << "\texpires at "<< cd.expiration << endl;
+            }
+        }
+        */
     } else {
         cache.erase(fId);
+        /*
+        if(cId.getQoSId() != QoSCube::MANAGEMENT.getQosId()) {
+            cout << "! not found " << dstAddr << endl;
+        }
+        */
     }
 
     return ret;
@@ -116,18 +136,6 @@ string MultiQoSTable::toString(){
     }
 
 
-    os << "\tCache : "<<endl;
-    for(const auto &ent : cache) {
-        os << "\t\t :";
-        os << "("<< ent.first.srcAddr << "."<< ent.first.srcCepId << ")";
-        os << " -> ";
-        os << "("<< ent.first.dstAddr << "."<< ent.first.dstCepId << ")";
-        os << " ["<< ent.first.qosId << "]";
-        os << " >> "<<endl;
-        os << "\t\t\t" << ent.second.next->getParentModule()->getName();
-        os << "\t\t\tExpires " << ent.second.expiration;
-        os << endl;
-    }
     return os.str();
 }
 
@@ -140,7 +148,7 @@ RMTPort * MultiQoSTable::search(const string & dst, const string & qos) {
         if(pS <= 0) { return nullptr; }
         if(pS == 1) { return vR.front(); }
 
-        int k = intuniform(0, pS);
+        int k = intuniform(0, pS-1);
         return vR[k];
     } else {
         return search(dst, MA2QoS);
@@ -149,7 +157,6 @@ RMTPort * MultiQoSTable::search(const string & dst, const string & qos) {
 
 //Insert/Remove an entry
 void MultiQoSTable::addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports) {
-
     vector<RMTPort*> old;
 
     for(RMTPort * p : table[qosId][addr]) {
@@ -184,11 +191,27 @@ void MultiQoSTable::onPolicyInit(){
 }
 
 void MultiQoSTable::finish(){
-    if(par("printAtEnd").boolValue()){
+    if(par("printAtEnd").boolValue() || par("printCacheAtEnd").boolValue()){
         EV << "-----------------" << endl;
         EV << this->getFullPath() << endl;
-        EV << "Forwarding table::" << endl;
-        EV << toString() <<endl;
+        if(par("printAtEnd").boolValue()) {
+            EV << "Forwarding table::" << endl;
+            EV << toString() <<endl;
+        }
+        if(par("printCacheAtEnd").boolValue()) {
+            EV << "\tCache : "<<endl;
+            for(const auto &ent : cache) {
+                EV << "\t\t :";
+                EV << "("<< ent.first.srcAddr << "."<< ent.first.srcCepId << ")";
+                EV << " -> ";
+                EV << "("<< ent.first.dstAddr << "."<< ent.first.dstCepId << ")";
+                EV << " ["<< ent.first.qosId << "]";
+                EV << " >> "<<endl;
+                EV << "\t\t\t" << ent.second.next->getParentModule()->getName();
+                EV << "\t\t\tExpires " << ent.second.expiration;
+                EV << endl;
+            }
+        }
         EV << "-----------------" << endl;
     }
 }
