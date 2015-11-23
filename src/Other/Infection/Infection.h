@@ -12,138 +12,50 @@ namespace Infection {
 
     class Infection;
 
-    class FlowInstance {
-        public:
-          static unsigned int cepID;
-
-          unsigned int fcepID, secNum;
-          FlowInstance();
+    struct pduT {
+        PDU * pdu;
+        double wT;
     };
 
-    class Flows {
-        public:
-            int lim;
+    class Flow {
+        public :
+            Flow(string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec);
+
+            pduT getPDU(bool record);
+            string QoS;
+
+        private :
             ConnectionId connID;
             Address srcAddr, dstAddr;
+            static unsigned int cepID;
 
-            int minPDU, maxPDU;
+            double avgWT;
+            int minS, maxS;
+            int current, parts, rec;
+            unsigned int fcepID, secNum;
 
-            vector<FlowInstance> flows;
-            vector<FlowInstance>::iterator current;
-
-            Flows(int _lim, int avgPDU, int varPDU, string DIF, string SRC, string DST, string QoS);
-            Flows(int _lim, ConnectionId _connID, Address _srcAddr, Address _dstAddr, int _minPDU, int _maxPDU);
-
-            void addFlow();
-            Flows dup();
-    };
-
-    class PortFlows {
-        public:
-            double avgBitWt;
-            int lim;
-            vector<Flows> flows;
-
-            PortFlows(double _avgBitWt);
-
-            Flows * addFlows(int _lim, int avgPDU, int varPDU, string DIF, string SRC, string DST, string QoS);
-            Flows * addFlows(Flows fls);
-
-            PortFlows dup();
     };
 
     class commMsg : public cMessage {
-    public:
-        PortFlows * pf;
+        public:
+            Flow * f;
 
-        commMsg(PortFlows * _pf);
+            commMsg(Flow * _f);
     };
 
-    class Infection : public cSimpleModule
-    {
-      public:
-      //  void finish();
+    class Infection : public cSimpleModule{
+          public:
+                void finish();
 
-      protected:
-        virtual void initialize();
-        virtual void handleMessage(cMessage *msg);
+          protected:
+                virtual void initialize();
+                virtual void handleMessage(cMessage *msg);
 
-        vector<PortFlows> flows;
+                vector<Flow *> flows;
 
-        double finTime;
+                bool emitSignals;
+                simsignal_t signal;
 
-        int partitions;
-
-        bool emitSignals;
-        simsignal_t signal;
-
-        double markIniT, markFinT;
+                double markIniT, markFinT, finTime;
     };
 }
-    /*
-
-
-    class InfectionFlows {
-        double bitWTime;
-        int minPDU, maxPDU;
-        Address srcAddr, dstAddr;
-        string QoS;
-        ConnectionId connID;
-
-        long count;
-
-    };
-
-    class InfectionFlow {
-      public:
-        static int cepID;
-
-        int fcepID;
-
-        long count;
-        unsigned int secNum;
-    };
-
-    class InfectionFlow
-    {
-      public:
-        static int cepID;
-
-        int fcepID;
-
-        long count;
-        unsigned int secNum;
-
-        InfectionFlow();
-
-        DataTransferPDU* getPDU(Infection * parent, bool signaled);
-    };
-
-    class TimerMessage : public cMessage {
-      public:
-        InfectionFlow * inf;
-        TimerMessage(InfectionFlow * _inf);
-    };
-
-    class Infection : public cSimpleModule
-    {
-      public:
-        void recall(InfectionFlow *, double dt);
-        void finish();
-
-      protected:
-        virtual void initialize();
-        virtual void handleMessage(cMessage *msg);
-
-        vector<InfectionFlow * > infs;
-
-        double finTime;
-
-        int partitions;
-
-        bool emitSignals;
-        simsignal_t signal;
-
-        double markIniT, markFinT;
-    };
-*/

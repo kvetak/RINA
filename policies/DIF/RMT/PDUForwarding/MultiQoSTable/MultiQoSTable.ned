@@ -33,6 +33,8 @@ simple MultiQoSTable like IntPDUForwarding
         double exTime = default(1000);
         
         bool printAtEnd = default(false);
+        bool printCacheAtEnd = default(false);
+        
         string MA2QoS = default("*");
         
 }

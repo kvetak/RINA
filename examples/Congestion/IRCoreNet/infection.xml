@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode>	
+		<flow dstAddr="1" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="2" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="3" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="4" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="5" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="6" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="7" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="8" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="9" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="a" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
+		
+		<flow dstAddr="1" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="2" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="3" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="4" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="5" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="6" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="7" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="8" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="9" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="a" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
+		
+		<flow dstAddr="1" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="2" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="3" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="4" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="5" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="6" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="7" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="8" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="9" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="a" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
+		
+		<flow dstAddr="1" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="2" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="3" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="4" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="5" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="6" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="7" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="8" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="9" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+		<flow dstAddr="a" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+	</InfectionNode>
+</Infection>
