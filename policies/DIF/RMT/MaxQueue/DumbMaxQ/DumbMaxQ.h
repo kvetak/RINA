@@ -39,6 +39,7 @@ class DumbMaxQ : public RMTMaxQBase
     SmartMonitor * monitor;
 
     std::map<std::string, unsigned int> dropIn, dropOut, okIn, okOut;
+    std::map<std::string, unsigned long> dDropIn, dDropOut, dOkIn, dOkOut;
 };
 
 #endif /*  */

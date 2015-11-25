@@ -23,12 +23,12 @@
 #pragma once
 
 #include <omnetpp.h>
-#include "IntPDUForwarding.h"
-#include <vector>
+#include "IntQoSMForwarding.h"
+#include <map>
 
-class IntQoSMForwarding  : public IntPDUForwarding {
+class IntIQoSMForwarding  : public IntQoSMForwarding {
 public:
 
-    //Insert/Remove an entry
-    virtual void addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports) = 0;
+    virtual void setPortDelay(RMTPort* port, double delay) = 0;
 };
+

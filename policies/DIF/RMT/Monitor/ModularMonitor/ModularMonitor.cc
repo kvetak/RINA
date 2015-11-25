@@ -45,14 +45,22 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
         case RMTQueue::OUTPUT:
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
-            break;
-    }
 
-    if(emitSignals) {
-        const cPacket * pdu = queue->getLastPDU();
-        if(inTime.find(pdu) == inTime.end()) {
-            inTime[pdu] = simTime();
-        }
+            if(emitSignals) {
+                const cPacket * pdu = queue->getLastPDU();
+                if(inTime.find(pdu) == inTime.end()) {
+                    inTime[pdu] = simTime();
+                }
+
+                if(inPos.find(pdu) == inPos.end()) {
+                    inPos[pdu] = portServed[port];
+                }
+
+                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                    emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                }
+            }
+            break;
     }
 }
 
@@ -66,14 +74,16 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
         case RMTQueue::OUTPUT:
             outOutModule->pduDropped(queue, pdu, port);
             outDropModule->pduDropped(queue, pdu, port);
-            break;
-    }
 
-    if(emitSignals) {
-        if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-            emit(signal, new HopLossMsg(p->getConnId().getQoSId()));
-        }
-        inTime.erase(pdu);
+            if(emitSignals) {
+                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                    emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+                }
+                inTime.erase(pdu);
+                inPos.erase(pdu);
+            }
+
+            break;
     }
 }
 
@@ -87,19 +97,21 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
         case RMTQueue::OUTPUT:
             outOutModule->pduReleased(queue, port);
             outDropModule->pduReleased(queue, port);
-            break;
-    }
 
-    if(emitSignals) {
-        if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
-            if(inTime.find(pdu) != inTime.end()) {
+            if(emitSignals) {
+                if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
+                    if(inTime.find(pdu) != inTime.end()) {
 
-                simtime_t hdel = simTime()-inTime[pdu];
-                std::string qos = pdu->getConnId().getQoSId();
-                inTime.erase(pdu);
-                emit(signal, new HopDelayMsg(qos, hdel));
+                        int hdel = portServed[port]-inPos[pdu];
+                        std::string qos = pdu->getConnId().getQoSId();
+                        inTime.erase(pdu);
+                        inPos.erase(pdu);
+                        emit(signal, new HopDelayMsg(qos, hdel, this));
+                    }
+                }
             }
-        }
+            portServed[port]++;
+            break;
     }
 }
 

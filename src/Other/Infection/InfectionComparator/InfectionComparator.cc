@@ -37,7 +37,14 @@ bool InfectionComparator::matchesThisIPC(const Address& addr, PDU * pdu)
             if(inf->signaled) {
                 ConnectionId cId = inf->getConnId();
                 simtime_t delay = simTime() - inf->sendT;
-                emit(signal, new RecvInfMsg(cId.getQoSId(), delay, inf->fcepID, inf->getSeqNum()));
+                emit(signal, new RecvInfMsg(
+                        inf->getSrcAddr().getIpcAddress().getName(),
+                        inf->getDstAddr().getIpcAddress().getName(),
+                        inf->getConnId().getSrcCepId(),
+                        cId.getQoSId(),
+                        inf->getSeqNum(),
+                        delay,
+                        inf->pathDelay));
             }
         }
         return true;

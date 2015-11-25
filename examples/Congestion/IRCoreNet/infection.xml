@@ -1,48 +1,227 @@
 <?xml version="1.0"?>
 <Infection>
-	<InfectionNode>	
-		<flow dstAddr="1" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="2" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="3" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="4" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="5" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="6" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="7" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="8" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="9" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="a" qos="PU" pduSizeVar="400" N="1" rate="0.1" />
-		
-		<flow dstAddr="1" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="2" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="3" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="4" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="5" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="6" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="7" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="8" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="9" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="a" qos="PN" pduSizeVar="400" N="1" rate="0.1" />
-		
-		<flow dstAddr="1" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="2" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="3" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="4" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="5" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="6" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="7" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="8" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="9" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="a" qos="CU" pduSizeVar="400" N="1" rate="0.1" />
-		
-		<flow dstAddr="1" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="2" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="3" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="4" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="5" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="6" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="7" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="8" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="9" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
-		<flow dstAddr="a" qos="CN" pduSizeVar="400" N="1" rate="0.1" />
+	<InfectionNode id="Node_1">
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.3933"  N = "394" rec = "394" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5169"  N = "517" rec = "517" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1120"  N = "112" rec = "112" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1191"  N = "120" rec = "120" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0664"  N = "67" rec = "67" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0490"  N = "50" rec = "50" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0631"  N = "64" rec = "64" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1685"  N = "169" rec = "169" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2215"  N = "222" rec = "222" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0480"  N = "48" rec = "48" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0285"  N = "29" rec = "29" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0210"  N = "22" rec = "22" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "28" rec = "28" />
+		<flow  dstAddr = "5" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "a" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "5" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "a" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+	</InfectionNode>
+	<InfectionNode id="Node_2">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.3933"  N = "394" rec = "394" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5478"  N = "548" rec = "548" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1120"  N = "112" rec = "112" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0675"  N = "68" rec = "68" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0770"  N = "77" rec = "77" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1685"  N = "169" rec = "169" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2348"  N = "235" rec = "235" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0480"  N = "48" rec = "48" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0289"  N = "29" rec = "29" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0330"  N = "33" rec = "33" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "4" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "9" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "4" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "9" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+	</InfectionNode>
+	<InfectionNode id="Node_3">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5099"  N = "510" rec = "510" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5345"  N = "535" rec = "535" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2369"  N = "237" rec = "237" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0770"  N = "77" rec = "77" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0490"  N = "50" rec = "50" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2185"  N = "219" rec = "219" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2291"  N = "230" rec = "230" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1015"  N = "102" rec = "102" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0330"  N = "33" rec = "33" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0210"  N = "22" rec = "22" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+	</InfectionNode>
+	<InfectionNode id="Node_4">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2096"  N = "210" rec = "210" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.3960"  N = "397" rec = "397" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1432"  N = "144" rec = "144" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0898"  N = "90" rec = "90" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1697"  N = "170" rec = "170" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0614"  N = "62" rec = "62" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "2" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "9" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "9" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+	</InfectionNode>
+	<InfectionNode id="Node_5">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1191"  N = "120" rec = "120" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0738"  N = "74" rec = "74" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.4099"  N = "410" rec = "410" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0770"  N = "77" rec = "77" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0244"  N = "25" rec = "25" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0561"  N = "57" rec = "57" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0316"  N = "32" rec = "32" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1757"  N = "176" rec = "176" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0330"  N = "33" rec = "33" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0105"  N = "11" rec = "11" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "25" rec = "25" />
+		<flow  dstAddr = "2" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "a" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "a" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+	</InfectionNode>
+	<InfectionNode id="Node_6">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0664"  N = "67" rec = "67" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1230"  N = "124" rec = "124" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2243"  N = "225" rec = "225" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0177"  N = "18" rec = "18" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0490"  N = "50" rec = "50" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0631"  N = "64" rec = "64" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0285"  N = "29" rec = "29" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0527"  N = "53" rec = "53" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0961"  N = "97" rec = "97" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0076"  N = "8" rec = "8" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0210"  N = "22" rec = "22" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "28" rec = "28" />
+	</InfectionNode>
+	<InfectionNode id="Node_7">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1190"  N = "120" rec = "120" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0770"  N = "77" rec = "77" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0840"  N = "84" rec = "84" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0305"  N = "31" rec = "31" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2119"  N = "212" rec = "212" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0101"  N = "11" rec = "11" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0510"  N = "52" rec = "52" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0330"  N = "33" rec = "33" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0360"  N = "36" rec = "36" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0131"  N = "14" rec = "14" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0908"  N = "91" rec = "91" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0043"  N = "5" rec = "5" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+	</InfectionNode>
+	<InfectionNode id="Node_8">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0630"  N = "63" rec = "63" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0171"  N = "18" rec = "18" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5392"  N = "540" rec = "540" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.3653"  N = "366" rec = "366" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "27" rec = "27" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0073"  N = "8" rec = "8" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2311"  N = "232" rec = "232" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1565"  N = "157" rec = "157" />
+	</InfectionNode>
+	<InfectionNode id="Node_9">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0107"  N = "11" rec = "11" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.5104"  N = "511" rec = "511" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.4815"  N = "482" rec = "482" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0046"  N = "5" rec = "5" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2188"  N = "219" rec = "219" />
+		<flow  dstAddr = "a" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2064"  N = "207" rec = "207" />
+		<flow  dstAddr = "2" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "4" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "4" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+	</InfectionNode>
+	<InfectionNode id="Node_a">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0561"  N = "57" rec = "57" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0631"  N = "64" rec = "64" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0560"  N = "56" rec = "56" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0561"  N = "57" rec = "57" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.3863"  N = "387" rec = "387" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "1000"  pduSizeVar = "400" rate = "0.4744"  N = "475" rec = "475" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "25" rec = "25" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0270"  N = "28" rec = "28" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "24" rec = "24" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.0240"  N = "25" rec = "25" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.1655"  N = "166" rec = "166" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "1000"  pduSizeVar = "400" rate = "0.2033"  N = "204" rec = "204" />
+		<flow  dstAddr = "2" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "5" qos = "GU" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0200"  N = "20" rec = "20" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
+		<flow  dstAddr = "5" qos = "SN" pduSize = "1024" pduSize = "1000"  pduSizeVar = "400" rate = "0.0800"  N = "80" rec = "80" />
 	</InfectionNode>
 </Infection>

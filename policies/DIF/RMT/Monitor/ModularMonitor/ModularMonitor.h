@@ -51,6 +51,8 @@ protected:
     bool emitSignals;
     simsignal_t signal;
     map<const cPacket *, simtime_t> inTime;
+    map<const cPacket *, int> inPos;
+    map<RMTPort *, int> portServed;
 };
 
 }

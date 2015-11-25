@@ -16,19 +16,19 @@
 #pragma once
 
 #include <IntPDUFG.h>
-#include <IntQoSMForwarding.h>
+#include <IntIQoSMForwarding.h>
 #include <TSimpleRouting/IntTSimpleRouting.h>
 
 #include <map>
 #include <set>
 
-namespace QoSAwareMEntries {
+namespace IQoSAwareMEntries {
 
 using namespace std;
 
 typedef unsigned short mType;
 
-class QoSAwareMEntries: public IntPDUFG {
+class IQoSAwareMEntries: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
@@ -43,7 +43,7 @@ protected:
 
 private:
     DA * difA;
-    IntQoSMForwarding * fwd;
+    IntIQoSMForwarding * fwd;
     IntTSimpleRouting<mType> * rt;
 
     //QoS, Next, Ports
@@ -52,6 +52,7 @@ private:
 
     set<string> urgentQoS;
     map<string, int> dstLat;
+    map<string, double> dstDLat;
     bool maUrgent;
     int maxLat;
 };

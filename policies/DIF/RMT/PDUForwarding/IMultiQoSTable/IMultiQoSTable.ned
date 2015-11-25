@@ -20,15 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+package rina.policies.DIF.RMT.PDUForwarding.IMultiQoSTable;
 
-#include <omnetpp.h>
-#include "IntPDUForwarding.h"
-#include <vector>
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-class IntQoSMForwarding  : public IntPDUForwarding {
-public:
-
-    //Insert/Remove an entry
-    virtual void addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports) = 0;
-};
+simple IMultiQoSTable like IntPDUForwarding
+{
+    parameters:
+        @class(IMultiQoSTable::IMultiQoSTable);
+        @display("i=block/socket");
+        
+        double exTime = default(1000);
+        
+        bool printAtEnd = default(false);
+        bool printCacheAtEnd = default(false);
+        
+        string MA2QoS = default("*");
+        
+}

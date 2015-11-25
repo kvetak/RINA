@@ -22,19 +22,30 @@ class HopDelayMsg  : public cObject {
 public:
 
     std::string qos;
-    simtime_t t;
+    int t;
+    cModule * module;
 
-    HopDelayMsg(std::string _qos, simtime_t _t) : qos(_qos), t(_t) {}
+    HopDelayMsg(std::string _qos, int _t, cModule * _module) : qos(_qos), t(_t), module(_module) {}
     ~HopDelayMsg(){}
 };
 
+
+class HopRcvMsg  : public cObject {
+public:
+
+    std::string qos;
+    cModule * module;
+
+    HopRcvMsg(std::string _qos, cModule * _module) : qos(_qos), module(_module) {}
+    ~HopRcvMsg(){}
+};
 
 class HopLossMsg  : public cObject {
 public:
 
     std::string qos;
-    simtime_t t;
+    cModule * module;
 
-    HopLossMsg(std::string _qos) : qos(_qos) {}
+    HopLossMsg(std::string _qos, cModule * _module) : qos(_qos), module(_module) {}
     ~HopLossMsg(){}
 };
