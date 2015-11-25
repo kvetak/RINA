@@ -20,8 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef __RINA_IListener_H_
-#define __RINA_IListener_H_
+#pragma once
 
 //Standard libraries
 #include <omnetpp.h>
@@ -33,60 +32,94 @@
 #include <set>
 #include <map>
 
+namespace IListener {
 
-using namespace std;
+    using namespace std;
 
-class IListenerModule : public cListener {
-  public:
-    set<string> QoS;
-    map<string, double> QoSDelay, QoSJitter;
+    struct modQoSInfo {
+        int maxDel;
+        map<int, int> distDel;
+        int countDel;
+        int sumDel;
 
+        int rcv, drop;
 
-    IListenerModule();
-    void print();
-    void print(ofstream &out);
+        modQoSInfo();
+        void RcvMsg();
+        void DropMsg();
+        void ServeMsg(int t);
+    };
 
-    void initialize();
-    virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
+    struct flowId {
+        string src, dst;
+        int srcCepId;
+        string qos;
 
-  private:
-    void record_send(string qos);
-    void record_loss(string qos);
-    map<string, long> sent, lost;
+        flowId(string _src, string _dst, int _srcCepId, string _qos);
+        bool operator<( const flowId & o ) const ;
+    };
 
-    void record_hop_delay(string qos, simtime_t t);
-    map<string, long> hop_delay_count;
-    map<string, simtime_t> sum_hop_delay, max_hop_delay;
+    struct flowInfo {
+        simtime_t minDel, maxDel;
+        map<simtime_t, int> distDel;
+        int countDel;
+        simtime_t sumDel;
 
-    void record_delay(string qos, simtime_t t);
-    map<string, long> delay_count;
-    map<string, simtime_t> sum_delay, max_delay;
-    map<string, int > delay_degraded;
-    map<string, map<int, int> > delay_degradation;
-
-    bool record_unnorder(string qos, int cepID, unsigned int seqN);
-    map<int, unsigned int> lastRcv;
-    map<string, int> unorderedRCV;
-
-
-    void record_jitter(string qos, int cepID, simtime_t delay);
-    map<string, long> jitter_count;
-    map<string, simtime_t> sum_jitter, max_jitter;
-    map<int, simtime_t> last_time;
-    map<string, map<int, int> > jitter_degradation;
+        simtime_t lastDelay;
+        simtime_t minJitter, maxJitter;
+        map<simtime_t, int> distJit;
+        int countJit;
+        simtime_t sumJit;
 
 
-};
+        int snd, rcv;
+        map<int, int> countConsDrop;
+        int lastSec, consDrop;
 
-class IListener : public cSimpleModule {
-  protected:
-    virtual void initialize();
-    virtual void finish();
-  private:
-    IListenerModule module;
-};
+        flowInfo();
+
+        void SendMsg();
+        void RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay);
+    };
 
 
-double Idround(double a, int ndigits);
+    class IListenerModule : public cListener {
+          public:
+                set<string> QoS;
+                map<string, double> QoSDelay, QoSJitter;
 
-#endif
+                void initialize();
+                virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
+                void print(ofstream &out);
+                void printHopInfo(ofstream &out);
+                void printGHopInfo(ofstream &out);
+                void printFlowInfo(ofstream &out);
+                void printJFlowInfo(ofstream &out, ofstream &outb);
+
+                void printQoSInfo(ofstream &out, ofstream &outb);
+                double h_delayV;
+
+          protected:
+                map<string, map<cModule *, modQoSInfo> > modulesQoSInfo;
+                map<string, modQoSInfo> hopQoSInfo;
+                map<string, int> QoSsend;
+
+                map<cModule *, modQoSInfo> modulesInfo;
+
+                map<string, map<flowId, flowInfo> > QoSFlowInfo;
+
+    };
+
+    class IListener : public cSimpleModule {
+      protected:
+        virtual void initialize();
+        virtual void finish();
+      private:
+        IListenerModule module;
+        double h_delayV;
+    };
+
+    double Idround(double a, int ndigits);
+    simtime_t toDistIndex(simtime_t t);
+
+}

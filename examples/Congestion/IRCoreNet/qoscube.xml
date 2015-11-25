@@ -13,7 +13,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
+			<MaxSDUSize>5000</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
@@ -25,7 +25,7 @@
 			<RateOn>0</RateOn>				
 		</QosCube>
 		
-		<QosCube id="PU">
+		<QosCube id="GU">
 			<Delay>10</Delay>	
 			<PDUDroppingProbability>0.0000001</PDUDroppingProbability>			
 			<CostTime>4</CostTime>
@@ -38,7 +38,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
+			<MaxSDUSize>5000</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
@@ -50,7 +50,7 @@
 			<RateOn>0</RateOn>				
 		</QosCube>
 		
-		<QosCube id="PN">
+		<QosCube id="SN">
 			<Delay>1000</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
 			<CostTime>3</CostTime>
@@ -63,7 +63,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
+			<MaxSDUSize>5000</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
@@ -76,7 +76,7 @@
 		</QosCube>
 		
 		
-		<QosCube id="CU">
+		<QosCube id="sBE">
 			<Delay>10</Delay>	
 			<PDUDroppingProbability>0.0001</PDUDroppingProbability>			
 			<CostTime>2</CostTime>
@@ -89,7 +89,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
+			<MaxSDUSize>5000</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>
@@ -101,7 +101,7 @@
 			<RateOn>0</RateOn>				
 		</QosCube>
 		
-		<QosCube id="CN">
+		<QosCube id="BE">
 			<Delay>1000</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
@@ -114,7 +114,7 @@
 			<BurstPeriod>10000000</BurstPeriod>
 			<BurstDuration>1000000</BurstDuration>
 			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
+			<MaxSDUSize>5000</MaxSDUSize>
 			<PartialDelivery>0</PartialDelivery>
 			<IncompleteDelivery>0</IncompleteDelivery>
 			<ForceOrder>0</ForceOrder>

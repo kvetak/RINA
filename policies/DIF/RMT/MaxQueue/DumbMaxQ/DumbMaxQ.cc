@@ -52,14 +52,30 @@ bool DumbMaxQ::run(RMTQueue* queue)
     if(drop) {
         if(queue->getType() == RMTQueue::INPUT){
             dropIn[qos]++;
+            dDropIn[qos] += queue->getLastPDU()->getBitLength();
+
+            dropIn["*"]++;
+            dDropIn["*"] += queue->getLastPDU()->getBitLength();
         } else {
             dropOut[qos]++;
+            dDropOut[qos] += queue->getLastPDU()->getBitLength();
+
+            dropOut["*"]++;
+            dDropOut["*"] += queue->getLastPDU()->getBitLength();
         }
     } else {
         if(queue->getType() == RMTQueue::INPUT){
             okIn[qos]++;
+            dOkIn[qos] += queue->getLastPDU()->getBitLength();
+
+            okIn["*"]++;
+            dOkIn["*"] += queue->getLastPDU()->getBitLength();
         } else {
             okOut[qos]++;
+            dOkOut[qos] += queue->getLastPDU()->getBitLength();
+
+            okOut["*"]++;
+            dOkOut["*"] += queue->getLastPDU()->getBitLength();
         }
     }
 
@@ -75,7 +91,7 @@ void  DumbMaxQ::finish(){
 
         EV << "On output:" <<endl;
         for(it = okOut.begin(); it!= okOut.end(); it++){
-            EV << "QoS " << it->first << " - Processed " << okOut[it->first] << " - Dropped "<< dropOut[it->first] << endl;
+            EV << "QoS " << it->first << " - Processed " << okOut[it->first] <<"(" << dOkOut[it->first] << ")" << " - Dropped "<< dropOut[it->first] <<"(" << dDropOut[it->first] << ")" << endl;
         }
         EV << "--------"<< endl;
     }

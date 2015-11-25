@@ -38,17 +38,13 @@ namespace Infection {
     }
 
     pduT Flow::getPDU(bool record) {
+        //int size = 1024;
         int size = intuniform(minS, maxS);
 
         pduT ret;
-        ret.wT = size * avgWT * exponential(1);
-
-        /*
-        cout << "-------------------" << endl;
-        cout << simTime() << endl;
-        cout << srcAddr << "." << current  <<" > "<< dstAddr <<".0"<< endl;
-        cout << size  <<" "<< ret.wT << endl;
-*/
+        ret.wT = 8*(size+20) * avgWT * exponential(1);
+        //ret.wT = 8*(size+20) * avgWT;
+        //ret.wT = size * avgWT;
 
         if(current == 0) { secNum++; }
         DataTransferPDU * pdu = new InfectedDataTransferPDU( record && current < rec, fcepID, "InfectedPDU");
@@ -68,7 +64,7 @@ namespace Infection {
         ud->addData(sdu);
         pdu->setUserDataField(ud);
 
-        pdu->setBitLength(size);
+        pdu->setByteLength(size);
 
         ret.pdu = pdu;
 
@@ -145,6 +141,7 @@ namespace Infection {
 
             if (n->getAttribute("pduSize") && atoi(n->getAttribute("pduSize")) > 0) {
                 pduS = atoi(n->getAttribute("pduSize")); }
+            if(pduS < 50) { pduS = 50; }
 
             if (n->getAttribute("pduSizeVar") && atoi(n->getAttribute("pduSizeVar")) > 0) {
                 pduSv = atoi(n->getAttribute("pduSizeVar")); }
@@ -156,7 +153,7 @@ namespace Infection {
 
             Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec);
             flows.push_back(f);
-            scheduleAt(iniT + uniform(0, 1500/unitRate), new commMsg(f));
+            scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
         }
 
     }
@@ -172,7 +169,12 @@ namespace Infection {
 
             scheduleAt(now + k.wT, msg);
             send(k.pdu, "g$o");
-            if(emitSignals) { emit(signal, new SendInfMsg(m->f->QoS));}
+            if(emitSignals) { emit(signal, new SendInfMsg(
+                    k.pdu->getSrcAddr().getIpcAddress().getName(),
+                    k.pdu->getDstAddr().getIpcAddress().getName(),
+                    k.pdu->getConnId().getSrcCepId(),
+                    m->f->QoS)
+            );}
         }
     }
 

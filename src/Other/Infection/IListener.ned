@@ -24,11 +24,13 @@ package rina.src.Other.Infection;
 
 simple IListener {
     parameters:
-        @class(IListener);
+        @class(IListener::IListener);
         @display("i=device/antennatower");
         
         string configname = default("");
         string runname = default("");
         
         xml data = default(xml("<QoS><QoS/>"));
+        
+        int mtu = default(1500);
 }

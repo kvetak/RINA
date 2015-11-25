@@ -61,20 +61,20 @@ network IRCoreNet
             @display("p=240,415");
         }
     connections:
-        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 6.5ms; } <--> r2.medium++;
-        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.5ms; } <--> r3.medium++;
-        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 12ms; } <--> r6.medium++;
-        r2.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 6.0ms; } <--> r3.medium++;
-        r2.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 6.5ms; } <--> r5.medium++;
-        r3.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 5.0ms; } <--> r4.medium++;
-        r4.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.5ms; } <--> r5.medium++;
-        r4.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 5.0ms; } <--> r6.medium++;
-        r5.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 5.0ms; } <--> r7.medium++;
-        r6.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.0ms; } <--> r7.medium++;
-        r6.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 5.0ms; } <--> r8.medium++;
-        r7.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.0ms; } <--> r9.medium++;
-        r8.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.0ms; } <--> r9.medium++;
-        r8.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.0ms; } <--> ra.medium++;
-        r9.medium++ <--> DatarateChannel {  datarate = 10Gbps; delay = 4.5ms; } <--> ra.medium++;
+        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r2.medium++;
+        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r3.medium++;
+        r1.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r6.medium++;
+        r2.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r3.medium++;
+        r2.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r5.medium++;
+        r3.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r4.medium++;
+        r4.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r5.medium++;
+        r4.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r6.medium++;
+        r5.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r7.medium++;
+        r6.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r7.medium++;
+        r6.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r8.medium++;
+        r7.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r9.medium++;
+        r8.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> r9.medium++;
+        r8.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> ra.medium++;
+        r9.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> ra.medium++;
 
 }

@@ -120,24 +120,13 @@ double MM_DQ_Drop::getDropProbability(RMTQueue * q, RMTPort * p) {
             prob = th.prob;
         }
     }
-/*
-    if(prob > 0.1) {
-        cout << q->getName() << " - " << count << " : " << prob << endl;
-        cout << "\tQueue " << qc->id << endl;
-        cout << "\t\tAbsolute threshold " << qc->absThreshold<<endl;
-        for(Threshold & th : qc->thresholdList) {
-            cout << "\t\t-Threshold " << th.limit << " :: "<< th.prob <<endl;
-        }
-
-    }
-*/
 
     return prob;
 }
 
 
 void MM_DQ_Drop::finish() {
-    /*
+/*
     cout << "MM_DQ_DROP "<< this->getFullPath()  << endl;
     for(auto qc : queueConf) {
         cout << "\tQueue " << qc.second->id << endl;
@@ -147,7 +136,7 @@ void MM_DQ_Drop::finish() {
         }
 
     }
-    */
+*/
 }
 
 }

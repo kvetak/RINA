@@ -19,25 +19,36 @@
 #include <omnetpp.h>
 #include "DataTransferPDU.h"
 
+using namespace std;
+
 class SendInfMsg  : public cObject {
 public:
 
-    std::string qos;
+    string src, dst;
+    int srcCepId;
+    string qos;
 
-    SendInfMsg(std::string _qos) : qos(_qos) {}
+    SendInfMsg(string _src, string _dst, int _srcCepId, string _qos) :
+        src(_src), dst(_dst), srcCepId(_srcCepId), qos(_qos) {}
     ~SendInfMsg(){}
 };
 
 class RecvInfMsg  : public cObject {
 public:
 
-    std::string qos;
-    simtime_t delay;
-    int cepID;
+    string src, dst;
+    int src_cepID;
+    string qos;
     unsigned int seqN;
 
-    RecvInfMsg(std::string _qos, simtime_t _delay, int _cepID, unsigned int _seqN) :
-        qos(_qos), delay(_delay), cepID(_cepID), seqN(_seqN){}
+    simtime_t h_delay, p_delay;
+
+    RecvInfMsg(string _src, string _dst, int _cepID, string _qos,
+           unsigned int _seqN,  simtime_t _h_delay, simtime_t _p_delay) :
+        src(_src), dst(_dst), src_cepID(_cepID), qos(_qos),
+        seqN(_seqN),
+        h_delay(_h_delay),
+        p_delay(_p_delay) {}
     ~RecvInfMsg(){}
 };
 
@@ -47,19 +58,23 @@ public:
     simtime_t sendT;
     bool signaled;
     int fcepID;
+    double pathDelay;
 
     InfectedDataTransferPDU(bool _signaled, int _fcepID, const char *name=NULL):
             DataTransferPDU(name, 0),
             signaled(_signaled),
-            fcepID(_fcepID)
+            fcepID(_fcepID),
+            pathDelay(0.0)
             {sendT = simTime();}
     InfectedDataTransferPDU(const InfectedDataTransferPDU& other) :
             DataTransferPDU(other),
             signaled(other.signaled),
-            fcepID(other.fcepID)
+            fcepID(other.fcepID),
+            pathDelay(other.pathDelay)
             {sendT = other.sendT;}
     InfectedDataTransferPDU(const DataTransferPDU& other) :
-            DataTransferPDU(other)
+            DataTransferPDU(other),
+            pathDelay(0.0)
             {sendT = simTime(); fcepID = 0; signaled = false;}
 
     virtual InfectedDataTransferPDU *dup() const {return new InfectedDataTransferPDU(*this);}
