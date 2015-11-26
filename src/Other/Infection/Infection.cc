@@ -57,12 +57,18 @@ namespace Infection {
         pdu->setSeqNum(secNum);
 
         UserDataField * ud = new UserDataField();
-        ud->setSduSeqNum(secNum);
 
         SDU * sdu = new SDU();
         sdu->addUserData(new cPacket());
-        ud->addData(sdu);
-        pdu->setUserDataField(ud);
+        ud->encapsulate(sdu);
+
+        ud->setCompleteSDU(true);
+        ud->setNoLength(false);
+        ud->setSduSeqNumPresent(true);
+        ud->setSduSeqNum(secNum);
+
+        //pdu->setUserDataField(ud);
+        pdu->encapsulate(ud);
 
         pdu->setByteLength(size);
 
