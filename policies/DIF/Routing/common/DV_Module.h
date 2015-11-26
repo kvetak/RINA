@@ -291,11 +291,6 @@ public:
         Routing_Alg<T>::sendUpdate();
         secId++;
 
-<<<<<<< HEAD
-=======
-       //
->>>>>>> Updated CoreNet example.
-
         for(auto neig : Routing_Alg<T>::neigTable){
             T linkM = Routing_Alg<T>::nei[neig.first];
 
