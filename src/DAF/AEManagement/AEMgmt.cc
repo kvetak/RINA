@@ -87,6 +87,7 @@ void AEMgmt::initSignalsAndListeners() {
 }
 
 void AEMgmt::signalizeSendData(CDAPMessage* msg) {
+    Enter_Method("signalizeSendData()");
     //Check dstAddress
     if (msg->getDstAddr() == Address::UNSPECIFIED_ADDRESS) {
         EV << "Destination address cannot be UNSPECIFIED!" << endl;

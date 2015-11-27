@@ -280,10 +280,10 @@ void DAFEnrollment::insertStateTableEntry(Flow* flow){
 void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     Enter_Method("receivePositiveConnectResponse()");
 
-    signalizeEnrolled();
+    //signalizeEnrolled();
 
     /* this is commented only for testing ---> refactoring of adress is need to be done
-    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
+    */CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
@@ -295,7 +295,7 @@ void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     entry->setCACEConStatus(DAFEnrollmentStateTableEntry::CON_ESTABLISHED);
 
     startEnrollment(entry);
-    */
+
 }
 
 void DAFEnrollment::receiveNegativeConnectResponse(CDAPMessage* msg) {
@@ -447,9 +447,12 @@ void DAFEnrollment::processStopEnrollmentResponse(DAFEnrollmentStateTableEntry* 
 
     signalizeStopEnrollmentResponse(enrollObj);
 
+
     if (entry->getIsImmediateDAFEnrollment()) {
         entry->setDAFEnrollmentStatus(DAFEnrollmentStateTableEntry::ENROLL_ENROLLED);
         signalizeEnrollmentFinished(entry);
+
+        signalizeEnrolled();
     }
     else {
         entry->setDAFEnrollmentStatus(DAFEnrollmentStateTableEntry::ENROLL_WAIT_START_OPERATION);

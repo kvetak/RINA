@@ -48,6 +48,10 @@ Address::Address(std::string composite)
         apname = APN(os.str().c_str());
     }
 
+    if (tokens.size() == 1) {
+        apname = APN(composite);
+    }
+
 
 }
 
