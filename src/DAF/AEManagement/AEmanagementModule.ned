@@ -26,7 +26,7 @@ import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.Enrollment.DAFEnrollmentNotifier;
 import rina.src.DIF.FA.FANotifier;
 
-module AEmanagement
+module AEmanagementModule
 {
     parameters:
         @display("i=block/control;bgb=271,300");

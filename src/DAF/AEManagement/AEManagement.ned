@@ -24,7 +24,7 @@ module AEManagement
     gates:
         inout southIo;
     submodules:
-        aemanagement: AEmanagement {
+        aemanagement: AEmanagementModule {
             parameters:
                 @display("p=100,150");
         }
