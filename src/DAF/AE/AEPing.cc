@@ -144,6 +144,21 @@ void AEPing::handleMessage(cMessage *msg)
 
 void AEPing::onStart() {
     connect();
+    //afterConnect();
+}
+
+void AEPing::connect() {
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(APN(srcApName),
+                    srcApInstance,
+                    srcAeName,
+                    srcAeInstance),
+        APNamingInfo(APN(dstApName),
+                    dstApInstance,
+                    dstAeName,
+                    dstAeInstance));
+
+    emit(sigAEEnrolled, apnip);
 }
 
 void AEPing::afterConnect() {

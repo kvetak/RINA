@@ -35,7 +35,7 @@ class DAFEnrollmentBase : public cSimpleModule {
 public:
     DAFEnrollmentBase();
     virtual ~DAFEnrollmentBase();
-    virtual void startCACE(APNIPair* apnip) = 0;
+    //virtual void startCACE(APNIPair* apnip) = 0;
     virtual void startEnrollment(DAFEnrollmentStateTableEntry* entry) = 0;
     virtual void insertStateTableEntry(Flow* flow) = 0;
     virtual void receivePositiveConnectResponse(CDAPMessage* msg) = 0;

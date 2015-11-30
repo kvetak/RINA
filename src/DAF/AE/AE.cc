@@ -372,7 +372,10 @@ void AE::signalizeReleaseRequest(CDAPMessage* msg){
 }
 
 void AE::connect(){
-    emit(sigAEEnrolled, 0);
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(),
+        APNamingInfo());
+    emit(sigAEEnrolled, apnip);
 }
 
 void AE::afterConnect() {

@@ -63,12 +63,10 @@ void LisDAFEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
 
     // TODO: refactor this stuff
     Flow* flow = dynamic_cast<Flow*>(obj);
-    APNIPair* apnip = new APNIPair(flow->getSrcApni(),flow->getDstApni());
     if (flow){
-        if (flow == enrollment->FlowObj) {
-            //enrollment->createBindings(*flow);
-            enrollment->Irm->receiveAllocationResponsePositiveFromIpc(flow);
-            enrollment->startCACE(apnip);
+        if (flow->getQosRequirements().compare(QoSReq::MANAGEMENT) &&
+                !flow->getDstApni().getAename().compare("mgmt")) {
+            enrollment->receiveAllocationResponsePositive(flow);
         }
     }
     else {
@@ -209,7 +207,8 @@ void LisDAFEnrollmentConReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisDAFEnrollmentRequest::receiveSignal(cComponent* src, simsignal_t id,
-        long obj) {
+        cObject* obj) {
     //TODO: add checks
-    enrollment->checkEnrolled();
+    APNIPair* apni = dynamic_cast<APNIPair*>(obj);
+    enrollment->checkEnrolled(apni);
 }

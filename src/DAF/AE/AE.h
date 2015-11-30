@@ -99,7 +99,7 @@ class AE : public AEBase
     void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeConnectionRequest(CDAPMessage* msg);
     void signalizeReleaseRequest(CDAPMessage* msg);
-    void connect();
+    virtual void connect();
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);

@@ -24,10 +24,10 @@ module AEManagement
     gates:
         inout southIo;
     submodules:
-        aemanagement: AEmanagementModule {
-            parameters:
-                @display("p=100,150");
-        }
+        //aemanagement: AEmanagementModule {
+        //    parameters:
+        //        @display("p=100,150");
+        //}
         enrollment: DAFEnrollmentModule {
             parameters:
                 @display("p=100,50");

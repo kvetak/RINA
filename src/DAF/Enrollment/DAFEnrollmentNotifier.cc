@@ -28,6 +28,7 @@ void DAFEnrollmentNotifier::initialize() {
 
 void DAFEnrollmentNotifier::initPointers() {
     RIBd = check_and_cast<AEMgmtBase*>( getModuleByPath("^.aemgmt") );
+    FlowObj = NULL;
 }
 
 void DAFEnrollmentNotifier::initSignalsAndListeners() {
@@ -73,6 +74,15 @@ void DAFEnrollmentNotifier::initSignalsAndListeners() {
     lisDAFEnrollmentNotifierStaOperRes = new LisDAFEnrollmentNotifierStaOperRes(this);
     catcher2->subscribe(SIG_ENROLLMENT_StartOperationResponse, lisDAFEnrollmentNotifierStaOperRes);
 
+}
+
+void DAFEnrollmentNotifier::setFlow(Flow* flow) {
+    FlowObj = flow;
+}
+
+
+Flow* DAFEnrollmentNotifier::getFlow() {
+    return FlowObj;
 }
 
 void DAFEnrollmentNotifier::handleMessage(cMessage *msg)

@@ -22,6 +22,7 @@
 #include "RINASignals.h"
 #include "DAFEnrollmentObj.h"
 #include "DAFOperationObj.h"
+#include "Flow.h"
 
 class DAFEnrollmentNotifierBase : public cSimpleModule, public CDAPProcessingBase {
 public:
@@ -33,6 +34,7 @@ public:
     virtual void sendStartOperationRequest(DAFOperationObj* obj) = 0;
     virtual void sendStartOperationResponse(DAFOperationObj* obj) = 0;
     virtual void sendCACE(CDAPMessage* msg) = 0;
+    virtual Flow* getFlow() = 0;
 
     //CDAPProcessingBase interface
     virtual bool isMessageProcessable(CDAPMessage* msg);

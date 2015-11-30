@@ -83,6 +83,7 @@ class AEPing : public AE
     //=== AEPing interface ends here ===
 
   private:
+    void connect();
     std::string myPath;
 };
 

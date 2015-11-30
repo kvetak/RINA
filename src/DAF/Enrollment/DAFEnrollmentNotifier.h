@@ -20,6 +20,7 @@
 #include "AEMgmtBase.h"
 #include "DAFEnrollmentNotifierListeners.h"
 #include "DAFEnrollmentNotifierBase.h"
+#include "Flow.h"
 
 extern const char* DAF_MSG_ENROLLMENT;
 extern const int DAF_VAL_DEFINSTANCE;
@@ -34,9 +35,12 @@ class DAFEnrollmentNotifier : public DAFEnrollmentNotifierBase
     virtual void sendStartOperationRequest(DAFOperationObj* obj);
     virtual void sendStartOperationResponse(DAFOperationObj* obj);
     virtual void sendCACE(CDAPMessage* msg);
+    virtual void setFlow(Flow* flow);
+    virtual Flow* getFlow();
 
   protected:
     AEMgmtBase* RIBd;
+    Flow* FlowObj;
 
     simsignal_t sigRIBDStartEnrollReq;
     simsignal_t sigRIBDStartEnrollRes;

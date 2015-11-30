@@ -39,8 +39,12 @@ void LisDAFEnrollmentNotifierRcvEnrollCACE::receiveSignal(cComponent* src, simsi
         cObject* obj) {
     EV << "Send CACE from Enrollment" << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
-    if (cimsg) {
-        enb->sendCACE(cimsg);
+    if (cimsg && enb->getFlow()){
+        std::string msgdst = cimsg->getDstAddr().getApn().getName();
+        std::string dst = enb->getFlow()->getDstApni().getApn().getName();
+        if(!msgdst.compare(dst)) {
+            enb->sendCACE(cimsg);
+        }
     }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;

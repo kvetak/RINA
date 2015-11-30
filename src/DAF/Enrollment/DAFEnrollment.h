@@ -39,6 +39,7 @@
 #include "ExternConsts.h"
 #include "DAFEnrollmentListeners.h"
 #include "DAFEnrollmentStateTable.h"
+#include "DAFEnrollmentNotifier.h"
 #include "Address.h"
 #include "AEMgmt.h"
 #include "DAFEnrollmentObj.h"
@@ -78,7 +79,7 @@ class DAFEnrollment : public DAFEnrollmentBase
 
     DAFEnrollment();
     virtual ~DAFEnrollment();
-    void startCACE(APNIPair* apnip);
+    void startCACE(Flow* flow);
     void startEnrollment(DAFEnrollmentStateTableEntry* entry);
     void insertStateTableEntry(Flow* flow);
     void receivePositiveConnectResponse(CDAPMessage* msg);
@@ -92,17 +93,17 @@ class DAFEnrollment : public DAFEnrollmentBase
     void receiveStartOperationRequest(CDAPMessage* msg);
     void receiveStartOperationResponse(CDAPMessage* msg);
 
+    void receiveAllocationResponsePositive(Flow* flow);
     void receiveAllocationRequestFromFAI(Flow* flow);
     void insertFlow();
 
-    void createBindings(Flow &flow);
+    void createBindings(Flow *flow, DAFEnrollmentNotifier* module);
 
-    void checkEnrolled();
+    void checkEnrolled(APNIPair* apnip);
 
 
-    Flow* FlowObj;
+    //Flow* FlowObj;
     IRM* Irm;
-    bool test;
   protected:
     void initPointers();
     void initSignalsAndListeners();
@@ -118,7 +119,8 @@ class DAFEnrollment : public DAFEnrollmentBase
     void processNewConReq(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentResponse(DAFEnrollmentStateTableEntry* entry);
-    void createFlow();
+    void createFlow(APNIPair* apnip);
+    DAFEnrollmentNotifier* createMgmtAE(Flow* flow);
 
     FABase* FlowAlloc;
 
@@ -131,6 +133,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     std::string authOther;
     int maxConRetries;
     int numOfConnects;
+    int currentMgmtAEInstanceId;
 
     simsignal_t sigDAFEnrollmentCACESendData;
     simsignal_t sigDAFEnrollmentSendData;
@@ -161,7 +164,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     LisDAFEnrollmentAllReqFromFai* lisDAFEnrollmentAllReqFromFai;
 
     DAFEnrollmentStateTable* StateTable;
-    AEMgmt* aemgmt;
+    //AEMgmt* aemgmt;
 
     void signalizeCACESendData(CDAPMessage* cmsg);
     void signalizeStartEnrollmentRequest(DAFEnrollmentObj* obj);

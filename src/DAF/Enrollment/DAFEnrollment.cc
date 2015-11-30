@@ -54,17 +54,19 @@ const char* DAF_ELEM_RELEASE      = "Release";
 const char* DAF_ATTR_TIME         = "t";
 
 DAFEnrollment::DAFEnrollment() :
-        StateTable(NULL), aemgmt(NULL), test(true)
+        StateTable(NULL)//, aemgmt(NULL)
 {
 }
 
 DAFEnrollment::~DAFEnrollment(){
     StateTable = NULL;
-    aemgmt = NULL;
+    //aemgmt = NULL;
 }
 
 void DAFEnrollment::initialize()
 {
+    currentMgmtAEInstanceId = 0;
+
     //Parse XML config
     parseConfig(par(PAR_CONFIGDATA).xmlValue());
 
@@ -100,12 +102,12 @@ void DAFEnrollment::initialize()
     WATCH_MAP(PreenrollReleases);
 }
 
-void DAFEnrollment::createBindings(Flow& flow) {
-    cModule* Cdap = this->getModuleByPath("^.^.aemanagement.commonDistributedApplicationProtocol");
+void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
+    cModule* Cdap = module->getModuleByPath("^.commonDistributedApplicationProtocol");
     cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
     cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
-    cModule* aeMgmt = this->getModuleByPath("^.^.aemanagement");
+    cModule* aeMgmt = module->getModuleByPath("^");
     cGate* gaeMgmtIn = aeMgmt->gateHalf("aeIo", cGate::INPUT);
     cGate* gaeMgmtOut = aeMgmt->gateHalf("aeIo", cGate::OUTPUT);
 
@@ -142,12 +144,12 @@ void DAFEnrollment::createBindings(Flow& flow) {
     gIrmModIn->connectTo(gIrmIn);
 
     //Set north-half of the routing in ConnectionTable
-    Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
+    Irm->setNorthGates(flow, gIrmIn, gIrmOut);
 }
 
 void DAFEnrollment::initPointers(){
     StateTable = check_and_cast<DAFEnrollmentStateTable*>(getModuleByPath("^.enrollmentStateTable"));
-    aemgmt = check_and_cast<AEMgmt*>( getModuleByPath("^.^.aemanagement.aemgmt") );
+    //aemgmt = check_and_cast<AEMgmt*>( getModuleByPath("^.^.aemanagement.aemgmt") );
     Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
     //FlowAlloc = check_and_cast<FABase*>( getModuleByPath("^.^.flowAllocator.fa") );
 }
@@ -214,11 +216,13 @@ void DAFEnrollment::initSignalsAndListeners() {
     catcher1->subscribe(SIG_RIBD_ConnectionRequest, lisDAFEnrollmentConReq);
 }
 
-void DAFEnrollment::startCACE(APNIPair* apnip) {
+void DAFEnrollment::startCACE(Flow* flow) {
     Enter_Method("startCACE()");
 
-    auto entry = DAFEnrollmentStateTableEntry(apnip->first, apnip->second, DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
-    StateTable->insert(entry);
+    //auto entry = DAFEnrollmentStateTableEntry(apnip->first, apnip->second, DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
+    //StateTable->insert(entry);
+
+    auto entry = StateTable->findEntryByDstAPN(flow->getDstApni().getApn());
 
     CDAP_M_Connect* msg = new CDAP_M_Connect(DAF_MSG_CONREQ);
 
@@ -234,15 +238,15 @@ void DAFEnrollment::startCACE(APNIPair* apnip) {
     msg->setAuth(auth);
     msg->setAbsSyntax(GPB);
 
-    APNamingInfo src = APNamingInfo(entry.getLocal().getApn(),
-                entry.getLocal().getApinstance(),
-                entry.getLocal().getAename(),
-                entry.getLocal().getAeinstance());
+    APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
+                entry->getLocal().getApinstance(),
+                entry->getLocal().getAename(),
+                entry->getLocal().getAeinstance());
 
-    APNamingInfo dst = APNamingInfo(entry.getRemote().getApn(),
-            entry.getRemote().getApinstance(),
-            entry.getRemote().getAename(),
-            entry.getRemote().getAeinstance());
+    APNamingInfo dst = APNamingInfo(entry->getRemote().getApn(),
+            entry->getRemote().getApinstance(),
+            entry->getRemote().getAename(),
+            entry->getRemote().getAeinstance());
     /*
      * XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
      *                      exactly the same ADT in RINASim source codes.
@@ -262,14 +266,15 @@ void DAFEnrollment::startCACE(APNIPair* apnip) {
     msg->setSrc(src);
     msg->setDst(dst);
 
-    msg->setSrcAddr(Address(entry.getLocal().getApn()));
-    msg->setDstAddr(Address(entry.getRemote().getApn()));
+    msg->setSrcAddr(Address(entry->getLocal().getApn()));
+    msg->setDstAddr(Address(entry->getRemote().getApn()));
 
     //send data to ribd to send
     signalizeCACESendData(msg);
 }
 
 void DAFEnrollment::insertStateTableEntry(Flow* flow){
+    Enter_Method("insertStateTableEntry()");
     //insert only first flow created (management flow)
     if(StateTable->findEntryByDstAPN(APN(flow->getDstAddr().getApn().getName().c_str())) != NULL) {
         return;
@@ -397,9 +402,9 @@ void DAFEnrollment::receiveStartEnrollmentResponse(CDAPMessage* msg) {
     }
 
     //assign new, received address
-    Address newAddr = aemgmt->getMyAddress();
-    newAddr.setIpcAddress(APN(enrollRec->getAddress().getName().c_str()));
-    aemgmt->setMyAddress(newAddr);
+    //Address newAddr = aemgmt->getMyAddress();
+    //newAddr.setIpcAddress(APN(enrollRec->getAddress().getName().c_str()));
+    //aemgmt->setMyAddress(newAddr);
 
     //TODO: assign other received values
 
@@ -836,36 +841,86 @@ void DAFEnrollment::signalizeEnrolled() {
     emit(sigDAFEnrollmentEnrollPosi, 0);
 }
 
-void DAFEnrollment::checkEnrolled() {
+void DAFEnrollment::checkEnrolled(APNIPair* apnip) {
     Enter_Method("checkEnrolled()");
-    if (StateTable->isEmpty()) {
-        createFlow();
-        //signalizeEnrolled();
-        //TODO: continue here
+    if (!StateTable->findEntryByDstAPN(apnip->first.getApn())) {
+        createFlow(apnip);
     }
     else {
         signalizeEnrolled();
     }
 }
 
-void DAFEnrollment::createFlow() {
+void DAFEnrollment::createFlow(APNIPair* apnip) {
+    Enter_Method("createFlow()");
+
+
+    APNamingInfo src = APNamingInfo(apnip->first.getApn(),
+                                    "0",
+                                    "mgmt",
+                                    std::to_string(currentMgmtAEInstanceId));
+
+    APNamingInfo dst = APNamingInfo(apnip->second.getApn(),
+                                    "0",
+                                    "mgmt",
+                                    "0");
+
+    currentMgmtAEInstanceId += 1;
     //Create a flow
-    APNamingInfo dst = aemgmt->getDstNamingInfo();
-    APNamingInfo src = aemgmt->getSrcNamingInfo();
+    Flow* flow = new Flow(src,dst);
+    flow->setQosRequirements(QoSReq::MANAGEMENT);
 
-    FlowObj = new Flow(src, dst);
-    FlowObj->setQosRequirements(QoSReq::MANAGEMENT);
+    Irm->newFlow(flow);
+    Irm->receiveAllocationRequestFromAe(flow);
+}
 
-    Irm->newFlow(FlowObj);
+void DAFEnrollment::receiveAllocationResponsePositive(Flow* flow) {
+    Enter_Method("receiveAllocationResponsePositive()");
 
-    //Interconnect IRM and AE
-    //bool status =
-    createBindings(*FlowObj);
-    //if (!status) {
-    //    error("Gate inconsistency during creation of a new flow!");
-    //}
+    Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
-    Irm->receiveAllocationRequestFromAe(FlowObj);
+    auto module = createMgmtAE(flow);
+
+    createBindings(flow, module);
+
+    DAFEnrollmentStateTableEntry entry = DAFEnrollmentStateTableEntry(flow->getSrcApni(),flow->getDstApni(), DAFEnrollmentStateTableEntry::CON_CONNECTPENDING);
+    StateTable->insert(entry);
+
+    //APNIPair* apni = new APNIPair(flow->getSrcApni(),flow->getDstApni());
+    //APNIPair* apnip = NULL;
+    //startCACE(apnip);
+
+    startCACE(flow);
+
+}
+
+DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
+    cModuleType *moduleType = cModuleType::get("rina.src.DAF.AEManagement.AEmanagementModule");
+
+    //Prepare parameters
+    //int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+    //int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+
+    //Create a name
+    std::ostringstream ostr;
+    ostr << "mgmtae_" << flow->getSrcApni().getAeinstance();
+
+    //Instantiate module
+    cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule()->getParentModule());
+
+    //module->par(PAR_LOCALCEPID) = cepId;
+    //module->par(PAR_CREREQTIMEOUT) = par(PAR_CREREQTIMEOUT).doubleValue();
+    module->finalizeParameters();
+    module->buildInside();
+
+    // create activation message
+    //module->scheduleStart(simTime());
+    module->callInitialize();
+
+    DAFEnrollmentNotifier* enrollNotif = dynamic_cast<DAFEnrollmentNotifier*>(module->getSubmodule("enrollmentNotifier"));
+    enrollNotif->setFlow(flow);
+
+    return enrollNotif;
 }
 
 void DAFEnrollment::receiveAllocationRequestFromFAI(Flow* flow) {
@@ -874,20 +929,25 @@ void DAFEnrollment::receiveAllocationRequestFromFAI(Flow* flow) {
 
     if ( flow->getQosRequirements().compare(QoSReq::MANAGEMENT) ) {
         //Initialize flow within AE
-        FlowObj = flow;
-        insertFlow();
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
+
+
+        Irm->newFlow(flow);
 
         bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
         //Change connection status
         if (status) {
-            this->signalizeAllocateResponsePositive(FlowObj);
+            this->signalizeAllocateResponsePositive(flow);
         }
         else {
             EV << "IRM was unable to create bindings!" << endl;
         }
+
+        auto module = createMgmtAE(flow);
+
+        createBindings(flow,module);
     }
     else {
         EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
@@ -899,11 +959,10 @@ void DAFEnrollment::insertFlow() {
     //Add a new flow to
 
     //Prepare flow
-    Irm->newFlow(FlowObj);
 
     //Interconnect IRM and AE
     //bool status =
-    createBindings(*FlowObj);
+                                                //createBindings(*FlowObj, NULL);  //upravit upravit
     //if (!status) {
     //    error("Gate inconsistency during creation of a new flow!");
     //}
