@@ -36,13 +36,13 @@ struct timestamps_t {
 
 class AEMyPing : public AEPing
 {
-
+  public:
+    virtual void afterOnStart();
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    virtual void onStart();
     virtual void onPing();
     virtual void onStop();
 

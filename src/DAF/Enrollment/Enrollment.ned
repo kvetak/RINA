@@ -41,6 +41,7 @@ package rina.src.DAF.Enrollment;
         
         //signals
         @signal[Enrollment-CACEDataSend](type=CDAPMessage?);
+        @signal[Enrollment-DataSend];
         @signal[Enrollment-StartEnrollmentRequest];
         @signal[Enrollment-StartEnrollmentResponse];
         @signal[Enrollment-StopEnrollmentRequest];
@@ -48,6 +49,9 @@ package rina.src.DAF.Enrollment;
         @signal[Enrollment-StartOperationRequest];
         @signal[Enrollment-StartOperationResponse];
         @signal[Enrollment-Finished];
+        @signal[AEMgmt-ConnectionResponsePositive];
+        @signal[AEorRIBd-AllocateResponseNegative];
+        @signal[AEorRIBd-AllocateResponsePositive];
         
         
 }

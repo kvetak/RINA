@@ -95,14 +95,13 @@ class DAFEnrollment : public DAFEnrollmentBase
 
     void receiveAllocationResponsePositive(Flow* flow);
     void receiveAllocationRequestFromFAI(Flow* flow);
-    void insertFlow();
 
     void createBindings(Flow *flow, DAFEnrollmentNotifier* module);
 
     void checkEnrolled(APNIPair* apnip);
 
 
-    //Flow* FlowObj;
+
     IRM* Irm;
   protected:
     void initPointers();
@@ -128,6 +127,8 @@ class DAFEnrollment : public DAFEnrollmentBase
     DAFEnrollCommands PreenrollReleases;
 
     int authType;
+    std::string apName;
+    std::string apInstance;
     std::string authName;
     std::string authPassword;
     std::string authOther;
@@ -164,7 +165,6 @@ class DAFEnrollment : public DAFEnrollmentBase
     LisDAFEnrollmentAllReqFromFai* lisDAFEnrollmentAllReqFromFai;
 
     DAFEnrollmentStateTable* StateTable;
-    //AEMgmt* aemgmt;
 
     void signalizeCACESendData(CDAPMessage* cmsg);
     void signalizeStartEnrollmentRequest(DAFEnrollmentObj* obj);

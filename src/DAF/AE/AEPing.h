@@ -48,7 +48,7 @@ class AEPing : public AE
   public:
     AEPing();
     virtual ~AEPing();
-    void afterConnect();
+    virtual void afterOnStart();
 
   protected:
     std::string dstApName;
@@ -74,7 +74,8 @@ class AEPing : public AE
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    virtual void onStart();
+    void onStart();
+    void connect();
     virtual void onPing();
     virtual void onStop();
 
@@ -83,7 +84,6 @@ class AEPing : public AE
     //=== AEPing interface ends here ===
 
   private:
-    void connect();
     std::string myPath;
 };
 

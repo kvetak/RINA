@@ -28,8 +28,10 @@ void LisDAFEnrollmentNotifierRcvCACE::receiveSignal(cComponent* src, simsignal_t
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
-    if (cimsg) {
-        enb->receiveMessage(cimsg);
+    if (cimsg && enb->getFlow()){
+        if(!cimsg->getDstAddr().getApn().getName().compare(enb->getFlow()->getSrcApni().getApn().getName())) {
+            enb->receiveMessage(cimsg);
+        }
     }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
@@ -40,9 +42,7 @@ void LisDAFEnrollmentNotifierRcvEnrollCACE::receiveSignal(cComponent* src, simsi
     EV << "Send CACE from Enrollment" << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
     if (cimsg && enb->getFlow()){
-        std::string msgdst = cimsg->getDstAddr().getApn().getName();
-        std::string dst = enb->getFlow()->getDstApni().getApn().getName();
-        if(!msgdst.compare(dst)) {
+        if(!cimsg->getDstAddr().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())) {
             enb->sendCACE(cimsg);
         }
     }
@@ -55,8 +55,11 @@ void LisDAFEnrollmentNotifierStaEnrolReq::receiveSignal(cComponent* src, simsign
     EV << "StartEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
-    if (enroll)
-        enb->sendStartEnrollmentRequest(enroll);
+    if (enroll && enb->getFlow()){
+        if(!enroll->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStartEnrollmentRequest(enroll);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 
@@ -67,8 +70,11 @@ void LisDAFEnrollmentNotifierStaEnrolRes::receiveSignal(cComponent* src, simsign
     EV << "StartEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
-    if (enroll)
-        enb->sendStartEnrollmentResponse(enroll);
+    if (enroll&& enb->getFlow()){
+        if(!enroll->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStartEnrollmentResponse(enroll);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 
@@ -79,8 +85,11 @@ void LisDAFEnrollmentNotifierStoEnrolReq::receiveSignal(cComponent* src, simsign
     EV << "StopEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
-    if (enroll)
-        enb->sendStopEnrollmentRequest(enroll);
+    if (enroll&& enb->getFlow()){
+        if(!enroll->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStopEnrollmentRequest(enroll);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 
@@ -91,8 +100,11 @@ void LisDAFEnrollmentNotifierStoEnrolRes::receiveSignal(cComponent* src, simsign
     EV << "StopEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
-    if (enroll)
-        enb->sendStopEnrollmentResponse(enroll);
+    if (enroll&& enb->getFlow()){
+        if(!enroll->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStopEnrollmentResponse(enroll);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 
@@ -103,8 +115,11 @@ void LisDAFEnrollmentNotifierStaOperReq::receiveSignal(cComponent* src, simsigna
     EV << "StartOperationRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);
-    if (oper)
-        enb->sendStartOperationRequest(oper);
+    if (oper&& enb->getFlow()){
+        if(!oper->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStartOperationRequest(oper);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 
@@ -115,8 +130,11 @@ void LisDAFEnrollmentNotifierStaOperRes::receiveSignal(cComponent* src, simsigna
     EV << "StartOperationResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);
-    if (oper)
-        enb->sendStartOperationResponse(oper);
+    if (oper&& enb->getFlow()){
+        if(!oper->getDstAddress().getApn().getName().compare(enb->getFlow()->getDstApni().getApn().getName())){
+            enb->sendStartOperationResponse(oper);
+        }
+    }
     else
         EV << "DafEnrollmentNotifierListener received unknown object!" << endl;
 

@@ -34,7 +34,8 @@ void AEMyPing::handleMessage(cMessage* msg) {
     }
 }
 
-void AEMyPing::onStart() {
+void AEMyPing::afterOnStart() {
+    Enter_Method("afterOnStart()");
     //Prepare flow's source and destination
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,

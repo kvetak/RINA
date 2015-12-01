@@ -32,6 +32,8 @@
 #include <DAFEnrollmentListeners.h>
 
 DAFEnrollmentListeners::DAFEnrollmentListeners(DAFEnrollment* nenrollment): enrollment(nenrollment) {
+    apName = enrollment->getModuleByPath("^.^.^")->par("apName").stringValue();
+    apInstance = enrollment->getModuleByPath("^.^.^")->par("apInstance").stringValue();
 }
 
 DAFEnrollmentListeners::~DAFEnrollmentListeners() {
@@ -65,7 +67,9 @@ void LisDAFEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow){
         if (flow->getQosRequirements().compare(QoSReq::MANAGEMENT) &&
-                !flow->getDstApni().getAename().compare("mgmt")) {
+                !flow->getDstApni().getAename().compare("mgmt") &&
+                !flow->getSrcApni().getApn().getName().compare(apName) &&
+                !flow->getSrcApni().getApinstance().compare(apInstance)) {
             enrollment->receiveAllocationResponsePositive(flow);
         }
     }
@@ -81,7 +85,10 @@ void LisDAFEnrollmentAllReqFromFai::receiveSignal(cComponent* src, simsignal_t i
        << " and processed by " << enrollment->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if(flow->getQosRequirements().compare(QoSReq::MANAGEMENT))
+        if(flow->getQosRequirements().compare(QoSReq::MANAGEMENT) &&
+                !flow->getDstApni().getAename().compare("mgmt") &&
+                !flow->getSrcApni().getApn().getName().compare(apName) &&
+                !flow->getSrcApni().getApinstance().compare(apInstance))
             enrollment->receiveAllocationRequestFromFAI(flow);
     }
     else

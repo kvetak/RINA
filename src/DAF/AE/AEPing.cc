@@ -143,8 +143,7 @@ void AEPing::handleMessage(cMessage *msg)
 }
 
 void AEPing::onStart() {
-    connect();
-    //afterConnect();
+    AEPing::connect();
 }
 
 void AEPing::connect() {
@@ -161,7 +160,7 @@ void AEPing::connect() {
     emit(sigAEEnrolled, apnip);
 }
 
-void AEPing::afterConnect() {
+void AEPing::afterOnStart() {
     Enter_Method("afterConnect()");
     //Prepare flow's source and destination
     APNamingInfo src = this->getApni();

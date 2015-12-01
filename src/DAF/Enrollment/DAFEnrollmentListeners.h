@@ -44,6 +44,8 @@ public:
         }
 protected:
     DAFEnrollment* enrollment;
+    std::string apName;
+    std::string apInstance;
 };
 
 

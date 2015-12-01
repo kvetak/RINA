@@ -53,7 +53,7 @@ class AE : public AEBase
     void receiveAllocationResponseNegative(Flow* flow);
     void receiveAllocationResponsePositive(Flow* flow);
 
-    virtual void afterConnect();
+    virtual void afterOnStart();
 
   protected:
     IRM* Irm;

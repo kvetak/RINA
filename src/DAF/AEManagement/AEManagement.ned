@@ -20,7 +20,7 @@ import rina.src.DAF.Enrollment.DAFEnrollmentModule;
 module AEManagement
 {
     parameters:
-        @display("bgb=200,250;i=block/cogwheel,#888A85,50");
+        @display("bgb=400,350;i=block/cogwheel,#888A85,50");
     gates:
         inout southIo;
     submodules:
