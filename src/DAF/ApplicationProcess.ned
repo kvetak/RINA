@@ -46,7 +46,7 @@ module ApplicationProcess
             @display("p=89,60");
         }
         
-        managementApplicationEntity: AEManagement {
+        apManagement: AEManagement {
             @display("p=240,60");
         }
     connections allowunconnected:
