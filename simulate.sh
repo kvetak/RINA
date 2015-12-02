@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Run RINASim scenarios from the command line.
 
 if ! type opp_run >/dev/null 2>/dev/null; then
