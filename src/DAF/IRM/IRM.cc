@@ -102,8 +102,10 @@ void IRM::initSignalsAndListeners() {
     cModule* catcher = this->getModuleByPath("^.^");
 
     //Signals that this module emits
+    /*
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
+    */
     sigStatIRMPassUp      = registerSignal(SIG_STAT_IRM_UP);
     sigStatIRMPassDown      = registerSignal(SIG_STAT_IRM_DOWN);
 
@@ -223,13 +225,13 @@ bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     }
     return status;
 }
-
+/*
 void IRM::signalizeAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
     //EV << "Emits AllocReq Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
     emit(sigIRMAllocReq, flow);
 }
-
+*/
 void IRM::newFlow(Flow* flow) {
     Enter_Method("newFlow()");
 
@@ -262,11 +264,11 @@ void IRM::updateDisplayString() {
     os << "up: " << statPassUp << endl << "down: " << statPassDown << endl << "discard: " << statDiscarded;
     setPolicyDisplayString(this, os.str().c_str());
 }
-
+/*
 void IRM::signalizeDeallocateRequest(Flow* flow) {
     emit(sigIRMDeallocReq, flow);
 }
-
+*/
 ConnectionTable* IRM::getConTable() const {
     return ConTable;
 }

@@ -81,10 +81,10 @@ class FA : public FABase
     simsignal_t sigFAAllocFinMgmt;
 
     //Listeners
-    LisFAAllocReq*      lisAllocReq;
+    //LisFAAllocReq*      lisAllocReq;
+    //LisFADeallocReq*    lisDeallocReq;
     LisFAAllocFinMgmt*  lisEnrollFin;
     LisFACreFloPosi*    lisCreFloPosi;
-    LisFADeallocReq*    lisDeallocReq;
     LisFACreReq*        lisCreReq;
 
   protected:
