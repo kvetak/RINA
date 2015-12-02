@@ -147,7 +147,7 @@
 			<ATime>0</ATime>
 			<RxOn>1</RxOn>
 			<WinOn>1</WinOn>
-			<RateOn>0</RateOn>						
+			<RateOn>0</RateOn>
 		</QoSCube>
 		<QoSCube id="2">
 			<AverageBandwidth>12000000</AverageBandwidth>
@@ -168,9 +168,12 @@
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
 			<ATime>0</ATime>	
-			<RxOn>0</RxOn>
+			<RxOn>1</RxOn>
 			<WinOn>1</WinOn>
 			<RateOn>0</RateOn>
+			<EFCPPolicySet>
+				<RcvrAck>RcvrAckPolicyLG</RcvrAck>
+			</EFCPPolicySet>
 		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>

@@ -20,39 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DIF.EFCP.DTP;
+package rina.policies.DIF.EFCP.DTCP.RcvrAck.RcvrAckPolicyLG;
+import rina.policies.DIF.EFCP.DTCP.RcvrAck.IntRcvrAckPolicy;
 
 //
 // TODO auto-generated type
 //
-simple DTP
+simple RcvrAckPolicyLG like IntRcvrAckPolicy
 {
-    
-    parameters:
-        @display("i=block/layer");
-//        string rcvrInactivityPolicy = default("");
-//        string senderInactivityPolicy = default("");
-//        string initialSeqNumPolicy = default("");
-//        string rttEstimatorPolicy = default("");
-        
-        @signal[EFCP-StopSending](type=Flow?);
-        @signal[EFCP-StartSending](type=Flow?);
-        
-        @signal[DTP_RTT](type=double);
-        @statistic[dtp-rtt](title="Estimated RTT"; source=DTP_RTT; record=vector, mean);
-        
-        @signal[DTP_CLOSED_WIN_Q](type=unsigned long);
-        @statistic[dtp-close-win-q](title="Closed-window Queue length"; source=DTP_CLOSED_WIN_Q; record=vector, mean);
-        
-        @signal[DTP_SEQ_NUM_SENT](type="unsigned long");
-        @statistic[dtp-seq-num-sent](title="Sent seq num"; source="DTP_SEQ_NUM_SENT"; record=vector, last);
-        
-        @signal[DTP_SEQ_NUM_RCVD](type=unsigned long);
-        @statistic[dtp-seq-num-rcvd](title="Received seq num"; source="DTP_SEQ_NUM_RCVD"; record=vector, last);
-
-        gates:
-        inout northIo; //towards Delimiting
-        inout southIo; //towards RMT
-        
-
+        parameters:
+        string policyName = "RcvrAck LG";
+        @display("i=block/socket");
 }
