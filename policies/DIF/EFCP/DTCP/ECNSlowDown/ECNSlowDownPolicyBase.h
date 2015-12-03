@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,12 +19,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file ECNSlowDownPolicyBase.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Feb 12, 2015
+ * @brief
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.ECNSlowDown;
+#ifndef ECNSLOWDOWNPOLICYBASE_H_
+#define ECNSLOWDOWNPOLICYBASE_H_
 
-moduleinterface IntDTCPECNSlowDownPolicy
+#include <omnetpp.h>
+
+#include "EFCPPolicy.h"
+
+/*
+ *
+ */
+class ECNSlowDownPolicyBase : public EFCPPolicy
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
-}
+  public:
+    ECNSlowDownPolicyBase();
+    virtual ~ECNSlowDownPolicyBase();
+    void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
+  protected:
+    virtual void initialize(){};
+    virtual void handleMessage(cMessage* msg){};
+
+};
+
+#endif /* ECNSLOWDOWNPOLICYBASE_H_ */

@@ -19,24 +19,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file DTCPECNSlowDownPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Feb 12, 2015
- * @brief
- * @detail
- */
 
-#include <DTCPECNSlowDownPolicyBase.h>
+package rina.policies.DIF.EFCP.DTCP.ECNSlowDown.ECNSlowDownPolicyDefault;
 
-DTCPECNSlowDownPolicyBase::DTCPECNSlowDownPolicyBase()
+//
+// TODO auto-generated module
+//
+simple ECNSlowDownPolicyDefault
 {
-
-
+    parameters:
+        string policyName = "ECN SlowDown Default";
+        @display("i=block/socket");
 }
-
-DTCPECNSlowDownPolicyBase::~DTCPECNSlowDownPolicyBase()
-{
-
-}
-

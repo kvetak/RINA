@@ -20,34 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file DTCPECNPolicyDefault.cc
+ * @file ECNSlowDownPolicyDefault.h
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
+ * @date Dec 3, 2015
+ * @brief This is an example policy class implementing default ECN SlowDown policy behavior
  * @detail
  */
 
-#include <ECN/DTCPECNPolicyDefault.h>
-Register_Class(DTCPECNPolicyDefault);
+#ifndef ECNSLOWDOWNPOLICYDEFAULT_H_
+#define ECNSLOWDOWNPOLICYDEFAULT_H_
 
-DTCPECNPolicyDefault::DTCPECNPolicyDefault()
+#include "ECNSlowDownPolicyBase.h"
+
+class ECNSlowDownPolicyDefault : public ECNSlowDownPolicyBase
 {
+  public:
+    ECNSlowDownPolicyDefault();
+    virtual ~ECNSlowDownPolicyDefault();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-}
-
-DTCPECNPolicyDefault::~DTCPECNPolicyDefault()
-{
-
-}
-
-bool DTCPECNPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
-{
-  dtpState->getCurrentPdu();
-  if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
-    dtpState->setEcnSet(true);
-
-  }else{
-    dtpState->setEcnSet(false);
-  }
-  return false;
-}
+#endif /* ECNSLOWDOWNPOLICYDEFAULT_H_ */

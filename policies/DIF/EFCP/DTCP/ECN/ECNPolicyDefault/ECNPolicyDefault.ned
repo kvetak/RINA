@@ -19,36 +19,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file DTCPECNPolicyBase.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
- * @detail
- */
 
-#ifndef DTCPECNPOLICYBASE_H_
-#define DTCPECNPOLICYBASE_H_
+package rina.policies.DIF.EFCP.DTCP.ECN.ECNPolicyDefault;
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPECNPolicyBase : public cSimpleModule
+//
+// TODO auto-generated module
+//
+simple ECNPolicyDefault
 {
-  public:
-    DTCPECNPolicyBase();
-    virtual ~DTCPECNPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
-};
-
-#endif /* DTCPECNPOLICYBASE_H_ */
+    parameters:
+        string policyName = "ECN Default";
+        @display("i=block/socket");
+}

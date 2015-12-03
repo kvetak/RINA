@@ -20,35 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file DTCPECNSlowDownPolicyBase.h
+ * @file ECNPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Feb 12, 2015
+ * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#ifndef DTCPECNSLOWDOWNPOLICYBASE_H_
-#define DTCPECNSLOWDOWNPOLICYBASE_H_
+#include "ECNPolicyBase.h"
 
-#include <omnetpp.h>
-
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPECNSlowDownPolicyBase : public cSimpleModule
+ECNPolicyBase::ECNPolicyBase()
 {
-  public:
-    DTCPECNSlowDownPolicyBase();
-    virtual ~DTCPECNSlowDownPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
 
-  protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
 
-};
+}
 
-#endif /* DTCPECNSLOWDOWNPOLICYBASE_H_ */
+ECNPolicyBase::~ECNPolicyBase()
+{
+
+}
+
+void ECNPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+    /* Default */
+    if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
+      dtpState->setEcnSet(true);
+    }else{
+      dtpState->setEcnSet(false);
+    }
+    /* End default */
+
+}

@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,12 +19,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file ECNSlowDownPolicyDefault.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date Jan 9, 2015
+ * @brief
+ * @detail
+ */
 
-package rina.policies.DIF.EFCP.DTCP.ECN;
+#include "ECNSlowDownPolicyDefault.h"
+Register_Class(ECNSlowDownPolicyDefault);
 
-moduleinterface IntDTCPECNPolicy
+ECNSlowDownPolicyDefault::ECNSlowDownPolicyDefault()
 {
-    parameters:
-        @display("i=block/socket");
-        string policyName;
+
+}
+
+ECNSlowDownPolicyDefault::~ECNSlowDownPolicyDefault()
+{
+
+}
+
+bool ECNSlowDownPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("ECNSlowDownPolicyDefault");
+  defaultAction(dtpState, dtcpState);
+  return false;
 }
