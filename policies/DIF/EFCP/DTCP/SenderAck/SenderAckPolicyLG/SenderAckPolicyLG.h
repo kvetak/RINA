@@ -19,44 +19,25 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SenderAckPolicyLG.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG Initial Sequence Number behavior
+ * @detail
+ */
 
-package rina.examples.Congestion.DCCongestion;
-import ned.DatarateChannel;
-import rina.src.CS.Host1AP;
-import rina.src.CS.InteriorRouter2Int;
+#ifndef SENDERACKLGPOLICY_H_
+#define SENDERACKLGPOLICY_H_
 
-network DCCongestion
+#include <SenderAckPolicyBase.h>
+
+class SenderAckPolicyLG : public SenderAckPolicyBase
 {
-    parameters:
-    	@display("bgb=368,202");
-    	
-    types:
-        channel FastChannel extends ned.DatarateChannel {
-            @defaultname(FChan);            
-            datarate = 20Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        channel SlowChannel extends ned.DatarateChannel {
-            @defaultname(SChan);
-            datarate = 10Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        	
-    submodules:
-        host1: Host1AP {
-            @display("p=70,101");
-        }
-        interiorRouter: InteriorRouter2Int {
-            @display("p=180,101");
-        }
-        host2: Host1AP {
-            @display("p=290,101");
-        }
+  public:
+    SenderAckPolicyLG();
+    virtual ~SenderAckPolicyLG();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+};
 
-    connections allowunconnected:
-        host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
-        host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
-
-}
+#endif /* SENDERACKLGPOLICY_H_ */

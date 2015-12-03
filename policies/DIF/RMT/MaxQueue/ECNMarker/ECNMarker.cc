@@ -23,7 +23,15 @@
 
 #include <ECNMarker.h>
 
+const char * ECN_MARKER = "ECN_MARKER";
+
+
 Define_Module(ECNMarker);
+
+void ECNMarker::onPolicyInit() {
+    sigStatECNMarker = registerSignal(ECN_MARKER);
+}
+
 
 bool ECNMarker::run(RMTQueue* queue)
 {
@@ -35,6 +43,9 @@ bool ECNMarker::run(RMTQueue* queue)
     else
     {
         EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
+        const cPacket* msg = queue->getLastPDU();
+        PDU* pdu = (PDU*) msg;
+        emit(sigStatECNMarker, pdu->getSeqNum());
         queue->markCongestionOnLast();
         return false;
     }

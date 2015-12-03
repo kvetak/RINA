@@ -19,44 +19,38 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SenderAckPolicyLG.cc
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG SenderAck behavior
+ * @detail
+ */
 
-package rina.examples.Congestion.DCCongestion;
-import ned.DatarateChannel;
-import rina.src.CS.Host1AP;
-import rina.src.CS.InteriorRouter2Int;
+#include "SenderAckPolicyLG.h"
+#include "DTCP.h"
 
-network DCCongestion
+Register_Class(SenderAckPolicyLG);
+
+SenderAckPolicyLG::SenderAckPolicyLG()
 {
-    parameters:
-    	@display("bgb=368,202");
-    	
-    types:
-        channel FastChannel extends ned.DatarateChannel {
-            @defaultname(FChan);            
-            datarate = 20Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        channel SlowChannel extends ned.DatarateChannel {
-            @defaultname(SChan);
-            datarate = 10Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        	
-    submodules:
-        host1: Host1AP {
-            @display("p=70,101");
-        }
-        interiorRouter: InteriorRouter2Int {
-            @display("p=180,101");
-        }
-        host2: Host1AP {
-            @display("p=290,101");
-        }
 
-    connections allowunconnected:
-        host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
-        host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
 
+}
+
+SenderAckPolicyLG::~SenderAckPolicyLG()
+{
+
+}
+
+bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+  Enter_Method("SenderAckPolicyLG");
+
+  defaultAction(dtpState, dtcpState);
+
+  if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01)
+      EV << "Congestion!";
+
+  return false;
 }

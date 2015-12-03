@@ -20,43 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Congestion.DCCongestion;
-import ned.DatarateChannel;
-import rina.src.CS.Host1AP;
-import rina.src.CS.InteriorRouter2Int;
-
-network DCCongestion
+package rina.policies.DIF.EFCP.DTCP.SenderAck.SenderAckPolicyLG;
+import rina.policies.DIF.EFCP.DTCP.SenderAck.IntSenderAckPolicy;
+//
+// TODO auto-generated type
+//
+simple SenderAckPolicyLG like IntSenderAckPolicy
 {
-    parameters:
-    	@display("bgb=368,202");
-    	
-    types:
-        channel FastChannel extends ned.DatarateChannel {
-            @defaultname(FChan);            
-            datarate = 20Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        channel SlowChannel extends ned.DatarateChannel {
-            @defaultname(SChan);
-            datarate = 10Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
-        	
-    submodules:
-        host1: Host1AP {
-            @display("p=70,101");
-        }
-        interiorRouter: InteriorRouter2Int {
-            @display("p=180,101");
-        }
-        host2: Host1AP {
-            @display("p=290,101");
-        }
-
-    connections allowunconnected:
-        host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
-        host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
-
+        parameters:
+        string policyName = "SenderAck LG";
+        @display("i=block/socket");
 }

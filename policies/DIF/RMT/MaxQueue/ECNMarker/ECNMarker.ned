@@ -30,4 +30,8 @@ simple ECNMarker like IntRMTMaxQPolicy
     parameters:
         @display("i=block/socket");
         @signal[RMT-SlowDownRequest];
+        
+        @signal[ECN_MARKER](type=unsigned long);
+        @statistic[rmt-ecn-marker](title="RMT ECN Marker"; source="ECN_MARKER"; record=vector, last);
+        
 }
