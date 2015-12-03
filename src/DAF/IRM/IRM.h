@@ -85,9 +85,11 @@ class IRM : public cSimpleModule   {
     LisIRMAllocReq* lisAllocReq;
     LisIRMDeallocReq* lisDeallocReq;
 
+    /*
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
+    */
 
 };
 

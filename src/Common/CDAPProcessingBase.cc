@@ -161,7 +161,7 @@ std::string CDAPProcessingBase::infoMessage(CDAPMessage* msg) {
         case 8:     type = "M_DELETE_R";    break;
         case 9:     type = "M_READ";        break;
         case 10:    type = "M_READ_R";      break;
-        case 11:    type = " M_CANCELREAD"; break;
+        case 11:    type = "M_CANCELREAD";  break;
         case 12:    type = "M_CANCELREAD_R";break;
         case 13:    type = "M_WRITE";       break;
         case 14:    type = "M_WRITE_R";     break;

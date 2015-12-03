@@ -37,26 +37,26 @@ module RIBDaemon
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
             parameters:
-                @display("p=135,211");
+                @display("p=147,211");
             gates:
                 southIo;
         }
         ribd: RIBd {
             parameters:
-                @display("p=135,118");
+                @display("p=147,118");
         }
 
         ribdSplitter: RIBdSplitter {
-            @display("p=135,304");
+            @display("p=147,304");
         }
         faNotifier: FANotifier {
-            @display("p=48,31");
+            @display("p=60,31");
         }
         enrollmentNotifier: EnrollmentNotifier {
-            @display("p=48,144");
+            @display("p=60,144");
         }
         routingNotifier: RoutingNotifier {
-            @display("p=48,85");
+            @display("p=60,85");
         }
     connections allowunconnected:
         commonDistributedApplicationProtocol.southIo <--> ribdSplitter.cdapIo;
