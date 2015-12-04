@@ -803,7 +803,7 @@ void DTP::cancelATimer(unsigned int seqNum)
 void DTP::startATimer(unsigned int seqNum)
 {
 
-  if(!state->getQoSCube()->getATime() > 0.0)
+  if(!(state->getQoSCube()->getATime() > 0.0))
   {
     return;
   }

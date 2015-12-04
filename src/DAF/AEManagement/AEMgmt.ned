@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,11 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.EFCP.DTCP.ECNSlowDown;
+package rina.src.DAF.AEManagement;
 
-moduleinterface IntDTCPECNSlowDownPolicy
+simple AEMgmt
 {
     parameters:
-        @display("i=block/socket");
-        string policyName;
+    	@display("i=block/control");
+    	
+    	@signal[RIBd-DataSend](type=CDAPMessage?);
+        
+    	bool useEnrollmentNotifier = default(false);
+    	
+        string aeName = default("mgmt");
+        string aeInstance = default("0");
+        
+        
+        string dstApName = default("ErrorApp");
+        string dstApInstance = default("0");
+        string dstAeName = default("mgmt");
+        string dstAeInstance = default("0");
 }

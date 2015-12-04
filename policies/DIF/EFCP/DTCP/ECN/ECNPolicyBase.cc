@@ -20,23 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file DTCPECNPolicyBase.cc
+ * @file ECNPolicyBase.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <ECN/DTCPECNPolicyBase.h>
+#include "ECNPolicyBase.h"
 
-DTCPECNPolicyBase::DTCPECNPolicyBase()
+ECNPolicyBase::ECNPolicyBase()
 {
 
 
 }
 
-DTCPECNPolicyBase::~DTCPECNPolicyBase()
+ECNPolicyBase::~ECNPolicyBase()
 {
 
 }
 
+void ECNPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
+{
+
+    /* Default */
+    if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
+      dtpState->setEcnSet(true);
+    }else{
+      dtpState->setEcnSet(false);
+    }
+    /* End default */
+
+}

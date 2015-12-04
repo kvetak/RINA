@@ -19,36 +19,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file DTCPECNPolicyBase.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Jan 9, 2015
- * @brief
- * @detail
- */
 
-#ifndef DTCPECNPOLICYBASE_H_
-#define DTCPECNPOLICYBASE_H_
+#ifndef AEMGMTLISTENERS_H_
+#define AEMGMTLISTENERS_H_
 
+//Standard libraries
 #include <omnetpp.h>
+//RINASim libraries
+#include "AEMgmtBase.h"
 
-#include "DTPState.h"
-#include "DTCPState.h"
-
-/*
- *
- */
-class DTCPECNPolicyBase : public cSimpleModule
-{
+class AEMgmtListeners : public cListener {
   public:
-    DTCPECNPolicyBase();
-    virtual ~DTCPECNPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
-
+    AEMgmtListeners(AEMgmtBase* nmgmt);
+    virtual ~AEMgmtListeners();
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+        EV << "Signal to AEMgmt initiated by " << src->getFullPath() << endl;
+    }
   protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
-
+    AEMgmtBase* aemgmt;
 };
 
-#endif /* DTCPECNPOLICYBASE_H_ */
+class LisAEMgmtRcvData : public AEMgmtListeners {
+  public:
+    LisAEMgmtRcvData(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
+#endif /* AEMgmtLISTENERS_H_ */

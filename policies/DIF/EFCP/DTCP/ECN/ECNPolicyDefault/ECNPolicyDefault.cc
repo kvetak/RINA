@@ -20,34 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /**
- * @file DTCPECNPolicyDefault.cc
+ * @file ECNPolicyDefault.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
  * @date Jan 9, 2015
  * @brief
  * @detail
  */
 
-#include <ECN/DTCPECNPolicyDefault.h>
-Register_Class(DTCPECNPolicyDefault);
+#include "ECNPolicyDefault.h"
+Register_Class(ECNPolicyDefault);
 
-DTCPECNPolicyDefault::DTCPECNPolicyDefault()
+ECNPolicyDefault::ECNPolicyDefault()
 {
 
 }
 
-DTCPECNPolicyDefault::~DTCPECNPolicyDefault()
+ECNPolicyDefault::~ECNPolicyDefault()
 {
 
 }
 
-bool DTCPECNPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
+bool ECNPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
 {
-  dtpState->getCurrentPdu();
-  if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
-    dtpState->setEcnSet(true);
-
-  }else{
-    dtpState->setEcnSet(false);
-  }
+  Enter_Method("ECNPolicyDefault");
+  defaultAction(dtpState, dtcpState);
   return false;
 }

@@ -19,24 +19,36 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/**
- * @file DTCPECNSlowDownPolicyBase.cc
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Feb 12, 2015
- * @brief
- * @detail
- */
 
-#include <DTCPECNSlowDownPolicyBase.h>
+package rina.src.DAF.AEManagement;
 
-DTCPECNSlowDownPolicyBase::DTCPECNSlowDownPolicyBase()
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DAF.Enrollment.DAFEnrollmentNotifier;
+import rina.src.DIF.FA.FANotifier;
+
+module AEmanagementModule
 {
+    parameters:
+        @display("i=block/control;bgb=271,300");
 
+    gates:
+        inout aeIo;
 
+    submodules:
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            parameters:
+                @display("p=135,211");
+        }
+        aemgmt: AEMgmt {
+            parameters:
+                @display("p=135,118");
+        }
+
+        //faNotifier: FANotifier {
+        //    @display("p=73,50");
+        //}
+        enrollmentNotifier: DAFEnrollmentNotifier {
+            @display("p=203,50");
+        }
+    connections allowunconnected:
 }
-
-DTCPECNSlowDownPolicyBase::~DTCPECNSlowDownPolicyBase()
-{
-
-}
-

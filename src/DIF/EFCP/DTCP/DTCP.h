@@ -41,7 +41,7 @@
 #include "DTCPTimers_m.h"
 
 /* Policies */
-#include "DTCPECNPolicyBase.h"
+#include "ECNPolicyBase.h"
 #include "RcvrFCPolicyBase.h"
 #include "RcvrAckPolicyBase.h"
 #include "ReceivingFCPolicyBase.h"
@@ -56,7 +56,7 @@
 #include "NoRateSlowDownPolicyBase.h"
 #include "ReconcileFCPolicyBase.h"
 #include "RateReductionPolicyBase.h"
-#include "DTCPECNSlowDownPolicyBase.h"
+#include "ECNSlowDownPolicyBase.h"
 #include "RxTimerExpiryPolicyBase.h"
 
 class DTP;
@@ -70,7 +70,8 @@ class DTCP: public cSimpleModule {
 //    FlowControl* flowControl;
 //    RXControl* rxControl;
 
-    DTCPECNPolicyBase* ecnPolicy;
+    ECNPolicyBase* ecnPolicy;
+    ECNSlowDownPolicyBase* ecnSlowDownPolicy;
     RcvrFCPolicyBase* rcvrFCPolicy;
     RcvrAckPolicyBase* rcvrAckPolicy;
     ReceivingFCPolicyBase* receivingFCPolicy;
@@ -85,8 +86,8 @@ class DTCP: public cSimpleModule {
     NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
     ReconcileFCPolicyBase* reconcileFCPolicy;
     RateReductionPolicyBase* rateReductionPolicy;
-    DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
     RxTimerExpiryPolicyBase* rxTimerExpiryPolicy;
+
 
 
     /*Timers*/
@@ -211,6 +212,8 @@ public:
     void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
     void setDtcpState(DTCPState* dtcpState);
     void setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy);
+    void setECNPolicy(ECNPolicyBase* ecnPolicy);
+    void setECNSlowDownPolicy(ECNSlowDownPolicyBase* ecnSlowDownPolicy);
     void startRendezvousTimer();
 
   protected:

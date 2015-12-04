@@ -36,6 +36,7 @@ extern const char* SIG_AE_DeallocateRequest;
 extern const char* SIG_AE_DataSend;
 extern const char* SIG_AE_ConnectionRequest;
 extern const char* SIG_AE_ReleaseRequest;
+extern const char* SIG_AE_Enrolled;
 
 //RIBd
 extern const char* SIG_RIBD_DataSend;
@@ -60,6 +61,9 @@ extern const char* SIG_RIBD_ConnectionResponsePositive;
 extern const char* SIG_RIBD_ConnectionResponseNegative;
 extern const char* SIG_RIBD_ConnectionRequest;
 extern const char* SIG_RIBD_CACESend;
+
+//DAF AEMgmt
+extern const char* SIG_AEMGMT_ConnectionResponsePositive;
 
 //Enrollment
 extern const char* SIG_ENROLLMENT_DataSend;

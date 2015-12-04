@@ -20,12 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.EFCP.DTCP.ECN;
+package rina.policies.DIF.EFCP.DTCP.ECN.ECNPolicyDefault;
 
 //
 // TODO auto-generated module
 //
-simple DTCPECNPolicyDefault
+simple ECNPolicyDefault
 {
     parameters:
         string policyName = "ECN Default";

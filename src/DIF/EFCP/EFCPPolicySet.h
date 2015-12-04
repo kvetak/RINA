@@ -56,6 +56,8 @@ class EFCPPolicySet
     const char* sendingAck;
     const char* txControl;
     const char* rxTimerExpiry;
+    const char* ecn;
+    const char* ecnSlowDown;
 
   public:
     EFCPPolicySet();
@@ -80,6 +82,8 @@ class EFCPPolicySet
     const char* getSenderInactiv() const;
     const char* getRxTimerExpiry() const;
     const char* getRcvFcOverrun() const;
+    const char* getEcn() const;
+    const char* getEcnSlowDown() const;
 };
 
 #endif /* EFCPPOLICYSET_H_ */

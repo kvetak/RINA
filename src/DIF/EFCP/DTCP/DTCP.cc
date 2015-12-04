@@ -150,19 +150,14 @@ void DTCP::setDTP(DTP* dtp)
 
 bool DTCP::runECNPolicy(DTPState* dtpState)
 {
-  //TODO A1 Make it module based policy
+
   Enter_Method_Silent("ECNPolicy");
-  if(ecnPolicy == NULL || ecnPolicy->run(dtpState, dtcpState)){
-    /* Default */
-    if(dtpState->getCurrentPdu()->getFlags()  & ECN_FLAG){
-      dtpState->setEcnSet(true);
-    }else{
-      dtpState->setEcnSet(false);
-    }
-    /* End default */
-  }
+  ecnPolicy->call(dtpState, dtcpState);
+
   return false;
 }
+
+
 
 void DTCP::incRcvRtWinEdge()
 {
@@ -286,14 +281,10 @@ bool DTCP::runRateReductionPolicy(DTPState* dtpState)
 
 bool DTCP::runECNSlowDownPolicy(DTPState* dtpState)
 {
+
   Enter_Method_Silent("ECNSlowDownPolicy");
-  if (ecnSlowDownPolicy == NULL || ecnSlowDownPolicy->run(dtpState, dtcpState))
-  {
-    /* Default */
+  ecnSlowDownPolicy->call(dtpState, dtcpState);
 
-    /* End default */
-
-  }
   return false;
 }
 
@@ -769,6 +760,16 @@ void DTCP::setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy)
 void DTCP::setTxControlPolicy(TxControlPolicyBase* txControlPolicy)
 {
   this->txControlPolicy = txControlPolicy;
+}
+
+void DTCP::setECNPolicy(ECNPolicyBase* ecnPolicy)
+{
+  this->ecnPolicy = ecnPolicy;
+}
+
+void DTCP::setECNSlowDownPolicy(ECNSlowDownPolicyBase* ecnSlowDownPolicy)
+{
+  this->ecnSlowDownPolicy = ecnSlowDownPolicy;
 }
 
 void DTCP::setDtcpState(DTCPState* dtcpState)

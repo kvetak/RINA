@@ -19,36 +19,42 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 /**
- * @file DTCPECNSlowDownPolicyBase.h
- * @author Marcel Marek (imarek@fit.vutbr.cz)
- * @date Feb 12, 2015
- * @brief
+ * @file DAFEnrollmentStateTable.h
+ * @author Kamil Jerabek (xjerab18@stud.fit.vutbr.cz)
+ * @date Apr 1, 2015
+ * @brief DAFEnrollment state table
  * @detail
  */
 
-#ifndef DTCPECNSLOWDOWNPOLICYBASE_H_
-#define DTCPECNSLOWDOWNPOLICYBASE_H_
+#ifndef __RINA_DAFENROLLMENTSTATETABLE_H_
+#define __RINA_DAFENROLLMENTSTATETABLE_H_
 
 #include <omnetpp.h>
+#include "Flow.h"
+#include "DAFEnrollmentStateTableEntry.h"
 
-#include "DTPState.h"
-#include "DTCPState.h"
+typedef std::list<DAFEnrollmentStateTableEntry> DAFEnrollStateTable;
+typedef DAFEnrollStateTable::iterator DAFEnrollStateTableIter;
+typedef DAFEnrollStateTable::const_iterator DAFEnrollStateTableConstIter;
 
-/*
- *
- */
-class DTCPECNSlowDownPolicyBase : public cSimpleModule
+class DAFEnrollmentStateTable : public cSimpleModule
 {
   public:
-    DTCPECNSlowDownPolicyBase();
-    virtual ~DTCPECNSlowDownPolicyBase();
-    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    void insert(DAFEnrollmentStateTableEntry entry);
+    DAFEnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
+    bool isEnrolled(const APN& myApn);
+    bool isEmpty();
 
   protected:
-    virtual void initialize(){};
-    virtual void handleMessage(cMessage* msg){};
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
 
+    void parseConfig(cXMLElement* config);
+
+  private:
+    DAFEnrollStateTable StateTable;
 };
 
-#endif /* DTCPECNSLOWDOWNPOLICYBASE_H_ */
+#endif
