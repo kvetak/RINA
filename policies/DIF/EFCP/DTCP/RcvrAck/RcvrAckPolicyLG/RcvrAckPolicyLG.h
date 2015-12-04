@@ -43,6 +43,11 @@ class RcvrAckPolicyLG : public RcvrAckPolicyBase
     RcvrAckPolicyLG();
     virtual ~RcvrAckPolicyLG();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void initialize();
+
+    simsignal_t sigStatECNMarked;
+
 };
 
 #endif /* RCVRACKPOLICYLG_H_ */

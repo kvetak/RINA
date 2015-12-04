@@ -31,4 +31,8 @@ simple RcvrAckPolicyLG like IntRcvrAckPolicy
         parameters:
         string policyName = "RcvrAck LG";
         @display("i=block/socket");
+        
+        @signal[ECN_MARKED_DATA](type=unsigned long);
+        @statistic[dtcp-ecn-marked-data](title="DTCP ECN Marked Data"; source="ECN_MARKED_DATA"; record=vector, last);
+        
 }

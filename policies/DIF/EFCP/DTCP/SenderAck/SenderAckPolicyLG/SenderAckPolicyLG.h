@@ -38,6 +38,11 @@ class SenderAckPolicyLG : public SenderAckPolicyBase
     SenderAckPolicyLG();
     virtual ~SenderAckPolicyLG();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void initialize();
+
+    simsignal_t sigStatECNMarked;
+
 };
 
 #endif /* SENDERACKLGPOLICY_H_ */

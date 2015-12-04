@@ -30,4 +30,8 @@ simple SenderAckPolicyLG like IntSenderAckPolicy
         parameters:
         string policyName = "SenderAck LG";
         @display("i=block/socket");
+        
+        @signal[ECN_MARKED_CTRL](type=unsigned long);
+        @statistic[dtcp-ecn-marked-ctrl](title="DTCP ECN Marked Control"; source="ECN_MARKED_CTRL"; record=vector, last);
+        
 }

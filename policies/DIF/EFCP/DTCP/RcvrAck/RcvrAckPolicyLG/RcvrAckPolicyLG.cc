@@ -29,18 +29,22 @@
 
 #include <RcvrAckPolicyLG/RcvrAckPolicyLG.h>
 
+const char * ECN_MARKED_DATA = "ECN_MARKED_DATA";
+
 Register_Class(RcvrAckPolicyLG);
 
 RcvrAckPolicyLG::RcvrAckPolicyLG()
 {
-
-
 }
 
 RcvrAckPolicyLG::~RcvrAckPolicyLG()
 {
-
 }
+
+void RcvrAckPolicyLG::initialize() {
+    sigStatECNMarked = registerSignal(ECN_MARKED_DATA);
+}
+
 
 bool RcvrAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 {
@@ -73,8 +77,10 @@ bool RcvrAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
     dtcpState->setRcvRightWinEdgeSent(dtcpState->getRcvRightWinEdge());
 
-    if(dtpState->isEcnSet())
+    if(dtpState->isEcnSet()) {
         ackFlowPdu->setFlags(ackFlowPdu->getFlags() | 0x01);
+        emit(sigStatECNMarked, seqNum);
+    }
 
     dtp->sendToRMT(ackFlowPdu);
 

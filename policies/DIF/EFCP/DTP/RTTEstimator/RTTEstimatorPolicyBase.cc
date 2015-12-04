@@ -33,13 +33,16 @@
 
 RTTEstimatorPolicyBase::RTTEstimatorPolicyBase()
 {
-
-
+    RTO = 1;
 }
 
 RTTEstimatorPolicyBase::~RTTEstimatorPolicyBase()
 {
 
+}
+
+double RTTEstimatorPolicyBase::getRTO() {
+    return RTO;
 }
 
 void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
@@ -77,7 +80,7 @@ void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
         if (!foundAck)
         {
 
-          EV << "RTTEstimator: Did not found PDU on RxQ to compare times." << endl;
+          EV << "RTTEstimator: Did not find PDU on RxQ to compare times." << endl;
           return;
         }
 
@@ -90,6 +93,6 @@ void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
     double tmp = floor(((alpha * dtpState->getRtt()) + ((1 - alpha) * newRtt)) * 1000000000);
     dtpState->setRtt(((double) tmp / 1000000000) * 1.1);
     EV << "Current RTT: " << dtpState->getRtt() << endl;
-
+    RTO = dtpState->getRtt() + (double)dtpState->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON;
 
 }

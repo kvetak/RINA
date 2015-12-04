@@ -30,17 +30,20 @@
 #include "SenderAckPolicyLG.h"
 #include "DTCP.h"
 
+const char * ECN_MARKED_CTRL = "ECN_MARKED_CTRL";
+
 Register_Class(SenderAckPolicyLG);
 
 SenderAckPolicyLG::SenderAckPolicyLG()
 {
-
-
 }
 
 SenderAckPolicyLG::~SenderAckPolicyLG()
 {
+}
 
+void SenderAckPolicyLG::initialize() {
+    sigStatECNMarked = registerSignal(ECN_MARKED_CTRL);
 }
 
 bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
@@ -49,8 +52,9 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
   defaultAction(dtpState, dtcpState);
 
-  if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01)
-      EV << "Congestion!";
+  if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
+      emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
+  }
 
   return false;
 }
