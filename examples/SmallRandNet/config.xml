@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="H0_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="H1_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="H2_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="H3_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+                <Connection src="H4_RandDIF" dst="R16_RandDIF" qosCube="1"/>
+                <Connection src="H5_RandDIF" dst="R17_RandDIF" qosCube="1"/>
+                <Connection src="H6_RandDIF" dst="R18_RandDIF" qosCube="1"/>
+                <Connection src="H7_RandDIF" dst="R19_RandDIF" qosCube="1"/>
+                <Connection src="H8_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="H9_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="H10_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="H11_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+                <Connection src="R12_RandDIF" dst="R17_RandDIF" qosCube="1"/>
+                <Connection src="R13_RandDIF" dst="R18_RandDIF" qosCube="1"/>
+                <Connection src="R14_RandDIF" dst="R19_RandDIF" qosCube="1"/>
+                <Connection src="R15_RandDIF" dst="R12_RandDIF" qosCube="1"/>
+                <Connection src="R16_RandDIF" dst="R13_RandDIF" qosCube="1"/>
+                <Connection src="R17_RandDIF" dst="R14_RandDIF" qosCube="1"/>
+                <Connection src="R18_RandDIF" dst="R15_RandDIF" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+    
+    <Node id="all">
+        <DA>
+            <Directory>
+                <APN apn="H0_RandDIF">
+                    <DIF difName="Shim0To12" ipcAddress="0"/>
+                </APN>
+                <APN apn="H1_RandDIF">
+                    <DIF difName="Shim1To13" ipcAddress="1"/>
+                </APN>
+                <APN apn="H2_RandDIF">
+                    <DIF difName="Shim2To14" ipcAddress="2"/>
+                </APN>
+                <APN apn="H3_RandDIF">
+                    <DIF difName="Shim3To15" ipcAddress="3"/>
+                </APN>
+                <APN apn="H4_RandDIF">
+                    <DIF difName="Shim4To16" ipcAddress="4"/>
+                </APN>
+                <APN apn="H5_RandDIF">
+                    <DIF difName="Shim5To17" ipcAddress="5"/>
+                </APN>
+                <APN apn="H6_RandDIF">
+                    <DIF difName="Shim6To18" ipcAddress="6"/>
+                </APN>
+                <APN apn="H7_RandDIF">
+                    <DIF difName="Shim7To19" ipcAddress="7"/>
+                </APN>
+                <APN apn="H8_RandDIF">
+                    <DIF difName="Shim8To12" ipcAddress="8"/>
+                </APN>
+                <APN apn="H9_RandDIF">
+                    <DIF difName="Shim9To13" ipcAddress="9"/>
+                </APN>
+                <APN apn="H10_RandDIF">
+                    <DIF difName="Shim10To14" ipcAddress="10"/>
+                </APN>
+                <APN apn="H11_RandDIF">
+                    <DIF difName="Shim11To15" ipcAddress="11"/>
+                </APN>
+                <APN apn="R12_RandDIF">
+                    <DIF difName="Shim0To12" ipcAddress="12"/>
+                    <DIF difName="Shim8To12" ipcAddress="12"/>
+                    <DIF difName="Shim15To12" ipcAddress="12"/>
+                    <DIF difName="Shim12To17" ipcAddress="12"/>
+                </APN>
+                <APN apn="R13_RandDIF">
+                    <DIF difName="Shim1To13" ipcAddress="13"/>
+                    <DIF difName="Shim9To13" ipcAddress="13"/>
+                    <DIF difName="Shim16To13" ipcAddress="13"/>
+                    <DIF difName="Shim13To18" ipcAddress="13"/>
+                </APN>
+                <APN apn="R14_RandDIF">
+                    <DIF difName="Shim2To14" ipcAddress="14"/>
+                    <DIF difName="Shim10To14" ipcAddress="14"/>
+                    <DIF difName="Shim17To14" ipcAddress="14"/>
+                    <DIF difName="Shim14To19" ipcAddress="14"/>
+                </APN>
+                <APN apn="R15_RandDIF">
+                    <DIF difName="Shim3To15" ipcAddress="15"/>
+                    <DIF difName="Shim11To15" ipcAddress="15"/>
+                    <DIF difName="Shim15To12" ipcAddress="15"/>
+                    <DIF difName="Shim18To15" ipcAddress="15"/>
+                </APN>
+                <APN apn="R16_RandDIF">
+                    <DIF difName="Shim4To16" ipcAddress="16"/>
+                    <DIF difName="Shim16To13" ipcAddress="16"/>
+                </APN>
+                <APN apn="R17_RandDIF">
+                    <DIF difName="Shim5To17" ipcAddress="17"/>
+                    <DIF difName="Shim12To17" ipcAddress="17"/>
+                    <DIF difName="Shim17To14" ipcAddress="17"/>
+                </APN>
+                <APN apn="R18_RandDIF">
+                    <DIF difName="Shim6To18" ipcAddress="18"/>
+                    <DIF difName="Shim13To18" ipcAddress="18"/>
+                    <DIF difName="Shim18To15" ipcAddress="18"/>
+                </APN>
+                <APN apn="R19_RandDIF">
+                    <DIF difName="Shim7To19" ipcAddress="19"/>
+                    <DIF difName="Shim14To19" ipcAddress="19"/>
+                </APN>
+                <APN apn="App0Host0">
+                    <DIF difName="RandDIF" ipcAddress="H0"/>
+                </APN>
+                <APN apn="App0Host1">
+                    <DIF difName="RandDIF" ipcAddress="H1"/>
+                </APN>
+                <APN apn="App0Host2">
+                    <DIF difName="RandDIF" ipcAddress="H2"/>
+                </APN>
+                <APN apn="App0Host3">
+                    <DIF difName="RandDIF" ipcAddress="H3"/>
+                </APN>
+                <APN apn="App0Host4">
+                    <DIF difName="RandDIF" ipcAddress="H4"/>
+                </APN>
+                <APN apn="App0Host5">
+                    <DIF difName="RandDIF" ipcAddress="H5"/>
+                </APN>
+                <APN apn="App0Host6">
+                    <DIF difName="RandDIF" ipcAddress="H6"/>
+                </APN>
+                <APN apn="App0Host7">
+                    <DIF difName="RandDIF" ipcAddress="H7"/>
+                </APN>
+                <APN apn="App0Host8">
+                    <DIF difName="RandDIF" ipcAddress="H8"/>
+                </APN>
+                <APN apn="App0Host9">
+                    <DIF difName="RandDIF" ipcAddress="H9"/>
+                </APN>
+                <APN apn="App0Host10">
+                    <DIF difName="RandDIF" ipcAddress="H10"/>
+                </APN>
+                <APN apn="App0Host11">
+                    <DIF difName="RandDIF" ipcAddress="H11"/>
+                </APN>
+            </Directory>
+        </DA>
+    </Node>	<QoSCubesSet>
+        <QosCube id="1">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>0</ForceOrder>
+            <MaxAllowableGap>0</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+            <ATime>0</ATime>
+        </QosCube>
+        <QosCube id="2">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>1</ForceOrder>
+            <MaxAllowableGap>0</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+            <ATime>0</ATime>
+        </QosCube>
+    </QoSCubesSet>
+</Configuration>

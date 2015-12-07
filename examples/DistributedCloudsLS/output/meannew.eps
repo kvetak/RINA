@@ -1,0 +1,2568 @@
+%!PS-Adobe-2.0
+%%Title: meannew.eps
+%%Creator: gnuplot 4.6 patchlevel 4
+%%CreationDate: Sat Jul 11 02:02:03 2015
+%%DocumentFonts: (atend)
+%%BoundingBox: 50 50 554 770
+%%Orientation: Landscape
+%%Pages: (atend)
+%%EndComments
+%%BeginProlog
+/gnudict 256 dict def
+gnudict begin
+%
+% The following true/false flags may be edited by hand if desired.
+% The unit line width and grayscale image gamma correction may also be changed.
+%
+/Color true def
+/Blacktext false def
+/Solid false def
+/Dashlength 1 def
+/Landscape true def
+/Level1 false def
+/Rounded false def
+/ClipToBoundingBox false def
+/SuppressPDFMark false def
+/TransparentPatterns false def
+/gnulinewidth 5.000 def
+/userlinewidth gnulinewidth def
+/Gamma 1.0 def
+/BackgroundColor {-1.000 -1.000 -1.000} def
+%
+/vshift -46 def
+/dl1 {
+  10.0 Dashlength mul mul
+  Rounded { currentlinewidth 0.75 mul sub dup 0 le { pop 0.01 } if } if
+} def
+/dl2 {
+  10.0 Dashlength mul mul
+  Rounded { currentlinewidth 0.75 mul add } if
+} def
+/hpt_ 31.5 def
+/vpt_ 31.5 def
+/hpt hpt_ def
+/vpt vpt_ def
+/doclip {
+  ClipToBoundingBox {
+    newpath 50 50 moveto 554 50 lineto 554 770 lineto 50 770 lineto closepath
+    clip
+  } if
+} def
+%
+% Gnuplot Prolog Version 4.6 (September 2012)
+%
+%/SuppressPDFMark true def
+%
+/M {moveto} bind def
+/L {lineto} bind def
+/R {rmoveto} bind def
+/V {rlineto} bind def
+/N {newpath moveto} bind def
+/Z {closepath} bind def
+/C {setrgbcolor} bind def
+/f {rlineto fill} bind def
+/g {setgray} bind def
+/Gshow {show} def   % May be redefined later in the file to support UTF-8
+/vpt2 vpt 2 mul def
+/hpt2 hpt 2 mul def
+/Lshow {currentpoint stroke M 0 vshift R 
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/Rshow {currentpoint stroke M dup stringwidth pop neg vshift R
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/Cshow {currentpoint stroke M dup stringwidth pop -2 div vshift R 
+	Blacktext {gsave 0 setgray show grestore} {show} ifelse} def
+/UP {dup vpt_ mul /vpt exch def hpt_ mul /hpt exch def
+  /hpt2 hpt 2 mul def /vpt2 vpt 2 mul def} def
+/DL {Color {setrgbcolor Solid {pop []} if 0 setdash}
+ {pop pop pop 0 setgray Solid {pop []} if 0 setdash} ifelse} def
+/BL {stroke userlinewidth 2 mul setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/AL {stroke userlinewidth 2 div setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+/UL {dup gnulinewidth mul /userlinewidth exch def
+	dup 1 lt {pop 1} if 10 mul /udl exch def} def
+/PL {stroke userlinewidth setlinewidth
+	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
+% Default Line colors
+/LCw {1 1 1} def
+/LCb {0 0 0} def
+/LCa {0 0 0} def
+/LC0 {1 0 0} def
+/LC1 {0 1 0} def
+/LC2 {0 0 1} def
+/LC3 {1 0 1} def
+/LC4 {0 1 1} def
+/LC5 {1 1 0} def
+/LC6 {0 0 0} def
+/LC7 {1 0.3 0} def
+/LC8 {0.5 0.5 0.5} def
+% Default Line Types
+/LTw {PL [] 1 setgray} def
+/LTb {BL [] LCb DL} def
+/LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
+/LT0 {PL [] LC0 DL} def
+/LT1 {PL [4 dl1 2 dl2] LC1 DL} def
+/LT2 {PL [2 dl1 3 dl2] LC2 DL} def
+/LT3 {PL [1 dl1 1.5 dl2] LC3 DL} def
+/LT4 {PL [6 dl1 2 dl2 1 dl1 2 dl2] LC4 DL} def
+/LT5 {PL [3 dl1 3 dl2 1 dl1 3 dl2] LC5 DL} def
+/LT6 {PL [2 dl1 2 dl2 2 dl1 6 dl2] LC6 DL} def
+/LT7 {PL [1 dl1 2 dl2 6 dl1 2 dl2 1 dl1 2 dl2] LC7 DL} def
+/LT8 {PL [2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 2 dl2 2 dl1 4 dl2] LC8 DL} def
+/Pnt {stroke [] 0 setdash gsave 1 setlinecap M 0 0 V stroke grestore} def
+/Dia {stroke [] 0 setdash 2 copy vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke
+  Pnt} def
+/Pls {stroke [] 0 setdash vpt sub M 0 vpt2 V
+  currentpoint stroke M
+  hpt neg vpt neg R hpt2 0 V stroke
+ } def
+/Box {stroke [] 0 setdash 2 copy exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke
+  Pnt} def
+/Crs {stroke [] 0 setdash exch hpt sub exch vpt add M
+  hpt2 vpt2 neg V currentpoint stroke M
+  hpt2 neg 0 R hpt2 vpt2 V stroke} def
+/TriU {stroke [] 0 setdash 2 copy vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke
+  Pnt} def
+/Star {2 copy Pls Crs} def
+/BoxF {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath fill} def
+/TriUF {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath fill} def
+/TriD {stroke [] 0 setdash 2 copy vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke
+  Pnt} def
+/TriDF {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath fill} def
+/DiaF {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath fill} def
+/Pent {stroke [] 0 setdash 2 copy gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore Pnt} def
+/PentF {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath fill grestore} def
+/Circle {stroke [] 0 setdash 2 copy
+  hpt 0 360 arc stroke Pnt} def
+/CircleF {stroke [] 0 setdash hpt 0 360 arc fill} def
+/C0 {BL [] 0 setdash 2 copy moveto vpt 90 450 arc} bind def
+/C1 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C2 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C3 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C4 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C5 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc
+	2 copy moveto
+	2 copy vpt 180 270 arc closepath fill
+	vpt 0 360 arc} bind def
+/C6 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C7 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 270 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C8 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C9 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 270 450 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C10 {BL [] 0 setdash 2 copy 2 copy moveto vpt 270 360 arc closepath fill
+	2 copy moveto
+	2 copy vpt 90 180 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C11 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 180 arc closepath fill
+	2 copy moveto
+	2 copy vpt 270 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C12 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C13 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 0 90 arc closepath fill
+	2 copy moveto
+	2 copy vpt 180 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/C14 {BL [] 0 setdash 2 copy moveto
+	2 copy vpt 90 360 arc closepath fill
+	vpt 0 360 arc} bind def
+/C15 {BL [] 0 setdash 2 copy vpt 0 360 arc closepath fill
+	vpt 0 360 arc closepath} bind def
+/Rec {newpath 4 2 roll moveto 1 index 0 rlineto 0 exch rlineto
+	neg 0 rlineto closepath} bind def
+/Square {dup Rec} bind def
+/Bsquare {vpt sub exch vpt sub exch vpt2 Square} bind def
+/S0 {BL [] 0 setdash 2 copy moveto 0 vpt rlineto BL Bsquare} bind def
+/S1 {BL [] 0 setdash 2 copy vpt Square fill Bsquare} bind def
+/S2 {BL [] 0 setdash 2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S3 {BL [] 0 setdash 2 copy exch vpt sub exch vpt2 vpt Rec fill Bsquare} bind def
+/S4 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S5 {BL [] 0 setdash 2 copy 2 copy vpt Square fill
+	exch vpt sub exch vpt sub vpt Square fill Bsquare} bind def
+/S6 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S7 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt vpt2 Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S8 {BL [] 0 setdash 2 copy vpt sub vpt Square fill Bsquare} bind def
+/S9 {BL [] 0 setdash 2 copy vpt sub vpt vpt2 Rec fill Bsquare} bind def
+/S10 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt Square fill
+	Bsquare} bind def
+/S11 {BL [] 0 setdash 2 copy vpt sub vpt Square fill 2 copy exch vpt sub exch vpt2 vpt Rec fill
+	Bsquare} bind def
+/S12 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill Bsquare} bind def
+/S13 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy vpt Square fill Bsquare} bind def
+/S14 {BL [] 0 setdash 2 copy exch vpt sub exch vpt sub vpt2 vpt Rec fill
+	2 copy exch vpt sub exch vpt Square fill Bsquare} bind def
+/S15 {BL [] 0 setdash 2 copy Bsquare fill Bsquare} bind def
+/D0 {gsave translate 45 rotate 0 0 S0 stroke grestore} bind def
+/D1 {gsave translate 45 rotate 0 0 S1 stroke grestore} bind def
+/D2 {gsave translate 45 rotate 0 0 S2 stroke grestore} bind def
+/D3 {gsave translate 45 rotate 0 0 S3 stroke grestore} bind def
+/D4 {gsave translate 45 rotate 0 0 S4 stroke grestore} bind def
+/D5 {gsave translate 45 rotate 0 0 S5 stroke grestore} bind def
+/D6 {gsave translate 45 rotate 0 0 S6 stroke grestore} bind def
+/D7 {gsave translate 45 rotate 0 0 S7 stroke grestore} bind def
+/D8 {gsave translate 45 rotate 0 0 S8 stroke grestore} bind def
+/D9 {gsave translate 45 rotate 0 0 S9 stroke grestore} bind def
+/D10 {gsave translate 45 rotate 0 0 S10 stroke grestore} bind def
+/D11 {gsave translate 45 rotate 0 0 S11 stroke grestore} bind def
+/D12 {gsave translate 45 rotate 0 0 S12 stroke grestore} bind def
+/D13 {gsave translate 45 rotate 0 0 S13 stroke grestore} bind def
+/D14 {gsave translate 45 rotate 0 0 S14 stroke grestore} bind def
+/D15 {gsave translate 45 rotate 0 0 S15 stroke grestore} bind def
+/DiaE {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V closepath stroke} def
+/BoxE {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V closepath stroke} def
+/TriUE {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V closepath stroke} def
+/TriDE {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V closepath stroke} def
+/PentE {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  closepath stroke grestore} def
+/CircE {stroke [] 0 setdash 
+  hpt 0 360 arc stroke} def
+/Opaque {gsave closepath 1 setgray fill grestore 0 setgray closepath} def
+/DiaW {stroke [] 0 setdash vpt add M
+  hpt neg vpt neg V hpt vpt neg V
+  hpt vpt V hpt neg vpt V Opaque stroke} def
+/BoxW {stroke [] 0 setdash exch hpt sub exch vpt add M
+  0 vpt2 neg V hpt2 0 V 0 vpt2 V
+  hpt2 neg 0 V Opaque stroke} def
+/TriUW {stroke [] 0 setdash vpt 1.12 mul add M
+  hpt neg vpt -1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt 1.62 mul V Opaque stroke} def
+/TriDW {stroke [] 0 setdash vpt 1.12 mul sub M
+  hpt neg vpt 1.62 mul V
+  hpt 2 mul 0 V
+  hpt neg vpt -1.62 mul V Opaque stroke} def
+/PentW {stroke [] 0 setdash gsave
+  translate 0 hpt M 4 {72 rotate 0 hpt L} repeat
+  Opaque stroke grestore} def
+/CircW {stroke [] 0 setdash 
+  hpt 0 360 arc Opaque stroke} def
+/BoxFill {gsave Rec 1 setgray fill grestore} def
+/Density {
+  /Fillden exch def
+  currentrgbcolor
+  /ColB exch def /ColG exch def /ColR exch def
+  /ColR ColR Fillden mul Fillden sub 1 add def
+  /ColG ColG Fillden mul Fillden sub 1 add def
+  /ColB ColB Fillden mul Fillden sub 1 add def
+  ColR ColG ColB setrgbcolor} def
+/BoxColFill {gsave Rec PolyFill} def
+/PolyFill {gsave Density fill grestore grestore} def
+/h {rlineto rlineto rlineto gsave closepath fill grestore} bind def
+%
+% PostScript Level 1 Pattern Fill routine for rectangles
+% Usage: x y w h s a XX PatternFill
+%	x,y = lower left corner of box to be filled
+%	w,h = width and height of box
+%	  a = angle in degrees between lines and x-axis
+%	 XX = 0/1 for no/yes cross-hatch
+%
+/PatternFill {gsave /PFa [ 9 2 roll ] def
+  PFa 0 get PFa 2 get 2 div add PFa 1 get PFa 3 get 2 div add translate
+  PFa 2 get -2 div PFa 3 get -2 div PFa 2 get PFa 3 get Rec
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+  clip
+  currentlinewidth 0.5 mul setlinewidth
+  /PFs PFa 2 get dup mul PFa 3 get dup mul add sqrt def
+  0 0 M PFa 5 get rotate PFs -2 div dup translate
+  0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 M 0 PFs V} for
+  0 PFa 6 get ne {
+	0 1 PFs PFa 4 get div 1 add floor cvi
+	{PFa 4 get mul 0 2 1 roll M PFs 0 V} for
+ } if
+  stroke grestore} def
+%
+/languagelevel where
+ {pop languagelevel} {1} ifelse
+ 2 lt
+	{/InterpretLevel1 true def}
+	{/InterpretLevel1 Level1 def}
+ ifelse
+%
+% PostScript level 2 pattern fill definitions
+%
+/Level2PatternFill {
+/Tile8x8 {/PaintType 2 /PatternType 1 /TilingType 1 /BBox [0 0 8 8] /XStep 8 /YStep 8}
+	bind def
+/KeepColor {currentrgbcolor [/Pattern /DeviceRGB] setcolorspace} bind def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke} 
+>> matrix makepattern
+/Pat1 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 8 8 L 0 8 M 8 0 L stroke
+	0 4 M 4 8 L 8 4 L 4 0 L 0 4 L stroke}
+>> matrix makepattern
+/Pat2 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 0 M 0 8 L
+	8 8 L 8 0 L 0 0 L fill}
+>> matrix makepattern
+/Pat3 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 8 M 8 -4 L
+	0 12 M 12 0 L stroke}
+>> matrix makepattern
+/Pat4 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -4 0 M 8 12 L
+	0 -4 M 12 8 L stroke}
+>> matrix makepattern
+/Pat5 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 8 M 4 -4 L
+	0 12 M 8 -4 L 4 12 M 10 0 L stroke}
+>> matrix makepattern
+/Pat6 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop -2 0 M 4 12 L
+	0 -4 M 8 12 L 4 -4 M 10 8 L stroke}
+>> matrix makepattern
+/Pat7 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 8 -2 M -4 4 L
+	12 0 M -4 8 L 12 4 M 0 10 L stroke}
+>> matrix makepattern
+/Pat8 exch def
+<< Tile8x8
+ /PaintProc {0.5 setlinewidth pop 0 -2 M 12 4 L
+	-4 0 M 12 8 L -4 4 M 8 10 L stroke}
+>> matrix makepattern
+/Pat9 exch def
+/Pattern1 {PatternBgnd KeepColor Pat1 setpattern} bind def
+/Pattern2 {PatternBgnd KeepColor Pat2 setpattern} bind def
+/Pattern3 {PatternBgnd KeepColor Pat3 setpattern} bind def
+/Pattern4 {PatternBgnd KeepColor Landscape {Pat5} {Pat4} ifelse setpattern} bind def
+/Pattern5 {PatternBgnd KeepColor Landscape {Pat4} {Pat5} ifelse setpattern} bind def
+/Pattern6 {PatternBgnd KeepColor Landscape {Pat9} {Pat6} ifelse setpattern} bind def
+/Pattern7 {PatternBgnd KeepColor Landscape {Pat8} {Pat7} ifelse setpattern} bind def
+} def
+%
+%
+%End of PostScript Level 2 code
+%
+/PatternBgnd {
+  TransparentPatterns {} {gsave 1 setgray fill grestore} ifelse
+} def
+%
+% Substitute for Level 2 pattern fill codes with
+% grayscale if Level 2 support is not selected.
+%
+/Level1PatternFill {
+/Pattern1 {0.250 Density} bind def
+/Pattern2 {0.500 Density} bind def
+/Pattern3 {0.750 Density} bind def
+/Pattern4 {0.125 Density} bind def
+/Pattern5 {0.375 Density} bind def
+/Pattern6 {0.625 Density} bind def
+/Pattern7 {0.875 Density} bind def
+} def
+%
+% Now test for support of Level 2 code
+%
+Level1 {Level1PatternFill} {Level2PatternFill} ifelse
+%
+/Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
+dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
+currentdict end definefont pop
+/MFshow {
+   { dup 5 get 3 ge
+     { 5 get 3 eq {gsave} {grestore} ifelse }
+     {dup dup 0 get findfont exch 1 get scalefont setfont
+     [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
+     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
+     get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
+     dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
+     show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
+     pop aload pop M} ifelse }ifelse }ifelse }
+     ifelse }
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
+/MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
+ {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
+/MLshow { currentpoint stroke M
+  0 exch R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MRshow { currentpoint stroke M
+  exch dup MFwidth neg 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/MCshow { currentpoint stroke M
+  exch dup MFwidth -2 div 3 -1 roll R
+  Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
+/XYsave    { [( ) 1 2 true false 3 ()] } bind def
+/XYrestore { [( ) 1 2 true false 4 ()] } bind def
+Level1 SuppressPDFMark or 
+{} {
+/SDict 10 dict def
+systemdict /pdfmark known not {
+  userdict /pdfmark systemdict /cleartomark get put
+} if
+SDict begin [
+  /Title (meannew.eps)
+  /Subject (gnuplot plot)
+  /Creator (gnuplot 4.6 patchlevel 4)
+  /Author (ubuntu)
+%  /Producer (gnuplot)
+%  /Keywords ()
+  /CreationDate (Sat Jul 11 02:02:03 2015)
+  /DOCINFO pdfmark
+end
+} ifelse
+end
+%%EndProlog
+%%Page: 1 1
+gnudict begin
+gsave
+doclip
+50 50 translate
+0.100 0.100 scale
+90 rotate
+0 -5040 translate
+0 setgray
+newpath
+(Helvetica) findfont 140 scalefont setfont
+BackgroundColor 0 lt 3 1 roll 0 lt exch 0 lt or or not {gsave BackgroundColor C clippath fill grestore} if
+1.000 UL
+LTb
+LCb setrgbcolor
+602 448 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 448 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 0)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 1080 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 1080 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 5)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 1712 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 1712 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 10)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 2344 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 2344 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 15)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 2975 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 2975 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 20)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 3607 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 3607 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 25)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 4239 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 4239 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 30)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 4871 M
+63 0 V
+6282 0 R
+-63 0 V
+stroke
+518 4871 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 35)]
+] -46.7 MRshow
+1.000 UL
+LTb
+LCb setrgbcolor
+602 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+602 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 0)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1660 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+1660 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 50)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+2717 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+2717 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 100)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+3775 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+3775 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 150)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+4832 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+4832 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 200)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+5890 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+5890 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 250)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+6947 448 M
+0 63 V
+0 4360 R
+0 -63 V
+stroke
+6947 308 M
+[ [(Helvetica) 140.0 0.0 true true 0 ( 300)]
+] -46.7 MCshow
+1.000 UL
+LTb
+LCb setrgbcolor
+1.000 UL
+LTb
+LCb setrgbcolor
+602 4871 N
+602 448 L
+6345 0 V
+0 4423 V
+-6345 0 V
+Z stroke
+LCb setrgbcolor
+112 2659 M
+currentpoint gsave translate -270 rotate 0 0 moveto
+[ [(Helvetica) 140.0 0.0 true true 0 (PDU Forwarding Table size)]
+] -46.7 MCshow
+grestore
+LTb
+LCb setrgbcolor
+3774 98 M
+[ [(Helvetica) 140.0 0.0 true true 0 (Simulation Time)]
+] -46.7 MCshow
+LTb
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+% Begin plot #1
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 Pls
+1237 1080 Pls
+1871 1585 Pls
+2506 2344 Pls
+3140 2470 Pls
+3775 2596 Pls
+4409 2723 Pls
+5044 2849 Pls
+5678 2975 Pls
+6313 3228 Pls
+% End plot #1
+% Begin plot #2
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 Crs
+1237 1080 Crs
+1871 1585 Crs
+2506 2091 Crs
+3140 2723 Crs
+3775 2849 Crs
+4409 2975 Crs
+5044 3102 Crs
+5678 3355 Crs
+6313 3607 Crs
+% End plot #2
+% Begin plot #3
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 Star
+1237 1080 Star
+1871 1206 Star
+2506 1712 Star
+3140 2217 Star
+3775 2849 Star
+4409 2975 Star
+5044 3228 Star
+5678 3481 Star
+6313 3860 Star
+% End plot #3
+% Begin plot #4
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 Box
+1237 1080 Box
+1871 1206 Box
+2506 1838 Box
+3140 2344 Box
+3775 2975 Box
+4409 3228 Box
+5044 3481 Box
+5678 3860 Box
+6313 4113 Box
+% End plot #4
+% Begin plot #5
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 BoxF
+1237 1080 BoxF
+1871 1459 BoxF
+2506 1964 BoxF
+3140 2470 BoxF
+3775 3228 BoxF
+4409 3481 BoxF
+5044 3860 BoxF
+5678 4113 BoxF
+6313 4113 BoxF
+% End plot #5
+% Begin plot #6
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 Circle
+1237 1080 Circle
+1871 1459 Circle
+2506 2091 Circle
+3140 2723 Circle
+3775 3481 Circle
+4409 3860 Circle
+5044 4113 Circle
+5678 4113 Circle
+6313 4113 Circle
+% End plot #6
+% Begin plot #7
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 CircleF
+1237 1080 CircleF
+1871 1206 CircleF
+2506 1459 CircleF
+3140 1585 CircleF
+3775 1964 CircleF
+4409 2217 CircleF
+5044 2470 CircleF
+5678 2596 CircleF
+6313 2723 CircleF
+% End plot #7
+% Begin plot #8
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 TriU
+1237 1080 TriU
+1871 1333 TriU
+2506 1585 TriU
+3140 1964 TriU
+3775 2217 TriU
+4409 2470 TriU
+5044 2596 TriU
+5678 2723 TriU
+6313 2849 TriU
+% End plot #8
+% Begin plot #9
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 TriUF
+1871 1080 TriUF
+2506 1585 TriUF
+3140 1964 TriUF
+3775 2470 TriUF
+4409 2596 TriUF
+5044 2723 TriUF
+5678 2849 TriUF
+6313 2975 TriUF
+% End plot #9
+% Begin plot #10
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 TriD
+1237 1080 TriD
+1871 1459 TriD
+2506 1712 TriD
+3140 1964 TriD
+3775 2849 TriD
+4409 3228 TriD
+5044 3607 TriD
+5678 4113 TriD
+6313 4113 TriD
+% End plot #10
+% Begin plot #11
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 TriDF
+1237 1080 TriDF
+1871 1459 TriDF
+2506 1838 TriDF
+3140 2723 TriDF
+3775 3228 TriDF
+4409 3607 TriDF
+5044 4113 TriDF
+5678 4113 TriDF
+6313 4113 TriDF
+% End plot #11
+% Begin plot #12
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 Dia
+1237 953 Dia
+1871 1459 Dia
+2506 1964 Dia
+3140 2470 Dia
+3775 2596 Dia
+4409 2723 Dia
+5044 2849 Dia
+5678 2975 Dia
+6313 3228 Dia
+% End plot #12
+% Begin plot #13
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 DiaF
+1237 1080 DiaF
+1871 1585 DiaF
+2506 1964 DiaF
+3140 2217 DiaF
+3775 2470 DiaF
+4409 2596 DiaF
+5044 2723 DiaF
+5678 2849 DiaF
+6313 2975 DiaF
+% End plot #13
+% Begin plot #14
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 Pent
+1237 1080 Pent
+1871 1206 Pent
+2506 1333 Pent
+3140 1585 Pent
+3775 1964 Pent
+4409 2849 Pent
+5044 3228 Pent
+5678 3607 Pent
+6313 4113 Pent
+% End plot #14
+% Begin plot #15
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 PentF
+1237 953 PentF
+1871 1080 PentF
+2506 1964 PentF
+3140 2217 PentF
+3775 2470 PentF
+4409 2596 PentF
+5044 2723 PentF
+5678 2849 PentF
+6313 2975 PentF
+% End plot #15
+% Begin plot #16
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 C0
+1237 1080 C0
+1871 1333 C0
+2506 1459 C0
+3140 1964 C0
+3775 2217 C0
+4409 2470 C0
+5044 2596 C0
+5678 2723 C0
+6313 2849 C0
+% End plot #16
+% Begin plot #17
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 C1
+1237 1080 C1
+1871 2217 C1
+2506 2975 C1
+3140 3607 C1
+3775 4113 C1
+4409 4113 C1
+5044 4113 C1
+5678 4113 C1
+6313 4113 C1
+% End plot #17
+% Begin plot #18
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 C2
+1237 1080 C2
+1871 1712 C2
+2506 2723 C2
+3140 3228 C2
+3775 3607 C2
+4409 4113 C2
+5044 4113 C2
+5678 4113 C2
+6313 4113 C2
+% End plot #18
+% Begin plot #19
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 C3
+1237 1080 C3
+1871 1333 C3
+2506 2596 C3
+3140 3228 C3
+3775 3607 C3
+4409 4113 C3
+5044 4113 C3
+5678 4113 C3
+6313 4113 C3
+% End plot #19
+% Begin plot #20
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 C4
+1237 1080 C4
+1871 1712 C4
+2506 2344 C4
+3140 2975 C4
+3775 3860 C4
+4409 4113 C4
+5044 4113 C4
+5678 4113 C4
+6313 4113 C4
+% End plot #20
+% Begin plot #21
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 C5
+1237 1080 C5
+1871 1838 C5
+2506 2596 C5
+3140 3355 C5
+3775 4113 C5
+4409 4113 C5
+5044 4113 C5
+5678 4113 C5
+6313 4113 C5
+% End plot #21
+% Begin plot #22
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 C6
+1237 1080 C6
+1871 1206 C6
+2506 1585 C6
+3140 1964 C6
+3775 2470 C6
+4409 2596 C6
+5044 2723 C6
+5678 2849 C6
+6313 2975 C6
+% End plot #22
+% Begin plot #23
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 C7
+1237 1080 C7
+1871 1206 C7
+2506 1585 C7
+3140 1964 C7
+3775 2470 C7
+4409 2596 C7
+5044 2723 C7
+5678 2849 C7
+6313 2975 C7
+% End plot #23
+% Begin plot #24
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 C8
+1237 1080 C8
+1871 1333 C8
+2506 1838 C8
+3140 2849 C8
+3775 3228 C8
+4409 3607 C8
+5044 4113 C8
+5678 4113 C8
+6313 4113 C8
+% End plot #24
+% Begin plot #25
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 C9
+1237 1080 C9
+1871 1206 C9
+2506 1333 C9
+3140 1585 C9
+3775 1964 C9
+4409 2723 C9
+5044 3228 C9
+5678 3607 C9
+6313 4113 C9
+% End plot #25
+% Begin plot #26
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 C10
+1237 1080 C10
+1871 2091 C10
+2506 2723 C10
+3140 3355 C10
+3775 4113 C10
+4409 4113 C10
+5044 4113 C10
+5678 4113 C10
+6313 4113 C10
+% End plot #26
+% Begin plot #27
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 C11
+1237 1080 C11
+1871 2091 C11
+2506 2470 C11
+3140 2723 C11
+3775 3102 C11
+4409 3481 C11
+5044 3607 C11
+5678 3986 C11
+6313 3986 C11
+% End plot #27
+% Begin plot #28
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 C12
+1237 1080 C12
+1871 2091 C12
+2506 2470 C12
+3140 2849 C12
+3775 3228 C12
+4409 3607 C12
+5044 3986 C12
+5678 3986 C12
+6313 3986 C12
+% End plot #28
+% Begin plot #29
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 C13
+1237 1080 C13
+1871 1206 C13
+2506 2344 C13
+3140 2723 C13
+3775 3102 C13
+4409 3734 C13
+5044 3986 C13
+5678 3986 C13
+6313 3986 C13
+% End plot #29
+% Begin plot #30
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 C14
+1237 1080 C14
+1871 1333 C14
+2506 2470 C14
+3140 2849 C14
+3775 3481 C14
+4409 3734 C14
+5044 3986 C14
+5678 3986 C14
+6313 3986 C14
+% End plot #30
+% Begin plot #31
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 C15
+1237 1080 C15
+1871 1459 C15
+2506 2596 C15
+3140 3228 C15
+3775 3481 C15
+4409 3734 C15
+5044 3986 C15
+5678 3986 C15
+6313 3986 C15
+% End plot #31
+% Begin plot #32
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 S0
+1237 1080 S0
+1871 1585 S0
+2506 2975 S0
+3140 3228 S0
+3775 3481 S0
+4409 3734 S0
+5044 3986 S0
+5678 3986 S0
+6313 3986 S0
+% End plot #32
+% Begin plot #33
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 S1
+1237 1080 S1
+1871 1206 S1
+2506 1459 S1
+3140 2596 S1
+3775 2975 S1
+4409 3228 S1
+5044 3355 S1
+5678 3481 S1
+6313 3607 S1
+% End plot #33
+% Begin plot #34
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 S2
+1237 1080 S2
+1871 1206 S2
+2506 1712 S2
+3140 1964 S2
+3775 2723 S2
+4409 2975 S2
+5044 3228 S2
+5678 3355 S2
+6313 3481 S2
+% End plot #34
+% Begin plot #35
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 S3
+1237 1080 S3
+1871 1206 S3
+2506 2091 S3
+3140 2470 S3
+3775 2975 S3
+4409 3355 S3
+5044 3481 S3
+5678 3607 S3
+6313 3986 S3
+% End plot #35
+% Begin plot #36
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 S4
+1237 1080 S4
+1871 1964 S4
+2506 2975 S4
+3140 3228 S4
+3775 3481 S4
+4409 3734 S4
+5044 3986 S4
+5678 3986 S4
+6313 3986 S4
+% End plot #36
+% Begin plot #37
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 S5
+1237 1080 S5
+1871 1964 S5
+2506 2344 S5
+3140 2723 S5
+3775 3102 S5
+4409 3481 S5
+5044 3607 S5
+5678 3986 S5
+6313 3986 S5
+% End plot #37
+% Begin plot #38
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 S6
+1237 1080 S6
+1871 1333 S6
+2506 1712 S6
+3140 1964 S6
+3775 1964 S6
+4409 2723 S6
+5044 2975 S6
+5678 3228 S6
+6313 3355 S6
+% End plot #38
+% Begin plot #39
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 S7
+1237 1080 S7
+1871 1206 S7
+2506 2217 S7
+3140 2470 S7
+3775 2723 S7
+4409 3102 S7
+5044 3481 S7
+5678 3607 S7
+6313 3986 S7
+% End plot #39
+% Begin plot #40
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 S8
+1237 1080 S8
+1871 1459 S8
+2506 1964 S8
+3140 1964 S8
+3775 2723 S8
+4409 2975 S8
+5044 3228 S8
+5678 3355 S8
+6313 3481 S8
+% End plot #40
+% Begin plot #41
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 S9
+1237 1080 S9
+1871 1206 S9
+2506 1964 S9
+3140 2975 S9
+3775 3228 S9
+4409 3481 S9
+5044 3734 S9
+5678 3986 S9
+6313 3986 S9
+% End plot #41
+% Begin plot #42
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 S10
+1237 1080 S10
+1871 1964 S10
+2506 2344 S10
+3140 2723 S10
+3775 3102 S10
+4409 3481 S10
+5044 3607 S10
+5678 3986 S10
+6313 3986 S10
+% End plot #42
+% Begin plot #43
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 S11
+1237 1080 S11
+1871 1206 S11
+2506 2217 S11
+3140 2470 S11
+3775 2723 S11
+4409 3102 S11
+5044 3481 S11
+5678 3607 S11
+6313 3986 S11
+% End plot #43
+% Begin plot #44
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 S12
+1237 1080 S12
+1871 1712 S12
+2506 1964 S12
+3140 1964 S12
+3775 2723 S12
+4409 2975 S12
+5044 3228 S12
+5678 3355 S12
+6313 3481 S12
+% End plot #44
+% Begin plot #45
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 S13
+1237 1080 S13
+1871 1964 S13
+2506 2975 S13
+3140 3228 S13
+3775 3481 S13
+4409 3734 S13
+5044 3986 S13
+5678 3986 S13
+6313 3986 S13
+% End plot #45
+% Begin plot #46
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 S14
+1237 1080 S14
+1871 1964 S14
+2506 2975 S14
+3140 3228 S14
+3775 3481 S14
+4409 3734 S14
+5044 3986 S14
+5678 3986 S14
+6313 3986 S14
+% End plot #46
+% Begin plot #47
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 S15
+1237 1080 S15
+1871 1459 S15
+2506 1964 S15
+3140 1964 S15
+3775 2723 S15
+4409 2975 S15
+5044 3228 S15
+5678 3355 S15
+6313 3481 S15
+% End plot #47
+% Begin plot #48
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 D0
+1237 1080 D0
+1871 1206 D0
+2506 1712 D0
+3140 1838 D0
+3775 1964 D0
+4409 2723 D0
+5044 2975 D0
+5678 3228 D0
+6313 3355 D0
+% End plot #48
+% Begin plot #49
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 D1
+1237 1080 D1
+1871 1838 D1
+2506 2344 D1
+3140 2723 D1
+3775 3355 D1
+4409 3734 D1
+5044 3860 D1
+5678 4239 D1
+6313 4366 D1
+% End plot #49
+% Begin plot #50
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 D2
+1237 1080 D2
+1871 1838 D2
+2506 2217 D2
+3140 2975 D2
+3775 3355 D2
+4409 3607 D2
+5044 4239 D2
+5678 4366 D2
+6313 4366 D2
+% End plot #50
+% Begin plot #51
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 D3
+1237 1080 D3
+1871 1206 D3
+2506 1333 D3
+3140 1838 D3
+3775 2091 D3
+4409 2470 D3
+5044 3228 D3
+5678 3481 D3
+6313 3860 D3
+% End plot #51
+% Begin plot #52
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 D4
+1237 1080 D4
+1871 1080 D4
+2506 1333 D4
+3140 1333 D4
+3775 1838 D4
+4409 2091 D4
+5044 2470 D4
+5678 3228 D4
+6313 3481 D4
+% End plot #52
+% Begin plot #53
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 D5
+1237 1080 D5
+1871 1206 D5
+2506 1585 D5
+3140 2344 D5
+3775 3228 D5
+4409 3481 D5
+5044 3734 D5
+5678 3986 D5
+6313 4113 D5
+% End plot #53
+% Begin plot #54
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 D6
+1237 1080 D6
+1871 1206 D6
+2506 1838 D6
+3140 2723 D6
+3775 3355 D6
+4409 3734 D6
+5044 3986 D6
+5678 4113 D6
+6313 4366 D6
+% End plot #54
+% Begin plot #55
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 D7
+1237 1080 D7
+1871 1206 D7
+2506 1712 D7
+3140 2091 D7
+3775 2470 D7
+4409 3228 D7
+5044 3481 D7
+5678 3734 D7
+6313 3986 D7
+% End plot #55
+% Begin plot #56
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 D8
+1237 1080 D8
+1871 1459 D8
+2506 1712 D8
+3140 1964 D8
+3775 2723 D8
+4409 2975 D8
+5044 3102 D8
+5678 3607 D8
+6313 3734 D8
+% End plot #56
+% Begin plot #57
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 D9
+1237 1080 D9
+1871 1712 D9
+2506 2596 D9
+3140 2975 D9
+3775 3607 D9
+4409 3986 D9
+5044 4113 D9
+5678 4366 D9
+6313 4366 D9
+% End plot #57
+% Begin plot #58
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 D10
+1237 1080 D10
+1871 1206 D10
+2506 1838 D10
+3140 2091 D10
+3775 2470 D10
+4409 3228 D10
+5044 3481 D10
+5678 3860 D10
+6313 4239 D10
+% End plot #58
+% Begin plot #59
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 D11
+1237 1080 D11
+1871 1585 D11
+2506 2470 D11
+3140 2975 D11
+3775 3102 D11
+4409 3607 D11
+5044 3734 D11
+5678 3860 D11
+6313 4239 D11
+% End plot #59
+% Begin plot #60
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 D12
+1237 1080 D12
+1871 1206 D12
+2506 1712 D12
+3140 1838 D12
+3775 1964 D12
+4409 2470 D12
+5044 3228 D12
+5678 3481 D12
+6313 3734 D12
+% End plot #60
+% Begin plot #61
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 D13
+1237 1080 D13
+1871 1333 D13
+2506 2344 D13
+3140 2723 D13
+3775 3102 D13
+4409 3607 D13
+5044 3734 D13
+5678 3860 D13
+6313 4239 D13
+% End plot #61
+% Begin plot #62
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 D14
+1237 1080 D14
+1871 1206 D14
+2506 2470 D14
+3140 2849 D14
+3775 3228 D14
+4409 3860 D14
+5044 4113 D14
+5678 4366 D14
+6313 4366 D14
+% End plot #62
+% Begin plot #63
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 D15
+1237 1080 D15
+1871 1080 D15
+2506 1333 D15
+3140 1712 D15
+3775 1838 D15
+4409 2091 D15
+5044 2470 D15
+5678 3228 D15
+6313 3481 D15
+% End plot #63
+% Begin plot #64
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 BoxE
+1237 1080 BoxE
+1871 1712 BoxE
+2506 1838 BoxE
+3140 1964 BoxE
+3775 2470 BoxE
+4409 3228 BoxE
+5044 3481 BoxE
+5678 3734 BoxE
+6313 3986 BoxE
+% End plot #64
+% Begin plot #65
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 CircE
+1237 1080 CircE
+1871 1459 CircE
+2506 1964 CircE
+3140 2723 CircE
+3775 2975 CircE
+4409 3102 CircE
+5044 3607 CircE
+5678 3734 CircE
+6313 3860 CircE
+% End plot #65
+% Begin plot #66
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 TriUE
+1237 1080 TriUE
+1871 1459 TriUE
+2506 1712 TriUE
+3140 1964 TriUE
+3775 2723 TriUE
+4409 2975 TriUE
+5044 3102 TriUE
+5678 3607 TriUE
+6313 3734 TriUE
+% End plot #66
+% Begin plot #67
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 TriDE
+1237 1080 TriDE
+1871 1585 TriDE
+2506 1838 TriDE
+3140 2091 TriDE
+3775 2470 TriDE
+4409 3228 TriDE
+5044 3481 TriDE
+5678 3734 TriDE
+6313 3986 TriDE
+% End plot #67
+% Begin plot #68
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 DiaE
+1237 1080 DiaE
+1871 1712 DiaE
+2506 1838 DiaE
+3140 1964 DiaE
+3775 2470 DiaE
+4409 3228 DiaE
+5044 3481 DiaE
+5678 3734 DiaE
+6313 3986 DiaE
+% End plot #68
+% Begin plot #69
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 PentE
+1237 1080 PentE
+1871 1712 PentE
+2506 2596 PentE
+3140 2975 PentE
+3775 3607 PentE
+4409 3986 PentE
+5044 4113 PentE
+5678 4366 PentE
+6313 4366 PentE
+% End plot #69
+% Begin plot #70
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 BoxW
+1237 1080 BoxW
+1871 1712 BoxW
+2506 2596 BoxW
+3140 2975 BoxW
+3775 3607 BoxW
+4409 3986 BoxW
+5044 4113 BoxW
+5678 4366 BoxW
+6313 4366 BoxW
+% End plot #70
+% Begin plot #71
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 CircW
+1237 1080 CircW
+1871 1459 CircW
+2506 2344 CircW
+3140 2849 CircW
+3775 3102 CircW
+4409 3607 CircW
+5044 3734 CircW
+5678 3860 CircW
+6313 4239 CircW
+% End plot #71
+% Begin plot #72
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 TriUW
+1237 1080 TriUW
+1871 1712 TriUW
+2506 2091 TriUW
+3140 2470 TriUW
+3775 3228 TriUW
+4409 3481 TriUW
+5044 3860 TriUW
+5678 4239 TriUW
+6313 4366 TriUW
+% End plot #72
+% Begin plot #73
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 TriDW
+1237 1080 TriDW
+1871 1333 TriDW
+2506 1712 TriDW
+3140 2723 TriDW
+3775 2975 TriDW
+4409 3102 TriDW
+5044 3607 TriDW
+5678 3734 TriDW
+6313 3860 TriDW
+% End plot #73
+% Begin plot #74
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 DiaW
+1237 1080 DiaW
+1871 1333 DiaW
+2506 1585 DiaW
+3140 1964 DiaW
+3775 2723 DiaW
+4409 2975 DiaW
+5044 3102 DiaW
+5678 3607 DiaW
+6313 3734 DiaW
+% End plot #74
+% Begin plot #75
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 PentW
+1237 1080 PentW
+1871 1712 PentW
+2506 2344 PentW
+3140 2849 PentW
+3775 3228 PentW
+4409 3607 PentW
+5044 3986 PentW
+5678 4113 PentW
+6313 4239 PentW
+% End plot #75
+% Begin plot #76
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 Pls
+1237 1080 Pls
+1871 1712 Pls
+2506 2217 Pls
+3140 2723 Pls
+3775 3228 Pls
+4409 3355 Pls
+5044 3607 Pls
+5678 3986 Pls
+6313 4113 Pls
+% End plot #76
+% Begin plot #77
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 Crs
+1237 1080 Crs
+1871 1206 Crs
+2506 1964 Crs
+3140 2470 Crs
+3775 2975 Crs
+4409 3228 Crs
+5044 3355 Crs
+5678 3607 Crs
+6313 3986 Crs
+% End plot #77
+% Begin plot #78
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 Star
+1237 1080 Star
+1871 1333 Star
+2506 2091 Star
+3140 2596 Star
+3775 2975 Star
+4409 3228 Star
+5044 3355 Star
+5678 3607 Star
+6313 3986 Star
+% End plot #78
+% Begin plot #79
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 Box
+1237 1080 Box
+1871 1459 Box
+2506 2217 Box
+3140 2723 Box
+3775 2975 Box
+4409 3228 Box
+5044 3355 Box
+5678 3607 Box
+6313 3986 Box
+% End plot #79
+% Begin plot #80
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 BoxF
+1237 1080 BoxF
+1871 1585 BoxF
+2506 2596 BoxF
+3140 2723 BoxF
+3775 2975 BoxF
+4409 3228 BoxF
+5044 3355 BoxF
+5678 3607 BoxF
+6313 3986 BoxF
+% End plot #80
+% Begin plot #81
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 Circle
+1237 1080 Circle
+1871 1459 Circle
+2506 2091 Circle
+3140 3102 Circle
+3775 3481 Circle
+4409 3860 Circle
+5044 4239 Circle
+5678 4366 Circle
+6313 4366 Circle
+% End plot #81
+% Begin plot #82
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 CircleF
+1237 1080 CircleF
+1871 1585 CircleF
+2506 2344 CircleF
+3140 2975 CircleF
+3775 3607 CircleF
+4409 3986 CircleF
+5044 4239 CircleF
+5678 4366 CircleF
+6313 4366 CircleF
+% End plot #82
+% Begin plot #83
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 TriU
+1237 1080 TriU
+1871 1206 TriU
+2506 1838 TriU
+3140 2723 TriU
+3775 3481 TriU
+4409 3734 TriU
+5044 4113 TriU
+5678 4366 TriU
+6313 4366 TriU
+% End plot #83
+% Begin plot #84
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 TriUF
+1237 1080 TriUF
+1871 1206 TriUF
+2506 1585 TriUF
+3140 2091 TriUF
+3775 2344 TriUF
+4409 2723 TriUF
+5044 3355 TriUF
+5678 3734 TriUF
+6313 3986 TriUF
+% End plot #84
+% Begin plot #85
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 TriD
+1237 1080 TriD
+1871 2091 TriD
+2506 2596 TriD
+3140 2723 TriD
+3775 2975 TriD
+4409 3228 TriD
+5044 3355 TriD
+5678 3607 TriD
+6313 3986 TriD
+% End plot #85
+% Begin plot #86
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 TriDF
+1237 1080 TriDF
+1871 1838 TriDF
+2506 2217 TriDF
+3140 2723 TriDF
+3775 3228 TriDF
+4409 3355 TriDF
+5044 3607 TriDF
+5678 4113 TriDF
+6313 4113 TriDF
+% End plot #86
+% Begin plot #87
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 Dia
+1237 1080 Dia
+1871 1333 Dia
+2506 2091 Dia
+3140 2723 Dia
+3775 2975 Dia
+4409 3228 Dia
+5044 3355 Dia
+5678 3607 Dia
+6313 3986 Dia
+% End plot #87
+% Begin plot #88
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 DiaF
+1237 1080 DiaF
+1871 1333 DiaF
+2506 1585 DiaF
+3140 1712 DiaF
+3775 2091 DiaF
+4409 2470 DiaF
+5044 2723 DiaF
+5678 3355 DiaF
+6313 3734 DiaF
+% End plot #88
+% Begin plot #89
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 Pent
+1237 1080 Pent
+1871 1333 Pent
+2506 2217 Pent
+3140 2723 Pent
+3775 3228 Pent
+4409 3860 Pent
+5044 4113 Pent
+5678 4239 Pent
+6313 4366 Pent
+% End plot #89
+% Begin plot #90
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 PentF
+1237 1080 PentF
+1871 1333 PentF
+2506 2217 PentF
+3140 2596 PentF
+3775 2723 PentF
+4409 2975 PentF
+5044 3228 PentF
+5678 3355 PentF
+6313 3607 PentF
+% End plot #90
+% Begin plot #91
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 C0
+1237 1080 C0
+1871 1206 C0
+2506 1585 C0
+3140 1712 C0
+3775 2091 C0
+4409 2470 C0
+5044 2723 C0
+5678 3355 C0
+6313 3734 C0
+% End plot #91
+% Begin plot #92
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 C1
+1237 1080 C1
+1871 1838 C1
+2506 2091 C1
+3140 2596 C1
+3775 3355 C1
+4409 3734 C1
+5044 3986 C1
+5678 4239 C1
+6313 4366 C1
+% End plot #92
+% Begin plot #93
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 C2
+1237 1080 C2
+1871 1459 C2
+2506 1838 C2
+3140 2217 C2
+3775 2723 C2
+4409 3355 C2
+5044 3734 C2
+5678 3986 C2
+6313 4239 C2
+% End plot #93
+% Begin plot #94
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 C3
+1237 1080 C3
+1871 1459 C3
+2506 1838 C3
+3140 2344 C3
+3775 2723 C3
+4409 3355 C3
+5044 3734 C3
+5678 3986 C3
+6313 4239 C3
+% End plot #94
+% Begin plot #95
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 C4
+1237 1080 C4
+1871 1459 C4
+2506 2091 C4
+3140 2470 C4
+3775 3228 C4
+4409 3734 C4
+5044 3986 C4
+5678 4239 C4
+6313 4366 C4
+% End plot #95
+% Begin plot #96
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 C5
+1237 1080 C5
+1871 1459 C5
+2506 2091 C5
+3140 2470 C5
+3775 3228 C5
+4409 3734 C5
+5044 3986 C5
+5678 4239 C5
+6313 4366 C5
+% End plot #96
+% Begin plot #97
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 C6
+1237 1080 C6
+1871 2091 C6
+2506 2596 C6
+3140 2723 C6
+3775 2975 C6
+4409 3228 C6
+5044 3355 C6
+5678 3607 C6
+6313 3986 C6
+% End plot #97
+% Begin plot #98
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 C7
+1237 1080 C7
+1871 2091 C7
+2506 2596 C7
+3140 2723 C7
+3775 3102 C7
+4409 3228 C7
+5044 3481 C7
+5678 3734 C7
+6313 4113 C7
+% End plot #98
+% Begin plot #99
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 C8
+1237 1080 C8
+1871 1459 C8
+2506 2217 C8
+3140 2849 C8
+3775 3355 C8
+4409 3986 C8
+5044 4113 C8
+5678 4239 C8
+6313 4366 C8
+% End plot #99
+% Begin plot #100
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 C9
+1237 1080 C9
+1871 1206 C9
+2506 1964 C9
+3140 2344 C9
+3775 2975 C9
+4409 3228 C9
+5044 3355 C9
+5678 3607 C9
+6313 3986 C9
+% End plot #100
+% Begin plot #101
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 C10
+1237 1080 C10
+1871 1080 C10
+2506 1333 C10
+3140 1459 C10
+3775 1712 C10
+4409 2091 C10
+5044 2470 C10
+5678 2723 C10
+6313 3355 C10
+% End plot #101
+% Begin plot #102
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 C11
+602 953 C11
+1237 1080 C11
+1871 1459 C11
+2506 1964 C11
+3140 2470 C11
+3775 2596 C11
+4409 2723 C11
+5044 2849 C11
+5678 2975 C11
+6313 3228 C11
+% End plot #102
+% Begin plot #103
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 C12
+602 953 C12
+602 1080 C12
+1237 1206 C12
+1871 1838 C12
+2506 2217 C12
+3140 2596 C12
+3775 2975 C12
+4409 3355 C12
+5044 3481 C12
+5678 3860 C12
+6313 3860 C12
+% End plot #103
+% Begin plot #104
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 C13
+602 953 C13
+1237 1080 C13
+1871 1585 C13
+2506 2091 C13
+3140 2344 C13
+3775 3102 C13
+4409 3481 C13
+5044 3734 C13
+5678 4113 C13
+6313 4239 C13
+% End plot #104
+% Begin plot #105
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 C14
+602 953 C14
+602 1206 C14
+1237 1333 C14
+1871 1585 C14
+2506 2091 C14
+3140 2596 C14
+3775 3102 C14
+4409 3355 C14
+5044 3607 C14
+5678 4113 C14
+6313 4113 C14
+% End plot #105
+% Begin plot #106
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 827 C15
+1871 953 C15
+2506 1080 C15
+3140 1459 C15
+3775 1459 C15
+4409 1964 C15
+5044 2217 C15
+5678 2470 C15
+6313 2596 C15
+% End plot #106
+% Begin plot #107
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+602 701 S0
+1871 953 S0
+2506 1080 S0
+3140 1206 S0
+3775 1459 S0
+4409 1838 S0
+5044 2596 S0
+5678 3102 S0
+6313 3481 S0
+% End plot #107
+% Begin plot #108
+1.000 UP
+1.000 UL
+LT8
+LC8 setrgbcolor
+602 701 S1
+1871 953 S1
+2506 1206 S1
+3140 1585 S1
+3775 1838 S1
+4409 1838 S1
+5044 2596 S1
+5678 2849 S1
+6313 3102 S1
+% End plot #108
+% Begin plot #109
+1.000 UP
+1.000 UL
+LT0
+LC0 setrgbcolor
+602 701 S2
+1871 827 S2
+2506 1080 S2
+3140 1838 S2
+3775 2849 S2
+4409 3102 S2
+5044 3355 S2
+5678 3607 S2
+6313 3860 S2
+% End plot #109
+% Begin plot #110
+1.000 UP
+1.000 UL
+LT1
+LC1 setrgbcolor
+602 701 S3
+1871 1080 S3
+2506 2091 S3
+3140 2344 S3
+3775 2596 S3
+4409 2975 S3
+5044 3355 S3
+5678 3481 S3
+6313 3860 S3
+% End plot #110
+% Begin plot #111
+1.000 UP
+1.000 UL
+LT2
+LC2 setrgbcolor
+602 701 S4
+1871 953 S4
+2506 1206 S4
+3140 1206 S4
+3775 1712 S4
+4409 1964 S4
+5044 2344 S4
+5678 3102 S4
+6313 3355 S4
+% End plot #111
+% Begin plot #112
+1.000 UP
+1.000 UL
+LT3
+LC3 setrgbcolor
+602 701 S5
+1871 953 S5
+2506 1333 S5
+3140 1585 S5
+3775 1838 S5
+4409 2596 S5
+5044 2849 S5
+5678 2975 S5
+6313 3481 S5
+% End plot #112
+% Begin plot #113
+1.000 UP
+1.000 UL
+LT4
+LC4 setrgbcolor
+602 701 S6
+1871 953 S6
+2506 1206 S6
+3140 1585 S6
+3775 1712 S6
+4409 1964 S6
+5044 2344 S6
+5678 3102 S6
+6313 3355 S6
+% End plot #113
+% Begin plot #114
+1.000 UP
+1.000 UL
+LT5
+LC5 setrgbcolor
+602 701 S7
+1871 827 S7
+2506 953 S7
+3140 1206 S7
+3775 1333 S7
+4409 1585 S7
+5044 1964 S7
+5678 2344 S7
+6313 2596 S7
+% End plot #114
+% Begin plot #115
+1.000 UP
+1.000 UL
+LT6
+LC6 setrgbcolor
+602 701 S8
+1871 1459 S8
+2506 1964 S8
+3140 2470 S8
+3775 2975 S8
+4409 3228 S8
+5044 3481 S8
+5678 3860 S8
+6313 3986 S8
+% End plot #115
+% Begin plot #116
+1.000 UP
+1.000 UL
+LT7
+LC7 setrgbcolor
+LCb setrgbcolor
+6296 4738 M
+[ [(Helvetica) 140.0 0.0 true true 0 (Mean)]
+] -46.7 MRshow
+LT7
+6380 4738 M
+399 0 V
+602 702 M
+635 356 V
+634 386 V
+635 557 V
+634 412 V
+635 435 V
+634 344 V
+635 256 V
+634 234 V
+635 176 V
+602 702 S9
+1237 1058 S9
+1871 1444 S9
+2506 2001 S9
+3140 2413 S9
+3775 2848 S9
+4409 3192 S9
+5044 3448 S9
+5678 3682 S9
+6313 3858 S9
+6579 4738 S9
+% End plot #116
+1.000 UL
+LTb
+LCb setrgbcolor
+602 4871 N
+602 448 L
+6345 0 V
+0 4423 V
+-6345 0 V
+Z stroke
+1.000 UP
+1.000 UL
+LTb
+LCb setrgbcolor
+stroke
+grestore
+end
+showpage
+%%Trailer
+%%DocumentFonts: Helvetica
+%%Pages: 1
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        %%Trailer
+%%DocumentFonts: Helvetica
+%%Pages: 1

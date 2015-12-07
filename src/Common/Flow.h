@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #ifndef FLOW_H_
 #define FLOW_H_
@@ -30,10 +23,8 @@
 #include "APNamingInfo.h"
 #include "ConnectionId.h"
 #include "Address.h"
-#include "QoSReq.h"
 
-extern const int VAL_UNDEF_PORTID;
-extern const int VAL_MGMT_PORTID;
+extern const int VAL_UNDEFINED;
 extern const int VAL_MAXHOPCOUNT;
 extern const int VAL_MAXCREATERETRIES;
 
@@ -79,8 +70,6 @@ class Flow : public cObject
      * @return
      */
     virtual Flow* dup() const;
-
-    Flow* dupToMgmt() const;
 
     //Various string output functions
     /**
@@ -150,24 +139,17 @@ class Flow : public cObject
      */
     void setConId(const ConnectionId& conId);
 
-
-    void setQosCube(const QoSCube& qosCube);
-
-    const QoSCube& getQosCube() const;
-
     /**
      * @brief Gets QoS parameters wanted by flow initiator
-     * @return Read-only QoSReq instance
+     * @return Read-only QoSCube instance
      */
-    const QoSReq& getQosRequirements() const;
-
-    QoSReq& getQosReqs();
+    const QoSCube& getQosParameters() const;
 
     /**
      * @brief Sets QoS parameters wanted by flow initiator
-     * @param qosParameters A new QoSReq instance that is accompanied with Flow
+     * @param qosParameters A new QoSCube instance that is accompanied with Flow
      */
-    void setQosRequirements(const QoSReq& qosReqs);
+    void setQosParameters(const QoSCube& qosParameters);
 
     /**
      * @brief Gets read-only source APNamingInfo
@@ -309,6 +291,8 @@ class Flow : public cObject
      */
     void setDstNeighbor(const Address& dstNeighbor);
 
+    //const long getPortCepId() const;
+
     /**
      * @brief Gets allocation InvokeId
      * Used inside M_CREATE(_R)(flow) messages
@@ -346,10 +330,6 @@ class Flow : public cObject
      * @param ddtFlag True if DDT otherwise false
      */
     void setDdtFlag(bool ddtFlag);
-
-    bool isManagementFlow() const;
-
-    bool isManagementFlowLocalToIPCP() const;
 
   protected:
     //Properties are based on RINA-Demo-2012-001.pdf page 6
@@ -414,16 +394,10 @@ class Flow : public cObject
      */
     uint32_t hopCount;
 
-
     /**
-     * @brief Attribute holding the assigned QoSCube
+     * @brief Attribute holding wanted QoS parameters in form of QoSCube
      */
-    QoSCube qosCube;
-
-    /**
-     * @brief Attribute holding wanted QoS parameters in form of QoSReq
-     */
-    QoSReq qosReqs;
+    QoSCube qosParameters;
 
     /**
      * @brief Attribute holding persistant InvokeId used for allocation

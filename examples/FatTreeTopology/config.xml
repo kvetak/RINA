@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="S1_DC"  dst="TOR1_DC" qosCube="1"/>       
+                <Connection src="S2_DC"  dst="TOR1_DC" qosCube="1"/>   
+                <Connection src="S3_DC"  dst="TOR2_DC" qosCube="1"/>
+                <Connection src="S4_DC"  dst="TOR2_DC" qosCube="1"/>
+                <Connection src="TOR1_DC"  dst="AS1_DC" qosCube="1"/>
+                <Connection src="TOR1_DC"  dst="AS2_DC" qosCube="1"/>     
+                <Connection src="TOR2_DC"  dst="AS1_DC" qosCube="1"/>
+                <Connection src="TOR2_DC"  dst="AS2_DC" qosCube="1"/>     
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
+	<Switch id="AS1">
+		<!--
+			This contains the whole mapping of the network. 
+			It can be used to the Dif Allocator of every element.
+		-->
+		<DA>
+			<Directory>
+				<!-- 
+					How the DIF name are formatted? 
+					They contain, for reading purposes, the initial letter of the "upper"
+					element in the simulation and the initial letter of the "bottom" element.
+					Example: A1T1 means Aggregator1 to Tor1.
+			  	-->
+			  	
+			  	<!-- Aggregator side naming of the Shims -->
+				<APN apn="AS1_DC">
+					<DIF difName="A1T1" ipcAddress="1"/>
+					<DIF difName="A1T2" ipcAddress="1"/>
+				</APN>
+				<APN apn="AS2_DC">
+					<DIF difName="A2T1" ipcAddress="1"/>
+					<DIF difName="A2T2" ipcAddress="1"/>
+				</APN>
+	
+				<!-- TOR side naming of the Shims -->
+				<APN apn="TOR1_DC">
+					<DIF difName="A1T1" ipcAddress="2"/>
+					<DIF difName="A2T1" ipcAddress="2"/>
+					
+					<DIF difName="T1S1" ipcAddress="1"/>
+					<DIF difName="T1S2" ipcAddress="1"/>
+				</APN>
+				<APN apn="TOR2_DC">
+					<DIF difName="A1T2" ipcAddress="2"/>
+					<DIF difName="A2T2" ipcAddress="2"/>
+					
+					<DIF difName="T2S3" ipcAddress="1"/>
+					<DIF difName="T2S4" ipcAddress="1"/>
+				</APN>
+				
+				<!-- Server side naming of the Shims -->
+				<APN apn="S1_DC">
+					<DIF difName="T1S1" ipcAddress="2"/>
+				</APN>
+				<APN apn="S2_DC">
+					<DIF difName="T1S2" ipcAddress="2"/>
+				</APN>
+				<APN apn="S3_DC">
+					<DIF difName="T2S3" ipcAddress="2"/>
+				</APN>
+				<APN apn="S4_DC">
+					<DIF difName="T2S4" ipcAddress="2"/>
+				</APN>
+				
+				<!-- AE side naming of the DC IPCs -->
+				<APN apn="App1">
+					<DIF difName="DC" ipcAddress="S1"/>
+				</APN>
+				<APN apn="App2">
+					<DIF difName="DC" ipcAddress="S2"/>
+				</APN>
+				<APN apn="App3">
+					<DIF difName="DC" ipcAddress="S3"/>
+				</APN>
+				<APN apn="App4">
+					<DIF difName="DC" ipcAddress="S4"/>
+				</APN>
+			</Directory>
+		</DA>
+	</Switch>
+	<Switch id="AS2">
+	</Switch>
+	<QoSCubesSet>
+		<QosCube id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>
+		<QosCube id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>		
+	</QoSCubesSet>
+</Configuration>

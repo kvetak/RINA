@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 /**
  * @file RA.cc
@@ -31,13 +26,27 @@
 
 Define_Module(RA);
 
-// QoS loader parameters
 const char* PAR_QOSDATA              = "qoscubesData";
 const char* ELEM_QOSCUBE             = "QoSCube";
-const char* PAR_QOSREQ               = "qosReqData";
-const char* ELEM_QOSREQ              = "QoSReq";
 const char* ATTR_ID                  = "id";
-
+const char* ELEM_AVGBW               = "AverageBandwidth";
+const char* ELEM_AVGSDUBW            = "AverageSDUBandwidth";
+const char* ELEM_PEAKBWDUR           = "PeakBandwidthDuration";
+const char* ELEM_PEAKSDUBWDUR        = "PeakSDUBandwidthDuration";
+const char* ELEM_BURSTPERIOD         = "BurstPeriod";
+const char* ELEM_BURSTDURATION       = "BurstDuration";
+const char* ELEM_UNDETECTBITERR      = "UndetectedBitError";
+const char* ELEM_PDUDROPPROBAB       = "PDUDroppingProbability";
+const char* ELEM_MAXSDUSIZE          = "MaxSDUSize";
+const char* ELEM_PARTIALDELIVER      = "PartialDelivery";
+const char* ELEM_INCOMPLETEDELIVER   = "IncompleteDelivery";
+const char* ELEM_FORCEORDER          = "ForceOrder";
+const char* ELEM_MAXALLOWGAP         = "MaxAllowableGap";
+const char* ELEM_DELAY               = "Delay";
+const char* ELEM_JITTER              = "Jitter";
+const char* ELEM_COSTTIME            = "CostTime";
+const char* ELEM_COSTBITS            = "CostBits";
+const char* ELEM_ATIME               = "ATime";
 
 void RA::initialize(int stage)
 {
@@ -45,25 +54,31 @@ void RA::initialize(int stage)
     {
         // determine and set RMT mode of operation
         setRMTMode();
-        // preallocate flows
         initFlowAlloc();
         return;
     }
 
     // retrieve pointers to other modules
-    thisIPC = this->getModuleByPath("^.^");
-    rmtModule = (getRINAModule<cModule*>(this, 2, {MOD_RELAYANDMUX}));
+    thisIPC = this->getParentModule()->getParentModule();
+    rmtModule = thisIPC->getSubmodule("relayAndMux");
 
     // Get access to the forwarding and routing functionalities...
-    fwdtg = getRINAModule<IntPDUFG *>(this, 1, {MOD_PDUFWDGEN});
-    difAllocator = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});;
-    flowTable = getRINAModule<NM1FlowTable*>(this, 1, {MOD_RANM1FLOWTABLE});
-    rmt = getRINAModule<RMT*>(this, 2, {MOD_RELAYANDMUX, MOD_RMT});
-    rmtAllocator = getRINAModule<RMTModuleAllocator*>(this, 2, {MOD_RELAYANDMUX, MOD_RMTALLOC});
-    fa = getRINAModule<FABase*>(this, 2, {MOD_FLOWALLOC, MOD_FA});
+    fwdtg = check_and_cast<IntPDUFG *>
+        (getModuleByPath("^.pduFwdGenerator"));
+
+
+    difAllocator = check_and_cast<DA*>
+        (getModuleByPath("^.^.^.difAllocator.da"));
+    flowTable = check_and_cast<NM1FlowTable*>
+        (getModuleByPath("^.nm1FlowTable"));
+    rmt = check_and_cast<RMT*>
+        (getModuleByPath("^.^.relayAndMux.rmt"));
+    rmtAllocator = check_and_cast<RMTModuleAllocator*>
+        (getModuleByPath("^.^.relayAndMux.allocator"));
 
     // retrieve pointers to policies
-    qAllocPolicy = getRINAModule<QueueAllocBase*>(this, 1, {MOD_POL_QUEUEALLOC});
+    qAllocPolicy = check_and_cast<QueueAllocBase*>
+        (getModuleByPath("^.queueAllocPolicy"));
 
     // initialize attributes
     std::ostringstream os;
@@ -81,30 +96,13 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            auto flows = preparedFlows[simTime()];
+            std::list<Flow*>* flows = preparedFlows[simTime()];
 
             while (!flows->empty())
             {
-                // Data connections are carried by (N-1)-flows alone, whereas
-                // management connections use (N-1)-management flows ALONG WITH
-                // (N)-management flows. Thus, data flows are allocated via
-                // (N-1)-FA and management flows via (N)-FA.
-                // In addition to that, we can assume that (N-1)-data flows
-                // are going to require (N)-management, so it's allocated as well.
-
-                Flow* flow = flows->front();
-                if (flow->isManagementFlow())
-                { // mgmt flow
-                    createNFlow(flow);
-                }
-                else
-                { // data flow
-                    createNM1Flow(flow);
-                }
-
+                createNM1Flow(flows->front());
                 flows->pop_front();
             }
 
@@ -120,8 +118,6 @@ void RA::initSignalsAndListeners()
     sigRACreFloNega = registerSignal(SIG_RA_CreateFlowNegative);
     sigRASDReqFromRMT = registerSignal(SIG_RA_InvokeSlowdown);
     sigRASDReqFromRIB = registerSignal(SIG_RA_ExecuteSlowdown);
-    sigRAMgmtAllocd = registerSignal(SIG_RA_MgmtFlowAllocated);
-    sigRAMgmtDeallocd = registerSignal(SIG_RA_MgmtFlowDeallocated);
 
     lisRAAllocResPos = new LisRAAllocResPos(this);
     thisIPC->subscribe(SIG_FAI_AllocateResponsePositive, lisRAAllocResPos);
@@ -154,66 +150,53 @@ void RA::initSignalsAndListeners()
 void RA::initFlowAlloc()
 {
     cXMLElement* dirXml = par("preallocation").xmlValue();
-    const cXMLElementList& timeMap = dirXml->getChildrenByTagName("SimTime");
+    cXMLElementList timeMap = dirXml->getChildrenByTagName("SimTime");
 
-    for (auto const m : timeMap)
+    for (cXMLElementList::const_iterator it = timeMap.begin(); it != timeMap.end(); ++it)
     {
-        simtime_t time = static_cast<simtime_t>(atoi(m->getAttribute("t")));
-        const cXMLElementList& connMap = m->getChildrenByTagName("Connection");
+        cXMLElement* m = *it;
+        simtime_t time = static_cast<simtime_t>(
+                atoi(m->getAttribute("t")));
 
-        for (auto const n : connMap)
+        cXMLElementList connMap = m->getChildrenByTagName("Connection");
+        for (cXMLElementList::const_iterator jt = connMap.begin(); jt != connMap.end(); ++jt)
         {
-            // retrieve the parameters
+            cXMLElement* n = *jt;
             const char* src = n->getAttribute("src");
-            const char* dst = n->getAttribute("dst");
-            const char* qosReqID = n->getAttribute("qosReq");
-
-            if (!src || !dst || !qosReqID)
-            {
-                throw cRuntimeError("Invalid preallocation parameter(s) for SimTime %s",
-                        time.str().c_str());
-            }
-
-            // keep going only if this is a configuration meant for this IPC process
             if (opp_strcmp(src, processName.c_str()))
             {
                 continue;
             }
 
+            const char* dst = n->getAttribute("dst");
+            unsigned short qosId = static_cast<unsigned short>(
+                            atoi(n->getAttribute("qosCube")));
+
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
-
-            QoSReq* qosReq = nullptr;
-            if (!opp_strcmp(qosReqID, "mgmt"))
+            const QoSCube* qosCube = getQoSCubeById(qosId);
+            if (qosCube == NULL)
             {
-                qosReq = &mgmtReqs;
-            }
-            else
-            {
-                qosReq = initQoSReqById(qosReqID);
-            }
-
-            if (!qosReq)
-            {
-                throw cRuntimeError("Invalid QoSReqId %s for SimTime=%s, src=\"%s\", dst=\"%s\"",
-                        qosReqID,
-                        time.str().c_str(),
-                        src,
-                        dst);
+                EV << "!!! Invalid QoS-id provided for flow with dst " << dst
+                   << "! Allocation won't be initiated." << endl;
+                return;
             }
 
             Flow *flow = new Flow(srcAPN, dstAPN);
-            flow->setQosRequirements(*qosReq);
+            flow->setQosParameters(*qosCube);
 
-            if (preparedFlows[time] == nullptr)
+            if (preparedFlows[time] == NULL)
             {
                 preparedFlows[time] = new std::list<Flow*>;
+                preparedFlows[time]->push_back(flow);
+
                 cMessage* msg = new cMessage("RA-CreateConnections");
                 scheduleAt(simTime() + time, msg);
-
             }
-
-            preparedFlows[time]->push_back(flow);
+            else
+            {
+                preparedFlows[time]->push_back(flow);
+            }
         }
     }
 }
@@ -226,14 +209,14 @@ void RA::setRMTMode()
     // identify the role of this IPC process in processing system
     std::string bottomGate = thisIPC->gate("southIo$o", 0)->getNextGate()->getName();
 
-    if (bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
+    if (bottomGate == "medium$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
         rmt->setOnWire(true);
         // connect RMT to the medium
         bindMediumToRMT();
     }
-        else if (bottomGate == "northIo$i")
+    else if (bottomGate == "northIo$i")
     { // other IPC processes are below us
         rmt->setOnWire(false);
     }
@@ -246,87 +229,164 @@ void RA::setRMTMode()
 
 /**
  * Initializes QoS cubes from given XML configuration directive.
+ *
  */
 void RA::initQoSCubes()
 {
-    cXMLElement* qosXml = nullptr;
-    if (par(PAR_QOSDATA).xmlValue() != nullptr
-            && par(PAR_QOSDATA).xmlValue()->hasChildren())
+    cXMLElement* qosXml = NULL;
+    if (par(PAR_QOSDATA).xmlValue() != NULL && par(PAR_QOSDATA).xmlValue()->hasChildren())
         qosXml = par(PAR_QOSDATA).xmlValue();
     else
         error("qoscubesData parameter not initialized!");
 
-    // load cubes from XML
     cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSCUBE);
-    for (auto const m : cubes)
-    {
-        if (!m->getAttribute(ATTR_ID))
-        {
+    for (cXMLElementList::iterator it = cubes.begin(); it != cubes.end(); ++it) {
+        cXMLElement* m = *it;
+        if (!m->getAttribute(ATTR_ID)) {
             EV << "Error parsing QoSCube. Its ID is missing!" << endl;
             continue;
         }
+        else if (! (unsigned short)atoi(m->getAttribute(ATTR_ID)) ) {
+            EV << "QosID = 0 is reserved and cannot be used!" << endl;
+            continue;
+        }
+
+        QoSCube cube;
+        cube.setQosId((unsigned short)atoi(m->getAttribute(ATTR_ID)));
+        //Following data types should be same as in QoSCubes.h
+        int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
+        int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
+        int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
+        int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+        int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
+        int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
+        double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+        double pduDropProbab        = VAL_QOSPARDONOTCARE;
+        int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
+        bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+        bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+        bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
+        unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+        int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
+        int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
+        int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
+        int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
+        double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
 
         cXMLElementList attrs = m->getChildren();
-        QoSCube cube = QoSCube(attrs);
-        cube.setQosId(m->getAttribute(ATTR_ID));
+        for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt) {
+            cXMLElement* n = *jt;
+            if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
+                avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (avgBand < 0)
+                    avgBand = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_AVGSDUBW)) {
+                avgSDUBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (avgSDUBand < 0)
+                    avgSDUBand = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_PEAKBWDUR)) {
+                peakBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (peakBandDuration < 0)
+                    peakBandDuration = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_PEAKSDUBWDUR)) {
+                peakSDUBandDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (peakSDUBandDuration < 0)
+                    peakSDUBandDuration = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_BURSTPERIOD)) {
+                burstPeriod = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (burstPeriod < 0)
+                    burstPeriod = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_BURSTDURATION)) {
+                burstDuration = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (burstDuration < 0)
+                    burstDuration = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_UNDETECTBITERR)) {
+                undetectedBitErr = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (undetectedBitErr < 0 || undetectedBitErr > 1 )
+                    undetectedBitErr = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_PDUDROPPROBAB)) {
+                pduDropProbab = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (pduDropProbab < 0 || pduDropProbab > 1 )
+                    pduDropProbab = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_MAXSDUSIZE)) {
+                maxSDUsize = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (maxSDUsize < 0)
+                    maxSDUsize = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_PARTIALDELIVER)) {
+                partDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_INCOMPLETEDELIVER)) {
+                incompleteDeliv = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_FORCEORDER)) {
+                forceOrder = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_MAXALLOWGAP)) {
+                maxAllowGap = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (maxAllowGap < 0)
+                    maxAllowGap = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_DELAY)) {
+                delay = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (delay < 0)
+                    delay = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_JITTER)) {
+                jitter = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+                if (jitter < 0)
+                    jitter = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_COSTTIME)) {
+                costtime = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+                if (costtime < 0)
+                    costtime = VAL_QOSPARDONOTCARE;
+            }
+            else if (!strcmp(n->getTagName(), ELEM_COSTBITS)) {
+                costbits = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+                if (costbits < 0)
+                    costbits = VAL_QOSPARDONOTCARE;
+            }else if (!strcmp(n->getTagName(), ELEM_ATIME)) {
+              aTime = n->getNodeValue() ? atof(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
+              if (aTime < 0)
+                  aTime = VAL_QOSPARDONOTCARE;
+          }
+        }
 
-        //Integrity check!!!
-        if (cube.isDefined())
-        {
-            QoSCubes.push_back(cube);
-        }
-        else
-        {
-            EV << "QoSCube with ID " << cube.getQosId()
-                    << " contains DO-NOT-CARE parameter. It is not fully defined,"
-                    << " thus it is not loaded into RA's QoS-cube set!"
-                    << endl;
-        }
+        cube.setAvgBand(avgBand);
+        cube.setAvgSduBand(avgSDUBand);
+        cube.setPeakBandDuration(peakBandDuration);
+        cube.setPeakSduBandDuration(peakSDUBandDuration);
+        cube.setBurstPeriod(burstPeriod);
+        cube.setBurstDuration(burstDuration);
+        cube.setUndetectedBitErr(undetectedBitErr);
+        cube.setPduDropProbability(pduDropProbab);
+        cube.setMaxSduSize(maxSDUsize);
+        cube.setPartialDelivery(partDeliv);
+        cube.setIncompleteDelivery(incompleteDeliv);
+        cube.setForceOrder(forceOrder);
+        cube.setMaxAllowGap(maxAllowGap);
+        cube.setDelay(delay);
+        cube.setJitter(jitter);
+        cube.setCostBits(costbits);
+        cube.setCostTime(costtime);
+        cube.setATime(aTime);
+
+        QoSCubes.push_back(cube);
     }
-
-    if (!QoSCubes.size())
-    {
+    if (!QoSCubes.size()) {
         std::ostringstream os;
-        os << this->getFullPath()
-                << " does not have any QoSCube in its set. "
-                << "It cannot work without at least one valid QoS cube!"
-                << endl;
+        os << this->getFullPath() << " does not have any QoSCube in its set. It cannot work without at least one valid QoS cube!" << endl;
         error(os.str().c_str());
     }
-
-    // add a static QoS cube for management
-    QoSCubes.push_back(QoSCube::MANAGEMENT);
-
-    // add a QoS requirements object
-    mgmtReqs = QoSReq::MANAGEMENT;
-}
-
-/**
- * Initializes QoS requirement identified by given id
- * @param id ID of the QoSReq to be initialized
- */
-QoSReq* RA::initQoSReqById(const char* id)
-{
-    cXMLElement* qosXml = nullptr;
-    if (par(PAR_QOSREQ).xmlValue() != nullptr
-            && par(PAR_QOSREQ).xmlValue()->hasChildren())
-    {
-        qosXml = par(PAR_QOSREQ).xmlValue();
-    }
-    else
-    {
-        return nullptr;
-    }
-
-    cXMLElement* reqs = qosXml->getFirstChildWithAttribute(ELEM_QOSREQ, ATTR_ID, id);
-    cXMLElementList attrs;
-
-    if (reqs)
-    {
-        attrs = reqs->getChildren();
-    }
-
-    return (reqs ? new QoSReq(attrs) : nullptr);
 }
 
 
@@ -390,7 +450,7 @@ void RA::bindMediumToRMT()
     thisIPCIn->connectTo(rmtModuleIn);
 
     // create a mock "(N-1)-port" for interface
-    RMTPort* port = rmtAllocator->addPort(nullptr);
+    RMTPort* port = rmtAllocator->addPort(NULL);
     // connect the port to the bottom
     interconnectModules(rmtModule, port->getParentModule(), rmtGate.str(), std::string(GATE_SOUTHIO));
     // finalize initial port parameters
@@ -398,6 +458,8 @@ void RA::bindMediumToRMT()
     port->setOutputReady();
     port->setInputReady();
 
+    // create extra queues for management purposes
+    rmtAllocator->addMgmtQueues(port);
     // apply queue allocation policy handler
     qAllocPolicy->onNM1PortInit(port);
 }
@@ -431,8 +493,10 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     port->postInitialize();
 
     // 3) allocate queues
-    // apply queue allocation policy handler (if applicable)
-    qAllocPolicy->onNM1PortInit(port);
+    // create extra queues for management purposes (this will likely go away later)
+    rmtAllocator->addMgmtQueues(port);
+    // apply queue allocation policy handler
+    qAllocPolicy->onNM1PortInit(port);    
 
     // 4) update the flow table
     flowTable->insert(flow, fab, port, thisIPCGate.str().c_str());
@@ -456,16 +520,6 @@ std::string RA::normalizePortID(std::string ipcName, int flowPortID)
 }
 
 /**
- * Invokes allocation of an (N)-flow (used for allocation of management flows).
- *
- * @param flow specified flow object
- */
-void RA::createNFlow(Flow *flow)
-{
-    fa->receiveMgmtAllocateRequest(flow);
-}
-
-/**
  * Invokes allocation of an (N-1)-flow (this is the mechanism behind Allocate() call).
  *
  * @param flow specified flow object
@@ -475,7 +529,6 @@ void RA::createNM1Flow(Flow *flow)
     Enter_Method("createNM1Flow()");
 
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
@@ -485,7 +538,8 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
 
         if(fi)
         {
@@ -498,52 +552,50 @@ void RA::createNM1Flow(Flow *flow)
 
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
-    if (ad == nullptr)
-    {
-        EV << "DifAllocator returned nullptr for resolving " << dstApn << endl;
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << dstApn << endl;
         return;
     }
     Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
-    if (!difAllocator->isDifLocal(addr.getDifName()))
-    {
+    if (!difAllocator->isDifLocal(addr.getDifName())) {
         EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
         return;
     }
 
-    // retrieve local IPC process enrolled in given DIF
+    //Retrieve DIF's local IPC member
     cModule* targetIPC = difAllocator->getDifMember(addr.getDifName());
-    // retrieve the IPC process's Flow Allocator
     FABase* fab = difAllocator->findFaInsideIpc(targetIPC);
-    // command the (N-1)-FA to allocate the flow
+
+    //Command target FA to allocate flow
     bool status = fab->receiveAllocateRequest(flow);
 
+    //If AllocationRequest ended by creating connections between this IPC's modules
     if (status)
-    { // the Allocate procedure has successfully begun (and M_CREATE request has been sent)
-        // bind the new (N-1)-flow to an RMT port
+    {
+        // connect the new flow to the RMT
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
+        // TODO: remove this when management isn't piggy-backed anymore!
+        // (port shouldn't be ready to send out data when the flow isn't yet allocated)
+        port->setOutputReady();
+        port->setInputReady();
 
-        fab->invokeNewFlowRequestPolicy(flow);
-
-        // notify the PDUFG of the new flow
+        // invoke fwdTable insertion policy
         fwdtg->insertFlowInfo(
             Address(flow->getDstApni().getApn().getName()),
-            flow->getQosCube(),
+            flow->getConId().getQoSId(),
             port);
     }
     else
-    { // Allocate procedure couldn't be invoked
+    {
        EV << "Flow not allocated!" << endl;
     }
-
-    // flow creation will be finalized by postNM1FlowAllocation(flow)
-    // (on arrival of M_CREATE_R)
 }
 
 /**
  * Handles receiver-side allocation of an (N-1)-flow requested by other IPC.
- * (this is the mechanism behind answering an M_CREATE request).
+ * (this is the mechanism behind M_CREATE_R).
  *
  * @param flow specified flow object
  */
@@ -552,7 +604,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     Enter_Method("createNM1FlowWoAlloc()");
 
     const APN& dstAPN = flow->getDstApni().getApn();
-    const std::string& qosID = flow->getConId().getQoSId();
+    unsigned short qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
@@ -562,7 +614,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+            e->getDestAddr().getApname().getName(),
+            flow->getConId().getQoSId());
 
         if(fi)
         {
@@ -576,35 +629,32 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
 
     // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
-    if (ad == nullptr)
-    {
-        EV << "DifAllocator returned nullptr for resolving " << dstAPN << endl;
+    if (ad == NULL) {
+        EV << "DifAllocator returned NULL for resolving " << dstAPN << endl;
         signalizeCreateFlowNegativeToRIBd(flow);
         return;
     }
     Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
-    if (!difAllocator->isDifLocal(addr.getDifName()))
-    {
-        EV << "Local CS does not have any IPC in DIF " << addr.getDifName()
-                << endl;
+    if (!difAllocator->isDifLocal(addr.getDifName())) {
+        EV << "Local CS does not have any IPC in DIF " << addr.getDifName() << endl;
         signalizeCreateFlowNegativeToRIBd(flow);
         return;
     }
 
-    // retrieve local IPC process enrolled in given DIF
+    //Retrieve DIF's local IPC member
     cModule* targetIpc = difAllocator->getDifMember(addr.getDifName());
-    // retrieve the IPC process's Flow Allocator
     FABase* fab = difAllocator->findFaInsideIpc(targetIpc);
+
     // attach the new flow to RMT
     RMTPort* port = bindNM1FlowToRMT(targetIpc, fab, flow);
-    // notify the PDUFG of the new flow
+    // update the PDU forwarding table
     fwdtg->insertFlowInfo(
         Address(flow->getDstApni().getApn().getName()),
-        flow->getQosCube(),
+        flow->getConId().getQoSId(),
         port);
-    // answer the M_CREATE request
+
     signalizeCreateFlowPositiveToRIBd(flow);
 
     // mark this flow as connected
@@ -630,10 +680,11 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
-        auto neighApn = flow->getDstNeighbor().getApn().getName();
-        auto qosId = flow->getConId().getQoSId();
-        auto item = flowTable->findFlowByDstApni(neighApn, qosId);
-        if (item != nullptr)
+        const std::string& neighApn = flow->getDstNeighbor().getApname().getName();
+        unsigned short qosId = flow->getConId().getQoSId();
+
+        NM1FlowTableItem* item = flowTable->findFlowByDstApni(neighApn, qosId);
+        if (item != NULL)
         {
             qAllocPolicy->onNFlowAlloc(item->getRMTPort(), flow);
         }
@@ -648,19 +699,10 @@ void RA::postNFlowAllocation(Flow* flow)
 void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 {
     Enter_Method("postNM1FlowAllocation()");
-    // mark this flow as connected and update info
+    // mark this flow as connected
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    RMTPort* port = ftItem->getRMTPort();
-    port->setOutputReady();
-    port->setInputReady();
-    port->setFlow(ftItem->getFlow());
-
-    // if this is a management flow, notify the Enrollment module
-    if (ftItem->getFlow()->isManagementFlow())
-    {
-        APNIPair* apnip = new APNIPair(ftItem->getFlow()->getSrcApni(), ftItem->getFlow()->getDstApni());
-        signalizeMgmtAllocToEnrollment(apnip);
-    }
+    ftItem->getRMTPort()->setOutputReady();
+    ftItem->getRMTPort()->setInputReady();
 }
 
 /**
@@ -671,9 +713,8 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
 void RA::removeNM1Flow(Flow *flow)
 { // TODO: part of this should be split into something like postNM1FlowDeallocation
 
-	Enter_Method("removeNM1Flow()");
-    auto flowItem = flowTable->lookup(flow);
-    ASSERT(flowItem != nullptr);
+    NM1FlowTableItem* flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != NULL);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
     flowItem->getFABase()->receiveDeallocateRequest(flow);
 
@@ -711,65 +752,63 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 {
     Enter_Method("bindNFlowToNM1Flow()");
 
-    EV << "Received a request to bind an (N)-flow (dst "
-       << flow->getDstApni().getApn().getName() << ", QoS-id "
-       << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
-
     if (rmt->isOnWire())
-    {
-        EV << "This is a bottommost IPCP, the (N)-flow is bound to a medium." << endl;
+    { // nothing to be done
         return true;
     }
 
-    std::string dstAddr = flow->getDstAddr().getApn().getName();
-    std::string neighAddr = flow->getDstNeighbor().getApn().getName();
-    std::string qosID = flow->getConId().getQoSId();
+    std::string dstAddr = flow->getDstAddr().getApname().getName();
+    // immediate neighbor (e.g. an interior router)
+    std::string neighAddr = flow->getDstNeighbor().getApname().getName();
+    unsigned short qosID = flow->getConId().getQoSId();
 
-    EV << "Binding to an (N-1)-flow leading to " << dstAddr;
-    if (dstAddr != neighAddr)
+    //
+    // A flow already exists from this ipc to the destination one(passing through a neighbor)?
+    //
+    PDUFGNeighbor * te =
+        fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+
+    if(te)
     {
-        EV << " through neighbor " << neighAddr;
-    }
-    EV << "." << endl;
-
-    APNamingInfo srcAPN = APNamingInfo(APN(processName));
-    APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
-    APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
-
-    PDUFGNeighbor * te = fwdtg->getNextNeighbor(flow->getDstAddr(),
-            flow->getConId().getQoSId());
-
-    if (te)
-    {
-        neighAddr = te->getDestAddr().getApn().getName();
+        neighAddr = te->getDestAddr().getApname().getName();
     }
 
-    auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
+    // see if any appropriate (N-1)-flow already exists
+    NM1FlowTableItem* nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
 
-    if (nm1FlowItem != nullptr)
-    { // a flow exists
-        if (nm1FlowItem->getConnectionStatus()
-                == NM1FlowTableItem::CON_ESTABLISHED)
+    if (nm1FlowItem == NULL)
+    { // we need to allocate a new (N-1)-flow to suit our needs
+        EV << getFullName()
+           << " allocating an (N-1)-flow (dstApp " << neighAddr << ")" << endl;
+
+        APNamingInfo src = APNamingInfo(APN(processName));
+        APNamingInfo dst = APNamingInfo(APN(neighAddr));
+
+        Flow *nm1Flow = new Flow(src, dst);
+        // FIXME: useless, appropriate QoS class has to be chosen by some algorithm
+        nm1Flow->setQosParameters(flow->getQosParameters());
+        // initiate flow creation
+        createNM1Flow(nm1Flow);
+        // repeat the lookup
+        nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
+
+        if (nm1FlowItem == NULL)
         {
-            EV << "Such (N-1)-flow is already present, using it." << endl;
-            return true;
+            EV << "!!! not able to allocate (N-1)-flow for " << neighAddr << endl;
+            return false;
         }
-        else if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_FLOWPENDING)
-        {
-            EV << "Such (N-1)-flow is already present but its allocation is not yet finished"
-               << endl;
-        }
+    }
+
+    if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_ESTABLISHED)
+    {
+        return true;
     }
     else
-    { // no suitable flow exists
-        EV << "No such (N-1)-flow present, allocating a new one." << endl;
-        Flow *nm1Flow = new Flow(srcAPN, neighAPN);
-        nm1Flow->setQosRequirements(flow->getQosRequirements());
-        createNM1Flow(nm1Flow);
+    {
+        return false;
     }
-
-    return false;
 }
+
 
 void RA::blockNM1PortOutput(NM1FlowTableItem* ftItem)
 {
@@ -806,23 +845,7 @@ void RA::signalizeSlowdownRequestToEFCP(cObject* obj)
     emit(sigRASDReqFromRIB, congInfo);
 }
 
-void RA::signalizeMgmtAllocToEnrollment(APNIPair* apnip)
-{
-    Enter_Method("signalizeMgmtAllocToEnrollment()");
-    emit(sigRAMgmtAllocd, apnip);
-}
-
-void RA::signalizeMgmtDeallocToEnrollment(Flow* flow)
-{
-    Enter_Method("signalizeMgmtDeallocToEnrollment()");
-    emit(sigRAMgmtDeallocd, flow);
-}
-
 NM1FlowTable* RA::getFlowTable()
 {
     return flowTable;
-}
-
-bool RA::hasFlow(std::string addr, std::string qosId) {
-    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != nullptr);
 }

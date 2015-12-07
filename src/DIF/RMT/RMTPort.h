@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #ifndef __RINA_RMTPORT_H_
 #define __RINA_RMTPORT_H_
@@ -26,12 +21,11 @@
 #include <omnetpp.h>
 #include <algorithm>
 
-#include "Utils.h"
 #include "RINASignals.h"
 #include "Flow.h"
+#include "CDAPMessage_m.h"
 #include "RMTQueue.h"
 #include "QueueIDGenBase.h"
-#include "SDUData_m.h"
 
 class RMTPort : public cSimpleModule
 {
@@ -97,6 +91,16 @@ class RMTPort : public cSimpleModule
      * @return (N-1)-flow object
      */
     const Flow* getFlow() const;
+
+    /**
+     * Returns the port's management queue.
+     * Note: this will go away soon when we start dedicating entire (N-1)-flows
+     *       for management purposes
+     *
+     * @param type direction of data
+     * @return management queue
+     */
+    RMTQueue* getManagementQueue(RMTQueueType type) const;
 
     /**
      * Returns the first queue available on this port.
@@ -175,7 +179,6 @@ class RMTPort : public cSimpleModule
     long inputReadRate;
     double postReadDelay;
     std::string dstAppAddr;
-    std::string dstAppQoS;
 
     Flow* flow;
     QueueIDGenBase* queueIdGen;

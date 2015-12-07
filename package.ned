@@ -1,3 +1,0 @@
-package rina;
-
-@license(MIT);

@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 /**
  * @file SDU.cc
  * @author Marcel Marek (imarek@fit.vutbr.cz)
@@ -54,14 +47,14 @@ void SDU::copy(const SDU& other){
  */
 unsigned int SDU::getSize() const
 {
-//  if (dataType_var == SDU_COMPLETE_TYPE)
+  if (dataType_var == SDU_COMPLETE_TYPE)
   {
     return size_var;
   }
-//  else if (dataType_var == SDU_FRAGMENT_TYPE)
+  else if (dataType_var == SDU_FRAGMENT_TYPE)
   {
     return fSize_var;
-//  }else{
+  }else{
     return 0; //PANIC!
   }
 }
@@ -79,43 +72,43 @@ unsigned int SDU::getRestSize()const
   return size_var - offset_var;
 }
 
-//void SDU::setSize(unsigned int size)
-//{
-//  if(userData !=NULL){
-//    unsigned char *tmp = new unsigned char[size];
-//    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
-//    this->size_var = size;
-//    free(userData);
-//    userData = tmp;
-//  }else{
-//    this->size_var = size;
-//    userData = new unsigned char[size];
-//  }
-//
-//}
+void SDU::setSize(unsigned int size)
+{
+  if(userData !=NULL){
+    unsigned char *tmp = new unsigned char[size];
+    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
+    this->size_var = size;
+    free(userData);
+    userData = tmp;
+  }else{
+    this->size_var = size;
+    userData = new unsigned char[size];
+  }
 
-//unsigned char* SDU::getUserData() const
-//{
-//  return &userData[offset_var];
-//}
+}
 
-//const unsigned char* SDU::getUserData(unsigned int size)
-//{
-//  offset_var += size;
-//  return &userData[offset_var - size];
-//}
+unsigned char* SDU::getUserData() const
+{
+  return &userData[offset_var];
+}
 
-//void SDU::setUserData(unsigned char* userData, unsigned int size)
-//{
-//  if(this->userData != NULL){
-//    free(this->userData);
-//    this->offset_var = 0;
-//  }
-//  this->size_var = size;
-//  this->userData = new unsigned char[size];
-//  memcpy(this->userData, userData, size);
-////    this->userData = userData;
-//}
+const unsigned char* SDU::getUserData(unsigned int size)
+{
+  offset_var += size;
+  return &userData[offset_var - size];
+}
+
+void SDU::setUserData(unsigned char* userData, unsigned int size)
+{
+  if(this->userData != NULL){
+    free(this->userData);
+    this->offset_var = 0;
+  }
+  this->size_var = size;
+  this->userData = new unsigned char[size];
+  memcpy(this->userData, userData, size);
+//    this->userData = userData;
+}
 
 bool SDU::addUserData(cPacket* msg){
 
@@ -175,7 +168,7 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
   fSize_var = fSize;
   fSeqNum_var = fSeqNum;
   fOffset_var = fOffset;
-//  dataType_var = SDU_FRAGMENT_TYPE;
+  dataType_var = SDU_FRAGMENT_TYPE;
   if(fSeqNum == 0){
     fragType_var = SDU_FRAG_FIRST;
   }else if(fSize + fOffset == this->size_var){

@@ -1,0 +1,119 @@
+                <APN apn="59_G3DIF">
+                    <DIF difName= "Shim59ToGL3" ipcAddress= "1"/>
+                    <DIF difName= "Shim59To74" ipcAddress= "1"/>
+                </APN>
+                <APN apn="60_G3DIF">
+                    <DIF difName= "Shim60ToGL3" ipcAddress= "1"/>
+                    <DIF difName= "Shim60To75" ipcAddress= "2"/>
+                </APN>
+                <APN apn="85_G3DIF">
+                    <DIF difName= "Shim85ToGL3" ipcAddress= "1"/>
+                    <DIF difName= "Shim85To70" ipcAddress= "1"/>
+                </APN>
+                <APN apn="75_G3DIF">
+                    <DIF difName= "Shim60To75" ipcAddress= "1"/>
+                    <DIF difName= "Shim82To75" ipcAddress= "1"/>
+                </APN>
+                <APN apn="82_G3DIF">
+                    <DIF difName= "Shim82To75" ipcAddress= "2"/>
+                    <DIF difName= "Shim82To83" ipcAddress= "2"/>
+                </APN>
+                <APN apn="83_G3DIF">
+                    <DIF difName= "Shim82To83" ipcAddress= "1"/>
+                    <DIF difName= "Shim69To83" ipcAddress= "1"/>
+                </APN>
+                <APN apn="82_G3DIF">
+                </APN>
+                <APN apn="69_G3DIF">
+                    <DIF difName= "Shim69To64" ipcAddress= "2"/>
+                    <DIF difName= "Shim69To83" ipcAddress= "2"/>
+                </APN>
+                <APN apn="64_G3DIF">
+                    <DIF difName= "Shim63To64" ipcAddress= "1"/>
+                    <DIF difName= "Shim69To64" ipcAddress= "1"/>
+                </APN>
+                <APN apn="63_G3DIF">
+                    <DIF difName= "Shim63To64" ipcAddress= "2"/>
+                    <DIF difName= "Shim63To65" ipcAddress= "2"/>
+                </APN>
+                <APN apn="65_G3DIF">
+                    <DIF difName= "Shim63To65" ipcAddress= "1"/>
+                    <DIF difName= "Shim80To65" ipcAddress= "1"/>
+                </APN>
+
+                <APN apn="80_G3DIF">
+                    <DIF difName= "Shim80To81" ipcAddress= "2"/>
+                    <DIF difName= "Shim80To65" ipcAddress= "2"/>
+                </APN>
+                <APN apn="81_G3DIF">
+                    <DIF difName= "Shim77To81" ipcAddress= "1"/>
+                    <DIF difName= "Shim80To81" ipcAddress= "1"/>
+                </APN>
+                <APN apn="77_G3DIF">
+                    <DIF difName= "Shim77To81" ipcAddress= "2"/>
+                    <DIF difName= "Shim77To73" ipcAddress= "2"/>
+                </APN>
+                <APN apn="73_G3DIF">
+                    <DIF difName= "Shim77To73" ipcAddress= "1"/>
+                    <DIF difName= "Shim76To73" ipcAddress= "1"/>
+                </APN>
+                <APN apn="76_G3DIF">
+                    <DIF difName= "Shim76To68" ipcAddress= "2"/>
+                    <DIF difName= "Shim76To73" ipcAddress= "2"/>
+                </APN>
+                <APN apn="68_G3DIF">
+                    <DIF difName= "Shim114To68" ipcAddress= "1"/>
+                    <DIF difName= "Shim76To68" ipcAddress= "1"/>
+                </APN>
+                <APN apn="74_G3DIF">
+                    <DIF difName= "Shim59To74" ipcAddress= "2"/>
+                    <DIF difName= "Shim84To74" ipcAddress= "2"/>
+                </APN>
+                <APN apn="84_G3DIF">
+                    <DIF difName= "Shim84To74" ipcAddress= "1"/>
+                    <DIF difName= "Shim84To71" ipcAddress= "1"/>
+                </APN>
+                <APN apn="71_G3DIF">
+                    <DIF difName= "Shim86To71" ipcAddress= "2"/>
+                    <DIF difName= "Shim84To71" ipcAddress= "2"/>
+                </APN>
+                <APN apn="86_G3DIF">
+                    <DIF difName= "Shim86To78" ipcAddress= "1"/>
+                    <DIF difName= "Shim86To71" ipcAddress= "1"/>
+                </APN>
+                <APN apn="79_G3DIF">
+                    <DIF difName= "Shim79To78" ipcAddress= "1"/>
+                    <DIF difName= "Shim79To87" ipcAddress= "1"/>
+                </APN>
+                <APN apn="78_G3DIF">
+                    <DIF difName= "Shim79To78" ipcAddress= "2"/>
+                    <DIF difName= "Shim86To78" ipcAddress= "2"/>
+                </APN>
+                <APN apn="87_G3DIF">
+                    <DIF difName= "Shim67To87" ipcAddress= "2"/>
+                    <DIF difName= "Shim79To87" ipcAddress= "2"/>
+                </APN>
+                <APN apn="67_G3DIF">
+                    <DIF difName= "Shim67To72" ipcAddress= "1"/>
+                    <DIF difName= "Shim67To87" ipcAddress= "1"/>
+                </APN>
+                <APN apn="72_G3DIF">
+                    <DIF difName= "Shim67To72" ipcAddress= "2"/>
+                    <DIF difName= "Shim72To50" ipcAddress= "1"/>
+                </APN>
+                <APN apn="70_G3DIF">
+                    <DIF difName= "Shim61To70" ipcAddress= "2"/>
+                    <DIF difName= "Shim85To70" ipcAddress= "2"/>
+                </APN>
+                <APN apn="61_G3DIF">
+                    <DIF difName= "Shim61To62" ipcAddress= "1"/>
+                    <DIF difName= "Shim61To70" ipcAddress= "1"/>
+                </APN>
+                <APN apn="66_G3DIF">
+                    <DIF difName= "Shim66To62" ipcAddress= "1"/>
+                    <DIF difName= "Shim66To43" ipcAddress= "1"/>
+                </APN>
+                <APN apn="62_G3DIF">
+                    <DIF difName= "Shim66To62" ipcAddress= "2"/>
+                    <DIF difName= "Shim61To62" ipcAddress= "2"/>
+                </APN>

@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "AE.h"
 
@@ -40,8 +33,7 @@ AE::~AE() {
 
 void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^");//->getSubmodule("managementApplicationEntity")->getSubmodule("enrollment");
+    cModule* catcher2 = this->getParentModule()->getParentModule()->getParentModule();
 
 
     //Signals that this module is emitting
@@ -52,7 +44,6 @@ void AE::initSignalsAndListeners() {
     sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
     sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
     sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
-    sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
 
 
     //Signals that this module is processing
@@ -62,10 +53,6 @@ void AE::initSignalsAndListeners() {
     //  AllocationRequest from FAI
     lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
     catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
-
-    //  Enrollment
-    lisAEEnrolled = new LisAEEnrolled(this);
-    catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
 
     //  DeallocationRequest from FAI
     lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
@@ -78,6 +65,17 @@ void AE::initSignalsAndListeners() {
 
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
+
+    lisAEConResPosi = new LisAEConResPosi(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponsePositive, lisAEConResPosi);
+
+    lisAEConResNega = new LisAEConResNega(this);
+    catcher1->subscribe(SIG_CACE_ConnectionResponseNegative, lisAEConResNega);
+
+    lisAERelRes = new LisAERelRes(this);
+    catcher1->subscribe(SIG_CACE_ReleaseResponse, lisAERelRes);
+
+
 }
 
 void AE::initialize() {
@@ -108,7 +106,7 @@ bool AE::createBindings(Flow& flow) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
+    cModule* ApMon = this->getParentModule()->getParentModule();
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
@@ -135,7 +133,6 @@ bool AE::createBindings(Flow& flow) {
     //Set north-half of the routing in ConnectionTable
     Irm->setNorthGates(&flow, gIrmIn, gIrmOut);
 
-
     //Return true if all dynamically created gates have same index
     return gIrmIn->isConnected()
            && gAeIn->isConnected()
@@ -144,11 +141,9 @@ bool AE::createBindings(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = getRINAModule<IRM*>(this, 3, {MOD_IPCRESMANAGER, MOD_IRM});
-    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
+    Irm = dynamic_cast<IRM*>(this->getParentModule()->getParentModule()->getParentModule()->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM));
+    Cdap = this->getParentModule()->getSubmodule(MOD_CDAP);
 
-    if (!Cdap)
-        error("Pointers to Cdap !");
     if (!Irm || !Cdap)
         error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
 }
@@ -192,27 +187,25 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
     //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
 
-    if ( QoSRequirements.compare(flow->getQosRequirements()) ) {
+    //TODO: Vesely - More sophisticated decission
+    if (QoSRequirements.countFeasibilityScore(flow->getQosParameters()) > 0) {
         //Initialize flow within AE
         FlowObject = flow;
         insertFlow();
         //EV << "======================" << endl << flow->info() << endl;
         //Interconnect IRM and IPC
 
-        bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
+        Irm->receiveAllocationResponsePositiveFromIpc(flow) ?
+                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_CONNECTPENDING)
+                :
+                Irm->changeStatus(FlowObject, ConnectionTableEntry::CON_ERROR);
 
         //Change connection status
-        if (status) {
-            changeConStatus(CONNECTION_PENDING);
-            this->signalizeAllocateResponsePositive(FlowObject);
-        }
-        else {
-            EV << "IRM was unable to create bindings!" << endl;
-        }
+        changeConStatus(CONNECTION_PENDING);
+        this->signalizeAllocateResponsePositive(FlowObject);
     }
     else {
-        EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
-        this->signalizeAllocateResponseNegative(flow);
+        this->signalizeAllocateResponseNegative(FlowObject);
     }
 }
 
@@ -240,6 +233,9 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     Enter_Method("receiveAllocationResponsePositive()");
     //Interconnect IRM and IPC
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
+
+    //Change allocation status
+    Irm->changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING);
 
     //Change connection status
     changeConStatus(CONNECTION_PENDING);
@@ -328,7 +324,7 @@ bool AE::deleteBindings(Flow& flow) {
     cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle1);
     cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle1);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
+    cModule* ApMon = this->getParentModule()->getParentModule();
     cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle2);
     cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle2);
 
@@ -369,14 +365,4 @@ void AE::signalizeConnectionRequest(CDAPMessage* msg){
 
 void AE::signalizeReleaseRequest(CDAPMessage* msg){
     emit(sigAERelReq, msg);
-}
-
-void AE::connect(){
-    APNIPair* apnip = new APNIPair(
-        APNamingInfo(),
-        APNamingInfo());
-    emit(sigAEEnrolled, apnip);
-}
-
-void AE::afterOnStart() {
 }

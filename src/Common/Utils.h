@@ -1,25 +1,3 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-
 /*
  * Utils.h
  *
@@ -33,8 +11,6 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
-#include "omnetpp.h"
 
 /*
  * Explode a string into a vector of strings, given a delimiter
@@ -55,39 +31,5 @@ std::string join(const std::vector<std::string> &elems, const unsigned int n, co
  *
  */
 bool isPrefix(std::string prefix, std::string s);
-
-/**
- * Display the selected policy next to given policy module.
- *
- * @param mod target instance
- */
-void setPolicyDisplayString(cModule* mod, const char* str = nullptr);
-
-/**
- * A getModuleByPath wrapper accepting individual modules in the path as variables.
- * e.g. TMod* newMod = (TMod*)parentMod->getModuleByPath("^.^.a.b")
- *      ==
- *      getRINAModule<TMod*>(parentMod, 2, {"a", "b"})
- *
- * @tparam target module type
- * @param curMod starting module
- * @param parentLevel level of initial ascent into parent modules
- * @param modPath path of modules to descent into
- * @param nullCheck causes an exception to be thrown in case of module not present
- * @return pointer to the retrieved module
- */
-template<typename modType>
-modType getRINAModule(  cModule* curMod,
-                        int parentLevel,
-                        std::initializer_list<const char*> modPath,
-                        bool nullCheck = true)
-{
-    std::ostringstream modulePath;
-    while (parentLevel--) { modulePath << ".^"; }
-    for (auto elem : modPath) { modulePath << "." << elem; }
-    cModule* mod = curMod->getModuleByPath(modulePath.str().c_str());
-    return (nullCheck ? check_and_cast<modType>(mod) : dynamic_cast<modType>(mod));
-}
-
 
 #endif /* UTILS_H_ */

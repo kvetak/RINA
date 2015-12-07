@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "DTPState.h"
 
@@ -50,11 +45,6 @@ void DTPState::setBlockingPort(bool blockingPort)
   this->blockingPort = blockingPort;
 }
 
-void DTPState::resetRcvVars()
-{
-  rcvLeftWinEdge = 0;
-}
-
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -63,25 +53,43 @@ void DTPState::initialize(int step)
     disp.setTagArg("p", 0, 240);
     disp.setTagArg("p", 1, 50);
 
-    maxFlowSDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxSDUSize");
-    maxFlowPDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxPDUSize");
-//    delimitDelay = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("delimitDelay");
+    maxFlowSDUSize = par("maxSDUSize");
+    maxFlowPDUSize = par("maxPDUSize");
 
     rtt = par("rtt");
-    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rtt")){
-      rtt = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("rtt");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rtt")){
+      rtt = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rtt");
 
     }
 
     mpl = par("mpl");
-    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("mpl")){
-      mpl = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("mpl");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("mpl")){
+      mpl = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("mpl");
 
     }
 
-    if(qoSCube->isRxOn() || qoSCube->isWindowFcOn() || qoSCube->isRateFcOn()){
-      dtcpPresent =  true;
 
+//    winBased = par("winBased");
+//    rateBased = par("rateBased");
+    rateBased = false;
+
+//    rxPresent = par("rxPresent");
+
+    if(qoSCube->isForceOrder()){
+      rxPresent = true;
+    }else{
+      rxPresent = false;
+    }
+
+    if(qoSCube->getAvgBand() > 0){
+      winBased = true;
+    }else{
+      winBased = false;
+    }
+
+    if(rxPresent || winBased || rateBased){
+      dtcpPresent =  true;
+      //TODO A! create DTCP module here?
     }
   }
 }
@@ -93,7 +101,8 @@ void DTPState::initDefaults(){
   dropDup = 0;
   setDRFFlag = true;
   dtcpPresent = false;
-
+  winBased = false;
+  rateBased = false;
   incompDeliv = false;
 
 
@@ -101,16 +110,13 @@ void DTPState::initDefaults(){
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-  qoSCube = nullptr;
+  qoSCube = NULL;
 
   seqNumRollOverThresh = INT_MAX - 1;
   lastSeqNumSent = 0;
   ecnSet = false;
 
   blockingPort = false;
-
-  tmpAtimer = nullptr;
-
 
 }
 
@@ -229,13 +235,13 @@ void DTPState::setPartDeliv(bool partDeliv) {
     this->partDeliv = partDeliv;
 }
 
-//bool DTPState::isRateBased() const {
-//    return rateBased;
-//}
-//
-//void DTPState::setRateBased(bool rateBased) {
-//    this->rateBased = rateBased;
-//}
+bool DTPState::isRateBased() const {
+    return rateBased;
+}
+
+void DTPState::setRateBased(bool rateBased) {
+    this->rateBased = rateBased;
+}
 
 //bool DTPState::isRateFullfilled() const {
 //    return rateFullfilled;
@@ -253,13 +259,13 @@ void DTPState::setRcvLeftWinEdge(unsigned int rcvLeftWinEdge) {
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
-//bool DTPState::isRxPresent() const {
-//    return rxPresent;
-//}
-//
-//void DTPState::setRxPresent(bool rexmsnPresent) {
-//    this->rxPresent = rexmsnPresent;
-//}
+bool DTPState::isRxPresent() const {
+    return rxPresent;
+}
+
+void DTPState::setRxPresent(bool rexmsnPresent) {
+    this->rxPresent = rexmsnPresent;
+}
 
 unsigned int DTPState::getSeqNumRollOverThresh() const {
     return seqNumRollOverThresh;
@@ -277,13 +283,13 @@ void DTPState::setState(int state) {
     this->state = state;
 }
 
-//bool DTPState::isWinBased() const {
-//    return winBased;
-//}
-//
-//void DTPState::setWinBased(bool winBased) {
-//    this->winBased = winBased;
-//}
+bool DTPState::isWinBased() const {
+    return winBased;
+}
+
+void DTPState::setWinBased(bool winBased) {
+    this->winBased = winBased;
+}
 
 bool DTPState::isSetDrfFlag() const
 {
@@ -345,9 +351,8 @@ std::vector<DataTransferPDU*>* DTPState::getReassemblyPDUQ()
 
 void DTPState::pushBackToReassemblyPDUQ(DataTransferPDU* pdu)
 {
-//TODO A2 check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
+//TODO check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
-  take(pdu);
   reassemblyPDUQ.push_back(pdu);
 }
 
@@ -355,44 +360,43 @@ void DTPState::addPDUToReassemblyQ(DataTransferPDU* pdu)
 {
 
   if (pdu != NULL)
-  {
-    take(pdu);
-    if (reassemblyPDUQ.empty())
-    {
-      reassemblyPDUQ.push_back(pdu);
-    }
-    else
-    {
-      if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
-      {
-        reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
-      }
-      else
-      {
-        for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
-        {
-          if ((*it)->getSeqNum() == pdu->getSeqNum())
-          {
-            //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
-            //Throw Error.
-            throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
-          }
-          else if ((*it)->getSeqNum() > pdu->getSeqNum())
-          {
-            /* Put the incoming PDU before one with bigger seqNum */
-            reassemblyPDUQ.insert(it, pdu);
-            break;
-          }
-          else if (it == --reassemblyPDUQ.end())
-          {
-            //'it' is last element
-            reassemblyPDUQ.insert(it + 1, pdu);
-            break;
-          }
-        }
-      }
-    }
-  }
+   {
+     if (reassemblyPDUQ.empty())
+     {
+       reassemblyPDUQ.push_back(pdu);
+     }
+     else
+     {
+       if (reassemblyPDUQ.front()->getSeqNum() > pdu->getSeqNum())
+       {
+         reassemblyPDUQ.insert(reassemblyPDUQ.begin(), pdu);
+       }
+       else
+       {
+         for (std::vector<DataTransferPDU*>::iterator it = reassemblyPDUQ.begin(); it != reassemblyPDUQ.end(); ++it)
+         {
+           if ((*it)->getSeqNum() == pdu->getSeqNum())
+           {
+             //Not sure if this case could ever happen; EDIT: No, this SHOULD not ever happen.
+             //Throw Error.
+             throw cRuntimeError("addPDUTo reassemblyQ with same seqNum. SHOULD not ever happen");
+           }
+           else if ((*it)->getSeqNum() > pdu->getSeqNum())
+           {
+             /* Put the incoming PDU before one with bigger seqNum */
+             reassemblyPDUQ.insert(it, pdu);
+             break;
+           }
+           else if (it == --reassemblyPDUQ.end())
+           {
+             //'it' is last element
+             reassemblyPDUQ.insert(it + 1, pdu);
+             break;
+           }
+         }
+       }
+     }
+   }
 }
 
 
@@ -442,46 +446,62 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
-
-
+  //TODO A3
+  //Update LeftWindowEdge removing allowed gaps;
   unsigned int sduGap = qoSCube->getMaxAllowGap();
 
-  PDUQ_t* pduQ = &reassemblyPDUQ;
-
-  for (auto it = pduQ->begin(); it != pduQ->end(); ++it)
+  if (isDtcpPresent())
   {
-    if((rcvLeftWinEdge + 1) + sduGap >= (*it)->getSeqNum())
+    PDUQ_t::iterator it;
+    PDUQ_t* pduQ = &reassemblyPDUQ;
+    for (it = pduQ->begin(); it != pduQ->end(); ++it)
     {
-      rcvLeftWinEdge = (*it)->getSeqNum();
-    }
+      if ((*it)->getSeqNum() == getRcvLeftWinEdge())
+      {
+        incRcvLeftWindowEdge();
 
+      }
+      else if ((*it)->getSeqNum() < getRcvLeftWinEdge())
+      {
+        continue;
+      }
+      else
+      {
+        if (pduQ->size() == 1 || it == pduQ->begin())
+        {
+          if ((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap)
+          {
+            setRcvLeftWinEdge((*it)->getSeqNum());
+          }
+        }
+        else
+        {
+          (*(it - 1))->getSDUGap((*it));
+        }
+        break;
+      }
+    }
+  }
+  else
+  {
+    setRcvLeftWinEdge(std::max(getRcvLeftWinEdge(), seqNum));
+//    if(state.getRcvLeftWinEdge() > timer->getSeqNum()){
+//         throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
+//       }else{
+//         state.setRcvLeftWinEdge(timer->getSeqNum());
+//       }
   }
 
-  return;
+
+
+  if(getRcvLeftWinEdge() < seqNum){
+    //TODO B1 Is it correct?
+    //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
+  }
 }
 
 void DTPState::handleMessage(cMessage* msg)
 {
 }
 
-/* Dirty hacks */
-ATimer* DTPState::getTmpAtimer() const
-{
-  return tmpAtimer;
-}
 
-void DTPState::setTmpAtimer(ATimer* tmpAtimer)
-{
-  this->tmpAtimer = tmpAtimer;
-}
-
-//double DTPState::getDelimitDelay() const
-//{
-//  return delimitDelay;
-//}
-//
-//void DTPState::setDelimitDelay(double delimitDelay)
-//{
-//  this->delimitDelay = delimitDelay;
-//}
-/* End dirty hacks */

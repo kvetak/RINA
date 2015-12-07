@@ -13,12 +13,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.CS;
-import rina.src.Common.Test;
-import rina.src.DAF.ApplicationProcess;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
-import rina.src.DAF.IRM.IPCResourceManager;
+package rina.CS;
+import rina.Common.Test;
+import rina.DAF.ApplicationProcess;
+import rina.DAF.DA.DIFAllocator;
+import rina.DIF.IPCProcess;
+import rina.DAF.IRM.IPCResourceManager;
 
 module VIFIBNode
 {

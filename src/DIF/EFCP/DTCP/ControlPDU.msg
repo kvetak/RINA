@@ -1,73 +1,68 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 cplusplus {{
 #include "PDU.h"
 }}
-packet PDU;
+message PDU;
 
-packet ControlPDU extends PDU{
+message ControlPDU extends PDU{
     type = -1;
 //    unsigned int controlSeqNum;
 }
 
 
-packet NAckPDU extends ControlPDU{
+message NAckPDU extends ControlPDU{
     unsigned int ackNackSeqNum;
     
 }
-packet FlowControlPDU extends NAckPDU {
-    unsigned int rcvRightWinEdge;
-	unsigned int rcvRate;
+message FlowControlPDU extends NAckPDU {
+    unsigned int newRightWinEdge;
+	unsigned int newRate;
     unsigned long timeUnit;
-    unsigned int sndLeftWinEdge;
-    unsigned int sndRightWinEdge;
-    unsigned int sndRate;
+    unsigned int myLeftWinEdge;
+    unsigned int myRightWinEdge;
+    unsigned int myRcvRate;
 }
 
 
 
-packet AckOnlyPDU extends NAckPDU{
+message AckOnlyPDU extends NAckPDU{
     type = ACK_ONLY_PDU;
 }
 
-packet NackOnlyPDU extends NAckPDU{
+message NackOnlyPDU extends NAckPDU{
     type = NACK_ONLY_PDU;
 }
 
-packet AckFlowPDU extends FlowControlPDU{
+message AckFlowPDU extends FlowControlPDU{
     type = ACK_FLOW_PDU;
 }
 
-packet NackFlowPDU extends FlowControlPDU{
+message NackFlowPDU extends FlowControlPDU{
     type = NACK_FLOW_PDU;
 }
 
-packet FlowControlOnlyPDU extends FlowControlPDU{
+message FlowControlOnlyPDU extends FlowControlPDU{
     type = FLOW_ONLY_PDU;
 }
 
 
-packet SelectiveNAckFlow extends FlowControlPDU{
+message SelectiveNAckFlow extends FlowControlPDU{
     unsigned int newLeftWinEdge;
     
     
@@ -75,36 +70,29 @@ packet SelectiveNAckFlow extends FlowControlPDU{
     unsigned int nackList [];
 }
 
-packet SelectiveAckFlowPDU extends SelectiveNAckFlow{
+message SelectiveAckFlowPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_FLOW_PDU;
 }
 
-packet SelectiveNackFlowPDU extends SelectiveNAckFlow{
+message SelectiveNackFlowPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_FLOW_PDU;
 }
 
-packet SelectiveAckPDU extends SelectiveNAckFlow{
+message SelectiveAckPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_PDU;
 }
 
-packet SelectiveNackPDU extends SelectiveNAckFlow{
+message SelectiveNackPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_PDU;
 }
 
-packet ControlAckPDU extends ControlPDU{
+message ControlAckPDU extends ControlPDU{
     type = CONTROL_ACK_PDU;
     
 	unsigned int lastCtrlSeqNumRcv;
-	unsigned int rcvLeftWinEdge;
-	unsigned int rcvRightWinEdge;
-	unsigned int sndLeftWinEdge;
-	unsigned int sndRightWinEdge;
-	unsigned int rcvRate;
-}
-
-packet RendezvousPDU extends ControlAckPDU{
-    type = RENDEZVOUS_PDU;
-    
-    unsigned int rendezSeqNum;
-    
+	unsigned int sndLtWinEdge;
+	unsigned int sndRtWinEdge;
+	unsigned int myLtWinEdge;
+	unsigned int myRtWinEdge;
+	unsigned int myRcvRate;
 }

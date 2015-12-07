@@ -1,35 +1,26 @@
 //
 // Copyright � 2014 PRISTINE Consortium (http://ict-pristine.eu)
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 cplusplus {{
-    #include "APNamingInfo.h"
-    #include "Address.h"
+    #include "Address.h"       
     typedef cObject* ObjectPtr;
 }}
 
 class noncobject Address;
-class noncobject APNamingInfo;
 class noncobject ObjectPtr;
 
 //Message operation codes
@@ -156,7 +147,6 @@ enum headerBitLengths {
 packet CDAPMessage {
     string displayString;
     unsigned int headerBitLength = 160; //in bits
-    Address srcAddr;
     Address dstAddr;
     schedulingPriority = -1;
     int32 opCode enum(opCode_t);
@@ -168,7 +158,7 @@ packet CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Connect extends CDAPMessage {	
-	displayString = "b=15,15,oval,#0066CC,#0066CC,0";
+    displayString = "b=15,15,oval,#0066CC,#0066CC,0";
 	opCode enum(opCode_t) = M_CONNECT;
 	headerBitLength = (2+3)*hdrInt32 + hdrAuth + 2*hdrNaming;
 		
@@ -177,8 +167,8 @@ packet CDAP_M_Connect extends CDAPMessage {
 	int32 absSyntax enum(absSyntax_t);	
 	
 	auth_t auth;		
-	APNamingInfo src;
-	APNamingInfo dst;
+	naming_t src;
+	naming_t dst;
 }
 
 packet CDAP_M_Connect_R extends CDAPMessage {
@@ -193,8 +183,8 @@ packet CDAP_M_Connect_R extends CDAPMessage {
 	result_t result;	
 	
 	auth_t auth;		
-	APNamingInfo src;
-	APNamingInfo dst;
+	naming_t src;
+	naming_t dst;
 }
 
 //////////////////////////////////////////////
@@ -211,7 +201,7 @@ packet CDAP_M_Release extends CDAPMessage {
 }
 
 packet CDAP_M_Release_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#9966CC,#9966CC,0";
+    displayString = "b=15,15,oval,#9966CC,#9966CC,0";
 	opCode enum(opCode_t) = M_RELEASE_R;
 	headerBitLength = (2+2)*hdrInt32 + hdrResult;
 			
@@ -226,7 +216,7 @@ packet CDAP_M_Release_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Create extends CDAPMessage {
-	displayString = "b=15,15,oval,#FFEE00,#FFEE00,0";
+    displayString = "b=15,15,oval,#FFEE00,#FFEE00,0";
 	opCode enum(opCode_t) = M_CREATE;	
 	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
 	
@@ -240,8 +230,8 @@ packet CDAP_M_Create extends CDAPMessage {
 }
 
 packet CDAP_M_Create_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#FFFF66,#FFFF66,0";
-  	opCode enum(opCode_t) = M_CREATE_R;
+    displayString = "b=15,15,oval,#FFFF66,#FFFF66,0";
+	opCode enum(opCode_t) = M_CREATE_R;
 	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
 	
 	int32 flags enum(flagValues_t);
@@ -273,7 +263,7 @@ packet CDAP_M_Delete extends CDAPMessage {
 }
 
 packet CDAP_M_Delete_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#CC9966,#CC9966,0";
+    displayString = "b=15,15,oval,#CC9966,#CC9966,0";
 	opCode enum(opCode_t) = M_DELETE_R;	
 	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
 	
@@ -292,7 +282,7 @@ packet CDAP_M_Delete_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Read extends CDAPMessage {
-	displayString = "b=15,15,oval,#33CCCC,#33CCCC,0"; 
+    displayString = "b=15,15,oval,#33CCCC,#33CCCC,0"; 
 	opCode enum(opCode_t) = M_READ;	
 	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
 		
@@ -306,7 +296,7 @@ packet CDAP_M_Read extends CDAPMessage {
 }
 
 packet CDAP_M_Read_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#33FFCC,#33FFCC,0";
+    displayString = "b=15,15,oval,#33FFCC,#33FFCC,0";
 	opCode enum(opCode_t) = M_READ_R;	
 	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
 	
@@ -325,7 +315,7 @@ packet CDAP_M_Read_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_CancelRead extends CDAPMessage {
-	displayString = "b=15,15,oval,#333366,#333366,0";
+    displayString = "b=15,15,oval,#333366,#333366,0";
 	opCode enum(opCode_t) = M_CANCELREAD;	
 	headerBitLength = (2+2)*hdrInt32 + hdrResult;
 	
@@ -336,7 +326,7 @@ packet CDAP_M_CancelRead extends CDAPMessage {
 }
 
 packet CDAP_M_CancelRead_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#333399,#333399,0";
+    displayString = "b=15,15,oval,#333399,#333399,0";
 	opCode enum(opCode_t) = M_CANCELREAD_R;
 	headerBitLength = (2+2)*hdrInt32 + hdrResult;
 	
@@ -351,7 +341,7 @@ packet CDAP_M_CancelRead_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Write extends CDAPMessage {
-	displayString = "b=15,15,oval,#CC9900,#CC9900,0";
+    displayString = "b=15,15,oval,#CC9900,#CC9900,0";
 	opCode enum(opCode_t) = M_WRITE;	
 	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
 		
@@ -365,7 +355,7 @@ packet CDAP_M_Write extends CDAPMessage {
 }
 
 packet CDAP_M_Write_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#CC9933,#CC9933,0";
+    displayString = "b=15,15,oval,#CC9933,#CC9933,0";
 	opCode enum(opCode_t) = M_WRITE_R;	
 	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
 	
@@ -384,7 +374,7 @@ packet CDAP_M_Write_R extends CDAPMessage {
 //////////////////////////////////////////////
 
 packet CDAP_M_Start extends CDAPMessage {
-	displayString = "b=15,15,oval,#99CC00,#99CC00,0";
+    displayString = "b=15,15,oval,#99CC00,#99CC00,0";
 	opCode enum(opCode_t) = M_START;	
 	headerBitLength = (2+3)*hdrInt32 + hdrFiltr;
 		
@@ -431,7 +421,7 @@ packet CDAP_M_Stop extends CDAPMessage {
 }
 
 packet CDAP_M_Stop_R extends CDAPMessage {
-	displayString = "b=15,15,oval,#FF6666,#FF6666,0";
+    displayString = "b=15,15,oval,#FF6666,#FF6666,0";
 	opCode enum(opCode_t) = M_STOP_R;	
 	headerBitLength = (2+2)*hdrInt32 + hdrResult + hdrFiltr;
 	

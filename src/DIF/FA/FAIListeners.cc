@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "FAI.h"
 #include "FAIListeners.h"
@@ -29,7 +22,7 @@ FAIListeners::FAIListeners(FAI* nfai) {
 }
 
 FAIListeners::~FAIListeners() {
-
+    // TODO Auto-generated destructor stub
 
 }
 
@@ -45,7 +38,6 @@ void LisFAIAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
-    //EV << "Emitted" << endl << fl->info() << endl << endl << "Recv" << fai->getFlow()->info() << endl;
     if (fai->getFlow() == fl)
         fai->receiveAllocateResponseNegative();
 }
@@ -139,9 +131,8 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         //EV << "!!!!!!!!!Cube " << flow->getConId().getQoSId() << endl;
-        if (fai->getFa()->getMyAddress().getApn() == flow->getSrcApni().getApn()
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn()
             && fai->getFlow()->getConId().getQoSId() == flow->getConId().getQoSId()
-            && !flow->isManagementFlow()
                 ) {
             //EV << "B!!!!!!!!!!!!!!IN" << endl;
             fai->receiveCreateFlowResponsePositiveFromNminusOne();
@@ -156,7 +147,7 @@ void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
-        if (fai->getFa()->getMyAddress().getApn() == flow->getSrcApni().getApn() )
+        if (fai->getFa()->getMyAddress().getApname() == flow->getSrcApni().getApn() )
             fai->receiveCreateFlowResponseNegativeFromNminusOne();
     }
     else

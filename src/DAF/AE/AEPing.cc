@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "AEPing.h"
 
@@ -70,7 +63,8 @@ void AEPing::prepareDeallocateRequest() {
     scheduleAt(stopAt, m3);
 }
 
-void AEPing::initPing() {
+void AEPing::initialize()
+{
     //Init pointers
     initPointers();
     //Source info
@@ -93,10 +87,6 @@ void AEPing::initPing() {
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
-    if (!dstAeName.compare("AeErr")) {
-        EV << "AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
-    }
-
     //Schedule AllocateRequest
     if (startAt > 0)
         prepareAllocateRequest();
@@ -107,29 +97,45 @@ void AEPing::initPing() {
     if (stopAt > 0)
         prepareDeallocateRequest();
 
+    myPath = this->getFullPath();
+
     //Watchers
     WATCH(FlowObject);
     WATCH(connectionState);
-
-}
-
-void AEPing::initialize()
-{
-    initPing();
-
-    myPath = this->getFullPath();
 }
 
 void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), TIM_START) ) {
-        onStart();
+        //Flow
+        APNamingInfo src = this->getApni();
+        APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
+                                         this->dstAeName, this->dstAeInstance);
+
+        FlowObject = new Flow(src, dst);
+        FlowObject->setQosParameters(this->getQoSRequirements());
+
+        //Insert it to the Flows ADT
+        insertFlow();
+
+        sendAllocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
-        onStop();
+        sendDeallocationRequest(FlowObject);
     }
     else if ( strstr(msg->getName(), MSG_PING) ) {
-        onPing();
+        //Create PING messsage
+        CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
+        object_t obj;
+        obj.objectName = VAL_MODULEPATH;
+        obj.objectClass = "string";
+        obj.objectInstance = -1;
+        obj.objectVal = (cObject*)(&myPath);
+        ping->setObject(obj);
+        ping->setByteLength(size);
+
+        //Send message
+        sendData(FlowObject, ping);
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -140,63 +146,6 @@ void AEPing::handleMessage(cMessage *msg)
 {
     if ( msg->isSelfMessage() )
             this->handleSelfMessage(msg);
-}
-
-void AEPing::onStart() {
-    AEPing::connect();
-}
-
-void AEPing::connect() {
-    APNIPair* apnip = new APNIPair(
-        APNamingInfo(APN(srcApName),
-                    srcApInstance,
-                    srcAeName,
-                    srcAeInstance),
-        APNamingInfo(APN(dstApName),
-                    dstApInstance,
-                    dstAeName,
-                    dstAeInstance));
-
-    emit(sigAEEnrolled, apnip);
-}
-
-void AEPing::afterOnStart() {
-    Enter_Method("afterConnect()");
-    //Prepare flow's source and destination
-    APNamingInfo src = this->getApni();
-    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                     this->dstAeName, this->dstAeInstance);
-
-    //Create a flow
-    FlowObject = new Flow(src, dst);
-    FlowObject->setQosRequirements(this->getQoSRequirements());
-
-    //Notify IRM about a new flow
-    insertFlow();
-
-    //Call flow allocation request
-    sendAllocationRequest(FlowObject);
-}
-
-void AEPing::onPing() {
-    //Create PING messsage
-    CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
-    object_t obj;
-    obj.objectName = VAL_MODULEPATH;
-    obj.objectClass = "string";
-    obj.objectInstance = -1;
-    obj.objectVal = (cObject*)(&myPath);
-    ping->setObject(obj);
-    ping->setByteLength(size);
-
-    //Send message
-    sendData(FlowObject, ping);
-
-}
-
-void AEPing::onStop() {
-    //Call flow deallocation submit
-    sendDeallocationRequest(FlowObject);
 }
 
 void AEPing::processMRead(CDAPMessage* msg) {

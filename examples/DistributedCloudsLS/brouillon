@@ -1,0 +1,38 @@
+ <Connection src="1_TenantDIF" dst="3_TenantDIF" qosCube="1"/>
+                <Connection src="2_TenantDIF" dst="3_TenantDIF" qosCube="1"/>
+                <Connection src="3_TenantDIF" dst="4_TenantDIF" qosCube="1"/>
+                <Connection src="3_TenantDIF" dst="9_TenantDIF" qosCube="1"/>
+                <Connection src="5_TenantDIF" dst="4_TenantDIF" qosCube="1"/>
+                <Connection src="6_TenantDIF" dst="4_TenantDIF" qosCube="1"/>
+                <Connection src="4_TenantDIF" dst="10_TenantDIF" qosCube="1"/>
+                <Connection src="7_TenantDIF" dst="9_TenantDIF" qosCube="1"/>
+                <Connection src="8_TenantDIF" dst="9_TenantDIF" qosCube="1"/>
+                <Connection src="9_TenantDIF" dst="10_TenantDIF" qosCube="1"/>
+                <Connection src="11_TenantDIF" dst="10_TenantDIF" qosCube="1"/>
+                <Connection src="12_TenantDIF" dst="10_TenantDIF" qosCube="1"/>
+                
+                <Connection src="1_IGDIF1.1" dst="2_IGDIF1.1" qosCube="1"/>
+                <Connection src="1_IGDIF1.2" dst="2_IGDIF1.2" qosCube="1"/>
+                
+                <Connection src="1_IGDIF2.1" dst="2_IGDIF2.1" qosCube="1"/>
+                <Connection src="2_IGDIF2.1" dst="3_IGDIF2.1" qosCube="1"/>
+                <Connection src="3_IGDIF2.1" dst="4_IGDIF2.1" qosCube="1"/>
+                
+                 <Connection src="1_G1DIF" dst="3_G1DIF" qosCube="1"/>
+                 <Connection src="2_G1DIF" dst="3_G1DIF" qosCube="1"/>
+                 
+                 <Connection src="2_G2DIF" dst="1_G2DIF" qosCube="1"/>
+                 <Connection src="3_G2DIF" dst="1_G2DIF" qosCube="1"/>
+                 <Connection src="2_G3DIF" dst="1_G3DIF" qosCube="1"/>
+                 <Connection src="3_G3DIF" dst="1_G3DIF" qosCube="1"/>
+                 
+                 
+                 <Connection src="2_G4DIF" dst="1_G4DIF" qosCube="1"/>
+                 <Connection src="3_G4DIF" dst="1_G4DIF" qosCube="1"/>
+                 
+                 
+                 
+                                 
+                <Connection src="1_IGDIF2.1" dst="2_IGDIF2.1" qosCube="1"/>
+                <Connection src="2_IGDIF2.1" dst="3_IGDIF2.1" qosCube="1"/>
+                <Connection src="3_IGDIF2.1" dst="4_IGDIF2.1" qosCube="1"/>

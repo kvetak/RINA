@@ -1,0 +1,256 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="1_TenantDIF" dst="3_TenantDIF" qosCube="1"/>
+
+                <Connection src="3_TenantDIF" dst="4_TenantDIF" qosCube="1"/>
+
+                <Connection src="4_TenantDIF" dst="10_TenantDIF" qosCube="1"/>
+                <Connection src="10_TenantDIF" dst="12_TenantDIF" qosCube="1"/>
+                 
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
+    <Node id="all">
+        <DA>
+            <Directory>
+                <APN apn="1_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="1"/>
+                </APN>
+                <APN apn="2_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="2"/>
+                </APN>
+                <APN apn="3_TenantDIF">
+                    <DIF difName="IGDIF1.1" ipcAddress="1"/>
+                    <DIF difName="G1DIF" ipcAddress="3"/>
+                    <DIF difName="IGDIF2.1" ipcAddress="1"/>
+                </APN>                
+                <APN apn="4_TenantDIF">
+                    <DIF difName="IGDIF1.1" ipcAddress="2"/>
+                    <DIF difName="G2DIF" ipcAddress="1"/>
+                    <DIF difName="IGDIF2.1" ipcAddress="2"/>
+                </APN>
+                <APN apn="5_TenantDIF">
+                    <DIF difName="G2DIF" ipcAddress="2"/>
+                </APN>               
+                <APN apn="6_TenantDIF">
+                    <DIF difName="G2DIF" ipcAddress="3"/>
+                </APN>                
+                <APN apn="7_TenantDIF">
+                    <DIF difName="G3DIF" ipcAddress="1"/>
+                </APN>
+                <APN apn="8_TenantDIF">
+                    <DIF difName="G3DIF" ipcAddress="2"/>
+                </APN>        
+                <APN apn="9_TenantDIF">
+                    <DIF difName="G3DIF" ipcAddress="3"/>
+                    <DIF difName="IGDIF2.1" ipcAddress="3"/>
+                    <DIF difName="IGDIF1.2" ipcAddress="1"/>
+                </APN>                    
+                <APN apn="10_TenantDIF">
+                    <DIF difName="G4DIF" ipcAddress="1"/>
+                    <DIF difName="IGDIF1.2" ipcAddress="2"/>
+                    <DIF difName="IGDIF2.1" ipcAddress="4"/>
+                </APN>
+                <APN apn="11_TenantDIF">
+                    <DIF difName="G4DIF" ipcAddress="2"/>
+                </APN>            
+                <APN apn="12_TenantDIF">
+                    <DIF difName="G4DIF" ipcAddress="3"/>
+                </APN>
+                
+   
+                
+                <APN apn="1_G1DIF">
+                    <DIF difName="Shim1To2" ipcAddress="1"/>
+                    <DIF difName="Shim1To3" ipcAddress="1"/>
+                </APN>               
+                <APN apn="2_G1DIF">
+                    <DIF difName="Shim1To2" ipcAddress="2"/>
+                    <DIF difName="Shim2To3" ipcAddress="1"/>
+                </APN>
+                <APN apn="3_G1DIF">
+                    <DIF difName="Shim2To3" ipcAddress="2"/>
+                    <DIF difName="Shim1To3" ipcAddress="2"/>
+                    <DIF difName="Shim3To4" ipcAddress="1"/>
+                    <DIF difName="Shim3To9" ipcAddress="1"/>
+                </APN>
+         
+                <APN apn="1_G2DIF">
+                    <DIF difName="Shim4To5" ipcAddress="1"/>
+                    <DIF difName="Shim4To6" ipcAddress="1"/>
+                    <DIF difName="Shim4To10" ipcAddress="1"/>
+                </APN>                
+                <APN apn="2_G2DIF">
+                    <DIF difName="Shim4To5" ipcAddress="2"/>
+                    <DIF difName="Shim5To6" ipcAddress="1"/>
+                </APN>
+                <APN apn="3_G2DIF">
+                    <DIF difName="Shim5To6" ipcAddress="2"/>
+                    <DIF difName="Shim4To6" ipcAddress="2"/>
+                </APN>                       
+                <APN apn="1_G3DIF">
+                    <DIF difName="Shim7To8" ipcAddress="1"/>
+                    <DIF difName="Shim7To9" ipcAddress="1"/>
+                </APN>              
+                <APN apn="2_G3DIF">
+                    <DIF difName="Shim7To8" ipcAddress="2"/>
+                    <DIF difName="Shim8To9" ipcAddress="1"/>
+                </APN>
+                <APN apn="3_G3DIF">
+                    <DIF difName="Shim8To9" ipcAddress="2"/>
+                    <DIF difName="Shim7To9" ipcAddress="2"/>
+                    <DIF difName="Shim3To9" ipcAddress="2"/>
+                    <DIF difName="Shim9To10" ipcAddress="1"/>
+                </APN>                
+                <APN apn="1_G4DIF">
+                    <DIF difName="Shim10To12" ipcAddress="1"/>
+                    <DIF difName="Shim10To11" ipcAddress="1"/>
+                    <DIF difName="Shim4To10" ipcAddress="2"/>
+                    <DIF difName="Shim9To10" ipcAddress="2"/>
+                </APN>               
+                <APN apn="2_G4DIF">
+                    <DIF difName="Shim10To11" ipcAddress="2"/>
+                    <DIF difName="Shim11To12" ipcAddress="1"/>
+                </APN>
+                <APN apn="3_G4DIF">
+                    <DIF difName="Shim10To12" ipcAddress="2"/>
+                    <DIF difName="Shim11To12" ipcAddress="2"/>
+                </APN>
+                
+                              
+                <APN apn="1_IGDIF2.1">
+                    <DIF difName="Shim2To3" ipcAddress="2"/>
+                    <DIF difName="Shim1To3" ipcAddress="2"/>
+                    <DIF difName="Shim3To4" ipcAddress="1"/>
+                    <DIF difName="Shim3To9" ipcAddress="1"/>
+                </APN>
+                <APN apn="2_IGDIF2.1">
+                    <DIF difName="Shim4To5" ipcAddress="1"/>
+                    <DIF difName="Shim4To6" ipcAddress="1"/>
+                    <DIF difName="Shim4To10" ipcAddress="1"/>
+                    <DIF difName="Shim3To4" ipcAddress="2"/>
+                </APN>               
+                <APN apn="3_IGDIF2.1">
+                    <DIF difName="Shim8To9" ipcAddress="2"/>
+                    <DIF difName="Shim7To9" ipcAddress="2"/>
+                    <DIF difName="Shim3To9" ipcAddress="2"/>
+                    <DIF difName="Shim9To10" ipcAddress="1"/>
+                </APN>             
+                <APN apn="4_IGDIF2.1">
+                    <DIF difName="Shim10To11" ipcAddress="1"/>
+                    <DIF difName="Shim10To12" ipcAddress="1"/>
+                    <DIF difName="Shim9To10" ipcAddress="2"/>
+                    <DIF difName="Shim4To10" ipcAddress="2"/>
+                </APN>
+                
+                <APN apn="1_IGDIF1.1">
+                    <DIF difName="Shim3To4" ipcAddress="1"/>
+                    <DIF difName="Shim2To3" ipcAddress="2"/>
+                    <DIF difName="Shim1To3" ipcAddress="2"/>
+                    <DIF difName="Shim3To9" ipcAddress="1"/>
+                </APN>
+                <APN apn="2_IGDIF1.1">
+                    <DIF difName="Shim3To4" ipcAddress="2"/>
+                    <DIF difName="Shim4To5" ipcAddress="1"/>
+                    <DIF difName="Shim4To6" ipcAddress="1"/>
+                </APN>
+                
+                <APN apn="1_IGDIF1.2">
+                    <DIF difName="Shim8To9" ipcAddress="2"/>
+                    <DIF difName="Shim7To9" ipcAddress="2"/>
+                </APN>
+                
+                <APN apn="2_IGDIF1.2">
+                    <DIF difName="Shim10To11" ipcAddress="1"/>
+                    <DIF difName="Shim10To12" ipcAddress="1"/>
+                    <DIF difName="Shim4To10" ipcAddress="2"/>
+                    <DIF difName="Shim9To10" ipcAddress="2"/>
+                </APN>
+ 
+
+                
+                <APN apn="App1">
+                    <DIF difName="TenantDIF" ipcAddress="1"/>
+                </APN>
+                <APN apn="App2">
+                    <DIF difName="TenantDIF" ipcAddress="2"/>
+                </APN>
+                <APN apn="App3">
+                    <DIF difName="TenantDIF" ipcAddress="3"/>
+                </APN>
+                <APN apn="App4">
+                    <DIF difName="TenantDIF" ipcAddress="4"/>
+                </APN>
+                <APN apn="App5">
+                    <DIF difName="TenantDIF" ipcAddress="5"/>
+                </APN>
+                <APN apn="App6">
+                    <DIF difName="TenantDIF" ipcAddress="6"/>
+                </APN>
+                <APN apn="App7">
+                    <DIF difName="TenantDIF" ipcAddress="7"/>
+                </APN>
+                <APN apn="App8">
+                    <DIF difName="TenantDIF" ipcAddress="8"/>
+                </APN>
+                <APN apn="App9">
+                    <DIF difName="TenantDIF" ipcAddress="9"/>
+                </APN>
+                <APN apn="App10">
+                    <DIF difName="TenantDIF" ipcAddress="10"/>
+                </APN>
+                <APN apn="App11">
+                    <DIF difName="TenantDIF" ipcAddress="11"/>
+                </APN>
+                
+                <APN apn="App12">
+                    <DIF difName="TenantDIF" ipcAddress="12"/>
+                </APN>
+                <APN apn="App10">
+                    <DIF difName="TenantDIF" ipcAddress="10"/>
+                </APN>
+            </Directory>
+        </DA>
+    </Node>	<QoSCubesSet>
+        <QosCube id="1">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>0</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+        <QosCube id="2">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>1</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+    </QoSCubesSet>
+</Configuration>

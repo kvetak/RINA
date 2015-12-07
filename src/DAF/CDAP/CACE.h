@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #ifndef __RINA_CACE_H_
 #define __RINA_CACE_H_
@@ -28,23 +21,48 @@
 #include "CDAPMessage_m.h"
 #include "CACEListeners.h"
 #include "ExternConsts.h"
+#include "AE.h"
 
-class LisCACESendData;
+class LisCACEConReq;
+class LisCACERelReq;
+class LisCACEAuthRes;
 class CACE : public cSimpleModule
 {
 public:
-    void sendData(CDAPMessage *cmsg);
+    void processMRelease(CDAPMessage *cmsg);
+    void processMConnect(CDAPMessage *cmsg);
+    void processMConnectResPosi(CDAPMessage *cmsg);
+    void processMConnectResNega(CDAPMessage *cmsg);
+    void treatAuthRes(CDAPMessage *cmsg);
   protected:
 
-    simsignal_t sigCACEReceiveData;
+    int potentialConTimer;
+    int currentConRetries;
+    int maxConRetries;
+    AE* ae;
 
-    LisCACESendData* lisCACESendData;
+    simsignal_t sigCACEAuthReq;
+    simsignal_t sigCACEConResPosi;
+    simsignal_t sigCACEConResNega;
+    simsignal_t sigCACERelRes;
+
+    LisCACEConReq* lisCACEConReq;
+    LisCACERelReq* lisCACERelReq;
+    LisCACEAuthRes* lisCACEAuthRes;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    void changeConnectionState(CDAPConnectionState connectionState);
     void initPointers();
     void initSignalsAndListeners();
-    void signalizeDataReceive(CDAPMessage* cmsg);
+    void CACEStateMachine(CDAPMessage *cmsg);
+    void processMRelease();
+    void processMReleaseR(CDAPMessage *cmsg);
+    void sendMessage(CDAPMessage *cmsg);
+    void signalizeAuthenticationRequest(CDAPMessage* cmsg);
+    void signalizeConnResponseNegative(CDAPMessage* cmsg);
+    void signalizeConnResponsePositive(CDAPMessage* cmsg);
+    void signalizeReleaseResponse(CDAPMessage* cmsg);
 
 };
 

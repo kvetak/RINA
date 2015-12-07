@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include <RAListeners.h>
 
@@ -29,7 +24,7 @@ RAListeners::RAListeners(RABase* nra) : ra(nra)
 
 RAListeners::~RAListeners()
 {
-    ra = nullptr;
+    ra = NULL;
 }
 
 void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -38,6 +33,10 @@ void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     if (flow)
     {
         ra->createNM1FlowWithoutAllocate(flow);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
     }
 }
 
@@ -48,6 +47,11 @@ void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* o
     {
         ra->postNFlowAllocation(flow);
     }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
+
 }
 
 void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
@@ -57,25 +61,33 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
     {
         ra->postNFlowAllocation(flow);
     }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
+    }
 }
 
 void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosId = flow->getConId().getQoSId();
+    unsigned short qosId = flow->getConId().getQoSId();
 
-    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
-    if (item != nullptr)
+    NM1FlowTableItem* item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    if (item != NULL)
     {
         ra->postNM1FlowAllocation(item);
+    }
+    else
+    {
+        return;
     }
 }
 
 void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    auto item = ra->getFlowTable()->lookup(flow);
+    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
 
     if (item)
     {
@@ -86,7 +98,7 @@ void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject*
 void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
-    auto item = ra->getFlowTable()->lookup(flow);
+    NM1FlowTableItem* item = ra->getFlowTable()->lookup(flow);
 
     if (item)
     {
@@ -100,6 +112,10 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
     if (pdu)
     {
         ra->signalizeSlowdownRequestToRIBd(pdu);
+    }
+    else
+    {
+        EV << "RAListener received unknown object!" << endl;
     }
 }
 

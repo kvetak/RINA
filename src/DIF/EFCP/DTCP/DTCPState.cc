@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 /*
  * @file DTCPState.cc
@@ -32,18 +27,10 @@
 
 Define_Module(DTCPState);
 
-void DTCPState::resetRcvVars()
-{
-  rcvRightWinEdge = UINT_MAX;
-//  rcvRate = ??
-
-}
-
 void DTCPState::initFC()
 {
-//  rcvRightWinEdge = rcvCredit;
-  resetRcvVars();
-  sndRightWinEdge = sndCredit;
+  rcvRtWinEdge = rcvCredit;
+  sndRtWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
 //  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
@@ -61,8 +48,7 @@ void DTCPState::initFC()
   rcvrRate = configRcvrRate;
 
   sendingRate = 0;
-//  rcvrRate = 0;
-  rendezSeqNum = 0;
+  rcvrRate = 0;
 
 }
 
@@ -70,20 +56,14 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
-  winBased = false;
-  rateBased = false;
-
-  rcvRightWinEdgeSent = 0;
+  rcvRtWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
-  sndLeftWinEdge = 0;
+  senderLeftWinEdge = 0;
+
+  //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
+  immediate = true;
 
   rxSent = 0;
-
-  sndRendez = false;
-  rcvRendez = false;
-
-  rendezvousTimer = nullptr;
-  reliableCPDUTimer = nullptr;
 }
 
 void DTCPState::incRxSent()
@@ -92,42 +72,42 @@ void DTCPState::incRxSent()
 }
 
 
-//bool DTCPState::isImmediate() const
-//{
-//  return immediate;
-//}
+bool DTCPState::isImmediate() const
+{
+  return immediate;
+}
 
-//void DTCPState::setImmediate(bool immediate)
-//{
-//  this->immediate = immediate;
-//}
+void DTCPState::setImmediate(bool immediate)
+{
+  this->immediate = immediate;
+}
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
-  return rcvRightWinEdgeSent;
+  return rcvRtWinEdgeSent;
 }
 
-void DTCPState::setRcvRightWinEdgeSent(unsigned int rcvRightWinEdgeSent)
+void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
-  this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
+  this->rcvRtWinEdgeSent = rcvRightWinEdgeSent;
 }
 
-unsigned int DTCPState::getSndLeftWinEdge() const {
-    return sndLeftWinEdge;
+unsigned int DTCPState::getSenderLeftWinEdge() const {
+    return senderLeftWinEdge;
 }
 
 void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
-    this->sndLeftWinEdge = senderLeftWinEdge;
+    this->senderLeftWinEdge = senderLeftWinEdge;
 }
 
-unsigned int DTCPState::getSndRightWinEdge() const
+unsigned int DTCPState::getSenderRightWinEdge() const
 {
-  return sndRightWinEdge;
+  return sndRtWinEdge;
 }
 
 void DTCPState::setSenderRightWinEdge(unsigned int senderRightWinEdge)
 {
-  this->sndRightWinEdge = senderRightWinEdge;
+  this->sndRtWinEdge = senderRightWinEdge;
 }
 
 DTCPState::~DTCPState()
@@ -156,19 +136,19 @@ void DTCPState::setSndCredit(unsigned int sndCredit)
   this->sndCredit = sndCredit;
 }
 
-unsigned int DTCPState::getRcvRightWinEdge() const
+unsigned int DTCPState::getRcvRtWinEdge() const
 {
-  return rcvRightWinEdge;
+  return rcvRtWinEdge;
 }
 
 void DTCPState::setRcvRtWinEdge(unsigned int rcvRtWinEdge)
 {
-  this->rcvRightWinEdge = rcvRtWinEdge;
+  this->rcvRtWinEdge = rcvRtWinEdge;
 }
 
 void DTCPState::incRcvRtWinEdge()
 {
-  rcvRightWinEdge++;
+  rcvRtWinEdge++;
 }
 
 void DTCPState::updateRcvRtWinEdge(unsigned int rcvLtWinEdge)
@@ -285,7 +265,7 @@ void DTCPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
 //TODO A3 Check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
   take(pdu);
-  closedWindowQ.push_back(pdu);
+    closedWindowQ.push_back(pdu);
 }
 
 std::vector<DataTransferPDU*>* DTCPState::getClosedWindowQ()
@@ -425,37 +405,30 @@ void DTCPState::handleMessage(cMessage* msg)
 void DTCPState::initialize(int step)
 {
   if(step == 1){
-
-      rxPresent = qoSCube->isRxOn();
-          winBased = qoSCube->isWindowFcOn();
-          rateBased = qoSCube->isRateFcOn();
-
     if(par("aTime").doubleValue() != 0){
-//      immediate = false;
+      immediate = false;
     }
 
     rcvCredit = par("rcvCredit");
-    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rcvCredit")){
-          rcvCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("rcvCredit");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("rcvCredit")){
+          rcvCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("rcvCredit");
     }
     sndCredit = par("initialSenderCredit");
-    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("initialSenderCredit")){
-          sndCredit = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("initialSenderCredit");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("initialSenderCredit")){
+          sndCredit = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("initialSenderCredit");
     }
     nextSenderControlSeqNum = par("nextSenderControlSeqNum");
     dataReXmitMax = par("dataReXmitMax");
 
 
     maxClosedWinQueLen = par("maxClosedWinQueLen");
-    if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("maxClosedWinQueLen")){
-          maxClosedWinQueLen = getRINAModule<cModule*>(this, 2, {MOD_EFCP})->par("maxClosedWinQueLen");
+    if(getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->hasPar("maxClosedWinQueLen")){
+          maxClosedWinQueLen = getModuleByPath((std::string(".^.^.") + std::string(MOD_EFCP)).c_str())->par("maxClosedWinQueLen");
 
     }
-    
     timeUnit = par("timeUnit");
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
-
     initFC();
   }
 }
@@ -465,114 +438,7 @@ unsigned int DTCPState::getRxSent() const
   return rxSent;
 }
 
-const QoSCube* DTCPState::getQoSCube() const {
-    return qoSCube;
-}
-
-void DTCPState::setQoSCube(const QoSCube*& qoSCube) {
-    this->qoSCube = qoSCube;
-}
-
-DTCPReliableControlPDUTimer* DTCPState::getReliableCpduTimer()
-{
-  return reliableCPDUTimer;
-}
-
-void DTCPState::setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer)
-{
-  reliableCPDUTimer = reliableCpduTimer;
-}
-
 void DTCPState::initFromQoS(const QoSCube* qosCube)
 {
 
-}
-
-unsigned int DTCPState::getRxQLen()
-{
-  return rxQ.size();
-}
-
-bool DTCPState::isRateBased() const {
-    return rateBased;
-}
-
-void DTCPState::setRateBased(bool rateBased) {
-    this->rateBased = rateBased;
-}
-
-bool DTCPState::isRxPresent() const {
-    return rxPresent;
-}
-
-void DTCPState::setRxPresent(bool rxPresent) {
-    this->rxPresent = rxPresent;
-}
-
-bool DTCPState::isWinBased() const {
-    return winBased;
-}
-
-void DTCPState::setWinBased(bool winBased) {
-    this->winBased = winBased;
-}
-
-unsigned int DTCPState::getPdusRcvdInTimeUnit() const
-{
-  return pdusRcvdinTimeUnit;
-}
-
-void DTCPState::setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit)
-{
-  this->pdusRcvdinTimeUnit = pdusRcvdinTimeUnit;
-}
-
-unsigned int DTCPState::getLastControlSeqNumSent() const
-{
-  return lastControlSeqNumSent;
-}
-
-void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
-{
-  this->lastControlSeqNumSent = lastControlSeqNumSent;
-}
-
-bool DTCPState::isRcvRendez() const
-{
-  return rcvRendez;
-}
-
-void DTCPState::setRcvRendez(bool rcvRendez)
-{
-  this->rcvRendez = rcvRendez;
-}
-
-bool DTCPState::isSndRendez() const
-{
-  return sndRendez;
-}
-
-void DTCPState::setSndRendez(bool sndRendez)
-{
-  this->sndRendez = sndRendez;
-}
-
-DTCPRendezvousTimer* DTCPState::getRendezvousTimer()
-{
-  return rendezvousTimer;
-}
-
-void DTCPState::setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer)
-{
-  this->rendezvousTimer = rendezvousTimer;
-}
-
-unsigned int DTCPState::getRendezSeqNum() const
-{
-  return rendezSeqNum;
-}
-
-void DTCPState::setRendezSeqNum(unsigned int rendezSeqNum)
-{
-  this->rendezSeqNum = rendezSeqNum;
 }

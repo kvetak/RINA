@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="0_DCDIF" dst="1_DCDIF" qosCube="1"/>
+                <Connection src="1_DCDIF" dst="2_DCDIF" qosCube="1"/>
+                <Connection src="1_DCDIF" dst="3_DCDIF" qosCube="1"/>
+                <Connection src="2_DCDIF" dst="4_DCDIF" qosCube="1"/>
+                <Connection src="3_DCDIF" dst="5_DCDIF" qosCube="1"/>
+                <Connection src="4_DCDIF" dst="6_DCDIF" qosCube="1"/>
+                <Connection src="5_TenantDIF" dst="7_TenantDIF" qosCube="1"/>
+                <Connection src="6_TenantDIF" dst="8_TenantDIF" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+
+    <Node id="all">
+        <DA>
+            <Directory>
+                <APN apn="0_TentantDIF">
+                    <DIF difName="DCIPC" ipcAddress="0"/>
+                </APN>
+                <APN apn="0_DCDIF">
+                    <DIF difName="Shim0To1" ipcAddress="0"/>
+                </APN>
+                <APN apn="1_DCDIF">
+                    <DIF difName="Shim0To1" ipcAddress="1"/>
+                    <DIF difName="Shim1To2" ipcAddress="1"/>
+                    <DIF difName="Shim1To3" ipcAddress="1"/>
+                </APN>
+                <APN apn="2_DCDIF">
+                    <DIF difName="Shim1To2" ipcAddress="2"/>
+                    <DIF difName="Shim2To4" ipcAddress="2"/>
+                </APN>
+                <APN apn="3_DCDIF">
+                    <DIF difName="Shim1To3" ipcAddress="3"/>
+                    <DIF difName="Shim3To5" ipcAddress="3"/>
+                </APN>
+                <APN apn="4_DCDIF">
+                    <DIF difName="Shim2To4" ipcAddress="4"/>
+                    <DIF difName="Shim4To6" ipcAddress="4"/>
+                </APN>
+                <APN apn="5_DCDIF">
+                    <DIF difName="Shim3To5" ipcAddress="5"/>
+                </APN>
+                <APN apn="6_DCDIF">
+                    <DIF difName="Shim4To6" ipcAddress="6"/>
+                </APN>
+                <APN apn="5_TenantDIF">
+                    <DIF difName="DCIPC" ipcAddress="5"/>
+                    <DIF difName="Shim5To7" ipcAddress="5"/>
+                </APN>
+                <APN apn="7_TenantDIF">
+                    <DIF difName="Shim5To7" ipcAddress="7"/>
+                </APN>
+                <APN apn="App0VM7">
+                    <DIF difName="TenantDIF" ipcAddress="7"/>
+                </APN>
+                <APN apn="6_TenantDIF">
+                    <DIF difName="DCIPC" ipcAddress="6"/>
+                    <DIF difName="Shim6To8" ipcAddress="6"/>
+                </APN>
+                <APN apn="8_TenantDIF">
+                    <DIF difName="Shim6To8" ipcAddress="8"/>
+                </APN>
+                <APN apn="App0VM8">
+                    <DIF difName="TenantDIF" ipcAddress="8"/>
+                </APN>
+            </Directory>
+        </DA>
+    </Node>	<QoSCubesSet>
+        <QosCube id="1">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>0</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+        <QosCube id="2">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>1</ForceOrder>
+            <MaxAllowableGap>10</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+        </QosCube>
+    </QoSCubesSet>
+</Configuration>

@@ -1,29 +1,21 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "Flow.h"
 
-const int VAL_UNDEF_PORTID = -1;
-const int VAL_MGMT_PORTID = 0;
+const int VAL_UNDEFINED = -1;
 const int VAL_MAXHOPCOUNT = 16;
 const int VAL_MAXCREATERETRIES = 3;
 
@@ -31,7 +23,7 @@ Register_Class(Flow);
 
 Flow::Flow() :
     srcApni(APNamingInfo()), dstApni(APNamingInfo()),
-    srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
+    srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
     srcAddr(Address()), dstAddr(Address()),
     srcNeighbor(Address()), dstNeighbor(Address()),
     conId(ConnectionId()),
@@ -43,7 +35,7 @@ Flow::Flow() :
 
 Flow::Flow(APNamingInfo src, APNamingInfo dst) :
         srcApni(src), dstApni(dst),
-        srcPortId(VAL_UNDEF_PORTID), dstPortId(VAL_UNDEF_PORTID),
+        srcPortId(VAL_UNDEFINED), dstPortId(VAL_UNDEFINED),
         srcAddr(Address()), dstAddr(Address()),
         srcNeighbor(Address()), dstNeighbor(Address()),
         conId(ConnectionId()),
@@ -56,13 +48,13 @@ Flow::Flow(APNamingInfo src, APNamingInfo dst) :
 Flow::~Flow() {
     this->srcApni = APNamingInfo();
     this->dstApni = APNamingInfo();
-    this->srcPortId = 0;
-    this->dstPortId = 0;
+    this->srcPortId = VAL_UNDEFINED;
+    this->dstPortId = VAL_UNDEFINED;
     this->srcAddr = Address();
     this->dstAddr = Address();
-    this->createFlowRetries = 0;
-    this->maxCreateFlowRetries = 0;
-    this->hopCount = 0;
+    this->createFlowRetries = VAL_UNDEFINED;
+    this->maxCreateFlowRetries = VAL_UNDEFINED;
+    this->hopCount = VAL_UNDEFINED;
     srcNeighbor = Address();
     dstNeighbor = Address();
     allocInvokeId = 0;
@@ -163,21 +155,9 @@ void Flow::setSrcAddr(const Address& srcAddr) {
     this->srcAddr = srcAddr;
 }
 
-
-void Flow::setQosCube(const QoSCube& qosCube) {
-    this->qosCube = qosCube;
+const QoSCube& Flow::getQosParameters() const {
+    return qosParameters;
 }
-
-const QoSCube& Flow::getQosCube() const {
-    return qosCube;
-}
-
-
-const QoSReq& Flow::getQosRequirements() const {
-    return qosReqs;
-}
-
-
 
 Flow* Flow::dup() const {
     Flow* flow = new Flow();
@@ -191,8 +171,7 @@ Flow* Flow::dup() const {
     flow->setMaxCreateFlowRetries(this->getMaxCreateFlowRetries());
     flow->setHopCount(this->getHopCount());
     flow->setCreateFlowRetries(this->getCreateFlowRetries());
-    flow->setQosCube(this->getQosCube());
-    flow->setQosRequirements(this->getQosRequirements());
+    flow->setQosParameters(this->getQosParameters());
     flow->setSrcNeighbor(this->getSrcNeighbor());
     flow->setDstNeighbor(this->getDstNeighbor());
     flow->setAllocInvokeId(this->getAllocInvokeId());
@@ -228,9 +207,9 @@ void Flow::swapCepIds() {
 
 std::string Flow::infoSource() const {
     std::stringstream os;
-    os << "SRC> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << srcApni
+    os << "SRC> " << srcApni
        << "\n   address:  " << srcAddr
-       << ", neighbor: " << srcNeighbor
+       << "\n   neighbor: " << srcNeighbor
        << "\n   port: " << srcPortId
        << "\n   cep: " << conId.getSrcCepId();
     return os.str();
@@ -238,9 +217,9 @@ std::string Flow::infoSource() const {
 
 std::string Flow::infoDestination() const {
     std::stringstream os;
-    os << "DST> " << (isManagementFlowLocalToIPCP() ? "RIBd of ": "") << dstApni
+    os << "DST> " << dstApni
        << "\n   address:  " << dstAddr
-       << ", neighbor: " << dstNeighbor
+       << "\n   neighbor: " << dstNeighbor
        << "\n   port: " << dstPortId
        << "\n   cep: " << conId.getDstCepId();
     return os.str();
@@ -257,12 +236,8 @@ std::string Flow::infoOther() const {
 
 std::string Flow::infoQoS() const {
     std::stringstream os;
-    os << "Chosen RA's QoS cube: " << conId.getQoSId();
-    if (this->isManagementFlow() && !this->isManagementFlowLocalToIPCP())
-    {
-        os << " (aggregated)";
-    }
-    os << endl << qosReqs.info();
+    os << "Chosen RA's QoS cube>" << conId.getQoSId();
+    //os << qosParameters.info();
     return os.str();
 }
 
@@ -273,6 +248,14 @@ bool Flow::compare(const Flow& other) const {
             && conId == other.conId
             );
 }
+
+/*
+const long Flow::getPortCepId() const {
+    int ports = getSrcPortId() xor getDstPortId();
+    int ceps = conId.getSrcCepId() xor conId.getDstCepId();
+    return (long) ((ports << sizeof(int)) xor ceps);
+}
+*/
 
 long Flow::getAllocInvokeId() const{
     return allocInvokeId;
@@ -298,10 +281,6 @@ void Flow::setDdtFlag(bool ddtFlag) {
     this->ddtFlag = ddtFlag;
 }
 
-QoSReq& Flow::getQosReqs() {
-    return qosReqs;
-}
-
 void Flow::swapApni() {
     APNamingInfo tmpapni = srcApni;
     srcApni = dstApni;
@@ -320,8 +299,8 @@ Flow& Flow::swapFlow() {
     return *this;
 }
 
-void Flow::setQosRequirements(const QoSReq& qosParameters) {
-    this->qosReqs = qosParameters;
+void Flow::setQosParameters(const QoSCube& qosParameters) {
+    this->qosParameters = qosParameters;
 }
 
 std::string Flow::info() const {
@@ -351,24 +330,4 @@ const Address& Flow::getSrcNeighbor() const {
 
 void Flow::setSrcNeighbor(const Address& srcNeighbor) {
     this->srcNeighbor = srcNeighbor;
-}
-
-Flow* Flow::dupToMgmt() const {
-    Flow* mgmtflow = this->dup();
-    mgmtflow->setQosRequirements(QoSReq::MANAGEMENT);
-    mgmtflow->setSrcApni(getSrcAddr().getApn());
-    mgmtflow->setDstApni(getDstNeighbor().getApn());
-    mgmtflow->setDstAddr(getDstNeighbor().getApn());
-    //EV << mgmtflow->info() << endl;
-    return mgmtflow;
-}
-
-bool Flow::isManagementFlow() const {
-    return getQosRequirements().compare(QoSReq::MANAGEMENT);
-}
-
-bool Flow::isManagementFlowLocalToIPCP() const {
-    return isManagementFlow()
-            && this->getSrcApni().getApn() == getSrcAddr().getApn()
-            && this->getDstApni().getApn() == getDstAddr().getApn();
 }

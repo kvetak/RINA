@@ -1,24 +1,17 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 
 #include "IRM.h"
@@ -44,10 +37,10 @@ IRM::~IRM() {
 }
 
 void IRM::initPointers() {
-    ConTable = getRINAModule<ConnectionTable*>(this, 1, {MOD_CONNTABLE});
+    ConTable = dynamic_cast<ConnectionTable*>(this->getParentModule()->getSubmodule(MOD_CONNTABLE));
     if (!ConTable)
             error("ConTab is NULL!");
-    DifAllocator = getRINAModule<DA*>(this, 2, {MOD_DIFALLOC, MOD_DA});
+    DifAllocator = dynamic_cast<DA*>(this->getParentModule()->getParentModule()->getSubmodule(MOD_DIFALLOC)->getSubmodule(MOD_DA));
 }
 
 void IRM::initialize() {
@@ -61,27 +54,17 @@ void IRM::handleMessage(cMessage* msg) {
         bool isGoingUp = false;
         cGate* g = ConTable->findOutputGate(msg->getArrivalGate(), isGoingUp);
         //Send out if gate exist
-        cPacket* packet = dynamic_cast<cPacket*>(msg);
-        cPacket* outPacket;
+
         if (g) {
             if (isGoingUp) {
                 statPassUp++;
                 emit(sigStatIRMPassUp, true);
-                outPacket = packet->decapsulate();
-                delete packet;
             }
-            else
-            {
+            else {
                 statPassDown++;
                 emit(sigStatIRMPassDown, true);
-                SDUData* sduData = new SDUData();
-                sduData->encapsulate(packet);
-                outPacket = sduData;
             }
-
-
-            send(outPacket, g);
-
+            send(msg, g);
         }
         else {
             EV << "Received message but destination gate is not in the ConnectionTable!" << endl;
@@ -99,13 +82,11 @@ void IRM::handleMessage(cMessage* msg) {
 }
 
 void IRM::initSignalsAndListeners() {
-    cModule* catcher = this->getModuleByPath("^.^");
+    cModule* catcher = this->getParentModule()->getParentModule();
 
     //Signals that this module emits
-    /*
     sigIRMAllocReq      = registerSignal(SIG_IRM_AllocateRequest);
     sigIRMDeallocReq    = registerSignal(SIG_IRM_DeallocateRequest);
-    */
     sigStatIRMPassUp      = registerSignal(SIG_STAT_IRM_UP);
     sigStatIRMPassDown      = registerSignal(SIG_STAT_IRM_DOWN);
 
@@ -206,32 +187,26 @@ bool IRM::receiveDeallocationRequestFromAe(Flow* flow) {
     Enter_Method("receiveDeallocateRequest()");
     EV << this->getFullPath() << " received DeallocationRequest" << endl;
 
-    auto cte = ConTable->findEntryByFlow(flow);
+    //Command target FA to allocate flow
+    FABase* fab = ConTable->getFa(flow);
     bool status = false;
 
-    if (cte) {
-        //TODO: Vesely - Change CONNECT_PENDING to establish ASAP when AE Enrollment
-        //               implementation is finished
-        if (cte->getConStatus() == ConnectionTableEntry::CON_CONNECTPENDING
-                && cte->getSouthGateOut() && cte->getSouthGateIn() ) {
-            status = cte->getFlowAlloc()->receiveDeallocateRequest(flow);
-        }
-        else {
-            EV << "Connection not in proper state or south gates are missing!" << endl;
-        }
+    if (fab) {
+        //signalizeDeallocateRequest(fl);
+        status = fab->receiveDeallocateRequest(flow);
     }
-    else {
-        EV << "There is no valid entry in Connection Table!" << endl;
-    }
+    else
+        EV << "FA could not be found in ConnectionTable!" << endl;
+
     return status;
 }
-/*
+
 void IRM::signalizeAllocateRequest(Flow* flow) {
     //EV << "!!!!VYemitovano" << endl;
     //EV << "Emits AllocReq Flow = " << flow->getSrcApni() << "_" << flow->getDstApni() << endl;
     emit(sigIRMAllocReq, flow);
 }
-*/
+
 void IRM::newFlow(Flow* flow) {
     Enter_Method("newFlow()");
 
@@ -260,15 +235,17 @@ void IRM::newFlow(Flow* flow) {
 }
 
 void IRM::updateDisplayString() {
+    cDisplayString& disp = getDisplayString();
+    disp.setTagArg("t", 1, "t");
     std::ostringstream os;
     os << "up: " << statPassUp << endl << "down: " << statPassDown << endl << "discard: " << statDiscarded;
-    setPolicyDisplayString(this, os.str().c_str());
+    disp.setTagArg("t", 0, os.str().c_str());
 }
-/*
+
 void IRM::signalizeDeallocateRequest(Flow* flow) {
     emit(sigIRMDeallocReq, flow);
 }
-*/
+
 ConnectionTable* IRM::getConTable() const {
     return ConTable;
 }
@@ -276,11 +253,6 @@ ConnectionTable* IRM::getConTable() const {
 bool IRM::receiveAllocationResponsePositiveFromIpc(Flow* flow) {
     Enter_Method("allocationResponsePositive()");
     bool status = createBindings(flow);
-
-    status ?
-    changeStatus(flow, ConnectionTableEntry::CON_CONNECTPENDING)
-    :
-    changeStatus(flow, ConnectionTableEntry::CON_ERROR);
     return status;
 }
 
@@ -347,7 +319,7 @@ int IRM::getApGateHandle(Flow* flow) const {
     ConnectionTableEntry* cte = ConTable->findEntryByFlow(flow);
     if (cte && cte->getNorthGateIn()) {
         std::string desc = cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getFullName();
-        //EV << "!!!!!!!!!!!!!!" << desc << endl;
+        EV << "!!!!!!!!!!!!!!" << desc << endl;
         return cte->getNorthGateIn()->getPreviousGate()->getPreviousGate()->getIndex();
     }
     return VAL_UNDEF_HANDLE;

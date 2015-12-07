@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "RMTPort.h"
 
@@ -43,7 +38,8 @@ void RMTPort::initialize()
     southInputGate = gateHalf(GATE_SOUTHIO, cGate::INPUT);
     southOutputGate = gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
-    queueIdGen = getRINAModule<QueueIDGenBase*>(this, 3, {MOD_RESALLOC, MOD_POL_RA_IDGENERATOR});
+    queueIdGen = check_and_cast<QueueIDGenBase*>
+            (getModuleByPath("^.^.^.resourceAllocator.queueIdGenerator"));
 
     sigStatRMTPortUp = registerSignal(SIG_STAT_RMTPORT_UP);
     sigStatRMTPortDown = registerSignal(SIG_STAT_RMTPORT_DOWN);
@@ -64,7 +60,7 @@ void RMTPort::initialize()
 
 void RMTPort::postInitialize()
 {
-    // this will be nullptr if this IPC doesn't use a channel
+    // this will be NULL if this IPC doesn't use a channel
     outputChannel = southOutputGate->findTransmissionChannel();
 }
 
@@ -88,80 +84,68 @@ void RMTPort::handleMessage(cMessage* msg)
 
         delete msg;
     }
-    else
+    else if (msg->getArrivalGate() == southInputGate) // incoming message
     {
-//        PDU* pdu = dynamic_cast<PDU*>(msg);
-//        if (pdu != nullptr)
-//        {
-            if (msg->getArrivalGate() == southInputGate) // incoming message
+        if (dynamic_cast<CDAPMessage*>(msg) != NULL)
+        { // this will go away when we figure out management flow pre-allocation
+            send(msg, getManagementQueue(RMTQueue::INPUT)->getInputGate()->getPreviousGate());
+            emit(sigStatRMTPortUp, true);
+        }
+        else if (dynamic_cast<PDU*>(msg) != NULL)
+        {
+            // get a proper queue for this message
+            RMTQueue* inQueue = getQueueById(RMTQueue::INPUT,
+                                             queueIdGen->generateID((PDU*)msg).c_str());
+
+            if (inQueue != NULL)
             {
-              SDUData* sduData = dynamic_cast<SDUData*>(msg);
-              if(sduData == nullptr){
-                delete msg;
-                EV << "this type of message isn't supported!" << endl;
-                return;
-              }
-              PDU* pdu = static_cast<PDU*>(sduData->decapsulate());
-              delete sduData;
-                // get a proper queue for this message
-                std::string queueID =
-                        queueIdGen->generateInputQueueID(pdu);
-
-                RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
-
-                if (inQueue != nullptr)
-                {
-                    send(pdu, inQueue->getInputGate()->getPreviousGate());
-                    emit(sigStatRMTPortUp, true);
-                }
-                else
-                {
-                    EV << getFullPath()
-                       << ": no input queue of such queue-id (" << queueID
-                       << ") available!" << endl;
-                    EV << pdu->getConnId().getQoSId() << endl;
-                }
+                send(msg, inQueue->getInputGate()->getPreviousGate());
+                emit(sigStatRMTPortUp, true);
             }
-            else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
+            else
             {
-                PDU* pdu = dynamic_cast<PDU*>(msg);
-                if (pdu == nullptr){
-                  delete msg;
-                  EV << "this type of message isn't supported!" << endl;
-                  return;
-                }
-                setOutputBusy();
-                // start the transmission
-                SDUData* sduData = new SDUData();
-                sduData->encapsulate(pdu);
-                send(sduData, southOutputGate);
+                EV << "no input queue with such ID is available!";
+            }
+        }
+        else
+        {
+            EV << "this type of message isn't supported!" << endl;
+        }
+    }
+    else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
+    {
+        cPacket* packet = NULL;
+        if ((packet = dynamic_cast<cPacket*>(msg)) != NULL)
+        {
+            setOutputBusy();
+            // start the transmission
+            send(packet, southOutputGate);
 
-                // determine when should the port be ready to serve again
-                if (outputChannel != nullptr)
-                { // we're using a channel, likely with some sort of data rate/delay
-                    simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
-                    if (transmitEnd > simTime())
-                    { // transmit requires some simulation time
-                        scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
-                    }
-                    else
-                    {
-                        scheduleNextWrite();
-                        emit(sigStatRMTPortDown, true);
-                    }
+            // determine when should the port be ready to serve again
+            if (outputChannel != NULL)
+            { // we're using a channel, likely with some sort of data rate/delay
+                simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
+                if (transmitEnd > simTime())
+                { // transmit requires some simulation time
+                    scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
                 }
                 else
-                { // there isn't any delay or rate control in place, the PDU is already sent
+                {
                     scheduleNextWrite();
                     emit(sigStatRMTPortDown, true);
-                    emit(sigRMTPortReadyToWrite, this);
                 }
             }
-//        }
-//        else
-//        {
-//            EV << "this type of message isn't supported!" << endl;
-//        }
+            else
+            { // there isn't any delay or rate control in place
+                scheduleNextWrite();
+                emit(sigStatRMTPortDown, true);
+                emit(sigRMTPortReadyToWrite, this);
+            }
+        }
+        else
+        {
+            EV << "this type of message isn't supported!" << endl;
+        }
     }
 }
 
@@ -211,11 +195,18 @@ cGate* RMTPort::getSouthOutputGate() const
     return southOutputGate;
 }
 
-RMTQueue* RMTPort::getFirstQueue(RMTQueueType type) const
+RMTQueue* RMTPort::getManagementQueue(RMTQueueType type) const
 {
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     return queueVect.front();
+}
+
+RMTQueue* RMTPort::getFirstQueue(RMTQueueType type) const
+{
+    const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
+
+    return queueVect.at(1);
 }
 
 RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const
@@ -223,10 +214,11 @@ RMTQueue* RMTPort::getLongestQueue(RMTQueueType type) const
     const RMTQueues& queueVect = (type == RMTQueue::INPUT ? inputQueues : outputQueues);
 
     int longest = 0;
-    RMTQueue* result = nullptr;
+    RMTQueue* result = NULL;
 
-    for(auto const q : queueVect)
+    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
+        RMTQueue* q = *it;
         if (q->getLength() > longest)
         {
             longest = q->getLength();
@@ -243,14 +235,15 @@ RMTQueue* RMTPort::getQueueById(RMTQueueType type, const char* queueId) const
     std::ostringstream fullId;
     fullId << (type == RMTQueue::INPUT ? "inQ_" : "outQ_") << queueId;
 
-    for(auto const q : queueVect)
+    for(RMTQueuesConstIter it = queueVect.begin(); it != queueVect.end(); ++it)
     {
+        RMTQueue* q = *it;
         if (!opp_strcmp(q->getFullName(), fullId.str().c_str()))
         {
             return q;
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 bool RMTPort::isOutputReady()
@@ -342,21 +335,20 @@ void RMTPort::redrawGUI(bool redrawParent)
         if (redrawParent)
         {
             std::ostringstream ostr;
-            ostr << "dstApp: " << endl << dstAppAddr << endl
-                 << "QoS-id: " << endl << dstAppQoS;
+            ostr << "dst app: " << dstAppAddr << endl;
             if (blockedInput)
             {
-                ostr << endl << "input blocked";
+                ostr << "input blocked" << endl;
             }
             if (blockedOutput)
             {
-                ostr << endl << "output blocked" << endl;
+                ostr << "output blocked" << endl;
             }
 
             cDisplayString& dStr = getParentModule()->getDisplayString();
 
             dStr.setTagArg("t", 0, ostr.str().c_str());
-            dStr.setTagArg("t", 1, "r");
+            dStr.setTagArg("t", 1, "t");
         }
     }
 }
@@ -373,17 +365,15 @@ void RMTPort::setFlow(Flow* flow)
     // display address of the remote IPC on top of the module
     if (ev.isGUI())
     {
-        if (flow != nullptr)
+        if (flow != NULL)
         {
             // shitty temporary (yeah, right) hack to strip the layer name off
             const std::string& dstAppFull = flow->getDstApni().getApn().getName();
             dstAppAddr = dstAppFull.substr(0, dstAppFull.find("_"));
-            dstAppQoS = flow->getConId().getQoSId();
         }
         else
         {
             dstAppAddr = "N/A (PHY)";
-            dstAppQoS = "N/A (medium)";
         }
         redrawGUI(true);
     }

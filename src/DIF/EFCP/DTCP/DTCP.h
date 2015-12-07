@@ -1,24 +1,20 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+// Copyright © 2014 PRISTINE Consortium (http://ict-pristine.eu)
+//  
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public License
+// as published by the Free Software Foundation; either version 3
+// of the License, or (at your option) any later version.
 //
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program; if not, see <http://www.gnu.org/licenses/>.
+//
 /*
  * DTCP.h
  *
@@ -29,7 +25,6 @@
 #ifndef DTCP_H_
 #define DTCP_H_
 
-#include <omnetpp.h>
 #include <csimplemodule.h>
 
 //#include "RXControl.h"
@@ -41,23 +36,21 @@
 #include "DTCPTimers_m.h"
 
 /* Policies */
-#include "ECNPolicyBase.h"
-#include "RcvrFCPolicyBase.h"
-#include "RcvrAckPolicyBase.h"
-#include "ReceivingFCPolicyBase.h"
-#include "SendingAckPolicyBase.h"
-#include "LostControlPDUPolicyBase.h"
-#include "RcvrControlAckPolicyBase.h"
-#include "SenderAckPolicyBase.h"
-#include "SndFCOverrunPolicyBase.h"
-#include "RcvFCOverrunPolicyBase.h"
-#include "NoOverridePeakPolicyBase.h"
-#include "TxControlPolicyBase.h"
-#include "NoRateSlowDownPolicyBase.h"
-#include "ReconcileFCPolicyBase.h"
-#include "RateReductionPolicyBase.h"
-#include "ECNSlowDownPolicyBase.h"
-#include "RxTimerExpiryPolicyBase.h"
+#include "DTCPECNPolicyBase.h"
+#include "DTCPRcvrFCPolicyBase.h"
+#include "DTCPRcvrAckPolicyBase.h"
+#include "DTCPReceivingFCPolicyBase.h"
+#include "DTCPSendingAckPolicyBase.h"
+#include "DTCPLostControlPDUPolicyBase.h"
+#include "DTCPRcvrControlAckPolicyBase.h"
+#include "DTCPSenderAckPolicyBase.h"
+#include "DTCPFCOverrunPolicyBase.h"
+#include "DTCPNoOverridePeakPolicyBase.h"
+#include "DTCPTxControlPolicyBase.h"
+#include "DTCPNoRateSlowDownPolicyBase.h"
+#include "DTCPReconcileFCPolicyBase.h"
+#include "DTCPRateReductionPolicyBase.h"
+#include "DTCPECNSlowDownPolicyBase.h"
 
 class DTP;
 
@@ -70,40 +63,34 @@ class DTCP: public cSimpleModule {
 //    FlowControl* flowControl;
 //    RXControl* rxControl;
 
-    ECNPolicyBase* ecnPolicy;
-    ECNSlowDownPolicyBase* ecnSlowDownPolicy;
-    RcvrFCPolicyBase* rcvrFCPolicy;
-    RcvrAckPolicyBase* rcvrAckPolicy;
-    ReceivingFCPolicyBase* receivingFCPolicy;
-    SendingAckPolicyBase* sendingAckPolicy;
-    LostControlPDUPolicyBase* lostControlPDUPolicy;
-    RcvrControlAckPolicyBase* rcvrControlAckPolicy;
-    SenderAckPolicyBase* senderAckPolicy;
-    SndFCOverrunPolicyBase* sndFcOverrunPolicy;
-    RcvFCOverrunPolicyBase* rcvFcOverrunPolicy;
-    NoOverridePeakPolicyBase* noOverridePeakPolicy;
-    TxControlPolicyBase* txControlPolicy;
-    NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
-    ReconcileFCPolicyBase* reconcileFCPolicy;
-    RateReductionPolicyBase* rateReductionPolicy;
-    RxTimerExpiryPolicyBase* rxTimerExpiryPolicy;
-
+    DTCPECNPolicyBase* ecnPolicy;
+    DTCPRcvrFCPolicyBase* rcvrFCPolicy;
+    DTCPRcvrAckPolicyBase* rcvrAckPolicy;
+    DTCPReceivingFCPolicyBase* receivingFCPolicy;
+    DTCPSendingAckPolicyBase* sendingAckPolicy;
+    DTCPLostControlPDUPolicyBase* lostControlPDUPolicy;
+    DTCPRcvrControlAckPolicyBase* rcvrControlAckPolicy;
+    DTCPSenderAckPolicyBase* senderAckPolicy;
+    DTCPFCOverrunPolicyBase* fcOverrunPolicy;
+    DTCPNoOverridePeakPolicyBase* noOverridePeakPolicy;
+    DTCPTxControlPolicyBase* txControlPolicy;
+    DTCPNoRateSlowDownPolicyBase* noRateSlowDownPolicy;
+    DTCPReconcileFCPolicyBase* reconcileFCPolicy;
+    DTCPRateReductionPolicyBase* rateReductionPolicy;
+    DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
 
 
     /*Timers*/
-//    WindowTimer* windowTimer;
+    WindowTimer* windowTimer;
     DTCPSendingRateTimer sendingRateTimer;
 
     void schedule(DTCPTimers *timer, double time = 0.0);
-//    void resetWindowTimer();
+    void resetWindowTimer();
 
     void sendAckPDU();
     void flushAllQueuesAndPrepareToDie();
 
     void handleSendingRateTimer(DTCPSendingRateTimer* timer);
-    void handleRendezvousTimer(DTCPRendezvousTimer* rendezTimer);
-    void startReliableCPDUTimer();
-    void stopReliableCPDUTimer();
 
 public:
 
@@ -115,7 +102,7 @@ public:
     DTCPState* getDTCPState() const;
 
 
-//    void handleWindowTimer(WindowTimer* timer);
+    void handleWindowTimer(WindowTimer* timer);
     void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
 
 
@@ -129,7 +116,7 @@ public:
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
     unsigned int getSndRtWinEdge();
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
-    unsigned int getRcvRightWinEdge();
+    unsigned int getRcvRtWinEdge();
 
     unsigned int getRcvCredit();
 
@@ -151,9 +138,6 @@ public:
     void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
     void incPdusSentInTimeUnit();
 
-    unsigned int getPdusRcvdInTimeUnit() const;
-
-
     unsigned int getSendingRate() const;
     void setSendingRate(unsigned int sendingRate);
 
@@ -165,7 +149,7 @@ public:
     void incDupFC();
     unsigned int getDupFC() const;
 
-    unsigned int getSndLeftWinEdge() const;
+    unsigned int getSenderLeftWinEdge() const;
     void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
     void updateSenderLWE(unsigned int seqNum);
 
@@ -178,8 +162,7 @@ public:
     bool runLostControlPDUPolicy(DTPState* dtpState);
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
-    bool runSndFCOverrunPolicy(DTPState* dtpState);
-    bool runRcvFCOverrunPolicy(DTPState* dtpState);
+    bool runFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
     bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
     bool runNoRateSlowDownPolicy(DTPState* dtpState);
@@ -187,6 +170,7 @@ public:
     bool runRateReductionPolicy(DTPState* dtpState);
     bool runECNSlowDownPolicy(DTPState* dtpState);
 
+    //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
 
 
@@ -195,28 +179,8 @@ public:
     void redrawGUI();
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
-    void scheduleRxTimerExpiry();
-    void setSndFcOverrunPolicy(SndFCOverrunPolicyBase* sndFcOverrunPolicy);
-    void setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy);
-    void setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy);
-    void setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy);
-    void setRateReductionPolicy(RateReductionPolicyBase* rateReductionPolicy);
-    void setRcvrAckPolicy(RcvrAckPolicyBase* rcvrAckPolicy);
-    void setRcvrControlAckPolicy(RcvrControlAckPolicyBase* rcvrControlAckPolicy);
-    void setRcvrFcPolicy(RcvrFCPolicyBase* rcvrFcPolicy);
-    void setReceivingFcPolicy(ReceivingFCPolicyBase* receivingFcPolicy);
-    void setReconcileFcPolicy(ReconcileFCPolicyBase* reconcileFcPolicy);
-    void setRxTimerExpiryPolicy(RxTimerExpiryPolicyBase* rxTimerExpiryPolicy);
-    void setSenderAckPolicy(SenderAckPolicyBase* senderAckPolicy);
-    void setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy);
-    void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
-    void setDtcpState(DTCPState* dtcpState);
-    void setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy);
-    void setECNPolicy(ECNPolicyBase* ecnPolicy);
-    void setECNSlowDownPolicy(ECNSlowDownPolicyBase* ecnSlowDownPolicy);
-    void startRendezvousTimer();
 
-  protected:
+protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
     int numInitStages() const

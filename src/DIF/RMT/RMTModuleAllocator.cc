@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "RMTModuleAllocator.h"
 
@@ -26,10 +21,11 @@ Define_Module(RMTModuleAllocator);
 
 void RMTModuleAllocator::initialize()
 {
-    qMonPolicy = getRINAModule<RMTQMonitorBase*>(this, 1, {MOD_POL_RMT_QMONITOR});
+    qMonPolicy = check_and_cast<RMTQMonitorBase*>
+        (getModuleByPath("^.queueMonitorPolicy"));
 
     portCount = 0;
-    interfacePort = nullptr;
+    interfacePort = NULL;
 
     // TODO: purge this crap and think of something smarter
     // port module coordinates
@@ -50,19 +46,25 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     queueName << strType << queueId;
 
     RMTQueue* queue = lookup(port, type, queueName.str().c_str());
-    if (queue != nullptr)
+    if (queue)
     {
         EV << "addQueue(): Queue with this ID already exists!";
         return queue;
     }
 
     // instantiate a new module
-    cModuleType *moduleType = cModuleType::get(MOD_RMT_QUEUE);
+    cModuleType *moduleType = cModuleType::get("rina.DIF.RMT.RMTQueue");
     cModule *newModule = moduleType->createScheduleInit(queueName.str().c_str(), portWrapper);
     queue = dynamic_cast<RMTQueue*>(newModule);
 
+    // modify the position a little
+//    cDisplayString& disp = queue->getDisplayString();
+//    disp.setTagArg("p", 0, atoi(port->getDisplayString().getTagArg("p", 0)) - 40);
+//    disp.setTagArg("p", 1, 130 + (portQueueCount[port] * 40));
+//    portQueueCount[port] += 1;
+
     // create bindings to other modules
-    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
+    cModule* rmt = getModuleByPath("^.rmt");
     std::ostringstream combinedQueueName;
     combinedQueueName << portWrapper->getFullName() << queueName.str();
     if (type == RMTQueue::OUTPUT)
@@ -100,10 +102,22 @@ RMTQueue* RMTModuleAllocator::addQueue(RMTQueueType type, RMTPort* port, const c
     }
 
     queue->setType(type);
-    queueToPort[queue] = port;
     qMonPolicy->postQueueCreation(queue);
+    queueToPort[queue] = port;
 
     return queue;
+}
+
+void RMTModuleAllocator::addMgmtQueues(RMTPort* port)
+{
+    cModule* inQ = addQueue(RMTQueue::INPUT, port, "M");
+    cModule* outQ = addQueue(RMTQueue::OUTPUT, port, "M");
+
+    cDisplayString& dispIn = inQ->getDisplayString();
+    cDisplayString& dispOut = outQ->getDisplayString();
+
+    dispIn.setTagArg("i2", 0, "status/execute");
+    dispOut.setTagArg("i2", 0, "status/execute");
 }
 
 RMTPort* RMTModuleAllocator::addPort(Flow* flow)
@@ -113,9 +127,9 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     portCount++;
 
     // initialize a wrapper with port inside it
-    cModuleType* moduleType = cModuleType::get(MOD_RMT_PORTWRAPPER);
+    cModuleType* moduleType = cModuleType::get("rina.DIF.RMT.RMTPortWrapper");
     cModule* portWrapper = moduleType->createScheduleInit(portName.str().c_str(), getParentModule());
-    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
+    RMTPort* port = check_and_cast<RMTPort*>(portWrapper->getSubmodule("port"));
 
     port->setFlow(flow);
 
@@ -123,15 +137,11 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     cDisplayString& portDisp = portWrapper->getDisplayString();
     portDisp.setTagArg("p", 0, portXCoord);
     portDisp.setTagArg("p", 1, portYCoord);
-    portXCoord += 120;
+    portXCoord += 80;
 
-    if (flow == nullptr)
+    if (flow == NULL)
     {
         interfacePort = port;
-    }
-    else if (flow->isManagementFlow())
-    {
-        portDisp.setTagArg("i2", 0, "status/execute");
     }
 
     return port;
@@ -139,7 +149,7 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
 
 void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 {
-    cModule* rmt = getRINAModule<cModule*>(this, 1, {MOD_RMT});
+    cModule* rmt = getModuleByPath("^.rmt");
     RMTPort* port = queueToPort[queue];
     cGate* rmtGate = queue->getRMTAccessGate();
     cGate* qOutputGate = queue->getOutputGate();
@@ -171,24 +181,24 @@ void RMTModuleAllocator::removeQueue(RMTQueue* queue)
 
 void RMTModuleAllocator::removeQueues(const RMTQueues& queues)
 {
-    for(auto const q : queues)
+    for(RMTQueues::const_iterator it = queues.begin(); it != queues.end(); ++it )
     {
-        removeQueue(q);
+        removeQueue((RMTQueue*)*it);
     }
 }
 
 RMTQueue* RMTModuleAllocator::lookup(RMTPort* port, RMTQueueType type, const char* queueName)
 {
     RMTQueues queues = (type == RMTQueue::OUTPUT ? port->getOutputQueues() : port->getInputQueues());
-
-    for(auto const q : queues)
+    for(RMTQueuesIter it = queues.begin(); it != queues.end(); ++it )
     {
-        if (!opp_strcmp(q->getName(), queueName))
+        RMTQueue* a = *it;
+        if (!opp_strcmp(a->getName(), queueName))
         {
-            return q;
+            return a;
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 void RMTModuleAllocator::removePort(RMTPort* port)
@@ -215,8 +225,11 @@ RMTPort* RMTModuleAllocator::getPort(const char* name)
     cModule* portWrapper = getParentModule()->getSubmodule(name);
     if (portWrapper)
     {
-        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule(MOD_RMTPORT));
+        return dynamic_cast<RMTPort*>(portWrapper->getSubmodule("port"));
+    }
+    else
+    {
+        return NULL;
     }
 
-    return nullptr;
 }

@@ -1,24 +1,19 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
+// Copyright © 2014 - 2015 PRISTINE Consortium (http://ict-pristine.eu)
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #ifndef __RINA_RMTQUEUE_H_
 #define __RINA_RMTQUEUE_H_
@@ -29,7 +24,6 @@
 #include "RINASignals.h"
 #include "PDU.h"
 
-#include "Flow.h"
 
 class RMTQueue : public cSimpleModule
 {
@@ -96,6 +90,20 @@ class RMTQueue : public cSimpleModule
      * @param value new threshold
      */
     void setThreshLength(int value);
+//
+//    /**
+//     * Returns the queue ID. Its content is determined by RA's QueueIdGen policy.
+//     *
+//     * @return queue ID
+//     */
+//    const char* getQueueId() const;
+//
+//    /**
+//     * Sets the queue ID.
+//     *
+//     * @param queueId new queue ID
+//     */
+//    void setQueueId(const char* queueId);
 
     /**
      * Returns a pointer to the first PDU in the queue.
@@ -134,9 +142,6 @@ class RMTQueue : public cSimpleModule
      */
     std::string info() const;
 
-    void setFlow(Flow *);
-    const Flow* getFlow() const;
-
   protected:
     virtual void initialize();
     virtual void finish();
@@ -155,8 +160,6 @@ class RMTQueue : public cSimpleModule
     cGate* outputGate;
     cGate* inputGate;
 
-    Flow  * flow;
-
     void setType(queueType type);
 
     void enqueuePDU(cPacket* pdu);
@@ -169,8 +172,7 @@ class RMTQueue : public cSimpleModule
 
     void redrawGUI();
 
-    simsignal_t sigRMTPDUPreRcvd;
-    simsignal_t sigRMTPDUPostRcvd;
+    simsignal_t sigRMTPDURcvd;
     simsignal_t sigRMTPDUPreSend;
     simsignal_t sigRMTPDUSent;
     simsignal_t sigStatRMTQueueLength;
@@ -178,6 +180,8 @@ class RMTQueue : public cSimpleModule
 
 typedef RMTQueue::queueType RMTQueueType;
 typedef std::vector<RMTQueue*>  RMTQueues;
+typedef RMTQueues::iterator  RMTQueuesIter;
+typedef RMTQueues::const_iterator  RMTQueuesConstIter;
 
 std::ostream& operator<< (std::ostream& os, const RMTQueue& cte);
 

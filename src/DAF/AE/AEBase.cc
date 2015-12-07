@@ -1,24 +1,17 @@
-// The MIT License (MIT)
-//
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
 #include "AEBase.h"
 
@@ -62,7 +55,6 @@ const std::string& AEBase::getAuthName() const {
 const std::string& AEBase::getAuthPassword() const {
     return authPassword;
 }
-
 const std::string& AEBase::getAuthOther() const {
     return authOther;
 }
@@ -109,8 +101,8 @@ CDAPConnectionState AEBase::getConStatus(){
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getModuleByPath("^.^")->par(PAR_APNAME).stdstringValue();
-    srcApInstance = this->getModuleByPath("^.^")->par(PAR_APINSTANCE).stdstringValue();
+    srcApName = this->getParentModule()->getParentModule()->par(PAR_APNAME).stdstringValue();
+    srcApInstance = this->getParentModule()->getParentModule()->par(PAR_APINSTANCE).stdstringValue();
     srcAeName = this->par(PAR_AENAME).stdstringValue();
     srcAeInstance = this->par(PAR_AEINSTANCE).stdstringValue();
 
@@ -124,11 +116,11 @@ void AEBase::initialize()
     initQoSRequiremets();
 }
 
-const QoSReq& AEBase::getQoSRequirements() const {
+const QoSCube& AEBase::getQoSRequirements() const {
     return QoSRequirements;
 }
 
-void AEBase::setQoSRequirements(const QoSReq& qoSRequirements) {
+void AEBase::setQoSRequirements(const QoSCube& qoSRequirements) {
     QoSRequirements = qoSRequirements;
 }
 
@@ -150,8 +142,9 @@ void AEBase::initQoSRequiremets() {
            hasPar(PAR_DELAY) &&
            hasPar(PAR_JITTER) &&
            hasPar(PAR_COSTTIME) &&
-           hasPar(PAR_COSTBITS)
-           //&& hasPar(PAR_ATIME)
+           hasPar(PAR_COSTBITS) &&
+           hasPar(PAR_ATIME)
+
           )
        ) {
         std::ostringstream ss;
@@ -159,22 +152,105 @@ void AEBase::initQoSRequiremets() {
         error(ss.str().c_str());
     }
 
-    //Create QoS req according to parameters
-    QoSReq req(par(PAR_AVGBW),par(PAR_AVGSDUBW),par(PAR_PEAKBWDUR),par(PAR_PEAKSDUBWDUR),par(PAR_BURSTPERIOD),par(PAR_BURSTDURATION),
-            par(PAR_UNDETECTBITERR).doubleValue(),par(PAR_PDUDROPPROBAB).doubleValue(),
-            par(PAR_MAXSDUSIZE),
-            par(PAR_PARTIALDELIVER).boolValue(),par(PAR_INCOMPLETEDELIVER).boolValue(),par(PAR_FORCEORDER).boolValue(),
-            par(PAR_MAXALLOWGAP),par(PAR_DELAY),par(PAR_JITTER),
-            par(PAR_COSTTIME),par(PAR_COSTBITS)
-            );
-    this->setQoSRequirements(req);
+    //Create QoS cube according to parameters
+    QoSCube cube;
+
+    int avgBand                 = VAL_QOSPARDONOTCARE;    //Average bandwidth (measured at the application in bits/sec)
+    int avgSDUBand              = VAL_QOSPARDONOTCARE;    //Average SDU bandwidth (measured in SDUs/sec)
+    int peakBandDuration        = VAL_QOSPARDONOTCARE;    //Peak bandwidth-duration (measured in bits/sec);
+    int peakSDUBandDuration     = VAL_QOSPARDONOTCARE;    //Peak SDU bandwidth-duration (measured in SDUs/sec);
+    int burstPeriod             = VAL_QOSPARDONOTCARE;    //Burst period measured in useconds
+    int burstDuration           = VAL_QOSPARDONOTCARE;    //Burst duration, measured in usecs fraction of Burst Period
+    double undetectedBitErr     = VAL_QOSPARDONOTCARE;    //Undetected bit error rate measured as a probability
+    double pduDropProbab        = VAL_QOSPARDONOTCARE;
+    int maxSDUsize              = VAL_QOSPARDONOTCARE;    //MaxSDUSize measured in bytes
+    bool partDeliv              = VAL_QOSPARDEFBOOL;      //Partial Delivery - Can SDUs be delivered in pieces rather than all at once?
+    bool incompleteDeliv        = VAL_QOSPARDEFBOOL;      //Incomplete Delivery - Can SDUs with missing pieces be delivered?
+    bool forceOrder             = VAL_QOSPARDEFBOOL;      //Must SDUs be delivered in order?
+    unsigned int maxAllowGap    = VAL_QOSPARDONOTCARE;    //Max allowable gap in SDUs, (a gap of N SDUs is considered the same as all SDUs delivered, i.e. a gap of N is a "don't care.")
+    int delay                   = VAL_QOSPARDONOTCARE;    //Delay in usecs
+    int jitter                  = VAL_QOSPARDONOTCARE;    //Jitter in usecs2
+    int costtime                = VAL_QOSPARDONOTCARE;    //measured in $/ms
+    int costbits                = VAL_QOSPARDONOTCARE;    //measured in $/Mb
+    double aTime               = VAL_QOSPARDONOTCARE;    //measured in ms
+
+    avgBand = par(PAR_AVGBW);
+    if (avgBand < 0)
+        avgBand = VAL_QOSPARDONOTCARE;
+    avgSDUBand = par(PAR_AVGSDUBW);
+    if (avgSDUBand < 0)
+        avgSDUBand = VAL_QOSPARDONOTCARE;
+    peakBandDuration = par(PAR_PEAKBWDUR);
+    if (peakBandDuration < 0)
+        peakBandDuration = VAL_QOSPARDONOTCARE;
+    peakSDUBandDuration = par(PAR_PEAKSDUBWDUR);
+    if (peakSDUBandDuration < 0)
+        peakSDUBandDuration = VAL_QOSPARDONOTCARE;
+    burstPeriod = par(PAR_BURSTPERIOD);
+    if (burstPeriod < 0)
+        burstPeriod = VAL_QOSPARDONOTCARE;
+    burstDuration = par(PAR_BURSTDURATION);
+    if (burstDuration < 0)
+        burstDuration = VAL_QOSPARDONOTCARE;
+    undetectedBitErr = par(PAR_UNDETECTBITERR).doubleValue();
+    if (undetectedBitErr < 0 || undetectedBitErr > 1 )
+        undetectedBitErr = VAL_QOSPARDONOTCARE;
+    pduDropProbab = par(PAR_PDUDROPPROBAB).doubleValue();
+    if (pduDropProbab < 0 || pduDropProbab > 1 )
+        pduDropProbab = VAL_QOSPARDONOTCARE;
+    maxSDUsize = par(PAR_MAXSDUSIZE);
+    if (maxSDUsize < 0)
+        maxSDUsize = VAL_QOSPARDONOTCARE;
+    partDeliv = par(PAR_PARTIALDELIVER);
+    incompleteDeliv = par(PAR_INCOMPLETEDELIVER);
+    forceOrder = par(PAR_FORCEORDER);
+    maxAllowGap = par(PAR_MAXALLOWGAP);
+    if (maxAllowGap < 0)
+        maxAllowGap = VAL_QOSPARDONOTCARE;
+    delay = par(PAR_DELAY);
+    if (delay < 0)
+        delay = VAL_QOSPARDONOTCARE;
+    jitter = par(PAR_JITTER);
+    if (jitter < 0)
+        jitter = VAL_QOSPARDONOTCARE;
+    costtime = par(PAR_COSTTIME);
+    if (costtime < 0)
+        costtime = VAL_QOSPARDONOTCARE;
+    costbits = par(PAR_COSTBITS);
+    if (costbits < 0)
+        costbits = VAL_QOSPARDONOTCARE;
+    aTime = par(PAR_ATIME).doubleValue();
+    if (aTime < 0)
+        aTime = VAL_QOSPARDONOTCARE;
+
+    cube.setQosId(0);
+    cube.setAvgBand(avgBand);
+    cube.setAvgSduBand(avgSDUBand);
+    cube.setPeakBandDuration(peakBandDuration);
+    cube.setPeakSduBandDuration(peakSDUBandDuration);
+    cube.setBurstPeriod(burstPeriod);
+    cube.setBurstDuration(burstDuration);
+    cube.setUndetectedBitErr(undetectedBitErr);
+    cube.setMaxSduSize(maxSDUsize);
+    cube.setPartialDelivery(partDeliv);
+    cube.setIncompleteDelivery(incompleteDeliv);
+    cube.setForceOrder(forceOrder);
+    cube.setMaxAllowGap(maxAllowGap);
+    cube.setDelay(delay);
+    cube.setJitter(jitter);
+    cube.setCostBits(costbits);
+    cube.setCostTime(costtime);
+    cube.setATime(aTime);
+
+    this->setQoSRequirements(cube);
+
     //EV << "QQQQQQ\n" << cube << "\n\nXXXX\n" << this->getQoSRequirements();
 
 }
 
 void AEBase::handleMessage(cMessage *msg)
 {
-
+    // TODO - Generated method body
 }
 
 Flow* AEBase::getFlowObject() const {
