@@ -1,6 +1,6 @@
 package rina.policies.DIF.Routing.PortsLoadRouting.PortsLoadLS;
 
-import rina.policies.DIF.Routing.IntRouting;
+import rina.src.DIF.Routing.IntRouting;
 
 simple PortsLoadLS like IntRouting
 {

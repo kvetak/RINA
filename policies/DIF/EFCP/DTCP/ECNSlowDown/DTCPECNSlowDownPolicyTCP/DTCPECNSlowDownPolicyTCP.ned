@@ -16,7 +16,7 @@
 // 
 
 package rina.policies.DIF.EFCP.DTCP.ECNSlowDown.DTCPECNSlowDownPolicyTCP;
-import rina.policies.DIF.EFCP.DTCP.ECNSlowDown.IntDTCPECNSlowDownPolicy;
+import rina.policies.DIF.EFCP.DTCP.ECNSlowDown.IntECNSlowDownPolicy;
 
 simple DTCPECNSlowDownPolicyTCP
 {

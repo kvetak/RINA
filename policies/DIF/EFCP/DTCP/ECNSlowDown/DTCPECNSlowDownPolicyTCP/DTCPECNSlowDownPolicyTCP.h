@@ -16,10 +16,10 @@
 #ifndef DTCPECNSLOWDOWNPOLICYTCP_H_
 #define DTCPECNSLOWDOWNPOLICYTCP_H_
 
-#include <DTCPECNSlowDownPolicyBase.h>
+#include <ECNSlowDownPolicyBase.h>
 #include "TxControlPolicyTCPTahoe.h"
 
-class DTCPECNSlowDownPolicyTCP: public DTCPECNSlowDownPolicyBase {
+class DTCPECNSlowDownPolicyTCP: public ECNSlowDownPolicyBase {
 public:
     virtual ~DTCPECNSlowDownPolicyTCP();
     DTCPECNSlowDownPolicyTCP();

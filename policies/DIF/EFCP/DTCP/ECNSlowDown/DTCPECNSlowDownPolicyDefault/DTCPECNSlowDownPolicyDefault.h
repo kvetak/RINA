@@ -16,9 +16,9 @@
 #ifndef DTCPECNSLOWDOWNPOLICYDEFAULT_H_
 #define DTCPECNSLOWDOWNPOLICYDEFAULT_H_
 
-#include <DTCPECNSlowDownPolicyBase.h>
+#include <ECNSlowDownPolicyBase.h>
 
-class DTCPECNSlowDownPolicyDefault: public DTCPECNSlowDownPolicyBase {
+class DTCPECNSlowDownPolicyDefault: public ECNSlowDownPolicyBase {
 public:
     virtual ~DTCPECNSlowDownPolicyDefault();
     DTCPECNSlowDownPolicyDefault();

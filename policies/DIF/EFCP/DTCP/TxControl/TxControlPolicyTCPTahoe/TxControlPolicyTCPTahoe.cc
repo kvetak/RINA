@@ -119,7 +119,7 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
         } else
             pduQ = dtpState->getGeneratedPDUQ();
 
-        for (it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSenderRightWinEdge() && sentNo <= sendCredit; sentNo++) {
+        for (it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSndRightWinEdge() && sentNo <= sendCredit; sentNo++) {
             dtpState->pushBackToPostablePDUQ((*it));
             flightSize++;
             slowedDown = false;

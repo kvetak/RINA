@@ -1,6 +1,6 @@
 package rina.policies.DIF.RA.PDUFG.PortsLoadGenerator;
 
-import rina.policies.DIF.RA.PDUFG.IntPDUFG;
+import rina.src.DIF.RA.PDUFG.IntPDUFG;
 
 simple PortsLoadGenerator like IntPDUFG
 {
