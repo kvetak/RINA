@@ -1374,7 +1374,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
           }
         }    // end of RateBased
 
-        if (dtcp->getDTCPState()->isClosedWindow() ^ dtcp->isSendingRateFullfilled())
+        if ((dtcp->getDTCPState()->isRateBased() && dtcp->getDTCPState()->isWinBased()) && (dtcp->getDTCPState()->isClosedWindow() ^ dtcp->isSendingRateFullfilled()))
         {
           dtcp->runReconcileFCPolicy(state);
         }
