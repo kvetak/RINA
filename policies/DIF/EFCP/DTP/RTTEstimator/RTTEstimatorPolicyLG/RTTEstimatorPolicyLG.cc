@@ -54,5 +54,5 @@ bool RTTEstimatorPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
           RTO = MIN_RTO;
       emit(sigStatRTTRTO, RTO);
 
-      return true;
+      return false;
 }

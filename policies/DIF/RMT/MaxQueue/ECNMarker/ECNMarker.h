@@ -30,10 +30,6 @@ class ECNMarker : public RMTMaxQBase
 {
   public:
     bool run(RMTQueue* queue);
-    void onPolicyInit();
-
-    simsignal_t sigStatECNMarker;
-
 };
 
 #endif /* ECNMARKER_H_ */

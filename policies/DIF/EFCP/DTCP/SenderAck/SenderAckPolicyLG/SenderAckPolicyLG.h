@@ -31,9 +31,16 @@
 #define SENDERACKLGPOLICY_H_
 
 #include <SenderAckPolicyBase.h>
+#include "TxControlPolicyLG.h"
 
 class SenderAckPolicyLG : public SenderAckPolicyBase
 {
+  private:
+    double load;
+    double gamma;
+
+    TxControlPolicyLG *txControlPolicyLG;
+
   public:
     SenderAckPolicyLG();
     virtual ~SenderAckPolicyLG();
@@ -41,7 +48,10 @@ class SenderAckPolicyLG : public SenderAckPolicyBase
 
     void initialize();
 
+    double getLoad();
+
     simsignal_t sigStatECNMarked;
+    simsignal_t sigStatApprLoad;
 
 };
 

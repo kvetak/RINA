@@ -34,4 +34,7 @@ simple SenderAckPolicyLG like IntSenderAckPolicy
         @signal[ECN_MARKED_CTRL](type=unsigned long);
         @statistic[dtcp-ecn-marked-ctrl](title="DTCP ECN Marked Control"; source="ECN_MARKED_CTRL"; record=vector, last);
         
+        @signal[APPR_LOAD](type=double);
+        @statistic[approximate-load](title="Load approximation"; source="APPR_LOAD"; record=vector, last);
+        
 }

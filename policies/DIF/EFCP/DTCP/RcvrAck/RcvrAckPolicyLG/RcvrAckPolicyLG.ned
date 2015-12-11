@@ -30,6 +30,7 @@ simple RcvrAckPolicyLG like IntRcvrAckPolicy
 {
         parameters:
         string policyName = "RcvrAck LG";
+        double gamma = default(0.02);
         @display("i=block/socket");
         
         @signal[ECN_MARKED_DATA](type=unsigned long);

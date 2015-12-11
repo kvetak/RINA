@@ -22,41 +22,49 @@
 
 package rina.examples.Congestion.DCCongestion;
 import ned.DatarateChannel;
-import rina.src.CS.Host1AP;
-import rina.src.CS.InteriorRouter2Int;
+import rina.src.CS.*;
 
 network DCCongestion
 {
     parameters:
-    	@display("bgb=368,202");
-    	
+        @display("bgb=367,296");
+
     types:
-        channel FastChannel extends ned.DatarateChannel {
-            @defaultname(FChan);            
+        channel FastChannel extends ned.DatarateChannel
+        {
+            @defaultname(FChan);
             datarate = 20Mbps;
             delay = 10ms;
             ber = 0;
         }
-        channel SlowChannel extends ned.DatarateChannel {
+        channel SlowChannel extends ned.DatarateChannel
+        {
             @defaultname(SChan);
             datarate = 10Mbps;
             delay = 10ms;
             ber = 0;
         }
-        	
+
     submodules:
-        host1: Host1AP {
-            @display("p=70,101");
+        host11: Host1AP {
+            @display("p=70,61");
         }
-        interiorRouter: InteriorRouter2Int {
+        host12: Host1AP {
+            @display("p=70,151");
+        }
+        host13: Host1AP {
+            @display("p=70,241");
+        }
+        interiorRouter: InteriorRouterNInt {
             @display("p=180,101");
         }
-        host2: Host1AP {
+        host21: HostNAP {
             @display("p=290,101");
         }
 
     connections allowunconnected:
-        host1.medium <--> e1: FastChannel <--> interiorRouter.medium++;
-        host2.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
-
+        host11.medium <--> e1: SlowChannel <--> interiorRouter.medium++;
+        host21.medium <--> e2: SlowChannel <--> interiorRouter.medium++;
+        host12.medium <--> e3: SlowChannel <--> interiorRouter.medium++;
+        host13.medium <--> e4: SlowChannel <--> interiorRouter.medium++;
 }

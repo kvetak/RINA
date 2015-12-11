@@ -31,30 +31,79 @@
 #include "DTCP.h"
 
 const char * ECN_MARKED_CTRL = "ECN_MARKED_CTRL";
+const char * APPR_LOAD = "APPR_LOAD";
 
 Register_Class(SenderAckPolicyLG);
 
 SenderAckPolicyLG::SenderAckPolicyLG()
 {
+    load = 0;
+    gamma = 0.004;
 }
 
 SenderAckPolicyLG::~SenderAckPolicyLG()
 {
 }
 
+double SenderAckPolicyLG::getLoad() {
+    return load;
+}
+
 void SenderAckPolicyLG::initialize() {
     sigStatECNMarked = registerSignal(ECN_MARKED_CTRL);
+    sigStatApprLoad = registerSignal(APPR_LOAD);
+
+
+    txControlPolicyLG = getRINAModule<TxControlPolicyLG*>(this, 1, {"txControlPolicy"});
 }
 
 bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 {
-  Enter_Method("SenderAckPolicyLG");
+    Enter_Method("SenderAckPolicyLG");
 
-  defaultAction(dtpState, dtcpState);
+    //  defaultAction(dtpState, dtcpState);
+//    DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
+    /* Default */
+    unsigned int endSeqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
+    unsigned int startSeqNum = endSeqNum;
+    bool startTrue = false;
 
-  if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
-      emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
-  }
+    int count = 0;
 
-  return false;
+    std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+    std::vector<DTCPRxExpiryTimer*>::iterator it;
+
+    for (unsigned int index = 0; index < rxQ->size(); )
+    {
+        DTCPRxExpiryTimer* timer = rxQ->at(index);
+        unsigned int seqNum =(timer->getPdu())->getSeqNum();
+
+        if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum)
+        {
+            dtcpState->deleteRxTimer(seqNum);
+            count++;
+
+            continue;
+        }
+        index++;
+    }
+    //update SendLeftWindowEdge
+    dtcpState->updateSndLWE(endSeqNum + 1);
+
+
+    if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
+        emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
+        if(load == 0)
+            load = 1;
+        else
+            load = (1 - gamma) * load + gamma * 1;
+    } else
+        load = (1 - gamma) * load + gamma * 0;
+
+    emit(sigStatApprLoad, load);
+
+    txControlPolicyLG->updateRate(load, count);
+    dtcpState->setClosedWindow(false);
+
+    return false;
 }

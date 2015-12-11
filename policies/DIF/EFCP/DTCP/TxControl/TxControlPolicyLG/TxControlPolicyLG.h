@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,22 +19,47 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file TxControlPolicyLG.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG Initial Sequence Number behavior
+ * @detail
+ */
 
-#include <ECNMarker.h>
+#ifndef TXCONTROLPOLICYLG_H_
+#define TXCONTROLPOLICYLG_H_
 
-Define_Module(ECNMarker);
+#include "TxControlPolicyBase.h"
 
-bool ECNMarker::run(RMTQueue* queue)
+#define INITIAL_RATE    0.04
+#define ALPHA           0.1
+#define RST_WND         1
+#define SEGMENT_SIZE    1460
+#define BANDWIDTH       9500000
+
+class TxControlPolicyLG : public TxControlPolicyBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+private:
+    double rate;
+    double alpha;
+    double flightSize;
+    double sendCredit;
+    double cwnd;
+
+    simsignal_t sigStatRate;
+    simsignal_t sigStatFlightSize;
+
+public:
+    TxControlPolicyLG();
+    virtual ~TxControlPolicyLG();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void updateRate(double load, double acked);
+    double getActualRate(DTPState* dtpState);
+    double getRate();
+
+    void initialize();
+};
+
+#endif /* TXCONTROLPOLICYLG_H_ */
