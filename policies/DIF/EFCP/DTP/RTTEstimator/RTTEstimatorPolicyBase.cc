@@ -48,7 +48,7 @@ double RTTEstimatorPolicyBase::getRTO() {
 void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
   double newRtt = dtpState->getRtt();
-    double alpha = 0.99;
+    double alpha = 0.998;
     /* Default */
     ControlPDU* pdu = (ControlPDU*) dtpState->getCurrentPdu();
     if (pdu->getType() & PDU_SEL_BIT)
