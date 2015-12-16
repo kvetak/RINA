@@ -56,7 +56,7 @@ public:
 
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port) = 0;
-    virtual void removedFlow(const Address &addr, RMTPort * port) = 0;
+    virtual void removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port) = 0;
 
     //Routing has processes a routing update
     virtual void routingUpdated() = 0;

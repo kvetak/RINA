@@ -54,10 +54,10 @@ class PortsLoadGenerator : public IntPDUFG
 public:
 
     // A new port has been inserted to another node.
-    virtual void insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port);
+    virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
 
     // A previous existing port has been deleted.
-    virtual void removedFlow(const Address &addr, RMTPort * port);
+    virtual void removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
 
     // Routing policy signal an update.
     virtual void routingUpdated();

@@ -71,7 +71,7 @@ void LatGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort
         }
     }
 }
-void LatGenerator::removedFlow(const Address &addr, RMTPort * port){
+void LatGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(portMetric(port, 0));
     if(neighbours[dst].size() <= 0){

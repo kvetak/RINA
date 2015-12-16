@@ -116,7 +116,10 @@ void PortsLoadGenerator::handleMessage(cMessage *msg)
     }
 }
 
-void PortsLoadGenerator::insertedFlow(const Address& addr, const QoSCube & qos, RMTPort* port)
+void PortsLoadGenerator::insertedFlow(
+    const Address &addr,
+    const QoSCube& qos,
+    RMTPort * port)
 {
     std::string dst = addr.getIpcAddress().getName();
 
@@ -197,30 +200,33 @@ bool PortsLoadGenerator::rateCacheEntryExists(
     return false;
 }
 
-void PortsLoadGenerator::removedFlow(const Address &addr, RMTPort * port)
+void PortsLoadGenerator::removedFlow(
+        const Address &addr,
+        const QoSCube& qos,
+        RMTPort * port)
 {
-//    std::string dst = addr.getIpcAddress().getName();
-//    neighbours[dst][qos].erase(port);
-//
-//    if(neighbours[dst][qos].size() <= 0)
-//    {
-//        neighbours[dst].erase(qos);
-//        rt->removeFlow(addr, dst, qos, true);
-//
-//        if(neighbours[dst].size() <= 0)
-//        {
-//            neighbours.erase(dst);
-//        }
-//
-//        if(rateCacheEntryExists(dst, qos))
-//        {
-//            // Removes the entry from the cache.
-//            rateCache[dst].erase(qos);
-//            rateCache.erase(dst);
-//        }
-//
-//        routingUpdated();
-//    }
+    std::string dst = addr.getIpcAddress().getName();
+    neighbours[dst][qos.getQosId()].erase(port);
+
+    if(neighbours[dst][qos.getQosId()].size() <= 0)
+    {
+        neighbours[dst].erase(qos.getQosId());
+        rt->removeFlow(addr, dst, qos.getQosId(), true);
+
+        if(neighbours[dst].size() <= 0)
+        {
+            neighbours.erase(dst);
+        }
+
+        if(rateCacheEntryExists(dst, qos.getQosId()))
+        {
+            // Removes the entry from the cache.
+            rateCache[dst].erase(qos.getQosId());
+            rateCache.erase(dst);
+        }
+
+        routingUpdated();
+    }
 }
 
 void PortsLoadGenerator::routingUpdated()
