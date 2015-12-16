@@ -64,7 +64,7 @@ void LatencySingleMEntries::insertedFlow(const Address &addr, const QoSCube &qos
         }
     }
 }
-void LatencySingleMEntries::removedFlow(const Address &addr, RMTPort * port){
+void LatencySingleMEntries::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(portMetric(port, 0));
     if(neighbours[dst].size() <= 0){

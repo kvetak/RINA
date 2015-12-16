@@ -49,7 +49,7 @@ void QoSDomainGenerator::insertedFlow(const Address& addr, const QoSCube & qos, 
     }
 }
 
-void QoSDomainGenerator::removedFlow(const Address &addr, RMTPort * port){
+void QoSDomainGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
 
     //Iterate through all QoS cubes and remove is inserted
