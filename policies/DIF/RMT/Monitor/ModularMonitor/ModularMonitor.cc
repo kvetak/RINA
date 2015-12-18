@@ -18,6 +18,9 @@
 #include <ModularMonitor.h>
 #include "ModularMonitorSignals.h"
 #include "AEConstantMsgs.h"
+#include "UserDataField.h"
+#include "PDUData.h"
+#include "InfectionSignals.h"
 
 namespace ModularMonitor {
 
@@ -98,15 +101,18 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
             outOutModule->pduReleased(queue, port);
             outDropModule->pduReleased(queue, port);
 
-            if(emitSignals) {
-                if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
-                    if(inTime.find(pdu) != inTime.end()) {
-
-                        int hdel = portServed[port]-inPos[pdu];
-                        std::string qos = pdu->getConnId().getQoSId();
-                        inTime.erase(pdu);
-                        inPos.erase(pdu);
-                        emit(signal, new HopDelayMsg(qos, hdel, this));
+            if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
+                if(inTime.find(pdu) != inTime.end()) {
+                    int hdel = portServed[port]-inPos[pdu];
+                    std::string qos = pdu->getConnId().getQoSId();
+                    inTime.erase(pdu);
+                    inPos.erase(pdu);
+                    emit(signal, new HopDelayMsg(qos, hdel, this));
+                    if(InfectedDataTransferPDU * idt =
+                            dynamic_cast<InfectedDataTransferPDU * >(
+                                    const_cast<PDU*>(pdu))) {
+                        idt->addPSTdelay(hdel);
+                        idt->setHopCount(idt->getHopCount()+1);
                     }
                 }
             }

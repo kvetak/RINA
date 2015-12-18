@@ -18,7 +18,7 @@
 
 
 
-namespace SimpleLatOrHopMEntries {
+namespace NSPSimpleLatOrHopMEntries {
 
 Register_Class(SimpleLatOrHopMEntries);
 

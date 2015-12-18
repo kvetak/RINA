@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
     <Metrics>
-    	<Qos id="MA"  />
+    	<Qos id="MA" urgent="true" />
     	<Qos id="GU" urgent="true" />
     	<Qos id="SN" />
     	<Qos id="sBE" urgent="true" />

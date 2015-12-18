@@ -5,7 +5,7 @@ import rina.src.DIF.RA.PDUFG.IntPDUFG;
 simple SimpleLatOrHopMEntries like IntPDUFG
 {
     parameters:
-        @class(SimpleLatOrHopMEntries::SimpleLatOrHopMEntries);
+        @class(NSPSimpleLatOrHopMEntries::SimpleLatOrHopMEntries);
         @display("i=block/socket");
         
         int infinite = default(32);

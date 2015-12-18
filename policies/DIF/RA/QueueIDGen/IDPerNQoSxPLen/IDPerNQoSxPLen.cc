@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include "IDPerNQoSxPLen.h"
-#include "PLQoSAwareMEntries.h"
+#include "IPLSPDUFG.h"
 
 using namespace std;
 
@@ -35,13 +35,9 @@ string IDPerNQoSxPLen::generateOutputQueueID(PDU* pdu)
 
     string qos = pdu->getConnId().getQoSId();
 
-    int h = hCount[qos][pdu->getDstAddr().getIpcAddress().getName()] + 255-pdu->getHopCount();
+    int h = hCount[qos][pdu->getDstAddr().getIpcAddress().getName()] + pdu->getHopCount();
     if(h >= maxHCount) { h = maxHCount; }
     if(h <= 0) { h = 1; }
-
-
-        cout << hCount[qos][pdu->getDstAddr().getIpcAddress().getName()] << " " << pdu->getHopCount() << endl;
-
 
     return qos + "_" + to_string(h);
 }
@@ -76,16 +72,14 @@ void IDPerNQoSxPLen::initialize() {
         }
     }
 
-    PLQoSAwareMEntries::PLQoSAwareMEntries * genMod;
-    genMod = check_and_cast<PLQoSAwareMEntries::PLQoSAwareMEntries *>
+    IPLSPDUFG * genMod = check_and_cast<IPLSPDUFG *>
         (getModuleByPath(par("genModPath").stdstringValue().c_str()));
     genMod->registerQidsGen(this);
 
 }
 
 void IDPerNQoSxPLen::finalize() {
-    PLQoSAwareMEntries::PLQoSAwareMEntries * genMod;
-    genMod = check_and_cast<PLQoSAwareMEntries::PLQoSAwareMEntries *>
+    IPLSPDUFG * genMod = check_and_cast<IPLSPDUFG *>
         (getModuleByPath(par("genModPath").stdstringValue().c_str()));
     genMod->unregisterQidsGen(this);
 }

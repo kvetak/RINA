@@ -25,7 +25,7 @@
 #include <set>
 
 
-namespace SimpleLatOrHopMEntries {
+namespace NSPSimpleLatOrHopMEntries {
 
 using namespace std;
 
@@ -44,7 +44,6 @@ protected:
     // Called after initialize
     virtual void onPolicyInit();
 
-private:
     DA * difA;
     IntIQoSMForwarding * fwd;
     IntTSimpleRouting<mType> * rt;

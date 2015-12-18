@@ -73,6 +73,7 @@ namespace Infection {
 
         pdu->setByteLength(size);
 
+        pdu->setHopCount(0);
        // ret.wT = 5555555;
        // pdu->setByteLength(0);
 
