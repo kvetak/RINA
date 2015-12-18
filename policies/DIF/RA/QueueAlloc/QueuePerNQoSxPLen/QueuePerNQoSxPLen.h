@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+#pragma once
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+#include <omnetpp.h>
 
+#include "QueueAllocBase.h"
 
-simple TailDrop like IntRMTMaxQPolicy 
+class QueuePerNQoSxPLen : public QueueAllocBase
 {
-    parameters:
-        @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
-}
+  public:
+    virtual void onNM1PortInit(RMTPort* port);
+
+    void onPolicyInit();
+  private:
+    int maxHCount;
+};

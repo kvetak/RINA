@@ -21,16 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+#include <IterativeMonitor.h>
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+namespace IterativeScheduling {
+
+using namespace std;
+
+Define_Module(IterativeMonitor);
+
+void IterativeMonitor::onPolicyInit(){
+    schedMod= getRINAModule<IterativeScheduling*>(this, 1, {MOD_POL_RMT_SCHEDULER});
+}
+
+void IterativeMonitor::postQueueCreation(RMTQueue* queue) {
+    if(queue->getType() == RMTQueue::OUTPUT){
+        RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+        schedMod->addQueue(port, queue);
+    }
+}
 
 
-simple TailDrop like IntRMTMaxQPolicy 
-{
-    parameters:
-        @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
+void IterativeMonitor::preQueueRemoval(RMTQueue* queue) {
+    if(queue->getType() == RMTQueue::OUTPUT){
+        RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+        schedMod->removeQueue(port, queue);
+    }
+}
 }

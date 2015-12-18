@@ -1,5 +1,6 @@
 //
-// The MIT License (MIT)
+
+// // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
 //
@@ -21,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RA.QueueIDGen.IntRAQueueIDGen;
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+package rina.policies.DIF.RA.QueueIDGen.IDPerNQoSxPLen;
 
-
-simple TailDrop like IntRMTMaxQPolicy 
+simple IDPerNQoSxPLen like IntRAQueueIDGen
 {
     parameters:
         @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
+        int maxHCount = default(1);
+        string genModPath;
+        xml data = default(xml("<data />"));
         
-        bool printAtEnd = default(false);
 }

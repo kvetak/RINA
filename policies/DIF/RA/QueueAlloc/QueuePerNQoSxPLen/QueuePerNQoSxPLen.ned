@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RA.QueueAlloc.IntRAQueueAlloc;
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+package rina.policies.DIF.RA.QueueAlloc.QueuePerNQoSxPLen;
 
-
-simple TailDrop like IntRMTMaxQPolicy 
+simple QueuePerNQoSxPLen like IntRAQueueAlloc
 {
     parameters:
-        @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
+        @display("i=block/socket");  
+        int maxHCount = default(1);
 }

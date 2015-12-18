@@ -21,16 +21,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+package rina.policies.DIF.RMT.Monitor.IterativeStopMonitor;
 
-
-simple TailDrop like IntRMTMaxQPolicy 
+simple IterativeStopMonitor like IntRMTQMonitorPolicy 
 {
     parameters:
         @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
+        @class(IterativeScheduling::IterativeStopMonitor);
         
-        bool printAtEnd = default(false);
+        int stopAt = default(3);
+        int restartAt = default(1);
 }

@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,16 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
+#pragma once
 
-package rina.policies.DIF.RMT.MaxQueue.TailDrop;
+#include <omnetpp.h>
+#include "QueueIDGenBase.h"
 
+#include <map>
 
-simple TailDrop like IntRMTMaxQPolicy 
+using namespace std;
+
+class IDPerNQoSxPLen : public QueueIDGenBase
 {
-    parameters:
-        @display("i=block/socket");
-        @signal[RMT-SlowDownRequest];
-        
-        bool printAtEnd = default(false);
-}
+  public:
+    string generateInputQueueID(PDU* pdu);
+    string generateOutputQueueID(PDU* pdu);
+
+    void initialize();
+    void finalize();
+
+    void setDistance(string addr, string qos, int d);
+
+  private :
+
+    //qos, addr -> h
+    map<string, map<string, int> > hCount;
+    int maxHCount;
+
+
+};
