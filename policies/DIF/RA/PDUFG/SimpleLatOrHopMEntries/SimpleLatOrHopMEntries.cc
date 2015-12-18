@@ -44,7 +44,7 @@ void SimpleLatOrHopMEntries::insertedFlow(const Address &addr, const QoSCube &qo
         routingUpdated();
     }
 }
-void SimpleLatOrHopMEntries::removedFlow(const Address &addr, RMTPort * port){
+void SimpleLatOrHopMEntries::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
 
     neighbours[dst].erase(port);

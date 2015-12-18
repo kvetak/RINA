@@ -44,7 +44,8 @@ bool InfectionComparator::matchesThisIPC(const Address& addr, PDU * pdu)
                         cId.getQoSId(),
                         inf->getSeqNum(),
                         delay,
-                        inf->pathDelay));
+                        inf->pathDelay,
+                        inf->pstDelay));
             }
         }
         return true;

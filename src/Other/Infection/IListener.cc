@@ -72,6 +72,10 @@ namespace IListener {
             maxDel(0.0),
             countDel(0),
             sumDel(0.0),
+            minPST(9999),
+            maxPST(0),
+            countPST(0),
+            sumPST(0),
             minJitter(MAXTIME),
             maxJitter(0.0),
             countJit(0),
@@ -85,7 +89,7 @@ namespace IListener {
         snd++;
     }
 
-    void flowInfo::RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay) {
+    void flowInfo::RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay, int pst_delay) {
         if(lastSec > nSec) {
             cerr << "Messages should not arrive unordered";
 
@@ -99,8 +103,15 @@ namespace IListener {
         if(maxDel < delay) { maxDel = delay; }
         sumDel += delay;
         distDel[toDistIndex(delay)]++;
-
         countDel++;
+
+
+
+        if(minPST > pst_delay) { minPST = pst_delay; }
+        if(maxPST < pst_delay) { maxPST = pst_delay; }
+        sumPST += pst_delay;
+        distPST[pst_delay]++;
+        countPST++;
 
         // Case All OK
         if(lastSec+1 == nSec) {
@@ -198,7 +209,7 @@ namespace IListener {
             QoSFlowInfo[m->qos][fId].SendMsg();
         } else if(RecvInfMsg * m = dynamic_cast<RecvInfMsg*>(obj)) {
             flowId fId(m->src, m->dst, m->src_cepID, m->qos);
-            QoSFlowInfo[m->qos][fId].RcvMsg(m->seqN, m->h_delay*h_delayV, m->p_delay);
+            QoSFlowInfo[m->qos][fId].RcvMsg(m->seqN, m->h_delay*h_delayV, m->p_delay, m->pst_delay);
         }
     }
 
@@ -538,6 +549,80 @@ namespace IListener {
         }
     }
 
+    void IListenerModule::printPSTFlowInfo(ofstream &out) {
+        for(string qos : QoS) {
+            out << "QoS," << qos << endl;
+            out << "SRC, DST, CEPID,,SEND, DROP, DROP %,,MIN DELAY,AVG DELAY,MAX DELAY,,MIN JITTER,AVG JITTER,MAX JITTER";
+            out << endl;
+            for(auto & mI : QoSFlowInfo[qos]) {
+                out << mI.first.src <<
+                        ","<< mI.first.dst <<
+                        ","<< mI.first.srcCepId <<
+                        ",," << mI.second.snd <<
+                        "," << (mI.second.snd - mI.second.rcv) <<
+                        "," << 100.0*(mI.second.snd - mI.second.rcv)/(double)mI.second.snd <<
+                        ",," << mI.second.minPST <<
+                        "," << mI.second.sumPST/(double)mI.second.countPST <<
+                        "," << mI.second.maxPST <<
+                        endl;
+            }
+            out << "QoS," << qos << endl << endl;
+        }
+    }
+
+    void IListenerModule::printPSTJFlowInfo(ofstream &out) {
+        map<string, map<string, map<string, flowInfo> > > qos_src_dst_fInfo;
+        set<int> delays;
+        set<int> consDrops;
+
+        for(string qos : QoS) {
+            for(auto & mI : QoSFlowInfo[qos]) {
+                flowInfo &cI = mI.second;
+                flowInfo & fI = qos_src_dst_fInfo[qos][mI.first.src][mI.first.dst];
+
+                if(cI.minPST < fI.minPST) { fI.minPST = cI.minPST; }
+                if(cI.maxPST > fI.maxPST) { fI.maxPST = cI.maxPST; }
+                fI.sumPST += cI.sumPST;
+                fI.countPST += cI.countPST;
+                for(auto & d:cI.distPST) {
+                    fI.distPST[d.first] += d.second;
+                    delays.insert(d.first);
+                }
+
+                fI.snd += cI.snd;
+                fI.rcv += cI.rcv;
+                for(auto & d:cI.countConsDrop) {
+                    fI.countConsDrop[d.first] += d.second;
+                    consDrops.insert(d.first);
+                }
+            }
+        }
+
+        for(string qos : QoS) {
+            out << "QoS," << qos << endl;
+            out << "SRC, DST,,SEND, DROP, DROP %,,MIN DELAY,AVG DELAY,MAX DELAY,,MIN JITTER,AVG JITTER,MAX JITTER";
+            out << endl;
+            for(auto & src_ : qos_src_dst_fInfo[qos]) {
+                string src = src_.first;
+                for(auto & dst_ : src_.second) {
+                    string dst = dst_.first;
+                    flowInfo &mI = dst_.second;
+
+
+                    out << src <<
+                            ","<< dst <<
+                            ",," << mI.snd <<
+                            "," << (mI.snd - mI.rcv) <<
+                            "," << 100.0*(mI.snd - mI.rcv)/(double)mI.snd <<
+                            ",," << mI.minPST <<
+                            "," << mI.sumPST/(double)mI.countPST <<
+                            "," << mI.maxPST <<
+                            endl;
+                }
+            }
+        }
+    }
+
 
 
     void IListenerModule::printQoSInfo(ofstream &out, ofstream &outb) {
@@ -655,6 +740,22 @@ namespace IListener {
         outb << config << endl;
         outb << run << endl;
         module.printJFlowInfo(out, outb);
+        out.close();
+        outb.close();
+
+
+        out.open (filename +".PSTFlowInfo.csv");
+        out << config << endl;
+        out << run << endl;
+        module.printPSTFlowInfo(out);
+        out.close();
+
+        out.open (filename +".jPSTFlowInfo.csv");
+        out << config << endl;
+        out << run << endl;
+        outb << config << endl;
+        outb << run << endl;
+        module.printPSTJFlowInfo(out);
         out.close();
         outb.close();
 

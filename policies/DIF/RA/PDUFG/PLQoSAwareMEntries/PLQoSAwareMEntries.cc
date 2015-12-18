@@ -61,7 +61,7 @@ void PLQoSAwareMEntries::insertedFlow(const Address &addr, const QoSCube &qos, R
         routingUpdated();
     }
 }
-void PLQoSAwareMEntries::removedFlow(const Address &addr, RMTPort * port){
+void PLQoSAwareMEntries::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     string qosId = portQoS[port];
     neighbours[qosId][dst].erase(port);

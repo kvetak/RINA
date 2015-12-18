@@ -35,7 +35,7 @@ namespace Infection {
             connID.setSrcCepId(1);
             connID.setDstCepId(-1);
             connID.setQoSId(_QoS);
-            cout << minS << " " << maxS << endl;
+          //  cout << minS << " " << maxS << endl;
     }
 
     pduT Flow::getPDU(bool record) {

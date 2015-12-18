@@ -65,6 +65,12 @@ namespace IListener {
         int countDel;
         simtime_t sumDel;
 
+
+        int minPST, maxPST;
+        map<int, int> distPST;
+        int countPST;
+        long sumPST;
+
         simtime_t lastDelay;
         simtime_t minJitter, maxJitter;
         map<simtime_t, int> distJit;
@@ -79,7 +85,7 @@ namespace IListener {
         flowInfo();
 
         void SendMsg();
-        void RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay);
+        void RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay, int pst_delay);
     };
 
 
@@ -95,6 +101,9 @@ namespace IListener {
                 void printGHopInfo(ofstream &out);
                 void printFlowInfo(ofstream &out);
                 void printJFlowInfo(ofstream &out, ofstream &outb);
+
+                void printPSTFlowInfo(ofstream &out);
+                void printPSTJFlowInfo(ofstream &out);
 
                 void printQoSInfo(ofstream &out, ofstream &outb);
                 double h_delayV;
