@@ -48,6 +48,7 @@ class AEPing : public AE
   public:
     AEPing();
     virtual ~AEPing();
+    virtual void afterOnStart();
 
   protected:
     std::string dstApName;
@@ -73,7 +74,8 @@ class AEPing : public AE
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    virtual void onStart();
+    void onStart();
+    void connect();
     virtual void onPing();
     virtual void onStop();
 

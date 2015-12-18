@@ -40,7 +40,7 @@ void SimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
         routingUpdated();
     }
 }
-void SimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
+void SimpleGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){
