@@ -27,7 +27,7 @@ import rina.src.CS.*;
 network DCCongestion
 {
     parameters:
-        @display("bgb=366,804");
+        @display("bgb=1080,303");
 
     types:
         channel FastChannel extends ned.DatarateChannel
@@ -47,40 +47,70 @@ network DCCongestion
 
     submodules:
         host11: Host1AP {
-            @display("p=70,61");
+            @display("p=70,62");
         }
         host12: Host1AP {
-            @display("p=70,151");
+            @display("p=120,62");
         }
         host13: Host1AP {
-            @display("p=70,241");
+            @display("p=170,62");
         }
         host14: Host1AP {
-            @display("p=70,331");
+            @display("p=220,62");
         }
         host15: Host1AP {
-            @display("p=70,421");
+            @display("p=270,62");
         }
         host16: Host1AP {
-            @display("p=70,421");
+            @display("p=320,62");
         }
         host17: Host1AP {
-            @display("p=76,518");
+            @display("p=370,62");
         }
         host18: Host1AP {
-            @display("p=103,587");
+            @display("p=420,62");
         }
         host19: Host1AP {
-            @display("p=144,651");
+            @display("p=470,62");
         }
         host110: Host1AP {
-            @display("p=197,690");
+            @display("p=520,62");
+        }
+        host111: Host1AP {
+            @display("p=570,62");
+        }
+        host112: Host1AP {
+            @display("p=620,62");
+        }
+        host113: Host1AP {
+            @display("p=670,62");
+        }
+        host114: Host1AP {
+            @display("p=720,62");
+        }
+        host115: Host1AP {
+            @display("p=770,62");
+        }
+        host116: Host1AP {
+            @display("p=820,62");
+        }
+        host117: Host1AP {
+            @display("p=870,62");
+        }
+        host118: Host1AP {
+            @display("p=920,62");
+        }
+        host119: Host1AP {
+            @display("p=970,62");
+        }
+        host120: Host1AP {
+            @display("p=1020,62");
         }
         interiorRouter: InteriorRouterNInt {
-            @display("p=180,101");
+            @display("p=556,166");
         }
         host21: HostNAP {
-            @display("p=290,101");
+            @display("p=556,249");
         }
 
     connections allowunconnected:
@@ -95,4 +125,14 @@ network DCCongestion
         host18.medium <--> e9: SlowChannel <--> interiorRouter.medium++;
         host19.medium <--> e10: SlowChannel <--> interiorRouter.medium++;
         host110.medium <--> e11: SlowChannel <--> interiorRouter.medium++;
+        host111.medium <--> e12: SlowChannel <--> interiorRouter.medium++;
+        host112.medium <--> e13: SlowChannel <--> interiorRouter.medium++;
+        host113.medium <--> e14: SlowChannel <--> interiorRouter.medium++;
+        host114.medium <--> e15: SlowChannel <--> interiorRouter.medium++;
+        host115.medium <--> e16: SlowChannel <--> interiorRouter.medium++;
+        host116.medium <--> e17: SlowChannel <--> interiorRouter.medium++;
+        host117.medium <--> e18: SlowChannel <--> interiorRouter.medium++;
+        host118.medium <--> e19: SlowChannel <--> interiorRouter.medium++;
+        host119.medium <--> e120: SlowChannel <--> interiorRouter.medium++;
+        host120.medium <--> e121: SlowChannel <--> interiorRouter.medium++;
 }
