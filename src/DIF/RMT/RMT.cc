@@ -194,6 +194,12 @@ void RMT::preQueueArrival(cObject* obj)
  *
  * @param obj RMT queue object
  */
+void RMT::recDel(cPacket * p) {
+    cPacket * enc = p->decapsulate();
+    if(enc != nullptr) { recDel(enc); }
+    delete p;
+}
+
 void RMT::postQueueArrival(cObject* obj)
 {
     Enter_Method("onQueueArrival()");
@@ -220,7 +226,7 @@ void RMT::postQueueArrival(cObject* obj)
             tracePDUEvent(queue->getLastPDU(), MSG_DROP);
         }
         emit(sigRMTPacketError, obj);
-        queue->dropLast();
+        recDel( queue->dropLast() );
         return;
     }
 
@@ -239,7 +245,7 @@ void RMT::postQueueArrival(cObject* obj)
             }
             const auto dropped = queue->dropLast();
             qMonPolicy->onMessageDrop(queue, dropped);
-            delete dropped;
+            recDel( dropped );
             return;
         }
     }
@@ -467,19 +473,22 @@ void RMT::relayPDUToPort(PDU* pdu)
  */
 void RMT::relayPDUToEFCPI(PDU* pdu)
 {
-    unsigned cepId = pdu->getConnId().getDstCepId();
-    cGate* efcpiGate = efcpiOut[cepId];
+    int cepId = pdu->getConnId().getDstCepId();
 
+    if(cepId < 0) { delete pdu; return; }
+
+    cGate* efcpiGate = efcpiOut[cepId];
     if (efcpiGate != nullptr)
     {
         send(pdu, efcpiGate);
     }
     else
     {
-        EV << this->getFullPath() << ": EFCPI " << cepId
-           << " isn't present on this system! Notifying other modules." << endl;
-        emit(sigRMTNoConnID, pdu);
-        invalidPDUs.push_back(pdu);
+            EV << this->getFullPath() << ": EFCPI " << cepId
+               << " isn't present on this system! Notifying other modules." << endl;
+            emit(sigRMTNoConnID, pdu);
+            invalidPDUs.push_back(pdu);
+
     }
 }
 

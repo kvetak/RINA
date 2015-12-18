@@ -88,6 +88,7 @@ namespace IListener {
     void flowInfo::RcvMsg(int nSec, simtime_t h_delay, simtime_t p_delay) {
         if(lastSec > nSec) {
             cerr << "Messages should not arrive unordered";
+
             exit(0);
         }
         rcv++;
@@ -620,6 +621,7 @@ namespace IListener {
         EV << "outfile "<< filename << endl;
 
         ofstream out, outb;
+
         out.open (filename +".out");
         out << "Config : "<< config << endl;
         out << "Rate : "<< run << endl;

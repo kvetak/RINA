@@ -78,5 +78,4 @@ public:
             {sendT = simTime(); fcepID = 0; signaled = false;}
 
     virtual InfectedDataTransferPDU *dup() const {return new InfectedDataTransferPDU(*this);}
-    ~InfectedDataTransferPDU(){};
 };

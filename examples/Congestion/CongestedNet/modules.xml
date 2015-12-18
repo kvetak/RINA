@@ -251,6 +251,16 @@
         <queue id="outQ_C3" threshold="100"  />
     </WFQDROP>
     
+    
+    <BEDROP>
+        <queue id="outQ_M" threshold="100" />
+        <queue id="outQ_mgmt" threshold="100" />
+        
+        <queue id="outQ_A1" threshold="100" />
+        <queue id="outQ_B2" threshold="100"  />
+        <queue id="outQ_C3" threshold="100"  />
+    </BEDROP>
+    
     <WFQOUT>
         <queue id="outQ_M" 
         	priority="5"

@@ -33,8 +33,9 @@ namespace Infection {
         fcepID(Flow::cepID++),
         secNum(0) {
             connID.setSrcCepId(1);
-            connID.setDstCepId(0);
+            connID.setDstCepId(-1);
             connID.setQoSId(_QoS);
+            cout << minS << " " << maxS << endl;
     }
 
     pduT Flow::getPDU(bool record) {
@@ -42,7 +43,13 @@ namespace Infection {
         int size = intuniform(minS, maxS);
 
         pduT ret;
-        ret.wT = 8*(size+20) * avgWT * exponential(1);
+        ret.wT = 8*(size+11) * avgWT * exponential(1);
+
+        //size = 11;
+        //ret.wT = 100;
+
+       // ret.wT = 8*(size+40) * avgWT * (4+ exponential(1))/5.0;
+       // ret.wT = 8*(size+22) * avgWT * uniform(0.9,1.15);
         //ret.wT = 8*(size+20) * avgWT;
         //ret.wT = size * avgWT;
 
@@ -58,19 +65,16 @@ namespace Infection {
 
         UserDataField * ud = new UserDataField();
 
-        SDU * sdu = new SDU();
-        sdu->addUserData(new cPacket());
-        ud->encapsulate(sdu);
-
         ud->setCompleteSDU(true);
         ud->setNoLength(false);
         ud->setSduSeqNumPresent(true);
         ud->setSduSeqNum(secNum);
-
-        //pdu->setUserDataField(ud);
         pdu->encapsulate(ud);
 
         pdu->setByteLength(size);
+
+       // ret.wT = 5555555;
+       // pdu->setByteLength(0);
 
         ret.pdu = pdu;
 
@@ -123,6 +127,7 @@ namespace Infection {
         double linkRate = par("linkRate").doubleValue();
         double usage = par("usage").doubleValue();
 
+//        cout << "BaseRate : " << linkRate << " | Usage : "<< usage << endl;
         double unitRate = linkRate * usage;
 
         cXMLElementList flowsXML = Xml->getChildrenByTagName("flow");
@@ -160,6 +165,8 @@ namespace Infection {
             Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec);
             flows.push_back(f);
             scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
+
+  //          cout << "LinkRate : " << unitRate << " | FlowRate : "<< (unitRate*rate) << " (" << rate << ")" << endl;
         }
 
     }
@@ -181,7 +188,9 @@ namespace Infection {
                     k.pdu->getConnId().getSrcCepId(),
                     m->f->QoS)
             );}
+            return;
         }
+        delete msg;
     }
 
     void Infection::finish() {
