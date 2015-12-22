@@ -50,7 +50,7 @@ class MM_maxPST_Out : public Int_MM_Out_Module
         map<RMTPort* , long > portTime;
         map<RMTQueue* , list<long> > queueInTime;
 
-        int maxTH;
+        int maxTH, margin;
 
         void initialize();
 };

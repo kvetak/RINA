@@ -25,6 +25,7 @@ Define_Module(MM_maxPST_Out);
 void MM_maxPST_Out::initialize() {
 
     maxTH = par("maxTH").longValue();
+    margin = par("margin").longValue();
 
     cXMLElement* Xml = NULL;
     if (par("data").xmlValue() != NULL && par("data").xmlValue()->hasChildren()){
@@ -88,11 +89,13 @@ void MM_maxPST_Out::queueCreated(RMTQueue * q, RMTPort * p) {
             th = qName2Threshold[qv[1]];
         }
         th /= h;
-        if(th < 0) { th = 0; }
     } else {
         cout  << "Queue : "<< q->getName() << endl;
         error("Queue name must be \"M\" or of the form \"in/outQ_QoS_distance\"");
     }
+
+    th -= margin;
+    if(th < 0) { th = 0; }
 
     qThreshold[q] = th;
 

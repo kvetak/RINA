@@ -27,4 +27,5 @@ simple MM_maxPST_Out like Int_MM_Out_Module
         
         int maxTH = default(1000);
         xml data = default(xml("<QueueDelay/>"));
+        int margin = default(0);
 }
