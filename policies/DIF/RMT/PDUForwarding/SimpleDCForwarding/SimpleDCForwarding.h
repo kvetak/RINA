@@ -73,9 +73,11 @@ using namespace std;
          * AG : 1.a(rack).b(AG)
          * SP : 2.a(AG).b(SP)
          */
+        void setNodeInfo(const string & n_addr);
         void setNodeInfo(const int & type, const int & a, const int & b);
         void addNeigh(const string & s_addr, RMTPort* port);
-        void removeNeigh(const string & s_addr, RMTPort* port);
+        void replaceNeigh(const string & s_addr, RMTPort* port);
+        void removeNeigh(const string & s_addr);
 
         void addDst(const string & s_addr, const set<int> & upP, const set<int> & downP);
 
