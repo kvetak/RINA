@@ -16,6 +16,9 @@
 package rina.examples.Routing.DDC;
 
 import rina.src.CS.InteriorRouterNInt;
+import rina.src.DAF.AE.AEData.AEData;
+import rina.src.Other.FlowsListener.FlowListener;
+
 
 network DDC
 {
@@ -138,6 +141,9 @@ network DDC
         }
         S_2_2: InteriorRouterNInt {
             @display("p=954,172");
+        }
+        flowListener: FlowListener {
+            @display("p=234,54");
         }
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;

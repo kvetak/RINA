@@ -31,6 +31,9 @@ void SimpleDCGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RM
     DCAddr dst_addr = DCAddr(dst);
     neighsAddr[dst] = dst_addr;
 
+    cout << "At " << Im.type <<"."<<Im.a << "." << Im.b
+            << " new flow to "<< dst_addr.type <<"."<<dst_addr.a << "." << dst_addr.b <<endl;
+
     bool first = false;
 
     switch(Im.type) {
@@ -79,6 +82,9 @@ void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMT
     DCAddr dst_addr = DCAddr(dst);
     neighsAddr[dst] = dst_addr;
 
+    cout << "At " << Im.type <<"."<<Im.a << "." << Im.b
+            << " removed flow to "<< dst_addr.type <<"."<<dst_addr.a << "." << dst_addr.b <<endl;
+
     bool last = false;
     set<RMTPort*> * ks = nullptr;
 
@@ -89,7 +95,8 @@ void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMT
                 ks->erase(port);
                 last = ks->empty();
             } else {
-                cerr << "Invalid neighbour " << dst << endl;
+                cerr << "Invalid neighbour " << dst <<" for TOR"
+                        << Im.type <<"." << Im.a << "." << Im.b << endl;
             }
             break;
         case 1 :
@@ -97,12 +104,15 @@ void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMT
                 ks = &down[dst_addr.b];
                 ks->erase(port);
                 last = ks->empty();
-            } if(dst_addr.type == 2 && dst_addr.a == Im.b) {
+            } else if(dst_addr.type == 2 && dst_addr.a == Im.b) {
                 ks = &up[dst_addr.b];
                 ks->erase(port);
                 last = ks->empty();
             } else {
-                cerr << "Invalid neighbour " << dst << endl;
+                cerr << "Invalid neighbour "
+                        << dst
+                        << " for AG "
+                        << Im.type <<"." << Im.a << "." << Im.b << endl;
             }
             break;
         case 2 :
@@ -111,7 +121,8 @@ void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMT
                 ks->erase(port);
                 last = ks->empty();
             } else {
-                cerr << "Invalid neighbour " << dst << endl;
+                cerr << "Invalid neighbour " << dst << " for Spine"
+                        << Im.type <<"." << Im.a << "." << Im.b << endl;
             }
             break;
     }

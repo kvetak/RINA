@@ -30,41 +30,7 @@ namespace NSPSimpleDC {
 
     using namespace std;
 
-
-    DCAddr::DCAddr(): type(-1), a(0), b(0){}
-
-    DCAddr::DCAddr(const int & _type, const int & _a, const int & _b):
-            type(_type), a(_a), b(_b){}
-
-    DCAddr::DCAddr(const string & s_addr) {
-        vector<string> s_vec = split(s_addr, '.');
-        if(s_vec.size() != 3) {
-            type = -1;
-        } else {
-            type = atoi(s_vec[0].c_str());
-            a = atoi(s_vec[1].c_str());
-            b = atoi(s_vec[2].c_str());
-        }
-    }
-
-    bool DCAddr::operator<( const DCAddr & o ) const {
-        if(type < o.type) { return true; }
-        if(type > o.type) { return false;}
-
-        if(a < o.a) { return true; }
-        if(a > o.a) { return false;}
-
-        if(b < o.b) { return true; }
-
-        return false;
-    }
-
-    bool DCAddr::operator==( const DCAddr & o ) const {
-        return (type == o.type && a == o.a && b == o.b);
-    }
-
     FWDEntry::FWDEntry() : inverse(false), toUp(false) {}
-
 
     vector<RMTPort * > SimpleDCForwarding::lookup(const PDU * pdu) {
         string s_addr = pdu->getDstAddr().getIpcAddress().getName();
@@ -77,6 +43,11 @@ namespace NSPSimpleDC {
         if(possible.size() > 0) {
             int k = intuniform(0, possible.size()-1);
             ret.push_back(possible[k]);
+        }
+
+        cout << "forwarding to "<< s_addr << " possible ports "<< possible.size() <<endl;
+        for(auto o : possible) {
+            cout << "\t"<< o->getFullPath() << endl;
         }
         return ret;
     }
@@ -226,14 +197,13 @@ namespace NSPSimpleDC {
         Im = DCAddr(type, a, b);
     }
 
-    void SimpleDCForwarding::addNeigh(const string & s_addr, RMTPort* port) {
-        DCAddr n_addr = DCAddr(s_addr);
+    void SimpleDCForwarding::addNeigh(const DCAddr & n_addr, RMTPort* port) {
         bool re_up = false;
         bool re_down = false;
         switch(Im.type) {
             case 0:
                 if(n_addr.type != 1 || Im.a != n_addr.a) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for TOR ";
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for TOR ";
                     cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
@@ -243,7 +213,7 @@ namespace NSPSimpleDC {
             case 1:
                 if( (n_addr.type != 0 || Im.a != n_addr.a)
                   &&(n_addr.type != 2 || Im.b != n_addr.a)) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for AG ";
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for AG ";
                     cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
@@ -257,7 +227,7 @@ namespace NSPSimpleDC {
                 break;
             case 2:
                 if(n_addr.type != 1 || Im.a != n_addr.b) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for Spine ";
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for Spine ";
                     cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
@@ -280,18 +250,18 @@ namespace NSPSimpleDC {
         }
     }
 
-    void SimpleDCForwarding::replaceNeigh(const string & s_addr, RMTPort* port) {
+    void SimpleDCForwarding::replaceNeigh(const DCAddr & n_addr, RMTPort* port) {
         addNeigh(s_addr, port);
     }
 
-    void SimpleDCForwarding::removeNeigh(const string & s_addr) {
-        DCAddr n_addr = DCAddr(s_addr);
+    void SimpleDCForwarding::removeNeigh(const DCAddr & n_addr) {
         bool re_up = false;
         bool re_down = false;
         switch(Im.type) {
             case 0:
                 if(n_addr.type != 1 || Im.a != n_addr.a) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for TOR." << endl;
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for TOR." << endl;
+                    cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
                 upN.erase(n_addr.b);
@@ -300,7 +270,8 @@ namespace NSPSimpleDC {
             case 1:
                 if( (n_addr.type != 0 || Im.a != n_addr.a)
                   &&(n_addr.type != 2 || Im.b != n_addr.a)) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for AG." << endl;
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for AG." << endl;
+                    cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
                 if(n_addr.type == 0) {
@@ -312,8 +283,9 @@ namespace NSPSimpleDC {
                 }
                 break;
             case 2:
-                if(n_addr.type != 2 || Im.a != n_addr.b) {
-                    cerr << "Invalid neighbour ("<<s_addr<< ") found for Spine." << endl;
+                if(n_addr.type != 1 || Im.a != n_addr.b) {
+                    cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for Spine." << endl;
+                    cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
                 }
                 downN.erase(n_addr.a);
@@ -335,11 +307,10 @@ namespace NSPSimpleDC {
         }
     }
 
-    void SimpleDCForwarding::addDst(const string & s_addr, const set<int> & upP, const set<int> & downP) {
-        DCAddr n_addr = DCAddr(s_addr);
+    void SimpleDCForwarding::addDst(const DCAddr & n_addr, const set<int> & upP, const set<int> & downP) {
         if(n_addr == Im) { return; }
         if(n_addr.type < 0 || n_addr.type > 2) {
-            cerr << "Invalid dst addr ("<<s_addr<< ") inserted." << endl;
+            cerr << "Invalid dst addr ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") inserted." << endl;
         }
 
         int upPS = upP.size();
