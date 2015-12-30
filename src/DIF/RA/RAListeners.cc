@@ -72,6 +72,19 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
     }
 }
 
+void LisRADelFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+{
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    const APN& dstApn = flow->getDstApni().getApn();
+    const std::string& qosId = flow->getConId().getQoSId();
+
+    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    if (item != nullptr)
+    {
+        ra->removeNM1FlowBindings(item);
+    }
+}
+
 void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);

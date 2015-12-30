@@ -60,7 +60,7 @@ const char* SIG_RIBD_ConnectionResponseNegative = "RIBd-ConnectionResponseNegati
 const char* SIG_RIBD_ConnectionRequest          = "RIBd-ConnectionRequest";
 const char* SIG_RIBD_CACESend                   = "RIBd-CACEDataSend";
 
-extern const char* SIG_AEMGMT_ConnectionResponsePositive = "AEMgmt-ConnectionResponsePositive";
+const char* SIG_AEMGMT_ConnectionResponsePositive = "AEMgmt-ConnectionResponsePositive";
 
 const char* SIG_ENROLLMENT_DataSend             = "Enrollment-DataSend";
 const char* SIG_ENROLLMENT_CACEDataSend         = "Enrollment-CACEDataSend";

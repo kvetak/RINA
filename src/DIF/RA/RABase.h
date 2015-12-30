@@ -45,6 +45,7 @@ class RABase : public cSimpleModule
     virtual void postNFlowAllocation(Flow* flow) = 0;
     virtual void postNM1FlowAllocation(NM1FlowTableItem* ftItem) = 0;
     virtual void removeNM1Flow(Flow *flow) = 0;
+    virtual void removeNM1FlowBindings(NM1FlowTableItem* ftItem) = 0;
     virtual bool bindNFlowToNM1Flow(Flow* flow) = 0;
     virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem) = 0;
     virtual void unblockNM1PortOutput(NM1FlowTableItem* ftItem) = 0;

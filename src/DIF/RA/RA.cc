@@ -81,10 +81,9 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            auto flows = preparedFlows[simTime()];
+            auto flows = preAllocs[simTime()];
 
             while (!flows->empty())
             {
@@ -103,6 +102,28 @@ void RA::handleMessage(cMessage *msg)
                 else
                 { // data flow
                     createNM1Flow(flow);
+                }
+
+                flows->pop_front();
+            }
+
+            delete flows;
+            delete msg;
+        }
+        else if (!opp_strcmp(msg->getName(), "RA-TerminateConnections"))
+        {
+            auto flows = preDeallocs[simTime()];
+
+            while (!flows->empty())
+            {
+                Flow* flow = flows->front();
+                if (flow->isManagementFlow())
+                { // mgmt flow
+                    // huh?
+                }
+                else
+                { // data flow
+                    removeNM1Flow(flow);
                 }
 
                 flows->pop_front();
@@ -135,6 +156,10 @@ void RA::initSignalsAndListeners()
     lisRACreResPosi = new LisRACreResPosi(this);
     thisIPC->getParentModule()->
             subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisRACreResPosi);
+
+    lisRADelFlow = new LisRADelFlow(this);
+    thisIPC->getParentModule()->
+            subscribe(SIG_RIBD_DeleteRequestFlow, lisRADelFlow);
 
     lisEFCPStopSending = new LisEFCPStopSending(this);
     thisIPC->getParentModule()->
@@ -205,15 +230,40 @@ void RA::initFlowAlloc()
             Flow *flow = new Flow(srcAPN, dstAPN);
             flow->setQosRequirements(*qosReq);
 
-            if (preparedFlows[time] == nullptr)
+            if (preAllocs[time] == nullptr)
             {
-                preparedFlows[time] = new std::list<Flow*>;
+                preAllocs[time] = new std::list<Flow*>;
                 cMessage* msg = new cMessage("RA-CreateConnections");
-                scheduleAt(simTime() + time, msg);
+                scheduleAt(time, msg);
 
             }
 
-            preparedFlows[time]->push_back(flow);
+            preAllocs[time]->push_back(flow);
+
+            const char* until_s = n->getAttribute("until");
+            if (until_s)
+            {
+                simtime_t until = static_cast<simtime_t>(atoi(until_s));
+
+                if (until <= time)
+                {
+                    throw cRuntimeError(
+                            "Invalid time of deallocation for flow {SimTime=%s, src=\"%s\", dst=\"%s\", qosReq=\"%s\"}",
+                            time.str().c_str(),
+                            src,
+                            dst,
+                            qosReqID);
+                }
+
+                if (preDeallocs[until] == nullptr)
+                {
+                    preDeallocs[until] = new std::list<Flow*>;
+                    cMessage* msg = new cMessage("RA-TerminateConnections");
+                    scheduleAt(until, msg);
+                }
+
+                preDeallocs[until]->push_back(flow);
+            }
         }
     }
 }
@@ -663,23 +713,13 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     }
 }
 
-/**
- * Removes specified (N-1)-flow and bindings (this is the mechanism behind Deallocate() call).
- *
- * @param flow specified flow object
- */
-void RA::removeNM1Flow(Flow *flow)
-{ // TODO: part of this should be split into something like postNM1FlowDeallocation
-
-	Enter_Method("removeNM1Flow()");
-    auto flowItem = flowTable->lookup(flow);
-    ASSERT(flowItem != nullptr);
-    flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
-    flowItem->getFABase()->receiveDeallocateRequest(flow);
+void RA::removeNM1FlowBindings(NM1FlowTableItem* ftItem)
+{
+    Enter_Method("removeNM1FlowBindings()");
 
     // disconnect and delete gates
-    RMTPort* port = flowItem->getRMTPort();
-    const char* gateName = flowItem->getGateName().c_str();
+    RMTPort* port = ftItem->getRMTPort();
+    const char* gateName = ftItem->getGateName().c_str();
     cGate* thisIpcIn = thisIPC->gateHalf(gateName, cGate::INPUT);
     cGate* thisIpcOut = thisIPC->gateHalf(gateName, cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
@@ -696,9 +736,26 @@ void RA::removeNM1Flow(Flow *flow)
     thisIPC->deleteGate(gateName);
 
     // remove table entries
-    fwdtg->removeFlowInfo(flowItem->getRMTPort());
-    rmtAllocator->removePort(flowItem->getRMTPort());
-    flowTable->remove(flow);
+    fwdtg->removeFlowInfo(port);
+    rmtAllocator->removePort(port);
+    flowTable->remove(ftItem->getFlow());
+}
+
+/**
+ * Removes specified (N-1)-flow and bindings (this is the mechanism behind Deallocate() call).
+ *
+ * @param flow specified flow object
+ */
+void RA::removeNM1Flow(Flow *flow)
+{
+	Enter_Method("removeNM1Flow()");
+    auto flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != nullptr);
+    flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
+    flowItem->getFABase()->receiveDeallocateRequest(flow);
+
+    // TODO: discuss whether the bindings should be removed afterwards
+    removeNM1FlowBindings(flowItem);
 }
 
 /**
