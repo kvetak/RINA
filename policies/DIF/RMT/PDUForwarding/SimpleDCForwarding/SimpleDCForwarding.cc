@@ -44,11 +44,12 @@ namespace NSPSimpleDC {
             int k = intuniform(0, possible.size()-1);
             ret.push_back(possible[k]);
         }
-
+/*
         cout << "forwarding to "<< s_addr << " possible ports "<< possible.size() <<endl;
         for(auto o : possible) {
             cout << "\t"<< o->getFullPath() << endl;
         }
+  */
         return ret;
     }
 
@@ -251,7 +252,7 @@ namespace NSPSimpleDC {
     }
 
     void SimpleDCForwarding::replaceNeigh(const DCAddr & n_addr, RMTPort* port) {
-        addNeigh(s_addr, port);
+        addNeigh(n_addr, port);
     }
 
     void SimpleDCForwarding::removeNeigh(const DCAddr & n_addr) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace NSPSimpleDC {
 
 using namespace std;
@@ -13,5 +15,8 @@ using namespace std;
 
         bool operator<( const DCAddr & n ) const;
         bool operator==( const DCAddr & n ) const;
+        bool operator!=( const DCAddr & n ) const;
     };
+
+    std::ostream& operator << (std::ostream &o, const DCAddr &a);
 }

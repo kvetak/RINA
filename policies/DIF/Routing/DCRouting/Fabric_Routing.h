@@ -10,8 +10,9 @@ namespace NSPSimpleDC {
         void inactiveNeigh(const DCAddr &dst);
         void startMyLinks();
 
-        vector<rtEntry>  getChanges();
-        vector<rtEntry>  getAll();
+        set<DCAddr> getNotOptimalDst(map<DCAddr, tableNode> *  table);
+
+        void printAtEnd();
     };
 
 }

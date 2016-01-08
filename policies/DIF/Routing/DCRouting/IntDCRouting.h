@@ -25,6 +25,8 @@
 #include <IntRouting.h>
 #include <vector>
 #include <set>
+#include <map>
+#include <queue>
 #include "DCAddr.h"
 
 namespace NSPSimpleDC {
@@ -37,13 +39,14 @@ struct linkId {
     *      0   - (TOR/Fabric)
     *      1   - (Fabric/Spine)
     */
-    int type, pod, src, dst;
+    DCAddr src, dst;
 
     linkId();
-    linkId(const int &_type, const int &_pod, const int &_src, const int &_dst);
+    linkId(const DCAddr &_src, const DCAddr &_dst);
 
     bool operator<(const linkId &o) const;
     bool operator==(const linkId & o) const;
+    bool operator!=(const linkId & o) const;
 };
 
 struct linkInfo {
@@ -65,6 +68,15 @@ struct linkInfo {
     linkInfo(const linkId &_link, const bool &_status, const simtime_t &_timestamp);
 };
 
+struct tableNode {
+    int d;
+    set<const linkId *> L;
+    tableNode();
+    tableNode(const linkId * n);
+
+    void insert (set<const linkId *> Ls);
+};
+
 class LinksUpdate : public IntRoutingUpdate {
     public:
         vector<linkInfo> linksStatus;
@@ -74,7 +86,7 @@ class LinksUpdate : public IntRoutingUpdate {
 
 struct rtEntry {
     DCAddr dst;
-    vector<int> up, down;
+    vector<DCAddr> next;
 };
 
 class IntDCRouting: public IntRouting {
@@ -87,8 +99,8 @@ public:
     void removeNeighbour(const Address &addr, const DCAddr &dst);
 
     //Get Changes
-    virtual vector<rtEntry> getChanges() = 0;
-    virtual vector<rtEntry>  getAll() = 0;
+    vector<rtEntry>  getChanges();
+    vector<rtEntry>  getAll();
 
 protected:
     DCAddr Im;
@@ -100,6 +112,8 @@ protected:
     map<linkId, linkInfo> myLinks, linksOk, linksKo;
     set<Address> activeNeighbours;
 
+    map<DCAddr, set<const linkId *>> cache;
+
     // Called after initialize
     void onPolicyInit();
 
@@ -110,8 +124,18 @@ protected:
     virtual void activeNeigh(const DCAddr &dst) = 0;
     virtual void inactiveNeigh(const DCAddr &dst) = 0;
 
+    virtual void printAtEnd() = 0;
+
     virtual void startMyLinks() = 0;
     void scheduleUpdate();
     void scheduleClean();
+
+    map<DCAddr, tableNode> * computeTable();
+
+    vector<DCAddr> getNeis(DCAddr);
+
+    virtual set<DCAddr> getNotOptimalDst(map<DCAddr, tableNode> *  table) = 0;
+
+    void finish();
 };
 }

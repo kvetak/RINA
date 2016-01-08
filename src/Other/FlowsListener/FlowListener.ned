@@ -18,6 +18,4 @@ package rina.src.Other.FlowsListener;
 //
 // TODO auto-generated module
 //
-simple FlowListener
-{
-}
+simple FlowListener{}

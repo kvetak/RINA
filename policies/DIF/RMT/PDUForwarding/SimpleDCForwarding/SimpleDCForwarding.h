@@ -66,11 +66,11 @@ using namespace std;
          */
         void setNodeInfo(const string & n_addr);
         void setNodeInfo(const int & type, const int & a, const int & b);
-        void addNeigh(const string & s_addr, RMTPort* port);
-        void replaceNeigh(const string & s_addr, RMTPort* port);
-        void removeNeigh(const string & s_addr);
+        void addNeigh(const DCAddr & n_addr, RMTPort* port);
+        void replaceNeigh(const DCAddr & s_addr, RMTPort* port);
+        void removeNeigh(const DCAddr & s_addr);
 
-        void addDst(const string & s_addr, const set<int> & upP, const set<int> & downP);
+        void addDst(const DCAddr & n_addr, const set<int> & upP, const set<int> & downP);
 
     protected:
         DCAddr Im;
