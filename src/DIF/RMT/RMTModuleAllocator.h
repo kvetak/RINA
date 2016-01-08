@@ -78,7 +78,7 @@ class RMTModuleAllocator : public cSimpleModule
      *
      * @param queues vector of queues
      */
-    void removeQueues(const RMTQueues& queues);
+    void removeQueues(RMTQueues& queues);
 
     /**
      * Returns (N-1)-port the given queue is assigned to.

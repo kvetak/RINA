@@ -169,12 +169,12 @@ void RMTModuleAllocator::removeQueue(RMTQueue* queue)
     queue->deleteModule();
 }
 
-void RMTModuleAllocator::removeQueues(const RMTQueues& queues)
+void RMTModuleAllocator::removeQueues(RMTQueues& queues)
 {
-    for(auto it = queues.begin(); it!= queues.end();){
-        RMTQueue * q = *it;
-        it++;
-        removeQueue(q);
+    while (!queues.empty())
+    {
+        removeQueue(queues.back());
+        queues.pop_back();
     }
 }
 

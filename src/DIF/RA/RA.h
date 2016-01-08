@@ -64,6 +64,7 @@ class RA : public RABase
     virtual void createNM1Flow(Flow* flow);
     virtual void createNM1FlowWithoutAllocate(Flow* flow);
     virtual void removeNM1Flow(Flow* flow);
+    virtual void removeNM1FlowBindings(NM1FlowTableItem* ftItem);
     virtual void createNFlow(Flow *flow);
     virtual bool bindNFlowToNM1Flow(Flow* flow);
     virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem);
@@ -96,7 +97,8 @@ class RA : public RABase
     IntPDUFG * fwdtg;
 
     std::string processName;
-    std::map<simtime_t, std::list<Flow*>*> preparedFlows;
+    std::map<simtime_t, std::list<Flow*>*> preAllocs;
+    std::map<simtime_t, std::list<Flow*>*> preDeallocs;
     std::map<std::string, std::list<Flow*>*> pendingFlows;
     QoSReq mgmtReqs;
 
@@ -121,6 +123,7 @@ class RA : public RABase
     LisRAAllocResPos* lisRAAllocResPos;
     LisRACreAllocResPos* lisRACreAllocResPos;
     LisRACreResPosi* lisRACreResPosi;
+    LisRADelFlow* lisRADelFlow;
     LisEFCPStopSending* lisEFCPStopSending;
     LisEFCPStartSending* lisEFCPStartSending;
 
