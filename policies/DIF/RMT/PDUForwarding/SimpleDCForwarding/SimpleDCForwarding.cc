@@ -33,8 +33,15 @@ namespace NSPSimpleDC {
     FWDEntry::FWDEntry() : inverse(false), toUp(false) {}
 
     vector<RMTPort * > SimpleDCForwarding::lookup(const PDU * pdu) {
+
         string s_addr = pdu->getDstAddr().getIpcAddress().getName();
         DCAddr n_addr = DCAddr(s_addr);
+
+        PDU * p = const_cast<PDU*>(pdu);
+        p->setHopCount(p->getHopCount()+1);
+        if(p->getHopCount()> 10) {
+            return vector<RMTPort * >();
+        }
 
         if(n_addr.type < 0) {  return vector<RMTPort * >(); }
 
@@ -44,12 +51,8 @@ namespace NSPSimpleDC {
             int k = intuniform(0, possible.size()-1);
             ret.push_back(possible[k]);
         }
-/*
-        cout << "forwarding to "<< s_addr << " possible ports "<< possible.size() <<endl;
-        for(auto o : possible) {
-            cout << "\t"<< o->getFullPath() << endl;
-        }
-  */
+
+
         return ret;
     }
 
@@ -93,6 +96,7 @@ namespace NSPSimpleDC {
                     ret.push_back(p);
                 }
             }
+            return ret;
         }
 
         if(Im == n_addr) { return vector<RMTPort * >(); }
@@ -212,8 +216,9 @@ namespace NSPSimpleDC {
                 re_up = true;
                 break;
             case 1:
-                if( (n_addr.type != 0 || Im.a != n_addr.a)
-                  &&(n_addr.type != 2 || Im.b != n_addr.a)) {
+                if( n_addr.type == 1 ||
+                        (n_addr.type == 0 && n_addr.a != Im.a) ||
+                        (n_addr.type == 2 && n_addr.a != Im.b)) {
                     cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for AG ";
                     cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
@@ -269,8 +274,9 @@ namespace NSPSimpleDC {
                 re_up = true;
                 break;
             case 1:
-                if( (n_addr.type != 0 || Im.a != n_addr.a)
-                  &&(n_addr.type != 2 || Im.b != n_addr.a)) {
+                if( n_addr.type == 1 ||
+                        (n_addr.type == 0 && n_addr.a != Im.a) ||
+                        (n_addr.type == 2 && n_addr.a != Im.b)) {
                     cerr << "Invalid neighbour ("<<n_addr.type << "." <<n_addr.a <<"." <<n_addr.b<< ") found for AG." << endl;
                     cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
                     return;
@@ -347,7 +353,7 @@ namespace NSPSimpleDC {
                         break;
                     case 2:
                         if(upP.find(n_addr.a) != upP.end() && upPS == 1) {
-                            //Direct link available or towards AG of same spine-set
+                            //link available towards AG of same spine-set
                             table.erase(n_addr);
                         } else {
                             //Secondary links available
@@ -406,9 +412,9 @@ namespace NSPSimpleDC {
                                 table.erase(n_addr);
                             } else {
                                 //Some links available
-                                table[n_addr] = getUpPorts(downP);
+                                table[n_addr] = getUpPorts(upP);
                             }
-                        } else if(upPS == upNS && downPS == downPS){
+                        } else if(upPS == upNS && downPS == downNS){
                             table.erase(n_addr);
                         } else {
                             table[n_addr] = getJoinPorts(upP, downP);
@@ -433,7 +439,7 @@ namespace NSPSimpleDC {
                                 table.erase(n_addr);
                             } else {
                                 //Some links available
-                                table[n_addr] = getDownPorts(upP);
+                                table[n_addr] = getDownPorts(downP);
                             }
                         }
                         break;
@@ -504,13 +510,14 @@ namespace NSPSimpleDC {
 
     FWDEntry SimpleDCForwarding::getJoinPorts(const set<int> & upIds, const set<int> & downIds) {
         FWDEntry ret;
+
         for(auto idPort : upN) {
             if(upIds.find(idPort.first) != upIds.end()) {
                 ret.ports.insert(idPort.second);
             }
         }
         for(auto idPort : downN) {
-            if(downIds.find(idPort.first) == downIds.end()) {
+            if(downIds.find(idPort.first) != downIds.end()) {
                 ret.ports.insert(idPort.second);
             }
         }
@@ -551,7 +558,7 @@ namespace NSPSimpleDC {
             }
             cout << "Stored entries " << table.size() << endl;
             for(auto & e : table) {
-                cout <<"\t\t"<< e.first.type << "." << e.first.a << "." << e.first.b
+                cout <<"\t\t"<< e.first
                         << " -- " << e.second.ports.size() << (e.second.inverse? " (inverse)":"" )<< endl;
                 for(auto &k : e.second.ports) {
                     cout << "\t\t\t" << k->getFullPath() << endl;

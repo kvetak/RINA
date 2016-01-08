@@ -42,6 +42,10 @@ namespace NSPSimpleDC {
         return (type != o.type || a != o.a || b != o.b);
     }
 
+    string DCAddr::toString() {
+        return to_string (type) + "." +to_string (a)  + "." +to_string (b);
+    }
+
     std::ostream& operator << (std::ostream &o, const DCAddr &a) {
       o << a.type << "." << a.a << "."<<a.b;
       return o;

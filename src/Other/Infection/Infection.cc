@@ -102,10 +102,10 @@ namespace Infection {
         markIniT = par("markIniT").doubleValue();
         markFinT = par("markFinT").doubleValue();
 
-        cModule * mod = this->getParentModule()->getSubmodule(par("infectedIPC").stringValue());
+        mod = this->getParentModule()->getSubmodule(par("infectedIPC").stringValue());
         if(mod==NULL) { return; }
 
-        cModule * rmt = mod->getSubmodule("relayAndMux")->getSubmodule("rmt");
+        rmt = mod->getSubmodule("relayAndMux")->getSubmodule("rmt");
 
         rmt->addGate("infGate", cGate::INOUT, false);
         cGate * modIn = rmt->gateHalf("infGate", cGate::INPUT);

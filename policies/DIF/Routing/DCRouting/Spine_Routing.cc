@@ -8,7 +8,7 @@ namespace NSPSimpleDC {
 
     void Spine_Routing::activeNeigh(const DCAddr &dst) {
         if(dst.type != 1 || dst.b != Im.a) {
-            cerr << "I'm " << Im
+            cerr << "ADD - I'm " << Im
                  << " -- "
                  << "Invalid neighbour "<< dst
                  << endl;
@@ -31,8 +31,11 @@ namespace NSPSimpleDC {
     }
 
     void Spine_Routing::inactiveNeigh(const DCAddr &dst) {
-        if(dst.type != 2 || dst.b != Im.a) {
-            cerr << "Invalid neighbour" << endl;
+        if(dst.type != 1 || dst.b != Im.a) {
+            cerr << "REM - I'm " << Im
+                 << " -- "
+                 << "Invalid neighbour "<< dst
+                 << endl;
             return;
         }
 

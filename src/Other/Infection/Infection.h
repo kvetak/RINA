@@ -52,6 +52,7 @@ namespace Infection {
                 virtual void handleMessage(cMessage *msg);
 
                 vector<Flow *> flows;
+                cModule * mod, * rmt;
 
                 bool emitSignals;
                 simsignal_t signal;

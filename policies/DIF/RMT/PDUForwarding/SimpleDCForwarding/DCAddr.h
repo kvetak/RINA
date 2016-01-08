@@ -16,6 +16,8 @@ using namespace std;
         bool operator<( const DCAddr & n ) const;
         bool operator==( const DCAddr & n ) const;
         bool operator!=( const DCAddr & n ) const;
+
+        string toString();
     };
 
     std::ostream& operator << (std::ostream &o, const DCAddr &a);

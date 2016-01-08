@@ -15,9 +15,9 @@
 
 package rina.examples.Routing.DDC;
 
-import rina.src.CS.InteriorRouterNInt;
 import rina.src.DAF.AE.AEData.AEData;
 import rina.src.Other.FlowsListener.FlowListener;
+import rina.src.Other.Infection.InfectedDCRouter;
 
 
 network DDC
@@ -25,125 +25,126 @@ network DDC
     @display("bgb=1109,510");
     submodules:
 
-        T_0_0: InteriorRouterNInt {
+        T_0_0: InfectedDCRouter {
             @display("p=30,470");
         }
-        T_0_1: InteriorRouterNInt {
+        T_0_1: InfectedDCRouter {
             @display("p=93,470");
         }
-        T_0_2: InteriorRouterNInt {
+        T_0_2: InfectedDCRouter {
             @display("p=161,470");
         }
-        T_0_3: InteriorRouterNInt {
+        T_0_3: InfectedDCRouter {
             @display("p=223,470");
         }
 
-        T_1_0: InteriorRouterNInt {
+        T_1_0: InfectedDCRouter {
             @display("p=320,470");
         }
-        T_1_1: InteriorRouterNInt {
+        T_1_1: InfectedDCRouter {
             @display("p=383,470");
         }
-        T_1_2: InteriorRouterNInt {
+        T_1_2: InfectedDCRouter {
             @display("p=451,470");
         }
-        T_1_3: InteriorRouterNInt {
+        T_1_3: InfectedDCRouter {
             @display("p=513,470");
         }
 
-        T_2_0: InteriorRouterNInt {
+        T_2_0: InfectedDCRouter {
             @display("p=609,470");
         }
-        T_2_1: InteriorRouterNInt {
+        T_2_1: InfectedDCRouter {
             @display("p=672,470");
         }
-        T_2_2: InteriorRouterNInt {
+        T_2_2: InfectedDCRouter {
             @display("p=740,470");
         }
-        T_2_3: InteriorRouterNInt {
+        T_2_3: InfectedDCRouter {
             @display("p=802,470");
         }
 
-        T_3_0: InteriorRouterNInt {
+        T_3_0: InfectedDCRouter {
             @display("p=892,470");
         }
-        T_3_1: InteriorRouterNInt {
+        T_3_1: InfectedDCRouter {
             @display("p=955,470");
         }
-        T_3_2: InteriorRouterNInt {
+        T_3_2: InfectedDCRouter {
             @display("p=1023,470");
         }
-        T_3_3: InteriorRouterNInt {
+        T_3_3: InfectedDCRouter {
             @display("p=1085,470");
         }
-        A_0_0: InteriorRouterNInt {
+        A_0_0: InfectedDCRouter {
             @display("p=54,364");
         }
-        A_0_1: InteriorRouterNInt {
+        A_0_1: InfectedDCRouter {
             @display("p=121,364");
         }
-        A_0_2: InteriorRouterNInt {
+        A_0_2: InfectedDCRouter {
             @display("p=187,364");
         }
-        A_1_2: InteriorRouterNInt {
+        A_1_2: InfectedDCRouter {
             @display("p=477,364");
         }
-        A_1_1: InteriorRouterNInt {
+        A_1_1: InfectedDCRouter {
             @display("p=411,364");
         }
-        A_1_0: InteriorRouterNInt {
+        A_1_0: InfectedDCRouter {
             @display("p=344,364");
         }
-        A_2_2: InteriorRouterNInt {
+        A_2_2: InfectedDCRouter {
             @display("p=769,364");
         }
-        A_2_1: InteriorRouterNInt {
+        A_2_1: InfectedDCRouter {
             @display("p=703,364");
         }
-        A_2_0: InteriorRouterNInt {
+        A_2_0: InfectedDCRouter {
             @display("p=636,364");
         }
-        A_3_2: InteriorRouterNInt {
+        A_3_2: InfectedDCRouter {
             @display("p=1049,364");
         }
-        A_3_0: InteriorRouterNInt {
+        A_3_0: InfectedDCRouter {
             @display("p=916,364");
         }
-        A_3_1: InteriorRouterNInt {
+        A_3_1: InfectedDCRouter {
             @display("p=983,364");
         }
 
-        S_0_0: InteriorRouterNInt {
+        S_0_0: InfectedDCRouter {
             @display("p=100,172");
         }
-        S_0_1: InteriorRouterNInt {
+        S_0_1: InfectedDCRouter {
             @display("p=154,172");
         }
-        S_0_2: InteriorRouterNInt {
+        S_0_2: InfectedDCRouter {
             @display("p=210,172");
         }
 
-        S_1_0: InteriorRouterNInt {
+        S_1_0: InfectedDCRouter {
             @display("p=490,172");
         }
-        S_1_1: InteriorRouterNInt {
+        S_1_1: InfectedDCRouter {
             @display("p=542,172");
         }
-        S_1_2: InteriorRouterNInt {
+        S_1_2: InfectedDCRouter {
             @display("p=597,172");
         }
 
-        S_2_0: InteriorRouterNInt {
+        S_2_0: InfectedDCRouter {
             @display("p=853,172");
         }
-        S_2_1: InteriorRouterNInt {
+        S_2_1: InfectedDCRouter {
             @display("p=904,172");
         }
-        S_2_2: InteriorRouterNInt {
+        S_2_2: InfectedDCRouter {
             @display("p=954,172");
         }
         
         flowListener: FlowListener { @display("p=234,54");  }
+       
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;
         T_0_1.medium++ <--> A_0_0.medium++;

@@ -429,9 +429,17 @@ void RMT::relayPDUToPort(PDU* pdu)
     if (outPorts.empty())
     {
         EV << "!!! Empty PDUForwarding policy lookup result!" << endl
+           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+
+        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
+           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
+           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
+           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
+           << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+
         invalidPDUs.push_back(pdu);
     }
 
@@ -444,7 +452,6 @@ void RMT::relayPDUToPort(PDU* pdu)
         if (it != (outPorts.end() - 1))
         { // clone the message if sending via multiple ports
             outPDU = pdu->dup();
-            std::cout << "CLONEDDDDD!!!!!!!" << endl;
         }
         else
         {
@@ -484,6 +491,7 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
     }
     else
     {
+        std::cout << "WTF " << cepId << endl;
             EV << this->getFullPath() << ": EFCPI " << cepId
                << " isn't present on this system! Notifying other modules." << endl;
             emit(sigRMTNoConnID, pdu);

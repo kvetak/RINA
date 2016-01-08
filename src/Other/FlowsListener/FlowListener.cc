@@ -27,11 +27,12 @@ void FlowListener::initialize() {
 void FlowListener::handleMessage(cMessage *msg) {
     Enter_Method_Silent();
     if(FlowContainer * fc = dynamic_cast<FlowContainer*> (msg) ) {
+        /*
         std::cout << "At "<< simTime()
                 <<" sleep flow " << fc->f->getSrcAddr() << " -> "
                 << fc->f->getDstAddr() << " / "
                 << fc->f-> getConId().getQoSId() << endl;
-
+         */
         fc->ra->sleepFlow(fc->f, simTime() + 5.2);
     }
     delete msg;
@@ -40,11 +41,12 @@ void FlowListener::handleMessage(cMessage *msg) {
 void FlowListener::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj) {
     Enter_Method_Silent();
     Flow * f = dynamic_cast<Flow*>(obj);
+    /*
     std::cout << "At "<< simTime()
             <<" new flow " << f->getSrcAddr()
             << " -> " << f->getDstAddr() << " / "
             << f-> getConId().getQoSId() << endl;
-
+     */
     RA * ra = dynamic_cast<RA*>(source);
 
     if(uniform(0,10) <= 1) {

@@ -156,8 +156,16 @@ namespace NSPSimpleDC {
         bool changes = false;
 
         for(const auto l : u->linksStatus) {
-       //     cout << l.link.src << " -> "<< l.link.dst << endl;
-            if(myLinks.find(l.link) != myLinks.end()) { continue; }
+            auto ml = myLinks.find(l.link);
+            if(ml != myLinks.end()) {
+                if(l.status == false
+                        && ml->second.status
+                        && ml->second.timestamp < (simTime()-expiration)) {
+                    ml->second.timestamp = simTime();
+                    changes = true;
+                }
+                continue;
+            }
 
 
             if(l.status) {
@@ -415,6 +423,18 @@ namespace NSPSimpleDC {
                 if(par("printNotOptimal").boolValue()) {
                     cout << "-print not optimal paths"<<endl;
                     set<DCAddr> no = getNotOptimalDst(t);
+                    for(auto n : no) {
+                        auto &tn = (*t)[n];
+                        cout << "\t"<<n<<endl;
+                        cout << "\t\t distance "<< tn.d<<endl;
+                        for(auto & nd : tn.L) {
+                            if(nd->src == Im) {
+                                cout << "\t\t-> "<< nd->dst <<endl;
+                            } else {
+                                cout << "\t\t-> "<< nd->src <<endl;
+                            }
+                        }
+                    }
                 }
             } else if(par("printNotOptimal").boolValue()) {
                 map<DCAddr, tableNode> * t = computeTable();

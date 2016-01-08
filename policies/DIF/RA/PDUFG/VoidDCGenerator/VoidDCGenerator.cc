@@ -78,10 +78,10 @@ void VoidDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPo
     std::string dst = addr.getIpcAddress().getName();
     DCAddr dst_addr = DCAddr(dst);
     neighsAddr[dst] = dst_addr;
-
+/*
     cout << "At " << Im.type <<"."<<Im.a << "." << Im.b
             << " removed flow to "<< dst_addr.type <<"."<<dst_addr.a << "." << dst_addr.b <<endl;
-
+*/
     bool last = false;
     set<RMTPort*> * ks = nullptr;
 
@@ -158,6 +158,7 @@ void VoidDCGenerator::routingUpdated(){
                     break;
             }
         }
+
         fwd->addDst(e.dst, upP, downP);
     }
 
