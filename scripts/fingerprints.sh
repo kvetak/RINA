@@ -129,16 +129,17 @@ process_args $@
 cd $rina_scenarios
 
 # retrieve scenarios by the given directory glob
-scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" | sort )"
+scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini"  \
+        $( for scen in "${exclude_scenarios[@]}"; do echo -not -path ./*/"$scen"/omnetpp.ini; done ) \
+        | sort )"
+
 if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
+
+echo "$scenarios"
+exit
 
 # run the main loop
 echo "$scenarios" | while read simfile; do
-    # exclude the scenario if this is wanted
-    # for scen in "${exclude_scenarios[@]}"; do
-    #     if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
-    # done
-
     simdir="$( dirname $simfile)"
     echo "Processing $simdir..."
 
