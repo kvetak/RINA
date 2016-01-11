@@ -135,9 +135,6 @@ scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini
 
 if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
 
-echo "$scenarios"
-exit
-
 # run the main loop
 echo "$scenarios" | while read simfile; do
     simdir="$( dirname $simfile)"
