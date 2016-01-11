@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+package rina.policies.DIF.EFCP.DTCP.TxControl.TxControlPolicyLG;
+import rina.policies.DIF.EFCP.DTCP.TxControl.IntTxControlPolicy;
 
-Define_Module(ECNMarker);
-
-bool ECNMarker::run(RMTQueue* queue)
+simple TxControlPolicyLG like IntTxControlPolicy
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+    parameters:
+        string policyName = "TxControl LG";
+        @display("i=block/socket");    
+        
+        @signal[Tx_LG_RATE](type=double);
+        @statistic[tx-lg-rate](title="Tx LG Rate"; source="Tx_LG_RATE"; record=vector, last);
+
+        @signal[Tx_LG_FLIGHT_SIZE](type=double);
+        @statistic[tx-flight-size](title="Tx Flight Size"; source="Tx_LG_FLIGHT_SIZE"; record=vector, last);
 }

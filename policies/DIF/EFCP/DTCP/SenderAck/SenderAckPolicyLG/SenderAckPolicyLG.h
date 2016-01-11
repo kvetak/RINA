@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,22 +19,40 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file SenderAckPolicyLG.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG Initial Sequence Number behavior
+ * @detail
+ */
 
-#include <ECNMarker.h>
+#ifndef SENDERACKLGPOLICY_H_
+#define SENDERACKLGPOLICY_H_
 
-Define_Module(ECNMarker);
+#include <SenderAckPolicyBase.h>
+#include "TxControlPolicyLG.h"
 
-bool ECNMarker::run(RMTQueue* queue)
+class SenderAckPolicyLG : public SenderAckPolicyBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+  private:
+    double load;
+    double gamma;
+
+    TxControlPolicyLG *txControlPolicyLG;
+
+  public:
+    SenderAckPolicyLG();
+    virtual ~SenderAckPolicyLG();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void initialize();
+
+    double getLoad();
+
+    simsignal_t sigStatECNMarked;
+    simsignal_t sigStatApprLoad;
+
+};
+
+#endif /* SENDERACKLGPOLICY_H_ */

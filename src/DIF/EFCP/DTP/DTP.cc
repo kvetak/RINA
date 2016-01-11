@@ -24,6 +24,8 @@
 
 const char * SIG_STAT_DTP_RTT = "DTP_RTT";
 const char * SIG_STAT_DTP_CLOSED_WIN_Q = "DTP_CLOSED_WIN_Q";
+const char * DTP_SEQ_NUM_RCVD = "DTP_SEQ_NUM_RCVD";
+const char * DTP_SEQ_NUM_SENT = "DTP_SEQ_NUM_SENT";
 
 Define_Module(DTP);
 
@@ -98,6 +100,8 @@ void DTP::initSignalsAndListeners()
   sigStatDTPRTT = registerSignal(SIG_STAT_DTP_RTT);
   sigStatDTPClosedWinQ = registerSignal(SIG_STAT_DTP_CLOSED_WIN_Q);
 //  sigStatDTPRxCount   = registerSignal(SIG_STAT_DTP_RX_SENT);
+  sigStatDTPRecvSeqNum    = registerSignal(DTP_SEQ_NUM_RCVD);
+  sigStatDTPSentSeqNum    = registerSignal(DTP_SEQ_NUM_SENT);
 }
 
 void DTP::initialize(int step)
@@ -368,6 +372,8 @@ void DTP::handleMessage(cMessage *msg)
     }
     else if (msg->arrivedOn(southI->getId()))
     {
+        if (((PDU_Base*) msg)->getType() == DATA_TRANSFER_PDU)
+            emit(sigStatDTPRecvSeqNum, ((PDU_Base*) msg)->getSeqNum());
       handleMsgFromRMT((PDU*) msg);
     }
   }
@@ -1313,7 +1319,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       {
         if (dtcp->dtcpState->isWinBased())
         {
-          if ((*it)->getSeqNum() <= dtcp->getSndRtWinEdge())
+          if (((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()) && !dtcp->getDTCPState()->isClosedWindow())
           {
             /* The Window is Open. */
             dtcp->runTxControlPolicy(state, pduQ);
@@ -1630,7 +1636,7 @@ void DTP::sendToRMT(PDU* pdu)
   take(pdu);
   if (pdu->getType() == DATA_TRANSFER_PDU)
   {
-
+      emit(sigStatDTPSentSeqNum, pdu->getSeqNum());
     //TODO B1 What to do in case of retransmission?
     state->setLastSeqNumSent(pdu->getSeqNum());
     EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " sent in time: " << simTime() << endl;

@@ -20,22 +20,31 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file RTTEstimatorPolicyLG.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG RTT Estimator
+ * @detail
+ */
 
-#include <ECNMarker.h>
+#ifndef RTTESTIMATORPOLICYLG_H_
+#define RTTESTIMATORPOLICYLG_H_
 
-Define_Module(ECNMarker);
+#define MIN_RTO     1
 
-bool ECNMarker::run(RMTQueue* queue)
+#include "RTTEstimatorPolicyBase.h"
+
+class RTTEstimatorPolicyLG : public RTTEstimatorPolicyBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+  public:
+    RTTEstimatorPolicyLG();
+    virtual ~RTTEstimatorPolicyLG();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+    void initialize();
+
+    simsignal_t sigStatRTTRTO;
+
+};
+
+#endif /* RTTESTIMATORPOLICYLG_H_ */

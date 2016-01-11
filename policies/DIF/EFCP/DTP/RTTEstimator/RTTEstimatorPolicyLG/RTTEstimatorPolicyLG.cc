@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+/*
+ * RTTEstimatorPolicyLG.c
+ *
+ *  Created on: May 3, 2015
+ *      Author: Marcel Marek
+ */
 
-Define_Module(ECNMarker);
+#include "RTTEstimatorPolicyLG.h"
+#include "ControlPDU_m.h"
 
-bool ECNMarker::run(RMTQueue* queue)
+const char * RTT_RTO_ESTIMATOR = "RTT_RTO_ESTIMATOR";
+
+Register_Class(RTTEstimatorPolicyLG);
+
+RTTEstimatorPolicyLG::RTTEstimatorPolicyLG()
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+    RTO = MIN_RTO;
+}
+
+RTTEstimatorPolicyLG::~RTTEstimatorPolicyLG()
+{
+}
+
+void RTTEstimatorPolicyLG::initialize() {
+    sigStatRTTRTO = registerSignal(RTT_RTO_ESTIMATOR);
+}
+
+bool RTTEstimatorPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
+{
+      defaultAction(dtpState, dtcpState);
+      if(RTO < MIN_RTO)
+          RTO = MIN_RTO;
+      emit(sigStatRTTRTO, RTO);
+
+      return false;
 }

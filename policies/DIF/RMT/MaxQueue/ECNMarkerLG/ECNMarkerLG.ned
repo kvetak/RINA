@@ -21,21 +21,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+import rina.policies.DIF.RMT.MaxQueue.IntRMTMaxQPolicy;
 
-Define_Module(ECNMarker);
+package rina.policies.DIF.RMT.MaxQueue.ECNMarkerLG;
 
-bool ECNMarker::run(RMTQueue* queue)
+simple ECNMarkerLG like IntRMTMaxQPolicy 
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+    parameters:
+        @display("i=block/socket");
+        @signal[RMT-SlowDownRequest];
+        
+        @signal[ECN_MARKER](type=unsigned long);
+        @statistic[rmt-ecn-marker](title="RMT ECN Marker"; source="ECN_MARKER"; record=vector, last);
+        
 }

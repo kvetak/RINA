@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+package rina.policies.DIF.EFCP.DTP.RTTEstimator.RTTEstimatorPolicyLG;
+import  rina.policies.DIF.EFCP.DTP.RTTEstimator.IntRTTEstimatorPolicy;
 
-Define_Module(ECNMarker);
-
-bool ECNMarker::run(RMTQueue* queue)
+//
+// TODO auto-generated module
+//                                     
+simple RTTEstimatorPolicyLG like IntRTTEstimatorPolicy
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+    parameters:
+        string policyName = "RTTEstimator LG";
+        @display("i=block/socket");
+        
+        @signal[RTT_RTO_ESTIMATOR](type=double);
+        @statistic[dtcp-rtt-rto](title="RTT-RTO Estimator"; source="RTT_RTO_ESTIMATOR"; record=vector, last);
+        
 }

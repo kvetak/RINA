@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+package rina.policies.DIF.EFCP.DTCP.RcvrAck.RcvrAckPolicyLG;
+import rina.policies.DIF.EFCP.DTCP.RcvrAck.IntRcvrAckPolicy;
 
-Define_Module(ECNMarker);
-
-bool ECNMarker::run(RMTQueue* queue)
+//
+// TODO auto-generated type
+//
+simple RcvrAckPolicyLG like IntRcvrAckPolicy
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+        parameters:
+        string policyName = "RcvrAck LG";
+        double gamma = default(0.02);
+        @display("i=block/socket");
+        
+        @signal[ECN_MARKED_DATA](type=unsigned long);
+        @statistic[dtcp-ecn-marked-data](title="DTCP ECN Marked Data"; source="ECN_MARKED_DATA"; record=vector, last);
+        
 }

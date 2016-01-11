@@ -1,0 +1,108 @@
+# This topology (SimpleRelayWithCongestion) is designed for testing simple 
+# network congestion on a InteriorRouter. You can change its behaviour by 
+# defining multiple variables for EFCP, RMT and FA. Several implications needs 
+# to be taken into account when defining these variables and their mutual relations.
+# For Flow Allocator it is mainly the createRequestTimeout. It specifies the 
+# upper limit in which it expects response for createFlow request. So if you want 
+# to avoid re-sending createFlow request, set it high enough to accomodate for 
+# recursive Flow creation. It depends heavily on chosen topology.
+# Default value is 10s. You can change it in .ini.
+#
+# Example:
+# **.fa.createRequestTimeout = 12s
+#
+# For EFCP it is
+# initialSenderCredit (default 10)
+# rcvCredit (default 10)
+# closedWindowQLen (default 4)
+# mpl (default 50s)
+# rtt (default 2s)
+# initialSenderCredit 	specifies the initial credit on the sender direction. 
+#					   	Setting this variable high (might) cause the 
+#						InteriorRouter get congested. Setting it too low will on 
+#						the other hand prevent the initial overload. After first 
+#						exchange of FlowControlPDU, the initialSenderCredit looses 
+#						its importance.
+# rcvCredit 			is the value that is send (in form of RcvRightWindowEdge) 
+#						in mentioned FlowControlPDU.
+# closedWindowQLen 		takes place when SndRightWindowEdge permits from sending 
+#						another PDU, so DTP starts to put them on closedWindowQ. 
+#						When lenght of this queue reaches closedWindowQLen, 
+#						DTP signals Push-Back to upper flow.
+# mpl 					is maximum PDU lifetime and is used for computation few 
+#						inner timers. This variable is fixed throughout simulation run.
+# rtt 					is initial value for round-trip time. RTT is then gradually 
+#						updated through RTTEstimator policy. Set it high enough, 
+#						so the first DataTransferPDU - Ack exchange have chance 
+#						to updated it before retransmission timer expiration.
+#
+# In RMT you can set defaultThreshQLength, defaultMaxQLength and maxQPolicyName.
+# defaultThreshQLength 	sets initial threshold length of dynamically initiated RMT 
+#						queues (10 by default).
+# defaultMaxQLength 	sets initial maximum length of dynamically initiated RMT 
+#						queues (20 by default, defaultMaxQLength >= defaultThreshQLength). 
+# maxQPolicyName 		specifies the RMT MaxQueue policy to be used in the scenario. 
+#						This policy is invoked by a queue each time number of 
+#						queued PDUs exceeds the defaultThreshQLength. The sample 
+#						MaxQueue policy used for invocation of congestion notifications 
+#						is called "UpstreamNotifier".
+#
+# CongestionPing:
+# We are trying to congest InteriorRouter so the connection between InteriorRouter 
+# and Host2 has bigger latency, queues from InteriorRouter to Host2 are shorter, etc.
+#
+# Used AE: AEPing - behave in same sense as ICMP Echo Request/reply
+# **.host1.applicationProcess1.applicationEntity.iae.dstApName = "App2"
+# **.host1.applicationProcess1.applicationEntity.iae.dstAeName = "Ping"
+# **.host1.applicationProcess1.applicationEntity.iae.startAt = 10s -> start of Application entity (not start of sending PINGs)
+# **.host1.applicationProcess1.applicationEntity.iae.pingAt =  60s -> AE starts sending PINGs
+# **.host1.applicationProcess1.applicationEntity.iae.rate = 50 -> number of PINGs that will be sent
+# **.host1.applicationProcess1.applicationEntity.iae.stopAt = 250s -> time of deallocation
+# **.interiorRouter.relayIpc.relayAndMux.defaultMaxQLength = 5 -> shortened output queue towards Host2
+# **.interiorRouter.relayIpc.relayAndMux.defaultThreshQLength = 3 -> lowered threshold
+# **.efcp.rtt = 25s -> high enough
+# **.host1.ipcProcess1.efcp.efcp.initialSenderCredit = 50 -> Host1 can send up to 50 PDUs before getting Ack or FlowControl update
+# **.interiorRouter.ipcProcess1.efcp.efcp.initialSenderCredit = 3 -> But IPC towards Host2 on InteriorRouter in the lower DIF can send only up to 3 PDUs before getting Ack or FlowControl update
+# **.interiorRouter.ipcProcess1.efcp.efcp.maxClosedWinQueLen = 4 -> after reaching 4 PDUs on closedWindowQ this IPC emits Push-Back
+# **.host2.ipcProcess0.efcp.efcp.rcvCredit = 3 -> thanks to this, the sender credit on Interior router in ipcProcess1 stays same as initialSenderCredit even after FlowControl update.
+# **.relayAndMux.maxQPolicyName = "UpstreamNotifier" -> Name of policy.
+#
+# Important Events:
+# t=10s - created connection between Host1.ipcp1 - Host1.ipcp0
+# t=10.000Xs - created connection between Host1.ipcp0 - interiorRouter.ipcp0, interiorRouter.ipcp0 - interiorRouter.relayIpc, interiorRouter.relayIpc - interiorRouter.ipcp1.
+# t=15s - created connection between interiorRouter.ipcp1 - Host2.ipcp0.
+# t=25s - created connection Host2.ipcp0 - Host2.ipcp1, Host2.ipcp1 - Host2.irm
+# t=30s - created connection Host1.ipcp1 - Host1.irm
+# t=60s - start of sending PINGs
+# t=62s - interiorRouter.ipcp1 - senderCredit gets depleted (see SndRightWindowEdge -5 and NextSeqNumToSend -6)
+# t=63s - interiorRouter.ipcp1 - first PDU is put on closedWindowQ
+# t=66s - interiorRouter.ipcp1 - closedWindowQ is full - initiate PushBack (block upper flow),
+#       -               .relayIpc - RMT shuts down port towards ipcp1 and it starts to fill
+# t=70s - interiorRouter.ipcp1 - Ack is received -> there is space in closedWindowQ -> RMT port is unblocked and 1 PDU is released.
+# t=70s - interiorRouter.ipcp1 - closedWindowQ is full - initiate PushBack (block upper flow) (this happens several times
+# t=95s - interiorRouter.relayIpc - RMT port is full - SlowDown mechanism is invoked
+#       -                         - RIBd sends CDAP message to Host1.ipcp1 to "SlowDown"
+# t=95s - Host1.ipcp1 - RIBd receives CDAP message to "SlowDown" and ECNSlowDownPolicy in DTCP is initiated.
+#
+#
+# CongestionStream
+# Used AE: AEStream - Sends messages to the other side. Unlike AEPing, it does not send response back.
+# Important Events:
+# t=10s - created connection between Host1.ipcp1 - Host1.ipcp0
+# t=10.000Xs - created connection between Host1.ipcp0 - interiorRouter.ipcp0, interiorRouter.ipcp0 - interiorRouter.relayIpc, interiorRouter.relayIpc - interiorRouter.ipcp1.
+# t=15s - created connection between interiorRouter.ipcp1 - Host2.ipcp0.
+# t=25s - created connection Host2.ipcp0 - Host2.ipcp1, Host2.ipcp1 - Host2.irm
+# t=30s - created connection Host1.ipcp1 - Host1.irm
+#
+# t=60s - start of sending PINGs
+# t=62s - interiorRouter.ipcp1 - senderCredit gets depleted (see SndRightWindowEdge -5 and NextSeqNumToSend -6)
+# t=63s - interiorRouter.ipcp1 - first PDU is put on closedWindowQ
+# t=66s - interiorRouter.ipcp1 - closedWindowQ is full - initiate PushBack (block upper flow),
+#       -               .relayIpc - RMT shuts down port towards ipcp1 and it starts to fill
+# t=70s - interiorRouter.ipcp1 - Ack is received -> there is space in closedWindowQ -> RMT port is unblocked and 1 PDU is released.
+# t=70s - interiorRouter.ipcp1 - closedWindowQ is full - initiate PushBack (block upper flow),
+# t=84s - interiorRouter.relayIpc - RMT port is full - SlowDown mechanism is invoked
+#       -                         - RIBd sends CDAP message to Host1.ipcp1 to "SlowDown"
+# t=84s - Host1.ipcp1 - RIBd receives CDAP message to "SlowDown" and ECNSlowDownPolicy in DTCP is initiated.  
+
+  

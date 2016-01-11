@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,21 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
-
-Define_Module(ECNMarker);
-
-bool ECNMarker::run(RMTQueue* queue)
+package rina.policies.DIF.EFCP.DTCP.SenderAck.SenderAckPolicyLG;
+import rina.policies.DIF.EFCP.DTCP.SenderAck.IntSenderAckPolicy;
+//
+// TODO auto-generated type
+//
+simple SenderAckPolicyLG like IntSenderAckPolicy
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
+        parameters:
+        string policyName = "SenderAck LG";
+        @display("i=block/socket");
+        
+        @signal[ECN_MARKED_CTRL](type=unsigned long);
+        @statistic[dtcp-ecn-marked-ctrl](title="DTCP ECN Marked Control"; source="ECN_MARKED_CTRL"; record=vector, last);
+        
+        @signal[APPR_LOAD](type=double);
+        @statistic[approximate-load](title="Load approximation"; source="APPR_LOAD"; record=vector, last);
+        
 }

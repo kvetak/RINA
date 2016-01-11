@@ -21,21 +21,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+#ifndef ECNMARKERLG_H_
+#define ECNMARKERLG_H_
 
-Define_Module(ECNMarker);
+#include "RMTMaxQBase.h"
+#include "DataTransferPDU.h"
 
-bool ECNMarker::run(RMTQueue* queue)
+
+class ECNMarkerLG : public RMTMaxQBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+  public:
+    bool run(RMTQueue* queue);
+    void onPolicyInit();
+
+    simsignal_t sigStatECNMarker;
+
+};
+
+#endif /* ECNMARKERLG_H_ */

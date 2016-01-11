@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,22 +19,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+/**
+ * @file RcvrAckPolicyLG.h
+ * @author Marcel Marek (imarek@fit.vutbr.cz)
+ * @date May 3, 2015
+ * @brief This is an example policy class implementing LG RcvrAck behavior
+ * @detail
+ */
 
-#include <ECNMarker.h>
+#ifndef RCVRACKPOLICYLG_H_
+#define RCVRACKPOLICYLG_H_
 
-Define_Module(ECNMarker);
+#include <RcvrAckPolicyBase.h>
 
-bool ECNMarker::run(RMTQueue* queue)
+#include "DataTransferPDU.h"
+#include "ControlPDU_m.h"
+#include "DTP.h"
+
+
+class RcvrAckPolicyLG : public RcvrAckPolicyBase
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
-        EV << "ECNMarker: dropping message for queue " << queue->getName() << endl;
-        return true;
-    }
-    else
-    {
-        EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
-        return false;
-    }
-}
+  public:
+    RcvrAckPolicyLG();
+    virtual ~RcvrAckPolicyLG();
+    virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
+
+    void initialize();
+
+    simsignal_t sigStatECNMarked;
+
+};
+
+#endif /* RCVRACKPOLICYLG_H_ */

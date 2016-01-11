@@ -275,6 +275,8 @@ class DTP : public cSimpleModule
     simsignal_t sigStatDTPRTT;
     simsignal_t sigStatDTPClosedWinQ;
 //    simsignal_t sigStatDTPRxCount;
+    simsignal_t sigStatDTPSentSeqNum;
+    simsignal_t sigStatDTPRecvSeqNum;
 
 };
 

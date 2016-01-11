@@ -45,6 +45,6 @@ RTTEstimatorPolicyDefault::~RTTEstimatorPolicyDefault()
 
 bool RTTEstimatorPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)
 {
-  defaultAction(dtpState, dtcpState);
+//  defaultAction(dtpState, dtcpState);
   return true;
 }

@@ -21,11 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarker.h>
+#include <ECNMarkerLG.h>
 
-Define_Module(ECNMarker);
+const char * ECN_MARKER = "ECN_MARKER";
 
-bool ECNMarker::run(RMTQueue* queue)
+
+Define_Module(ECNMarkerLG);
+
+void ECNMarkerLG::onPolicyInit() {
+    sigStatECNMarker = registerSignal(ECN_MARKER);
+}
+
+
+bool ECNMarkerLG::run(RMTQueue* queue)
 {
     if (queue->getLength() >= queue->getMaxLength())
     {
@@ -35,7 +43,15 @@ bool ECNMarker::run(RMTQueue* queue)
     else
     {
         EV << "ECNMarker: marking the last message in queue " << queue->getName() << endl;
-        queue->markCongestionOnLast();
+        const cPacket* msg = queue->getLastPDU();
+        PDU* pdu = (PDU*) msg;
+        if(dynamic_cast<DataTransferPDU*>(pdu)) {
+            emit(sigStatECNMarker, pdu->getSeqNum());
+            queue->markCongestionOnLast();
+        } else {
+            EV << "Not a Data PDU to ECN-mark!" << endl;
+        }
         return false;
     }
 }
+
