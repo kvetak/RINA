@@ -41,7 +41,8 @@ class EFCPPolicySet
     const char* rcvrInactiv;
     const char* rttEstimat;
     const char* senderInactiv;
-    const char* fcOverrun;
+    const char* sndFcOverrun;
+    const char* rcvFcOverrun;
     const char* lostControlPDU;
     const char* noOverridePeak;
     const char* noRateSlowDown;
@@ -55,12 +56,14 @@ class EFCPPolicySet
     const char* sendingAck;
     const char* txControl;
     const char* rxTimerExpiry;
+    const char* ecn;
+    const char* ecnSlowDown;
 
   public:
     EFCPPolicySet();
     virtual ~EFCPPolicySet();
     bool init(cXMLElement* parent);
-    const char* getFcOverrun() const;
+    const char* getSndFcOverrun() const;
     const char* getLostControlPdu() const;
     const char* getNoOverridePeak() const;
     const char* getNoRateSlowDown() const;
@@ -78,6 +81,9 @@ class EFCPPolicySet
     const char* getRttEstimat() const;
     const char* getSenderInactiv() const;
     const char* getRxTimerExpiry() const;
+    const char* getRcvFcOverrun() const;
+    const char* getEcn() const;
+    const char* getEcnSlowDown() const;
 };
 
 #endif /* EFCPPOLICYSET_H_ */

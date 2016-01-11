@@ -48,14 +48,28 @@ endif
 
 # Main target when "Build Project" is invoked
 all:
+# TODO: atrocious, rewrite
+	$(Q)test -f src/Makefile -a -f policies/Makefile || make makefiles
 	$(qecho) Creating library librinasimcore ...
 	$(Q)if [ -d $(PROJECT_OUTPUT_DIR) ]; then \
 		find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;; fi
 	$(Q)cd src && $(MAKE) all
 	$(qecho) Creating library librinasim ...
-	$(Q)cd policies && $(MAKE) all	
+	$(Q)cd policies && $(MAKE) all
 
 submakedirs:  src_dir policies_dir
+
+makefiles:
+	$(qecho) Generating makefiles...
+
+	$(Q)cd src && \
+	opp_makemake -f --deep --make-lib -o rinasimcore -O out \
+		`find ../policies/ -type d | sed 's/^/-I/' | tr '\n' ' '` >/dev/null
+
+	$(Q)cd policies && \
+	opp_makemake -f --deep --make-so -o rinasim -O out -L../out/gcc-debug/src -lrinasimcore \
+		`find ../src/ -type d | sed 's/^/-I/' | tr '\n' ' '` >/dev/null
+
 
 .PHONY: all clean cleanall depend msgheaders src policies
 policies: policies_dir
@@ -69,31 +83,30 @@ src_dir:
 
 msgheaders:
 	$(Q)cd src && $(MAKE) msgheaders
-	$(Q)cd policies && $(MAKE) msgheaders	
+	$(Q)cd policies && $(MAKE) msgheaders
 
 # When "Clean Local/Project" is invoked
 clean: cleansrc cleanpolicies
-	$(qecho) Cleaning project ...  
-	$(Q)rm -rf $(O)  
-	$(Q)rm -f librinasim.so librinasim.dll librinasimcore.a librinasimcore.lib  
-	 		  
+	$(qecho) Cleaning project ...
+	$(Q)rm -rf $(O)
+	$(Q)rm -f librinasim.so librinasim.dll librinasimcore.a librinasimcore.lib
+
 cleanall: clean
 	$(Q)rm -rf $(PROJECT_OUTPUT_DIR)
-	
+
 cleanlibs:
-	$(qecho) Cleaning libraries ...		
-	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasimcore.*" -exec rm -rf {} \;	
+	$(qecho) Cleaning libraries ...
+	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasimcore.*" -exec rm -rf {} \;
 	$(Q)find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;
-	
+
 cleansrc:
 	$(Q)cd src && $(MAKE) clean && rm -f .tmp* sta*
-	
-cleanpolicies:	 	
+
+cleanpolicies:
 	$(Q)cd policies && $(MAKE) clean && rm -f .tmp* sta*
-	
+
 depend:
 	$(qecho) Creating dependencies...
 	$(Q)cd src && if [ -f Makefile ]; then $(MAKE) depend; fi
 	$(Q)cd policies && if [ -f Makefile ]; then $(MAKE) depend; fi
-	
 

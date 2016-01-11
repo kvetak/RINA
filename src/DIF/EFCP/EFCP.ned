@@ -27,6 +27,7 @@ simple EFCP
     parameters:
         @display("i=block/fork");
         bool pduDroppingEnabled = default(false);
+        bool rendezvousEnabled = default(false);
         
         string ecnPolicy = default("");
         string rcvrFCPolicy = default("");

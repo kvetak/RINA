@@ -52,7 +52,7 @@ void StaticGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTP
     }
 
 }
-void StaticGenerator::removedFlow(const Address &addr, RMTPort * port){
+void StaticGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     //Iterate through all QoS cubes and check if exist an entry with qos
     for(QoSCube qosI : cubes) {
         auto res = fwd->lookup(addr, qosI.getQosId());

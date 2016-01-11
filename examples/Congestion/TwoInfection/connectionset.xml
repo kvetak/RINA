@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+    <ConnectionSet>
+            <!-- Allocate management flows. -->
+            <SimTime t="0">
+                <Connection src="1_Core" dst="2_Core" qosReq="1"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="1"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="1"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="1"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="1"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="1"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="1"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="1"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="1"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="1"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="1"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="1"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="1"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="1"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="1"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="2"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="2"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="2"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="2"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="2"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="2"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="2"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="2"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="2"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="2"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="2"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="2"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="2"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="2"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="2"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="3"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="3"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="3"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="3"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="3"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="3"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="3"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="3"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="3"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="3"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="3"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="3"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="3"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="3"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="3"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="4"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="4"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="4"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="4"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="4"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="4"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="4"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="4"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="4"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="4"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="4"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="4"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="4"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="4"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="4"/>
+                
+                <Connection src="1_Core" dst="2_Core" qosReq="5"/>
+                <Connection src="1_Core" dst="3_Core" qosReq="5"/>
+                <Connection src="1_Core" dst="6_Core" qosReq="5"/>
+                <Connection src="2_Core" dst="3_Core" qosReq="5"/>
+                <Connection src="2_Core" dst="5_Core" qosReq="5"/>
+                <Connection src="3_Core" dst="4_Core" qosReq="5"/>
+                <Connection src="4_Core" dst="5_Core" qosReq="5"/>
+                <Connection src="4_Core" dst="6_Core" qosReq="5"/>
+                <Connection src="5_Core" dst="7_Core" qosReq="5"/>
+                <Connection src="6_Core" dst="7_Core" qosReq="5"/>
+                <Connection src="6_Core" dst="8_Core" qosReq="5"/>
+                <Connection src="7_Core" dst="9_Core" qosReq="5"/>
+                <Connection src="8_Core" dst="9_Core" qosReq="5"/>
+                <Connection src="8_Core" dst="a_Core" qosReq="5"/>
+                <Connection src="9_Core" dst="a_Core" qosReq="5"/>
+            </SimTime>
+    </ConnectionSet>

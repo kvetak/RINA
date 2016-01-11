@@ -26,13 +26,13 @@ Register_Class(NoRateSlowDownPolicyDefault)
 
 NoRateSlowDownPolicyDefault::NoRateSlowDownPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 NoRateSlowDownPolicyDefault::~NoRateSlowDownPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool NoRateSlowDownPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

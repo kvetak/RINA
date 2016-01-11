@@ -41,8 +41,12 @@
 class DTCPState : public cSimpleModule
 {
   private:
+    bool winBased; /*!< a Boolean that indicates whether window-based flow control is in use.*/
+    bool rateBased; /*!<a Boolean indicates whether rate-based flow control is in use.*/
+    bool rxPresent; /*!<a Boolean that indicates whether Retransmission Control (potentially with gaps) is in use*/
+
 //    bool setDRFFlag; // This Boolean indicates that the next PDU sent should have the DRF Flag set.
-    bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
+//    bool immediate; //If Retransmission Control is present, this Boolean indicates whether Acks are sent immediately or after the A timer expires, or if DTCP is not present that there is no delay to allow late packets to arrive.
     unsigned int sndLeftWinEdge;
     unsigned int sndRightWinEdge;
     unsigned int rcvRightWinEdge; //The absolute value of the credit on this flow.
@@ -56,6 +60,7 @@ class DTCPState : public cSimpleModule
     /* Moved from RX */
     unsigned int nextSenderControlSeqNum; //This state variable will contain the Sequence Number to be assigned to a Control PDU sent on this connection.
     unsigned int lastControlSeqNumRcv; // - This state variable contains the sequence number of the next expected Transfer PDU received on this connection.
+    unsigned int lastControlSeqNumSent;
 
     unsigned int dataReXmitMax; // The maximum number of retransmissions of PDUs without a positive acknowledgment that will be tried before declaring an error.
 
@@ -80,8 +85,9 @@ class DTCPState : public cSimpleModule
 
     unsigned int rcvrRate; //This variable contains the current rate that the receiver has told the sender that it may send PDUs at.
 
-    /* Without getters/setters */
     unsigned int pdusRcvdinTimeUnit; //This variable contains the number of PDUs received in this Time Unit. When PDUsRcvdinTimeUnit equals RcvrRate, the receiver is allowed to discard any PDUs received until a new time unit begins.
+
+    /* Without getters/setters */
     unsigned int rcvBytesFree; //The number of bytes that this flow can assume it has available for incoming PDUs on this connection.
     unsigned int rcvBytesPercentFree; //The percent of bytes that are free for incoming PDUs on this connection.
     unsigned int rcvBytesThreshold; //The number of free bytes at which flow control does not move the Right Window Edge.
@@ -106,9 +112,19 @@ class DTCPState : public cSimpleModule
     std::vector<DTCPRxExpiryTimer*> rxQ;
 
 
+    bool sndRendez; //Rendezvous-at-sender state
+    bool rcvRendez; //Rendezvous-at-receiver state
+    DTCPRendezvousTimer* rendezvousTimer;
+    DTCPReliableControlPDUTimer* reliableCPDUTimer;
+
+    unsigned int rendezSeqNum;
+
+
     unsigned int rxSent; //number of PDUs sent from RxQ due to RxTimer expiration
 
     void clearPDUQ(PDUQ_t* pduQ);
+
+    const QoSCube* qoSCube; //We'll see how this work out.
 
 
   public:
@@ -116,13 +132,13 @@ class DTCPState : public cSimpleModule
     virtual ~DTCPState();
 //    unsigned int getRtt() const;
 //    void setRtt(unsigned int rtt);
-    bool isImmediate() const;
-    void setImmediate(bool immediate);
+//    bool isImmediate() const;
+//    void setImmediate(bool immediate);
     unsigned int getRcvrRightWinEdgeSent() const;
-    void setRcvRtWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
-    unsigned int getSenderRightWinEdge() const;
+    void setRcvRightWinEdgeSent(unsigned int rcvrRightWinEdgeSent);
+    unsigned int getSndRightWinEdge() const;
     void setSenderRightWinEdge(unsigned int senderRightWinEdge);
-    unsigned int getSenderLeftWinEdge() const;
+    unsigned int getSndLeftWinEdge() const;
     void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
 //    bool isSetDrfFlag() const;
 //    void setSetDrfFlag(bool setDrfFlag);
@@ -139,7 +155,7 @@ class DTCPState : public cSimpleModule
     void setLastCtrlSeqNumRcv(unsigned int ctrlSeqNum);
     void incRcvRtWinEdge();
     void initFC();
-    unsigned int getRcvRtWinEdge() const;
+    unsigned int getRcvRightWinEdge() const;
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
     unsigned int getRcvBufferPercentThreshold() const;
     void setRcvBufferPercentThreshold(unsigned int rcvBufferPercentThreshold);
@@ -191,7 +207,34 @@ class DTCPState : public cSimpleModule
     bool isClosedWinQClosed() const;
     void incRxSent();
     unsigned int getRxSent() const;
+    bool isRateBased() const;
+    void setRateBased(bool rateBased);
+    bool isRxPresent() const;
+    void setRxPresent(bool rxPresent);
+    bool isWinBased() const;
+    void setWinBased(bool winBased);
 
+    bool isFCPresent(){ return winBased || rateBased;}
+
+    const QoSCube* getQoSCube() const;
+    void setQoSCube(const QoSCube*& qoSCube);
+
+    unsigned int getPdusRcvdInTimeUnit() const;
+    void setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit);
+
+    void resetRcvVars();
+    bool isRcvRendez() const;
+    void setRcvRendez(bool rcvRendez);
+    bool isSndRendez() const;
+    void setSndRendez(bool sndRendez);
+    unsigned int getLastControlSeqNumSent() const;
+    void setLastControlSeqNumSent(unsigned int lastControlSeqNumSent);
+    DTCPRendezvousTimer* getRendezvousTimer();
+    void setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer);
+    DTCPReliableControlPDUTimer* getReliableCpduTimer();
+    void setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer);
+    unsigned int getRendezSeqNum() const;
+    void setRendezSeqNum(unsigned int rendezSeqNum);
 
   protected:
     virtual void handleMessage(cMessage *msg);

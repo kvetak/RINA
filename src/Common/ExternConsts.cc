@@ -156,8 +156,6 @@ const char* ELEM_EFCPPOL             = "EFCPPolicySet";
 
 
 //Values
-//TODO: Vesely @Marek - What about -1 as default DoNotCare value
-//TODO: Marek @Vesely - OK
 const int   VAL_QOSPARDONOTCARE = -1;
 const bool  VAL_QOSPARDEFBOOL   = false;
 const int   UNINIT_INVOKEID     = -1;

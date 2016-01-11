@@ -50,6 +50,11 @@ void DTPState::setBlockingPort(bool blockingPort)
   this->blockingPort = blockingPort;
 }
 
+void DTPState::resetRcvVars()
+{
+  rcvLeftWinEdge = 0;
+}
+
 void DTPState::initialize(int step)
 {
   if(step == 0){
@@ -58,8 +63,9 @@ void DTPState::initialize(int step)
     disp.setTagArg("p", 0, 240);
     disp.setTagArg("p", 1, 50);
 
-    maxFlowSDUSize = par("maxSDUSize");
-    maxFlowPDUSize = par("maxPDUSize");
+    maxFlowSDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxSDUSize");
+    maxFlowPDUSize = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("maxPDUSize");
+//    delimitDelay = getRINAModule<cModule*>(this, 3, {MOD_EFCP})->par("delimitDelay");
 
     rtt = par("rtt");
     if(getRINAModule<cModule*>(this, 2, {MOD_EFCP})->hasPar("rtt")){
@@ -73,29 +79,7 @@ void DTPState::initialize(int step)
 
     }
 
-
-////    winBased = par("winBased");
-////    rateBased = par("rateBased");
-//    rateBased = false;
-//
-////    rxPresent = par("rxPresent");
-//
-//    if(qoSCube->isRxOn()){
-//      rxPresent = true;
-//    }else{
-//      rxPresent = false;
-//    }
-    rxPresent = qoSCube->isRxOn();
-    winBased = qoSCube->isWindowFcOn();
-    rateBased = qoSCube->isRateFcOn();
-
-//    if(qoSCube->getAvgBand() > 0){
-//      winBased = true;
-//    }else{
-//      winBased = false;
-//    }
-
-    if(rxPresent || winBased || rateBased){
+    if(qoSCube->isRxOn() || qoSCube->isWindowFcOn() || qoSCube->isRateFcOn()){
       dtcpPresent =  true;
 
     }
@@ -109,8 +93,7 @@ void DTPState::initDefaults(){
   dropDup = 0;
   setDRFFlag = true;
   dtcpPresent = false;
-  winBased = false;
-  rateBased = false;
+
   incompDeliv = false;
 
 
@@ -118,13 +101,16 @@ void DTPState::initDefaults(){
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
   nextSeqNumToSend = 1;
-  qoSCube = NULL;
+  qoSCube = nullptr;
 
   seqNumRollOverThresh = INT_MAX - 1;
   lastSeqNumSent = 0;
   ecnSet = false;
 
   blockingPort = false;
+
+  tmpAtimer = nullptr;
+
 
 }
 
@@ -243,13 +229,13 @@ void DTPState::setPartDeliv(bool partDeliv) {
     this->partDeliv = partDeliv;
 }
 
-bool DTPState::isRateBased() const {
-    return rateBased;
-}
-
-void DTPState::setRateBased(bool rateBased) {
-    this->rateBased = rateBased;
-}
+//bool DTPState::isRateBased() const {
+//    return rateBased;
+//}
+//
+//void DTPState::setRateBased(bool rateBased) {
+//    this->rateBased = rateBased;
+//}
 
 //bool DTPState::isRateFullfilled() const {
 //    return rateFullfilled;
@@ -267,13 +253,13 @@ void DTPState::setRcvLeftWinEdge(unsigned int rcvLeftWinEdge) {
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
-bool DTPState::isRxPresent() const {
-    return rxPresent;
-}
-
-void DTPState::setRxPresent(bool rexmsnPresent) {
-    this->rxPresent = rexmsnPresent;
-}
+//bool DTPState::isRxPresent() const {
+//    return rxPresent;
+//}
+//
+//void DTPState::setRxPresent(bool rexmsnPresent) {
+//    this->rxPresent = rexmsnPresent;
+//}
 
 unsigned int DTPState::getSeqNumRollOverThresh() const {
     return seqNumRollOverThresh;
@@ -291,13 +277,13 @@ void DTPState::setState(int state) {
     this->state = state;
 }
 
-bool DTPState::isWinBased() const {
-    return winBased;
-}
-
-void DTPState::setWinBased(bool winBased) {
-    this->winBased = winBased;
-}
+//bool DTPState::isWinBased() const {
+//    return winBased;
+//}
+//
+//void DTPState::setWinBased(bool winBased) {
+//    this->winBased = winBased;
+//}
 
 bool DTPState::isSetDrfFlag() const
 {
@@ -456,58 +442,22 @@ void DTPState::setQoSCube(const QoSCube*& qoSCube)
 
 void DTPState::updateRcvLWE(unsigned int seqNum)
 {
-  //TODO A3
-  //Update LeftWindowEdge removing allowed gaps;
+
+
   unsigned int sduGap = qoSCube->getMaxAllowGap();
 
-  if (isDtcpPresent())
+  PDUQ_t* pduQ = &reassemblyPDUQ;
+
+  for (auto it = pduQ->begin(); it != pduQ->end(); ++it)
   {
-    PDUQ_t::iterator it;
-    PDUQ_t* pduQ = &reassemblyPDUQ;
-    for (it = pduQ->begin(); it != pduQ->end(); ++it)
+    if((rcvLeftWinEdge + 1) + sduGap >= (*it)->getSeqNum())
     {
-      if ((*it)->getSeqNum() == getRcvLeftWinEdge())
-      {
-        incRcvLeftWindowEdge();
-
-      }
-      else if ((*it)->getSeqNum() < getRcvLeftWinEdge())
-      {
-        continue;
-      }
-      else
-      {
-        if (pduQ->size() == 1 || it == pduQ->begin())
-        {
-          if ((*it)->getSDUSeqNum() <= getLastSduDelivered() + sduGap)
-          {
-            setRcvLeftWinEdge((*it)->getSeqNum());
-          }
-        }
-        else
-        {
-          (*(it - 1))->getSDUGap((*it));
-        }
-        break;
-      }
+      rcvLeftWinEdge = (*it)->getSeqNum();
     }
-  }
-  else
-  {
-    setRcvLeftWinEdge(std::max(getRcvLeftWinEdge(), seqNum));
-//    if(state.getRcvLeftWinEdge() > timer->getSeqNum()){
-//         throw cRuntimeError("RcvLeftWindowEdge SHOULD not be bigger than seqNum in A-Timer, right?");
-//       }else{
-//         state.setRcvLeftWinEdge(timer->getSeqNum());
-//       }
+
   }
 
-
-
-  if(getRcvLeftWinEdge() < seqNum){
-    //TODO B1 Is it correct?
-    //We did not manage to move the RLWE to seqNum even with A-Timer and allowed gap -> signal error
-  }
+  return;
 }
 
 void DTPState::handleMessage(cMessage* msg)
@@ -525,4 +475,13 @@ void DTPState::setTmpAtimer(ATimer* tmpAtimer)
   this->tmpAtimer = tmpAtimer;
 }
 
+//double DTPState::getDelimitDelay() const
+//{
+//  return delimitDelay;
+//}
+//
+//void DTPState::setDelimitDelay(double delimitDelay)
+//{
+//  this->delimitDelay = delimitDelay;
+//}
 /* End dirty hacks */

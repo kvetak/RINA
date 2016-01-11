@@ -33,13 +33,13 @@ Register_Class(NoOverridePeakPolicyDefault)
 
 NoOverridePeakPolicyDefault::NoOverridePeakPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 NoOverridePeakPolicyDefault::~NoOverridePeakPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool NoOverridePeakPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

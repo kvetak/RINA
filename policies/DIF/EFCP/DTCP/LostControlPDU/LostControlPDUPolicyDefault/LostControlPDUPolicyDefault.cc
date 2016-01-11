@@ -33,13 +33,13 @@ Register_Class(LostControlPDUPolicyDefault)
 
 LostControlPDUPolicyDefault::LostControlPDUPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 LostControlPDUPolicyDefault::~LostControlPDUPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool LostControlPDUPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

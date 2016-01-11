@@ -70,6 +70,10 @@ void AESInt::initialize()
     dstAeName     = par("dstAeName").stringValue();
     dstAeInstance = par("dstAeInstance").stringValue();
 
+    if (!dstAeName.compare("AeErr")) {
+        EV << "Destination AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
+    }
+
     //Schedule AllocateRequest & DeallocateRequest
     if (startAt > 0) {
         scheduleAt(startAt, new cMessage("StartCommunication"));

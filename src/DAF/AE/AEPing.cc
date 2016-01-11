@@ -93,6 +93,10 @@ void AEPing::initPing() {
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+    if (!dstAeName.compare("AeErr")) {
+        EV << "AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
+    }
+
     //Schedule AllocateRequest
     if (startAt > 0)
         prepareAllocateRequest();
@@ -139,6 +143,25 @@ void AEPing::handleMessage(cMessage *msg)
 }
 
 void AEPing::onStart() {
+    AEPing::connect();
+}
+
+void AEPing::connect() {
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(APN(srcApName),
+                    srcApInstance,
+                    srcAeName,
+                    srcAeInstance),
+        APNamingInfo(APN(dstApName),
+                    dstApInstance,
+                    dstAeName,
+                    dstAeInstance));
+
+    emit(sigAEEnrolled, apnip);
+}
+
+void AEPing::afterOnStart() {
+    Enter_Method("afterConnect()");
     //Prepare flow's source and destination
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
@@ -153,7 +176,6 @@ void AEPing::onStart() {
 
     //Call flow allocation request
     sendAllocationRequest(FlowObject);
-
 }
 
 void AEPing::onPing() {

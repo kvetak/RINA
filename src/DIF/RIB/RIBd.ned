@@ -32,5 +32,6 @@ simple RIBd
     	
     	bool useFANotifier = default(false);
     	bool useEnrollmentNotifier = default(false);
+    	bool useRoutingNotifier = default(false);
     	
 }

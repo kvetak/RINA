@@ -38,4 +38,6 @@ simple RA
         xml qoscubesData = default(xml("<QoSCube/>"));
         xml qosReqData = default(xml("<QoSReq/>"));
         xml preallocation = default(xml("<root/>"));
+        
+        bool onWire = default(false);
 }

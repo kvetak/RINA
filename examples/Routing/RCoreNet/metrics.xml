@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+    <Metrics>
+    	<Qos id="MA" urgent="true" />
+    	<Qos id="PU" urgent="true" />
+    	<Qos id="PN" />
+    	<Qos id="CU" urgent="true" />
+    	<Qos id="CN" />
+    
+        <Link src="1" l="6.5" dst="2" />
+        <Link src="1" l="4.5" dst="3" />
+        <Link src="1" l="12"  dst="6" />
+        <Link src="2" l="6.0" dst="3" />
+        <Link src="2" l="6.5" dst="5" />
+        <Link src="3" l="5.0" dst="4" />
+        <Link src="4" l="4.5" dst="5" />
+        <Link src="4" l="5.0" dst="6" />
+        <Link src="5" l="5.0" dst="7" />
+        <Link src="6" l="4.0" dst="7" />
+        <Link src="6" l="5.0" dst="8" />
+        <Link src="7" l="4.0" dst="9" />
+        <Link src="8" l="4.0" dst="9" />
+        <Link src="8" l="4.0" dst="a" />
+        <Link src="9" l="4.5" dst="a" />
+    </Metrics>

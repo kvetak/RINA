@@ -24,7 +24,7 @@
  * SenderInactivityPolicyDefault.cc
  *
  *  Created on: May 3, 2015
- *      Author: badluck
+ *      Author: Marcel Marek
  */
 
 #include "SenderInactivityPolicyDefault.h"

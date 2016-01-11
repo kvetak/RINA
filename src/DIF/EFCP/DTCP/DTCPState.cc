@@ -32,9 +32,17 @@
 
 Define_Module(DTCPState);
 
+void DTCPState::resetRcvVars()
+{
+  rcvRightWinEdge = UINT_MAX;
+//  rcvRate = ??
+
+}
+
 void DTCPState::initFC()
 {
-  rcvRightWinEdge = rcvCredit;
+//  rcvRightWinEdge = rcvCredit;
+  resetRcvVars();
   sndRightWinEdge = sndCredit;
   sendingRateFullfilled = false;
   closedWindow = false;
@@ -53,7 +61,8 @@ void DTCPState::initFC()
   rcvrRate = configRcvrRate;
 
   sendingRate = 0;
-  rcvrRate = 0;
+//  rcvrRate = 0;
+  rendezSeqNum = 0;
 
 }
 
@@ -61,14 +70,20 @@ void DTCPState::initFC()
 DTCPState::DTCPState()
 {
 
+  winBased = false;
+  rateBased = false;
+
   rcvRightWinEdgeSent = 0;
   lastControlSeqNumRcv = 0;
   sndLeftWinEdge = 0;
 
-  //TODO B1 remove immediate and use aTimer eg if(ATime == 0){//imediate}
-  immediate = true;
-
   rxSent = 0;
+
+  sndRendez = false;
+  rcvRendez = false;
+
+  rendezvousTimer = nullptr;
+  reliableCPDUTimer = nullptr;
 }
 
 void DTCPState::incRxSent()
@@ -77,27 +92,27 @@ void DTCPState::incRxSent()
 }
 
 
-bool DTCPState::isImmediate() const
-{
-  return immediate;
-}
+//bool DTCPState::isImmediate() const
+//{
+//  return immediate;
+//}
 
-void DTCPState::setImmediate(bool immediate)
-{
-  this->immediate = immediate;
-}
+//void DTCPState::setImmediate(bool immediate)
+//{
+//  this->immediate = immediate;
+//}
 
 unsigned int DTCPState::getRcvrRightWinEdgeSent() const
 {
   return rcvRightWinEdgeSent;
 }
 
-void DTCPState::setRcvRtWinEdgeSent(unsigned int rcvRightWinEdgeSent)
+void DTCPState::setRcvRightWinEdgeSent(unsigned int rcvRightWinEdgeSent)
 {
   this->rcvRightWinEdgeSent = rcvRightWinEdgeSent;
 }
 
-unsigned int DTCPState::getSenderLeftWinEdge() const {
+unsigned int DTCPState::getSndLeftWinEdge() const {
     return sndLeftWinEdge;
 }
 
@@ -105,7 +120,7 @@ void DTCPState::setSenderLeftWinEdge(unsigned int senderLeftWinEdge) {
     this->sndLeftWinEdge = senderLeftWinEdge;
 }
 
-unsigned int DTCPState::getSenderRightWinEdge() const
+unsigned int DTCPState::getSndRightWinEdge() const
 {
   return sndRightWinEdge;
 }
@@ -141,7 +156,7 @@ void DTCPState::setSndCredit(unsigned int sndCredit)
   this->sndCredit = sndCredit;
 }
 
-unsigned int DTCPState::getRcvRtWinEdge() const
+unsigned int DTCPState::getRcvRightWinEdge() const
 {
   return rcvRightWinEdge;
 }
@@ -270,7 +285,7 @@ void DTCPState::pushBackToClosedWinQ(DataTransferPDU* pdu) {
 //TODO A3 Check if this PDU is already on the queue (I believe the FSM is broken and it might try to add one PDU twice)
 
   take(pdu);
-    closedWindowQ.push_back(pdu);
+  closedWindowQ.push_back(pdu);
 }
 
 std::vector<DataTransferPDU*>* DTCPState::getClosedWindowQ()
@@ -410,8 +425,13 @@ void DTCPState::handleMessage(cMessage* msg)
 void DTCPState::initialize(int step)
 {
   if(step == 1){
+
+      rxPresent = qoSCube->isRxOn();
+          winBased = qoSCube->isWindowFcOn();
+          rateBased = qoSCube->isRateFcOn();
+
     if(par("aTime").doubleValue() != 0){
-      immediate = false;
+//      immediate = false;
     }
 
     rcvCredit = par("rcvCredit");
@@ -435,6 +455,7 @@ void DTCPState::initialize(int step)
     timeUnit = par("timeUnit");
     sendingTimeUnit = par("sendingTimeUnit");
     rcvBufferPercentThreshold = par("rcvBufferPercentThreshold");
+
     initFC();
   }
 }
@@ -442,6 +463,24 @@ void DTCPState::initialize(int step)
 unsigned int DTCPState::getRxSent() const
 {
   return rxSent;
+}
+
+const QoSCube* DTCPState::getQoSCube() const {
+    return qoSCube;
+}
+
+void DTCPState::setQoSCube(const QoSCube*& qoSCube) {
+    this->qoSCube = qoSCube;
+}
+
+DTCPReliableControlPDUTimer* DTCPState::getReliableCpduTimer()
+{
+  return reliableCPDUTimer;
+}
+
+void DTCPState::setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer)
+{
+  reliableCPDUTimer = reliableCpduTimer;
 }
 
 void DTCPState::initFromQoS(const QoSCube* qosCube)
@@ -454,3 +493,86 @@ unsigned int DTCPState::getRxQLen()
   return rxQ.size();
 }
 
+bool DTCPState::isRateBased() const {
+    return rateBased;
+}
+
+void DTCPState::setRateBased(bool rateBased) {
+    this->rateBased = rateBased;
+}
+
+bool DTCPState::isRxPresent() const {
+    return rxPresent;
+}
+
+void DTCPState::setRxPresent(bool rxPresent) {
+    this->rxPresent = rxPresent;
+}
+
+bool DTCPState::isWinBased() const {
+    return winBased;
+}
+
+void DTCPState::setWinBased(bool winBased) {
+    this->winBased = winBased;
+}
+
+unsigned int DTCPState::getPdusRcvdInTimeUnit() const
+{
+  return pdusRcvdinTimeUnit;
+}
+
+void DTCPState::setPdusRcvdinTimeUnit(unsigned int pdusRcvdinTimeUnit)
+{
+  this->pdusRcvdinTimeUnit = pdusRcvdinTimeUnit;
+}
+
+unsigned int DTCPState::getLastControlSeqNumSent() const
+{
+  return lastControlSeqNumSent;
+}
+
+void DTCPState::setLastControlSeqNumSent(unsigned int lastControlSeqNumSent)
+{
+  this->lastControlSeqNumSent = lastControlSeqNumSent;
+}
+
+bool DTCPState::isRcvRendez() const
+{
+  return rcvRendez;
+}
+
+void DTCPState::setRcvRendez(bool rcvRendez)
+{
+  this->rcvRendez = rcvRendez;
+}
+
+bool DTCPState::isSndRendez() const
+{
+  return sndRendez;
+}
+
+void DTCPState::setSndRendez(bool sndRendez)
+{
+  this->sndRendez = sndRendez;
+}
+
+DTCPRendezvousTimer* DTCPState::getRendezvousTimer()
+{
+  return rendezvousTimer;
+}
+
+void DTCPState::setRendezvousTimer(DTCPRendezvousTimer* rendezvousTimer)
+{
+  this->rendezvousTimer = rendezvousTimer;
+}
+
+unsigned int DTCPState::getRendezSeqNum() const
+{
+  return rendezSeqNum;
+}
+
+void DTCPState::setRendezSeqNum(unsigned int rendezSeqNum)
+{
+  this->rendezSeqNum = rendezSeqNum;
+}

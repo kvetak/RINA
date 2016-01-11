@@ -41,6 +41,7 @@ AE::~AE() {
 void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
     cModule* catcher2 = this->getModuleByPath("^.^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^");//->getSubmodule("managementApplicationEntity")->getSubmodule("enrollment");
 
 
     //Signals that this module is emitting
@@ -51,6 +52,7 @@ void AE::initSignalsAndListeners() {
     sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
     sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
     sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
+    sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
 
 
     //Signals that this module is processing
@@ -60,6 +62,10 @@ void AE::initSignalsAndListeners() {
     //  AllocationRequest from FAI
     lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
     catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
+
+    //  Enrollment
+    lisAEEnrolled = new LisAEEnrolled(this);
+    catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
 
     //  DeallocationRequest from FAI
     lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
@@ -363,4 +369,14 @@ void AE::signalizeConnectionRequest(CDAPMessage* msg){
 
 void AE::signalizeReleaseRequest(CDAPMessage* msg){
     emit(sigAERelReq, msg);
+}
+
+void AE::connect(){
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(),
+        APNamingInfo());
+    emit(sigAEEnrolled, apnip);
+}
+
+void AE::afterOnStart() {
 }

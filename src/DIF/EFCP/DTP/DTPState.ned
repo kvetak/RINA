@@ -27,8 +27,7 @@ simple DTPState
 {
     @display("i=block/subqueue");
     
-    int maxSDUSize @unit(B) = default(1500B);
-    int maxPDUSize @unit(B) = default(1500B);
+
     
 //    bool rxPresent = default(true);
 //    bool winBased = default(true);

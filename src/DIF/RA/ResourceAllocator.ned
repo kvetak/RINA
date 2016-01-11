@@ -39,9 +39,12 @@ module ResourceAllocator
         string queueIdGenName = default("SingleID");
         string addrComparatorName = default("ExactMatch");
 
+		bool onWire = default(false);
+
     submodules:
         ra: RA {
             @display("p=69,55");
+            onWire = onWire;
         }
         nm1FlowTable: NM1FlowTable {
             @display("p=189,55");

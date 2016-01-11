@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<Configuration>
+    <DLDROP>
+        <queue id="outQ_M" threshold="100" />
+        <queue id="outQ_mgmt" threshold="100" />
+        
+        <queue id="outQ_A1" threshold="95" />
+        <queue id="outQ_A2" threshold="75" />
+        <queue id="outQ_A3" threshold="65" />
+        
+        <queue id="outQ_B1" threshold="95"  />
+        <queue id="outQ_B2" threshold="75"  />
+        <queue id="outQ_B3" threshold="65"  />
+        
+        <queue id="outQ_C1" threshold="95"  />
+        <queue id="outQ_C2" threshold="75"  />
+        <queue id="outQ_C3" threshold="65"  />
+        
+        <queue id="outQ_BE" threshold="55"  />
+    </DLDROP>
+    
+    <DLOUT>
+        <queue id="outQ_M" priority="5" />
+        <queue id="outQ_mgmt" priority="5" />
+        
+        <queue id="outQ_A1" priority="4" />
+        <queue id="outQ_A2" priority="4" />
+        <queue id="outQ_A3" priority="4" />
+        
+        <queue id="outQ_B1" priority="3"  />
+        <queue id="outQ_B2" priority="3"  />
+        <queue id="outQ_B3" priority="3"  />
+        
+        <queue id="outQ_C1" priority="2"  />
+        <queue id="outQ_C2" priority="2"  />
+        <queue id="outQ_C3" priority="2"  />
+        
+        <queue id="outQ_BE" priority="1"  />
+    </DLOUT>
+    
+    <prioritySkip>
+		<priority val="1" prob="0" />
+	  	<priority val="2" prob="0" />
+	  	<priority val="3" prob="0.48" />
+	  	<priority val="4" prob="0" />
+	  	<priority val="5" prob="0" />
+	</prioritySkip>
+	
+	
+    <POUT>
+        <queue id="outQ_M" priority="100" />
+        <queue id="outQ_mgmt" priority="100" />
+        
+        <queue id="outQ_A1" priority="70" />
+        <queue id="outQ_A2" priority="70" />
+        <queue id="outQ_A3" priority="70" />
+        
+        <queue id="outQ_B1" priority="50"  />
+        <queue id="outQ_B2" priority="50"  />
+        <queue id="outQ_B3" priority="50"  />
+        
+        <queue id="outQ_C1" priority="40"  />
+        <queue id="outQ_C2" priority="40"  />
+        <queue id="outQ_C3" priority="40"  />
+        
+        <queue id="outQ_BE" priority="20"  />
+    </POUT>
+	
+    <eDLDROP>
+        <queue id="outQ_M"  threshold="100" dropProb="1.0" absThreshold="100" />
+        <queue id="outQ_mgmt"  threshold="100" dropProb="1.0" absThreshold="100" />
+        
+        <queue id="outQ_A1" threshold="80" dropProb="0.1" absThreshold="95" />
+        <queue id="outQ_A2" threshold="55" dropProb="0.1" absThreshold="75" />
+        <queue id="outQ_A3" threshold="55" dropProb="0.3" absThreshold="65" />
+        
+        <queue id="outQ_B1" threshold="80" dropProb="0.1" absThreshold="95"  />
+        <queue id="outQ_B2" threshold="55" dropProb="0.1" absThreshold="75"  />
+        <queue id="outQ_B3" threshold="55" dropProb="0.3" absThreshold="65"  />
+        
+        <queue id="outQ_C1" threshold="80" dropProb="0.1" absThreshold="95"  />
+        <queue id="outQ_C2" threshold="55" dropProb="0.1" absThreshold="75"  />
+        <queue id="outQ_C3" threshold="55" dropProb="0.3" absThreshold="65"  />
+        
+        <queue id="outQ_BE" threshold="40" dropProb="0.5" absThreshold="55"  />
+    </eDLDROP>
+	
+    <maxDel>
+        <queue id="outQ_M" delay="0.0" multip="100.0" />
+        <queue id="outQ_mgmt" delay="0.0" multip="100.0" />
+        
+        <queue id="outQ_A1" delay="0.05" multip="50.0" />
+        <queue id="outQ_A2" delay="0.05" multip="50.0" />
+        <queue id="outQ_A3" delay="0.05" multip="50.0" />
+        
+        <queue id="outQ_B1" delay="0.3" multip="1.0"  />
+        <queue id="outQ_B2" delay="0.3" multip="1.0"  />
+        <queue id="outQ_B3" delay="0.3" multip="1.0"  />
+        
+        <queue id="outQ_C1" delay="0.4" multip="1.0"  />
+        <queue id="outQ_C2" delay="0.4" multip="1.0"  />
+        <queue id="outQ_C3" delay="0.4" multip="1.0"  />
+        
+        <queue id="outQ_BE" delay="1.0" multip="0.5"  />
+    </maxDel>
+    
+    
+    <sDQQueuePriority>
+        <queue id="outQ_M" defPriority="10" />
+        <queue id="outQ_mgmt" defPriority="10" />
+        
+        <queue id="outQ_A1" defPriority="9" />
+        
+        <queue id="outQ_B2" defPriority="6"/>
+        
+        <queue id="outQ_C3" defPriority="3" />
+    </sDQQueuePriority>
+    
+    <DQQueuePriority>
+        <queue id="outQ_M" defPriority="10" />
+        <queue id="outQ_mgmt" defPriority="10" />
+        
+        <queue id="outQ_A1" defPriority="9" rate="50" >
+			<degradList t="0.0">
+				<PP priority="7" probability="0.2" />
+			</degradList>
+			<degradList t="0.0003">
+				<PP priority="7" probability="0.3" />
+				<PP priority="3" probability="0.2" />
+			</degradList>
+			<degradList t="0.0008">
+				<PP priority="6" probability="0.2" />
+				<PP priority="3" probability="0.3" />
+			</degradList>
+        </queue>
+        
+        <queue id="outQ_B2" defPriority="6" rate="50" >
+			<degradList t="0.0">
+				<PP priority="3" probability="0.3" />
+			</degradList>
+			<degradList t="0.0002">
+				<PP priority="3" probability="0.3" />
+				<PP priority="2" probability="0.2" />
+			</degradList>
+			<degradList t="0.0008">
+				<PP priority="3" probability="0.4" />
+				<PP priority="2" probability="0.4" />
+			</degradList>
+        </queue>
+        
+        
+        <queue id="outQ_C3" defPriority="4" rate="50" >
+			<degradList t="0.0">
+				<PP priority="3" probability="0.3" />
+			</degradList>
+			<degradList t="0.0002">
+				<PP priority="3" probability="0.3" />
+				<PP priority="2" probability="0.2" />
+			</degradList>
+			<degradList t="0.0008">
+				<PP priority="3" probability="0.2" />
+				<PP priority="2" probability="0.1" />
+			</degradList>
+        </queue>
+    </DQQueuePriority>
+	
+	
+    
+    <DQQueueOut>
+        <queue id="outQ_M" defPriority="10" />
+        <queue id="outQ_mgmt" defPriority="10" />
+        
+        <queue id="outQ_A1" defPriority="9" rate="1" >
+        </queue>
+        
+        <queue id="outQ_B2" defPriority="8" rate="1" >
+			<degradList s="40">
+				<PP priority="7" probability="0.3" />
+			</degradList>
+			<degradList s="50">
+				<PP priority="7" probability="0.5" />
+			</degradList>
+        </queue>
+        
+        <queue id="outQ_C3" defPriority="7" rate="1" >
+        </queue>
+    </DQQueueOut>
+	
+    <DQQueueDrop>
+        <queue id="outQ_M" absThreshold="100" />
+        <queue id="outQ_mgmt" absThreshold="100" />
+        
+        <queue id="outQ_A1" absThreshold="95">
+        	<TH threshold="80" dropProb="0.1" />
+        	<TH threshold="85" dropProb="0.2" />
+        	<TH threshold="90" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_A2" absThreshold="75">
+        	<TH threshold="55" dropProb="0.1" />
+        	<TH threshold="60" dropProb="0.2" />
+        	<TH threshold="70" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_A3" absThreshold="65">
+        	<TH threshold="50" dropProb="0.1" />
+        	<TH threshold="55" dropProb="0.2" />
+        	<TH threshold="60" dropProb="0.3" />
+        </queue>
+        
+        <queue id="outQ_B1" absThreshold="95">
+        	<TH threshold="80" dropProb="0.1" />
+        	<TH threshold="85" dropProb="0.2" />
+        	<TH threshold="90" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_B2" absThreshold="75">
+        	<TH threshold="55" dropProb="0.1" />
+        	<TH threshold="60" dropProb="0.2" />
+        	<TH threshold="70" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_B3" absThreshold="65">
+        	<TH threshold="50" dropProb="0.1" />
+        	<TH threshold="55" dropProb="0.2" />
+        	<TH threshold="60" dropProb="0.3" />
+        </queue>
+        
+        <queue id="outQ_C1" absThreshold="95">
+        	<TH threshold="80" dropProb="0.1" />
+        	<TH threshold="85" dropProb="0.2" />
+        	<TH threshold="90" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_C2" absThreshold="75">
+        	<TH threshold="55" dropProb="0.1" />
+        	<TH threshold="60" dropProb="0.2" />
+        	<TH threshold="70" dropProb="0.3" />
+        </queue>
+        <queue id="outQ_C3" absThreshold="65">
+        	<TH threshold="50" dropProb="0.1" />
+        	<TH threshold="55" dropProb="0.2" />
+        	<TH threshold="60" dropProb="0.3" />
+        </queue>
+        
+        <queue id="outQ_BE" absThreshold="40"  />
+    </DQQueueDrop>
+    
+    
+    <WFQDROP>
+        <queue id="outQ_M" threshold="100" />
+        <queue id="outQ_mgmt" threshold="100" />
+        
+        <queue id="outQ_A1" threshold="100" />
+        <queue id="outQ_B2" threshold="100"  />
+        <queue id="outQ_C3" threshold="100"  />
+    </WFQDROP>
+    
+    
+    <BEDROP>
+        <queue id="outQ_M" threshold="100" />
+        <queue id="outQ_mgmt" threshold="100" />
+        
+        <queue id="outQ_A1" threshold="100" />
+        <queue id="outQ_B2" threshold="100"  />
+        <queue id="outQ_C3" threshold="100"  />
+    </BEDROP>
+    
+    <WFQOUT>
+        <queue id="outQ_M" 
+        	priority="5"
+        	rTkBit="1"
+        	sTkBit="0"
+        	maxTk="1"
+       	/>
+       	
+        <queue id="outQ_mgmt" 
+        	priority="5"
+        	rTkBit="1"
+        	sTkBit="0"
+        	maxTk="1"
+       	/>
+       	
+        <queue id="outQ_A1" 
+        	priority="4"
+        	rTkBit="50"
+        	sTkBit="100"
+        	maxTk="400"
+       	/>
+        
+        <queue id="outQ_B2" 
+        	priority="4"
+        	rTkBit="30"
+        	sTkBit="100"
+        	maxTk="400"
+       	/>
+
+        <queue id="outQ_C3" 
+        	priority="4"
+        	rTkBit="20"
+        	sTkBit="100"
+        	maxTk="400"
+       	/>
+    </WFQOUT>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

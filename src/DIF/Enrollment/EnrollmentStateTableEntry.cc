@@ -28,7 +28,6 @@
  * @detail
  */
 
-
 #include <EnrollmentStateTableEntry.h>
 
 const int VAL_NOCONRETRY    = 0;

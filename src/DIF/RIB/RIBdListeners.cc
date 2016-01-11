@@ -140,22 +140,22 @@ void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 
 }
 */
-void LisRIBDRoutingUpdate::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-    EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
-       << " and processed by " << ribd->getFullPath() << endl;
-
-    IntRoutingUpdate * info = dynamic_cast<IntRoutingUpdate *>(obj);
-
-    if (info)
-    {
-        ribd->receiveRoutingUpdateFromRouting(info);
-    }
-    else
-    {
-        EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
-    }
-}
+//void LisRIBDRoutingUpdate::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+//{
+//    EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
+//       << " and processed by " << ribd->getFullPath() << endl;
+//
+//    IntRoutingUpdate * info = dynamic_cast<IntRoutingUpdate *>(obj);
+//
+//    if (info)
+//    {
+//        ribd->receiveRoutingUpdateFromRouting(info);
+//    }
+//    else
+//    {
+//        EV << "ForwardingInfoUpdate listener received unknown object!" << endl;
+//    }
+//}
 
 void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj) {

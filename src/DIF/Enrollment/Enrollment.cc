@@ -191,7 +191,6 @@ void Enrollment::startCACE(APNIPair* apnip) {
     dst.AEName = entry.getRemote().getAename();
     dst.ApInst = entry.getRemote().getApinstance();
     dst.ApName = entry.getRemote().getApn().getName();
-
     naming_t src;
     src.AEInst = entry.getLocal().getAeinstance();
     src.AEName = entry.getLocal().getAename();

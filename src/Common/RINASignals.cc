@@ -34,6 +34,7 @@ const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
 const char* SIG_AE_DataSend                     = "AE-DataSend";
 const char* SIG_AE_ConnectionRequest            = "AE-ConnectionRequest";
 const char* SIG_AE_ReleaseRequest               = "AE-ReleaseRequest";
+const char* SIG_AE_Enrolled                     = "AE-Enrolled";
 
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
@@ -58,6 +59,8 @@ const char* SIG_RIBD_ConnectionResponsePositive = "RIBd-ConnectionResponsePositi
 const char* SIG_RIBD_ConnectionResponseNegative = "RIBd-ConnectionResponseNegative";
 const char* SIG_RIBD_ConnectionRequest          = "RIBd-ConnectionRequest";
 const char* SIG_RIBD_CACESend                   = "RIBd-CACEDataSend";
+
+const char* SIG_AEMGMT_ConnectionResponsePositive = "AEMgmt-ConnectionResponsePositive";
 
 const char* SIG_ENROLLMENT_DataSend             = "Enrollment-DataSend";
 const char* SIG_ENROLLMENT_CACEDataSend         = "Enrollment-CACEDataSend";

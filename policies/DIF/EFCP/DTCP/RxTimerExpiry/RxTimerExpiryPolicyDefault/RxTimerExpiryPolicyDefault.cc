@@ -33,13 +33,13 @@ Register_Class(RxTimerExpiryPolicyDefault);
 
 RxTimerExpiryPolicyDefault::RxTimerExpiryPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 RxTimerExpiryPolicyDefault::~RxTimerExpiryPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool RxTimerExpiryPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

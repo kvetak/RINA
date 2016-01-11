@@ -40,8 +40,10 @@ const char* ELEM_RTTESTIMAT            = "RTTEstimator";
 const char* DEFAULT_RTTESTIMAT         = "RTTEstimatorPolicyDefault";
 const char* ELEM_SENDERINACTIV         = "SenderInactivity";
 const char* DEFAULT_SENDERINACTIV      = "SenderInactivityPolicyDefault";
-const char* ELEM_FCOVERRUN             = "FCOverrun";
-const char* DEFAULT_FCOVERRUN          = "FCOverrunPolicyDefault";
+const char* ELEM_SNDFCOVERRUN          = "SndFCOverrun";
+const char* DEFAULT_SNDFCOVERRUN       = "SndFCOverrunPolicyDefault";
+const char* ELEM_RCVFCOVERRUN          = "RcvFCOverrun";
+const char* DEFAULT_RCVFCOVERRUN       = "RcvFCOverrunPolicyDefault";
 const char* ELEM_LOSTCONTROLPDU        = "LostControlPDU";
 const char* DEFAULT_LOSTCONTROLPDU     = "LostControlPDUPolicyDefault";
 const char* ELEM_NOOVERRIDEPEAK        = "NoOverridePeak";
@@ -68,13 +70,20 @@ const char* ELEM_TXCONTROL             = "TxControl";
 const char* DEFAULT_TXCONTROL          = "TxControlPolicyDefault";
 const char* ELEM_RXTIMEREXPIRY         = "RxTimerExpiry";
 const char* DEFAULT_RXTIMEREXPIRY      = "RxTimerExpiryPolicyDefault";
+const char* ELEM_ECN                   = "ECN";
+const char* DEFAULT_ECN                = "ECNPolicyDefault";
+const char* ELEM_ECNSLOWDOWN           = "ECNSlowDown";
+const char* DEFAULT_ECNSLOWDOWN        = "ECNSlowDownPolicyDefault";
+
 
 EFCPPolicySet::EFCPPolicySet() : initialSeqNum(DEFAULT_INITSEQNUM), rcvrInactiv(DEFAULT_RCVRINACTIV),
-    rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), fcOverrun(DEFAULT_FCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
+    rttEstimat(DEFAULT_RTTESTIMAT), senderInactiv(DEFAULT_SENDERINACTIV), sndFcOverrun(DEFAULT_SNDFCOVERRUN),
+    rcvFcOverrun(DEFAULT_RCVFCOVERRUN), lostControlPDU(DEFAULT_LOSTCONTROLPDU),
     noOverridePeak(DEFAULT_NOOVERRIDEPEAK), noRateSlowDown(DEFAULT_NORATESLOWDOWN),
     rateReduction(DEFAULT_RATEREDUCTION), rcvrAck(DEFAULT_RCVRACK), rcvrControlAck(DEFAULT_RCVRCONTROLACK),
     rcvrFC(DEFAULT_RCVRFC), receivingFC(DEFAULT_RECEIVINGFC), reconcileFC(DEFAULT_RECONCILEFC),
-    senderAck(DEFAULT_SENDERACK), sendingAck(DEFAULT_SENDINGACK), txControl(DEFAULT_TXCONTROL), rxTimerExpiry(DEFAULT_RXTIMEREXPIRY){
+    senderAck(DEFAULT_SENDERACK), sendingAck(DEFAULT_SENDINGACK), txControl(DEFAULT_TXCONTROL), rxTimerExpiry(DEFAULT_RXTIMEREXPIRY),
+    ecn(DEFAULT_ECN), ecnSlowDown(DEFAULT_ECNSLOWDOWN) {
 
 
 }
@@ -105,9 +114,9 @@ const char* EFCPPolicySet::getSenderInactiv() const
   return senderInactiv;
 }
 
-const char* EFCPPolicySet::getFcOverrun() const
+const char* EFCPPolicySet::getSndFcOverrun() const
 {
-  return fcOverrun;
+  return sndFcOverrun;
 }
 
 const char* EFCPPolicySet::getLostControlPdu() const
@@ -175,6 +184,21 @@ const char* EFCPPolicySet::getRxTimerExpiry() const
   return rxTimerExpiry;
 }
 
+const char* EFCPPolicySet::getEcn() const
+{
+  return ecn;
+}
+
+const char* EFCPPolicySet::getEcnSlowDown() const
+{
+  return ecnSlowDown;
+}
+
+const char* EFCPPolicySet::getRcvFcOverrun() const
+{
+  return rcvFcOverrun;
+}
+
 bool EFCPPolicySet::init(cXMLElement* parent)
 {
 
@@ -199,9 +223,13 @@ bool EFCPPolicySet::init(cXMLElement* parent)
     {
       senderInactiv = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_SENDERINACTIV;
     }
-    else if (!strcmp(policyTag->getTagName(), ELEM_FCOVERRUN))
+    else if (!strcmp(policyTag->getTagName(), ELEM_SNDFCOVERRUN))
     {
-      fcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_FCOVERRUN;
+      sndFcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_SNDFCOVERRUN;
+    }
+    else if (!strcmp(policyTag->getTagName(), ELEM_RCVFCOVERRUN))
+    {
+      rcvFcOverrun = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_RCVFCOVERRUN;
     }
     else if (!strcmp(policyTag->getTagName(), ELEM_LOSTCONTROLPDU))
     {
@@ -255,6 +283,15 @@ bool EFCPPolicySet::init(cXMLElement* parent)
     {
       rxTimerExpiry = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_RXTIMEREXPIRY;
     }
+    else if (!strcmp(policyTag->getTagName(), ELEM_ECN))
+    {
+      ecn = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_ECN;
+    }
+    else if (!strcmp(policyTag->getTagName(), ELEM_ECNSLOWDOWN))
+    {
+      ecnSlowDown = policyTag->getNodeValue() ? policyTag->getNodeValue() : DEFAULT_ECNSLOWDOWN;
+    }
   }
   return true;
 }
+

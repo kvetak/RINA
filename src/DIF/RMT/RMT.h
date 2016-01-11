@@ -80,6 +80,7 @@ class RMT : public RMTBase
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     virtual void finish();
+    void recDel(cPacket * p);
 
   private:
     IntPDUForwarding* fwd;

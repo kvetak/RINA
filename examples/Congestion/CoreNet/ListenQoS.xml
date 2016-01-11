@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<QoS>
+	<qos name="DC1" delay="0.05" jitter="0.01" />
+	<qos name="DC2" delay="0.5"  jitter="0.1" />	
+	<qos name="IP1" delay="0.1"  jitter="0.05" />
+	<qos name="IP2" delay="1"    jitter="0.2" />	
+</QoS>

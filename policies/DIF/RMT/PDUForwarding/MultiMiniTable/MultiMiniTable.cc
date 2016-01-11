@@ -38,14 +38,25 @@ vector<RMTPort * > MultiMiniTable::lookup(const PDU * pdu){
 vector<RMTPort * > MultiMiniTable::lookup(const Address &dst, const std::string& qos){
 
     vector<RMTPort* > ret;
+
     string dstAddr = dst.getIpcAddress().getName();
+
+    if(dstAddr == "") { return ret; }
+
     FWDTableIt it = table.find(dstAddr);
 
     if(it != table.end()){
         int i = intuniform(0, it->second.size()-1);
         ret.push_back(it->second.at(i));
     }
-
+  /*
+    if(ret.empty()) {
+        std::cout << this->getFullPath() << endl;
+        std::cout << "\tNOT FOUND " << dst << endl;
+    } else {
+        std::cout << "\tFOUND " << dst << endl;
+    }
+   */
     return ret;
 }
 

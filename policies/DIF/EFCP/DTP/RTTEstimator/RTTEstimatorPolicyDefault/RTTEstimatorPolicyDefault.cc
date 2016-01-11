@@ -24,7 +24,7 @@
  * RTTEstimatorPolicyDefault.c
  *
  *  Created on: May 3, 2015
- *      Author: badluck
+ *      Author: Marcel Marek
  */
 
 #include "RTTEstimatorPolicyDefault.h"
@@ -34,13 +34,13 @@ Register_Class(RTTEstimatorPolicyDefault);
 
 RTTEstimatorPolicyDefault::RTTEstimatorPolicyDefault()
 {
-  // TODO Auto-generated constructor stub
+
 
 }
 
 RTTEstimatorPolicyDefault::~RTTEstimatorPolicyDefault()
 {
-  // TODO Auto-generated destructor stub
+
 }
 
 bool RTTEstimatorPolicyDefault::run(DTPState* dtpState, DTCPState* dtcpState)

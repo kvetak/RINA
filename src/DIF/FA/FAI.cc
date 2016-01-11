@@ -584,6 +584,7 @@ void FAI::signalizeCreateFlowResponseNegative() {
 }
 
 void FAI::signalizeAllocationRequestFromFai() {
+    EV << "Trying to notify " << FlowObject->getSrcApni() << endl;
     emit(sigFAIAllocReq, FlowObject);
 }
 

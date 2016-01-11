@@ -31,11 +31,11 @@
 
 package rina.src.CS;
 
-import rina.src.Common.Test;
 import rina.src.DAF.ApplicationProcess;
 import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
 import rina.src.DAF.IRM.IPCResourceManager;
+import rina.src.DIF.IPCProcess;
+
 
 module DC_VM
 {

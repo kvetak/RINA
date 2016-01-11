@@ -52,7 +52,7 @@ void WeightedFairQMonitor::preQueueRemoval(RMTQueue* queue){
     queueTimes.erase(queue);
 }
 
-void WeightedFairQMonitor::onMessageArrival(RMTQueue* queue) {
+void WeightedFairQMonitor::postPDUInsertion(RMTQueue* queue) {
     if(queue->getType() == RMTQueue::INPUT){ return; }
 
     if(queueTimes.find(queue) != queueTimes.end()) {
@@ -70,7 +70,7 @@ void WeightedFairQMonitor::onMessageArrival(RMTQueue* queue) {
      */
 }
 
-void WeightedFairQMonitor::onMessageDeparture(RMTQueue* queue) {
+void WeightedFairQMonitor::postPDURelease(RMTQueue* queue) {
     if(queue->getType() == RMTQueue::INPUT){ return; }
 
     if(queueTimes.find(queue) != queueTimes.end()) {

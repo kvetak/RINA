@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+
+  <DA>
+    <Directory>
+		<APN apn="1_Core">
+			<DIF difName="shim12" ipcAddress="1" />
+			<DIF difName="shim13" ipcAddress="1" />
+			<DIF difName="shim16" ipcAddress="1" />
+		</APN>
+		<APN apn="2_Core">
+			<DIF difName="shim12" ipcAddress="2" />
+			<DIF difName="shim23" ipcAddress="2" />
+			<DIF difName="shim25" ipcAddress="2" />
+		</APN>
+		<APN apn="3_Core">
+			<DIF difName="shim13" ipcAddress="3" />
+			<DIF difName="shim23" ipcAddress="3" />
+			<DIF difName="shim34" ipcAddress="3" />
+			
+		</APN>
+		<APN apn="4_Core">
+			<DIF difName="shim34" ipcAddress="4" />
+			<DIF difName="shim45" ipcAddress="4" />
+			<DIF difName="shim46" ipcAddress="4" />
+		</APN>
+		<APN apn="5_Core">
+			<DIF difName="shim25" ipcAddress="5" />
+			<DIF difName="shim45" ipcAddress="5" />
+			<DIF difName="shim57" ipcAddress="5" />
+		</APN>
+		<APN apn="6_Core">
+			<DIF difName="shim16" ipcAddress="6" />
+			<DIF difName="shim46" ipcAddress="6" />
+			<DIF difName="shim67" ipcAddress="6" />
+			<DIF difName="shim68" ipcAddress="6" />
+		</APN>
+		<APN apn="7_Core">
+			<DIF difName="shim57" ipcAddress="7" />
+			<DIF difName="shim67" ipcAddress="7" />
+			<DIF difName="shim79" ipcAddress="7" />
+		</APN>
+		<APN apn="8_Core">
+			<DIF difName="shim68" ipcAddress="8" />
+			<DIF difName="shim89" ipcAddress="8" />
+			<DIF difName="shim8a" ipcAddress="8" />
+		</APN>
+		<APN apn="9_Core">
+			<DIF difName="shim79" ipcAddress="9" />
+			<DIF difName="shim89" ipcAddress="9" />
+			<DIF difName="shim9a" ipcAddress="9" />
+		</APN>
+		<APN apn="a_Core">
+			<DIF difName="shim8a" ipcAddress="a" />
+			<DIF difName="shim9a" ipcAddress="a" />
+		</APN>
+    </Directory>
+  </DA>

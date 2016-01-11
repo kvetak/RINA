@@ -90,20 +90,28 @@ void RMTPort::handleMessage(cMessage* msg)
     }
     else
     {
-        PDU* pdu = dynamic_cast<PDU*>(msg);
-        if (pdu != nullptr)
-        {
+//        PDU* pdu = dynamic_cast<PDU*>(msg);
+//        if (pdu != nullptr)
+//        {
             if (msg->getArrivalGate() == southInputGate) // incoming message
             {
+              SDUData* sduData = dynamic_cast<SDUData*>(msg);
+              if(sduData == nullptr){
+                delete msg;
+                EV << "this type of message isn't supported!" << endl;
+                return;
+              }
+              PDU* pdu = static_cast<PDU*>(sduData->decapsulate());
+              delete sduData;
                 // get a proper queue for this message
                 std::string queueID =
-                        queueIdGen->generateInputQueueID((PDU*)msg);
+                        queueIdGen->generateInputQueueID(pdu);
 
                 RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
 
                 if (inQueue != nullptr)
                 {
-                    send(msg, inQueue->getInputGate()->getPreviousGate());
+                    send(pdu, inQueue->getInputGate()->getPreviousGate());
                     emit(sigStatRMTPortUp, true);
                 }
                 else
@@ -116,9 +124,17 @@ void RMTPort::handleMessage(cMessage* msg)
             }
             else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
             {
+                PDU* pdu = dynamic_cast<PDU*>(msg);
+                if (pdu == nullptr){
+                  delete msg;
+                  EV << "this type of message isn't supported!" << endl;
+                  return;
+                }
                 setOutputBusy();
                 // start the transmission
-                send(pdu, southOutputGate);
+                SDUData* sduData = new SDUData();
+                sduData->encapsulate(pdu);
+                send(sduData, southOutputGate);
 
                 // determine when should the port be ready to serve again
                 if (outputChannel != nullptr)
@@ -141,21 +157,21 @@ void RMTPort::handleMessage(cMessage* msg)
                     emit(sigRMTPortReadyToWrite, this);
                 }
             }
-        }
-        else
-        {
-            EV << "this type of message isn't supported!" << endl;
-        }
+//        }
+//        else
+//        {
+//            EV << "this type of message isn't supported!" << endl;
+//        }
     }
 }
 
 
-const RMTQueues& RMTPort::getInputQueues() const
+RMTQueues& RMTPort::getInputQueues()
 {
     return inputQueues;
 }
 
-const RMTQueues& RMTPort::getOutputQueues() const
+RMTQueues& RMTPort::getOutputQueues()
 {
     return outputQueues;
 }

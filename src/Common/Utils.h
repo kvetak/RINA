@@ -61,21 +61,7 @@ bool isPrefix(std::string prefix, std::string s);
  *
  * @param mod target instance
  */
-inline void setPolicyDisplayString(cModule* mod, const char* str = nullptr)
-{
-    if (ev.isGUI())
-    {
-        cDisplayString& disp = mod->getDisplayString();
-        disp.setTagArg("t", 1, "t");
-        disp.setTagArg("t", 0, (str == nullptr ? mod->getClassName() : str));
-        disp.setTagArg("b", 0, "45");
-        disp.setTagArg("b", 1, "45");
-        disp.setTagArg("b", 2, "rect");
-        disp.setTagArg("b", 3, "grey");
-        disp.setTagArg("b", 4, "cyan");
-        disp.setTagArg("b", 5, "1");
-    }
-}
+void setPolicyDisplayString(cModule* mod, const char* str = nullptr);
 
 /**
  * A getModuleByPath wrapper accepting individual modules in the path as variables.
@@ -85,17 +71,22 @@ inline void setPolicyDisplayString(cModule* mod, const char* str = nullptr)
  *
  * @tparam target module type
  * @param curMod starting module
- * @param parentLevel initial getParentModule() invocation count
+ * @param parentLevel level of initial ascent into parent modules
  * @param modPath path of modules to descent into
+ * @param nullCheck causes an exception to be thrown in case of module not present
  * @return pointer to the retrieved module
  */
 template<typename modType>
-modType getRINAModule(cModule* curMod, int parentLevel, std::initializer_list<const char*> modPath)
+modType getRINAModule(  cModule* curMod,
+                        int parentLevel,
+                        std::initializer_list<const char*> modPath,
+                        bool nullCheck = true)
 {
     std::ostringstream modulePath;
     while (parentLevel--) { modulePath << ".^"; }
     for (auto elem : modPath) { modulePath << "." << elem; }
-    return check_and_cast<modType>(curMod->getModuleByPath(modulePath.str().c_str()));
+    cModule* mod = curMod->getModuleByPath(modulePath.str().c_str());
+    return (nullCheck ? check_and_cast<modType>(mod) : dynamic_cast<modType>(mod));
 }
 
 

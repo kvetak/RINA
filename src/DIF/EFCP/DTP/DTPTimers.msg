@@ -36,6 +36,17 @@ enum DTPTimerType
 //  DTP_WINDOW_TIMER = 4;
 //  DTP_SENDING_RATE_TIMER = 5;
   DTP_A_TIMER = 6;
+//  DTCP_SND_RENDEZ_TIMER = 7;
+  DTP_INTERRUPTER_TIMER = 8;
+//  DTP_DELIMITING_TIMER = 9;
+  
+}
+
+enum InterrupterActionType
+{
+  INTERRUPTER_ZERO_RCV_CREDIT = 1;
+  INTERRUPTER_INFLATE_RCV_CREDIT = 2;   
+
   
 }
 message DTPTimers {
@@ -54,6 +65,9 @@ message RcvrInactivityTimer extends InactivityTimer{
     type = DTP_RCVR_INACTIVITY_TIMER;
 }
 
+//message DelimitingTimer extends DTPTimers{
+//    type = DTP_DELIMITING_TIMER;
+//}
 
 //message RxExpiryTimer extends DTPTimers{
 //    type = DTP_RX_EXPIRY_TIMER;
@@ -74,6 +88,11 @@ message ATimer extends DTPTimers{
  	type = DTP_A_TIMER;   
  	DTPDU_p pdu = NULL;
  	unsigned int seqNum;
+}
+
+message TheInterrupterTimer extends DTPTimers{
+ type = DTP_INTERRUPTER_TIMER;
+ int action enum(InterrupterActionType);
 }
 
 

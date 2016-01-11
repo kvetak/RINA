@@ -23,51 +23,51 @@
 cplusplus {{
 #include "PDU.h"
 }}
-message PDU;
+packet PDU;
 
-message ControlPDU extends PDU{
+packet ControlPDU extends PDU{
     type = -1;
 //    unsigned int controlSeqNum;
 }
 
 
-message NAckPDU extends ControlPDU{
+packet NAckPDU extends ControlPDU{
     unsigned int ackNackSeqNum;
     
 }
-message FlowControlPDU extends NAckPDU {
-    unsigned int newRightWinEdge;
-	unsigned int newRate;
+packet FlowControlPDU extends NAckPDU {
+    unsigned int rcvRightWinEdge;
+	unsigned int rcvRate;
     unsigned long timeUnit;
-    unsigned int myLeftWinEdge;
-    unsigned int myRightWinEdge;
-    unsigned int myRcvRate;
+    unsigned int sndLeftWinEdge;
+    unsigned int sndRightWinEdge;
+    unsigned int sndRate;
 }
 
 
 
-message AckOnlyPDU extends NAckPDU{
+packet AckOnlyPDU extends NAckPDU{
     type = ACK_ONLY_PDU;
 }
 
-message NackOnlyPDU extends NAckPDU{
+packet NackOnlyPDU extends NAckPDU{
     type = NACK_ONLY_PDU;
 }
 
-message AckFlowPDU extends FlowControlPDU{
+packet AckFlowPDU extends FlowControlPDU{
     type = ACK_FLOW_PDU;
 }
 
-message NackFlowPDU extends FlowControlPDU{
+packet NackFlowPDU extends FlowControlPDU{
     type = NACK_FLOW_PDU;
 }
 
-message FlowControlOnlyPDU extends FlowControlPDU{
+packet FlowControlOnlyPDU extends FlowControlPDU{
     type = FLOW_ONLY_PDU;
 }
 
 
-message SelectiveNAckFlow extends FlowControlPDU{
+packet SelectiveNAckFlow extends FlowControlPDU{
     unsigned int newLeftWinEdge;
     
     
@@ -75,29 +75,36 @@ message SelectiveNAckFlow extends FlowControlPDU{
     unsigned int nackList [];
 }
 
-message SelectiveAckFlowPDU extends SelectiveNAckFlow{
+packet SelectiveAckFlowPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_FLOW_PDU;
 }
 
-message SelectiveNackFlowPDU extends SelectiveNAckFlow{
+packet SelectiveNackFlowPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_FLOW_PDU;
 }
 
-message SelectiveAckPDU extends SelectiveNAckFlow{
+packet SelectiveAckPDU extends SelectiveNAckFlow{
     type = SELECT_ACK_PDU;
 }
 
-message SelectiveNackPDU extends SelectiveNAckFlow{
+packet SelectiveNackPDU extends SelectiveNAckFlow{
     type = SELECT_NACK_PDU;
 }
 
-message ControlAckPDU extends ControlPDU{
+packet ControlAckPDU extends ControlPDU{
     type = CONTROL_ACK_PDU;
     
 	unsigned int lastCtrlSeqNumRcv;
-	unsigned int sndLtWinEdge;
-	unsigned int sndRtWinEdge;
-	unsigned int myLtWinEdge;
-	unsigned int myRtWinEdge;
-	unsigned int myRcvRate;
+	unsigned int rcvLeftWinEdge;
+	unsigned int rcvRightWinEdge;
+	unsigned int sndLeftWinEdge;
+	unsigned int sndRightWinEdge;
+	unsigned int rcvRate;
+}
+
+packet RendezvousPDU extends ControlAckPDU{
+    type = RENDEZVOUS_PDU;
+    
+    unsigned int rendezSeqNum;
+    
 }

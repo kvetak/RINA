@@ -47,7 +47,6 @@ class DataTransferPDU : public DataTransferPDU_Base
 //      DataTransferPDU& operator=(const DataTransferPDU& other) {if (this==&other) return *this; DataTransferPDU_Base::operator=(other); copy(other); return *this;}
       virtual DataTransferPDU *dup() const {return new DataTransferPDU(*this);}
       // ADD CODE HERE to redefine and implement pure virtual functions from DataTransferPDU_Base
-      ~DataTransferPDU();
 
       unsigned int getSize();
 

@@ -44,115 +44,19 @@ class LisRIBDRcvData : public RIBdListeners {
     LisRIBDRcvData(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-/*
-class LisRIBDCreReq : public RIBdListeners {
-  public:
-    LisRIBDCreReq(RIBdBase* nribd) : RIBdListeners(nribd){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
 
-class LisRIBDDelReq : public RIBdListeners {
-  public:
-    LisRIBDDelReq(RIBdBase* nribd) : RIBdListeners(nribd){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDDelRes : public RIBdListeners {
-  public:
-    LisRIBDDelRes(RIBdBase* nribd) : RIBdListeners(nribd){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDAllReqFromFai : public RIBdListeners {
-  public:
-    LisRIBDAllReqFromFai(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDCreResNega: public RIBdListeners {
-  public:
-    LisRIBDCreResNega(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDCreResPosi: public RIBdListeners {
-  public:
-    LisRIBDCreResPosi(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDCreFloNega: public RIBdListeners {
-  public:
-    LisRIBDCreFloNega(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDCreFloPosi: public RIBdListeners {
-  public:
-    LisRIBDCreFloPosi(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-*/
 /* Listen for Forwarding info updates from PDUFTG and handle them. */
-class LisRIBDRoutingUpdate: public RIBdListeners
-{
-  public:
-    LisRIBDRoutingUpdate(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
+//class LisRIBDRoutingUpdate: public RIBdListeners
+//{
+//  public:
+//    LisRIBDRoutingUpdate(RIBdBase* nribd) : RIBdListeners(nribd) {};
+//    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+//};
 
 class LisRIBDCongesNotif: public RIBdListeners {
   public:
     LisRIBDCongesNotif(RIBdBase* nribd) : RIBdListeners(nribd) {};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
-/*
-class LisRIBDRcvCACE: public RIBdListeners {
-  public:
-    LisRIBDRcvCACE(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
 
-class LisRIBDRcvEnrollCACE: public RIBdListeners {
-  public:
-    LisRIBDRcvEnrollCACE(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStaEnrolReq: public RIBdListeners {
-  public:
-    LisRIBDStaEnrolReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStaEnrolRes: public RIBdListeners {
-  public:
-    LisRIBDStaEnrolRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStoEnrolReq: public RIBdListeners {
-  public:
-    LisRIBDStoEnrolReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStoEnrolRes: public RIBdListeners {
-  public:
-    LisRIBDStoEnrolRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStaOperReq: public RIBdListeners {
-  public:
-    LisRIBDStaOperReq(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisRIBDStaOperRes: public RIBdListeners {
-  public:
-    LisRIBDStaOperRes(RIBdBase* nribd) : RIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-*/
 #endif /* RIBDLISTENERS_H_ */

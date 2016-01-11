@@ -22,8 +22,6 @@
 
 package rina.src.DIF;
 
-import rina.src.Common.Test;
-import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DIF.EFCP.EFCPModule;
 import rina.src.DIF.Enrollment.EnrollmentModule;
 import rina.src.DIF.FA.FlowAllocator;
@@ -41,6 +39,9 @@ module IPCProcess
         string apName = default(ipcAddress + "_" + difName);
         bool relay = default(false);
         string routingPolicyName = default("DummyRouting");
+        
+        bool onWire = default(false);
+        
     gates:
         inout southIo[];
         inout northIo[];
@@ -66,6 +67,7 @@ module IPCProcess
         }
         resourceAllocator: ResourceAllocator {
             @display("p=390,249");
+            onWire = onWire;
         }
 
     connections allowunconnected:

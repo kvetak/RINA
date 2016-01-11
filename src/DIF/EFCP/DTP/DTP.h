@@ -36,6 +36,7 @@
 #include "RMT.h"
 
 #include "RA.h"
+#include "SDUData_m.h"
 
 
 /* Policies */
@@ -57,8 +58,11 @@ class DTP : public cSimpleModule
     friend class DTCP;
   private:
 
+    unsigned int sduSeqNum;
+    std::set<unsigned int> sequencingQ;
     int deletePdu;
     bool pduDroppingEnabled;
+    bool rendezvousEnabled;
 
     DTPState* state; //state of this data-transfer
     DTCP* dtcp;
@@ -73,15 +77,18 @@ class DTP : public cSimpleModule
     RTTEstimatorPolicyBase* rttEstimatorPolicy;
 
     /* Various queues */
-    /* Output queues - from App to RMT */
-    std::vector<SDU*> sduQ; //SDUs generated from delimiting //TODO A1 Deprecated - delete
-    std::vector<SDU*> dataQ; //SDU or SDUFragments generated from delimiting
+
+
+    std::vector<UserDataField*> userDataFieldQOut;
+
+    std::vector<ATimer*> aTimerQ;
 
 
 
     /* Timers */
     SenderInactivityTimer* senderInactivityTimer;
     RcvrInactivityTimer* rcvrInactivityTimer;
+
 
     /**************** Moved rateFulfilled to FC together with sendingRatetimer **************************/
     /* This timer should be in FlowControl, but since for some reason "rateFulfilled" is in DTState it is better available from here */
@@ -109,7 +116,7 @@ class DTP : public cSimpleModule
     void handleDTPATimer(ATimer* timer);
 
 //    void handleMsgFromDelimiting(Data* msg);
-    void handleMsgFromDelimiting(SDU* sdu);
+    void handleMsgFromUp(UserDataField* userDataField);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
 
@@ -117,7 +124,7 @@ class DTP : public cSimpleModule
 
 
     /** Delimits content of buffer from application */
-    unsigned int delimit(SDU* sdu);
+    unsigned int delimit(SDUData* sduData);
     unsigned int delimitFromRMT(PDU *pdu, unsigned int len);
 
 
@@ -161,13 +168,13 @@ class DTP : public cSimpleModule
 
     unsigned int getAllowableGap();
 
-    void svUpdate(unsigned int seqNum);
+
 
     void flushReassemblyPDUQ();
     void clearRxQ();
     void clearClosedWindowQ();
 
-
+    void generateDTPDU(UserDataField* userDataField);
 
     void schedule(DTPTimers* timer, double time =0.0);
 
@@ -193,6 +200,16 @@ class DTP : public cSimpleModule
 
 
     void notifyStartSending();
+    void handleControlPDUFromRMT(ControlPDU* pdu);
+
+    double getATime();
+    void fillControlAckPDU(ControlAckPDU* ctrlAckPdu);
+    void fillRendezvousPDU(RendezvousPDU* rendezPDU);
+    void sendRendezvousPDU();
+    void rendezvousCondition();
+    void handleRendezvousTimer(DTCPRendezvousTimer* timer);
+    void handleInterrupterTimer(TheInterrupterTimer* msg);
+    void changeInBuffers();
 
   public:
     DTP();
@@ -202,7 +219,8 @@ class DTP : public cSimpleModule
 //    bool readImmediate(int portId, unsigned char* buffer, int len);
 //    bool write(int portId, unsigned char *buffer, int len);
 
-    void delimitFromRMT(DataTransferPDU* pdu);
+    void delimitFromRMT();
+    void svUpdate(unsigned int seqNum);
 
     void setFlow(const Flow* flow);
     void setDTCP(DTCP* dtcp);
@@ -218,6 +236,7 @@ class DTP : public cSimpleModule
 
     void setPDUHeader(PDU* pdu);
 
+
     void sendFCOnlyPDU();
     void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
     void sendControlAckPDU();
@@ -232,6 +251,9 @@ class DTP : public cSimpleModule
 
     void runCongestionNotificationPolicy();
     void setState(DTPState* state);
+    void sendReliableControlPDU();
+    void cancelATimer(unsigned int seqNum);
+    bool isATimerQEmpty();
 
   protected:
     virtual void handleMessage(cMessage *msg);

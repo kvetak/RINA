@@ -1,5 +1,7 @@
 package rina.examples.Basics.DublinSS;
-import rina.src.CS.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouterNInt;
+
 
 network DublinSS
 {

@@ -30,7 +30,7 @@
 class ExactMatch : public AddressComparatorBase
 {
   public:
-    virtual bool matchesThisIPC(const Address& addr);
+    virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
 };
 
 #endif

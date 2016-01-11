@@ -54,14 +54,14 @@ void SDU::copy(const SDU& other){
  */
 unsigned int SDU::getSize() const
 {
-  if (dataType_var == SDU_COMPLETE_TYPE)
+//  if (dataType_var == SDU_COMPLETE_TYPE)
   {
     return size_var;
   }
-  else if (dataType_var == SDU_FRAGMENT_TYPE)
+//  else if (dataType_var == SDU_FRAGMENT_TYPE)
   {
     return fSize_var;
-  }else{
+//  }else{
     return 0; //PANIC!
   }
 }
@@ -79,43 +79,43 @@ unsigned int SDU::getRestSize()const
   return size_var - offset_var;
 }
 
-void SDU::setSize(unsigned int size)
-{
-  if(userData !=NULL){
-    unsigned char *tmp = new unsigned char[size];
-    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
-    this->size_var = size;
-    free(userData);
-    userData = tmp;
-  }else{
-    this->size_var = size;
-    userData = new unsigned char[size];
-  }
+//void SDU::setSize(unsigned int size)
+//{
+//  if(userData !=NULL){
+//    unsigned char *tmp = new unsigned char[size];
+//    memcpy(tmp,userData, (this->size_var < size) ? this->size_var : size);
+//    this->size_var = size;
+//    free(userData);
+//    userData = tmp;
+//  }else{
+//    this->size_var = size;
+//    userData = new unsigned char[size];
+//  }
+//
+//}
 
-}
+//unsigned char* SDU::getUserData() const
+//{
+//  return &userData[offset_var];
+//}
 
-unsigned char* SDU::getUserData() const
-{
-  return &userData[offset_var];
-}
+//const unsigned char* SDU::getUserData(unsigned int size)
+//{
+//  offset_var += size;
+//  return &userData[offset_var - size];
+//}
 
-const unsigned char* SDU::getUserData(unsigned int size)
-{
-  offset_var += size;
-  return &userData[offset_var - size];
-}
-
-void SDU::setUserData(unsigned char* userData, unsigned int size)
-{
-  if(this->userData != NULL){
-    free(this->userData);
-    this->offset_var = 0;
-  }
-  this->size_var = size;
-  this->userData = new unsigned char[size];
-  memcpy(this->userData, userData, size);
-//    this->userData = userData;
-}
+//void SDU::setUserData(unsigned char* userData, unsigned int size)
+//{
+//  if(this->userData != NULL){
+//    free(this->userData);
+//    this->offset_var = 0;
+//  }
+//  this->size_var = size;
+//  this->userData = new unsigned char[size];
+//  memcpy(this->userData, userData, size);
+////    this->userData = userData;
+//}
 
 bool SDU::addUserData(cPacket* msg){
 
@@ -175,7 +175,7 @@ void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOf
   fSize_var = fSize;
   fSeqNum_var = fSeqNum;
   fOffset_var = fOffset;
-  dataType_var = SDU_FRAGMENT_TYPE;
+//  dataType_var = SDU_FRAGMENT_TYPE;
   if(fSeqNum == 0){
     fragType_var = SDU_FRAG_FIRST;
   }else if(fSize + fOffset == this->size_var){

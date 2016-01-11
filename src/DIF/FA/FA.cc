@@ -53,19 +53,20 @@ void FA::initSignalsAndListeners() {
     cModule* catcher2 = this->getModuleByPath("^.^");
 
     //Signals that this module is emitting
+    //sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreReqFwd      = registerSignal(SIG_FA_CreateFlowRequestForward);
-    sigFACreResPosiFwd  = registerSignal(SIG_FA_CreateFlowResponseForward);
     sigFACreResNega     = registerSignal(SIG_FA_CreateFlowResponseNegative);
     sigFAAllocFinMgmt   = registerSignal(SIG_FA_MgmtFlowAllocated);
 
     //Signals that this module is processing
+    /*
     //  AllocateRequest
     this->lisAllocReq = new LisFAAllocReq(this);
     catcher3->subscribe(SIG_IRM_AllocateRequest, this->lisAllocReq);
     //  DeallocateRequest
     this->lisDeallocReq = new LisFADeallocReq(this);
     catcher3->subscribe(SIG_IRM_DeallocateRequest, this->lisDeallocReq);
-
+    */
     //AllocateResponsePositive
     lisCreFloPosi = new LisFACreFloPosi(this);
     catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisCreFloPosi);
@@ -512,4 +513,3 @@ void FA::signalizeCreateFlowRequestForward(Flow* flow) {
 void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
     emit(this->sigFACreResNega, flow);
 }
-

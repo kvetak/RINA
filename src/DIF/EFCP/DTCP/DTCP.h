@@ -41,7 +41,7 @@
 #include "DTCPTimers_m.h"
 
 /* Policies */
-#include "DTCPECNPolicyBase.h"
+#include "ECNPolicyBase.h"
 #include "RcvrFCPolicyBase.h"
 #include "RcvrAckPolicyBase.h"
 #include "ReceivingFCPolicyBase.h"
@@ -49,13 +49,14 @@
 #include "LostControlPDUPolicyBase.h"
 #include "RcvrControlAckPolicyBase.h"
 #include "SenderAckPolicyBase.h"
-#include "FCOverrunPolicyBase.h"
+#include "SndFCOverrunPolicyBase.h"
+#include "RcvFCOverrunPolicyBase.h"
 #include "NoOverridePeakPolicyBase.h"
 #include "TxControlPolicyBase.h"
 #include "NoRateSlowDownPolicyBase.h"
 #include "ReconcileFCPolicyBase.h"
 #include "RateReductionPolicyBase.h"
-#include "DTCPECNSlowDownPolicyBase.h"
+#include "ECNSlowDownPolicyBase.h"
 #include "RxTimerExpiryPolicyBase.h"
 
 class DTP;
@@ -69,7 +70,8 @@ class DTCP: public cSimpleModule {
 //    FlowControl* flowControl;
 //    RXControl* rxControl;
 
-    DTCPECNPolicyBase* ecnPolicy;
+    ECNPolicyBase* ecnPolicy;
+    ECNSlowDownPolicyBase* ecnSlowDownPolicy;
     RcvrFCPolicyBase* rcvrFCPolicy;
     RcvrAckPolicyBase* rcvrAckPolicy;
     ReceivingFCPolicyBase* receivingFCPolicy;
@@ -77,27 +79,31 @@ class DTCP: public cSimpleModule {
     LostControlPDUPolicyBase* lostControlPDUPolicy;
     RcvrControlAckPolicyBase* rcvrControlAckPolicy;
     SenderAckPolicyBase* senderAckPolicy;
-    FCOverrunPolicyBase* fcOverrunPolicy;
+    SndFCOverrunPolicyBase* sndFcOverrunPolicy;
+    RcvFCOverrunPolicyBase* rcvFcOverrunPolicy;
     NoOverridePeakPolicyBase* noOverridePeakPolicy;
     TxControlPolicyBase* txControlPolicy;
     NoRateSlowDownPolicyBase* noRateSlowDownPolicy;
     ReconcileFCPolicyBase* reconcileFCPolicy;
     RateReductionPolicyBase* rateReductionPolicy;
-    DTCPECNSlowDownPolicyBase* ecnSlowDownPolicy;
     RxTimerExpiryPolicyBase* rxTimerExpiryPolicy;
 
 
+
     /*Timers*/
-    WindowTimer* windowTimer;
+//    WindowTimer* windowTimer;
     DTCPSendingRateTimer sendingRateTimer;
 
     void schedule(DTCPTimers *timer, double time = 0.0);
-    void resetWindowTimer();
+//    void resetWindowTimer();
 
     void sendAckPDU();
     void flushAllQueuesAndPrepareToDie();
 
     void handleSendingRateTimer(DTCPSendingRateTimer* timer);
+    void handleRendezvousTimer(DTCPRendezvousTimer* rendezTimer);
+    void startReliableCPDUTimer();
+    void stopReliableCPDUTimer();
 
 public:
 
@@ -109,7 +115,7 @@ public:
     DTCPState* getDTCPState() const;
 
 
-    void handleWindowTimer(WindowTimer* timer);
+//    void handleWindowTimer(WindowTimer* timer);
     void handleDTCPRxExpiryTimer(DTCPRxExpiryTimer* timer);
 
 
@@ -123,7 +129,7 @@ public:
     void setSndRtWinEdge(unsigned int sndRtWinEdge);
     unsigned int getSndRtWinEdge();
     void setRcvRtWinEdge(unsigned int rcvRtWinEdge);
-    unsigned int getRcvRtWinEdge();
+    unsigned int getRcvRightWinEdge();
 
     unsigned int getRcvCredit();
 
@@ -145,6 +151,9 @@ public:
     void setPdusSentInTimeUnit(unsigned int pdusSentInTimeUnit);
     void incPdusSentInTimeUnit();
 
+    unsigned int getPdusRcvdInTimeUnit() const;
+
+
     unsigned int getSendingRate() const;
     void setSendingRate(unsigned int sendingRate);
 
@@ -156,7 +165,7 @@ public:
     void incDupFC();
     unsigned int getDupFC() const;
 
-    unsigned int getSenderLeftWinEdge() const;
+    unsigned int getSndLeftWinEdge() const;
     void setSenderLeftWinEdge(unsigned int senderLeftWinEdge);
     void updateSenderLWE(unsigned int seqNum);
 
@@ -169,7 +178,8 @@ public:
     bool runLostControlPDUPolicy(DTPState* dtpState);
     bool runRcvrControlAckPolicy(DTPState* dtpState);
     bool runSenderAckPolicy(DTPState* dtpState);
-    bool runFCOverrunPolicy(DTPState* dtpState);
+    bool runSndFCOverrunPolicy(DTPState* dtpState);
+    bool runRcvFCOverrunPolicy(DTPState* dtpState);
     bool runNoOverridePeakPolicy(DTPState* dtpState);
     bool runTxControlPolicy(DTPState* dtpState, PDUQ_t* pduQ);
     bool runNoRateSlowDownPolicy(DTPState* dtpState);
@@ -177,7 +187,6 @@ public:
     bool runRateReductionPolicy(DTPState* dtpState);
     bool runECNSlowDownPolicy(DTPState* dtpState);
 
-    //TODO policies
     void runRxTimerExpiryPolicy(DTCPRxExpiryTimer* timer);
 
 
@@ -187,7 +196,7 @@ public:
     cModule* createPolicyModule(const char* prefix, const char* name);
     bool isClosedWinQClosed();
     void scheduleRxTimerExpiry();
-    void setFcOverrunPolicy(FCOverrunPolicyBase* fcOverrunPolicy);
+    void setSndFcOverrunPolicy(SndFCOverrunPolicyBase* sndFcOverrunPolicy);
     void setLostControlPduPolicy(LostControlPDUPolicyBase* lostControlPduPolicy);
     void setNoOverridePeakPolicy(NoOverridePeakPolicyBase* noOverridePeakPolicy);
     void setNoRateSlowDownPolicy(NoRateSlowDownPolicyBase* noRateSlowDownPolicy);
@@ -202,8 +211,12 @@ public:
     void setSendingAckPolicy(SendingAckPolicyBase* sendingAckPolicy);
     void setTxControlPolicy(TxControlPolicyBase* txControlPolicy);
     void setDtcpState(DTCPState* dtcpState);
+    void setRcvFcOverrunPolicy(RcvFCOverrunPolicyBase* rcvFcOverrunPolicy);
+    void setECNPolicy(ECNPolicyBase* ecnPolicy);
+    void setECNSlowDownPolicy(ECNSlowDownPolicyBase* ecnSlowDownPolicy);
+    void startRendezvousTimer();
 
-protected:
+  protected:
     virtual void handleMessage(cMessage *msg);
     virtual void initialize(int step);
     int numInitStages() const

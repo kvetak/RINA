@@ -21,13 +21,16 @@
 // THE SOFTWARE.
 
 package rina.examples.Routing.LatEx;
-import rina.src.CS.*;
+import rina.src.CS.Host1AP;
+import rina.src.CS.HostNAP;
+import rina.src.CS.InteriorRouterNInt;
+
 
 network LatEx
 {
     @display("bgb=388,718");
     submodules:
-        host1: HostNAP {
+        host1: Host1AP {
             @display("p=189,51");
         }
         host2: Host1AP {

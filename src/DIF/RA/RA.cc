@@ -81,10 +81,9 @@ void RA::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
-
         if (!opp_strcmp(msg->getName(), "RA-CreateConnections"))
         {
-            auto flows = preparedFlows[simTime()];
+            auto flows = preAllocs[simTime()];
 
             while (!flows->empty())
             {
@@ -98,11 +97,35 @@ void RA::handleMessage(cMessage *msg)
                 Flow* flow = flows->front();
                 if (flow->isManagementFlow())
                 { // mgmt flow
+                    //std::cout << "prepare MGMT flow" << endl;
+                    //createNM1Flow(flow);
                     createNFlow(flow);
                 }
                 else
                 { // data flow
                     createNM1Flow(flow);
+                }
+
+                flows->pop_front();
+            }
+
+            delete flows;
+            delete msg;
+        }
+        else if (!opp_strcmp(msg->getName(), "RA-TerminateConnections"))
+        {
+            auto flows = preDeallocs[simTime()];
+
+            while (!flows->empty())
+            {
+                Flow* flow = flows->front();
+                if (flow->isManagementFlow())
+                { // mgmt flow
+                    // huh?
+                }
+                else
+                { // data flow
+                    removeNM1Flow(flow);
                 }
 
                 flows->pop_front();
@@ -136,6 +159,10 @@ void RA::initSignalsAndListeners()
     thisIPC->getParentModule()->
             subscribe(SIG_RIBD_CreateFlowResponsePositive, this->lisRACreResPosi);
 
+    lisRADelFlow = new LisRADelFlow(this);
+    thisIPC->getParentModule()->
+            subscribe(SIG_RIBD_DeleteRequestFlow, lisRADelFlow);
+
     lisEFCPStopSending = new LisEFCPStopSending(this);
     thisIPC->getParentModule()->
             subscribe(SIG_EFCP_StopSending, this->lisEFCPStopSending);
@@ -159,50 +186,86 @@ void RA::initFlowAlloc()
     for (auto const m : timeMap)
     {
         simtime_t time = static_cast<simtime_t>(atoi(m->getAttribute("t")));
-
         const cXMLElementList& connMap = m->getChildrenByTagName("Connection");
 
         for (auto const n : connMap)
         {
+            // retrieve the parameters
             const char* src = n->getAttribute("src");
+            const char* dst = n->getAttribute("dst");
+            const char* qosReqID = n->getAttribute("qosReq");
+
+            if (!src || !dst || !qosReqID)
+            {
+                throw cRuntimeError("Invalid preallocation parameter(s) for SimTime %s",
+                        time.str().c_str());
+            }
+
+            // keep going only if this is a configuration meant for this IPC process
             if (opp_strcmp(src, processName.c_str()))
             {
                 continue;
             }
 
-
-            const char* dst = n->getAttribute("dst");
-            const char* qosReqID_s = n->getAttribute("qosReq");
             APNamingInfo srcAPN = APNamingInfo(APN(src));
             APNamingInfo dstAPN = APNamingInfo(APN(dst));
 
             QoSReq* qosReq = nullptr;
-
-            if (!opp_strcmp(qosReqID_s, "mgmt"))
+            if (!opp_strcmp(qosReqID, "mgmt"))
             {
                 qosReq = &mgmtReqs;
             }
             else
             {
-                qosReq = initQoSReqById(static_cast<unsigned short>
-                                        (atoi(qosReqID_s)));
+                qosReq = initQoSReqById(qosReqID);
             }
 
-
-            if (qosReq == nullptr) continue;
+            if (!qosReq)
+            {
+                throw cRuntimeError("Invalid QoSReqId %s for SimTime=%s, src=\"%s\", dst=\"%s\"",
+                        qosReqID,
+                        time.str().c_str(),
+                        src,
+                        dst);
+            }
 
             Flow *flow = new Flow(srcAPN, dstAPN);
             flow->setQosRequirements(*qosReq);
 
-            if (preparedFlows[time] == nullptr)
+            if (preAllocs[time] == nullptr)
             {
-                preparedFlows[time] = new std::list<Flow*>;
+                preAllocs[time] = new std::list<Flow*>;
                 cMessage* msg = new cMessage("RA-CreateConnections");
-                scheduleAt(simTime() + time, msg);
+                scheduleAt(time, msg);
 
             }
 
-            preparedFlows[time]->push_back(flow);
+            preAllocs[time]->push_back(flow);
+
+            const char* until_s = n->getAttribute("until");
+            if (until_s)
+            {
+                simtime_t until = static_cast<simtime_t>(atoi(until_s));
+
+                if (until <= time)
+                {
+                    throw cRuntimeError(
+                            "Invalid time of deallocation for flow {SimTime=%s, src=\"%s\", dst=\"%s\", qosReq=\"%s\"}",
+                            time.str().c_str(),
+                            src,
+                            dst,
+                            qosReqID);
+                }
+
+                if (preDeallocs[until] == nullptr)
+                {
+                    preDeallocs[until] = new std::list<Flow*>;
+                    cMessage* msg = new cMessage("RA-TerminateConnections");
+                    scheduleAt(until, msg);
+                }
+
+                preDeallocs[until]->push_back(flow);
+            }
         }
     }
 }
@@ -215,7 +278,7 @@ void RA::setRMTMode()
     // identify the role of this IPC process in processing system
     std::string bottomGate = thisIPC->gate("southIo$o", 0)->getNextGate()->getName();
 
-    if (bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
+    if (par("onWire").boolValue() || bottomGate == "medium$o" || bottomGate == "mediumIntra$o" || bottomGate == "mediumInter$o")
     {
         // we're on wire! this is the bottommost "interface" DIF
         rmt->setOnWire(true);
@@ -291,10 +354,10 @@ void RA::initQoSCubes()
 }
 
 /**
- * Initializes QoS requirement identified by give id
+ * Initializes QoS requirement identified by given id
  * @param id ID of the QoSReq to be initialized
  */
-QoSReq* RA::initQoSReqById(unsigned short id)
+QoSReq* RA::initQoSReqById(const char* id)
 {
     cXMLElement* qosXml = nullptr;
     if (par(PAR_QOSREQ).xmlValue() != nullptr
@@ -307,25 +370,15 @@ QoSReq* RA::initQoSReqById(unsigned short id)
         return nullptr;
     }
 
-    cXMLElementList cubes = qosXml->getChildrenByTagName(ELEM_QOSREQ);
-    for (auto const m : cubes)
+    cXMLElement* reqs = qosXml->getFirstChildWithAttribute(ELEM_QOSREQ, ATTR_ID, id);
+    cXMLElementList attrs;
+
+    if (reqs)
     {
-        if (!m->getAttribute(ATTR_ID))
-        {
-            EV << "Error parsing QoSReq. Its ID is missing!" << endl;
-            continue;
-        }
-        //Skipping QoSReqs with wrong ID
-        else if ((unsigned short) atoi(m->getAttribute(ATTR_ID)) != id)
-        {
-            continue;
-        }
-
-        cXMLElementList attrs = m->getChildren();
-
-        return new QoSReq(attrs);
+        attrs = reqs->getChildren();
     }
-    return nullptr;
+
+    return (reqs ? new QoSReq(attrs) : nullptr);
 }
 
 
@@ -662,23 +715,13 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     }
 }
 
-/**
- * Removes specified (N-1)-flow and bindings (this is the mechanism behind Deallocate() call).
- *
- * @param flow specified flow object
- */
-void RA::removeNM1Flow(Flow *flow)
-{ // TODO: part of this should be split into something like postNM1FlowDeallocation
-
-	Enter_Method("removeNM1Flow()");
-    auto flowItem = flowTable->lookup(flow);
-    ASSERT(flowItem != nullptr);
-    flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
-    flowItem->getFABase()->receiveDeallocateRequest(flow);
+void RA::removeNM1FlowBindings(NM1FlowTableItem* ftItem)
+{
+    Enter_Method("removeNM1FlowBindings()");
 
     // disconnect and delete gates
-    RMTPort* port = flowItem->getRMTPort();
-    const char* gateName = flowItem->getGateName().c_str();
+    RMTPort* port = ftItem->getRMTPort();
+    const char* gateName = ftItem->getGateName().c_str();
     cGate* thisIpcIn = thisIPC->gateHalf(gateName, cGate::INPUT);
     cGate* thisIpcOut = thisIPC->gateHalf(gateName, cGate::OUTPUT);
     cGate* rmtModuleIn = rmtModule->gateHalf(gateName, cGate::INPUT);
@@ -695,9 +738,26 @@ void RA::removeNM1Flow(Flow *flow)
     thisIPC->deleteGate(gateName);
 
     // remove table entries
-    fwdtg->removeFlowInfo(flowItem->getRMTPort());
-    rmtAllocator->removePort(flowItem->getRMTPort());
-    flowTable->remove(flow);
+    fwdtg->removeFlowInfo(port);
+    rmtAllocator->removePort(port);
+    flowTable->remove(ftItem->getFlow());
+}
+
+/**
+ * Removes specified (N-1)-flow and bindings (this is the mechanism behind Deallocate() call).
+ *
+ * @param flow specified flow object
+ */
+void RA::removeNM1Flow(Flow *flow)
+{
+	Enter_Method("removeNM1Flow()");
+    auto flowItem = flowTable->lookup(flow);
+    ASSERT(flowItem != nullptr);
+    flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
+    flowItem->getFABase()->receiveDeallocateRequest(flow);
+
+    // TODO: discuss whether the bindings should be removed afterwards
+    removeNM1FlowBindings(flowItem);
 }
 
 /**
@@ -825,3 +885,56 @@ NM1FlowTable* RA::getFlowTable()
 bool RA::hasFlow(std::string addr, std::string qosId) {
     return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != nullptr);
 }
+
+bool RA::sleepFlow(Flow * flow, simtime_t wakeUp) {
+    Enter_Method_Silent();
+    if(flowTable->lookup(flow) != nullptr) {
+        simtime_t now = simTime();
+        if(wakeUp >= now) {
+            Flow *nflow = new Flow(flow->getSrcApni(), flow->getDstApni());
+            nflow->setQosRequirements(flow->getQosReqs());
+
+            if (preAllocs[wakeUp] == nullptr) {
+                preAllocs[wakeUp] = new std::list<Flow*>;
+                cMessage* msg = new cMessage("RA-CreateConnections");
+                scheduleAt(wakeUp, msg);
+            }
+            preAllocs[wakeUp]->push_back(nflow);
+        }
+
+        if (preDeallocs[now] == nullptr)
+        {
+            preDeallocs[now] = new std::list<Flow*>;
+            cMessage* msg = new cMessage("RA-TerminateConnections");
+            scheduleAt(now, msg);
+        }
+        preDeallocs[now]->push_back(flow);
+
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

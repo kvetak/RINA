@@ -213,8 +213,8 @@ void Management::action(cMessage *msg, bool del) {
             } else if(masterConenctTo * m = dynamic_cast<masterConenctTo*>(msg)){
                 // ************* Conect borders <-> dstBorders, random, start at s(src), d(dst)
                 if(currentBorders > 0 && extBorders[m->dstZone].size() > 0){
-                    int s = intuniform(0, currentBorders-1);
-                    int d = intuniform(0, extBorders[m->dstZone].size()-1);
+        //            int s = intuniform(0, currentBorders-1);
+        //            int d = intuniform(0, extBorders[m->dstZone].size()-1);
                 }
             }
         }

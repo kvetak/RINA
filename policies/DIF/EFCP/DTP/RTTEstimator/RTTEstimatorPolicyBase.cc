@@ -88,7 +88,7 @@ void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
       }
     }
     double tmp = floor(((alpha * dtpState->getRtt()) + ((1 - alpha) * newRtt)) * 1000000000);
-    dtpState->setRtt((double) tmp / 1000000000);
+    dtpState->setRtt(((double) tmp / 1000000000) * 1.1);
     EV << "Current RTT: " << dtpState->getRtt() << endl;
 
 

@@ -22,10 +22,7 @@
 
 package rina.examples.Routing.TriNet;
 
-import ned.DatarateChannel;
-import rina.src.CS.HostNAP;
 import rina.src.CS.InteriorRouter2Int;
-import rina.src.CS.InteriorRouter3Int;
 
 
 network TriNet

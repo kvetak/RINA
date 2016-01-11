@@ -59,6 +59,10 @@ void AEStream::initialize()
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+    if (!dstAeName.compare("AeErr")) {
+        EV << "Destination AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
+    }
+
     //Timers
     startAt         = simTime() + par(PAR_START);
     stopAt          = simTime() + par(PAR_STOP);

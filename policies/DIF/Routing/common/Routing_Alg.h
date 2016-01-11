@@ -35,7 +35,7 @@ public:
     virtual ~Routing_Alg(){};
 
     Routing_Alg(Routing_Module * p, const Address &_nAddr, const string &_addr, T inf) :
-        parent(p), myNAddr(_nAddr), myAddr(_addr), infinite(inf), updateW(1), scheduledUpdate(false){};
+        parent(p), myNAddr(_nAddr), myAddr(_addr), infinite(inf), updateW(0.01), scheduledUpdate(false){};
 
     virtual void addSynonym(const string syn) { synonyms.insert(syn); }
     virtual void removeSynonym(const string syn) { synonyms.erase(syn); }

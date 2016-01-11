@@ -39,7 +39,7 @@ void NeighborTable::initialize()
 
 void NeighborTable::handleMessage(cMessage *msg)
 {
-    // TODO - Generated method body
+
 }
 
 void NeighborTable::addNeighborEntry(const APN& apn) {
