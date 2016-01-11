@@ -3,7 +3,7 @@
 # TODO: remove bashisms
 
 # scenarios to exclude (e.g. if they're too resource-expensive)
-# exclude_scenarios=(BigRandNet DC)
+exclude_scenarios=(BigRandNet DC Circular)
 
 # initialize the mandatory stuff
 rina_root="$( readlink -f "$( dirname $0 )/.." )"

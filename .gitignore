@@ -26,7 +26,7 @@ src/Makefile.vc
 *.vci
 *.elog
 .computed/
-/examples/*log*
+*.csv
 
 # Misceleanous
 *.pyc
