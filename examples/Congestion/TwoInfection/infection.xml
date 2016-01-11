@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode id="Node_1_A">
+		<flow  dstAddr = "2" qos = "GU" pduSize = "2989"  pduSizeVar = "1000" rate = "0.02" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "2989"  pduSizeVar = "1000" rate = "0.08" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.27" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.63" />
+	</InfectionNode>
+	<InfectionNode id="Node_2_A">
+		<flow  dstAddr = "1" qos = "GU" pduSize = "2989"  pduSizeVar = "2000" rate = "0.02" />
+		<flow  dstAddr = "1" qos = "SN" pduSize = "2989"  pduSizeVar = "2000" rate = "0.08" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.27" />
+		<flow  dstAddr = "1" qos = "BE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.63" />
+	</InfectionNode>
+	
+	
+	<InfectionNode id="Node_1_B">
+		<flow  dstAddr = "2" qos = "GU" pduSize = "2989"  pduSizeVar = "1000" rate = "0.04" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "2989"  pduSizeVar = "1000" rate = "0.16" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.24" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.56" />
+	</InfectionNode>
+	<InfectionNode id="Node_2_B">
+		<flow  dstAddr = "1" qos = "GU" pduSize = "2989"  pduSizeVar = "2000" rate = "0.04" />
+		<flow  dstAddr = "1" qos = "SN" pduSize = "2989"  pduSizeVar = "2000" rate = "0.16" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.24" />
+		<flow  dstAddr = "1" qos = "BE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.56" />
+	</InfectionNode>
+	
+	
+	<InfectionNode id="Node_1_C">
+		<flow  dstAddr = "2" qos = "GU" pduSize = "2989"  pduSizeVar = "1000" rate = "0.06" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "2989"  pduSizeVar = "1000" rate = "0.24" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.21" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.49" />
+	</InfectionNode>
+	<InfectionNode id="Node_2_C">
+		<flow  dstAddr = "1" qos = "GU" pduSize = "2989"  pduSizeVar = "2000" rate = "0.06" />
+		<flow  dstAddr = "1" qos = "SN" pduSize = "2989"  pduSizeVar = "2000" rate = "0.24" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.21" />
+		<flow  dstAddr = "1" qos = "BE" pduSize = "2989"  pduSizeVar = "2000" rate = "0.49" />
+	</InfectionNode>
+	
+</Infection>

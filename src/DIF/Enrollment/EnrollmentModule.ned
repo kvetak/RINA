@@ -22,7 +22,6 @@
 
 package rina.src.DIF.Enrollment;
 
-
 network EnrollmentModule
 {
     parameters:

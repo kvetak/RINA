@@ -50,13 +50,6 @@ unsigned int DataTransferPDU::getSize(){
   return userDataField_var->getSize() + PDU_HEADER_LEN;
 }
 
-DataTransferPDU::~DataTransferPDU()
-{
-  if(userDataField_var != NULL){
-//    drop(userDataField_var);
-//    delete userDataField_var;
-  }
-}
 
 
 UserDataFieldPtr& DataTransferPDU::getUserDataField()

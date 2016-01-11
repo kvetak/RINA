@@ -21,15 +21,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef TAILDROP_H_
-#define TAILDROP_H_
+#pragma once
 
 #include "RMTMaxQBase.h"
+
+#include <map>
 
 class TailDrop : public RMTMaxQBase
 {
   public:
     virtual bool run(RMTQueue* queue);
+
+    void finish();
+  protected :
+    std::map<RMTQueue*, long> count, accepted, drop;
 };
 
-#endif /* TAILDROP_H_ */

@@ -23,18 +23,35 @@
 
 #include <TailDrop.h>
 
+#include <iostream>
+
 Define_Module(TailDrop);
 
 bool TailDrop::run(RMTQueue* queue)
 {
-    if (queue->getLength() >= queue->getMaxLength())
-    {
+    count[queue]++;
+    if (queue->getLength() >= queue->getMaxLength()) {
+        drop[queue]++;
         EV << "TailDrop: dropping message for queue " << queue->getName() << "!" << endl;
         return true;
-    }
-    else
-    {
+    }  else {
+        accepted[queue]++;
         return false;
+    }
+}
+
+void TailDrop::finish() {
+    if(par("printAtEnd").boolValue()) {
+        std::cout << "TailDrop::finish" << endl;
+        std::cout << this->getFullPath() << endl;
+        for(auto & ql : count) {
+            RMTQueue * q = ql.first;
+            std::cout << "\tQueue : "<< q->getFullPath()<<endl;
+            std::cout << "\t\tReceived : "<< count[q]<<endl;
+            std::cout << "\t\tAccepted : "<< accepted[q]<<endl;
+            std::cout << "\t\tRefused : "<< drop[q]<<endl;
+
+        }
     }
 }
 

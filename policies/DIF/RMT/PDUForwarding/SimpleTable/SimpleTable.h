@@ -24,54 +24,52 @@
 #define SimpleTable_H_
 
 #include <IntMiniForwarding.h>
-
 #include <map>
 #include <string>
 #include <vector>
+#include "RINASignals.h"
 
 #define ANY_QOS "*"
 
 namespace SimpleTable {
-
 using namespace std;
 
 typedef map<std::string, RMTPort*> qos2Port;
 typedef map<std::string, qos2Port> FWDTable;
-
 typedef qos2Port::iterator qos2PortIt;
 typedef FWDTable::iterator FWDTableIt;
 
-class SimpleTable: public IntMiniForwarding {
+class SimpleTable : public IntMiniForwarding
+{
+    public:
+        // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+        vector<RMTPort *> lookup(const PDU * pdu);
+        vector<RMTPort *> lookup(const Address &dst, const std::string& qos);
 
-public:
-    // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
-    vector<RMTPort * > lookup(const PDU * pdu);
-    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+        // Returns a representation of the Forwarding Knowledge
+        string toString();
 
-    // Returns a representation of the Forwarding Knowledge
-    string toString();
+        //Insert/Remove an entry
+        void insert(const std::string &addr, const std::string& qos, RMTPort * port);
+        void insert(const Address &addr, const std::string& qos, RMTPort * port);
+        void remove(const std::string &addr, const std::string& qos);
+        void remove(const Address &addr, const std::string& qos);
 
-    //Insert/Remove an entry
-    void insert(const std::string &addr, const std::string& qos, RMTPort * port);
-    void insert(const Address &addr, const std::string& qos, RMTPort * port);
-    void remove(const std::string &addr, const std::string& qos);
-    void remove(const Address &addr, const std::string& qos);
+        //Insert/Remove a mini entry
+        void insert(const std::string &addr, RMTPort * port);
+        void insert(const Address &addr, RMTPort * port);
+        void remove(const std::string &addr);
+        void remove(const Address &addr);
+        void finish();
 
-    //Insert/Remove a mini entry
-    void insert(const std::string &addr, RMTPort * port);
-    void insert(const Address &addr, RMTPort * port);
-    void remove(const std::string &addr);
-    void remove(const Address &addr);
-
-    void finish();
-
-protected:
-    FWDTable table;
-
-    // Called after initialize
-    void onPolicyInit();
+    protected:
+        FWDTable table;
+        // Called after initialize
+        void onPolicyInit();
+        void initSignalsAndListeners();
+        void initialize();
+        simsignal_t sigStatPDUFTLENGTH;
+        const char* SIG_STAT_PDUFT_LENGTH = "PDUFT_Length";
 };
-
 }
-
 #endif /* SimpleTable_H_ */

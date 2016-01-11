@@ -29,7 +29,7 @@ PDUFGNeighbor::PDUFGNeighbor()
 
 }
 
-PDUFGNeighbor::PDUFGNeighbor(Address addr, std::string qosId, RMTPort * p)
+PDUFGNeighbor::PDUFGNeighbor(Address addr, QoSCube& qosId, RMTPort * p)
 {
     dstAddr = addr;
     qos = qosId;
@@ -51,7 +51,7 @@ RMTPort * PDUFGNeighbor::getPort()
     return port;
 }
 
-std::string PDUFGNeighbor::getQosId()
+QoSCube& PDUFGNeighbor::getQoSCube()
 {
     return qos;
 }
@@ -66,7 +66,7 @@ void PDUFGNeighbor::setPort(RMTPort * p)
     port = p;
 }
 
-void PDUFGNeighbor::setQosId(std::string qosId)
+void PDUFGNeighbor::setQosId(QoSCube qosId)
 {
     qos = qosId;
 }

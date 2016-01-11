@@ -40,7 +40,7 @@ void SingleDomainGenerator::insertedFlow(const Address &addr, const QoSCube & qo
         routingUpdated();
     }
 }
-void SingleDomainGenerator::removedFlow(const Address &addr, RMTPort * port){
+void SingleDomainGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){

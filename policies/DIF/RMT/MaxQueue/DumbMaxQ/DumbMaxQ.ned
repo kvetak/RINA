@@ -31,4 +31,6 @@ simple DumbMaxQ like IntRMTMaxQPolicy
         @display("i=block/socket");
 
         @signal[RMT-SlowDownRequest];
+        
+        bool printAtEnd = default(false);
 }

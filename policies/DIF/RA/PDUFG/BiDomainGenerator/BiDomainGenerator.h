@@ -51,7 +51,7 @@ class BiDomainGenerator: public IntPDUFG {
 public:
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, RMTPort * port);
+    virtual void removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
 
     //Routing has processes a routing update
     virtual void routingUpdated();

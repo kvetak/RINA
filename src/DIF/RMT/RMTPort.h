@@ -129,14 +129,14 @@ class RMTPort : public cSimpleModule
      *
      * @return set of queues
      */
-    const RMTQueues& getInputQueues() const;
+    RMTQueues& getInputQueues();
 
     /**
      * Returns a list of available output queues.
      *
      * @return set of queues
      */
-    const RMTQueues& getOutputQueues() const;
+    RMTQueues& getOutputQueues();
 
     /**
      * Returns number of PDUs waiting to be read.

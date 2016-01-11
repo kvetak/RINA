@@ -41,7 +41,7 @@ void HierarchicalGenerator::insertedFlow(const Address &addr, const QoSCube &qos
     fwd->setTmp(addr, port);
 }
 
-void HierarchicalGenerator::removedFlow(const Address &addr, RMTPort * port){
+void HierarchicalGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     pAddr parsedA = parseAddr(dst);
 

@@ -166,12 +166,12 @@ void RMTPort::handleMessage(cMessage* msg)
 }
 
 
-const RMTQueues& RMTPort::getInputQueues() const
+RMTQueues& RMTPort::getInputQueues()
 {
     return inputQueues;
 }
 
-const RMTQueues& RMTPort::getOutputQueues() const
+RMTQueues& RMTPort::getOutputQueues()
 {
     return outputQueues;
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+    <Metrics>
+    	<Qos id="MA" urgent="true" />
+    	<Qos id="GU" urgent="true" />
+    	<Qos id="SN" />
+    	<Qos id="sBE" urgent="true" />
+    	<Qos id="BE" />
+    
+        <Link src="1" l="1" dst="2" />
+        <Link src="2" l="1" dst="3" />
+        <Link src="3" l="1" dst="4" />
+        <Link src="4" l="1" dst="5" />
+        <Link src="5" l="1" dst="6" />
+        <Link src="6" l="1" dst="7" />
+        <Link src="7" l="1" dst="8" />
+        <Link src="8" l="1" dst="9" />
+        <Link src="9" l="1" dst="1" />
+    </Metrics>

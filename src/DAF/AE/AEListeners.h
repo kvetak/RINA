@@ -89,4 +89,10 @@ class LisAERelRes : public AEListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisAEEnrolled : public AEListeners {
+  public:
+    LisAEEnrolled(AE* nae) :  AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, long obj);
+};
+
 #endif /* AELISTENERS_H_ */

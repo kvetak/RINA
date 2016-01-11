@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode id="Node_1">
+		<flow  dstAddr = "2" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_2">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "3" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_3">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "2" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_4">
+		<flow  dstAddr = "3" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "5" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_5">
+		<flow  dstAddr = "2" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_6">
+		<flow  dstAddr = "1" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "4" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "7" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_7">
+		<flow  dstAddr = "5" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "6" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_8">
+		<flow  dstAddr = "6" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_9">
+		<flow  dstAddr = "7" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "8" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "a" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+	<InfectionNode id="Node_a">
+		<flow  dstAddr = "8" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+		<flow  dstAddr = "9" qos = "BE" pduSize = "4500"  pduSizeVar = "400" rate = "1.0"  N = "1" rec = "1" />
+	</InfectionNode>
+</Infection>

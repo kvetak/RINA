@@ -52,7 +52,6 @@ void IDPerNCU::onPolicyInit()
             continue;
         }
 
-
         qos2CU[qosId] =  cu;
     }
 }

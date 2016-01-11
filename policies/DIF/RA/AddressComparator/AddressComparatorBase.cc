@@ -38,7 +38,7 @@ void AddressComparatorBase::onPolicyInit()
 {
 }
 
-bool AddressComparatorBase::matchesThisIPC(const Address& addr)
+bool AddressComparatorBase::matchesThisIPC(const Address& addr, PDU * pdu)
 {
     return false;
 }

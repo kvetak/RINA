@@ -194,6 +194,12 @@ void RMT::preQueueArrival(cObject* obj)
  *
  * @param obj RMT queue object
  */
+void RMT::recDel(cPacket * p) {
+    cPacket * enc = p->decapsulate();
+    if(enc != nullptr) { recDel(enc); }
+    delete p;
+}
+
 void RMT::postQueueArrival(cObject* obj)
 {
     Enter_Method("onQueueArrival()");
@@ -220,7 +226,7 @@ void RMT::postQueueArrival(cObject* obj)
             tracePDUEvent(queue->getLastPDU(), MSG_DROP);
         }
         emit(sigRMTPacketError, obj);
-        queue->dropLast();
+        recDel( queue->dropLast() );
         return;
     }
 
@@ -239,7 +245,7 @@ void RMT::postQueueArrival(cObject* obj)
             }
             const auto dropped = queue->dropLast();
             qMonPolicy->onMessageDrop(queue, dropped);
-            delete dropped;
+            recDel( dropped );
             return;
         }
     }
@@ -423,9 +429,17 @@ void RMT::relayPDUToPort(PDU* pdu)
     if (outPorts.empty())
     {
         EV << "!!! Empty PDUForwarding policy lookup result!" << endl
+           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+
+        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
+           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
+           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
+           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
+           << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+
         invalidPDUs.push_back(pdu);
     }
 
@@ -466,19 +480,23 @@ void RMT::relayPDUToPort(PDU* pdu)
  */
 void RMT::relayPDUToEFCPI(PDU* pdu)
 {
-    unsigned cepId = pdu->getConnId().getDstCepId();
-    cGate* efcpiGate = efcpiOut[cepId];
+    int cepId = pdu->getConnId().getDstCepId();
 
+    if(cepId < 0) { delete pdu; return; }
+
+    cGate* efcpiGate = efcpiOut[cepId];
     if (efcpiGate != nullptr)
     {
         send(pdu, efcpiGate);
     }
     else
     {
-        EV << this->getFullPath() << ": EFCPI " << cepId
-           << " isn't present on this system! Notifying other modules." << endl;
-        emit(sigRMTNoConnID, pdu);
-        invalidPDUs.push_back(pdu);
+        std::cout << "WTF " << cepId << endl;
+            EV << this->getFullPath() << ": EFCPI " << cepId
+               << " isn't present on this system! Notifying other modules." << endl;
+            emit(sigRMTNoConnID, pdu);
+            invalidPDUs.push_back(pdu);
+
     }
 }
 
@@ -499,7 +517,7 @@ void RMT::processMessage(cMessage* msg)
 
         if (dynamic_cast<RMTQueue*>(senderModule) != nullptr)
         { // message from a port
-            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr(), pdu) )
             {
                 relayPDUToEFCPI(pdu);
             }
@@ -514,7 +532,7 @@ void RMT::processMessage(cMessage* msg)
         }
         else
         { // message from an EFCPI
-            if (addrComparator->matchesThisIPC(pdu->getDstAddr()))
+            if (addrComparator->matchesThisIPC(pdu->getDstAddr(), pdu) )
             {
                 relayPDUToEFCPI(pdu);
             }

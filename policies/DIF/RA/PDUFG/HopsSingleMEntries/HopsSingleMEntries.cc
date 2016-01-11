@@ -34,7 +34,7 @@ void HopsSingleMEntries::insertedFlow(const Address &addr, const QoSCube &qos, R
         routingUpdated();
     }
 }
-void HopsSingleMEntries::removedFlow(const Address &addr, RMTPort * port){
+void HopsSingleMEntries::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){

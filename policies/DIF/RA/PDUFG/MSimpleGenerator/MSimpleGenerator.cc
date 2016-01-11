@@ -40,7 +40,7 @@ void MSimpleGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMT
         routingUpdated();
     }
 }
-void MSimpleGenerator::removedFlow(const Address &addr, RMTPort * port){
+void MSimpleGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     neighbours[dst].erase(port);
     if(neighbours[dst].size() <= 0){
@@ -71,8 +71,8 @@ void MSimpleGenerator::routingUpdated(){
             if(p != NULL) {
                 ps.push_back(p);
             }
-            fwd->addReplace(dst.second, ps);
         }
+        fwd->addReplace(dst.second, ps);
     }
 }
 

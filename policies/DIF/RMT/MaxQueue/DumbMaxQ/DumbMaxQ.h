@@ -21,8 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef DLMaxQ_H_
-#define DLMaxQ_H_
+#pragma once
 
 #include "RMTMaxQBase.h"
 #include "SmartMonitor.h"
@@ -38,7 +37,6 @@ class DumbMaxQ : public RMTMaxQBase
   protected:
     SmartMonitor * monitor;
 
-    std::map<std::string, unsigned int> dropIn, dropOut;
+    std::map<std::string, unsigned int> dropIn, dropOut, okIn, okOut;
+    std::map<std::string, unsigned long> dDropIn, dDropOut, dOkIn, dOkOut;
 };
-
-#endif /*  */

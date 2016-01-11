@@ -36,21 +36,21 @@ class PDUFGNeighbor
 {
 private:
     Address dstAddr;
-    std::string qos;
+    QoSCube qos;
     RMTPort * port;
 
 public:
     PDUFGNeighbor();
-    PDUFGNeighbor(Address dst, std::string qos, RMTPort * port);
+    PDUFGNeighbor(Address dst, QoSCube& qos, RMTPort * port);
     ~PDUFGNeighbor();
 
     Address & getDestAddr();
     RMTPort* getPort();
-    std::string getQosId();
+    QoSCube& getQoSCube();
 
     void setDestAddr(Address & dstAddr);
     void setPort(RMTPort* p);
-    void setQosId(std::string qosId);
+    void setQosId(QoSCube qosId);
 };
 
 #endif

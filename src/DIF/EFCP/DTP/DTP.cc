@@ -797,7 +797,7 @@ void DTP::cancelATimer(unsigned int seqNum)
 void DTP::startATimer(unsigned int seqNum)
 {
 
-  if(!state->getQoSCube()->getATime() > 0.0)
+  if(!(state->getQoSCube()->getATime() > 0.0))
   {
     return;
   }
@@ -1368,7 +1368,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
           }
         }    // end of RateBased
 
-        if (dtcp->getDTCPState()->isClosedWindow() ^ dtcp->isSendingRateFullfilled())
+        if ((dtcp->getDTCPState()->isRateBased() && dtcp->getDTCPState()->isWinBased()) && (dtcp->getDTCPState()->isClosedWindow() ^ dtcp->isSendingRateFullfilled()))
         {
           dtcp->runReconcileFCPolicy(state);
         }

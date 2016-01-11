@@ -124,3 +124,10 @@ void LisAERelRes::receiveSignal(cComponent* src, simsignal_t id,
     ae->changeConStatus(NIL);
     //TODO: signalize that ae can close flow, result is available --> api call
 }
+
+void LisAEEnrolled::receiveSignal(cComponent* src, simsignal_t id,
+        long obj) {
+
+    //TODO: checks before call
+    ae->afterOnStart();
+}

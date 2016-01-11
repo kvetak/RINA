@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode >
+		<flow  dstAddr = "1" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "1" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "1" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "1" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+		
+		<flow  dstAddr = "2" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "2" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "2" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "2" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+		
+		<flow  dstAddr = "3" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "3" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "3" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "3" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+		
+		<flow  dstAddr = "4" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "4" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "4" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "4" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+		
+		<flow  dstAddr = "5" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "5" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "5" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "5" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+				
+		<flow  dstAddr = "6" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "6" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "6" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "6" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+				
+		<flow  dstAddr = "7" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "7" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "7" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "7" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+				
+		<flow  dstAddr = "8" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "8" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "8" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "8" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+				
+		<flow  dstAddr = "9" qos = "BE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.4"  N = "400" rec = "400" />
+		<flow  dstAddr = "9" qos = "sBE" pduSize = "3000"  pduSizeVar = "1500" rate = "0.2"  N = "200" rec = "200" />
+		<flow  dstAddr = "9" qos = "GU" pduSize = "3000"  pduSizeVar = "1500" rate = "0.1"  N = "100" rec = "100" />
+		<flow  dstAddr = "9" qos = "SN" pduSize = "3000"  pduSizeVar = "1500" rate = "0.3"  N = "300" rec = "300" />
+	</InfectionNode>
+</Infection>

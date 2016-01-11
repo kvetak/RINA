@@ -71,6 +71,13 @@ class LisRACreResPosi : public RAListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
+class LisRADelFlow : public RAListeners
+{
+  public:
+    LisRADelFlow(RABase* nra) : RAListeners(nra){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
+
 class LisEFCPStopSending : public RAListeners
 {
   public:

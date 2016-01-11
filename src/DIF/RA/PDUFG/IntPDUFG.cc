@@ -60,7 +60,7 @@ void IntPDUFG::insertFlowInfo(Address addr, QoSCube qos, RMTPort * port) {
     EV << "New flow -> <" << addr << " , " << qos.getQosId() << "> at " << port->getFullPath()<<endl;
 
     //Insert Flow into neighbour state
-    neiState.push_back(new PDUFGNeighbor(addr, qos.getQosId(), port));
+    neiState.push_back(new PDUFGNeighbor(addr, qos, port));
 
     // Inform child policy of changes
     insertedFlow(addr, qos, port);
@@ -72,12 +72,13 @@ void IntPDUFG::removeFlowInfo(RMTPort * port) {
         PDUFGNeighbor * e = (*it);
         if(port == e->getPort()) {
             Address addr = e->getDestAddr();
+            QoSCube& qos = e->getQoSCube();
 
             // Remove flow from neighbour state
             neiState.erase(it);
 
             // Inform child policy of changes
-            removedFlow(addr, port);
+            removedFlow(addr, qos, port);
             return;
         }
     }
