@@ -63,22 +63,10 @@ bool RcvrAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
     ackFlowPdu->setAckNackSeqNum(seqNum);
 
-    ackFlowPdu->setRcvRightWinEdge(dtcpState->getRcvRightWinEdge());
-
-    ackFlowPdu->setRcvRate(dtcpState->getRcvRightWinEdge());
-
-    ackFlowPdu->setTimeUnit(dtcpState->getSendingTimeUnit());
-
-    ackFlowPdu->setSndLeftWinEdge(dtcpState->getSndLeftWinEdge());
-
-    ackFlowPdu->setSndRightWinEdge(dtcpState->getSndLeftWinEdge());
-
-    ackFlowPdu->setSndRate(dtcpState->getSndLeftWinEdge());
-
-    dtcpState->setRcvRightWinEdgeSent(dtcpState->getRcvRightWinEdge());
+    dtp->fillFlowControlPDU(ackFlowPdu);
 
     if(dtpState->isEcnSet()) {
-        ackFlowPdu->setFlags(ackFlowPdu->getFlags() | 0x01);
+        ackFlowPdu->setFlags(ackFlowPdu->getFlags() | ECN_FLAG);
         emit(sigStatECNMarked, seqNum);
     }
 

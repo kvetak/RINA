@@ -372,8 +372,6 @@ void DTP::handleMessage(cMessage *msg)
     }
     else if (msg->arrivedOn(southI->getId()))
     {
-        if (((PDU_Base*) msg)->getType() == DATA_TRANSFER_PDU)
-            emit(sigStatDTPRecvSeqNum, ((PDU_Base*) msg)->getSeqNum());
       handleMsgFromRMT((PDU*) msg);
     }
   }
@@ -855,6 +853,8 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
 
   EV << getFullPath() << ": PDU number: " << pdu->getSeqNum() << " received" << endl;
 
+  emit(sigStatDTPRecvSeqNum, pdu->getSeqNum());
+
   cancelEvent(rcvrInactivityTimer);
   /*
    * What to do when you want to discard the incomming PDU?
@@ -1319,7 +1319,7 @@ void DTP::trySendGenPDUs(std::vector<DataTransferPDU*>* pduQ)
       {
         if (dtcp->dtcpState->isWinBased())
         {
-          if (((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()) && !dtcp->getDTCPState()->isClosedWindow())
+          if (((*it)->getSeqNum() <= dtcp->getSndRtWinEdge()))
           {
             /* The Window is Open. */
             dtcp->runTxControlPolicy(state, pduQ);

@@ -92,7 +92,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
 
     if(endSeqNum >= 2) {
-        if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
+        if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & ECN_FLAG) {
             emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
             if(load == 0)
                 load = 1;
