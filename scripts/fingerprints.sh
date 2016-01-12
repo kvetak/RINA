@@ -104,7 +104,7 @@ update_fingerprint()
     )
 
     if [ -n "$fingerprint" ]; then
-        sed -i "/^\[(Config )?$3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
+        sed -i "/^\[\(Config \)\?$3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
         if $colorize; then printf "${txtgreen}"; fi
         echo "UPDATED ($fingerprint)"
     else
@@ -151,7 +151,8 @@ echo "$scenarios" | while read simfile; do
             output=$( run_simulation "$simdir" "$simconf" )
             analyze_output "$output" $?
         elif [ $mode = "update" ]; then
-            if [ -z "$( sed -n "/^\[(Config )?$simconf/,/^\[Config/p" "$simfile" | grep '^fingerprint[ =]')" ]; then
+
+            if [ -z "$( sed -n "/^\[\(Config \)\?$simconf/,/^\[Config/p" "$simfile" | grep '^fingerprint[ =]')" ]; then
                 echo -e "${txtred}NO FINGERPRINT SPECIFIED${txtrst}"
             else
                 output=$( run_simulation "$simdir" "$simconf" )
