@@ -104,7 +104,7 @@ update_fingerprint()
     )
 
     if [ -n "$fingerprint" ]; then
-        sed -i "/^\[Config $3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
+        sed -i "/^\[(Config )?$3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
         if $colorize; then printf "${txtgreen}"; fi
         echo "UPDATED ($fingerprint)"
     else
