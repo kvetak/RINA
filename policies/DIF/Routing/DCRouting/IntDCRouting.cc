@@ -329,7 +329,7 @@ namespace NSPSimpleDC {
         for(auto it = cache.begin(); it!= cache.end();) {
             const DCAddr & n = it->first;
             auto noIt = no.find(n);
-            bool save = false;
+           bool save = false;
             auto &tn = (*t)[n];
 
             if(noIt == no.end()) {
@@ -345,15 +345,15 @@ namespace NSPSimpleDC {
                 no.erase(noIt);
             }
 
-            if(save){
+           if(save){
                 rtEntry e;
                 e.dst = n;
                 for(auto & nd : tn.L) {
-                    if(nd->src == Im) {  e.next.push_back(nd->dst); }
-                    else { e.next.push_back(nd->src); }
+                    if(nd->src == Im) {  e.next.insert(nd->dst); }
+                    else { e.next.insert(nd->src); }
                 }
                 ret.push_back(e);
-            }
+          }
         }
 
         for(auto & n : no) {
@@ -362,8 +362,8 @@ namespace NSPSimpleDC {
             e.dst = n;
             cache[n] = tn.L;
             for(auto & nd : tn.L) {
-                if(nd->src == Im) {  e.next.push_back(nd->dst); }
-                else { e.next.push_back(nd->src); }
+                if(nd->src == Im) {  e.next.insert(nd->dst); }
+                else { e.next.insert(nd->src); }
             }
             ret.push_back(e);
         }
@@ -382,8 +382,8 @@ namespace NSPSimpleDC {
             e.dst = n;
             cache[n] = tn.L;
             for(auto & nd : tn.L) {
-                if(nd->src == Im) {  e.next.push_back(nd->dst); }
-                else { e.next.push_back(nd->src); }
+                if(nd->src == Im) {  e.next.insert(nd->dst); }
+                else { e.next.insert(nd->src); }
             }
             ret.push_back(e);
         }

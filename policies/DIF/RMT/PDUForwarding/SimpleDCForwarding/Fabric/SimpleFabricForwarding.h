@@ -22,45 +22,40 @@
 
 #pragma once
 
-#include <IntPDUForwarding.h>
-
-#include <map>
-#include <string>
-#include <vector>
-#include <map>
-
-#include "DCAddr.h"
+#include "SimpleDCForwarding.h"
 
 namespace NSPSimpleDC {
 
 using namespace std;
 
-    typedef RMTPort* Port;
+    struct fFWDEntry {
+        char entryType;         //0 == NONE, 1 == UP, 2 DOWN, 3 BOTH
+        bool inverseStorage;
+        set<Port> ports;
 
-    class iSimpleDCForwarding: public IntPDUForwarding {
+        fFWDEntry();
+    };
+
+    class SimpleFabricForwarding: public iSimpleDCForwarding {
 
     public:
-        // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
-        vector<Port> lookup(const PDU * pdu);
-        vector<Port> lookup(const Address & dst, const std::string & qos);
+        bool setNeigh(const DCAddr & n_addr, Port port);
+        void setDst(const DCAddr & n_addr, const set<DCAddr> & next);
+        void finish();
 
-        // Returns a representation of the Forwarding Knowledge
-        virtual string toString();
-
-        void setNodeInfo(const string & n_addr);
-        void setNodeInfo(const int & type, const int & a, const int & b);
-
-        virtual bool setNeigh(const DCAddr & n_addr, Port port) = 0;
-        virtual void setDst(const DCAddr & n_addr, const set<DCAddr> & next) = 0;
 
     protected:
-        DCAddr Im;
+        int upCount, downCount;
+        Port * portsArray;
+        vector<Port> upV, downV, bothV;
+        map<DCAddr, fFWDEntry> table;
 
-        virtual void onPolicyInit() = 0;
-        virtual vector<Port> search(const DCAddr & n_addr) = 0;
+        void onPolicyInit();
+        vector<Port> search(const DCAddr & n_addr);
 
-        virtual void refreshCache(Port oldP, Port newP);
-        virtual void refreshCache(const DCAddr & addr);
+        fFWDEntry getFWDEntryUP(const set<int> & pIds);
+        fFWDEntry getFWDEntryDOWN(const set<int> & pIds);
+        fFWDEntry getFWDEntryBOTH(const set<int> & pIdsU, const set<int> & pIdsD);
     };
 
 }
