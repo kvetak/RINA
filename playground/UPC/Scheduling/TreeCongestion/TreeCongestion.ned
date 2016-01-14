@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Congestion.TreeCongestion;
+package rina.playground.UPC.Scheduling.TreeCongestion;
 import ned.DatarateChannel;
 import rina.src.CS.Host1AP;
 import rina.src.CS.HostNAP;

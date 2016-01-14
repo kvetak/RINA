@@ -31,28 +31,28 @@ network Circular
             @display("p=117,112");
         }
         r2: InfectedRouter {
-            @display("p=156,301");
+            @display("p=117,286");
         }
         r3: InfectedRouter {
-            @display("p=215,202");
+            @display("p=273,217");
         }
         r4: InfectedRouter {
-            @display("p=395,231");
+            @display("p=302,351");
         }
         r5: InfectedRouter {
             @display("p=441,364");
         }
         r6: InfectedRouter {
-            @display("p=441,364");
+            @display("p=578,312");
         }
         r7: InfectedRouter {
-            @display("p=441,364");
+            @display("p=441,209");
         }
         r8: InfectedRouter {
-            @display("p=441,364");
+            @display("p=528,125");
         }
         r9: InfectedRouter {
-            @display("p=441,364");
+            @display("p=327,73");
         }
         listener: IListener {
             @display("p=240,415");
