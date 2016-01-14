@@ -46,7 +46,7 @@ namespace Infection {
 
         string qosId = par("qosId");
 
-        srcAddr = Address(DIF.c_str(), DIF.c_str());
+        srcAddr = Address(SRC.c_str(), DIF.c_str());
         dstAddr = srcAddr;
         connID.setSrcCepId(-1);
         connID.setDstCepId(-1);

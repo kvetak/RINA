@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.SimpleDCForwarding;
+package rina.policies.DIF.RMT.PDUForwarding.SimpleDCForwarding.TOR;
 
 import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-simple SimpleDCForwarding like IntPDUForwarding
+simple SimpleTORForwarding like IntPDUForwarding
 {
     parameters:
-        @class(NSPSimpleDC::SimpleDCForwarding);
+        @class(NSPSimpleDC::SimpleTORForwarding);
         @display("i=block/socket");
         
         bool printAtEnd = default(false);
+        int upCount = default(0);
 }

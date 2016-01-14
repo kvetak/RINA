@@ -20,47 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+package rina.policies.DIF.RMT.PDUForwarding.SimpleDCForwarding.Fabric;
 
-#include <IntPDUForwarding.h>
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-#include <map>
-#include <string>
-#include <vector>
-#include <map>
-
-#include "DCAddr.h"
-
-namespace NSPSimpleDC {
-
-using namespace std;
-
-    typedef RMTPort* Port;
-
-    class iSimpleDCForwarding: public IntPDUForwarding {
-
-    public:
-        // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
-        vector<Port> lookup(const PDU * pdu);
-        vector<Port> lookup(const Address & dst, const std::string & qos);
-
-        // Returns a representation of the Forwarding Knowledge
-        virtual string toString();
-
-        void setNodeInfo(const string & n_addr);
-        void setNodeInfo(const int & type, const int & a, const int & b);
-
-        virtual bool setNeigh(const DCAddr & n_addr, Port port) = 0;
-        virtual void setDst(const DCAddr & n_addr, const set<DCAddr> & next) = 0;
-
-    protected:
-        DCAddr Im;
-
-        virtual void onPolicyInit() = 0;
-        virtual vector<Port> search(const DCAddr & n_addr) = 0;
-
-        virtual void refreshCache(Port oldP, Port newP);
-        virtual void refreshCache(const DCAddr & addr);
-    };
-
+simple SimpleFabricForwarding like IntPDUForwarding
+{
+    parameters:
+        @class(NSPSimpleDC::SimpleFabricForwarding);
+        @display("i=block/socket");
+        
+        bool printAtEnd = default(false);
+        int upCount = default(0);
+        int downCount = default(0);
 }
