@@ -20,32 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Routing.TriNet;
+package rina.playground.UPC.Scheduling.TwoScheduling9;
 
+import ned.DatarateChannel;
+import rina.src.CS.HostNAP;
 import rina.src.CS.InteriorRouter2Int;
 
 
-network TriNet
+network TwoScheduling9
 {
-    @display("bgb=325,256");
+    @display("bgb=325,196");
     submodules:
-        A: InteriorRouter2Int {
-            @display("p=96,118");
+        host1: HostNAP {
+            @display("p=82,92");
         }
-        B: InteriorRouter2Int {
-            @display("p=170,45");
+        host2: HostNAP {
+            @display("p=231,92");
         }
-        C: InteriorRouter2Int {
-            @display("p=170,198");
-        }
-        D: InteriorRouter2Int {
-            @display("p=239,118");
+        router: InteriorRouter2Int {
+            @display("p=154,121");
         }
     connections allowunconnected:
-        A.medium[0] <--> B.medium[0];
-        A.medium[1] <--> C.medium[0];
-        
-        B.medium[1] <--> D.medium[0];
-        C.medium[1] <--> D.medium[1];
-
+        host1.medium <--> DatarateChannel{datarate = 5 Gbps;} <--> router.medium[0];
+        host2.medium <--> DatarateChannel{datarate = 5 Gbps;} <--> router.medium[1];
 }

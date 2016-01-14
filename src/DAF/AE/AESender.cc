@@ -27,11 +27,23 @@ Define_Module(AESender);
 PingMsg::PingMsg(){
     pingAt = simTime();
 }
+
+PingMsg * PingMsg::dup() const {
+    auto *t = new PingMsg(*this);
+    t->pingAt = pingAt;
+    return t;
+}
+
 PongMsg::PongMsg(simtime_t _pingAt){
     pingAt = _pingAt;
     pongAt = simTime();
 }
 
+PongMsg * PongMsg::dup() const {
+       auto *t = new PongMsg(pingAt);
+       t->pongAt = pongAt;
+       return t;
+   }
 
 AESender::AESender() : AE() {
     S_TIM_START           = "StartCommunication";
