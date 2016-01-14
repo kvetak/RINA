@@ -1,42 +1,6 @@
 <?xml version="1.0"?>
-<Configuration>
-    <ConnectionSets>
-        <ConnectionSet id="all">
-            <SimTime t="0">
-                <Connection src="S1_DC"  dst="TOR1_DC" qosReq="1"/>       
-                <Connection src="S2_DC"  dst="TOR1_DC" qosReq="1"/>   
-                <Connection src="S3_DC"  dst="TOR2_DC" qosReq="1"/>
-                <Connection src="S4_DC"  dst="TOR2_DC" qosReq="1"/>
-                <Connection src="TOR1_DC"  dst="AS1_DC" qosReq="1"/>
-                <Connection src="TOR1_DC"  dst="AS2_DC" qosReq="1"/>     
-                <Connection src="TOR2_DC"  dst="AS1_DC" qosReq="1"/>
-                <Connection src="TOR2_DC"  dst="AS2_DC" qosReq="1"/>     
-            </SimTime>
-        </ConnectionSet>        
-    </ConnectionSets>
-	<QoSReqSet>
-    	<QosReq id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<PDUDroppingProbability>0</PDUDroppingProbability>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>1000000</Delay>
-			<Jitter>500000</Jitter>
-			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>        
-		</QosReq>
-	</QoSReqSet>
-
-	<Switch id="AS1">
+<Configuration>	
+	<Node id="All">
 		<!--
 			This contains the whole mapping of the network. 
 			It can be used to the Dif Allocator of every element.
@@ -104,49 +68,42 @@
 					<DIF difName="DC" ipcAddress="S4"/>
 				</APN>
 			</Directory>
+			<NeighborTable>
+				<APN apn="AS1_DC">
+					<Neighbor apn="TOR1_DC" />
+					<Neighbor apn="TOR2_DC" />
+				</APN>
+				<APN apn="AS2_DC">
+					<Neighbor apn="TOR1_DC" />
+					<Neighbor apn="TOR2_DC" />
+				</APN>
+				<APN apn="TOR1_DC">
+					<Neighbor apn="AS1_DC" />
+					<Neighbor apn="AS2_DC" />
+					<Neighbor apn="S1_DC" />
+					<Neighbor apn="S2_DC" />
+				</APN>
+				<APN apn="TOR1_DC">
+					<Neighbor apn="TOR1_DC" />
+					<Neighbor apn="TOR2_DC" />
+					<Neighbor apn="S3_DC" />
+					<Neighbor apn="S4_DC" />
+				</APN>
+				<APN apn="S1_DC">
+					<Neighbor apn="TOR1_DC" />
+				</APN>
+				<APN apn="S2_DC">
+					<Neighbor apn="TOR1_DC" />
+				</APN>
+				<APN apn="S3_DC">
+					<Neighbor apn="TOR2_DC" />
+				</APN>
+				<APN apn="S4_DC">
+					<Neighbor apn="TOR2_DC" />
+				</APN>
+			</NeighborTable>
 		</DA>
-	</Switch>
-	<Switch id="AS2">
-	</Switch>
-	<QoSCubesSet>
-		<QosCube id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>1000000</Delay>
-			<Jitter>500000</Jitter>
-			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
-		</QosCube>
-		<QosCube id="2">
-			<AverageBandwidth>12000000</AverageBandwidth>
-			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
-			<BurstPeriod>10000000</BurstPeriod>
-			<BurstDuration>1000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<PDUDroppingProbability>0</PDUDroppingProbability>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>1</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Delay>1000000</Delay>
-			<Jitter>500000</Jitter>
-			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
-		</QosCube>		
-	</QoSCubesSet>
+	</Node>
+	
+
 </Configuration>

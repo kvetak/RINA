@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<ConnectionSets>
+    <ConnectionSet id="all">
+        <SimTime t="0">
+            <Connection src="H0_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+            <Connection src="H1_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+            <Connection src="H2_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+            <Connection src="H3_RandDIF" dst="R15_RandDIF" qosReq="1"/>
+            <Connection src="H4_RandDIF" dst="R16_RandDIF" qosReq="1"/>
+            <Connection src="H5_RandDIF" dst="R17_RandDIF" qosReq="1"/>
+            <Connection src="H6_RandDIF" dst="R18_RandDIF" qosReq="1"/>
+            <Connection src="H7_RandDIF" dst="R19_RandDIF" qosReq="1"/>
+            <Connection src="H8_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+            <Connection src="H9_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+            <Connection src="H10_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+            <Connection src="H11_RandDIF" dst="R15_RandDIF" qosReq="1"/>
+            <Connection src="R12_RandDIF" dst="R17_RandDIF" qosReq="1"/>
+            <Connection src="R13_RandDIF" dst="R18_RandDIF" qosReq="1"/>
+            <Connection src="R14_RandDIF" dst="R19_RandDIF" qosReq="1"/>
+            <Connection src="R15_RandDIF" dst="R12_RandDIF" qosReq="1"/>
+            <Connection src="R16_RandDIF" dst="R13_RandDIF" qosReq="1"/>
+            <Connection src="R17_RandDIF" dst="R14_RandDIF" qosReq="1"/>
+            <Connection src="R18_RandDIF" dst="R15_RandDIF" qosReq="1"/>
+        </SimTime>
+    </ConnectionSet>
+</ConnectionSets>
