@@ -124,7 +124,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), TIM_START) ) {
         onStart();
-        afterOnStart();
+    //    afterOnStart();
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
         onStop();
@@ -144,7 +144,26 @@ void AEPing::handleMessage(cMessage *msg)
 }
 
 void AEPing::onStart() {
-    AEPing::connect();
+
+    //AEPing::connect();
+
+    //Flow
+    APNamingInfo src = this->getApni();
+    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
+                                     this->dstAeName, this->dstAeInstance);
+
+    FlowObject = new Flow(src, dst);
+    FlowObject->setQosRequirements(this->getQoSRequirements());
+
+    //Insert it to the Flows ADT
+    insertFlow();
+
+    sendAllocationRequest(FlowObject);
+/*
+    //Schedule ComRequest
+    cMessage* m = new cMessage(S_TIM_COM);
+    scheduleAt(simTime()+sendAfter+uniform(0,rate), m);
+*/
 }
 
 void AEPing::connect() {

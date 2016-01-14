@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Basics.ExtendedPingTwoCSsSimple;
+package rina.playground.UPC.Old.ExtendedPingTwoCSsSimple;
 
 import ned.DatarateChannel;
 import rina.src.CS.TestHost1AP;
