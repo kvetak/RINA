@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<ConnectionSets>
+    <ConnectionSet id="all">
+        <SimTime t="0">
+            <Connection src="S1_DC"  dst="TOR1_DC" qosReq="1" />       
+            <Connection src="S2_DC"  dst="TOR1_DC" qosReq="1" />   
+            <Connection src="S3_DC"  dst="TOR2_DC" qosReq="1" />
+            <Connection src="S4_DC"  dst="TOR2_DC" qosReq="1" />
+            <Connection src="TOR1_DC"  dst="AS1_DC" qosReq="1" />
+            <Connection src="TOR1_DC"  dst="AS2_DC" qosReq="1" />     
+            <Connection src="TOR2_DC"  dst="AS1_DC" qosReq="1" />
+            <Connection src="TOR2_DC"  dst="AS2_DC" qosReq="1" />     
+        </SimTime>
+    </ConnectionSet>        
+</ConnectionSets>
