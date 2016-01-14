@@ -124,6 +124,7 @@ void AEPing::handleSelfMessage(cMessage *msg) {
     //EV << flows.back().info() << endl;
     if ( !strcmp(msg->getName(), TIM_START) ) {
         onStart();
+        afterOnStart();
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
         onStop();
@@ -162,6 +163,7 @@ void AEPing::connect() {
 
 void AEPing::afterOnStart() {
     Enter_Method("afterConnect()");
+
     //Prepare flow's source and destination
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,

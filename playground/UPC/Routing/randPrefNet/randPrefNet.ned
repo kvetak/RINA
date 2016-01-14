@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.examples.Routing.randPrefNet;
+package rina.playground.UPC.Routing.randPrefNet;
 
 import ned.DelayChannel;
 import rina.src.CS.InteriorRouterNMInt;

@@ -111,7 +111,7 @@ void LatencySingle1Entry::routingUpdated(){
 void LatencySingle1Entry::onPolicyInit(){
     //Set Forwarding policy
     fwd = getRINAModule<IntMiniForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
-    rt = getRINAModule<IntTSimpleRouting<mType> *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_ROUTING});
+    rt = getRINAModule<IntTSimpleRouting<mType> *>(this, 2, {MOD_POL_ROUTING});
 
     difA = getRINAModule<DA *>(this, 3, {MOD_DIFALLOC, MOD_DA});
 

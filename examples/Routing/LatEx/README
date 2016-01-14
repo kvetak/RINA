@@ -1,0 +1,3 @@
+[Example] Small mesh network
+
+Example to test Forwwarding generator policies based on hops and N-1 link latency with distinct Routing policies and forwarding tables.

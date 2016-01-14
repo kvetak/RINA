@@ -3,86 +3,40 @@
   <ConnectionSets>
     <ConnectionSet id="all">
       <SimTime t="0">
-        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="mgmt"/>  
-      </SimTime>
-      <SimTime t="1">
-        <Connection src="R1.S1_DC" dst="R1.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="2">
-        <Connection src="R1.S2_DC" dst="R1.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="3">
-        <Connection src="R1.S3_DC" dst="R1.TOR_DC" qosReq="mgmt"/>
+        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="1"/>  
+        <Connection src="R1.S1_DC" dst="R1.TOR_DC" qosReq="1"/>
+        <Connection src="R1.S2_DC" dst="R1.TOR_DC" qosReq="1"/>
+        <Connection src="R1.S3_DC" dst="R1.TOR_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="4">
-        <Connection src="R2.S1_DC" dst="R2.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="5">
-        <Connection src="R2.S2_DC" dst="R2.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="6">
-        <Connection src="R2.S3_DC" dst="R2.TOR_DC" qosReq="mgmt"/>
+        <Connection src="R2.S1_DC" dst="R2.TOR_DC" qosReq="1"/>
+        <Connection src="R2.S2_DC" dst="R2.TOR_DC" qosReq="1"/>
+        <Connection src="R2.S3_DC" dst="R2.TOR_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="7">
-        <Connection src="R3.S1_DC" dst="R3.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="8">
-        <Connection src="R3.S2_DC" dst="R3.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="9">
-        <Connection src="R3.S3_DC" dst="R3.TOR_DC" qosReq="mgmt"/>
+        <Connection src="R3.S1_DC" dst="R3.TOR_DC" qosReq="1"/>
+        <Connection src="R3.S2_DC" dst="R3.TOR_DC" qosReq="1"/>
+        <Connection src="R3.S3_DC" dst="R3.TOR_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="10">
-        <Connection src="R4.S1_DC" dst="R4.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="11">
-        <Connection src="R4.S2_DC" dst="R4.TOR_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="12">
-        <Connection src="R4.S3_DC" dst="R4.TOR_DC" qosReq="mgmt"/>
+        <Connection src="R4.S1_DC" dst="R4.TOR_DC" qosReq="1"/>
+        <Connection src="R4.S2_DC" dst="R4.TOR_DC" qosReq="1"/>
+        <Connection src="R4.S3_DC" dst="R4.TOR_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="13">
-        <Connection src="R1.TOR_DC" dst="AS.1_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="1">
-        <Connection src="R1.TOR_DC" dst="AS.2_DC" qosReq="mgmt"/>
+        <Connection src="R1.TOR_DC" dst="AS.1_DC" qosReq="1"/>
+        <Connection src="R1.TOR_DC" dst="AS.2_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="14">
-        <Connection src="R2.TOR_DC" dst="AS.1_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="15">
-        <Connection src="R2.TOR_DC" dst="AS.2_DC" qosReq="mgmt"/>
+        <Connection src="R2.TOR_DC" dst="AS.1_DC" qosReq="1"/>
+        <Connection src="R2.TOR_DC" dst="AS.2_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="16">
-        <Connection src="R3.TOR_DC" dst="AS.3_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="17">
-        <Connection src="R3.TOR_DC" dst="AS.4_DC" qosReq="mgmt"/>
+        <Connection src="R3.TOR_DC" dst="AS.3_DC" qosReq="1"/>
+        <Connection src="R3.TOR_DC" dst="AS.4_DC" qosReq="1"/>
         
-        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="18">
-        <Connection src="R4.TOR_DC" dst="AS.4_DC" qosReq="mgmt"/>
+        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="1"/>
+        <Connection src="R4.TOR_DC" dst="AS.4_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="19">
-        <Connection src="AS.1_DC" dst="AS.5_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="20">
-        <Connection src="AS.2_DC" dst="AS.5_DC" qosReq="mgmt"/>
+        <Connection src="AS.1_DC" dst="AS.5_DC" qosReq="1"/>
+        <Connection src="AS.2_DC" dst="AS.5_DC" qosReq="1"/>
         
-      </SimTime>
-      <SimTime t="21">
-        <Connection src="AS.3_DC" dst="AS.6_DC" qosReq="mgmt"/>
-      </SimTime>
-      <SimTime t="22">
-        <Connection src="AS.4_DC" dst="AS.6_DC" qosReq="mgmt"/>        
+        <Connection src="AS.3_DC" dst="AS.6_DC" qosReq="1"/>
+        <Connection src="AS.4_DC" dst="AS.6_DC" qosReq="1"/>        
       </SimTime>
     </ConnectionSet>
   </ConnectionSets>
