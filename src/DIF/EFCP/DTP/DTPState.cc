@@ -52,7 +52,13 @@ void DTPState::setBlockingPort(bool blockingPort)
 
 void DTPState::resetRcvVars()
 {
+  currentPDU = NULL;
+//  dropDup = 0;
+//  lastSDUDelivered = 0;
   rcvLeftWinEdge = 0;
+  maxSeqNumRcvd = 0;
+  tmpAtimer = nullptr;
+  ecnSet = false;
 }
 
 void DTPState::initialize(int step)
@@ -86,30 +92,39 @@ void DTPState::initialize(int step)
   }
 }
 
+void DTPState::resetSndVars()
+{
+  /* Snd */
+  setDRFFlag = true;
+  nextSeqNumToSend = 1;
+  seqNumRollOverThresh = INT_MAX - 1;
+  lastSeqNumSent = 0;
+}
 
 void DTPState::initDefaults(){
 
+  dtcpPresent = false;
+  incompDeliv = false;
+  qoSCube = nullptr;
+
+  /* Rcv */
   currentPDU = NULL;
   dropDup = 0;
-  setDRFFlag = true;
-  dtcpPresent = false;
-
-  incompDeliv = false;
-
-
   lastSDUDelivered = 0;
   rcvLeftWinEdge = 0;
   maxSeqNumRcvd = 0;
-  nextSeqNumToSend = 1;
-  qoSCube = nullptr;
-
-  seqNumRollOverThresh = INT_MAX - 1;
-  lastSeqNumSent = 0;
+  tmpAtimer = nullptr;
   ecnSet = false;
+
+
+  /* Snd */
+  resetSndVars();
 
   blockingPort = false;
 
-  tmpAtimer = nullptr;
+
+
+
 
 
 }

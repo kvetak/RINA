@@ -205,6 +205,8 @@ public:
     ATimer* getTmpAtimer() const;
     void setTmpAtimer(ATimer* tmpAtimer);
     void resetRcvVars();
+    void resetSndVars();
+
 //    double getDelimitDelay() const;
 //    void setDelimitDelay(double delimitDelay);
 
