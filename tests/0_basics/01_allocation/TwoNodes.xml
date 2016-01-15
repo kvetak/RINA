@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="TwoNodes-Preallocated">
+            <!-- preallocate the whole setup -->
+            <SimTime t="0">
+                <Connection src="11_Layer1" dst="22_Layer1" qosReq="mgmt"/>
+            </SimTime>
+            <SimTime t="5">
+                <Connection src="11_Layer1" dst="22_Layer1" qosReq="1" until="10"/>
+            </SimTime>
+			<SimTime t="15">
+                <Connection src="22_Layer1" dst="11_Layer1" qosReq="1" until="20"/>
+            </SimTime>                        
+        </ConnectionSet>
+        <ConnectionSet id="TwoNodes-Recursive">
+            <!-- specify just the data flow -->
+            <SimTime t="0">
+                <Connection src="11_Layer1" dst="22_Layer1" qosReq="1"/>
+            </SimTime>
+        </ConnectionSet>        
+    </ConnectionSets>   
+</Configuration>

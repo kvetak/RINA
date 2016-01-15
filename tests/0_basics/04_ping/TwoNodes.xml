@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Host id="hostA">
+		<DA>
+			<Directory>
+				<APN apn="SourceA">					
+					<DIF difName="Layer1" ipcAddress="11" />
+				</APN>
+				<APN apn="11_Layer1">
+					<DIF difName="Layer0" ipcAddress="1" />
+				</APN>					
+				<APN apn="DestinationB">
+					<DIF difName="Layer1" ipcAddress="22" />
+				</APN>
+				<APN apn="22_Layer1">
+					<DIF difName="Layer0" ipcAddress="2" />
+				</APN>				
+			</Directory>
+		</DA>
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="11_Layer1" dst="22_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>	
+	<Host id="hostB">
+		<Enrollment id="ipcProcess0">  
+			<EnrollmentStateTable>
+				<State src="2_Layer0" dst="2_Layer0" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+		<Enrollment id="ipcProcess1">  
+			<EnrollmentStateTable>
+				<State src="22_Layer1" dst="22_Layer1" cace="CON_ESTABLISHED" enroll="ENROLL_ENROLLED" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+	</Host>
+	
+	<QoSCubesSet>
+		<QoSCube id="QoSCube_WithoutDTCP">
+			<AverageBandwidth>10000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+		</QoSCube>
+		<QoSCube id="QoSCube_WithDTCP">
+			<AverageBandwidth>10000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>					
+		</QoSCube>		
+	</QoSCubesSet>
+</Configuration>
