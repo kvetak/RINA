@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Host id="hostA">
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="11_Layer1" dst="22_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>	
+	<Host id="hostB">
+		<Enrollment id="ipcProcess0">  
+			<EnrollmentStateTable>
+				<State src="2_Layer0" dst="2_Layer0" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+		<Enrollment id="ipcProcess1">  
+			<EnrollmentStateTable>
+				<State src="22_Layer1" dst="22_Layer1" cace="CON_ESTABLISHED" enroll="ENROLL_ENROLLED" />
+			</EnrollmentStateTable>                      
+		</Enrollment>	
+	</Host>	
+</Configuration>

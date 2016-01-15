@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Configuration>
+	<Host id="hostB">
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="22_Layer11" dst="33_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>		
+	</Host>
+</Configuration>
