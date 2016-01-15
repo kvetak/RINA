@@ -5,12 +5,18 @@
 #include "RINASignals.h"
 #include "Flow.h"
 #include "RA.h"
+#include <set>
+
+using namespace std;
 
 class FlowContainer : public cMessage {
     public:
         Flow * f;
         RA * ra;
         FlowContainer(Flow * _f, RA * _ra);
+
+        bool operator<(const FlowContainer &o) const;
+        bool operator==(const FlowContainer & o) const;
 };
 
 class FlowListener : public cSimpleModule, cListener {
@@ -19,4 +25,8 @@ class FlowListener : public cSimpleModule, cListener {
     protected:
         void initialize();
         void handleMessage(cMessage *msg);
+
+        vector<FlowContainer> flows;
+        double killTime;
+        int killCount;
 };

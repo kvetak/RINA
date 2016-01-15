@@ -1,9 +1,10 @@
 package rina.policies.DIF.Routing.DCRouting;
 
-simple Spine_Routing like iDC_Routing
+
+simple Edge_Routing like iDC_Routing
 {
     parameters:
-        @class(NSPSimpleDC::Spine_Routing);
+        @class(NSPSimpleDC::Edge_Routing);
         
         bool printAtEnd = default(false);
         

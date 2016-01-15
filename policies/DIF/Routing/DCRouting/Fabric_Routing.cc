@@ -17,12 +17,7 @@ namespace NSPSimpleDC {
             return;
         }
 
-        linkId lid;
-        if(dst.type == 0) {
-            lid = linkId(dst, Im);
-        } else {
-            lid = linkId(Im, dst);
-        }
+        linkId lid = linkId(dst, Im);
         linkInfo & li = myLinks [lid];
 
         if(!li.status) {
@@ -45,13 +40,7 @@ namespace NSPSimpleDC {
             return;
         }
 
-
-        linkId lid;
-        if(dst.type == 0) {
-            lid = linkId(dst, Im);
-        } else {
-            lid = linkId(Im, dst);
-        }
+        linkId lid = linkId(dst, Im);
         linkInfo & li = myLinks [lid];
 
         if(li.status) {
@@ -63,7 +52,7 @@ namespace NSPSimpleDC {
     }
 
     void Fabric_Routing::startMyLinks() {
-        for(int i = 0; i < fabricXpod; i++) {
+        for(int i = 0; i < torXpod; i++) {
             linkId l = linkId(DCAddr(0, Im.a, i), Im);
             myLinks [l] = linkInfo(l, false, 0);
             linksKo[l] = linkInfo(l, false, 0);
@@ -105,7 +94,7 @@ namespace NSPSimpleDC {
                         }
                     }
                 } break;
-                case 1: {
+                case 1:  {
                     if(dst.a == Im.a) {
                         if(tn.d > 2 || (int)tn.L.size() != torXpod) {
                             ret.insert(dst);
@@ -147,6 +136,15 @@ namespace NSPSimpleDC {
                                 break;
                             }
                         }
+                    }
+                }break;
+                case 3: {
+                    if((dst.b == Im.b)) {
+                        if(tn.d > 2  || (int)tn.L.size() != spineXfabric) {
+                            ret.insert(dst);
+                        }
+                    } else if(tn.d > 4  || (int)tn.L.size() != torXpod) {
+                        ret.insert(dst);
                     }
                 }break;
 

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<Configuration>
+    <DLOUT>
+        <queue id="outQ_M"  	priority="5" />
+        <queue id="outQ_MA" 	priority="5" />
+        <queue id="outQ_mgmt" 	priority="5" />
+        
+        <queue id="outQ_GU" 	priority="4" />
+        <queue id="outQ_SN" 	priority="2" />
+        
+        <queue id="outQ_sBE" 	priority="4" />
+        <queue id="outQ_BE" 	priority="2" />
+    </DLOUT>
+	
+    <DQQueueDrop>
+        <queue id="outQ_M" 		absThreshold="200" />
+        <queue id="outQ_MA" 	absThreshold="200" />
+        <queue id="outQ_mgmt" 	absThreshold="200" />
+        
+        <queue id="outQ_GU" 	absThreshold="120" />
+        
+        <queue id="outQ_SN" 	absThreshold="120">
+        	<TH threshold="110" dropProb="0.1" />
+        </queue>
+        
+        <queue id="outQ_sBE" 	absThreshold="100">
+        	<TH threshold="90" 	dropProb="0.1" />
+        </queue>
+        
+        <queue id="outQ_BE" 	absThreshold="100">
+        	<TH threshold="90" 	dropProb="0.2" />
+        </queue>
+    </DQQueueDrop>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

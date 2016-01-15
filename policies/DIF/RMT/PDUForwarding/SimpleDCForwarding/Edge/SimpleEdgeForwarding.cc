@@ -20,27 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "SimpleTORForwarding.h"
+#include "SimpleEdgeForwarding.h"
 #include <sstream>
 #include "Utils.h"
 
 namespace NSPSimpleDC {
 
-    Register_Class(SimpleTORForwarding);
+    Register_Class(SimpleEdgeForwarding);
 
     using namespace std;
 
-    tFWDEntry::tFWDEntry() : entryType(false), inverseStorage(false) {}
+    eFWDEntry::eFWDEntry() : entryType(false), inverseStorage(false) {}
 
 
-    void SimpleTORForwarding::onPolicyInit() {
-        upCount = par("upCount").longValue();
-        if(upCount < 0) { upCount = 0; }
-        portsArray = new Port[upCount];
-        for(int i = 0; i<upCount; i++) { portsArray[i] = nullptr; }
+    void SimpleEdgeForwarding::onPolicyInit() {
+        downCount = par("downCount").longValue();
+        if(downCount < 0) { downCount = 0; }
+        portsArray = new Port[downCount];
+        for(int i = 0; i<downCount; i++) { portsArray[i] = nullptr; }
     }
 
-    vector<Port> SimpleTORForwarding::search(const DCAddr & n_addr) {
+    vector<Port> SimpleEdgeForwarding::search(const DCAddr & n_addr) {
         if(Im == n_addr) { return vector<Port>(); }
         if(n_addr.type < 0 || n_addr.type > 3) {
             cerr << "Invalid dst addr ("<<n_addr<< ")" << endl;
@@ -53,7 +53,7 @@ namespace NSPSimpleDC {
             if(!e.entryType) { return vector<Port>(); }
 
             vector<Port> ret;
-            for(int i = 0; i<upCount; i++) {
+            for(int i = 0; i<downCount; i++) {
                 Port p = portsArray[i];
                 if(e.inverseStorage == (e.ports.find(p) == e.ports.end()) ) {
                     ret.push_back(p);
@@ -62,30 +62,20 @@ namespace NSPSimpleDC {
             return ret;
         }
 
-        switch(n_addr.type) {
-            case 1:
-            case 3:
-                if(n_addr.b < upCount && portsArray[n_addr.b]!= nullptr) {
+        if(n_addr.type == 2 && n_addr.a == Im.b) {
+            if(n_addr.b < downCount && portsArray[n_addr.b] != nullptr) {
                     vector<Port> ret;
                     ret.push_back(portsArray[n_addr.b]);
                     return ret;
-                } else { cerr << "!!!" << endl;}
-                break;
-            case 2:
-                if(n_addr.a < upCount && portsArray[n_addr.a]!= nullptr) {
-                    vector<Port> ret;
-                    ret.push_back(portsArray[n_addr.a]);
-                    return ret;
-                } else { cerr << "!!!" << endl;}
-                break;
+            } else { cout << "!!! Invalid port to " << (n_addr.b) << "  at " << Im << endl; }
         }
-        return upV;
+        return downV;
     }
 
 
-    bool SimpleTORForwarding::setNeigh(const DCAddr & n_addr, Port port) {
-        if(n_addr.type != 1 || Im.a != n_addr.a || n_addr.b >= upCount) {
-            cerr << "Invalid neighbour ("<<n_addr<< ") found for TOR " << Im<<endl;
+    bool SimpleEdgeForwarding::setNeigh(const DCAddr & n_addr, Port port) {
+        if(n_addr.type != 2 || Im.b != n_addr.a || n_addr.b >= downCount) {
+            cerr << "Invalid neighbour ("<<n_addr<< ") found for Edge " << Im<<endl;
             return false;
         }
 
@@ -94,10 +84,10 @@ namespace NSPSimpleDC {
         portsArray[n_addr.b] = port;
 
 
-        upV.clear();
-        for(int i = 0; i<upCount; i++) {
+        downV.clear();
+        for(int i = 0; i<downCount; i++) {
             if(portsArray[i]!= nullptr) {
-                upV.push_back(portsArray[i]);
+                downV.push_back(portsArray[i]);
             }
         }
 
@@ -114,7 +104,7 @@ namespace NSPSimpleDC {
         return true;
     }
 
-    void SimpleTORForwarding::setDst(const DCAddr & n_addr, const set<DCAddr> & next) {
+    void SimpleEdgeForwarding::setDst(const DCAddr & n_addr, const set<DCAddr> & next) {
         if(n_addr == Im) { return; }
 
         if(n_addr.type < 0 || n_addr.type > 3) {
@@ -125,7 +115,7 @@ namespace NSPSimpleDC {
         int S = next.size();
 
         if(S == 0) {
-            table[n_addr] = tFWDEntry();
+            table[n_addr] = eFWDEntry();
             return;
         }
 
@@ -134,41 +124,28 @@ namespace NSPSimpleDC {
             pIds.insert(n.b);
         }
 
-        switch(n_addr.type) {
-            case 0:
-                if(S == upCount) {
-                    table.erase(n_addr);
-                    refreshCache (n_addr);
-                    return;
-                } break;
-            case 1:
-            case 3:
-                if(S == 1 && pIds.find(n_addr.b) != pIds.end() ){
-                    table.erase(n_addr);
-                    refreshCache (n_addr);
-                    return;
-                }
-                break;
-            case 2:
-                if(S == 1 && pIds.find(n_addr.a) != pIds.end() ){
-                    table.erase(n_addr);
-                    refreshCache (n_addr);
-                    return;
-                }
-                break;
-        }
 
-        table[n_addr] = getFWDEntry(pIds);
+        if(n_addr.type == 2 && n_addr.a == Im.b) {
+            if(S == 1 && pIds.find(n_addr.b) != pIds.end()){
+                table.erase(n_addr);
+            } else {
+                table[n_addr] = getFWDEntry(pIds);
+            }
+        } else if (S == downCount) {
+            table.erase(n_addr);
+        } else {
+            table[n_addr] = getFWDEntry(pIds);
+        }
 
         refreshCache (n_addr);
     }
 
-    tFWDEntry SimpleTORForwarding::getFWDEntry(const set<int> & pIds) {
-        tFWDEntry ret;
+    eFWDEntry SimpleEdgeForwarding::getFWDEntry(const set<int> & pIds) {
+        eFWDEntry ret;
         ret.entryType = true;
-        ret.inverseStorage = ((int)pIds.size()*2 > upCount);
+        ret.inverseStorage = ((int)pIds.size()*2 > downCount);
 
-        for(int i = 0; i< upCount; i++) {
+        for(int i = 0; i< downCount; i++) {
             if(ret.inverseStorage == (pIds.find(i) == pIds.end())) {
                 ret.ports.insert(portsArray[i]);
             }
@@ -176,16 +153,16 @@ namespace NSPSimpleDC {
         return ret;
     }
 
-    void SimpleTORForwarding::finish() {
+    void SimpleEdgeForwarding::finish() {
         if(par("printAtEnd").boolValue()) {
             cout << "-----------------------" << endl;
-            cout << "SimpleTORForwarding at "<< endl;
+            cout << "SimpleEdgeForwarding at "<< endl;
             cout << " " << getFullPath() << endl;
 
-            cout << "I'm TOR "<< Im << endl;
-            if(upCount > 0) {
-                cout << "\tUp neighbours:" << endl;
-                for(int i = 0; i < upCount; i++) {
+            cout << "I'm Edge "<< Im << endl;
+            if(downCount > 0) {
+                cout << "\tDown neighbours:" << endl;
+                for(int i = 0; i < downCount; i++) {
                     cout << "\t\t1."<<Im.a<<"."<<i<<"  ->  Status "<< (portsArray[i]!=nullptr? "ON":"OFF") << endl;
                 }
             }
