@@ -222,11 +222,6 @@ void AE::signalizeSendData(cMessage* msg) {
 }
 
 void AE::signalizeAllocateResponsePositive(Flow* flow) {
-    /* Ehsan ***********************************************************************/
-        Stats st;
-        //st.Stats();
-        st.updateLoad(flow->getSrcApni().getApn().getName(), flow->getSrcApni().getApinstance(), flow->getSrcApni().getAename(), flow->getSrcApni().getAeinstance(), true);
-        /***********************************************************************/
     emit(sigAEAllocResPosi, flow);
 }
 
@@ -303,11 +298,6 @@ void AE::processMRead(CDAPMessage* msg) {
 
 void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveDeallocationRequestFromFai()");
-
-    /* Ehsan **********************************************************************/
-    Stats st;
-    st.updateLoad(flow->getSrcApni().getApn().getName(), flow->getSrcApni().getApinstance(), flow->getSrcApni().getAename(), flow->getSrcApni().getAeinstance(), false);
-    /**********************************************************************/
 
     bool status;
     status = deleteBindings(*flow);
@@ -392,11 +382,4 @@ void AE::connect(){
 }
 
 void AE::afterOnStart() {
-}
-
-// Ehsan
-std::string AE::getBestApp(std::string srcApp, std::string dstApp, std::string allApps)
-{
-    Stats st;
-    return st.getBestApp(srcApp, dstApp, allApps);
 }
