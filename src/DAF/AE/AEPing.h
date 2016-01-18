@@ -45,6 +45,9 @@ class AEPing : public AE
     const char* PAR_DSTAEINSTANCE;
     const char* VAL_MODULEPATH;
 
+    //Ehsan
+    const char* SAME_APPS;
+
   public:
     AEPing();
     virtual ~AEPing();
@@ -55,6 +58,9 @@ class AEPing : public AE
     std::string dstApInstance;
     std::string dstAeName;
     std::string dstAeInstance;
+
+    //Ehsan
+    std::string sameApps;
 
     simtime_t startAt;
     simtime_t stopAt;

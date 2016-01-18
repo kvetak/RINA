@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+
+  <DA>
+    <Directory>
+		<APN apn="0.0.0_DC">
+			<DIF difName="ta0.0.0" ipcAddress="0" />
+			<DIF difName="ta0.0.1" ipcAddress="0" />
+			<DIF difName="ta0.0.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.0.1_DC">
+			<DIF difName="ta0.1.0" ipcAddress="0" />
+			<DIF difName="ta0.1.1" ipcAddress="0" />
+			<DIF difName="ta0.1.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.0.2_DC">
+			<DIF difName="ta0.2.0" ipcAddress="0" />
+			<DIF difName="ta0.2.1" ipcAddress="0" />
+			<DIF difName="ta0.2.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.0.3_DC">
+			<DIF difName="ta0.3.0" ipcAddress="0" />
+			<DIF difName="ta0.3.1" ipcAddress="0" />
+			<DIF difName="ta0.3.2" ipcAddress="0" />
+		</APN>
+		
+		<APN apn="0.1.0_DC">
+			<DIF difName="ta1.0.0" ipcAddress="0" />
+			<DIF difName="ta1.0.1" ipcAddress="0" />
+			<DIF difName="ta1.0.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.1.1_DC">
+			<DIF difName="ta1.1.0" ipcAddress="0" />
+			<DIF difName="ta1.1.1" ipcAddress="0" />
+			<DIF difName="ta1.1.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.1.2_DC">
+			<DIF difName="ta1.2.0" ipcAddress="0" />
+			<DIF difName="ta1.2.1" ipcAddress="0" />
+			<DIF difName="ta1.2.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.1.3_DC">
+			<DIF difName="ta1.3.0" ipcAddress="0" />
+			<DIF difName="ta1.3.1" ipcAddress="0" />
+			<DIF difName="ta1.3.2" ipcAddress="0" />
+		</APN>
+		
+		<APN apn="0.2.0_DC">
+			<DIF difName="ta2.0.0" ipcAddress="0" />
+			<DIF difName="ta2.0.1" ipcAddress="0" />
+			<DIF difName="ta2.0.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.2.1_DC">
+			<DIF difName="ta2.1.0" ipcAddress="0" />
+			<DIF difName="ta2.1.1" ipcAddress="0" />
+			<DIF difName="ta2.1.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.2.2_DC">
+			<DIF difName="ta2.2.0" ipcAddress="0" />
+			<DIF difName="ta2.2.1" ipcAddress="0" />
+			<DIF difName="ta2.2.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.2.3_DC">
+			<DIF difName="ta2.3.0" ipcAddress="0" />
+			<DIF difName="ta2.3.1" ipcAddress="0" />
+			<DIF difName="ta2.3.2" ipcAddress="0" />
+		</APN>
+		
+		<APN apn="0.3.0_DC">
+			<DIF difName="ta3.0.0" ipcAddress="0" />
+			<DIF difName="ta3.0.1" ipcAddress="0" />
+			<DIF difName="ta3.0.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.3.1_DC">
+			<DIF difName="ta3.1.0" ipcAddress="0" />
+			<DIF difName="ta3.1.1" ipcAddress="0" />
+			<DIF difName="ta3.1.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.3.2_DC">
+			<DIF difName="ta3.2.0" ipcAddress="0" />
+			<DIF difName="ta3.2.1" ipcAddress="0" />
+			<DIF difName="ta3.2.2" ipcAddress="0" />
+		</APN>
+		<APN apn="0.3.3_DC">
+			<DIF difName="ta3.3.0" ipcAddress="0" />
+			<DIF difName="ta3.3.1" ipcAddress="0" />
+			<DIF difName="ta3.3.2" ipcAddress="0" />
+		</APN>
+		
+		
+		
+		<APN apn="1.0.0_DC">
+			<DIF difName="ta0.0.0" ipcAddress="1" />
+			<DIF difName="ta0.1.0" ipcAddress="1" />
+			<DIF difName="ta0.2.0" ipcAddress="1" />
+			<DIF difName="ta0.3.0" ipcAddress="1" />
+			
+			<DIF difName="as0.0.0" ipcAddress="1" />
+			<DIF difName="as0.0.1" ipcAddress="1" />
+			<DIF difName="as0.0.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.0.1_DC">
+			<DIF difName="ta0.0.1" ipcAddress="1" />
+			<DIF difName="ta0.1.1" ipcAddress="1" />
+			<DIF difName="ta0.2.1" ipcAddress="1" />
+			<DIF difName="ta0.3.1" ipcAddress="1" />
+			
+			<DIF difName="as1.0.0" ipcAddress="1" />
+			<DIF difName="as1.0.1" ipcAddress="1" />
+			<DIF difName="as1.0.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.0.2_DC">
+			<DIF difName="ta0.0.2" ipcAddress="1" />
+			<DIF difName="ta0.1.2" ipcAddress="1" />
+			<DIF difName="ta0.2.2" ipcAddress="1" />
+			<DIF difName="ta0.3.2" ipcAddress="1" />
+			
+			<DIF difName="as2.0.0" ipcAddress="1" />
+			<DIF difName="as2.0.1" ipcAddress="1" />
+			<DIF difName="as2.0.2" ipcAddress="1" />
+		</APN>
+		
+		
+		
+		<APN apn="1.1.0_DC">
+			<DIF difName="ta1.0.0" ipcAddress="1" />
+			<DIF difName="ta1.1.0" ipcAddress="1" />
+			<DIF difName="ta1.2.0" ipcAddress="1" />
+			<DIF difName="ta1.3.0" ipcAddress="1" />
+			
+			<DIF difName="as0.1.0" ipcAddress="1" />
+			<DIF difName="as0.1.1" ipcAddress="1" />
+			<DIF difName="as0.1.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.1.1_DC">
+			<DIF difName="ta1.0.1" ipcAddress="1" />
+			<DIF difName="ta1.1.1" ipcAddress="1" />
+			<DIF difName="ta1.2.1" ipcAddress="1" />
+			<DIF difName="ta1.3.1" ipcAddress="1" />
+			
+			<DIF difName="as1.1.0" ipcAddress="1" />
+			<DIF difName="as1.1.1" ipcAddress="1" />
+			<DIF difName="as1.1.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.1.2_DC">
+			<DIF difName="ta1.0.2" ipcAddress="1" />
+			<DIF difName="ta1.1.2" ipcAddress="1" />
+			<DIF difName="ta1.2.2" ipcAddress="1" />
+			<DIF difName="ta1.3.2" ipcAddress="1" />
+			
+			<DIF difName="as2.1.0" ipcAddress="1" />
+			<DIF difName="as2.1.1" ipcAddress="1" />
+			<DIF difName="as2.1.2" ipcAddress="1" />
+		</APN>
+		
+		
+		
+		<APN apn="1.2.0_DC">
+			<DIF difName="ta2.0.0" ipcAddress="1" />
+			<DIF difName="ta2.1.0" ipcAddress="1" />
+			<DIF difName="ta2.2.0" ipcAddress="1" />
+			<DIF difName="ta2.3.0" ipcAddress="1" />
+			
+			<DIF difName="as0.2.0" ipcAddress="1" />
+			<DIF difName="as0.2.1" ipcAddress="1" />
+			<DIF difName="as0.2.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.2.1_DC">
+			<DIF difName="ta2.0.1" ipcAddress="1" />
+			<DIF difName="ta2.1.1" ipcAddress="1" />
+			<DIF difName="ta2.2.1" ipcAddress="1" />
+			<DIF difName="ta2.3.1" ipcAddress="1" />
+			
+			<DIF difName="as1.2.0" ipcAddress="1" />
+			<DIF difName="as1.2.1" ipcAddress="1" />
+			<DIF difName="as1.2.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.2.2_DC">
+			<DIF difName="ta2.0.2" ipcAddress="1" />
+			<DIF difName="ta2.1.2" ipcAddress="1" />
+			<DIF difName="ta2.2.2" ipcAddress="1" />
+			<DIF difName="ta2.3.2" ipcAddress="1" />
+			
+			<DIF difName="as2.2.0" ipcAddress="1" />
+			<DIF difName="as2.2.1" ipcAddress="1" />
+			<DIF difName="as2.2.2" ipcAddress="1" />
+		</APN>
+		
+		
+		
+		<APN apn="1.3.0_DC">
+			<DIF difName="ta3.0.0" ipcAddress="1" />
+			<DIF difName="ta3.1.0" ipcAddress="1" />
+			<DIF difName="ta3.2.0" ipcAddress="1" />
+			<DIF difName="ta3.3.0" ipcAddress="1" />
+			
+			<DIF difName="as0.3.0" ipcAddress="1" />
+			<DIF difName="as0.3.1" ipcAddress="1" />
+			<DIF difName="as0.3.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.3.1_DC">
+			<DIF difName="ta3.0.1" ipcAddress="1" />
+			<DIF difName="ta3.1.1" ipcAddress="1" />
+			<DIF difName="ta3.2.1" ipcAddress="1" />
+			<DIF difName="ta3.3.1" ipcAddress="1" />
+			
+			<DIF difName="as1.3.0" ipcAddress="1" />
+			<DIF difName="as1.3.1" ipcAddress="1" />
+			<DIF difName="as1.3.2" ipcAddress="1" />
+		</APN>
+		<APN apn="1.3.2_DC">
+			<DIF difName="ta3.0.2" ipcAddress="1" />
+			<DIF difName="ta3.1.2" ipcAddress="1" />
+			<DIF difName="ta3.2.2" ipcAddress="1" />
+			<DIF difName="ta3.3.2" ipcAddress="1" />
+			
+			<DIF difName="as2.3.0" ipcAddress="1" />
+			<DIF difName="as2.3.1" ipcAddress="1" />
+			<DIF difName="as2.3.2" ipcAddress="1" />
+		</APN>
+		
+		
+		
+		
+		<APN apn="2.0.0_DC">
+			<DIF difName="as0.0.0" ipcAddress="2" />
+			<DIF difName="as0.1.0" ipcAddress="2" />
+			<DIF difName="as0.2.0" ipcAddress="2" />
+			<DIF difName="as0.3.0" ipcAddress="2" />
+		</APN>
+		<APN apn="2.0.1_DC">
+			<DIF difName="as0.0.1" ipcAddress="2" />
+			<DIF difName="as0.1.1" ipcAddress="2" />
+			<DIF difName="as0.2.1" ipcAddress="2" />
+			<DIF difName="as0.3.1" ipcAddress="2" />
+		</APN>
+		<APN apn="2.0.2_DC">
+			<DIF difName="as0.0.2" ipcAddress="2" />
+			<DIF difName="as0.1.2" ipcAddress="2" />
+			<DIF difName="as0.2.2" ipcAddress="2" />
+			<DIF difName="as0.3.2" ipcAddress="2" />
+		</APN>
+		
+		
+		<APN apn="2.1.0_DC">
+			<DIF difName="as1.0.0" ipcAddress="2" />
+			<DIF difName="as1.1.0" ipcAddress="2" />
+			<DIF difName="as1.2.0" ipcAddress="2" />
+			<DIF difName="as1.3.0" ipcAddress="2" />
+		</APN>
+		<APN apn="2.1.1_DC">
+			<DIF difName="as1.0.1" ipcAddress="2" />
+			<DIF difName="as1.1.1" ipcAddress="2" />
+			<DIF difName="as1.2.1" ipcAddress="2" />
+			<DIF difName="as1.3.1" ipcAddress="2" />
+		</APN>
+		<APN apn="2.1.2_DC">
+			<DIF difName="as1.0.2" ipcAddress="2" />
+			<DIF difName="as1.1.2" ipcAddress="2" />
+			<DIF difName="as1.2.2" ipcAddress="2" />
+			<DIF difName="as1.3.2" ipcAddress="2" />
+		</APN>
+		
+		
+		<APN apn="2.2.0_DC">
+			<DIF difName="as2.0.0" ipcAddress="2" />
+			<DIF difName="as2.1.0" ipcAddress="2" />
+			<DIF difName="as2.2.0" ipcAddress="2" />
+			<DIF difName="as2.3.0" ipcAddress="2" />
+		</APN>
+		<APN apn="2.2.1_DC">
+			<DIF difName="as2.0.1" ipcAddress="2" />
+			<DIF difName="as2.1.1" ipcAddress="2" />
+			<DIF difName="as2.2.1" ipcAddress="2" />
+			<DIF difName="as2.3.1" ipcAddress="2" />
+		</APN>
+		<APN apn="2.2.2_DC">
+			<DIF difName="as2.0.2" ipcAddress="2" />
+			<DIF difName="as2.1.2" ipcAddress="2" />
+			<DIF difName="as2.2.2" ipcAddress="2" />
+			<DIF difName="as2.3.2" ipcAddress="2" />
+		</APN>
+    </Directory>
+  </DA>

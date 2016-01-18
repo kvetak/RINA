@@ -1,0 +1,10 @@
+[Example] Small Datacenter Fabric network
+
+Example to test Routing/Forwarding policies that profits from DC topology knowledge
+
+3 Configurations:
+- SimpleTable : Base configuration with common distance vector and forwarding table
+- DCForwarding : Test configuration for topological DC Forwarding
+- MDCRouting : Test configuration for topological DC Forwarding + Routing
+
+In order to test the correctness of policies, random shim flows are deallocated and finally each node sends a pdu to every other node in the network.

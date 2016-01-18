@@ -39,6 +39,9 @@ AEPing::AEPing() : AE() {
   PAR_DSTAENAME       = "dstAeName";
   PAR_DSTAEINSTANCE   = "dstAeInstance";
   VAL_MODULEPATH      = "getFullPath()";
+
+  //Ehsan
+  SAME_APPS           = "sameApps";
 }
 
 AEPing::~AEPing() {
@@ -93,6 +96,9 @@ void AEPing::initPing() {
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+    //Ehsan
+    sameApps = this->par(SAME_APPS).stringValue();
+
     if (!dstAeName.compare("AeErr")) {
         EV << "AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
     }
@@ -144,6 +150,13 @@ void AEPing::handleMessage(cMessage *msg)
 }
 
 void AEPing::onStart() {
+
+    /************************************************************/
+    //Ehsan: Getting the most suitable server application instance to connect with
+    EV<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+    this->dstApName = getBestApp(this->srcApName, this->dstApName, this->sameApps);
+    EV<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+    /************************************************************/
 
     //AEPing::connect();
 
