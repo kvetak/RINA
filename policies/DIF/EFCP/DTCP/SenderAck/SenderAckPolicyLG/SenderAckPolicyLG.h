@@ -37,7 +37,11 @@ class SenderAckPolicyLG : public SenderAckPolicyBase
 {
   private:
     double load;
+    double lastLoad;
     double gamma;
+    int state;
+    double gamma2;
+    double gamma1;
 
     TxControlPolicyLG *txControlPolicyLG;
 

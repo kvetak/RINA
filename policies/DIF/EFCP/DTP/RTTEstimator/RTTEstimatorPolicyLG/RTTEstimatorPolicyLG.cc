@@ -37,6 +37,8 @@ Register_Class(RTTEstimatorPolicyLG);
 RTTEstimatorPolicyLG::RTTEstimatorPolicyLG()
 {
     RTO = MIN_RTO;
+    minRTT = 100000; // a large number!
+    maxRTT = 0;
 }
 
 RTTEstimatorPolicyLG::~RTTEstimatorPolicyLG()
@@ -47,11 +49,26 @@ void RTTEstimatorPolicyLG::initialize() {
     sigStatRTTRTO = registerSignal(RTT_RTO_ESTIMATOR);
 }
 
+double RTTEstimatorPolicyLG::getMinRTT() {
+    return minRTT;
+}
+
+double RTTEstimatorPolicyLG::getMaxRTT() {
+    return maxRTT;
+}
+
 bool RTTEstimatorPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 {
       defaultAction(dtpState, dtcpState);
+      if(lastRTT < minRTT)
+          minRTT = lastRTT;
+
+      if(lastRTT > maxRTT)
+          maxRTT = lastRTT;
+
       if(RTO < MIN_RTO)
           RTO = MIN_RTO;
+
       emit(sigStatRTTRTO, RTO);
 
       return false;

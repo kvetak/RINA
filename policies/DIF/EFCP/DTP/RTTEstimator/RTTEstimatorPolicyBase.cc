@@ -34,6 +34,7 @@
 RTTEstimatorPolicyBase::RTTEstimatorPolicyBase()
 {
     RTO = 1;
+    lastRTT = 100000; // a large number!
 }
 
 RTTEstimatorPolicyBase::~RTTEstimatorPolicyBase()
@@ -90,6 +91,8 @@ void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
 
       }
     }
+    lastRTT = newRtt;
+
     double tmp = floor(((alpha * dtpState->getRtt()) + ((1 - alpha) * newRtt)) * 1000000000);
 //    dtpState->setRtt(((double) tmp / 1000000000) * 1.1);
     dtpState->setRtt(((double) tmp / 1000000000));  // removing * 1.1

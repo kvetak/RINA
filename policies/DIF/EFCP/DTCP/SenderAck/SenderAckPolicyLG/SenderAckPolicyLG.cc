@@ -38,7 +38,11 @@ Register_Class(SenderAckPolicyLG);
 SenderAckPolicyLG::SenderAckPolicyLG()
 {
     load = 0;
+    lastLoad = 0;
     gamma = 0.005;
+    gamma1 = 0.005;
+    gamma2 = 0.025;
+    state = 1;
 }
 
 SenderAckPolicyLG::~SenderAckPolicyLG()
@@ -92,14 +96,22 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
 
     if(endSeqNum >= 2) {
+        lastLoad = load;
         if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
             emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
-            if(load == 0)
+            if(load == 0) {
                 load = 1;
-            else
+                state = 2;
+                gamma = gamma2;
+            } else
                 load = (1 - gamma) * load + gamma * 1;
         } else
             load = (1 - gamma) * load + gamma * 0;
+    }
+
+    if(state == 2 && lastLoad < load && lastLoad != 0) {
+        state = 3;
+        gamma = gamma1;
     }
 
     emit(sigStatApprLoad, load);

@@ -48,6 +48,8 @@ TxControlPolicyLG::~TxControlPolicyLG()
 void TxControlPolicyLG::initialize() {
     sigStatRate = registerSignal(Tx_LG_RATE);
     sigStatFlightSize = registerSignal(Tx_FLIGHT_SIZE);
+
+    rttEstimatorPolicyLG = getRINAModule<RTTEstimatorPolicyLG*>(this, 1, {"rttEstimatorPolicy"});
 }
 
 void TxControlPolicyLG::updateRate(double load, double acked)
@@ -61,7 +63,7 @@ void TxControlPolicyLG::updateRate(double load, double acked)
 
 double TxControlPolicyLG::getActualRate(DTPState* dtpState)
 {
-    return flightSize * SEGMENT_SIZE * 8 / dtpState->getRtt();//0.045; //dtpState->getRtt();   // segment size
+    return flightSize * SEGMENT_SIZE * 8 / rttEstimatorPolicyLG->getMinRTT();//dtpState->getRtt();//0.045; //dtpState->getRtt();   // segment size
 }
 
 double TxControlPolicyLG::getRate()
@@ -75,7 +77,7 @@ bool TxControlPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
     if(getActualRate(dtpState) < getRate()) {
         double addRate = (getRate() - getActualRate(dtpState));
-        sendCredit = addRate * dtpState->getRtt() / (SEGMENT_SIZE * 8);
+        sendCredit = addRate * rttEstimatorPolicyLG->getMinRTT() / (SEGMENT_SIZE * 8);
 
         // -------------  adding packets to send queue
         std::vector<DataTransferPDU*>::iterator it;

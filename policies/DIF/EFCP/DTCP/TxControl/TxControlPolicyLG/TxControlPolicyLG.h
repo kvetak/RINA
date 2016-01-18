@@ -31,6 +31,7 @@
 #define TXCONTROLPOLICYLG_H_
 
 #include "TxControlPolicyBase.h"
+#include "RTTEstimatorPolicyLG.h"
 
 #define INITIAL_RATE    0.04
 #define ALPHA           0.1
@@ -49,6 +50,8 @@ private:
 
     simsignal_t sigStatRate;
     simsignal_t sigStatFlightSize;
+
+    RTTEstimatorPolicyLG* rttEstimatorPolicyLG;
 
 public:
     TxControlPolicyLG();

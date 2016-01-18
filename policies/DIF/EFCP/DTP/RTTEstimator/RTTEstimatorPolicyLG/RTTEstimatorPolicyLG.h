@@ -37,11 +37,18 @@
 
 class RTTEstimatorPolicyLG : public RTTEstimatorPolicyBase
 {
-  public:
+private:
+    double minRTT;
+    double maxRTT;
+
+public:
     RTTEstimatorPolicyLG();
     virtual ~RTTEstimatorPolicyLG();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
     void initialize();
+
+    double getMinRTT();
+    double getMaxRTT();
 
     simsignal_t sigStatRTTRTO;
 
