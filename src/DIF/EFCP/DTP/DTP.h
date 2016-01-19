@@ -150,7 +150,7 @@ class DTP : public cSimpleModule
 //    void runTxControlPolicy(std::vector<DataTransferPDU*>* pduQ);
 //    void runNoRateSlowDownPolicy();
 //    void runReconcileFlowControlPolicy();
-    bool runInitialSeqNumPolicy();
+
 //    void runRateReductionPolicy();
 //    void runRxTimerExpiryPolicy(RxExpiryTimer* timer);
     void runRcvrInactivityTimerPolicy();
@@ -250,6 +250,8 @@ class DTP : public cSimpleModule
     void notifyAboutUnableMaintain();
 
     void runCongestionNotificationPolicy();
+    bool runInitialSeqNumPolicy();
+
     void setState(DTPState* state);
     void sendReliableControlPDU();
     void cancelATimer(unsigned int seqNum);

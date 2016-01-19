@@ -36,15 +36,34 @@ void DTCPState::resetRcvVars()
 {
   rcvRightWinEdge = UINT_MAX;
 //  rcvRate = ??
+  rcvBuffersPercentFree = 100;
+  rcvrRate = configRcvrRate;
+  sndRightWinEdge = sndCredit;
+  sendingRateFullfilled = false;
 
+  lastControlSeqNumRcv = 0;
+
+
+}
+
+void DTCPState::resetSndVars()
+{
+  //  timeUnit = 1000;
+  //  sendingTimeUnit = 1000;
+
+  //  sendingRate = 2;
+
+  sendingRate = 0;
+  sndLeftWinEdge = 0;
+  rcvRightWinEdgeSent = 0;
 }
 
 void DTCPState::initFC()
 {
 //  rcvRightWinEdge = rcvCredit;
   resetRcvVars();
-  sndRightWinEdge = sndCredit;
-  sendingRateFullfilled = false;
+
+
   closedWindow = false;
 //  maxClosedWinQueLen = MAX_CLOSED_WIN_Q_LEN;
   dupAcks = 0;
@@ -53,14 +72,14 @@ void DTCPState::initFC()
 
 //  timeUnit = 1000;
 //  sendingTimeUnit = 1000;
-  rcvBuffersPercentFree = 100;
+
 //  rcvBufferPercentThreshold = 75;
 //  sendingRate = 2;
 
 //  configRcvrRate = 50;
-  rcvrRate = configRcvrRate;
 
-  sendingRate = 0;
+
+  resetSndVars();
 //  rcvrRate = 0;
   rendezSeqNum = 0;
 
@@ -73,9 +92,9 @@ DTCPState::DTCPState()
   winBased = false;
   rateBased = false;
 
-  rcvRightWinEdgeSent = 0;
+
   lastControlSeqNumRcv = 0;
-  sndLeftWinEdge = 0;
+
 
   rxSent = 0;
 
