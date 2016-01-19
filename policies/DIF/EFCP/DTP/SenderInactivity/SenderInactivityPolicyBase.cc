@@ -28,7 +28,7 @@
  */
 
 #include "SenderInactivityPolicyBase.h"
-
+#include "DTP.h"
 SenderInactivityPolicyBase::SenderInactivityPolicyBase()
 {
 
@@ -42,5 +42,14 @@ SenderInactivityPolicyBase::~SenderInactivityPolicyBase()
 
 void SenderInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+  DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
+
+  dtpState->resetSndVars();
+
+  if(dtpState->isDtcpPresent()){
+    dtcpState->resetSndVars();
+  }
+
+  dtp->runInitialSeqNumPolicy();
 
 }

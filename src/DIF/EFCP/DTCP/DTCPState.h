@@ -235,6 +235,7 @@ class DTCPState : public cSimpleModule
     void setReliableCpduTimer(DTCPReliableControlPDUTimer* reliableCpduTimer);
     unsigned int getRendezSeqNum() const;
     void setRendezSeqNum(unsigned int rendezSeqNum);
+    void resetSndVars();
 
   protected:
     virtual void handleMessage(cMessage *msg);
