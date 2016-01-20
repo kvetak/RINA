@@ -198,7 +198,7 @@ void RMTQueue::markCongestionOnLast()
     if (dynamic_cast<PDU*>(msg) != nullptr)
     {
         PDU* pdu = (PDU*) msg;
-        pdu->setFlags(pdu->getFlags() | 0x01);
+        pdu->setFlags(pdu->getFlags() | ECN_FLAG);
     }
     else
     {

@@ -34,6 +34,7 @@
 #include <omnetpp.h>
 
 #include "EFCPPolicy.h"
+#include "EFCP_defs.h"
 
 /*
  *
@@ -44,6 +45,9 @@ class RTTEstimatorPolicyBase : public EFCPPolicy
     RTTEstimatorPolicyBase();
     virtual ~RTTEstimatorPolicyBase();
 //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
+    double RTO;     // Retransmission timeout
+    double getRTO();
+
 
   protected:
     virtual void initialize(){};

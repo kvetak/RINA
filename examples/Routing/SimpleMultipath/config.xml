@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<Configuration>
+  <DA>
+    <Directory>
+		<APN apn="h1_NET">
+			<DIF difName="shimHR1" ipcAddress="h1" />
+		</APN>
+		<APN apn="h2_NET">
+			<DIF difName="shimHR2" ipcAddress="h2" />
+		</APN>
+		
+		<APN apn="r1_NET">
+			<DIF difName="shimHR1" ipcAddress="r1" />
+			<DIF difName="shim12" ipcAddress="r1" />
+			<DIF difName="shim13" ipcAddress="r1" />
+		</APN>
+		<APN apn="r2_NET">
+			<DIF difName="shim12" ipcAddress="r2" />
+			<DIF difName="shim24" ipcAddress="r2" />
+		</APN>
+		<APN apn="r3_NET">
+			<DIF difName="shim13" ipcAddress="r3" />
+			<DIF difName="shim34" ipcAddress="r3" />
+		</APN>
+		<APN apn="r4_NET">
+			<DIF difName="shimHR2" ipcAddress="r4" />
+			<DIF difName="shim24" ipcAddress="r4" />
+			<DIF difName="shim34" ipcAddress="r4" />
+		</APN>
+		
+		
+		<APN apn="Snd0">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd1">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd2">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd3">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd4">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd5">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd6">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd7">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd8">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Snd9">
+			<DIF difName="NET" ipcAddress="h1" />
+		</APN>
+		<APN apn="Rcv0">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv1">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv2">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv3">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv4">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv5">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv6">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv7">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv8">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+		<APN apn="Rcv9">
+			<DIF difName="NET" ipcAddress="h2" />
+		</APN>
+    </Directory>
+  </DA>
+  <Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="B1_LayerX" dst="BRB_LayerX" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+</Configuration>

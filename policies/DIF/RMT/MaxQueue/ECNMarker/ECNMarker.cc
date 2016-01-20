@@ -39,4 +39,3 @@ bool ECNMarker::run(RMTQueue* queue)
         return false;
     }
 }
-

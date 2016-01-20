@@ -191,7 +191,7 @@ class DTP : public cSimpleModule
 
     void redrawGUI();
     void addPDUToReassemblyQ(DataTransferPDU* pdu);
-    void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
+
 
 
     void rcvrBufferStateChange();
@@ -235,12 +235,12 @@ class DTP : public cSimpleModule
     void resetSenderInactivTimer();
 
     void setPDUHeader(PDU* pdu);
-
+    void fillFlowControlPDU(FlowControlPDU* flowControlPdu);
 
     void sendFCOnlyPDU();
     void sendAckFlowPDU(unsigned int seqNum = 0, bool seqNumValid = false);
     void sendControlAckPDU();
-      void sendEmptyDTPDU();
+    void sendEmptyDTPDU();
 
     void sendToRMT(PDU *pdu);
 
@@ -275,6 +275,8 @@ class DTP : public cSimpleModule
     simsignal_t sigStatDTPRTT;
     simsignal_t sigStatDTPClosedWinQ;
 //    simsignal_t sigStatDTPRxCount;
+    simsignal_t sigStatDTPSentSeqNum;
+    simsignal_t sigStatDTPRecvSeqNum;
 
 };
 

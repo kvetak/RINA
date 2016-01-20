@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<Configuration>
+  	<ConnectionSet>
+  		<!-- Allocate management flows. -->
+	  	<SimTime t="1">
+	  		<Connection src="h1_NET" dst="r1_NET" qosReq="mgmt"/>
+	  		<Connection src="r2_NET" dst="r1_NET" qosReq="mgmt"/>
+	  		<Connection src="r3_NET" dst="r1_NET" qosReq="mgmt"/>
+	  		<Connection src="h2_NET" dst="r8_NET" qosReq="mgmt"/>
+	  		<Connection src="r2_NET" dst="r4_NET" qosReq="mgmt"/>
+	  		<Connection src="r3_NET" dst="r4_NET" qosReq="mgmt"/>
+	  		<Connection src="r2_NET" dst="r5_NET" qosReq="mgmt"/>
+	  		<Connection src="r4_NET" dst="r7_NET" qosReq="mgmt"/>
+	  		<Connection src="r5_NET" dst="r6_NET" qosReq="mgmt"/>
+	  		<Connection src="r5_NET" dst="r7_NET" qosReq="mgmt"/>
+	  		<Connection src="r6_NET" dst="r8_NET" qosReq="mgmt"/>
+	  		<Connection src="r7_NET" dst="r8_NET" qosReq="mgmt"/>
+	  	</SimTime>
+            
+        <!-- Allocate data flows. -->
+	  	<SimTime t="2">
+	  		<Connection src="h1_NET" dst="r1_NET" qosReq="1"/>
+	  		<Connection src="r2_NET" dst="r1_NET" qosReq="1"/>
+	  		<Connection src="r3_NET" dst="r1_NET" qosReq="1"/>
+	  		<Connection src="h2_NET" dst="r8_NET" qosReq="1"/>
+	  		<Connection src="r2_NET" dst="r4_NET" qosReq="1"/>
+	  		<Connection src="r3_NET" dst="r4_NET" qosReq="1"/>
+	  		<Connection src="r2_NET" dst="r5_NET" qosReq="1"/>
+	  		<Connection src="r4_NET" dst="r7_NET" qosReq="1"/>
+	  		<Connection src="r5_NET" dst="r6_NET" qosReq="1"/>
+	  		<Connection src="r5_NET" dst="r7_NET" qosReq="1"/>
+	  		<Connection src="r6_NET" dst="r8_NET" qosReq="1"/>
+	  		<Connection src="r7_NET" dst="r8_NET" qosReq="1"/>
+	  	</SimTime>
+	</ConnectionSet>
+</Configuration>

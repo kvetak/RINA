@@ -33,6 +33,8 @@
 
 #define SDU_FRAG_LEN 2 //number of bytes for length field of a fragment
 #define SDU_DELIMITER_FLAG_LEN 1 //size of SDUDelimiterFlags in bytes
+#define DRF_FLAG 0x80
+#define ECN_FLAG 0x01
 
 #include <omnetpp.h>
 #include "PDU_m.h"

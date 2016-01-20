@@ -3,7 +3,7 @@
 # TODO: remove bashisms
 
 # scenarios to exclude (e.g. if they're too resource-expensive)
-# exclude_scenarios=(BigRandNet DC)
+exclude_scenarios=(BigRandNet DC Circular)
 
 # initialize the mandatory stuff
 rina_root="$( readlink -f "$( dirname $0 )/.." )"
@@ -104,7 +104,7 @@ update_fingerprint()
     )
 
     if [ -n "$fingerprint" ]; then
-        sed -i "/^\[Config $3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
+        sed -i "/^\[\(Config \)\?$3/,/^\[Config/s/^fingerprint[ =].*/fingerprint = \"$fingerprint\"/" $2
         if $colorize; then printf "${txtgreen}"; fi
         echo "UPDATED ($fingerprint)"
     else
@@ -129,20 +129,20 @@ process_args $@
 cd $rina_scenarios
 
 # retrieve scenarios by the given directory glob
-scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini" | sort )"
+scenarios="$( find . -type f -path "./${glob_group}/${glob_scenario}/omnetpp.ini"  \
+        $( for scen in "${exclude_scenarios[@]}"; do echo -not -path ./*/"$scen"/omnetpp.ini; done ) \
+        | sort )"
+
 if [ -z "$scenarios" ]; then echo "No matching scenarios!"; exit 1; fi
 
 # run the main loop
 echo "$scenarios" | while read simfile; do
-    # exclude the scenario if this is wanted
-    # for scen in "${exclude_scenarios[@]}"; do
-    #     if [ "${i%/}" = "$scen" ]; then echo "Skipping $i..."; continue 2; fi
-    # done
-
     simdir="$( dirname $simfile)"
     echo "Processing $simdir..."
 
-    grep '^\[Config ' "$simfile" | sed 's/\[Config \(.*\)].*/\1/' | while read simconf; do
+    configs="General"$'\n'"$( grep '^\[Config ' "$simfile" | sed 's/\[Config \(.*\)].*/\1/' )"
+
+    echo "$configs" | while read simconf; do
         if [[ "$simconf" != $glob_config ]]; then continue; fi
 
         printf "  $simconf: "
@@ -151,7 +151,8 @@ echo "$scenarios" | while read simfile; do
             output=$( run_simulation "$simdir" "$simconf" )
             analyze_output "$output" $?
         elif [ $mode = "update" ]; then
-            if [ -z "$( sed -n "/^\[Config $simconf/,/^\[Config/p" "$simfile" | grep '^fingerprint[ =]')" ]; then
+
+            if [ -z "$( sed -n "/^\[\(Config \)\?$simconf/,/^\[Config/p" "$simfile" | grep '^fingerprint[ =]')" ]; then
                 echo -e "${txtred}NO FINGERPRINT SPECIFIED${txtrst}"
             else
                 output=$( run_simulation "$simdir" "$simconf" )
