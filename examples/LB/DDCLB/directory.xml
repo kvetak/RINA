@@ -8,10 +8,10 @@
 		<APN apn="App2">					
 			<DIF difName="DC" ipcAddress="H.1.2.1" />
 		</APN>
-		<APN apn="APN_0.1.0">					
+		<APN apn="H.0.1.1_DC">					
 			<DIF difName="ht0.1.3" ipcAddress="H.0.1.0" />
 		</APN>
-		<APN apn="APN_1.2.0">					
+		<APN apn="H.1.2.1_DC">					
 			<DIF difName="ht1.2.3" ipcAddress="H.1.2.0" />
 		</APN>
 		<APN apn="0.0.0_DC">
