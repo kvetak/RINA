@@ -305,6 +305,7 @@ void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveDeallocationRequestFromFai()");
 
     /* Ehsan **********************************************************************/
+    EV << "Ehsanz: In receive Deallocation Request" << flow->getSrcApni().getApn().getName()<<endl;
     Stats st;
     st.updateLoad(flow->getSrcApni().getApn().getName(), flow->getSrcApni().getApinstance(), flow->getSrcApni().getAename(), flow->getSrcApni().getAeinstance(), false);
     /**********************************************************************/

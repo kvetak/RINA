@@ -15,6 +15,8 @@
 
 package rina.examples.LB.DDCLB;
 
+import rina.src.CS.HostNAP;
+import rina.src.CS.HostNAPNAE;
 import rina.src.DAF.AE.AEData.AEData;
 import rina.src.Other.FlowsListener.FlowListener;
 import rina.src.Other.Infection.InfectedDCRouter;
@@ -22,7 +24,7 @@ import rina.src.Other.Infection.InfectedDCRouter;
 
 network DDCLB
 {
-    @display("bgb=1109,510");
+    @display("bgb=1109,655");
     submodules:
 
         T_0_0: InfectedDCRouter {
@@ -142,9 +144,21 @@ network DDCLB
         S_2_2: InfectedDCRouter {
             @display("p=954,172");
         }
-        
-        flowListener: FlowListener { @display("p=234,54");  }
-       
+
+        flowListener: FlowListener {
+            @display("p=234,54");
+        }
+
+        H_0_1: HostNAPNAE {
+            @display("p=91,569");
+            numOfAPs = 1;
+            numOfAEs = 1;
+        }
+        H_1_2: HostNAPNAE {
+            @display("p=454,569");
+            numOfAPs = 1;
+            numOfAEs = 1;
+        }
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;
         T_0_1.medium++ <--> A_0_0.medium++;
@@ -230,4 +244,6 @@ network DDCLB
         A_3_2.medium++ <--> S_2_0.medium++;
         A_3_2.medium++ <--> S_2_1.medium++;
         A_3_2.medium++ <--> S_2_2.medium++;
+        H_1_2.medium <--> T_1_2.medium++;
+        H_0_1.medium <--> T_0_1.medium++;
 }

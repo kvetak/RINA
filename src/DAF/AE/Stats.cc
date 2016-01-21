@@ -149,7 +149,8 @@
             {
                 if(--load==0)
                 {
-                    this->rowErase(row);
+                    EV << "Ehsanz: Erasing "<<std::endl;
+                    //this->rowErase(row);
                 }
                 else
                 {
