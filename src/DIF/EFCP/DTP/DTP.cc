@@ -1256,9 +1256,6 @@ void DTP::generatePDUsnew()
 
     state->pushBackToGeneratedPDUQ(genPDU);
   }
-  if(!state->isDtcpPresent()){
-      state->setSetDrfFlag(true);
-  }
 
   //HOTFIX
   if(!state->isDtcpPresent()){

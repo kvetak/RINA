@@ -271,25 +271,22 @@ void AE::sendData(Flow* flow, CDAPMessage* msg) {
         if (dynamic_cast<CDAP_M_Connect*>(msg) != NULL &&
                 getConStatus() == CONNECTION_PENDING){
             signalizeConnectionRequest(msg);
-            return;
         }
         else if(dynamic_cast<CDAP_M_Release*>(msg) != NULL){
             signalizeReleaseRequest(msg);
             changeConStatus(RELEASING);
-            return;
         }
         else if(getConStatus() == ESTABLISHED
                 //TODO: Vesely - Ugly hack to support old AE wo Establishment. Should be removed sooner or later
                 || getConStatus() == CONNECTION_PENDING
                 ){
             signalizeSendData(msg);
-
-            return;
         }
     }
-    EV << "Sending data before flow is allocated!" << endl;
-    std::cerr << "Sending data before flow is allocated!" << endl;
-    delete msg;
+    else {
+        EV << "Sending data before flow is allocated!" << endl;
+        delete msg;
+    }
 }
 
 void AE::processMRead(CDAPMessage* msg) {

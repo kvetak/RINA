@@ -36,7 +36,6 @@
 #include "ExternConsts.h"
 #include "CDAPMessage_m.h"
 
-
 class AE : public AEBase
 {
   public:
@@ -104,7 +103,6 @@ class AE : public AEBase
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
-
 
 };
 

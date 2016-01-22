@@ -1,0 +1,56 @@
+<style>
+	body {
+		margin:auto;
+	}
+	form {
+		padding: 30px;
+		text-align:left;
+		margin:auto;
+	}
+	label {
+		display:block;
+		margin : 10px;
+	}
+	label .label_text {
+		display: inline-block;
+		width : 100px;
+		font-weight: bold;
+	}
+</style>
+<form method="GET" action="action.php">
+	<label for="pods">
+		<span class="label_text">Pods : </span>
+		<input type="text" name="pods" value="1"/>
+	</label>
+	<label for="tors">
+		<span class="label_text">Tors : </span>
+		<input type="text" name="tors" value="1"/>
+	</label>
+	<label for="fabrics">
+		<span class="label_text">Fabrics : </span>
+		<input type="text" name="fabrics" value="1"/>
+	</label>
+	<label for="spines">
+		<span class="label_text">Spines : </span>
+		<input type="text" name="spines" value="1"/>
+	</label>
+	<label for="edges">
+		<span class="label_text">Edges : </span>
+		<input type="text" name="edges" value="0"/>
+	</label>
+	<label >
+		<span class="label_text">Show : </span>
+		<input type="Submit" name="show" value="NED" />
+		<input type="Submit" name="show" value="INI" />
+		<input type="Submit" name="show" value="Connections" />
+		<input type="Submit" name="show" value="Directory" />
+	</label>
+	<label >
+		<span class="label_text">Download : </span>
+		<input type="Submit" name="download" value="NED" />
+		<input type="Submit" name="download" value="INI" />
+		<input type="Submit" name="download" value="Connections" />
+		<input type="Submit" name="download" value="Directory" />
+	</label>
+
+</form>

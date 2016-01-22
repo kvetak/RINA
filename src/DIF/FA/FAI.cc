@@ -30,7 +30,6 @@ Define_Module(FAI);
 FAI::FAI() : FAIBase() {
     FaModule = NULL;
     //creReqTimer = NULL;
-    std::cout << "FAI live at "<< simTime() <<endl;
 }
 
 FAI::~FAI() {
@@ -42,7 +41,6 @@ FAI::~FAI() {
     remotePortId    = VAL_UNDEF_PORTID;
     remoteCEPId     = VAL_UNDEF_CEPID;
 
-    std::cout << "FAI die at "<< simTime() <<endl;
     //if (creReqTimer)
     //    cancelAndDelete(creReqTimer);
 }
@@ -90,9 +88,7 @@ bool FAI::receiveAllocateRequest() {
         return false;
     }
 
-    std::cout << this->getFullPath() <<endl;
 
-    std::cout << "FAI request at "<<simTime()<<endl;
     status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
@@ -137,7 +133,6 @@ bool FAI::receiveAllocateResponsePositive() {
 
 
     //Instantiate EFCPi
-    std::cout << "FAI response at "<<simTime()<<endl;
     bool status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;

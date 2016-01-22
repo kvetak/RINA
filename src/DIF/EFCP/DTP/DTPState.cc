@@ -153,7 +153,6 @@ void DTPState::clearPostablePDUQ()
 }
 
 DTPState::~DTPState() {
-    std::cout << "Die at "<<simTime() << endl;
   clearReassemblyPDUQ();
   clearGeneratedPDUQ();
   clearPostablePDUQ();
@@ -206,7 +205,6 @@ void DTPState::incMaxSeqNumRcvd() {
 
 void DTPState::incRcvLeftWindowEdge() {
   rcvLeftWinEdge++;
-  std::cout << "Incremented to "<<rcvLeftWinEdge <<endl;
 }
 
 /*
@@ -261,9 +259,6 @@ unsigned int DTPState::getRcvLeftWinEdge() const {
 }
 
 void DTPState::setRcvLeftWinEdge(unsigned int rcvLeftWinEdge) {
-
-
-        std::cout << "Set at "<<rcvLeftWinEdge <<endl;
     this->rcvLeftWinEdge = rcvLeftWinEdge;
 }
 
@@ -471,8 +466,6 @@ void DTPState::updateRcvLWE(unsigned int seqNum)
     if((rcvLeftWinEdge + 1) + sduGap >= (*it)->getSeqNum())
     {
       rcvLeftWinEdge = (*it)->getSeqNum();
-
-      std::cout << "Set onUpdate at "<<rcvLeftWinEdge<<endl;
     }
 
   }

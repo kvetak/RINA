@@ -31,7 +31,9 @@ simple AEPing extends AE like IAE
         string dstAeName = default("AeErr");
         string dstAeInstance = default("0");
         
-               
+        //  Ehsan
+        string sameApps = default("AppErr");
+        
         int startAt @unit(s) = default(0s);
         int stopAt  @unit(s) = default(0s);
         int pingAt  @unit(s) = default(0s);

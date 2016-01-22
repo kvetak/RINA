@@ -40,7 +40,8 @@ AEPing::AEPing() : AE() {
   PAR_DSTAEINSTANCE   = "dstAeInstance";
   VAL_MODULEPATH      = "getFullPath()";
 
-
+  //Ehsan
+  SAME_APPS           = "sameApps";
 }
 
 AEPing::~AEPing() {
@@ -54,6 +55,7 @@ void AEPing::prepareAllocateRequest() {
     //Schedule AllocateRequest
     cMessage* m1 = new cMessage(TIM_START);
     scheduleAt(startAt, m1);
+    scheduleAt(startAt-1, new cMessage(""));
 }
 
 void AEPing::preparePing() {
@@ -95,6 +97,8 @@ void AEPing::initPing() {
     dstAeName     = this->par(PAR_DSTAENAME).stringValue();
     dstAeInstance = this->par(PAR_DSTAEINSTANCE).stringValue();
 
+    //Ehsan
+    sameApps = this->par(SAME_APPS).stringValue();
 
     if (!dstAeName.compare("AeErr")) {
         EV << "AEName is set to default which is AeErr. AeErr is for special testing purposes. Are you sure that it is right?" << endl;
@@ -153,21 +157,14 @@ void AEPing::handleMessage(cMessage *msg)
 
 void AEPing::onStart() {
 
-    AEPing::connect();
-/*
-    //Flow
-    APNamingInfo src = this->getApni();
-    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                     this->dstAeName, this->dstAeInstance);
+    /************************************************************/
+    //Ehsan: Getting the most suitable server application instance to connect with
+    EV<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+   // this->dstApName = getBestApp(this->srcApName, this->dstApName, this->sameApps);
+    EV<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+    /************************************************************/
 
-    FlowObject = new Flow(src, dst);
-    FlowObject->setQosRequirements(this->getQoSRequirements());
-
-    //Insert it to the Flows ADT
-    insertFlow();
-
-    sendAllocationRequest(FlowObject);
-*/
+    connect();
 }
 
 void AEPing::connect() {
@@ -182,8 +179,9 @@ void AEPing::connect() {
                     dstApInstance,
                     dstAeName,
                     dstAeInstance));
-
+std::cout <<  *apnip <<endl;
     emit(sigAEEnrolled, apnip);
+    std::cout << "Emit signal" <<endl;
 }
 
 void AEPing::afterOnStart() {

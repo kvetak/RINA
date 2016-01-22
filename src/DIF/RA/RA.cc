@@ -534,10 +534,17 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    Address addrs = Address(dstApn.getName());
-    PDUFGNeighbor * e = fwdtg->getNextNeighbor(addrs, qosID);
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), flow->getConId().getQoSId());
+    //std::cout << "Ehsanz: In RA::createNM1Flow "<<endl<<"DST Addr Info: " << flow->getDstAddr().info()<<endl;
+    //std::cout << "Ehsanz: In RA::createNM1Flow "<<endl<<"Flow Info: " << flow->info()<<endl;
 
-    if(e) {
+    if(simTime()>100) {
+        std::cout << "Ehsanz: In RA::createNM1Flow "<<endl
+                <<"Flow Info: " << flow->info()<<endl;
+
+    }
+    if(e)
+    {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
         e->getDestAddr().getApn().getName(), qosID);
         if(fi)
@@ -609,6 +616,11 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     const APN& dstApn = flow->getDstApni().getApn();
     const std::string& qosID = flow->getConId().getQoSId();
 
+    if(simTime()>100) {
+        std::cout << "Ehsanz: In RA::createNM1FlowWithoutAllocate "<<endl
+                <<"Flow Info: " << flow->info()<<endl;
+
+    }
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
@@ -773,9 +785,13 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     fa->invokeNewFlowRequestPolicy(flow);
     Enter_Method("bindNFlowToNM1Flow()");
 
-    EV << "Received a request to bind an (N)-flow (dst "
-       << flow->getDstApni().getApn().getName() << ", QoS-id "
-       << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
+    if(simTime()>100) {
+        std::cout << "Received a request to bind an (N)-flow (dst "
+           << flow->getDstApni().getApn().getName() << ", QoS-id "
+           << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
+
+    }
+
 
     if (rmt->isOnWire())
     {
