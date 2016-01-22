@@ -122,11 +122,6 @@ void DTPState::initDefaults(){
 
   blockingPort = false;
 
-std::cout << "INIT TO DEFAULT"<<endl;
-
-
-
-
 }
 
 void DTPState::clearPDUQ(std::vector<DataTransferPDU*>* pduQ)

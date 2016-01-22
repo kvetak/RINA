@@ -1256,6 +1256,9 @@ void DTP::generatePDUsnew()
 
     state->pushBackToGeneratedPDUQ(genPDU);
   }
+  if(!state->isDtcpPresent()){
+      state->setSetDrfFlag(true);
+  }
 
   delete baseDataPDU;
 }
