@@ -65,6 +65,8 @@ class AEPing : public AE
     unsigned int size;
 
 
+    int received, sent;
+
     void initPing();
     void handleSelfMessage(cMessage* msg);
 
@@ -84,6 +86,8 @@ class AEPing : public AE
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
     //=== AEPing interface ends here ===
+
+
 
   private:
     std::string myPath;

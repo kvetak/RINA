@@ -455,16 +455,22 @@ void DTP::addPDUToReassemblyQ(DataTransferPDU* pdu)
  */
 void DTP::delimitFromRMT()
 {
+    EV << "delimitFromRMT?"<<endl;
   Enter_Method_Silent();
   PDUQ_t* pduQ = state->getReassemblyPDUQ();
 
-  for (auto it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= state->getRcvLeftWinEdge();)
+  for (auto it = pduQ->begin();
+          it != pduQ->end() && (*it)->getSeqNum() <= state->getRcvLeftWinEdge();)
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
-
-
     send((*it)->decapsulate(), northO);
     delete (*it);
     it = pduQ->erase(it);
+  }
+
+  for (auto it = pduQ->begin();
+          it != pduQ->end(); it++)
+  {
+      std::cout << "Get " << (*it)->getSeqNum() << " vs current " << state->getRcvLeftWinEdge()<<endl;
   }
 
 }
@@ -908,6 +914,9 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
     //Flush the PDUReassemblyQueue
     flushReassemblyPDUQ();
 
+    if(pdu->getSeqNum() <= 0) {
+        std::cout << "A - Set 0 "<< endl;
+    }
     state->setMaxSeqNumRcvd(pdu->getSeqNum());
     state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
 
@@ -987,6 +996,10 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
         }
         else
         {
+
+            if(state->getMaxSeqNumRcvd() <= 0) {
+                std::cout << "B - Set 0 "<< endl;
+            }
           state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
           /* No A-Timer necessary, already running */
         }
@@ -1018,6 +1031,9 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
       }
       else
       {
+          if(state->getMaxSeqNumRcvd() <= 0) {
+              std::cout << "C - Set 0 "<< endl;
+          }
         state->setRcvLeftWinEdge(state->getMaxSeqNumRcvd());
         //start A-Timer (for this PDU)
         startATimer(pdu->getSeqNum());
@@ -1061,7 +1077,6 @@ void DTP::handleDataTransferPDUFromRMT(DataTransferPDU* pdu)
 //  /* Backstop timer */
 //  schedule(rcvrInactivityTimer);
     }
-
     //TODO C1 DIF.integrity
     /* If we are encrypting, we can't let PDU sequence numbers roll over */
 
@@ -1139,6 +1154,9 @@ void DTP::handleDTPATimer(ATimer* timer)
     }
 
 
+    if(timer->getSeqNum() <= 0) {
+        std::cout << "D - Set 0 "<< endl;
+    }
     state->setRcvLeftWinEdge(timer->getSeqNum());
 
     cancelATimer(timer->getSeqNum());

@@ -62,6 +62,7 @@ void EFCPInstance::setDtp(DTP* dtp)
 
 EFCPInstance::~EFCPInstance()
 {
+    std::cout << " EFCPi Die at "<<simTime()<<endl;
 
 }
 

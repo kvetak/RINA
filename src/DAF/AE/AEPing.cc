@@ -114,6 +114,11 @@ void AEPing::initPing() {
     WATCH(FlowObject);
     WATCH(connectionState);
 
+    received = 0;
+    sent = 0;
+    WATCH(received);
+    WATCH(sent);
+
 }
 
 void AEPing::initialize()
@@ -148,8 +153,8 @@ void AEPing::handleMessage(cMessage *msg)
 
 void AEPing::onStart() {
 
-    //AEPing::connect();
-
+    AEPing::connect();
+/*
     //Flow
     APNamingInfo src = this->getApni();
     APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
@@ -162,14 +167,12 @@ void AEPing::onStart() {
     insertFlow();
 
     sendAllocationRequest(FlowObject);
-/*
-    //Schedule ComRequest
-    cMessage* m = new cMessage(S_TIM_COM);
-    scheduleAt(simTime()+sendAfter+uniform(0,rate), m);
 */
 }
 
 void AEPing::connect() {
+    std::cout<< "connect"<<endl;
+    EV<< "-------connect"<<endl;
     APNIPair* apnip = new APNIPair(
         APNamingInfo(APN(srcApName),
                     srcApInstance,
@@ -184,6 +187,8 @@ void AEPing::connect() {
 }
 
 void AEPing::afterOnStart() {
+    std::cout<< "afterOnStart"<<endl;
+    EV<< "-------afterOnStart"<<endl;
     Enter_Method("afterConnect()");
 
     //Prepare flow's source and destination
@@ -203,6 +208,10 @@ void AEPing::afterOnStart() {
 }
 
 void AEPing::onPing() {
+    if(FlowObject == nullptr) {
+        std::cerr << "Flow still not requested"<<endl;
+        return;
+    }
     //Create PING messsage
     CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
     object_t obj;
@@ -216,9 +225,15 @@ void AEPing::onPing() {
     //Send message
     sendData(FlowObject, ping);
 
+    EV << "Sent ping msg "<<++sent <<endl;
+    std::cout << "Sent ping msg "<<++sent <<endl;
 }
 
 void AEPing::onStop() {
+    if(FlowObject == nullptr) {
+        std::cerr << "Flow still not requested"<<endl;
+        return;
+    }
     //Call flow deallocation submit
     sendDeallocationRequest(FlowObject);
 }
@@ -229,6 +244,8 @@ void AEPing::processMRead(CDAPMessage* msg) {
     EV << "Received M_Read";
     object_t object = msg1->getObject();
     EV << " with object '" << object.objectClass << "'" << endl;
+    EV << "Received ping msg "<<++received <<endl;
+    std::cout << "Received ping msg "<<++received <<endl;
 
     if ( strstr(object.objectName.c_str(), VAL_MODULEPATH) ) {
         std::string* source = (std::string*)(object.objectVal);
@@ -247,6 +264,8 @@ void AEPing::processMRead(CDAPMessage* msg) {
         pong->setObject(obj);
 
         sendData(FlowObject, pong);
+        EV << "Sent pong msg "<<++sent <<endl;
+        std::cout << "Sent pong msg "<<++sent <<endl;
     }
 }
 
@@ -256,6 +275,8 @@ void AEPing::processMReadR(CDAPMessage* msg) {
     EV << "Received M_Read_R";
     object_t object = msg1->getObject();
     EV << " with object '" << object.objectClass << "'" << endl;
+    EV << "Received pong msg "<<++received <<endl;
+    std::cout << "Received pong msg "<<++received <<endl;
 
     if ( strstr(object.objectName.c_str(), VAL_MODULEPATH) ) {
         std::string* source = (std::string*)(object.objectVal);

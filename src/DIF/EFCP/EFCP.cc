@@ -122,6 +122,7 @@ void EFCP::initialize(int step){
 
 EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
   Enter_Method("createEFCPI()");
+  std::cout << "createEFCPI"<<endl;
 
 //  this->efcpTable = (EFCPTable*)this->getSubmodule("efcpTable");
   const QoSCube* qosCube = resourceAllocator->getQoSCubeById(flow->getConId().getQoSId());
@@ -161,8 +162,9 @@ EFCPInstance* EFCP::createEFCPI(const Flow* flow, int cepId, int portId){
 
 
   DTP* dtpModule = getRINAModule<DTP*>(efcpiModule, 0, {MOD_DTP});
+  std::cout << "Get state"<<endl;
   DTPState* dtpState = getRINAModule<DTPState*>(efcpiModule, 0, {MOD_DTP_STATE});
-
+  std::cout << "set state"<<endl;
   dtpState->setQoSCube(qosCube);
   dtpModule->setState(dtpState);
 

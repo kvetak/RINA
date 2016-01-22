@@ -153,6 +153,7 @@ void NFlowTable::removeByFlow(Flow* flow) {
 }
 
 NFlowTableEntry* NFlowTable::findEntryByFlow(const Flow* flow) {
+    std::cout << "findEntryByFlow " << flow->getDstAddr()<<endl;
     for(TFTIter it = NFlowTab.begin(); it != NFlowTab.end(); ++it) {
         NFlowTableEntry tft = *it;
         if (*(tft.getCFlow()) == *flow)

@@ -43,6 +43,9 @@ vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos)
 
     if(it != table.end()){
         ret.push_back(it->second);
+    } else {
+    //    std::cout << this->getFullPath()<<endl;
+    //    std::cout << dst << " not found "<<endl;
     }
 
     return ret;

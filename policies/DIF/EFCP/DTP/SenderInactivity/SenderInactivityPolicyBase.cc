@@ -42,6 +42,8 @@ SenderInactivityPolicyBase::~SenderInactivityPolicyBase()
 
 void SenderInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+    std::cout << getFullPath()<<endl;
+    std::cout << "SenderInactivityPolicyBase at "<<simTime()<<endl;
   DTP* dtp = (DTP*)getModuleByPath((std::string(".^.") + std::string(MOD_DTP)).c_str());
 
   dtpState->resetSndVars();

@@ -42,6 +42,8 @@ RcvrInactivityPolicyBase::~RcvrInactivityPolicyBase()
 
 void RcvrInactivityPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpState)
 {
+    std::cout << getFullPath()<<endl;
+    std::cout << "RcvrInactivityPolicyBase at "<<simTime()<<endl;
 
   dtpState->resetRcvVars();
 
