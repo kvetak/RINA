@@ -20,7 +20,8 @@ namespace Infection {
             int avgPDU,
             int varPDU,
             int nParts,
-            int nRec) :
+            int nRec,
+            int DstCepId) :
         QoS (_QoS),
         srcAddr(Address(SRC.c_str(), DIF.c_str())),
         dstAddr(Address(DST.c_str(), DIF.c_str())),
@@ -33,7 +34,7 @@ namespace Infection {
         fcepID(Flow::cepID++),
         secNum(0) {
             connID.setSrcCepId(1);
-            connID.setDstCepId(-1);
+            connID.setDstCepId(DstCepId);
             connID.setQoSId(_QoS);
           //  cout << minS << " " << maxS << endl;
     }
@@ -143,7 +144,8 @@ namespace Infection {
 
             if (n->getAttribute("qos")) { QoS = n->getAttribute("qos"); }
 
-            int N = 1, rec = 1, pduS = 1024, pduSv = 0;
+            int N = 1, rec = 1, pduS = 1024, pduSv = 0, DstCepId = 99999;
+
             double rate = 1.0;
 
             if (n->getAttribute("N") && atoi(n->getAttribute("N")) > 0) {
@@ -155,6 +157,9 @@ namespace Infection {
                 pduS = atoi(n->getAttribute("pduSize")); }
             if(pduS < 50) { pduS = 50; }
 
+            if (n->getAttribute("DstCepId") && atoi(n->getAttribute("DstCepId")) > 0) {
+                DstCepId = atoi(n->getAttribute("DstCepId")); }
+
             if (n->getAttribute("pduSizeVar") && atoi(n->getAttribute("pduSizeVar")) > 0) {
                 pduSv = atoi(n->getAttribute("pduSizeVar")); }
             if(pduSv > pduS) { pduSv = pduS - 1; }
@@ -163,7 +168,7 @@ namespace Infection {
                 rate = atof(n->getAttribute("rate")); }
             if(rate <= 0) { continue; }
 
-            Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec);
+            Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, DstCepId);
             flows.push_back(f);
             scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
 

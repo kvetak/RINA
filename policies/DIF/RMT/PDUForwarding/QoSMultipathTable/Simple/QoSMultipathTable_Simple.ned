@@ -33,4 +33,5 @@ simple QoSMultipathTable_Simple like iQoSMultipathTable
         bool printAtEnd = default(false);
         double cleanCache_t = default(0);
         xml QoS_BW;
+        bool bigFlows = default(false);
 }

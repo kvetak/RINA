@@ -19,7 +19,7 @@ namespace Infection {
 
     class Flow {
         public :
-            Flow(string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec);
+            Flow(string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec, int DstCepId);
 
             pduT getPDU(bool record);
             string QoS;

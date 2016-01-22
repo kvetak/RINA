@@ -99,8 +99,10 @@ protected:
 
     RMTPort * portLookup(const string& dst, const string& qos);
     RMTPort * rerouteFlows(const vector<entryT>& ports, const string& dst, const int& bw);
-    static bool compare(const entryT &i, const entryT &j);
+    static bool compareDecresing(const entryT &i, const entryT &j);
+    static bool compareAscending(const entryT &i, const entryT &j);
     void AplyReroute(const RerouteInfo &info, const string& dst);
+    bool isBetterPort(const entryT * port1, const entryT * port2);
 };
 
 }

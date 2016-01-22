@@ -155,12 +155,6 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     int reqBW = QoS_BWreq[qos];
     vector<entryT> * entries = & table[dst];
 
-    long totalBW = 0;
-    for (entryT & it : *entries)
-    {
-       totalBW += it.BW-BWControl[it.p].bw;
-    }
-
     vector<entryT> possibles;
 
     for( entryT & e : *entries) {
@@ -171,6 +165,11 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     }
 
     if(possibles.empty()) {
+        long totalBW = 0;
+            for (entryT & it : *entries)
+            {
+               totalBW += it.BW-BWControl[it.p].bw;
+            }
         if(totalBW >= reqBW){
             return rerouteFlows(*entries, dst, reqBW);
         }
@@ -179,14 +178,17 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
         }
     }
 
-    int maxBW=0;
+    //int maxBW=0;
     entryT * exit = nullptr;
     for( entryT & e : possibles) {
-        UsedBW* BW = &BWControl[(e.p)];
-        if(maxBW < e.BW - BW->bw) {
-            maxBW = e.BW - BW->bw;
+        if(isBetterPort(&e,exit)){
             exit = &e;
         }
+        //UsedBW* BW = &BWControl[(e.p)];
+        //if(maxBW < e.BW - BW->bw) {
+            //maxBW = e.BW - BW->bw;
+            //exit = &e;
+        //}
     }
     if (exit != nullptr)
     {
@@ -210,7 +212,12 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
         AvBWports.push_back(e);
     }
 
-    sort(AvBWports.begin(), AvBWports.end(), compare);
+    if(par("bigFlows").boolValue()){
+        sort(AvBWports.begin(), AvBWports.end(), compareAscending);
+    }
+    else{
+        sort(AvBWports.begin(), AvBWports.end(), compareDecresing);
+    }
 
     for(auto p: AvBWports){
         RerouteInfo info(AvBWports);
@@ -221,7 +228,8 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 entryT * auxPort = new entryT(NULL, 0);
                 for (auto it2 : info.ports){
                     if (it2.first != p.p){
-                        if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
+                        //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
+                        if ((it2.second >= it.second.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))){
                             auxPort->p = it2.first;
                             auxPort->BW = it2.second;
                         }
@@ -255,8 +263,32 @@ void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string
     }
 }
 
-bool QoSMultipathTable_Simple::compare(const entryT &i, const entryT &j){
+bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT * port2){
+    if(port1 == nullptr)
+    {
+        return false;
+    }
+    else if(port2 == nullptr)
+    {
+        return true;
+    }
+    else{
+        if(par("bigFlows").boolValue()){
+            return ((port1->BW-BWControl[port1->p].bw) < (port2->BW-BWControl[port2->p].bw));
+        }
+        else{
+            return ((port1->BW-BWControl[port1->p].bw) > (port2->BW-BWControl[port2->p].bw));
+        }
+    }
+
+}
+
+bool QoSMultipathTable_Simple::compareDecresing(const entryT &i, const entryT &j){
     return(i.BW > j.BW);//Decresing order
+}
+
+bool QoSMultipathTable_Simple::compareAscending(const entryT &i, const entryT &j){
+    return(i.BW < j.BW);//Ascending order
 }
 
 void QoSMultipathTable_Simple::onSetPort(RMTPort * p, const int bw) {

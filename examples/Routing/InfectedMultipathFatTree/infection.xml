@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode id="Server11">
+		<flow  dstAddr = "R4.S2" qos = "GU" pduSize = "2989"  pduSizeVar = "1000" rate = "0.02" DstCepId = "1" />
+		<flow  dstAddr = "R4.S2" qos = "SN" pduSize = "2989"  pduSizeVar = "1000" rate = "0.08" DstCepId = "2" />
+		<flow  dstAddr = "R4.S2" qos = "sBE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.27" DstCepId = "3" />
+		<flow  dstAddr = "R4.S2" qos = "BE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.63" DstCepId = "4" />
+	</InfectionNode>	
+</Infection>
