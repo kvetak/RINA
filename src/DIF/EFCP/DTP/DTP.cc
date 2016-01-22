@@ -1260,6 +1260,11 @@ void DTP::generatePDUsnew()
       state->setSetDrfFlag(true);
   }
 
+  //HOTFIX
+  if(!state->isDtcpPresent()){
+    state->setSetDrfFlag(true);
+  }
+
   delete baseDataPDU;
 }
 
