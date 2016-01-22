@@ -533,7 +533,8 @@ void RA::createNM1Flow(Flow *flow)
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
     PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
-
+    //std::cout << "Ehsanz: In RA::createNM1Flow "<<endl<<"DST Addr Info: " << flow->getDstAddr().info()<<endl;
+    std::cout << "Ehsanz: In RA::createNM1Flow "<<endl<<"Flow Info: " << flow->info()<<endl;
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(

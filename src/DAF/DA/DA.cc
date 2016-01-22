@@ -32,6 +32,7 @@ const Address* DA::resolveApnToBestAddress(const APN& apn) {
     Enter_Method("resolveApnToBestAddress()");
 
     DirectoryEntry* de = resolveApn(apn);
+    EV << "Ehsanz: In DA::resolveApnToBestAddress " << de->info()<<endl;
     if (de == NULL) {
         EV << "DA does not know target application" << endl;
         return NULL;
@@ -51,6 +52,7 @@ const Address* DA::resolveApnToBestAddress(const APN& apn, const DAP& difName) {
     Enter_Method("resolveApnToBestAddress()");
 
     DirectoryEntry* de = resolveApn(apn);
+    EV << "Ehsanz: In DA::resolveApnToBestAddress with DIFName " << de->info()<<endl;
     if (de == NULL) {
         EV << "DA does not know target application" << endl;
         return NULL;
