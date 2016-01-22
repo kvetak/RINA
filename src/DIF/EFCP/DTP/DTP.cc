@@ -1239,6 +1239,11 @@ void DTP::generatePDUsnew()
     state->pushBackToGeneratedPDUQ(genPDU);
   }
 
+  //HOTFIX
+  if(!state->isDtcpPresent()){
+    state->setSetDrfFlag(true);
+  }
+
   delete baseDataPDU;
 }
 
