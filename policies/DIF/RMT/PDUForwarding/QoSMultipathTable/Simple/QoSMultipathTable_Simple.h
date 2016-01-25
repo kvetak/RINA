@@ -33,7 +33,12 @@ struct cEntry {
     RMTPort * p;
     int reqBW;
     simtime_t t;
-    cEntry();
+    string QoSid;
+    cEntry(){
+        QoSid = "null";
+        p = nullptr;
+        t = 0;
+    }
 };
 
 struct UsedBW {
@@ -42,6 +47,7 @@ struct UsedBW {
         bw=0;
     }
 };
+
 
 struct Movement {
     RMTPort * org; //Origin port of the flow
@@ -86,7 +92,7 @@ public:
 
 protected:
     map<string, map<int, cEntry>> cache;
-    map<RMTPort *, UsedBW> BWControl; //map<port, UsedBW>;
+    map<RMTPort *, map<string , UsedBW>> BWControl; //map<port, map<QoSid, UsedBW> >;
     double cleanCache_t;
 
     map<string, vector<entryT> > table;
@@ -98,11 +104,11 @@ protected:
     void handleMessage(cMessage * msg);
 
     RMTPort * portLookup(const string& dst, const string& qos);
-    RMTPort * rerouteFlows(const vector<entryT>& ports, const string& dst, const int& bw);
+    RMTPort * rerouteFlows(const vector<entryT>& ports, const string& dst, const int& bw, const string& qos);
     static bool compareDecresing(const entryT &i, const entryT &j);
     static bool compareAscending(const entryT &i, const entryT &j);
-    void AplyReroute(const RerouteInfo &info, const string& dst);
-    bool isBetterPort(const entryT * port1, const entryT * port2);
+    void AplyReroute(const RerouteInfo &info, const string& dst, const string& qos);
+    bool isBetterPort(const entryT * port1, const entryT * port2, const string& qos);
 };
 
 }

@@ -1,9 +1,88 @@
 <?xml version="1.0"?>
 <Infection>
 	<InfectionNode id="Server11">
-		<flow  dstAddr = "R4.S2" qos = "GU" pduSize = "2989"  pduSizeVar = "1000" rate = "0.02" DstCepId = "1" />
-		<flow  dstAddr = "R4.S2" qos = "SN" pduSize = "2989"  pduSizeVar = "1000" rate = "0.08" DstCepId = "2" />
-		<flow  dstAddr = "R4.S2" qos = "sBE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.27" DstCepId = "3" />
-		<flow  dstAddr = "R4.S2" qos = "BE" pduSize = "2989"  pduSizeVar = "1000" rate = "0.63" DstCepId = "4" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "1" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "2" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "3" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "4" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "5" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "6" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "7" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "8" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "9" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "10" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "11" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "12" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "13" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "14" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "15" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "16" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "17" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "18" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "19" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "20" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "21" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "22" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "23" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "24" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "25" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "26" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "27" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "28" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "29" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "30" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "31" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "32" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "33" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "34" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "35" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "36" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "37" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "38" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "39" />
+	</InfectionNode>	
+	
+	<InfectionNode id="Server12">
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "40" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "41" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "42" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "43" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "44" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "45" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "46" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "47" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "48" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "49" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "50" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "51" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "52" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "53" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "54" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "55" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "56" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "57" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "58" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "59" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "60" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "61" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "62" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "63" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "64" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "65" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "66" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "67" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "68" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "69" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "70" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "71" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "72" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "73" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "74" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "75" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "76" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "77" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "78" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "79" />
+		<flow  dstAddr = "R4.S2" qos = "1" pduSize = "2989"  pduSizeVar = "10000" rate = "0.02" DstCepId = "80" />
 	</InfectionNode>	
 </Infection>

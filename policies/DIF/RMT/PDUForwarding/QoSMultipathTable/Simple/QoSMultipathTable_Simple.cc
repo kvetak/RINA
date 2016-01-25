@@ -34,7 +34,7 @@ using namespace std;
 using namespace QoSMultipathTable;
 
 
-cEntry::cEntry(): p(nullptr), t(0) {}
+//cEntry::cEntry(): p(nullptr), t(0) {}
 
 
 void QoSMultipathTable_Simple::onMainPolicyInit() {
@@ -50,59 +50,23 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
 
     cEntry * e = &cache[dstAddr][pdu->getConnId().getDstCepId()];
 
-    next = e->p;
+    string QoSid;
+    if(par("QoSSpliter").boolValue()){
+        QoSid = pdu->getConnId().getQoSId();
+    }
+    else{
+        QoSid = "null";
+    }
 
-    //Only for debug
-//    int reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
-//    if((pdu->getDstAddr().getIpcAddress().getName()=="R4.S2")
-//            && (pdu->getSrcAddr().getIpcAddress().getName()=="R1.S1")
-//            && (reqBW == 8000000)){
-//
-//        vector<entryT> * entries = & table[dstAddr];
-//        if(entries->size()==2)
-//        {
-//            auto port = (*entries)[0].p;
-//            cache[dstAddr][11].p=port;
-//            cache[dstAddr][11].reqBW=2000000;
-//            cache[dstAddr][22].p=port;
-//            cache[dstAddr][22].reqBW=2000000;
-//            cache[dstAddr][33].p=port;
-//            cache[dstAddr][33].reqBW=2000000;
-//            cache[dstAddr][44].p=port;
-//            cache[dstAddr][44].reqBW=2000000;
-//
-//            BWControl[port].bw+=8000000;
-//
-//            port = (*entries)[1].p;
-//            cache[dstAddr][55].p=port;
-//            cache[dstAddr][55].reqBW=2000000;
-//            cache[dstAddr][66].p=port;
-//            cache[dstAddr][66].reqBW=2000000;
-//            cache[dstAddr][77].p=port;
-//            cache[dstAddr][77].reqBW=2000000;
-//            cache[dstAddr][88].p=port;
-//            cache[dstAddr][88].reqBW=2000000;
-//
-//            BWControl[port].bw+=8000000;
-//
-//            std::ostringstream os;
-//            EV << "Cache Inicial" << endl;
-//            for(auto it : cache[dstAddr]){
-//                EV << "Flujo : " << it.first << endl;
-//                EV << "Puerto: " << (int)it.second.p << endl;
-//                EV << "BW    : " << it.second.reqBW << endl <<endl;
-//            }
-//            EV << endl << endl;
-//        }
-//    }
-    //End of debug
+    next = e->p;
 
     if(next == nullptr) {
         next = portLookup(dstAddr, pdu->getConnId().getQoSId());
         e->p = next;//Port inserted in cache
         e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
+        e->QoSid = QoSid;
         string aux = pdu->getConnId().getQoSId();
-        BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
+        BWControl[next][QoSid].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
     }
 
     //Only for debug
@@ -110,6 +74,7 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
     for(auto it : cache[dstAddr]){
         EV << "Flujo : " << it.first << endl;
         EV << "Puerto: " << (int)it.second.p << endl;
+        EV << "QoS: " << it.second.QoSid << endl;
         EV << "BW    : " << it.second.reqBW << endl <<endl;
     }
     EV << endl << endl;
@@ -120,7 +85,7 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         ret.push_back(next);
         e->t = simTime();
     } else {
-        BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
+        BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p][QoSid].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
         cache[dstAddr].erase(pdu->getConnId().getDstCepId());
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
@@ -135,6 +100,7 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
 vector<RMTPort * > QoSMultipathTable_Simple::lookup(const Address &dst, const std::string& qos){
     RMTPort * next = nullptr;
     vector<RMTPort *> ret;
+
 
     string dstAddr = dst.getIpcAddress().getName();
 
@@ -152,13 +118,20 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     if(dst == "") {
         return nullptr;
     }
+    string QoSid;
+    if(par("QoSSpliter").boolValue()){
+        QoSid = qos;
+    }
+    else{
+        QoSid = "null";
+    }
     int reqBW = QoS_BWreq[qos];
     vector<entryT> * entries = & table[dst];
 
     vector<entryT> possibles;
 
     for( entryT & e : *entries) {
-        UsedBW* BW = &BWControl[(e.p)];
+        UsedBW* BW = &BWControl[(e.p)][QoSid];
         if((e.BW - BW->bw) >= reqBW) {
             possibles.push_back(e);
         }
@@ -168,10 +141,10 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
         long totalBW = 0;
             for (entryT & it : *entries)
             {
-               totalBW += it.BW-BWControl[it.p].bw;
+               totalBW += it.BW-BWControl[it.p][QoSid].bw;
             }
         if(totalBW >= reqBW){
-            return rerouteFlows(*entries, dst, reqBW);
+            return rerouteFlows(*entries, dst, reqBW, QoSid);
         }
         else{
             return nullptr;
@@ -181,7 +154,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     //int maxBW=0;
     entryT * exit = nullptr;
     for( entryT & e : possibles) {
-        if(isBetterPort(&e,exit)){
+        if(isBetterPort(&e, exit ,qos)){
             exit = &e;
         }
         //UsedBW* BW = &BWControl[(e.p)];
@@ -201,14 +174,14 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     }
 }
 
-RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, const string& dst, const int& bw){
+RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, const string& dst, const int& bw, const string& qos){
 
     vector<entryT> AvBWports; //ports with AVIABLE BandWith
 
 
     for(auto it : ports)
     {
-        entryT e(it.p,it.BW-BWControl[it.p].bw);
+        entryT e(it.p,it.BW-BWControl[it.p][qos].bw);
         AvBWports.push_back(e);
     }
 
@@ -229,7 +202,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 for (auto it2 : info.ports){
                     if (it2.first != p.p){
                         //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
-                        if ((it2.second >= it.second.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))){
+                        if ((it2.second >= it.second.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort, qos))){
                             auxPort->p = it2.first;
                             auxPort->BW = it2.second;
                         }
@@ -241,7 +214,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 delete auxPort;
 
                 if(info.ports[p.p] >= bw){
-                    AplyReroute(info, dst);
+                    AplyReroute(info, dst, qos);
                     return p.p;
 
                 }
@@ -254,16 +227,15 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
 
 }
 
-void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst){
+void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst, const string& qos){
 
     for (auto it : info.movements){
         cache[dst][it.flow].p=it.dst;
-        BWControl[it.org].bw += it.reqBW;
-        BWControl[it.dst].bw -= it.reqBW;
+        BWControl[it.org][qos].bw += it.reqBW;
     }
 }
 
-bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT * port2){
+bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT * port2, const string& qos){
     if(port1 == nullptr)
     {
         return false;
@@ -274,10 +246,10 @@ bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT *
     }
     else{
         if(par("bigFlows").boolValue()){
-            return ((port1->BW-BWControl[port1->p].bw) < (port2->BW-BWControl[port2->p].bw));
+            return ((port1->BW-BWControl[port1->p][qos].bw) < (port2->BW-BWControl[port2->p][qos].bw));
         }
         else{
-            return ((port1->BW-BWControl[port1->p].bw) > (port2->BW-BWControl[port2->p].bw));
+            return ((port1->BW-BWControl[port1->p][qos].bw) > (port2->BW-BWControl[port2->p][qos].bw));
         }
     }
 

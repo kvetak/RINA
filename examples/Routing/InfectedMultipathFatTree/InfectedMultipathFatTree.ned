@@ -58,7 +58,7 @@ network InfectedMultipathFatTree
         Server11: InfectedRouter {
             @display("p=67,682");
         }
-        Server12: Host1AP {
+        Server12: InfectedRouter {
             @display("p=242,682");
         }
         Server21: Host1AP {
@@ -117,7 +117,7 @@ network InfectedMultipathFatTree
         AS4.medium++ <--> DatarateChannel {  delay = 1ms; } <--> AS6.medium++;
 
         Server11.medium++ <--> DatarateChannel {  delay = 1ms; } <--> TOR1.medium++;
-        Server12.medium <--> DatarateChannel {  delay = 1ms; } <--> TOR1.medium++;
+        Server12.medium++ <--> DatarateChannel {  delay = 1ms; } <--> TOR1.medium++;
         Server21.medium <--> DatarateChannel {  delay = 1ms; } <--> TOR2.medium++;
         Server22.medium <--> DatarateChannel {  delay = 1ms; } <--> TOR2.medium++;
         Server31.medium <--> DatarateChannel {  delay = 1ms; } <--> TOR3.medium++;
