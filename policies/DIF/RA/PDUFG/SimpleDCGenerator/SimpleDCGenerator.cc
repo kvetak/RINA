@@ -31,50 +31,14 @@ void SimpleDCGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RM
     DCAddr dst_addr = DCAddr(dst);
     neighsAddr[dst] = dst_addr;
 
-    cout << "At " << Im.type <<"."<<Im.a << "." << Im.b
-            << " new flow to "<< dst_addr.type <<"."<<dst_addr.a << "." << dst_addr.b <<endl;
+    if(!fwd->setNeigh(dst, port)){ return; }
 
-    bool first = false;
-
-    switch(Im.type) {
-        case 0 :
-            if(dst_addr.type == 1 && dst_addr.a == Im.a) {
-                first = up[dst_addr.b].empty();
-                up[dst_addr.b].insert(port);
-            } else {
-                cerr << "Invalid neighbour " << dst << " at TOR ";
-                cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
-            }
-            break;
-        case 1 :
-            if(dst_addr.type == 0 && dst_addr.a == Im.a) {
-                first = down[dst_addr.b].empty();
-                down[dst_addr.b].insert(port);
-            } else if(dst_addr.type == 2 && dst_addr.a == Im.b) {
-                first = up[dst_addr.b].empty();
-                up[dst_addr.b].insert(port);
-            } else {
-                cerr << "Invalid neighbour " << dst << " at AG ";
-                cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
-            }
-            break;
-        case 2 :
-            if(dst_addr.type == 1 && dst_addr.b == Im.a) {
-                first = down[dst_addr.a].empty();
-                down[dst_addr.a].insert(port);
-            } else {
-                cerr << "Invalid neighbour " << dst << " at Spine ";
-                cerr << Im.type << "." <<Im.a <<"." <<Im.b<<endl;
-            }
-            break;
-    }
+    bool first = ports[dst_addr].empty();
+    ports[dst_addr].insert(port);
 
     if(first){
-        fwd->addNeigh(dst, port);
-        rt->insertFlow(addr, dst, "hops", 1);
+        rt->insertFlow(addr, dst, "", 1);
         routingUpdated();
-    } else {
-        fwd->replaceNeigh(dst, port);
     }
 }
 void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
@@ -82,58 +46,21 @@ void SimpleDCGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMT
     DCAddr dst_addr = DCAddr(dst);
     neighsAddr[dst] = dst_addr;
 
-    cout << "At " << Im.type <<"."<<Im.a << "." << Im.b
-            << " removed flow to "<< dst_addr.type <<"."<<dst_addr.a << "." << dst_addr.b <<endl;
 
-    bool last = false;
-    set<RMTPort*> * ks = nullptr;
-
-    switch(Im.type) {
-        case 0 :
-            if(dst_addr.type == 1 && dst_addr.a == Im.a) {
-                ks = &up[dst_addr.b];
-                ks->erase(port);
-                last = ks->empty();
-            } else {
-                cerr << "Invalid neighbour " << dst <<" for TOR"
-                        << Im.type <<"." << Im.a << "." << Im.b << endl;
-            }
-            break;
-        case 1 :
-            if(dst_addr.type == 0 && dst_addr.a == Im.a) {
-                ks = &down[dst_addr.b];
-                ks->erase(port);
-                last = ks->empty();
-            } else if(dst_addr.type == 2 && dst_addr.a == Im.b) {
-                ks = &up[dst_addr.b];
-                ks->erase(port);
-                last = ks->empty();
-            } else {
-                cerr << "Invalid neighbour "
-                        << dst
-                        << " for AG "
-                        << Im.type <<"." << Im.a << "." << Im.b << endl;
-            }
-            break;
-        case 2 :
-            if(dst_addr.type == 1 && dst_addr.b == Im.a) {
-                ks = &down[dst_addr.a];
-                ks->erase(port);
-                last = ks->empty();
-            } else {
-                cerr << "Invalid neighbour " << dst << " for Spine"
-                        << Im.type <<"." << Im.a << "." << Im.b << endl;
-            }
-            break;
+    ports[dst_addr].erase(port);
+    bool last = ports[dst_addr].empty();
+    RMTPort * p = nullptr;
+    if(!last) {
+        p = *ports[dst_addr].begin();
+    } else {
+        ports.erase(dst_addr);
     }
 
+    if(!fwd->setNeigh(dst, p)){ return; }
+
     if(last){
-        rt->removeFlow(addr, dst, "hops");
+        rt->removeFlow(addr, dst, "");
         routingUpdated();
-        fwd->removeNeigh(dst);
-    } else if(ks!= nullptr){
-        RMTPort * sport = *ks->begin();
-        fwd->replaceNeigh(dst, sport);
     }
 }
 
@@ -145,30 +72,16 @@ void SimpleDCGenerator::routingUpdated(){
 
     for(const auto & qosEntries : changes){
         for(const auto & entry : qosEntries.second){
-            set<int> upP, downP;
+            set<DCAddr> links;
             for(string nextHop : entry.second.nh){
                 DCAddr n_addr = neighsAddr[nextHop];
                 if(n_addr.type < 0) {
                     cerr << "Unknown neighbour "<< nextHop << endl;
                 } else {
-                    switch(Im.type) {
-                        case 0 :
-                            upP.insert(n_addr.b);
-                            break;
-                        case 1 :
-                            if(n_addr.type == 0) {
-                                downP.insert(n_addr.b);
-                            } else {
-                                upP.insert(n_addr.b);
-                            }
-                            break;
-                        case 2 :
-                            downP.insert(n_addr.a);
-                            break;
-                    }
+                    links.insert(n_addr);
                 }
             }
-            fwd->addDst(entry.first, upP, downP);
+            fwd->setDst(entry.first, links);
         }
     }
 }
@@ -182,30 +95,16 @@ void SimpleDCGenerator::handleMessage(cMessage *msg) {
     for(const auto & qosEntries : changes){
         for(const auto & entry : qosEntries.second){
 
-            set<int> upP, downP;
+            set<DCAddr> links;
             for(string nextHop : entry.second.nh){
                 DCAddr n_addr = neighsAddr[nextHop];
                 if(n_addr.type < 0) {
                     cerr << "Unknown neighbour "<< nextHop << endl;
                 } else {
-                    switch(Im.type) {
-                        case 0 :
-                            upP.insert(n_addr.b);
-                            break;
-                        case 1 :
-                            if(n_addr.type == 0) {
-                                downP.insert(n_addr.b);
-                            } else {
-                                upP.insert(n_addr.b);
-                            }
-                            break;
-                        case 2 :
-                            downP.insert(n_addr.a);
-                            break;
-                    }
+                    links.insert(n_addr);
                 }
             }
-            fwd->addDst(entry.first, upP, downP);
+            fwd->setDst(entry.first, links);
         }
     }
 }
@@ -213,7 +112,7 @@ void SimpleDCGenerator::handleMessage(cMessage *msg) {
 // Called after initialize
 void SimpleDCGenerator::onPolicyInit(){
     //Set Forwarding policy
-    fwd = check_and_cast<SimpleDCForwarding *>
+    fwd = check_and_cast<iSimpleDCForwarding *>
         (getModuleByPath("^.^.relayAndMux.pduForwardingPolicy"));
     rt = check_and_cast<IntTSimpleRouting<mType> *>
         (getModuleByPath("^.^.routingPolicy"));

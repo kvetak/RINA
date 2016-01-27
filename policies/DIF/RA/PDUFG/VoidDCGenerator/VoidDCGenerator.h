@@ -45,14 +45,14 @@ protected:
     DCAddr Im;
 
     DA * difA;
-    SimpleDCForwarding * fwd;
+    iSimpleDCForwarding * fwd;
     IntDCRouting * rt;
 
     //s_Addr -> DCAddr
     map<string, DCAddr > neighsAddr;
 
     //int -> portsSet || up and down by sub-id
-    map<int, set<RMTPort*> > up, down;
+    map<DCAddr, set<RMTPort*> > ports;
 
     bool updateRoutes;
 

@@ -86,7 +86,7 @@ class LinksUpdate : public IntRoutingUpdate {
 
 struct rtEntry {
     DCAddr dst;
-    vector<DCAddr> next;
+    set<DCAddr> next;
 };
 
 class IntDCRouting: public IntRouting {

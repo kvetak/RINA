@@ -22,6 +22,7 @@ namespace Infection {
             int nParts,
             int nRec,
             int DstCepId) :
+
         QoS (_QoS),
         srcAddr(Address(SRC.c_str(), DIF.c_str())),
         dstAddr(Address(DST.c_str(), DIF.c_str())),
@@ -160,6 +161,7 @@ namespace Infection {
             if (n->getAttribute("DstCepId") && atoi(n->getAttribute("DstCepId")) > 0) {
                 DstCepId = atoi(n->getAttribute("DstCepId")); }
 
+
             if (n->getAttribute("pduSizeVar") && atoi(n->getAttribute("pduSizeVar")) > 0) {
                 pduSv = atoi(n->getAttribute("pduSizeVar")); }
             if(pduSv > pduS) { pduSv = pduS - 1; }
@@ -168,7 +170,9 @@ namespace Infection {
                 rate = atof(n->getAttribute("rate")); }
             if(rate <= 0) { continue; }
 
+
             Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, DstCepId);
+
             flows.push_back(f);
             scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
 
