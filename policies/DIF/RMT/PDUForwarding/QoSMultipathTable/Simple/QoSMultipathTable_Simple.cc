@@ -34,7 +34,7 @@ using namespace std;
 using namespace QoSMultipathTable;
 
 
-//cEntry::cEntry(): p(nullptr), t(0) {}
+cEntry::cEntry(): p(nullptr), t(0) {}
 
 
 void QoSMultipathTable_Simple::onMainPolicyInit() {
@@ -64,9 +64,9 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         next = portLookup(dstAddr, pdu->getConnId().getQoSId());
         e->p = next;//Port inserted in cache
         e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
-        e->QoSid = QoSid;
         string aux = pdu->getConnId().getQoSId();
-        BWControl[next][QoSid].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
+        //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
+        BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
     }
 
     //Only for debug
@@ -74,7 +74,6 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
     for(auto it : cache[dstAddr]){
         EV << "Flujo : " << it.first << endl;
         EV << "Puerto: " << (int)it.second.p << endl;
-        EV << "QoS: " << it.second.QoSid << endl;
         EV << "BW    : " << it.second.reqBW << endl <<endl;
     }
     EV << endl << endl;
@@ -85,7 +84,9 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         ret.push_back(next);
         e->t = simTime();
     } else {
-        BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p][QoSid].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
+        //BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
+        auto aux = cache[dstAddr][pdu->getConnId().getDstCepId()];
+        BWControl.removeBW(aux.p, QoSid, aux.reqBW);
         cache[dstAddr].erase(pdu->getConnId().getDstCepId());
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
@@ -100,7 +101,6 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
 vector<RMTPort * > QoSMultipathTable_Simple::lookup(const Address &dst, const std::string& qos){
     RMTPort * next = nullptr;
     vector<RMTPort *> ret;
-
 
     string dstAddr = dst.getIpcAddress().getName();
 
@@ -131,8 +131,9 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     vector<entryT> possibles;
 
     for( entryT & e : *entries) {
-        UsedBW* BW = &BWControl[(e.p)][QoSid];
-        if((e.BW - BW->bw) >= reqBW) {
+        //UsedBW* BW = &BWControl[(e.p)];
+        //if((e.BW - BW->bw) >= reqBW) {
+        if ((e.BW - BWControl.getTotalBW(e.p)) >= reqBW){
             possibles.push_back(e);
         }
     }
@@ -141,7 +142,8 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
         long totalBW = 0;
             for (entryT & it : *entries)
             {
-               totalBW += it.BW-BWControl[it.p][QoSid].bw;
+               //totalBW += it.BW-BWControl[it.p].bw;
+                totalBW += it.BW-BWControl.getTotalBW(it.p);
             }
         if(totalBW >= reqBW){
             return rerouteFlows(*entries, dst, reqBW, QoSid);
@@ -154,7 +156,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     //int maxBW=0;
     entryT * exit = nullptr;
     for( entryT & e : possibles) {
-        if(isBetterPort(&e, exit ,qos)){
+        if(isBetterPort(&e,exit)){
             exit = &e;
         }
         //UsedBW* BW = &BWControl[(e.p)];
@@ -181,7 +183,8 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
 
     for(auto it : ports)
     {
-        entryT e(it.p,it.BW-BWControl[it.p][qos].bw);
+        //entryT e(it.p,it.BW-BWControl[it.p].bw);
+        entryT e(it.p,it.BW-BWControl.getBWbyQoS(it.p, qos));
         AvBWports.push_back(e);
     }
 
@@ -202,7 +205,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 for (auto it2 : info.ports){
                     if (it2.first != p.p){
                         //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
-                        if ((it2.second >= it.second.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort, qos))){
+                        if ((it2.second >= it.second.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))){
                             auxPort->p = it2.first;
                             auxPort->BW = it2.second;
                         }
@@ -214,7 +217,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 delete auxPort;
 
                 if(info.ports[p.p] >= bw){
-                    AplyReroute(info, dst, qos);
+                    AplyReroute(info, dst);
                     return p.p;
 
                 }
@@ -227,15 +230,16 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
 
 }
 
-void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst, const string& qos){
+void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst){
 
     for (auto it : info.movements){
         cache[dst][it.flow].p=it.dst;
-        BWControl[it.org][qos].bw += it.reqBW;
+        BWControl[it.org].bw += it.reqBW;
+        BWControl[it.dst].bw -= it.reqBW;
     }
 }
 
-bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT * port2, const string& qos){
+bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT * port2){
     if(port1 == nullptr)
     {
         return false;
@@ -246,10 +250,10 @@ bool QoSMultipathTable_Simple::isBetterPort(const entryT * port1, const entryT *
     }
     else{
         if(par("bigFlows").boolValue()){
-            return ((port1->BW-BWControl[port1->p][qos].bw) < (port2->BW-BWControl[port2->p][qos].bw));
+            return ((port1->BW-BWControl[port1->p].bw) < (port2->BW-BWControl[port2->p].bw));
         }
         else{
-            return ((port1->BW-BWControl[port1->p][qos].bw) > (port2->BW-BWControl[port2->p][qos].bw));
+            return ((port1->BW-BWControl[port1->p].bw) > (port2->BW-BWControl[port2->p].bw));
         }
     }
 
