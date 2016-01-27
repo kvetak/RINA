@@ -137,6 +137,8 @@ protected:
     static bool compareAscending(const entryT &i, const entryT &j);
     void AplyReroute(const RerouteInfo &info, const string& dst);
     bool isBetterPort(const entryT * port1, const entryT * port2, const string& qos);
+    bool isBetterPort(const entryT * port1, const entryT * port2);
+    vector<int> OrganiceFlows(map<int, cEntry> flows);
 };
 
 }
