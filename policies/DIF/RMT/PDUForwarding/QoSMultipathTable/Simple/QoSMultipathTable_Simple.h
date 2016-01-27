@@ -32,8 +32,14 @@ using namespace QoSMultipathTable;
 struct cEntry {
     RMTPort * p;
     int reqBW;
+    string QoS;
     simtime_t t;
-    cEntry();
+    cEntry(){
+        p = nullptr;
+        reqBW = 0;
+        t = 0;
+        QoS = "null";
+    }
 };
 
 struct UsedBW {
@@ -64,6 +70,9 @@ struct BWcontrol {
     void removeBW (RMTPort * port, string QoS, int bw){
         BW[port][QoS].bw-=bw;
     }
+    void removePort (RMTPort * port){
+        BW.erase(port);
+    }
 };
 
 struct Movement {
@@ -71,11 +80,13 @@ struct Movement {
     RMTPort * dst; //Destination port of the flow
     int flow;
     int reqBW;
-    Movement(RMTPort * Org, RMTPort * Dst, int Flow, int ReqBW){
+    string qos;
+    Movement(RMTPort * Org, RMTPort * Dst, int Flow, int ReqBW, string QoS){
         org = Org;
         dst = Dst;
         flow = Flow;
         reqBW = ReqBW;
+        qos = QoS;
     }
 };
 
@@ -83,8 +94,8 @@ struct RerouteInfo{
     vector<Movement> movements;
     map<RMTPort *, int> ports; //map<port, BW>
 
-    void addMov(RMTPort * org, RMTPort * dst, int flow, int reqBW){
-       Movement mov(org, dst, flow, reqBW);
+    void addMov(RMTPort * org, RMTPort * dst, int flow, int reqBW, string qos){
+       Movement mov(org, dst, flow, reqBW, qos);
        movements.push_back(mov);
     }
 
@@ -125,7 +136,7 @@ protected:
     static bool compareDecresing(const entryT &i, const entryT &j);
     static bool compareAscending(const entryT &i, const entryT &j);
     void AplyReroute(const RerouteInfo &info, const string& dst);
-    bool isBetterPort(const entryT * port1, const entryT * port2);
+    bool isBetterPort(const entryT * port1, const entryT * port2, const string& qos);
 };
 
 }

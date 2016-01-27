@@ -93,10 +93,10 @@ network InfectedMultipathFatTree
         }
 
         AS5: InteriorRouterNInt {
-            @display("p=488,65");
+            @display("p=495,68");
         }
         AS6: InteriorRouterNInt {
-            @display("p=650,65");
+            @display("p=657,68");
         }
     connections:
 
