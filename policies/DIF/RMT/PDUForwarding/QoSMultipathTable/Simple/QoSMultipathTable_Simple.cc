@@ -130,6 +130,9 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     int reqBW = QoS_BWreq[qos];
     vector<entryT> * entries = & table[dst];
 
+    if (entries->empty()){
+        return nullptr;
+    }
     vector<entryT> possibles;
 
     for( entryT & e : *entries) {
@@ -210,7 +213,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                 for (auto it2 : info.ports){
                         //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
                     if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
-                            && (it2.first != p.p) && (cache[dst][it].QoS==qos)){
+                            && (it2.first != p.p)){
                         auxPort->p = it2.first;
                         auxPort->BW = it2.second;
                     }

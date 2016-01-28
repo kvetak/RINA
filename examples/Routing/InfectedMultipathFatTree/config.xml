@@ -95,14 +95,12 @@
 					<DIF difName="A2A5" ipcAddress="2"/>
 					<DIF difName="A3A5" ipcAddress="2"/>
 					<DIF difName="A4A5" ipcAddress="2"/>
-					<DIF difName="A5A6" ipcAddress="1"/>
 				</APN>
 				<APN apn="AS.6_DC">
 					<DIF difName="A1A6" ipcAddress="2"/>
 					<DIF difName="A2A6" ipcAddress="2"/>
 					<DIF difName="A3A6" ipcAddress="2"/>
 					<DIF difName="A4A6" ipcAddress="2"/>
-					<DIF difName="A5A6" ipcAddress="2"/>
 				</APN>
 	
 				<!-- TOR side naming of the Shims -->
