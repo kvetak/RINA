@@ -35,4 +35,6 @@ simple RTTEstimatorPolicyLG like IntRTTEstimatorPolicy
         @signal[RTT_RTO_ESTIMATOR](type=double);
         @statistic[dtcp-rtt-rto](title="RTT-RTO Estimator"; source="RTT_RTO_ESTIMATOR"; record=vector, last);
         
+        @signal[MEASURED_RTT](type=double);
+        @statistic[measured-rtt](title="measured-rtt"; source="MEASURED_RTT"; record=vector, mean);
 }

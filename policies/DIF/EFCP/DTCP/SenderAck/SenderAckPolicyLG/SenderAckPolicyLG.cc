@@ -39,9 +39,12 @@ SenderAckPolicyLG::SenderAckPolicyLG()
 {
     load = 0;
     lastLoad = 0;
-    gamma = 0.005;
-    gamma1 = 0.005;
-    gamma2 = 0.025;
+    gamma = 0.05;
+    gamma1 = 0.05;
+    gamma2 = 0.5;
+//    gamma = 0.05;
+//    gamma1 = 0.05;
+//    gamma2 = 0.05;
     state = 1;
 }
 
@@ -57,7 +60,6 @@ void SenderAckPolicyLG::initialize() {
     sigStatECNMarked = registerSignal(ECN_MARKED_CTRL);
     sigStatApprLoad = registerSignal(APPR_LOAD);
 
-
     txControlPolicyLG = getRINAModule<TxControlPolicyLG*>(this, 1, {"txControlPolicy"});
 }
 
@@ -71,6 +73,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
     unsigned int endSeqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     unsigned int startSeqNum = endSeqNum;
     bool startTrue = false;
+    double lastECN = 0;
 
     int count = 0;
 
@@ -98,6 +101,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
     if(endSeqNum >= 2) {
         lastLoad = load;
         if(((NAckPDU*)dtpState->getCurrentPdu())->getFlags() & 0x01) {
+            lastECN = 1;
             emit(sigStatECNMarked, ((NAckPDU*)dtpState->getCurrentPdu())->getSeqNum());
             if(load == 0) {
                 load = 1;
@@ -116,7 +120,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
     emit(sigStatApprLoad, load);
 
-    txControlPolicyLG->updateRate(load, count);
+    txControlPolicyLG->updateRate(load, count, lastECN);
     dtcpState->setClosedWindow(false);
 
     return false;

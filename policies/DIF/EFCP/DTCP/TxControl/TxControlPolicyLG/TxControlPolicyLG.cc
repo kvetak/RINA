@@ -31,6 +31,7 @@
 
 const char * Tx_LG_RATE = "Tx_LG_RATE";
 const char * Tx_FLIGHT_SIZE = "Tx_LG_FLIGHT_SIZE";
+const char * USED_LOAD = "USED_LOAD";
 
 Register_Class(TxControlPolicyLG);
 
@@ -39,6 +40,11 @@ TxControlPolicyLG::TxControlPolicyLG()
     rate = INITIAL_RATE;
     alpha = ALPHA;
     flightSize = 0;
+    lastUpdate = 0;
+
+    totalPackets = 0;
+    ecnMarkedPackets = 0;
+    usedLoad = 0;
 }
 
 TxControlPolicyLG::~TxControlPolicyLG()
@@ -48,13 +54,36 @@ TxControlPolicyLG::~TxControlPolicyLG()
 void TxControlPolicyLG::initialize() {
     sigStatRate = registerSignal(Tx_LG_RATE);
     sigStatFlightSize = registerSignal(Tx_FLIGHT_SIZE);
+    sigStatUsedLoad = registerSignal(USED_LOAD);
 
     rttEstimatorPolicyLG = getRINAModule<RTTEstimatorPolicyLG*>(this, 1, {"rttEstimatorPolicy"});
 }
 
-void TxControlPolicyLG::updateRate(double load, double acked)
+void TxControlPolicyLG::updateRate(double load, double acked, double lastECN)
 {
-    rate = rate * alpha * (1 - rate - load) + rate;
+    if(load > 0)
+        alpha = ALPHA;
+
+    totalPackets++;
+    ecnMarkedPackets += lastECN;
+
+    simtime_t now = simTime();
+    if(now - lastUpdate >= rttEstimatorPolicyLG->getMinRTT()) {
+        if(usedLoad == 0 && load > 0)
+            usedLoad = 1;
+        else
+            usedLoad = (ecnMarkedPackets / totalPackets) * 0.04 + 0.96 * usedLoad;
+
+        load = usedLoad;
+
+        rate = rate * alpha * (1 - rate - load) + rate;
+        lastUpdate = now;
+        emit(sigStatUsedLoad, load);
+
+        totalPackets = 0;
+        ecnMarkedPackets = 0;
+    }
+
     flightSize -= acked;
 
     emit(sigStatRate, rate);
@@ -78,6 +107,8 @@ bool TxControlPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
     if(getActualRate(dtpState) < getRate()) {
         double addRate = (getRate() - getActualRate(dtpState));
         sendCredit = addRate * rttEstimatorPolicyLG->getMinRTT() / (SEGMENT_SIZE * 8);
+        if(sendCredit > 0 && sendCredit < 1 && flightSize == 0)
+            sendCredit = 1;
 
         // -------------  adding packets to send queue
         std::vector<DataTransferPDU*>::iterator it;

@@ -33,11 +33,11 @@
 #include "TxControlPolicyBase.h"
 #include "RTTEstimatorPolicyLG.h"
 
-#define INITIAL_RATE    0.04
-#define ALPHA           0.1
+#define INITIAL_RATE    0.03
+#define ALPHA           0.10
 #define RST_WND         1
-#define SEGMENT_SIZE    1460
-#define BANDWIDTH       9500000
+#define SEGMENT_SIZE    1500
+#define BANDWIDTH       95000000//9800000
 
 class TxControlPolicyLG : public TxControlPolicyBase
 {
@@ -48,8 +48,15 @@ private:
     double sendCredit;
     double cwnd;
 
+    double totalPackets;
+    double ecnMarkedPackets;
+    double usedLoad;
+
+    simtime_t lastUpdate;
+
     simsignal_t sigStatRate;
     simsignal_t sigStatFlightSize;
+    simsignal_t sigStatUsedLoad;
 
     RTTEstimatorPolicyLG* rttEstimatorPolicyLG;
 
@@ -58,7 +65,7 @@ public:
     virtual ~TxControlPolicyLG();
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 
-    void updateRate(double load, double acked);
+    void updateRate(double load, double acked, double lastECN);
     double getActualRate(DTPState* dtpState);
     double getRate();
 

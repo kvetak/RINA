@@ -30,18 +30,11 @@ network DCCongestion
         @display("bgb=1080,303");
 
     types:
-        channel FastChannel extends ned.DatarateChannel
-        {
-            @defaultname(FChan);
-            datarate = 20Mbps;
-            delay = 10ms;
-            ber = 0;
-        }
         channel SlowChannel extends ned.DatarateChannel
         {
             @defaultname(SChan);
             datarate = 10Mbps;
-            delay = 10ms;
+            delay = 0.012s;
             ber = 0;
         }
 

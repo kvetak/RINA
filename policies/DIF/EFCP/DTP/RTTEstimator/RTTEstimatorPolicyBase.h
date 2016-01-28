@@ -54,6 +54,8 @@ class RTTEstimatorPolicyBase : public EFCPPolicy
     virtual void initialize(){};
     virtual void handleMessage(cMessage* msg){};
     void defaultAction(DTPState* dtpState, DTCPState* dtcpState);
+
+    simsignal_t sigStatMeasuredRTT;
 };
 
 #endif /* RTTESTIMATORPOLICYBASE_H_ */

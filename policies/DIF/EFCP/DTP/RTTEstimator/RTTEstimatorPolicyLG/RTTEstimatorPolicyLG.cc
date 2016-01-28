@@ -31,6 +31,7 @@
 #include "ControlPDU_m.h"
 
 const char * RTT_RTO_ESTIMATOR = "RTT_RTO_ESTIMATOR";
+const char * MEASURED_RTT = "MEASURED_RTT";
 
 Register_Class(RTTEstimatorPolicyLG);
 
@@ -46,6 +47,7 @@ RTTEstimatorPolicyLG::~RTTEstimatorPolicyLG()
 }
 
 void RTTEstimatorPolicyLG::initialize() {
+    sigStatMeasuredRTT = registerSignal(MEASURED_RTT);
     sigStatRTTRTO = registerSignal(RTT_RTO_ESTIMATOR);
 }
 
@@ -70,6 +72,7 @@ bool RTTEstimatorPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
           RTO = MIN_RTO;
 
       emit(sigStatRTTRTO, RTO);
+      emit(sigStatMeasuredRTT, lastRTT);
 
       return false;
 }

@@ -34,4 +34,8 @@ simple TxControlPolicyLG like IntTxControlPolicy
 
         @signal[Tx_LG_FLIGHT_SIZE](type=double);
         @statistic[tx-flight-size](title="Tx Flight Size"; source="Tx_LG_FLIGHT_SIZE"; record=vector, last);
+
+        @signal[USED_LOAD](type=double);
+        @statistic[used-load](title="Used Load"; source="USED_LOAD"; record=vector, mean);
+        
 }
