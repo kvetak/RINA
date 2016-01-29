@@ -2,11 +2,19 @@
 
 <DA>
 	<Directory>
+		<APN apn="0.0.0.0_DC">
+   			<DIF difName="st0.0.0" ipcAddress="4" />
+  		</APN>
+  		<APN apn="0.1.0.0_DC">
+   			<DIF difName="st1.0.0" ipcAddress="4" />
+  		</APN>
 		<APN apn="0.0.0_DC">
 			<DIF difName="tf0.0.0" ipcAddress="0" />
 			<DIF difName="tf0.0.1" ipcAddress="0" />
 			<DIF difName="tf0.0.2" ipcAddress="0" />
 			<DIF difName="tf0.0.3" ipcAddress="0" />
+			<DIF difName="st0.0.0" ipcAddress="0" />
+   			<DIF difName="st1.0.0" ipcAddress="0" />
 		</APN>
 		<APN apn="0.0.1_DC">
 			<DIF difName="tf0.1.0" ipcAddress="0" />
@@ -37,6 +45,8 @@
 			<DIF difName="tf1.0.1" ipcAddress="0" />
 			<DIF difName="tf1.0.2" ipcAddress="0" />
 			<DIF difName="tf1.0.3" ipcAddress="0" />
+			<DIF difName="st0.0.0" ipcAddress="0" />
+   			<DIF difName="st1.0.0" ipcAddress="0" />
 		</APN>
 		<APN apn="0.1.1_DC">
 			<DIF difName="tf1.1.0" ipcAddress="0" />
@@ -6046,5 +6056,11 @@
 			<DIF difName="es3.3.9" ipcAddress="2" />
 			<DIF difName="es4.3.9" ipcAddress="2" />
 		</APN>
+		<APN apn="srcAP">
+   			<DIF difName="DC" ipcAddress="0.0.0.0" />
+  		</APN>
+  		<APN apn="dstAP">
+   			<DIF difName="DC" ipcAddress="0.1.0.0" />
+  		</APN>
 	</Directory>
 </DA>

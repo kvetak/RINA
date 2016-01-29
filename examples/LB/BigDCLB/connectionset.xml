@@ -2,6 +2,8 @@
 <ConnectionSet>
 	<!-- Allocate N-1 flows. -->
 	<SimTime t="0">
+		<Connection src="0.0.0.0_DC" dst="0.0.0_DC" qosReq="1"/>
+  		<Connection src="0.1.0.0_DC" dst="0.1.0_DC" qosReq="1"/>
 		<Connection src="0.0.0_DC" dst="1.0.0_DC" qosReq="1"/>
 		<Connection src="0.0.0_DC" dst="1.0.1_DC" qosReq="1"/>
 		<Connection src="0.0.0_DC" dst="1.0.2_DC" qosReq="1"/>

@@ -157,12 +157,12 @@ void AEPing::handleMessage(cMessage *msg)
 
 void AEPing::onStart() {
 
-    /************************************************************/
+    /************************************************************
     //Ehsan: Getting the most suitable server application instance to connect with
-    EV<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
-   // this->dstApName = getBestApp(this->srcApName, this->dstApName, this->sameApps);
-    EV<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
-    /************************************************************/
+    std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+    this->dstApName = getBestAppByAEN(this->srcApName, this->dstApName, this->dstAeName);
+    std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+    ***********************************************************/
 
     connect();
 }

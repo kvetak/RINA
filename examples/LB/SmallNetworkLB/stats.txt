@@ -1,3 +1,0 @@
-APN,API,AEName,AEInstance,Load
-App4,0,Ping,0,1
-App5,0,Ping,0,1

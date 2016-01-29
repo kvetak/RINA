@@ -41,9 +41,6 @@ class Stats
 
     private:
         std::map<std::pair<unsigned int, unsigned int>, std::string> m_oData;
-
-        unsigned int    m_nCols;
-        unsigned int    m_nRows;
         const int MAX_LOAD = 100;
 
     public:
@@ -62,6 +59,8 @@ class Stats
         int toInt(std::string str);
         int rowCount();
         int getLoad(std::string apn);
+        bool isAvailabile(std::string apn);
+        int getThreshold(std::string apn);
         void updateLoad(std::string apn, std::string api, std::string aen, std::string aei, bool increment);
         void rowErase(unsigned int row);
 
@@ -70,12 +69,23 @@ class Stats
         {
             m_nCols = std::max( m_nCols, nCol+1 );
             m_nRows = std::max( m_nRows, nRow+1 );
-            return m_oData[std::make_pair(nCol, nRow)];
+            return staticData[std::make_pair(nCol, nRow)];
         }
 
         inline unsigned int GetRows() { return m_nRows; }
         inline unsigned int GetCols() { return m_nCols; }
 
-        std::string getBestApp(std::string srcApp, std::string dstApp, std::string allApps);
+        std::string getBestAppByAppList(std::string srcApp, std::string dstApp, std::string allApps);
+        std::string getBestAppByAEN(std::string srcApp, std::string dstApp, std::string aen);
+
+        static std::map<std::pair<unsigned int, unsigned int>, std::string> staticData;
+        static bool enableLB;
+        unsigned int    m_nCols;
+        unsigned int    m_nRows;
+
+        static unsigned int    staticCols;
+        static unsigned int    staticRows;
+
+        void printStatus();
 };
 #endif

@@ -36,6 +36,8 @@
 #include "ExternConsts.h"
 #include "CDAPMessage_m.h"
 
+//#include "Stats.h"
+
 class AE : public AEBase
 {
   public:
@@ -103,6 +105,9 @@ class AE : public AEBase
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
+
+    //Ehsan: Getting the most suitable server application instance to connect with
+    std::string getBestAppByAEN(std::string srcApp, std::string dstApp, std::string aen);
 
 };
 
