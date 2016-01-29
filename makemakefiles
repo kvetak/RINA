@@ -1,0 +1,12 @@
+#
+# Usage:
+#    make -f makemakefiles
+# or, for Microsoft Visual C++:
+#    nmake -f makemakefiles MMOPT=-n
+#
+
+MAKEMAKE=opp_makemake $(MMOPT)
+
+all:
+	cd policies && $(MAKEMAKE) -f --deep --make-so -o rinasim -O out -I../src/DIF/Routing -I../src/Common -I../src/DIF/RMT -I../src/DIF/EFCP/DTCP -I../src/DAF/DA -I../src/DIF/RA -I../src/DIF/EFCP/DTP -I../src/DAF/CDAP -I../src/DIF/Enrollment -I../src/DIF/FA -I../src/DIF/EFCP/EFCPTable -I../src/DIF/RIB -I../src/DAF/IRM -I../src/DIF/EFCP -I../src/DIF/RA/PDUFG -I../src/DIF/Delimiting -I../src/DAF/AE -I../src/Other/Infection -I../src/DAF/AE/AEConstant -L../out/$$\(CONFIGNAME\)/src -lrinasimcore
+	cd src && $(MAKEMAKE) -f --deep --make-lib -o rinasimcore -O out -I../policies/DIF/RA/QueueAlloc -I../policies/DIF/EFCP/DTCP/SenderAck -I../policies/DIF/RA/AddressComparator -I../policies/DIF/EFCP/DTCP/TxControl -I../policies/DIF/EFCP -I../policies/DIF/EFCP/DTCP/RcvrControlAck -I../policies/DIF/EFCP/DTCP/ECNSlowDown -I../policies/DIF/FA/NewFlowRequest -I../policies/DIF/EFCP/DTCP/LostControlPDU -I../policies/DIF/EFCP/DTP/SenderInactivity -I../policies/DIF/RMT/Scheduler -I../policies/DIF/EFCP/DTP/InitialSeqNum -I../policies/DIF/EFCP/DTCP/SendingAck -I../policies/DIF/EFCP/DTCP/RcvrFC -I../policies/DIF/EFCP/DTCP/ReceivingFC -I../policies/DIF/EFCP/DTCP/RxTimerExpiry -I../policies/DIF/RA -I../policies/DIF/FA -I../policies/DIF/EFCP/DTCP/ReconcileFC -I../policies/DIF/EFCP/DTP/RcvrInactivity -I../policies/DIF/RMT/PDUForwarding -I../policies/DIF/EFCP/DTCP/RcvFCOverrun -I../policies/DIF/EFCP/DTP -I../policies/DIF/RMT/Monitor -I../policies/DIF/EFCP/DTCP/ECN -I../policies/DIF/EFCP/DTCP/NoRateSlowDown -I../policies/DIF/EFCP/DTCP/NoOverridePeak -I../policies/DIF/RA/QueueIDGen -I../policies/DIF/FA/AllocateRetry -I../policies/DIF/EFCP/DTCP/SndFCOverrun -I../policies/DIF/RMT/MaxQueue -I../policies/DIF/EFCP/DTCP/RcvrAck -I../policies/DIF/EFCP/DTCP/RateReduction -I../policies/DIF/EFCP/DTP/RTTEstimator -I../policies/DIF/RMT/Monitor/ModularMonitor -I../policies/DIF/RMT/PDUForwarding/SimpleDCForwarding -I../policies/DIF/RMT/Monitor/SmartMonitor -L../out/$$\(CONFIGNAME\)/policies
