@@ -62,12 +62,14 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
 
     if(next == nullptr) {
         next = portLookup(dstAddr, pdu->getConnId().getQoSId());
-        e->p = next;//Port inserted in cache
-        e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
-        e->QoS = QoSid;
-        string aux = pdu->getConnId().getQoSId();
-        //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
-        BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
+        if(next != nullptr){
+            e->p = next;//Port inserted in cache
+            e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
+            e->QoS = QoSid;
+            string aux = pdu->getConnId().getQoSId();
+            //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
+            BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
+        }
     }
 
     //Only for debug
@@ -135,26 +137,62 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     }
     vector<entryT> possibles;
 
+    int max = 0;
+    RMTPort * bestOption = nullptr;
+
     for( entryT & e : *entries) {
         //UsedBW* BW = &BWControl[(e.p)];
         //if((e.BW - BW->bw) >= reqBW) {
+        if(par("Reroute").boolValue()){
+            if((e.BW - BWControl.getBWbyQoS(e.p, qos)) > max){
+                bestOption = e.p;
+            }
+        }
         if ((e.BW - BWControl.getTotalBW(e.p)) >= reqBW){
             possibles.push_back(e);
         }
     }
 
+
     if(possibles.empty()) {
-        long totalBW = 0;
-            for (entryT & it : *entries)
-            {
-               //totalBW += it.BW-BWControl[it.p].bw;
-                totalBW += it.BW-BWControl.getTotalBW(it.p);
+        if(par("Reroute").boolValue()){
+            long totalBW = 0;
+                for (entryT & it : *entries)
+                {
+                   //totalBW += it.BW-BWControl[it.p].bw;
+                    totalBW += it.BW-BWControl.getTotalBW(it.p);
+                }
+            if(totalBW >= reqBW){
+
+                RMTPort * result = rerouteFlows(*entries, dst, reqBW, QoSid);
+                if (result!=nullptr){
+                    return result;
+                }
+                else{
+                    if(par("DropIfNoBW").boolValue()){
+                        return bestOption;
+                    }
+                    else{
+                        return nullptr;
+                    }
+                }
             }
-        if(totalBW >= reqBW){
-            return rerouteFlows(*entries, dst, reqBW, QoSid);
+            else{
+                if(par("DropIfNoBW").boolValue()){
+                    return bestOption;
+                }
+                else{
+                    return nullptr;
+                }
+            }
         }
         else{
-            return nullptr;
+            if(par("DropIfNoBW").boolValue()){
+                return bestOption;
+            }
+            else{
+                return nullptr;
+            }
         }
     }
 

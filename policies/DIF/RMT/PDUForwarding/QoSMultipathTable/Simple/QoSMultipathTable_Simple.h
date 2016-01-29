@@ -119,7 +119,7 @@ public:
     void addReplace(const string &addr, vector<entryT> ports);
 
 protected:
-    map<string, map<int, cEntry>> cache;
+    map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
     BWcontrol BWControl;
     double cleanCache_t;
 

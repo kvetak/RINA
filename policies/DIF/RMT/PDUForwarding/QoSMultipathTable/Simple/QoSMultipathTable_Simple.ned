@@ -35,4 +35,6 @@ simple QoSMultipathTable_Simple like iQoSMultipathTable
         xml QoS_BW;
         bool bigFlows = default(false);
         bool QoSSpliter = default(false);
+        bool Reroute = default(false);
+        bool DropIfNoBW = defautl(false);
 }
