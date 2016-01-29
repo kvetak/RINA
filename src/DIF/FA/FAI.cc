@@ -40,6 +40,7 @@ FAI::~FAI() {
     localCEPId      = VAL_UNDEF_CEPID;
     remotePortId    = VAL_UNDEF_PORTID;
     remoteCEPId     = VAL_UNDEF_CEPID;
+
     //if (creReqTimer)
     //    cancelAndDelete(creReqTimer);
 }

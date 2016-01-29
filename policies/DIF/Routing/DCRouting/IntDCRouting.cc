@@ -88,9 +88,17 @@ namespace NSPSimpleDC {
         } else if(msg == sched) {
             LinksUpdate update;
             for(const auto & linkData : linksOk) {
+                if(linkData.second.link.src == DCAddr()) {
+                    cerr << "Invalid link in ok list" << endl;
+                    continue;
+                }
                 update.linksStatus.push_back(linkData.second);
             }
             for(const auto & linkData : linksKo) {
+                if(linkData.second.link.src == DCAddr()) {
+                    cerr << "Invalid link in ko list" << endl;
+                    continue;
+                }
                 update.linksStatus.push_back(linkData.second);
             }
 
@@ -105,6 +113,10 @@ namespace NSPSimpleDC {
         } else  if(msg == start) {
             LinksUpdate update;
             for(const auto & linkData : linksKo) {
+                if(linkData.second.link.src == DCAddr()) {
+                    cerr << "Start - Invalid link in ko list" << endl;
+                    continue;
+                }
                 update.linksStatus.push_back(linkData.second);
             }
 
@@ -135,6 +147,7 @@ namespace NSPSimpleDC {
         torXpod = par("torXpod").longValue();
         fabricXpod = par("fabricXpod").longValue();
         spineXfabric = par("spineXfabric").longValue();
+        edgeSets = par("edgeSets").longValue();
         updateWait = par("updateWait").doubleValue();
         expiration = par("expiration").doubleValue();
         double starttime = par("starttime").doubleValue();
@@ -167,6 +180,10 @@ namespace NSPSimpleDC {
                 continue;
             }
 
+            if(l.link.src == DCAddr(-1,0,0)) {
+                cerr << "At " << Im << ", received invalid link info from "<< u->getSource() << endl;
+                continue;
+            }
 
             if(l.status) {
                 if(linksKo.find(l.link) != linksKo.end()) {
@@ -257,6 +274,11 @@ namespace NSPSimpleDC {
                 t[DCAddr(2, f, s)];
             }
         }
+        for(int p = 0; p < edgeSets; p++) {
+            for(int f = 0; f < fabricXpod; f++) {
+                t[DCAddr(3, p, f)];
+            }
+        }
 
         queue<DCAddr> next;
         for(auto & l : myLinks) {
@@ -315,6 +337,11 @@ namespace NSPSimpleDC {
                 for(int p = 0; p < pods; p++) {
                     ret.push_back( DCAddr(1, p, n.a) );
                 }
+                for(int p = 0; p < edgeSets; p++) {
+                    ret.push_back( DCAddr(3, p, n.a) );
+                }
+                break;
+            case 3 :
                 break;
         }
 

@@ -22,10 +22,11 @@ namespace Infection {
                 cModule * mod, * rmt;
 
                 DCAddr Im, current;
-                int pods, torXpod, fabricXpod, spineXfabric;
-                bool toTors, toFabric, toSpines;
+                int pods, torXpod, fabricXpod, spineXfabric, edgeSets;
+                bool toTors, toFabric, toSpines, toEdges;
 
-                double finTime, interTime;
+                double interTime;
+                int loopRem;
 
                 ConnectionId connID;
                 Address srcAddr, dstAddr;

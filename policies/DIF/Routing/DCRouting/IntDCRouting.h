@@ -106,7 +106,7 @@ protected:
     DCAddr Im;
 
     cMessage * clean, * start, * sched;
-    int pods, torXpod, fabricXpod, spineXfabric;
+    int pods, torXpod, fabricXpod, spineXfabric, edgeSets;
     simtime_t updateWait, expiration;
 
     map<linkId, linkInfo> myLinks, linksOk, linksKo;

@@ -106,6 +106,11 @@ namespace NSPSimpleDC {
                         }
                     }
                 }break;
+                case 3: {
+                    if(tn.d > 3 || (int)tn.L.size() != 1) {
+                        ret.insert(dst);
+                    }
+                }break;
 
             }
         }

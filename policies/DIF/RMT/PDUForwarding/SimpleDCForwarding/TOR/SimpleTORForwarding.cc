@@ -138,18 +138,21 @@ namespace NSPSimpleDC {
             case 0:
                 if(S == upCount) {
                     table.erase(n_addr);
+                    refreshCache (n_addr);
                     return;
                 } break;
             case 1:
             case 3:
                 if(S == 1 && pIds.find(n_addr.b) != pIds.end() ){
                     table.erase(n_addr);
+                    refreshCache (n_addr);
                     return;
                 }
                 break;
             case 2:
                 if(S == 1 && pIds.find(n_addr.a) != pIds.end() ){
                     table.erase(n_addr);
+                    refreshCache (n_addr);
                     return;
                 }
                 break;

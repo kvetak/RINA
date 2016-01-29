@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<ConnectionSets>
+    <ConnectionSet id="all">
+        <SimTime t="0">
+            <Connection src="101_Layer11" dst="106_Layer11" qosReq="1"/>
+            <Connection src="102_Layer11" dst="106_Layer11" qosReq="1"/>
+            <Connection src="103_Layer11" dst="107_Layer11" qosReq="1"/>
+            <Connection src="104_Layer11" dst="108_Layer11" qosReq="1"/>
+            <Connection src="105_Layer11" dst="108_Layer11" qosReq="1"/>        
+            <Connection src="107_Layer11" dst="106_Layer11" qosReq="1"/>
+            <Connection src="107_Layer11" dst="108_Layer11" qosReq="1"/>
+        </SimTime>
+    </ConnectionSet>
+</ConnectionSets> 

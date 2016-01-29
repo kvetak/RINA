@@ -458,10 +458,9 @@ void DTP::delimitFromRMT()
   Enter_Method_Silent();
   PDUQ_t* pduQ = state->getReassemblyPDUQ();
 
-  for (auto it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= state->getRcvLeftWinEdge();)
+  for (auto it = pduQ->begin();
+          it != pduQ->end() && (*it)->getSeqNum() <= state->getRcvLeftWinEdge();)
   {/* DO NOT FORGET TO PUT '++it' in all cases where we DO NOT erase PDUs from queue */
-
-
     send((*it)->decapsulate(), northO);
     delete (*it);
     it = pduQ->erase(it);
