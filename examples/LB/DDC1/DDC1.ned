@@ -16,6 +16,7 @@
 package rina.examples.LB.DDC1;
 
 import rina.src.CS.Host1AP;
+import rina.src.CS.HostNAP;
 import rina.src.CS.HostNAPNAE;
 import rina.src.DAF.AE.AEData.AEData;
 import rina.src.Other.FlowsListener.FlowListener;
@@ -150,22 +151,28 @@ network DDC1
         }
 
         H_0_0_0: Host1AP {
-            @display("p=50,585");
+            @display("p=30,574");
         }
         H_1_0_0: Host1AP {
-            @display("p=318,580");
+            @display("p=320,562");
         }
         H_0_1_0: Host1AP {
-            @display("p=131,574");
+            @display("p=93,574");
         }
         H_1_1_0: Host1AP {
-            @display("p=392,560");
+            @display("p=383,562");
         }
         H_0_2_0: HostNAPNAE {
-            @display("p=220,585");
+            @display("p=161,574");
         }
         H_1_2_0: HostNAPNAE {
-            @display("p=467,562");
+            @display("p=447,562");
+        }
+        H_0_3_0: HostNAP {
+            @display("p=223,574");
+        }
+        H_1_3_0: HostNAP {
+            @display("p=513,562");
         }
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;
@@ -258,4 +265,6 @@ network DDC1
         H_0_1_0.medium <--> T_0_1.medium++;
         H_0_2_0.medium <--> T_0_2.medium++;
         H_1_2_0.medium <--> T_1_2.medium++;
+        H_0_3_0.medium <--> T_0_3.medium++;
+        H_1_3_0.medium <--> T_1_3.medium++;
 }
