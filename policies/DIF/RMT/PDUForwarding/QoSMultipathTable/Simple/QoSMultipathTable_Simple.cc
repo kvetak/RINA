@@ -143,7 +143,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     for( entryT & e : *entries) {
         //UsedBW* BW = &BWControl[(e.p)];
         //if((e.BW - BW->bw) >= reqBW) {
-        if(par("Reroute").boolValue()){
+        if(!par("DropIfNoBW").boolValue()){
             if((e.BW - BWControl.getBWbyQoS(e.p, qos)) > max){
                 bestOption = e.p;
             }
@@ -169,7 +169,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
                     return result;
                 }
                 else{
-                    if(par("DropIfNoBW").boolValue()){
+                    if(!par("DropIfNoBW").boolValue()){
                         return bestOption;
                     }
                     else{
@@ -178,7 +178,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
                 }
             }
             else{
-                if(par("DropIfNoBW").boolValue()){
+                if(!par("DropIfNoBW").boolValue()){
                     return bestOption;
                 }
                 else{
@@ -187,7 +187,7 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
             }
         }
         else{
-            if(par("DropIfNoBW").boolValue()){
+            if(!par("DropIfNoBW").boolValue()){
                 return bestOption;
             }
             else{
