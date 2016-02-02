@@ -179,10 +179,7 @@ void AEPing::afterOnStart() {
 }
 
 void AEPing::onPing() {
-    if(FlowObject == nullptr) {
-        std::cerr << "Flow still not requested"<<endl;
-        return;
-    }
+
     //Create PING messsage
     CDAP_M_Read* ping = new CDAP_M_Read(VAL_MODULEPATH);
     object_t obj;
@@ -199,10 +196,7 @@ void AEPing::onPing() {
 }
 
 void AEPing::onStop() {
-    if(FlowObject == nullptr) {
-        std::cerr << "Flow still not requested"<<endl;
-        return;
-    }
+    
     //Call flow deallocation submit
     sendDeallocationRequest(FlowObject);
 }
