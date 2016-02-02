@@ -36,12 +36,14 @@ class PingMsg : public CDAP_M_Read {
 public:
     PingMsg();
     simtime_t pingAt;
+    virtual PingMsg *dup() const;
 };
 
 class PongMsg : public CDAP_M_Read_R {
 public:
     PongMsg(simtime_t pingAt);
     simtime_t pingAt, pongAt;
+    virtual PongMsg *dup() const;
 };
 
 class AESender : public AE

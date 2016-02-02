@@ -10,18 +10,20 @@ namespace Infection {
 
     void DCInfection::initialize() {
         double iniT = par("iniTime").doubleValue();
-        if(iniT<0 || par("infectedIPC").stdstringValue() == "") { return; }
+        loopRem = par("loop").longValue();
+
+        if(loopRem <= 0 || iniT<0 || par("infectedIPC").stdstringValue() == "") { return; }
 
         toTors = par("toTors");
         toFabric = par("toFabric");
         toSpines = par("toSpines");
+        toEdges = par("toEdges");
 
         if(toTors || toFabric || toSpines) {
                 scheduleAt(iniT, new cMessage());
         } else { return; }
 
         interTime = par("interTime").doubleValue();
-        finTime = par("finTime").doubleValue();
 
         mod = this->getParentModule()->getSubmodule(par("infectedIPC").stringValue());
         if(mod==NULL) { return; }
@@ -57,17 +59,19 @@ namespace Infection {
         torXpod = par("torXpod").longValue();
         fabricXpod = par("fabricXpod").longValue();
         spineXfabric = par("spineXfabric").longValue();
+        edgeSets =  par("edgeSets").longValue();
 
         if(pods < 1) { pods = 1; }
         if(torXpod < 1) { torXpod = 1; }
         if(fabricXpod < 1) { fabricXpod = 1; }
         if(spineXfabric < 1) { spineXfabric = 1; }
+        if(edgeSets < 0) { edgeSets = 0; }
     }
 
 
     void DCInfection::handleMessage(cMessage *msg) {
         simtime_t now = simTime();
-        if(now >= finTime) { delete msg; return; }
+        if(loopRem <= 0) { delete msg; return; }
 
         PDU * pdu = getPDU();
         if(pdu != nullptr) {
@@ -124,7 +128,7 @@ namespace Infection {
                 break;
             case 2:
                 if(!toSpines) {
-                    current.type = 0;
+                    current.type = 3;
                     current.a = 0;
                     current.b = -1;
                     setNext();
@@ -136,6 +140,27 @@ namespace Infection {
                     current.a++;
                 }
                 if(current.a == fabricXpod) {
+                    current.type = 3;
+                    current.a = 0;
+                    current.b = -1;
+                    setNext();
+                    return;
+                }
+                break;
+            case 3:
+                if(!toEdges) {
+                    current.type = 0;
+                    current.a = 0;
+                    current.b = -1;
+                    setNext();
+                    return;
+                }
+                current.b += 1;
+                if(current.b == fabricXpod) {
+                    current.b = 0;
+                    current.a++;
+                }
+                if(current.a == edgeSets) {
                     current.type = 0;
                     current.a = 0;
                     current.b = -1;
@@ -145,7 +170,7 @@ namespace Infection {
                 break;
         }
 
-        if(current == Im && tCurr != Im) { setNext(); }
+        if(current == Im && tCurr != Im) { loopRem--; setNext(); }
         else {
             dstAddr = Address(current.toString().c_str(), dstAddr.getDifName().getName().c_str());
        //     cout << Im << " -> " << current << endl;

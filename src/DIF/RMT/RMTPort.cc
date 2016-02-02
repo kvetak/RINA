@@ -90,9 +90,6 @@ void RMTPort::handleMessage(cMessage* msg)
     }
     else
     {
-//        PDU* pdu = dynamic_cast<PDU*>(msg);
-//        if (pdu != nullptr)
-//        {
             if (msg->getArrivalGate() == southInputGate) // incoming message
             {
               SDUData* sduData = dynamic_cast<SDUData*>(msg);
@@ -157,11 +154,6 @@ void RMTPort::handleMessage(cMessage* msg)
                     emit(sigRMTPortReadyToWrite, this);
                 }
             }
-//        }
-//        else
-//        {
-//            EV << "this type of message isn't supported!" << endl;
-//        }
     }
 }
 

@@ -65,6 +65,7 @@ protected:
     // Contains the list of N-DIF neighbors of this IPC Address.
     //
     NeighborState neiState;
+    Address ipcAddr;
 
     // Initialize.
     void initialize();

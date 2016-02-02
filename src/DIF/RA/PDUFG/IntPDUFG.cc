@@ -34,24 +34,32 @@ void IntPDUFG::initialize(){
     //Set Forwarding policy
     fwd = getRINAModule<IntPDUForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
     onPolicyInit();
+
+    ipcAddr = Address( getModuleByPath("^.^")->par("ipcAddress").stringValue(),
+                getModuleByPath("^.^")->par("difName").stringValue());
 }
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
-
-    RMTPorts ports = fwd->lookup(destination, qos);
-    if(ports.size() >= 0){
-        for(RMTPorts::iterator it = ports.begin(); it != ports.end(); it++){
-            RMTPort * p = (*it);
-            for(EIter it2 = neiState.begin(); it2 != neiState.end(); ++it2 ){
-                PDUFGNeighbor * e = (*it2);
-                // Found the port used for the forwarding table; so it's the next neighbor.
-                if(p == e->getPort()){
-                        return e;
+    EV << "Search for " << destination << " with QoS "<< qos << endl;
+    if(ipcAddr.getDifName().getName() != destination.getDifName().getName()) {
+        EV << "Invalid search at "<< ipcAddr << endl;
+    } else {
+        RMTPorts ports = fwd->lookup(destination, qos);
+        if(ports.size() >= 0){
+            for(RMTPorts::iterator it = ports.begin(); it != ports.end(); it++){
+                RMTPort * p = (*it);
+                for(EIter it2 = neiState.begin(); it2 != neiState.end(); ++it2 ){
+                    PDUFGNeighbor * e = (*it2);
+                    // Found the port used for the forwarding table; so it's the next neighbor.
+                    if(p == e->getPort()){
+                        EV<< "Found "<< e->getDestAddr() << " -> "<< e->getPort()->getFullPath()<<endl;
+                            return e;
+                    }
                 }
             }
         }
+        EV<< "Not found"<<endl;
     }
-
     return nullptr;
 
 }

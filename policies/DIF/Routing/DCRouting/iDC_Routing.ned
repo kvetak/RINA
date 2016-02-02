@@ -17,6 +17,7 @@ moduleinterface iDC_Routing extends IntRouting
         int torXpod;
         int fabricXpod;
         int spineXfabric;
+        int edgeSets;
         
         double starttime;
         double updateWait;

@@ -1,3 +1,4 @@
+
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -532,7 +533,7 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), flow->getConId().getQoSId());
 
     if(e)
     {
@@ -609,7 +610,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
+    Address addrs = Address(dstAPN.getName());
+    PDUFGNeighbor* e = fwdtg->getNextNeighbor(addrs, qosID);
 
     if(e)
     {
@@ -750,7 +752,7 @@ void RA::removeNM1FlowBindings(NM1FlowTableItem* ftItem)
  */
 void RA::removeNM1Flow(Flow *flow)
 {
-	Enter_Method("removeNM1Flow()");
+  Enter_Method("removeNM1Flow()");
     auto flowItem = flowTable->lookup(flow);
     ASSERT(flowItem != nullptr);
     flowItem->setConnectionStatus(NM1FlowTableItem::CON_RELEASING);
@@ -795,8 +797,8 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
-    PDUFGNeighbor * te = fwdtg->getNextNeighbor(flow->getDstAddr(),
-            flow->getConId().getQoSId());
+    Address addrs = Address(dstAddr);
+    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosID);
 
     if (te)
     {
@@ -914,27 +916,3 @@ bool RA::sleepFlow(Flow * flow, simtime_t wakeUp) {
     }
     return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

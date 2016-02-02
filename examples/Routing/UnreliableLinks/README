@@ -1,0 +1,8 @@
+[Example] Small mesh network with unreliable links
+
+Example to test Forwwarding in a network with unreliable links.
+
+3 Configurations:
+-HopsSingle1Entry : Simple forwarding
+-HopsSingleMEntries : ECMP forwarding
+-HopsFloodMEntries : Directed Flood forwarding
