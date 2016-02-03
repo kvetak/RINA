@@ -34,11 +34,15 @@ struct cEntry {
     int reqBW;
     string QoS;
     simtime_t t;
+    string dst;
+    int DstCepId;
     cEntry(){
         p = nullptr;
         reqBW = 0;
         t = 0;
         QoS = "null";
+        dst = "null";
+        DstCepId = 0;
     }
 };
 
@@ -138,7 +142,8 @@ protected:
     void AplyReroute(const RerouteInfo &info, const string& dst);
     bool isBetterPort(const entryT * port1, const entryT * port2, const string& qos);
     bool isBetterPort(const entryT * port1, const entryT * port2);
-    vector<int> OrganiceFlows(map<int, cEntry> flows);
+    vector<cEntry> OrganiceFlows(map<string, map<int, cEntry>> flows);
+    bool SameNextHop(string dst1, string dst2);
 };
 
 }

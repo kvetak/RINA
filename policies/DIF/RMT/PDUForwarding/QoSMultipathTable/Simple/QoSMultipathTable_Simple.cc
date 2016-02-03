@@ -66,6 +66,8 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
             e->p = next;//Port inserted in cache
             e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
             e->QoS = QoSid;
+            e->dst = dstAddr;
+            e->DstCepId = pdu->getConnId().getDstCepId();
             string aux = pdu->getConnId().getQoSId();
             //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
             BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
@@ -238,27 +240,30 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
         sort(AvBWports.begin(), AvBWports.end(), compareDecresing);
     }
 
-    vector<int> flows = OrganiceFlows(cache[dst]);
+    vector<cEntry> flows = OrganiceFlows(cache);
     for(auto p: AvBWports){
         RerouteInfo info(AvBWports);
 
         //for(auto it : cache[dst]){
         for(auto it : flows){
             //if((it.second.p==p.p) && (it.second.reqBW>0)){
-            if((cache[dst][it].p==p.p) && (cache[dst][it].reqBW>0)){
+            //if((cache[dst][it].p==p.p) && (cache[dst][it].reqBW>0)){
+            if((it.p==p.p) && (it.reqBW > 0) && SameNextHop(dst, it.dst)){
                 //if flow can be rerouted
                 entryT * auxPort = new entryT(NULL, 0);
                 for (auto it2 : info.ports){
                         //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
-                    if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
+                    //if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
+                          //  && (it2.first != p.p)){
+                    if ((it2.second >= it.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
                             && (it2.first != p.p)){
                         auxPort->p = it2.first;
                         auxPort->BW = it2.second;
                     }
                 }
-                info.addMov(p.p, auxPort->p, it, cache[dst][it].reqBW, qos);
-                info.ports[p.p]+=cache[dst][it].reqBW;
-                info.ports[auxPort->p]-=cache[dst][it].reqBW;
+                info.addMov(p.p, auxPort->p, it.DstCepId, it.reqBW, qos);
+                info.ports[p.p]+=it.reqBW;
+                info.ports[auxPort->p]-=it.reqBW;
                 delete auxPort;
 
                 if(info.ports[p.p] >= bw){
@@ -275,18 +280,51 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
 
 }
 
-vector<int> QoSMultipathTable_Simple::OrganiceFlows(map<int, cEntry> flows){
-    vector<int> result;
-    while (flows.size()>0)
-    {
-        int max = flows.begin()->first;
-        for(auto it : flows){
-            if(it.second.reqBW > flows[max].reqBW){
-               max=it.first;
+bool QoSMultipathTable_Simple::SameNextHop(string dst1, string dst2){
+
+    if(dst1 == dst2){
+        return true;
+    }
+
+    vector<entryT> * entries1 = & table[dst1];
+    vector<entryT> * entries2 = & table[dst2];
+
+    for (auto it1 : *entries1){
+        for (auto it2 : *entries2){
+            if(it1.p == it2.p){
+                return true;
             }
         }
-        result.push_back(max);
-        flows.erase(max);
+    }
+
+    return false;
+}
+
+vector<cEntry> QoSMultipathTable_Simple::OrganiceFlows(map<string, map<int, cEntry>> flows){
+    vector<cEntry> result;
+    while (flows.size()>0)
+    {
+        //int max = flows.begin()->first;
+        for(auto it : flows){
+            int max = it.second.begin()->first;
+            cEntry entry = it.second.begin()->second;
+            for (auto it2 : it.second)
+            {
+                if(it2.second.reqBW > it.second[max].reqBW){
+                    max=it2.first;
+                    entry=it.second[max];
+                }
+            }
+            result.push_back(entry);
+            it.second.erase(max);
+            if(it.second.size()==0)
+            {
+                flows.erase(it.first);
+            }
+
+        }
+        //result.push_back(max);
+        //flows.erase(max);
     }
     return result;
 }
