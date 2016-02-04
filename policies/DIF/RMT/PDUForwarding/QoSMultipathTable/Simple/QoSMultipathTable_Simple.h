@@ -110,6 +110,31 @@ struct RerouteInfo{
         }
     }
 };
+
+struct orderedList{
+    list<cEntry*> List;
+    void addElement (cEntry* entry){
+        if (List.empty()){
+            List.push_front(entry);
+        }
+        else{
+            for(list<cEntry*>::iterator it=List.begin(); it!=List.end(); it++){
+                if(entry->reqBW >= (*it)->reqBW){
+                    List.insert(it, entry);
+                    break;
+                }
+            }
+            List.push_back(entry);
+        }
+    }
+    void erraseElement (cEntry* entry){
+        for(list<cEntry*>::iterator it=List.begin(); it!=List.end(); it++){
+            if(entry == (*it)){
+                List.erase(it);
+            }
+        }
+    }
+};
 class QoSMultipathTable_Simple: public iQoSMultipathTable {
 
 public:
@@ -126,6 +151,7 @@ protected:
     map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
     BWcontrol BWControl;
     double cleanCache_t;
+    orderedList orderedCache;
 
     map<string, vector<entryT> > table;
 
@@ -142,7 +168,7 @@ protected:
     void AplyReroute(const RerouteInfo &info, const string& dst);
     bool isBetterPort(const entryT * port1, const entryT * port2, const string& qos);
     bool isBetterPort(const entryT * port1, const entryT * port2);
-    vector<cEntry> OrganiceFlows(map<string, map<int, cEntry>> flows);
+    //vector<cEntry> OrganiceFlows(map<string, map<int, cEntry>> &flows);
     bool SameNextHop(string dst1, string dst2);
 };
 

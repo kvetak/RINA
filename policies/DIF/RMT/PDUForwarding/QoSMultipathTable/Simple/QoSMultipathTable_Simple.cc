@@ -68,6 +68,7 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
             e->QoS = QoSid;
             e->dst = dstAddr;
             e->DstCepId = pdu->getConnId().getDstCepId();
+            orderedCache.addElement(e);
             string aux = pdu->getConnId().getQoSId();
             //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
             BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
@@ -91,8 +92,11 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         e->t = simTime();
     } else {
         //BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
-        auto aux = cache[dstAddr][pdu->getConnId().getDstCepId()];
-        BWControl.removeBW(aux.p, QoSid, aux.reqBW);
+        BWControl.removeBW(cache[dstAddr][pdu->getConnId().getDstCepId()].p,
+                QoSid,
+                cache[dstAddr][pdu->getConnId().getDstCepId()].reqBW);
+
+        orderedCache.erraseElement(&cache[dstAddr][pdu->getConnId().getDstCepId()]);
         cache[dstAddr].erase(pdu->getConnId().getDstCepId());
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
@@ -240,30 +244,28 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
         sort(AvBWports.begin(), AvBWports.end(), compareDecresing);
     }
 
-    vector<cEntry> flows = OrganiceFlows(cache);
+    //vector<cEntry> flows = OrganiceFlows(cache);
     for(auto p: AvBWports){
         RerouteInfo info(AvBWports);
 
         //for(auto it : cache[dst]){
-        for(auto it : flows){
-            //if((it.second.p==p.p) && (it.second.reqBW>0)){
-            //if((cache[dst][it].p==p.p) && (cache[dst][it].reqBW>0)){
-            if((it.p==p.p) && (it.reqBW > 0) && SameNextHop(dst, it.dst)){
+        for(auto it : orderedCache.List){
+            if((it->p==p.p) && (it->reqBW > 0) && SameNextHop(dst, it->dst)){
                 //if flow can be rerouted
                 entryT * auxPort = new entryT(NULL, 0);
                 for (auto it2 : info.ports){
                         //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
                     //if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
                           //  && (it2.first != p.p)){
-                    if ((it2.second >= it.reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
+                    if ((it2.second >= it->reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
                             && (it2.first != p.p)){
                         auxPort->p = it2.first;
                         auxPort->BW = it2.second;
                     }
                 }
-                info.addMov(p.p, auxPort->p, it.DstCepId, it.reqBW, qos);
-                info.ports[p.p]+=it.reqBW;
-                info.ports[auxPort->p]-=it.reqBW;
+                info.addMov(p.p, auxPort->p, it->DstCepId, it->reqBW, qos);
+                info.ports[p.p]+=it->reqBW;
+                info.ports[auxPort->p]-=it->reqBW;
                 delete auxPort;
 
                 if(info.ports[p.p] >= bw){
@@ -300,34 +302,34 @@ bool QoSMultipathTable_Simple::SameNextHop(string dst1, string dst2){
     return false;
 }
 
-vector<cEntry> QoSMultipathTable_Simple::OrganiceFlows(map<string, map<int, cEntry>> flows){
-    vector<cEntry> result;
-    while (flows.size()>0)
-    {
-        //int max = flows.begin()->first;
-        for(auto it : flows){
-            int max = it.second.begin()->first;
-            cEntry entry = it.second.begin()->second;
-            for (auto it2 : it.second)
-            {
-                if(it2.second.reqBW > it.second[max].reqBW){
-                    max=it2.first;
-                    entry=it.second[max];
-                }
-            }
-            result.push_back(entry);
-            it.second.erase(max);
-            if(it.second.size()==0)
-            {
-                flows.erase(it.first);
-            }
-
-        }
-        //result.push_back(max);
-        //flows.erase(max);
-    }
-    return result;
-}
+//vector<cEntry> QoSMultipathTable_Simple::OrganiceFlows(map<string, map<int, cEntry>> &flows){
+//    vector<cEntry> result;
+//    while (flows.size()>0)
+//    {
+//        //int max = flows.begin()->first;
+//        for(auto it : flows){
+//            int max = it.second.begin()->first;
+//            cEntry entry = it.second.begin()->second;
+//            for (auto it2 : it.second)
+//            {
+//                if(it2.second.reqBW > it.second[max].reqBW){
+//                    max=it2.first;
+//                    entry=it.second[max];
+//                }
+//            }
+//            result.push_back(entry);
+//            it.second.erase(max);
+//            if(it.second.size()==0)
+//            {
+//                flows.erase(it.first);
+//            }
+//
+//        }
+//        //result.push_back(max);
+//        //flows.erase(max);
+//    }
+//    return result;
+//}
 
 void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst){
 
@@ -402,6 +404,7 @@ void QoSMultipathTable_Simple::onSetPort(RMTPort * p, const int bw) {
             if(it2->second.p == p) {
                 auto tIt = it2;
                 it2++;
+                orderedCache.erraseElement(&(tIt->second));
                 it->second.erase(tIt);
             } else { it2++; }
         }
@@ -434,6 +437,7 @@ void QoSMultipathTable_Simple::handleMessage(cMessage * msg) {
                 it2++;
                 //BWControl[tIt->second.p].bw -= tIt->second.reqBW;
                 BWControl.removeBW(tIt->second.p, tIt->second.QoS, tIt->second.reqBW);
+                orderedCache.erraseElement(&(tIt->second));
                 it->second.erase(tIt);
             } else { it2++; }
         }
@@ -477,6 +481,7 @@ void QoSMultipathTable_Simple::addReplace(const string &addr, vector<entryT> por
                     it2++;
                     //BWControl[tIt->second.p].bw -= tIt->second.reqBW;
                     BWControl.removeBW(tIt->second.p, tIt->second.QoS, tIt->second.reqBW);
+                    orderedCache.erraseElement(&(tIt->second));
                     cache[addr].erase(tIt);
                 } else {
                     it2++;
