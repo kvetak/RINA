@@ -17,6 +17,17 @@ package rina.src.DAF;
 
 import rina.src.DAF.AE.ApplicationEntity;
 
+import rina.src.Common.Test;
+import rina.src.DAF.AE.AEPing;
+import rina.src.DAF.AEManagement.AEManagement;
+import rina.src.DAF.AE.ApplicationEntity;
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DAF.IRM.ConnectionTable;
+import rina.src.DAF.IRM.IRM;
+import rina.src.DIF.RIB.RIBDaemon;
+import rina.src.DIF.RMT.RMT;
+
 module ApplicationProcessNAE
 {
     parameters:
@@ -32,6 +43,10 @@ module ApplicationProcessNAE
 
         applicationEntity[numOfAE]: ApplicationEntity {
             @display("p=112,81,r,150");
+        }
+        
+        apManagement: AEManagement {
+            @display("p=240,60");
         }
     
     connections allowunconnected:

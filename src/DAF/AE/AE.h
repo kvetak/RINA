@@ -36,7 +36,7 @@
 #include "ExternConsts.h"
 #include "CDAPMessage_m.h"
 
-//#include "Stats.h"
+#include "Stats.h"
 
 class AE : public AEBase
 {

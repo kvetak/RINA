@@ -225,16 +225,12 @@ unsigned int    Stats::staticRows = 0;
             }
             else
             {
-                if(--load < toInt(m_oData[std::make_pair(5, row)]))
+                if(--load < 0) load = 0;
+                if(load < toInt(m_oData[std::make_pair(5, row)]))
                 {
                     m_oData[std::make_pair(6, row)] = "Y";
-                    m_oData[std::make_pair(4, row)] = this->toString(load);
-                    //this->rowErase(row);
                 }
-                else
-                {
-                    m_oData[std::make_pair(4, row)] = this->toString(load);
-                }
+                m_oData[std::make_pair(4, row)] = this->toString(load);
             }
         }
 
@@ -381,15 +377,15 @@ unsigned int    Stats::staticRows = 0;
             int minLoad = MAX_LOAD;
             int appLoad = 0;
             bool ok = false;
-            std::cout <<"Ehsanz: AEN: "<<aen<<std::endl;
+            //std::cout <<"Ehsanz: AEN: "<<aen<<std::endl;
             for ( unsigned int row = 1; row < m_nRows; row++ )
             {
                 aename = m_oData[std::make_pair(2, row)];
-                std::cout <<"Ehsanz: AENAME: "<<aename<<std::endl;
+                //std::cout <<"Ehsanz: AENAME: "<<aename<<std::endl;
                 if(!aename.compare(aen))
                 {
                     app = m_oData[std::make_pair(0, row)];
-                    std::cout <<"Ehsanz: App: "<<app<<std::endl;
+                  //  std::cout <<"Ehsanz: App: "<<app<<std::endl;
                 }
                 else
                 {
@@ -408,7 +404,7 @@ unsigned int    Stats::staticRows = 0;
                 {
                     appLoad = toInt(m_oData[std::make_pair(4, row)]);
                     ok = true;
-                    std::cout <<"Ehsanz: Selection of App: " << app << " Load:" << appLoad<<" "<<std::endl;;
+                    //std::cout <<"Ehsanz: Selection of App: " << app << " Load:" << appLoad<<" "<<std::endl;;
                     if(minLoad > appLoad)
                     {
                         minLoad = appLoad;
@@ -418,12 +414,12 @@ unsigned int    Stats::staticRows = 0;
             }
             if(ok)
             {
-                std::cout << " Min load:" << minLoad << " App:"<< availableApp<<std::endl;
+                //std::cout << " Min load:" << minLoad << " App:"<< availableApp<<std::endl;
                 return availableApp;
             }
             else
             {
-                std::cout << " Min load:" << minLoad << " App: AppErr"<<std::endl;
+                //std::cout << " Min load:" << minLoad << " App: AppErr"<<std::endl;
                 return "AppErr";
             }
         }

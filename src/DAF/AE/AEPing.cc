@@ -157,13 +157,20 @@ void AEPing::handleMessage(cMessage *msg)
 
 void AEPing::onStart() {
 
-    /************************************************************
+    /************************************************************/
     //Ehsan: Getting the most suitable server application instance to connect with
     std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
     this->dstApName = getBestAppByAEN(this->srcApName, this->dstApName, this->dstAeName);
     std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
-    ***********************************************************/
-
+    /***********************************************************/
+    /*if(!dstApName.compare("AppErr") && stopAt > simTime()+10)
+    {
+        std::cout<< "Ehsanz: Waiting for 10 seconds for another try "<<std::endl;
+        sleep(10);
+        std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+        this->dstApName = getBestAppByAEN(this->srcApName, this->dstApName, this->dstAeName);
+        std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+    }*/
     connect();
 }
 

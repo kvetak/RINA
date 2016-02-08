@@ -1,6 +1,5 @@
 APN,API,AEName,AEInstance,Load,Threshold,Available
-App5,0,Ping,0,0,1,N
-App2,0,Ping,0,0,1,Y
-App4,0,Ping,0,0,1,Y
+Sap2.3.1.0,0,Ping,0,0,1,Y
 App6,0,Ping,0,0,1,Y
 App8,0,Ping,0,0,1,Y
+App10,0,Ping,0,0,1,N
