@@ -2,8 +2,8 @@ RINA Simulator
 ====
 
 ###Version changelog
-* <yet-to-be-named 2015> Added support for fragmentation/concatenation in delimiting.
-
+* October 2015-February 2016 - Trento meeting version, Fragmentation/Concatenation in Delimiting, 
+								DAF level Enrollment, scenario split
 * July-September 2015 - RIBd notifiers, pre-EFCPv6 updates, CDAPProcessingBase interface,
 						merging partner's contribution (namely routing and congestion control),
 						added Hop Count to PDU header  
@@ -36,13 +36,17 @@ RINA Simulator
 		/Basics					... simple testing scenarios
 		/Congestion				... congestion control
 		/Demos					... use-cases for tutorials and demo sessions
+		/LB						... load-balancing
 		/Routing				... routing in topologies
+		
+	/playground					... unsupported/obsolete scenarios
 		
 	/src						... source codes' folder
 		/Common					... shared basic classes
 		/CS						... computing system simulation nodes
 		/DAF					... DAF components
 		/DIF 					... DIF component
+		/Other					... non-essential user-requested core components
 	
 	/policies				    ... all programable RINA policies
 	
@@ -128,7 +132,8 @@ RINA Simulator
 	        							   used with "SmartMonitor"s
 	            /LongestQFirst         ... pick the queue which contains the most PDUs 
 	    /Routing                       ... routing policies
-	        /DomainRouting	           ... routing policy based on domains. A domain is defined as a sub-set                                                    of the DIF, with its own metrics and routing algorithm.
+	        /DomainRouting	           ... routing policy based on domains. A domain is defined as a sub-set
+	        							   of the DIF, with its own metrics and routing algorithm.
 	        	/DV                    ... simple distance vector algorithm for DomainRouting
 	        	/LS                    ... simple link-state algorithm for DomainRouting
 	        /DummyRouting              ... noop
