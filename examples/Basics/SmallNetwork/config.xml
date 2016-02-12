@@ -113,7 +113,7 @@
 			<NeighborTable>
 				<APN apn="105_Layer11">
 					<Neighbor apn="107_Layer11" />
-				</APN>			
+				</APN>
 			</NeighborTable>
 		</DA>	
 	</Router>
@@ -123,6 +123,7 @@
 				<APN apn="105_Layer11">
 					<Neighbor apn="108_Layer11" />
 				</APN>
+				
 				<APN apn="101_Layer11">
 					<Neighbor apn="106_Layer11" />
 				</APN>				

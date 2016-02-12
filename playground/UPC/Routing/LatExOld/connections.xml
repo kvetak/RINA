@@ -2,7 +2,7 @@
 <Configuration>
   	<ConnectionSet>
   		<!-- Allocate management flows. -->
-	  	<SimTime t="0">
+	  	<SimTime t="1">
 	  		<Connection src="h1_NET" dst="r1_NET" qosReq="mgmt"/>
 	  		<Connection src="r2_NET" dst="r1_NET" qosReq="mgmt"/>
 	  		<Connection src="r3_NET" dst="r1_NET" qosReq="mgmt"/>
@@ -17,8 +17,8 @@
 	  		<Connection src="r2_NET" dst="r1_NET" qosReq="1"/>
 	  		<Connection src="r3_NET" dst="r1_NET" qosReq="1"/>
 	  		<Connection src="h2_NET" dst="r4_NET" qosReq="1"/>
-	  		<Connection src="r2_NET" dst="r4_NET" qosReq="15"/>
-	  		<Connection src="r3_NET" dst="r4_NET" qosReq="10"/>
+	  		<Connection src="r2_NET" dst="r4_NET" qosReq="10"/>
+	  		<Connection src="r3_NET" dst="r4_NET" qosReq="15"/>
 	  	</SimTime>
 	</ConnectionSet>
 </Configuration>

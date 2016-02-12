@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Configuration>
 	<Host id="host1">
-        <DA>
+		<DA>
 			<Directory>
 				<APN apn="App1">
 					<DIF difName="Layer11" ipcAddress="101" />
@@ -49,12 +49,68 @@
 					<DIF difName="Layer04" ipcAddress="12" />
 					<DIF difName="Layer06" ipcAddress="13" />
 					<DIF difName="Layer07" ipcAddress="14" />
-				</APN>	
+				</APN>							
 			</Directory>
-		</DA>
+			<NeighborTable>
+				<APN apn="105_Layer11">
+					<Neighbor apn="106_Layer11" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
 	</Host>
+
+	<Host id="host2">
+		<DA>
+			<NeighborTable>
+				<APN apn="103_Layer11">
+					<Neighbor apn="106_Layer11" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="102_Layer11" dst="106_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>		
+	</Host>
+
+	<Host id="host3">
+		<DA>
+			<NeighborTable>
+				<APN apn="102_Layer11">
+					<Neighbor apn="107_Layer11" />
+				</APN>			
+			</NeighborTable>
+		</DA>		
+	</Host>
+
+	<Host id="host4">
+		<DA>
+
+		</DA>	
+	</Host>
+
+	<Host id="host5">
+		<DA>
+			<NeighborTable>
+				<APN apn="101_Layer11">
+					<Neighbor apn="108_Layer11" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="105_Layer11" dst="108_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>	
+	</Host>
+
 	<Router id="router1">
-        <DA>
+		<DA>
 			<Directory>
 				<APN apn="App1">
 					<DIF difName="Layer11" ipcAddress="101" />
@@ -70,8 +126,8 @@
 				</APN>
 				<APN apn="App5">
 					<DIF difName="Layer11" ipcAddress="105" />
-				</APN>
-
+				</APN>		
+				
 				<APN apn="101_Layer11">
 					<DIF difName="Layer01" ipcAddress="1" />
 				</APN>
@@ -87,7 +143,7 @@
 				<APN apn="105_Layer11">
 					<DIF difName="Layer07" ipcAddress="5" />
 				</APN>
-				
+
 				<APN apn="106_Layer11">
 					<DIF difName="Layer01" ipcAddress="6" />
 					<DIF difName="Layer02" ipcAddress="7" />
@@ -102,8 +158,55 @@
 					<DIF difName="Layer04" ipcAddress="12" />
 					<DIF difName="Layer06" ipcAddress="13" />
 					<DIF difName="Layer07" ipcAddress="14" />
-				</APN>	
+				</APN>
+						
 			</Directory>
-		</DA> 
+			<NeighborTable>
+				<APN apn="105_Layer11">
+					<Neighbor apn="107_Layer11" />
+				</APN>		
+				<APN apn="103_Layer11">
+					<Neighbor apn="107_Layer11" />
+				</APN>					
+			</NeighborTable>
+		</DA>	
 	</Router>
+	<Router id="router2">
+		<DA>
+			<NeighborTable>
+				<APN apn="105_Layer11">
+					<Neighbor apn="108_Layer11" />
+				</APN>
+				<APN apn="102_Layer11">
+					<Neighbor apn="106_Layer11" />
+				</APN>					
+				<APN apn="101_Layer11">
+					<Neighbor apn="106_Layer11" />
+				</APN>				
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="1">
+	                <Connect src="107_Layer11" dst="106_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Router>
+	<Router id="router3">
+		<DA>
+			<NeighborTable>
+				<APN apn="101_Layer11">
+					<Neighbor apn="107_Layer11" />
+				</APN>						
+			</NeighborTable>
+		</DA>
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="2">
+	                <Connect src="108_Layer11" dst="107_Layer11" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>	
+	</Router>	
 </Configuration>
