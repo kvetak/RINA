@@ -25,7 +25,8 @@ RINA Simulator
 * [VMWare Out-of-the-box virtual machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
 * [PRISTINE webpage](http://ict-pristine.eu/)	 
 * [Developer's mailing-list](https://www.fit.vutbr.cz/mailman/listinfo/rinasim)
-* [Deliverable 2.4 describing RINASim basics](http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf)
+* [Deliverable 2.4 describing RINASim January 2015 functionality](http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf)
+* [Deliverable 2.6 describing RINASim December 2015 functionality](http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf)
 
 ###Papers
 * [V.Vesely, M.Marek, T.Hykel, O.Rysavy; Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator](http://arxiv.org/abs/1509.03550)
