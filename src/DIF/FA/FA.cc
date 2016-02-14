@@ -285,7 +285,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 bool FA::receiveMgmtAllocateRequest(Flow* mgmtflow) {
     bool status = true;
     //If N-1 mgmt-flow not ready, then allocate
-    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), VAL_MGMTQOSID)) {
+    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), QoSReq::MANAGEMENT)) {
         status = RaModule->bindNFlowToNM1Flow(mgmtflow);
     }
 
@@ -311,7 +311,7 @@ bool FA::receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst) {
 
     bool status = true;
     //If N-1 mgmt-flow not ready, then allocate
-    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), VAL_MGMTQOSID)) {
+    if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), QoSReq::MANAGEMENT)) {
         status = RaModule->bindNFlowToNM1Flow(mgmtflow);
     }
 

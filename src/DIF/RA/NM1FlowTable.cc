@@ -58,12 +58,12 @@ NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
 }
 
 NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(const std::string& addr,
-        const std::string& qosId)
+        const QoSReq& qosReqs)
 {
     for (auto& item : flows)
     {
         if ((item.getFlow()->getDstApni().getApn().getName() == addr)
-                && !item.getFlow()->getConId().getQoSId().compare(qosId))
+                && item.getFlow()->getQosRequirements().compare(qosReqs))
         {
             return &item;
         }
@@ -72,12 +72,12 @@ NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(const std::string& addr,
 }
 
 NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(const std::string& addr,
-        const std::string& qosId)
+        const QoSReq& qosReqs)
 {
     for(auto& item : flows)
     {
-        if ((item.getFlow()->getDstAddr().getApn().getName() == addr) &&
-             !item.getFlow()->getConId().getQoSId().compare(qosId) )
+        if ((item.getFlow()->getDstAddr().getApn().getName() == addr)
+                && item.getFlow()->getQosRequirements().compare(qosReqs))
         {
             return &item;
         }

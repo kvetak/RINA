@@ -63,9 +63,10 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosId = flow->getConId().getQoSId();
+//    const std::string& qosId = flow->getConId().getQoSId();
+    const QoSReq& qosReqs = flow->getQosRequirements();
 
-    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosReqs);
     if (item != nullptr)
     {
         ra->postNM1FlowAllocation(item);
@@ -76,9 +77,10 @@ void LisRADelFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosId = flow->getConId().getQoSId();
+    //const std::string& qosId = flow->getConId().getQoSId();
+    const QoSReq& qosReqs = flow->getQosRequirements();
 
-    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosId);
+    auto item = ra->getFlowTable()->findFlowByDstApni(dstApn.getName(), qosReqs);
     if (item != nullptr)
     {
         ra->removeNM1FlowBindings(item);

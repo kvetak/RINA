@@ -353,7 +353,7 @@ std::ostream& operator <<(std::ostream& os, const QoSReq& qosreq) {
 //XXX: Vesely: BEAWARE! Do-not-care value might be the problem when comparing
 //             other AP with some requirements and this with none!!!
 bool QoSReq::compare(const QoSReq& other) const {
-    //EV << "!!!!!Mine" << endl << info() << endl << "!!!!Other" << other.info() ;
+    EV << "!!!!!Mine" << endl << info() << endl << "!!!!Other" << other.info() ;
     return (other.getAvgBand() <= avgBand && other.getAvgSduBand() <= avgSDUBand
             && other.getPeakBandDuration() <= peakBandDuration && other.getPeakSduBandDuration() <= getPeakSduBandDuration()
             && other.getBurstPeriod() <= burstPeriod && other.getBurstDuration() <= burstDuration

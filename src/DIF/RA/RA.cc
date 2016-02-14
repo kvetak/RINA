@@ -527,23 +527,33 @@ void RA::createNM1Flow(Flow *flow)
 {
     Enter_Method("createNM1Flow()");
 
+    EV << "!!! Received a request to create an (N-1)-flow:" << endl
+                << flow->info() << endl;
+
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosID = flow->getConId().getQoSId();
+//    const std::string& qosID = flow->getConId().getQoSId();
+    const QoSReq& qosReqs = flow->getQosRequirements();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), flow->getConId().getQoSId());
+    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), qosReqs);
 
     if(e)
     {
+        EV << "!!! a flow leading to " << dstApn.getName() << " already exists (with " << e->getDestAddr() << "), using that one" << endl;
+
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+            e->getDestAddr().getApn().getName(), qosReqs);
 
         if(fi)
         {
             return;
         }
+    }
+    else
+    {
+        EV << "!!! no such flow is present right now, creating it" << endl;
     }
     //
     // End flow exists check.
@@ -556,6 +566,10 @@ void RA::createNM1Flow(Flow *flow)
         EV << "DifAllocator returned nullptr for resolving " << dstApn << endl;
         return;
     }
+    else
+    {
+        EV << "!!! DA says we should use " << ad->getApn().getName() << " to reach the other IPC" << endl;
+    }
     Address addr = *ad;
 
     //TODO: Vesely - New IPC must be enrolled or DIF created
@@ -567,14 +581,17 @@ void RA::createNM1Flow(Flow *flow)
 
     // retrieve local IPC process enrolled in given DIF
     cModule* targetIPC = difAllocator->getDifMember(addr.getDifName());
+    EV << "!!! IPC will be reached via " << targetIPC->getFullName() << endl;
     // retrieve the IPC process's Flow Allocator
     FABase* fab = difAllocator->findFaInsideIpc(targetIPC);
     // command the (N-1)-FA to allocate the flow
+    EV << "!!! commanding its FA to process allocate request" << endl;
     bool status = fab->receiveAllocateRequest(flow);
 
     if (status)
     { // the Allocate procedure has successfully begun (and M_CREATE request has been sent)
         // bind the new (N-1)-flow to an RMT port
+        EV << "!!! Allocate has begun, instantiating a port" << endl;
         RMTPort* port = bindNM1FlowToRMT(targetIPC, fab, flow);
 
         fab->invokeNewFlowRequestPolicy(flow);
@@ -605,18 +622,19 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     Enter_Method("createNM1FlowWoAlloc()");
 
     const APN& dstAPN = flow->getDstApni().getApn();
-    const std::string& qosID = flow->getConId().getQoSId();
+//    const std::string& qosID = flow->getConId().getQoSId();
+    const QoSReq& qosReqs = flow->getQosRequirements();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
     Address addrs = Address(dstAPN.getName());
-    PDUFGNeighbor* e = fwdtg->getNextNeighbor(addrs, qosID);
+    PDUFGNeighbor* e = fwdtg->getNextNeighbor(addrs, qosReqs);
 
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+            e->getDestAddr().getApn().getName(), qosReqs);
 
         if(fi)
         {
@@ -662,10 +680,18 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     signalizeCreateFlowPositiveToRIBd(flow);
 
     // mark this flow as connected
-    flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
-            setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
-    port->setOutputReady();
-    port->setInputReady();
+    auto x = flowTable->findFlowByDstApni(dstAPN.getName(), qosReqs);
+
+    if (x)
+    {
+        x->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+        port->setOutputReady();
+        port->setInputReady();
+    }
+    else
+    {
+        EV << "!!! not found: " << flow->info() << endl;
+    }
 }
 
 /**
@@ -685,8 +711,8 @@ void RA::postNFlowAllocation(Flow* flow)
     else
     {
         auto neighApn = flow->getDstNeighbor().getApn().getName();
-        auto qosId = flow->getConId().getQoSId();
-        auto item = flowTable->findFlowByDstApni(neighApn, qosId);
+        auto qosReqs = flow->getQosRequirements();
+        auto item = flowTable->findFlowByDstApni(neighApn, qosReqs);
         if (item != nullptr)
         {
             qAllocPolicy->onNFlowAlloc(item->getRMTPort(), flow);
@@ -772,9 +798,12 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 {
     Enter_Method("bindNFlowToNM1Flow()");
 
-    EV << "Received a request to bind an (N)-flow (dst "
-       << flow->getDstApni().getApn().getName() << ", QoS-id "
-       << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
+//    EV << "Received a request to bind an (N)-flow (dst "
+//       << flow->getDstApni().getApn().getName() << ", QoS-id "
+//       << flow->getConId().getQoSId() << ") to an (N-1)-flow." << endl;
+
+    EV << "!!! Received a request to bind an (N)-flow:" << endl
+            << flow->info() << endl;
 
     if (rmt->isOnWire())
     {
@@ -784,28 +813,30 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
     std::string dstAddr = flow->getDstAddr().getApn().getName();
     std::string neighAddr = flow->getDstNeighbor().getApn().getName();
-    std::string qosID = flow->getConId().getQoSId();
+//    std::string qosID = flow->getConId().getQoSId();
+    const QoSReq& qosReqs = flow->getQosRequirements();
 
-    EV << "Binding to an (N-1)-flow leading to " << dstAddr;
+    EV << "Flow specifies (N-1)-IPC address " << dstAddr;
     if (dstAddr != neighAddr)
     {
-        EV << " through neighbor " << neighAddr;
+        EV << " via neighbor " << neighAddr;
     }
     EV << "." << endl;
 
-    APNamingInfo srcAPN = APNamingInfo(APN(processName));
-    APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
-    APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
-
     Address addrs = Address(dstAddr);
-    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosID);
+    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosReqs);
 
     if (te)
     {
         neighAddr = te->getDestAddr().getApn().getName();
+        EV << "!!! setting the PDUFGNeighbor " << neighAddr << " as the target IPC address" << endl;
     }
 
-    auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
+    auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosReqs);
+
+    APNamingInfo srcAPN = APNamingInfo(APN(processName));
+    APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
+//    APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
     if (nm1FlowItem != nullptr)
     { // a flow exists
@@ -884,8 +915,8 @@ NM1FlowTable* RA::getFlowTable()
     return flowTable;
 }
 
-bool RA::hasFlow(std::string addr, std::string qosId) {
-    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosId) != nullptr);
+bool RA::hasFlow(const std::string addr, const QoSReq& qosReqs) {
+    return rmt->isOnWire() ? true : (flowTable->findFlowByDstApni(addr, qosReqs) != nullptr);
 }
 
 bool RA::sleepFlow(Flow * flow, simtime_t wakeUp) {

@@ -70,7 +70,8 @@ class RA : public RABase
     virtual void blockNM1PortOutput(NM1FlowTableItem* ftItem);
     virtual void unblockNM1PortOutput(NM1FlowTableItem* ftItem);
     virtual NM1FlowTable* getFlowTable();
-    virtual bool hasFlow(std::string addr, std::string qosId);
+    //virtual bool hasFlow(std::string addr, QoSReq& qosReqs);
+    virtual bool hasFlow(const std::string addr, const QoSReq& qosReqs);
 
     virtual bool sleepFlow(Flow * flow, simtime_t wakeUp);
 

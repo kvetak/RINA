@@ -27,6 +27,7 @@
 
 #include "PDUFGNeighbor.h"
 #include "IntPDUForwarding.h"
+#include "NM1FlowTable.h"
 #include "DA.h"
 #include "QoSCube.h"
 
@@ -43,7 +44,7 @@ public:
     ~IntPDUFG();
 
     // Find the next known neighbor to reach the destination.
-    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const std::string& qos);
+    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const QoSReq& qosReqs);
 
     //
     // Flow up/down operations:
@@ -75,6 +76,7 @@ protected:
 
 private:
     IntPDUForwarding * fwd;
+    NM1FlowTable* flowTable;
 };
 
 #endif /* PDUFTG_H_ */
