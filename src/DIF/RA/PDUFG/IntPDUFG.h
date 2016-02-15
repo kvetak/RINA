@@ -25,15 +25,15 @@
 
 #include <omnetpp.h>
 
-#include "PDUFGNeighbor.h"
+//#include "PDUFGNeighbor.h"
 #include "IntPDUForwarding.h"
 #include "NM1FlowTable.h"
 #include "DA.h"
 #include "QoSCube.h"
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
-typedef std::list<PDUFGNeighbor *> NeighborState;
-typedef NeighborState::iterator EIter;
+//typedef std::list<PDUFGNeighbor *> NeighborState;
+//typedef NeighborState::iterator EIter;
 
 
 class IntPDUFG  : public cSimpleModule {
@@ -44,7 +44,7 @@ public:
     ~IntPDUFG();
 
     // Find the next known neighbor to reach the destination.
-    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const QoSReq& qosReqs);
+//    virtual PDUFGNeighbor * getNextNeighbor(const Address &destination, const QoSReq& qosReqs);
 
     //
     // Flow up/down operations:
@@ -65,7 +65,7 @@ public:
 protected:
     // Contains the list of N-DIF neighbors of this IPC Address.
     //
-    NeighborState neiState;
+//    NeighborState neiState;
     Address ipcAddr;
 
     // Initialize.

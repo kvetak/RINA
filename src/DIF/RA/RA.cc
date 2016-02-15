@@ -537,19 +537,18 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), qosReqs);
+//    PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), qosReqs);
 
-    if(e)
+//    if(e)
+//    {
+
+    NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(flow->getDstAddr().getApn().getName(), qosReqs);
+
+    if(fi)
     {
-        EV << "!!! a flow leading to " << dstApn.getName() << " already exists (with " << e->getDestAddr() << "), using that one" << endl;
-
-        NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosReqs);
-
-        if(fi)
-        {
-            return;
-        }
+        EV << "!!! a flow leading to " << dstApn.getName() << " already exists (with "
+                << e->getDestAddr() << "), using that one" << endl;
+        return;
     }
     else
     {
@@ -816,21 +815,16 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 //    std::string qosID = flow->getConId().getQoSId();
     const QoSReq& qosReqs = flow->getQosRequirements();
 
-    EV << "Flow specifies (N-1)-IPC address " << dstAddr;
-    if (dstAddr != neighAddr)
-    {
-        EV << " via neighbor " << neighAddr;
-    }
-    EV << "." << endl;
+    EV << "Flow specifies (N-1)-IPC address " << dstAddr << " with neighbor " << neighAddr << "." << endl;
 
-    Address addrs = Address(dstAddr);
-    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosReqs);
+//    Address addrs = Address(dstAddr);
+//    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosReqs);
 
-    if (te)
-    {
-        neighAddr = te->getDestAddr().getApn().getName();
-        EV << "!!! setting the PDUFGNeighbor " << neighAddr << " as the target IPC address" << endl;
-    }
+//    if (te)
+//    {
+//        neighAddr = te->getDestAddr().getApn().getName();
+//        EV << "!!! setting the PDUFGNeighbor " << neighAddr << " as the target IPC address" << endl;
+//    }
 
     auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosReqs);
 
@@ -843,18 +837,18 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         if (nm1FlowItem->getConnectionStatus()
                 == NM1FlowTableItem::CON_ESTABLISHED)
         {
-            EV << "Such (N-1)-flow is already present, using it." << endl;
+            EV << "!!! Such (N-1)-flow is already present, using it." << endl;
             return true;
         }
         else if (nm1FlowItem->getConnectionStatus() == NM1FlowTableItem::CON_FLOWPENDING)
         {
-            EV << "Such (N-1)-flow is already present but its allocation is not yet finished"
+            EV << "!!! Such (N-1)-flow is already present but its allocation is not yet finished"
                << endl;
         }
     }
     else
     { // no suitable flow exists
-        EV << "No such (N-1)-flow present, allocating a new one." << endl;
+        EV << "!!! No such (N-1)-flow present, allocating a new one." << endl;
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
         nm1Flow->setQosRequirements(flow->getQosRequirements());
         createNM1Flow(nm1Flow);
