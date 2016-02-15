@@ -52,6 +52,7 @@ void RMT::initialize()
     // set up features
     relayOn = false;
     onWire = false;
+    saveInvalidPDUs = par("saveInvalidPDUs").boolValue();
     tracing = getParentModule()->par("pduTracing").boolValue();
     if (tracing && !rmtTraceFile.is_open())
     {
@@ -435,12 +436,17 @@ void RMT::relayPDUToPort(PDU* pdu)
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
 
         std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
-           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
+                << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
+                << "Time " << simTime() << endl
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
 
-        invalidPDUs.push_back(pdu);
+        if(saveInvalidPDUs) {
+            invalidPDUs.push_back(pdu);
+        } else {
+            delete pdu;
+        }
     }
 
     PDU* outPDU = nullptr;

@@ -38,6 +38,7 @@ namespace NSPSimpleDC {
         PDU * p = const_cast<PDU*>(pdu);
         p->setHopCount(p->getHopCount()+1);
         if(p->getHopCount()> 15) {
+            cout << "MaxHops?" << endl;
             return vector<Port>();
         }
 
@@ -49,7 +50,6 @@ namespace NSPSimpleDC {
             int k = intuniform(0, possible.size()-1);
             ret.push_back(possible[k]);
         }
-
 
         return ret;
     }

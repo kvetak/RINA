@@ -20,5 +20,8 @@ simple FlowListener{
         @display("i=block/socket");
 
 		double killTime = default(10);
+		double killTimeVar = default(1);
 		int killCount = default(0);
+		
+		xml killList = default(xml("<killList/>"));
 }

@@ -93,6 +93,7 @@ namespace NSPSimpleDC {
                     return downV;
                 }
         }
+
         return vector<Port>();
     }
 

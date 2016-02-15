@@ -1,0 +1,21 @@
+package rina.policies.DIF.Routing.RERtDC.ToR;
+
+import rina.policies.DIF.Routing.RERtDC.RuleExceptionRT;
+
+simple RERt_ToR like RuleExceptionRT
+{
+    parameters:
+        @class(RERtDC::RERt_ToR);
+        
+        bool printAtEnd = default(false);
+        
+        int nPod;
+        int nTor;
+        int nFab;
+        int nSpine;
+        int nEdgeP;
+        
+        double starttime = default(10);
+        double oldAfter = default(10);
+        double expiresAfter = default(20);
+}

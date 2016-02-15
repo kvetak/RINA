@@ -31,6 +31,7 @@ simple RMT
 		@signal[RMT-ErrornousPacket](type=cObject?);
 		
 		bool printAtEnd = default(false);
+        bool saveInvalidPDUs = default(true);
 		
     gates:
         //inout efcpIo;

@@ -8,17 +8,18 @@ namespace NSPSimpleDC {
 
     DCAddr::DCAddr(): type(-1), a(0), b(0){}
 
-    DCAddr::DCAddr(const int & _type, const int & _a, const int & _b):
+    DCAddr::DCAddr(const char & _type, const unsigned char & _a, const unsigned char & _b):
             type(_type), a(_a), b(_b){}
+
 
     DCAddr::DCAddr(const string & s_addr) {
         vector<string> s_vec = split(s_addr, '.');
         if(s_vec.size() != 3) {
             type = -1;
         } else {
-            type = atoi(s_vec[0].c_str());
-            a = atoi(s_vec[1].c_str());
-            b = atoi(s_vec[2].c_str());
+            type = (char)atoi(s_vec[0].c_str());
+            a = (unsigned char)atoi(s_vec[1].c_str());
+            b = (unsigned char)atoi(s_vec[2].c_str());
         }
     }
 
@@ -47,7 +48,7 @@ namespace NSPSimpleDC {
     }
 
     std::ostream& operator << (std::ostream &o, const DCAddr &a) {
-      o << a.type << "." << a.a << "."<<a.b;
+      o << to_string (a.type) + "." +to_string (a.a)  + "." +to_string (a.b);
       return o;
     }
 }

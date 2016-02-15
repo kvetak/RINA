@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 class FlowContainer : public cMessage {
     public:
         Flow * f;
@@ -26,7 +27,11 @@ class FlowListener : public cSimpleModule, cListener {
         void initialize();
         void handleMessage(cMessage *msg);
 
-        vector<FlowContainer> flows;
-        double killTime;
+        vector<FlowContainer> kflows, flows;
+        double killTime, killTimeVar;
         int killCount;
+
+        map<string, set<string> > killReq;
+
+        cMessage * kM;
 };

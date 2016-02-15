@@ -88,6 +88,7 @@ class RMT : public RMTBase
 
     bool relayOn;
     bool onWire;
+    bool saveInvalidPDUs;
 
     EfcpiMapping efcpiOut;
     EfcpiMapping efcpiIn;

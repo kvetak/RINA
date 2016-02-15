@@ -65,6 +65,17 @@ namespace Infection {
         if(fabricXpod < 1) { fabricXpod = 1; }
         if(spineXfabric < 1) { spineXfabric = 1; }
         if(edgeSets < 0) { edgeSets = 0; }
+
+        switch(Im.type) {
+            case 0:
+                if(!toTors) { current.a++; } break;
+            case 1:
+                if(!toFabric) { current.a++; } break;
+            case 2:
+                if(!toSpines) { current.a++; } break;
+            case 3:
+                if(!toEdges) { current.a++; } break;
+        }
     }
 
 
@@ -88,6 +99,9 @@ namespace Infection {
                     current.type = 1;
                     current.a = 0;
                     current.b = -1;
+                    if(Im.type == 0) {
+                        loopRem--;
+                    }
                     setNext();
                     return;
                 }
@@ -109,6 +123,9 @@ namespace Infection {
                     current.type = 2;
                     current.a = 0;
                     current.b = -1;
+                    if(Im.type == 1) {
+                        loopRem--;
+                    }
                     setNext();
                     return;
                 }
@@ -130,6 +147,9 @@ namespace Infection {
                     current.type = 3;
                     current.a = 0;
                     current.b = -1;
+                    if(Im.type == 2) {
+                        loopRem--;
+                    }
                     setNext();
                     return;
                 }
@@ -151,6 +171,9 @@ namespace Infection {
                     current.type = 0;
                     current.a = 0;
                     current.b = -1;
+                    if(Im.type == 3) {
+                        loopRem--;
+                    }
                     setNext();
                     return;
                 }
@@ -169,7 +192,11 @@ namespace Infection {
                 break;
         }
 
-        if(current == Im && tCurr != Im) { loopRem--; setNext(); }
+        bool endLoop = current == Im && tCurr != Im;
+        if(endLoop) {
+            loopRem--;
+            setNext();
+        }
         else {
             dstAddr = Address(current.toString().c_str(), dstAddr.getDifName().getName().c_str());
        //     cout << Im << " -> " << current << endl;
