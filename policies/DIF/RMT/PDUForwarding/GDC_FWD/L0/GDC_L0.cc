@@ -115,9 +115,9 @@ namespace GDC {
 
         if(list.size()*2 > myportsSyze) {
             vecushort ilist = inverseList(list, 0, myportsSyze);
-            return createException(GDC_EXCEPTION_FLAG_UP | GDC_EXCEPTION_FLAG_INVERSE, ilist);
+            return createException(GDC_EXCEPTION_FLAG_DOWN | GDC_EXCEPTION_FLAG_INVERSE, ilist);
         } else {
-            return createException(GDC_EXCEPTION_FLAG_UP, list);
+            return createException(GDC_EXCEPTION_FLAG_DOWN, list);
         }
     }
 

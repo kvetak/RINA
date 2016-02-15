@@ -57,7 +57,7 @@ namespace GDC {
         const setAddr & myFailsD = R1FailsDown[Im];
         for(const Addr & f : myFailsU) { myUNeis[f.b-1] = false; }
         for(const Addr & f : myFailsD) { myDNeis[f.b-1-nFab] = false; }
-        bool hasUFails = !myFailsU.empty();
+        //bool hasUFails = !myFailsU.empty();
         bool hasDFails = !myFailsD.empty();
 
 
@@ -90,11 +90,12 @@ namespace GDC {
 
                     vecAddr valids;
                     for(uchar i = 0; i< mySons; i++) {
+                        if(!myDNeis[i]) { continue; }
                         bool ok = false;
                         if(okNeis[i]) { ok = true; } //all neis of dst are shared
                         else {
                             //Parse Nei fails
-                            tdNei.b = i;
+                            tdNei.b = i + nFab +1;
                             vbool neiNeis(nFab, true);
                             const setAddr & neiFails = R2Fails[tdNei];
                             for(const Addr & f : neiFails) { neiNeis[f.b-1] = false; }
@@ -106,7 +107,7 @@ namespace GDC {
                         }
 
                         if(ok) {
-                            tdNei.b = i;
+                            tdNei.b = i + nFab +1;
                             valids.push_back(tdNei);
                         }
                     }
@@ -150,9 +151,10 @@ namespace GDC {
             //Parse groups with R1 Up problems
             uchar2setuchar groupFails;
             for(const auto & fail : R1FailsUp) {
+                const Addr & dst = fail.first;
                 if(dst.a == Im.a) { continue; } // Skip if R1 in same group
                 for(const Addr & sf : fail.second) {
-                    if(myFailsU[sf.b]) { // Only consider problems to reachable neis
+                    if(myUNeis[sf.b]) { // Only consider problems to reachable neis
                         Addr dst = fail.first;
                         groupFails[dst.a].insert(dst.b);
                         break;
@@ -166,29 +168,90 @@ namespace GDC {
                 const setuchar & gProbs = gfail.second;
                 bool gHasProbs = fnd(groupProb, tN.a);
 
-                if(gProbs.size() < nFab) { //Some Dst neis do not have problems to reachable neis,
-                    //no problems to op-reach group
-                    if(gHasProbs) { //Some R2 may be non opt-reachable via all neis
+                if(gProbs.size() >= nFab || gHasProbs) {
 
-                    }
-                } else { //All dst neis have some problems to reach neis
-                    //possible problems to op-reach group
-
-                    //Shared neis with group R1s
+                    //Shared neis with dst group R1s
                     vbool vNeis[nFab];
+                    for(uchar i = 0; i < nFab; i++) { vNeis[i] = myUNeis; }
 
+                    vbool isAlive(nFab, true);
                     for(const uchar i : gProbs) {
-                        vNeis[i] = myUNeis;
                         tN.b = i;
-                        //Check problems at dst R1
-                        const setAddr & dF = R1FailsUp[tN];
-                        for(const Addr f : dF) { vNeis[f.b-1] = false; }
+                        if(fnd(R1DeadDown, tN) || fnd(R1DeadUp, tN)) { isAlive[i] = false; }
+                        else if(fnd(R1FailsUp, tN)) {
+                            //Check problems at dst R1
+                            const setAddr & dF = R1FailsUp[tN];
+                            for(const Addr f : dF) { vNeis[i-1][f.b-1] = false; }
+                        }
                     }
 
+                    vbool validNeis = myUNeis;
+                    if(gProbs.size() >= nFab) { //All dst R1 have problems to reach some R0 neis
+                        //Check if all R0 neis can be used to reach at least one dst R1
+                        bool changes = false;
+                        for(uchar j = 0; j < nSpines; j++) {
+                            if(!validNeis[j]) { continue; } //Already not a reachable nei
+                            uchar vcount = nFab;
+                            for(uchar i = 0; i< nFab; i++) {
+                                if(!isAlive[i]) { vcount--; }
+                                else if(!vNeis[i][j]) { vcount--; }
+                            }
+                            if(vcount <= 0) {
+                                validNeis[j] = false;
+                                changes = true;
+                            }
+                        }
+                        if(changes) { //Some R0 neis cannot opt-reach some dst R1
+                            vecAddr valids;
+                            for(uchar i = 0; i < nSpines; i++) {
+                                if(!validNeis[i]) { continue; }
+                                tuNei.b = i+1;
+                                valids.push_back(tuNei);
+                            }
+                            tN.b = 0;
+                            ret.push_back(RawException(tN, valids) );
+                        }
+                    }
+                    if(gHasProbs) { //Some R2 may be non opt-reachable via all dst R1
+                        //Check all problematic dst R2s
+                        const uchar2setuchar & gfails = R2GroupedFailures[tN.a];
+                        for(const auto & rfails : gfails) {
+
+
+                            vbool dstNeis(nFab, true);
+
+                            //Check if all dst fails are dead nodes
+                            bool allFailsDead = true;
+                            for(const uchar & f : rfails.second) {
+                                dstNeis[f-1] = false;
+                                if(isAlive[f-1]) { allFailsDead = false; }
+                            }
+                            if(allFailsDead) { continue; } // Skip if only dead R1 errors found
+
+                            //Search for shared neis with dst R1 neis
+                            vbool validDstNeis(nSpines, false);
+                            for(uchar i = 0; i < nFab; i++) {
+                                if(!dstNeis[i]) { continue; }
+                                if(!isAlive[i]) { continue; }
+                                for(uchar j = 0; j< nSpines; j++) {
+                                    if(vNeis[i][j]) { validDstNeis[j] = true; }
+                                }
+                            }
+
+                            if(validNeis != validDstNeis) { //Valid neis to reach dst R2 differ from default to reach dst group
+                                vecAddr valids;
+                                for(uchar i = 0; i < nSpines; i++) {
+                                    if(!validDstNeis[i]) { continue; }
+                                    tuNei.b = i+1;
+                                    valids.push_back(tuNei);
+                                }
+                                tN.b = rfails.first;
+                                ret.push_back(RawException(tN, valids) );
+                            }
+                        }
+                    }
                 }
             }
-
-
         } else { //Dead UP, go down for default
             //Only search for nei R1 up connected
             //high number of paths makes highly probable that any R2 used can reach opt any group/R2
@@ -212,7 +275,7 @@ namespace GDC {
                 for(uchar i = 0; i < mySons; i++) {
                     if(!neiDNeis[i]) { continue; }
                     tdNei.b = i+1+nFab;
-                    valids.push_back(tuNei);
+                    valids.push_back(tdNei);
                 }
                 ret.push_back(RawException(Addr(0, 0), valids) );
             }

@@ -179,7 +179,7 @@ namespace GDC {
             if(myports[i] == nullptr) { continue; }
             while( i > current) {
                 j++;
-                if(j > list.size()) { current = b; }
+                if(j >= list.size()) { current = b; }
                 else { current = list[j]; }
             }
             if(i < current) { ret.push_back(i); }

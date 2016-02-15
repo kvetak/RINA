@@ -115,7 +115,6 @@ namespace GDC {
                 }
 
                 if(valids.empty()){ //Check for subOptPaths R0->(R1->R2->R1)->R2
-                    cout << "Check" << endl;
                     vneis = myneis;
                     for(uchar i = 0; i < nFab; i++) {
                         if(!myneis[i]) { continue; }
@@ -135,7 +134,6 @@ namespace GDC {
                         }
                     }
                 }
-                cout << dst <<" -> "<< valids.size() << endl;
                 ret.push_back(RawException(dst, valids) );
             }
         }
