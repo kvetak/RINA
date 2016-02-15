@@ -55,7 +55,7 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
 
-            if(emitSignals) {
+            if(emitSignals || recordStats) {
                 const cPacket * pdu = queue->getLastPDU();
                 if(inTime.find(pdu) == inTime.end()) {
                     inTime[pdu] = simTime();
@@ -64,9 +64,10 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
                 if(inPos.find(pdu) == inPos.end()) {
                     inPos[pdu] = portServed[port];
                 }
-
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                if(emitSignals) {
+                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                        emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
             }
             break;
@@ -84,9 +85,11 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             outOutModule->pduDropped(queue, pdu, port);
             outDropModule->pduDropped(queue, pdu, port);
 
-            if(emitSignals) {
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+            if(emitSignals || recordStats) {
+                if(emitSignals) {
+                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                        emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
                 inTime.erase(pdu);
                 inPos.erase(pdu);
