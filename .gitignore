@@ -38,6 +38,7 @@ src/Makefile.vc
 .cmdenv-log
 netanim-trace.txt
 gcc-debug
+.cproject
 
 # ignore binary files
 /out
