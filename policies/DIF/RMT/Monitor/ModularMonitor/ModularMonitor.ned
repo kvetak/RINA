@@ -30,6 +30,11 @@ module ModularMonitor like IntRMTQMonitorPolicy
         string outputDropSubModule_Type = default("MM_Simple_Drop");
         
         bool signal = default(true);
+        
+        bool recordStats = default(false);
+        int limStats = default(100);
+        
+        bool printAtEnd = default(false);
 
     submodules:
 

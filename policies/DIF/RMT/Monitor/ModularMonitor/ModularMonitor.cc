@@ -27,14 +27,20 @@ namespace ModularMonitor {
 Define_Module(ModularMonitor);
 
 void ModularMonitor::onPolicyInit(){
-     inOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("inputOutSubModule"));
-     inDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("inputDropSubModule"));
+    inOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("inputOutSubModule"));
+    inDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("inputDropSubModule"));
     outOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("outputOutSubModule"));
     outDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("outputDropSubModule"));
 
     emitSignals = par("signal").boolValue();
     if(emitSignals) {
         signal = registerSignal("ModularSignal");
+    }
+
+    recordStats = par("recordStats").boolValue();
+    if(recordStats) {
+        limStats = par("limStats");
+        if(limStats <= 0) { recordStats = false;}
     }
 }
 
@@ -49,7 +55,7 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
 
-            if(emitSignals) {
+            if(emitSignals || recordStats) {
                 const cPacket * pdu = queue->getLastPDU();
                 if(inTime.find(pdu) == inTime.end()) {
                     inTime[pdu] = simTime();
@@ -58,9 +64,10 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
                 if(inPos.find(pdu) == inPos.end()) {
                     inPos[pdu] = portServed[port];
                 }
-
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                if(emitSignals) {
+                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                        emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
             }
             break;
@@ -78,9 +85,11 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             outOutModule->pduDropped(queue, pdu, port);
             outDropModule->pduDropped(queue, pdu, port);
 
-            if(emitSignals) {
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+            if(emitSignals || recordStats) {
+                if(emitSignals) {
+                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                        emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
                 inTime.erase(pdu);
                 inPos.erase(pdu);
@@ -113,6 +122,12 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
                                     const_cast<PDU*>(pdu))) {
                         idt->addPSTdelay(hdel);
                         idt->setHopCount(idt->getHopCount()+1);
+                    }
+
+                    if(recordStats) {
+                        list<unsigned short> & st = stats[port][qos];
+                        st.push_back(hdel);
+                        while((int)st.size() > limStats) { st.pop_front(); }
                     }
                 }
             }
@@ -162,6 +177,40 @@ simtime_t ModularMonitor::getInNextTime(RMTPort* port){
 
 simtime_t ModularMonitor::getOutNextTime(RMTPort* port){
     return outOutModule->getnextTime(port);
+}
+
+
+list<unsigned short > & ModularMonitor::getStats(RMTPort * port, const string & QoS) {
+    return stats[port][QoS];
+}
+
+void ModularMonitor::finish(){
+    if(par("printAtEnd").boolValue()) {
+        cout << "ModularMonitor at "<< getFullPath() << endl;
+        if(recordStats) {
+            cout << "Last "<< limStats << " records." << endl;
+            for(const auto & pS : stats) {
+                cout << "\tPort : "<< pS.first->getFullPath() << endl;
+                for(const auto & qS : pS.second) {
+                    cout << "\t\tQoS : " << qS.first <<endl;
+                    if(qS.second.empty()){
+                        cout << "\t\t\t -- No stats recorded --" <<endl;
+                    } else {
+                        ushort min = 9999, max = 0;
+                        long s = 0;
+                        for(const unsigned short k : qS.second) {
+                            s += k;
+                            if(min > k) { min = k; }
+                            if(max < k) { max = k; }
+                        }
+                        double avg = (double)s/(double)qS.second.size();
+                        cout << "\t\t\t -- "<<qS.second.size() << " PDUs recorded --" <<endl;
+                        cout << "\t\t\t -- MIN/AVG/MAX : "<< min<<"/"<<avg<<"/"<<max<<"/"<< " --" <<endl;
+                    }
+                }
+            }
+        }
+    }
 }
 
 

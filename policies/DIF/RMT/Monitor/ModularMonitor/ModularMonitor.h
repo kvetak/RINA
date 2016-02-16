@@ -42,17 +42,25 @@ public:
     simtime_t getInNextTime(RMTPort * port);
     simtime_t getOutNextTime(RMTPort * port);
 
+    list<unsigned short > & getStats(RMTPort * port, const string & QoS);
+
+    virtual void finish();
+
 protected:
     Int_MM_Out_Module  * inOutModule;
     Int_MM_Drop_Module * inDropModule;
     Int_MM_Out_Module  * outOutModule;
     Int_MM_Drop_Module * outDropModule;
 
-    bool emitSignals;
+    bool emitSignals, recordStats;
+    int limStats;
     simsignal_t signal;
     map<const cPacket *, simtime_t> inTime;
     map<const cPacket *, int> inPos;
     map<RMTPort *, int> portServed;
+    simtime_t refreshT;
+
+    map<RMTPort *, map<string, list<unsigned short> > > stats;
 };
 
 }
