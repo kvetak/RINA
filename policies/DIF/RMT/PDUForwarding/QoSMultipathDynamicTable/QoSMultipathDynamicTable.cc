@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #include <QoSMultipathDynamicTable/QoSMultipathDynamicTable.h>
+//#include "APN.h"
 
 
 
@@ -32,6 +33,8 @@ namespace QoSMultipathDynamicTable {
     entryT::entryT(RMTPort * _p, int _bw): p(_p), BW(_bw) {}
 
     void iQoSMultipathDynamicTable::onPolicyInit() {
+
+        mon = getRINAModule<ModularMonitor::ModularMonitor *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_QMONITOR});
 
         cXMLElement* Xml = NULL;
         if (par("QoS_BW").xmlValue() != NULL && par("QoS_BW").xmlValue()->hasChildren()){

@@ -244,19 +244,13 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
         sort(AvBWports.begin(), AvBWports.end(), compareDecresing);
     }
 
-    //vector<cEntry> flows = OrganiceFlows(cache);
     for(auto p: AvBWports){
         RerouteInfo info(AvBWports);
 
-        //for(auto it : cache[dst]){
         for(auto it : orderedCache.List){
             if((it->p==p.p) && (it->reqBW > 0) && SameNextHop(dst, it->dst)){
-                //if flow can be rerouted
                 entryT * auxPort = new entryT(NULL, 0);
                 for (auto it2 : info.ports){
-                        //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
-                    //if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
-                          //  && (it2.first != p.p)){
                     if ((it2.second >= it->reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
                             && (it2.first != p.p)){
                         auxPort->p = it2.first;
@@ -301,35 +295,6 @@ bool QoSMultipathTable_Simple::SameNextHop(string dst1, string dst2){
 
     return false;
 }
-
-//vector<cEntry> QoSMultipathTable_Simple::OrganiceFlows(map<string, map<int, cEntry>> &flows){
-//    vector<cEntry> result;
-//    while (flows.size()>0)
-//    {
-//        //int max = flows.begin()->first;
-//        for(auto it : flows){
-//            int max = it.second.begin()->first;
-//            cEntry entry = it.second.begin()->second;
-//            for (auto it2 : it.second)
-//            {
-//                if(it2.second.reqBW > it.second[max].reqBW){
-//                    max=it2.first;
-//                    entry=it.second[max];
-//                }
-//            }
-//            result.push_back(entry);
-//            it.second.erase(max);
-//            if(it.second.size()==0)
-//            {
-//                flows.erase(it.first);
-//            }
-//
-//        }
-//        //result.push_back(max);
-//        //flows.erase(max);
-//    }
-//    return result;
-//}
 
 void QoSMultipathTable_Simple::AplyReroute(const RerouteInfo &info, const string& dst){
 

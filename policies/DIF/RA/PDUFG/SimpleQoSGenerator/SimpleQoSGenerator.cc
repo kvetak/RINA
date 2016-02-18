@@ -61,7 +61,7 @@ void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, R
 void SimpleQoSGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();
     nEntry * e = &neighbours[dst];
-    int aux=e->entries.size();
+    //int aux=e->entries.size();
     //for(auto it = e->entries.begin(); it != e->entries.end();) {
     auto it = e->entries.begin();
     while (it != e->entries.end()){
@@ -69,7 +69,7 @@ void SimpleQoSGenerator::removedFlow(const Address &addr, const QoSCube& qos, RM
             auto tIt = it;
             //it++;
             e->entries.erase(tIt);
-            aux=e->entries.size();
+            //aux=e->entries.size();
         } else { it++; }
     }
 

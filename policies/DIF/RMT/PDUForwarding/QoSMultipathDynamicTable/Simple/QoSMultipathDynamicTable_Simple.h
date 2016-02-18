@@ -148,9 +148,15 @@ public:
     void addReplace(const string &addr, vector<entryT> ports);
 
 protected:
+
+    cMessage * timeOutMsg = new cMessage("Clean Forwarding Cache");
+    cMessage * recalcWeightMsg = new cMessage("Recalcule Weights");
+
     map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
+    map<string, map<RMTPort *, float>> weights; //map<qos, map<port, weight>>
     BWcontrol BWControl;
     double cleanCache_t;
+    double recalcule_t;
     orderedList orderedCache;
 
     map<string, vector<entryT> > table;
@@ -170,6 +176,7 @@ protected:
     bool isBetterPort(const entryT * port1, const entryT * port2);
     //vector<cEntry> OrganiceFlows(map<string, map<int, cEntry>> &flows);
     bool SameNextHop(string dst1, string dst2);
+    unsigned int WeightedRandom(vector<entryT> &possibles, vector<float> &weights);
 };
 
 }

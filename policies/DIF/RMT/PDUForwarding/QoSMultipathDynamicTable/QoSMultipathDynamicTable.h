@@ -23,6 +23,7 @@
 #pragma once
 
 #include "IntPDUForwarding.h"
+#include "ModularMonitor.h"
 
 #include <map>
 #include <string>
@@ -31,6 +32,7 @@
 namespace QoSMultipathDynamicTable {
 
     using namespace std;
+    //using namespace ModularMonitor;
 
     struct entryT {
         RMTPort * p;
@@ -58,6 +60,8 @@ namespace QoSMultipathDynamicTable {
         virtual void onMainPolicyInit() = 0;
         virtual void onSetPort(RMTPort * p, const int bw) = 0;
         virtual void preReplacePort(RMTPort * oldP, RMTPort * newP, const int bw) = 0;
+
+        ModularMonitor::ModularMonitor * mon;
 
     };
 
