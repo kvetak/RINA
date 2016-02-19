@@ -81,6 +81,10 @@ void AEStream::initialize()
     if (stopAt > 0)
         prepareDeallocateRequest();
 
+        received = 0;
+        sent = 0;
+        WATCH(received);
+        WATCH(sent);
 
 }
 
@@ -94,6 +98,12 @@ void AEStream::handleSelfMessage(cMessage* msg) {
     if ( !strcmp(msg->getName(), TIM_START) ) {
         //Flow
         APNamingInfo src = this->getApni();
+        /************************************************************/
+        //Ehsan: Getting the most suitable server application instance to connect with
+            std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+            this->dstApName = getBestAppByAEN(this->srcApName, this->dstApName, this->dstAeName);
+            std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+        /***********************************************************/
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
 
@@ -118,6 +128,8 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         obj.objectVal = (cObject*)("0123456789abcdef");
         data->setObject(obj);
         data->setByteLength(size);
+        std::cout << "Ehsanz: Message "<< ++sent <<" Sent at: "<<simTime() <<std::endl;
+        EV << "Ehsanz: Message "<< sent <<" Sent at: "<<simTime() <<std::endl;
 
         //Send message
         sendData(FlowObject, data);
@@ -152,8 +164,8 @@ void AEStream::prepareDeallocateRequest() {
 
 void AEStream::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
-
-    EV << "Received data M_DATA";
+    std::cout << "Ehsanz: Message "<<++received<<" Received at: "<<simTime() <<std::endl;
+    EV << "Ehsanz: Message "<<received<<" Received at: "<<simTime() <<std::endl; //"Received data M_DATA";
     object_t object = msg1->getObject();
     EV << " with object '" << object.objectClass << "' and value '" << object.objectVal << "'" << endl;
 

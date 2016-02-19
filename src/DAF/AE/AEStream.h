@@ -63,6 +63,8 @@ class AEStream : public AE
     unsigned int size;
     double interval;
 
+    int received, sent;
+
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
     void handleSelfMessage(cMessage* msg);

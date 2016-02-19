@@ -377,6 +377,7 @@ unsigned int    Stats::staticRows = 0;
             int minLoad = MAX_LOAD;
             int appLoad = 0;
             bool ok = false;
+            bool aenFound = false;
             //std::cout <<"Ehsanz: AEN: "<<aen<<std::endl;
             for ( unsigned int row = 1; row < m_nRows; row++ )
             {
@@ -391,7 +392,7 @@ unsigned int    Stats::staticRows = 0;
                 {
                     continue;
                 }
-
+                aenFound = true;
                 if (!srcApp.compare(app))
                 {
                     continue;
@@ -420,7 +421,10 @@ unsigned int    Stats::staticRows = 0;
             else
             {
                 //std::cout << " Min load:" << minLoad << " App: AppErr"<<std::endl;
-                return "AppErr";
+                if (aenFound)
+                    return "AppErr";
+                else
+                    return dstApp;
             }
         }
 
