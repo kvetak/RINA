@@ -56,4 +56,15 @@ protected:
     map<RMTPort *, int> portServed;
 };
 
+class PDUInserted  : public cObject {
+public:
+
+    std::string qos;
+    cModule * module;
+
+    PDUInserted(std::string str, cModule * _module) {}
+    ~PDUInserted(){}
+};
+
+
 }

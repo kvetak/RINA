@@ -49,7 +49,7 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
         case RMTQueue::OUTPUT:
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
-            emit(PDUsignal, "PDUInserted");
+
             if(emitSignals) {
                 const cPacket * pdu = queue->getLastPDU();
                 if(inTime.find(pdu) == inTime.end()) {
@@ -101,7 +101,7 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
         case RMTQueue::OUTPUT:
             outOutModule->pduReleased(queue, port);
             outDropModule->pduReleased(queue, port);
-
+            emit(PDUsignal, new PDUInserted("PDUInsertedHere", this));
             if(const PDU * pdu = dynamic_cast<const PDU*>(queue->getFirstPDU())) {
                 if(inTime.find(pdu) != inTime.end()) {
                     int hdel = portServed[port]-inPos[pdu];

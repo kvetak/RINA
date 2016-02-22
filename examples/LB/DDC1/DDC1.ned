@@ -9,6 +9,9 @@ import rina.src.Other.FlowsListener.FlowListener;
 import rina.src.Other.Infection.IListener;
 import rina.src.Other.Infection.InfectedDCRouter;
 import rina.src.Other.Infection.InfectedISP;
+import rina.src.Other.myListener.myListener;
+
+
 network DDC1
 {
     @display("bgb=3109,642");
@@ -415,6 +418,9 @@ network DDC1
         }
         listener: IListener {
             @display("p=319,165");
+        }
+        mListener: myListener {
+            @display("p=380,185");
         }
     connections:
         T_0_0.medium++ <--> TA_Link <--> A_0_0.medium++;
