@@ -5,14 +5,13 @@ namespace GDC {
 
     //Exceptions
     Exception createException(const uchar & type, const vecushort & ports) {
-        uchar size = 1+ports.size();
-        Exception e = (Exception)malloc(size*sizeof(uchar));
+        uchar size = 2+ports.size();
+        Exception e = (Exception)malloc(size*sizeof(ushort));
 
-        ushort s = ((ushort)ports.size())<<8 & 0xFF00;
-        ushort h = (ushort) type & 0x00FF;
-        e[0] = s | h;
+        e[0] = (ushort)type;
+        e[1] = (ushort)ports.size();
 
-        int i = 1;
+        int i = 2;
         for(const auto & p : ports) { e[i++] = p; }
         return e;
     }
@@ -27,8 +26,8 @@ namespace GDC {
     }
 
     void printException(Addr addr, Exception & e) {
-        uchar header = e[0] & 0x00FF;
-        uchar size = (e[0]>>8)& 0x00FF;
+        ushort header = e[0];
+        ushort size = e[1];
 
         cout << "\t\t" << addr;
 
@@ -46,7 +45,7 @@ namespace GDC {
             }
             cout << " PortsList (size " << (int)size << ") : ";
             for(uchar i = 0; i<size; i++) {
-                cout << (int)e[i+1]<<" ";
+                cout << (int)e[i+2]<<" ";
             }
         }
 

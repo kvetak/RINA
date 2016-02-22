@@ -47,8 +47,8 @@ namespace GDC {
 
     vecushort L2::readException(const Exception & e) {
         vecushort ret;
-        uchar header = e[0] & 0x00FF;
-        uchar size = (e[1]>>8)& 0x00FF;
+        ushort header = e[0];
+        ushort size = e[1];
 
         if(! (header & GDC_EXCEPTION_FLAG_UP) ) { return ret; }
 
@@ -65,7 +65,7 @@ namespace GDC {
             if((current == i) != inverse) { ret.push_back(i); }
             if(current == i) {
                 j++;
-                if(j < e[1]) { current = e[j+2]; }
+                if(j < size) { current = e[j+2]; }
                 else { current = nFab; }
             }
         }
