@@ -61,5 +61,6 @@ void myListener::handleMessage(cMessage *msg) {
 
 void myListener::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj) {
     Enter_Method_Silent();
-    std::cout<< "Signal Received: Source:" << source->getFullPath() << ", MSG:" << dynamic_cast<std::string*>(obj) << std::endl;
+    std::string *str = dynamic_cast<std::string*>(obj);
+    std::cout<< "Signal Received: Source:" << source->getFullPath() << ", MSG:" << str << std::endl;
 }
