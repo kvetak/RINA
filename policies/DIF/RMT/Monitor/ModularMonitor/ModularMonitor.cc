@@ -36,6 +36,7 @@ void ModularMonitor::onPolicyInit(){
     if(emitSignals) {
         signal = registerSignal("ModularSignal");
     }
+    PDUsignal = registerSignal("PDUModularSignal");
 }
 
 void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
@@ -48,7 +49,7 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
         case RMTQueue::OUTPUT:
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
-
+            emit(PDUsignal, "PDUInserted");
             if(emitSignals) {
                 const cPacket * pdu = queue->getLastPDU();
                 if(inTime.find(pdu) == inTime.end()) {
