@@ -49,3 +49,13 @@ public:
     HopLossMsg(std::string _qos, cModule * _module) : qos(_qos), module(_module) {}
     ~HopLossMsg(){}
 };
+
+class PDUInserted  : public cObject {
+public:
+
+    std::string eventName;
+    cModule * module;
+
+    PDUInserted(std::string str, cModule * _module) : eventName(str), module(_module) {}
+    ~PDUInserted(){}
+};
