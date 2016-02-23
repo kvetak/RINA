@@ -43,8 +43,8 @@ void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
 
     if(cleanCache_t > 0) {
         scheduleAt(simTime() + cleanCache_t, timeOutMsg);
-        scheduleAt(simTime(), recalcWeightMsg);
     }
+    scheduleAt(simTime(), recalcWeightMsg);
 }
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
@@ -208,8 +208,13 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     //int maxBW=0;
     entryT * exit = nullptr;
     vector<float> auxweight;
+    float sum = 0;
     for( entryT & e : possibles) {
         auxweight.insert(auxweight.end(),weights[qos][e.p]);
+        sum=+weights[qos][e.p];
+    }
+    for(auto it2 : auxweight){
+        it2 = it2/sum;//Normalization
     }
     exit = &possibles[WeightedRandom(possibles, auxweight)];
 
@@ -286,6 +291,10 @@ unsigned int QoSMultipathDynamicTable_Simple::WeightedRandom(vector<entryT> &pos
     unsigned int sum = 0;
     for (unsigned int i=0; i<weights.size(); i++){
         sum =+ (int)(weights[i]*100);
+    }
+    if(sum == 0)
+    {
+        return 0;
     }
     int rnd = rand() % sum;
     for (unsigned int i=0; i<weights.size(); i++){
@@ -443,21 +452,26 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
     else if (msg == recalcWeightMsg){
 
         for(auto it : QoS_BWreq){
-            float sum = 0;
+
             for(auto it2 : Port_avBW){
                 list <unsigned short> aux = mon->getStats(it2.first, it.first);
                 float mean = 0;
                 for(auto it3 : aux){
                     mean =+ it3;
                 }
-                mean = aux.size()/(mean+1);//inverse of median (+1 to avoid divide by 0)
+                if(aux.size()== 0 || mean == 0){
+                    mean = 0.01;
+                }
+                else{
+                    mean = aux.size()/(mean);//inverse of median
+                }
                 weights[it.first][it2.first]==mean;
-                sum=+mean;
             }
-            for(auto it2 : Port_avBW){
-                weights[it.first][it2.first]/sum;//Normalization
-            }
+            //for(auto it2 : Port_avBW){
+            //    weights[it.first][it2.first]/sum;//Normalization
+            //}
         }
+        scheduleAt(simTime() + recalcule_t, msg);
     }
 }
 
