@@ -23,7 +23,7 @@
 #pragma once
 
 #include <IntPDUFG.h>
-#include "QoSMultipathTable.h"
+#include "QoSMultipathDynamicTable.h"
 #include "IntTSimpleRouting.h"
 
 #include <map>
@@ -32,7 +32,7 @@
 namespace SimpleQoSGenerator {
 
 using namespace std;
-using namespace QoSMultipathTable;
+using namespace QoSMultipathDynamicTable;
 
 typedef unsigned short mType;
 
@@ -56,7 +56,7 @@ protected:
 
 private:
     DA * difA;
-    iQoSMultipathTable * fwd;
+    iQoSMultipathDynamicTable * fwd;
     IntTSimpleRouting<mType> * rt;
 
     map<string, nEntry> neighbours;

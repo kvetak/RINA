@@ -56,7 +56,7 @@
 			
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>10000</CostTime>
-			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageBandwidth>12000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>

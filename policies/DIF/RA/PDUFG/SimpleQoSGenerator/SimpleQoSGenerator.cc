@@ -30,7 +30,7 @@ namespace SimpleQoSGenerator {
 Register_Class(SimpleQoSGenerator);
 
 using namespace std;
-using namespace QoSMultipathTable;
+using namespace QoSMultipathDynamicTable;
 
 
 void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
@@ -111,7 +111,7 @@ void SimpleQoSGenerator::routingUpdated(){
 }
 
 void SimpleQoSGenerator::onPolicyInit(){
-    fwd = getRINAModule<iQoSMultipathTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    fwd = getRINAModule<iQoSMultipathDynamicTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
     rt = getRINAModule<IntTSimpleRouting<mType> *>(this, 2, {MOD_POL_ROUTING});
 
     difA = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});

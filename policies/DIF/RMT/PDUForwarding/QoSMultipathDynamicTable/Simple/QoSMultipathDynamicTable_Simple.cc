@@ -40,11 +40,12 @@ using namespace QoSMultipathDynamicTable;
 void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
     cleanCache_t = par("cleanCache_t").doubleValue();
     recalcule_t = par("recalcule_t").doubleValue();
+    counter = 0;
 
     if(cleanCache_t > 0) {
         scheduleAt(simTime() + cleanCache_t, timeOutMsg);
     }
-    scheduleAt(simTime(), recalcWeightMsg);
+    scheduleAt(simTime() + recalcule_t, recalcWeightMsg);
 }
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
@@ -131,6 +132,7 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     if(dst == "") {
         return nullptr;
     }
+    counter ++;
     string QoSid;
     if(par("QoSSpliter").boolValue()){
         QoSid = qos;
@@ -206,18 +208,28 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     }
 
     //int maxBW=0;
+    if (weights.empty() || counter>=100){
+        recalcule();
+        counter=0;
+    }
     entryT * exit = nullptr;
-    vector<float> auxweight;
-    float sum = 0;
-    for( entryT & e : possibles) {
-        auxweight.insert(auxweight.end(),weights[qos][e.p]);
-        sum=+weights[qos][e.p];
+    vector<double> auxweight;
+    double sum = 0;
+    if (weights.find(qos)!=weights.end())
+    {
+        for( entryT & e : possibles) {
+            auxweight.insert(auxweight.end(),weights[qos][e.p]);
+            sum=+weights[qos][e.p];
+        }
+        for(vector<double>::iterator it2 = auxweight.begin(); it2 != auxweight.end(); it2++){
+            *it2 = (*it2)/sum;//Normalization
+        }
+        exit = &possibles[WeightedRandom(possibles, auxweight)];
     }
-    for(auto it2 : auxweight){
-        it2 = it2/sum;//Normalization
+    else
+    {
+        exit = &possibles[(rand() % possibles.size())];
     }
-    exit = &possibles[WeightedRandom(possibles, auxweight)];
-
     if (exit != nullptr)
     {
         return exit->p;
@@ -286,23 +298,23 @@ RMTPort * QoSMultipathDynamicTable_Simple::rerouteFlows(const vector<entryT>& po
 
 }
 
-unsigned int QoSMultipathDynamicTable_Simple::WeightedRandom(vector<entryT> &possibles, vector<float> &weights){
+unsigned int QoSMultipathDynamicTable_Simple::WeightedRandom(vector<entryT> &possibles, vector<double> &weight){
 
     unsigned int sum = 0;
-    for (unsigned int i=0; i<weights.size(); i++){
-        sum =+ (int)(weights[i]*100);
+    for (unsigned int i=0; i<weight.size(); i++){
+        sum =+ (int)(weight[i]*100);
     }
     if(sum == 0)
     {
         return 0;
     }
     int rnd = rand() % sum;
-    for (unsigned int i=0; i<weights.size(); i++){
-        if(rnd < (int)(weights[i]*100)){
+    for (unsigned int i=0; i<weight.size(); i++){
+        if(rnd < (int)(weight[i]*100)){
             return i;
         }
         else{
-            rnd =- (int)(weights[i]*100);
+            rnd =- (int)(weight[i]*100);
         }
     }
     return 0;//Never should end here
@@ -451,28 +463,52 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
     }
     else if (msg == recalcWeightMsg){
 
-        for(auto it : QoS_BWreq){
-
-            for(auto it2 : Port_avBW){
-                list <unsigned short> aux = mon->getStats(it2.first, it.first);
-                float mean = 0;
-                for(auto it3 : aux){
-                    mean =+ it3;
-                }
-                if(aux.size()== 0 || mean == 0){
-                    mean = 0.01;
-                }
-                else{
-                    mean = aux.size()/(mean);//inverse of median
-                }
-                weights[it.first][it2.first]==mean;
-            }
-            //for(auto it2 : Port_avBW){
-            //    weights[it.first][it2.first]/sum;//Normalization
-            //}
-        }
+//        for(auto it : QoS_BWreq){
+//
+//            for(auto it2 : Port_avBW){
+//                list <unsigned short> aux = mon->getStats(it2.first, it.first);
+//                double mean = 0;
+//                for(auto it3 : aux){
+//                    mean =+ it3;
+//                }
+//                if(aux.size()== 0 || mean == 0){
+//                    mean = 0.01;
+//                }
+//                else{
+//                    mean = aux.size()/(mean);//inverse of median
+//                }
+//                weights[it.first][it2.first]==mean;
+//            }
+//            //for(auto it2 : Port_avBW){
+//            //    weights[it.first][it2.first]/sum;//Normalization
+//            //}
+//        }
+        recalcule();
         scheduleAt(simTime() + recalcule_t, msg);
     }
+}
+
+void QoSMultipathDynamicTable_Simple::recalcule(){
+    for(auto it : QoS_BWreq){
+
+                for(auto it2 : Port_avBW){
+                    list <unsigned short> aux = mon->getStats(it2.first, it.first);
+                    double mean = 0;
+                    for(auto it3 : aux){
+                        mean =+ it3;
+                    }
+                    if(aux.size()== 0 || mean == 0){
+                        mean = 0.01;
+                    }
+                    else{
+                        mean = aux.size()/(mean);//inverse of median
+                    }
+                    weights[it.first][it2.first] = mean;
+                }
+                //for(auto it2 : Port_avBW){
+                //    weights[it.first][it2.first]/sum;//Normalization
+                //}
+            }
 }
 
 //Insert/Remove an entry

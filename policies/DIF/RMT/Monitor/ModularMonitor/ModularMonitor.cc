@@ -196,7 +196,7 @@ void ModularMonitor::finish(){
                     if(qS.second.empty()){
                         cout << "\t\t\t -- No stats recorded --" <<endl;
                     } else {
-                        ushort min = 9999, max = 0;
+                        unsigned short min = 9999, max = 0;
                         long s = 0;
                         for(const unsigned short k : qS.second) {
                             s += k;

@@ -298,7 +298,7 @@ public:
 
 protected:
 
-
+    unsigned short counter;
 
     cMessage * timeOutMsg = new cMessage("Clean Forwarding Cache");
 
@@ -308,7 +308,7 @@ protected:
 
     map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
 
-    map<string, map<RMTPort *, float>> weights; //map<qos, map<port, weight>>
+    map<string, map<RMTPort *, double>> weights; //map<qos, map<port, weight>>
 
     BWcontrol BWControl;
 
@@ -354,7 +354,9 @@ protected:
 
     bool SameNextHop(string dst1, string dst2);
 
-    unsigned int WeightedRandom(vector<entryT> &possibles, vector<float> &weights);
+    unsigned int WeightedRandom(vector<entryT> &possibles, vector<double> &weights);
+
+    void recalcule();
 
 };
 
