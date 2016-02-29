@@ -49,6 +49,7 @@ void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
 }
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
+    counter ++;
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
 
@@ -132,7 +133,6 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     if(dst == "") {
         return nullptr;
     }
-    counter ++;
     string QoSid;
     if(par("QoSSpliter").boolValue()){
         QoSid = qos;
@@ -208,18 +208,18 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     }
 
     //int maxBW=0;
-    if (weights.empty() || counter>=100){
+    if (weights.empty() || counter>=20){
         recalcule();
         counter=0;
     }
     entryT * exit = nullptr;
     vector<double> auxweight;
-    double sum = 0;
+    long double sum = 0;
     if (weights.find(qos)!=weights.end())
     {
         for( entryT & e : possibles) {
             auxweight.insert(auxweight.end(),weights[qos][e.p]);
-            sum=+weights[qos][e.p];
+            sum = sum + weights[qos][e.p];
         }
         for(vector<double>::iterator it2 = auxweight.begin(); it2 != auxweight.end(); it2++){
             *it2 = (*it2)/sum;//Normalization
@@ -302,7 +302,7 @@ unsigned int QoSMultipathDynamicTable_Simple::WeightedRandom(vector<entryT> &pos
 
     unsigned int sum = 0;
     for (unsigned int i=0; i<weight.size(); i++){
-        sum =+ (int)(weight[i]*100);
+        sum = sum + (int)(weight[i]*100);
     }
     if(sum == 0)
     {

@@ -34,7 +34,7 @@
   
 	<QoSReqSet>
     	<QosReq id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageBandwidth>12000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
@@ -189,7 +189,7 @@
 	
 	<QoSCubesSet>
 		<QosCube id="1">
-			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageBandwidth>12000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
