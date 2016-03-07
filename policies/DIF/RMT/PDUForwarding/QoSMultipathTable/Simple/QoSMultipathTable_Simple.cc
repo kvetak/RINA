@@ -76,14 +76,14 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
     }
 
     //Only for debug
-    EV << "Cache Final" << endl;
-    for(auto it : cache[dstAddr]){
-        EV << "Flujo : " << it.first << endl;
-        EV << "Puerto: " << (int)it.second.p << endl;
-        EV << "QoS: " << it.second.QoS << endl;
-        EV << "BW    : " << it.second.reqBW << endl <<endl;
-    }
-    EV << endl << endl;
+//    EV << "Cache Final" << endl;
+//    for(auto it : cache[dstAddr]){
+//        EV << "Flujo : " << it.first << endl;
+//        EV << "Puerto: " << (int)it.second.p << endl;
+//        EV << "QoS: " << it.second.QoS << endl;
+//        EV << "BW    : " << it.second.reqBW << endl <<endl;
+//    }
+//    EV << endl << endl;
     //End of debug
 
     vector<RMTPort *> ret;

@@ -108,55 +108,55 @@
 					<DIF difName="A1T1" ipcAddress="2"/>
 					<DIF difName="A2T1" ipcAddress="2"/>
 					
-					<DIF difName="TS1" ipcAddress="1"/>
-					<DIF difName="TS2" ipcAddress="1"/>
+					<DIF difName="T1S1" ipcAddress="1"/>
+					<DIF difName="T1S2" ipcAddress="1"/>
 				</APN>
 				<APN apn="R2.TOR_DC">
 					<DIF difName="A1T2" ipcAddress="2"/>
 					<DIF difName="A2T2" ipcAddress="2"/>
 					
-					<DIF difName="TS1" ipcAddress="1"/>
-					<DIF difName="TS2" ipcAddress="1"/>
+					<DIF difName="T2S1" ipcAddress="1"/>
+					<DIF difName="T2S2" ipcAddress="1"/>
 				</APN>
 				<APN apn="R3.TOR_DC">
 					<DIF difName="A3T3" ipcAddress="2"/>
 					<DIF difName="A4T3" ipcAddress="2"/>
 					
-					<DIF difName="TS1" ipcAddress="1"/>
-					<DIF difName="TS2" ipcAddress="1"/>
+					<DIF difName="T3S1" ipcAddress="1"/>
+					<DIF difName="T3S2" ipcAddress="1"/>
 				</APN>
 				<APN apn="R4.TOR_DC">
 					<DIF difName="A3T4" ipcAddress="2"/>
 					<DIF difName="A4T4" ipcAddress="2"/>
 					
-					<DIF difName="TS1" ipcAddress="1"/>
-					<DIF difName="TS2" ipcAddress="1"/>
+					<DIF difName="T4S1" ipcAddress="1"/>
+					<DIF difName="T4S2" ipcAddress="1"/>
 				</APN>
 				
 				<!-- Server side naming of the Shims -->
 				<APN apn="R1.S1_DC">
-					<DIF difName="TS1" ipcAddress="2"/>
+					<DIF difName="T1S1" ipcAddress="2"/>
 				</APN>
 				<APN apn="R1.S2_DC">
-					<DIF difName="TS2" ipcAddress="2"/>
+					<DIF difName="T1S2" ipcAddress="2"/>
 				</APN>
 				<APN apn="R2.S1_DC">
-					<DIF difName="TS1" ipcAddress="2"/>
+					<DIF difName="T2S1" ipcAddress="2"/>
 				</APN>
 				<APN apn="R2.S2_DC">
-					<DIF difName="TS2" ipcAddress="2"/>
+					<DIF difName="T2S2" ipcAddress="2"/>
 				</APN>
 				<APN apn="R3.S1_DC">
-					<DIF difName="TS1" ipcAddress="2"/>
+					<DIF difName="T3S1" ipcAddress="2"/>
 				</APN>
 				<APN apn="R3.S2_DC">
-					<DIF difName="TS2" ipcAddress="2"/>
+					<DIF difName="T3S2" ipcAddress="2"/>
 				</APN>
 				<APN apn="R4.S1_DC">
-					<DIF difName="TS1" ipcAddress="2"/>
+					<DIF difName="T4S1" ipcAddress="2"/>
 				</APN>
 				<APN apn="R4.S2_DC">
-					<DIF difName="TS2" ipcAddress="2"/>
+					<DIF difName="T4S2" ipcAddress="2"/>
 				</APN>
 				
 				<!-- AE side naming of the DC IPCs -->
