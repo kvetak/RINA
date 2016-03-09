@@ -159,7 +159,9 @@ namespace Infection {
             if(pduS < 50) { pduS = 50; }
 
             if (n->getAttribute("DstCepId") && atoi(n->getAttribute("DstCepId")) > 0) {
-                DstCepId = atoi(n->getAttribute("DstCepId")); }
+                //DstCepId = atoi(n->getAttribute("DstCepId")); }
+                DstCepId = -1;
+            }
 
 
             if (n->getAttribute("pduSizeVar") && atoi(n->getAttribute("pduSizeVar")) > 0) {
