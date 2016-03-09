@@ -50,6 +50,10 @@ void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
     counter ++;
+    if (counter>=20){
+       recalcule();
+       counter=0;
+    }
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
 
