@@ -30,9 +30,9 @@ import rina.src.DIF.IPCProcess;
 module InteriorRouterNInt
 {
     parameters:
-    	@display("i=abstract/switch;bgb=600,325");
-    	@node;
-    
+        @display("i=abstract/switch;bgb=1310,325");
+        @node;
+
     gates:
         inout medium[];
 
