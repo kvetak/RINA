@@ -108,6 +108,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="111_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host12">
@@ -117,7 +124,14 @@
 					<Neighbor apn="131_Layer1" />
 				</APN>			
 			</NeighborTable>
-		</DA>	
+		</DA>
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="112_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>				
 	</Host>
 
 	<Host id="host13">
@@ -128,6 +142,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="113_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host14">
@@ -138,6 +159,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="114_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host15">
@@ -148,6 +176,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="115_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host21">
@@ -158,6 +193,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="121_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host22">
@@ -168,6 +210,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="122_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host23">
@@ -178,6 +227,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="123_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Host>
 
 	<Host id="host24">
@@ -188,6 +244,14 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="124_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+		
 	</Host>
 
 	<Host id="host25">
@@ -198,6 +262,14 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="125_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+
 	</Host>
 
 	<Router id="router1">
@@ -300,6 +372,13 @@
 				</APN>			
 			</NeighborTable>
 		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0">
+	                <Connect src="131_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
 	</Router>
 	<Router id="router2">
 		<DA>
@@ -332,6 +411,7 @@
             <BurstPeriod>10000000</BurstPeriod>
             <BurstDuration>1000000</BurstDuration>
             <UndetectedBitError>0.01</UndetectedBitError>
+            <PDUDroppingProbability>0</PDUDroppingProbability>
             <MaxSDUSize>1500</MaxSDUSize>
             <PartialDelivery>0</PartialDelivery>
             <IncompleteDelivery>0</IncompleteDelivery>
