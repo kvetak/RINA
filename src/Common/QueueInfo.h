@@ -20,50 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /*
- * @file EFCPListeners.h
+ * @file QueueInfo.h
  * @author Marcel Marek
- * @date Feb 12, 2015
+ * @date Apr 28, 2016
  * @brief
  * @detail
-
  */
 
-#ifndef EFCPLISTENERS_H_
-#define EFCPLISTENERS_H_
+#ifndef QUEUEINFO_H_
+#define QUEUEINFO_H_
 
+#include <cobject.h>
+#include "Flow.h"
 
-#include <omnetpp.h>
-
-//#include "CongestionDescriptor.h"
-#include "EFCPTable.h"
-
-class EFCPListeners : public cListener
+class QueueInfo : public cObject
 {
-  public:
-    EFCPListeners(EFCPTable* efcpTable);
-    virtual ~EFCPListeners();
+  private:
+    Flow* flow;
+    unsigned int capacity;
+    unsigned int free;
 
-  protected:
-    EFCPTable* efcpTable;
+  public:
+    QueueInfo();
+    virtual ~QueueInfo();
+    unsigned int getCapacity() const;
+    void setCapacity(unsigned int capacity);
+    Flow* getFlow() const;
+    void setFlow(Flow* flow);
+    unsigned int getFree() const;
+    void setFree(unsigned int free);
 };
 
-
-class LisEFCPCongestFromRA : public EFCPListeners {
-  public:
-    LisEFCPCongestFromRA(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-class LisEFCPQueueInfoFromRMT : public EFCPListeners {
-  public:
-    LisEFCPQueueInfoFromRMT(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-class LisEFCPQueueInfoFromAE : public EFCPListeners {
-  public:
-    LisEFCPQueueInfoFromAE(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-#endif /* EFCPLISTENERS_H_ */
+#endif /* QUEUEINFO_H_ */

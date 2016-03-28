@@ -20,50 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /*
- * @file EFCPListeners.h
+ * @file Socket.h
  * @author Marcel Marek
- * @date Feb 12, 2015
+ * @date Apr 28, 2016
  * @brief
  * @detail
-
  */
 
-#ifndef EFCPLISTENERS_H_
-#define EFCPLISTENERS_H_
-
+#ifndef SOCKET_H_
+#define SOCKET_H_
 
 #include <omnetpp.h>
+#include "QueueInfo.h"
 
-//#include "CongestionDescriptor.h"
-#include "EFCPTable.h"
-
-class EFCPListeners : public cListener
+class Socket : public cObject
 {
   public:
-    EFCPListeners(EFCPTable* efcpTable);
-    virtual ~EFCPListeners();
-
-  protected:
-    EFCPTable* efcpTable;
+    Socket();
+    virtual ~Socket();
 };
 
-
-class LisEFCPCongestFromRA : public EFCPListeners {
-  public:
-    LisEFCPCongestFromRA(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-class LisEFCPQueueInfoFromRMT : public EFCPListeners {
-  public:
-    LisEFCPQueueInfoFromRMT(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-class LisEFCPQueueInfoFromAE : public EFCPListeners {
-  public:
-    LisEFCPQueueInfoFromAE(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
-};
-
-#endif /* EFCPLISTENERS_H_ */
+#endif /* SOCKET_H_ */

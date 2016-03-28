@@ -20,69 +20,53 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /*
- * @file EFCPListeners.cc
+ * @file QueueInfo.cc
  * @author Marcel Marek
- * @date Feb 12, 2015
+ * @date Apr 28, 2016
  * @brief
  * @detail
-
  */
 
-#include <EFCPListeners.h>
-//#include <CongestionDescriptor.h>
+#include <QueueInfo.h>
 
-EFCPListeners::EFCPListeners(EFCPTable* efcpTable)
+QueueInfo::QueueInfo()
 {
-
-this->efcpTable = efcpTable;
-
+  // TODO Auto-generated constructor stub
 
 }
 
-EFCPListeners::~EFCPListeners()
+unsigned int QueueInfo::getCapacity() const
 {
-
+  return capacity;
 }
 
-void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void QueueInfo::setCapacity(unsigned int capacity)
 {
-
-  CongestionDescriptor* cd = (CongestionDescriptor*) obj;
-  DTP* dtp = efcpTable->getDTPBySrcCEP(cd->getConnectionId().getSrcCepId());
-
-  if(dtp != NULL){
-    dtp->runCongestionNotificationPolicy();
-  }else{
-    //Error
-  }
+  this->capacity = capacity;
 }
 
-
-void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+Flow* QueueInfo::getFlow() const
 {
-
-  QueueInfo* qi = (QueueInfo*) obj;
-  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
-  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
-
-  if(dtp != NULL){
-    dtp->handleQueueInfoFromRMT(qi);
-  }else{
-    //Error
-  }
+  return flow;
 }
 
-
-void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void QueueInfo::setFlow(Flow* flow)
 {
-
-  QueueInfo* qi = (QueueInfo*) obj;
-  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
-  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
-
-  if(dtp != NULL){
-    dtp->handleQueueInfoFromSocket(qi);
-  }else{
-    //Error
-  }
+  this->flow = flow;
 }
+
+unsigned int QueueInfo::getFree() const
+{
+  return free;
+}
+
+void QueueInfo::setFree(unsigned int free)
+{
+  this->free = free;
+}
+
+QueueInfo::~QueueInfo()
+{
+  // TODO Auto-generated destructor stub
+}
+

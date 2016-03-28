@@ -20,69 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 /*
- * @file EFCPListeners.cc
+ * @file Socket.cc
  * @author Marcel Marek
- * @date Feb 12, 2015
+ * @date Apr 28, 2016
  * @brief
  * @detail
-
  */
 
-#include <EFCPListeners.h>
-//#include <CongestionDescriptor.h>
+#include <Socket.h>
 
-EFCPListeners::EFCPListeners(EFCPTable* efcpTable)
+Socket::Socket()
 {
-
-this->efcpTable = efcpTable;
-
+  // TODO Auto-generated constructor stub
 
 }
 
-EFCPListeners::~EFCPListeners()
+Socket::~Socket()
 {
-
+  // TODO Auto-generated destructor stub
 }
 
-void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-
-  CongestionDescriptor* cd = (CongestionDescriptor*) obj;
-  DTP* dtp = efcpTable->getDTPBySrcCEP(cd->getConnectionId().getSrcCepId());
-
-  if(dtp != NULL){
-    dtp->runCongestionNotificationPolicy();
-  }else{
-    //Error
-  }
-}
-
-
-void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-
-  QueueInfo* qi = (QueueInfo*) obj;
-  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
-  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
-
-  if(dtp != NULL){
-    dtp->handleQueueInfoFromRMT(qi);
-  }else{
-    //Error
-  }
-}
-
-
-void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
-{
-
-  QueueInfo* qi = (QueueInfo*) obj;
-  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
-  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
-
-  if(dtp != NULL){
-    dtp->handleQueueInfoFromSocket(qi);
-  }else{
-    //Error
-  }
-}

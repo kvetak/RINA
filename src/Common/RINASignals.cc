@@ -36,6 +36,8 @@ const char* SIG_AE_ConnectionRequest            = "AE-ConnectionRequest";
 const char* SIG_AE_ReleaseRequest               = "AE-ReleaseRequest";
 const char* SIG_AE_Enrolled                     = "AE-Enrolled";
 
+const char* SIG_Socket_QueueInfo                = "Socket-QueueInfo";
+
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
 const char* SIG_RIBD_CreateRequestFlow          = "RIBd-CreateRequestFlow";
 const char* SIG_RIBD_DeleteRequestFlow          = "RIBd-DeleteRequestFlow";
@@ -128,7 +130,7 @@ const char* SIG_RMT_QueuePDUPreSend             = "RMT-QueuePDUPreSend";
 const char* SIG_RMT_QueuePDUSent                = "RMT-QueuePDUSent";
 const char* SIG_RMT_PortReadyToServe            = "RMT-PortReadyToServe";
 const char* SIG_RMT_PortReadyForRead            = "RMT-PortReadyForRead";
-
+const char* SIG_RMT_QueueInfo                   = "RMT-QueueInfo";
 
 const char* SIG_PDUFTG_FwdInfoUpdate            = "PDUFTG-ForwardingInfoUpdate";
 const char* SIG_RIBD_RoutingUpdate              = "Routing-Update";

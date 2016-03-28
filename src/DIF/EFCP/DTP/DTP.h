@@ -38,6 +38,8 @@
 #include "RA.h"
 #include "SDUData_m.h"
 
+#include "QueueInfo.h"
+
 
 /* Policies */
 #include "RcvrInactivityPolicyBase.h"
@@ -119,6 +121,8 @@ class DTP : public cSimpleModule
     void handleMsgFromUp(UserDataField* userDataField);
     void handleMsgFromRMT(PDU* msg);
     void handleDataTransferPDUFromRMT(DataTransferPDU* pdu);
+
+    void handleQueueInfo(QueueInfo* queueInfo);
 
     /* Send */
 
@@ -256,6 +260,11 @@ class DTP : public cSimpleModule
     void sendReliableControlPDU();
     void cancelATimer(unsigned int seqNum);
     bool isATimerQEmpty();
+
+
+    /* Handle signals */
+    void handleQueueInfoFromRMT(QueueInfo* queueInfo);
+    void handleQueueInfoFromSocket(QueueInfo* queueInfo);
 
   protected:
     virtual void handleMessage(cMessage *msg);
