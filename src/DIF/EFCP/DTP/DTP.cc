@@ -97,6 +97,10 @@ void DTP::handleQueueInfoFromSocket(QueueInfo* queueInfo)
   handleQueueInfo(queueInfo);
 }
 
+void DTP::handleQueueInfo(QueueInfo* queueInfo)
+{
+}
+
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting
