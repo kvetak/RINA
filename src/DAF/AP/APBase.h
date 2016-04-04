@@ -20,40 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DAF;
+#ifndef APBASE_H_
+#define APBASE_H_
 
-import rina.src.Common.Test;
-import rina.src.DAF.AE.AEPing;
-import rina.src.DAF.AEManagement.AEManagement;
-import rina.src.DAF.AE.ApplicationEntity;
-import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DAF.IRM.IRM;
-import rina.src.DIF.RIB.RIBDaemon;
-import rina.src.DIF.RMT.RMT;
-import rina.src.DAF.AP.AP;
+#include <omnetpp.h>
+#include <string>
+#include "Flow.h"
+#include "APIResult.h"
+#include "CDAPMessage_m.h"
 
-module ApplicationProcess
-{
-    parameters:
-        @display("bgb=400,200;i=misc/node,yellow,30");
-        string apName = default("App");
-        string apInstance = default("0");
-        string apType = default("AP");
-    gates:
-        inout southIo[];
-    submodules:
-        apInst: <apType> like AP {
-        	@display("p=25,25");
-        }
-        
-        applicationEntity: ApplicationEntity {
-            @display("p=100,60");
-        }
-        
-        apManagement: AEManagement {
-            @display("p=260,60");
-        }
-    connections allowunconnected:
-}
+class APBase : public cSimpleModule {
+public:
+    APBase();
+    virtual ~APBase();
+
+    virtual void A_GETOPEN_R(APIResult* result) = 0;
+    virtual void A_GETREAD_R(APIResult* result) = 0;
+    virtual void A_GETWRITE_R(APIResult* result) = 0;
+
+protected:
+    virtual bool A_OPEN(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) = 0;
+    virtual bool A_OPEN(int invokeID, Flow* flow);
+    virtual bool A_CLOSE(int CDAPConn, int invokeID = 0) = 0;
+    virtual bool A_READ(int CDAPConn, std::string objName, int invokeID) = 0;
+    virtual bool A_WRITE(int CDAPConn, object_t *obj, int invokeID) = 0;
+
+};
+
+#endif /* APBASE_H_ */

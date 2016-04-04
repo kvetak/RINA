@@ -20,40 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DAF;
+#ifndef AP_H_
+#define AP_H_
 
-import rina.src.Common.Test;
-import rina.src.DAF.AE.AEPing;
-import rina.src.DAF.AEManagement.AEManagement;
-import rina.src.DAF.AE.ApplicationEntity;
-import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DAF.IRM.IRM;
-import rina.src.DIF.RIB.RIBDaemon;
-import rina.src.DIF.RMT.RMT;
-import rina.src.DAF.AP.AP;
+#include <omnetpp.h>
+#include "APBase.h"
 
-module ApplicationProcess
-{
-    parameters:
-        @display("bgb=400,200;i=misc/node,yellow,30");
-        string apName = default("App");
-        string apInstance = default("0");
-        string apType = default("AP");
-    gates:
-        inout southIo[];
-    submodules:
-        apInst: <apType> like AP {
-        	@display("p=25,25");
-        }
-        
-        applicationEntity: ApplicationEntity {
-            @display("p=100,60");
-        }
-        
-        apManagement: AEManagement {
-            @display("p=260,60");
-        }
-    connections allowunconnected:
-}
+class AP : public APBase {
+public:
+    AP();
+    virtual ~AP();
+
+    virtual void A_GETOPEN_R(APIResult* result);
+    virtual void A_GETREAD_R(APIResult* result);
+    virtual void A_GETWRITE_R(APIResult* result);
+
+protected:
+    bool A_OPEN(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst);
+    bool A_OPEN(int invokeID, Flow* flow);
+    bool A_CLOSE(int CDAPConn, int invokeID = 0);
+    bool A_READ(int CDAPConn, std::string objName, int invokeID = 0);
+    bool A_WRITE(int CDAPConn, object_t *obj, int invokeID = 0);
+};
+
+#endif /* AP_H_ */

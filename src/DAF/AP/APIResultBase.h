@@ -20,40 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.src.DAF;
+#ifndef APIRESULTBASE_H_
+#define APIRESULTBASE_H_
 
-import rina.src.Common.Test;
-import rina.src.DAF.AE.AEPing;
-import rina.src.DAF.AEManagement.AEManagement;
-import rina.src.DAF.AE.ApplicationEntity;
-import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DAF.IRM.ConnectionTable;
-import rina.src.DAF.IRM.IRM;
-import rina.src.DIF.RIB.RIBDaemon;
-import rina.src.DIF.RMT.RMT;
-import rina.src.DAF.AP.AP;
+#include <omnetpp.h>
 
-module ApplicationProcess
-{
-    parameters:
-        @display("bgb=400,200;i=misc/node,yellow,30");
-        string apName = default("App");
-        string apInstance = default("0");
-        string apType = default("AP");
-    gates:
-        inout southIo[];
-    submodules:
-        apInst: <apType> like AP {
-        	@display("p=25,25");
-        }
-        
-        applicationEntity: ApplicationEntity {
-            @display("p=100,60");
-        }
-        
-        apManagement: AEManagement {
-            @display("p=260,60");
-        }
-    connections allowunconnected:
-}
+class APIResultBase : public cObject {
+public:
+    APIResultBase();
+    virtual ~APIResultBase();
+};
+
+#endif /* APIRESULTBASE_H_ */
