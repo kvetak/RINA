@@ -34,9 +34,6 @@ using namespace std;
 using namespace QoSMultipathDynamicTable;
 
 
-//cEntry::cEntry(): p(nullptr), t(0), QoS("null") {}
-
-
 void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
     cleanCache_t = par("cleanCache_t").doubleValue();
     recalcule_t = par("recalcule_t").doubleValue();
@@ -50,14 +47,15 @@ void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
     counter ++;
-    if (counter>=20){
+    if (counter>=100){
        recalcule();
        counter=0;
     }
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
+    int source = pdu->getConnId().getSrcCepId();
 
-    cEntry * e = &cache[dstAddr][pdu->getConnId().getDstCepId()];
+    cEntry * e = &cache[dstAddr][source];
 
     string QoSid;
     if(par("QoSSpliter").boolValue()){
@@ -76,37 +74,23 @@ vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
             e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
             e->QoS = QoSid;
             e->dst = dstAddr;
-            e->DstCepId = pdu->getConnId().getDstCepId();
+            e->SrcCepId = pdu->getConnId().getSrcCepId();
             orderedCache.addElement(e);
-            string aux = pdu->getConnId().getQoSId();
-            //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
             BWControl.addBW(next,QoSid,QoS_BWreq[pdu->getConnId().getQoSId()]);
         }
     }
-
-    //Only for debug
-  /*  EV << "Cache Final" << endl;
-    for(auto it : cache[dstAddr]){
-        EV << "Flujo : " << it.first << endl;
-        EV << "Puerto: " << (int)it.second.p << endl;
-        EV << "QoS: " << it.second.QoS << endl;
-        EV << "BW    : " << it.second.reqBW << endl <<endl;
-    }
-    EV << endl << endl;*/
-    //End of debug
 
     vector<RMTPort *> ret;
     if(next != nullptr) {
         ret.push_back(next);
         e->t = simTime();
     } else {
-        //BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
-        BWControl.removeBW(cache[dstAddr][pdu->getConnId().getDstCepId()].p,
+        BWControl.removeBW(cache[dstAddr][pdu->getConnId().getSrcCepId()].p,
                 QoSid,
-                cache[dstAddr][pdu->getConnId().getDstCepId()].reqBW);
+                cache[dstAddr][pdu->getConnId().getSrcCepId()].reqBW);
 
-        orderedCache.erraseElement(&cache[dstAddr][pdu->getConnId().getDstCepId()]);
-        cache[dstAddr].erase(pdu->getConnId().getDstCepId());
+        orderedCache.erraseElement(&cache[dstAddr][pdu->getConnId().getSrcCepId()]);
+        cache[dstAddr].erase(pdu->getConnId().getSrcCepId());
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
         }
@@ -156,8 +140,6 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     RMTPort * bestOption = nullptr;
 
     for( entryT & e : *entries) {
-        //UsedBW* BW = &BWControl[(e.p)];
-        //if((e.BW - BW->bw) >= reqBW) {
         if(!par("DropIfNoBW").boolValue()){
             if((e.BW - BWControl.getBWbyQoS(e.p, qos)) > max){
                 bestOption = e.p;
@@ -174,8 +156,7 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
             long totalBW = 0;
                 for (entryT & it : *entries)
                 {
-                   //totalBW += it.BW-BWControl[it.p].bw;
-                    totalBW += it.BW-BWControl.getTotalBW(it.p);
+                    totalBW = totalBW + it.BW-BWControl.getTotalBW(it.p);
                 }
             if(totalBW >= reqBW){
 
@@ -211,11 +192,6 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
         }
     }
 
-    //int maxBW=0;
-    if (weights.empty() || counter>=20){
-        recalcule();
-        counter=0;
-    }
     entryT * exit = nullptr;
     vector<double> auxweight;
     long double sum = 0;
@@ -252,7 +228,6 @@ RMTPort * QoSMultipathDynamicTable_Simple::rerouteFlows(const vector<entryT>& po
 
     for(auto it : ports)
     {
-        //entryT e(it.p,it.BW-BWControl[it.p].bw);
         entryT e(it.p,it.BW-BWControl.getTotalBW(it.p));
         AvBWports.push_back(e);
     }
@@ -264,27 +239,21 @@ RMTPort * QoSMultipathDynamicTable_Simple::rerouteFlows(const vector<entryT>& po
         sort(AvBWports.begin(), AvBWports.end(), compareDecresing);
     }
 
-    //vector<cEntry> flows = OrganiceFlows(cache);
     for(auto p: AvBWports){
         RerouteInfo info(AvBWports);
 
-        //for(auto it : cache[dst]){
         for(auto it : orderedCache.List){
             if((it->p==p.p) && (it->reqBW > 0) && SameNextHop(dst, it->dst)){
-                //if flow can be rerouted
                 entryT * auxPort = new entryT(NULL, 0);
                 for (auto it2 : info.ports){
-                        //if ((it2.second >= it.second.reqBW) && (it2.second > auxPort->BW)){
-                    //if ((it2.second >= cache[dst][it].reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
-                          //  && (it2.first != p.p)){
                     if ((it2.second >= it->reqBW) && (isBetterPort(new entryT(it2.first, it2.second), auxPort))
                             && (it2.first != p.p)){
                         auxPort->p = it2.first;
                         auxPort->BW = it2.second;
                     }
                 }
-                info.addMov(p.p, auxPort->p, it->DstCepId, it->reqBW, qos);
-                info.ports[p.p]+=it->reqBW;
+                info.addMov(p.p, auxPort->p, it->SrcCepId, it->reqBW, qos);
+                info.ports[p.p] = info.ports[p.p] + it->reqBW;
                 info.ports[auxPort->p]-=it->reqBW;
                 delete auxPort;
 
@@ -304,21 +273,26 @@ RMTPort * QoSMultipathDynamicTable_Simple::rerouteFlows(const vector<entryT>& po
 
 unsigned int QoSMultipathDynamicTable_Simple::WeightedRandom(vector<entryT> &possibles, vector<double> &weight){
 
-    unsigned int sum = 0;
+    double sum = 0;
+    std::random_device rd;
+    std::mt19937 gen(rd());
     for (unsigned int i=0; i<weight.size(); i++){
-        sum = sum + (int)(weight[i]*100);
-    }
+            sum = sum + weight[i];
+        }
+    std::uniform_real_distribution<double> generator(0.0, sum);
+
     if(sum == 0)
     {
         return 0;
     }
-    int rnd = rand() % sum;
+    double rnd = generator(gen);
     for (unsigned int i=0; i<weight.size(); i++){
-        if(rnd < (int)(weight[i]*100)){
+
+        if(rnd < weight[i]){
             return i;
         }
         else{
-            rnd =- (int)(weight[i]*100);
+            rnd = rnd - weight[i];
         }
     }
     return 0;//Never should end here
@@ -348,9 +322,7 @@ void QoSMultipathDynamicTable_Simple::AplyReroute(const RerouteInfo &info, const
 
     for (auto it : info.movements){
         cache[dst][it.flow].p=it.dst;
-        //BWControl[it.org].bw += it.reqBW;
         BWControl.addBW(it.org, it.qos, it.reqBW);
-        //BWControl[it.dst].bw -= it.reqBW;
         BWControl.removeBW(it.dst, it.qos, it.reqBW);
     }
 }
@@ -366,11 +338,9 @@ bool QoSMultipathDynamicTable_Simple::isBetterPort(const entryT * port1, const e
     }
     else{
         if(par("bigFlows").boolValue()){
-            //return ((port1->BW-BWControl[port1->p].bw) < (port2->BW-BWControl[port2->p].bw));
             return ((port1->BW-BWControl.getBWbyQoS(port1->p, qos)) < (port2->BW-BWControl.getBWbyQoS(port2->p,qos)));
         }
         else{
-            //return ((port1->BW-BWControl[port1->p].bw) > (port2->BW-BWControl[port2->p].bw));
             return ((port1->BW-BWControl.getBWbyQoS(port1->p, qos)) > (port2->BW-BWControl.getBWbyQoS(port2->p,qos)));
         }
     }
@@ -388,11 +358,9 @@ bool QoSMultipathDynamicTable_Simple::isBetterPort(const entryT * port1, const e
     }
     else{
         if(par("bigFlows").boolValue()){
-            //return ((port1->BW-BWControl[port1->p].bw) < (port2->BW-BWControl[port2->p].bw));
             return ((port1->BW-BWControl.getTotalBW(port1->p)) < (port2->BW-BWControl.getTotalBW(port2->p)));
         }
         else{
-            //return ((port1->BW-BWControl[port1->p].bw) > (port2->BW-BWControl[port2->p].bw));
             return ((port1->BW-BWControl.getTotalBW(port1->p)) > (port2->BW-BWControl.getTotalBW(port2->p)));
         }
     }
@@ -450,7 +418,6 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
                 if(it2->second.t < limT) {
                     auto tIt = it2;
                     it2++;
-                    //BWControl[tIt->second.p].bw -= tIt->second.reqBW;
                     BWControl.removeBW(tIt->second.p, tIt->second.QoS, tIt->second.reqBW);
                     orderedCache.erraseElement(&(tIt->second));
                     it->second.erase(tIt);
@@ -466,27 +433,6 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
         scheduleAt(simTime() + cleanCache_t, msg);
     }
     else if (msg == recalcWeightMsg){
-
-//        for(auto it : QoS_BWreq){
-//
-//            for(auto it2 : Port_avBW){
-//                list <unsigned short> aux = mon->getStats(it2.first, it.first);
-//                double mean = 0;
-//                for(auto it3 : aux){
-//                    mean =+ it3;
-//                }
-//                if(aux.size()== 0 || mean == 0){
-//                    mean = 0.01;
-//                }
-//                else{
-//                    mean = aux.size()/(mean);//inverse of median
-//                }
-//                weights[it.first][it2.first]==mean;
-//            }
-//            //for(auto it2 : Port_avBW){
-//            //    weights[it.first][it2.first]/sum;//Normalization
-//            //}
-//        }
         recalcule();
         scheduleAt(simTime() + recalcule_t, msg);
     }
@@ -499,19 +445,24 @@ void QoSMultipathDynamicTable_Simple::recalcule(){
                     list <unsigned short> aux = mon->getStats(it2.first, it.first);
                     double mean = 0;
                     for(auto it3 : aux){
-                        mean =+ it3;
+                        mean = mean + it3;
                     }
-                    if(aux.size()== 0 || mean == 0){
-                        mean = 0.01;
+                    if(aux.size()== 0){
+                        mean = 1.0;
+                    }
+                    else if(mean == 0)
+                    {
+                        mean = 1.0;
                     }
                     else{
-                        mean = aux.size()/(mean);//inverse of median
+                        mean = (double)aux.size()/(mean);//inverse of median
+                        if(mean > 1.0){
+                            mean = 1.0;
+                        }
+
                     }
                     weights[it.first][it2.first] = mean;
                 }
-                //for(auto it2 : Port_avBW){
-                //    weights[it.first][it2.first]/sum;//Normalization
-                //}
             }
 }
 
@@ -523,7 +474,6 @@ void QoSMultipathDynamicTable_Simple::addReplace(const string &addr, vector<entr
 
     if(ports.empty()) {
         for(auto it = cache[addr].begin(); it!= cache[addr].end();) {
-                //BWControl[it->second.p].bw -= it->second.reqBW;
             BWControl.removeBW(it->second.p, it->second.QoS, it->second.reqBW);
         }
         cache.erase(addr);
@@ -543,7 +493,6 @@ void QoSMultipathDynamicTable_Simple::addReplace(const string &addr, vector<entr
                 if(it2->second.p == e.p) {
                     auto tIt = it2;
                     it2++;
-                    //BWControl[tIt->second.p].bw -= tIt->second.reqBW;
                     BWControl.removeBW(tIt->second.p, tIt->second.QoS, tIt->second.reqBW);
                     orderedCache.erraseElement(&(tIt->second));
                     cache[addr].erase(tIt);
@@ -579,6 +528,27 @@ void QoSMultipathDynamicTable_Simple::finish(){
     if(par("printAtEnd").boolValue()){
         EV << "-----------------" << endl;
         EV << "Forwarding table::" << endl;
+        EV << toString() <<endl;
+        EV << "-----------------" << endl;
+        EV << "Cache table::" << endl;
+        map<RMTPort *, int> counter;
+        for(auto it : Port_avBW){
+            counter[it.first]=0;
+        }
+        for (auto it : cache){
+        EV << it.first << endl;
+            for(auto it2 : it.second){
+                EV << "Flujo : " << it2.first << endl;
+                EV << "Puerto: " << it2.second.p->getFullPath() << endl;
+                EV << "QoS: " << it2.second.QoS << endl;
+                EV << "BW    : " << it2.second.reqBW << endl <<endl;
+                counter[it2.second.p] = counter[it2.second.p]+1;
+            }
+            EV << "-----------------" << endl;
+        }
+        for(auto it3 : Port_avBW){
+            EV  << it3.first->getFullPath() << " : " << counter[it3.first] << endl;
+        }
         EV << toString() <<endl;
         EV << "-----------------" << endl;
     }

@@ -12,6 +12,7 @@ namespace Infection {
     unsigned int Flow::cepID = 1;
 
     Flow::Flow(
+            double _startTime,
             string DIF,
             string SRC,
             string DST,
@@ -21,8 +22,8 @@ namespace Infection {
             int varPDU,
             int nParts,
             int nRec,
-            int DstCepId) :
-
+            int SrcCepId) :
+        startTime (_startTime),
         QoS (_QoS),
         srcAddr(Address(SRC.c_str(), DIF.c_str())),
         dstAddr(Address(DST.c_str(), DIF.c_str())),
@@ -34,8 +35,8 @@ namespace Infection {
         rec(nRec),
         fcepID(Flow::cepID++),
         secNum(0) {
-            connID.setSrcCepId(1);
-            connID.setDstCepId(DstCepId);
+            connID.setSrcCepId(SrcCepId);
+            connID.setDstCepId(-1);
             connID.setQoSId(_QoS);
           //  cout << minS << " " << maxS << endl;
     }
@@ -83,12 +84,11 @@ namespace Infection {
 
         current++;
         if(current >= parts) { current = 0;}
-        connID.setSrcCepId(current+1);
+        //connID.setSrcCepId(current+1);
 
 
         return ret;
     }
-
     commMsg::commMsg(Flow * _f) : f(_f) {}
 
     void Infection::initialize() {
@@ -145,9 +145,12 @@ namespace Infection {
 
             if (n->getAttribute("qos")) { QoS = n->getAttribute("qos"); }
 
-            int N = 1, rec = 1, pduS = 1024, pduSv = 0, DstCepId = 99999;
+            int N = 1, rec = 1, pduS = 1024, pduSv = 0, SrcCepId = 99999;
 
-            double rate = 1.0;
+            double rate = 1.0, start = 0.0;
+
+            if (n->getAttribute("startTime") && atof(n->getAttribute("startTime")) > 0) {
+                start = atof(n->getAttribute("startTime")); }
 
             if (n->getAttribute("N") && atoi(n->getAttribute("N")) > 0) {
                 N = atoi(n->getAttribute("N")); }
@@ -158,9 +161,8 @@ namespace Infection {
                 pduS = atoi(n->getAttribute("pduSize")); }
             if(pduS < 50) { pduS = 50; }
 
-            if (n->getAttribute("DstCepId") && atoi(n->getAttribute("DstCepId")) > 0) {
-                //DstCepId = atoi(n->getAttribute("DstCepId")); }
-                DstCepId = -1;
+            if (n->getAttribute("SrcCepId") && atoi(n->getAttribute("SrcCepId")) > 0) {
+                SrcCepId = atoi(n->getAttribute("SrcCepId"));
             }
 
 
@@ -173,7 +175,7 @@ namespace Infection {
             if(rate <= 0) { continue; }
 
 
-            Flow * f = new Flow(DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, DstCepId);
+            Flow * f = new Flow(start, DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, SrcCepId);
 
             flows.push_back(f);
             scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
@@ -188,18 +190,27 @@ namespace Infection {
             simtime_t now = simTime();
             if(now >= finTime) { delete msg; return; }
 
-            bool record = now >= markIniT && now < markFinT;
+            if (now >= (SimTime(m->f->startTime)))
+            {
 
-            pduT k = m->f->getPDU(record);
+                bool record = now >= markIniT && now < markFinT;
 
-            scheduleAt(now + k.wT, msg);
-            send(k.pdu, "g$o");
-            if(emitSignals) { emit(signal, new SendInfMsg(
-                    k.pdu->getSrcAddr().getIpcAddress().getName(),
-                    k.pdu->getDstAddr().getIpcAddress().getName(),
-                    k.pdu->getConnId().getSrcCepId(),
-                    m->f->QoS)
-            );}
+                pduT k = m->f->getPDU(record);
+
+                scheduleAt(now + k.wT, msg);
+                send(k.pdu, "g$o");
+                if(emitSignals) { emit(signal, new SendInfMsg(
+                        k.pdu->getSrcAddr().getIpcAddress().getName(),
+                        k.pdu->getDstAddr().getIpcAddress().getName(),
+                        k.pdu->getConnId().getSrcCepId(),
+                        m->f->QoS)
+                );}
+            }
+            else
+            {
+                scheduleAt(SimTime(m->f->startTime), msg);
+            }
+
             return;
         }
         delete msg;

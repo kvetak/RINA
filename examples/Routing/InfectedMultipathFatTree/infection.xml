@@ -1,48 +1,101 @@
 <?xml version="1.0"?>
 <Infection>
 	<InfectionNode id="Server11">
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "1" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "2" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "3" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "4" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "5" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "6" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "7" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "8" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "9" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "10" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "11" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "12" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "13" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "14" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "15" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "16" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "17" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "18" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "19" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "20" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "21" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "22" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "23" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "24" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "25" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "26" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "27" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "28" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "29" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "30" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "31" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "32" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "33" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "34" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "35" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "36" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "37" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "38" />
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "39" />
+		<flow  startTime = "31.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "1" />
+		<flow  startTime = "31.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "2" />
+		<flow  startTime = "31.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "3" />
+		<flow  startTime = "31.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "4" />
+		<flow  startTime = "31.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "5" />
+		<flow  startTime = "31.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "6" />
+		<flow  startTime = "31.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "7" />
+		<flow  startTime = "31.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "8" />
+		<flow  startTime = "31.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "9" />
+		<flow  startTime = "31.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "10" />
+		<flow  startTime = "31.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "11" />
+		<flow  startTime = "31.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "12" />
+		<flow  startTime = "31.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "13" />
+		<flow  startTime = "31.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "14" />
+		<flow  startTime = "31.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "15" />
+		<flow  startTime = "31.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "16" />
+		<flow  startTime = "31.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "17" />
+		<flow  startTime = "31.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "18" />
+		<flow  startTime = "32.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "19" />
+		<flow  startTime = "33.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "20" />
+		<flow  startTime = "33.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "21" />
+		<flow  startTime = "33.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "22" />
+		<flow  startTime = "33.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "23" />
+		<flow  startTime = "33.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "24" />
+		<flow  startTime = "33.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "25" />
+		<flow  startTime = "33.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "26" />
+		<flow  startTime = "33.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "27" />
+		<flow  startTime = "33.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "28" />
+		<flow  startTime = "33.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "29" />
+		<flow  startTime = "34.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "30" />
+		<flow  startTime = "34.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "31" />
+		<flow  startTime = "34.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "32" />
+		<flow  startTime = "34.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "33" />
+		<flow  startTime = "34.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "34" />
+		<flow  startTime = "34.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "35" />
+		<flow  startTime = "34.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "36" />
 	</InfectionNode>	
 	
 	<InfectionNode id="Server12">
-		<flow  dstAddr = "R1.TOR" qos = "1" pduSize = "1500"  pduSizeVar = "0" rate = "0.1" DstCepId = "39" />
+		<flow  startTime = "31.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "37" />
+		<flow  startTime = "32.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "38" />
+		<flow  startTime = "32.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "39" />
+		<flow  startTime = "32.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "40" />
+		<flow  startTime = "32.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "41" />
+		<flow  startTime = "32.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "42" />
+		<flow  startTime = "32.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "43" />
+		<flow  startTime = "32.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "44" />
+		<flow  startTime = "32.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "45" />
+		<flow  startTime = "32.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "46" />
+		<flow  startTime = "34.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "47" />
+		<flow  startTime = "34.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "48" />
+		<flow  startTime = "34.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "49" />
+		<flow  startTime = "35.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "50" />
+		<flow  startTime = "35.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "51" />
+		<flow  startTime = "35.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "52" />
+		<flow  startTime = "35.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "53" />
+		<flow  startTime = "35.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "54" />
+		<flow  startTime = "35.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "55" />
+		<flow  startTime = "35.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "56" />
+		<flow  startTime = "35.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "57" />
+		<flow  startTime = "35.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "58" />
+		<flow  startTime = "35.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "59" />
+		<flow  startTime = "36.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "60" />
+		<flow  startTime = "36.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "61" />
+		<flow  startTime = "36.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "62" />
+		<flow  startTime = "36.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "63" />
+		<flow  startTime = "36.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "64" />
+		<flow  startTime = "36.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "65" />
+		<flow  startTime = "36.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "66" />
+		<flow  startTime = "36.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "67" />
+		<flow  startTime = "36.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "68" />
+		<flow  startTime = "37.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "69" />
+		<flow  startTime = "37.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "70" />
+		<flow  startTime = "37.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "71" />
+		<flow  startTime = "37.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "72" />
+		<flow  startTime = "37.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "73" />
+		<flow  startTime = "37.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "74" />
+		<flow  startTime = "37.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "75" />
+		<flow  startTime = "37.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "76" />
+		<flow  startTime = "37.8" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "77" />
+		<flow  startTime = "37.9" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "78" />
+		<flow  startTime = "38.0" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "79" />
+		<flow  startTime = "38.1" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "80" />
+		<flow  startTime = "38.2" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "81" />
+		<flow  startTime = "38.3" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "82" />
+		<flow  startTime = "38.4" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "83" />
+		<flow  startTime = "38.5" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "84" />
+		<flow  startTime = "38.6" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "85" />
+		<flow  startTime = "38.7" dstAddr = "AS.5" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.007" SrcCepId = "86" />
 	</InfectionNode>	
+	
+	<InfectionNode id="TOR1">
+	
+		<flow  dstAddr = "AS.1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.5" SrcCepId = "99" />
+		<flow  dstAddr = "AS.2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.7" SrcCepId = "98" />
+
+	</InfectionNode>
 </Infection>

@@ -72,7 +72,7 @@ struct cEntry {
 
     string dst;
 
-    int DstCepId;
+    int SrcCepId;
 
     cEntry(){
 
@@ -86,7 +86,7 @@ struct cEntry {
 
         dst = "null";
 
-        DstCepId = 0;
+        SrcCepId = 0;
 
     }
 
@@ -306,7 +306,7 @@ protected:
 
 
 
-    map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
+    map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(SrcCepId), entry>>
 
     map<string, map<RMTPort *, double>> weights; //map<qos, map<port, weight>>
 

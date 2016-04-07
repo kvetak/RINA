@@ -20,11 +20,12 @@ namespace Infection {
     class Flow {
         public :
 
-            Flow(string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec, int DstCepId);
+            Flow(double startTime, string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec, int DstCepId);
 
 
             pduT getPDU(bool record);
             string QoS;
+            double startTime;
 
         private :
             ConnectionId connID;
@@ -43,6 +44,8 @@ namespace Infection {
             Flow * f;
 
             commMsg(Flow * _f);
+
+
     };
 
     class Infection : public cSimpleModule{
