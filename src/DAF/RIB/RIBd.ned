@@ -20,18 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+package rina.src.DAF.RIB;
 
-APBase::APBase() {
-
-}
-
-APBase::~APBase() {
-}
-
-
-void APBase::initialize() {
-}
-
-void APBase::handleMessage(cMessage *msg) {
+simple DAFRIBd
+{
+    parameters:
+    	@display("i=block/control");
+    	
+    	@signal[RIBd-DataSend](type=CDAPMessage?);
+    	
+    	bool useEnrollmentNotifier = default(false);    	
 }

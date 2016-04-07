@@ -30,14 +30,14 @@ import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.ConnectionTable;
 import rina.src.DAF.IRM.IRM;
-import rina.src.DIF.RIB.RIBDaemon;
 import rina.src.DIF.RMT.RMT;
 import rina.src.DAF.AP.AP;
+import rina.src.DAF.RIB.DAFRIBDaemon;
 
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=400,200;i=misc/node,yellow,30");
+        @display("bgb=400,220;i=misc/node,yellow,30");
         string apName = default("App");
         string apInstance = default("0");
         string apType = default("AP");
@@ -45,15 +45,19 @@ module ApplicationProcess
         inout southIo[];
     submodules:
         apInst: <apType> like AP {
-        	@display("p=25,25");
+	       	@display("p=25,25");
+        }
+        
+        ribDaemon: DAFRIBDaemon {
+            @display("p=200,150");
         }
         
         applicationEntity: ApplicationEntity {
-            @display("p=100,60");
+            @display("p=125,60");
         }
         
         apManagement: AEManagement {
-            @display("p=260,60");
+            @display("p=300,60");
         }
     connections allowunconnected:
 }

@@ -20,18 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+#ifndef DAFRIBDLISTENERS_H_
+#define DAFRIBDLISTENERS_H_
 
-APBase::APBase() {
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "DAFRIBdBase.h"
 
-}
+class DAFRIBdListeners : public cListener {
+public:
+    DAFRIBdListeners(DAFRIBdBase* nribd);
+    virtual ~DAFRIBdListeners();
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+        EV << "Signal to DAFRIBd initiated by " << src->getFullPath() << endl;
+    }
+  protected:
+    DAFRIBdBase* ribd;
+};
 
-APBase::~APBase() {
-}
+class LisDAFRIBDRcvData : public DAFRIBdListeners {
+  public:
+    LisDAFRIBDRcvData(DAFRIBdBase* nribd) : DAFRIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+};
 
-
-void APBase::initialize() {
-}
-
-void APBase::handleMessage(cMessage *msg) {
-}
+#endif /* DAFRIBDLISTENERS_H_ */

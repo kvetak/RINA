@@ -1,3 +1,4 @@
+//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,18 +21,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+#ifndef DAFRIBD_H_
+#define DAFRIBD_H_
 
-APBase::APBase() {
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
+#include "Utils.h"
+#include "CDAPProcessingBase.h"
+#include "DAFRIBdBase.h"
+#include "ExternConsts.h"
+#include "DAFRIBdListeners.h"
+#include "RINASignals.h"
+#include "PDU.h"
+#include "EnrollmentNotifier.h"
 
-}
+class DAFRIBd : public DAFRIBdBase {
+public:
+  virtual void receiveData(CDAPMessage* cimsg);
 
-APBase::~APBase() {
-}
+  virtual void signalizeSendData(CDAPMessage* msg);
 
+protected:
+  EnrollmentNotifierBase* EnrollNotif;
 
-void APBase::initialize() {
-}
+  bool useEnrollmentNotifier;
 
-void APBase::handleMessage(cMessage *msg) {
-}
+  virtual void initialize();
+  virtual void handleMessage(cMessage *msg);
+
+  void initSignalsAndListeners();
+  void initPointers();
+
+  //Signals
+  simsignal_t sigDAFRIBDSendData;
+
+  //Listeners
+  LisDAFRIBDRcvData*             lisDAFRIBDRcvData;
+
+};
+
+#endif /* DAFRIBD_H_ */

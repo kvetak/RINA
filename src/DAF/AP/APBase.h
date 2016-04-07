@@ -56,6 +56,9 @@ protected:
 
     int getNewInvokeID();
 
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+
 };
 
 #endif /* APBASE_H_ */

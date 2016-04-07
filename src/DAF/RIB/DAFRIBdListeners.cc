@@ -20,18 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+#include <RIB/DAFRIBdListeners.h>
 
-APBase::APBase() {
-
+DAFRIBdListeners::DAFRIBdListeners(DAFRIBdBase* nribd) : ribd(nribd) {
 }
 
-APBase::~APBase() {
+DAFRIBdListeners::~DAFRIBdListeners() {
+    ribd = NULL;
 }
 
-
-void APBase::initialize() {
-}
-
-void APBase::handleMessage(cMessage *msg) {
+void LisDAFRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "ReceiveData initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
+    if (cimsg) {
+        ribd->receiveData(cimsg);
+    }
+    else
+        EV << "DAFRIBdListener received unknown object!" << endl;
 }

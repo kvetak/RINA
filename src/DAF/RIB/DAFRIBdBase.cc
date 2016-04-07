@@ -20,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+#include <RIB/DAFRIBdBase.h>
 
-APBase::APBase() {
-
+DAFRIBdBase::DAFRIBdBase() {
 }
 
-APBase::~APBase() {
+DAFRIBdBase::~DAFRIBdBase() {
+}
+
+long DAFRIBdBase::getNewInvokeId() {
+    long newinvoke = getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID).longValue() + 1;
+    getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID) = newinvoke;
+    return newinvoke;
 }
 
 
-void APBase::initialize() {
-}
-
-void APBase::handleMessage(cMessage *msg) {
-}

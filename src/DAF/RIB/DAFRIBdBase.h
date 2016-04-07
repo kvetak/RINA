@@ -20,18 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+#ifndef DAFRIBDBASE_H_
+#define DAFRIBDBASE_H_
 
-APBase::APBase() {
+//Standard libraries
+#include <omnetpp.h>
+//RINASim libraries
 
-}
+#include "ExternConsts.h"
+#include "CDAPMessage_m.h"
+#include "DAFEnrollmentObj.h"
+#include "DAFOperationObj.h"
+#include "PDU.h"
 
-APBase::~APBase() {
-}
+class DAFRIBdBase : public cSimpleModule {
+public:
+    DAFRIBdBase();
+    virtual ~DAFRIBdBase();
 
+    virtual void receiveData(CDAPMessage* flow) = 0;
+    virtual void signalizeSendData(CDAPMessage* msg) = 0;
 
-void APBase::initialize() {
-}
+    long getNewInvokeId();
+protected:
 
-void APBase::handleMessage(cMessage *msg) {
-}
+    //SimpleModule overloads
+    virtual void initialize() = 0;
+    virtual void handleMessage(cMessage *msg) = 0;
+};
+
+#endif /* DAFRIBDBASE_H_ */

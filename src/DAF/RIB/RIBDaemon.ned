@@ -20,18 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APBase.h>
+package rina.src.DAF.RIB;
 
-APBase::APBase() {
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.DIF.Enrollment.EnrollmentNotifier;
 
+module DAFRIBDaemon
+{
+    parameters:
+        @display("i=block/control;bgb=250,250");
+
+    gates:
+        inout southIo;
+
+    submodules:
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            parameters:
+                @display("p=125,175");
+            gates:
+                southIo;
+        }
+        ribd: DAFRIBd {
+            parameters:
+                @display("p=125,100");
+        }
+
+        enrollmentNotifier: EnrollmentNotifier {
+            @display("p=60,30");
+        }
+    connections allowunconnected:
 }
 
-APBase::~APBase() {
-}
 
-
-void APBase::initialize() {
-}
-
-void APBase::handleMessage(cMessage *msg) {
-}
