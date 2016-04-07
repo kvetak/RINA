@@ -31,30 +31,43 @@ AP::AP() {
 AP::~AP() {
 }
 
-void A_GETOPEN_R(APIResult* result) {
-}
-void A_GETREAD_R(APIResult* result) {
-}
-void A_GETWRITE_R(APIResult* result) {
-
+void AP::onOpen(APIResult* result) {
 }
 
-bool A_OPEN(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) {
-
+void AP::onRead(APIResult* result) {
 }
 
-bool A_OPEN(int invokeID, Flow* flow) {
-
+void AP::onWrite(APIResult* result) {
 }
 
-bool A_CLOSE(int CDAPConn, int invokeID = 0) {
-
+void AP::onClose(APIResult* result) {
 }
 
-bool A_READ(int CDAPConn, std::string objName, int invokeID) {
-
+bool AP::a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) {
 }
 
-bool A_WRITE(int CDAPConn, object_t *obj, int invokeID) {
-
+bool AP::a_close(int CDAPConn, int invokeID) {
 }
+
+bool AP::a_read(int CDAPConn, std::string objName, int invokeID) {
+}
+
+bool AP::a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID) {
+}
+
+APIRetObj* AP::a_getopen_r(int invokeID) {
+}
+
+APIRetObj* AP::a_getclose_r(int CDAPConn, int invokeID) {
+}
+
+bool AP::a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete) {
+}
+
+APIRetObj* AP::a_get_read_r(int CDAPConn, int invokeID) {
+}
+
+bool a_cancelread_r(int CDAPConn, int invokeID = 0) {
+}
+
+APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);

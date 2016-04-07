@@ -20,34 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef AP_H_
-#define AP_H_
+#ifndef APIOBJBASE_H_
+#define APIOBJBASE_H_
 
 #include <omnetpp.h>
-#include "APBase.h"
 
-class AP : public APBase {
+class APIObjBase : public cObject {
 public:
-    AP();
-    virtual ~AP();
-
-    virtual void onOpen(APIResult* result);
-    virtual void onRead(APIResult* result);
-    virtual void onWrite(APIResult* result);
-    virtual void onClose(APIResult* result);
-
-protected:
-    virtual bool a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst);
-    virtual bool a_close(int CDAPConn, int invokeID = 0);
-    virtual bool a_read(int CDAPConn, std::string objName, int invokeID = 0);
-    virtual bool a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID = 0);
-
-    virtual APIRetObj* a_getopen_r(int invokeID);
-    virtual APIRetObj* a_getclose_r(int CDAPConn, int invokeID = 0);
-    virtual bool a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete = true) ;
-    virtual APIRetObj* a_get_read_r(int CDAPConn, int invokeID);
-    virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0);
-    virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
+    APIObjBase();
+    virtual ~APIObjBase();
 };
 
-#endif /* AP_H_ */
+#endif /* APIOBJBASE_H_ */

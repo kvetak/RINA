@@ -20,11 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AP/APIResultBase.h>
+#ifndef APIRETOBJ_H_
+#define APIRETOBJ_H_
 
-APIResultBase::APIResultBase() {
-}
+#include "APIObjBase.h"
 
-APIResultBase::~APIResultBase() {
-}
+class APIRetObj : public APIObjBase {
+public:
+    APIRetObj();
+    virtual ~APIRetObj();
+};
 
+#endif /* APIRETOBJ_H_ */

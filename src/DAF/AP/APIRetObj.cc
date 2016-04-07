@@ -20,15 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULTBASE_H_
-#define APIRESULTBASE_H_
+#include <APIRetObj.h>
 
-#include <omnetpp.h>
+APIRetObj::APIRetObj() {
+}
 
-class APIResultBase : public cObject {
-public:
-    APIResultBase();
-    virtual ~APIResultBase();
-};
+APIRetObj::~APIRetObj() {
+}
 
-#endif /* APIRESULTBASE_H_ */

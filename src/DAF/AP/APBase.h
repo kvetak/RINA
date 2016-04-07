@@ -27,6 +27,7 @@
 #include <string>
 #include "Flow.h"
 #include "APIResult.h"
+#include "APIRetObj.h"
 #include "CDAPMessage_m.h"
 
 class APBase : public cSimpleModule {
@@ -34,16 +35,26 @@ public:
     APBase();
     virtual ~APBase();
 
-    virtual void A_GETOPEN_R(APIResult* result) = 0;
-    virtual void A_GETREAD_R(APIResult* result) = 0;
-    virtual void A_GETWRITE_R(APIResult* result) = 0;
+    virtual void onOpen(APIResult* result) = 0;
+    virtual void onRead(APIResult* result) = 0;
+    virtual void onWrite(APIResult* result) = 0;
+    virtual void onClose(APIResult* result) = 0;
 
 protected:
-    virtual bool A_OPEN(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) = 0;
-    virtual bool A_OPEN(int invokeID, Flow* flow);
-    virtual bool A_CLOSE(int CDAPConn, int invokeID = 0) = 0;
-    virtual bool A_READ(int CDAPConn, std::string objName, int invokeID) = 0;
-    virtual bool A_WRITE(int CDAPConn, object_t *obj, int invokeID) = 0;
+    virtual bool a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) = 0;
+    virtual bool a_open(int invokeID, Flow* flow);
+    virtual bool a_close(int CDAPConn, int invokeID = 0) = 0;
+    virtual bool a_read(int CDAPConn, std::string objName, int invokeID = 0) = 0;
+    virtual bool a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID = 0) = 0;
+
+    virtual APIRetObj* a_getopen_r(int invokeID) = 0;
+    virtual APIRetObj* a_getclose_r(int CDAPConn, int invokeID = 0) = 0;
+    virtual bool a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete = true) = 0;
+    virtual APIRetObj* a_get_read_r(int CDAPConn, int invokeID) = 0;
+    virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0) = 0;
+    virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL) = 0;
+
+    int getNewInvokeID();
 
 };
 
