@@ -42,7 +42,7 @@ public:
 
 protected:
     virtual bool a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) = 0;
-    virtual bool a_open(int invokeID, Flow* flow);
+    virtual bool a_open(int invokeID, Flow* flow) = 0;
     virtual bool a_close(int CDAPConn, int invokeID = 0) = 0;
     virtual bool a_read(int CDAPConn, std::string objName, int invokeID = 0) = 0;
     virtual bool a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID = 0) = 0;

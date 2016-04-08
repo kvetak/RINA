@@ -46,6 +46,9 @@ void AP::onClose(APIResult* result) {
 bool AP::a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) {
 }
 
+bool AP::a_open(int invokeID, Flow* flow){
+}
+
 bool AP::a_close(int CDAPConn, int invokeID) {
 }
 
@@ -67,7 +70,9 @@ bool AP::a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj
 APIRetObj* AP::a_get_read_r(int CDAPConn, int invokeID) {
 }
 
-bool a_cancelread_r(int CDAPConn, int invokeID = 0) {
+bool AP::a_cancelread_r(int CDAPConn, int invokeID) {
 }
 
-APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
+APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj){
+
+}
