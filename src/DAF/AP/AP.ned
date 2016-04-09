@@ -22,10 +22,9 @@
 
 package rina.src.DAF.AP;
 
-moduleinterface AP
-{
+simple AP like APInst
+{        
     parameters:
-        @display("i=block/telnet");
+        @display("i=block/telnet");        
         @class(AP);
 }
-

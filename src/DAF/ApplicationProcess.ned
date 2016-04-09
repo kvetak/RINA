@@ -31,7 +31,7 @@ import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.ConnectionTable;
 import rina.src.DAF.IRM.IRM;
 import rina.src.DIF.RMT.RMT;
-import rina.src.DAF.AP.AP;
+import rina.src.DAF.AP.APInst;
 import rina.src.DAF.RIB.DAFRIBDaemon;
 
 module ApplicationProcess
@@ -44,13 +44,13 @@ module ApplicationProcess
     gates:
         inout southIo[];
     submodules:
-        apInst: <apType> like AP {
+        apInst: <apType> like APInst {
 	       	@display("p=25,25");
         }
         
-        ribDaemon: DAFRIBDaemon {
-            @display("p=200,150");
-        }
+        //ribDaemon: DAFRIBDaemon {
+        //    @display("p=200,150");
+        //}
         
         applicationEntity: ApplicationEntity {
             @display("p=125,60");
