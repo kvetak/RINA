@@ -35,3 +35,14 @@ void APBase::initialize() {
 
 void APBase::handleMessage(cMessage *msg) {
 }
+
+int APBase::getNewAEInstNum(std::string AEName) {
+    auto it = AEInstNumbers.find(AEName);
+    if (it == AEInstNumbers.end())
+        AEInstNumbers[AEName] = 0;
+    else {
+        AEInstNumbers[AEName] = AEInstNumbers[AEName] +1;
+    }
+
+    return AEInstNumbers[AEName];
+}

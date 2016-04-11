@@ -25,7 +25,7 @@ package rina.src.DAF;
 import rina.src.Common.Test;
 import rina.src.DAF.AE.AEPing;
 import rina.src.DAF.AEManagement.AEManagement;
-import rina.src.DAF.AE.ApplicationEntity;
+//import rina.src.DAF.AE.ApplicationEntity;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.ConnectionTable;
@@ -52,9 +52,9 @@ module ApplicationProcess
         //    @display("p=200,150");
         //}
         
-        applicationEntity: ApplicationEntity {
-            @display("p=125,60");
-        }
+        //applicationEntity: ApplicationEntity {
+        //    @display("p=125,60");
+        //}
         
         apManagement: AEManagement {
             @display("p=300,60");

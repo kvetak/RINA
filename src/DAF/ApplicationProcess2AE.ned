@@ -15,7 +15,7 @@
 
 package rina.src.DAF;
 
-import rina.src.DAF.AE.ApplicationEntity;
+//import rina.src.DAF.AE.ApplicationEntity;
 
 
 module ApplicationProcess2AE
@@ -29,10 +29,10 @@ module ApplicationProcess2AE
         inout southIo[];
     
     submodules:
-        applicationEntity2: ApplicationEntity {
-            @display("p=202,80");
-        }
-        applicationEntity1: ApplicationEntity {
-            @display("p=75,80");
-        }
+        //applicationEntity2: ApplicationEntity {
+        //    @display("p=202,80");
+        //}
+        //applicationEntity1: ApplicationEntity {
+        //    @display("p=75,80");
+        //}
 }

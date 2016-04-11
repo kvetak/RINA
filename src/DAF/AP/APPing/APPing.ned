@@ -19,25 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
 
-#include <omnetpp.h>
-#include "QueueInfo.h"
+package rina.src.DAF.AP.APPing;
+import rina.src.DAF.AP.AP;
+import rina.src.DAF.AP.APInst;
 
-class Socket : public cSimpleModule
+simple APPing extends AP like APInst
 {
-  public:
-    Socket();
-    virtual ~Socket();
-};
-
-#endif /* SOCKET_H_ */
+    parameters:
+        @class(APPing);
+        
+        int startAt @unit(s) = default(0s);
+        int stopAt  @unit(s) = default(0s);
+        int pingAt  @unit(s) = default(0s);
+}

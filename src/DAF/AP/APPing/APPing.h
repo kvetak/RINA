@@ -19,25 +19,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+
+#ifndef APPING_H_
+#define APPING_H_
 
 #include <omnetpp.h>
-#include "QueueInfo.h"
+#include "AP.h"
 
-class Socket : public cSimpleModule
-{
-  public:
-    Socket();
-    virtual ~Socket();
+#include "RINASignals.h"
+
+class APPing : public AP {
+public:
+    APPing();
+    virtual ~APPing();
+    void initialize();
+    void handleMessage(cMessage *msg);
+    simsignal_t sigAEEnrolled;
 };
 
-#endif /* SOCKET_H_ */
+#endif /* APPING_H_ */

@@ -25,7 +25,6 @@
 Define_Module(AP);
 
 AP::AP() {
-
 }
 
 AP::~AP() {
@@ -43,7 +42,8 @@ void AP::onWrite(APIResult* result) {
 void AP::onClose(APIResult* result) {
 }
 
-bool AP::a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) {
+bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
+    return createIAE(APName, APInst, AEName, AEInst);
 }
 
 bool AP::a_open(int invokeID, Flow* flow){
@@ -74,5 +74,68 @@ bool AP::a_cancelread_r(int CDAPConn, int invokeID) {
 }
 
 APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj){
+}
 
+bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
+    std::string str = "^."+AEName;
+    cModule *submodule, *module = this->getModuleByPath(str.c_str());
+    cModuleType *moduleType;
+    std::ostringstream ostr;
+
+    str = "rina.src.DAF.AE."+AEName;
+    cModuleType *moduleAEType = cModuleType::find(str.c_str());
+    if(!moduleAEType) {
+        str = "rina.src.DAF.AE."+AEName+"."+AEName;
+        moduleAEType = cModuleType::find(str.c_str());
+    }
+
+    if(!moduleAEType) {
+        return false;
+    }
+
+    int AEInstanceNum = getNewAEInstNum(AEName);
+
+    //create module wrapper for AE if not exists
+    if(!module) {
+        moduleType = cModuleType::get("rina.src.DAF.AE.ApplicationEntity");
+        //Create a name
+        ostr << AEName;
+
+        //Instantiate module
+        module = moduleType->create(ostr.str().c_str(), this->getModuleByPath("^"));
+        module->finalizeParameters();
+        module->buildInside();
+        module->callInitialize();
+    }
+
+    //create whole module AEInst, inside IAE,Socket
+    str = "^."+AEName;
+    module = this->getModuleByPath(str.c_str());
+
+    if (!module) {
+        return false;
+    }
+
+    ostr.clear();
+    ostr.str("");
+
+    ostr << AEName << "_" << AEInstanceNum;
+    moduleType = cModuleType::get("rina.src.DAF.AE.ApplicationEntityInstance");
+    module = moduleType->create(ostr.str().c_str(), this->getModuleByPath(str.c_str()));
+    module->par("aeType") = AEName;
+
+    submodule = module->getModuleByPath("iae");
+    submodule->par("aeName") = AEName;
+    submodule->par("aeInstance") = std::to_string(AEInstanceNum);
+    submodule->par("dstApName") = APName;
+    submodule->par("dstApInstance") = APInst;
+    submodule->par("dstAeName") = AEName;
+    submodule->par("dstAeInstance") = AEInst;
+
+
+    module->finalizeParameters();
+    module->buildInside();
+    module->callInitialize();
+
+    return true;
 }

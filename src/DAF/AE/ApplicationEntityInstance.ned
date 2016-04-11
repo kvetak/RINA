@@ -19,25 +19,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+package rina.src.DAF.AE;
 
-#include <omnetpp.h>
-#include "QueueInfo.h"
+import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
+import rina.src.Common.Socket;
 
-class Socket : public cSimpleModule
+
+module ApplicationEntityInstance
 {
-  public:
-    Socket();
-    virtual ~Socket();
-};
-
-#endif /* SOCKET_H_ */
+    parameters:
+        @display("i=block/socket;bgb=276,300");
+        string aeType = default("AE");
+    gates:
+        inout aeIo;
+                
+    submodules:
+        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
+            @display("p=135,145");
+        }
+        iae: <aeType> like IAE {
+            @display("p=135,48");
+        }
+        socket: Socket {
+            @display("p=135,230");
+        }
+    connections allowunconnected:
+}

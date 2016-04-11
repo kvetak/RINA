@@ -19,25 +19,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+#include <APPing/APPing.h>
 
-#include <omnetpp.h>
-#include "QueueInfo.h"
+Define_Module(APPing);
 
-class Socket : public cSimpleModule
-{
-  public:
-    Socket();
-    virtual ~Socket();
-};
+APPing::APPing() {
+}
 
-#endif /* SOCKET_H_ */
+APPing::~APPing() {
+}
+
+void APPing::initialize() {
+    sigAEEnrolled = registerSignal(SIG_AE_Enrolled);
+    cMessage* m1 = new cMessage("start");
+    scheduleAt(simTime() + 1, m1);
+}
+
+void APPing::handleMessage(cMessage *msg) {
+        if ( !strcmp(msg->getName(), "start") ) {
+            a_open(0, "AP", "1", "AEMonitor", "1");
+        }
+        else
+            EV << this->getFullPath() << " received unknown self-message " << msg->getName();
+        delete(msg);
+}
+

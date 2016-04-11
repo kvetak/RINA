@@ -19,25 +19,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+package rina.src.DAF.AE.AEMonitor;
+import rina.src.DAF.AE.AE;
+import rina.src.DAF.AE.IAE;
 
-#include <omnetpp.h>
-#include "QueueInfo.h"
-
-class Socket : public cSimpleModule
+simple AEMonitor extends AE like IAE
 {
-  public:
-    Socket();
-    virtual ~Socket();
-};
-
-#endif /* SOCKET_H_ */
+    parameters:
+        @class(AEMonitor);
+}

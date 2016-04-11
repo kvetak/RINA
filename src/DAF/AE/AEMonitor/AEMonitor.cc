@@ -19,25 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-/*
- * @file Socket.h
- * @author Marcel Marek
- * @date Apr 28, 2016
- * @brief
- * @detail
- */
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+#include <AEMonitor/AEMonitor.h>
 
-#include <omnetpp.h>
-#include "QueueInfo.h"
+Define_Module(AEMonitor);
 
-class Socket : public cSimpleModule
-{
-  public:
-    Socket();
-    virtual ~Socket();
-};
+AEMonitor::AEMonitor() {
+}
 
-#endif /* SOCKET_H_ */
+AEMonitor::~AEMonitor() {
+}
+
+void AEMonitor::initialize() {
+
+}
+

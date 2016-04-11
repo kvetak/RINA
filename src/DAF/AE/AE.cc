@@ -144,7 +144,7 @@ bool AE::createBindings(Flow& flow) {
 }
 
 void AE::initPointers() {
-    Irm = getRINAModule<IRM*>(this, 3, {MOD_IPCRESMANAGER, MOD_IRM});
+    Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
     Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
 
     if (!Cdap)

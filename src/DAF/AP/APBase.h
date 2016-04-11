@@ -29,6 +29,7 @@
 #include "APIResult.h"
 #include "APIRetObj.h"
 #include "CDAPMessage_m.h"
+#include <map>
 
 class APBase : public cSimpleModule {
 public:
@@ -58,6 +59,11 @@ protected:
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+
+    int getNewAEInstNum(std::string AEName);
+
+private:
+    std::map<std::string, int> AEInstNumbers;
 
 };
 
