@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+    <ConnectionSet>
+            <!-- Allocate management flows. -->
+            <SimTime t="0">
+                <Connection src="A_Core" dst="B_Core" qosReq="1"/>
+                <Connection src="B_Core" dst="C_Core" qosReq="1"/>
+                <Connection src="B_Core" dst="D_Core" qosReq="1"/>
+                <Connection src="D_Core" dst="E_Core" qosReq="1"/>
+                <Connection src="E_Core" dst="F_Core" qosReq="1"/>
+            </SimTime>
+    </ConnectionSet>

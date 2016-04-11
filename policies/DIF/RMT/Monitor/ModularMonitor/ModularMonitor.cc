@@ -59,8 +59,10 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
                     inPos[pdu] = portServed[port];
                 }
 
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                if(const InfectedDataTransferPDU * p = dynamic_cast<const InfectedDataTransferPDU*>(pdu)) {
+                    if(p->signaled) {
+                        emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
             }
             break;
@@ -79,8 +81,10 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             outDropModule->pduDropped(queue, pdu, port);
 
             if(emitSignals) {
-                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                    emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+                if(const InfectedDataTransferPDU * p = dynamic_cast<const InfectedDataTransferPDU*>(pdu)) {
+                    if(p->signaled) {
+                        emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
+                    }
                 }
                 inTime.erase(pdu);
                 inPos.erase(pdu);
@@ -107,12 +111,14 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
                     std::string qos = pdu->getConnId().getQoSId();
                     inTime.erase(pdu);
                     inPos.erase(pdu);
-                    emit(signal, new HopDelayMsg(qos, hdel, this));
                     if(InfectedDataTransferPDU * idt =
                             dynamic_cast<InfectedDataTransferPDU * >(
                                     const_cast<PDU*>(pdu))) {
                         idt->addPSTdelay(hdel);
                         idt->setHopCount(idt->getHopCount()+1);
+                        if(idt->signaled) {
+                            emit(signal, new HopDelayMsg(qos, hdel, this));
+                        }
                     }
                 }
             }

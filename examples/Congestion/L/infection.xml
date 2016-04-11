@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode id="T">
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "5"	nFlows="100" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "5"	nFlows="100" listen="true" />
+	</InfectionNode>
+	
+	<InfectionNode id="A">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "1"	nFlows="100" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "2"	nFlows="200" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "3"	nFlows="300" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "4"	nFlows="400" listen="true" />
+	</InfectionNode>
+	
+	<InfectionNode id="AT">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "2"	nFlows="20" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "8"	nFlows="80" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "27"	nFlows="270" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "63"	nFlows="630" listen="true" />
+	</InfectionNode>
+	<InfectionNode id="B" />
+	<InfectionNode id="C" />
+</Infection>

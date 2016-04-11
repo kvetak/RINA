@@ -107,7 +107,7 @@ QoSReq::QoSReq(cXMLElementList& attrs) :
         cXMLElement* n = *jt;
 
         if ( !strcmp(n->getTagName(), ELEM_AVGBW) ) {
-            avgBand = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+            avgBand = n->getNodeValue() ? atol(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
             if (avgBand < 0)
                 avgBand = VAL_QOSPARDONOTCARE;
         }

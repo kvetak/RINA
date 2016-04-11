@@ -191,6 +191,17 @@ cPacket* RMTQueue::dropLast()
     return dropped;
 }
 
+cPacket* RMTQueue::dropFirst()
+{
+    cPacket* dropped = queue.front();
+    bubble("Dropping a PDU...");
+    queue.pop_front();
+    redrawGUI();
+    return dropped;
+}
+
+
+
 void RMTQueue::markCongestionOnLast()
 {
     cPacket* msg = queue.back();

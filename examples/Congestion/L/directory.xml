@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+  <DA>
+    <Directory>
+		<APN apn="A_Core">
+			<DIF difName="sAB" ipcAddress="A" />
+		</APN>
+		<APN apn="B_Core">
+			<DIF difName="sAB" ipcAddress="B" />
+			<DIF difName="sBC" ipcAddress="B" />
+		</APN>
+		<APN apn="C_Core">
+			<DIF difName="sBC" ipcAddress="C" />
+		</APN>
+    </Directory>
+  </DA>

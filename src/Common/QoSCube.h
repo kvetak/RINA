@@ -65,7 +65,7 @@ class QoSCube {
     /**
      * @brief Attribute holding average bandwidth
      */
-    int avgBand ;               //Average bandwidth (measured at the application in bits/sec)
+    long avgBand ;               //Average bandwidth (measured at the application in bits/sec)
 
     /**
      * @brief Attribute holding average SDU bandwidth
@@ -181,7 +181,7 @@ class QoSCube {
     QoSCube(cXMLElementList& attrs);
 
     QoSCube(std::string tqosid,
-            int tavgBand, int tavgSDUBand, int tpeakBandDuration, int tpeakSDUBandDuration, int tburstPeriod, int tburstDuration,
+            long tavgBand, int tavgSDUBand, int tpeakBandDuration, int tpeakSDUBandDuration, int tburstPeriod, int tburstDuration,
             double tundetectedBitErr, double tpduDropProbab,
             int tmaxSDUsize, bool tpartDeliv, bool tincompleteDeliv, bool tforceOrder,
             unsigned int tmaxAllowGap, int tdelay, int tjitter, int tcosttime, int tcostbits,
@@ -213,13 +213,13 @@ class QoSCube {
      * @brief Gets Average Bandwidth parameter
      * @return Value measured at the application in bits/sec
      */
-    int getAvgBand() const;
+    long getAvgBand() const;
 
     /**
      * @brief Sets Average Bandwidth parameter
      * @param avgBand A new value in bits/sec
      */
-    void setAvgBand(int avgBand);
+    void setAvgBand(long avgBand);
 
     /**
      * @brief Gets Average SDU Bandwidth parameter

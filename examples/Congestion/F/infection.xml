@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<Infection>
+	<InfectionNode id="A">
+		<flowSet  dstAddr = "B" 	qos = "GU" 		rate = "10" />
+		<flowSet  dstAddr = "B" 	qos = "SN" 		rate = "20" />
+		<flowSet  dstAddr = "B" 	qos = "sBE" 	rate = "20" />
+		<flowSet  dstAddr = "B" 	qos = "BE" 		rate = "30" />
+		
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "1"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "2"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "3"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "4"	nFlows="3" listen="true" />
+		
+		<flowSet  dstAddr = "F" 	qos = "GU" 		rate = "1"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "F" 	qos = "SN" 		rate = "2"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "F" 	qos = "sBE" 	rate = "3"	nFlows="3" listen="true" />
+		<flowSet  dstAddr = "F" 	qos = "BE" 		rate = "4"	nFlows="3" listen="true" />
+	</InfectionNode>
+	<InfectionNode id="B">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "10" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "20" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "20" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "40" />
+		
+		<flowSet  dstAddr = "D" 	qos = "GU" 		rate = "110" />
+		<flowSet  dstAddr = "D" 	qos = "SN" 		rate = "220" />
+		<flowSet  dstAddr = "D" 	qos = "sBE" 	rate = "220" />
+		<flowSet  dstAddr = "D" 	qos = "BE" 		rate = "440" />
+	</InfectionNode>
+	<InfectionNode id="C" />
+	<InfectionNode id="D">
+		<flowSet  dstAddr = "E" 	qos = "GU" 		rate = "110" />
+		<flowSet  dstAddr = "E" 	qos = "SN" 		rate = "220" />
+		<flowSet  dstAddr = "E" 	qos = "sBE" 	rate = "220" />
+		<flowSet  dstAddr = "E" 	qos = "BE" 		rate = "440" />
+	</InfectionNode>
+	<InfectionNode id="E">
+		<flowSet  dstAddr = "F" 	qos = "GU" 		rate = "10" />
+		<flowSet  dstAddr = "F" 	qos = "SN" 		rate = "20" />
+		<flowSet  dstAddr = "F" 	qos = "sBE" 	rate = "20" />
+		<flowSet  dstAddr = "F" 	qos = "BE" 		rate = "40" />
+	</InfectionNode>
+	<InfectionNode id="F" />
+</Infection>

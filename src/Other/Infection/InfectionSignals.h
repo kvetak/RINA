@@ -63,7 +63,7 @@ public:
     double pathDelay;
     int pstDelay;
 
-    InfectedDataTransferPDU(bool _signaled, int _fcepID, const char *name=NULL):
+    InfectedDataTransferPDU(bool _signaled, int _fcepID, const char *name="InfectedPDU"):
             DataTransferPDU(name, 0),
             signaled(_signaled),
             fcepID(_fcepID),

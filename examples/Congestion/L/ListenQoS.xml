@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<QoS>
+	<qos name="GU" 	delay="21" 	jitter="0.01" 	/>
+	<qos name="SN" 	delay="50"  jitter="0.1" 	/>	
+	<qos name="sBE" delay="21"  jitter="0.05" 	/>
+	<qos name="BE" 	delay="50" 	jitter="0.2" 	/>	
+</QoS>

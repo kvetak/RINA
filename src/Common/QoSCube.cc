@@ -186,7 +186,7 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
 }
 
 QoSCube::QoSCube(std::string tqosid,
-        int tavgBand, int tavgSDUBand,
+        long tavgBand, int tavgSDUBand,
         int tpeakBandDuration, int tpeakSDUBandDuration,
         int tburstPeriod, int tburstDuration,
         double tundetectedBitErr, double tpduDropProbab,
@@ -249,11 +249,11 @@ std::ostream& operator <<(std::ostream& os, const QoSCube& cube) {
     return os << cube.info();
 }
 
-int QoSCube::getAvgBand() const {
+long QoSCube::getAvgBand() const {
     return avgBand;
 }
 
-void QoSCube::setAvgBand(int avgBand) {
+void QoSCube::setAvgBand(long avgBand) {
     this->avgBand = avgBand;
 }
 

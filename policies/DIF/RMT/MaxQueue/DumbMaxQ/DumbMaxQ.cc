@@ -91,7 +91,39 @@ void  DumbMaxQ::finish(){
 
         EV << "On output:" <<endl;
         for(it = okOut.begin(); it!= okOut.end(); it++){
-            EV << "QoS " << it->first << " - Processed " << okOut[it->first] <<"(" << dOkOut[it->first] << ")" << " - Dropped "<< dropOut[it->first] <<"(" << dDropOut[it->first] << ")" << endl;
+            double pSize = dOkOut[it->first];
+            std::string pM = "b";
+            if(pSize > 1000) {
+                pSize/=1000;
+                pM = "Kb";
+                if(pSize > 1000) {
+                    pSize/=1000;
+                    pM = "Mb";
+                    if(pSize > 1000) {
+                        pSize/=1000;
+                        pM = "Gb";
+                    }
+                }
+            }
+            EV << "QoS " << it->first << " - Processed " << okOut[it->first]
+               <<"(" << pSize << " "<< pM << ")";
+
+            pSize = dDropOut[it->first];
+            pM = "b";
+            if(pSize > 1000) {
+                pSize/=1000;
+                pM = "Kb";
+                if(pSize > 1000) {
+                    pSize/=1000;
+                    pM = "Mb";
+                    if(pSize > 1000) {
+                        pSize/=1000;
+                        pM = "Gb";
+                    }
+                }
+            }
+            EV << " - Dropped "<< dropOut[it->first]
+               <<"(" << pSize << " "<< pM << ")" << endl;
         }
         EV << "--------"<< endl;
     }
