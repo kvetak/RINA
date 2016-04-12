@@ -32,7 +32,7 @@ module ApplicationEntityInstance
         @display("i=block/socket;bgb=276,300");
         string aeType = default("AE");
     gates:
-        inout aeIo;
+        inout aeIo[];
                 
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {

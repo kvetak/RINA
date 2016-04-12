@@ -18,10 +18,6 @@ package rina.src.DAF.AE;
 simple AESint extends AE like IAE
 {
     parameters:
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
         
         int startAt @unit(s) = default(0s);
         int stopAt  @unit(s) = default(0s);

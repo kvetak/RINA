@@ -27,6 +27,10 @@ simple AE like IAE
     parameters:
         @display("i=block/socket");        
         @class(AE);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
         
         @signal[AEorRIBd-AllocateResponsePositive];
         @signal[AEorRIBd-AllocateResponseNegative];

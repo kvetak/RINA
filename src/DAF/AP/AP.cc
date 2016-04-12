@@ -124,7 +124,10 @@ bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, s
     module = moduleType->create(ostr.str().c_str(), this->getModuleByPath(str.c_str()));
     module->par("aeType") = AEName;
 
-    submodule = module->getModuleByPath("iae");
+    module->finalizeParameters();
+    module->buildInside();
+
+    submodule = module->getSubmodule("iae");
     submodule->par("aeName") = AEName;
     submodule->par("aeInstance") = std::to_string(AEInstanceNum);
     submodule->par("dstApName") = APName;
@@ -132,9 +135,6 @@ bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, s
     submodule->par("dstAeName") = AEName;
     submodule->par("dstAeInstance") = AEInst;
 
-
-    module->finalizeParameters();
-    module->buildInside();
     module->callInitialize();
 
     return true;

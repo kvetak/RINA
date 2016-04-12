@@ -41,7 +41,7 @@ AE::~AE() {
 void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
     cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^");//->getSubmodule("managementApplicationEntity")->getSubmodule("enrollment");
+    cModule* catcher3 = this->getModuleByPath("^.^");
 
 
     //Signals that this module is emitting
@@ -108,14 +108,33 @@ bool AE::createBindings(Flow& flow) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
+    cModule* ApMon = this->getModuleByPath("^.^.^");
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
 
     //Get AE gates
-    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
+    cModule* AeMod = this->getModuleByPath("^.^");
+    cGate* gAeIn;
+    cGate* gAeOut;
+    AeMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gAeIn, *&gAeOut);
+
+    //Get AE instance gates
+    cModule* AeInstanceMod = this->getModuleByPath("^");
+    cGate* gAeInstIn;
+    cGate* gAeInstOut;
+    AeInstanceMod->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&gAeInstIn, *&gAeInstOut);
+
+    //Get Socket South Gates
+    cModule* SocketMod = this->getModuleByPath("^.Socket");
+    cGate* gSocketIn;
+    cGate* gSocketOut;
+    SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
+
+    //Get Socket CDAP Gates
+    cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
+    cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
 
     //CDAPParent Module gates
     cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
@@ -125,9 +144,13 @@ bool AE::createBindings(Flow& flow) {
     gIrmOut->connectTo(gIrmModOut);
     gIrmModOut->connectTo(gApIn);
     gApIn->connectTo(gAeIn);
-    gAeIn->connectTo(gCdapParentIn);
+    gAeIn->connectTo(gAeInstIn);
+    gAeInstIn->connectTo(gSocketIn);
+    gSocketCdapIn->connectTo(gCdapParentIn);
 
-    gCdapParentOut->connectTo(gAeOut);
+    gCdapParentOut->connectTo(gSocketCdapOut);
+    gSocketOut->connectTo(gAeInstOut);
+    gAeInstOut->connectTo(gAeOut);
     gAeOut->connectTo(gApOut);
     gApOut->connectTo(gIrmModIn);
     gIrmModIn->connectTo(gIrmIn);
@@ -140,7 +163,9 @@ bool AE::createBindings(Flow& flow) {
     return gIrmIn->isConnected()
            && gAeIn->isConnected()
            && gIrmModIn->isConnected()
-           && gApIn->isConnected();
+           && gApIn->isConnected()
+           && gAeInstIn->isConnected()
+           && gSocketCdapIn->isConnected();
 }
 
 void AE::initPointers() {
