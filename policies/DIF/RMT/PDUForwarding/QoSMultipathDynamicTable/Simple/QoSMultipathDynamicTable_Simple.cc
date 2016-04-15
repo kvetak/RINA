@@ -68,6 +68,14 @@ vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
     next = e->p;
 
     if(next == nullptr) {
+
+        //Debug only
+        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        cMessage *msg = new cMessage();
+        take(msg);
+        sendDirect(msg, targetModule, "radioIn");
+        //end of debug
+
         next = portLookup(dstAddr, pdu->getConnId().getQoSId());
         if(next != nullptr){
             e->p = next;//Port inserted in cache

@@ -29,11 +29,13 @@ import ned.DatarateChannel;
 import rina.src.CS.Host1AP;
 import rina.src.CS.InteriorRouterNInt;
 
+import rina.src.Other.FullPathMonitor.FullPathMonitor;
 import rina.src.Other.Infection.InfectedRouter;
 import rina.src.Other.Infection.IListener;
 
 import rina.src.Other.Infection.IListener;
 import rina.src.DAF.AE.AEConstant.AEConstantListener;
+import rina.src.Other.FullPathMonitor.FullPathMonitor;
 
 
 network InfectedMultipathFatTree
@@ -98,35 +100,38 @@ network InfectedMultipathFatTree
         AS6: InteriorRouterNInt {
             @display("p=657,68");
         }
+        fullPathMonitor: FullPathMonitor {
+            @display("p=953,128");
+        }
     connections:
 
-        AS1.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR1.medium++;
-        AS1.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR2.medium++;
-        AS1.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS5.medium++;
+        AS1.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR1.medium++;
+        AS1.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR2.medium++;
+        AS1.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
 
-        AS2.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR1.medium++;
-        AS2.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR2.medium++;
-        AS2.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS6.medium++;
+        AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR1.medium++;
+        AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR2.medium++;
+        AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
 
-        AS3.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR3.medium++;
-        AS3.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR4.medium++;
-        AS3.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS5.medium++;
+        AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR3.medium++;
+        AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR4.medium++;
+        AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
 
-        AS4.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR3.medium++;
-        AS4.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR4.medium++;
-        AS4.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS6.medium++;
+        AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR3.medium++;
+        AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR4.medium++;
+        AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
 
-        Server11.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR1.medium++;
-        Server12.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> TOR1.medium++;
-        Server21.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR2.medium++;
-        Server22.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR2.medium++;
-        Server31.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR3.medium++;
-        Server32.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR3.medium++;
-        Server41.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR4.medium++;
-        Server42.medium <--> DatarateChannel { datarate = 1Gbps;} <--> TOR4.medium++;
-        AS1.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS6.medium++;
-        AS2.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS5.medium++;
-        AS3.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS6.medium++;
-        AS4.medium++ <--> DatarateChannel { datarate = 1Gbps;} <--> AS5.medium++;
+        Server11.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR1.medium++;
+        Server12.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR1.medium++;
+        Server21.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR2.medium++;
+        Server22.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR2.medium++;
+        Server31.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR3.medium++;
+        Server32.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR3.medium++;
+        Server41.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR4.medium++;
+        Server42.medium <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR4.medium++;
+        AS1.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
+        AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
+        AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
+        AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
 
 }

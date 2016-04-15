@@ -551,14 +551,22 @@ void RMT::processMessage(cMessage* msg)
 
 void RMT::handleMessage(cMessage *msg)
 {
-    if (msg->isSelfMessage())
+    if (strcmp("MonitorMsg", msg->getName())==0)
     {
-        // ?
-        invalidPDUs.push_back(msg);
+
+
     }
     else
     {
-        processMessage(msg);
+        if (msg->isSelfMessage())
+        {
+            // ?
+            invalidPDUs.push_back(msg);
+        }
+        else
+        {
+            processMessage(msg);
+        }
     }
 }
 
