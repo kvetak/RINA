@@ -34,20 +34,15 @@ module DAFRIBDaemon
         inout southIo;
 
     submodules:
-        commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
-            parameters:
-                @display("p=125,175");
-            gates:
-                southIo;
-        }
+
         ribd: DAFRIBd {
             parameters:
                 @display("p=125,100");
         }
 
-        enrollmentNotifier: EnrollmentNotifier {
-            @display("p=60,30");
-        }
+//        enrollmentNotifier: EnrollmentNotifier {
+//            @display("p=60,30");
+//        }
     connections allowunconnected:
 }
 

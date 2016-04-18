@@ -35,6 +35,8 @@
 #include "ConnectionTable.h"
 #include "ExternConsts.h"
 #include "CDAPMessage_m.h"
+#include "APIReqObj.h"
+#include "APIResult.h"
 
 class AE : public AEBase
 {
@@ -54,6 +56,13 @@ class AE : public AEBase
     void receiveAllocationResponsePositive(Flow* flow);
 
     virtual void afterOnStart();
+    void start(Flow *flow);
+
+
+
+    virtual bool onA_read(APIReqObj* obj);
+
+    virtual bool onA_write(APIReqObj* obj);
 
   protected:
     IRM* Irm;
@@ -79,6 +88,9 @@ class AE : public AEBase
     simsignal_t sigAERelReq;
     simsignal_t sigAEEnrolled;
 
+    //API AE-AP Signals
+    simsignal_t sigAEAPAPI;
+
     //Listeners
     LisAEReceiveData* lisAERcvData;
     LisAEAllReqFromFai* lisAEAllReqFromFai;
@@ -91,6 +103,9 @@ class AE : public AEBase
     LisAERelRes* lisAERelRes;
     LisAEEnrolled* lisAEEnrolled;
 
+    //API AP-AE Listeners
+    LisAPAEAPI* lisAPAEAPI;
+
     //Signaling
     void signalizeAllocateRequest(Flow* flow);
     void signalizeDeallocateRequest(Flow* flow);
@@ -99,6 +114,7 @@ class AE : public AEBase
     void signalizeAllocateResponseNegative(Flow* flow);
     void signalizeConnectionRequest(CDAPMessage* msg);
     void signalizeReleaseRequest(CDAPMessage* msg);
+    void signalizeAEAPAPI(APIResult* obj);
     virtual void connect();
 
     virtual void processMRead(CDAPMessage* msg);

@@ -129,5 +129,10 @@ void LisAEEnrolled::receiveSignal(cComponent* src, simsignal_t id,
         long obj) {
 
     //TODO: checks before call
-    ae->afterOnStart();
+    //ae->afterOnStart();
+}
+
+void LisAPAEAPI::receiveSignal(cComponent* src, simsignal_t id,
+        long obj) {
+
 }

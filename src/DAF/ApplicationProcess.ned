@@ -25,7 +25,6 @@ package rina.src.DAF;
 import rina.src.Common.Test;
 import rina.src.DAF.AE.AEPing;
 import rina.src.DAF.AEManagement.AEManagement;
-//import rina.src.DAF.AE.ApplicationEntity;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.ConnectionTable;
@@ -33,6 +32,8 @@ import rina.src.DAF.IRM.IRM;
 import rina.src.DIF.RMT.RMT;
 import rina.src.DAF.AP.APInst;
 import rina.src.DAF.RIB.DAFRIBDaemon;
+import rina.src.DAF.AE.ApplicationEntity;
+import rina.src.DAF.Enrollment.DAFEnrollmentModule;
 
 module ApplicationProcess
 {
@@ -45,19 +46,19 @@ module ApplicationProcess
         inout southIo[];
     submodules:
         apInst: <apType> like APInst {
-	       	@display("p=25,25");
+	       	@display("p=35,35");
         }
         
-        //ribDaemon: DAFRIBDaemon {
-        //    @display("p=200,150");
-        //}
+        ribDaemon: DAFRIBDaemon {
+            @display("p=200,60");
+        }
         
-        //applicationEntity: ApplicationEntity {
-        //    @display("p=125,60");
-        //}
+        enrollment: DAFEnrollmentModule {
+            @display("p=325,60");
+        }
         
-        apManagement: AEManagement {
-            @display("p=300,60");
+        aeManagement: ApplicationEntity {
+            @display("p=200,150;i=block/cogwheel");
         }
     connections allowunconnected:
 }

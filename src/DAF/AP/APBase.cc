@@ -46,3 +46,7 @@ int APBase::getNewAEInstNum(std::string AEName) {
 
     return AEInstNumbers[AEName];
 }
+
+int APBase::getCurrentAEInstNum(std::string AEName) {
+    return AEInstNumbers[AEName];
+}

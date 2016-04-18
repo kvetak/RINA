@@ -25,18 +25,29 @@
 
 #include <omnetpp.h>
 #include "APBase.h"
+#include "APListeners.h"
+#include "AE.h"
+#include "APIReqObj.h"
 
+class LisAPAllReqFromFai;
+class LisAEAPAPI;
 class AP : public APBase {
 public:
     AP();
     virtual ~AP();
 
-    virtual void onOpen(APIResult* result);
-    virtual void onRead(APIResult* result);
-    virtual void onWrite(APIResult* result);
+    virtual void onA_getOpen(APIResult* result);
+    virtual void onA_getRead(APIResult* result);
+    virtual void onA_getWrite(APIResult* result);
     virtual void onClose(APIResult* result);
+    void receiveAllocationRequestFromFAI(Flow* flow);
 
+    virtual void resultAssign(APIResult* result);
 protected:
+    virtual void initialize();
+    virtual void initSignalsAndListeners();
+    virtual void initPointers();
+
     virtual bool a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst);
     virtual bool a_open(int invokeID, Flow* flow);
     virtual bool a_close(int CDAPConn, int invokeID = 0);
@@ -45,13 +56,22 @@ protected:
 
     virtual APIRetObj* a_getopen_r(int invokeID);
     virtual APIRetObj* a_getclose_r(int CDAPConn, int invokeID = 0);
-    virtual bool a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete = true) ;
+    virtual bool a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete = true);
     virtual APIRetObj* a_get_read_r(int CDAPConn, int invokeID);
     virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0);
     virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
 
 private:
-    bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst);
+    simsignal_t sigAPAEAPI;
+
+    //Listeners
+    LisAPAllReqFromFai* lisAPAllReqFromFai;
+
+    LisAEAPAPI* lisAEAPAPI;
+
+    bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow);
+
+    void signalizeAPAEAPI(APIReqObj* obj);
 };
 
 #endif /* AP_H_ */

@@ -38,6 +38,7 @@ class Socket : public cSimpleModule
   public:
     Socket();
     virtual ~Socket();
+    void handleMessage(cMessage* msg);
 };
 
 #endif /* SOCKET_H_ */

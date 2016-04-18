@@ -109,8 +109,8 @@ CDAPConnectionState AEBase::getConStatus(){
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getModuleByPath("^.^")->par(PAR_APNAME).stdstringValue();
-    srcApInstance = this->getModuleByPath("^.^")->par(PAR_APINSTANCE).stdstringValue();
+    srcApName = this->getModuleByPath("^.^.^")->par(PAR_APNAME).stdstringValue();
+    srcApInstance = this->getModuleByPath("^.^.^")->par(PAR_APINSTANCE).stdstringValue();
     srcAeName = this->par(PAR_AENAME).stdstringValue();
     srcAeInstance = this->par(PAR_AEINSTANCE).stdstringValue();
 

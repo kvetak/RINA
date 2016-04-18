@@ -33,7 +33,7 @@ void DAFEnrollmentNotifier::initPointers() {
 
 void DAFEnrollmentNotifier::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getParentModule()->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^.^");
 
     //Signals that this module is emitting
     sigRIBDStartEnrollReq = registerSignal(SIG_RIBD_StartEnrollmentRequest);

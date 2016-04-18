@@ -32,8 +32,8 @@
 #include <DAFEnrollmentListeners.h>
 
 DAFEnrollmentListeners::DAFEnrollmentListeners(DAFEnrollment* nenrollment): enrollment(nenrollment) {
-    apName = enrollment->getModuleByPath("^.^.^")->par("apName").stringValue();
-    apInstance = enrollment->getModuleByPath("^.^.^")->par("apInstance").stringValue();
+    apName = enrollment->getModuleByPath("^.^")->par("apName").stringValue();
+    apInstance = enrollment->getModuleByPath("^.^")->par("apInstance").stringValue();
 }
 
 DAFEnrollmentListeners::~DAFEnrollmentListeners() {

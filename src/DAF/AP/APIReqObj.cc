@@ -20,36 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APLISTENERS_H_
-#define APLISTENERS_H_
+#include <APIReqObj.h>
 
-#include <omnetpp.h>
-#include "AP.h"
-#include "APIResult.h"
+APIReqObj::APIReqObj() {
+    // TODO Auto-generated constructor stub
 
-class AP;
-class APListeners : public cListener {
-  public:
-    APListeners(AP* nap);
-    virtual ~APListeners();
+}
 
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
-        EV << "Signal to AP initiated by " << src->getFullPath() << endl;
-    }
-  protected:
-    AP* ap;
-};
+APIReqObj::~APIReqObj() {
+    // TODO Auto-generated destructor stub
+}
 
-class LisAPAllReqFromFai : public APListeners {
-  public:
-    LisAPAllReqFromFai(AP* nap) : APListeners(nap){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-class LisAEAPAPI : public APListeners {
-  public:
-    LisAEAPAPI(AP* nap) : APListeners(nap){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-
-#endif /* APLISTENERS_H_ */

@@ -35,6 +35,7 @@ public:
     virtual ~APPing();
     void initialize();
     void handleMessage(cMessage *msg);
+    cMessage* m1;
     simsignal_t sigAEEnrolled;
 };
 

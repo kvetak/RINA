@@ -29,12 +29,16 @@
 
 #include "RINASignals.h"
 
+const char* SIG_AP_AE_API                       = "AP-AE-API";
+
 const char* SIG_AE_AllocateRequest              = "AE-AllocateRequest";
 const char* SIG_AE_DeallocateRequest            = "AE-DeallocateRequest";
 const char* SIG_AE_DataSend                     = "AE-DataSend";
 const char* SIG_AE_ConnectionRequest            = "AE-ConnectionRequest";
 const char* SIG_AE_ReleaseRequest               = "AE-ReleaseRequest";
 const char* SIG_AE_Enrolled                     = "AE-Enrolled";
+
+const char* SIG_AE_AP_API                       = "AE-AP-API";
 
 const char* SIG_Socket_QueueInfo                = "Socket-QueueInfo";
 

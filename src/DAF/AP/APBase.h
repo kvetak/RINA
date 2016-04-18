@@ -30,15 +30,19 @@
 #include "APIRetObj.h"
 #include "CDAPMessage_m.h"
 #include <map>
+#include "ExternConsts.h"
+#include "RINASignals.h"
 
 class APBase : public cSimpleModule {
 public:
     APBase();
     virtual ~APBase();
 
-    virtual void onOpen(APIResult* result) = 0;
-    virtual void onRead(APIResult* result) = 0;
-    virtual void onWrite(APIResult* result) = 0;
+    int getCurrentAEInstNum(std::string AEName);
+
+    virtual void onA_getOpen(APIResult* result) = 0;
+    virtual void onA_getRead(APIResult* result) = 0;
+    virtual void onA_getWrite(APIResult* result) = 0;
     virtual void onClose(APIResult* result) = 0;
 
 protected:

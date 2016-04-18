@@ -90,8 +90,10 @@ void DAFEnrollment::initialize()
         else
             { updateEnrollmentDisplay(ENICON_NOTENROLLED); }
     }
-    apName = this->getModuleByPath("^.^.^")->par("apName").stringValue();
-    apInstance = this->getModuleByPath("^.^.^")->par("apInstance").stringValue();
+
+
+    apName = this->getModuleByPath("^.^")->par("apName").stringValue();
+    apInstance = this->getModuleByPath("^.^")->par("apInstance").stringValue();
     authType = par(DAF_PAR_AUTH_TYPE);
     authName = this->par(DAF_PAR_AUTH_NAME).stringValue();
     authPassword = this->par(DAF_PAR_AUTH_PASS).stringValue();
@@ -101,6 +103,7 @@ void DAFEnrollment::initialize()
 
     WATCH_MAP(PreenrollConnects);
     WATCH_MAP(PreenrollReleases);
+
 }
 
 void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
@@ -108,13 +111,26 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
     cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
-    cModule* aeMgmt = module->getModuleByPath("^");
-    cGate* gaeMgmtIn = aeMgmt->gateHalf("aeIo", cGate::INPUT);
-    cGate* gaeMgmtOut = aeMgmt->gateHalf("aeIo", cGate::OUTPUT);
+    //Get Socket South Gates
+    cModule* SocketMod = module->getModuleByPath("^.socket");
+    cGate* gSocketIn;
+    cGate* gSocketOut;
+    SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
 
-    cModule* aeMgmtParent = this->getModuleByPath("^.^");
-    cGate* gaeMgmtParentIn = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gaeMgmtParentOut = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    //Get Socket CDAP Gates
+    cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
+    cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
+
+    cModule* aeMgmt = module->getModuleByPath("^");
+    cGate* gaeMgmtIn;
+    cGate* gaeMgmtOut;
+    aeMgmt->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&gaeMgmtIn, *&gaeMgmtOut);
+
+    cModule* aeMgmtParent = module->getModuleByPath("^.^");
+    cGate* gaeMgmtParentIn;
+    cGate* gaeMgmtParentOut;
+    aeMgmtParent->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gaeMgmtParentIn, *&gaeMgmtParentOut);
 
     //Create new gates
     cGate* gIrmIn;
@@ -126,7 +142,7 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getModuleByPath("^.^.^");
+    cModule* ApMon = module->getModuleByPath("^.^.^");
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
@@ -136,9 +152,12 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     gIrmModOut->connectTo(gApIn);
     gApIn->connectTo(gaeMgmtParentIn);
     gaeMgmtParentIn->connectTo(gaeMgmtIn);
-    gaeMgmtIn->connectTo(gCdapIn);
+    gaeMgmtIn->connectTo(gSocketIn);
+    gSocketCdapIn->connectTo(gCdapIn);
 
-    gCdapOut->connectTo(gaeMgmtOut);
+
+    gCdapOut->connectTo(gSocketCdapOut);
+    gSocketOut->connectTo(gaeMgmtOut);
     gaeMgmtOut->connectTo(gaeMgmtParentOut);
     gaeMgmtParentOut->connectTo(gApOut);
     gApOut->connectTo(gIrmModIn);
@@ -151,14 +170,14 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
 void DAFEnrollment::initPointers(){
     StateTable = check_and_cast<DAFEnrollmentStateTable*>(getModuleByPath("^.enrollmentStateTable"));
     //aemgmt = check_and_cast<AEMgmt*>( getModuleByPath("^.^.aemanagement.aemgmt") );
-    Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
+    Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
     //FlowAlloc = check_and_cast<FABase*>( getModuleByPath("^.^.flowAllocator.fa") );
 }
 
 void DAFEnrollment::initSignalsAndListeners() {
     cModule* catcher1 = this->getModuleByPath("^.^");
-    cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^.^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
 
     sigDAFEnrollmentCACESendData   = registerSignal(SIG_ENROLLMENT_CACEDataSend);
     sigDAFEnrollmentSendData       = registerSignal(SIG_ENROLLMENT_DataSend);
@@ -898,7 +917,7 @@ DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
     ostr << "mgmtae_" << currentMgmtAEInstanceId;
 
     //Instantiate module
-    cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule()->getParentModule());
+    cModule *module = moduleType->create(ostr.str().c_str(), this->getModuleByPath("^.^.aeManagement"));
 
     module->finalizeParameters();
     module->buildInside();

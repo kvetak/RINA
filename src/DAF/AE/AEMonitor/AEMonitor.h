@@ -30,7 +30,6 @@ class AEMonitor : public AE {
 public:
     AEMonitor();
     virtual ~AEMonitor();
-    void initialize();
 };
 
 #endif /* AEMONITOR_H_ */

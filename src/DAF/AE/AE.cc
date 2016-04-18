@@ -38,10 +38,33 @@ AE::~AE() {
     Cdap = NULL;
 }
 
+void AE::initialize() {
+    //Init pointers
+    initPointers();
+    //Source info
+    initNamingInfo();
+    //Setup signals
+    initSignalsAndListeners();
+    //Watchers
+    //WATCH_LIST(flows);
+    WATCH(FlowObject);
+    WATCH(connectionState);
+}
+
+void AE::initPointers() {
+    Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
+    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
+
+    if (!Cdap)
+        error("Pointers to Cdap !");
+    if (!Irm || !Cdap)
+        error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
+}
+
 void AE::initSignalsAndListeners() {
     cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^.^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
 
 
     //Signals that this module is emitting
@@ -53,19 +76,25 @@ void AE::initSignalsAndListeners() {
     sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
     sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
     sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
+    sigAEAPAPI         = registerSignal(SIG_AE_AP_API);
 
 
     //Signals that this module is processing
     lisAERcvData = new LisAEReceiveData(this);
     catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
 
+    //TODO: solve problem with dynamic creation when listener is called (can not subscribe to the same signal)
     //  AllocationRequest from FAI
-    lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
-    catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
+    //lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
+    //catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
 
     //  Enrollment
     lisAEEnrolled = new LisAEEnrolled(this);
     catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
+
+    // AP-AE API
+    lisAPAEAPI = new LisAPAEAPI(this);
+    catcher3->subscribe(SIG_AP_AE_API, lisAPAEAPI);
 
     //  DeallocationRequest from FAI
     lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
@@ -80,18 +109,6 @@ void AE::initSignalsAndListeners() {
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
 }
 
-void AE::initialize() {
-    //Init pointers
-    initPointers();
-    //Source info
-    initNamingInfo();
-    //Setup signals
-    initSignalsAndListeners();
-    //Watchers
-    //WATCH_LIST(flows);
-    WATCH(FlowObject);
-    WATCH(connectionState);
-}
 
 void AE::handleMessage(cMessage* msg) {
 }
@@ -126,7 +143,7 @@ bool AE::createBindings(Flow& flow) {
     AeInstanceMod->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&gAeInstIn, *&gAeInstOut);
 
     //Get Socket South Gates
-    cModule* SocketMod = this->getModuleByPath("^.Socket");
+    cModule* SocketMod = this->getModuleByPath("^.socket");
     cGate* gSocketIn;
     cGate* gSocketOut;
     SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
@@ -168,15 +185,6 @@ bool AE::createBindings(Flow& flow) {
            && gSocketCdapIn->isConnected();
 }
 
-void AE::initPointers() {
-    Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
-    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
-
-    if (!Cdap)
-        error("Pointers to Cdap !");
-    if (!Irm || !Cdap)
-        error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
-}
 
 void AE::insertFlow() {
     //Add a new flow to
@@ -186,18 +194,53 @@ void AE::insertFlow() {
 
     //Interconnect IRM and AE
     bool status = createBindings(*FlowObject);
-    if (!status) {
-        error("Gate inconsistency during creation of a new flow!");
+    //if (!status) {
+    //    error("Gate inconsistency during creation of a new flow!");
+    //}
+}
+
+void AE::start(Flow* flow) {
+    if (flow) {
+        signalizeAllocateResponsePositive(flow);
+        FlowObject = flow;
+        insertFlow();
+
+        //Interconnect IRM and IPC
+        bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
+
+        //Change connection status
+        if (status) {
+            changeConStatus(CONNECTION_PENDING);
+            this->signalizeAllocateResponsePositive(FlowObject);
+        }
+        else {
+            EV << "IRM was unable to create bindings!" << endl;
+        }
+    }
+    else {
+        APNamingInfo src = this->getApni();
+
+        std::string dstApName     = this->par("dstApName").stringValue();
+        std::string dstApInstance = this->par("dstApInstance").stringValue();
+        std::string dstAeName     = this->par("dstAeName").stringValue();
+        std::string dstAeInstance = this->par("dstAeInstance").stringValue();
+
+        APNamingInfo dst = APNamingInfo( APN(dstApName), dstApInstance,
+                                         dstAeName, dstAeInstance);
+
+        //Create a flow
+        FlowObject = new Flow(src, dst);
+        //TODO: change configuration of qos
+        FlowObject->setQosRequirements(this->getQoSRequirements());
+
+        //Notify IRM about a new flow
+        insertFlow();
+
+        //Call flow allocation request
+        sendAllocationRequest(FlowObject);
     }
 }
 
-void AE::signalizeAllocateRequest(Flow* flow) {
-    emit(sigAEAllocReq, flow);
-}
-
-void AE::signalizeDeallocateRequest(Flow* flow) {
-    emit(sigAEDeallocReq, flow);
-}
 
 void AE::receiveData(CDAPMessage* msg) {
     Enter_Method("receiveData()");
@@ -215,15 +258,14 @@ void AE::receiveData(CDAPMessage* msg) {
 
 void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
-    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
 
     if ( QoSRequirements.compare(flow->getQosRequirements()) ) {
+
         //Initialize flow within AE
         FlowObject = flow;
         insertFlow();
-        //EV << "======================" << endl << flow->info() << endl;
-        //Interconnect IRM and IPC
 
+        //Interconnect IRM and IPC
         bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
         //Change connection status
@@ -241,14 +283,6 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     }
 }
 
-void AE::signalizeSendData(cMessage* msg) {
-    EV << "Emits SendData signal for message " << msg->getName() << endl;
-    emit(sigAESendData, msg);
-}
-
-void AE::signalizeAllocateResponsePositive(Flow* flow) {
-    emit(sigAEAllocResPosi, flow);
-}
 
 void AE::receiveAllocationResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocationResponseNegative()");
@@ -283,9 +317,6 @@ void AE::sendDeallocationRequest(Flow* flow) {
     Irm->receiveDeallocationRequestFromAe(flow);
 }
 
-void AE::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(sigAEAllocResNega, flow);
-}
 
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
@@ -388,13 +419,6 @@ void AE::processMReadR(CDAPMessage* msg) {
 
 }
 
-void AE::signalizeConnectionRequest(CDAPMessage* msg){
-    emit(sigAEConReq, msg);
-}
-
-void AE::signalizeReleaseRequest(CDAPMessage* msg){
-    emit(sigAERelReq, msg);
-}
 
 void AE::connect(){
     APNIPair* apnip = new APNIPair(
@@ -404,4 +428,45 @@ void AE::connect(){
 }
 
 void AE::afterOnStart() {
+}
+
+
+bool AE::onA_read(APIReqObj* obj) {
+}
+
+bool AE::onA_write(APIReqObj* obj) {
+}
+
+
+void AE::signalizeAllocateRequest(Flow* flow) {
+    emit(sigAEAllocReq, flow);
+}
+
+void AE::signalizeDeallocateRequest(Flow* flow) {
+    emit(sigAEDeallocReq, flow);
+}
+
+void AE::signalizeConnectionRequest(CDAPMessage* msg){
+    emit(sigAEConReq, msg);
+}
+
+void AE::signalizeReleaseRequest(CDAPMessage* msg){
+    emit(sigAERelReq, msg);
+}
+
+void AE::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigAEAllocResNega, flow);
+}
+
+void AE::signalizeSendData(cMessage* msg) {
+    EV << "Emits SendData signal for message " << msg->getName() << endl;
+    emit(sigAESendData, msg);
+}
+
+void AE::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigAEAllocResPosi, flow);
+}
+
+void AE::signalizeAEAPAPI(APIResult* obj) {
+    emit(sigAEAPAPI, obj);
 }

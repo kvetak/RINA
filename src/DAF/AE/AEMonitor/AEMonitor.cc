@@ -29,8 +29,3 @@ AEMonitor::AEMonitor() {
 
 AEMonitor::~AEMonitor() {
 }
-
-void AEMonitor::initialize() {
-
-}
-

@@ -22,12 +22,36 @@
 
 #include <AP/APListeners.h>
 
-APListeners::APListeners() {
-    // TODO Auto-generated constructor stub
-
+APListeners::APListeners(AP* nap) : ap(nap) {
 }
 
 APListeners::~APListeners() {
-    // TODO Auto-generated destructor stub
+    ap = NULL;
 }
 
+void LisAPAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
+       << " and processed by " << ap->getFullPath() << endl;
+    Flow* flow = dynamic_cast<Flow*>(obj);
+    if (flow) {
+        const APNamingInfo dstApni = flow->getSrcApni();
+        if (ap->getCurrentAEInstNum(dstApni.getAename()) < std::stoi(dstApni.getAeinstance()) ||
+                std::stoi(dstApni.getAeinstance()) == -1)
+            { ap->receiveAllocationRequestFromFAI(flow); }
+    }
+    else
+        EV << "APListener received unknown object!" << endl;
+}
+
+void LisAEAPAPI::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj) {
+    EV << "APWriteR initiated by " << src->getFullPath()
+       << " and processed by " << ap->getFullPath() << endl;
+    APIResult* result = dynamic_cast<APIResult*>(obj);
+    if (result) {
+        ap->resultAssign(result);
+    }
+    else
+        EV << "APListener received unknown object!" << endl;
+}

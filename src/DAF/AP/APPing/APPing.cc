@@ -31,17 +31,33 @@ APPing::~APPing() {
 }
 
 void APPing::initialize() {
+    AP::initialize();
     sigAEEnrolled = registerSignal(SIG_AE_Enrolled);
-    cMessage* m1 = new cMessage("start");
-    scheduleAt(simTime() + 1, m1);
+    if (!strcmp(this->getModuleByPath("^")->par("apName").stringValue(),"App1")) {
+        m1 = new cMessage("start");
+        scheduleAt(simTime() + 20, m1);
+    }
 }
 
 void APPing::handleMessage(cMessage *msg) {
+    if(msg->isSelfMessage()) {
         if ( !strcmp(msg->getName(), "start") ) {
-            a_open(0, "AP", "1", "AEMonitor", "1");
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(APN("App1"),
+                    "0",
+                    "Mgmt",
+                    "0"),
+        APNamingInfo(APN("App2"),
+                    "0",
+                    "Mgmt",
+                    "0"));
+
+            emit(sigAEEnrolled, apnip);
+            a_open(0, "App2", "0", "AEMonitor", "-1");
         }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();
         delete(msg);
+    }
 }
 

@@ -34,6 +34,8 @@ moduleinterface IAE
         string dstAeName;
         string dstAeInstance;
         
+        bool initiator;
+        
         //QoS -> Default DoNotCare value -1
         int averageBandwidth @unit(bps); //bits/s
         int averageSDUBandwidth; //SDU/s

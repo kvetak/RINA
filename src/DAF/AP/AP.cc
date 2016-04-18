@@ -30,20 +30,43 @@ AP::AP() {
 AP::~AP() {
 }
 
-void AP::onOpen(APIResult* result) {
+void AP::initialize() {
+    initPointers();
+    initSignalsAndListeners();
 }
 
-void AP::onRead(APIResult* result) {
+void AP::initSignalsAndListeners() {
+    cModule* catcher1 = this->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^");
+
+    sigAPAEAPI = registerSignal(SIG_AP_AE_API);
+
+    //  AllocationRequest from FAI
+    lisAPAllReqFromFai = new LisAPAllReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_AllocateRequest, lisAPAllReqFromFai);
+
+    // API listeners
+    lisAEAPAPI = new LisAEAPAPI(this);
+    catcher1->subscribe(SIG_AE_AP_API, lisAEAPAPI);
 }
 
-void AP::onWrite(APIResult* result) {
+void AP::initPointers() {
+}
+
+void AP::onA_getOpen(APIResult* result) {
+}
+
+void AP::onA_getRead(APIResult* result) {
+}
+
+void AP::onA_getWrite(APIResult* result) {
 }
 
 void AP::onClose(APIResult* result) {
 }
 
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
-    return createIAE(APName, APInst, AEName, AEInst);
+    return createIAE(APName, APInst, AEName, AEInst, NULL);
 }
 
 bool AP::a_open(int invokeID, Flow* flow){
@@ -76,7 +99,7 @@ bool AP::a_cancelread_r(int CDAPConn, int invokeID) {
 APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj){
 }
 
-bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
+bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow) {
     std::string str = "^."+AEName;
     cModule *submodule, *module = this->getModuleByPath(str.c_str());
     cModuleType *moduleType;
@@ -135,7 +158,60 @@ bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, s
     submodule->par("dstAeName") = AEName;
     submodule->par("dstAeInstance") = AEInst;
 
+    if (flow == NULL)
+        submodule->par("initiator") = true;
+    else
+        submodule->par("initiator") = false;
+
     module->callInitialize();
 
+    AE* aeModule = dynamic_cast<AE*>(module->getSubmodule("iae"));
+    aeModule->start(flow);
+
     return true;
+}
+
+void AP::receiveAllocationRequestFromFAI(Flow* flow) {
+
+    Enter_Method("receiveAllocationRequestFromFai()");
+    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
+
+//    if ( QoSRequirements.compare(flow->getQosRequirements()) ) {
+
+
+
+
+
+    //Initialize flow within AE
+        //TODO: tady dodelat vytvoreni a inicializace IAE
+        createIAE(flow->getDstApni().getApn().getName(), flow->getDstApni().getApinstance(),
+                flow->getDstApni().getAename(), flow->getDstApni().getAeinstance(), flow);
+        //FlowObject = flow;
+        //insertFlow();
+        //EV << "======================" << endl << flow->info() << endl;
+        //Interconnect IRM and IPC
+
+        //bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
+
+        //Change connection status
+        /*if (status) {
+            this->signalizeAllocateResponsePositive(flow);
+        }
+        else {
+            EV << "IRM was unable to create bindings!" << endl;
+        }
+//    }
+//    else {
+//        EV << "QoS Requirement cannot be met, please check AE attributes!" << endl;
+//        this->signalizeAllocateResponseNegative(flow);
+//    }
+ *
+ */
+}
+
+void AP::resultAssign(APIResult* result) {
+}
+
+void AP::signalizeAPAEAPI(APIReqObj* obj) {
+    emit(sigAPAEAPI, obj);
 }

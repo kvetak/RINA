@@ -95,4 +95,11 @@ class LisAEEnrolled : public AEListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, long obj);
 };
 
+//API AP-AE Listeners
+class LisAPAEAPI : public AEListeners {
+  public:
+    LisAPAEAPI(AE* nae) :  AEListeners(nae){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, long obj);
+};
+
 #endif /* AELISTENERS_H_ */

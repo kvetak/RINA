@@ -31,6 +31,7 @@ simple AE like IAE
         string dstApInstance = default("0");
         string dstAeName = default("AeErr");
         string dstAeInstance = default("0");
+        bool initiator = default(true);
         
         @signal[AEorRIBd-AllocateResponsePositive];
         @signal[AEorRIBd-AllocateResponseNegative];

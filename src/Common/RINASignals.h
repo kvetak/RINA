@@ -30,6 +30,9 @@
 #ifndef RINASIGNALS_H_
 #define RINASIGNALS_H_
 
+//AP
+extern const char* SIG_AP_AE_API;
+
 //AE
 extern const char* SIG_AE_AllocateRequest;
 extern const char* SIG_AE_DeallocateRequest;
@@ -37,6 +40,8 @@ extern const char* SIG_AE_DataSend;
 extern const char* SIG_AE_ConnectionRequest;
 extern const char* SIG_AE_ReleaseRequest;
 extern const char* SIG_AE_Enrolled;
+
+extern const char* SIG_AE_AP_API;
 
 //Socket
 extern const char* SIG_Socket_QueueInfo;
