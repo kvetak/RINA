@@ -29,6 +29,17 @@ class APIObjBase : public cObject {
 public:
     APIObjBase();
     virtual ~APIObjBase();
+
+protected:
+    void setCDAPConId(unsigned long id);
+    unsigned long getCDAPConId();
+
+    void setInvokeId(unsigned long id);
+    unsigned long getInvokeId();
+
+private:
+    unsigned long CDAPConId;
+    unsigned long invokeID;
 };
 
 #endif /* APIOBJBASE_H_ */

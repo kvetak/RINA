@@ -46,17 +46,17 @@ module ApplicationProcess
         inout southIo[];
     submodules:
         apInst: <apType> like APInst {
-	       	@display("p=35,35");
+            @display("p=35,35");
         }
-        
+
         ribDaemon: DAFRIBDaemon {
-            @display("p=200,60");
+            @display("p=200,60;i=block/segm");
         }
-        
+
         enrollment: DAFEnrollmentModule {
             @display("p=325,60");
         }
-        
+
         aeManagement: ApplicationEntity {
             @display("p=200,150;i=block/cogwheel");
         }

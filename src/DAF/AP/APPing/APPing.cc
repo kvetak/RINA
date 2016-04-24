@@ -35,7 +35,9 @@ void APPing::initialize() {
     sigAEEnrolled = registerSignal(SIG_AE_Enrolled);
     if (!strcmp(this->getModuleByPath("^")->par("apName").stringValue(),"App1")) {
         m1 = new cMessage("start");
+        //cMessage* m2 = new cMessage("start");
         scheduleAt(simTime() + 20, m1);
+        //scheduleAt(simTime() + 25, m2);
     }
 }
 

@@ -28,3 +28,19 @@ APIObjBase::APIObjBase() {
 APIObjBase::~APIObjBase() {
 }
 
+
+void APIObjBase::setCDAPConId(unsigned long id) {
+    CDAPConId = id;
+}
+
+unsigned long APIObjBase::getCDAPConId() {
+    return CDAPConId;
+}
+
+void APIObjBase::setInvokeId(unsigned long id) {
+    invokeID = id;
+}
+
+unsigned long APIObjBase::getInvokeId() {
+    return invokeID;
+}
