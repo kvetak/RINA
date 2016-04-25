@@ -23,7 +23,8 @@ namespace T2Infection {
     }
 
     void Flow::setCepId(int id) { connID.setSrcCepId(id); }
-    void Flow::iniRate(double avgWtXbit, double var) {
+    void Flow::iniRate(double _avgWtXbit, double var) {
+        avgWtXbit = _avgWtXbit;
         minWtXbit = avgWtXbit*(1.0-var);
         maxWtXbit = avgWtXbit*(1.0+var);
     }
@@ -41,6 +42,8 @@ namespace T2Infection {
 
         pduT ret;
         ret.wT = bitSize * uniform(minWtXbit, maxWtXbit);    // Waiting time till next Pdu
+        //ret.wT = bitSize * avgWtXbit;////////////////////////////////
+
         ret.sig = mark && listening;                    // Signal Pdu?
 
         InfectedDataTransferPDU * pdu = new InfectedDataTransferPDU( ret.sig, connID.getSrcCepId());
@@ -133,7 +136,7 @@ namespace T2Infection {
 
             if(n->getAttribute("rate") == nullptr) { error("Error parsing Infected flow. Its rateis missing!"); }
             double rate = atol(n->getAttribute("rate"));
-            if(rate <= 0) { error("Error parsing Infected flow. Its rate <= 0"); }
+            if(rate <= 0) { continue; }
 
             double avgRateVar = 0.0;
             if(n->getAttribute("avgRateVar") != nullptr) {

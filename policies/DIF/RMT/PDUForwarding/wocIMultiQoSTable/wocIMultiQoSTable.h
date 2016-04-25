@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,18 +20,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+#ifndef wocIMultiQoSTable_H_
+#define wocIMultiQoSTable_H_
 
-package rina.policies.DIF.RMT.Monitor.IterativeStopMonitor;
+#include <IntIQoSMForwarding.h>
 
-simple IterativeStopMonitor like IntRMTQMonitorPolicy 
-{
-    parameters:
-        @display("i=block/socket");
-        @class(IterativeScheduling::IterativeStopMonitor);
-        
-        int stopAt = default(3);
-        int restartAt = default(1);
-        
-        bool printAtEnd = default(false);
+#include <map>
+#include <string>
+#include <vector>
+
+namespace wocIMultiQoSTable {
+
+using namespace std;
+
+class wocIMultiQoSTable: public IntIQoSMForwarding {
+
+public:
+    // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+    vector<RMTPort * > lookup(const PDU * pdu);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+
+    RMTPort * search(const string & dst, const string & qos);
+
+    // Returns a representation of the Forwarding Knowledge
+    string toString();
+
+    //Insert/Remove an entry
+    void addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports);
+
+    void finish();
+
+    void setPortDelay(RMTPort* port, double delay);
+
+protected:
+    //QoS, Dst, Ports
+    map<string, map<string, vector<RMTPort*> > > table;
+
+    // Called after initialize
+    void onPolicyInit();
+
+    string MA2QoS;
+
+    map<RMTPort*, double> portDelay;
+};
+
 }
+
+#endif /* wocIMultiQoSTable_H_ */

@@ -18,6 +18,29 @@
 		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "27"	nFlows="270" listen="true" />
 		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "63"	nFlows="630" listen="true" />
 	</InfectionNode>
+	
+	
+	<InfectionNode id="I1">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "2"	nFlows="20" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "8"	nFlows="80" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "27"	nFlows="270" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "63"	nFlows="630" listen="true" />
+	</InfectionNode>
+	
+	<InfectionNode id="I2">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "4"	nFlows="40" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "16"	nFlows="160" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "24"	nFlows="240" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "56"	nFlows="560" listen="true" />
+	</InfectionNode>
+	
+	<InfectionNode id="I3">
+		<flowSet  dstAddr = "C" 	qos = "GU" 		rate = "6"	nFlows="60" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "SN" 		rate = "24"	nFlows="240" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "sBE" 	rate = "21"	nFlows="210" listen="true" />
+		<flowSet  dstAddr = "C" 	qos = "BE" 		rate = "49"	nFlows="490" listen="true" />
+	</InfectionNode>
+	
 	<InfectionNode id="B" />
 	<InfectionNode id="C" />
 </Infection>

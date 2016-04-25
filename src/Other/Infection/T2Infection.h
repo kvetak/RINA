@@ -20,7 +20,7 @@ namespace T2Infection {
         public :
             Flow(string DIF, string SRC, string DST, string QoS);
             void setCepId(int id);
-            void iniRate(double avgWtXbit, double var);
+            void iniRate(double _avgWtXbit, double var);
             void iniPduSize(unsigned int min, unsigned int max);
             void markStatus(bool status);
             void listenStatus(bool status);
@@ -34,7 +34,7 @@ namespace T2Infection {
 
             bool mark, listening;
 
-            double minWtXbit, maxWtXbit;
+            double avgWtXbit, minWtXbit, maxWtXbit;
             unsigned int minPdusize, maxPduSize;
             double secNum;
     };

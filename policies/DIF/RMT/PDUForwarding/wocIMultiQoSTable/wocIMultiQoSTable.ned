@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import rina.policies.DIF.RMT.Monitor.IntRMTQMonitorPolicy;
+package rina.policies.DIF.RMT.PDUForwarding.wocIMultiQoSTable;
 
-package rina.policies.DIF.RMT.Monitor.IterativeStopMonitor;
+import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-simple IterativeStopMonitor like IntRMTQMonitorPolicy 
+simple wocIMultiQoSTable like IntPDUForwarding
 {
     parameters:
+        @class(wocIMultiQoSTable::wocIMultiQoSTable);
         @display("i=block/socket");
-        @class(IterativeScheduling::IterativeStopMonitor);
-        
-        int stopAt = default(3);
-        int restartAt = default(1);
         
         bool printAtEnd = default(false);
+        
+        string MA2QoS = default("*");
+        
 }
