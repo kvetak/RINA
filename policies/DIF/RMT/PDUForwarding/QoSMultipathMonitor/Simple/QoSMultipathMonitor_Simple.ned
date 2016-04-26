@@ -20,50 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+package rina.policies.DIF.RMT.PDUForwarding.QoSMultipathMonitor.Simple;
 
-#include <IntPDUFG.h>
-#include "QoSMultipathMonitor.h"
-#include "IntTSimpleRouting.h"
+import rina.policies.DIF.RMT.PDUForwarding.QoSMultipathMonitor.iQoSMultipathMonitor;
 
-#include <map>
-#include <set>
-
-namespace SimpleQoSGenerator {
-
-using namespace std;
-using namespace QoSMultipathMonitor;
-
-typedef unsigned short mType;
-
-struct nEntry {
-    entryT best;
-    vector<entryT> entries;
-};
-
-class SimpleQoSGenerator: public IntPDUFG {
-public:
-    // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
-
-    //Routing has processes a routing update
-    virtual void routingUpdated();
-
-protected:
-    // Called after initialize
-    virtual void onPolicyInit();
-
-    void handleMessage(cMessage * msg);
-
-private:
-    DA * difA;
-    iQoSMultipathMonitor * fwd;
-    IntTSimpleRouting<mType> * rt;
-
-    map<string, nEntry> neighbours;
-
-    cMessage * iniMsg = new cMessage();
-};
-
+simple QoSMultipathMonitor_Simple like iQoSMultipathMonitor
+{
+    parameters:
+        @class(QoSMultipathMonitor_Simple::QoSMultipathMonitor_Simple);
+        @display("i=block/socket");
+        
+        double recalcule_t = default (0.1);//100ms
+        bool printAtEnd = default(false);
+        xml QoS_BW;
+        bool QoSSpliter = default(false);
 }

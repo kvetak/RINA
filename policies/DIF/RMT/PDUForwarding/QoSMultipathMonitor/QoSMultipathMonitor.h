@@ -22,48 +22,47 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "QoSMultipathMonitor.h"
-#include "IntTSimpleRouting.h"
+#include "IntPDUForwarding.h"
+#include "ModularMonitor.h"
+#include "MultipathStructs.h"
 
 #include <map>
-#include <set>
+#include <string>
+#include <vector>
 
-namespace SimpleQoSGenerator {
+namespace QoSMultipathMonitor {
 
-using namespace std;
-using namespace QoSMultipathMonitor;
+    using namespace std;
+    using namespace MultipathStructs;
 
-typedef unsigned short mType;
 
-struct nEntry {
-    entryT best;
-    vector<entryT> entries;
-};
 
-class SimpleQoSGenerator: public IntPDUFG {
-public:
-    // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
-    virtual void removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port);
+    class iQoSMultipathMonitor: public IntPDUForwarding {
+    public:
+        //Insert/Remove an entry
+        void setPort(RMTPort * p, const int bw);
+        void replacePort(RMTPort * oldP, RMTPort * newP, const int bw);
 
-    //Routing has processes a routing update
-    virtual void routingUpdated();
+        //Insert/Remove an entry
+        virtual void addReplace(const string &addr, vector<entryT> ports) = 0;
 
-protected:
-    // Called after initialize
-    virtual void onPolicyInit();
+        virtual Routingtable* getRoutingTable() = 0;
+        virtual SchedulerInfo* getSchedulerInfo() = 0;
 
-    void handleMessage(cMessage * msg);
+    protected:
+        map<string, int> QoS_BWreq;
+        map<RMTPort *, int> Port_avBW;
 
-private:
-    DA * difA;
-    iQoSMultipathMonitor * fwd;
-    IntTSimpleRouting<mType> * rt;
+        // Called after initialize
+        void onPolicyInit();
 
-    map<string, nEntry> neighbours;
+        virtual void onMainPolicyInit() = 0;
+        virtual void onSetPort(RMTPort * p, const int bw) = 0;
+        virtual void preReplacePort(RMTPort * oldP, RMTPort * newP, const int bw) = 0;
 
-    cMessage * iniMsg = new cMessage();
-};
+
+        ModularMonitor::ModularMonitor * mon;
+
+    };
 
 }

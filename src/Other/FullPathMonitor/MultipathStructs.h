@@ -4,15 +4,24 @@
 
 #include "RMTPort.h"
 
+
+
 namespace MultipathStructs {
 
 using namespace std;
 
+
 struct entryT {
     RMTPort * p;
     int BW;
-    entryT();
-    entryT(RMTPort * _p, int _bw);
+    entryT(){
+        p = nullptr;
+        BW = 0;
+    }
+    entryT(RMTPort * _p, int _bw){
+        p = _p;
+        BW = _bw;
+    }
 };
 
 struct cEntry {
@@ -213,23 +222,45 @@ struct orderedList {
 
 };
 
-typedef map<string, vector<entryT> >* Routingtable;
-typedef map<RMTPort *, int>* Port_avBW;
+typedef map<string, vector<entryT> > Routingtable;
+typedef map<string, map<RMTPort *, double>> SchedulerInfo;
+typedef map<RMTPort *, string> NeighboursInfo;
 
 struct RegisterInfo{
 
     string nodeId;
-    Routingtable routingInfo;
-    Port_avBW portInfo;
+    Routingtable* routingInfo;
+    SchedulerInfo* schedulerInfo;
+    NeighboursInfo* neighboursInfo;
 
+    RegisterInfo(){
+        nodeId ="";
+        routingInfo = nullptr;
+        schedulerInfo = nullptr;
+        neighboursInfo = nullptr;
+    }
+
+};
+
+struct RsvInfo{
+    string nodeIdOrg;
+    string nodeIdDst;
+    string qos;
+    int flowId;
+
+    RsvInfo(){
+            nodeIdOrg ="";
+            nodeIdDst = "";
+            qos = "";
+            flowId = -1;
+        }
 };
 
 class MonitorMsg : public cMessage {
 public:
     string type;
     RegisterInfo regInfo;
-
-
+    RsvInfo rsvInfo;
 };
 
 }

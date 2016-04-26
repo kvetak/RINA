@@ -30,7 +30,7 @@ namespace SimpleQoSGenerator {
 Register_Class(SimpleQoSGenerator);
 
 using namespace std;
-using namespace QoSMultipathDynamicTable;
+using namespace QoSMultipathMonitor;
 
 
 void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
@@ -111,13 +111,33 @@ void SimpleQoSGenerator::routingUpdated(){
 }
 
 void SimpleQoSGenerator::onPolicyInit(){
-    fwd = getRINAModule<iQoSMultipathDynamicTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    fwd = getRINAModule<iQoSMultipathMonitor *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
     rt = getRINAModule<IntTSimpleRouting<mType> *>(this, 2, {MOD_POL_ROUTING});
 
     difA = getRINAModule<DA*>(this, 3, {MOD_DIFALLOC, MOD_DA});
 
     mType infMetric = par("infinite");
     rt->setInfinite(infMetric);
+    scheduleAt(0.0001, iniMsg);
+}
+
+void SimpleQoSGenerator::handleMessage(cMessage * msg){
+    if (msg == iniMsg)
+    {
+        //update informatión in manager
+        MonitorMsg* Monmsg = new MonitorMsg();
+        Monmsg->regInfo.nodeId=ipcAddr.getIpcAddress().getName();;
+        Monmsg->type="Register_Node";
+        Monmsg->regInfo.routingInfo=fwd->getRoutingTable();
+        Monmsg->regInfo.schedulerInfo=fwd->getSchedulerInfo();
+        Monmsg->regInfo.neighboursInfo = new NeighboursInfo();
+        for (auto it : neighbours){
+            Monmsg->regInfo.neighboursInfo->insert(pair<RMTPort *, string>(it.second.best.p, it.first));
+        }
+        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        take(Monmsg);
+        sendDirect(Monmsg, targetModule, "radioIn");
+    }
 }
 
 }

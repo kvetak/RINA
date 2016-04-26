@@ -21,6 +21,7 @@ simple FullPathMonitor{
     parameters:
         @class(FullPathMonitor::FullPathMonitor);
         @display("i=device/antennatower");
+        xml QoS_BW;
         
 	gates:
         input radioIn @directIn;

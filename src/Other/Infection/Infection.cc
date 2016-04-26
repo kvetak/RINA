@@ -2,8 +2,10 @@
 
 #include "DataTransferPDU.h"
 #include "InfectionSignals.h"
+#include "MultipathStructs.h"
 
 using namespace std;
+using namespace MultipathStructs;
 
 namespace Infection {
 
@@ -192,19 +194,32 @@ namespace Infection {
 
             if (now >= (SimTime(m->f->startTime)))
             {
-
                 bool record = now >= markIniT && now < markFinT;
 
                 pduT k = m->f->getPDU(record);
+                if(k.pdu->getSeqNum() == 1){
+                    MonitorMsg* Monmsg = new MonitorMsg();
+                    Monmsg->type = "Rsv_Req";
+                    Monmsg->rsvInfo.flowId = k.pdu->getConnId().getSrcCepId();
+                    Monmsg->rsvInfo.nodeIdDst = k.pdu->getDstAddr().getIpcAddress().getName();
+                    Monmsg->rsvInfo.nodeIdOrg = k.pdu->getSrcAddr().getIpcAddress().getName();
+                    Monmsg->rsvInfo.qos = k.pdu->getConnId().getQoSId();
+                    cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+                    take(Monmsg);
+                    sendDirect(Monmsg, targetModule, "radioIn");
 
-                scheduleAt(now + k.wT, msg);
-                send(k.pdu, "g$o");
-                if(emitSignals) { emit(signal, new SendInfMsg(
-                        k.pdu->getSrcAddr().getIpcAddress().getName(),
-                        k.pdu->getDstAddr().getIpcAddress().getName(),
-                        k.pdu->getConnId().getSrcCepId(),
-                        m->f->QoS)
-                );}
+
+                }
+                else{
+                    scheduleAt(now + k.wT, msg);
+                    send(k.pdu, "g$o");
+                    if(emitSignals) { emit(signal, new SendInfMsg(
+                            k.pdu->getSrcAddr().getIpcAddress().getName(),
+                            k.pdu->getDstAddr().getIpcAddress().getName(),
+                            k.pdu->getConnId().getSrcCepId(),
+                            m->f->QoS)
+                    );}
+                }
             }
             else
             {
