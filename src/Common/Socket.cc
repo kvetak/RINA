@@ -40,5 +40,10 @@ Socket::~Socket()
 }
 
 void Socket::handleMessage(cMessage* msg) {
+  if(msg->arrivedOn("cdapIo$i")){
+    send(msg,"southIo$o", 0);
+  }else{
+    send(msg,"northIo$o");
+  }
 
 }
