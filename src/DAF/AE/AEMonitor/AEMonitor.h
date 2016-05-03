@@ -30,6 +30,12 @@ class AEMonitor : public AE {
 public:
     AEMonitor();
     virtual ~AEMonitor();
+    bool onA_read(APIReqObj* obj);
+
+private:
+    void processMRead(CDAPMessage* msg);
+    void processMReadR(CDAPMessage* msg);
+    object_t obj;
 };
 
 #endif /* AEMONITOR_H_ */

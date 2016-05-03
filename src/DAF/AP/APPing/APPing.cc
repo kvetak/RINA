@@ -55,7 +55,8 @@ void APPing::handleMessage(cMessage *msg) {
                     "0"));
 
             emit(sigAEEnrolled, apnip);
-            a_open(0, "App2", "0", "AEMonitor", "-1");
+            invokeId = getNewInvokeID();
+            a_open(invokeId, "App2", "0", "AEMonitor", "-1");
         }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -63,3 +64,15 @@ void APPing::handleMessage(cMessage *msg) {
     }
 }
 
+
+void APPing::onA_getOpen(APIResult* result) {
+    if (result->getInvokeId() == invokeId) {
+        conID = result->getCDAPConId();
+        a_read(conID, "time");
+    }
+}
+
+void APPing::onA_getRead(APIResult* result) {
+    value = (int*)(result->getObj()->objectVal);
+    a_read(conID, "time");
+}

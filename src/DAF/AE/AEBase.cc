@@ -189,3 +189,19 @@ bool AEBase::hasFlow(const Flow* flow) {
     return FlowObject ? *FlowObject == *flow : false;
 }
 
+
+const unsigned long AEBase::getCdapConId() {
+    return this->cdapConId;
+}
+void AEBase::setCdapConId(unsigned long cdapConId) {
+    this->cdapConId = cdapConId;
+}
+
+
+const int AEBase::getStartInvokeId() {
+    return this->startInvokeId;
+}
+
+void AEBase::setStartInvokeId(int invokeId) {
+    this->startInvokeId = invokeId;
+}

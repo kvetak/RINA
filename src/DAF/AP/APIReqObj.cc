@@ -31,3 +31,29 @@ APIReqObj::~APIReqObj() {
     // TODO Auto-generated destructor stub
 }
 
+
+
+void APIReqObj::setAPIReqType(APIReqType type) {
+    this->type = type;
+}
+
+APIReqObj::APIReqType APIReqObj::getAPIReqType() {
+    return this->type;
+}
+
+
+void APIReqObj::setObj(object_t *obj) {
+    this->obj = obj;
+}
+
+object_t *APIReqObj::getObj() {
+    return this->obj;
+}
+
+void APIReqObj::setObjName(std::string objName) {
+    this->objName = objName;
+}
+
+std::string APIReqObj::getObjName() {
+    return this->objName;
+}

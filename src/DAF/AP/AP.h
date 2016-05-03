@@ -43,6 +43,7 @@ public:
     void receiveAllocationRequestFromFAI(Flow* flow);
 
     virtual void resultAssign(APIResult* result);
+
 protected:
     virtual void initialize();
     virtual void initSignalsAndListeners();
@@ -69,7 +70,7 @@ private:
 
     LisAEAPAPI* lisAEAPAPI;
 
-    bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow);
+    bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID);
 
     void signalizeAPAEAPI(APIReqObj* obj);
 };

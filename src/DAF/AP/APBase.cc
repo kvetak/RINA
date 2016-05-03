@@ -23,7 +23,8 @@
 #include <AP/APBase.h>
 
 APBase::APBase() {
-
+    currentCdapConId = 0;
+    currentInvokeId = 0;
 }
 
 APBase::~APBase() {
@@ -49,4 +50,12 @@ int APBase::getNewAEInstNum(std::string AEName) {
 
 int APBase::getCurrentAEInstNum(std::string AEName) {
     return AEInstNumbers[AEName];
+}
+
+unsigned long APBase::getNewCdapConID() {
+    return ++this->currentCdapConId;
+}
+
+int APBase::getNewInvokeID() {
+    return ++this->currentInvokeId;
 }

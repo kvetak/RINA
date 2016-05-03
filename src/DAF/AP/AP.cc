@@ -66,7 +66,7 @@ void AP::onClose(APIResult* result) {
 }
 
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
-    return createIAE(APName, APInst, AEName, AEInst, NULL);
+    return createIAE(APName, APInst, AEName, AEInst, NULL, invokeID);
 }
 
 bool AP::a_open(int invokeID, Flow* flow){
@@ -76,9 +76,24 @@ bool AP::a_close(int CDAPConn, int invokeID) {
 }
 
 bool AP::a_read(int CDAPConn, std::string objName, int invokeID) {
+    APIReqObj* obj = new APIReqObj();
+    obj->setCDAPConId(CDAPConn);
+    obj->setObjName(objName);
+    obj->setInvokeId(invokeID);
+    obj->setAPIReqType(APIReqObj::A_READ);
+
+    this->signalizeAPAEAPI(obj);
 }
 
 bool AP::a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setObjName(objName);
+    req->setObj(obj);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_WRITE);
+
+    this->signalizeAPAEAPI(req);
 }
 
 APIRetObj* AP::a_getopen_r(int invokeID) {
@@ -99,7 +114,7 @@ bool AP::a_cancelread_r(int CDAPConn, int invokeID) {
 APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj){
 }
 
-bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow) {
+bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID) {
     std::string str = "^."+AEName;
     cModule *submodule, *module = this->getModuleByPath(str.c_str());
     cModuleType *moduleType;
@@ -166,6 +181,9 @@ bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, s
     module->callInitialize();
 
     AE* aeModule = dynamic_cast<AE*>(module->getSubmodule("iae"));
+
+    aeModule->setCdapConId(this->getNewCdapConID());
+    aeModule->setStartInvokeId(invokeID);
     aeModule->start(flow);
 
     return true;
@@ -185,7 +203,7 @@ void AP::receiveAllocationRequestFromFAI(Flow* flow) {
     //Initialize flow within AE
         //TODO: tady dodelat vytvoreni a inicializace IAE
         createIAE(flow->getDstApni().getApn().getName(), flow->getDstApni().getApinstance(),
-                flow->getDstApni().getAename(), flow->getDstApni().getAeinstance(), flow);
+                flow->getDstApni().getAename(), flow->getDstApni().getAeinstance(), flow, 0);
         //FlowObject = flow;
         //insertFlow();
         //EV << "======================" << endl << flow->info() << endl;
@@ -210,6 +228,18 @@ void AP::receiveAllocationRequestFromFAI(Flow* flow) {
 }
 
 void AP::resultAssign(APIResult* result) {
+    if (result->getAPIResType() == APIResult::A_GET_OPEN) {
+        Enter_Method("onA_getOpen()");
+        onA_getOpen(result);
+    }
+    if (result->getAPIResType() == APIResult::A_GET_READ) {
+        Enter_Method("onA_getRead()");
+        onA_getRead(result);
+    }
+    else if (result->getAPIResType() == APIResult::A_GET_WRITE) {
+        Enter_Method("onA_getWrite()");
+        onA_getWrite(result);
+    }
 }
 
 void AP::signalizeAPAEAPI(APIReqObj* obj) {

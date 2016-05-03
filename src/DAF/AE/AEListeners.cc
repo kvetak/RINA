@@ -133,6 +133,11 @@ void LisAEEnrolled::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAPAEAPI::receiveSignal(cComponent* src, simsignal_t id,
-        long obj) {
-
+        cObject* obj) {
+    EV << "APIRequest initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    APIReqObj* apiObj = dynamic_cast<APIReqObj*>(obj);
+    if (apiObj->getCDAPConId() == ae->getCdapConId()) {
+        ae->apiSwitcher(apiObj);
+    }
 }

@@ -28,3 +28,27 @@ APIResult::APIResult() {
 APIResult::~APIResult() {
 }
 
+void APIResult::setAPIResType(APIResult::APIResType type) {
+    this->type = type;
+}
+
+APIResult::APIResType APIResult::getAPIResType() {
+    return this->type;
+}
+
+
+void APIResult::setObj(object_t *obj) {
+    this->obj = obj;
+}
+
+object_t *APIResult::getObj() {
+    return this->obj;
+}
+
+void APIResult::setObjName(std::string objName) {
+    this->objName = objName;
+}
+
+std::string APIResult::getObjName() {
+    return this->objName;
+}

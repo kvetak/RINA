@@ -27,8 +27,22 @@
 
 class APIReqObj : public APIObjBase {
 public:
+    enum APIReqType {A_READ, A_WRITE};
     APIReqObj();
     virtual ~APIReqObj();
+
+    void setAPIReqType(APIReqObj::APIReqType type);
+    APIReqObj::APIReqType getAPIReqType();
+
+    void setObj(object_t *obj);
+    object_t *getObj();
+
+    void setObjName(std::string objName);
+    std::string getObjName();
+private:
+    APIReqType type;
+    object_t *obj;
+    std::string objName;
 };
 
 #endif /* APIREQOBJ_H_ */

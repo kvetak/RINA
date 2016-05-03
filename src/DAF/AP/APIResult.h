@@ -29,6 +29,21 @@ class APIResult : public APIObjBase {
 public:
     APIResult();
     virtual ~APIResult();
+
+    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE};
+
+    void setAPIResType(APIResult::APIResType type);
+    APIResult::APIResType getAPIResType();
+
+    void setObj(object_t *obj);
+    object_t *getObj();
+
+    void setObjName(std::string objName);
+    std::string getObjName();
+private:
+    APIResType type;
+    std::string objName;
+    object_t *obj;
 };
 
 #endif /* APIRESULT_H_ */

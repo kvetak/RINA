@@ -24,13 +24,13 @@
 #define APIOBJBASE_H_
 
 #include <omnetpp.h>
+#include "CDAPMessage_m.h"
 
 class APIObjBase : public cObject {
 public:
     APIObjBase();
     virtual ~APIObjBase();
 
-protected:
     void setCDAPConId(unsigned long id);
     unsigned long getCDAPConId();
 

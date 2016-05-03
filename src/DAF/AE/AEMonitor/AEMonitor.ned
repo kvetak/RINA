@@ -28,4 +28,6 @@ simple AEMonitor extends AE like IAE
 {
     parameters:
         @class(AEMonitor);
+        @signal[AP-AE-API];
+        @signal[AE-AP-API];
 }

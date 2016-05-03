@@ -99,7 +99,7 @@ class LisAEEnrolled : public AEListeners {
 class LisAPAEAPI : public AEListeners {
   public:
     LisAPAEAPI(AE* nae) :  AEListeners(nae){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, long obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
 };
 
 #endif /* AELISTENERS_H_ */

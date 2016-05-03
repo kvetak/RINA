@@ -66,7 +66,11 @@ protected:
 
     int getNewAEInstNum(std::string AEName);
 
+    unsigned long getNewCdapConID();
+
 private:
+    int currentInvokeId;
+    unsigned long currentCdapConId;
     std::map<std::string, int> AEInstNumbers;
 
 };

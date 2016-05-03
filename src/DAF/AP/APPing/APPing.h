@@ -35,6 +35,13 @@ public:
     virtual ~APPing();
     void initialize();
     void handleMessage(cMessage *msg);
+private:
+    void onA_getOpen(APIResult* result);
+    void onA_getRead(APIResult* result);
+
+    int *value;
+    int invokeId;
+    unsigned long conID;
     cMessage* m1;
     simsignal_t sigAEEnrolled;
 };

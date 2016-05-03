@@ -45,6 +45,7 @@ class AE : public AEBase
     virtual ~AE();
     void receiveData(CDAPMessage* obj);
     void sendData(Flow* flow, CDAPMessage* msg);
+    void apiSwitcher(APIReqObj *obj);
 
     void sendAllocationRequest(Flow* flow);
     void sendDeallocationRequest(Flow* flow);
@@ -61,7 +62,6 @@ class AE : public AEBase
 
 
     virtual bool onA_read(APIReqObj* obj);
-
     virtual bool onA_write(APIReqObj* obj);
 
   protected:

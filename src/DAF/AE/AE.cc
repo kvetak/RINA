@@ -242,16 +242,37 @@ void AE::start(Flow* flow) {
 }
 
 
+void AE::apiSwitcher(APIReqObj *obj) {
+    if (obj->getAPIReqType() == APIReqObj::A_READ) {
+        Enter_Method("onA_read()");
+        onA_read(obj);
+    }
+    else if (obj->getAPIReqType() == APIReqObj::A_WRITE) {
+        Enter_Method("onA_write()");
+        onA_write(obj);
+    }
+}
+
 void AE::receiveData(CDAPMessage* msg) {
     Enter_Method("receiveData()");
     //M_READ_Request
     if (dynamic_cast<CDAP_M_Read*>(msg)) {
+        Enter_Method("processMRead()");
         processMRead(msg);
     }
     //M_READ_Response
     else if (dynamic_cast<CDAP_M_Read_R*>(msg)) {
+        Enter_Method("processMReadR()");
         processMReadR(msg);
     }
+    //M_WRITE_Request
+    //else if (dynamic_cast<CDAP_M_Write*>(msg)) {
+    //    processMWrite(msg);
+    //}
+    //M_WRITE_Response
+    //else if (dynamic_cast<CDAP_M_Write_R*>(msg)) {
+    //    processMWriteR(msg);
+    //}
 
     delete msg;
 }
@@ -300,8 +321,16 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     //Interconnect IRM and IPC
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
-    //Change connection status
-    changeConStatus(CONNECTION_PENDING);
+    //TODO: Change connection status to connection pending
+    changeConStatus(ESTABLISHED);
+
+    //send response to AP Instance
+    //TODO: do this after cace
+    APIResult *obj = new APIResult();
+    obj->setInvokeId(startInvokeId);
+    obj->setCDAPConId(cdapConId);
+    obj->setAPIResType(APIResult::A_GET_OPEN);
+    signalizeAEAPAPI(obj);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {
