@@ -28,6 +28,7 @@
  */
 
 #include <Socket.h>
+#include <string>
 
 Define_Module(Socket);
 
@@ -40,10 +41,11 @@ Socket::~Socket()
 }
 
 void Socket::handleMessage(cMessage* msg) {
-  if(msg->arrivedOn("cdapIo$i")){
-    send(msg,"southIo$o", 0);
-  }else{
-    send(msg,"northIo$o");
+  std::string str = msg->getArrivalGate()->getName();
+  if(strstr(msg->getArrivalGate()->getName(), "southIo$i") != NULL){
+    send(msg,"cdapIo$o");
   }
-
+  else { //if(strstr(msg->getArrivalGate()->getName(), "cdapIo$i") != NULL){
+    send(msg,"southIo$o", 0);
+  }
 }

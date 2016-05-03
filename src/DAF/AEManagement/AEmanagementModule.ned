@@ -52,4 +52,5 @@ module AEmanagementModule
             @display("p=203,50");
         }
     connections allowunconnected:
+        socket.cdapIo <--> commonDistributedApplicationProtocol.southIo;
 }

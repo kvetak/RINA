@@ -153,10 +153,9 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     gApIn->connectTo(gaeMgmtParentIn);
     gaeMgmtParentIn->connectTo(gaeMgmtIn);
     gaeMgmtIn->connectTo(gSocketIn);
-    gSocketCdapIn->connectTo(gCdapIn);
+    //gSocketCdapIn->connectTo(gCdapIn);
 
-
-    gCdapOut->connectTo(gSocketCdapOut);
+    //gCdapOut->connectTo(gSocketCdapOut);
     gSocketOut->connectTo(gaeMgmtOut);
     gaeMgmtOut->connectTo(gaeMgmtParentOut);
     gaeMgmtParentOut->connectTo(gApOut);

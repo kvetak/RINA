@@ -30,4 +30,5 @@ simple Socket
     gates:
         inout cdapIo;
         inout southIo[];
+        
 }

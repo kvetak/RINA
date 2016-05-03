@@ -44,5 +44,7 @@ module ApplicationEntityInstance
         socket: Socket {
             @display("p=135,230");
         }
+
     connections allowunconnected:
+        socket.cdapIo <--> commonDistributedApplicationProtocol.southIo;
 }

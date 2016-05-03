@@ -163,9 +163,9 @@ bool AE::createBindings(Flow& flow) {
     gApIn->connectTo(gAeIn);
     gAeIn->connectTo(gAeInstIn);
     gAeInstIn->connectTo(gSocketIn);
-    gSocketCdapIn->connectTo(gCdapParentIn);
+    //gSocketCdapIn->connectTo(gCdapParentIn);
 
-    gCdapParentOut->connectTo(gSocketCdapOut);
+    //gCdapParentOut->connectTo(gSocketCdapOut);
     gSocketOut->connectTo(gAeInstOut);
     gAeInstOut->connectTo(gAeOut);
     gAeOut->connectTo(gApOut);
