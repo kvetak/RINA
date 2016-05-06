@@ -53,6 +53,7 @@ unsigned int    Stats::staticRows = 0;
 
     Stats::Stats(void)
     {
+        std::srand ( time(NULL) );
         if(!enableLB)
         {
             m_nCols = 0; m_nRows = 0;
@@ -373,6 +374,8 @@ unsigned int    Stats::staticRows = 0;
 
             if(!dstApp.compare("AppErr"))
                 return dstApp;
+            return getBestRandAppByAEN (srcApp, dstApp, aen);
+            /* This code is about the selection of App sequentially
             std::string app, aename, availableApp = dstApp;
             int minLoad = MAX_LOAD;
             int appLoad = 0;
@@ -426,8 +429,61 @@ unsigned int    Stats::staticRows = 0;
                 else
                     return dstApp;
             }
+            */
         }
 
+    std::string Stats::getBestRandAppByAEN(std::string srcApp, std::string dstApp, std::string aen)
+    {
+                std::string app, aename, availableApp = dstApp;
+                std::vector<int> appsV;
+                appsV.reserve (m_nRows);
+                bool ok = false;
+                bool aenFound = false;
+                //std::cout <<"Ehsanz: AEN: "<<aen<<std::endl;
+                for ( unsigned int row = 1; row < m_nRows; row++ )
+                {
+                    aename = m_oData[std::make_pair(2, row)];
+                    //std::cout <<"Ehsanz: AENAME: "<<aename<<std::endl;
+                    if(!aename.compare(aen))
+                    {
+                        app = m_oData[std::make_pair(0, row)];
+                      //  std::cout <<"Ehsanz: App: "<<app<<std::endl;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                    aenFound = true;
+                    if (!srcApp.compare(app))
+                    {
+                        continue;
+                    }
+                    if(m_oData[std::make_pair(6, row)]=="N")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ok = true;
+                        appsV.push_back(row);
+                    }
+                }
+                if(ok)
+                {
+                    //std::cout << " Min load:" << minLoad << " App:"<< availableApp<<std::endl;
+                    //availableApp = m_oData[std::make_pair(0, appsV[rand() % appsV.size()])];  // For random selection
+                    availableApp = m_oData[std::make_pair(0, appsV[appsV.size()-1])];  // For last instance selection
+                    return availableApp;
+                }
+                else
+                {
+                    //std::cout << " Min load:" << minLoad << " App: AppErr"<<std::endl;
+                    if (aenFound)
+                        return "AppErr";
+                    else
+                        return dstApp;
+                }
+            }
 
     void Stats::printStatus()
     {

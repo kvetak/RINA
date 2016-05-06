@@ -19,49 +19,39 @@
 Define_Module(myListener);
 
 
-myContainer::myContainer(Flow * _f, RA * _ra):f(_f), ra(_ra){}
-bool myContainer::operator<(const myContainer &o) const {
-    if(f < o.f) { return true; }
-    if(f > o.f) { return false; }
-    if(ra < o.ra) { return true; }
-    return false;
-}
-
-bool myContainer::operator==(const myContainer & o) const {
-    return (f == o.f && ra == o.ra);
-}
-
 void myListener::initialize() {
-    getParentModule()->subscribe(SIG_RA_CreateFlowPositive, this);
-    killTime = par("killTime").doubleValue();
-    killCount = par("killCount");
+    getParentModule()->subscribe("PDUModularSignal", this);
 
-    if(killCount > 0 && killTime > simTime().dbl()) {
-        //scheduleAt(killTime, new cMessage("Kill flows"));
-    }
-}
-
-void myListener::handleMessage(cMessage *msg) {
-    Enter_Method_Silent();
-    for(int i = 0; i < killCount; i++) {
-        if(flows.empty()) {
-            cerr << "All flows removed, requested to remove "<<(killCount-i) << " more flows" << endl;
-            break;
-        }
-
-        int r = intuniform(0, flows.size()-1);
-        auto f = flows[r];
-        if(r == (int)flows.size()-1) {
-            flows[r] = flows.back();
-            flows.pop_back();
-        }
-        f.ra->sleepFlow(f.f, -1);
-    }
-    delete msg;
 }
 
 void myListener::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj) {
     Enter_Method_Silent();
-    PDUInserted * o = dynamic_cast<PDUInserted*>(obj);
-    std::cout<< "Signal Received: Source:" << source->getFullPath() << ", MSG:" << o->eventName << std::endl;
+    //PDUInserted * o = dynamic_cast<PDUInserted*>(obj);
+    //std::cout<< "Signal Received: Source:" << source->getFullPath() << ", MSG:" << o->eventName << std::endl;
+    updateCount (source->getFullPath());
+}
+
+void myListener::updateCount (std::string nodeInfo)
+{
+    unsigned int c = nodes.count(nodeInfo);
+    if (c == 0 )
+    {
+        //add new element into map
+        nodes[nodeInfo] = 1;
+    }
+    else
+    {
+        // increment
+        nodes[nodeInfo] += 1;
+    }
+}
+
+void myListener::finish ()
+{
+    std::map<std::string, unsigned int>::iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+    {
+        std::cout<<it->first<<": "<<it->second<<std::endl;
+    }
+    //nodes.clear();
 }

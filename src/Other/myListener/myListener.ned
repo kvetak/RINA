@@ -19,6 +19,4 @@ simple myListener{
     parameters:
         @display("i=block/socket");
 
-		double killTime = default(10);
-		int killCount = default(0);
 }

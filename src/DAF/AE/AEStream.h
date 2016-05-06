@@ -62,11 +62,12 @@ class AEStream : public AE
 
     unsigned int size;
     double interval;
-
+    simtime_t currentDelay;
+    simtime_t avgDelay;
     int received, sent;
-
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual void finish();
     void handleSelfMessage(cMessage* msg);
 
     void prepareAllocateRequest();

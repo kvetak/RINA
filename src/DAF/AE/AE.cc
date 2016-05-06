@@ -224,9 +224,9 @@ void AE::signalizeSendData(cMessage* msg) {
 void AE::signalizeAllocateResponsePositive(Flow* flow) {
     /* Ehsan ***********************************************************************/
     Stats st;
-    st.printStatus();
+    //st.printStatus();
     st.updateLoad(flow->getSrcApni().getApn().getName(), flow->getSrcApni().getApinstance(), flow->getSrcApni().getAename(), flow->getSrcApni().getAeinstance(), true);
-    st.printStatus();
+    //st.printStatus();
   /***********************************************************************/
     emit(sigAEAllocResPosi, flow);
 }
@@ -303,11 +303,11 @@ void AE::receiveDeallocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveDeallocationRequestFromFai()");
 
     /* Ehsan **********************************************************************/
-    std::cout << "Ehsanz: In receive Deallocation Request for " << flow->getSrcApni().getApn().getName()<<endl;
+    //std::cout << "Ehsanz: In receive Deallocation Request for " << flow->getSrcApni().getApn().getName()<<endl;
     Stats st;
-    st.printStatus();
+    //st.printStatus();
     st.updateLoad(flow->getSrcApni().getApn().getName(), flow->getSrcApni().getApinstance(), flow->getSrcApni().getAename(), flow->getSrcApni().getAeinstance(), false);
-    st.printStatus();
+    //st.printStatus();
     /**********************************************************************/
 
     bool status;

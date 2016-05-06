@@ -85,6 +85,10 @@ void AEStream::initialize()
         sent = 0;
         WATCH(received);
         WATCH(sent);
+        currentDelay = 0;
+        avgDelay = 0;
+        //WATCH(currentDelay);
+        WATCH(avgDelay);
 
 }
 
@@ -100,9 +104,9 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         APNamingInfo src = this->getApni();
         /************************************************************/
         //Ehsan: Getting the most suitable server application instance to connect with
-            std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
+            //std::cout<< "Ehsanz: Dst App Name Before: " << dstApName <<std::endl;
             this->dstApName = getBestAppByAEN(this->srcApName, this->dstApName, this->dstAeName);
-            std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
+            //std::cout<< "Ehsanz: Dst App Name After: " << dstApName <<std::endl;
         /***********************************************************/
         APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
                                          this->dstAeName, this->dstAeInstance);
@@ -128,8 +132,8 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         obj.objectVal = (cObject*)("0123456789abcdef");
         data->setObject(obj);
         data->setByteLength(size);
-        std::cout << "Ehsanz: Message "<< ++sent <<" Sent at: "<<simTime() <<std::endl;
-        EV << "Ehsanz: Message "<< sent <<" Sent at: "<<simTime() <<std::endl;
+        //std::cout << this->getFullPath() << ": "<< obj.objectName << ":" << ++sent <<" Sent at: "<<simTime() <<std::endl;
+        EV << "Ehsanz: Message "<< ++sent <<" Sent at: "<<simTime() <<std::endl;
 
         //Send message
         sendData(FlowObject, data);
@@ -147,10 +151,10 @@ void AEStream::prepareAllocateRequest() {
 
 void AEStream::prepareStreamData() {
     //Schedule stream data chunk
-    int j = 0;
+    int j = 1;
     for (simtime_t i = beginStreamAt; i < endStreamAt; i += interval) {
         std::ostringstream ss;
-        ss << MSG_STDATA << j++;
+        ss << MSG_STDATA << j++ << "@" << i;
         cMessage* m2 = new cMessage(ss.str().c_str());
         scheduleAt(i, m2);
     }
@@ -164,9 +168,22 @@ void AEStream::prepareDeallocateRequest() {
 
 void AEStream::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
-    std::cout << "Ehsanz: Message "<<++received<<" Received at: "<<simTime() <<std::endl;
+    std::string m =  msg1->getObject().objectName.c_str();
+    int pos = m.find('@');
+    simtime_t timeNow = simTime();
+    currentDelay = timeNow - std::atof(m.substr(pos+1).c_str());
+    if(avgDelay == 0) avgDelay = currentDelay;
+    avgDelay = (avgDelay+currentDelay)/2;
+    ++received;
+    //std::cout << this->getFullPath() << ": " << msg1->getObject().objectName << ":" <<++received<<" Received at: "<<timeNow << " Delay: " << currentDelay << "," << avgDelay <<std::endl;
     EV << "Ehsanz: Message "<<received<<" Received at: "<<simTime() <<std::endl; //"Received data M_DATA";
     object_t object = msg1->getObject();
     EV << " with object '" << object.objectClass << "' and value '" << object.objectVal << "'" << endl;
 
 }
+
+void AEStream::finish()
+{
+    std::cout << this->getFullPath() << ": AvgDelay " << avgDelay << " : Total Received " << received <<std::endl;
+}
+

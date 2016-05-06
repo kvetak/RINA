@@ -77,6 +77,7 @@ class Stats
 
         std::string getBestAppByAppList(std::string srcApp, std::string dstApp, std::string allApps);
         std::string getBestAppByAEN(std::string srcApp, std::string dstApp, std::string aen);
+        std::string getBestRandAppByAEN(std::string srcApp, std::string dstApp, std::string aen);
 
         static std::map<std::pair<unsigned int, unsigned int>, std::string> staticData;
         static bool enableLB;
