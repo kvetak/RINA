@@ -188,47 +188,55 @@ namespace Infection {
     }
 
     void Infection::handleMessage(cMessage *msg) {
-        if(commMsg * m = dynamic_cast<commMsg *>(msg)) {
-            simtime_t now = simTime();
-            if(now >= finTime) { delete msg; return; }
-
-            if (now >= (SimTime(m->f->startTime)))
-            {
-                bool record = now >= markIniT && now < markFinT;
-
-                pduT k = m->f->getPDU(record);
-                if(k.pdu->getSeqNum() == 1){
-                    MonitorMsg* Monmsg = new MonitorMsg();
-                    Monmsg->type = "Rsv_Req";
-                    Monmsg->rsvInfo.flowId = k.pdu->getConnId().getSrcCepId();
-                    Monmsg->rsvInfo.nodeIdDst = k.pdu->getDstAddr().getIpcAddress().getName();
-                    Monmsg->rsvInfo.nodeIdOrg = k.pdu->getSrcAddr().getIpcAddress().getName();
-                    Monmsg->rsvInfo.qos = k.pdu->getConnId().getQoSId();
-                    cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
-                    take(Monmsg);
-                    sendDirect(Monmsg, targetModule, "radioIn");
-
-
-                }
-                else{
-                    scheduleAt(now + k.wT, msg);
-                    send(k.pdu, "g$o");
-                    if(emitSignals) { emit(signal, new SendInfMsg(
-                            k.pdu->getSrcAddr().getIpcAddress().getName(),
-                            k.pdu->getDstAddr().getIpcAddress().getName(),
-                            k.pdu->getConnId().getSrcCepId(),
-                            m->f->QoS)
-                    );}
-                }
+        if(strcmp("MonitorMsg", msg->getName())==0)
+        {
+            MultipathStructs::MonitorMsg * monMsg = dynamic_cast<MultipathStructs::MonitorMsg *>(msg);
+            if(monMsg->type.compare("ACK")==0){
+                scheduleAt(simTime(),msgDataBase[monMsg->ackInfo.flowID]);
             }
-            else
-            {
-                scheduleAt(SimTime(m->f->startTime), msg);
-            }
-
-            return;
         }
-        delete msg;
+        else{
+            if(commMsg * m = dynamic_cast<commMsg *>(msg)) {
+                simtime_t now = simTime();
+                if(now >= finTime) { delete msg; return; }
+
+                if (now >= (SimTime(m->f->startTime)))
+                {
+                    bool record = now >= markIniT && now < markFinT;
+
+                    pduT k = m->f->getPDU(record);
+                    if(k.pdu->getSeqNum() == 1){
+                        MonitorMsg* Monmsg = new MonitorMsg();
+                        Monmsg->type = "Rsv_Req";
+                        Monmsg->rsv_ReqInfo.flowId = k.pdu->getConnId().getSrcCepId();
+                        Monmsg->rsv_ReqInfo.nodeIdDst = k.pdu->getDstAddr().getIpcAddress().getName();
+                        Monmsg->rsv_ReqInfo.nodeIdOrg = k.pdu->getSrcAddr().getIpcAddress().getName();
+                        Monmsg->rsv_ReqInfo.qos = k.pdu->getConnId().getQoSId();
+                        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+                        take(Monmsg);
+                        sendDirect(Monmsg, targetModule, "radioIn");
+                        msgDataBase[k.pdu->getConnId().getSrcCepId()]=msg;
+                    }
+                    else{
+                        scheduleAt(now + k.wT, msg);
+                        send(k.pdu, "g$o");
+                        if(emitSignals) { emit(signal, new SendInfMsg(
+                                k.pdu->getSrcAddr().getIpcAddress().getName(),
+                                k.pdu->getDstAddr().getIpcAddress().getName(),
+                                k.pdu->getConnId().getSrcCepId(),
+                                m->f->QoS)
+                        );}
+                    }
+                }
+                else
+                {
+                    scheduleAt(SimTime(m->f->startTime), msg);
+                }
+
+                return;
+            }
+            delete msg;
+        }
     }
 
     void Infection::finish() {

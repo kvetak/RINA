@@ -63,5 +63,7 @@ namespace Infection {
                 simsignal_t signal;
 
                 double markIniT, markFinT, finTime;
+
+                map <int, cMessage *> msgDataBase; //<flowID, message>
     };
 }

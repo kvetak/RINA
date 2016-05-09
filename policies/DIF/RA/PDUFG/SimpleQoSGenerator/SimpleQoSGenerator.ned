@@ -31,4 +31,7 @@ simple SimpleQoSGenerator like IntPDUFG
         @display("i=block/socket");
         
         int infinite = default(32);
+        
+    gates:
+        input radioIn @directIn;
 }

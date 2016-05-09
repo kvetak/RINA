@@ -74,6 +74,8 @@ public:
 
     Routingtable* getRoutingTable();
     SchedulerInfo* getSchedulerInfo();
+    void setFlow(cEntry entry);
+    void removeFlow(cEntry entry);
 
 
     string toString();

@@ -48,6 +48,8 @@ namespace QoSMultipathMonitor {
 
         virtual Routingtable* getRoutingTable() = 0;
         virtual SchedulerInfo* getSchedulerInfo() = 0;
+        virtual void setFlow(cEntry entry) = 0;
+        virtual void removeFlow(cEntry entry) = 0;
 
     protected:
         map<string, int> QoS_BWreq;

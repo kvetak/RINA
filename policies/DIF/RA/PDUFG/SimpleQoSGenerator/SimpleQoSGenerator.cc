@@ -56,6 +56,10 @@ void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, R
             rt->insertFlow(addr, dst, "", 1);
             routingUpdated();
         }
+        if(LinksMonFrecMsg->getArrivalTime()!=simTime()){
+            cancelEvent(LinksMonFrecMsg);
+            scheduleAt(simTime(),LinksMonFrecMsg);
+        }
     }
 }
 void SimpleQoSGenerator::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
@@ -90,6 +94,10 @@ void SimpleQoSGenerator::removedFlow(const Address &addr, const QoSCube& qos, RM
             routingUpdated();
         }
     }
+    if(LinksMonFrecMsg->getArrivalTime()!=simTime()){
+        cancelEvent(LinksMonFrecMsg);
+        scheduleAt(simTime(),LinksMonFrecMsg);
+    }
 }
 
 void SimpleQoSGenerator::routingUpdated(){
@@ -119,6 +127,10 @@ void SimpleQoSGenerator::onPolicyInit(){
     mType infMetric = par("infinite");
     rt->setInfinite(infMetric);
     scheduleAt(0.0001, iniMsg);
+    SchedulerMonFrec = ForwardingMonFrec = LinksMonFrec = 0;
+    SchedulerMonMsg = new cMessage();
+    ForwardingMonMsg = new cMessage();
+    LinksMonFrecMsg = new cMessage();
 }
 
 void SimpleQoSGenerator::handleMessage(cMessage * msg){
@@ -126,17 +138,96 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
     {
         //update informatión in manager
         MonitorMsg* Monmsg = new MonitorMsg();
-        Monmsg->regInfo.nodeId=ipcAddr.getIpcAddress().getName();;
+        Monmsg->setName("MonitorMsg");
+        Monmsg->regInfo.nodeId=ipcAddr.getIpcAddress().getName();
         Monmsg->type="Register_Node";
         Monmsg->regInfo.routingInfo=fwd->getRoutingTable();
         Monmsg->regInfo.schedulerInfo=fwd->getSchedulerInfo();
         Monmsg->regInfo.neighboursInfo = new NeighboursInfo();
+        Monmsg->regInfo.nodePath=getFullPath();
         for (auto it : neighbours){
             Monmsg->regInfo.neighboursInfo->insert(pair<RMTPort *, string>(it.second.best.p, it.first));
         }
         cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
+    }
+    else if (msg == SchedulerMonMsg){
+        MonitorMsg* Monmsg = new MonitorMsg();
+        Monmsg->setName("MonitorMsg");
+        Monmsg->monitorParamInfo.nodeId=ipcAddr.getIpcAddress().getName();
+        Monmsg->type="Monitor_Param";
+        Monmsg->monitorParamInfo.schedulerInfo=fwd->getSchedulerInfo();
+        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        take(Monmsg);
+        sendDirect(Monmsg, targetModule, "radioIn");
+
+        if (SchedulerMonFrec > 0){
+            scheduleAt(simTime()+SchedulerMonFrec, SchedulerMonMsg);
+        }
+    }
+    else if (msg == ForwardingMonMsg){
+        MonitorMsg* Monmsg = new MonitorMsg();
+        Monmsg->setName("MonitorMsg");
+        Monmsg->monitorParamInfo.nodeId=ipcAddr.getIpcAddress().getName();
+        Monmsg->type="Monitor_Param";
+        Monmsg->monitorParamInfo.routingInfo=fwd->getRoutingTable();
+        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        take(Monmsg);
+        sendDirect(Monmsg, targetModule, "radioIn");
+        if(ForwardingMonFrec > 0){
+            scheduleAt(simTime()+ForwardingMonFrec, ForwardingMonMsg);
+        }
+    }
+    else if (msg == LinksMonFrecMsg){
+        MonitorMsg* Monmsg = new MonitorMsg();
+        Monmsg->setName("MonitorMsg");
+        Monmsg->monitorParamInfo.nodeId=ipcAddr.getIpcAddress().getName();
+        Monmsg->type="Monitor_Param";
+        Monmsg->monitorParamInfo.neighboursInfo = new NeighboursInfo();
+        for (auto it : neighbours){
+            Monmsg->monitorParamInfo.neighboursInfo->insert(pair<RMTPort *, string>(it.second.best.p, it.first));
+        }
+        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        take(Monmsg);
+        sendDirect(Monmsg, targetModule, "radioIn");
+        if(LinksMonFrec){
+            scheduleAt(simTime()+LinksMonFrec, LinksMonFrecMsg);
+        }
+    }
+    else if(strcmp("MonitorMsg", msg->getName())==0){
+        MultipathStructs::MonitorMsg * MonMsg = dynamic_cast<MultipathStructs::MonitorMsg *>(msg);
+        if(MonMsg->type.compare("RSV")==0){
+            fwd->setFlow(MonMsg->rsvInfo.entry);
+        }
+        else if(MonMsg->type.compare("FREE")==0){
+            fwd->removeFlow(MonMsg->rsvInfo.entry);
+        }
+        else if(MonMsg->type.compare("MONITORING_CONFIG")==0){
+            if(MonMsg->monConfigInfo.SchedulerMonFrec != SchedulerMonFrec){
+                SchedulerMonFrec = MonMsg->monConfigInfo.SchedulerMonFrec;
+                cancelEvent(SchedulerMonMsg);
+                if (SchedulerMonFrec > 0){
+                    scheduleAt(simTime()+SchedulerMonFrec, SchedulerMonMsg);
+                }
+            }
+            if(MonMsg->monConfigInfo.ForwardingMonFrec != ForwardingMonFrec){
+                ForwardingMonFrec = MonMsg->monConfigInfo.ForwardingMonFrec;
+                cancelEvent(ForwardingMonMsg);
+                if (ForwardingMonFrec > 0){
+                    scheduleAt(simTime()+ForwardingMonFrec, ForwardingMonMsg);
+                }
+            }
+            if(MonMsg->monConfigInfo.LinksMonFrec != LinksMonFrec){
+                LinksMonFrec = MonMsg->monConfigInfo.LinksMonFrec;
+                cancelEvent(LinksMonFrecMsg);
+                if (LinksMonFrec>0){
+                    scheduleAt(simTime()+LinksMonFrec, LinksMonFrecMsg);
+                }
+            }
+            SchedulerMonThres = MonMsg->monConfigInfo.SchedulerMonThres;
+        }
+        delete msg;
     }
 }
 

@@ -24,4 +24,6 @@ simple Infection {
         
     gates:
         inout g;
+        input radioIn @directIn;
+        
 }

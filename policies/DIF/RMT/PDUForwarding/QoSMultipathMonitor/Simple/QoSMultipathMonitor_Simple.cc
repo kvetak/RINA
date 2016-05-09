@@ -46,7 +46,7 @@ vector<RMTPort * > QoSMultipathMonitor_Simple::lookup(const PDU * pdu){
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
 
-    cEntry * e = &cache[dstAddr][pdu->getConnId().getDstCepId()];
+    cEntry * e = &cache[dstAddr][pdu->getConnId().getSrcCepId()];
 
     next = e->p;
     if(next == nullptr) {
@@ -251,6 +251,17 @@ string QoSMultipathMonitor_Simple::toString(){
     }
 
     return os.str();
+}
+
+void QoSMultipathMonitor_Simple::setFlow(cEntry entry){
+    cache[entry.dst][entry.SrcCepId]=entry;
+}
+
+void QoSMultipathMonitor_Simple::removeFlow(cEntry entry){
+    cache[entry.dst].erase(entry.SrcCepId);
+    if(cache[entry.dst].size()==0){
+        cache.erase(entry.dst);
+    }
 }
 
 void QoSMultipathMonitor_Simple::finish(){

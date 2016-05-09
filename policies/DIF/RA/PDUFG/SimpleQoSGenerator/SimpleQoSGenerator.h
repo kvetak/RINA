@@ -64,6 +64,17 @@ private:
     map<string, nEntry> neighbours;
 
     cMessage * iniMsg = new cMessage();
+
+    double SchedulerMonFrec;
+    double ForwardingMonFrec;
+    double LinksMonFrec;
+    double SchedulerMonThres;
+
+    cMessage * SchedulerMonMsg;
+    cMessage * ForwardingMonMsg;
+    cMessage * LinksMonFrecMsg;
+
+
 };
 
 }

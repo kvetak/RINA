@@ -232,23 +232,25 @@ struct RegisterInfo{
     Routingtable* routingInfo;
     SchedulerInfo* schedulerInfo;
     NeighboursInfo* neighboursInfo;
+    string nodePath;
 
     RegisterInfo(){
         nodeId ="";
         routingInfo = nullptr;
         schedulerInfo = nullptr;
         neighboursInfo = nullptr;
+        nodePath = "";
     }
 
 };
 
-struct RsvInfo{
+struct Rsv_ReqInfo{
     string nodeIdOrg;
     string nodeIdDst;
     string qos;
     int flowId;
 
-    RsvInfo(){
+    Rsv_ReqInfo(){
             nodeIdOrg ="";
             nodeIdDst = "";
             qos = "";
@@ -256,11 +258,55 @@ struct RsvInfo{
         }
 };
 
+struct RsvInfo{
+    cEntry entry;
+};
+
+struct AckInfo{
+    int flowID;
+
+    AckInfo(){
+        flowID = -1;
+    }
+};
+
+struct MonConfigInfo{
+    double SchedulerMonFrec;
+    double ForwardingMonFrec;
+    double LinksMonFrec;
+    double SchedulerMonThres;
+
+    MonConfigInfo(){
+        SchedulerMonFrec = 0;
+        ForwardingMonFrec = 0;
+        LinksMonFrec = 0;
+        SchedulerMonThres = 0.0;
+    }
+};
+
+struct MonitorParamInfo{
+    string nodeId;
+    Routingtable* routingInfo;
+    SchedulerInfo* schedulerInfo;
+    NeighboursInfo* neighboursInfo;
+    MonitorParamInfo(){
+        nodeId ="";
+        routingInfo = nullptr;
+        schedulerInfo = nullptr;
+        neighboursInfo = nullptr;
+    }
+};
+
+
 class MonitorMsg : public cMessage {
 public:
     string type;
     RegisterInfo regInfo;
+    Rsv_ReqInfo rsv_ReqInfo;
     RsvInfo rsvInfo;
+    AckInfo ackInfo;
+    MonConfigInfo monConfigInfo;
+    MonitorParamInfo monitorParamInfo;
 };
 
 }

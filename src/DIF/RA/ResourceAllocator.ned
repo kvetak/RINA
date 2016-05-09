@@ -40,6 +40,8 @@ module ResourceAllocator
         string addrComparatorName = default("ExactMatch");
 
 		bool onWire = default(false);
+		
+	
 
     submodules:
         ra: RA {
@@ -61,4 +63,5 @@ module ResourceAllocator
         addressComparator: <addrComparatorName> like IntAddressComparator {
             @display("p=429,150");
         }
+  
 }

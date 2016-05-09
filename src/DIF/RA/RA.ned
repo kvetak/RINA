@@ -40,4 +40,5 @@ simple RA
         xml preallocation = default(xml("<root/>"));
         
         bool onWire = default(false);
+        
 }

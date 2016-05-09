@@ -35,6 +35,6 @@ simple RMT
     gates:
         //inout efcpIo;
         inout southIo[];
-        inout ribdIo;    
-        input radioIn @directIn;
+        inout ribdIo;   
+        input radioIn; 
 }
