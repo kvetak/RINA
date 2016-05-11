@@ -86,8 +86,8 @@ namespace FullPathMonitor {
             posiblePaths.back().ok=true;
         }
         else{
-            if(nodeDataBase[nodeIdOrg].routingInfo->find(nodeIdDst)!=nodeDataBase[nodeIdOrg].routingInfo->end()){
-                vector<entryT> * entries =  &(nodeDataBase[nodeIdOrg].routingInfo->at(nodeIdDst));
+            if(nodeDataBase[nodeIdOrg].routingInfo.find(nodeIdDst)!=nodeDataBase[nodeIdOrg].routingInfo.end()){
+                vector<entryT> * entries =  &(nodeDataBase[nodeIdOrg].routingInfo.at(nodeIdDst));
                 vector<entryT> possibles;
                 for( entryT & e : *entries) {
                     if ((e.BW - BWControl.getTotalBW(e.p)) >= QoS_BWreq[qos]){
@@ -101,8 +101,8 @@ namespace FullPathMonitor {
                             posiblePaths.push_back(auxpath);
                         }
                         posiblePaths.back().steps.push_back(make_pair(nodeIdOrg, it.p));
-                        posiblePaths.back().weight = posiblePaths.back().weight + nodeDataBase[nodeIdOrg].schedulerInfo->at(qos)[it.p];
-                        recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo->at(it.p), nodeIdDst, qos, flowId);
+                        posiblePaths.back().weight = posiblePaths.back().weight + nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p];
+                        recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId);
                     }
                 }
             }
@@ -188,13 +188,13 @@ namespace FullPathMonitor {
                    //nodeDataBase[monMsg->monitorParamInfo.nodeId].neighboursInfo=monMsg->monitorParamInfo.neighboursInfo;
                    auto nodeInfo = nodeDataBase[monMsg->monitorParamInfo.nodeId].neighboursInfo;
                    for (auto it : *(monMsg->monitorParamInfo.neighboursInfo)){
-                       if(nodeInfo->count(it.first)==0){
-                           nodeInfo->insert(it);
+                       if(nodeInfo.count(it.first)==0){
+                           nodeInfo.insert(it);
                        }
                    }
-                   if (nodeInfo->size()>monMsg->monitorParamInfo.neighboursInfo->size()){//eliminated liks
+                   if (nodeInfo.size()>monMsg->monitorParamInfo.neighboursInfo->size()){//eliminated liks
 
-                       for(auto it : *nodeInfo){
+                       for(auto it : nodeInfo){
                            if(monMsg->monitorParamInfo.neighboursInfo->count(it.first)==0){
                                for(auto it1 : cache){
                                   for(auto it2 : it1.second.steps){
@@ -209,10 +209,10 @@ namespace FullPathMonitor {
 
                 }
                 if(monMsg->monitorParamInfo.routingInfo!=nullptr){
-                    nodeDataBase[monMsg->monitorParamInfo.nodeId].routingInfo=monMsg->monitorParamInfo.routingInfo;
+                    nodeDataBase[monMsg->monitorParamInfo.nodeId].routingInfo=*(monMsg->monitorParamInfo.routingInfo);
                 }
                 if(monMsg->monitorParamInfo.schedulerInfo!=nullptr){
-                    nodeDataBase[monMsg->monitorParamInfo.nodeId].schedulerInfo=monMsg->monitorParamInfo.schedulerInfo;
+                    nodeDataBase[monMsg->monitorParamInfo.nodeId].schedulerInfo=*(monMsg->monitorParamInfo.schedulerInfo);
                 }
             }
         }

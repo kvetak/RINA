@@ -74,6 +74,7 @@ private:
     cMessage * ForwardingMonMsg;
     cMessage * LinksMonFrecMsg;
 
+    bool registered = false;
 
 };
 

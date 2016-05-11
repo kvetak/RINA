@@ -299,6 +299,7 @@ Routingtable* QoSMultipathMonitor_Simple::getRoutingTable(){
 }
 
 SchedulerInfo* QoSMultipathMonitor_Simple::getSchedulerInfo(){
+    recalcule();
     return &weights;
 }
 

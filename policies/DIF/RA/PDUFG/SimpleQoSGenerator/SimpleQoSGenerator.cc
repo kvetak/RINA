@@ -56,7 +56,7 @@ void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, R
             rt->insertFlow(addr, dst, "", 1);
             routingUpdated();
         }
-        if(LinksMonFrecMsg->getArrivalTime()!=simTime()){
+        if((LinksMonFrecMsg->getArrivalTime()!=simTime())and(registered==true)){
             cancelEvent(LinksMonFrecMsg);
             scheduleAt(simTime(),LinksMonFrecMsg);
         }
@@ -94,7 +94,7 @@ void SimpleQoSGenerator::removedFlow(const Address &addr, const QoSCube& qos, RM
             routingUpdated();
         }
     }
-    if(LinksMonFrecMsg->getArrivalTime()!=simTime()){
+    if((LinksMonFrecMsg->getArrivalTime()!=simTime())and(registered==true)){
         cancelEvent(LinksMonFrecMsg);
         scheduleAt(simTime(),LinksMonFrecMsg);
     }
@@ -141,16 +141,16 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
         Monmsg->setName("MonitorMsg");
         Monmsg->regInfo.nodeId=ipcAddr.getIpcAddress().getName();
         Monmsg->type="Register_Node";
-        Monmsg->regInfo.routingInfo=fwd->getRoutingTable();
-        Monmsg->regInfo.schedulerInfo=fwd->getSchedulerInfo();
-        Monmsg->regInfo.neighboursInfo = new NeighboursInfo();
+        Monmsg->regInfo.routingInfo=*(fwd->getRoutingTable());
+        Monmsg->regInfo.schedulerInfo=*(fwd->getSchedulerInfo());
         Monmsg->regInfo.nodePath=getFullPath();
         for (auto it : neighbours){
-            Monmsg->regInfo.neighboursInfo->insert(pair<RMTPort *, string>(it.second.best.p, it.first));
+            Monmsg->regInfo.neighboursInfo.insert(pair<RMTPort *, string>(it.second.best.p, it.first));
         }
         cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
+        registered = true;
     }
     else if (msg == SchedulerMonMsg){
         MonitorMsg* Monmsg = new MonitorMsg();

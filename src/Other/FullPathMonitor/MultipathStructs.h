@@ -229,16 +229,13 @@ typedef map<RMTPort *, string> NeighboursInfo;
 struct RegisterInfo{
 
     string nodeId;
-    Routingtable* routingInfo;
-    SchedulerInfo* schedulerInfo;
-    NeighboursInfo* neighboursInfo;
+    Routingtable routingInfo;
+    SchedulerInfo schedulerInfo;
+    NeighboursInfo neighboursInfo;
     string nodePath;
 
     RegisterInfo(){
         nodeId ="";
-        routingInfo = nullptr;
-        schedulerInfo = nullptr;
-        neighboursInfo = nullptr;
         nodePath = "";
     }
 

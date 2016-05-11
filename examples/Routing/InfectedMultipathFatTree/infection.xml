@@ -94,8 +94,8 @@
 	
 	<InfectionNode id="TOR1">
 	
-		<flow  dstAddr = "AS.1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.5" SrcCepId = "99" />
-		<flow  dstAddr = "AS.2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.7" SrcCepId = "98" />
+		<flow  dstAddr = "AS.1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.3" SrcCepId = "99" />
+		<flow  dstAddr = "AS.2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.9" SrcCepId = "98" />
 
 	</InfectionNode>
 </Infection>
