@@ -27,8 +27,8 @@ namespace ModularMonitor {
 Define_Module(ModularMonitor);
 
 void ModularMonitor::onPolicyInit(){
-    inOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("inputOutSubModule"));
-    inDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("inputDropSubModule"));
+     inOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("inputOutSubModule"));
+     inDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("inputDropSubModule"));
     outOutModule  = check_and_cast<Int_MM_Out_Module*>  (getSubmodule("outputOutSubModule"));
     outDropModule = check_and_cast<Int_MM_Drop_Module*> (getSubmodule("outputDropSubModule"));
 
@@ -37,11 +37,9 @@ void ModularMonitor::onPolicyInit(){
         signal = registerSignal("ModularSignal");
     }
 
-    recordStats = par("recordStats").boolValue();
-    if(recordStats) {
-        limStats = par("limStats");
-        if(limStats <= 0) { recordStats = false;}
-    }
+    //TO-DO
+    //MonitoredLen = par("MonitoredLen").longValue();
+    MonitoredLen = 100;
 }
 
 void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
@@ -55,8 +53,30 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
             outOutModule->pduInsertered(queue, port);
             outDropModule->pduInsertered(queue, port);
 
-            if(emitSignals || recordStats) {
-                const cPacket * pdu = queue->getLastPDU();
+            const cPacket * pdu = queue->getLastPDU();
+            long pLen = pdu->getBitLength ();
+            inPortTimes[port].push_back(simTime());
+            inQueueTimes[port][queue->getName()].push_back(simTime());
+
+            inPortData[port].push_back(pLen);
+            inPortAgData[port] += pLen;
+            inQueueData[port][queue->getName()].push_back(pLen);
+            inQueueAgData[port][queue->getName()] += pLen;
+
+            if(inPortTimes[port].size() > MonitoredLen) {
+                inPortTimes[port].pop_front();
+                inPortAgData[port] -= inPortData[port].front();
+                inPortData[port].pop_front();
+            }
+
+            if(inQueueTimes[port][queue->getName()].size() > MonitoredLen) {
+                inQueueTimes[port][queue->getName()].pop_front();
+                inQueueAgData[port][queue->getName()] -= inQueueData[port][queue->getName()].front();
+                inQueueData[port][queue->getName()].pop_front();
+            }
+
+
+            if(emitSignals) {
                 if(inTime.find(pdu) == inTime.end()) {
                     inTime[pdu] = simTime();
                 }
@@ -64,10 +84,9 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
                 if(inPos.find(pdu) == inPos.end()) {
                     inPos[pdu] = portServed[port];
                 }
-                if(emitSignals) {
-                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                        emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
-                    }
+
+                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                    emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
                 }
             }
             break;
@@ -85,11 +104,9 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             outOutModule->pduDropped(queue, pdu, port);
             outDropModule->pduDropped(queue, pdu, port);
 
-            if(emitSignals || recordStats) {
-                if(emitSignals) {
-                    if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
-                        emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
-                    }
+            if(emitSignals) {
+                if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
+                    emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
                 }
                 inTime.erase(pdu);
                 inPos.erase(pdu);
@@ -122,12 +139,6 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
                                     const_cast<PDU*>(pdu))) {
                         idt->addPSTdelay(hdel);
                         idt->setHopCount(idt->getHopCount()+1);
-                    }
-
-                    if(recordStats) {
-                        list<unsigned short> & st = stats[port][qos];
-                        st.push_back(hdel);
-                        while((int)st.size() > limStats) { st.pop_front(); }
                     }
                 }
             }
@@ -180,37 +191,30 @@ simtime_t ModularMonitor::getOutNextTime(RMTPort* port){
 }
 
 
-list<unsigned short > & ModularMonitor::getStats(RMTPort * port, const string & QoS) {
-    return stats[port][QoS];
+double ModularMonitor::getPortUsage(RMTPort*p){
+    if(inPortTimes[p].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inPortTimes[p].front();
+    double tDif = dif.dbl();
+    return inPortAgData[p] / tDif;
 }
 
-void ModularMonitor::finish(){
-    if(par("printAtEnd").boolValue()) {
-        cout << "ModularMonitor at "<< getFullPath() << endl;
-        if(recordStats) {
-            cout << "Last "<< limStats << " records." << endl;
-            for(const auto & pS : stats) {
-                cout << "\tPort : "<< pS.first->getFullPath() << endl;
-                for(const auto & qS : pS.second) {
-                    cout << "\t\tQoS : " << qS.first <<endl;
-                    if(qS.second.empty()){
-                        cout << "\t\t\t -- No stats recorded --" <<endl;
-                    } else {
-                        unsigned short min = 9999, max = 0;
-                        long s = 0;
-                        for(const unsigned short k : qS.second) {
-                            s += k;
-                            if(min > k) { min = k; }
-                            if(max < k) { max = k; }
-                        }
-                        double avg = (double)s/(double)qS.second.size();
-                        cout << "\t\t\t -- "<<qS.second.size() << " PDUs recorded --" <<endl;
-                        cout << "\t\t\t -- MIN/AVG/MAX : "<< min<<"/"<<avg<<"/"<<max<<"/"<< " --" <<endl;
-                    }
-                }
-            }
-        }
-    }
+double ModularMonitor::getPortUsageP(RMTPort*p){
+    if(inPortTimes[p].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inPortTimes[p].front();
+    double tDif = dif.dbl();
+    return inPortTimes[p].size() / tDif;
+}
+double ModularMonitor::getQueueUsage(RMTPort*p, string q){
+    if(inQueueTimes[p][q].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inQueueTimes[p][q].front();
+    double tDif = dif.dbl();
+    return inQueueAgData[p][q] / tDif;
+}
+double ModularMonitor::getQueueUsageP(RMTPort*p, string q) {
+    if(inQueueTimes[p][q].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inQueueTimes[p][q].front();
+    double tDif = dif.dbl();
+    return inQueueTimes[p][q].size() / tDif;
 }
 
 

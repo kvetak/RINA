@@ -442,7 +442,7 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
 }
 
 void QoSMultipathDynamicTable_Simple::recalcule(){
-    for(auto it : QoS_BWreq){
+   /* for(auto it : QoS_BWreq){
 
                 for(auto it2 : Port_avBW){
                     list <unsigned short> aux = mon->getStats(it2.first, it.first);
@@ -466,7 +466,7 @@ void QoSMultipathDynamicTable_Simple::recalcule(){
                     }
                     weights[it.first][it2.first] = mean;
                 }
-            }
+            }*/
 }
 
 //Insert/Remove an entry

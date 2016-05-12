@@ -42,9 +42,11 @@ public:
     simtime_t getInNextTime(RMTPort * port);
     simtime_t getOutNextTime(RMTPort * port);
 
-    list<unsigned short > & getStats(RMTPort * port, const string & QoS);
-
-    virtual void finish();
+    //Monitor usage
+    double getPortUsage(RMTPort*);
+    double getPortUsageP(RMTPort*);
+    double getQueueUsage(RMTPort*, string);
+    double getQueueUsageP(RMTPort*, string);
 
 protected:
     Int_MM_Out_Module  * inOutModule;
@@ -52,15 +54,22 @@ protected:
     Int_MM_Out_Module  * outOutModule;
     Int_MM_Drop_Module * outDropModule;
 
-    bool emitSignals, recordStats;
-    int limStats;
+    bool emitSignals;
     simsignal_t signal;
     map<const cPacket *, simtime_t> inTime;
     map<const cPacket *, int> inPos;
     map<RMTPort *, int> portServed;
-    simtime_t refreshT;
 
-    map<RMTPort *, map<string, list<unsigned short> > > stats;
+    //Monitor usage
+    int MonitoredLen;
+    map<RMTPort *, list<simtime_t> > inPortTimes;
+    map<RMTPort *, list<long> > inPortData;
+    map<RMTPort *, long > inPortAgData;
+    map<RMTPort *, map<string, list<simtime_t> > > inQueueTimes;
+    map<RMTPort *, map<string, list<long> > > inQueueData;
+    map<RMTPort *, map<string, long > > inQueueAgData;
+
+
 };
 
 }

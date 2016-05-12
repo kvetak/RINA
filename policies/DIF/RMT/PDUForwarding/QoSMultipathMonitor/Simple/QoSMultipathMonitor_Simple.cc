@@ -215,26 +215,7 @@ void QoSMultipathMonitor_Simple::recalcule(){
     for(auto it : QoS_BWreq){
 
         for(auto it2 : Port_avBW){
-            list <unsigned short> aux = mon->getStats(it2.first, it.first);
-            double mean = 0;
-            for(auto it3 : aux){
-                mean = mean + it3;
-            }
-            if(aux.size()== 0){
-                mean = 1.0;
-            }
-            else if(mean == 0)
-            {
-                mean = 1.0;
-            }
-            else{
-                mean = (double)aux.size()/(mean);//inverse of median
-                if(mean > 1.0){
-                    mean = 1.0;
-                }
-
-            }
-            weights[it.first][it2.first] = mean;
+            weights[it.first][it2.first] = mon->getQueueUsage(it2.first, "outQ_"+it.first);
         }
     }
 }

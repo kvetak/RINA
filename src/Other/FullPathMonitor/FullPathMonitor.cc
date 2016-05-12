@@ -1,7 +1,7 @@
 #include "FullPathMonitor.h"
 #include <iostream>
 #include <fstream>
-
+#include <cmath>
 
 Define_Module(FullPathMonitor::FullPathMonitor);
 
@@ -101,7 +101,11 @@ namespace FullPathMonitor {
                             posiblePaths.push_back(auxpath);
                         }
                         posiblePaths.back().steps.push_back(make_pair(nodeIdOrg, it.p));
-                        posiblePaths.back().weight = posiblePaths.back().weight + nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p];
+                        //posiblePaths.back().weight = posiblePaths.back().weight + ((double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW);
+                        double ocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW;
+                        if(posiblePaths.back().weight>ocupation){
+                            posiblePaths.back().weight=ocupation;
+                        }
                         recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId);
                     }
                 }

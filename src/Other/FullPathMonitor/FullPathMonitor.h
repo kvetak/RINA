@@ -24,7 +24,7 @@ namespace FullPathMonitor {
             bool ok;
             string qos;
             PathInfo(){
-                weight = 0;
+                weight = 1;
                 ok = false;
                 qos="";
             }
