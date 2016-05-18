@@ -102,7 +102,7 @@ protected:
 
     map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(SrcCepId), entry>>
 
-    map<string, map<RMTPort *, double>> weights; //map<qos, map<port, weight>>
+    map<RMTPort *, WeightInfo> weights; //map<qos, map<port, weight>>
 
     BWcontrol BWControl;
 

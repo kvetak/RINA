@@ -212,10 +212,13 @@ void QoSMultipathMonitor_Simple::addReplace(const string &addr, vector<entryT> p
 }
 
 void QoSMultipathMonitor_Simple::recalcule(){
-    for(auto it : QoS_BWreq){
+    for(auto it2 : Port_avBW){
 
-        for(auto it2 : Port_avBW){
-            weights[it.first][it2.first] = mon->getQueueUsage(it2.first, "outQ_"+it.first);
+        for(auto it : QoS_BWreq){
+            //weights[it.first][it2.first] = mon->getQueueUsage(it2.first, "outQ_"+it.first);
+            weights[it2.first].totalUsage = mon->getPortUsage(it2.first);
+            weights[it2.first].qosUsage[it.first] = mon->getQueueUsage(it2.first, "outQ_"+it.first);
+
         }
     }
 }

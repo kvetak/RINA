@@ -19,22 +19,24 @@ namespace FullPathMonitor {
 
     private:
         struct PathInfo{
-            list< pair<string, RMTPort *>> steps;
-            double weight;
+            vector< pair<pair<double,double>,pair<string, RMTPort *>>> steps;
+            //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
             bool ok;
             string qos;
             PathInfo(){
-                weight = 1;
                 ok = false;
                 qos="";
             }
         };
+        double QoSFactor;
+        double TotalFactor;
         void registerNode(RegisterInfo info);
         void handleMessage(cMessage * msg);
         void lookPath(string nodeIdOrg, string nodeIdDst, string qos, int flowId, cModule * requestModule);
         void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId);
         void deletePath(string nodeIdOrg, string nodeIdDst, int flowId);
         unsigned int WeightedRandom(vector<double> &weight);
+        unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
 
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;

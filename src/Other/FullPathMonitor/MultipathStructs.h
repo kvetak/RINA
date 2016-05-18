@@ -222,8 +222,13 @@ struct orderedList {
 
 };
 
+struct WeightInfo{
+    double totalUsage;
+    map<string, double> qosUsage; //map<qos,usage>
+};
+
 typedef map<string, vector<entryT> > Routingtable;
-typedef map<string, map<RMTPort *, double>> SchedulerInfo;
+typedef map<RMTPort *, WeightInfo> SchedulerInfo;
 typedef map<RMTPort *, string> NeighboursInfo;
 
 struct RegisterInfo{

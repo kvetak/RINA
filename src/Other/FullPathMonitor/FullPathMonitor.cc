@@ -8,6 +8,10 @@ Define_Module(FullPathMonitor::FullPathMonitor);
 namespace FullPathMonitor {
 
     void FullPathMonitor::initialize(){
+
+        QoSFactor = par("QoSFactor").doubleValue();
+        TotalFactor = par("TotalFactor").doubleValue();
+
         cXMLElement* Xml = NULL;
         if (par("QoS_BW").xmlValue() != NULL && par("QoS_BW").xmlValue()->hasChildren()){
            Xml = par("QoS_BW").xmlValue();
@@ -35,21 +39,41 @@ namespace FullPathMonitor {
         if(path->steps.size()==0){
             posiblePaths.push_back(PathInfo());
             recursivePathFinder(nodeIdOrg, nodeIdDst, qos, flowId);
-            vector<double> auxweight;
-            long double sum = 0;
-            for(auto it : posiblePaths) {
-                if(it.ok){
-                    auxweight.insert(auxweight.end(),it.weight);
-                    sum = sum + it.weight;
+            vector<double> auxweightQoS;
+            vector<double> auxweightTotal;
+            for(auto it : posiblePaths){
+                auxweightTotal.push_back(1);
+                auxweightQoS.push_back(1);
+            }
+            for(unsigned i=0; i < posiblePaths.begin()->steps.size(); i++){
+                vector<RMTPort *> steps;
+                for(auto it : posiblePaths){
+                    steps.push_back(it.steps[i].second.second);
+                }
+                for(unsigned j=0; j < posiblePaths.size(); j++){
+                    if(numberOfAppearances(steps,posiblePaths[j].steps[i].second.second)==1){
+                        if(auxweightTotal[j]>posiblePaths[j].steps[i].first.first){
+                            auxweightTotal[j]=posiblePaths[j].steps[i].first.first;
+                        }
+                        if(auxweightQoS[j]>posiblePaths[j].steps[i].first.second){
+                            auxweightQoS[j]=posiblePaths[j].steps[i].first.second;
+                        }
+                    }
                 }
             }
-            for(vector<double>::iterator it2 = auxweight.begin(); it2 != auxweight.end(); it2++){
-                *it2 = (*it2)/sum;//Normalization
+
+            vector<double> finalweight;
+            double sum =0;
+            for(unsigned i=0; i < posiblePaths.size(); i++){
+                finalweight.push_back(auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+                sum = sum + (auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
             }
-            auto auxPath = posiblePaths[WeightedRandom(auxweight)];
+            for (auto it : finalweight){
+                it=it/sum;
+            }
+            auto auxPath = posiblePaths[WeightedRandom(finalweight)];
             path->ok=auxPath.ok;
             path->steps=auxPath.steps;
-            path->weight=auxPath.weight;
             path->qos=qos;
         }
 
@@ -61,24 +85,35 @@ namespace FullPathMonitor {
         sendDirect(ackMsg, requestModule, "radioIn");
 
         for(auto it : path->steps){
-            BWControl.addBW(it.second, qos, QoS_BWreq[qos]);
+            BWControl.addBW(it.second.second, qos, QoS_BWreq[qos]);
             MonitorMsg * monMsg = new MonitorMsg();
             cEntry entry;
             entry.QoS=qos;
             entry.SrcCepId=flowId;
             entry.dst=nodeIdDst;
-            entry.p=it.second;
+            entry.p=it.second.second;
             entry.reqBW=QoS_BWreq[qos];
             entry.t=simTime();
             monMsg->setName("MonitorMsg");
             monMsg->type="RSV";
             monMsg->rsvInfo.entry=entry;
             take(monMsg);
-            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            cModule *targetModule = getModuleByPath(nodeDataBase[it.second.first].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");
         }
         posiblePaths.clear();
 
+    }
+
+    unsigned FullPathMonitor::numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port){
+
+        unsigned count = 0;
+        for (auto it : Vector){
+            if (it == Port){
+                count ++;
+            }
+        }
+        return count;
     }
 
     void FullPathMonitor::recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId){
@@ -100,12 +135,13 @@ namespace FullPathMonitor {
                         if (it.p != possibles.begin()->p){
                             posiblePaths.push_back(auxpath);
                         }
-                        posiblePaths.back().steps.push_back(make_pair(nodeIdOrg, it.p));
+                        double QoSocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo[it.p].qosUsage[qos])) /(double)it.BW;
+                        double Totalocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo[it.p].totalUsage)) /(double)it.BW;
+                        posiblePaths.back().steps.push_back(make_pair(make_pair(Totalocupation,QoSocupation),make_pair(nodeIdOrg, it.p)));
                         //posiblePaths.back().weight = posiblePaths.back().weight + ((double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW);
-                        double ocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW;
-                        if(posiblePaths.back().weight>ocupation){
-                            posiblePaths.back().weight=ocupation;
-                        }
+
+
+
                         recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId);
                     }
                 }
@@ -160,20 +196,20 @@ namespace FullPathMonitor {
 
         PathInfo * path = &cache[make_tuple(nodeIdOrg, nodeIdDst, flowId)];
         for(auto it : path->steps){
-            BWControl.removeBW(it.second, path->qos, QoS_BWreq[path->qos]);
+            BWControl.removeBW(it.second.second, path->qos, QoS_BWreq[path->qos]);
             MonitorMsg * monMsg = new MonitorMsg();
             cEntry entry;
             entry.QoS=path->qos;
             entry.SrcCepId=flowId;
             entry.dst=nodeIdDst;
-            entry.p=it.second;
+            entry.p=it.second.second;
             entry.reqBW=QoS_BWreq[path->qos];
             entry.t=simTime();
             monMsg->setName("MonitorMsg");
             monMsg->type="FREE";
             monMsg->rsvInfo.entry=entry;
             take(monMsg);
-            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            cModule *targetModule = getModuleByPath(nodeDataBase[it.second.first].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");
         }
         cache.erase(make_tuple(nodeIdOrg, nodeIdDst, flowId));
@@ -202,7 +238,7 @@ namespace FullPathMonitor {
                            if(monMsg->monitorParamInfo.neighboursInfo->count(it.first)==0){
                                for(auto it1 : cache){
                                   for(auto it2 : it1.second.steps){
-                                      if(it2.second==it.first){
+                                      if(it2.second.second==it.first){
                                           deletePath(get<0>(it1.first), get<1>(it1.first), get<2>(it1.first));
                                       }
                                   }
