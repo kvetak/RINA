@@ -239,7 +239,7 @@ void DTP::flushAllQueuesAndPrepareToDie()
  */
 void DTP::redrawGUI()
 {
-  if (!ev.isGUI())
+  if (!getEnvir()->isGUI())
   {
     return;
   }

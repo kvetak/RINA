@@ -105,7 +105,7 @@ std::ostream& operator <<(std::ostream& os, const RMTQueue& cte)
 
 void RMTQueue::redrawGUI()
 {
-    if (!ev.isGUI())
+    if (!getEnvir()->isGUI())
     {
         return;
     }

@@ -56,8 +56,8 @@ void RMT::initialize()
     if (tracing && !rmtTraceFile.is_open())
     {
         std::ostringstream filename;
-        filename << "results/" << ev.getConfigEx()->getActiveConfigName() << "-"
-                 << ev.getConfigEx()->getActiveRunNumber() << ".tr";
+        filename << "results/" << getEnvir()->getConfigEx()->getActiveConfigName() << "-"
+                 << getEnvir()->getConfigEx()->getActiveRunNumber() << ".tr";
         rmtTraceFile.open(filename.str().c_str());
 
         if (!rmtTraceFile.is_open())

@@ -30,7 +30,7 @@
 #ifndef QUEUEINFO_H_
 #define QUEUEINFO_H_
 
-#include <cobject.h>
+#include <omnetpp.h>
 #include "Flow.h"
 
 class QueueInfo : public cObject

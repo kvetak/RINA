@@ -603,7 +603,7 @@ void DTCP::redrawGUI()
 {
 //    return;
   Enter_Method_Silent();
-  if (!ev.isGUI())
+  if (!getEnvir()->isGUI())
   {
       return;
   }

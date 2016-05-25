@@ -30,7 +30,6 @@
 #define DTCP_H_
 
 #include <omnetpp.h>
-#include <csimplemodule.h>
 
 //#include "RXControl.h"
 #include "DTCPState.h"

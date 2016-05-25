@@ -327,7 +327,7 @@ void RMTPort::setInputRate(long pdusPerSecond)
 
 void RMTPort::redrawGUI(bool redrawParent)
 {
-    if (ev.isGUI())
+    if (getEnvir()->isGUI())
     {
         getDisplayString().setTagArg("i2", 0, (isOutputReady() ? "status/green" : "status/noentry"));
 
@@ -363,7 +363,7 @@ void RMTPort::setFlow(Flow* flow)
     this->flow = flow;
 
     // display address of the remote IPC on top of the module
-    if (ev.isGUI())
+    if (getEnvir()->isGUI())
     {
         if (flow != nullptr)
         {
