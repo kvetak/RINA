@@ -29,7 +29,7 @@ Stream::Stream(){
     avgWTime = 10.0;
     varSTime = 2.0;
     varWTime = 2.0;
-    rng = &uniform;
+    //rng = &uniform;
 }
 
 void Stream::setWt(double val) {
@@ -171,7 +171,7 @@ void AEVoice::doIni() {
             } else if ( !strcmp(n->getTagName(), "rng") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setRNG(&uniform);
+                    //st.setRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setRNG(&minMaxNormal);
                 }

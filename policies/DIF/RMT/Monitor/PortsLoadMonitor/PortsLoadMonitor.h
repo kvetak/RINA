@@ -25,9 +25,9 @@
 #include "RMTModuleAllocator.h"
 
 // Will map (link --> input + output bytes).
-typedef std::map<RMTPort *, int64> PortsMap;
+typedef std::map<RMTPort *, int64_t> PortsMap;
 // Single entry of the map.
-typedef std::pair<RMTPort *, int64> PMElem;
+typedef std::pair<RMTPort *, int64_t> PMElem;
 // Simply iterator over the map.
 typedef PortsMap::iterator PMIter;
 
@@ -62,7 +62,7 @@ public:
 
     // Get the load of the port.
     // 0 if no traffic has been detected or if the port does not exists.
-    int64 getByteRate(RMTPort * port);
+    int64_t getByteRate(RMTPort * port);
 
     // A PDU arrived.
     virtual void postPDUInsertion(RMTQueue* queue);

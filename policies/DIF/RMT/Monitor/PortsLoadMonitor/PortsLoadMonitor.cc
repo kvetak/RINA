@@ -44,7 +44,7 @@ void PortsLoadMonitor::enhancedDebug()
 }
 #endif
 
-int64 PortsLoadMonitor::getByteRate(RMTPort * port)
+int64_t PortsLoadMonitor::getByteRate(RMTPort * port)
 {
     PMIter i = rates.find(port);
 

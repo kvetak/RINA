@@ -25,7 +25,7 @@
 
 class SenderAckPolicyTCP : public SenderAckPolicyBase {
 public:
-    uint32 numOfAcked;
+    uint32_t numOfAcked;
 
     SenderAckPolicyTCP();
     virtual ~SenderAckPolicyTCP();

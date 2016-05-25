@@ -28,7 +28,7 @@ _PongMsg::_PongMsg(simtime_t _pingAt){
 
 
 double minMaxNormal (double a, double b, int rng){
-    double rn = normal(a+(b-a)/2, (b-a)/6);
+    double rn = normal(NULL, a+(b-a)/2, (b-a)/6);
     if(rn < a) { rn = a; }
     if(rn > b) { rn = b; }
     return b;

@@ -29,10 +29,10 @@ Stream::Stream(){
     brt = 8.0;
 
     dataS = 10240;
-    rng = &uniform;
+    //rng = &uniform;
 
     waitT = 0;
-    rngwt = &uniform;
+    //rngwt = &uniform;
 }
 
 void Stream::setBrt(double val) {
@@ -151,14 +151,14 @@ void AEData::doIni() {
             } else if ( !strcmp(n->getTagName(), "rng") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setRNG(&uniform);
+                    //st.setRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setRNG(&minMaxNormal);
                 }
             } else if ( !strcmp(n->getTagName(), "rngwt") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setWTRNG(&uniform);
+                    //st.setWTRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setWTRNG(&minMaxNormal);
                 }

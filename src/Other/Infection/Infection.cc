@@ -40,10 +40,10 @@ namespace Infection {
 
     pduT Flow::getPDU(bool record) {
         //int size = 1024;
-        int size = intuniform(minS, maxS);
+        int size = intuniform(NULL,minS, maxS);
 
         pduT ret;
-        ret.wT = 8*(size+11) * avgWT * exponential(1);
+        ret.wT = 8*(size+11) * avgWT * exponential(NULL,1);
 
         //size = 11;
         //ret.wT = 100;

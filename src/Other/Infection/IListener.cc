@@ -68,7 +68,7 @@ namespace IListener {
     }
 
     flowInfo::flowInfo() :
-            minDel(MAXTIME),
+            minDel(SIMTIME_MAX),
             maxDel(0.0),
             countDel(0),
             sumDel(0.0),
@@ -76,7 +76,7 @@ namespace IListener {
             maxPST(0),
             countPST(0),
             sumPST(0),
-            minJitter(MAXTIME),
+            minJitter(SIMTIME_MAX),
             maxJitter(0.0),
             countJit(0),
             sumJit(0.0),
