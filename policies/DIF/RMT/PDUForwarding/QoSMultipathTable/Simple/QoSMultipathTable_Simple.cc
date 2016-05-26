@@ -24,6 +24,7 @@
 #include <sstream>
 #include <algorithm>
 #include <vector>
+#include <random>
 
 
 Register_Class(QoSMultipathTable_Simple::QoSMultipathTable_Simple);
@@ -48,7 +49,7 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
 
-    cEntry * e = &cache[dstAddr][pdu->getConnId().getDstCepId()];
+    cEntry * e = &cache[dstAddr][pdu->getConnId().getSrcCepId()];
 
     string QoSid;
     if(par("QoSSpliter").boolValue()){
@@ -65,9 +66,9 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         if(next != nullptr){
             e->p = next;//Port inserted in cache
             e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
-            e->QoS = QoSid;
+            e->QoS = pdu->getConnId().getQoSId();
             e->dst = dstAddr;
-            e->DstCepId = pdu->getConnId().getDstCepId();
+            e->SrcCepId = pdu->getConnId().getSrcCepId();
             orderedCache.addElement(e);
             string aux = pdu->getConnId().getQoSId();
             //BWControl[next].bw += QoS_BWreq[pdu->getConnId().getQoSId()];
@@ -91,16 +92,17 @@ vector<RMTPort * > QoSMultipathTable_Simple::lookup(const PDU * pdu){
         ret.push_back(next);
         e->t = simTime();
     } else {
-        //BWControl[(cache[dstAddr][pdu->getConnId().getDstCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getDstCepId()]).reqBW;
-        BWControl.removeBW(cache[dstAddr][pdu->getConnId().getDstCepId()].p,
+        //BWControl[(cache[dstAddr][pdu->getConnId().getSrcCepId()]).p].bw -= (cache[dstAddr][pdu->getConnId().getSrcCepId()]).reqBW;
+        BWControl.removeBW(cache[dstAddr][pdu->getConnId().getSrcCepId()].p,
                 QoSid,
-                cache[dstAddr][pdu->getConnId().getDstCepId()].reqBW);
+                cache[dstAddr][pdu->getConnId().getSrcCepId()].reqBW);
 
-        orderedCache.erraseElement(&cache[dstAddr][pdu->getConnId().getDstCepId()]);
-        cache[dstAddr].erase(pdu->getConnId().getDstCepId());
+        orderedCache.erraseElement(&cache[dstAddr][pdu->getConnId().getSrcCepId()]);
+        cache[dstAddr].erase(pdu->getConnId().getSrcCepId());
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
         }
+        dropedFlows[pdu->getConnId().getSrcCepId()]=simTime();
     }
 
 
@@ -158,6 +160,14 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
             possibles.push_back(e);
         }
     }
+    //JUST TEMPORAL
+//    if (!entries->empty()){
+//        std::random_device rd;
+//        std::mt19937 gen(rd());
+//        std::uniform_int_distribution<> generator(0, entries->size()-1);
+//        int pos = generator(gen);
+//        return entries->at(pos).p;
+//    }
 
 
     if(possibles.empty()) {
@@ -203,9 +213,9 @@ RMTPort * QoSMultipathTable_Simple::portLookup(const string& dst, const string& 
     }
 
     //int maxBW=0;
-    entryT * exit = nullptr;
+    entryT * exit = &possibles[0];
     for( entryT & e : possibles) {
-        if(isBetterPort(&e, exit, qos)){
+        if(isBetterPort(&e, exit, QoSid)){
             exit = &e;
         }
         //UsedBW* BW = &BWControl[(e.p)];
@@ -257,7 +267,7 @@ RMTPort * QoSMultipathTable_Simple::rerouteFlows(const vector<entryT>& ports, co
                         auxPort->BW = it2.second;
                     }
                 }
-                info.addMov(p.p, auxPort->p, it->DstCepId, it->reqBW, qos);
+                info.addMov(p.p, auxPort->p, it->SrcCepId, it->reqBW, qos);
                 info.ports[p.p]+=it->reqBW;
                 info.ports[auxPort->p]-=it->reqBW;
                 delete auxPort;
@@ -478,10 +488,38 @@ string QoSMultipathTable_Simple::toString(){
 
 void QoSMultipathTable_Simple::finish(){
     if(par("printAtEnd").boolValue()){
+        //EV << "-----------------" << endl;
+        //EV << "Forwarding table::" << endl;
+        //EV << toString() <<endl;
+        //EV << "-----------------" << endl;
+        EV << "Cache table::" << endl;
+        map<RMTPort *,map<string, int>> counter;
+        for(auto it : Port_avBW){
+            for(auto it2 : QoS_BWreq){
+                counter[it.first][it2.first]=0;
+            }
+        }
+        for (auto it : cache){
+            for(auto it2 : it.second){
+//                EV << "Flujo : " << it2.first << endl;
+//                EV << "Puerto: " << it2.second.p->getFullPath() << endl;
+//                EV << "QoS: " << it2.second.QoS << endl;
+//                EV << "BW    : " << it2.second.reqBW << endl <<endl;
+                counter[it2.second.p][it2.second.QoS] = counter[it2.second.p][it2.second.QoS]+1;
+            }
+        }
+        for(auto it3 : counter){
+            EV  << it3.first->getFullPath()<<endl;
+            for(auto it4 : it3.second){
+                EV << "QoS: " << it4.first <<"    "<< it4.second<< " flows"<<endl;
+            }
+        }
+        //EV << toString() <<endl;
         EV << "-----------------" << endl;
-        EV << "Forwarding table::" << endl;
-        EV << toString() <<endl;
-        EV << "-----------------" << endl;
+        EV << "Rejected Flows::" << endl;
+        for(auto it : dropedFlows){
+            EV << "Flow : " << it.first <<"\tTime: "<< it.second.str()<<endl;
+        }
     }
 }
 

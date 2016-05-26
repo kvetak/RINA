@@ -298,7 +298,7 @@ public:
 
 protected:
 
-    unsigned short counter;
+    //unsigned short counter;
 
     cMessage * timeOutMsg = new cMessage("Clean Forwarding Cache");
 
@@ -308,7 +308,7 @@ protected:
 
     map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(SrcCepId), entry>>
 
-    map<string, map<RMTPort *, double>> weights; //map<qos, map<port, weight>>
+    map<RMTPort *, double> weights; //map<port, usage>
 
     BWcontrol BWControl;
 
@@ -321,6 +321,7 @@ protected:
 
 
     map<string, vector<entryT> > table;
+    map<int, simtime_t> dropedFlows; //map<flowId, time>
 
 
 

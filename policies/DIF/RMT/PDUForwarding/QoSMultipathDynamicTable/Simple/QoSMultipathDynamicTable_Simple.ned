@@ -32,7 +32,7 @@ simple QoSMultipathDynamicTable_Simple like iQoSMultipathDynamicTable
         
         bool printAtEnd = default(false);
         double cleanCache_t = default(0);
-        double recalcule_t = default (0.1);//100ms
+        double recalcule_t = default (0.01);//10ms
         xml QoS_BW;
         bool bigFlows = default(false);
         bool QoSSpliter = default(false);

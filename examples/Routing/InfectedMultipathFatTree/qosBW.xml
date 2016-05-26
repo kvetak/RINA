@@ -1,13 +1,8 @@
 <?xml version="1.0"?>
 	<QOS_BW>	
 		<QoS id="MA" bw="100" />
-		<QoS id="GU" bw="100" />
-		<QoS id="SN" bw="100" />
-		<QoS id="sBE" bw="100" />
-		<QoS id="BE" bw="100" />
-		<QoS id="1" bw="1" />
-		<QoS id="2" bw="100" />
-		<QoS id="3" bw="100" />
-		<QoS id="4" bw="100" />
-		<QoS id="5" bw="100" />
+		<QoS id="1" bw="429496729" />
+		<QoS id="2" bw="107374182" />
+		<QoS id="3" bw="10737418" />
+		<QoS id="4" bw="0" />
 	</QOS_BW>

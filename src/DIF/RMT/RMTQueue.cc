@@ -38,18 +38,18 @@ RMTQueue::~RMTQueue()
 
 void RMTQueue::finish()
 {
-    size_t pduCount = queue.size();
-    if (pduCount)
-    {
-        EV << "Queue " << getFullPath() << " still contains " << pduCount
-           << " unprocessed PDUs!" << endl;
-
-        for (iterator it = begin(); it != end(); ++it)
-        {
-            cPacket* p = *it;
-            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
-        }
-    }
+//    size_t pduCount = queue.size();
+//    if (pduCount)
+//    {
+//        EV << "Queue " << getFullPath() << " still contains " << pduCount
+//           << " unprocessed PDUs!" << endl;
+//
+//        for (iterator it = begin(); it != end(); ++it)
+//        {
+//            cPacket* p = *it;
+//            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
+//        }
+//    }
 }
 
 

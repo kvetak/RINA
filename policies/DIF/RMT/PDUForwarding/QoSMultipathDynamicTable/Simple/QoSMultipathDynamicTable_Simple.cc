@@ -37,7 +37,7 @@ using namespace QoSMultipathDynamicTable;
 void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
     cleanCache_t = par("cleanCache_t").doubleValue();
     recalcule_t = par("recalcule_t").doubleValue();
-    counter = 0;
+    //counter = 0;
 
     if(cleanCache_t > 0) {
         scheduleAt(simTime() + cleanCache_t, timeOutMsg);
@@ -46,11 +46,11 @@ void QoSMultipathDynamicTable_Simple::onMainPolicyInit() {
 }
 
 vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
-    counter ++;
-    if (counter>=100){
-       recalcule();
-       counter=0;
-    }
+//    counter ++;
+//    if (counter>=100){
+//       recalcule();
+//       counter=0;
+//    }
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
     int source = pdu->getConnId().getSrcCepId();
@@ -75,7 +75,7 @@ vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
         if(next != nullptr){
             e->p = next;//Port inserted in cache
             e->reqBW = QoS_BWreq[pdu->getConnId().getQoSId()];
-            e->QoS = QoSid;
+            e->QoS = pdu->getConnId().getQoSId();
             e->dst = dstAddr;
             e->SrcCepId = pdu->getConnId().getSrcCepId();
             orderedCache.addElement(e);
@@ -97,6 +97,7 @@ vector<RMTPort * > QoSMultipathDynamicTable_Simple::lookup(const PDU * pdu){
         if(cache[dstAddr].empty()) {
             cache.erase(dstAddr);
         }
+        dropedFlows[source]=simTime();
     }
 
 
@@ -144,7 +145,7 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
 
     for( entryT & e : *entries) {
         if(!par("DropIfNoBW").boolValue()){
-            if((e.BW - BWControl.getBWbyQoS(e.p, qos)) > max){
+            if((e.BW - BWControl.getBWbyQoS(e.p, QoSid)) > max){
                 bestOption = e.p;
             }
         }
@@ -198,21 +199,22 @@ RMTPort * QoSMultipathDynamicTable_Simple::portLookup(const string& dst, const s
     entryT * exit = nullptr;
     vector<double> auxweight;
     long double sum = 0;
-    if (weights.find(qos)!=weights.end())
-    {
+//    if (weights.find(qos)!=weights.end())
+//    {
         for( entryT & e : possibles) {
-            auxweight.insert(auxweight.end(),weights[qos][e.p]);
-            sum = sum + weights[qos][e.p];
+            double aux = (double)(e.BW-weights[e.p])/(double)e.BW;
+            auxweight.insert(auxweight.end(),(double)(e.BW-weights[e.p])/(double)e.BW);
+            sum = sum + weights[e.p];
         }
         for(vector<double>::iterator it2 = auxweight.begin(); it2 != auxweight.end(); it2++){
             *it2 = (*it2)/sum;//Normalization
         }
         exit = &possibles[WeightedRandom(possibles, auxweight)];
-    }
-    else
-    {
-        exit = &possibles[(rand() % possibles.size())];
-    }
+//    }
+//    else
+//    {
+//        exit = &possibles[(rand() % possibles.size())];
+//    }
     if (exit != nullptr)
     {
         return exit->p;
@@ -442,31 +444,29 @@ void QoSMultipathDynamicTable_Simple::handleMessage(cMessage * msg) {
 }
 
 void QoSMultipathDynamicTable_Simple::recalcule(){
-   /* for(auto it : QoS_BWreq){
-
+//    for(auto it : QoS_BWreq){
                 for(auto it2 : Port_avBW){
-                    list <unsigned short> aux = mon->getStats(it2.first, it.first);
-                    double mean = 0;
-                    for(auto it3 : aux){
-                        mean = mean + it3;
-                    }
-                    if(aux.size()== 0){
-                        mean = 1.0;
-                    }
-                    else if(mean == 0)
-                    {
-                        mean = 1.0;
-                    }
-                    else{
-                        mean = (double)aux.size()/(mean);//inverse of median
-                        if(mean > 1.0){
-                            mean = 1.0;
-                        }
-
-                    }
-                    weights[it.first][it2.first] = mean;
-                }
-            }*/
+//                    list <unsigned short> aux = mon->getStats(it2.first, it.first);
+//                    double mean = 0;
+//                    for(auto it3 : aux){
+//                        mean = mean + it3;
+//                    }
+//                    if(aux.size()== 0){
+//                        mean = 1.0;
+//                    }
+//                    else if(mean == 0)
+//                    {
+//                        mean = 1.0;
+//                    }
+//                    else{
+//                        mean = (double)aux.size()/(mean);//inverse of median
+//                        if(mean > 1.0){
+//                            mean = 1.0;
+//                        }
+//                    }
+                    weights[it2.first] = mon->getPortUsage(it2.first);
+//                }
+            }
 }
 
 //Insert/Remove an entry
@@ -529,31 +529,38 @@ string QoSMultipathDynamicTable_Simple::toString(){
 
 void QoSMultipathDynamicTable_Simple::finish(){
     if(par("printAtEnd").boolValue()){
-        EV << "-----------------" << endl;
-        EV << "Forwarding table::" << endl;
-        EV << toString() <<endl;
-        EV << "-----------------" << endl;
+        //EV << "-----------------" << endl;
+        //EV << "Forwarding table::" << endl;
+        //EV << toString() <<endl;
+        //EV << "-----------------" << endl;
         EV << "Cache table::" << endl;
-        map<RMTPort *, int> counter;
+        map<RMTPort *,map<string, int>> counter;
         for(auto it : Port_avBW){
-            counter[it.first]=0;
+            for(auto it2 : QoS_BWreq){
+                counter[it.first][it2.first]=0;
+            }
         }
         for (auto it : cache){
-        EV << it.first << endl;
             for(auto it2 : it.second){
-                EV << "Flujo : " << it2.first << endl;
-                EV << "Puerto: " << it2.second.p->getFullPath() << endl;
-                EV << "QoS: " << it2.second.QoS << endl;
-                EV << "BW    : " << it2.second.reqBW << endl <<endl;
-                counter[it2.second.p] = counter[it2.second.p]+1;
+//                EV << "Flujo : " << it2.first << endl;
+//                EV << "Puerto: " << it2.second.p->getFullPath() << endl;
+//                EV << "QoS: " << it2.second.QoS << endl;
+//                EV << "BW    : " << it2.second.reqBW << endl <<endl;
+                counter[it2.second.p][it2.second.QoS] = counter[it2.second.p][it2.second.QoS]+1;
             }
-            EV << "-----------------" << endl;
         }
-        for(auto it3 : Port_avBW){
-            EV  << it3.first->getFullPath() << " : " << counter[it3.first] << endl;
+        for(auto it3 : counter){
+            EV  << it3.first->getFullPath()<<endl;
+            for(auto it4 : it3.second){
+                EV << "QoS: " << it4.first <<"    "<< it4.second<< " flows"<<endl;
+            }
         }
-        EV << toString() <<endl;
+        //EV << toString() <<endl;
         EV << "-----------------" << endl;
+        EV << "Rejected Flows::" << endl;
+        for(auto it : dropedFlows){
+            EV << "Flow : " << it.first <<"\tTime: "<< it.second.str()<<endl;
+        }
     }
 }
 

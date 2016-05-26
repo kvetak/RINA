@@ -35,14 +35,14 @@ struct cEntry {
     string QoS;
     simtime_t t;
     string dst;
-    int DstCepId;
+    int SrcCepId;
     cEntry(){
         p = nullptr;
         reqBW = 0;
         t = 0;
         QoS = "null";
         dst = "null";
-        DstCepId = 0;
+        SrcCepId = 0;
     }
 };
 
@@ -55,6 +55,7 @@ struct UsedBW {
 
 typedef map<string, UsedBW> BWport; //map<QoSid, UsedBW>;
 typedef map<RMTPort *, BWport> BWinfo; //map<port, BWport>;
+
 
 struct BWcontrol {
     BWinfo BW;
@@ -148,12 +149,13 @@ public:
     void addReplace(const string &addr, vector<entryT> ports);
 
 protected:
-    map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(dstcepid), entry>>
+    map<string, map<int, cEntry>> cache; //map<dst, map<flowidentifier(SrcCepId), entry>>
     BWcontrol BWControl;
     double cleanCache_t;
     orderedList orderedCache;
 
     map<string, vector<entryT> > table;
+    map<int, simtime_t> dropedFlows; //map<flowId, time>
 
     void onMainPolicyInit();
     void onSetPort(RMTPort * p, const int bw);
