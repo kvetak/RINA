@@ -33,7 +33,7 @@ RIBdListeners::~RIBdListeners() {
 }
 
 void LisRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "ReceiveData initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
@@ -158,7 +158,7 @@ void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 //}
 
 void LisRIBDCongesNotif::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "LisRIBDCongesNotif initiated by " << src->getFullPath()
        << " and processed by " << ribd->getFullPath() << endl;
 

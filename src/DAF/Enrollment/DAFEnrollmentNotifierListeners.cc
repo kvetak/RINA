@@ -24,7 +24,7 @@ DAFEnrollmentNotifierListeners::~DAFEnrollmentNotifierListeners() {
 }
 
 void LisDAFEnrollmentNotifierRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
@@ -38,7 +38,7 @@ void LisDAFEnrollmentNotifierRcvCACE::receiveSignal(cComponent* src, simsignal_t
 }
 
 void LisDAFEnrollmentNotifierRcvEnrollCACE::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "Send CACE from Enrollment" << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
     if (cimsg && enb->getFlow()){
@@ -51,7 +51,7 @@ void LisDAFEnrollmentNotifierRcvEnrollCACE::receiveSignal(cComponent* src, simsi
 }
 
 void LisDAFEnrollmentNotifierStaEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StartEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
@@ -66,7 +66,7 @@ void LisDAFEnrollmentNotifierStaEnrolReq::receiveSignal(cComponent* src, simsign
 }
 
 void LisDAFEnrollmentNotifierStaEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StartEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
@@ -81,7 +81,7 @@ void LisDAFEnrollmentNotifierStaEnrolRes::receiveSignal(cComponent* src, simsign
 }
 
 void LisDAFEnrollmentNotifierStoEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StopEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
@@ -96,7 +96,7 @@ void LisDAFEnrollmentNotifierStoEnrolReq::receiveSignal(cComponent* src, simsign
 }
 
 void LisDAFEnrollmentNotifierStoEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StopEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFEnrollmentObj* enroll = dynamic_cast<DAFEnrollmentObj*>(obj);
@@ -111,7 +111,7 @@ void LisDAFEnrollmentNotifierStoEnrolRes::receiveSignal(cComponent* src, simsign
 }
 
 void LisDAFEnrollmentNotifierStaOperReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StartOperationRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);
@@ -126,7 +126,7 @@ void LisDAFEnrollmentNotifierStaOperReq::receiveSignal(cComponent* src, simsigna
 }
 
 void LisDAFEnrollmentNotifierStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "StartOperationResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     DAFOperationObj* oper = dynamic_cast<DAFOperationObj*>(obj);

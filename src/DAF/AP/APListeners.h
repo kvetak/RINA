@@ -33,7 +33,7 @@ class APListeners : public cListener {
     APListeners(AP* nap);
     virtual ~APListeners();
 
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b, cObject *detail) {
         EV << "Signal to AP initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -43,13 +43,13 @@ class APListeners : public cListener {
 class LisAPAllReqFromFai : public APListeners {
   public:
     LisAPAllReqFromFai(AP* nap) : APListeners(nap){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEAPAPI : public APListeners {
   public:
     LisAEAPAPI(AP* nap) : APListeners(nap){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 #endif /* APLISTENERS_H_ */

@@ -26,8 +26,8 @@ simple RMTPort
 {
     parameters:
     	@display("i=block/square;is=s");
-    	@signal[RMT-PortReadyToServe](type=cObject?); 
-    	@signal[RMT-PortReadyForRead](type=cObject?);
+    	@signal[RMT-PortReadyToServe]; 
+    	@signal[RMT-PortReadyForRead];
     	@signal[RMTPort_PassUp](type=bool);
         @signal[RMTPort_PassDown](type=bool);
         @statistic[rmtport-up](title="msg passed up"; source=count(RMTPort_PassUp); record=last;);

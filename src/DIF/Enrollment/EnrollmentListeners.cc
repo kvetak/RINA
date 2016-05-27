@@ -39,7 +39,7 @@ EnrollmentListeners::~EnrollmentListeners() {
 }
 
 void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "AllocationResponsePositive initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
     /*Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
@@ -63,7 +63,7 @@ void LisEnrollmentAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     EV << "GetFlowFromFaiCreResPosi initiated by " << src->getFullPath() << " and processed by " << enrollment->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow){
@@ -77,7 +77,7 @@ void LisEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, simsi
 }
 
 void LisEnrollmentStartEnrollReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStartEnrollmentRequest(msg);
@@ -86,7 +86,7 @@ void LisEnrollmentStartEnrollReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentStartEnrollRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStartEnrollmentResponse(msg);
@@ -95,7 +95,7 @@ void LisEnrollmentStartEnrollRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentStopEnrollReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStopEnrollmentRequest(msg);
@@ -104,7 +104,7 @@ void LisEnrollmentStopEnrollReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentStopEnrollRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStopEnrollmentResponse(msg);
@@ -113,7 +113,7 @@ void LisEnrollmentStopEnrollRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentStopOperationReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStartOperationRequest(msg);
@@ -122,7 +122,7 @@ void LisEnrollmentStopOperationReq::receiveSignal(cComponent* src, simsignal_t i
 }
 
 void LisEnrollmentStartOperationRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveStartOperationResponse(msg);
@@ -131,7 +131,7 @@ void LisEnrollmentStartOperationRes::receiveSignal(cComponent* src, simsignal_t 
 }
 
 void LisEnrollmentConResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receivePositiveConnectResponse(msg);
@@ -140,7 +140,7 @@ void LisEnrollmentConResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentConResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveNegativeConnectResponse(msg);
@@ -149,7 +149,7 @@ void LisEnrollmentConResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisEnrollmentConReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
         enrollment->receiveConnectRequest(msg);

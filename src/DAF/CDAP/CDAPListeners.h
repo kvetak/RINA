@@ -34,7 +34,7 @@ class CDAPListeners : public cListener {
     CDAPListeners(CDAP* ncdap);
     virtual ~CDAPListeners();
 
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b, cObject *detail) {
            EV << "Signal to CDAP initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -44,7 +44,7 @@ class CDAPListeners : public cListener {
 class LisCDAPSendData : public CDAPListeners {
   public:
     LisCDAPSendData(CDAP* ncdap): CDAPListeners(ncdap){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 #endif /* CDAPLISTENERS_H_ */

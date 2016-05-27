@@ -44,7 +44,7 @@ EFCPListeners::~EFCPListeners()
 
 }
 
-void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
 
   CongestionDescriptor* cd = (CongestionDescriptor*) obj;
@@ -58,7 +58,7 @@ void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObjec
 }
 
 
-void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
 
   QueueInfo* qi = (QueueInfo*) obj;
@@ -73,7 +73,7 @@ void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cOb
 }
 
 
-void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
 
   QueueInfo* qi = (QueueInfo*) obj;

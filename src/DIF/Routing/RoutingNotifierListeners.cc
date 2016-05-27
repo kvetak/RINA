@@ -26,7 +26,7 @@ RoutingNotifierListeners::~RoutingNotifierListeners()
 }
 
 void LisRIBDRoutingUpdate::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj)
+        cObject* obj, cObject *detail)
 {
     EV << "LisRIBDRoutingUpdate initiated by " << src->getFullPath()
             << " and processed by " << rnb->getFullPath() << endl;

@@ -32,7 +32,7 @@ class AEMgmtListeners : public cListener {
   public:
     AEMgmtListeners(AEMgmtBase* nmgmt);
     virtual ~AEMgmtListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail) {
         EV << "Signal to AEMgmt initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -42,7 +42,7 @@ class AEMgmtListeners : public cListener {
 class LisAEMgmtRcvData : public AEMgmtListeners {
   public:
     LisAEMgmtRcvData(AEMgmtBase* naemgmt) : AEMgmtListeners(naemgmt) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 #endif /* AEMgmtLISTENERS_H_ */

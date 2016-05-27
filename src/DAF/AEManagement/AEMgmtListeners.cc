@@ -34,7 +34,7 @@ AEMgmtListeners::~AEMgmtListeners() {
 
 
 void LisAEMgmtRcvData::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "ReceiveData initiated by " << src->getFullPath()
        << " and processed by " << aemgmt->getFullPath() << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);

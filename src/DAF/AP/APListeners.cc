@@ -30,7 +30,7 @@ APListeners::~APListeners() {
 }
 
 void LisAPAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
        << " and processed by " << ap->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -45,7 +45,7 @@ void LisAPAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEAPAPI::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "APWriteR initiated by " << src->getFullPath()
        << " and processed by " << ap->getFullPath() << endl;
     APIResult* result = dynamic_cast<APIResult*>(obj);

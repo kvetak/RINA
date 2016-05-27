@@ -31,7 +31,7 @@ class AuthListeners : public cListener {
 public:
     AuthListeners(Auth* nauth);
     virtual ~AuthListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject *detail) {
                    EV << "Signal to CACE initiated by " << src->getFullPath() << endl;
             }
 protected:

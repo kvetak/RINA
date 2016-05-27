@@ -32,7 +32,7 @@ class DAFRIBdListeners : public cListener {
 public:
     DAFRIBdListeners(DAFRIBdBase* nribd);
     virtual ~DAFRIBdListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail) {
         EV << "Signal to DAFRIBd initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -42,7 +42,7 @@ public:
 class LisDAFRIBDRcvData : public DAFRIBdListeners {
   public:
     LisDAFRIBDRcvData(DAFRIBdBase* nribd) : DAFRIBdListeners(nribd) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 #endif /* DAFRIBDLISTENERS_H_ */

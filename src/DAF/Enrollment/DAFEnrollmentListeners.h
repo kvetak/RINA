@@ -39,7 +39,7 @@ class DAFEnrollmentListeners : public cListener {
 public:
     DAFEnrollmentListeners(DAFEnrollment* nenrollment);
     virtual ~DAFEnrollmentListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail) {
                EV << "Signal to DAFEnrollment initiated by " << src->getFullPath() << endl;
         }
 protected:
@@ -52,20 +52,20 @@ protected:
 class LisDAFEnrollmentAllResPosi : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentAllResPosi(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 
 class LisDAFEnrollmentAllReqFromFai : public DAFEnrollmentListeners {
   public:
     LisDAFEnrollmentAllReqFromFai(DAFEnrollment* nenrollment) : DAFEnrollmentListeners(nenrollment){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentAllResNega : public DAFEnrollmentListeners {
   public:
     LisDAFEnrollmentAllResNega(DAFEnrollment* nenrollment) : DAFEnrollmentListeners(nenrollment){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 
@@ -76,68 +76,68 @@ class LisDAFEnrollmentAllResNega : public DAFEnrollmentListeners {
 class LisDAFEnrollmentGetFlowFromFaiCreResPosi : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentGetFlowFromFaiCreResPosi(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 
 class LisDAFEnrollmentStartEnrollReq : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStartEnrollReq(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentStartEnrollRes : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStartEnrollRes(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentStopEnrollReq : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStopEnrollReq(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentStopEnrollRes : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStopEnrollRes(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentStopOperationReq : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStopOperationReq(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentStartOperationRes : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentStartOperationRes(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentConResPosi : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentConResPosi(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentConResNega : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentConResNega(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentConReq : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentConReq(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentRequest : public DAFEnrollmentListeners {
 public:
     LisDAFEnrollmentRequest(DAFEnrollment* nenrollment): DAFEnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 

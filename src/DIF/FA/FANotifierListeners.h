@@ -25,7 +25,7 @@ class FANotifierListeners : public cListener {
   public:
     FANotifierListeners(FANotifierBase* nfanb);
     virtual ~FANotifierListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail) {
             EV << "Signal to FANotifierBase initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -36,49 +36,49 @@ class FANotifierListeners : public cListener {
 class LisRIBDCreReq : public FANotifierListeners {
   public:
     LisRIBDCreReq(FANotifierBase* nfanb) : FANotifierListeners(nfanb){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDDelReq : public FANotifierListeners {
   public:
     LisRIBDDelReq(FANotifierBase* nfanb) : FANotifierListeners(nfanb){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDDelRes : public FANotifierListeners {
   public:
     LisRIBDDelRes(FANotifierBase* nfanb) : FANotifierListeners(nfanb){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDAllReqFromFai : public FANotifierListeners {
   public:
     LisRIBDAllReqFromFai(FANotifierBase* nfanb) : FANotifierListeners(nfanb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDCreResNega: public FANotifierListeners {
   public:
     LisRIBDCreResNega(FANotifierBase* nfanb) : FANotifierListeners(nfanb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDCreResPosi: public FANotifierListeners {
   public:
     LisRIBDCreResPosi(FANotifierBase* nfanb) : FANotifierListeners(nfanb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDCreFloNega: public FANotifierListeners {
   public:
     LisRIBDCreFloNega(FANotifierBase* nfanb) : FANotifierListeners(nfanb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDCreFloPosi: public FANotifierListeners {
   public:
     LisRIBDCreFloPosi(FANotifierBase* nfanb) : FANotifierListeners(nfanb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 

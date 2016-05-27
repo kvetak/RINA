@@ -31,33 +31,33 @@ RMTListeners::~RMTListeners()
     rmt = nullptr;
 }
 
-void LisRMTQueuePDUPreRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUPreRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->preQueueArrival(obj);
 }
 
-void LisRMTQueuePDUPostRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUPostRcvd::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->postQueueArrival(obj);
 }
 
-void LisRMTQueuePDUPreSend::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUPreSend::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->preQueueDeparture(obj);
 }
 
-void LisRMTQueuePDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTQueuePDUSent::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->postQueueDeparture(obj);
 }
 
-void LisRMTPortReadyToServe::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTPortReadyToServe::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->writeToPort(obj);
 }
 
 
-void LisRMTPortReadyForRead::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTPortReadyForRead::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject* detail)
 {
     rmt->readFromPort(obj);
 }

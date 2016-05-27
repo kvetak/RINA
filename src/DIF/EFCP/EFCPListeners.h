@@ -51,19 +51,19 @@ class EFCPListeners : public cListener
 class LisEFCPCongestFromRA : public EFCPListeners {
   public:
     LisEFCPCongestFromRA(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail);
 };
 
 class LisEFCPQueueInfoFromRMT : public EFCPListeners {
   public:
     LisEFCPQueueInfoFromRMT(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail);
 };
 
 class LisEFCPQueueInfoFromAE : public EFCPListeners {
   public:
     LisEFCPQueueInfoFromAE(EFCPTable* efcpTable): EFCPListeners(efcpTable){};
-    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail);
 };
 
 #endif /* EFCPLISTENERS_H_ */

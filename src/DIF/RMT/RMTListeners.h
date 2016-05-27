@@ -31,7 +31,7 @@ class RMTListeners : public cListener
   public:
     RMTListeners(RMTBase* rmt);
     virtual ~RMTListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj)
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail)
     {
         EV << "Signal to RMT initiated by " << src->getFullPath() << endl;
     }
@@ -43,42 +43,42 @@ class LisRMTQueuePDUPreRcvd : public RMTListeners
 {
   public:
     LisRMTQueuePDUPreRcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 class LisRMTQueuePDUPostRcvd : public RMTListeners
 {
   public:
     LisRMTQueuePDUPostRcvd(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 class LisRMTQueuePDUPreSend : public RMTListeners
 {
   public:
     LisRMTQueuePDUPreSend(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 class LisRMTQueuePDUSent : public RMTListeners
 {
   public:
     LisRMTQueuePDUSent(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 class LisRMTPortReadyToServe : public RMTListeners
 {
   public:
     LisRMTPortReadyToServe(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 class LisRMTPortReadyForRead : public RMTListeners
 {
   public:
     LisRMTPortReadyForRead(RMTBase* rmt) : RMTListeners(rmt){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject* obj, cObject* detail);
 };
 
 
