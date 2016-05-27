@@ -66,7 +66,7 @@ void RxTimerExpiryPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpS
 
     if (timer->getExpiryCount() == dtcpState->getDataReXmitMax() + 1)
     {
-      dtcpState->deleteRxTimer(timer->getPdu()->getSeqNum());
+      dtcp->deleteRxTimer(timer->getPdu()->getSeqNum());
       // Notify User Flow that we were unable to maintain the QoS for this connection
       dtp->notifyAboutUnableMaintain();
   //    throw cRuntimeError("Unable to maintain the QoS for this connection");

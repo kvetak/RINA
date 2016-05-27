@@ -104,8 +104,9 @@ class DTCP: public cSimpleModule {
     void startReliableCPDUTimer();
     void stopReliableCPDUTimer();
 
-public:
 
+public:
+    void deleteRxTimer(unsigned int seqNum);
     DTCP();
     virtual ~DTCP();
 

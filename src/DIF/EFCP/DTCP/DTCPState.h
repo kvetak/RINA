@@ -163,7 +163,7 @@ class DTCPState : public cSimpleModule
     void setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree);
 
 
-    void deleteRxTimer(unsigned int seqNum);
+//    void deleteRxTimer(unsigned int seqNum);
     unsigned int getDataReXmitMax() const;
     void setDataReXmitMax(unsigned int dataReXmitMax);
 

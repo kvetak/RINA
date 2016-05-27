@@ -62,7 +62,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
     Enter_Method("SenderAckPolicyLG");
 
     //  defaultAction(dtpState, dtcpState);
-//    DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
+    DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
     /* Default */
     unsigned int endSeqNum = ((NAckPDU*)dtpState->getCurrentPdu())->getAckNackSeqNum();
     unsigned int startSeqNum = endSeqNum;
@@ -80,7 +80,7 @@ bool SenderAckPolicyLG::run(DTPState* dtpState, DTCPState* dtcpState)
 
         if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum)
         {
-            dtcpState->deleteRxTimer(seqNum);
+            dtcp->deleteRxTimer(seqNum);
             count++;
 
             continue;
