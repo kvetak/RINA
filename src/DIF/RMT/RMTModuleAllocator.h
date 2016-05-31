@@ -30,6 +30,8 @@
 #include "RMTQueue.h"
 #include "RMTPort.h"
 #include "RMTQMonitorBase.h"
+#include "IntSDUProtection.h"
+
 
 class RMTQMonitorBase; /* FIXME: circular dependency */
 

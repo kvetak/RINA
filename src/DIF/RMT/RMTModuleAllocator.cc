@@ -34,7 +34,7 @@ void RMTModuleAllocator::initialize()
     // TODO: purge this crap and think of something smarter
     // port module coordinates
     portXCoord = 55;
-    portYCoord = 180;
+    portYCoord = 150;
 
     WATCH(portCount);
 }
@@ -133,6 +133,21 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
     {
         portDisp.setTagArg("i2", 0, "status/execute");
     }
+
+    // initialize SDU protection
+    std::ostringstream sdupName;
+    sdupName << "sdup" << portCount;
+    moduleType = cModuleType::get("rina.policies.DIF.SDUProtection.FixedDelay.FixedDelay");
+    cModule* sdup = check_and_cast<IntSDUProtection*>(
+            moduleType->createScheduleInit(portName.str().c_str(), portWrapper));
+
+    // modify the position a little
+//    cDisplayString& portDisp2 = sdup->getDisplayString();
+//    portDisp2.setTagArg("p", 0, portXCoord);
+//    portDisp2.setTagArg("p", 1, portYCoord + 80);
+
+    interconnectModules(port, sdup, std::string("protect"), std::string("protect"));
+    interconnectModules(port, sdup, std::string("unprotect"), std::string("unprotect"));
 
     return port;
 }
