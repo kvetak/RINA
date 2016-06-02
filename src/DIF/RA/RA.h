@@ -109,7 +109,6 @@ class RA : public RABase
     void setRMTMode();
     void bindMediumToRMT();
     RMTPort* bindNM1FlowToRMT(cModule* ipc, FABase* fab, Flow* flow);
-    void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
     std::string normalizePortID(std::string ipcName, int flowPortID);
 
     simsignal_t sigRACreFloPosi;

@@ -183,6 +183,10 @@ class RMTPort : public cSimpleModule
     std::set<cGate*> northInputGates;
     cGate* southInputGate;
     cGate* southOutputGate;
+    cGate* protectIn;
+    cGate* protectOut;
+    cGate* unprotectIn;
+    cGate* unprotectOut;
     cChannel* outputChannel;
 
     RMTQueues outputQueues;
