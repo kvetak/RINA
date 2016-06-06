@@ -272,6 +272,28 @@ struct AckInfo{
     }
 };
 
+struct NAckInfo{
+    int flowID;
+
+    NAckInfo(){
+        flowID = -1;
+    }
+};
+
+struct FreeInfo{
+    string nodeIdOrg;
+    string nodeIdDst;
+    string qos;
+    int flowId;
+
+    FreeInfo(){
+            nodeIdOrg ="";
+            nodeIdDst = "";
+            qos = "";
+            flowId = -1;
+        }
+};
+
 struct MonConfigInfo{
     double SchedulerMonFrec;
     double ForwardingMonFrec;
@@ -307,8 +329,10 @@ public:
     Rsv_ReqInfo rsv_ReqInfo;
     RsvInfo rsvInfo;
     AckInfo ackInfo;
+    NAckInfo nackInfo;
     MonConfigInfo monConfigInfo;
     MonitorParamInfo monitorParamInfo;
+    FreeInfo freeInfo;
 };
 
 }

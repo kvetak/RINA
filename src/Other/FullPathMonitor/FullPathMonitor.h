@@ -43,6 +43,7 @@ namespace FullPathMonitor {
         map<string, RegisterInfo> nodeDataBase;
         vector<PathInfo> posiblePaths;
         map<tuple<string, string, int>, PathInfo> cache; //map<tuple<org,dst,flowid>, pathInfo>
+        map<int, simtime_t> dropedFlows; //map<flowId, time>
 
     };
 }

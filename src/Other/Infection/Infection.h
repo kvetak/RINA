@@ -20,12 +20,13 @@ namespace Infection {
     class Flow {
         public :
 
-            Flow(double startTime, string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec, int DstCepId);
+            Flow(double startTime, double endTime, string DIF, string SRC, string DST, string QoS, double rate, int avgPDU, int varPDU, int nParts, int nRec, int DstCepId);
 
 
             pduT getPDU(bool record);
             string QoS;
             double startTime;
+            double endTime;
 
         private :
             ConnectionId connID;

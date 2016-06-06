@@ -3,6 +3,7 @@
 #include "DataTransferPDU.h"
 #include "InfectionSignals.h"
 #include "MultipathStructs.h"
+#include <math.h>
 
 using namespace std;
 using namespace MultipathStructs;
@@ -15,6 +16,7 @@ namespace Infection {
 
     Flow::Flow(
             double _startTime,
+            double _endTime,
             string DIF,
             string SRC,
             string DST,
@@ -26,6 +28,7 @@ namespace Infection {
             int nRec,
             int SrcCepId) :
         startTime (_startTime),
+        endTime (_endTime),
         QoS (_QoS),
         srcAddr(Address(SRC.c_str(), DIF.c_str())),
         dstAddr(Address(DST.c_str(), DIF.c_str())),
@@ -149,10 +152,13 @@ namespace Infection {
 
             int N = 1, rec = 1, pduS = 1024, pduSv = 0, SrcCepId = 99999;
 
-            double rate = 1.0, start = 0.0;
+            double rate = 1.0, start = 0.0, end = INFINITY;
 
             if (n->getAttribute("startTime") && atof(n->getAttribute("startTime")) > 0) {
                 start = atof(n->getAttribute("startTime")); }
+
+            if (n->getAttribute("endTime") && atof(n->getAttribute("endTime")) > 0) {
+                end = atof(n->getAttribute("endTime")); }
 
             if (n->getAttribute("N") && atoi(n->getAttribute("N")) > 0) {
                 N = atoi(n->getAttribute("N")); }
@@ -176,8 +182,10 @@ namespace Infection {
                 rate = atof(n->getAttribute("rate")); }
             if(rate <= 0) { continue; }
 
-
-            Flow * f = new Flow(start, DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, SrcCepId);
+            if (end<start){
+                end=start;
+            }
+            Flow * f = new Flow(start, end, DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, SrcCepId);
 
             flows.push_back(f);
             scheduleAt(iniT + uniform(0, pduS/unitRate), new commMsg(f));
@@ -193,15 +201,19 @@ namespace Infection {
             MultipathStructs::MonitorMsg * monMsg = dynamic_cast<MultipathStructs::MonitorMsg *>(msg);
             if(monMsg->type.compare("ACK")==0){
                 scheduleAt(simTime(),msgDataBase[monMsg->ackInfo.flowID]);
+                msgDataBase.erase(monMsg->ackInfo.flowID);
             }
+            else if(monMsg->type.compare("NACK")==0){
+                msgDataBase.erase(monMsg->ackInfo.flowID);
+            }
+
         }
         else{
             if(commMsg * m = dynamic_cast<commMsg *>(msg)) {
                 simtime_t now = simTime();
                 if(now >= finTime) { delete msg; return; }
 
-                if (now >= (SimTime(m->f->startTime)))
-                {
+                if ((now >= (SimTime(m->f->startTime)))&(now < (SimTime(m->f->endTime)))){
                     bool record = now >= markIniT && now < markFinT;
 
                     pduT k = m->f->getPDU(record);
@@ -228,8 +240,20 @@ namespace Infection {
                         );}
                     }
                 }
-                else
-                {
+                else if (now >= (SimTime(m->f->endTime))){
+                    bool record = now >= markIniT && now < markFinT;
+                    pduT k = m->f->getPDU(record);
+                    MonitorMsg* Monmsg = new MonitorMsg();
+                    Monmsg->type = "Free";
+                    Monmsg->freeInfo.flowId = k.pdu->getConnId().getSrcCepId();
+                    Monmsg->freeInfo.nodeIdDst = k.pdu->getDstAddr().getIpcAddress().getName();
+                    Monmsg->freeInfo.nodeIdOrg = k.pdu->getSrcAddr().getIpcAddress().getName();
+                    Monmsg->freeInfo.qos = k.pdu->getConnId().getQoSId();
+                    cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+                    take(Monmsg);
+                    sendDirect(Monmsg, targetModule, "radioIn");
+                }
+                else{
                     scheduleAt(SimTime(m->f->startTime), msg);
                 }
 

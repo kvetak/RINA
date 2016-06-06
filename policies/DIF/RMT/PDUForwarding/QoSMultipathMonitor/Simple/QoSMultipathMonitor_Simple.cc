@@ -249,33 +249,7 @@ void QoSMultipathMonitor_Simple::removeFlow(cEntry entry){
 }
 
 void QoSMultipathMonitor_Simple::finish(){
-    if(par("printAtEnd").boolValue()){
-        EV << "-----------------" << endl;
-        EV << "Forwarding table::" << endl;
-        EV << toString() <<endl;
-        EV << "-----------------" << endl;
-        EV << "Cache table::" << endl;
-        map<RMTPort *, int> counter;
-        for(auto it : Port_avBW){
-            counter[it.first]=0;
-        }
-        for (auto it : cache){
-        EV << it.first << endl;
-            for(auto it2 : it.second){
-                EV << "Flujo : " << it2.first << endl;
-                EV << "Puerto: " << it2.second.p->getFullPath() << endl;
-                EV << "QoS: " << it2.second.QoS << endl;
-                EV << "BW    : " << it2.second.reqBW << endl <<endl;
-                counter[it2.second.p] = counter[it2.second.p]+1;
-            }
-            EV << "-----------------" << endl;
-        }
-        for(auto it3 : Port_avBW){
-            EV  << it3.first->getFullPath() << " : " << counter[it3.first] << endl;
-        }
-        EV << toString() <<endl;
-        EV << "-----------------" << endl;
-    }
+
 }
 
 Routingtable* QoSMultipathMonitor_Simple::getRoutingTable(){

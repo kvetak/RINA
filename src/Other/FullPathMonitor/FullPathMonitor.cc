@@ -38,68 +38,83 @@ namespace FullPathMonitor {
 
         if(path->steps.size()==0){
             posiblePaths.push_back(PathInfo());
+            bool foundedPath = false;
             recursivePathFinder(nodeIdOrg, nodeIdDst, qos, flowId);
             vector<double> auxweightQoS;
             vector<double> auxweightTotal;
             for(auto it : posiblePaths){
                 auxweightTotal.push_back(1);
                 auxweightQoS.push_back(1);
-            }
-            for(unsigned i=0; i < posiblePaths.begin()->steps.size(); i++){
-                vector<RMTPort *> steps;
-                for(auto it : posiblePaths){
-                    steps.push_back(it.steps[i].second.second);
+                if (it.ok==true){
+                    foundedPath=true;
                 }
-                for(unsigned j=0; j < posiblePaths.size(); j++){
-                    if(numberOfAppearances(steps,posiblePaths[j].steps[i].second.second)==1){
-                        if(auxweightTotal[j]>posiblePaths[j].steps[i].first.first){
-                            auxweightTotal[j]=posiblePaths[j].steps[i].first.first;
-                        }
-                        if(auxweightQoS[j]>posiblePaths[j].steps[i].first.second){
-                            auxweightQoS[j]=posiblePaths[j].steps[i].first.second;
+            }
+            if (foundedPath==true){
+                for(unsigned i=0; i < posiblePaths.begin()->steps.size(); i++){
+                    vector<RMTPort *> steps;
+                    for(auto it : posiblePaths){
+                        steps.push_back(it.steps[i].second.second);
+                    }
+                    for(unsigned j=0; j < posiblePaths.size(); j++){
+                        if(numberOfAppearances(steps,posiblePaths[j].steps[i].second.second)==1){
+                            if(auxweightTotal[j]>posiblePaths[j].steps[i].first.first){
+                                auxweightTotal[j]=posiblePaths[j].steps[i].first.first;
+                            }
+                            if(auxweightQoS[j]>posiblePaths[j].steps[i].first.second){
+                                auxweightQoS[j]=posiblePaths[j].steps[i].first.second;
+                            }
                         }
                     }
                 }
+
+                vector<double> finalweight;
+                double sum =0;
+                for(unsigned i=0; i < posiblePaths.size(); i++){
+                    finalweight.push_back(auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+                    sum = sum + (auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+                }
+                for (auto it : finalweight){
+                    it=it/sum;
+                }
+                auto auxPath = posiblePaths[WeightedRandom(finalweight)];
+                path->ok=auxPath.ok;
+                path->steps=auxPath.steps;
+                path->qos=qos;
             }
 
-            vector<double> finalweight;
-            double sum =0;
-            for(unsigned i=0; i < posiblePaths.size(); i++){
-                finalweight.push_back(auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
-                sum = sum + (auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+            MonitorMsg * ackMsg = new MonitorMsg();
+            ackMsg->setName("MonitorMsg");
+            ackMsg->type="ACK";
+            ackMsg->ackInfo.flowID=flowId;
+            take(ackMsg);
+            sendDirect(ackMsg, requestModule, "radioIn");
+
+            for(auto it : path->steps){
+                BWControl.addBW(it.second.second, qos, QoS_BWreq[qos]);
+                MonitorMsg * monMsg = new MonitorMsg();
+                cEntry entry;
+                entry.QoS=qos;
+                entry.SrcCepId=flowId;
+                entry.dst=nodeIdDst;
+                entry.p=it.second.second;
+                entry.reqBW=QoS_BWreq[qos];
+                entry.t=simTime();
+                monMsg->setName("MonitorMsg");
+                monMsg->type="RSV";
+                monMsg->rsvInfo.entry=entry;
+                take(monMsg);
+                cModule *targetModule = getModuleByPath(nodeDataBase[it.second.first].nodePath.c_str());
+                sendDirect(monMsg, targetModule, "radioIn");
             }
-            for (auto it : finalweight){
-                it=it/sum;
-            }
-            auto auxPath = posiblePaths[WeightedRandom(finalweight)];
-            path->ok=auxPath.ok;
-            path->steps=auxPath.steps;
-            path->qos=qos;
         }
-
-        MonitorMsg * ackMsg = new MonitorMsg();
-        ackMsg->setName("MonitorMsg");
-        ackMsg->type="ACK";
-        ackMsg->ackInfo.flowID=flowId;
-        take(ackMsg);
-        sendDirect(ackMsg, requestModule, "radioIn");
-
-        for(auto it : path->steps){
-            BWControl.addBW(it.second.second, qos, QoS_BWreq[qos]);
-            MonitorMsg * monMsg = new MonitorMsg();
-            cEntry entry;
-            entry.QoS=qos;
-            entry.SrcCepId=flowId;
-            entry.dst=nodeIdDst;
-            entry.p=it.second.second;
-            entry.reqBW=QoS_BWreq[qos];
-            entry.t=simTime();
-            monMsg->setName("MonitorMsg");
-            monMsg->type="RSV";
-            monMsg->rsvInfo.entry=entry;
-            take(monMsg);
-            cModule *targetModule = getModuleByPath(nodeDataBase[it.second.first].nodePath.c_str());
-            sendDirect(monMsg, targetModule, "radioIn");
+        else{
+            MonitorMsg * nackMsg = new MonitorMsg();
+            nackMsg->setName("MonitorMsg");
+            nackMsg->type="NACK";
+            nackMsg->nackInfo.flowID=flowId;
+            take(nackMsg);
+            sendDirect(nackMsg, requestModule, "radioIn");
+            dropedFlows[flowId]=simTime();
         }
         posiblePaths.clear();
 
@@ -266,6 +281,9 @@ namespace FullPathMonitor {
         else if(monMsg->type.compare("Ack")==0){
             //Codigo
         }
+        else if(monMsg->type.compare("Free")==0){
+            deletePath(monMsg->freeInfo.nodeIdOrg, monMsg->freeInfo.nodeIdDst, monMsg->freeInfo.flowId);
+        }
         else{
             EV << "Incorrect Message" << endl;
         }
@@ -279,6 +297,28 @@ namespace FullPathMonitor {
 
     }
     void FullPathMonitor::finish(){
+
+        map<RMTPort *, long> portUsage;
+        for(auto it : cache){
+            for(auto it2 : it.second.steps){
+                if(portUsage.count(it2.second.second)>0){
+                    portUsage[it2.second.second] = portUsage[it2.second.second] + QoS_BWreq[it.second.qos];
+                }
+                else{
+                    portUsage[it2.second.second] = QoS_BWreq[it.second.qos];
+                }
+            }
+        }
+        EV << "-----------------" << endl;
+        EV << "Cache table::" << endl;
+        for(auto it : portUsage){
+            EV << it.first->getFullPath()<<" : "<<it.second<<" bps"<<endl;
+        }
+        EV << "Rejected Flows::" << endl;
+        for(auto it : dropedFlows){
+            EV << "Flow : " << it.first <<"\tTime: "<< it.second.str()<<endl;
+        }
+
 
     }
 }
