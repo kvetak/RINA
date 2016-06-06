@@ -2,6 +2,7 @@
 #include <omnetpp.h>
 #include <iostream>
 #include <fstream>
+#include <math.h>
 
 #include "MultipathStructs.h"
 
@@ -23,9 +24,11 @@ namespace FullPathMonitor {
             //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
             bool ok;
             string qos;
+            int freeBW;
             PathInfo(){
                 ok = false;
                 qos="";
+                freeBW=INFINITY;
             }
         };
         double QoSFactor;

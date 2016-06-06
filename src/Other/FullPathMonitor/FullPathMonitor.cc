@@ -108,6 +108,8 @@ namespace FullPathMonitor {
             }
         }
         else{
+            //Try to reroute
+
             MonitorMsg * nackMsg = new MonitorMsg();
             nackMsg->setName("MonitorMsg");
             nackMsg->type="NACK";
@@ -153,9 +155,10 @@ namespace FullPathMonitor {
                         double QoSocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo[it.p].qosUsage[qos])) /(double)it.BW;
                         double Totalocupation = (double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo[it.p].totalUsage)) /(double)it.BW;
                         posiblePaths.back().steps.push_back(make_pair(make_pair(Totalocupation,QoSocupation),make_pair(nodeIdOrg, it.p)));
+                        if(it.BW-BWControl.getTotalBW(it.p)<posiblePaths.back().freeBW){
+                            posiblePaths.back().freeBW=it.BW-BWControl.getTotalBW(it.p);
+                        }
                         //posiblePaths.back().weight = posiblePaths.back().weight + ((double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW);
-
-
 
                         recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId);
                     }
