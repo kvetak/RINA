@@ -19,24 +19,69 @@ namespace FullPathMonitor {
         void finish();
 
     private:
-        struct PathInfo{
-            vector< pair<pair<double,double>,pair<string, RMTPort *>>> steps;
-            //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
-            bool ok;
-            string qos;
+
+
+        struct stepInfo{
+            double TotalWeight;
+            double QoSWeight;
+            string nodeID;
+            RMTPort * port;
             int freeBW;
-            PathInfo(){
-                ok = false;
-                qos="";
+            stepInfo(){
+                TotalWeight=0.0;
+                QoSWeight=0.0;
+                nodeID="";
+                port=nullptr;
                 freeBW=INFINITY;
             }
         };
-        double QoSFactor;
+        struct PathInfo{
+            vector<stepInfo> steps;
+            //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
+            bool ok;
+            string qos;
+            int BW;
+            PathInfo(){
+                ok = false;
+                qos="";
+            }
+        };
+
+        struct orderedList{
+            list<PathInfo*> List;
+
+            void addElement (PathInfo* entry){
+                if (List.empty()){
+                    List.push_front(entry);
+                }
+                else{
+                    for(list<PathInfo*>::iterator it=List.begin(); it!=List.end(); it++){
+                        if(entry->BW >= (*it)->BW){
+                            List.insert(it, entry);
+                            break;
+                        }
+                    }
+                    List.push_back(entry);
+                }
+            }
+            void erraseElement (PathInfo* entry){
+                for(list<PathInfo*>::iterator it=List.begin(); it!=List.end(); it++){
+                    if(entry == (*it)){
+                        List.erase(it);
+                    }
+                }
+            }
+        };
+
+
+        double QoSFactor;//Quitar esto de aquí
         double TotalFactor;
+        orderedList orderedCache;
         void registerNode(RegisterInfo info);
         void handleMessage(cMessage * msg);
         void lookPath(string nodeIdOrg, string nodeIdDst, string qos, int flowId, cModule * requestModule);
-        void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId);
+        void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo> &posiblePaths);
+        bool reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId);
         void deletePath(string nodeIdOrg, string nodeIdDst, int flowId);
         unsigned int WeightedRandom(vector<double> &weight);
         unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
@@ -44,7 +89,7 @@ namespace FullPathMonitor {
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;
         map<string, RegisterInfo> nodeDataBase;
-        vector<PathInfo> posiblePaths;
+        //vector<PathInfo> posiblePaths;
         map<tuple<string, string, int>, PathInfo> cache; //map<tuple<org,dst,flowid>, pathInfo>
         map<int, simtime_t> dropedFlows; //map<flowId, time>
 
