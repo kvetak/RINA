@@ -41,11 +41,32 @@ namespace FullPathMonitor {
             bool ok;
             string qos;
             int BW;
+            string src;
+            string dst;
+            int flowID;
             PathInfo(){
                 ok = false;
                 qos="";
+                BW=0;
             }
         };
+
+        struct RerouteInfo{
+            vector<stepInfo> pathOrg;
+            vector<stepInfo> pathDst;
+            //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
+            int flowID;
+            string qos;
+            string src;
+            string dst;
+            RerouteInfo(){
+                flowID = 0;
+                qos="";
+                src="";
+                dst="";
+            }
+        };
+
 
         struct orderedList{
             list<PathInfo*> List;
@@ -74,17 +95,18 @@ namespace FullPathMonitor {
         };
 
 
-        double QoSFactor;//Quitar esto de aquí
+        double QoSFactor;
         double TotalFactor;
         orderedList orderedCache;
         void registerNode(RegisterInfo info);
         void handleMessage(cMessage * msg);
         void lookPath(string nodeIdOrg, string nodeIdDst, string qos, int flowId, cModule * requestModule);
-        void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo> &posiblePaths);
+        void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo> &posiblePaths, BWcontrol BWdata);
         bool reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId);
         void deletePath(string nodeIdOrg, string nodeIdDst, int flowId);
         unsigned int WeightedRandom(vector<double> &weight);
         unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
+        PathInfo selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths);
 
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;

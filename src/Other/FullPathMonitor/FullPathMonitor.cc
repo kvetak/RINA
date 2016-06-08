@@ -39,8 +39,12 @@ namespace FullPathMonitor {
         if(path->steps.size()==0){
             vector<PathInfo> posiblePaths;
             posiblePaths.push_back(PathInfo());
+            posiblePaths.back().BW=QoS_BWreq[qos];
+            posiblePaths.back().src=nodeIdOrg;
+            posiblePaths.back().dst=nodeIdDst;
+            posiblePaths.back().flowID=flowId;
             bool foundedPath = false;
-            recursivePathFinder(nodeIdOrg, nodeIdDst, qos, flowId, posiblePaths);
+            recursivePathFinder(nodeIdOrg, nodeIdDst, qos, flowId, posiblePaths, BWControl);
             vector<double> auxweightQoS;
             vector<double> auxweightTotal;
             for(auto it : posiblePaths){
@@ -82,6 +86,9 @@ namespace FullPathMonitor {
                 path->steps=auxPath.steps;
                 path->qos=qos;
                 path->BW = QoS_BWreq[qos];
+                path->src = nodeIdOrg;
+                path->dst = nodeIdDst;
+                path->flowID = flowId;
                 orderedCache.addElement(path);
 
 
@@ -114,7 +121,7 @@ namespace FullPathMonitor {
                 //Try to reroute
                 vector<PathInfo> reroutePaths;
                 reroutePaths.push_back(PathInfo());
-                recursivePathFinder(nodeIdOrg, nodeIdDst, "rerouteQoS", flowId, reroutePaths);
+                recursivePathFinder(nodeIdOrg, nodeIdDst, "rerouteQoS", flowId, reroutePaths, BWControl);
                 reroute(reroutePaths, nodeIdOrg, nodeIdDst, qos, flowId);
 
                 MonitorMsg * nackMsg = new MonitorMsg();
@@ -138,6 +145,8 @@ namespace FullPathMonitor {
 
     bool FullPathMonitor::reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId){
 
+        BWcontrol BWaux = BWControl;
+        list<RerouteInfo> changeList;
         for(unsigned i=0; i < reroutePaths.begin()->steps.size(); i++){
             bool congestedStep = true;
             int PathmaxBW = 0;
@@ -153,15 +162,14 @@ namespace FullPathMonitor {
                 }
             }
             if (congestedStep == true){//Necesary to reroute flows in the step
+
                 for(auto it : orderedCache.List){
                     if(it->steps[i].port==reroutePaths[PathmaxBW].steps[i].port){//Try to reroute that flow
                         vector<PathInfo> posiblePaths;
                         posiblePaths.push_back(PathInfo());
                         bool foundedPath = false;
 
-                        recursivePathFinder(reroutePaths[PathmaxBW].steps[0].nodeID,
-                                reroutePaths[PathmaxBW].steps.back().nodeID,
-                                qos, flowId, posiblePaths);
+                        recursivePathFinder(it->src, it->dst, it->qos, flowId, posiblePaths, BWaux);
                         for(unsigned int k; k < posiblePaths.size(); k++){
                             if(posiblePaths[k].steps[i].port==reroutePaths[PathmaxBW].steps[i].port)
                             {
@@ -174,17 +182,93 @@ namespace FullPathMonitor {
                             }
                         }
                         if (foundedPath == true){//posible to reroute
-
+                            RerouteInfo newchange;
+                            newchange.pathOrg=it->steps;
+                            newchange.pathDst=selectBetterReroute(reroutePaths[PathmaxBW], posiblePaths).steps;
+                            newchange.dst=reroutePaths[PathmaxBW].dst;
+                            newchange.flowID=reroutePaths[PathmaxBW].flowID;
+                            newchange.qos=reroutePaths[PathmaxBW].qos;
+                            newchange.src=reroutePaths[PathmaxBW].src;
+                            changeList.push_back(newchange);
+                            BWaux.removeBW(newchange.pathOrg[i].port, newchange.qos, QoS_BWreq[it->qos]);
+                            BWaux.addBW(newchange.pathDst[i].port, newchange.qos, QoS_BWreq[it->qos]);
+                           // if (( - BWaux.getTotalBW(newchange.pathOrg[i].port)) >= QoS_BWreq[newchange.qos]){
+                            reroutePaths[PathmaxBW].steps[i].freeBW=reroutePaths[PathmaxBW].steps[i].freeBW-QoS_BWreq[it->qos];
+                            if(reroutePaths[PathmaxBW].steps[i].freeBW > QoS_BWreq[qos]){
+                                break;//enought BW
+                            }
                         }
+                    }
+                }
+                if(reroutePaths[PathmaxBW].steps[i].freeBW < QoS_BWreq[qos]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    FullPathMonitor::PathInfo FullPathMonitor::selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths){
+
+        int distance[posiblePaths.size()];
+        for(unsigned int i=0; i<posiblePaths.size(); i++){
+            distance[i]=0;
+        }
+        for(unsigned int i=0; i<posiblePaths.size();i++){
+            for(unsigned int j=0; j<posiblePaths[i].steps.size(); j++){
+                if(posiblePaths[i].steps[j].port != orgPath.steps[j].port){
+                    distance[i] = distance[i] + 1;
+                }
+            }
+        }
+        int min = INFINITY;
+        vector<PathInfo> selectedPaths;
+        for(unsigned int i=0; i<posiblePaths.size(); i++){
+            if(distance[i]<min){
+                selectedPaths.clear();
+                selectedPaths.push_back(posiblePaths[i]);
+            }
+            else if(distance[i]==min){
+                selectedPaths.push_back(posiblePaths[i]);
+            }
+        }
+
+        vector<double> auxweightQoS;
+        vector<double> auxweightTotal;
+        for(auto it : selectedPaths){
+            auxweightTotal.push_back(1);
+            auxweightQoS.push_back(1);
+        }
+
+        for(unsigned i=0; i < selectedPaths.begin()->steps.size(); i++){
+            vector<RMTPort *> steps;
+            for(auto it : selectedPaths){
+                steps.push_back(it.steps[i].port);
+            }
+            for(unsigned j=0; j < selectedPaths.size(); j++){
+                if(numberOfAppearances(steps,selectedPaths[j].steps[i].port)){
+                    if(auxweightTotal[j]>selectedPaths[j].steps[i].TotalWeight){
+                        auxweightTotal[j]=selectedPaths[j].steps[i].TotalWeight;
+                    }
+                    if(auxweightQoS[j]>selectedPaths[j].steps[i].QoSWeight){
+                        auxweightQoS[j]=selectedPaths[j].steps[i].QoSWeight;
                     }
                 }
             }
         }
 
-        return false;
-    }
+        vector<double> finalweight;
+        double sum =0;
+        for(unsigned i=0; i < selectedPaths.size(); i++){
+            finalweight.push_back(auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+            sum = sum + (auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
+        }
+        for (auto it : finalweight){
+            it=it/sum;
+        }
+        return selectedPaths[WeightedRandom(finalweight)];
 
+    }
     unsigned FullPathMonitor::numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port){
 
         unsigned count = 0;
@@ -196,7 +280,7 @@ namespace FullPathMonitor {
         return count;
     }
 
-    void FullPathMonitor::recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo>& posiblePaths){
+    void FullPathMonitor::recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo>& posiblePaths, BWcontrol BWdata){
         if(nodeIdOrg.compare(nodeIdDst)==0){
             posiblePaths.back().ok=true;
         }
@@ -205,7 +289,7 @@ namespace FullPathMonitor {
                 vector<entryT> * entries =  &(nodeDataBase[nodeIdOrg].routingInfo.at(nodeIdDst));
                 vector<entryT> possibles;
                 for( entryT & e : *entries) {
-                    if ((e.BW - BWControl.getTotalBW(e.p)) >= QoS_BWreq[qos]){
+                    if ((e.BW - BWdata.getTotalBW(e.p)) >= QoS_BWreq[qos]){
                         possibles.push_back(e);
                     }
                 }
@@ -222,11 +306,11 @@ namespace FullPathMonitor {
                         newstep.TotalWeight=Totalocupation;
                         newstep.nodeID=nodeIdOrg;
                         newstep.port=it.p;
-                        newstep.freeBW=it.BW - BWControl.getTotalBW(it.p);
+                        newstep.freeBW=it.BW - BWdata.getTotalBW(it.p);
                         posiblePaths.back().steps.push_back(newstep);
                         //posiblePaths.back().steps.push_back(make_pair(make_pair(Totalocupation,QoSocupation),make_pair(nodeIdOrg, it.p)));
                         //posiblePaths.back().weight = posiblePaths.back().weight + ((double)(it.BW-(nodeDataBase[nodeIdOrg].schedulerInfo.at(qos)[it.p]))/(double)it.BW);
-                        recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId, posiblePaths);
+                        recursivePathFinder(nodeDataBase[nodeIdOrg].neighboursInfo.at(it.p), nodeIdDst, qos, flowId, posiblePaths, BWControl);
                     }
                 }
             }
