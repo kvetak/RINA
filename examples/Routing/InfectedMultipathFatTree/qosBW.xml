@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 	<QOS_BW>	
 		<QoS id="MA" bw="100" />
-		<QoS id="1" bw="23429496729" />
-		<QoS id="2" bw="23107374182" />
-		<QoS id="3" bw="2310737418" />
+		<QoS id="1" bw="429496729" />
+		<QoS id="2" bw="107374182" />
+		<QoS id="3" bw="10737418" />
 		<QoS id="4" bw="0" />
 		<QoS id="rerouteQoS" bw="0" />
 	</QOS_BW>

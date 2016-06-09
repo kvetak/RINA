@@ -244,6 +244,17 @@ struct RegisterInfo{
         nodePath = "";
     }
 
+    entryT* findEntrybyPort(RMTPort * port){
+        for(auto it : routingInfo){
+            for (auto it2 : it.second){
+                if(port == it2.p){
+                    return &it2;
+                }
+            }
+        }
+        return nullptr;
+    }
+
 };
 
 struct Rsv_ReqInfo{
