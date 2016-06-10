@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+    <Metrics>
+    	<Qos id="MA"  />
+    	<Qos id="GU" urgent="true" />
+    	<Qos id="SN" />
+    	<Qos id="sBE" urgent="true" />
+    	<Qos id="BE" />
+    
+        <Link src="1" l="6.5" dst="2" />
+    </Metrics>

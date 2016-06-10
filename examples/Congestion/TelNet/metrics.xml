@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<Metrics>
+  <Qos id="MA"  />
+  <Qos id="GU" urgent="true" />
+  <Qos id="SN" />
+  <Qos id="sBE" urgent="true" />
+  <Qos id="BE" />
+  
+  
+  
+    <Link src="0" dst=" 1" l="41"/>
+    <Link src="0" dst=" 2" l="74"/>
+    <Link src="0" dst=" 3" l="32"/>
+    <Link src="1" dst=" 2" l="37"/>
+    <Link src="1" dst=" 6" l="69"/>
+    <Link src="2" dst=" 5" l="37"/>
+    <Link src="3" dst=" 4" l="42"/>
+    <Link src="3" dst=" 5" l="62"/>
+    <Link src="4" dst=" 22" l="50"/>
+    <Link src="4" dst=" 27" l="36"/>
+    <Link src="4" dst=" 28" l="62"/>
+    <Link src="5" dst=" 6" l="59"/>
+    <Link src="5" dst=" 18" l="48"/>
+    <Link src="5" dst=" 19" l="34"/>
+    <Link src="6" dst=" 7" l="27"/>
+    <Link src="7" dst=" 8" l="63"/>
+    <Link src="7" dst=" 9" l="38"/>
+    <Link src="7" dst=" 18" l="28"/>
+    <Link src="8" dst=" 9" l="33"/>
+    <Link src="8" dst=" 10" l="25"/>
+    <Link src="8" dst=" 12" l="43"/>
+    <Link src="9" dst=" 14" l="39"/>
+    <Link src="9" dst=" 18" l="37"/>
+    <Link src="10" dst=" 11" l="19"/>
+    <Link src="10" dst=" 12" l="22"/>
+    <Link src="10" dst=" 14" l="41"/>
+    <Link src="12" dst=" 13" l="22"/>
+    <Link src="12" dst=" 14" l="58"/>
+    <Link src="14" dst=" 15" l="31"/>
+    <Link src="14" dst=" 16" l="41"/>
+    <Link src="15" dst=" 16" l="28"/>
+    <Link src="15" dst=" 17" l="28"/>
+    <Link src="15" dst=" 19" l="38"/>
+    <Link src="16" dst=" 17" l="22"/>
+    <Link src="16" dst=" 25" l="24"/>
+    <Link src="17" dst=" 21" l="24"/>
+    <Link src="17" dst=" 25" l="38"/>
+    <Link src="17" dst=" 26" l="32"/>
+    <Link src="18" dst=" 19" l="25"/>
+    <Link src="19" dst=" 20" l="20"/>
+    <Link src="19" dst=" 21" l="19"/>
+    <Link src="19" dst=" 22" l="16"/>
+    <Link src="21" dst=" 22" l="12"/>
+    <Link src="21" dst=" 27" l="46"/>
+    <Link src="22" dst=" 23" l="17"/>
+    <Link src="22" dst=" 24" l="21"/>
+    <Link src="23" dst=" 24" l="14"/>
+    <Link src="25" dst=" 31" l="26"/>
+    <Link src="26" dst=" 27" l="45"/>
+    <Link src="26" dst=" 30" l="44"/>
+    <Link src="27" dst=" 28" l="38"/>
+    <Link src="27" dst=" 29" l="48"/>
+    <Link src="28" dst=" 29" l="45"/>
+    <Link src="28" dst=" 34" l="42"/>
+    <Link src="29" dst=" 30" l="31"/>
+    <Link src="29" dst=" 33" l="45"/>
+    <Link src="29" dst=" 34" l="36"/>
+    <Link src="30" dst=" 31" l="35"/>
+    <Link src="30" dst=" 32" l="28"/>
+    <Link src="31" dst=" 32" l="47"/>
+    <Link src="32" dst=" 33" l="52"/>
+    <Link src="33" dst=" 34" l="31"/>
+  </SimTime>
+</Metrics>

@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="N0_Core">
+      <DIF difName="0-1" ipcAddress="0" />
+      <DIF difName="0-5" ipcAddress="0" />
+    </APN>
+    <APN apn="N1_Core">
+      <DIF difName="0-1" ipcAddress="1" />
+      <DIF difName="1-2" ipcAddress="1" />
+    </APN>
+    <APN apn="N2_Core">
+      <DIF difName="1-2" ipcAddress="2" />
+      <DIF difName="2-3" ipcAddress="2" />
+      <DIF difName="2-4" ipcAddress="2" />
+    </APN>
+    <APN apn="N3_Core">
+      <DIF difName="2-3" ipcAddress="3" />
+      <DIF difName="3-4" ipcAddress="3" />
+    </APN>
+    <APN apn="N4_Core">
+      <DIF difName="2-4" ipcAddress="4" />
+      <DIF difName="3-4" ipcAddress="4" />
+      <DIF difName="4-6" ipcAddress="4" />
+      <DIF difName="4-9" ipcAddress="4" />
+    </APN>
+    <APN apn="N5_Core">
+      <DIF difName="0-5" ipcAddress="5" />
+      <DIF difName="5-6" ipcAddress="5" />
+      <DIF difName="5-7" ipcAddress="5" />
+    </APN>
+    <APN apn="N6_Core">
+      <DIF difName="4-6" ipcAddress="6" />
+      <DIF difName="5-6" ipcAddress="6" />
+    </APN>
+    <APN apn="N7_Core">
+      <DIF difName="5-7" ipcAddress="7" />
+      <DIF difName="7-8" ipcAddress="7" />
+      <DIF difName="7-10" ipcAddress="7" />
+    </APN>
+    <APN apn="N8_Core">
+      <DIF difName="7-8" ipcAddress="8" />
+      <DIF difName="8-9" ipcAddress="8" />
+      <DIF difName="8-12" ipcAddress="8" />
+    </APN>
+    <APN apn="N9_Core">
+      <DIF difName="4-9" ipcAddress="9" />
+      <DIF difName="8-9" ipcAddress="9" />
+    </APN>
+    <APN apn="N10_Core">
+      <DIF difName="7-10" ipcAddress="10" />
+      <DIF difName="10-11" ipcAddress="10" />
+      <DIF difName="10-15" ipcAddress="10" />
+    </APN>
+    <APN apn="N11_Core">
+      <DIF difName="10-11" ipcAddress="11" />
+      <DIF difName="11-12" ipcAddress="11" />
+      <DIF difName="11-15" ipcAddress="11" />
+    </APN>
+    <APN apn="N12_Core">
+      <DIF difName="8-12" ipcAddress="12" />
+      <DIF difName="11-12" ipcAddress="12" />
+      <DIF difName="12-13" ipcAddress="12" />
+      <DIF difName="12-14" ipcAddress="12" />
+      <DIF difName="12-17" ipcAddress="12" />
+    </APN>
+    <APN apn="N13_Core">
+      <DIF difName="12-13" ipcAddress="13" />
+      <DIF difName="13-14" ipcAddress="13" />
+    </APN>
+    <APN apn="N14_Core">
+      <DIF difName="12-14" ipcAddress="14" />
+      <DIF difName="13-14" ipcAddress="14" />
+      <DIF difName="14-19" ipcAddress="14" />
+    </APN>
+    <APN apn="N15_Core">
+      <DIF difName="10-15" ipcAddress="15" />
+      <DIF difName="11-15" ipcAddress="15" />
+      <DIF difName="15-16" ipcAddress="15" />
+      <DIF difName="15-20" ipcAddress="15" />
+    </APN>
+    <APN apn="N16_Core">
+      <DIF difName="15-16" ipcAddress="16" />
+      <DIF difName="16-17" ipcAddress="16" />
+      <DIF difName="16-20" ipcAddress="16" />
+    </APN>
+    <APN apn="N17_Core">
+      <DIF difName="12-17" ipcAddress="17" />
+      <DIF difName="16-17" ipcAddress="17" />
+      <DIF difName="17-18" ipcAddress="17" />
+    </APN>
+    <APN apn="N18_Core">
+      <DIF difName="17-18" ipcAddress="18" />
+      <DIF difName="18-19" ipcAddress="18" />
+      <DIF difName="18-21" ipcAddress="18" />
+    </APN>
+    <APN apn="N19_Core">
+      <DIF difName="14-19" ipcAddress="19" />
+      <DIF difName="18-19" ipcAddress="19" />
+    </APN>
+    <APN apn="N20_Core">
+      <DIF difName="15-20" ipcAddress="20" />
+      <DIF difName="16-20" ipcAddress="20" />
+      <DIF difName="20-22" ipcAddress="20" />
+      <DIF difName="20-23" ipcAddress="20" />
+    </APN>
+    <APN apn="N21_Core">
+      <DIF difName="18-21" ipcAddress="21" />
+      <DIF difName="21-22" ipcAddress="21" />
+    </APN>
+    <APN apn="N22_Core">
+      <DIF difName="20-22" ipcAddress="22" />
+      <DIF difName="21-22" ipcAddress="22" />
+      <DIF difName="22-24" ipcAddress="22" />
+    </APN>
+    <APN apn="N23_Core">
+      <DIF difName="20-23" ipcAddress="23" />
+      <DIF difName="23-24" ipcAddress="23" />
+    </APN>
+    <APN apn="N24_Core">
+      <DIF difName="22-24" ipcAddress="24" />
+      <DIF difName="23-24" ipcAddress="24" />
+    </APN>
+  </Directory>
+</DA>

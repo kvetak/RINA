@@ -37,6 +37,7 @@ class RMTPort : public cSimpleModule
 {
     /* tight coupling for management purposes */
     friend class RA;
+    friend class sRA;
     friend class RMT;
     friend class RMTModuleAllocator;
 

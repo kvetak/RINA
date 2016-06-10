@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+	<Connection src="0000_Core" dst="0300_Core" qosReq="1"/>
+	<Connection src="0000_Core" dst="0400_Core" qosReq="1"/>
+	<Connection src="0000_Core" dst="0500_Core" qosReq="1"/>
+	<Connection src="0001_Core" dst="0300_Core" qosReq="1"/>
+	<Connection src="0001_Core" dst="0400_Core" qosReq="1"/>
+	<Connection src="0001_Core" dst="0500_Core" qosReq="1"/>
+	<Connection src="0002_Core" dst="0300_Core" qosReq="1"/>
+	<Connection src="0002_Core" dst="0400_Core" qosReq="1"/>
+	<Connection src="0002_Core" dst="0500_Core" qosReq="1"/>
+	
+	<Connection src="0100_Core" dst="0301_Core" qosReq="1"/>
+	<Connection src="0100_Core" dst="0401_Core" qosReq="1"/>
+	<Connection src="0100_Core" dst="0501_Core" qosReq="1"/>
+	<Connection src="0101_Core" dst="0301_Core" qosReq="1"/>
+	<Connection src="0101_Core" dst="0401_Core" qosReq="1"/>
+	<Connection src="0101_Core" dst="0501_Core" qosReq="1"/>
+	<Connection src="0102_Core" dst="0301_Core" qosReq="1"/>
+	<Connection src="0102_Core" dst="0401_Core" qosReq="1"/>
+	<Connection src="0102_Core" dst="0501_Core" qosReq="1"/>
+	
+	<Connection src="0200_Core" dst="0302_Core" qosReq="1"/>
+	<Connection src="0200_Core" dst="0402_Core" qosReq="1"/>
+	<Connection src="0200_Core" dst="0502_Core" qosReq="1"/>
+	<Connection src="0201_Core" dst="0302_Core" qosReq="1"/>
+	<Connection src="0201_Core" dst="0402_Core" qosReq="1"/>
+	<Connection src="0201_Core" dst="0502_Core" qosReq="1"/>
+	<Connection src="0202_Core" dst="0302_Core" qosReq="1"/>
+	<Connection src="0202_Core" dst="0402_Core" qosReq="1"/>
+	<Connection src="0202_Core" dst="0502_Core" qosReq="1"/>
+	
+	<Connection src="0300_Core" dst="0303_Core" qosReq="1"/>
+	<Connection src="0300_Core" dst="0304_Core" qosReq="1"/>
+	<Connection src="0300_Core" dst="0305_Core" qosReq="1"/>
+	<Connection src="0301_Core" dst="0303_Core" qosReq="1"/>
+	<Connection src="0301_Core" dst="0304_Core" qosReq="1"/>
+	<Connection src="0301_Core" dst="0305_Core" qosReq="1"/>
+	<Connection src="0302_Core" dst="0303_Core" qosReq="1"/>
+	<Connection src="0302_Core" dst="0304_Core" qosReq="1"/>
+	<Connection src="0302_Core" dst="0305_Core" qosReq="1"/>
+	
+	<Connection src="0400_Core" dst="0403_Core" qosReq="1"/>
+	<Connection src="0400_Core" dst="0404_Core" qosReq="1"/>
+	<Connection src="0400_Core" dst="0405_Core" qosReq="1"/>
+	<Connection src="0401_Core" dst="0403_Core" qosReq="1"/>
+	<Connection src="0401_Core" dst="0404_Core" qosReq="1"/>
+	<Connection src="0401_Core" dst="0405_Core" qosReq="1"/>
+	<Connection src="0402_Core" dst="0403_Core" qosReq="1"/>
+	<Connection src="0402_Core" dst="0404_Core" qosReq="1"/>
+	<Connection src="0402_Core" dst="0405_Core" qosReq="1"/>
+	
+	<Connection src="0500_Core" dst="0503_Core" qosReq="1"/>
+	<Connection src="0500_Core" dst="0504_Core" qosReq="1"/>
+	<Connection src="0500_Core" dst="0505_Core" qosReq="1"/>
+	<Connection src="0501_Core" dst="0503_Core" qosReq="1"/>
+	<Connection src="0501_Core" dst="0504_Core" qosReq="1"/>
+	<Connection src="0501_Core" dst="0505_Core" qosReq="1"/>
+	<Connection src="0502_Core" dst="0503_Core" qosReq="1"/>
+	<Connection src="0502_Core" dst="0504_Core" qosReq="1"/>
+	<Connection src="0502_Core" dst="0505_Core" qosReq="1"/>
+  </SimTime>
+</ConnectionSet>

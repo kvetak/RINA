@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Configuration>
+  <DA>
+    <Directory>
+		<APN apn="A_relay">
+			<DIF difName="tags" ipcAddress="A" />
+		</APN>
+		<APN apn="B_relay">
+			<DIF difName="tags" ipcAddress="B" />
+		</APN>
+		<APN apn="C_relay">
+			<DIF difName="tags" ipcAddress="C" />
+		</APN>
+		<APN apn="D_relay">
+			<DIF difName="tags" ipcAddress="D" />
+		</APN>
+    </Directory>
+  </DA>
+</Configuration>

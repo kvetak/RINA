@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+  <DA>
+    <Directory>
+		<APN apn="1_Core">
+			<DIF difName="shim12" ipcAddress="1" />
+		</APN>
+		<APN apn="2_Core">
+			<DIF difName="shim12" ipcAddress="2" />
+		</APN>
+    </Directory>
+  </DA>

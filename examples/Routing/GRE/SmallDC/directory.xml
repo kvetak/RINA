@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="0000_Core">
+      <DIF difName="0000-0300" ipcAddress="0000" />
+      <DIF difName="0000-0400" ipcAddress="0000" />
+      <DIF difName="0000-0500" ipcAddress="0000" />
+    </APN>
+    <APN apn="0001_Core">
+      <DIF difName="0001-0300" ipcAddress="0001" />
+      <DIF difName="0001-0400" ipcAddress="0001" />
+      <DIF difName="0001-0500" ipcAddress="0001" />
+    </APN>
+    <APN apn="0002_Core">
+      <DIF difName="0002-0300" ipcAddress="0002" />
+      <DIF difName="0002-0400" ipcAddress="0002" />
+      <DIF difName="0002-0500" ipcAddress="0002" />
+    </APN>
+    
+    <APN apn="0100_Core">
+      <DIF difName="0100-0301" ipcAddress="0100" />
+      <DIF difName="0100-0401" ipcAddress="0100" />
+      <DIF difName="0100-0501" ipcAddress="0100" />
+    </APN>
+    <APN apn="0101_Core">
+      <DIF difName="0101-0301" ipcAddress="0101" />
+      <DIF difName="0101-0401" ipcAddress="0101" />
+      <DIF difName="0101-0501" ipcAddress="0101" />
+    </APN>
+    <APN apn="0102_Core">
+      <DIF difName="0102-0301" ipcAddress="0102" />
+      <DIF difName="0102-0401" ipcAddress="0102" />
+      <DIF difName="0102-0501" ipcAddress="0102" />
+    </APN>
+    
+    <APN apn="0200_Core">
+      <DIF difName="0200-0302" ipcAddress="0200" />
+      <DIF difName="0200-0402" ipcAddress="0200" />
+      <DIF difName="0200-0502" ipcAddress="0200" />
+    </APN>
+    <APN apn="0201_Core">
+      <DIF difName="0201-0302" ipcAddress="0201" />
+      <DIF difName="0201-0402" ipcAddress="0201" />
+      <DIF difName="0201-0502" ipcAddress="0201" />
+    </APN>
+    <APN apn="0202_Core">
+      <DIF difName="0202-0302" ipcAddress="0202" />
+      <DIF difName="0202-0402" ipcAddress="0202" />
+      <DIF difName="0202-0502" ipcAddress="0202" />
+    </APN>
+    
+    
+    
+    <APN apn="0300_Core">
+      <DIF difName="0000-0300" ipcAddress="0300" />
+      <DIF difName="0001-0300" ipcAddress="0300" />
+      <DIF difName="0002-0300" ipcAddress="0300" />
+      
+      <DIF difName="0300-0303" ipcAddress="0300" />
+      <DIF difName="0300-0304" ipcAddress="0300" />
+      <DIF difName="0300-0305" ipcAddress="0300" />
+    </APN>
+    <APN apn="0301_Core">
+      <DIF difName="0100-0301" ipcAddress="0301" />
+      <DIF difName="0101-0301" ipcAddress="0301" />
+      <DIF difName="0102-0301" ipcAddress="0301" />
+      
+      <DIF difName="0301-0303" ipcAddress="0301" />
+      <DIF difName="0301-0304" ipcAddress="0301" />
+      <DIF difName="0301-0305" ipcAddress="0301" />
+    </APN>
+    <APN apn="0302_Core">
+      <DIF difName="0200-0302" ipcAddress="0302" />
+      <DIF difName="0201-0302" ipcAddress="0302" />
+      <DIF difName="0202-0302" ipcAddress="0302" />
+      
+      <DIF difName="0302-0303" ipcAddress="0302" />
+      <DIF difName="0302-0304" ipcAddress="0302" />
+      <DIF difName="0302-0305" ipcAddress="0302" />
+    </APN>
+    
+    <APN apn="0400_Core">
+      <DIF difName="0000-0400" ipcAddress="0400" />
+      <DIF difName="0001-0400" ipcAddress="0400" />
+      <DIF difName="0002-0400" ipcAddress="0400" />
+      
+      <DIF difName="0400-0403" ipcAddress="0400" />
+      <DIF difName="0400-0404" ipcAddress="0400" />
+      <DIF difName="0400-0405" ipcAddress="0400" />
+    </APN>
+    <APN apn="0401_Core">
+      <DIF difName="0100-0401" ipcAddress="0401" />
+      <DIF difName="0101-0401" ipcAddress="0401" />
+      <DIF difName="0102-0401" ipcAddress="0401" />
+      
+      <DIF difName="0401-0403" ipcAddress="0401" />
+      <DIF difName="0401-0404" ipcAddress="0401" />
+      <DIF difName="0401-0405" ipcAddress="0401" />
+    </APN>
+    <APN apn="0402_Core">
+      <DIF difName="0200-0402" ipcAddress="0402" />
+      <DIF difName="0201-0402" ipcAddress="0402" />
+      <DIF difName="0202-0402" ipcAddress="0402" />
+      
+      <DIF difName="0402-0403" ipcAddress="0402" />
+      <DIF difName="0402-0404" ipcAddress="0402" />
+      <DIF difName="0402-0405" ipcAddress="0402" />
+    </APN>
+    
+    <APN apn="0500_Core">
+      <DIF difName="0000-0500" ipcAddress="0500" />
+      <DIF difName="0001-0500" ipcAddress="0500" />
+      <DIF difName="0002-0500" ipcAddress="0500" />
+      
+      <DIF difName="0500-0503" ipcAddress="0500" />
+      <DIF difName="0500-0504" ipcAddress="0500" />
+      <DIF difName="0500-0505" ipcAddress="0500" />
+    </APN>
+    <APN apn="0501_Core">
+      <DIF difName="0100-0501" ipcAddress="0501" />
+      <DIF difName="0101-0501" ipcAddress="0501" />
+      <DIF difName="0102-0501" ipcAddress="0501" />
+      
+      <DIF difName="0501-0503" ipcAddress="0501" />
+      <DIF difName="0501-0504" ipcAddress="0501" />
+      <DIF difName="0501-0505" ipcAddress="0501" />
+    </APN>
+    <APN apn="0502_Core">
+      <DIF difName="0200-0502" ipcAddress="0502" />
+      <DIF difName="0201-0502" ipcAddress="0502" />
+      <DIF difName="0202-0502" ipcAddress="0502" />
+      
+      <DIF difName="0502-0503" ipcAddress="0502" />
+      <DIF difName="0502-0504" ipcAddress="0502" />
+      <DIF difName="0502-0505" ipcAddress="0502" />
+    </APN>
+    
+    
+    <APN apn="0303_Core">
+      <DIF difName="0300-0303" ipcAddress="0303" />
+      <DIF difName="0301-0303" ipcAddress="0303" />
+      <DIF difName="0302-0303" ipcAddress="0303" />
+    </APN>
+    <APN apn="0304_Core">
+      <DIF difName="0300-0304" ipcAddress="0304" />
+      <DIF difName="0301-0304" ipcAddress="0304" />
+      <DIF difName="0302-0304" ipcAddress="0304" />
+    </APN>
+    <APN apn="0305_Core">
+      <DIF difName="0300-0305" ipcAddress="0305" />
+      <DIF difName="0301-0305" ipcAddress="0305" />
+      <DIF difName="0302-0305" ipcAddress="0305" />
+    </APN>
+    
+    <APN apn="0403_Core">
+      <DIF difName="0400-0403" ipcAddress="0403" />
+      <DIF difName="0401-0403" ipcAddress="0403" />
+      <DIF difName="0402-0403" ipcAddress="0403" />
+    </APN>
+    <APN apn="0404_Core">
+      <DIF difName="0400-0404" ipcAddress="0404" />
+      <DIF difName="0401-0404" ipcAddress="0404" />
+      <DIF difName="0402-0404" ipcAddress="0404" />
+    </APN>
+    <APN apn="0405_Core">
+      <DIF difName="0400-0405" ipcAddress="0405" />
+      <DIF difName="0401-0405" ipcAddress="0405" />
+      <DIF difName="0402-0405" ipcAddress="0405" />
+    </APN>
+    
+    <APN apn="0503_Core">
+      <DIF difName="0500-0503" ipcAddress="0503" />
+      <DIF difName="0501-0503" ipcAddress="0503" />
+      <DIF difName="0502-0503" ipcAddress="0503" />
+    </APN>
+    <APN apn="0504_Core">
+      <DIF difName="0500-0504" ipcAddress="0504" />
+      <DIF difName="0501-0504" ipcAddress="0504" />
+      <DIF difName="0502-0504" ipcAddress="0504" />
+    </APN>
+    <APN apn="0505_Core">
+      <DIF difName="0500-0505" ipcAddress="0505" />
+      <DIF difName="0501-0505" ipcAddress="0505" />
+      <DIF difName="0502-0505" ipcAddress="0505" />
+    </APN>
+  </Directory>
+</DA>

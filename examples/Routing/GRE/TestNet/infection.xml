@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Infection>
+  <NodeListM>
+    <NodeAddr id = "0" />
+  </NodeListM>
+  <NodeList>
+    <NodeAddr id = "0" />
+    <NodeAddr id = "1" />
+    <NodeAddr id = "2" />
+    <NodeAddr id = "3" />
+    <NodeAddr id = "4" />
+    <NodeAddr id = "5" />
+    <NodeAddr id = "6" />
+    <NodeAddr id = "7" />
+    <NodeAddr id = "8" />
+  </NodeList>
+</Infection>

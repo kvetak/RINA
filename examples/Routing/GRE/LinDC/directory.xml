@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="0000_Core">
+      <DIF difName="0000-0100" ipcAddress="0000" />
+    </APN>
+    <APN apn="0100_Core">
+      <DIF difName="0000-0100" ipcAddress="0100" />
+      <DIF difName="0100-0101" ipcAddress="0100" />
+    </APN>
+    <APN apn="0101_Core">
+      <DIF difName="0100-0101" ipcAddress="0101" />
+    </APN>
+  </Directory>
+</DA>

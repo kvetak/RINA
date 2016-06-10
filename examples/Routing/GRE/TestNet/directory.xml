@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="0_Core">
+      <DIF difName="0-1" ipcAddress="0" />
+      <DIF difName="0-8" ipcAddress="0" />
+    </APN>
+    <APN apn="1_Core">
+      <DIF difName="0-1" ipcAddress="1" />
+      <DIF difName="1-2" ipcAddress="1" />
+    </APN>
+    <APN apn="2_Core">
+      <DIF difName="1-2" ipcAddress="2" />
+      <DIF difName="2-3" ipcAddress="2" />
+      <DIF difName="2-5" ipcAddress="2" />
+    </APN>
+    <APN apn="3_Core">
+      <DIF difName="2-3" ipcAddress="3" />
+      <DIF difName="3-5" ipcAddress="3" />
+      <DIF difName="3-6" ipcAddress="3" />
+    </APN>
+    <APN apn="4_Core">
+      <DIF difName="4-6" ipcAddress="4" />
+      <DIF difName="4-7" ipcAddress="4" />
+      <DIF difName="4-8" ipcAddress="4" />
+    </APN>
+    <APN apn="5_Core">
+      <DIF difName="2-5" ipcAddress="5" />
+      <DIF difName="3-5" ipcAddress="5" />
+    </APN>
+    <APN apn="6_Core">
+      <DIF difName="3-6" ipcAddress="6" />
+      <DIF difName="4-6" ipcAddress="6" />
+      <DIF difName="6-7" ipcAddress="6" />
+    </APN>
+    <APN apn="7_Core">
+      <DIF difName="4-7" ipcAddress="7" />
+      <DIF difName="6-7" ipcAddress="7" />
+    </APN>
+    <APN apn="8_Core">
+      <DIF difName="0-8" ipcAddress="8" />
+      <DIF difName="4-8" ipcAddress="8" />
+    </APN>
+  </Directory>
+</DA>

@@ -93,7 +93,7 @@ class FA : public FABase
     virtual void handleMessage(cMessage *msg);
     void initPointers();
 
-  private:
+  //private:
     EFCP* Efcp;
     DA* DifAllocator;
     RABase* RaModule;

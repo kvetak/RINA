@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="N0_Core" dst="N1_Core" qosReq="1"/>
+    <Connection src="N0_Core" dst="N5_Core" qosReq="1"/>
+    <Connection src="N1_Core" dst="N2_Core" qosReq="1"/>
+    <Connection src="N2_Core" dst="N3_Core" qosReq="1"/>
+    <Connection src="N2_Core" dst="N4_Core" qosReq="1"/>
+    <Connection src="N3_Core" dst="N4_Core" qosReq="1"/>
+    <Connection src="N4_Core" dst="N6_Core" qosReq="1"/>
+    <Connection src="N4_Core" dst="N9_Core" qosReq="1"/>
+    <Connection src="N5_Core" dst="N6_Core" qosReq="1"/>
+    <Connection src="N5_Core" dst="N7_Core" qosReq="1"/>
+    <Connection src="N7_Core" dst="N8_Core" qosReq="1"/>
+    <Connection src="N7_Core" dst="N10_Core" qosReq="1"/>
+    <Connection src="N8_Core" dst="N9_Core" qosReq="1"/>
+    <Connection src="N8_Core" dst="N12_Core" qosReq="1"/>
+    <Connection src="N10_Core" dst="N11_Core" qosReq="1"/>
+    <Connection src="N10_Core" dst="N15_Core" qosReq="1"/>
+    <Connection src="N11_Core" dst="N12_Core" qosReq="1"/>
+    <Connection src="N11_Core" dst="N15_Core" qosReq="1"/>
+    <Connection src="N12_Core" dst="N13_Core" qosReq="1"/>
+    <Connection src="N12_Core" dst="N14_Core" qosReq="1"/>
+    <Connection src="N12_Core" dst="N17_Core" qosReq="1"/>
+    <Connection src="N13_Core" dst="N14_Core" qosReq="1"/>
+    <Connection src="N14_Core" dst="N19_Core" qosReq="1"/>
+    <Connection src="N15_Core" dst="N16_Core" qosReq="1"/>
+    <Connection src="N15_Core" dst="N20_Core" qosReq="1"/>
+    <Connection src="N16_Core" dst="N17_Core" qosReq="1"/>
+    <Connection src="N16_Core" dst="N20_Core" qosReq="1"/>
+    <Connection src="N17_Core" dst="N18_Core" qosReq="1"/>
+    <Connection src="N18_Core" dst="N19_Core" qosReq="1"/>
+    <Connection src="N18_Core" dst="N21_Core" qosReq="1"/>
+    <Connection src="N20_Core" dst="N22_Core" qosReq="1"/>
+    <Connection src="N20_Core" dst="N23_Core" qosReq="1"/>
+    <Connection src="N21_Core" dst="N22_Core" qosReq="1"/>
+    <Connection src="N22_Core" dst="N24_Core" qosReq="1"/>
+    <Connection src="N23_Core" dst="N24_Core" qosReq="1"/>
+  </SimTime>
+</ConnectionSet>

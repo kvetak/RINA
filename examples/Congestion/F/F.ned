@@ -50,7 +50,7 @@ network F
             @display("p=394,376");
         }
     connections:
-        A.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> B.medium++;
+        A.medium++ <--> DatarateChannel {  datarate = 1Gbps;} <--> B.medium++;
         B.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> C.medium++;
         B.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> D.medium++;
         D.medium++ <--> DatarateChannel {  datarate = 10Gbps; } <--> E.medium++;

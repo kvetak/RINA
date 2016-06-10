@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<Infection>
+  <NodeListt>
+    <NodeAddr id = "0303"/>
+  </NodeListt>
+  <NodeList>
+    <NodeAddr id = "0000"/>
+    <NodeAddr id = "0001"/>
+    <NodeAddr id = "0002"/>
+    <NodeAddr id = "0100"/>
+    <NodeAddr id = "0101"/>
+    <NodeAddr id = "0102"/>
+    <NodeAddr id = "0200"/>
+    <NodeAddr id = "0201"/>
+    <NodeAddr id = "0202"/>
+    <NodeAddr id = "0300"/>
+    <NodeAddr id = "0301"/>
+    <NodeAddr id = "0302"/>
+    <NodeAddr id = "0303"/>
+    <NodeAddr id = "0304"/>
+    <NodeAddr id = "0305"/>
+    <NodeAddr id = "0400"/>
+    <NodeAddr id = "0401"/>
+    <NodeAddr id = "0402"/>
+    <NodeAddr id = "0403"/>
+    <NodeAddr id = "0404"/>
+    <NodeAddr id = "0405"/>
+    <NodeAddr id = "0500"/>
+    <NodeAddr id = "0501"/>
+    <NodeAddr id = "0502"/>
+    <NodeAddr id = "0503"/>
+    <NodeAddr id = "0504"/>
+    <NodeAddr id = "0505"/>
+  </NodeList>
+</Infection>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Infection>
+  <InfectionFlows>
+<flowSet srcAddr = "0" dstAddr = "1" qos = "BE" rate = "8" nFlows="800" listen="true" />
+<flowSet srcAddr = "0" dstAddr = "2" qos = "BE" rate = "8" nFlows="800" listen="true" />
+<flowSet srcAddr = "0" dstAddr = "3" qos = "BE" rate = "8" nFlows="800" listen="true" />
+<flowSet srcAddr = "0" dstAddr = "4" qos = "BE" rate = "10" nFlows="1000" listen="true" />
+  </InfectionFlows>
+</Infection>

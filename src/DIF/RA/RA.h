@@ -83,7 +83,7 @@ class RA : public RABase
     int numInitStages() const { return 2; };
     virtual void handleMessage(cMessage *msg);
 
-  private:
+  //private:
     DA* difAllocator;
     cModule* thisIPC;
     cModule* rmtModule;

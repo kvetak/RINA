@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Configuration>
+  	<ConnectionSet>
+  		<!-- Allocate management flows. -->
+	  	<SimTime t="1">
+	  		<Connection src="A_relay" dst="B_relay" qosReq="1"/>
+	  		<Connection src="A_relay" dst="B_relay" qosReq="2"/>
+	  		<Connection src="A_relay" dst="B_relay" qosReq="3"/>
+	  		<Connection src="A_relay" dst="B_relay" qosReq="4"/>
+	  	</SimTime>
+	</ConnectionSet>
+</Configuration>

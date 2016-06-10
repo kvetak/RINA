@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+	<QoSReqSet>	
+		<QosReq id="1">
+			<Delay>1</Delay>	
+			<PDUDroppingProbability>0.00000001</PDUDroppingProbability>	
+		</QosReq>
+		<QosReq id="2">
+			<Delay>10</Delay>	
+			<PDUDroppingProbability>0.0000001</PDUDroppingProbability>	
+		</QosReq>
+		<QosReq id="3">	
+			<Delay>1000</Delay>	
+			<PDUDroppingProbability>0.000001</PDUDroppingProbability>	
+		</QosReq>		
+		<QosReq id="4">	
+			<Delay>10</Delay>	
+			<PDUDroppingProbability>0.0001</PDUDroppingProbability>	
+		</QosReq>	
+		<QosReq id="5">
+			<Delay>1000</Delay>	
+			<PDUDroppingProbability>0.001</PDUDroppingProbability>	
+		</QosReq>
+	</QoSReqSet>
+	
