@@ -107,6 +107,7 @@ namespace FullPathMonitor {
         unsigned int WeightedRandom(vector<double> &weight);
         unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
         PathInfo selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths);
+        void UpdateBW(vector<stepInfo> orgPath, vector<stepInfo> dstPath, BWcontrol& BWdata, string qos);
 
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;
