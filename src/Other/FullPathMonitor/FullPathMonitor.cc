@@ -121,15 +121,26 @@ namespace FullPathMonitor {
                 vector<PathInfo> reroutePaths;
                 reroutePaths.push_back(PathInfo());
                 recursivePathFinder(nodeIdOrg, nodeIdDst, "rerouteQoS", flowId, reroutePaths, BWControl);
-                reroute(reroutePaths, nodeIdOrg, nodeIdDst, qos, flowId);
-
-                MonitorMsg * nackMsg = new MonitorMsg();
-                nackMsg->setName("MonitorMsg");
-                nackMsg->type="NACK";
-                nackMsg->nackInfo.flowID=flowId;
-                take(nackMsg);
-                sendDirect(nackMsg, requestModule, "radioIn");
-                dropedFlows[flowId]=simTime();
+                PathInfo auxPath = reroute(reroutePaths, nodeIdOrg, nodeIdDst, qos, flowId);
+                if(auxPath.ok==true){
+                    path->ok=auxPath.ok;
+                    path->steps=auxPath.steps;
+                    path->qos=qos;
+                    path->BW = QoS_BWreq[qos];
+                    path->src = nodeIdOrg;
+                    path->dst = nodeIdDst;
+                    path->flowID = flowId;
+                    orderedCache.addElement(path);
+                }
+                else{
+                    MonitorMsg * nackMsg = new MonitorMsg();
+                    nackMsg->setName("MonitorMsg");
+                    nackMsg->type="NACK";
+                    nackMsg->nackInfo.flowID=flowId;
+                    take(nackMsg);
+                    sendDirect(nackMsg, requestModule, "radioIn");
+                    dropedFlows[flowId]=simTime();
+                }
             }
         }
         else{
@@ -142,90 +153,132 @@ namespace FullPathMonitor {
         }
     }
 
-    bool FullPathMonitor::reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId){
+    FullPathMonitor::PathInfo FullPathMonitor::reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId){
 
         BWcontrol BWaux = BWControl;
         list<RerouteInfo> changeList;
+        vector<pair<int,int>> jams(reroutePaths.size(),make_pair(0, 0));//pair<numberofJams, minBW>
         PathInfo finalPath;
-        for(unsigned i=0; i < reroutePaths.begin()->steps.size(); i++){
-            bool congestedStep = true;
-            int PathmaxBW = 0;
-            int maxBW =0;
-            for(unsigned j=0; j < reroutePaths.size(); j++){
-                //if(reroutePaths[j].steps[i].freeBW>QoS_BWreq[qos]){
-                if((nodeDataBase[reroutePaths[j].steps[i].nodeID].findEntrybyPort(reroutePaths[j].steps[i].port)->BW-
-                        BWaux.getTotalBW(reroutePaths[j].steps[i].port))>QoS_BWreq[qos]){
-                    congestedStep = false;
-                    break;
-                }
-                if((nodeDataBase[reroutePaths[j].steps[i].nodeID].findEntrybyPort(reroutePaths[j].steps[i].port)->BW-
-                        BWaux.getTotalBW(reroutePaths[j].steps[i].port))>maxBW){
-                    PathmaxBW = j;
-                    maxBW=nodeDataBase[reroutePaths[j].steps[i].nodeID].findEntrybyPort(reroutePaths[j].steps[i].port)->BW-
-                            BWaux.getTotalBW(reroutePaths[j].steps[i].port);
-                }
-            }
-            if (congestedStep == true){//Necessary to reroute flows in the step
+        finalPath.ok=false;
 
-                for(auto it : orderedCache.List){
-                    if(it->steps[i].port==reroutePaths[PathmaxBW].steps[i].port){//Try to reroute that flow
-                        bool foundedPath = false;
-                        vector<PathInfo> posiblePaths;
-                        posiblePaths.push_back(PathInfo());
-                        recursivePathFinder(it->src, it->dst, it->qos, it->flowID, posiblePaths, BWaux);
-                        for(unsigned int k = 0; k < posiblePaths.size(); k++){
-                            if (posiblePaths[k].steps.size()>i)
-                            {
-                                if(posiblePaths[k].steps[i].port==reroutePaths[PathmaxBW].steps[i].port)
-                                {
-                                    posiblePaths[k].ok=false;
-                                }
-                            }
-                        }
-                        for(auto it2 : posiblePaths){
-                            if (it2.ok==true){
-                                foundedPath=true;
-                            }
-                        }
-                        if (foundedPath == true){//posible to reroute
-                            RerouteInfo newchange;
-                            newchange.pathOrg=it->steps;
-                            newchange.pathDst=selectBetterReroute(reroutePaths[PathmaxBW], posiblePaths).steps;
-                            newchange.dst=it->dst;
-                            newchange.flowID=it->flowID;
-                            newchange.qos=it->qos;
-                            newchange.src=it->src;
-                            changeList.push_back(newchange);
-                            UpdateBW(newchange.pathOrg, newchange.pathDst, BWaux, newchange.qos);
-                            //BWaux.removeBW(newchange.pathOrg[i].port, newchange.qos, QoS_BWreq[it->qos]);
-                            //BWaux.addBW(newchange.pathDst[i].port, newchange.qos, QoS_BWreq[it->qos]);
-                           // if (( - BWaux.getTotalBW(newchange.pathOrg[i].port)) >= QoS_BWreq[newchange.qos]){
-                            //reroutePaths[PathmaxBW].steps[i].freeBW=reroutePaths[PathmaxBW].steps[i].freeBW+QoS_BWreq[it->qos];
-                            //Actualizar BW en la database
-                            if((nodeDataBase[reroutePaths[PathmaxBW].steps[i].nodeID].findEntrybyPort(reroutePaths[PathmaxBW].steps[i].port)->BW-
-                                    BWaux.getTotalBW(reroutePaths[PathmaxBW].steps[i].port)) > QoS_BWreq[qos]){
-                                break;//enought BW
-                            }
-                            posiblePaths.clear();
-                        }
-                    }
+        for(unsigned int i=0; i<reroutePaths.size(); i++){
+            for(auto it2 : reroutePaths[i].steps){
+                if((nodeDataBase[it2.nodeID].findEntrybyPort(it2.port)->BW-BWaux.getTotalBW(it2.port))<QoS_BWreq[qos]){
+                    jams[i].first = jams[i].first + 1;
+                    jams[i].second = jams[i].second + it2.freeBW;
                 }
-                if((nodeDataBase[reroutePaths[PathmaxBW].steps[i].nodeID].findEntrybyPort(reroutePaths[PathmaxBW].steps[i].port)->BW-
-                        BWaux.getTotalBW(reroutePaths[PathmaxBW].steps[i].port)) < QoS_BWreq[qos]){
-                    return false;
-                }
-                else{
-                    //BWaux.addBW(reroutePaths[PathmaxBW].steps[i].port, qos, QoS_BWreq[qos]);
-                    finalPath.steps.push_back(reroutePaths[PathmaxBW].steps[i]);
-                }
-            }
-            else{
-                //BWaux.addBW(reroutePaths[PathmaxBW].steps[i].port, qos, QoS_BWreq[qos]);
-                finalPath.steps.push_back(reroutePaths[PathmaxBW].steps[i]);
             }
         }
-        BWControl=BWaux;
-        return true;
+        vector<PathInfo> candidatesReroute;
+        vector<pair<int,int>> candidatesjams;
+        int min = INFINITY;
+        for(unsigned int i = 0; i<reroutePaths.size(); i++){
+            if(jams[i].first<min){
+                candidatesReroute.clear();
+                candidatesjams.clear();
+                candidatesReroute.push_back(reroutePaths[i]);
+                candidatesjams.push_back(jams[i]);
+                min=jams[i].first;
+            }
+            else if(jams[i].first==min){
+                candidatesReroute.push_back(reroutePaths[i]);
+                candidatesjams.push_back(jams[i]);
+            }
+        }
+
+        candidatesReroute=orderCandidatebyJam(candidatesjams, candidatesReroute);
+
+        for(unsigned i=0; i < candidatesReroute.size(); i++){
+            for(unsigned j=0; j < candidatesReroute[i].steps.size(); j++){
+                if(candidatesReroute[i].steps[j].freeBW < QoS_BWreq[qos]){//Necessary to reroute
+                    for(auto it : orderedCache.List){
+                        if(it->steps[j].port==candidatesReroute[i].steps[j].port){//Try to reroute that flow
+                            bool foundedPath = false;
+                            vector<PathInfo> posiblePaths;
+                            posiblePaths.push_back(PathInfo());
+                            RemoveBW(it->steps, BWaux, it->qos);
+                            recursivePathFinder(it->src, it->dst, it->qos, it->flowID, posiblePaths, BWaux);
+                            for(unsigned int k = 0; k < posiblePaths.size(); k++){
+                                if (posiblePaths[k].steps.size()>i)//cambiar i por j
+                                {
+                                    if(posiblePaths[k].steps[j].port==candidatesReroute[i].steps[j].port)
+                                    {
+                                        posiblePaths[k].ok=false;
+                                    }
+                                }
+                            }
+                            for(auto it2 : posiblePaths){
+                                if (it2.ok==true){
+                                    foundedPath=true;
+                                }
+                            }
+                            if (foundedPath == true){//posible to reroute
+                                RerouteInfo newchange;
+                                newchange.pathOrg=it->steps;
+                                newchange.pathDst=selectBetterReroute(*it, posiblePaths).steps;
+                                newchange.dst=it->dst;
+                                newchange.flowID=it->flowID;
+                                newchange.qos=it->qos;
+                                newchange.src=it->src;
+                                changeList.push_back(newchange);
+                                AddBW(newchange.pathDst,BWaux,it->qos);
+                                if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
+                                        BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) > QoS_BWreq[qos]){
+                                    break;//enought BW
+                                }
+                                posiblePaths.clear();
+                            }
+                            else{
+                                AddBW(it->steps,BWaux,it->qos);
+                            }
+                        }
+                    }
+                    if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
+                            BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) < QoS_BWreq[qos]){
+                        RemoveBW(finalPath.steps, BWaux, qos);
+                        finalPath.steps.clear();
+                        break;
+                    }
+                    else{
+                        BWaux.addBW(candidatesReroute[i].steps[j].port, qos, QoS_BWreq[qos]);
+                        finalPath.steps.push_back(candidatesReroute[i].steps[j]);
+                    }
+                }
+                else{
+                    BWaux.addBW(candidatesReroute[i].steps[j].port, qos, QoS_BWreq[qos]);
+                    finalPath.steps.push_back(candidatesReroute[i].steps[j]);
+                }
+            }
+            if (finalPath.steps.size()>0)
+            {
+                BWControl=BWaux;
+                finalPath.ok=true;
+                return finalPath;
+            }
+
+        }
+        finalPath.steps.clear();
+        finalPath.ok=false;
+        return finalPath;
+    }
+
+    vector<FullPathMonitor::PathInfo> FullPathMonitor::orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates){
+
+        vector<PathInfo> orderedPaths;
+        while(candidates.size()>0){
+            int max=0;
+            int position=0;
+            for (unsigned int i=0; i<candidates.size(); i++){
+                if(jams[i].second > max){
+                    max=jams[i].second;
+                    position=i;
+                }
+            }
+            orderedPaths.push_back(candidates[position]);
+            jams.erase(jams.begin()+position);
+            candidates.erase(candidates.begin()+position);
+        }
+        return orderedPaths;
     }
 
     FullPathMonitor::PathInfo FullPathMonitor::selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths){
@@ -282,6 +335,18 @@ namespace FullPathMonitor {
             }
         }
 
+    }
+
+    void FullPathMonitor::AddBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos){
+        for(unsigned int i = 0; i<Path.size(); i++){
+            BWdata.addBW(Path[i].port, qos, QoS_BWreq[qos]);
+        }
+    }
+
+    void FullPathMonitor::RemoveBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos){
+        for(unsigned int i = 0; i<Path.size(); i++){
+            BWdata.removeBW(Path[i].port, qos, QoS_BWreq[qos]);
+        }
     }
 
     unsigned FullPathMonitor::numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port){

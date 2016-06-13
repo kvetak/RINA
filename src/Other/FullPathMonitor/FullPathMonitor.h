@@ -102,12 +102,15 @@ namespace FullPathMonitor {
         void handleMessage(cMessage * msg);
         void lookPath(string nodeIdOrg, string nodeIdDst, string qos, int flowId, cModule * requestModule);
         void recursivePathFinder(string nodeIdOrg, string nodeIdDst, string qos, int flowId, vector<PathInfo> &posiblePaths, BWcontrol BWdata);
-        bool reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId);
+        PathInfo reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId);
         void deletePath(string nodeIdOrg, string nodeIdDst, int flowId);
         unsigned int WeightedRandom(vector<double> &weight);
         unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
         PathInfo selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths);
         void UpdateBW(vector<stepInfo> orgPath, vector<stepInfo> dstPath, BWcontrol& BWdata, string qos);
+        vector<PathInfo> orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates);
+        void AddBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
+        void RemoveBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
 
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;
