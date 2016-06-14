@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Infection>
 	<InfectionNode id="Server11">
-		<flow  startTime = "30.0001" endTime = "30.1" dstAddr = "R4.S1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.4" SrcCepId = "1" />
+		<flow  startTime = "30.00001" endTime = "30.1" dstAddr = "R4.S1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.4" SrcCepId = "1" />
 		<flow  startTime = "30" endTime = "30.1" dstAddr = "R4.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "2" />
 		<flow  startTime = "30" endTime = "30.1" dstAddr = "R4.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "3" />
 		<flow  startTime = "30" endTime = "30.1" dstAddr = "R4.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "4" />

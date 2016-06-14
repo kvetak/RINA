@@ -111,6 +111,7 @@ namespace FullPathMonitor {
         vector<PathInfo> orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates);
         void AddBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
         void RemoveBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
+        void ApplyChanges (map<int,RerouteInfo> changeList);
 
         map<string, int> QoS_BWreq;
         BWcontrol BWControl;

@@ -110,7 +110,7 @@ namespace FullPathMonitor {
                     entry.t=simTime();
                     monMsg->setName("MonitorMsg");
                     monMsg->type="RSV";
-                    monMsg->rsvInfo.entry=entry;
+                    monMsg->rsvInfo.entries.push_back(entry);
                     take(monMsg);
                     cModule *targetModule = getModuleByPath(nodeDataBase[it.nodeID].nodePath.c_str());
                     sendDirect(monMsg, targetModule, "radioIn");
@@ -131,6 +131,13 @@ namespace FullPathMonitor {
                     path->dst = nodeIdDst;
                     path->flowID = flowId;
                     orderedCache.addElement(path);
+
+                    MonitorMsg * ackMsg = new MonitorMsg();
+                    ackMsg->setName("MonitorMsg");
+                    ackMsg->type="ACK";
+                    ackMsg->ackInfo.flowID=flowId;
+                    take(ackMsg);
+                    sendDirect(ackMsg, requestModule, "radioIn");
                 }
                 else{
                     MonitorMsg * nackMsg = new MonitorMsg();
@@ -156,7 +163,7 @@ namespace FullPathMonitor {
     FullPathMonitor::PathInfo FullPathMonitor::reroute(vector<PathInfo> reroutePaths, string nodeIdOrg, string nodeIdDst, string qos, int flowId){
 
         BWcontrol BWaux = BWControl;
-        list<RerouteInfo> changeList;
+        map<int,RerouteInfo> changeList; //map<flowid,RerouteInfo>
         vector<pair<int,int>> jams(reroutePaths.size(),make_pair(0, 0));//pair<numberofJams, minBW>
         PathInfo finalPath;
         finalPath.ok=false;
@@ -220,7 +227,15 @@ namespace FullPathMonitor {
                                 newchange.flowID=it->flowID;
                                 newchange.qos=it->qos;
                                 newchange.src=it->src;
-                                changeList.push_back(newchange);
+                                if (newchange.pathOrg.size()<6){
+                                    int algo;
+                                }
+                                if(changeList.count(newchange.flowID)==0){
+                                    changeList[newchange.flowID]=newchange;
+                                }
+                                else{
+                                    changeList[newchange.flowID].pathDst=newchange.pathDst;
+                                }
                                 AddBW(newchange.pathDst,BWaux,it->qos);
                                 if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                                         BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) > QoS_BWreq[qos]){
@@ -253,6 +268,7 @@ namespace FullPathMonitor {
             {
                 BWControl=BWaux;
                 finalPath.ok=true;
+                ApplyChanges(changeList);
                 return finalPath;
             }
 
@@ -260,6 +276,50 @@ namespace FullPathMonitor {
         finalPath.steps.clear();
         finalPath.ok=false;
         return finalPath;
+    }
+
+    void FullPathMonitor::ApplyChanges (map<int,RerouteInfo> changeList){
+        map<string , list<cEntry>> addedEntries;
+        map<string , list<cEntry>> removedEntries;
+        for(auto it:changeList){
+            for(unsigned i =0; i< it.second.pathOrg.size(); i++)
+            {
+                if(it.second.pathOrg[i].port != it.second.pathDst[i].port){
+                    cEntry entry;
+                    entry.QoS=it.second.qos;
+                    entry.SrcCepId=it.second.flowID;
+                    entry.dst=it.second.dst;
+                    entry.p=it.second.pathDst[i].port;
+                    entry.reqBW=QoS_BWreq[entry.QoS];
+                    entry.t=simTime();
+                    addedEntries[it.second.pathDst[i].nodeID].push_back(entry);
+
+                    entry.p=it.second.pathOrg[i].port;
+                    removedEntries[it.second.pathOrg[i].nodeID].push_back(entry);
+
+                }
+            }
+        }
+        for(auto it: removedEntries){
+            MonitorMsg * monMsg = new MonitorMsg();
+            cEntry entry;
+            monMsg->setName("MonitorMsg");
+            monMsg->type="FREE";
+            monMsg->rsvInfo.entries=it.second;
+            take(monMsg);
+            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            sendDirect(monMsg, targetModule, "radioIn");
+        }
+        for(auto it: removedEntries){
+            MonitorMsg * monMsg = new MonitorMsg();
+            cEntry entry;
+            monMsg->setName("MonitorMsg");
+            monMsg->type="RSV";
+            monMsg->rsvInfo.entries=it.second;
+            take(monMsg);
+            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            sendDirect(monMsg, targetModule, "radioIn");
+        }
     }
 
     vector<FullPathMonitor::PathInfo> FullPathMonitor::orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates){
@@ -455,7 +515,7 @@ namespace FullPathMonitor {
             entry.t=simTime();
             monMsg->setName("MonitorMsg");
             monMsg->type="FREE";
-            monMsg->rsvInfo.entry=entry;
+            monMsg->rsvInfo.entries.push_back(entry);
             take(monMsg);
             cModule *targetModule = getModuleByPath(nodeDataBase[it.nodeID].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");

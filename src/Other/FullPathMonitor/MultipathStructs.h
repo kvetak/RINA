@@ -272,7 +272,7 @@ struct Rsv_ReqInfo{
 };
 
 struct RsvInfo{
-    cEntry entry;
+    list<cEntry> entries;
 };
 
 struct AckInfo{

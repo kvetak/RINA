@@ -198,10 +198,14 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
     else if(strcmp("MonitorMsg", msg->getName())==0){
         MultipathStructs::MonitorMsg * MonMsg = dynamic_cast<MultipathStructs::MonitorMsg *>(msg);
         if(MonMsg->type.compare("RSV")==0){
-            fwd->setFlow(MonMsg->rsvInfo.entry);
+            for(auto it : MonMsg->rsvInfo.entries){
+                fwd->setFlow(it);
+            }
         }
         else if(MonMsg->type.compare("FREE")==0){
-            fwd->removeFlow(MonMsg->rsvInfo.entry);
+            for(auto it : MonMsg->rsvInfo.entries){
+                fwd->removeFlow(it);
+            }
         }
         else if(MonMsg->type.compare("MONITORING_CONFIG")==0){
             if(MonMsg->monConfigInfo.SchedulerMonFrec != SchedulerMonFrec){
