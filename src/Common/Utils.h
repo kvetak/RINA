@@ -64,6 +64,17 @@ bool isPrefix(std::string prefix, std::string s);
 void setPolicyDisplayString(cModule* mod, const char* str = nullptr);
 
 /**
+ * A convenience function for interconnecting two modules.
+ *
+ * @param m1 first module
+ * @param m2 second module
+ * @param n1 first module gate name
+ * @param n2 second module gate name
+ */
+void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2);
+
+
+/**
  * A getModuleByPath wrapper accepting individual modules in the path as variables.
  * e.g. TMod* newMod = (TMod*)parentMod->getModuleByPath("^.^.a.b")
  *      ==
