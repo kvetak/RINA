@@ -139,6 +139,12 @@ namespace Infection {
         double unitRate = linkRate * usage;
 
         cXMLElementList flowsXML = Xml->getChildrenByTagName("flow");
+
+        double startSimulation = par("iniTime").doubleValue();
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<double> generator(startSimulation, startSimulation+1.0);
+
         for(cXMLElement * n : flowsXML) {
             string DST = "";
             string QoS = VAL_MGMTQOSID;
@@ -185,6 +191,12 @@ namespace Infection {
             if (end<start){
                 end=start;
             }
+
+            if(par("randomIni").boolValue()==true){
+
+                start = generator(gen);
+            }
+
             Flow * f = new Flow(start, end, DIF, SRC, DST, QoS, unitRate*rate, pduS, pduSv, N, rec, SrcCepId);
 
             flows.push_back(f);

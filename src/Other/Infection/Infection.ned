@@ -21,6 +21,7 @@ simple Infection {
         double markIniT = default(12);
         double markFinT = default(18);
         
+        bool randomIni = default(false);
         
     gates:
         inout g;

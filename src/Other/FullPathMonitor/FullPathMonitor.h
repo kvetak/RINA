@@ -69,15 +69,15 @@ namespace FullPathMonitor {
 
 
         struct orderedList{
-            list<PathInfo*> List;
+            list<PathInfo> List;
 
-            void addElement (PathInfo* entry){
+            void addElement (PathInfo entry){
                 if (List.empty()){
                     List.push_front(entry);
                 }
                 else{
-                    for(list<PathInfo*>::iterator it=List.begin(); it!=List.end(); it++){
-                        if(entry->BW >= (*it)->BW){
+                    for(list<PathInfo>::iterator it=List.begin(); it!=List.end(); it++){
+                        if(entry.BW >= (it)->BW){
                             List.insert(it, entry);
                             break;
                         }
@@ -85,9 +85,9 @@ namespace FullPathMonitor {
                     List.push_back(entry);
                 }
             }
-            void erraseElement (PathInfo* entry){
-                for(list<PathInfo*>::iterator it=List.begin(); it!=List.end(); it++){
-                    if(entry == (*it)){
+            void erraseElement (PathInfo entry){
+                for(list<PathInfo>::iterator it=List.begin(); it!=List.end(); it++){
+                    if(entry.flowID == it->flowID){
                         List.erase(it);
                     }
                 }

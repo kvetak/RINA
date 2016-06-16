@@ -38,6 +38,7 @@ namespace FullPathMonitor {
 
         if(path->steps.size()==0){
             vector<PathInfo> posiblePaths;
+            vector<PathInfo> correctPaths;
             posiblePaths.push_back(PathInfo());
             posiblePaths.back().BW=QoS_BWreq[qos];
             posiblePaths.back().src=nodeIdOrg;
@@ -50,22 +51,22 @@ namespace FullPathMonitor {
             for(auto it : posiblePaths){
                 if (it.ok==true){
                     foundedPath=true;
-                    break;
+                    correctPaths.push_back(it);
                 }
             }
             if (foundedPath==true){
-                for(unsigned i=0; i < posiblePaths.begin()->steps.size(); i++){
+                for(unsigned i=0; i < correctPaths.begin()->steps.size(); i++){
                     vector<RMTPort *> steps;
-                    for(auto it : posiblePaths){
+                    for(auto it : correctPaths){
                         steps.push_back(it.steps[i].port);
                     }
-                    for(unsigned j=0; j < posiblePaths.size(); j++){
-                        if(numberOfAppearances(steps,posiblePaths[j].steps[i].port)){
-                            if(auxweightTotal[j]>posiblePaths[j].steps[i].TotalWeight){
-                                auxweightTotal[j]=posiblePaths[j].steps[i].TotalWeight;
+                    for(unsigned j=0; j < correctPaths.size(); j++){
+                        if(numberOfAppearances(steps,correctPaths[j].steps[i].port)){
+                            if(auxweightTotal[j]>correctPaths[j].steps[i].TotalWeight){
+                                auxweightTotal[j]=correctPaths[j].steps[i].TotalWeight;
                             }
-                            if(auxweightQoS[j]>posiblePaths[j].steps[i].QoSWeight){
-                                auxweightQoS[j]=posiblePaths[j].steps[i].QoSWeight;
+                            if(auxweightQoS[j]>correctPaths[j].steps[i].QoSWeight){
+                                auxweightQoS[j]=correctPaths[j].steps[i].QoSWeight;
                             }
                         }
                     }
@@ -73,14 +74,14 @@ namespace FullPathMonitor {
 
                 vector<double> finalweight;
                 double sum =0;
-                for(unsigned i=0; i < posiblePaths.size(); i++){
+                for(unsigned i=0; i < correctPaths.size(); i++){
                     finalweight.push_back(auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
                     sum = sum + (auxweightQoS[i]*QoSFactor + auxweightTotal[i]*TotalFactor);
                 }
                 for (auto it : finalweight){
                     it=it/sum;
                 }
-                PathInfo auxPath = posiblePaths[WeightedRandom(finalweight)];
+                PathInfo auxPath = correctPaths[WeightedRandom(finalweight)];
                 path->ok=auxPath.ok;
                 path->steps=auxPath.steps;
                 path->qos=qos;
@@ -88,7 +89,7 @@ namespace FullPathMonitor {
                 path->src = nodeIdOrg;
                 path->dst = nodeIdDst;
                 path->flowID = flowId;
-                orderedCache.addElement(path);
+                orderedCache.addElement(*path);
 
 
                 MonitorMsg * ackMsg = new MonitorMsg();
@@ -130,14 +131,30 @@ namespace FullPathMonitor {
                     path->src = nodeIdOrg;
                     path->dst = nodeIdDst;
                     path->flowID = flowId;
-                    orderedCache.addElement(path);
-
+                    orderedCache.addElement(*path);
                     MonitorMsg * ackMsg = new MonitorMsg();
                     ackMsg->setName("MonitorMsg");
                     ackMsg->type="ACK";
                     ackMsg->ackInfo.flowID=flowId;
                     take(ackMsg);
                     sendDirect(ackMsg, requestModule, "radioIn");
+                    for(auto it : path->steps){
+                        BWControl.addBW(it.port, qos, QoS_BWreq[qos]);
+                        MonitorMsg * monMsg = new MonitorMsg();
+                        cEntry entry;
+                        entry.QoS=qos;
+                        entry.SrcCepId=flowId;
+                        entry.dst=nodeIdDst;
+                        entry.p=it.port;
+                        entry.reqBW=QoS_BWreq[qos];
+                        entry.t=simTime();
+                        monMsg->setName("MonitorMsg");
+                        monMsg->type="RSV";
+                        monMsg->rsvInfo.entries.push_back(entry);
+                        take(monMsg);
+                        cModule *targetModule = getModuleByPath(nodeDataBase[it.nodeID].nodePath.c_str());
+                        sendDirect(monMsg, targetModule, "radioIn");
+                    }
                 }
                 else{
                     MonitorMsg * nackMsg = new MonitorMsg();
@@ -196,15 +213,16 @@ namespace FullPathMonitor {
         candidatesReroute=orderCandidatebyJam(candidatesjams, candidatesReroute);
 
         for(unsigned i=0; i < candidatesReroute.size(); i++){
+            orderedList listAux = orderedCache;
             for(unsigned j=0; j < candidatesReroute[i].steps.size(); j++){
                 if(candidatesReroute[i].steps[j].freeBW < QoS_BWreq[qos]){//Necessary to reroute
-                    for(auto it : orderedCache.List){
-                        if(it->steps[j].port==candidatesReroute[i].steps[j].port){//Try to reroute that flow
+                    for(auto it : listAux.List){
+                        if(it.steps[j].port==candidatesReroute[i].steps[j].port){//Try to reroute that flow
                             bool foundedPath = false;
                             vector<PathInfo> posiblePaths;
                             posiblePaths.push_back(PathInfo());
-                            RemoveBW(it->steps, BWaux, it->qos);
-                            recursivePathFinder(it->src, it->dst, it->qos, it->flowID, posiblePaths, BWaux);
+                            RemoveBW(it.steps, BWaux, it.qos);
+                            recursivePathFinder(it.src, it.dst, it.qos, it.flowID, posiblePaths, BWaux);
                             for(unsigned int k = 0; k < posiblePaths.size(); k++){
                                 if (posiblePaths[k].steps.size()>i)//cambiar i por j
                                 {
@@ -221,22 +239,20 @@ namespace FullPathMonitor {
                             }
                             if (foundedPath == true){//posible to reroute
                                 RerouteInfo newchange;
-                                newchange.pathOrg=it->steps;
-                                newchange.pathDst=selectBetterReroute(*it, posiblePaths).steps;
-                                newchange.dst=it->dst;
-                                newchange.flowID=it->flowID;
-                                newchange.qos=it->qos;
-                                newchange.src=it->src;
-                                if (newchange.pathOrg.size()<6){
-                                    int algo;
-                                }
+                                newchange.pathOrg=it.steps;
+                                newchange.pathDst=selectBetterReroute(it, posiblePaths).steps;
+                                newchange.dst=it.dst;
+                                newchange.flowID=it.flowID;
+                                newchange.qos=it.qos;
+                                newchange.src=it.src;
+                                it.steps=newchange.pathDst;
                                 if(changeList.count(newchange.flowID)==0){
                                     changeList[newchange.flowID]=newchange;
                                 }
                                 else{
                                     changeList[newchange.flowID].pathDst=newchange.pathDst;
                                 }
-                                AddBW(newchange.pathDst,BWaux,it->qos);
+                                AddBW(newchange.pathDst,BWaux,it.qos);
                                 if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                                         BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) > QoS_BWreq[qos]){
                                     break;//enought BW
@@ -244,7 +260,7 @@ namespace FullPathMonitor {
                                 posiblePaths.clear();
                             }
                             else{
-                                AddBW(it->steps,BWaux,it->qos);
+                                AddBW(it.steps,BWaux,it.qos);
                             }
                         }
                     }
@@ -252,7 +268,6 @@ namespace FullPathMonitor {
                             BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) < QoS_BWreq[qos]){
                         RemoveBW(finalPath.steps, BWaux, qos);
                         finalPath.steps.clear();
-                        break;
                     }
                     else{
                         BWaux.addBW(candidatesReroute[i].steps[j].port, qos, QoS_BWreq[qos]);
@@ -264,10 +279,11 @@ namespace FullPathMonitor {
                     finalPath.steps.push_back(candidatesReroute[i].steps[j]);
                 }
             }
-            if (finalPath.steps.size()>0)
+            if (finalPath.steps.size()==candidatesReroute[i].steps.size())
             {
                 BWControl=BWaux;
                 finalPath.ok=true;
+                orderedCache=listAux;
                 ApplyChanges(changeList);
                 return finalPath;
             }
@@ -282,6 +298,7 @@ namespace FullPathMonitor {
         map<string , list<cEntry>> addedEntries;
         map<string , list<cEntry>> removedEntries;
         for(auto it:changeList){
+            cache[make_tuple(it.second.src, it.second.dst, it.second.flowID)].steps=it.second.pathDst;
             for(unsigned i =0; i< it.second.pathOrg.size(); i++)
             {
                 if(it.second.pathOrg[i].port != it.second.pathDst[i].port){
@@ -520,7 +537,7 @@ namespace FullPathMonitor {
             cModule *targetModule = getModuleByPath(nodeDataBase[it.nodeID].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");
         }
-        orderedCache.erraseElement(&cache[make_tuple(nodeIdOrg, nodeIdDst, flowId)]);
+        orderedCache.erraseElement(cache[make_tuple(nodeIdOrg, nodeIdDst, flowId)]);
         cache.erase(make_tuple(nodeIdOrg, nodeIdDst, flowId));
 
     }
@@ -592,21 +609,25 @@ namespace FullPathMonitor {
     }
     void FullPathMonitor::finish(){
 
-        map<RMTPort *, long> portUsage;
+        map<RMTPort *, map<string, int>> portUsage;
         for(auto it : cache){
             for(auto it2 : it.second.steps){
-                if(portUsage.count(it2.port)>0){
-                    portUsage[it2.port] = portUsage[it2.port] + QoS_BWreq[it.second.qos];
+                if((portUsage.count(it2.port)>0)and(portUsage[it2.port].count(it.second.qos)>0)){
+                    portUsage[it2.port][it.second.qos] = portUsage[it2.port][it.second.qos] + 1;
                 }
                 else{
-                    portUsage[it2.port] = QoS_BWreq[it.second.qos];
+                    portUsage[it2.port][it.second.qos] = 1;
                 }
             }
         }
         EV << "-----------------" << endl;
         EV << "Cache table::" << endl;
         for(auto it : portUsage){
-            EV << it.first->getFullPath()<<" : "<<it.second<<" bps"<<endl;
+            EV << it.first->getFullPath()<<endl;
+            for(auto it2 : it.second){
+                EV<<"QoS: " << it2.first <<" "<<it2.second<< " flows" << endl;
+            }
+            EV<<endl;
         }
         EV << "Rejected Flows::" << endl;
         for(auto it : dropedFlows){
