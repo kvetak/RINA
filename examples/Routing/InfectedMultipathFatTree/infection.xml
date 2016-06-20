@@ -57,15 +57,88 @@
 	</InfectionNode>	
 	
 	<InfectionNode id="TOR1">
-		<flow  dstAddr = "AS.1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.3" SrcCepId = "99" />
-		<flow  dstAddr = "AS.2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.9" SrcCepId = "98" />
+		<flow  dstAddr = "AS.1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.3" SrcCepId = "999" />
+		<flow  dstAddr = "AS.2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.9" SrcCepId = "998" />
 	</InfectionNode>
 	
 	<InfectionNode id="AS1">
-		<flow  dstAddr = "AS.5" qos = "4" pduSize = "500"  pduSizeVar = "0" rate = "0.8" SrcCepId = "97" />
+		<flow  dstAddr = "AS.5" qos = "4" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "997" />
 	</InfectionNode>
 	
 	<InfectionNode id="AS2">
-		<flow  dstAddr = "AS.6" qos = "4" pduSize = "500"  pduSizeVar = "0" rate = "0.8" SrcCepId = "96" />
+		<flow  dstAddr = "AS.6" qos = "4" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "996" />
+	</InfectionNode>
+	
+	<InfectionNode id="Server21">
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.4" SrcCepId = "51" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "52" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "53" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "54" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "55" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "56" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "57" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "58" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "59" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "60" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "61" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "62" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "63" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "64" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "65" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "66" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "67" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "68" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "69" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "70" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "71" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "72" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "73" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "74" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S1" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "75" />
+	</InfectionNode>
+
+	<InfectionNode id="Server22">
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "1" pduSize = "500"  pduSizeVar = "0" rate = "0.4" SrcCepId = "76" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "77" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "78" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "79" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "2" pduSize = "500"  pduSizeVar = "0" rate = "0.1" SrcCepId = "80" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "81" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "82" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "83" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "84" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "85" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "86" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "87" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "88" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "89" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "90" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "91" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "92" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "93" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "94" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "95" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "96" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "97" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "98" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "99" />
+		<flow  startTime = "30" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "100" />
+		
+	</InfectionNode>
+	
+	<InfectionNode id="Server31">
+		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "995" />
+	</InfectionNode>
+	
+	<InfectionNode id="Server32">
+		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "994" />
+	</InfectionNode>
+	
+	<InfectionNode id="Server41">
+		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "993" />
+	</InfectionNode>
+		
+	<InfectionNode id="Server42">
+		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "992" />
 	</InfectionNode>
 </Infection>

@@ -214,6 +214,8 @@ namespace FullPathMonitor {
 
         for(unsigned i=0; i < candidatesReroute.size(); i++){
             orderedList listAux = orderedCache;
+            BWaux = BWControl;
+            finalPath.steps.clear();
             for(unsigned j=0; j < candidatesReroute[i].steps.size(); j++){
                 if(candidatesReroute[i].steps[j].freeBW < QoS_BWreq[qos]){//Necessary to reroute
                     for(auto it : listAux.List){
@@ -266,8 +268,7 @@ namespace FullPathMonitor {
                     }
                     if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                             BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) < QoS_BWreq[qos]){
-                        RemoveBW(finalPath.steps, BWaux, qos);
-                        finalPath.steps.clear();
+                        break;
                     }
                     else{
                         BWaux.addBW(candidatesReroute[i].steps[j].port, qos, QoS_BWreq[qos]);
