@@ -82,7 +82,7 @@ struct BWcontrol {
 
         for (auto it : BW[port]) {
 
-            total += it.second.bw;
+            total = total + it.second.bw;
 
         }
 
@@ -98,13 +98,13 @@ struct BWcontrol {
 
     void addBW(RMTPort * port, string QoS, int bw) {
 
-        BW[port][QoS].bw += bw;
+        BW[port][QoS].bw = BW[port][QoS].bw + bw;
 
     }
 
     void removeBW(RMTPort * port, string QoS, int bw) {
 
-        BW[port][QoS].bw -= bw;
+        BW[port][QoS].bw = BW[port][QoS].bw - bw;
 
     }
 

@@ -79,7 +79,7 @@ namespace FullPathMonitor {
                     for(list<PathInfo>::iterator it=List.begin(); it!=List.end(); it++){
                         if(entry.BW >= (it)->BW){
                             List.insert(it, entry);
-                            break;
+                            return;
                         }
                     }
                     List.push_back(entry);

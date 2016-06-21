@@ -216,6 +216,7 @@ namespace FullPathMonitor {
             orderedList listAux = orderedCache;
             BWaux = BWControl;
             finalPath.steps.clear();
+            changeList.clear();
             for(unsigned j=0; j < candidatesReroute[i].steps.size(); j++){
                 if(candidatesReroute[i].steps[j].freeBW < QoS_BWreq[qos]){//Necessary to reroute
                     for(auto it : listAux.List){
@@ -226,7 +227,7 @@ namespace FullPathMonitor {
                             RemoveBW(it.steps, BWaux, it.qos);
                             recursivePathFinder(it.src, it.dst, it.qos, it.flowID, posiblePaths, BWaux);
                             for(unsigned int k = 0; k < posiblePaths.size(); k++){
-                                if (posiblePaths[k].steps.size()>i)//cambiar i por j
+                                if (posiblePaths[k].steps.size()>j)//cambiar i por j
                                 {
                                     if(posiblePaths[k].steps[j].port==candidatesReroute[i].steps[j].port)
                                     {
@@ -268,6 +269,7 @@ namespace FullPathMonitor {
                     }
                     if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                             BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) < QoS_BWreq[qos]){
+                        finalPath.steps.clear();
                         break;
                     }
                     else{
@@ -280,7 +282,7 @@ namespace FullPathMonitor {
                     finalPath.steps.push_back(candidatesReroute[i].steps[j]);
                 }
             }
-            if (finalPath.steps.size()==candidatesReroute[i].steps.size())
+            if (finalPath.steps.size()>0)
             {
                 BWControl=BWaux;
                 finalPath.ok=true;

@@ -271,8 +271,8 @@ namespace Infection {
 
                 return;
             }
-            delete msg;
         }
+        delete msg;
     }
 
     void Infection::finish() {
