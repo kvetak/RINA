@@ -127,18 +127,18 @@
 	</InfectionNode>
 	
 	<InfectionNode id="Server31">
-		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "995" />
+		<flow  startTime = "50" endTime = "20" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "995" />
 	</InfectionNode>
 	
 	<InfectionNode id="Server32">
-		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "994" />
+		<flow  startTime = "50" endTime = "20" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "994" />
 	</InfectionNode>
 	
 	<InfectionNode id="Server41">
-		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "993" />
+		<flow  startTime = "50" endTime = "20" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "993" />
 	</InfectionNode>
 		
 	<InfectionNode id="Server42">
-		<flow  startTime = "50" endTime = "32" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "992" />
+		<flow  startTime = "50" endTime = "20" dstAddr = "R3.S2" qos = "3" pduSize = "500"  pduSizeVar = "0" rate = "0.01" SrcCepId = "992" />
 	</InfectionNode>
 </Infection>

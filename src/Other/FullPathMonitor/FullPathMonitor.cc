@@ -139,7 +139,6 @@ namespace FullPathMonitor {
                     take(ackMsg);
                     sendDirect(ackMsg, requestModule, "radioIn");
                     for(auto it : path->steps){
-                        BWControl.addBW(it.port, qos, QoS_BWreq[qos]);
                         MonitorMsg * monMsg = new MonitorMsg();
                         cEntry entry;
                         entry.QoS=qos;
