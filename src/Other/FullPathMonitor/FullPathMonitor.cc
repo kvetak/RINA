@@ -124,6 +124,7 @@ namespace FullPathMonitor {
                 recursivePathFinder(nodeIdOrg, nodeIdDst, "rerouteQoS", flowId, reroutePaths, BWControl);
                 PathInfo auxPath = reroute(reroutePaths, nodeIdOrg, nodeIdDst, qos, flowId);
                 if(auxPath.ok==true){
+                    numberOfReroutes++;
                     path->ok=auxPath.ok;
                     path->steps=auxPath.steps;
                     path->qos=qos;
@@ -257,13 +258,14 @@ namespace FullPathMonitor {
                                 AddBW(newchange.pathDst,BWaux,it.qos);
                                 if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                                         BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) > QoS_BWreq[qos]){
+                                    posiblePaths.clear();
                                     break;//enought BW
                                 }
-                                posiblePaths.clear();
                             }
                             else{
                                 AddBW(it.steps,BWaux,it.qos);
                             }
+                            posiblePaths.clear();
                         }
                     }
                     if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
@@ -319,24 +321,22 @@ namespace FullPathMonitor {
                 }
             }
         }
-        for(auto it: removedEntries){
+        for(auto it2: removedEntries){
             MonitorMsg * monMsg = new MonitorMsg();
-            cEntry entry;
             monMsg->setName("MonitorMsg");
             monMsg->type="FREE";
-            monMsg->rsvInfo.entries=it.second;
+            monMsg->rsvInfo.entries=it2.second;
             take(monMsg);
-            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            cModule *targetModule = getModuleByPath(nodeDataBase[it2.first].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");
         }
-        for(auto it: removedEntries){
+        for(auto it2: addedEntries){
             MonitorMsg * monMsg = new MonitorMsg();
-            cEntry entry;
             monMsg->setName("MonitorMsg");
             monMsg->type="RSV";
-            monMsg->rsvInfo.entries=it.second;
+            monMsg->rsvInfo.entries=it2.second;
             take(monMsg);
-            cModule *targetModule = getModuleByPath(nodeDataBase[it.first].nodePath.c_str());
+            cModule *targetModule = getModuleByPath(nodeDataBase[it2.first].nodePath.c_str());
             sendDirect(monMsg, targetModule, "radioIn");
         }
     }
@@ -612,30 +612,44 @@ namespace FullPathMonitor {
     void FullPathMonitor::finish(){
 
         map<RMTPort *, map<string, int>> portUsage;
-        for(auto it : cache){
-            for(auto it2 : it.second.steps){
-                if((portUsage.count(it2.port)>0)and(portUsage[it2.port].count(it.second.qos)>0)){
-                    portUsage[it2.port][it.second.qos] = portUsage[it2.port][it.second.qos] + 1;
+        for(auto it : orderedCache.List){
+            for(auto it2 : it.steps){
+                if((portUsage.count(it2.port)>0)and(portUsage[it2.port].count(it.qos)>0)){
+                    portUsage[it2.port][it.qos] = portUsage[it2.port][it.qos] + 1;
                 }
                 else{
-                    portUsage[it2.port][it.second.qos] = 1;
+                    portUsage[it2.port][it.qos] = 1;
                 }
             }
         }
         EV << "-----------------" << endl;
         EV << "Cache table::" << endl;
         for(auto it : portUsage){
+            float sum =0.0;
             EV << it.first->getFullPath()<<endl;
             for(auto it2 : it.second){
                 EV<<"QoS: " << it2.first <<" "<<it2.second<< " flows" << endl;
+                if(it2.first == "1"){
+                    sum = sum + (0.4*(float)it2.second);
+                }
+                else if(it2.first == "2"){
+                    sum = sum + (0.1*(float)it2.second);
+                }
+                else if(it2.first == "3"){
+                    sum = sum + (0.01*(float)it2.second);
+                }
             }
+            EV<<endl;
+            EV<< "Total Usage: " << sum << endl;
             EV<<endl;
         }
         EV << "Rejected Flows::" << endl;
         for(auto it : dropedFlows){
             EV << "Flow : " << it.first <<"\tTime: "<< it.second.str()<<endl;
         }
-
+        EV <<endl;
+        EV <<"Number of Successful reroutes: "<< numberOfReroutes<<endl;
+        EV << "-----------------" << endl;
 
     }
 }

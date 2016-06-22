@@ -94,7 +94,7 @@ namespace FullPathMonitor {
             }
         };
 
-
+        unsigned numberOfReroutes = 0;
         double QoSFactor;
         double TotalFactor;
         orderedList orderedCache;
