@@ -123,7 +123,7 @@ namespace FullPathMonitor {
                 reroutePaths.push_back(PathInfo());
                 recursivePathFinder(nodeIdOrg, nodeIdDst, "rerouteQoS", flowId, reroutePaths, BWControl);
                 PathInfo auxPath = reroute(reroutePaths, nodeIdOrg, nodeIdDst, qos, flowId);
-                if(auxPath.ok==true){
+                if((auxPath.ok==true)and(par("Reroute").boolValue()==true)){
                     numberOfReroutes++;
                     path->ok=auxPath.ok;
                     path->steps=auxPath.steps;
@@ -219,13 +219,13 @@ namespace FullPathMonitor {
             changeList.clear();
             for(unsigned j=0; j < candidatesReroute[i].steps.size(); j++){
                 if(candidatesReroute[i].steps[j].freeBW < QoS_BWreq[qos]){//Necessary to reroute
-                    for(auto it : listAux.List){
-                        if(it.steps[j].port==candidatesReroute[i].steps[j].port){//Try to reroute that flow
+                    for(unsigned k=0; k<listAux.List.size(); k++){
+                        if(listAux.List[k].steps[j].port==candidatesReroute[i].steps[j].port){//Try to reroute that flow
                             bool foundedPath = false;
                             vector<PathInfo> posiblePaths;
                             posiblePaths.push_back(PathInfo());
-                            RemoveBW(it.steps, BWaux, it.qos);
-                            recursivePathFinder(it.src, it.dst, it.qos, it.flowID, posiblePaths, BWaux);
+                            RemoveBW(listAux.List[k].steps, BWaux, listAux.List[k].qos);
+                            recursivePathFinder(listAux.List[k].src, listAux.List[k].dst, listAux.List[k].qos, listAux.List[k].flowID, posiblePaths, BWaux);
                             for(unsigned int k = 0; k < posiblePaths.size(); k++){
                                 if (posiblePaths[k].steps.size()>j)//cambiar i por j
                                 {
@@ -242,20 +242,20 @@ namespace FullPathMonitor {
                             }
                             if (foundedPath == true){//posible to reroute
                                 RerouteInfo newchange;
-                                newchange.pathOrg=it.steps;
-                                newchange.pathDst=selectBetterReroute(it, posiblePaths).steps;
-                                newchange.dst=it.dst;
-                                newchange.flowID=it.flowID;
-                                newchange.qos=it.qos;
-                                newchange.src=it.src;
-                                it.steps=newchange.pathDst;
+                                newchange.pathOrg=listAux.List[k].steps;
+                                newchange.pathDst=selectBetterReroute(listAux.List[k], posiblePaths).steps;
+                                newchange.dst=listAux.List[k].dst;
+                                newchange.flowID=listAux.List[k].flowID;
+                                newchange.qos=listAux.List[k].qos;
+                                newchange.src=listAux.List[k].src;
+                                listAux.List[k].steps=newchange.pathDst;
                                 if(changeList.count(newchange.flowID)==0){
                                     changeList[newchange.flowID]=newchange;
                                 }
                                 else{
                                     changeList[newchange.flowID].pathDst=newchange.pathDst;
                                 }
-                                AddBW(newchange.pathDst,BWaux,it.qos);
+                                AddBW(newchange.pathDst,BWaux,listAux.List[k].qos);
                                 if((nodeDataBase[candidatesReroute[i].steps[j].nodeID].findEntrybyPort(candidatesReroute[i].steps[j].port)->BW-
                                         BWaux.getTotalBW(candidatesReroute[i].steps[j].port)) > QoS_BWreq[qos]){
                                     posiblePaths.clear();
@@ -263,7 +263,7 @@ namespace FullPathMonitor {
                                 }
                             }
                             else{
-                                AddBW(it.steps,BWaux,it.qos);
+                                AddBW(listAux.List[k].steps,BWaux,listAux.List[k].qos);
                             }
                             posiblePaths.clear();
                         }

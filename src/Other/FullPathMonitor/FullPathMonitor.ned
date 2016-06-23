@@ -28,6 +28,7 @@ simple FullPathMonitor{
     	double SchedulerMonThres = default(0.05);
     	double QoSFactor = default(0.5);
     	double TotalFactor = default(0.5);
+    	bool Reroute = default(true);
         
 	gates:
         input radioIn @directIn;
