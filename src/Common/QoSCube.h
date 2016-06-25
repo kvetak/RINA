@@ -172,6 +172,11 @@ class QoSCube {
      */
     EFCPPolicySet* efcpPolicies;
 
+    /**
+     * @brief Attribute holding resiliency information, see PRISTINE D4.3 for more
+     */
+    int resiliencyFactor;
+
   public:
     /**
      * @brief Constructor of QoSCube with undefined values
@@ -430,6 +435,22 @@ class QoSCube {
      * @return
      */
     bool isDTCPNeeded() const;
+
+    /**
+     * @brief Gets Resiliency Factor parameter
+     * @param costBits A new value measured in $/bit
+     */
+    int getResiliencyFactor() const {
+        return resiliencyFactor;
+    }
+
+    /**
+     * @brief Sets Resiliency Factor  parameter
+     * @param resiliencyFactor A new value measured in $/bit
+     */
+    void setResiliencyFactor(int resiliencyFactor) {
+        this->resiliencyFactor = resiliencyFactor;
+    }
 
     /**
      * @brief Prints QoSCube information as string

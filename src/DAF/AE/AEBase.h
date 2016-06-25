@@ -53,7 +53,7 @@ extern const char* PAR_JITTER;
 extern const char* PAR_COSTTIME;
 extern const char* PAR_COSTBITS;
 extern const char* PAR_ATIME;
-
+extern const char* PAR_RESILIENCYFACTOR;
 
 enum CDAPConnectionState {NIL,
     FLOW_PENDING, CONNECTION_PENDING,

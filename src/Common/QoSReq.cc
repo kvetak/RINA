@@ -460,6 +460,12 @@ std::string QoSReq::info() const {
     else
         os << this->getCostBits() << " $/Mb";
 
+    os << "\n   resiliency factor = ";
+    if ( this->getResiliencyFactor() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getResiliencyFactor() << " usecs";
+
     return os.str();
 }
 

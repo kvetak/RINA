@@ -154,6 +154,7 @@ extern const char* ELEM_RXON;
 extern const char* ELEM_WINON;
 extern const char* ELEM_RATEON;
 extern const char* ELEM_EFCPPOL;
+extern const char* ELEM_RESILIENCYFACTOR;
 
 //Values
 extern const int    VAL_QOSPARDONOTCARE;

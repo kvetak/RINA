@@ -28,11 +28,19 @@ const char*   ELEM_PEER         = "Peer";
 
 Define_Module(SearchTable);
 
+void SearchTable::updateDisplayString() {
+    std::ostringstream description;
+    description << SrchTable.size() << " entries";
+    this->getDisplayString().setTagArg("t", 0, description.str().c_str());
+    this->getDisplayString().setTagArg("t", 1, "t");
+}
+
 void SearchTable::initialize()
 {
     //Parse XML config
     parseConfig(par(PAR_CONFIGDATA).xmlValue());
 
+    updateDisplayString();
     //Init watchers
     WATCH_LIST(SrchTable);
 }

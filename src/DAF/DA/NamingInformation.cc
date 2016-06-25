@@ -33,6 +33,7 @@ void NamingInformation::initialize()
     //Parse XML config
     parseConfig(par(PAR_CONFIGDATA).xmlValue());
 
+    udateDisplayString();
     //Init watchers
     WATCH_LIST(NamingInfoTable);
 }
@@ -139,4 +140,12 @@ void NamingInformation::parseConfig(cXMLElement* config) {
             addNewSynonym(newapn, APN(n->getAttribute(ATTR_APN)));
         }
     }
+}
+
+void NamingInformation::udateDisplayString() {
+    //Update display string
+    std::ostringstream description;
+    description << NamingInfoTable.size() << " entries";
+    this->getDisplayString().setTagArg("t", 0, description.str().c_str());
+    this->getDisplayString().setTagArg("t", 1, "t");
 }
