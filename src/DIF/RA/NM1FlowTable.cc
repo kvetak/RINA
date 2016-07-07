@@ -47,8 +47,10 @@ void NM1FlowTable::insert(Flow* flow, FABase* fa, RMTPort* port, std::string gat
 
 NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
 {
+    //EV << "search "<< flow->getDstAddr()<<endl;
     for(auto& item : flows)
     {
+      //  EV << " \t"<< item.getFlow()->getDstAddr()<<endl;
         if (item.getFlow() == flow)
         {
             return &item;
@@ -60,8 +62,11 @@ NM1FlowTableItem* NM1FlowTable::lookup(Flow* flow)
 NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(const std::string& addr,
         const std::string& qosId)
 {
+   // EV << "search A "<< addr << " + " << qosId<<endl;
     for (auto& item : flows)
     {
+      /*  EV << " \t"<< item.getFlow()->getDstApni().getApn().getName()
+                << " + "  << item.getFlow()->getConId().getQoSId() <<endl;*/
         if ((item.getFlow()->getDstApni().getApn().getName() == addr)
                 && !item.getFlow()->getConId().getQoSId().compare(qosId))
         {
@@ -74,8 +79,11 @@ NM1FlowTableItem* NM1FlowTable::findFlowByDstApni(const std::string& addr,
 NM1FlowTableItem* NM1FlowTable::findFlowByDstAddr(const std::string& addr,
         const std::string& qosId)
 {
+  //  EV << "search B "<< addr << " + " << qosId<<endl;
     for(auto& item : flows)
     {
+      /*  EV << " \t"<< item.getFlow()->getDstApni().getApn().getName()
+                << " + "  << item.getFlow()->getConId().getQoSId() <<endl;*/
         if ((item.getFlow()->getDstAddr().getApn().getName() == addr) &&
              !item.getFlow()->getConId().getQoSId().compare(qosId) )
         {

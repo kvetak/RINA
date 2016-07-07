@@ -433,13 +433,13 @@ void RMT::relayPDUToPort(PDU* pdu)
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
-
+/*
         std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
            << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
-
+*/
         invalidPDUs.push_back(pdu);
     }
 

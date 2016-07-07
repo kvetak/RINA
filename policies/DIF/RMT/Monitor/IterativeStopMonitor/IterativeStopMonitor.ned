@@ -33,4 +33,6 @@ simple IterativeStopMonitor like IntRMTQMonitorPolicy
         
         int stopAt = default(3);
         int restartAt = default(1);
+        
+        bool printAtEnd = default(false);
 }

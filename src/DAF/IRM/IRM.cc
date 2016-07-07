@@ -191,6 +191,7 @@ bool IRM::receiveAllocationRequestFromAe(Flow* flow) {
 
     if (fab) {
         //signalizeAllocateRequest(fl);
+//        std::cout << "IRM::receiveAllocationRequestFromAe"<<endl;
         status = fab->receiveAllocateRequest(flow);
         //If AllocationRequest NOT ended by creating connections
         if (!status)
@@ -241,6 +242,7 @@ void IRM::newFlow(Flow* flow) {
     //Ask DA which IPC to use to reach dst App
     const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
     if (ad == NULL) {
+        EV << "In IRM"<<endl;
         EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
         return;
     }

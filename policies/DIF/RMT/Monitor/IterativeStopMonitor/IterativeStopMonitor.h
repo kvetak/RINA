@@ -38,6 +38,7 @@ using namespace std;
     class IterativeStopMonitor : public RMTQMonitorBase {
         public:
             void onPolicyInit();
+            void finish();
             void postQueueCreation(RMTQueue* queue);
             void preQueueRemoval(RMTQueue* queue);
 
@@ -49,6 +50,8 @@ using namespace std;
             int stopAt, restartAt;
 
             simsignal_t stopSignal, startSignal;
+
+            long recData;
     };
 
 }

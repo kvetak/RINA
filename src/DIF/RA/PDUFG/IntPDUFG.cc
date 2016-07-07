@@ -40,7 +40,7 @@ void IntPDUFG::initialize(){
 }
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
-    EV << "Search for " << destination << " with QoS "<< qos << endl;
+    //EV << "Search for " << destination << " with QoS "<< qos << endl;
     if(ipcAddr.getDifName().getName() != destination.getDifName().getName()) {
         EV << "Invalid search at "<< ipcAddr << endl;
     } else {
@@ -52,12 +52,14 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
                     PDUFGNeighbor * e = (*it2);
                     // Found the port used for the forwarding table; so it's the next neighbor.
                     if(p == e->getPort()){
-                        EV<< "Found "<< e->getDestAddr() << " -> "<< e->getPort()->getFullPath()<<endl;
+                 //       EV<< "Found "<< e->getDestAddr() << " -> "<< e->getPort()->getFullPath()<<endl;
                             return e;
                     }
                 }
             }
         }
+       // std::cout << " At "<< getFullPath()<<endl;
+        //std::cout << "Not found"<<endl;
         EV<< "Not found"<<endl;
     }
     return nullptr;

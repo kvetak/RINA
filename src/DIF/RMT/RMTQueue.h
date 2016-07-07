@@ -137,6 +137,10 @@ class RMTQueue : public cSimpleModule
     void setFlow(Flow *);
     const Flow* getFlow() const;
 
+
+    cPacket* dropFirst();
+    cPacket* dropLast();
+
   protected:
     virtual void initialize();
     virtual void finish();
@@ -160,7 +164,6 @@ class RMTQueue : public cSimpleModule
     void setType(queueType type);
 
     void enqueuePDU(cPacket* pdu);
-    cPacket* dropLast();
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;
