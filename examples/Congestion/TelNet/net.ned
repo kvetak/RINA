@@ -1,48 +1,48 @@
 package rina.examples.Congestion.TelNet;
 
 import ned.DatarateChannel;
-import rina.src.Other.Infection.T2InfectedRouter;
-import rina.src.Other.Infection.IListener;
+import rina.src.Other.NetTest.NetTestRouter;
+import rina.src.Other.NetTest.NetTestListener;
 import rina.src.DAF.AE.AEConstant.AEConstantListener;
 
 network net {
 submodules:
-N0:T2InfectedRouter { @display("p=50,150"); }
-N1:T2InfectedRouter { @display("p=450,80"); }
-N2:T2InfectedRouter { @display("p=780,240"); }
-N3:T2InfectedRouter { @display("p=250,390"); }
-N4:T2InfectedRouter { @display("p=550,670"); }
-N5:T2InfectedRouter { @display("p=830,600"); }
-N6:T2InfectedRouter { @display("p=1130,100"); }
-N7:T2InfectedRouter { @display("p=1300,300"); }
-N8:T2InfectedRouter { @display("p=1930,300"); }
-N9:T2InfectedRouter { @display("p=1640,450"); }
-N10:T2InfectedRouter { @display("p=2080,500"); }
-N11:T2InfectedRouter { @display("p=1900,470"); }
-N12:T2InfectedRouter { @display("p=2300,500"); }
-N13:T2InfectedRouter { @display("p=2450,350"); }
-N14:T2InfectedRouter { @display("p=1810,800"); }
-N15:T2InfectedRouter { @display("p=1500,800"); }
-N16:T2InfectedRouter { @display("p=1510,1070"); }
-N17:T2InfectedRouter { @display("p=1310,1000"); }
-N18:T2InfectedRouter { @display("p=1300,580"); }
-N19:T2InfectedRouter { @display("p=1130,750"); }
-N20:T2InfectedRouter { @display("p=1300,650"); }
-N21:T2InfectedRouter { @display("p=1090,930"); }
-N22:T2InfectedRouter { @display("p=1010,850"); }
-N23:T2InfectedRouter { @display("p=910,720"); }
-N24:T2InfectedRouter { @display("p=810,810"); }
-N25:T2InfectedRouter { @display("p=1530,1300"); }
-N26:T2InfectedRouter { @display("p=1050,1170"); }
-N27:T2InfectedRouter { @display("p=640,1010"); }
-N28:T2InfectedRouter { @display("p=350,1250"); }
-N29:T2InfectedRouter { @display("p=730,1480"); }
-N30:T2InfectedRouter { @display("p=1010,1600"); }
-N31:T2InfectedRouter { @display("p=1320,1450"); }
-N32:T2InfectedRouter { @display("p=1110,1860"); }
-N33:T2InfectedRouter { @display("p=600,1910"); }
-N34:T2InfectedRouter { @display("p=420,1660"); }
-listener: IListener;
+N0:NetTestRouter { @display("p=50,150"); }
+N1:NetTestRouter { @display("p=450,80"); }
+N2:NetTestRouter { @display("p=780,240"); }
+N3:NetTestRouter { @display("p=250,390"); }
+N4:NetTestRouter { @display("p=550,670"); }
+N5:NetTestRouter { @display("p=830,600"); }
+N6:NetTestRouter { @display("p=1130,100"); }
+N7:NetTestRouter { @display("p=1300,300"); }
+N8:NetTestRouter { @display("p=1930,300"); }
+N9:NetTestRouter { @display("p=1640,450"); }
+N10:NetTestRouter { @display("p=2080,500"); }
+N11:NetTestRouter { @display("p=1900,470"); }
+N12:NetTestRouter { @display("p=2300,500"); }
+N13:NetTestRouter { @display("p=2450,350"); }
+N14:NetTestRouter { @display("p=1810,800"); }
+N15:NetTestRouter { @display("p=1500,800"); }
+N16:NetTestRouter { @display("p=1510,1070"); }
+N17:NetTestRouter { @display("p=1310,1000"); }
+N18:NetTestRouter { @display("p=1300,580"); }
+N19:NetTestRouter { @display("p=1130,750"); }
+N20:NetTestRouter { @display("p=1300,650"); }
+N21:NetTestRouter { @display("p=1090,930"); }
+N22:NetTestRouter { @display("p=1010,850"); }
+N23:NetTestRouter { @display("p=910,720"); }
+N24:NetTestRouter { @display("p=810,810"); }
+N25:NetTestRouter { @display("p=1530,1300"); }
+N26:NetTestRouter { @display("p=1050,1170"); }
+N27:NetTestRouter { @display("p=640,1010"); }
+N28:NetTestRouter { @display("p=350,1250"); }
+N29:NetTestRouter { @display("p=730,1480"); }
+N30:NetTestRouter { @display("p=1010,1600"); }
+N31:NetTestRouter { @display("p=1320,1450"); }
+N32:NetTestRouter { @display("p=1110,1860"); }
+N33:NetTestRouter { @display("p=600,1910"); }
+N34:NetTestRouter { @display("p=420,1660"); }
+//listener: NetTestListener;
 
 connections:
 N0.medium++ <--> DatarateChannel {  datarate = 100.0Gbps;  delay = 1.624ms; } <--> N1.medium++;

@@ -38,6 +38,7 @@ void IntPDUFG::initialize(){
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
 
+    std::cout << "Called for "<< destination << " + " << qos << std::endl;
     RMTPorts ports = fwd->lookup(destination, qos);
     if(ports.size() >= 0){
         for(RMTPorts::iterator it = ports.begin(); it != ports.end(); it++){
@@ -52,6 +53,7 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
         }
     }
 
+    std::cout << "not found"<<std::endl;
     return nullptr;
 
 }

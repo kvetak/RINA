@@ -45,7 +45,41 @@ inline string inverse(const string & s, const int &l) {
 }
 
 inline string reduce(const string & s, const int &symbolLen){
-    return "";
+   // cout << s << " " << (s.length()/symbolLen)<< endl;
+    bool changes;
+    string t = s;
+    do {
+        changes = false;
+        int k = t.length()/symbolLen;
+        int i = 0;
+        string r = "";
+
+        if(k == 0) { return ""; }
+
+        do {
+            bool m = true;
+            for(int j = 0; j < symbolLen; j++) {
+                if(s[i*symbolLen+j] != s[(i+1)*symbolLen+j]) { m = false; }
+            }
+            if(m) {
+                i+=2;
+                changes = true;
+            } else {
+                i++;
+                for(int j = 0; j < symbolLen; j++) {
+                    r +=t[i*symbolLen+j];
+                }
+            }
+            if(i == k-1) {
+                for(int j = 0; j < symbolLen; j++) {
+                    r +=t[i*symbolLen+j];
+                }
+            }
+            t = r;
+        } while(i < k-1);
+    } while(changes);
+  //  cout <<  " --> " << t <<  endl;
+    return t;
 }
 
 inline int getFirst(const string & s, const int &symbolLen) {

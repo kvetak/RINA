@@ -1,9 +1,40 @@
 <?xml version="1.0"?>
 <Infection>
-  <InfectionFlows>
-<flowSet srcAddr = "0" dstAddr = "1" qos = "BE" rate = "8" nFlows="800" listen="true" />
-<flowSet srcAddr = "0" dstAddr = "2" qos = "BE" rate = "8" nFlows="800" listen="true" />
-<flowSet srcAddr = "0" dstAddr = "3" qos = "BE" rate = "8" nFlows="800" listen="true" />
-<flowSet srcAddr = "0" dstAddr = "4" qos = "BE" rate = "10" nFlows="1000" listen="true" />
-  </InfectionFlows>
+  <NodeList>
+    <NodeAddr id = "0" />
+    <NodeAddr id = "1" />
+    <NodeAddr id = "2" />
+    <NodeAddr id = "3" />
+    <NodeAddr id = "4" />
+    <NodeAddr id = "5" />
+    <NodeAddr id = "6" />
+    <NodeAddr id = "7" />
+    <NodeAddr id = "8" />
+    <NodeAddr id = "9" />
+    <NodeAddr id = "10" />
+    <NodeAddr id = "11" />
+    <NodeAddr id = "12" />
+    <NodeAddr id = "13" />
+    <NodeAddr id = "14" />
+    <NodeAddr id = "15" />
+    <NodeAddr id = "16" />
+    <NodeAddr id = "17" />
+    <NodeAddr id = "18" />
+    <NodeAddr id = "19" />
+    <NodeAddr id = "20" />
+    <NodeAddr id = "21" />
+    <NodeAddr id = "22" />
+    <NodeAddr id = "23" />
+    <NodeAddr id = "24" />
+    <NodeAddr id = "25" />
+    <NodeAddr id = "26" />
+    <NodeAddr id = "27" />
+    <NodeAddr id = "28" />
+    <NodeAddr id = "29" />
+    <NodeAddr id = "30" />
+    <NodeAddr id = "31" />
+    <NodeAddr id = "32" />
+    <NodeAddr id = "33" />
+    <NodeAddr id = "34" />
+  </NodeList>
 </Infection>

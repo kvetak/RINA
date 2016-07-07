@@ -27,6 +27,9 @@ Register_Class(GironaFWD);
 vPorts GironaFWD::lookup(const PDU * pdu) {
     string d = pdu->getDstAddr().getIpcAddress().getName();
 
+    if(pdu->getHopCount() < 250) { return vPorts(); }
+    const_cast<PDU*>(pdu)->setHopCount(pdu->getHopCount()-1);
+
     vPorts possible = search(d);
 
     if(possible.size() < 2) { return possible; }
@@ -56,14 +59,19 @@ vPorts GironaFWD::lookup(const Address &dst, const std::string& qos) {
 vPorts GironaFWD::search(const string &dst) {
     vPorts ret;
     if(neis.find(dst) != neis.end()) { ret.push_back(neis[dst]); }
-    /*
-    string s = myaddr;
-    string d = dst;
-    string w = inverse(s, symbolLen) + d;
-    string we = reduce(w, symbolLen);
-    int e = getFirst(we, symbolLen);
-    cout << e << endl;
-    */
+
+    port_t p = nullptr;
+    int d = INT32_MAX;
+    for(const auto & n : neis) {
+        string s = inverse(n.first, symbolLen) + dst;
+        s = reduce(s, symbolLen);
+        if(s.length() < d) {
+            d = s.length();
+            p = n.second;
+        }
+    }
+    if(p != nullptr) { ret.push_back(p); }
+
     return ret;
 }
 

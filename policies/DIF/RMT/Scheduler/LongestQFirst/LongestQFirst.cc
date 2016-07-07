@@ -24,24 +24,36 @@
 
 Define_Module(LongestQFirst);
 
+using namespace std;
+
 void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 {
     Enter_Method("processQueues()");
+    bool print = false;
+    if(getFullPath() == "net.N0.dataIpc.relayAndMux.schedulingPolicy") { print = true; }
 
-    if (direction == RMTQueue::OUTPUT)
-    {
+    if(print)  { cout<<simTime() << " - Called for OUTPUT at "<< getFullPath() <<endl;}
+
+    if (direction == RMTQueue::OUTPUT)  {
         if (port->isOutputReady() && port->getWaiting(RMTQueue::OUTPUT))
         {
                 RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
                 outQ->releasePDU();
+
+                if(print)  { cout<< "\t Port ready, releasing queue "<< outQ->getFullPath()<<endl; }
+        } else {
+            if(print)  { cout<< "\t Port not ready"<<endl; }
         }
     }
-    else if (direction == RMTQueue::INPUT)
-    {
+    else if (direction == RMTQueue::INPUT)  {
+        if(print)  { cout<<simTime() << " - Called for INPUT at "<< getFullPath() <<endl;}
         if (port->isInputReady() && port->getWaiting(RMTQueue::INPUT))
         {
                 RMTQueue* inQ = port->getLongestQueue(RMTQueue::INPUT);
                 inQ->releasePDU();
+                if(print)  { cout<< "\t Port ready, releasing queue "<< inQ->getFullPath()<<endl; }
+        } else {
+            if(print)  { cout<< "\t Port not ready"<<endl; }
         }
     }
 }

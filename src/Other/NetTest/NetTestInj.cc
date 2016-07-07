@@ -55,10 +55,16 @@ void NetTestInj::initialize() {
 }
 
 void NetTestInj::handleMessage(cMessage *msg) {
-    if(destinations.empty()) { delete msg; return; }
+    if(destinations.empty()) {
+        destinations = tDest;
+        tDest.clear();
+        random_shuffle ( destinations.begin(), destinations.end() );
+      //  delete msg; return;
+    }
 
     string dst = destinations.back();
     destinations.pop_back();
+    tDest.push_back(dst);
 
     //Create new PDU
     Inj_PDU * pdu = new Inj_PDU();
@@ -77,6 +83,7 @@ void NetTestInj::handleMessage(cMessage *msg) {
     ud->setSduSeqNum(0);
     pdu->encapsulate(ud);
     pdu->setHopCount(0);
+    pdu->setByteLength(1480);
     send(pdu, "g$o");
 
     emit(signal, new SigSend(src, dst) );

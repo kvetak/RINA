@@ -15,7 +15,7 @@ class NetTestInj : public cSimpleModule {
     simsignal_t signal;
 
     double wait;
-    vector<string> destinations;
+    vector<string> destinations, tDest;
     string src, dif;
     ConnectionId connID;
     Address srcAddr, dstAddr;

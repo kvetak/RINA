@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Q2T>
+  <QoS id="MA" T="1" />
+  <QoS id="GU" T="1" />
+  <QoS id="SN" T="0" />
+  <QoS id="sBE" T="1" />
+  <QoS id="BE" T="0" />
+</Q2T>

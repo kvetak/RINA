@@ -43,6 +43,13 @@ const Address* DA::resolveApnToBestAddress(const APN& apn) {
             return &(*it);
     }
 
+    //Return first local DIF address
+    std::cout << apn << endl;
+    std::cout << "None of found DIFs is local!" << endl;
+    for (AddrCItem it = de->getSupportedDifs().begin(); it != de->getSupportedDifs().end(); ++it) {
+        std::cout<< it->getDifName() << " -> " << isDifLocal(it->getDifName()) << std::endl;
+    }
+
     EV << "None of found DIFs is local!" << endl;
     return NULL;
 }

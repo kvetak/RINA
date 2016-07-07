@@ -532,6 +532,7 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
+    std::cout << "Next A " << std::endl;
     PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
@@ -548,6 +549,7 @@ void RA::createNM1Flow(Flow *flow)
     // End flow exists check.
     //
 
+    std::cout << "Call A "<< dstApn << std::endl;
     //Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == nullptr)
@@ -609,6 +611,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
+    std::cout << "Next B " << std::endl;
     PDUFGNeighbor * e = fwdtg->getNextNeighbor(flow->getDstAddr(), flow->getConId().getQoSId());
 
     if(e)
@@ -626,6 +629,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
 
 
+    std::cout << "Call B "<< dstAPN << std::endl;
     // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
     if (ad == nullptr)
@@ -795,6 +799,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
+    std::cout << "Next C " << std::endl;
     PDUFGNeighbor * te = fwdtg->getNextNeighbor(flow->getDstAddr(),
             flow->getConId().getQoSId());
 
