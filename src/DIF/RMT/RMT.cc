@@ -491,7 +491,7 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
     }
     else
     {
-        std::cout << "WTF " << cepId << endl;
+        std::cout << "WTF " << this->getFullPath() << " => " << cepId << " -> " << simTime() << endl;
             EV << this->getFullPath() << ": EFCPI " << cepId
                << " isn't present on this system! Notifying other modules." << endl;
             emit(sigRMTNoConnID, pdu);

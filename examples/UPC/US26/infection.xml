@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Infection>
+	<flowSet  src = "0" dst="33" QoS = "A" N = "10" R = "4" D = "0.05" K = "0.2" pduMin = "700" pduMax = "1500" rand = "uniform" />
+	<flowSet  src = "0" dst="33" QoS = "B" N = "10" R = "3" D = "0.05" K = "0.2" pduMin = "700" pduMax = "1500" rand = "uniform" />
+	<flowSet  src = "0" dst="33" QoS = "C" N = "10" R = "1" D = "0.05" K = "0.2" pduMin = "700" pduMax = "1500" rand = "uniform" />
+</Infection>

@@ -65,15 +65,6 @@ void AEConstantServer::initialize()
 }
 
 void AEConstantServer::finish() {
-    if(count < 10) {
-        std::cout << "WTF!! count >> "<<count <<endl;
-    }
-    /*
-        if(FlowObject != NULL) {
-            EV << this->getFullPath() << " / ";
-            EV << "With QoS " << FlowObject->getConId().getQoSId() <<endl;
-        }
-    */
 }
 
 void AEConstantServer::handleSelfMessage(cMessage *msg) {

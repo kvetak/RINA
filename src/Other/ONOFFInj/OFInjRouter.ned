@@ -20,33 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
 
-#include <IntPDUForwarding.h>
+package rina.src.Other.ONOFFInj;
 
-using namespace std;
+import rina.src.DAF.AE.AEVideo.AEVideo;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
 
-typedef RMTPort * port_t;
-typedef vector<port_t> vPorts;
+module OFInjRouter
+{
+    parameters:
+        @display("i=abstract/switch;bgb=391,325");
+        @node;
 
-class Q2FwdT: public IntPDUForwarding {
-public:
-    vPorts lookup(const PDU * _pdu);
-    vPorts lookup(const Address &_dst, const std::string& _qos);
+    gates:
+        inout medium[];
 
-    void iniStructs(const map<string, int> & _Q2T, const int & _nT, const int & _Ts);
-    void setTentry(const int & _T, const int & _addr, port_t _p);
-    void setTable(const int & _T, const vPorts & _cont);
-    void setQ2T(const map<string, int> & _Q2T);
-
-protected:
-    void finish();
-
-    port_t search(const string & _raddr, const string & _qos);
-    string toString();
-    void onPolicyInit() {};
-
-    map<string, int> Q2T;
-    vector< vPorts > Tables;
-};
-
+    submodules:
+        ipcProcess0[sizeof(medium)]: IPCProcess {
+            @display("p=104,245,r,150");
+        }
+        ipcProcess1: IPCProcess {
+            @display("p=104,141;i=,#FFB000");
+            relay = true;
+        }
+        ipcProcess2: IPCProcess {
+            @display("p=104,141;i=,#FFB000");
+            relay = true;
+        }
+        difAllocator: DIFAllocator {
+            @display("p=104,53");
+        }
+        OFInj: ONOFInj {
+            @display("p=260,245");
+            infectedIPC = default("ipcProcess2");
+        }
+    connections allowunconnected:
+		ipcProcess2.southIo++ <--> ipcProcess1.northIo++;
+	
+        // Every IPC Process is connected to its medium and the Relay IPC.
+        for i=0..sizeof(medium)-1 {
+            ipcProcess1.southIo++ <--> ipcProcess0[i].northIo++;
+            ipcProcess0[i].southIo++ <--> medium[i];
+        }
+}

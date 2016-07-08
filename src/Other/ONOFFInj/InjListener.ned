@@ -20,33 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+package rina.src.Other.ONOFFInj;
 
-#include <IntPDUForwarding.h>
-
-using namespace std;
-
-typedef RMTPort * port_t;
-typedef vector<port_t> vPorts;
-
-class Q2FwdT: public IntPDUForwarding {
-public:
-    vPorts lookup(const PDU * _pdu);
-    vPorts lookup(const Address &_dst, const std::string& _qos);
-
-    void iniStructs(const map<string, int> & _Q2T, const int & _nT, const int & _Ts);
-    void setTentry(const int & _T, const int & _addr, port_t _p);
-    void setTable(const int & _T, const vPorts & _cont);
-    void setQ2T(const map<string, int> & _Q2T);
-
-protected:
-    void finish();
-
-    port_t search(const string & _raddr, const string & _qos);
-    string toString();
-    void onPolicyInit() {};
-
-    map<string, int> Q2T;
-    vector< vPorts > Tables;
-};
-
+simple InjListener {
+    parameters:
+        @display("i=device/antennatower");
+        
+        string logFile = default("");
+}

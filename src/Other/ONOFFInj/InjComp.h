@@ -19,34 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 #pragma once
 
-#include <IntPDUForwarding.h>
+#include <omnetpp.h>
+#include "AddressComparatorBase.h"
 
-using namespace std;
+class InjComp : public AddressComparatorBase
+{
+  private :
+    simsignal_t signal;
 
-typedef RMTPort * port_t;
-typedef vector<port_t> vPorts;
+  public:
+    virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
 
-class Q2FwdT: public IntPDUForwarding {
-public:
-    vPorts lookup(const PDU * _pdu);
-    vPorts lookup(const Address &_dst, const std::string& _qos);
-
-    void iniStructs(const map<string, int> & _Q2T, const int & _nT, const int & _Ts);
-    void setTentry(const int & _T, const int & _addr, port_t _p);
-    void setTable(const int & _T, const vPorts & _cont);
-    void setQ2T(const map<string, int> & _Q2T);
-
-protected:
-    void finish();
-
-    port_t search(const string & _raddr, const string & _qos);
-    string toString();
-    void onPolicyInit() {};
-
-    map<string, int> Q2T;
-    vector< vPorts > Tables;
+    void onPolicyInit();
 };
-

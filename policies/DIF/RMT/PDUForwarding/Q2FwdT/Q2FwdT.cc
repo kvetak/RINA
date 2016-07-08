@@ -22,6 +22,8 @@
 
 #include <Q2FwdT/Q2FwdT.h>
 
+#include <sstream>
+
 Register_Class(Q2FwdT);
 
 vPorts Q2FwdT::lookup(const PDU * pdu) {
@@ -63,6 +65,32 @@ void Q2FwdT::setTable(const int & _T, const vPorts & _cont) {
 }
 void Q2FwdT::setQ2T(const map<string, int> & _Q2T) {
     Q2T = _Q2T;
+}
+
+string Q2FwdT::toString(){
+    std::ostringstream os;
+
+    os << "-------------"<<endl;
+    os << "Forwarding at "<< getFullPath()<<endl;
+    os << "QoS to Table:"<<endl;
+    for(auto QT : Q2T) {
+        os << "    QoS : "<<QT.first << " -> Table : " << QT.second <<endl;
+    }
+    for(int i = 0; i< Tables.size(); i++) {
+        os << "Table "<<i <<endl;
+        const vPorts & T = Tables[i];
+        for(int j = 0; j < T.size(); j++) {
+            port_t p = T[j];
+            if(p != nullptr) {
+                os << "    Addr : "<< j << " -> Port : "<< T[j]->getFullPath()<<endl;
+            } else {
+                os << "    Addr : "<< j << " -> Port : null"<<endl;
+            }
+        }
+    }
+    os << "-------------"<<endl<<endl;
+
+    return os.str();
 }
 
 void Q2FwdT::finish() {

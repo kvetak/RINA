@@ -22,31 +22,29 @@
 
 #pragma once
 
-#include <IntPDUForwarding.h>
+//Standard libraries
+#include <omnetpp.h>
+#include <iostream>
+#include <fstream>
+
+#include <set>
+#include <map>
 
 using namespace std;
 
-typedef RMTPort * port_t;
-typedef vector<port_t> vPorts;
 
-class Q2FwdT: public IntPDUForwarding {
+class InjListener : public cSimpleModule, public cListener {
 public:
-    vPorts lookup(const PDU * _pdu);
-    vPorts lookup(const Address &_dst, const std::string& _qos);
-
-    void iniStructs(const map<string, int> & _Q2T, const int & _nT, const int & _Ts);
-    void setTentry(const int & _T, const int & _addr, port_t _p);
-    void setTable(const int & _T, const vPorts & _cont);
-    void setQ2T(const map<string, int> & _Q2T);
+    void initialize();
+    virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
+    virtual void finish();
 
 protected:
-    void finish();
+    map<string, map<string, map<string, long> > > SDQ_Flows;
+    map<string, map<string, map<string, double> > > SDQ_Rate;
 
-    port_t search(const string & _raddr, const string & _qos);
-    string toString();
-    void onPolicyInit() {};
+    map<string, map<string, map<string, long> > > SDQ_PDUSsend,  SDQ_PDUSreceived, SDQ_DATAsend,  SDQ_DATAreceived;
+    map<string, map<string, map<string, double> > > SDQ_Delay, SDQ_MAXDelay;
 
-    map<string, int> Q2T;
-    vector< vPorts > Tables;
 };
 

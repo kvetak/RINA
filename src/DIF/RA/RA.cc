@@ -497,34 +497,27 @@ void RA::createNM1Flow(Flow *flow)
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
- //   EV << "Search inf fwdtg "<< Address(dstApn.getName()) << " + "<< flow->getConId().getQoSId() <<endl;
+    //std::cout  << "Search in fwdtg "<< Address(dstApn.getName()) << " + "<< flow->getConId().getQoSId() <<endl;
+
     PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), flow->getConId().getQoSId());
 
     if(e)
     {
-  //      EV << "Found "<< e->getDestAddr().getApn().getName() << " - "<< e->getQoSCube().getQosId()<<endl;
-/*
-        NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-                e->getPort()->getFlow()->getDstAddr().getApn().getName(),
-                e->getPort()->getFlow()->getConId().getQoSId());
-*/
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
                 e->getDestAddr().getApn().getName(),
                 e->getQoSCube().getQosId());
 
         if(fi)
         {
-    //        EV << "double Found"<<endl;
             return;
         }
-
- //       EV << "not Found!?"<<endl;
     }
     //
     // End flow exists check.
     //
 
     //Ask DA which IPC to use to reach dst App
+    EV << "At RA::createNM1Flow in "<< getFullPath()<<endl;
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == nullptr)
     {

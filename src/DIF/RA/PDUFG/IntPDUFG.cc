@@ -40,7 +40,8 @@ void IntPDUFG::initialize(){
 }
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
-    //EV << "Search for " << destination << " with QoS "<< qos << endl;
+    //std::cout << "Search for " << destination << " with QoS "<< qos << " at "<< simTime()<<  endl;
+   // EV << "Search for " << destination << " with QoS "<< qos << endl;
     if(ipcAddr.getDifName().getName() != destination.getDifName().getName()) {
         EV << "Invalid search at "<< ipcAddr << endl;
     } else {
@@ -58,9 +59,10 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
                 }
             }
         }
-       // std::cout << " At "<< getFullPath()<<endl;
-        //std::cout << "Not found"<<endl;
-        EV<< "Not found"<<endl;
+     //   std::cout << " At "<< getFullPath()<<endl;
+     //   std::cout << "Not found"<<endl;
+     //   std::cout << fwd->toString()<<endl;
+    //    EV<< "Not found"<<endl;
     }
     return nullptr;
 

@@ -207,13 +207,32 @@
       <DIF difName="Core" ipcAddress="0" />
     </APN>
     <APN apn="A3_Data">
-      <DIF difName="Core" ipcAddress="3" />
+      <DIF difName="Core" ipcAddress="33" />
     </APN>
     <APN apn="B3_Data">
-      <DIF difName="Core" ipcAddress="3" />
+      <DIF difName="Core" ipcAddress="33" />
     </APN>
     <APN apn="C3_Data">
-      <DIF difName="Core" ipcAddress="3" />
+      <DIF difName="Core" ipcAddress="33" />
+    </APN>
+    
+    <APN apn="A2_Data">
+      <DIF difName="Core" ipcAddress="2" />
+    </APN>
+    <APN apn="B2_Data">
+      <DIF difName="Core" ipcAddress="2" />
+    </APN>
+    <APN apn="C2_Data">
+      <DIF difName="Core" ipcAddress="2" />
+    </APN>
+    <APN apn="A8_Data">
+      <DIF difName="Core" ipcAddress="8" />
+    </APN>
+    <APN apn="B8_Data">
+      <DIF difName="Core" ipcAddress="8" />
+    </APN>
+    <APN apn="C8_Data">
+      <DIF difName="Core" ipcAddress="8" />
     </APN>
   </Directory>
 </DA>
