@@ -36,6 +36,14 @@ void IterativeStopMonitor::onPolicyInit(){
 
     stopSignal = registerSignal(SIG_EFCP_StopSending);
     startSignal = registerSignal(SIG_EFCP_StartSending);
+
+    recData = 0;
+}
+void IterativeStopMonitor::finish(){
+    if(par("printAtEnd").boolValue()) {
+        cout << this->getFullPath() << endl;
+        cout << "   received to send "<< (recData/1000000.0) << " Mbits"<<endl;
+    }
 }
 
 void IterativeStopMonitor::postQueueCreation(RMTQueue* queue) {
@@ -55,9 +63,12 @@ void IterativeStopMonitor::preQueueRemoval(RMTQueue* queue) {
 
 
 void IterativeStopMonitor::postPDUInsertion(RMTQueue* queue) {
-    if(     queue->getType() == RMTQueue::OUTPUT
-            && strcmp(queue->getName(), "outQ_noflow")
-            && queue->getLength() >= stopAt) {
+    if(     queue->getType() == RMTQueue::OUTPUT) {
+        recData += queue->getLastPDU()->getBitLength();
+    }
+        if(     queue->getType() == RMTQueue::OUTPUT
+                && strcmp(queue->getName(), "outQ_noflow")
+                && queue->getLength() >= stopAt) {
         const Flow * f = queue->getFlow();
         if (f == nullptr) { error("Queue flow is null"); }
         emit(stopSignal, f);

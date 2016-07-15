@@ -69,6 +69,7 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
     if (item != nullptr)
     {
         ra->postNM1FlowAllocation(item);
+
     }
 }
 

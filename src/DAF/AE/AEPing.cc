@@ -126,10 +126,17 @@ void AEPing::handleSelfMessage(cMessage *msg) {
         onStart();
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
-        onStop();
+        if(FlowObject != nullptr) {
+            onStop();
+        }
     }
     else if ( strstr(msg->getName(), MSG_PING) ) {
-        onPing();
+        if(FlowObject == nullptr) {
+            EV << "Flow still not allocated, schedule ping latter"<<endl;
+            scheduleAt(simTime()+1, msg);
+            return;
+        }
+        else { onPing(); }
     }
     else
         EV << this->getFullPath() << " received unknown self-message " << msg->getName();

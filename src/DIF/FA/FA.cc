@@ -96,6 +96,7 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmt
         //Ask DA which IPC to use to reach src App
         const Address* ad = DifAllocator->resolveApnToBestAddress(apn, MyAddress.getDifName());
         if (ad == NULL) {
+            EV << "FA::getAddressFromDa"<<endl;
             EV << "DifAllocator returned NULL for resolving " << apn << endl;
             return Address();
         }
@@ -155,6 +156,7 @@ bool FA::changeSrcAddress(Flow* flow, bool useNeighbor) {
         //Ask DA which IPC to use to reach src App
         const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getSrcApni().getApn(), MyAddress.getDifName());
         if (ad == NULL) {
+            EV << "FA::changeSrcAddress"<<endl;
             EV << "DifAllocator returned NULL for resolving " << flow->getSrcApni().getApn() << endl;
             return false;
         }
@@ -168,6 +170,7 @@ bool FA::changeDstAddresses(Flow* flow, bool useNeighbor) {
     //Ask DA which IPC to use to reach dst App
     const Address* ad = DifAllocator->resolveApnToBestAddress(flow->getDstApni().getApn());
     if (ad == NULL) {
+        EV << "FA::changeDstAddresses"<<endl;
         EV << "DifAllocator returned NULL for resolving " << flow->getDstApni().getApn() << endl;
         return false;
     }
@@ -258,6 +261,7 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     }
 
     //Create FAI
+    //std::cout << "receiveAllocateRequest"<<endl;
     FAI* fai = this->createFAI(flow);
     fai->setDegenerateDataTransfer(flow->isDdtFlag());
 
@@ -284,6 +288,8 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 
 bool FA::receiveMgmtAllocateRequest(Flow* mgmtflow) {
     bool status = true;
+
+    //std::cout << "FA::receiveMgmtAllocateRequest"<<endl;
     //If N-1 mgmt-flow not ready, then allocate
     if (!RaModule->hasFlow(mgmtflow->getDstAddr().getApn().getName(), VAL_MGMTQOSID)) {
         status = RaModule->bindNFlowToNM1Flow(mgmtflow);
@@ -334,11 +340,14 @@ bool FA::receiveMgmtAllocateFinish() {
 bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     Enter_Method("receiveCreateFlowRequest()");
     EV << this->getFullPath() << " received CreateFlowRequest" << endl;
+    //std::cout << this->getFullPath() << " received CreateFlowRequest" << endl;
 
     bool status;
 
     //Is requested APP local?
     if ( DifAllocator->isAppLocal(flow->getSrcApni().getApn()) ){
+        //std::cout << "FA::receiveCreateFlowRequestFromRibd - if"<<endl;
+
         //Check for duplicity
         if (!DifAllocator->isAppLocal(flow->getDstApni().getApn())
             && N_flowTable->findEntryByInvokeId(flow->getAllocInvokeId())
@@ -362,6 +371,7 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
         N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
 
         //Create FAI
+        //std::cout << "receiveCreateFlowRequestFromRibd"<<endl;
         FAI* fai = this->createFAI(flow);
         if ( DifAllocator->isAppLocal( flow->getDstApni().getApn() ) ) {
             fai->setDegenerateDataTransfer(true);
@@ -381,6 +391,9 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     //...if not then forward CreateRequest Flow to next neighbor
     else {
         EV << "Forwarding M_CREATE(flow)" << endl;
+        //std::cout << "FA::receiveCreateFlowRequestFromRibd - else"<<endl;
+        //std::cout << "App no local? :: "<< flow->getSrcApni()<<endl;
+
 
         //Before that reverse SRC-DST information back
         flow->swapFlow();
@@ -457,13 +470,25 @@ bool FA::invokeNewFlowRequestPolicy(Flow* flow) {
 }
 
 FAI* FA::createFAI(Flow* flow) {
+
   //@Vladimir: what about using ExternConsts.cc for this?
     // find factory object
     cModuleType *moduleType = cModuleType::get("rina.src.DIF.FA.FAI");
 
     //Prepare parameters
     int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+    while(inUsePortId.find(portId) != inUsePortId.end()) {
+        portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+    }
+    inUsePortId.insert(portId);
+
     int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+    while(inUseCepId.find(cepId) != inUseCepId.end()) {
+        cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+    }
+    inUseCepId.insert(cepId);
+
+  //  std::cout << portId << " "<< cepId<< " / " << getFullPath() <<endl;
 
     //Create a name
     std::ostringstream ostr;
@@ -497,6 +522,7 @@ FAI* FA::createFAI(Flow* flow) {
     N_flowTable->setFaiToFlow(fai, flow);
     N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_PEND);
 
+    //std::cout <<simTime() << " - At "<< getFullPath() <<" create FAI "<<  ostr.str()<<endl;
     return fai;
 }
 

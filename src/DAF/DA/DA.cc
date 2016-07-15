@@ -44,6 +44,10 @@ const Address* DA::resolveApnToBestAddress(const APN& apn) {
     }
 
     EV << "None of found DIFs is local!" << endl;
+    EV << "Searching "<< apn <<endl;
+    for (AddrCItem it = de->getSupportedDifs().begin(); it != de->getSupportedDifs().end(); ++it) {
+        EV << "\t" << it->getDifName() << " " <<  isDifLocal(it->getDifName())<<endl;
+    }
     return NULL;
 }
 

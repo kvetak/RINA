@@ -30,6 +30,7 @@ import rina.src.DAF.IRM.IPCResourceManager;
 import rina.src.DIF.IPCProcess;
 
 
+
 module HostNAP
 {
     parameters:

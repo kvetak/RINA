@@ -46,6 +46,8 @@
 #include "NewFlowRequestBase.h"
 #include "EnrollmentStateTable.h"
 
+#include <set>
+
 //Constants
 
 extern const int RANDOM_NUMBER_GENERATOR;
@@ -99,6 +101,8 @@ class FA : public FABase
     RABase* RaModule;
     NewFlowRequestBase* NFloReqPolicy;
     EnrollmentStateTable* Enrollment;
+
+    std::set<int> inUseCepId, inUsePortId;
 
     bool isMalformedFlow(Flow* flow);
     FAI* createFAI(Flow* flow);

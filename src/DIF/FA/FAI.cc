@@ -657,6 +657,7 @@ void FAI::createNorthGates() {
         std::ostringstream nameIpcDown;
         nameIpcDown << GATE_NORTHIO_ << localPortId;
         cModule* IPCModule = FaModule->getModuleByPath("^.^");
+
         IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     }
     return;

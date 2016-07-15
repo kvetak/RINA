@@ -119,18 +119,46 @@ void RMT::initialize()
  */
 void RMT::finish()
 {
-//    size_t pduCount = invalidPDUs.size();
-//    if (pduCount)
-//    {
-//        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
-//           << " unprocessed PDUs!" << endl;
-//
-//        for (auto const& m : invalidPDUs)
-//        {
-//            EV << m->getClassName() << " received at " << m->getArrivalTime()
-//               << " from " << m->getSenderModule()->getFullPath() << endl;
-//        }
-//    }
+    size_t pduCount = invalidPDUs.size();
+    if (pduCount)
+    {
+        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
+
+        for (auto const& m : invalidPDUs)
+        {
+            if(const PDU* pdu = dynamic_cast<const PDU*>(m)) {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
+            } else {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                   << " || NOT PDU"<< endl;
+            }
+
+        }
+    }
+    size_t pduCount = invalidPDUs.size();
+    if (pduCount)
+    {
+        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
+
+        for (auto const& m : invalidPDUs)
+        {
+            if(const PDU* pdu = dynamic_cast<const PDU*>(m)) {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
+            } else {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                   << " || NOT PDU"<< endl;
+            }
+
+        }
+    }
 
     if (rmtTraceFile.is_open())
     {
@@ -303,6 +331,14 @@ void RMT::postQueueDeparture(cObject* obj)
     }
     else
     { // if this is an outgoing PDU, set the port as busy
+        /*
+        if(port->getFullPath() == "net.N[1].ipcProcess2.relayAndMux.p2.port") {
+            std::cout << "postQueueDeparture net.N[1].ipcProcess2.relayAndMux.p2.port"<< endl;
+        }
+        if(port->getFullPath() == "net.N[1].ipcProcess2.relayAndMux.p0.port") {
+            std::cout << "postQueueDeparture net.N[1].ipcProcess2.relayAndMux.p0.port"<< endl;
+        }
+        */
         port->setOutputBusy();
     }
 }
@@ -434,12 +470,6 @@ void RMT::relayPDUToPort(PDU* pdu)
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
 
-        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
-           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
-           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
-           << "PDUForwarding contents: " << endl << fwd->toString() << endl;
-
         invalidPDUs.push_back(pdu);
     }
 
@@ -491,7 +521,7 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
     }
     else
     {
-        std::cout << "WTF " << cepId << endl;
+        std::cout << "WTF " << this->getFullPath() << " => " << cepId << " -> " << simTime() << endl;
             EV << this->getFullPath() << ": EFCPI " << cepId
                << " isn't present on this system! Notifying other modules." << endl;
             emit(sigRMTNoConnID, pdu);

@@ -22,6 +22,8 @@
 
 #include "RMTQueue.h"
 
+#include "PDU.h"
+
 const char* SIG_STAT_RMTQUEUE_LENGTH = "RMTQueue_Length";
 const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";
 
@@ -38,18 +40,24 @@ RMTQueue::~RMTQueue()
 
 void RMTQueue::finish()
 {
-//    size_t pduCount = queue.size();
-//    if (pduCount)
-//    {
-//        EV << "Queue " << getFullPath() << " still contains " << pduCount
-//           << " unprocessed PDUs!" << endl;
-//
-//        for (iterator it = begin(); it != end(); ++it)
-//        {
-//            cPacket* p = *it;
-//            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
-//        }
-//    }
+    size_t pduCount = queue.size();
+    if (pduCount)
+    {
+        EV << "Queue " << getFullPath() << " still contains " << pduCount
+           << " unprocessed PDUs!" << endl;
+
+        for (iterator it = begin(); it != end(); ++it)
+        {
+            cPacket* p = *it;
+            if(PDU* pdu = dynamic_cast<PDU*>(p)) {
+                EV << p->getClassName() << " received at " << p->getArrivalTime()
+                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
+            } else {
+                EV << p->getClassName() << " received at " << p->getArrivalTime()
+                        << " || NOT PDU"<< endl;
+            }
+        }
+    }
 }
 
 
@@ -187,6 +195,14 @@ cPacket* RMTQueue::dropLast()
     cPacket* dropped = queue.back();
     bubble("Dropping a PDU...");
     queue.pop_back();
+    redrawGUI();
+    return dropped;
+}
+cPacket* RMTQueue::dropFirst()
+{
+    cPacket* dropped = queue.front();
+    bubble("Dropping a PDU...");
+    queue.pop_front();
     redrawGUI();
     return dropped;
 }

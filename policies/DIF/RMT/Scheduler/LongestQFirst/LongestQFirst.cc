@@ -30,11 +30,26 @@ void LongestQFirst::processQueues(RMTPort* port, RMTQueueType direction)
 
     if (direction == RMTQueue::OUTPUT)
     {
-        if (port->isOutputReady() && port->getWaiting(RMTQueue::OUTPUT))
-        {
+        if (port->isOutputReady() && port->getWaiting(RMTQueue::OUTPUT)) {
+           /* if(port->getFullPath() == "net.N[0].ipcProcess2.relayAndMux.p0.port"
+            || port->getFullPath() == "net.N[0].ipcProcess2.relayAndMux.p3.port"
+            || port->getFullPath() == "net.N[0].ipcProcess2.relayAndMux.p6.port"
+            || port->getFullPath() == "net.N[0].ipcProcess2.relayAndMux.p9.port"
+            || port->getFullPath() == "net.N[0].ipcProcess2.relayAndMux.p12.port") {
+                std::cout << "OK " << port->getFullPath() <<endl;
+            }
+            */
                 RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
                 outQ->releasePDU();
-        }
+        }/* else if(port->getWaiting(RMTQueue::OUTPUT) && !port->isOutputReady()) {
+            std::cout <<"Not ready OUT "<< port->getFullPath();
+            RMTQueue* outQ = port->getLongestQueue(RMTQueue::OUTPUT);
+            if(outQ == nullptr){
+                std::cout << " null Q?? "<< endl;
+            } else {
+                std::cout << " remaining "<< outQ->getLength()<< endl;
+            }
+        }*/
     }
     else if (direction == RMTQueue::INPUT)
     {

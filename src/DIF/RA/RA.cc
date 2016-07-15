@@ -98,7 +98,7 @@ void RA::handleMessage(cMessage *msg)
                 Flow* flow = flows->front();
                 if (flow->isManagementFlow())
                 { // mgmt flow
-                    //std::cout << "prepare MGMT flow" << endl;
+                    //EV << "prepare MGMT flow" << endl;
                     //createNM1Flow(flow);
                     createNFlow(flow);
                 }
@@ -449,6 +449,7 @@ RMTPort* RA::bindNM1FlowToRMT(cModule* bottomIPC, FABase* fab, Flow* flow)
     qAllocPolicy->onNM1PortInit(port);
 
     // 4) update the flow table
+//    EV << "At "<< getFullPath() << " insert flow "<< flow->getDstAddr() <<endl;
     flowTable->insert(flow, fab, port, thisIPCGate.str().c_str());
 
     return port;
@@ -488,6 +489,7 @@ void RA::createNM1Flow(Flow *flow)
 {
     Enter_Method("createNM1Flow()");
 
+    fa->invokeNewFlowRequestPolicy(flow);
     const APN& dstApn = flow->getDstApni().getApn();
     const std::string& qosID = flow->getConId().getQoSId();
 
@@ -499,7 +501,8 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+                e->getDestAddr().getApn().getName(),
+                e->getQoSCube().getQosId());
 
         if(fi)
         {
@@ -511,9 +514,11 @@ void RA::createNM1Flow(Flow *flow)
     //
 
     //Ask DA which IPC to use to reach dst App
+    EV << "At RA::createNM1Flow in "<< getFullPath()<<endl;
     const Address* ad = difAllocator->resolveApnToBestAddress(dstApn);
     if (ad == nullptr)
     {
+   //     EV << "RA::createNM1Flow"<<endl;
         EV << "DifAllocator returned nullptr for resolving " << dstApn << endl;
         return;
     }
@@ -577,8 +582,8 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
-
+                e->getPort()->getFlow()->getDstAddr().getApn().getName(),
+                e->getPort()->getFlow()->getConId().getQoSId());
         if(fi)
         {
             return;
@@ -593,6 +598,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
     if (ad == nullptr)
     {
+     //   EV << "RA::createNM1FlowWithoutAllocate"<<endl;
         EV << "DifAllocator returned nullptr for resolving " << dstAPN << endl;
         signalizeCreateFlowNegativeToRIBd(flow);
         return;
@@ -625,6 +631,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+
     port->setOutputReady();
     port->setInputReady();
 }
@@ -645,6 +652,7 @@ void RA::postNFlowAllocation(Flow* flow)
     }
     else
     {
+  //      EV << " postNFlowAllocation "<<endl;
         auto neighApn = flow->getDstNeighbor().getApn().getName();
         auto qosId = flow->getConId().getQoSId();
         auto item = flowTable->findFlowByDstApni(neighApn, qosId);
@@ -666,6 +674,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     // mark this flow as connected and update info
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
     RMTPort* port = ftItem->getRMTPort();
+
     port->setOutputReady();
     port->setInputReady();
     port->setFlow(ftItem->getFlow());
@@ -758,14 +767,17 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     APNamingInfo neighAPN = APNamingInfo(APN(neighAddr));
     APNamingInfo dstAPN = APNamingInfo(APN(dstAddr));
 
-    Address addrs = Address(dstAddr);
-    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosID);
 
+    Address addrs = Address(dstAddr);
+
+    PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosID);
     if (te)
     {
         neighAddr = te->getDestAddr().getApn().getName();
+        qosID = te->getQoSCube().getQosId();
     }
 
+  //  EV << " bindNFlowToNM1Flow "<<endl;
     auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);
 
     if (nm1FlowItem != nullptr)
@@ -787,6 +799,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         EV << "No such (N-1)-flow present, allocating a new one." << endl;
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
         nm1Flow->setQosRequirements(flow->getQosRequirements());
+
         createNM1Flow(nm1Flow);
     }
 

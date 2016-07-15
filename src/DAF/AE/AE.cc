@@ -264,6 +264,7 @@ void AE::signalizeAllocateResponseNegative(Flow* flow) {
 
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
+  //  std::cout << (flow == nullptr) << std::endl;
     int handle = Irm->getIrmGateHandle(flow);
     if (handle != VAL_UNDEF_HANDLE) {
         //Pass Data to CDAP
