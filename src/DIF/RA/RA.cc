@@ -492,13 +492,10 @@ void RA::createNM1Flow(Flow *flow)
     fa->invokeNewFlowRequestPolicy(flow);
     const APN& dstApn = flow->getDstApni().getApn();
     const std::string& qosID = flow->getConId().getQoSId();
-    //std::cout << "RA::createNM1Flow " << flow->getDstApni() << " + " << qosID<<endl;
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
-    //std::cout  << "Search in fwdtg "<< Address(dstApn.getName()) << " + "<< flow->getConId().getQoSId() <<endl;
-
     PDUFGNeighbor * e = fwdtg->getNextNeighbor(Address(dstApn.getName()), flow->getConId().getQoSId());
 
     if(e)
@@ -634,6 +631,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // mark this flow as connected
     flowTable->findFlowByDstApni(dstAPN.getName(), qosID)->
             setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
+
     port->setOutputReady();
     port->setInputReady();
 }
@@ -676,6 +674,7 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     // mark this flow as connected and update info
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
     RMTPort* port = ftItem->getRMTPort();
+
     port->setOutputReady();
     port->setInputReady();
     port->setFlow(ftItem->getFlow());
@@ -771,13 +770,11 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
 
     Address addrs = Address(dstAddr);
 
-    //std::cout << "----Search : " << addrs<< " + "<< qosID<<endl;
     PDUFGNeighbor * te = fwdtg->getNextNeighbor(addrs, qosID);
     if (te)
     {
         neighAddr = te->getDestAddr().getApn().getName();
         qosID = te->getQoSCube().getQosId();
-        //std::cout << "-Found : " << addrs<< " + "<< qosID<<endl;
     }
 
   //  EV << " bindNFlowToNM1Flow "<<endl;
@@ -803,7 +800,6 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
         Flow *nm1Flow = new Flow(srcAPN, neighAPN);
         nm1Flow->setQosRequirements(flow->getQosRequirements());
 
-        //std::cout << "No such (N-1)-flow present, allocating a new one." << endl;
         createNM1Flow(nm1Flow);
     }
 

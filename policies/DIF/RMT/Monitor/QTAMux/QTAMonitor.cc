@@ -215,7 +215,7 @@ void QTAMonitor::recDelete(cPacket * p) {
 }
 void QTAMonitor::recIDelete(cPacket * p) {
     cPacket * enc = p->decapsulate();
-    if(enc != nullptr) { recDelete(enc); }
+    if(enc != nullptr) { recIDelete(enc); }
     delete p;
 }
 

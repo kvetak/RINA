@@ -54,6 +54,7 @@ vector<RMTPort *> SimpleTable::lookup(const Address &dst, const std::string&qos)
     vector<RMTPort*> ret;
     string dstAddr = dst.getIpcAddress().getName();
     qos2Port * t = &table[dstAddr];
+
     if (t->empty())
     {
         return ret;
@@ -70,7 +71,7 @@ vector<RMTPort *> SimpleTable::lookup(const Address &dst, const std::string&qos)
     {
         if (t->find(ANY_QOS) != t->end())
         {
-            ret.push_back((*t)[ANY_QOS]);
+           // ret.push_back((*t)[ANY_QOS]);
         }
     }
     return ret;

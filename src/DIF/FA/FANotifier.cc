@@ -275,6 +275,7 @@ void FANotifier::signalizeCreateResponseFlowNegative(Flow* flow) {
 
 void FANotifier::signalizeCreateFlow(Flow* flow) {
     EV << "Emits CreateFlow signal for flow" << endl;
+
     emit(sigRIBDCreFlow, flow);
 }
 

@@ -4,117 +4,180 @@
 #include <queue>
 #include <ConnectionId.h>
 #include <Address.h>
+#include "OFMessages.h"
+#include "RMTPort.h"
 
 using namespace std;
 
-struct OF_Flow {
-    double interPDU;
-    int pduSize;
+class ONOFInj;
+
+
+class Flow_t {
+public :
     int flowId;
-    int secN;
-    long remaining;
-
-    OF_Flow(int _flowId) : flowId(_flowId) {};
-
-    void set(double R, int _pduSize, long _remaining) {
-        pduSize = _pduSize;
-        secN = 0;
-        remaining = _remaining;
-        interPDU = _pduSize / R;
-    }
-};
-
-struct OF_FlowSet {
-    vector<OF_Flow>  flows;
-    int method;
-
-    string dst;
+    string dstAddr;
     string QoS;
-    int N, cN;
-    double minR, maxR;
-    double minD, maxD;
-    double minW, maxW;
-    int pduMin, pduMax;
 
-    OF_FlowSet(){}
+    Flow_t(int fid, string da, string q) :
+        flowId(fid), dstAddr(da), QoS(q) {}
+    virtual ~Flow_t(){}
+};
 
-    OF_FlowSet(int & flowId, int _method, string _dst, string _QoS, int _N, double R, double D, double K, int _pduMin, int _pduMax) :
-        method(_method), dst(_dst), QoS(_QoS), pduMin(_pduMin), pduMax(_pduMax) {
-        minR = R*(1.0-K);
-        maxR = R*(1.0+K);
-        minD = D*(1.0-K);
-        maxD = D*(1.0+K);
-        double W = D/_N;
-        minW = W*(1.0-K);
-        maxW = W*(1.0+K);
+class Flow_timer : public cMessage {
+public:
+    Flow_t * f;
+    Flow_timer() : f ( nullptr ) {}
+};
+class actTimer : public Flow_timer {};
+class retransTimer : public Flow_timer {};
+class selretransTimer : public Flow_timer {};
+class ackTimer : public Flow_timer {};
 
-        N = 1 + 2*(int) ceil(maxD/minW);
-        cN = N;
 
-        for(int i = 0; i < N; i++) {
-            flows.push_back(OF_Flow(flowId++));
-        }
+class voiceOF : public Flow_t {
+public :
+    static int min_pdu_len, max_pdu_len;
+    static double interval, idle_time, burst_time;
+
+    seq_t seq;
+    actTimer * At;
+    bool state;
+    int remaining;
+
+    ~voiceOF(){}
+    voiceOF(int fid, string dst, string qos):
+      Flow_t(fid, dst, qos), seq (0), state(false), remaining(0) {
+        seq = -1;
+        At = new actTimer();
     }
 
-    double startNext() {
-        cN++;
-        if(cN >= N) { cN = 0; }
+    virtual ofMsg * getData(ONOFInj *);
+};
 
-        OF_Flow & f = flows[cN];
-        double fR;
-        int fPduSize;
-        long fRemaining;
-        double W;
 
-        switch (method) {
-            case 0:
-            default:
-                fR = uniform( minR, maxR);
-                fPduSize = intuniform(pduMin, pduMax);
-                fRemaining = (long) (uniform(minD, maxD)*fR);
-                W = uniform(minW, maxW);
-                break;
-        }
 
-        f.set(fR, fPduSize, fRemaining);
+class dtcpOF : public Flow_t {
+public :
+    static double ackT;
 
-        return W;
+    seq_t sent, acked, sN;
+    seq_t A, B;
+    seq_t p0, p1, p2;
+    double retT;
+    seq_t lastNack;
+    double last_sent;
+    bool nacking;
+
+    actTimer * At;
+    retransTimer * rt;
+    selretransTimer * srt;
+    ackTimer * at;
+
+    ~dtcpOF(){}
+    dtcpOF(int fid, string dst, string qos):
+      Flow_t(fid, dst, qos) {
+        At = new actTimer();
+        rt = new retransTimer();
+        srt = new selretransTimer();
+        at = new ackTimer();
+        sent = -1;
+        acked = -1;
+        sN = 0;
+        A = -1;
+        B = 0;
+        lastNack = -1;
+        retT = ackT + 0.1;
+        last_sent = 0.0;
+        nacking = false;
+    }
+};
+
+class clientOF : public dtcpOF {
+public :
+    static int pdu_len;
+
+    int minData, maxData; // in PDU
+    double minRate, maxRate; // in PDU/s
+    double idle_time;
+    double next_time;
+    seq_t until;
+    double reqRate;
+
+    ~clientOF(){}
+    clientOF(int fid, string dst, string qos,
+            int md, int Md, double mr, double Mr, double it):
+      dtcpOF(fid, dst, qos),
+      minData(md), maxData(Md), minRate(mr), maxRate(Mr), idle_time(it), until(0), reqRate(0.0){}
+
+    virtual ofMsg * getRq(ONOFInj *);
+    virtual ofMsg * getAck(ONOFInj *);
+};
+
+class serverOF : public dtcpOF {
+public :
+    static int pdu_len;
+
+    double interval;
+    seq_t until;
+    bool nextSNack;
+
+    serverOF(int fid, string dst, string qos):
+      dtcpOF(fid, dst, qos) {
+        nextSNack = false;
+        until = -1;
+        interval = 0.0;
     }
 
-};
-
-class OF_FlowNext_Msg : public cMessage {
-public:
-    int fset;
-    OF_FlowNext_Msg(int _fset) : cMessage ("OF : Start Flow"), fset(_fset) {}
-};
-class OF_PDUNext_Msg : public cMessage {
-public:
-    int fset, findex;
-    OF_PDUNext_Msg(int _fset, int _findex) : cMessage ("OF : Send PDU"), fset(_fset), findex(_findex) {}
-};
-class OF_IRed : public cMessage {
-public:
-    OF_IRed() : cMessage ("OF : InfReady") {}
+    virtual ofMsg * getData(ONOFInj *);
+    virtual ofMsg * getAck(ONOFInj *);
 };
 
 class ONOFInj : public cSimpleModule {
+public :
+    void receiveData(const string & _src, const string & _qos, shared_ptr<Inj_data> data);
+    Inj_PDU * getPDU(const Flow_t * f, Inj_data * data);
+
+    void setPort(const string & dst, const string & qos, RMTPort * p) {
+        ports[dst][qos] = p;
+    }
+
+    long long received, sent;
+    long long reqCount, ackCount, dataCount, dataDCount, dataACount;
+
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-    simsignal_t signal;
+    void finish();
 
+
+    int header;
     double fin;
-    vector<OF_FlowSet> flowSets;
 
+    ;
     string src, dif;
     ConnectionId connID;
     Address srcAddr, dstAddr;
 
-    queue<cPacket*> q;
 
-    int maxSimult, curSimult;
-    double wPerBit;
+    int nextFlowId;
+    map<int, voiceOF *> vFlows;
+    map<string, map<int, clientOF *> > cFlows;
+    map<string, map<int, serverOF *> > sFlows;
 
+
+    map<string, map<string, RMTPort * > > ports;
+
+
+    void actVoice(actTimer * m, voiceOF * f);
+    void actClient(actTimer * m, clientOF * f);
+    void actServer(actTimer * m, serverOF * f);
+
+    void retClient(retransTimer * m, clientOF * f);
+    void retServer(retransTimer * m, serverOF * f);
+
+    void selRetServer(selretransTimer * m, serverOF * f);
+
+    void rackClient(ackTimer * m, clientOF * f);
+    void rackServer(ackTimer * m, serverOF * f);
 };

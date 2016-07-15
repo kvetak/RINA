@@ -20,46 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include <NeiGen/NeiGen.h>
 
-package rina.src.Other.ONOFFInj;
+Register_Class(NeiGen);
 
-import rina.src.DAF.AE.AEVideo.AEVideo;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
+using namespace std;
 
-module OFInjRouter
-{
-    parameters:
-        @display("i=abstract/switch;bgb=391,325");
-        @node;
+// A new flow has been inserted/or removed
+void NeiGen::insertedFlow(const Address &addr, const QoSCube &qos, port_t port){
+    sfwd->insert(addr.getIpcAddress().getName(), qos.getQosId(), port);
+}
 
-    gates:
-        inout medium[];
+void NeiGen::removedFlow(const Address &addr, const QoSCube& qos, port_t port){
+    sfwd->remove(addr.getIpcAddress().getName(), qos.getQosId());
+}
 
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess;
-        ipcProcess1: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
-        }
-        ipcProcess2: IPCProcess {
-            @display("p=241,116;i=,#FFB000");
-            relay = true;
-            resourceAllocator.addrComparatorName = "OFInfectionComparator";
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-        OFInj: ONOFInj {
-            @display("p=260,245");
-            infectedIPC = default("ipcProcess2");
-        }
-    connections allowunconnected:
-        ipcProcess2.southIo++ <--> ipcProcess1.northIo++;
+//Routing has processes a routing update
+void NeiGen::routingUpdated(){}
 
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            ipcProcess1.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
+// Called after initialize
+void NeiGen::onPolicyInit(){
+    //Set Forwarding policy
+    sfwd = getRINAModule<NeiTable *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
 }

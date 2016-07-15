@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<Configuration>
+    <shapers>
+    	<shaper id="outQ_M" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_MA" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_mgmt" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	 	
+    	<shaper id="outQ_A" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_B" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_C" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "4" />
+    </shapers>
+    
+    <shapersB>
+    	<shaper id="outQ_M" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_MA" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_mgmt" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	 	
+    	<shaper id="outQ_A" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_B" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_C" 
+    		type="3" 
+    		urgency = "2" 
+    		cherish = "4" 
+    		header = "88"
+    		rtvar = "0.1"
+    		intervalSize = "100">
+    		<CU r = "5000000" C = "2" U = "2" />
+    		<CU r = "10000000" C = "3" U = "2" />
+    		<CU r = "20000000" C = "4" U = "3" />
+    	</shaper>
+    </shapersB>
+    
+    <mux
+    	type = "1"
+    	maxU = "3"
+    	maxC = "4">
+    	<CTh
+    		C = "0"
+    		ath = "200"
+    		th = "200"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "1"
+    		ath = "120"
+    		th = "120"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "2"
+    		ath = "120"
+    		th = "110"
+    		p = "0.1"
+    	/>
+    	<CTh
+    		C = "3"
+    		ath = "100"
+    		th = "90"
+    		p = "0.1"
+    	/>
+    	<CTh
+    		C = "4"
+    		ath = "100"
+    		th = "90"
+    		p = "0.2"
+    	/>
+    </mux>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -481,11 +481,14 @@ FAI* FA::createFAI(Flow* flow) {
         portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
     }
     inUsePortId.insert(portId);
+
     int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
-    while(inUseCepId.find(portId) != inUseCepId.end()) {
+    while(inUseCepId.find(cepId) != inUseCepId.end()) {
         cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
     }
     inUseCepId.insert(cepId);
+
+  //  std::cout << portId << " "<< cepId<< " / " << getFullPath() <<endl;
 
     //Create a name
     std::ostringstream ostr;

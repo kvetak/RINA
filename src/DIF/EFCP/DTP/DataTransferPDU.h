@@ -35,8 +35,7 @@
 /*
  *
  */
-class DataTransferPDU : public DataTransferPDU_Base
-  {
+class DataTransferPDU : public DataTransferPDU_Base {
     private:
       void copy(const DataTransferPDU& other);
       UserDataFieldPtr userDataField_var;

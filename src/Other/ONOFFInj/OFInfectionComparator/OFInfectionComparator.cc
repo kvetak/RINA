@@ -20,46 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#include "OFInfectionComparator.h"
+#include "Inj_PDU.h"
+#include "ONOFInj.h"
 
-package rina.src.Other.ONOFFInj;
+Define_Module(OFInfectionComparator);
 
-import rina.src.DAF.AE.AEVideo.AEVideo;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
 
-module OFInjRouter
-{
-    parameters:
-        @display("i=abstract/switch;bgb=391,325");
-        @node;
-
-    gates:
-        inout medium[];
-
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess;
-        ipcProcess1: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
+bool OFInfectionComparator::matchesThisIPC(const Address& addr, PDU * pdu) {
+    if(addr == thisIPCAddr) {
+        if(Inj_PDU *inf = dynamic_cast<Inj_PDU * >(pdu)){
+            p->receiveData(inf->getSrcAddr().getIpcAddress().getName(),
+                    inf->getConnId().getQoSId(), inf->xdata);
         }
-        ipcProcess2: IPCProcess {
-            @display("p=241,116;i=,#FFB000");
-            relay = true;
-            resourceAllocator.addrComparatorName = "OFInfectionComparator";
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-        OFInj: ONOFInj {
-            @display("p=260,245");
-            infectedIPC = default("ipcProcess2");
-        }
-    connections allowunconnected:
-        ipcProcess2.southIo++ <--> ipcProcess1.northIo++;
-
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            ipcProcess1.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
+        return true;
+    }
+    return false;
 }
+
+

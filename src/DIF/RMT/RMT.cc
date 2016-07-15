@@ -127,8 +127,16 @@ void RMT::finish()
 
         for (auto const& m : invalidPDUs)
         {
-            EV << m->getClassName() << " received at " << m->getArrivalTime()
-               << " from " << m->getSenderModule()->getFullPath() << endl;
+            if(const PDU* pdu = dynamic_cast<const PDU*>(m)) {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
+            } else {
+                EV << m->getClassName() << " received at " << m->getArrivalTime()
+                   << " from " << m->getSenderModule()->getFullPath()
+                   << " || NOT PDU"<< endl;
+            }
+
         }
     }
 
@@ -303,6 +311,14 @@ void RMT::postQueueDeparture(cObject* obj)
     }
     else
     { // if this is an outgoing PDU, set the port as busy
+        /*
+        if(port->getFullPath() == "net.N[1].ipcProcess2.relayAndMux.p2.port") {
+            std::cout << "postQueueDeparture net.N[1].ipcProcess2.relayAndMux.p2.port"<< endl;
+        }
+        if(port->getFullPath() == "net.N[1].ipcProcess2.relayAndMux.p0.port") {
+            std::cout << "postQueueDeparture net.N[1].ipcProcess2.relayAndMux.p0.port"<< endl;
+        }
+        */
         port->setOutputBusy();
     }
 }
@@ -433,13 +449,7 @@ void RMT::relayPDUToPort(PDU* pdu)
            << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
-/*
-        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
-           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
-           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
-           << "PDUForwarding contents: " << endl << fwd->toString() << endl;
-*/
+
         invalidPDUs.push_back(pdu);
     }
 

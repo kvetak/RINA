@@ -22,6 +22,8 @@
 
 #include "RMTQueue.h"
 
+#include "PDU.h"
+
 const char* SIG_STAT_RMTQUEUE_LENGTH = "RMTQueue_Length";
 const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";
 
@@ -47,7 +49,13 @@ void RMTQueue::finish()
         for (iterator it = begin(); it != end(); ++it)
         {
             cPacket* p = *it;
-            EV << p->getClassName() << " received at " << p->getArrivalTime() << endl;
+            if(PDU* pdu = dynamic_cast<PDU*>(p)) {
+                EV << p->getClassName() << " received at " << p->getArrivalTime()
+                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
+            } else {
+                EV << p->getClassName() << " received at " << p->getArrivalTime()
+                        << " || NOT PDU"<< endl;
+            }
         }
     }
 }

@@ -20,46 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#pragma once
 
-package rina.src.Other.ONOFFInj;
+#include <IntMiniForwarding.h>
+#include <map>
+#include <string>
+#include <vector>
+#include "RINASignals.h"
 
-import rina.src.DAF.AE.AEVideo.AEVideo;
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
+using namespace std;
 
-module OFInjRouter
+class NeiTable : public IntPDUForwarding
 {
-    parameters:
-        @display("i=abstract/switch;bgb=391,325");
-        @node;
+    public:
+        // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+        vector<RMTPort *> lookup(const PDU * pdu);
+        vector<RMTPort *> lookup(const Address &dst, const std::string& qos);
 
-    gates:
-        inout medium[];
+        // Returns a representation of the Forwarding Knowledge
+        string toString();
 
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess;
-        ipcProcess1: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
-        }
-        ipcProcess2: IPCProcess {
-            @display("p=241,116;i=,#FFB000");
-            relay = true;
-            resourceAllocator.addrComparatorName = "OFInfectionComparator";
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-        OFInj: ONOFInj {
-            @display("p=260,245");
-            infectedIPC = default("ipcProcess2");
-        }
-    connections allowunconnected:
-        ipcProcess2.southIo++ <--> ipcProcess1.northIo++;
+        //Insert/Remove an entry
+        void insert(const std::string &addr, const std::string& qos, RMTPort * port);
+        void remove(const std::string &addr, const std::string& qos);
 
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            ipcProcess1.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
-}
+        void finish();
+
+    protected:
+        map<string, map<string, RMTPort *> > table;
+        // Called after initialize
+        void onPolicyInit();
+        void initSignalsAndListeners();
+        void initialize();
+        simsignal_t sigStatPDUFTLENGTH;
+        const char* SIG_STAT_PDUFT_LENGTH = "PDUFT_Length";
+};
