@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<Configuration>
+    <ConnectionSets>
+        <ConnectionSet id="all">
+            <SimTime t="0">
+                <Connection src="111_Layer1" dst="131_Layer1" qosCube="1"/>
+                <Connection src="112_Layer1" dst="131_Layer1" qosCube="1"/>
+                <Connection src="113_Layer1" dst="131_Layer1" qosCube="1"/>
+                <Connection src="114_Layer1" dst="131_Layer1" qosCube="1"/>
+                <Connection src="115_Layer1" dst="131_Layer1" qosCube="1"/>
+
+                <Connection src="131_Layer1" dst="141_Layer1" qosCube="1"/>
+				
+                <Connection src="141_Layer1" dst="121_Layer1" qosCube="1"/>
+                <Connection src="141_Layer1" dst="122_Layer1" qosCube="1"/>
+                <Connection src="141_Layer1" dst="123_Layer1" qosCube="1"/>
+                <Connection src="141_Layer1" dst="124_Layer1" qosCube="1"/>
+                <Connection src="141_Layer1" dst="125_Layer1" qosCube="1"/>
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+    
+	<Host id="host11">
+		<DA>
+			<Directory>
+				<APN apn="App11">
+					<DIF difName="Layer1" ipcAddress="111" />
+				</APN>
+				<APN apn="App12">
+					<DIF difName="Layer1" ipcAddress="112" />
+				</APN>
+				<APN apn="App13">
+					<DIF difName="Layer1" ipcAddress="113" />
+				</APN>
+				<APN apn="App14">
+					<DIF difName="Layer1" ipcAddress="114" />
+				</APN>
+				<APN apn="App15">
+					<DIF difName="Layer1" ipcAddress="115" />
+				</APN>
+				<APN apn="App21">
+					<DIF difName="Layer1" ipcAddress="121" />
+				</APN>
+				<APN apn="App22">
+					<DIF difName="Layer1" ipcAddress="122" />
+				</APN>
+				<APN apn="App23">
+					<DIF difName="Layer1" ipcAddress="123" />
+				</APN>
+				<APN apn="App24">
+					<DIF difName="Layer1" ipcAddress="124" />
+				</APN>
+				<APN apn="App25">
+					<DIF difName="Layer1" ipcAddress="125" />
+				</APN>
+				
+				<APN apn="111_Layer1">
+					<DIF difName="Layer011" ipcAddress="011" />
+				</APN>
+				<APN apn="112_Layer1">
+					<DIF difName="Layer012" ipcAddress="012" />
+				</APN>						
+				<APN apn="113_Layer1">
+					<DIF difName="Layer013" ipcAddress="013" />
+				</APN>						
+				<APN apn="114_Layer1">
+					<DIF difName="Layer014" ipcAddress="014" />
+				</APN>						
+				<APN apn="115_Layer1">
+					<DIF difName="Layer015" ipcAddress="015" />
+				</APN>						
+				<APN apn="121_Layer1">
+					<DIF difName="Layer021" ipcAddress="021" />
+				</APN>
+				<APN apn="122_Layer1">
+					<DIF difName="Layer022" ipcAddress="022" />
+				</APN>						
+				<APN apn="123_Layer1">
+					<DIF difName="Layer023" ipcAddress="023" />
+				</APN>						
+				<APN apn="124_Layer1">
+					<DIF difName="Layer024" ipcAddress="024" />
+				</APN>						
+				<APN apn="125_Layer1">
+					<DIF difName="Layer025" ipcAddress="025" />
+				</APN>						
+				
+				<APN apn="131_Layer1">
+					<DIF difName="Layer011" ipcAddress="031" />
+					<DIF difName="Layer012" ipcAddress="032" />
+					<DIF difName="Layer013" ipcAddress="033" />
+					<DIF difName="Layer014" ipcAddress="034" />
+					<DIF difName="Layer015" ipcAddress="035" />
+					<DIF difName="Layer034" ipcAddress="036" />
+				</APN>	
+				<APN apn="141_Layer1">
+					<DIF difName="Layer021" ipcAddress="041" />
+					<DIF difName="Layer022" ipcAddress="042" />
+					<DIF difName="Layer023" ipcAddress="043" />
+					<DIF difName="Layer024" ipcAddress="044" />
+					<DIF difName="Layer025" ipcAddress="045" />
+					<DIF difName="Layer034" ipcAddress="046" />
+				</APN>	
+			</Directory>
+			<NeighborTable>
+				<APN apn="121_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="111_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host12">
+		<DA>
+			<NeighborTable>
+				<APN apn="122_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="112_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>				
+	</Host>
+
+	<Host id="host13">
+		<DA>
+			<NeighborTable>
+				<APN apn="123_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="113_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host14">
+		<DA>
+			<NeighborTable>
+				<APN apn="124_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="114_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host15">
+		<DA>
+			<NeighborTable>
+				<APN apn="125_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="115_Layer1" dst="131_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host21">
+		<DA>
+			<NeighborTable>
+				<APN apn="111_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="121_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host22">
+		<DA>
+			<NeighborTable>
+				<APN apn="112_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="122_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host23">
+		<DA>
+			<NeighborTable>
+				<APN apn="113_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="123_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Host>
+
+	<Host id="host24">
+		<DA>
+			<NeighborTable>
+				<APN apn="114_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="124_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+		
+	</Host>
+
+	<Host id="host25">
+		<DA>
+			<NeighborTable>
+				<APN apn="115_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0.5">
+	                <Connect src="125_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+
+	</Host>
+
+	<Router id="router1">
+		<DA>
+			<Directory>
+				<APN apn="App11">
+					<DIF difName="Layer1" ipcAddress="111" />
+				</APN>
+				<APN apn="App12">
+					<DIF difName="Layer1" ipcAddress="112" />
+				</APN>
+				<APN apn="App13">
+					<DIF difName="Layer1" ipcAddress="113" />
+				</APN>
+				<APN apn="App14">
+					<DIF difName="Layer1" ipcAddress="114" />
+				</APN>
+				<APN apn="App15">
+					<DIF difName="Layer1" ipcAddress="115" />
+				</APN>
+				<APN apn="App21">
+					<DIF difName="Layer1" ipcAddress="121" />
+				</APN>
+				<APN apn="App22">
+					<DIF difName="Layer1" ipcAddress="122" />
+				</APN>
+				<APN apn="App23">
+					<DIF difName="Layer1" ipcAddress="123" />
+				</APN>
+				<APN apn="App24">
+					<DIF difName="Layer1" ipcAddress="124" />
+				</APN>
+				<APN apn="App25">
+					<DIF difName="Layer1" ipcAddress="125" />
+				</APN>
+				
+				<APN apn="111_Layer1">
+					<DIF difName="Layer011" ipcAddress="011" />
+				</APN>
+				<APN apn="112_Layer1">
+					<DIF difName="Layer012" ipcAddress="012" />
+				</APN>						
+				<APN apn="113_Layer1">
+					<DIF difName="Layer013" ipcAddress="013" />
+				</APN>						
+				<APN apn="114_Layer1">
+					<DIF difName="Layer014" ipcAddress="014" />
+				</APN>						
+				<APN apn="115_Layer1">
+					<DIF difName="Layer015" ipcAddress="015" />
+				</APN>						
+				<APN apn="121_Layer1">
+					<DIF difName="Layer021" ipcAddress="021" />
+				</APN>
+				<APN apn="122_Layer1">
+					<DIF difName="Layer022" ipcAddress="022" />
+				</APN>						
+				<APN apn="123_Layer1">
+					<DIF difName="Layer023" ipcAddress="023" />
+				</APN>						
+				<APN apn="124_Layer1">
+					<DIF difName="Layer024" ipcAddress="024" />
+				</APN>						
+				<APN apn="125_Layer1">
+					<DIF difName="Layer025" ipcAddress="025" />
+				</APN>						
+				
+				<APN apn="131_Layer1">
+					<DIF difName="Layer011" ipcAddress="031" />
+					<DIF difName="Layer012" ipcAddress="032" />
+					<DIF difName="Layer013" ipcAddress="033" />
+					<DIF difName="Layer014" ipcAddress="034" />
+					<DIF difName="Layer015" ipcAddress="035" />
+					<DIF difName="Layer034" ipcAddress="036" />
+				</APN>	
+				<APN apn="141_Layer1">
+					<DIF difName="Layer021" ipcAddress="041" />
+					<DIF difName="Layer022" ipcAddress="042" />
+					<DIF difName="Layer023" ipcAddress="043" />
+					<DIF difName="Layer024" ipcAddress="044" />
+					<DIF difName="Layer025" ipcAddress="045" />
+					<DIF difName="Layer034" ipcAddress="046" />
+				</APN>	
+			</Directory>
+			<NeighborTable>
+				<APN apn="121_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+				<APN apn="122_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+				<APN apn="123_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+				<APN apn="124_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+				<APN apn="125_Layer1">
+					<Neighbor apn="141_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+		<Enrollment>
+			<Preenrollment>
+	            <SimTime t="0">
+	                <Connect src="131_Layer1" dst="141_Layer1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>			
+	</Router>
+	<Router id="router2">
+		<DA>
+			<NeighborTable>
+				<APN apn="111_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+				<APN apn="112_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+				<APN apn="113_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+				<APN apn="114_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+				<APN apn="115_Layer1">
+					<Neighbor apn="131_Layer1" />
+				</APN>			
+			</NeighborTable>
+		</DA>	
+	</Router>
+    
+	<QoSCubesSet>
+        <QosCube id="1">
+            <AverageBandwidth>12000000</AverageBandwidth>
+            <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+            <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+            <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+            <BurstPeriod>10000000</BurstPeriod>
+            <BurstDuration>1000000</BurstDuration>
+            <UndetectedBitError>0.01</UndetectedBitError>
+            <PDUDroppingProbability>0</PDUDroppingProbability>
+            <MaxSDUSize>1500</MaxSDUSize>
+            <PartialDelivery>0</PartialDelivery>
+            <IncompleteDelivery>0</IncompleteDelivery>
+            <ForceOrder>0</ForceOrder>
+            <MaxAllowableGap>0</MaxAllowableGap>
+            <Delay>1000000</Delay>
+            <Jitter>500000</Jitter>
+            <CostTime>0</CostTime>
+            <CostBits>0</CostBits>
+            <ATime>0</ATime>
+        </QosCube>
+	</QoSCubesSet>
+</Configuration>

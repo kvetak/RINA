@@ -51,6 +51,9 @@ class SearchTable : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
     void parseConfig(cXMLElement* config);
+
+private:
+    void updateDisplayString();
 };
 
 #endif

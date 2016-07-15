@@ -64,6 +64,11 @@ void RMTPort::initialize()
 
 void RMTPort::postInitialize()
 {
+    protectIn = gateHalf("protect$i", cGate::INPUT);
+    protectOut = gateHalf("protect$o", cGate::OUTPUT);
+    unprotectIn = gateHalf("unprotect$i", cGate::INPUT);
+    unprotectOut = gateHalf("unprotect$o", cGate::OUTPUT);
+
     // this will be nullptr if this IPC doesn't use a channel
     outputChannel = southOutputGate->findTransmissionChannel();
 }
@@ -90,70 +95,78 @@ void RMTPort::handleMessage(cMessage* msg)
     }
     else
     {
-            if (msg->getArrivalGate() == southInputGate) // incoming message
-            {
-              SDUData* sduData = dynamic_cast<SDUData*>(msg);
-              if(sduData == nullptr){
+        if (msg->getArrivalGate() == southInputGate) // incoming message
+        { // pass to SDU protection
+            send(msg, unprotectOut);
+        }
+        else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
+        { // pass to SDU protection
+            send(msg, protectOut);
+        }
+        else if (msg->getArrivalGate() == unprotectIn) // unprotected incoming message
+        {
+            SDUData* sduData = dynamic_cast<SDUData*>(msg);
+            if(sduData == nullptr){
                 delete msg;
                 EV << "this type of message isn't supported!" << endl;
                 return;
-              }
-              PDU* pdu = static_cast<PDU*>(sduData->decapsulate());
-              delete sduData;
-                // get a proper queue for this message
-                std::string queueID =
-                        queueIdGen->generateInputQueueID(pdu);
-
-                RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
-
-                if (inQueue != nullptr)
-                {
-                    send(pdu, inQueue->getInputGate()->getPreviousGate());
-                    emit(sigStatRMTPortUp, true);
-                }
-                else
-                {
-                    EV << getFullPath()
-                       << ": no input queue of such queue-id (" << queueID
-                       << ") available!" << endl;
-                    EV << pdu->getConnId().getQoSId() << endl;
-                }
             }
-            else if (northInputGates.count(msg->getArrivalGate())) // outgoing message
-            {
-                PDU* pdu = dynamic_cast<PDU*>(msg);
-                if (pdu == nullptr){
-                  delete msg;
-                  EV << "this type of message isn't supported!" << endl;
-                  return;
-                }
-                setOutputBusy();
-                // start the transmission
-                SDUData* sduData = new SDUData();
-                sduData->encapsulate(pdu);
-                send(sduData, southOutputGate);
+            PDU* pdu = static_cast<PDU*>(sduData->decapsulate());
+            delete sduData;
+            // get a proper queue for this message
+            std::string queueID =
+                    queueIdGen->generateInputQueueID(pdu);
 
-                // determine when should the port be ready to serve again
-                if (outputChannel != nullptr)
-                { // we're using a channel, likely with some sort of data rate/delay
-                    simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
-                    if (transmitEnd > simTime())
-                    { // transmit requires some simulation time
-                        scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
-                    }
-                    else
-                    {
-                        scheduleNextWrite();
-                        emit(sigStatRMTPortDown, true);
-                    }
+            RMTQueue* inQueue = getQueueById(RMTQueue::INPUT, queueID.c_str());
+
+            if (inQueue != nullptr)
+            {
+                send(pdu, inQueue->getInputGate()->getPreviousGate());
+                emit(sigStatRMTPortUp, true);
+            }
+            else
+            {
+                EV << getFullPath()
+                                       << ": no input queue of such queue-id (" << queueID
+                                       << ") available!" << endl;
+                EV << pdu->getConnId().getQoSId() << endl;
+            }
+        }
+        else if (msg->getArrivalGate() == protectIn) // protected outgoing message
+        {
+            PDU* pdu = dynamic_cast<PDU*>(msg);
+            if (pdu == nullptr){
+                delete msg;
+                EV << "this type of message isn't supported!" << endl;
+                return;
+            }
+            setOutputBusy();
+            // start the transmission
+            SDUData* sduData = new SDUData();
+            sduData->encapsulate(pdu);
+            send(sduData, southOutputGate);
+
+            // determine when should the port be ready to serve again
+            if (outputChannel != nullptr)
+            { // we're using a channel, likely with some sort of data rate/delay
+                simtime_t transmitEnd = outputChannel->getTransmissionFinishTime();
+                if (transmitEnd > simTime())
+                { // transmit requires some simulation time
+                    scheduleAt(transmitEnd, new cMessage("portTransmitEnd"));
                 }
                 else
-                { // there isn't any delay or rate control in place, the PDU is already sent
+                {
                     scheduleNextWrite();
                     emit(sigStatRMTPortDown, true);
-                    emit(sigRMTPortReadyToWrite, this);
                 }
             }
+            else
+            { // there isn't any delay or rate control in place, the PDU is already sent
+                scheduleNextWrite();
+                emit(sigStatRMTPortDown, true);
+                emit(sigRMTPortReadyToWrite, this);
+            }
+        }
     }
 }
 

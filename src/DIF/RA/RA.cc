@@ -382,45 +382,6 @@ QoSReq* RA::initQoSReqById(const char* id)
     return (reqs ? new QoSReq(attrs) : nullptr);
 }
 
-
-/**
- * A convenience function for interconnecting two modules.
- * TODO: convert this into a global utility method so others can use it
- *
- * @param m1 first module
- * @param m2 second module
- * @param n1 first module gate name
- * @param n2 second module gate name
- */
-void RA::interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n2)
-{
-    if (!m1->hasGate(n1.c_str()))
-    {
-        m1->addGate(n1.c_str(), cGate::INOUT, false);
-    }
-    cGate* m1In = m1->gateHalf(n1.c_str(), cGate::INPUT);
-    cGate* m1Out = m1->gateHalf(n1.c_str(), cGate::OUTPUT);
-
-    if (!m2->hasGate(n2.c_str()))
-    {
-        m2->addGate(n2.c_str(), cGate::INOUT, false);
-    }
-    cGate* m2In = m2->gateHalf(n2.c_str(), cGate::INPUT);
-    cGate* m2Out = m2->gateHalf(n2.c_str(), cGate::OUTPUT);
-
-    if (m2->getParentModule() == m1)
-    {
-        m1In->connectTo(m2In);
-        m2Out->connectTo(m1Out);
-    }
-    else
-    {
-        m1Out->connectTo(m2In);
-        m2Out->connectTo(m1In);
-    }
-}
-
-
 /**
  * Connects the medium defined in NED to the RMT module.
  * Used only for bottom IPC processes in a computing systems.

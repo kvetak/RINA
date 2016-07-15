@@ -30,14 +30,14 @@ import rina.src.DIF.IPCProcess;
 module InteriorRouterNInt
 {
     parameters:
-    	@display("i=abstract/switch;bgb=600,325");
-    	@node;
-    
+        @display("i=abstract/switch;bgb=1310,325");
+        @node;
+		int numOfInterfaces = default(1);
     gates:
-        inout medium[];
+        inout medium[numOfInterfaces];
 
     submodules:
-        ipcProcess[sizeof(medium)]: IPCProcess {
+        ipcProcess0[sizeof(medium)]: IPCProcess {
             @display("p=104,245,r,150");
         }
         relayIpc: IPCProcess {
@@ -51,7 +51,7 @@ module InteriorRouterNInt
 
         // Every IPC Process is connected to its medium and the Relay IPC.
         for i=0..sizeof(medium)-1 {
-            relayIpc.southIo++ <--> ipcProcess[i].northIo++;
-            ipcProcess[i].southIo++ <--> medium[i];
+            relayIpc.southIo++ <--> ipcProcess0[i].northIo++;
+            ipcProcess0[i].southIo++ <--> medium[i];
         }
 }

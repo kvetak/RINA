@@ -42,6 +42,7 @@ const char* PAR_JITTER              = "jitter";
 const char* PAR_COSTTIME            = "costTime";
 const char* PAR_COSTBITS            = "costBits";
 const char* PAR_ATIME               = "aTime";
+const char* PAR_RESILIENCYFACTOR    = "resiliencyFactor";
 
 const APNamingInfo& AEBase::getApni() const {
     return apni;

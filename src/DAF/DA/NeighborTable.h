@@ -53,6 +53,8 @@ class NeighborTable : public cSimpleModule
 
     void parseConfig(cXMLElement* config);
 
+private:
+    void updateDisplayString();
 };
 
 #endif

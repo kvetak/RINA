@@ -211,6 +211,30 @@ cModule* DA::findApp(const APN& apn) {
     }
     return NULL;
 }
+
+
+const Addresses* DA::resolveApnToAddressList(const APN& apn, const DAP& difName) {
+    Enter_Method("resolveApnToAddressList()");
+
+    DirectoryEntry* de = resolveApn(apn);
+    if (de == NULL) {
+        EV << "DA does not know target application" << endl;
+        return NULL;
+    }
+
+    Addresses* addrs = new Addresses();
+    //Return address from a given DIF
+    for (AddrCItem it = de->getSupportedDifs().begin(); it != de->getSupportedDifs().end(); ++it) {
+        if (it->getDifName() == difName && isDifLocal(it->getDifName()))
+            addrs->push_back(*it);
+    }
+
+    if (addrs->empty()) {
+        EV << "None of found DIFs is local!" << endl;
+    }
+
+    return addrs;
+}
 /*
 cModule* DA::resolveApnToIpc(const APN& apn) {
     Enter_Method("resolveApnToDif()");

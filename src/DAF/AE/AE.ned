@@ -53,7 +53,8 @@ simple AE like IAE
         int delay @unit(us)						= default(-1us); //Delay in usecs
         int jitter @unit(us)					= default(-1us); //Jitter in usecs
         int costTime							= default(-1); //measured in $/ms
-        int costBits							= default(-1); //measured in $/Mb        
+        int costBits							= default(-1); //measured in $/Mb
+        int resiliencyFactor					= default(-1);        
         
         //Authentication
         int authType							= default(0);

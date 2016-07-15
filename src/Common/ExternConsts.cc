@@ -153,6 +153,7 @@ const char* ELEM_RXON                = "RxOn";
 const char* ELEM_WINON               = "WinOn";
 const char* ELEM_RATEON              = "RateOn";
 const char* ELEM_EFCPPOL             = "EFCPPolicySet";
+const char* ELEM_RESILIENCYFACTOR    = "ResiliencyFactor";
 
 
 //Values
