@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<Configuration>
+  <ConnectionSets>
+    <ConnectionSet id="all">
+      <SimTime t="0">
+        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="1"/>  
+        <Connection src="R1.S1_DC" dst="R1.TOR_DC" qosReq="1"/>
+        <Connection src="R1.S2_DC" dst="R1.TOR_DC" qosReq="1"/>
+        <Connection src="R2.S1_DC" dst="R2.TOR_DC" qosReq="1"/>
+        <Connection src="R2.S2_DC" dst="R2.TOR_DC" qosReq="1"/>
+        <Connection src="R3.S1_DC" dst="R3.TOR_DC" qosReq="1"/>
+        <Connection src="R3.S2_DC" dst="R3.TOR_DC" qosReq="1"/>
+        <Connection src="R4.S1_DC" dst="R4.TOR_DC" qosReq="1"/>
+        <Connection src="R4.S2_DC" dst="R4.TOR_DC" qosReq="1"/>
+        <Connection src="R1.TOR_DC" dst="AS.1_DC" qosReq="1"/>
+        <Connection src="R1.TOR_DC" dst="AS.2_DC" qosReq="1"/>
+        <Connection src="R2.TOR_DC" dst="AS.1_DC" qosReq="1"/>
+        <Connection src="R2.TOR_DC" dst="AS.2_DC" qosReq="1"/>
+        <Connection src="R3.TOR_DC" dst="AS.3_DC" qosReq="1"/>
+        <Connection src="R3.TOR_DC" dst="AS.4_DC" qosReq="1"/>
+        <Connection src="R4.TOR_DC" dst="AS.3_DC" qosReq="1"/>
+        <Connection src="R4.TOR_DC" dst="AS.4_DC" qosReq="1"/>
+        <Connection src="AS.1_DC" dst="AS.5_DC" qosReq="1"/>
+        <Connection src="AS.2_DC" dst="AS.5_DC" qosReq="1"/>
+        <Connection src="AS.3_DC" dst="AS.5_DC" qosReq="1"/>
+        <Connection src="AS.4_DC" dst="AS.5_DC" qosReq="1"/>
+        <Connection src="AS.1_DC" dst="AS.6_DC" qosReq="1"/>
+        <Connection src="AS.2_DC" dst="AS.6_DC" qosReq="1"/>  
+        <Connection src="AS.3_DC" dst="AS.6_DC" qosReq="1"/>
+        <Connection src="AS.4_DC" dst="AS.6_DC" qosReq="1"/>
+       </SimTime>
+       
+       <SimTime t="1">
+        
+        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
+        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
+        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        
+        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+      </SimTime>
+      
+       <SimTime t="2">
+        
+        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
+        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
+        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        
+        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+      </SimTime>
+      
+       <SimTime t="3">
+        
+        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
+        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
+        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
+        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        
+        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+      </SimTime>
+    </ConnectionSet>
+  </ConnectionSets>
+  
+	<QoSReqSet>
+    	<QosReq id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>        
+		</QosReq>
+	</QoSReqSet>
+  
+	<DA>
+			<Directory>
+				<!-- 
+					How the DIF name are formatted? 
+					They contain, for reading purposes, the initial letter of the "upper"
+					element in the simulation and the initial letter of the "bottom" element.
+					Example: A1T1 means Aggregator1 to Tor1.
+			  	-->
+			  	
+			  	<!-- Aggregator side naming of the Shims -->
+				<APN apn="AS.1_DC">
+					<DIF difName="A1T1" ipcAddress="1"/>
+					<DIF difName="A1T2" ipcAddress="1"/>
+					<DIF difName="A1A5" ipcAddress="1"/>
+					<DIF difName="A1A6" ipcAddress="1"/>
+				</APN>
+				<APN apn="AS.2_DC">
+					<DIF difName="A2T1" ipcAddress="1"/>
+					<DIF difName="A2T2" ipcAddress="1"/>
+					<DIF difName="A2A5" ipcAddress="1"/>
+					<DIF difName="A2A6" ipcAddress="1"/>
+				</APN>
+				
+				<APN apn="AS.3_DC">
+					<DIF difName="A3T3" ipcAddress="1"/>
+					<DIF difName="A3T4" ipcAddress="1"/>
+					<DIF difName="A3A5" ipcAddress="1"/>
+					<DIF difName="A3A6" ipcAddress="1"/>
+				</APN>
+				<APN apn="AS.4_DC">
+					<DIF difName="A4T3" ipcAddress="1"/>
+					<DIF difName="A4T4" ipcAddress="1"/>
+					<DIF difName="A4A5" ipcAddress="1"/>
+					<DIF difName="A4A6" ipcAddress="1"/>
+				</APN>
+				
+				<APN apn="AS.5_DC">
+					<DIF difName="A1A5" ipcAddress="2"/>
+					<DIF difName="A2A5" ipcAddress="2"/>
+					<DIF difName="A3A5" ipcAddress="2"/>
+					<DIF difName="A4A5" ipcAddress="2"/>
+				</APN>
+				<APN apn="AS.6_DC">
+					<DIF difName="A1A6" ipcAddress="2"/>
+					<DIF difName="A2A6" ipcAddress="2"/>
+					<DIF difName="A3A6" ipcAddress="2"/>
+					<DIF difName="A4A6" ipcAddress="2"/>
+				</APN>
+	
+				<!-- TOR side naming of the Shims -->
+				<APN apn="R1.TOR_DC">
+					<DIF difName="A1T1" ipcAddress="2"/>
+					<DIF difName="A2T1" ipcAddress="2"/>
+					
+					<DIF difName="T1S1" ipcAddress="1"/>
+					<DIF difName="T1S2" ipcAddress="1"/>
+				</APN>
+				<APN apn="R2.TOR_DC">
+					<DIF difName="A1T2" ipcAddress="2"/>
+					<DIF difName="A2T2" ipcAddress="2"/>
+					
+					<DIF difName="T2S1" ipcAddress="1"/>
+					<DIF difName="T2S2" ipcAddress="1"/>
+				</APN>
+				<APN apn="R3.TOR_DC">
+					<DIF difName="A3T3" ipcAddress="2"/>
+					<DIF difName="A4T3" ipcAddress="2"/>
+					
+					<DIF difName="T3S1" ipcAddress="1"/>
+					<DIF difName="T3S2" ipcAddress="1"/>
+				</APN>
+				<APN apn="R4.TOR_DC">
+					<DIF difName="A3T4" ipcAddress="2"/>
+					<DIF difName="A4T4" ipcAddress="2"/>
+					
+					<DIF difName="T4S1" ipcAddress="1"/>
+					<DIF difName="T4S2" ipcAddress="1"/>
+				</APN>
+				
+				<!-- Server side naming of the Shims -->
+				<APN apn="R1.S1_DC">
+					<DIF difName="T1S1" ipcAddress="2"/>
+				</APN>
+				<APN apn="R1.S2_DC">
+					<DIF difName="T1S2" ipcAddress="2"/>
+				</APN>
+				<APN apn="R2.S1_DC">
+					<DIF difName="T2S1" ipcAddress="2"/>
+				</APN>
+				<APN apn="R2.S2_DC">
+					<DIF difName="T2S2" ipcAddress="2"/>
+				</APN>
+				<APN apn="R3.S1_DC">
+					<DIF difName="T3S1" ipcAddress="2"/>
+				</APN>
+				<APN apn="R3.S2_DC">
+					<DIF difName="T3S2" ipcAddress="2"/>
+				</APN>
+				<APN apn="R4.S1_DC">
+					<DIF difName="T4S1" ipcAddress="2"/>
+				</APN>
+				<APN apn="R4.S2_DC">
+					<DIF difName="T4S2" ipcAddress="2"/>
+				</APN>
+				
+				<!-- Servers side naming of the Net IPCs -->
+				<APN apn="R1.S1Net_Net">
+					<DIF difName="DC" ipcAddress="R1.S1"/>
+				</APN>
+				<APN apn="R1.S2Net_Net">
+					<DIF difName="DC" ipcAddress="R1.S2"/>
+				</APN>
+				<APN apn="R2.S1Net_Net">
+					<DIF difName="DC" ipcAddress="R2.S1"/>
+				</APN>
+				<APN apn="R2.S2Net_Net">
+					<DIF difName="DC" ipcAddress="R2.S2"/>
+				</APN>
+				<APN apn="R3.S1Net_Net">
+					<DIF difName="DC" ipcAddress="R3.S1"/>
+				</APN>
+				<APN apn="R3.S2Net_Net">
+					<DIF difName="DC" ipcAddress="R3.S2"/>
+				</APN>
+				<APN apn="R4.S1Net_Net">
+					<DIF difName="DC" ipcAddress="R4.S1"/>
+				</APN>
+				<APN apn="R4.S2Net_Net">
+					<DIF difName="DC" ipcAddress="R4.S2"/>
+				</APN>
+			</Directory>
+	</DA>
+	
+	<QoSCubesSet>
+		<QosCube id="1">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>
+		<QosCube id="2">
+			<AverageBandwidth>12000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>						
+		</QosCube>		
+	</QoSCubesSet>
+</Configuration>

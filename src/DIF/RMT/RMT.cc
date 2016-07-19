@@ -139,26 +139,6 @@ void RMT::finish()
 
         }
     }
-    size_t pduCount = invalidPDUs.size();
-    if (pduCount)
-    {
-        EV << "RMT " << this->getFullPath() << " still contains " << pduCount
-           << " unprocessed PDUs!" << endl;
-
-        for (auto const& m : invalidPDUs)
-        {
-            if(const PDU* pdu = dynamic_cast<const PDU*>(m)) {
-                EV << m->getClassName() << " received at " << m->getArrivalTime()
-                   << " from " << m->getSenderModule()->getFullPath()
-                        << " || "  << pdu->getSrcAddr()<< " -> " << pdu->getDstAddr() << endl;
-            } else {
-                EV << m->getClassName() << " received at " << m->getArrivalTime()
-                   << " from " << m->getSenderModule()->getFullPath()
-                   << " || NOT PDU"<< endl;
-            }
-
-        }
-    }
 
     if (rmtTraceFile.is_open())
     {

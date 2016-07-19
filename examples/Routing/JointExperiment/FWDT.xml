@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<FWDT>
+	<Node id="0">
+		<Tset>
+			<entry dst="1" T="0" next="1"/>
+			<entry dst="1" T="1" next="1"/>
+	</Tset>
+	</Node>
+	<Node id="1">
+		<Tset>
+			<entry dst="0" T="0" next="0"/>
+			<entry dst="0" T="1" next="0"/>
+	</Tset>
+	</Node>
+</FWDT>

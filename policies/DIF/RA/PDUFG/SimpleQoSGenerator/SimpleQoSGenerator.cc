@@ -147,7 +147,7 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
         for (auto it : neighbours){
             Monmsg->regInfo.neighboursInfo.insert(pair<RMTPort *, string>(it.second.best.p, it.first));
         }
-        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        cModule *targetModule = getModuleByPath("fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
         registered = true;
@@ -158,7 +158,7 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
         Monmsg->monitorParamInfo.nodeId=ipcAddr.getIpcAddress().getName();
         Monmsg->type="Monitor_Param";
         Monmsg->monitorParamInfo.schedulerInfo=fwd->getSchedulerInfo();
-        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        cModule *targetModule = getModuleByPath("fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
 
@@ -172,7 +172,7 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
         Monmsg->monitorParamInfo.nodeId=ipcAddr.getIpcAddress().getName();
         Monmsg->type="Monitor_Param";
         Monmsg->monitorParamInfo.routingInfo=fwd->getRoutingTable();
-        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        cModule *targetModule = getModuleByPath("fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
         if(ForwardingMonFrec > 0){
@@ -188,7 +188,7 @@ void SimpleQoSGenerator::handleMessage(cMessage * msg){
         for (auto it : neighbours){
             Monmsg->monitorParamInfo.neighboursInfo->insert(pair<RMTPort *, string>(it.second.best.p, it.first));
         }
-        cModule *targetModule = getModuleByPath("InfectedMultipathFatTree.fullPathMonitor");
+        cModule *targetModule = getModuleByPath("fullPathMonitor");
         take(Monmsg);
         sendDirect(Monmsg, targetModule, "radioIn");
         if(LinksMonFrec){
