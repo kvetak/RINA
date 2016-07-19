@@ -6,12 +6,18 @@
 
 using namespace std;
 
+typedef int32_t seq_t;
 
 class Inj_data {
 public:
     int len;
-    Inj_data(int l) : len(l){}
+    int flow;
+    seq_t seq;
+    simtime_t t0;
+
     virtual ~Inj_data(){}
+    Inj_data(int l, int f, seq_t s):
+        len(l), flow(f), seq(s), t0(simTime()){}
 };
 
 class Inj_PDU : public DataTransferPDU {

@@ -5,18 +5,33 @@
 
 using namespace std;
 
-typedef int32_t seq_t;
-
-class ofMsg : public Inj_data {
+class sender_d : public Inj_data {
 public:
-    int flow;
-    seq_t seq;
-    simtime_t t0;
-
-    ofMsg(int f, int l, seq_t s):
-        Inj_data(l), flow(f), seq(s), t0(simTime()){}
+    sender_d(int f, int l, seq_t s):
+        Inj_data(f, l, s){}
 };
 
+class client_d : public Inj_data {
+public:
+    seq_t A, B;
+    bool isNack;
+    int reqSize;
+    double reqInterval;
+
+    client_d(int f, int l, seq_t s, seq_t _A, seq_t _B, bool in, int rS, double rI) :
+        Inj_data(l, f, s), A(_A), B(_B), isNack(in), reqSize(rS), reqInterval(rI) {}
+};
+
+class server_d : public Inj_data {
+public:
+    seq_t A;
+    bool isNack;
+
+    server_d(int f, int l, seq_t s, seq_t _A, bool in) :
+        Inj_data(l, f, s), A(_A), isNack(in) {}
+};
+
+/*
 class ofAck : public ofMsg {
 public:
     seq_t A, B;
@@ -45,3 +60,4 @@ public:
         ofMsg(f, l, s), A(_A), B(_B), isNack(in) {}
 };
 
+*/
