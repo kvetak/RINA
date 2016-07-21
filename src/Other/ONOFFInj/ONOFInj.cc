@@ -9,6 +9,7 @@
 #include "InjListener.h"
 
 
+
 int voice_f::min_pdu_len = 100;
 int voice_f::max_pdu_len = 300;
 double voice_f::interval = 0.02;
@@ -90,22 +91,33 @@ void ONOFInj::initialize() {
 
 void ONOFInj::handleMessage(cMessage *msg) {
     Enter_Method_Silent();
+    if(strcmp("MonitorMsg", msg->getName())==0){
+        MonitorMsg * monMsg = dynamic_cast<MonitorMsg *>(msg);
+        if(monMsg->type.compare("ACK")==0){
+            scheduleAt( simTime(), &(senders[nextFlowId]->at));
+        }
+        else if(monMsg->type.compare("NACK")==0){
+            //msgDataBase.erase(monMsg->ackInfo.flowID);
+        }
 
-    if(msg == &iniFlows) { startFlows(); }
-    else if(actTimer * t = dynamic_cast<actTimer *>(msg)) {
-        pduReq r = t->f->act(this, simTime() > fin);
-        if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentAct++; }
-    } else if(retransTimer * t = dynamic_cast<retransTimer *>(msg)) {
-        pduReq r = t->f->ret(this, simTime() > fin);
-        if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentRet++; }
-    } else if(selretransTimer * t = dynamic_cast<selretransTimer *>(msg)) {
-        pduReq r = t->f->sret(this, simTime() > fin);
-        if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentSRt++; }
-    } else if(ackTimer * t = dynamic_cast<ackTimer *>(msg)) {
-        pduReq r = t->f->ack(this, simTime() > fin);
-        if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentActk++; }
-    } else {
-        cout << "Unknown message received"<< endl;
+    }
+    else{
+        if(msg == &iniFlows) { startFlows(); }
+        else if(actTimer * t = dynamic_cast<actTimer *>(msg)) {
+            pduReq r = t->f->act(this, simTime() > fin);
+            if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentAct++; }
+        } else if(retransTimer * t = dynamic_cast<retransTimer *>(msg)) {
+            pduReq r = t->f->ret(this, simTime() > fin);
+            if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentRet++; }
+        } else if(selretransTimer * t = dynamic_cast<selretransTimer *>(msg)) {
+            pduReq r = t->f->sret(this, simTime() > fin);
+            if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentSRt++; }
+        } else if(ackTimer * t = dynamic_cast<ackTimer *>(msg)) {
+            pduReq r = t->f->ack(this, simTime() > fin);
+            if(r.data != nullptr) { send(genPDU(r), "g$o"); sent++; sentActk++; }
+        } else {
+            cout << "Unknown message received"<< endl;
+        }
     }
 }
 void ONOFInj::finish() {
@@ -182,9 +194,20 @@ void ONOFInj::startFlows() {
             voice_f * f = new voice_f(nextFlowId, n, par("voice_qos").stdstringValue());
             f->at.f = f;
             senders[nextFlowId] = f;
-            nextFlowId++;
 
-            scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
+
+            MonitorMsg* Monmsg = new MonitorMsg();
+            Monmsg->type = "Rsv_Req";
+            Monmsg->rsv_ReqInfo.flowId = nextFlowId;
+            Monmsg->rsv_ReqInfo.nodeIdDst = f->dstAddr;
+            Monmsg->rsv_ReqInfo.nodeIdOrg = srcAddr.getIpcAddress().getName();
+            Monmsg->rsv_ReqInfo.qos = f->QoS;
+            cModule *targetModule = getModuleByPath("fullPathMonitor");
+            take(Monmsg);
+            sendDirect(Monmsg, (simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time)), 0, targetModule, "radioIn");
+
+            //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
+            nextFlowId++;
         }
         for (int i = 0; i < par("client_flows").longValue(); i++) {
             video_f * f = new video_f(nextFlowId, n, par("client_qos").stdstringValue());
@@ -199,7 +222,4 @@ void ONOFInj::startFlows() {
             scheduleAt( simTime() + uniform(0.0, video_f::idle_time), &f->at);
         }
     }
-
 }
-
-

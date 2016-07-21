@@ -8,6 +8,7 @@
 using namespace std;
 using namespace MultipathStructs;
 
+
 namespace Infection {
 
     Define_Module(Infection);

@@ -5,10 +5,10 @@
 #include "RMTPort.h"
 
 
-
+using namespace std;
 namespace MultipathStructs {
 
-using namespace std;
+
 
 
 struct entryT {
