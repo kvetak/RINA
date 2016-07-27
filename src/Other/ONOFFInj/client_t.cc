@@ -94,7 +94,7 @@ void client_t::receive(ONOFInj * parent, shared_ptr<server_d> d, bool fin) {
         if(rt.isScheduled()) { parent->cancelEvent(&rt); }
     }
 
-    if(!thend && B < 0 && A >= until) {
+    if(!thend && B < 0 && A >= nextRq) {
         //Signal Data received and start new request
         InjListener::instance->dataRequestEnded(parent->src, dstAddr, flowId);
 

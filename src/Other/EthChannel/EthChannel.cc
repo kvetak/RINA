@@ -12,7 +12,7 @@ void EthChannel::initialize() {
     edelay = par("delay").doubleValue();
     edatarate = par("datarate").doubleValue()/8.0;
     etxfinishtime = 0.0;
-    std::cout << "--initialized"<<endl;
+ //   std::cout << "--initialized"<<endl;
 }
 
 void EthChannel::processMessage(cMessage *msg, simtime_t t, result_t& result){

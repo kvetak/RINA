@@ -76,10 +76,10 @@ string Q2FwdT::toString(){
     for(auto QT : Q2T) {
         os << "    QoS : "<<QT.first << " -> Table : " << QT.second <<endl;
     }
-    for(int i = 0; i< Tables.size(); i++) {
+    for(unsigned int i = 0; i< Tables.size(); i++) {
         os << "Table "<<i <<endl;
         const vPorts & T = Tables[i];
-        for(int j = 0; j < T.size(); j++) {
+        for(unsigned int j = 0; j < T.size(); j++) {
             port_t p = T[j];
             if(p != nullptr) {
                 os << "    Addr : "<< j << " -> Port : "<< T[j]->getFullPath()<<endl;
@@ -101,10 +101,10 @@ void Q2FwdT::finish() {
         for(auto QT : Q2T) {
             cout << "    QoS : "<<QT.first << " -> Table : " << QT.second <<endl;
         }
-        for(int i = 0; i< Tables.size(); i++) {
+        for(unsigned int i = 0; i< Tables.size(); i++) {
             cout << "Table "<<i <<endl;
             const vPorts & T = Tables[i];
-            for(int j = 0; j < T.size(); j++) {
+            for(unsigned int j = 0; j < T.size(); j++) {
                 port_t p = T[j];
                 if(p != nullptr) {
                     cout << "    Addr : "<< j << " -> Port : "<< T[j]->getFullPath()<<endl;
