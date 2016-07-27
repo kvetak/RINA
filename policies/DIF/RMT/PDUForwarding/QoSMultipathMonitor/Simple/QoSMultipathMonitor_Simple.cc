@@ -45,9 +45,25 @@ void QoSMultipathMonitor_Simple::onMainPolicyInit() {
 vector<RMTPort * > QoSMultipathMonitor_Simple::lookup(const PDU * pdu){
     RMTPort * next = nullptr;
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
+    int srccepid=pdu->getConnId().getSrcCepId();
 
-    cEntry * e = &cache[dstAddr][pdu->getConnId().getSrcCepId()];
+    auto auxPdu = *pdu;
+    //auto infPdu = infPdu->getEncapsulatedMsg();
+    //auto infPdu = infPdu->getEncapsulatedMsg();
 
+    if(auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg() != nullptr){
+
+        //auto pdu4 = pdu3->decapsulate();
+
+        //auto pdu5 = pdu4->getEncapsulatedMsg();
+        //auto pdu6 = pdu5->getEncapsulatedMsg();
+
+
+
+        PDU* infPdu = dynamic_cast<PDU*>(auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg()->decapsulate()->getEncapsulatedMsg()->getEncapsulatedMsg());
+        srccepid=infPdu->getConnId().getSrcCepId();
+    }
+    cEntry * e = &cache[dstAddr][srccepid];
     next = e->p;
     if(next == nullptr) {
         next = portLookup(dstAddr, pdu->getConnId().getQoSId());

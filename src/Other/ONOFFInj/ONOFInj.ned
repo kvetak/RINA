@@ -33,4 +33,5 @@ simple ONOFInj {
         
     gates:
         inout g;
+        input radioIn @directIn;
 }

@@ -14,8 +14,8 @@
 #include "OFMessages.h"
 #include "MultipathStructs.h"
 
-using namespace std;
 using namespace MultipathStructs;
+using namespace std;
 
 class ONOFInj : public cSimpleModule {
 public :
@@ -48,7 +48,7 @@ public :
     Address srcAddr, dstAddr;
 
     //Id for next created flow
-    static int nextFlowId;
+    int nextFlowId;
 
     //Flows
     map<int, sender_t *> senders;

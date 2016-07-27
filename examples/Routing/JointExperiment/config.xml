@@ -32,116 +32,116 @@
        
        <SimTime t="1">
         
-        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R1.S2_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R2.S1_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R2.S2_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R3.S1_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R3.S2_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R1.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R2.S1_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R2.S2_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R3.S1_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R3.S2_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="1"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R2.S1_Net" dst="R2.S2_Net" qosReq="1"/>
+        <Connection src="R2.S1_Net" dst="R3.S1_Net" qosReq="1"/>
+        <Connection src="R2.S1_Net" dst="R3.S2_Net" qosReq="1"/>
+        <Connection src="R2.S1_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R2.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="1"/>
-        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R2.S2_Net" dst="R3.S1_Net" qosReq="1"/>
+        <Connection src="R2.S2_Net" dst="R3.S2_Net" qosReq="1"/>
+        <Connection src="R2.S2_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R2.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="1"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R3.S1_Net" dst="R3.S2_Net" qosReq="1"/>
+        <Connection src="R3.S1_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R3.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="1"/>
-        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R3.S2_Net" dst="R4.S1_Net" qosReq="1"/>
+        <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
-        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="1"/>
+        <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="1"/>
       </SimTime>
       
        <SimTime t="2">
         
-        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R1.S2_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R2.S1_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R2.S2_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R3.S1_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R3.S2_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R1.S1_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R2.S1_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R2.S2_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R3.S1_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R3.S2_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="2"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R2.S1_Net" dst="R2.S2_Net" qosReq="2"/>
+        <Connection src="R2.S1_Net" dst="R3.S1_Net" qosReq="2"/>
+        <Connection src="R2.S1_Net" dst="R3.S2_Net" qosReq="2"/>
+        <Connection src="R2.S1_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R2.S1_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="2"/>
-        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R2.S2_Net" dst="R3.S1_Net" qosReq="2"/>
+        <Connection src="R2.S2_Net" dst="R3.S2_Net" qosReq="2"/>
+        <Connection src="R2.S2_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R2.S2_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="2"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R3.S1_Net" dst="R3.S2_Net" qosReq="2"/>
+        <Connection src="R3.S1_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R3.S1_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="2"/>
-        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R3.S2_Net" dst="R4.S1_Net" qosReq="2"/>
+        <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="2"/>
         
-        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="2"/>
+        <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="2"/>
       </SimTime>
       
        <SimTime t="3">
         
-        <Connection src="R1.S1Net_Net" dst="R1.S2Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R1.S2_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R2.S1_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R2.S2_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R3.S1_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R3.S2_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R1.S1_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R1.S2Net_Net" dst="R2.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S2Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S2Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R1.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R2.S1_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R2.S2_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R3.S1_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R3.S2_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R2.S1Net_Net" dst="R2.S2Net_Net" qosReq="3"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
-        <Connection src="R2.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R2.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R2.S1_Net" dst="R2.S2_Net" qosReq="3"/>
+        <Connection src="R2.S1_Net" dst="R3.S1_Net" qosReq="3"/>
+        <Connection src="R2.S1_Net" dst="R3.S2_Net" qosReq="3"/>
+        <Connection src="R2.S1_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R2.S1_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R2.S2Net_Net" dst="R3.S1Net_Net" qosReq="3"/>
-        <Connection src="R2.S2Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R2.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R2.S2_Net" dst="R3.S1_Net" qosReq="3"/>
+        <Connection src="R2.S2_Net" dst="R3.S2_Net" qosReq="3"/>
+        <Connection src="R2.S2_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R2.S2_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R3.S1Net_Net" dst="R3.S2Net_Net" qosReq="3"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R3.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R3.S1_Net" dst="R3.S2_Net" qosReq="3"/>
+        <Connection src="R3.S1_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R3.S1_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R3.S2Net_Net" dst="R4.S1Net_Net" qosReq="3"/>
-        <Connection src="R3.S2Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R3.S2_Net" dst="R4.S1_Net" qosReq="3"/>
+        <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="3"/>
         
-        <Connection src="R4.S1Net_Net" dst="R4.S2Net_Net" qosReq="3"/>
+        <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="3"/>
       </SimTime>
     </ConnectionSet>
   </ConnectionSets>
@@ -274,28 +274,28 @@
 				</APN>
 				
 				<!-- Servers side naming of the Net IPCs -->
-				<APN apn="R1.S1Net_Net">
+				<APN apn="R1.S1_Net">
 					<DIF difName="DC" ipcAddress="R1.S1"/>
 				</APN>
-				<APN apn="R1.S2Net_Net">
+				<APN apn="R1.S2_Net">
 					<DIF difName="DC" ipcAddress="R1.S2"/>
 				</APN>
-				<APN apn="R2.S1Net_Net">
+				<APN apn="R2.S1_Net">
 					<DIF difName="DC" ipcAddress="R2.S1"/>
 				</APN>
-				<APN apn="R2.S2Net_Net">
+				<APN apn="R2.S2_Net">
 					<DIF difName="DC" ipcAddress="R2.S2"/>
 				</APN>
-				<APN apn="R3.S1Net_Net">
+				<APN apn="R3.S1_Net">
 					<DIF difName="DC" ipcAddress="R3.S1"/>
 				</APN>
-				<APN apn="R3.S2Net_Net">
+				<APN apn="R3.S2_Net">
 					<DIF difName="DC" ipcAddress="R3.S2"/>
 				</APN>
-				<APN apn="R4.S1Net_Net">
+				<APN apn="R4.S1_Net">
 					<DIF difName="DC" ipcAddress="R4.S1"/>
 				</APN>
-				<APN apn="R4.S2Net_Net">
+				<APN apn="R4.S2_Net">
 					<DIF difName="DC" ipcAddress="R4.S2"/>
 				</APN>
 			</Directory>

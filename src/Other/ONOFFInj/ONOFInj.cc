@@ -94,7 +94,19 @@ void ONOFInj::handleMessage(cMessage *msg) {
     if(strcmp("MonitorMsg", msg->getName())==0){
         MonitorMsg * monMsg = dynamic_cast<MonitorMsg *>(msg);
         if(monMsg->type.compare("ACK")==0){
-            scheduleAt( simTime(), &(senders[nextFlowId]->at));
+            if(senders.count(monMsg->ackInfo.flowID)>0){
+                scheduleAt( simTime(), &(senders[monMsg->ackInfo.flowID]->at));
+            }
+            else{
+                string nodes_raw = par("nodes").stdstringValue();
+                vector<string> nodes = split(nodes_raw, ' ');
+                for (const string & n : nodes) {
+                    if(clients[n].count(monMsg->ackInfo.flowID)>0)
+                    {
+                        scheduleAt( simTime(), &(clients[n][monMsg->ackInfo.flowID]->at));
+                    }
+                }
+            }
         }
         else if(monMsg->type.compare("NACK")==0){
             //msgDataBase.erase(monMsg->ackInfo.flowID);
@@ -204,7 +216,7 @@ void ONOFInj::startFlows() {
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
-            sendDirect(Monmsg, (simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time)), 0, targetModule, "radioIn");
+            sendDirect(Monmsg, simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), 0, targetModule, "radioIn");
 
             //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
             nextFlowId++;
@@ -215,11 +227,22 @@ void ONOFInj::startFlows() {
             f->rt.f = f;
             f->kt.f = f;
             clients[n][nextFlowId] = f;
-            nextFlowId++;
+
             f->setNextUntil();
             f->setNextRate();
 
-            scheduleAt( simTime() + uniform(0.0, video_f::idle_time), &f->at);
+            MonitorMsg* Monmsg = new MonitorMsg();
+            Monmsg->type = "Rsv_Req";
+            Monmsg->rsv_ReqInfo.flowId = nextFlowId;
+            Monmsg->rsv_ReqInfo.nodeIdDst = f->dstAddr;
+            Monmsg->rsv_ReqInfo.nodeIdOrg = srcAddr.getIpcAddress().getName();
+            Monmsg->rsv_ReqInfo.qos = f->QoS;
+            cModule *targetModule = getModuleByPath("fullPathMonitor");
+            take(Monmsg);
+            sendDirect(Monmsg, uniform(0.0, video_f::idle_time), 0, targetModule, "radioIn");
+
+            nextFlowId++;
+            //scheduleAt( simTime() + uniform(0.0, video_f::idle_time), &f->at);
         }
     }
 }
