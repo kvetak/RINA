@@ -39,6 +39,7 @@ void FailureTest::handleMessage(cMessage * msg) {
                     m->killLink(link);
                 }
                 dead.insert(link);
+                cout << "-- "<< link <<endl;
             }
             dead.clear();
         } else {
@@ -52,6 +53,7 @@ void FailureTest::handleMessage(cMessage * msg) {
                 }
                 dead.insert(link);
                 alive.erase(link);
+                cout << "-- "<< link <<endl;
             }
         }
     } else if (msg == resurrectTimer) {

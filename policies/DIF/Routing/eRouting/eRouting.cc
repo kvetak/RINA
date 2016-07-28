@@ -40,25 +40,28 @@ void eRouting::finish() {
     cancelAndDelete(updateTimer);
 
     if(par("printAtEnd").boolValue()) {
+
+        cout << hex;
         cout << "eRouting at "<< myAddress<<endl;
         cout << "  Registered neighbours :"<<endl;
         for(auto & k : links) {
             cout <<"    "
-                    << k.second.dst << "["<<to_string(k.first)<<"]"
+                    << k.second.dst << "["<<(k.first)<<"]"
                     << " status "<< (k.second.status.status? "ON":"OFF")
-                    << " - seq# "<< k.second.status.s
+                    << " - seq# "<< to_string(k.second.status.s)
                     << " / At "<< k.second.status.t
                     << endl;
         }
         cout << "  Stored info :"<<endl;
         for(auto & k : linksInfo) {
             cout <<"    "
-                    << "["<<to_string(k.first)<<"]"
+                    << "["<<(k.first)<<"]"
                     << " status "<< (k.second.status? "ON":"OFF")
-                    << " - seq# "<< k.second.s
+                    << " - seq# "<< to_string(k.second.s)
                     << " / At "<< k.second.t
                     << endl;
         }
+        cout << dec;
     }
 }
 
@@ -200,4 +203,16 @@ void eRouting::sendUpdates() {
         sendUpdate(u);
     }
 
+}
+
+
+nodesStatus eRouting::getProblems(){
+    nodesStatus ret;
+    for(auto & k : links) {
+        if(!k.second.status.status) { ret.ownFailures.push_back(k.first); }
+    }
+    for(auto & k : linksInfo) {
+        if(!k.second.status) { ret.othersFailures.push_back(k.first); }
+    }
+    return ret;
 }

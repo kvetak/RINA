@@ -19,156 +19,90 @@ namespace GRE_Clos {
 
 Register_Class(GRE_ClosR1);
 
-using namespace std;
-using namespace common_GraphCL;
-
-// A new flow has been inserted/or removed
-void GRE_ClosR1::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
-    string dst = addr.getIpcAddress().getName();
-    addr_t d = parseRawAddr(dst);
-
-    index_t id = getIdentifier(d);
-    addr_t z = getZone(d);
-    if(z == zone) { id -= f; }
-    else { id += t; }
-
-//    cout << "At "<< rawAddr << " << "<< addr << " : "<< (int)id<<endl;
-
-    fwd->addPort(id, port);
-
-    neiPortsCurrent[d] = port;
-    neiPorts[d].insert(port);
-    if(neiPorts[d].size() == 1){
-        aliveNeis[id] = true;
-        if(z == zone) { resetNeiGroups1(); }
-        else { resetNeiGroups2(); }
-
-        //Start Link
-        rt->onLink(neiLinks[d]);
-    }
-}
-void GRE_ClosR1::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
-    std::string dst = addr.getIpcAddress().getName();
-    addr_t d = parseRawAddr(dst);
-
-    index_t id = getIdentifier(d);
-    index_t z = getZone(d);
-    if(z == zone) { id -= f; }
-    else { id += t; }
-
-    neiPorts[d].erase(port);
-    if(neiPorts[d].size() <= 0){
-        fwd->removePort(id);
-        fwd->unsetNeighbour(d);
-        neiPortsCurrent[d] = nullptr;
-        aliveNeis[id] = false;
-        if(z == zone) { resetNeiGroups1(); }
-        else { resetNeiGroups2(); }
-
-        //Stop Link
-        rt->offLink(neiLinks[d]);
-    } else {
-        if(neiPortsCurrent[d] == port) {
-            port_t p = * neiPorts[d].begin();
-            neiPortsCurrent[d] = p;
-            fwd->addPort(id, port);
-        }
-    }
-}
-
-//Routing has processes a routing update
-void GRE_ClosR1::routingUpdated(){}
-
 // Called after initialize
-void GRE_ClosR1::onPolicyInit(){
-    f = par("fabrics").longValue();
-    p = par("pods").longValue();
-    s = par("spines").longValue();
-    t = par("tors").longValue();
-
+void GRE_ClosR1::postPolicyInit(){
     //Set Forwarding policy
-    fwd = getRINAModule<Clos1 *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+    fwd_ = dynamic_cast<Clos1 *>(fwd);
 
-    string dif = getModuleByPath("^.^")->par("difName").stringValue();
-    rawAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
-    myaddr = parseRawAddr(rawAddr);
-    zone = getZone(myaddr);
-    ident = getIdentifier(myaddr);
+    fwd_->setZone(zone);
+    fwd_->setIdentifier(ident);
+    fwd_->setNumSpines(f);
 
-    fwd->setZone(zone);
-    fwd->setIdentifier(ident);
-    fwd->setNumSpines(f);
-
-    fwd->addPort(t+s-1, nullptr);
-    for(addr_t d = 0; d < t; d++) {
-        fwd->setNeighbour(getAddr(zone, d+f), d);
-        aliveNeis.push_back(false);
-    }
+    fwd->addPort(f+t-1, nullptr);
     fwd->setGroup(1, vPortsIndex());
-    for(addr_t d = 0; d < s; d++) {
-        fwd->setNeighbour(getAddr(ident, d), d+t);
-        aliveNeis.push_back(false);
-    }
     fwd->setGroup(2, vPortsIndex());
 
-    //Set Routing policy
-    rt = getRINAModule<eRouting *>(this, 2, {MOD_POL_ROUTING});
-
     for(addr_t d = 0; d < t; d++) {
+        aliveNeis.push_back(false);
+
         addr_t dst_addr = getAddr(zone, d+f);
+        fwd->setNeighbour(dst_addr, d);
+
         elink_t dst_link = getELink(myaddr, dst_addr);
-
-        std::stringstream sstream;
-        sstream << std::hex << dst_addr;
-        std::string dst_raw = sstream.str();
-        while(dst_raw.size()<4) { dst_raw = "0"+dst_raw; }
-
-        rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
         neiLinks[dst_addr] = dst_link;
+        linkNei[dst_link] = dst_addr;
+
+        string dst_raw = getRaw(dst_addr);
+        rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
 
         if(FailureTest::instance) { FailureTest::instance->registerLink(to_string(dst_link), this); }
     }
 
     for(addr_t d = 0; d < s; d++) {
+        aliveNeis.push_back(false);
+
         addr_t dst_addr = getAddr(ident, d);
+        fwd->setNeighbour(dst_addr, d+t);
+
         elink_t dst_link = getELink(myaddr, dst_addr);
-
-        std::stringstream sstream;
-        sstream << std::hex << dst_addr;
-        std::string dst_raw = sstream.str();
-        while(dst_raw.size()<4) { dst_raw = "0"+dst_raw; }
-
-        rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
         neiLinks[dst_addr] = dst_link;
+        linkNei[dst_link] = dst_addr;
+
+        string dst_raw = getRaw(dst_addr);
+        rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
 
         if(FailureTest::instance) { FailureTest::instance->registerLink(to_string(dst_link), this); }
     }
 }
 
-void GRE_ClosR1::resetNeiGroups1() {
+index_t GRE_ClosR1::getNeiId(const addr_t & d) {
+    index_t id = getIdentifier(d);
+    addr_t z = getZone(d);
+
+    if(z == zone) { return id - f; }
+    else { return id + t; }
+}
+
+
+void GRE_ClosR1::resetNeiGroups() {
     vPortsIndex neis;
     for(addr_t d = 0; d < t; d++) {
         if(aliveNeis[d]) { neis.push_back(d); }
     }
     fwd->setGroup(1, neis);
-}
-
-
-void GRE_ClosR1::resetNeiGroups2() {
-    vPortsIndex neis;
+    neis.clear();
     for(addr_t d = 0; d < s; d++) {
         if(aliveNeis[d+t]) { neis.push_back(d+t); }
     }
     fwd->setGroup(2, neis);
 }
 
-
-void GRE_ClosR1::killLink(const string & link) {
-    rt->offLink(stoi(link));
-}
-
-void GRE_ClosR1::resurrectLink(const string &  link) {
-    rt->onLink(stoi(link));
+//Routing has processes a routing update
+void GRE_ClosR1::routingUpdated(){
+    cout << hex;
+    cout << "Routing updated "<< (myaddr) << endl;
+    nodesStatus st = rt->getProblems();
+    for(elink_t & l : st.ownFailures) {
+        cout << "  - Own " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    for(elink_t & l : st.othersFailures) {
+        cout <<"  - Others " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    cout << dec;
 }
 
 }

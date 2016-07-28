@@ -29,6 +29,11 @@ namespace GRE {
 vPorts GREFWD::lookup(const PDU * pdu) {
     vPorts ret;
 
+    PDU * pd = const_cast<PDU*>(pdu);
+    auto hc = pd->getHopCount();
+    if(hc <= 245) { return ret; }
+    pd->setHopCount(hc-1);
+
     //Patch for empty lookup bug
     string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
     if(dstAddr == "") { return ret; }

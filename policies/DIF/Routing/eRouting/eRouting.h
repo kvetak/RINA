@@ -31,6 +31,7 @@ using namespace std;
 
 typedef uint32_t lseq_t;
 
+
 struct update_t {
     lseq_t s;
     bool status;
@@ -62,6 +63,11 @@ public:
 };
 
 
+struct nodesStatus {
+    vector<elink_t> ownFailures;
+    vector<elink_t> othersFailures;
+};
+
 class eRouting: public IntRouting {
 public:
     virtual void finish();
@@ -72,6 +78,7 @@ public:
     void onLink(const elink_t & e);
     void offLink(const elink_t & e);
 
+    nodesStatus getProblems();
 
 protected:
     virtual void onPolicyInit();

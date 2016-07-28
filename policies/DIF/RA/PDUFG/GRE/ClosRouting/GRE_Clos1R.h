@@ -15,57 +15,22 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "GREFWD/Clos/Clos.h"
-#include "eRouting.h"
-#include "FailureTest.h"
-
-#include <IntMMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
-
-#include <map>
-#include <set>
+#include "GRE_ClosR.h"
 
 namespace GRE_Clos {
 
 using namespace GRE;
 using namespace std;
 
-typedef unsigned short mType;
+class GRE_ClosR1: public GRE_ClosR {
+protected:
+    virtual void postPolicyInit();
+    virtual void resetNeiGroups();
+    virtual index_t getNeiId(const addr_t & d);
 
-class GRE_ClosR1: public IntPDUFG, public FailureNode {
-public:
-    // A new flow has been inserted/or removed
-    virtual void insertedFlow(const Address & addr, const QoSCube & qos, port_t port);
-    virtual void removedFlow(const Address & addr, const QoSCube & qos, port_t port);
-
-    //Routing has processes a routing update
     virtual void routingUpdated();
 
-
-    void killLink(const string & link);
-    void resurrectLink(const string &  link);
-
-protected:
-    // Called after initialize
-    virtual void onPolicyInit();
-
-    void resetNeiGroups1();
-    void resetNeiGroups2();
-
-    Clos1 * fwd;
-    eRouting * rt;
-
-    map<addr_t, set<port_t> > neiPorts;
-    map<addr_t, port_t > neiPortsCurrent;
-
-    map<addr_t, elink_t > neiLinks;
-
-    index_t f, p, s, t;
-
-    string rawAddr;
-    addr_t myaddr, zone, ident;
-    vector<bool> aliveNeis;
+    Clos1 * fwd_;
 };
 
 }
