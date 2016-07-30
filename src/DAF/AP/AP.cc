@@ -24,7 +24,8 @@
 
 Define_Module(AP);
 
-AP::AP() {
+AP::AP(){
+    this->isEnrolled = this->EnrollmentState::NOT_ENROLLED;
 }
 
 AP::~AP() {
@@ -40,10 +41,16 @@ void AP::initSignalsAndListeners() {
     cModule* catcher2 = this->getModuleByPath("^.^");
 
     sigAPAEAPI = registerSignal(SIG_AP_AE_API);
+    sigAEEnrolled = registerSignal(SIG_AE_Enrolled);
 
     //  AllocationRequest from FAI
     lisAPAllReqFromFai = new LisAPAllReqFromFai(this);
     catcher2->subscribe(SIG_FAI_AllocateRequest, lisAPAllReqFromFai);
+
+
+    //  Enrollment
+    lisAPEnrolled = new LisAPEnrolled(this);
+    catcher1->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAPEnrolled);
 
     // API listeners
     lisAEAPAPI = new LisAEAPAPI(this);
@@ -66,7 +73,33 @@ void AP::onClose(APIResult* result) {
 }
 
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
-    return createIAE(APName, APInst, AEName, AEInst, NULL, invokeID);
+    if (this->isEnrolled == this->EnrollmentState::NOT_ENROLLED) {
+        APNIPair* apnip = new APNIPair(
+                //TODO: change this App1 name to something configured probably!!!!!!
+        APNamingInfo(APN("App1"),
+                    "0",
+                    "Mgmt",
+                    "0"),
+        APNamingInfo(APN(APName),
+                    "0",
+                    "Mgmt",
+                    "0"));
+
+        emit(sigAEEnrolled, apnip);
+        this->isEnrolled = this->EnrollmentState::ENROLLING;
+
+        //insert connection requests to queue
+        Flow tmp = Flow(APNamingInfo(), APNamingInfo(APN(APName), APInst, AEName, AEInst));
+        tmp.setAllocInvokeId(invokeID);
+        this->insertAEReq(tmp);
+    }
+    else if (this->isEnrolled == this->EnrollmentState::ENROLLING) {
+        Flow tmp = Flow(APNamingInfo(), APNamingInfo(APN(APName), APInst, AEName, AEInst));
+        tmp.setAllocInvokeId(invokeID);
+        this->insertAEReq(tmp);
+    }
+    else
+        return createIAE(APName, APInst, AEName, AEInst, NULL, invokeID);
 }
 
 bool AP::a_open(int invokeID, Flow* flow){
@@ -241,6 +274,25 @@ void AP::resultAssign(APIResult* result) {
         onA_getWrite(result);
     }
 }
+
+void AP::startRequestedConnections() {
+    Enter_Method("startRequestedConnections()");
+    Flow tmp;
+    while (!this->ConReqStack.empty()) {
+        tmp = this->ConReqStack.back();
+        this->createIAE(tmp.getDstApni().getApn().getName(), tmp.getDstApni().getApinstance(),
+                tmp.getDstApni().getAename(), tmp.getDstApni().getAeinstance(),
+                NULL, tmp.getAllocInvokeId());
+        this->ConReqStack.pop_back();
+    }
+    this->isEnrolled = this->EnrollmentState::ENROLLED;
+}
+
+void AP::insertAEReq(Flow req) {
+    this->ConReqStack.push_back(req);
+}
+
+
 
 void AP::signalizeAPAEAPI(APIReqObj* obj) {
     emit(sigAPAEAPI, obj);

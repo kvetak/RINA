@@ -20,29 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#ifndef DAF_ENROLLMENT_CACEBASE_H_
+#define DAF_ENROLLMENT_CACEBASE_H_
 
-#ifndef APPING_H_
-#define APPING_H_
+//#include "Flow.h"
+//#include "CDAPMessage_m.h"
+#include "DAFEnrollment.h"
+//#include "DAFEnrollmentStateTableEntry.h"
+//#include "DAFEnrollmentStateTable.h"
 
-#include <omnetpp.h>
-#include "AP.h"
-
-#include "RINASignals.h"
-
-class APPing : public AP {
+class DAFEnrollment;
+class CACEBase {
+friend class DAFEnrollment;
 public:
-    APPing();
-    virtual ~APPing();
-    void initialize();
-    void handleMessage(cMessage *msg);
-private:
-    void onA_getOpen(APIResult* result);
-    void onA_getRead(APIResult* result);
+    CACEBase();
+    virtual void startCACE(Flow* flow) = 0;
+    virtual void insertStateTableEntry(Flow* flow) = 0;
+    virtual void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) = 0;
+    virtual void receivePositiveConnectResponse(CDAPMessage* msg) = 0;
+    virtual void receiveNegativeConnectResponse(CDAPMessage* msg) = 0;
+    virtual void receiveConnectRequest(CDAPMessage* msg) = 0;
 
-    int *value;
-    int invokeId;
-    unsigned long conID;
-    cMessage* m1;
+    virtual void processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg) = 0;
+    virtual void processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg) = 0;
+    virtual void processNewConReq(DAFEnrollmentStateTableEntry* entry) = 0;
+    virtual ~CACEBase();
+
+protected:
+    DAFEnrollmentStateTable* StateTable;
 };
 
-#endif /* APPING_H_ */
+#endif /* DAF_ENROLLMENT_CACEBASE_H_ */

@@ -54,12 +54,13 @@ const char* DAF_ELEM_RELEASE      = "Release";
 const char* DAF_ATTR_TIME         = "t";
 
 DAFEnrollment::DAFEnrollment() :
-        StateTable(NULL)//, aemgmt(NULL)
+        StateTable(NULL), cace(NULL)//, aemgmt(NULL)
 {
 }
 
 DAFEnrollment::~DAFEnrollment(){
     StateTable = NULL;
+    cace = NULL;
     //aemgmt = NULL;
 }
 
@@ -100,6 +101,8 @@ void DAFEnrollment::initialize()
     authOther = this->par(DAF_PAR_AUTH_OTHER).stringValue();
 
     maxConRetries = this->par(DAF_PAR_CON_RETRIES);
+
+    cace = new CACEMgmt(this);
 
     WATCH_MAP(PreenrollConnects);
     WATCH_MAP(PreenrollReleases);

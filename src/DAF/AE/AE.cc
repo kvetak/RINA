@@ -90,7 +90,7 @@ void AE::initSignalsAndListeners() {
 
     //  Enrollment
     lisAEEnrolled = new LisAEEnrolled(this);
-    catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
+    //catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
 
     // AP-AE API
     lisAPAEAPI = new LisAPAEAPI(this);

@@ -32,7 +32,6 @@ APPing::~APPing() {
 
 void APPing::initialize() {
     AP::initialize();
-    sigAEEnrolled = registerSignal(SIG_AE_Enrolled);
     if (!strcmp(this->getModuleByPath("^")->par("apName").stringValue(),"App1")) {
         m1 = new cMessage("start");
         //cMessage* m2 = new cMessage("start");
@@ -44,17 +43,6 @@ void APPing::initialize() {
 void APPing::handleMessage(cMessage *msg) {
     if(msg->isSelfMessage()) {
         if ( !strcmp(msg->getName(), "start") ) {
-    APNIPair* apnip = new APNIPair(
-        APNamingInfo(APN("App1"),
-                    "0",
-                    "Mgmt",
-                    "0"),
-        APNamingInfo(APN("App2"),
-                    "0",
-                    "Mgmt",
-                    "0"));
-
-            emit(sigAEEnrolled, apnip);
             invokeId = getNewInvokeID();
             a_open(invokeId, "App2", "0", "AEMonitor", "-1");
         }

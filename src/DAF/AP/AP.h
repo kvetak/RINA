@@ -31,6 +31,12 @@
 
 class LisAPAllReqFromFai;
 class LisAEAPAPI;
+class LisAPEnrolled;
+
+typedef std::list<Flow> ConnectionRequests;
+typedef ConnectionRequests::iterator ConnectionRequestsIter;
+typedef ConnectionRequests::const_iterator ConnectionRequestsConstIter;
+
 class AP : public APBase {
 public:
     AP();
@@ -43,6 +49,7 @@ public:
     void receiveAllocationRequestFromFAI(Flow* flow);
 
     virtual void resultAssign(APIResult* result);
+    virtual void startRequestedConnections();
 
 protected:
     virtual void initialize();
@@ -62,13 +69,18 @@ protected:
     virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0);
     virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
 
+
+    void insertAEReq(Flow req);
 private:
     simsignal_t sigAPAEAPI;
+    simsignal_t sigAEEnrolled;
 
     //Listeners
     LisAPAllReqFromFai* lisAPAllReqFromFai;
-
+    LisAPEnrolled* lisAPEnrolled;
     LisAEAPAPI* lisAEAPAPI;
+
+    ConnectionRequests ConReqStack;
 
     bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID);
 

@@ -126,7 +126,7 @@ void LisDAFEnrollmentGetFlowFromFaiCreResPosi::receiveSignal(cComponent* src, si
         if (!flow->isManagementFlow()){
             return;
         }
-        enrollment->insertStateTableEntry(flow);
+        enrollment->cace->insertStateTableEntry(flow);
     }
     else
         EV << "DAFEnrollmentListener received unknown object!" << endl;

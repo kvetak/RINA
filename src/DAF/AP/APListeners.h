@@ -52,4 +52,11 @@ class LisAEAPAPI : public APListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
+class LisAPEnrolled : public APListeners {
+  public:
+    LisAPEnrolled(AP* nap) :  APListeners(nap){};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, long obj, cObject *detail);
+};
+
+
 #endif /* APLISTENERS_H_ */

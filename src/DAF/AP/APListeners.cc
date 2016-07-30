@@ -55,3 +55,11 @@ void LisAEAPAPI::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "APListener received unknown object!" << endl;
 }
+
+
+void LisAPEnrolled::receiveSignal(cComponent* src, simsignal_t id,
+        long obj, cObject *detail) {
+    EV << "APEnrollmentEnrolled initiated by " << src->getFullPath()
+           << " and processed by " << ap->getFullPath() << endl;
+    ap->startRequestedConnections();
+}

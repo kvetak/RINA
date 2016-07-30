@@ -20,29 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#ifndef DAF_ENROLLMENT_CACEGENERIC_H_
+#define DAF_ENROLLMENT_CACEGENERIC_H_
 
-#ifndef APPING_H_
-#define APPING_H_
+#include "CACEBase.h"
 
-#include <omnetpp.h>
-#include "AP.h"
-
-#include "RINASignals.h"
-
-class APPing : public AP {
+class CACEGeneric : public CACEBase {
 public:
-    APPing();
-    virtual ~APPing();
-    void initialize();
-    void handleMessage(cMessage *msg);
-private:
-    void onA_getOpen(APIResult* result);
-    void onA_getRead(APIResult* result);
-
-    int *value;
-    int invokeId;
-    unsigned long conID;
-    cMessage* m1;
+    CACEGeneric();
+    CACEGeneric(void *outerClass);
+    void startCACE(Flow* flow);
+    void insertStateTableEntry(Flow* flow);
+    void receivePositiveConnectResponse(CDAPMessage* msg);
+    void receiveNegativeConnectResponse(CDAPMessage* msg);
+    void receiveConnectRequest(CDAPMessage* msg);
+    virtual ~CACEGeneric();
 };
 
-#endif /* APPING_H_ */
+#endif /* DAF_ENROLLMENT_CACEGENERIC_H_ */

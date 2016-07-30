@@ -46,6 +46,8 @@ public:
     virtual void onClose(APIResult* result) = 0;
 
 protected:
+    enum EnrollmentState {NOT_ENROLLED, ENROLLING, ENROLLED};
+
     virtual bool a_open(int invokeID, std::string APname, std::string APinst, std::string AEname, std::string AEinst) = 0;
     virtual bool a_open(int invokeID, Flow* flow) = 0;
     virtual bool a_close(int CDAPConn, int invokeID = 0) = 0;
@@ -68,6 +70,7 @@ protected:
 
     unsigned long getNewCdapConID();
 
+    EnrollmentState isEnrolled;
 private:
     int currentInvokeId;
     unsigned long currentCdapConId;

@@ -20,29 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#ifndef DAF_ENROLLMENT_CACEMGMT_H_
+#define DAF_ENROLLMENT_CACEMGMT_H_
 
-#ifndef APPING_H_
-#define APPING_H_
+#include "CACEBase.h"
 
-#include <omnetpp.h>
-#include "AP.h"
-
-#include "RINASignals.h"
-
-class APPing : public AP {
+class CACEBase;
+class CACEMgmt : public CACEBase {
 public:
-    APPing();
-    virtual ~APPing();
-    void initialize();
-    void handleMessage(cMessage *msg);
-private:
-    void onA_getOpen(APIResult* result);
-    void onA_getRead(APIResult* result);
+    CACEMgmt();
+    CACEMgmt(DAFEnrollment *outerClass);
+    void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg);
+    void startCACE(Flow* flow);
+    void insertStateTableEntry(Flow* flow);
+    void receivePositiveConnectResponse(CDAPMessage* msg);
+    void receiveNegativeConnectResponse(CDAPMessage* msg);
+    void receiveConnectRequest(CDAPMessage* msg);
 
-    int *value;
-    int invokeId;
-    unsigned long conID;
-    cMessage* m1;
+    void processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processNewConReq(DAFEnrollmentStateTableEntry* entry);
+    ~CACEMgmt();
+protected:
+    DAFEnrollment *outerClass;
 };
 
-#endif /* APPING_H_ */
+#endif /* DAF_ENROLLMENT_CACEMGMT_H_ */
