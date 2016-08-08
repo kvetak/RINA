@@ -1,0 +1,46 @@
+#pragma once
+
+#include "OFClasses.h"
+
+#include <omnetpp.h>
+#include <queue>
+#include <memory>
+
+#include <ConnectionId.h>
+#include <Address.h>
+#include <RMTPort.h>
+
+#include "ConnectivityTestPDU.h"
+
+
+using namespace std;
+
+class ConnectivityTest : public cSimpleModule {
+public :
+    //Receive data from other node
+    void receiveData(const string & _src, const string & _qos, const int & srcCep, shared_ptr<CT_data> data);
+
+    //Generate PDU
+    CT_PDU * genPDU(const string & dst, const string & _QoS, const int & stage, const int & srcCep);
+
+    //PDU header
+    string QoS;
+    int header;
+
+    //Infection end time
+    double interval;
+    cMessage nextSend;
+
+    //Node info
+    string src, dif;
+    ConnectionId connID;
+    Address srcAddr, dstAddr;
+
+    vector<string> remaining;
+
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+    void finish();
+
+    void startFlows();
+};

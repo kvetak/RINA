@@ -3,6 +3,7 @@ package rina.src.Other.EthChannel;
 
 channel EthChannel extends ned.DatarateChannel {
     @class("EthChannel");
-    int header @unit(B);
-    int ipg @unit(B);
+    int header = default(12B) @unit(B);
+    int ipg = default(8B) @unit(B);
+    datarate = default(1Gbps);
 }
