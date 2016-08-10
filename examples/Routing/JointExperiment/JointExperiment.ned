@@ -42,70 +42,76 @@ import rina.src.Other.ONOFFInj.InjListener;
 
 network JointExperiment
 {
-    @display("bgb=1152,755");
+    @display("bgb=1152,777");
 
     submodules:
 
         AS1: InteriorRouterNInt {
-            @display("p=149,321");
+            @display("p=149,361");
         }
         AS2: InteriorRouterNInt {
-            @display("p=422,321");
+            @display("p=422,361");
         }
         TOR1: InteriorRouterNInt {
-            @display("p=149,509");
+            @display("p=149,549");
         }
         TOR2: InteriorRouterNInt {
-            @display("p=422,509");
+            @display("p=422,549");
         }
 
         Server11: OFInjRouter {
-            @display("p=80,682");
+            @display("p=80,722");
         }
         Server12: OFInjRouter {
-            @display("p=220,682");
+            @display("p=220,722");
         }
         Server21: OFInjRouter {
-            @display("p=353,682");
+            @display("p=353,722");
         }
         Server22: OFInjRouter {
-            @display("p=489,682");
+            @display("p=489,722");
         }
         AS3: InteriorRouterNInt {
-            @display("p=716,321");
+            @display("p=716,361");
         }
         AS4: InteriorRouterNInt {
-            @display("p=989,321");
+            @display("p=989,361");
         }
         Server31: OFInjRouter {
-            @display("p=650,682");
+            @display("p=650,722");
         }
         Server32: OFInjRouter {
-            @display("p=785,682");
+            @display("p=785,722");
         }
         Server41: OFInjRouter {
-            @display("p=920,682");
+            @display("p=920,722");
         }
         Server42: OFInjRouter {
-            @display("p=1054,682");
+            @display("p=1054,722");
         }
         TOR3: InteriorRouterNInt {
-            @display("p=716,509");
+            @display("p=716,549");
         }
         TOR4: InteriorRouterNInt {
-            @display("p=989,509");
+            @display("p=989,549");
         }
 
         AS5: InteriorRouterNInt {
-            @display("p=495,68");
+            @display("p=495,108");
         }
         AS6: InteriorRouterNInt {
-            @display("p=657,68");
+            @display("p=657,108");
         }
         fullPathMonitor: FullPathMonitor {
-            @display("p=953,128");
+            @display("p=953,168");
         }
-        listener: InjListener;
+        listener: InjListener {
+
+            @display("p=1037,111");
+        }
+        Exit: OFInjRouter {
+            @display("p=580,41");
+        }
     connections:
 
         AS1.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> TOR1.medium++;
@@ -136,5 +142,7 @@ network JointExperiment
         AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
         AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
         AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
+        AS5.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> Exit.medium++;
+        AS6.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> Exit.medium++;
 
 }

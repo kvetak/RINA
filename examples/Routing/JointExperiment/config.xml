@@ -28,6 +28,8 @@
         <Connection src="AS.2_DC" dst="AS.6_DC" qosReq="1"/>  
         <Connection src="AS.3_DC" dst="AS.6_DC" qosReq="1"/>
         <Connection src="AS.4_DC" dst="AS.6_DC" qosReq="1"/>
+        <Connection src="AS.5_DC" dst="Exit_DC" qosReq="1"/>
+        <Connection src="AS.6_DC" dst="Exit_DC" qosReq="1"/>
        </SimTime>
        
        <SimTime t="1">
@@ -40,6 +42,7 @@
         <Connection src="R1.S1_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R1.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R1.S2_Net" dst="R2.S1_Net" qosReq="1"/>
         <Connection src="R1.S2_Net" dst="R2.S2_Net" qosReq="1"/>
         <Connection src="R1.S2_Net" dst="R3.S1_Net" qosReq="1"/>
@@ -47,25 +50,41 @@
         <Connection src="R1.S2_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R1.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R2.S1_Net" dst="R2.S2_Net" qosReq="1"/>
         <Connection src="R2.S1_Net" dst="R3.S1_Net" qosReq="1"/>
         <Connection src="R2.S1_Net" dst="R3.S2_Net" qosReq="1"/>
         <Connection src="R2.S1_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R2.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R2.S2_Net" dst="R3.S1_Net" qosReq="1"/>
         <Connection src="R2.S2_Net" dst="R3.S2_Net" qosReq="1"/>
         <Connection src="R2.S2_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R2.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R3.S1_Net" dst="R3.S2_Net" qosReq="1"/>
         <Connection src="R3.S1_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R3.S1_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R3.S2_Net" dst="R4.S1_Net" qosReq="1"/>
         <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="1"/>
         
+        
         <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="1"/>
+        
+        
+        <Connection src="R1.S1_Net" dst="Exit_Net" qosReq="1"/>
+        <Connection src="R1.S2_Net" dst="Exit_Net" qosReq="1"/>
+		<Connection src="R2.S1_Net" dst="Exit_Net" qosReq="1"/>
+		<Connection src="R2.S2_Net" dst="Exit_Net" qosReq="1"/>
+		<Connection src="R3.S1_Net" dst="Exit_Net" qosReq="1"/>
+		<Connection src="R3.S2_Net" dst="Exit_Net" qosReq="1"/>
+        <Connection src="R4.S1_Net" dst="Exit_Net" qosReq="1"/>
+        <Connection src="R4.S2_Net" dst="Exit_Net" qosReq="1"/>
+        
       </SimTime>
       
        <SimTime t="2">
@@ -104,6 +123,15 @@
         <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="2"/>
         
         <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="2"/>
+        
+        <Connection src="R1.S1_Net" dst="Exit_Net" qosReq="2"/>
+        <Connection src="R1.S2_Net" dst="Exit_Net" qosReq="2"/>
+		<Connection src="R2.S1_Net" dst="Exit_Net" qosReq="2"/>
+		<Connection src="R2.S2_Net" dst="Exit_Net" qosReq="2"/>
+		<Connection src="R3.S1_Net" dst="Exit_Net" qosReq="2"/>
+		<Connection src="R3.S2_Net" dst="Exit_Net" qosReq="2"/>
+        <Connection src="R4.S1_Net" dst="Exit_Net" qosReq="2"/>
+        <Connection src="R4.S2_Net" dst="Exit_Net" qosReq="2"/>
       </SimTime>
       
        <SimTime t="3">
@@ -142,6 +170,15 @@
         <Connection src="R3.S2_Net" dst="R4.S2_Net" qosReq="3"/>
         
         <Connection src="R4.S1_Net" dst="R4.S2_Net" qosReq="3"/>
+        
+        <Connection src="R1.S1_Net" dst="Exit_Net" qosReq="3"/>
+        <Connection src="R1.S2_Net" dst="Exit_Net" qosReq="3"/>
+		<Connection src="R2.S1_Net" dst="Exit_Net" qosReq="3"/>
+		<Connection src="R2.S2_Net" dst="Exit_Net" qosReq="3"/>
+		<Connection src="R3.S1_Net" dst="Exit_Net" qosReq="3"/>
+		<Connection src="R3.S2_Net" dst="Exit_Net" qosReq="3"/>
+        <Connection src="R4.S1_Net" dst="Exit_Net" qosReq="3"/>
+        <Connection src="R4.S2_Net" dst="Exit_Net" qosReq="3"/>
       </SimTime>
     </ConnectionSet>
   </ConnectionSets>
@@ -209,12 +246,14 @@
 					<DIF difName="A2A5" ipcAddress="2"/>
 					<DIF difName="A3A5" ipcAddress="2"/>
 					<DIF difName="A4A5" ipcAddress="2"/>
+					<DIF difName="A5Exit" ipcAddress="1"/>
 				</APN>
 				<APN apn="AS.6_DC">
 					<DIF difName="A1A6" ipcAddress="2"/>
 					<DIF difName="A2A6" ipcAddress="2"/>
 					<DIF difName="A3A6" ipcAddress="2"/>
 					<DIF difName="A4A6" ipcAddress="2"/>
+					<DIF difName="A6Exit" ipcAddress="1"/>
 				</APN>
 	
 				<!-- TOR side naming of the Shims -->
@@ -272,6 +311,10 @@
 				<APN apn="R4.S2_DC">
 					<DIF difName="T4S2" ipcAddress="2"/>
 				</APN>
+				<APN apn="Exit_DC">
+					<DIF difName="A5Exit" ipcAddress="2"/>
+					<DIF difName="A6Exit" ipcAddress="2"/>
+				</APN>
 				
 				<!-- Servers side naming of the Net IPCs -->
 				<APN apn="R1.S1_Net">
@@ -297,6 +340,9 @@
 				</APN>
 				<APN apn="R4.S2_Net">
 					<DIF difName="DC" ipcAddress="R4.S2"/>
+				</APN>
+				<APN apn="Exit_Net">
+					<DIF difName="DC" ipcAddress="Exit"/>
 				</APN>
 			</Directory>
 	</DA>

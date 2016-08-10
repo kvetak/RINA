@@ -10,6 +10,12 @@
 
 
 
+//int voice_f::min_pdu_len = 100;
+//int voice_f::max_pdu_len = 300;
+//double voice_f::interval = 0.02;
+//double voice_f::idle_time = 9.0;
+//double voice_f::burst_time = 3.0;
+
 int voice_f::min_pdu_len = 100;
 int voice_f::max_pdu_len = 300;
 double voice_f::interval = 0.02;
@@ -44,6 +50,13 @@ Inj_PDU * ONOFInj::genPDU(const pduReq & req) {
 
 
 void ONOFInj::initialize() {
+    voice_f::min_pdu_len = (int)par("voice_min_pdu_len").doubleValue();
+    voice_f::max_pdu_len = (int)par("voice_max_pdu_len").doubleValue();
+    voice_f::interval = par("voice_interval").doubleValue();
+    voice_f::idle_time = par("voice_idle_time").doubleValue();
+    voice_f::burst_time = par("voice_burst_time").doubleValue();
+
+
     //Init ini/fin times
     double iniT = par("ini").doubleValue();
     if (iniT < 0 || par("infectedIPC").stdstringValue() == "") { return; }
@@ -109,7 +122,6 @@ void ONOFInj::handleMessage(cMessage *msg) {
             }
         }
         else if(monMsg->type.compare("NACK")==0){
-            //msgDataBase.erase(monMsg->ackInfo.flowID);
         }
 
     }
@@ -216,7 +228,7 @@ void ONOFInj::startFlows() {
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
-            sendDirect(Monmsg, simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), 0, targetModule, "radioIn");
+            sendDirect(Monmsg, uniform(0.0, voice_f::idle_time + voice_f::burst_time), 0, targetModule, "radioIn");
 
             //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
             nextFlowId++;
@@ -234,8 +246,8 @@ void ONOFInj::startFlows() {
             MonitorMsg* Monmsg = new MonitorMsg();
             Monmsg->type = "Rsv_Req";
             Monmsg->rsv_ReqInfo.flowId = nextFlowId;
-            Monmsg->rsv_ReqInfo.nodeIdDst = f->dstAddr;
-            Monmsg->rsv_ReqInfo.nodeIdOrg = srcAddr.getIpcAddress().getName();
+            Monmsg->rsv_ReqInfo.nodeIdDst = srcAddr.getIpcAddress().getName();
+            Monmsg->rsv_ReqInfo.nodeIdOrg = f->dstAddr;
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
