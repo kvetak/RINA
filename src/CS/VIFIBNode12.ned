@@ -19,17 +19,17 @@ import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DIF.IPCProcess;
 import rina.src.DAF.IRM.IPCResourceManager;
 
-module VIFIBNodeGL1
+module VIFIBNode12
 {
     parameters:
-        @display("i=device/router;bgb=474,500");
+        @display("i=device/router;bgb=552,515");
         @node;
 
     //    int nofConn = default(3);
     //    int nofInterG = default(1);
 
     gates:
-        inout medium[7];
+        inout medium[12];
 
     submodules:
         AP: ApplicationProcess {
@@ -70,16 +70,32 @@ module VIFIBNodeGL1
             @display("p=170,358");
         }
         ShimIPC3: IPCProcess {
-            @display("p=227,358");
+            @display("p=264,409");
         }
         ShimIPC4: IPCProcess {
-            @display("p=291,358");
-        }
-        ShimIPC5: IPCProcess {
             @display("p=364,391");
         }
+        ShimIPC5: IPCProcess {
+            @display("p=432,391");
+        }
         ShimIPC6: IPCProcess {
-            @display("p=420,358");
+            @display("p=517,430");
+        }
+        ShimIPC7: IPCProcess {
+            @display("p=525,491");
+        }
+        ShimIPC8: IPCProcess {
+            @display("p=445,469");
+        }
+        ShimIPC9: IPCProcess {
+            @display("p=525,344");
+        }
+        ShimIPC10: IPCProcess {
+            @display("p=525,344");
+        }
+
+        ShimIPC11: IPCProcess {
+            @display("p=525,344");
         }
     connections allowunconnected:
 
@@ -106,12 +122,24 @@ module VIFIBNodeGL1
         ShimIPC4.southIo++ <--> medium[4];
         ShimIPC5.southIo++ <--> medium[5];
         ShimIPC6.southIo++ <--> medium[6];
+        ShimIPC7.southIo++ <--> medium[7];
+        ShimIPC8.southIo++ <--> medium[8];
+        ShimIPC9.southIo++ <--> medium[9];
+        ShimIPC10.southIo++ <--> medium[10];
+        ShimIPC11.southIo++ <--> medium[11];
+
 
         GIPC.southIo++ <--> ShimIPC0.northIo++;
         GIPC.southIo++ <--> ShimIPC1.northIo++;
         GIPC.southIo++ <--> ShimIPC4.northIo++;
         GIPC.southIo++ <--> ShimIPC5.northIo++;
         GIPC.southIo++ <--> ShimIPC6.northIo++;
+        GIPC.southIo++ <--> ShimIPC7.northIo++;
+        GIPC.southIo++ <--> ShimIPC8.northIo++;
+        GIPC.southIo++ <--> ShimIPC9.northIo++;
+        GIPC.southIo++ <--> ShimIPC10.northIo++;
+        GIPC.southIo++ <--> ShimIPC11.northIo++;
+
         GIPC.northIo++ <--> TenantIPC.southIo++;
         ShimIPC2.northIo++ <--> GIPC.southIo++;
         ShimIPC3.northIo++ <--> GIPC.southIo++;
@@ -124,6 +152,12 @@ module VIFIBNodeGL1
         ShimIPC4.northIo++ <--> IGIPC0.southIo++;
         ShimIPC5.northIo++ <--> IGIPC0.southIo++;
         ShimIPC6.northIo++ <--> IGIPC0.southIo++;
+        ShimIPC7.northIo++ <--> IGIPC0.southIo++;
+        ShimIPC8.northIo++ <--> IGIPC0.southIo++;
+        ShimIPC9.northIo++ <--> IGIPC0.southIo++;
+        ShimIPC10.northIo++ <--> IGIPC0.southIo++;
+        ShimIPC11.northIo++ <--> IGIPC0.southIo++;
+
 
         //for i=0..nofInterG-1, 
    //     for j=0..nofConn-1 {

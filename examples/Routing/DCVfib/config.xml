@@ -1,0 +1,762 @@
+<?xml version="1.0"?>
+<Configuration>
+ 
+       <ConnectionSets>
+        <ConnectionSet id="all">
+            <!-- Allocate management flows. -->
+            <SimTime t="1">
+                
+    
+                <Connection src="9_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="9_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="2_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="5_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="6_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="7_G1DIF" qosReq="mgmt"/> 
+                <Connection src="9_G1DIF" dst="8_G1DIF" qosReq="mgmt"/>             
+                <Connection src="9_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="4_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="4_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="2_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="5_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="6_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="7_G1DIF" qosReq="mgmt"/> 
+                <Connection src="4_G1DIF" dst="8_G1DIF" qosReq="mgmt"/>            
+                <Connection src="4_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="8_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="8_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="8_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="8_G1DIF" dst="2_G1DIF" qosReq="mgmt"/> 
+                <Connection src="8_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="8_G1DIF" dst="5_G1DIF" qosReq="mgmt"/> 
+                <Connection src="8_G1DIF" dst="6_G1DIF" qosReq="mgmt"/> 
+                <Connection src="8_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>            
+                <Connection src="8_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                 
+                <Connection src="5_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="5_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="5_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="5_G1DIF" dst="2_G1DIF" qosReq="mgmt"/> 
+                <Connection src="5_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="5_G1DIF" dst="8_G1DIF" qosReq="mgmt"/> 
+                <Connection src="5_G1DIF" dst="6_G1DIF" qosReq="mgmt"/> 
+                <Connection src="5_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>             
+                <Connection src="5_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="7_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="7_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="7_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="7_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="7_G1DIF" dst="2_G1DIF" qosReq="mgmt"/> 
+                <Connection src="7_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="7_G1DIF" dst="8_G1DIF" qosReq="mgmt"/> 
+                <Connection src="7_G1DIF" dst="6_G1DIF" qosReq="mgmt"/>             
+                <Connection src="7_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="2_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>                
+                <Connection src="2_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="2_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="2_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="2_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="2_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="2_G1DIF" dst="8_G1DIF" qosReq="mgmt"/> 
+                <Connection src="2_G1DIF" dst="6_G1DIF" qosReq="mgmt"/> 
+                <Connection src="2_G1DIF" dst="2_G1DIF" qosReq="mgmt"/>            
+                <Connection src="2_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="6_G1DIF" dst="2_G1DIF" qosReq="mgmt"/>                
+                <Connection src="6_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>                
+                <Connection src="6_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="6_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="6_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="6_G1DIF" dst="1_G1DIF" qosReq="mgmt"/> 
+                <Connection src="6_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="6_G1DIF" dst="8_G1DIF" qosReq="mgmt"/>            
+                <Connection src="6_G1DIF" dst="10_G1DIF" qosReq="mgmt"/> 
+                
+                <Connection src="1_G1DIF" dst="2_G1DIF" qosReq="mgmt"/>               
+                <Connection src="1_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>                
+                <Connection src="1_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="1_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="1_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="1_G1DIF" dst="6_G1DIF" qosReq="mgmt"/>
+                <Connection src="1_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="1_G1DIF" dst="8_G1DIF" qosReq="mgmt"/>                
+                <Connection src="1_G1DIF" dst="10_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="10_G1DIF" dst="2_G1DIF" qosReq="mgmt"/>               
+                <Connection src="10_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>                
+                <Connection src="10_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="10_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="10_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="10_G1DIF" dst="6_G1DIF" qosReq="mgmt"/>
+                <Connection src="10_G1DIF" dst="3_G1DIF" qosReq="mgmt"/> 
+                <Connection src="10_G1DIF" dst="8_G1DIF" qosReq="mgmt"/>                
+                <Connection src="10_G1DIF" dst="1_G1DIF" qosReq="mgmt"/>
+                
+                <Connection src="3_G1DIF" dst="1_G1DIF" qosReq="mgmt"/>
+                <Connection src="3_G1DIF" dst="2_G1DIF" qosReq="mgmt"/>               
+                <Connection src="3_G1DIF" dst="7_G1DIF" qosReq="mgmt"/>                
+                <Connection src="3_G1DIF" dst="5_G1DIF" qosReq="mgmt"/>
+                <Connection src="3_G1DIF" dst="9_G1DIF" qosReq="mgmt"/>
+                <Connection src="3_G1DIF" dst="4_G1DIF" qosReq="mgmt"/>
+                <Connection src="3_G1DIF" dst="6_G1DIF" qosReq="mgmt"/>
+                <Connection src="3_G1DIF" dst="8_G1DIF" qosReq="mgmt"/> 
+
+            </SimTime>
+            
+            
+            <!-- Allocate data flows. -->
+            
+            <SimTime t="4"> 
+            
+           
+                <Connection src="9_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="9_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="2_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="5_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="6_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="7_G1DIF" qosReq="1"/> 
+                <Connection src="9_G1DIF" dst="8_G1DIF" qosReq="1"/>             
+                <Connection src="9_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="4_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="4_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="2_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="5_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="6_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="7_G1DIF" qosReq="1"/> 
+                <Connection src="4_G1DIF" dst="8_G1DIF" qosReq="1"/>            
+                <Connection src="4_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="8_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="8_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="8_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="8_G1DIF" dst="2_G1DIF" qosReq="1"/> 
+                <Connection src="8_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="8_G1DIF" dst="5_G1DIF" qosReq="1"/> 
+                <Connection src="8_G1DIF" dst="6_G1DIF" qosReq="1"/> 
+                <Connection src="8_G1DIF" dst="7_G1DIF" qosReq="1"/>            
+                <Connection src="8_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                 
+                <Connection src="5_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="5_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="5_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="5_G1DIF" dst="2_G1DIF" qosReq="1"/> 
+                <Connection src="5_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="5_G1DIF" dst="8_G1DIF" qosReq="1"/> 
+                <Connection src="5_G1DIF" dst="6_G1DIF" qosReq="1"/> 
+                <Connection src="5_G1DIF" dst="7_G1DIF" qosReq="1"/>             
+                <Connection src="5_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="7_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="7_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="7_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="7_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="7_G1DIF" dst="2_G1DIF" qosReq="1"/> 
+                <Connection src="7_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="7_G1DIF" dst="8_G1DIF" qosReq="1"/> 
+                <Connection src="7_G1DIF" dst="6_G1DIF" qosReq="1"/>             
+                <Connection src="7_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="2_G1DIF" dst="7_G1DIF" qosReq="1"/>                
+                <Connection src="2_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="2_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="2_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="2_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="2_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="2_G1DIF" dst="8_G1DIF" qosReq="1"/> 
+                <Connection src="2_G1DIF" dst="6_G1DIF" qosReq="1"/> 
+                <Connection src="2_G1DIF" dst="2_G1DIF" qosReq="1"/>            
+                <Connection src="2_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="6_G1DIF" dst="2_G1DIF" qosReq="1"/>                
+                <Connection src="6_G1DIF" dst="7_G1DIF" qosReq="1"/>                
+                <Connection src="6_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="6_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="6_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="6_G1DIF" dst="1_G1DIF" qosReq="1"/> 
+                <Connection src="6_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="6_G1DIF" dst="8_G1DIF" qosReq="1"/>            
+                <Connection src="6_G1DIF" dst="10_G1DIF" qosReq="1"/> 
+                
+                <Connection src="1_G1DIF" dst="2_G1DIF" qosReq="1"/>               
+                <Connection src="1_G1DIF" dst="7_G1DIF" qosReq="1"/>                
+                <Connection src="1_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="1_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="1_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="1_G1DIF" dst="6_G1DIF" qosReq="1"/>
+                <Connection src="1_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="1_G1DIF" dst="8_G1DIF" qosReq="1"/>                
+                <Connection src="1_G1DIF" dst="10_G1DIF" qosReq="1"/>
+                
+                <Connection src="10_G1DIF" dst="2_G1DIF" qosReq="1"/>               
+                <Connection src="10_G1DIF" dst="7_G1DIF" qosReq="1"/>                
+                <Connection src="10_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="10_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="10_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="10_G1DIF" dst="6_G1DIF" qosReq="1"/>
+                <Connection src="10_G1DIF" dst="3_G1DIF" qosReq="1"/> 
+                <Connection src="10_G1DIF" dst="8_G1DIF" qosReq="1"/>                
+                <Connection src="10_G1DIF" dst="1_G1DIF" qosReq="1"/>
+                
+                <Connection src="3_G1DIF" dst="1_G1DIF" qosReq="1"/>
+                <Connection src="3_G1DIF" dst="2_G1DIF" qosReq="1"/>               
+                <Connection src="3_G1DIF" dst="7_G1DIF" qosReq="1"/>                
+                <Connection src="3_G1DIF" dst="5_G1DIF" qosReq="1"/>
+                <Connection src="3_G1DIF" dst="9_G1DIF" qosReq="1"/>
+                <Connection src="3_G1DIF" dst="4_G1DIF" qosReq="1"/>
+                <Connection src="3_G1DIF" dst="6_G1DIF" qosReq="1"/>
+                <Connection src="10_G1DIF" dst="10_G1DIF" qosReq="1"/> 
+                <Connection src="3_G1DIF" dst="8_G1DIF" qosReq="1"/> 
+                
+         
+            </SimTime>
+        </ConnectionSet>
+    </ConnectionSets>
+    	
+    	
+    	
+        <DA>
+        <Directory>
+        
+                <APN apn="1_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="1"/>
+                </APN>
+                <APN apn="10_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="10"/>
+                </APN>
+                
+                <APN apn="2_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="2"/>
+                </APN>
+                
+                <APN apn="3_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="3"/>
+                </APN>
+                
+                <APN apn="4_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="4"/>
+                </APN>
+                <APN apn="6_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="6"/>
+                </APN>
+                <APN apn="8_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="8"/>
+                </APN>             
+                
+                <APN apn="7_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="7"/>
+                </APN>
+                <APN apn="5_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="5"/>
+                </APN>
+                <APN apn="9_TenantDIF">
+                    <DIF difName="G1DIF" ipcAddress="9"/>
+                </APN>
+                
+                <APN apn="1_G1DIF">
+                    <DIF difName="Shim1To2" ipcAddress="1"/>
+                    <DIF difName= "Shim1To3" ipcAddress="1"/>
+                    <DIF difName= "Shim1To10" ipcAddress="1"/>
+                </APN>
+                
+                <APN apn="3_G1DIF">
+                    <DIF difName= "Shim6To3" ipcAddress="2"/>
+                    <DIF difName= "Shim1To3" ipcAddress="2"/>
+                </APN>
+
+                
+                 <APN apn="2_G1DIF">
+                    <DIF difName= "Shim2To6" ipcAddress="1"/>
+                    <DIF difName= "Shim2To7" ipcAddress="1"/>
+                    <DIF difName= "Shim1To2" ipcAddress="2"/>
+                </APN>
+                
+                <APN apn="8_G1DIF">
+                    <DIF difName= "Shim8To4" ipcAddress="1"/>
+                </APN>
+                <APN apn="4_G1DIF">
+                    <DIF difName= "Shim4To9" ipcAddress="1"/>
+                    <DIF difName= "Shim8To4" ipcAddress="2"/>
+                </APN>
+                <APN apn="6_G1DIF">
+                    <DIF difName= "Shim2To6" ipcAddress="2"/>
+                    <DIF difName= "Shim6To3" ipcAddress="1"/>
+                </APN>
+                
+                <APN apn="10_G1DIF">
+                    <DIF difName= "Shim1To10" ipcAddress= "2"/>
+                </APN>
+                <APN apn="7_G1DIF">
+                    <DIF difName= "Shim5To7" ipcAddress= "2"/>
+                    <DIF difName= "Shim2To7" ipcAddress="2"/>
+                </APN>
+                <APN apn="9_G1DIF">
+                    <DIF difName= "Shim9To5" ipcAddress= "1"/>
+                    <DIF difName= "Shim4To9" ipcAddress="2"/>
+                </APN>
+                <APN apn="5_G1DIF">
+                    <DIF difName= "Shim9To5" ipcAddress= "2"/>
+                    <DIF difName= "Shim5To7" ipcAddress= "1"/>
+                </APN>
+                
+
+               <APN apn="App1">
+                    <DIF difName="TenantDIF"  ipcAddress="1"/>
+                </APN>
+                <APN apn="App2">
+                    <DIF difName="TenantDIF"  ipcAddress="2"/>
+                </APN>
+                <APN apn="App3">
+                    <DIF difName="TenantDIF"  ipcAddress="3"/>
+                </APN>
+                <APN apn="App4">
+                    <DIF difName="TenantDIF"  ipcAddress="4"/>
+                </APN>
+                <APN apn="App5">
+                    <DIF difName="TenantDIF"  ipcAddress="5"/>
+                </APN>
+                <APN apn="App6">
+                    <DIF difName="TenantDIF"  ipcAddress="6"/>
+                </APN>
+                <APN apn="App7">
+                    <DIF difName="TenantDIF"  ipcAddress="7"/>
+                </APN>
+                <APN apn="App8">
+                    <DIF difName="TenantDIF"  ipcAddress="8"/>
+                </APN>
+                <APN apn="App9">
+                    <DIF difName="TenantDIF"  ipcAddress="9"/>
+                </APN>
+                <APN apn="App10">
+                    <DIF difName="TenantDIF"  ipcAddress="10"/>
+                </APN>
+                
+        </Directory>
+        </DA>
+   	
+   <Host id="host1">
+        
+	  <DA>
+	    <NeighborTable>
+			<APN apn="7_TenantDIF">
+				<Neighbor apn="5_TenantDIF" />
+			</APN>
+			<APN apn="2_TenantDIF">
+				<Neighbor apn="3_TenantDIF" />
+			</APN>
+			<APN apn="2_G1DIF">
+				<Neighbor apn="3_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="1_G1DIF" dst="3_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="1_TenantDIF" dst="3_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+    	
+   <Host id="host2">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="9_TenantDIF">
+				<Neighbor apn="7_TenantDIF" />
+			</APN>
+			<APN apn="9_G1DIF">
+				<Neighbor apn="7_G1DIF" />
+			</APN>
+			<APN apn="5_TenantDIF">
+				<Neighbor apn="7_TenantDIF" />
+			</APN>
+			<APN apn="5_G1DIF">
+				<Neighbor apn="7_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="2_G1DIF" dst="7_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="2_TenantDIF" dst="7_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+		 <Enrollment id="IGIPC">
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="2_IGDIF1.1" dst="4_IGDIF1.1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	 	
+	<Host id="host3">
+        
+	  <DA>
+	    <NeighborTable>
+			<APN apn="8_TenantDIF">
+				<Neighbor apn="9_TenantDIF" />
+			</APN>
+			<APN apn="8_G1DIF">
+				<Neighbor apn="9_G1DIF" />
+			</APN>
+			<APN apn="10_TenantDIF">
+				<Neighbor apn="2_TenantDIF" />
+			</APN>
+			<APN apn="10_G1DIF">
+				<Neighbor apn="2_G1DIF" />
+			</APN>
+			<APN apn="5_TenantDIF">
+				<Neighbor apn="1_TenantDIF" />
+			</APN>
+			<APN apn="5_G1DIF">
+				<Neighbor apn="1_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="2">
+	                <Connect src="3_G1DIF" dst="4_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="3_TenantDIF" dst="4_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+		 <Enrollment id="IGIPC">
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="3_IGDIF1.1" dst="7_IGDIF1.1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	
+	    	
+	<Host id="host4">
+	  <DA>
+	    <NeighborTable>
+	    <APN apn="7_TenantDIF">
+				<Neighbor apn="6_TenantDIF" />
+			</APN>
+	    <APN apn="7_G1DIF">
+				<Neighbor apn="6_G1DIF" />
+			</APN>
+			<APN apn="9_TenantDIF">
+				<Neighbor apn="8_TenantDIF" />
+			</APN>
+			<APN apn="10_TenantDIF">
+				<Neighbor apn="8_TenantDIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="3_G1DIF" dst="5_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="3_TenantDIF" dst="5_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	
+	    	
+	<Host id="host5">
+        
+	  <DA>
+	    <NeighborTable>
+			<APN apn="9_TenantDIF">
+				<Neighbor apn="9_TenantDIF" />
+			</APN>
+			<APN apn="10_TenantDIF">
+				<Neighbor apn="4_TenantDIF" />
+			</APN>
+			<APN apn="2_TenantDIF">
+				<Neighbor apn="7_TenantDIF" />
+			</APN>
+			<APN apn="2_G1DIF">
+				<Neighbor apn="7_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="5_G1DIF" dst="7_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="5_TenantDIF" dst="7_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	
+	<Host id="host6">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="10_TenantDIF">
+				<Neighbor apn="2_TenantDIF" />
+			</APN>
+			<APN apn="10_G1DIF">
+				<Neighbor apn="2_G1DIF" />
+			</APN>
+			<APN apn="9_TenantDIF">
+				<Neighbor apn="4_TenantDIF" />
+			</APN>
+			<APN apn="9_G1DIF">
+				<Neighbor apn="4_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="6_G1DIF" dst="4_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="6_TenantDIF" dst="4_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+	<Host id="host7">
+        
+	  <DA>
+	    <NeighborTable>
+			<APN apn="9_TenantDIF">
+				<Neighbor apn="5_TenantDIF" />
+			</APN>	
+			<APN apn="9_G1DIF">
+				<Neighbor apn="5_G1DIF" />
+			</APN>	
+			<APN apn="4_TenantDIF">
+				<Neighbor apn="5_TenantDIF" />
+			</APN>
+			<APN apn="4_G1DIF">
+				<Neighbor apn="5_G1DIF" />
+			</APN>	
+		</NeighborTable>
+	  </DA>		 
+		 <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3">
+	                <Connect src="7_G1DIF" dst="2_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="7_TenantDIF" dst="2_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+		  
+		 <Enrollment id="IGIPC">
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="7_IGDIF1.1" dst="4_IGDIF1.1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+	</Host>
+
+		<Host id="host8">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="5_TenantDIF">
+				<Neighbor apn="4_TenantDIF" />
+			</APN>
+			<APN apn="7_TenantDIF">
+				<Neighbor apn="4_TenantDIF" />
+			</APN>
+			<APN apn="3_TenantDIF">
+				<Neighbor apn="9_TenantDIF" />
+			</APN>
+			<APN apn="3_G1DIF">
+				<Neighbor apn="9_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		 <Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="8_TenantDIF" dst="4_TenantDIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>
+		  
+		 <Enrollment id="IGIPC">
+			<Preenrollment>
+	            <SimTime t="5">
+	                <Connect src="8_IGDIF1.1" dst="4_IGDIF1.1" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	</Host>
+<Host id="host9">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="2_TenantDIF">
+				<Neighbor apn="5_TenantDIF" />
+			</APN>
+			<APN apn="2_G1DIF">
+				<Neighbor apn="5_G1DIF" />
+			</APN>
+			<APN apn="7_TenantDIF">
+				<Neighbor apn="5_TenantDIF" />
+			</APN>
+			<APN apn="7_G1DIF">
+				<Neighbor apn="5_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		  
+	   <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3.5">
+	                <Connect src="9_G1DIF" dst="5_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="9_TenantDIF" dst="5_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	</Host>
+	
+	<Host id="host10">
+	  <DA>
+	    <NeighborTable>
+			<APN apn="5_TenantDIF">
+				<Neighbor apn="8_TenantDIF" />
+			</APN>
+			<APN apn="4_TenantDIF">
+				<Neighbor apn="8_TenantDIF" />
+			</APN>
+			<APN apn="6_TenantDIF">
+				<Neighbor apn="2_TenantDIF" />
+			</APN>
+			<APN apn="6_G1DIF">
+				<Neighbor apn="2_G1DIF" />
+			</APN>
+			<APN apn="3_TenantDIF">
+				<Neighbor apn="2_TenantDIF" />
+			</APN>
+			<APN apn="3_G1DIF">
+				<Neighbor apn="2_G1DIF" />
+			</APN>
+		</NeighborTable>
+	  </DA>	
+		  
+	   <Enrollment id="GIPC">
+			<Preenrollment>
+	            <SimTime t="3.5">
+	                <Connect src="10_G1DIF" dst="2_G1DIF" />
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	   		<Enrollment id="tenant">
+			<Preenrollment>
+	            <SimTime t="6">
+	                <Connect src="10_TenantDIF" dst="2_TenantDIF" />	                
+	            </SimTime>
+			</Preenrollment>
+		</Enrollment>  
+	</Host>
+	
+	
+	<QoSCubesSet1>
+		<QoSCube id="QoSCube_WithoutDTCP">
+			<AverageBandwidth>10000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>
+		</QoSCube>	
+	</QoSCubesSet1>
+	<QoSCubesSet2>
+		<QoSCube id="QoSCube_WithDTCP">
+			<AverageBandwidth>10000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<PDUDroppingProbability>0</PDUDroppingProbability>
+			<MaxSDUSize>1500</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>1</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Delay>1000000</Delay>
+			<Jitter>500000</Jitter>
+			<CostTime>0</CostTime>
+			<CostBits>0</CostBits>					
+		</QoSCube>		
+	</QoSCubesSet2>
+	
+<QoSReqSet>
+		<QosReq id="1">
+			<Delay>1</Delay>	
+		</QosReq>
+</QoSReqSet>
+</Configuration>

@@ -1,0 +1,2066 @@
+network Scenario
+{
+    submodules:
+
+
+
+
+
+
+        VIFIBN119: VIFIBNode32 {
+        @display("p=109,62");
+        }
+        VIFIBN131: VIFIBNode17 {
+        @display("p=109,93");
+        }
+        VIFIBN96: VIFIBNode23 {
+        @display("p=109,52");
+        }
+        VIFIBN143: VIFIBNode12 {
+        @display("p=105,50");
+        }
+        VIFIBN120: VIFIBNode34 {
+        @display("p=604,584");
+        }
+        VIFIBN139: VIFIBNode13 {
+        @display("p=604,546");
+        }
+        VIFIBN22: VIFIBNode21 {
+        @display("p=600,549");
+        }
+        VIFIBN74: VIFIBNode17 {
+        @display("p=606,534");
+        }
+        VIFIBN5: VIFIBNode27 {
+        @display("p=605,597");
+        }
+        VIFIBN99: VIFIBNode15 {
+        @display("p=603,559");
+        }
+        VIFIBN81: VIFIBNode18 {
+        @display("p=607,571");
+        }
+        VIFIBN94: VIFIBNode18 {
+        @display("p=605,577");
+        }
+        VIFIBN103: VIFIBNode15 {
+        @display("p=600,562");
+        }
+        VIFIBN55: VIFIBNode17 {
+        @display("p=603,521");
+        }
+        VIFIBN28: VIFIBNode25 {
+        @display("p=607,593");
+        }
+        VIFIBN36: VIFIBNode25 {
+        @display("p=606,524");
+        }
+        VIFIBN77: VIFIBNode16 {
+        @display("p=600,509");
+        }
+        VIFIBN66: VIFIBNode21 {
+        @display("p=601,597");
+        }
+        VIFIBN117: VIFIBNode16 {
+        @display("p=609,511");
+        }
+        VIFIBN11: VIFIBNode21 {
+        @display("p=606,578");
+        }
+        VIFIBN141: VIFIBNode8 {
+        @display("p=604,583");
+        }
+        VIFIBN134: VIFIBNode18 {
+        @display("p=602,592");
+        }
+        VIFIBN133: VIFIBNode15 {
+        @display("p=606,536");
+        }
+        VIFIBN38: VIFIBNode17 {
+        @display("p=603,580");
+        }
+        VIFIBN147: VIFIBNode8 {
+        @display("p=600,544");
+        }
+        VIFIBN30: VIFIBNode26 {
+        @display("p=605,549");
+        }
+        VIFIBN88: VIFIBNode26 {
+        @display("p=606,547");
+        }
+        VIFIBN63: VIFIBNode14 {
+        @display("p=601,571");
+        }
+        VIFIBN148: VIFIBNode4 {
+        @display("p=604,507");
+        }
+        VIFIBN107: VIFIBNode20 {
+        @display("p=602,596");
+        }
+        VIFIBN128: VIFIBNode15 {
+        @display("p=601,523");
+        }
+        VIFIBN97: VIFIBNode16 {
+        @display("p=602,560");
+        }
+        VIFIBN91: VIFIBNode35 {
+        @display("p=307,43");
+        }
+        VIFIBN122: VIFIBNode17 {
+        @display("p=306,45");
+        }
+        VIFIBN127: VIFIBNode16 {
+        @display("p=303,57");
+        }
+        VIFIBN49: VIFIBNode28 {
+        @display("p=300,2");
+        }
+        VIFIBN86: VIFIBNode25 {
+        @display("p=306,99");
+        }
+        VIFIBN69: VIFIBNode25 {
+        @display("p=308,25");
+        }
+        VIFIBN136: VIFIBNode12 {
+        @display("p=307,73");
+        }
+        VIFIBN140: VIFIBNode11 {
+        @display("p=309,73");
+        }
+        VIFIBN45: VIFIBNode19 {
+        @display("p=302,97");
+        }
+        VIFIBN114: VIFIBNode20 {
+        @display("p=307,36");
+        }
+        VIFIBN58: VIFIBNode22 {
+        @display("p=307,1");
+        }
+        VIFIBN142: VIFIBNode13 {
+        @display("p=300,58");
+        }
+        VIFIBN70: VIFIBNode26 {
+        @display("p=305,3");
+        }
+        VIFIBN124: VIFIBNode14 {
+        @display("p=307,12");
+        }
+        VIFIBN24: VIFIBNode41 {
+        @display("p=1203,528");
+        }
+        VIFIBN20: VIFIBNode29 {
+        @display("p=1203,511");
+        }
+        VIFIBN57: VIFIBNode19 {
+        @display("p=1207,582");
+        }
+        VIFIBN59: VIFIBNode24 {
+        @display("p=1209,529");
+        }
+        VIFIBN71: VIFIBNode14 {
+        @display("p=1204,532");
+        }
+        VIFIBN53: VIFIBNode19 {
+        @display("p=1204,532");
+        }
+        VIFIBN90: VIFIBNode33 {
+        @display("p=507,82");
+        }
+        VIFIBN105: VIFIBNode24 {
+        @display("p=507,72");
+        }
+        VIFIBN7: VIFIBNode26 {
+        @display("p=505,14");
+        }
+        VIFIBN135: VIFIBNode15 {
+        @display("p=504,76");
+        }
+        VIFIBN146: VIFIBNode11 {
+        @display("p=503,68");
+        }
+        VIFIBN61: VIFIBNode18 {
+        @display("p=501,61");
+        }
+        VIFIBN118: VIFIBNode14 {
+        @display("p=501,72");
+        }
+        VIFIBN116: VIFIBNode19 {
+        @display("p=506,81");
+        }
+        VIFIBN80: VIFIBNode17 {
+        @display("p=505,78");
+        }
+        VIFIBN54: VIFIBNode23 {
+        @display("p=508,3");
+        }
+        VIFIBN108: VIFIBNode20 {
+        @display("p=504,18");
+        }
+        VIFIBN112: VIFIBNode20 {
+        @display("p=501,81");
+        }
+        VIFIBN111: VIFIBNode16 {
+        @display("p=503,23");
+        }
+        VIFIBN65: VIFIBNode22 {
+        @display("p=508,92");
+        }
+        VIFIBN104: VIFIBNode15 {
+        @display("p=504,99");
+        }
+        VIFIBN125: VIFIBNode16 {
+        @display("p=501,92");
+        }
+        VIFIBN83: VIFIBNode35 {
+        @display("p=1804,581");
+        }
+        VIFIBN82: VIFIBNode21 {
+        @display("p=1808,589");
+        }
+        VIFIBN52: VIFIBNode23 {
+        @display("p=1807,509");
+        }
+        VIFIBN31: VIFIBNode23 {
+        @display("p=1809,512");
+        }
+        VIFIBN34: VIFIBNode18 {
+        @display("p=1805,530");
+        }
+        VIFIBN26: VIFIBNode25 {
+        @display("p=1803,550");
+        }
+        VIFIBN67: VIFIBNode25 {
+        @display("p=1803,596");
+        }
+        VIFIBN33: VIFIBNode24 {
+        @display("p=1807,531");
+        }
+        VIFIBN92: VIFIBNode20 {
+        @display("p=1806,529");
+        }
+        VIFIBN13: VIFIBNode24 {
+        @display("p=1809,585");
+        }
+        VIFIBN132: VIFIBNode14 {
+        @display("p=1809,552");
+        }
+        VIFIBN23: VIFIBNode37 {
+        @display("p=706,0");
+        }
+        VIFIBN25: VIFIBNode21 {
+        @display("p=705,34");
+        }
+        VIFIBN21: VIFIBNode21 {
+        @display("p=703,84");
+        }
+        VIFIBN51: VIFIBNode29 {
+        @display("p=2408,569");
+        }
+        VIFIBN12: VIFIBNode27 {
+        @display("p=2403,566");
+        }
+        VIFIBN8: VIFIBNode25 {
+        @display("p=2407,592");
+        }
+        VIFIBN50: VIFIBNode18 {
+        @display("p=2403,551");
+        }
+        VIFIBN41: VIFIBNode17 {
+        @display("p=2405,525");
+        }
+        VIFIBN85: VIFIBNode26 {
+        @display("p=2405,535");
+        }
+        VIFIBN9: VIFIBNode24 {
+        @display("p=2407,540");
+        }
+        VIFIBN73: VIFIBNode25 {
+        @display("p=2408,510");
+        }
+        VIFIBN40: VIFIBNode20 {
+        @display("p=2401,521");
+        }
+        VIFIBN43: VIFIBNode23 {
+        @display("p=2400,515");
+        }
+        VIFIBN60: VIFIBNode35 {
+        @display("p=903,79");
+        }
+        VIFIBN46: VIFIBNode20 {
+        @display("p=902,49");
+        }
+        VIFIBN3: VIFIBNode26 {
+        @display("p=902,24");
+        }
+        VIFIBN15: VIFIBNode21 {
+        @display("p=908,60");
+        }
+        VIFIBN79: VIFIBNode19 {
+        @display("p=906,47");
+        }
+        VIFIBN2: VIFIBNode28 {
+        @display("p=906,43");
+        }
+        VIFIBN10: VIFIBNode26 {
+        @display("p=909,24");
+        }
+        VIFIBN44: VIFIBNode18 {
+        @display("p=908,71");
+        }
+        VIFIBN42: VIFIBNode18 {
+        @display("p=902,69");
+        }
+        VIFIBN95: VIFIBNode15 {
+        @display("p=904,21");
+        }
+        VIFIBN35: VIFIBNode28 {
+        @display("p=908,37");
+        }
+        VIFIBN64: VIFIBNode15 {
+        @display("p=909,1");
+        }
+        VIFIBN29: VIFIBNode22 {
+        @display("p=902,46");
+        }
+        VIFIBN37: VIFIBNode35 {
+        @display("p=3007,570");
+        }
+        VIFIBN6: VIFIBNode26 {
+        @display("p=3007,505");
+        }
+        VIFIBN56: VIFIBNode22 {
+        @display("p=3005,569");
+        }
+        VIFIBN76: VIFIBNode18 {
+        @display("p=3000,590");
+        }
+        VIFIBN75: VIFIBNode22 {
+        @display("p=3004,569");
+        }
+        VIFIBN17: VIFIBNode29 {
+        @display("p=3009,524");
+        }
+        VIFIBN39: VIFIBNode20 {
+        @display("p=3001,572");
+        }
+        VIFIBN89: VIFIBNode22 {
+        @display("p=1105,25");
+        }
+        VIFIBN62: VIFIBNode21 {
+        @display("p=1109,40");
+        }
+        VIFIBN48: VIFIBNode37 {
+        @display("p=1101,77");
+        }
+        VIFIBN19: VIFIBNode20 {
+        @display("p=1106,17");
+        }
+        VIFIBN27: VIFIBNode29 {
+        @display("p=1100,86");
+        }
+        VIFIBN47: VIFIBNode19 {
+        @display("p=1105,92");
+        }
+        VIFIBN14: VIFIBNode20 {
+        @display("p=1103,99");
+        }
+        VIFIBN93: VIFIBNode40 {
+        @display("p=3605,505");
+        }
+        VIFIBN72: VIFIBNode19 {
+        @display("p=3605,557");
+        }
+        VIFIBN101: VIFIBNode31 {
+        @display("p=1305,64");
+        }
+        VIFIBN18: VIFIBNode27 {
+        @display("p=1305,64");
+        }
+        VIFIBN113: VIFIBNode16 {
+        @display("p=1305,52");
+        }
+        VIFIBN4: VIFIBNode42 {
+        @display("p=4201,555");
+        }
+        VIFIBN68: VIFIBNode19 {
+        @display("p=4200,521");
+        }
+        VIFIBN87: VIFIBNode18 {
+        @display("p=4206,550");
+        }
+        VIFIBN16: VIFIBNode20 {
+        @display("p=1507,3");
+        }
+        VIFIBN144: VIFIBNode12 {
+        @display("p=1505,13");
+        }
+        VIFIBN98: VIFIBNode38 {
+        @display("p=1500,76");
+        }
+        VIFIBN100: VIFIBNode27 {
+        @display("p=1505,59");
+        }
+        VIFIBN123: VIFIBNode20 {
+        @display("p=1507,88");
+        }
+        VIFIBN78: VIFIBNode21 {
+        @display("p=1500,35");
+        }
+        VIFIBN115: VIFIBNode17 {
+        @display("p=1506,72");
+        }
+        VIFIBN1: VIFIBNode20 {
+        @display("p=1509,26");
+        }
+        VIFIBN102: VIFIBNode20 {
+        @display("p=1503,31");
+        }
+        VIFIBN106: VIFIBNode20 {
+        @display("p=1507,56");
+        }
+        VIFIBN138: VIFIBNode12 {
+        @display("p=1501,98");
+        }
+        VIFIBN32: VIFIBNode18 {
+        @display("p=1502,32");
+        }
+        VIFIBN84: VIFIBNode16 {
+        @display("p=1500,28");
+        }
+        VIFIBN130: VIFIBNode20 {
+        @display("p=1509,23");
+        }
+        VIFIBN126: VIFIBNode29 {
+        @display("p=4805,520");
+        }
+        VIFIBN109: VIFIBNode18 {
+        @display("p=4805,595");
+        }
+        VIFIBN137: VIFIBNode15 {
+        @display("p=4809,552");
+        }
+        VIFIBN110: VIFIBNode36 {
+        @display("p=1708,23");
+        }
+        VIFIBN150: VIFIBNode14 {
+        @display("p=1704,51");
+        }
+        VIFIBN129: VIFIBNode14 {
+        @display("p=1700,25");
+        }
+        VIFIBN145: VIFIBNode15 {
+        @display("p=1701,31");
+        }
+        VIFIBN149: VIFIBNode27 {
+        @display("p=5405,572");
+        }
+        VIFIBN121: VIFIBNode15 {
+        @display("p=5408,547");
+        }
+
+
+
+
+
+
+      connections:
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 15ms; datarate =99Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN6.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN13.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 11ms; datarate =86Mbps; ber = 0;} <--> VIFIBN29.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 14ms; datarate =99Mbps; ber = 0;} <--> VIFIBN32.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 20ms; datarate =83Mbps; ber = 0;} <--> VIFIBN35.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 29ms; datarate =82Mbps; ber = 0;} <--> VIFIBN46.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN49.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 17ms; datarate =87Mbps; ber = 0;} <--> VIFIBN50.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 22ms; datarate =91Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN58.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 23ms; datarate =91Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN63.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 16ms; datarate =82Mbps; ber = 0;} <--> VIFIBN64.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN88.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 47ms; datarate =85Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 35ms; datarate =96Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN1.medium++ <--> DatarateChannel {  delay = 38ms; datarate =80Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN1.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 20ms; datarate =96Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 29ms; datarate =89Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 17ms; datarate =82Mbps; ber = 0;} <--> VIFIBN11.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 16ms; datarate =90Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 13ms; datarate =83Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 23ms; datarate =82Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 13ms; datarate =98Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 24ms; datarate =89Mbps; ber = 0;} <--> VIFIBN35.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 15ms; datarate =83Mbps; ber = 0;} <--> VIFIBN41.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 21ms; datarate =89Mbps; ber = 0;} <--> VIFIBN45.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 24ms; datarate =90Mbps; ber = 0;} <--> VIFIBN50.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN58.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 28ms; datarate =91Mbps; ber = 0;} <--> VIFIBN63.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 28ms; datarate =80Mbps; ber = 0;} <--> VIFIBN69.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 12ms; datarate =89Mbps; ber = 0;} <--> VIFIBN75.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 10ms; datarate =91Mbps; ber = 0;} <--> VIFIBN79.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 10ms; datarate =81Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN81.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 23ms; datarate =90Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 16ms; datarate =97Mbps; ber = 0;} <--> VIFIBN92.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 18ms; datarate =89Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 26ms; datarate =95Mbps; ber = 0;} <--> VIFIBN109.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN112.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 30ms; datarate =81Mbps; ber = 0;} <--> VIFIBN116.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 41ms; datarate =95Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN2.medium++ <--> DatarateChannel {  delay = 34ms; datarate =95Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 20ms; datarate =87Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 28ms; datarate =80Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 19ms; datarate =80Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 20ms; datarate =90Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 18ms; datarate =80Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 14ms; datarate =84Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 24ms; datarate =91Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 23ms; datarate =97Mbps; ber = 0;} <--> VIFIBN61.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 20ms; datarate =92Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 14ms; datarate =92Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 27ms; datarate =83Mbps; ber = 0;} <--> VIFIBN102.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 19ms; datarate =88Mbps; ber = 0;} <--> VIFIBN105.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 21ms; datarate =81Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN3.medium++ <--> DatarateChannel {  delay = 44ms; datarate =83Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 18ms; datarate =89Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 18ms; datarate =82Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 18ms; datarate =89Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 13ms; datarate =99Mbps; ber = 0;} <--> VIFIBN29.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 12ms; datarate =98Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 23ms; datarate =84Mbps; ber = 0;} <--> VIFIBN35.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 17ms; datarate =83Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 15ms; datarate =91Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 23ms; datarate =94Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN45.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 21ms; datarate =83Mbps; ber = 0;} <--> VIFIBN46.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 21ms; datarate =90Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 24ms; datarate =82Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 27ms; datarate =82Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 12ms; datarate =90Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 19ms; datarate =84Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 22ms; datarate =94Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 29ms; datarate =86Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 18ms; datarate =97Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 10ms; datarate =82Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 24ms; datarate =84Mbps; ber = 0;} <--> VIFIBN88.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 28ms; datarate =80Mbps; ber = 0;} <--> VIFIBN92.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 31ms; datarate =88Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 46ms; datarate =97Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 38ms; datarate =93Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 11ms; datarate =80Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 12ms; datarate =92Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 16ms; datarate =80Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 20ms; datarate =95Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 17ms; datarate =82Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN61.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 28ms; datarate =82Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 25ms; datarate =96Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 24ms; datarate =86Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 10ms; datarate =89Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN105.medium++;
+        VIFIBN5.medium++ <--> DatarateChannel {  delay = 34ms; datarate =94Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 20ms; datarate =83Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 23ms; datarate =85Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 22ms; datarate =94Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 16ms; datarate =89Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 25ms; datarate =94Mbps; ber = 0;} <--> VIFIBN41.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 10ms; datarate =84Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 19ms; datarate =86Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 22ms; datarate =99Mbps; ber = 0;} <--> VIFIBN63.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 12ms; datarate =88Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 26ms; datarate =87Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 22ms; datarate =97Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 17ms; datarate =91Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 20ms; datarate =82Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 30ms; datarate =95Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 32ms; datarate =99Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 48ms; datarate =84Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 42ms; datarate =92Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 42ms; datarate =89Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN6.medium++ <--> DatarateChannel {  delay = 39ms; datarate =89Mbps; ber = 0;} <--> VIFIBN13.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 15ms; datarate =98Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 15ms; datarate =99Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 28ms; datarate =86Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 23ms; datarate =92Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 17ms; datarate =85Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 25ms; datarate =88Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 21ms; datarate =82Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 14ms; datarate =82Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 14ms; datarate =87Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN81.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 22ms; datarate =83Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 15ms; datarate =88Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 29ms; datarate =95Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 22ms; datarate =87Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 16ms; datarate =87Mbps; ber = 0;} <--> VIFIBN116.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 40ms; datarate =88Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN7.medium++ <--> DatarateChannel {  delay = 37ms; datarate =94Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 30ms; datarate =87Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 16ms; datarate =92Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 24ms; datarate =94Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 21ms; datarate =91Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN8.medium++ <--> DatarateChannel {  delay = 11ms; datarate =99Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 21ms; datarate =90Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 10ms; datarate =82Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 15ms; datarate =90Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 13ms; datarate =98Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 20ms; datarate =99Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 26ms; datarate =80Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 28ms; datarate =85Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 18ms; datarate =92Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 21ms; datarate =86Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 30ms; datarate =90Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN9.medium++ <--> DatarateChannel {  delay = 15ms; datarate =92Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 12ms; datarate =84Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 16ms; datarate =87Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 12ms; datarate =93Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 17ms; datarate =90Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 27ms; datarate =86Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 21ms; datarate =87Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 19ms; datarate =89Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 10ms; datarate =98Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 20ms; datarate =81Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 23ms; datarate =89Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 12ms; datarate =93Mbps; ber = 0;} <--> VIFIBN79.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 10ms; datarate =91Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 34ms; datarate =86Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 44ms; datarate =97Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN10.medium++ <--> DatarateChannel {  delay = 37ms; datarate =88Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 24ms; datarate =80Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 26ms; datarate =85Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 27ms; datarate =85Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 10ms; datarate =92Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 11ms; datarate =82Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 23ms; datarate =92Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 12ms; datarate =91Mbps; ber = 0;} <--> VIFIBN41.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 30ms; datarate =99Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 21ms; datarate =81Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 11ms; datarate =94Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 21ms; datarate =89Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 27ms; datarate =98Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 32ms; datarate =87Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 31ms; datarate =94Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN11.medium++ <--> DatarateChannel {  delay = 40ms; datarate =93Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 28ms; datarate =87Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 24ms; datarate =98Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 11ms; datarate =98Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 17ms; datarate =98Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 22ms; datarate =80Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 17ms; datarate =90Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 11ms; datarate =91Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 23ms; datarate =96Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 46ms; datarate =82Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN12.medium++ <--> DatarateChannel {  delay = 42ms; datarate =80Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN11.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 12ms; datarate =96Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 28ms; datarate =91Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 19ms; datarate =80Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 22ms; datarate =83Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 20ms; datarate =83Mbps; ber = 0;} <--> VIFIBN29.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 13ms; datarate =91Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 10ms; datarate =94Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 30ms; datarate =97Mbps; ber = 0;} <--> VIFIBN49.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 20ms; datarate =93Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN63.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN64.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 23ms; datarate =87Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 23ms; datarate =97Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 16ms; datarate =80Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 19ms; datarate =83Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 32ms; datarate =90Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 41ms; datarate =99Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 34ms; datarate =95Mbps; ber = 0;} <--> VIFIBN32.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 41ms; datarate =86Mbps; ber = 0;} <--> VIFIBN50.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 34ms; datarate =83Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN13.medium++ <--> DatarateChannel {  delay = 41ms; datarate =84Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 16ms; datarate =98Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 27ms; datarate =94Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 24ms; datarate =96Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 11ms; datarate =98Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 30ms; datarate =85Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 10ms; datarate =85Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 12ms; datarate =96Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 21ms; datarate =97Mbps; ber = 0;} <--> VIFIBN45.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 18ms; datarate =95Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 21ms; datarate =88Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 34ms; datarate =87Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN14.medium++ <--> DatarateChannel {  delay = 40ms; datarate =85Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 29ms; datarate =83Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 19ms; datarate =99Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 40ms; datarate =81Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 45ms; datarate =84Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN15.medium++ <--> DatarateChannel {  delay = 32ms; datarate =83Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 17ms; datarate =84Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 10ms; datarate =86Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 19ms; datarate =94Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 29ms; datarate =83Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 19ms; datarate =99Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 24ms; datarate =93Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 21ms; datarate =97Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 39ms; datarate =80Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 43ms; datarate =96Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN16.medium++ <--> DatarateChannel {  delay = 31ms; datarate =92Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN17.medium++ <--> DatarateChannel {  delay = 11ms; datarate =90Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN17.medium++ <--> DatarateChannel {  delay = 17ms; datarate =81Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN17.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 29ms; datarate =96Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 23ms; datarate =81Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 13ms; datarate =90Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 12ms; datarate =90Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 24ms; datarate =87Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 22ms; datarate =97Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 27ms; datarate =90Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 14ms; datarate =96Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN18.medium++ <--> DatarateChannel {  delay = 16ms; datarate =99Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 23ms; datarate =81Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 21ms; datarate =81Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 12ms; datarate =91Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 21ms; datarate =99Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 22ms; datarate =96Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 26ms; datarate =97Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 11ms; datarate =80Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN19.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 16ms; datarate =95Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 12ms; datarate =91Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 18ms; datarate =92Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 30ms; datarate =80Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 30ms; datarate =85Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 15ms; datarate =85Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 17ms; datarate =95Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 24ms; datarate =86Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 17ms; datarate =91Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 21ms; datarate =85Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 25ms; datarate =95Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN20.medium++ <--> DatarateChannel {  delay = 22ms; datarate =94Mbps; ber = 0;} <--> VIFIBN122.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 16ms; datarate =82Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 27ms; datarate =97Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 19ms; datarate =95Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 29ms; datarate =87Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 47ms; datarate =92Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 36ms; datarate =96Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 38ms; datarate =97Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN21.medium++ <--> DatarateChannel {  delay = 47ms; datarate =80Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN22.medium++ <--> DatarateChannel {  delay = 26ms; datarate =87Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN22.medium++ <--> DatarateChannel {  delay = 13ms; datarate =96Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN22.medium++ <--> DatarateChannel {  delay = 38ms; datarate =88Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN22.medium++ <--> DatarateChannel {  delay = 35ms; datarate =95Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 14ms; datarate =83Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 28ms; datarate =85Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 11ms; datarate =97Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 27ms; datarate =93Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 13ms; datarate =85Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN41.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 30ms; datarate =90Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 18ms; datarate =85Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 16ms; datarate =83Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN69.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 33ms; datarate =84Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 40ms; datarate =84Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 31ms; datarate =87Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 23ms; datarate =89Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 16ms; datarate =98Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 21ms; datarate =80Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 29ms; datarate =92Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 10ms; datarate =99Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 15ms; datarate =99Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 24ms; datarate =82Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 25ms; datarate =89Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 11ms; datarate =82Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 13ms; datarate =84Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 14ms; datarate =94Mbps; ber = 0;} <--> VIFIBN79.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 29ms; datarate =80Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 25ms; datarate =91Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 21ms; datarate =89Mbps; ber = 0;} <--> VIFIBN102.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 29ms; datarate =92Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 31ms; datarate =85Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 43ms; datarate =88Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN25.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 10ms; datarate =81Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 23ms; datarate =93Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 10ms; datarate =90Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 14ms; datarate =95Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 12ms; datarate =86Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 20ms; datarate =96Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 25ms; datarate =85Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 29ms; datarate =88Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 29ms; datarate =80Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 28ms; datarate =89Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 36ms; datarate =91Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN26.medium++ <--> DatarateChannel {  delay = 48ms; datarate =93Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN27.medium++ <--> DatarateChannel {  delay = 13ms; datarate =88Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN27.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN27.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN27.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN28.medium++ <--> DatarateChannel {  delay = 24ms; datarate =98Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN28.medium++ <--> DatarateChannel {  delay = 13ms; datarate =93Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN28.medium++ <--> DatarateChannel {  delay = 30ms; datarate =89Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN28.medium++ <--> DatarateChannel {  delay = 13ms; datarate =80Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN28.medium++ <--> DatarateChannel {  delay = 15ms; datarate =85Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 19ms; datarate =88Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 21ms; datarate =86Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 20ms; datarate =94Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 26ms; datarate =89Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 18ms; datarate =95Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 28ms; datarate =87Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 26ms; datarate =89Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN32.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 14ms; datarate =96Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 16ms; datarate =92Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 19ms; datarate =94Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 23ms; datarate =94Mbps; ber = 0;} <--> VIFIBN50.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 11ms; datarate =81Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 20ms; datarate =97Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 23ms; datarate =87Mbps; ber = 0;} <--> VIFIBN58.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN64.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 36ms; datarate =95Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN29.medium++ <--> DatarateChannel {  delay = 37ms; datarate =81Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 27ms; datarate =94Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 14ms; datarate =95Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 21ms; datarate =87Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 29ms; datarate =99Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 24ms; datarate =81Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 26ms; datarate =96Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 21ms; datarate =95Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 12ms; datarate =80Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 47ms; datarate =87Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 36ms; datarate =87Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN30.medium++ <--> DatarateChannel {  delay = 45ms; datarate =85Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 30ms; datarate =88Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 10ms; datarate =98Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 27ms; datarate =99Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 13ms; datarate =83Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 15ms; datarate =90Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 14ms; datarate =96Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 15ms; datarate =84Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 24ms; datarate =81Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 16ms; datarate =85Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 13ms; datarate =88Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 28ms; datarate =97Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 14ms; datarate =99Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN31.medium++ <--> DatarateChannel {  delay = 37ms; datarate =93Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 15ms; datarate =96Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 12ms; datarate =81Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 23ms; datarate =99Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 20ms; datarate =97Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 27ms; datarate =98Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 10ms; datarate =88Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 30ms; datarate =84Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 29ms; datarate =91Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 30ms; datarate =98Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 28ms; datarate =88Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 18ms; datarate =86Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 17ms; datarate =91Mbps; ber = 0;} <--> VIFIBN50.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 21ms; datarate =93Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN32.medium++ <--> DatarateChannel {  delay = 45ms; datarate =83Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 29ms; datarate =83Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 10ms; datarate =88Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 13ms; datarate =91Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 18ms; datarate =83Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 11ms; datarate =97Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 12ms; datarate =88Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 22ms; datarate =94Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 23ms; datarate =86Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 14ms; datarate =87Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 26ms; datarate =88Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 28ms; datarate =88Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 28ms; datarate =94Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN33.medium++ <--> DatarateChannel {  delay = 40ms; datarate =95Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN34.medium++ <--> DatarateChannel {  delay = 27ms; datarate =82Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN34.medium++ <--> DatarateChannel {  delay = 11ms; datarate =96Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN34.medium++ <--> DatarateChannel {  delay = 19ms; datarate =98Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 30ms; datarate =83Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 10ms; datarate =84Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 21ms; datarate =83Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 19ms; datarate =83Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 25ms; datarate =85Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 25ms; datarate =99Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 22ms; datarate =82Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 21ms; datarate =96Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 15ms; datarate =90Mbps; ber = 0;} <--> VIFIBN58.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 25ms; datarate =82Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 25ms; datarate =94Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 21ms; datarate =93Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 26ms; datarate =96Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 18ms; datarate =89Mbps; ber = 0;} <--> VIFIBN75.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 17ms; datarate =95Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 26ms; datarate =80Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 24ms; datarate =86Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 22ms; datarate =82Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 12ms; datarate =88Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 40ms; datarate =82Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 34ms; datarate =98Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN35.medium++ <--> DatarateChannel {  delay = 35ms; datarate =89Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 20ms; datarate =95Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 11ms; datarate =85Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 24ms; datarate =98Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 24ms; datarate =86Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 17ms; datarate =90Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN36.medium++ <--> DatarateChannel {  delay = 20ms; datarate =90Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 27ms; datarate =84Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 26ms; datarate =97Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 23ms; datarate =85Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 26ms; datarate =87Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN38.medium++ <--> DatarateChannel {  delay = 30ms; datarate =80Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN38.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 14ms; datarate =86Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 15ms; datarate =94Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 23ms; datarate =96Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN39.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 16ms; datarate =81Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 16ms; datarate =90Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 20ms; datarate =85Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN40.medium++ <--> DatarateChannel {  delay = 16ms; datarate =95Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 14ms; datarate =80Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 11ms; datarate =97Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 21ms; datarate =94Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 29ms; datarate =88Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 15ms; datarate =84Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 16ms; datarate =83Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 26ms; datarate =85Mbps; ber = 0;} <--> VIFIBN61.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 24ms; datarate =85Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 24ms; datarate =80Mbps; ber = 0;} <--> VIFIBN75.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 28ms; datarate =81Mbps; ber = 0;} <--> VIFIBN79.medium++;
+        VIFIBN41.medium++ <--> DatarateChannel {  delay = 19ms; datarate =87Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 28ms; datarate =99Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 28ms; datarate =87Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 13ms; datarate =83Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN42.medium++ <--> DatarateChannel {  delay = 35ms; datarate =90Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 24ms; datarate =93Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 11ms; datarate =86Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 28ms; datarate =89Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 14ms; datarate =81Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 25ms; datarate =89Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 21ms; datarate =83Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 26ms; datarate =80Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 13ms; datarate =81Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN43.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN44.medium++ <--> DatarateChannel {  delay = 28ms; datarate =82Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN44.medium++ <--> DatarateChannel {  delay = 14ms; datarate =95Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN44.medium++ <--> DatarateChannel {  delay = 15ms; datarate =85Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN44.medium++ <--> DatarateChannel {  delay = 17ms; datarate =90Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 17ms; datarate =97Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 20ms; datarate =87Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 17ms; datarate =98Mbps; ber = 0;} <--> VIFIBN21.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 29ms; datarate =96Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 13ms; datarate =88Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 26ms; datarate =88Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 24ms; datarate =83Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 12ms; datarate =92Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 16ms; datarate =85Mbps; ber = 0;} <--> VIFIBN69.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 12ms; datarate =92Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 28ms; datarate =82Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN45.medium++ <--> DatarateChannel {  delay = 45ms; datarate =96Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 26ms; datarate =83Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 16ms; datarate =83Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 30ms; datarate =86Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 14ms; datarate =99Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 14ms; datarate =84Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 30ms; datarate =81Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 10ms; datarate =92Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 17ms; datarate =80Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 18ms; datarate =94Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 12ms; datarate =82Mbps; ber = 0;} <--> VIFIBN64.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 15ms; datarate =84Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 21ms; datarate =97Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 22ms; datarate =95Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 28ms; datarate =96Mbps; ber = 0;} <--> VIFIBN88.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 49ms; datarate =85Mbps; ber = 0;} <--> VIFIBN19.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 39ms; datarate =80Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN46.medium++ <--> DatarateChannel {  delay = 46ms; datarate =97Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN47.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN47.medium++ <--> DatarateChannel {  delay = 13ms; datarate =96Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 25ms; datarate =90Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 20ms; datarate =86Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 11ms; datarate =87Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 13ms; datarate =85Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 30ms; datarate =98Mbps; ber = 0;} <--> VIFIBN14.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 26ms; datarate =89Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 19ms; datarate =99Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 17ms; datarate =95Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 25ms; datarate =98Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 15ms; datarate =98Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 13ms; datarate =90Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 21ms; datarate =97Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 18ms; datarate =94Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 24ms; datarate =82Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 20ms; datarate =81Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 12ms; datarate =86Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 14ms; datarate =86Mbps; ber = 0;} <--> VIFIBN61.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 28ms; datarate =89Mbps; ber = 0;} <--> VIFIBN63.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 16ms; datarate =85Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 23ms; datarate =84Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN79.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 28ms; datarate =90Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 22ms; datarate =89Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 17ms; datarate =99Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 15ms; datarate =80Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 12ms; datarate =99Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 46ms; datarate =81Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN49.medium++ <--> DatarateChannel {  delay = 38ms; datarate =92Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 16ms; datarate =92Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 21ms; datarate =81Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 25ms; datarate =90Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 25ms; datarate =82Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 11ms; datarate =93Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 12ms; datarate =98Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 22ms; datarate =80Mbps; ber = 0;} <--> VIFIBN55.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 27ms; datarate =94Mbps; ber = 0;} <--> VIFIBN58.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 17ms; datarate =83Mbps; ber = 0;} <--> VIFIBN69.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 23ms; datarate =81Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 27ms; datarate =96Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN50.medium++ <--> DatarateChannel {  delay = 27ms; datarate =82Mbps; ber = 0;} <--> VIFIBN80.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 13ms; datarate =86Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 30ms; datarate =85Mbps; ber = 0;} <--> VIFIBN7.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 12ms; datarate =87Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 13ms; datarate =85Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 16ms; datarate =84Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 29ms; datarate =90Mbps; ber = 0;} <--> VIFIBN34.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 15ms; datarate =87Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 12ms; datarate =89Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 10ms; datarate =84Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 12ms; datarate =99Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 40ms; datarate =97Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN52.medium++ <--> DatarateChannel {  delay = 21ms; datarate =91Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 16ms; datarate =96Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 14ms; datarate =88Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 16ms; datarate =98Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 19ms; datarate =97Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN53.medium++ <--> DatarateChannel {  delay = 36ms; datarate =83Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 21ms; datarate =82Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 30ms; datarate =97Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 24ms; datarate =95Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 26ms; datarate =86Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 16ms; datarate =98Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 12ms; datarate =96Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 22ms; datarate =87Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 30ms; datarate =80Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 12ms; datarate =81Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 13ms; datarate =90Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 19ms; datarate =93Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 28ms; datarate =89Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 12ms; datarate =85Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 27ms; datarate =95Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 14ms; datarate =96Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN54.medium++ <--> DatarateChannel {  delay = 16ms; datarate =81Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 28ms; datarate =82Mbps; ber = 0;} <--> VIFIBN12.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 16ms; datarate =89Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 26ms; datarate =87Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 10ms; datarate =80Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN55.medium++ <--> DatarateChannel {  delay = 33ms; datarate =87Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 11ms; datarate =87Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 18ms; datarate =81Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 30ms; datarate =94Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 23ms; datarate =92Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 13ms; datarate =88Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 16ms; datarate =98Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 19ms; datarate =87Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 15ms; datarate =83Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 10ms; datarate =92Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN56.medium++ <--> DatarateChannel {  delay = 14ms; datarate =86Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN57.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN57.medium++ <--> DatarateChannel {  delay = 18ms; datarate =99Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN57.medium++ <--> DatarateChannel {  delay = 21ms; datarate =96Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN57.medium++ <--> DatarateChannel {  delay = 24ms; datarate =81Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN57.medium++ <--> DatarateChannel {  delay = 30ms; datarate =82Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 24ms; datarate =95Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 15ms; datarate =92Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 18ms; datarate =93Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 21ms; datarate =84Mbps; ber = 0;} <--> VIFIBN45.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 29ms; datarate =87Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 13ms; datarate =84Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 27ms; datarate =80Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 11ms; datarate =89Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN81.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 11ms; datarate =96Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN92.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 13ms; datarate =91Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN58.medium++ <--> DatarateChannel {  delay = 18ms; datarate =88Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN59.medium++ <--> DatarateChannel {  delay = 11ms; datarate =84Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN59.medium++ <--> DatarateChannel {  delay = 30ms; datarate =91Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 26ms; datarate =92Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 29ms; datarate =91Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 19ms; datarate =89Mbps; ber = 0;} <--> VIFIBN11.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 20ms; datarate =93Mbps; ber = 0;} <--> VIFIBN22.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 21ms; datarate =81Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 25ms; datarate =90Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 22ms; datarate =80Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 19ms; datarate =85Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 23ms; datarate =91Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN68.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN76.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 25ms; datarate =92Mbps; ber = 0;} <--> VIFIBN81.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 29ms; datarate =85Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 18ms; datarate =91Mbps; ber = 0;} <--> VIFIBN88.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 20ms; datarate =88Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 28ms; datarate =81Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 23ms; datarate =88Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 28ms; datarate =86Mbps; ber = 0;} <--> VIFIBN15.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 29ms; datarate =85Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 19ms; datarate =83Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 21ms; datarate =95Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 23ms; datarate =87Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 14ms; datarate =99Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 14ms; datarate =82Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 25ms; datarate =90Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 16ms; datarate =95Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 22ms; datarate =92Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN61.medium++ <--> DatarateChannel {  delay = 13ms; datarate =94Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN62.medium++ <--> DatarateChannel {  delay = 11ms; datarate =99Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN62.medium++ <--> DatarateChannel {  delay = 12ms; datarate =86Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 22ms; datarate =97Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 11ms; datarate =92Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 10ms; datarate =85Mbps; ber = 0;} <--> VIFIBN11.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 27ms; datarate =85Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 17ms; datarate =99Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 12ms; datarate =94Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 30ms; datarate =99Mbps; ber = 0;} <--> VIFIBN40.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 21ms; datarate =96Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN63.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 22ms; datarate =93Mbps; ber = 0;} <--> VIFIBN5.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 15ms; datarate =99Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 10ms; datarate =80Mbps; ber = 0;} <--> VIFIBN10.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN16.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 15ms; datarate =80Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 21ms; datarate =91Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 15ms; datarate =86Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 20ms; datarate =86Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 10ms; datarate =89Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 26ms; datarate =83Mbps; ber = 0;} <--> VIFIBN45.medium++;
+        VIFIBN64.medium++ <--> DatarateChannel {  delay = 17ms; datarate =89Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 10ms; datarate =83Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 30ms; datarate =84Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 28ms; datarate =86Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 28ms; datarate =87Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 19ms; datarate =84Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 18ms; datarate =95Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 28ms; datarate =83Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 14ms; datarate =87Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 25ms; datarate =81Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 17ms; datarate =92Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN65.medium++ <--> DatarateChannel {  delay = 14ms; datarate =81Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 23ms; datarate =92Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 14ms; datarate =94Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 18ms; datarate =88Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 17ms; datarate =87Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 15ms; datarate =83Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 26ms; datarate =80Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 18ms; datarate =87Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 23ms; datarate =89Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 15ms; datarate =96Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN66.medium++ <--> DatarateChannel {  delay = 13ms; datarate =95Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 25ms; datarate =90Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 22ms; datarate =94Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 19ms; datarate =82Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 27ms; datarate =86Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 24ms; datarate =81Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN67.medium++ <--> DatarateChannel {  delay = 22ms; datarate =83Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 27ms; datarate =86Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 24ms; datarate =89Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 24ms; datarate =85Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 20ms; datarate =86Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 17ms; datarate =91Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN68.medium++ <--> DatarateChannel {  delay = 13ms; datarate =85Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 14ms; datarate =82Mbps; ber = 0;} <--> VIFIBN26.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 14ms; datarate =88Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 16ms; datarate =81Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 13ms; datarate =91Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 14ms; datarate =82Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN42.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 28ms; datarate =83Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 13ms; datarate =97Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 28ms; datarate =98Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 29ms; datarate =88Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 16ms; datarate =92Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 10ms; datarate =88Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 13ms; datarate =87Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 30ms; datarate =93Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 10ms; datarate =88Mbps; ber = 0;} <--> VIFIBN92.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 25ms; datarate =95Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 20ms; datarate =91Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN69.medium++ <--> DatarateChannel {  delay = 28ms; datarate =97Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 13ms; datarate =99Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 23ms; datarate =86Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 25ms; datarate =94Mbps; ber = 0;} <--> VIFIBN25.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 22ms; datarate =86Mbps; ber = 0;} <--> VIFIBN53.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 11ms; datarate =84Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 16ms; datarate =83Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 30ms; datarate =95Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 21ms; datarate =86Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 27ms; datarate =95Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 16ms; datarate =99Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 12ms; datarate =85Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 26ms; datarate =80Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN70.medium++ <--> DatarateChannel {  delay = 11ms; datarate =92Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN71.medium++ <--> DatarateChannel {  delay = 20ms; datarate =93Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN71.medium++ <--> DatarateChannel {  delay = 55ms; datarate =82Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN72.medium++ <--> DatarateChannel {  delay = 10ms; datarate =94Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN72.medium++ <--> DatarateChannel {  delay = 22ms; datarate =89Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN72.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN72.medium++ <--> DatarateChannel {  delay = 10ms; datarate =86Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN72.medium++ <--> DatarateChannel {  delay = 28ms; datarate =98Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 12ms; datarate =84Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 23ms; datarate =99Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN122.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 14ms; datarate =83Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 22ms; datarate =89Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 25ms; datarate =85Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN73.medium++ <--> DatarateChannel {  delay = 29ms; datarate =80Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN74.medium++ <--> DatarateChannel {  delay = 30ms; datarate =87Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN74.medium++ <--> DatarateChannel {  delay = 11ms; datarate =97Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN74.medium++ <--> DatarateChannel {  delay = 13ms; datarate =85Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 15ms; datarate =83Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 30ms; datarate =98Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 23ms; datarate =83Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 11ms; datarate =86Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 23ms; datarate =96Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 24ms; datarate =91Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 19ms; datarate =81Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 20ms; datarate =91Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 25ms; datarate =91Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 18ms; datarate =80Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 23ms; datarate =85Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 11ms; datarate =86Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 25ms; datarate =98Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN75.medium++ <--> DatarateChannel {  delay = 24ms; datarate =95Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 28ms; datarate =94Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 22ms; datarate =85Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 19ms; datarate =94Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 14ms; datarate =91Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 27ms; datarate =96Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 15ms; datarate =92Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 12ms; datarate =81Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 26ms; datarate =91Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 17ms; datarate =89Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN76.medium++ <--> DatarateChannel {  delay = 17ms; datarate =82Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN77.medium++ <--> DatarateChannel {  delay = 25ms; datarate =96Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN77.medium++ <--> DatarateChannel {  delay = 14ms; datarate =86Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN77.medium++ <--> DatarateChannel {  delay = 16ms; datarate =97Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN77.medium++ <--> DatarateChannel {  delay = 13ms; datarate =97Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN77.medium++ <--> DatarateChannel {  delay = 25ms; datarate =96Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 11ms; datarate =97Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 19ms; datarate =93Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 13ms; datarate =96Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 29ms; datarate =92Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 29ms; datarate =86Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 19ms; datarate =82Mbps; ber = 0;} <--> VIFIBN57.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 27ms; datarate =91Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 23ms; datarate =86Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 13ms; datarate =82Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN78.medium++ <--> DatarateChannel {  delay = 28ms; datarate =94Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 18ms; datarate =83Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 24ms; datarate =82Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 23ms; datarate =81Mbps; ber = 0;} <--> VIFIBN38.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 16ms; datarate =93Mbps; ber = 0;} <--> VIFIBN43.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 10ms; datarate =99Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 18ms; datarate =95Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 22ms; datarate =87Mbps; ber = 0;} <--> VIFIBN56.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 20ms; datarate =96Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 23ms; datarate =86Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 14ms; datarate =98Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 21ms; datarate =80Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN79.medium++ <--> DatarateChannel {  delay = 27ms; datarate =99Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 28ms; datarate =82Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 11ms; datarate =96Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 16ms; datarate =96Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 29ms; datarate =85Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 12ms; datarate =86Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 13ms; datarate =86Mbps; ber = 0;} <--> VIFIBN54.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 12ms; datarate =96Mbps; ber = 0;} <--> VIFIBN61.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 22ms; datarate =95Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 29ms; datarate =92Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 21ms; datarate =80Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN80.medium++ <--> DatarateChannel {  delay = 13ms; datarate =80Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 18ms; datarate =97Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 10ms; datarate =98Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 29ms; datarate =84Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 13ms; datarate =87Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 28ms; datarate =88Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 16ms; datarate =83Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 25ms; datarate =80Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 23ms; datarate =91Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 13ms; datarate =86Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN81.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN102.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 28ms; datarate =85Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 17ms; datarate =83Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 30ms; datarate =98Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 30ms; datarate =93Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 13ms; datarate =97Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 16ms; datarate =91Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN82.medium++ <--> DatarateChannel {  delay = 16ms; datarate =99Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN8.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 20ms; datarate =90Mbps; ber = 0;} <--> VIFIBN9.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 10ms; datarate =94Mbps; ber = 0;} <--> VIFIBN31.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 15ms; datarate =91Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 14ms; datarate =91Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 20ms; datarate =97Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 17ms; datarate =91Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 21ms; datarate =83Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 19ms; datarate =95Mbps; ber = 0;} <--> VIFIBN81.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 29ms; datarate =93Mbps; ber = 0;} <--> VIFIBN87.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 11ms; datarate =80Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 20ms; datarate =89Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 28ms; datarate =90Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 15ms; datarate =94Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 29ms; datarate =80Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 25ms; datarate =82Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN84.medium++ <--> DatarateChannel {  delay = 24ms; datarate =89Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 16ms; datarate =95Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 25ms; datarate =98Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 16ms; datarate =96Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 30ms; datarate =84Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 18ms; datarate =97Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 14ms; datarate =88Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 23ms; datarate =89Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 13ms; datarate =92Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 14ms; datarate =94Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN85.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 16ms; datarate =99Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 11ms; datarate =89Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN77.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 17ms; datarate =99Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 15ms; datarate =82Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 27ms; datarate =85Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 24ms; datarate =91Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 11ms; datarate =87Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 23ms; datarate =83Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 10ms; datarate =82Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 11ms; datarate =94Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 12ms; datarate =91Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 14ms; datarate =84Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 17ms; datarate =97Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 28ms; datarate =83Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN86.medium++ <--> DatarateChannel {  delay = 10ms; datarate =84Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 27ms; datarate =90Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 24ms; datarate =89Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 25ms; datarate =87Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 17ms; datarate =86Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 19ms; datarate =82Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 15ms; datarate =93Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 18ms; datarate =92Mbps; ber = 0;} <--> VIFIBN74.medium++;
+        VIFIBN87.medium++ <--> DatarateChannel {  delay = 16ms; datarate =84Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 19ms; datarate =88Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 25ms; datarate =80Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 30ms; datarate =81Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN33.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 11ms; datarate =91Mbps; ber = 0;} <--> VIFIBN36.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN71.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 29ms; datarate =94Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 11ms; datarate =84Mbps; ber = 0;} <--> VIFIBN75.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 24ms; datarate =86Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN86.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN89.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 14ms; datarate =84Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 15ms; datarate =95Mbps; ber = 0;} <--> VIFIBN92.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 27ms; datarate =86Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 19ms; datarate =97Mbps; ber = 0;} <--> VIFIBN97.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 11ms; datarate =94Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 18ms; datarate =89Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 20ms; datarate =94Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 11ms; datarate =91Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 22ms; datarate =99Mbps; ber = 0;} <--> VIFIBN109.medium++;
+        VIFIBN88.medium++ <--> DatarateChannel {  delay = 28ms; datarate =91Mbps; ber = 0;} <--> VIFIBN112.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 10ms; datarate =92Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 14ms; datarate =92Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 15ms; datarate =95Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 28ms; datarate =85Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 18ms; datarate =80Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 29ms; datarate =87Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN89.medium++ <--> DatarateChannel {  delay = 30ms; datarate =86Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 21ms; datarate =89Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 25ms; datarate =95Mbps; ber = 0;} <--> VIFIBN27.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 17ms; datarate =84Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 13ms; datarate =98Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 14ms; datarate =95Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 25ms; datarate =92Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 21ms; datarate =92Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 20ms; datarate =87Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 26ms; datarate =88Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN20.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 21ms; datarate =86Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 12ms; datarate =80Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 21ms; datarate =94Mbps; ber = 0;} <--> VIFIBN70.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 10ms; datarate =81Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 12ms; datarate =97Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 25ms; datarate =99Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 27ms; datarate =84Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 24ms; datarate =83Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 19ms; datarate =84Mbps; ber = 0;} <--> VIFIBN112.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 29ms; datarate =99Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN92.medium++ <--> DatarateChannel {  delay = 27ms; datarate =90Mbps; ber = 0;} <--> VIFIBN116.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 20ms; datarate =81Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 28ms; datarate =91Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 26ms; datarate =95Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 13ms; datarate =96Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 20ms; datarate =90Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 18ms; datarate =86Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 19ms; datarate =87Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 29ms; datarate =91Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 19ms; datarate =94Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 24ms; datarate =95Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 21ms; datarate =86Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 25ms; datarate =92Mbps; ber = 0;} <--> VIFIBN148.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN39.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 28ms; datarate =89Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 16ms; datarate =97Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 11ms; datarate =80Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 11ms; datarate =82Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 10ms; datarate =87Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN94.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN95.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN47.medium++;
+        VIFIBN95.medium++ <--> DatarateChannel {  delay = 19ms; datarate =80Mbps; ber = 0;} <--> VIFIBN59.medium++;
+        VIFIBN95.medium++ <--> DatarateChannel {  delay = 21ms; datarate =80Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 18ms; datarate =83Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 25ms; datarate =99Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 27ms; datarate =96Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 27ms; datarate =84Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 19ms; datarate =99Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 21ms; datarate =95Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 30ms; datarate =88Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 17ms; datarate =94Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 26ms; datarate =84Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 15ms; datarate =81Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 25ms; datarate =80Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN96.medium++ <--> DatarateChannel {  delay = 13ms; datarate =95Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 29ms; datarate =94Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 19ms; datarate =82Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 22ms; datarate =91Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 15ms; datarate =80Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 30ms; datarate =99Mbps; ber = 0;} <--> VIFIBN95.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 19ms; datarate =95Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 25ms; datarate =89Mbps; ber = 0;} <--> VIFIBN102.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 20ms; datarate =96Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN97.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 23ms; datarate =98Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN44.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN52.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 11ms; datarate =98Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 10ms; datarate =95Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 18ms; datarate =93Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 18ms; datarate =87Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 21ms; datarate =96Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 28ms; datarate =81Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 23ms; datarate =81Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 29ms; datarate =81Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 29ms; datarate =87Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 30ms; datarate =82Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN99.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN99.medium++ <--> DatarateChannel {  delay = 15ms; datarate =85Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN99.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN99.medium++ <--> DatarateChannel {  delay = 19ms; datarate =94Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 21ms; datarate =93Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 10ms; datarate =86Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 13ms; datarate =87Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 11ms; datarate =83Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 23ms; datarate =84Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 21ms; datarate =87Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 12ms; datarate =83Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN100.medium++ <--> DatarateChannel {  delay = 11ms; datarate =91Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 28ms; datarate =91Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 24ms; datarate =82Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 24ms; datarate =85Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 18ms; datarate =88Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 19ms; datarate =83Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 84ms; datarate =81Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 14ms; datarate =94Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 29ms; datarate =84Mbps; ber = 0;} <--> VIFIBN62.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 24ms; datarate =91Mbps; ber = 0;} <--> VIFIBN78.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 14ms; datarate =99Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 10ms; datarate =93Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 25ms; datarate =96Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 16ms; datarate =85Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 13ms; datarate =94Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 12ms; datarate =85Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 13ms; datarate =88Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 23ms; datarate =83Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 19ms; datarate =95Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 25ms; datarate =87Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 17ms; datarate =80Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 22ms; datarate =97Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN102.medium++ <--> DatarateChannel {  delay = 21ms; datarate =93Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 22ms; datarate =93Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 28ms; datarate =90Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 13ms; datarate =86Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 19ms; datarate =86Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 27ms; datarate =85Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 20ms; datarate =94Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 10ms; datarate =89Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 30ms; datarate =81Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN103.medium++ <--> DatarateChannel {  delay = 11ms; datarate =82Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 11ms; datarate =83Mbps; ber = 0;} <--> VIFIBN28.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 21ms; datarate =87Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 30ms; datarate =95Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 18ms; datarate =90Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 14ms; datarate =84Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 29ms; datarate =93Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 21ms; datarate =90Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN104.medium++ <--> DatarateChannel {  delay = 10ms; datarate =86Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 11ms; datarate =98Mbps; ber = 0;} <--> VIFIBN17.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 13ms; datarate =89Mbps; ber = 0;} <--> VIFIBN18.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 10ms; datarate =99Mbps; ber = 0;} <--> VIFIBN65.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 16ms; datarate =87Mbps; ber = 0;} <--> VIFIBN73.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN82.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 22ms; datarate =81Mbps; ber = 0;} <--> VIFIBN84.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 11ms; datarate =82Mbps; ber = 0;} <--> VIFIBN85.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 16ms; datarate =91Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 22ms; datarate =86Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 13ms; datarate =95Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN113.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 14ms; datarate =89Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 14ms; datarate =90Mbps; ber = 0;} <--> VIFIBN122.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 15ms; datarate =89Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 23ms; datarate =97Mbps; ber = 0;} <--> VIFIBN124.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 19ms; datarate =85Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 17ms; datarate =85Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 17ms; datarate =96Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN105.medium++ <--> DatarateChannel {  delay = 24ms; datarate =85Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 20ms; datarate =85Mbps; ber = 0;} <--> VIFIBN66.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 10ms; datarate =94Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 26ms; datarate =99Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 17ms; datarate =94Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 30ms; datarate =88Mbps; ber = 0;} <--> VIFIBN114.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 12ms; datarate =84Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 29ms; datarate =87Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 16ms; datarate =88Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 19ms; datarate =90Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 10ms; datarate =84Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 18ms; datarate =83Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN106.medium++ <--> DatarateChannel {  delay = 16ms; datarate =92Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 15ms; datarate =91Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 18ms; datarate =84Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 24ms; datarate =97Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 14ms; datarate =86Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 29ms; datarate =80Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN107.medium++ <--> DatarateChannel {  delay = 14ms; datarate =98Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 16ms; datarate =86Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 12ms; datarate =90Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 12ms; datarate =96Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 13ms; datarate =82Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 22ms; datarate =98Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 12ms; datarate =84Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 28ms; datarate =88Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 11ms; datarate =83Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 23ms; datarate =96Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 28ms; datarate =88Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 14ms; datarate =85Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN108.medium++ <--> DatarateChannel {  delay = 12ms; datarate =88Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 17ms; datarate =87Mbps; ber = 0;} <--> VIFIBN3.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 13ms; datarate =99Mbps; ber = 0;} <--> VIFIBN30.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 19ms; datarate =91Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 28ms; datarate =83Mbps; ber = 0;} <--> VIFIBN94.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 15ms; datarate =81Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 20ms; datarate =82Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 24ms; datarate =89Mbps; ber = 0;} <--> VIFIBN106.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 21ms; datarate =97Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 15ms; datarate =99Mbps; ber = 0;} <--> VIFIBN117.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 10ms; datarate =97Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 14ms; datarate =81Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 20ms; datarate =88Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 28ms; datarate =92Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 29ms; datarate =85Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN109.medium++ <--> DatarateChannel {  delay = 20ms; datarate =86Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 13ms; datarate =81Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 24ms; datarate =97Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 23ms; datarate =89Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 29ms; datarate =82Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 29ms; datarate =97Mbps; ber = 0;} <--> VIFIBN122.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 24ms; datarate =88Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 20ms; datarate =98Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 14ms; datarate =87Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 14ms; datarate =94Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 25ms; datarate =85Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 10ms; datarate =86Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN111.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN111.medium++ <--> DatarateChannel {  delay = 25ms; datarate =84Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN111.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 22ms; datarate =83Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 29ms; datarate =96Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 29ms; datarate =90Mbps; ber = 0;} <--> VIFIBN99.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 24ms; datarate =81Mbps; ber = 0;} <--> VIFIBN100.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 30ms; datarate =84Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 24ms; datarate =87Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 24ms; datarate =87Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 24ms; datarate =85Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 28ms; datarate =83Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 15ms; datarate =88Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 25ms; datarate =92Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 10ms; datarate =80Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 18ms; datarate =88Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 23ms; datarate =91Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 28ms; datarate =84Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 14ms; datarate =97Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN112.medium++ <--> DatarateChannel {  delay = 19ms; datarate =84Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN113.medium++ <--> DatarateChannel {  delay = 13ms; datarate =87Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN113.medium++ <--> DatarateChannel {  delay = 29ms; datarate =93Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN113.medium++ <--> DatarateChannel {  delay = 12ms; datarate =89Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN113.medium++ <--> DatarateChannel {  delay = 17ms; datarate =90Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 16ms; datarate =99Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 21ms; datarate =90Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 30ms; datarate =84Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 26ms; datarate =89Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 18ms; datarate =99Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN114.medium++ <--> DatarateChannel {  delay = 29ms; datarate =82Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN115.medium++ <--> DatarateChannel {  delay = 22ms; datarate =85Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN115.medium++ <--> DatarateChannel {  delay = 24ms; datarate =93Mbps; ber = 0;} <--> VIFIBN122.medium++;
+        VIFIBN115.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN123.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 14ms; datarate =93Mbps; ber = 0;} <--> VIFIBN67.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 30ms; datarate =97Mbps; ber = 0;} <--> VIFIBN72.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN96.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 29ms; datarate =88Mbps; ber = 0;} <--> VIFIBN103.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 10ms; datarate =96Mbps; ber = 0;} <--> VIFIBN104.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 11ms; datarate =84Mbps; ber = 0;} <--> VIFIBN105.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 15ms; datarate =96Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 29ms; datarate =96Mbps; ber = 0;} <--> VIFIBN115.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 16ms; datarate =94Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 25ms; datarate =99Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 26ms; datarate =93Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 20ms; datarate =81Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 17ms; datarate =96Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 16ms; datarate =89Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN116.medium++ <--> DatarateChannel {  delay = 26ms; datarate =81Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 28ms; datarate =80Mbps; ber = 0;} <--> VIFIBN111.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 28ms; datarate =95Mbps; ber = 0;} <--> VIFIBN125.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 16ms; datarate =86Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 12ms; datarate =95Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 30ms; datarate =98Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 10ms; datarate =85Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 17ms; datarate =84Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 11ms; datarate =81Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN117.medium++ <--> DatarateChannel {  delay = 28ms; datarate =81Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN118.medium++ <--> DatarateChannel {  delay = 22ms; datarate =86Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN118.medium++ <--> DatarateChannel {  delay = 22ms; datarate =83Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN118.medium++ <--> DatarateChannel {  delay = 25ms; datarate =88Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN118.medium++ <--> DatarateChannel {  delay = 60ms; datarate =83Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 27ms; datarate =87Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 16ms; datarate =86Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 14ms; datarate =98Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 30ms; datarate =82Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 13ms; datarate =96Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 19ms; datarate =96Mbps; ber = 0;} <--> VIFIBN127.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 18ms; datarate =91Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 10ms; datarate =82Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 16ms; datarate =89Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 11ms; datarate =87Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 12ms; datarate =91Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 28ms; datarate =90Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 21ms; datarate =94Mbps; ber = 0;} <--> VIFIBN148.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 29ms; datarate =90Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 17ms; datarate =88Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 29ms; datarate =92Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 28ms; datarate =86Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 26ms; datarate =82Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 10ms; datarate =85Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 98ms; datarate =91Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN121.medium++ <--> DatarateChannel {  delay = 70ms; datarate =84Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 18ms; datarate =99Mbps; ber = 0;} <--> VIFIBN107.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 27ms; datarate =93Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 10ms; datarate =92Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 24ms; datarate =99Mbps; ber = 0;} <--> VIFIBN120.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 20ms; datarate =90Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 18ms; datarate =99Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 11ms; datarate =88Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 12ms; datarate =92Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 11ms; datarate =94Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 16ms; datarate =88Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 12ms; datarate =90Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN122.medium++ <--> DatarateChannel {  delay = 28ms; datarate =80Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 17ms; datarate =92Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 14ms; datarate =87Mbps; ber = 0;} <--> VIFIBN121.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 11ms; datarate =80Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 22ms; datarate =97Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 20ms; datarate =84Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 13ms; datarate =86Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 19ms; datarate =92Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 29ms; datarate =86Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN123.medium++ <--> DatarateChannel {  delay = 15ms; datarate =98Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 24ms; datarate =91Mbps; ber = 0;} <--> VIFIBN108.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 23ms; datarate =80Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 30ms; datarate =94Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 11ms; datarate =81Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 30ms; datarate =94Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 92ms; datarate =82Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN124.medium++ <--> DatarateChannel {  delay = 73ms; datarate =95Mbps; ber = 0;} <--> VIFIBN148.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 18ms; datarate =86Mbps; ber = 0;} <--> VIFIBN118.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 13ms; datarate =84Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 16ms; datarate =80Mbps; ber = 0;} <--> VIFIBN134.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 29ms; datarate =86Mbps; ber = 0;} <--> VIFIBN138.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 25ms; datarate =94Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN125.medium++ <--> DatarateChannel {  delay = 29ms; datarate =94Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN126.medium++ <--> DatarateChannel {  delay = 16ms; datarate =96Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN126.medium++ <--> DatarateChannel {  delay = 26ms; datarate =85Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN126.medium++ <--> DatarateChannel {  delay = 16ms; datarate =82Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 17ms; datarate =84Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 27ms; datarate =91Mbps; ber = 0;} <--> VIFIBN130.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 30ms; datarate =94Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN136.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 26ms; datarate =95Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN127.medium++ <--> DatarateChannel {  delay = 27ms; datarate =88Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN128.medium++ <--> DatarateChannel {  delay = 20ms; datarate =85Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN128.medium++ <--> DatarateChannel {  delay = 15ms; datarate =98Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN128.medium++ <--> DatarateChannel {  delay = 30ms; datarate =94Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN129.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN129.medium++ <--> DatarateChannel {  delay = 23ms; datarate =83Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN129.medium++ <--> DatarateChannel {  delay = 24ms; datarate =95Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN129.medium++ <--> DatarateChannel {  delay = 18ms; datarate =98Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN130.medium++ <--> DatarateChannel {  delay = 25ms; datarate =86Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN130.medium++ <--> DatarateChannel {  delay = 22ms; datarate =85Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN130.medium++ <--> DatarateChannel {  delay = 29ms; datarate =98Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN130.medium++ <--> DatarateChannel {  delay = 29ms; datarate =96Mbps; ber = 0;} <--> VIFIBN137.medium++;
+        VIFIBN130.medium++ <--> DatarateChannel {  delay = 11ms; datarate =93Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN131.medium++ <--> DatarateChannel {  delay = 16ms; datarate =82Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN131.medium++ <--> DatarateChannel {  delay = 22ms; datarate =96Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN131.medium++ <--> DatarateChannel {  delay = 22ms; datarate =82Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN132.medium++ <--> DatarateChannel {  delay = 30ms; datarate =96Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN132.medium++ <--> DatarateChannel {  delay = 29ms; datarate =99Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN132.medium++ <--> DatarateChannel {  delay = 20ms; datarate =99Mbps; ber = 0;} <--> VIFIBN139.medium++;
+        VIFIBN132.medium++ <--> DatarateChannel {  delay = 17ms; datarate =87Mbps; ber = 0;} <--> VIFIBN140.medium++;
+        VIFIBN133.medium++ <--> DatarateChannel {  delay = 19ms; datarate =96Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN133.medium++ <--> DatarateChannel {  delay = 25ms; datarate =93Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN133.medium++ <--> DatarateChannel {  delay = 27ms; datarate =96Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 30ms; datarate =88Mbps; ber = 0;} <--> VIFIBN128.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 16ms; datarate =96Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 28ms; datarate =90Mbps; ber = 0;} <--> VIFIBN132.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 10ms; datarate =95Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 10ms; datarate =95Mbps; ber = 0;} <--> VIFIBN141.medium++;
+        VIFIBN134.medium++ <--> DatarateChannel {  delay = 14ms; datarate =90Mbps; ber = 0;} <--> VIFIBN142.medium++;
+        VIFIBN135.medium++ <--> DatarateChannel {  delay = 13ms; datarate =81Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN135.medium++ <--> DatarateChannel {  delay = 25ms; datarate =97Mbps; ber = 0;} <--> VIFIBN129.medium++;
+        VIFIBN135.medium++ <--> DatarateChannel {  delay = 14ms; datarate =81Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN135.medium++ <--> DatarateChannel {  delay = 23ms; datarate =93Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN136.medium++ <--> DatarateChannel {  delay = 25ms; datarate =91Mbps; ber = 0;} <--> VIFIBN131.medium++;
+        VIFIBN136.medium++ <--> DatarateChannel {  delay = 21ms; datarate =96Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN137.medium++ <--> DatarateChannel {  delay = 16ms; datarate =84Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN137.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN137.medium++ <--> DatarateChannel {  delay = 22ms; datarate =90Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN137.medium++ <--> DatarateChannel {  delay = 61ms; datarate =90Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN138.medium++ <--> DatarateChannel {  delay = 25ms; datarate =83Mbps; ber = 0;} <--> VIFIBN119.medium++;
+        VIFIBN138.medium++ <--> DatarateChannel {  delay = 22ms; datarate =84Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN138.medium++ <--> DatarateChannel {  delay = 19ms; datarate =86Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN138.medium++ <--> DatarateChannel {  delay = 12ms; datarate =82Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN138.medium++ <--> DatarateChannel {  delay = 58ms; datarate =91Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN139.medium++ <--> DatarateChannel {  delay = 10ms; datarate =98Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN139.medium++ <--> DatarateChannel {  delay = 18ms; datarate =85Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN139.medium++ <--> DatarateChannel {  delay = 30ms; datarate =97Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN140.medium++ <--> DatarateChannel {  delay = 23ms; datarate =95Mbps; ber = 0;} <--> VIFIBN133.medium++;
+        VIFIBN140.medium++ <--> DatarateChannel {  delay = 83ms; datarate =82Mbps; ber = 0;} <--> VIFIBN144.medium++;
+        VIFIBN140.medium++ <--> DatarateChannel {  delay = 58ms; datarate =89Mbps; ber = 0;} <--> VIFIBN150.medium++;
+        VIFIBN141.medium++ <--> DatarateChannel {  delay = 19ms; datarate =93Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN142.medium++ <--> DatarateChannel {  delay = 24ms; datarate =83Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN142.medium++ <--> DatarateChannel {  delay = 83ms; datarate =97Mbps; ber = 0;} <--> VIFIBN135.medium++;
+        VIFIBN142.medium++ <--> DatarateChannel {  delay = 32ms; datarate =91Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN143.medium++ <--> DatarateChannel {  delay = 75ms; datarate =85Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN144.medium++ <--> DatarateChannel {  delay = 22ms; datarate =85Mbps; ber = 0;} <--> VIFIBN143.medium++;
+        VIFIBN144.medium++ <--> DatarateChannel {  delay = 21ms; datarate =98Mbps; ber = 0;} <--> VIFIBN146.medium++;
+        VIFIBN144.medium++ <--> DatarateChannel {  delay = 74ms; datarate =94Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN146.medium++ <--> DatarateChannel {  delay = 37ms; datarate =97Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN148.medium++ <--> DatarateChannel {  delay = 26ms; datarate =97Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN149.medium++ <--> DatarateChannel {  delay = 17ms; datarate =93Mbps; ber = 0;} <--> VIFIBN145.medium++;
+        VIFIBN150.medium++ <--> DatarateChannel {  delay = 27ms; datarate =81Mbps; ber = 0;} <--> VIFIBN147.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 75ms; datarate =100Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 84ms; datarate =100Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 10ms; datarate =100Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 57ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 32ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 35ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 82ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 45ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 76ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 47ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 86ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 56ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN120.medium++ <--> DatarateChannel {  delay = 62ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 86ms; datarate =100Mbps; ber = 0;} <--> VIFIBN91.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 67ms; datarate =100Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 75ms; datarate =100Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 20ms; datarate =100Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 86ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 46ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 45ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 16ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 83ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 84ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 74ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 50ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 69ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 94ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN119.medium++ <--> DatarateChannel {  delay = 57ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 77ms; datarate =100Mbps; ber = 0;} <--> VIFIBN24.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 83ms; datarate =100Mbps; ber = 0;} <--> VIFIBN90.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 42ms; datarate =100Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 16ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 36ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 95ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 53ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 95ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 50ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 54ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 69ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 99ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 12ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN91.medium++ <--> DatarateChannel {  delay = 57ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 97ms; datarate =100Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 99ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 77ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 57ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 59ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 48ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 73ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 93ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 39ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 75ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN24.medium++ <--> DatarateChannel {  delay = 69ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 51ms; datarate =100Mbps; ber = 0;} <--> VIFIBN83.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 14ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 62ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 79ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 58ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 84ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 69ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 43ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 52ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 11ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN90.medium++ <--> DatarateChannel {  delay = 35ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 71ms; datarate =100Mbps; ber = 0;} <--> VIFIBN23.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 21ms; datarate =100Mbps; ber = 0;} <--> VIFIBN51.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 73ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 58ms; datarate =100Mbps; ber = 0;} <--> VIFIBN37.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 91ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 93ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 56ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 91ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 35ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN83.medium++ <--> DatarateChannel {  delay = 56ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 95ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 65ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 50ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 43ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 92ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 80ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 70ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN23.medium++ <--> DatarateChannel {  delay = 49ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 90ms; datarate =100Mbps; ber = 0;} <--> VIFIBN60.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 48ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 70ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 70ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 37ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 51ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN51.medium++ <--> DatarateChannel {  delay = 65ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 39ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 67ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 55ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 76ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 47ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 81ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN60.medium++ <--> DatarateChannel {  delay = 74ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 79ms; datarate =100Mbps; ber = 0;} <--> VIFIBN48.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 72ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 90ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 61ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 33ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 62ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN37.medium++ <--> DatarateChannel {  delay = 27ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 60ms; datarate =100Mbps; ber = 0;} <--> VIFIBN93.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 33ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 60ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 57ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 55ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN48.medium++ <--> DatarateChannel {  delay = 24ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 92ms; datarate =100Mbps; ber = 0;} <--> VIFIBN101.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 80ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 98ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 91ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN93.medium++ <--> DatarateChannel {  delay = 79ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 41ms; datarate =100Mbps; ber = 0;} <--> VIFIBN4.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 67ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 82ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 54ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN101.medium++ <--> DatarateChannel {  delay = 94ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 70ms; datarate =100Mbps; ber = 0;} <--> VIFIBN98.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 55ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 53ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN4.medium++ <--> DatarateChannel {  delay = 97ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 36ms; datarate =100Mbps; ber = 0;} <--> VIFIBN126.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 46ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN98.medium++ <--> DatarateChannel {  delay = 82ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;
+        VIFIBN126.medium++ <--> DatarateChannel {  delay = 71ms; datarate =100Mbps; ber = 0;} <--> VIFIBN110.medium++;
+        VIFIBN110.medium++ <--> DatarateChannel {  delay = 53ms; datarate =100Mbps; ber = 0;} <--> VIFIBN149.medium++;

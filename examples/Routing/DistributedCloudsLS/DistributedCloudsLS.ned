@@ -25,9 +25,7 @@ package rina.examples.Routing.DistributedCloudsLS;
 import rina.src.CS.*;
 import rina.src.DAF.IRM.ConnectionTable;
 import rina.src.DIF.EFCP.DTCP.*;
-import rina.src.CS.VIFIBNodeGL1;
-import rina.src.CS.VIFIBNodeGL2;
-import rina.src.CS.VIFIBNode;
+import rina.src.CS.*;
 
 network DistributedCloudsLS
 {
@@ -35,367 +33,367 @@ network DistributedCloudsLS
 
     submodules:
 
-        VIFIBN1: VIFIBNode {
+        VIFIBN1: VIFIBNode2 {
             @display("p=475,216");
         }
-        VIFIBN2: VIFIBNode {
+        VIFIBN2: VIFIBNode2 {
             @display("p=374,216");
         }
-        VIFIBN3: VIFIBNode {
+        VIFIBN3: VIFIBNode2 {
             @display("p=401,144");
         }
-        VIFIBN4: VIFIBNode {
+        VIFIBN4: VIFIBNode2 {
             @display("p=312,172");
         }
-        VIFIBN5: VIFIBNode {
+        VIFIBN5: VIFIBNode2 {
             @display("p=215,229");
         }
-        VIFIBN6: VIFIBNode {
-            @display("p=274,241");
+        VIFIBN6: VIFIBNode2 {
+            @display("p=337,277");
         }
-        VIFIBN7: VIFIBNode {
+        VIFIBN7: VIFIBNode2 {
             @display("p=173,298");
         }
-        VIFIBN8: VIFIBNode {
+        VIFIBN8: VIFIBNode2 {
             @display("p=258,120");
         }
-        VIFIBN9: VIFIBNode {
+        VIFIBN9: VIFIBNode2 {
             @display("p=312,98");
         }
-        VIFIBN10: VIFIBNode {
+        VIFIBN10: VIFIBNode2 {
             @display("p=173,157");
         }
-        VIFIBN11: VIFIBNode {
-            @display("p=297,314");
+        VIFIBN11: VIFIBNode2 {
+            @display("p=297,335");
         }
-        VIFIBN12: VIFIBNode {
+        VIFIBN12: VIFIBNode2 {
             @display("p=446,30");
         }
-        VIFIBN13: VIFIBNode {
+        VIFIBN13: VIFIBNode2 {
             @display("p=337,24");
         }
-        VIFIBN14: VIFIBNode {
+        VIFIBN14: VIFIBNode2 {
             @display("p=475,320");
         }
-        VIFIBN15: VIFIBNode {
+        VIFIBN15: VIFIBNode2 {
             @display("p=127,226");
         }
-        VIFIBN16: VIFIBNode {
+        VIFIBN16: VIFIBNode2 {
             @display("p=543,83");
         }
-        VIFIBN17: VIFIBNode {
+        VIFIBN17: VIFIBNode2 {
             @display("p=417,277");
         }
-        VIFIBN18: VIFIBNode {
+        VIFIBN18: VIFIBNode2 {
             @display("p=66,51");
         }
-        VIFIBN19: VIFIBNode {
+        VIFIBN19: VIFIBNode2 {
             @display("p=73,213");
         }
-        VIFIBN20: VIFIBNode {
+        VIFIBN20: VIFIBNode2 {
             @display("p=159,44");
         }
-        VIFIBN21: VIFIBNode {
+        VIFIBN21: VIFIBNode2 {
             @display("p=37,144");
         }
-        VIFIBN22: VIFIBNode {
+        VIFIBN22: VIFIBNode2 {
             @display("p=239,335");
         }
-        VIFIBN23: VIFIBNode {
+        VIFIBN23: VIFIBNode2 {
             @display("p=109,335");
         }
-        VIFIBN24: VIFIBNode {
+        VIFIBN24: VIFIBNode2 {
             @display("p=417,376");
         }
-        VIFIBN25: VIFIBNode {
+        VIFIBN25: VIFIBNode2 {
             @display("p=357,348");
         }
-        VIFIBN26: VIFIBNode {
+        VIFIBN26: VIFIBNode2 {
             @display("p=268,51");
         }
-        VIFIBN27: VIFIBNode {
+        VIFIBN27: VIFIBNode2 {
             @display("p=452,121");
         }
-        VIFIBN28: VIFIBNode {
+        VIFIBN28: VIFIBNode2 {
             @display("p=509,157");
         }
-        VIFIBN29: VIFIBNode {
+        VIFIBN29: VIFIBNode2 {
             @display("p=29,279");
         }
 
 
-        VIFIBN30: VIFIBNode {
+        VIFIBN30: VIFIBNode2 {
             @display("p=886,287");
         }
-        VIFIBN31: VIFIBNode {
+        VIFIBN31: VIFIBNode2 {
             @display("p=867,216");
         }
-        VIFIBN32: VIFIBNode {
+        VIFIBN32: VIFIBNode2 {
             @display("p=922,182");
         }
-        VIFIBN33: VIFIBNode {
+        VIFIBN33: VIFIBNode2 {
             @display("p=972,121");
         }
-        VIFIBN34: VIFIBNode {
+        VIFIBN34: VIFIBNode2 {
             @display("p=965,47");
         }
-        VIFIBN35: VIFIBNode {
+        VIFIBN35: VIFIBNode2 {
             @display("p=1040,47");
         }
-        VIFIBN36: VIFIBNode {
+        VIFIBN36: VIFIBNode2 {
             @display("p=867,30");
         }
-        VIFIBN37: VIFIBNode {
+        VIFIBN37: VIFIBNode2 {
             @display("p=1124,121");
         }
-        VIFIBN38: VIFIBNode {
+        VIFIBN38: VIFIBNode2 {
             @display("p=1136,24");
         }
-        VIFIBN39: VIFIBNode {
+        VIFIBN39: VIFIBNode2 {
             @display("p=1047,121");
         }
-        VIFIBN40: VIFIBNode {
+        VIFIBN40: VIFIBNode2 {
             @display("p=1196,107");
         }
-        VIFIBN41: VIFIBNode {
+        VIFIBN41: VIFIBNode2 {
             @display("p=874,130");
         }
-        VIFIBN42: VIFIBNode {
+        VIFIBN42: VIFIBNode2 {
             @display("p=1165,329");
         }
-        VIFIBN43: VIFIBNode {
+        VIFIBN43: VIFIBNode2 {
             @display("p=1258,298");
         }
-        VIFIBN44: VIFIBNode {
+        VIFIBN44: VIFIBNode2 {
             @display("p=972,287");
         }
-        VIFIBN45: VIFIBNode {
+        VIFIBN45: VIFIBNode2 {
             @display("p=809,329");
         }
-        VIFIBN46: VIFIBNode {
+        VIFIBN46: VIFIBNode2 {
             @display("p=1267,194");
         }
-        VIFIBN47: VIFIBNode {
+        VIFIBN47: VIFIBNode2 {
             @display("p=1001,213");
         }
-        VIFIBN48: VIFIBNode {
+        VIFIBN48: VIFIBNode2 {
             @display("p=1001,376");
         }
-        VIFIBN49: VIFIBNode {
+        VIFIBN49: VIFIBNode2 {
             @display("p=1100,226");
         }
-        VIFIBN50: VIFIBNode {
+        VIFIBN50: VIFIBNode2 {
             @display("p=1100,314");
         }
-        VIFIBN51: VIFIBNode {
+        VIFIBN51: VIFIBNode2 {
             @display("p=912,81");
         }
-        VIFIBN52: VIFIBNode {
-            @display("p=825,88");
+        VIFIBN52: VIFIBNode2 {
+            @display("p=804,98");
         }
-        VIFIBN53: VIFIBNode {
+        VIFIBN53: VIFIBNode2 {
             @display("p=1258,84");
         }
-        VIFIBN54: VIFIBNode {
+        VIFIBN54: VIFIBNode2 {
             @display("p=1194,242");
         }
-        VIFIBN55: VIFIBNode {
+        VIFIBN55: VIFIBNode2 {
             @display("p=1030,298");
         }
-        VIFIBN56: VIFIBNode {
+        VIFIBN56: VIFIBNode2 {
             @display("p=775,157");
         }
-        VIFIBN57: VIFIBNode {
+        VIFIBN57: VIFIBNode2 {
             @display("p=1150,182");
         }
-        VIFIBN58: VIFIBNode {
+        VIFIBN58: VIFIBNode2 {
             @display("p=941,357");
         }
-        VIFIBN59: VIFIBNode {
+        VIFIBN59: VIFIBNode2 {
             @display("p=843,609");
         }
-        VIFIBN60: VIFIBNode {
+        VIFIBN60: VIFIBNode2 {
             @display("p=893,546");
         }
-        VIFIBN61: VIFIBNode {
+        VIFIBN61: VIFIBNode2 {
             @display("p=825,696");
         }
-        VIFIBN62: VIFIBNode {
+        VIFIBN62: VIFIBNode2 {
             @display("p=893,696");
         }
-        VIFIBN63: VIFIBNode {
+        VIFIBN63: VIFIBNode2 {
             @display("p=815,768");
         }
-        VIFIBN64: VIFIBNode {
+        VIFIBN64: VIFIBNode2 {
             @display("p=746,780");
         }
-        VIFIBN65: VIFIBNode {
+        VIFIBN65: VIFIBNode2 {
             @display("p=872,798");
         }
-        VIFIBN66: VIFIBNode {
+        VIFIBN66: VIFIBNode2 {
             @display("p=1076,646");
         }
-        VIFIBN67: VIFIBNode {
+        VIFIBN67: VIFIBNode2 {
             @display("p=1150,523");
         }
-        VIFIBN68: VIFIBNode {
+        VIFIBN68: VIFIBNode2 {
             @display("p=1052,853");
         }
-        VIFIBN69: VIFIBNode {
+        VIFIBN69: VIFIBNode2 {
             @display("p=874,870");
         }
-        VIFIBN70: VIFIBNode {
+        VIFIBN70: VIFIBNode2 {
             @display("p=781,618");
         }
-        VIFIBN71: VIFIBNode {
+        VIFIBN71: VIFIBNode2 {
             @display("p=1223,798");
         }
-        VIFIBN72: VIFIBNode {
+        VIFIBN72: VIFIBNode2 {
             @display("p=1069,546");
         }
-        VIFIBN73: VIFIBNode {
+        VIFIBN73: VIFIBNode2 {
             @display("p=1136,597");
         }
-        VIFIBN74: VIFIBNode {
+        VIFIBN74: VIFIBNode2 {
             @display("p=912,618");
         }
-        VIFIBN75: VIFIBNode {
+        VIFIBN75: VIFIBNode2 {
             @display("p=980,533");
         }
-        VIFIBN76: VIFIBNode {
+        VIFIBN76: VIFIBNode2 {
             @display("p=1088,780");
         }
-        VIFIBN77: VIFIBNode {
+        VIFIBN77: VIFIBNode2 {
             @display("p=1151,680");
         }
-        VIFIBN78: VIFIBNode {
+        VIFIBN78: VIFIBNode2 {
             @display("p=1151,833");
         }
-        VIFIBN79: VIFIBNode {
+        VIFIBN79: VIFIBNode2 {
             @display("p=1215,665");
         }
-        VIFIBN80: VIFIBNode {
+        VIFIBN80: VIFIBNode2 {
             @display("p=930,749");
         }
-        VIFIBN81: VIFIBNode {
+        VIFIBN81: VIFIBNode2 {
             @display("p=941,853");
         }
-        VIFIBN82: VIFIBNode {
+        VIFIBN82: VIFIBNode2 {
             @display("p=1018,615");
         }
-        VIFIBN83: VIFIBNode {
+        VIFIBN83: VIFIBNode2 {
             @display("p=1009,722");
         }
-        VIFIBN84: VIFIBNode {
+        VIFIBN84: VIFIBNode2 {
             @display("p=1144,749");
         }
-        VIFIBN85: VIFIBNode {
+        VIFIBN85: VIFIBNode2 {
             @display("p=746,703");
         }
-        VIFIBN86: VIFIBNode {
+        VIFIBN86: VIFIBNode2 {
             @display("p=1244,733");
         }
-        VIFIBN87: VIFIBNode {
+        VIFIBN87: VIFIBNode2 {
             @display("p=1206,560");
         }
-        VIFIBN88: VIFIBNode {
+        VIFIBN88: VIFIBNode2 {
             @display("p=417,514");
         }
-        VIFIBN89: VIFIBNode {
+        VIFIBN89: VIFIBNode2 {
             @display("p=434,566");
         }
-        VIFIBN90: VIFIBNode {
+        VIFIBN90: VIFIBNode2 {
             @display("p=437,652");
         }
-        VIFIBN91: VIFIBNode {
+        VIFIBN91: VIFIBNode2 {
             @display("p=317,689");
         }
-        VIFIBN92: VIFIBNode {
+        VIFIBN92: VIFIBNode2 {
             @display("p=245,680");
         }
-        VIFIBN93: VIFIBNode {
+        VIFIBN93: VIFIBNode2 {
             @display("p=109,715");
         }
-        VIFIBN94: VIFIBNode {
+        VIFIBN94: VIFIBNode2 {
             @display("p=177,733");
         }
-        VIFIBN95: VIFIBNode {
+        VIFIBN95: VIFIBNode2 {
             @display("p=215,798");
         }
-        VIFIBN96: VIFIBNode {
+        VIFIBN96: VIFIBNode2 {
             @display("p=73,844");
         }
-        VIFIBN97: VIFIBNode {
+        VIFIBN97: VIFIBNode2 {
             @display("p=303,749");
         }
-        VIFIBN98: VIFIBNode {
+        VIFIBN98: VIFIBNode2 {
             @display("p=81,646");
         }
-        VIFIBN99: VIFIBNode {
+        VIFIBN99: VIFIBNode2 {
             @display("p=538,733");
         }
-        VIFIBN100: VIFIBNode {
+        VIFIBN100: VIFIBNode2 {
             @display("p=215,496");
         }
-        VIFIBN101: VIFIBNode {
+        VIFIBN101: VIFIBNode2 {
             @display("p=268,551");
         }
-        VIFIBN102: VIFIBNode {
+        VIFIBN102: VIFIBNode2 {
             @display("p=374,812");
         }
-        VIFIBN103: VIFIBNode {
+        VIFIBN103: VIFIBNode2 {
             @display("p=344,546");
         }
-        VIFIBN104: VIFIBNode {
+        VIFIBN104: VIFIBNode2 {
             @display("p=297,618");
         }
-        VIFIBN105: VIFIBNode {
+        VIFIBN105: VIFIBNode2 {
             @display("p=274,833");
         }
-        VIFIBN106: VIFIBNode {
+        VIFIBN106: VIFIBNode2 {
             @display("p=366,870");
         }
-        VIFIBN107: VIFIBNode {
+        VIFIBN107: VIFIBNode2 {
             @display("p=495,812");
         }
-        VIFIBN108: VIFIBNode {
+        VIFIBN108: VIFIBNode2 {
             @display("p=446,870");
         }
-        VIFIBN109: VIFIBNode {
+        VIFIBN109: VIFIBNode2 {
             @display("p=29,775");
         }
-        VIFIBN110: VIFIBNode {
+        VIFIBN110: VIFIBNode2 {
             @display("p=179,858");
         }
-        VIFIBN111: VIFIBNode {
+        VIFIBN111: VIFIBNode2 {
             @display("p=193,634");
         }
-        VIFIBN112: VIFIBNode {
+        VIFIBN112: VIFIBNode2 {
             @display("p=102,570");
         }
-        VIFIBN113: VIFIBNode {
+        VIFIBN113: VIFIBNode2 {
             @display("p=386,749");
         }
-        VIFIBN114: VIFIBNode {
+        VIFIBN114: VIFIBNode2 {
             @display("p=525,597");
         }
-        VIFIBN115: VIFIBNode {
+        VIFIBN115: VIFIBNode2 {
             @display("p=188,570");
         }
-        VIFIBN116: VIFIBNode {
+        VIFIBN116: VIFIBNode2 {
             @display("p=446,740");
         }
 
-        VIFIBNGL1: VIFIBNodeGL1 {
+        VIFIBN120: VIFIBNodeGL1 {
             @display("p=557,292");
         }
-        VIFIBNGL2: VIFIBNodeGL2 {
+        VIFIBN121: VIFIBNodeGL2 {
             @display("p=781,264");
         }
-        VIFIBNGL3: VIFIBNodeGL2 {
+        VIFIBN122: VIFIBNodeGL2 {
             @display("p=746,546");
         }
-        VIFIBNGL4: VIFIBNodeGL1 {
+        VIFIBN123: VIFIBNodeGL1 {
             @display("p=495,485");
         }
 
@@ -425,14 +423,14 @@ network DistributedCloudsLS
         VIFIBN16.medium[0] <--> VIFIBN27.medium[1];
         VIFIBN20.medium[1] <--> VIFIBN21.medium[1];
 
-        VIFIBN1.medium[1] <--> VIFIBNGL1.medium[0];
-        VIFIBN2.medium[1] <--> VIFIBNGL1.medium[1];
+        VIFIBN1.medium[1] <--> VIFIBN120.medium[0];
+        VIFIBN2.medium[1] <--> VIFIBN120.medium[1];
 
 
 
 		//Group 2 Connections
-        VIFIBNGL2.medium[0] <--> VIFIBN30.medium[0];
-        VIFIBNGL2.medium[1] <--> VIFIBN31.medium[0];
+        VIFIBN121.medium[0] <--> VIFIBN30.medium[0];
+        VIFIBN121.medium[1] <--> VIFIBN31.medium[0];
 
 
         VIFIBN31.medium[1] <--> VIFIBN32.medium[0];
@@ -458,8 +456,8 @@ network DistributedCloudsLS
         VIFIBN50.medium[0] <--> VIFIBN42.medium[1];
         VIFIBN49.medium[1] <--> VIFIBN55.medium[1];
         VIFIBN44.medium[1] <--> VIFIBN30.medium[1];
-        VIFIBN59.medium[0] <--> VIFIBNGL3.medium[0];
-        VIFIBN60.medium[0] <--> VIFIBNGL3.medium[1];
+        VIFIBN59.medium[0] <--> VIFIBN122.medium[0];
+        VIFIBN60.medium[0] <--> VIFIBN122.medium[1];
         VIFIBN61.medium[0] <--> VIFIBN62.medium[0];
         VIFIBN63.medium[0] <--> VIFIBN65.medium[0];
         VIFIBN63.medium[1] <--> VIFIBN64.medium[0];
@@ -487,8 +485,8 @@ network DistributedCloudsLS
 
 
 		//Group 4 Connections
-        VIFIBNGL4.medium[0] <--> VIFIBN88.medium[0];
-        VIFIBNGL4.medium[1] <--> VIFIBN89.medium[0];
+        VIFIBN123.medium[0] <--> VIFIBN88.medium[0];
+        VIFIBN123.medium[1] <--> VIFIBN89.medium[0];
         VIFIBN89.medium[1] <--> VIFIBN90.medium[0];
         VIFIBN90.medium[1] <--> VIFIBN91.medium[0];
         VIFIBN91.medium[1] <--> VIFIBN92.medium[0];
@@ -513,39 +511,39 @@ network DistributedCloudsLS
 
 
         //Connections between the groups
-        VIFIBNGL2.medium[2] <--> VIFIBNGL1.medium[2];
-        VIFIBNGL3.medium[2] <--> VIFIBNGL4.medium[2];
-        VIFIBNGL2.medium[3] <--> VIFIBNGL3.medium[3];
+        VIFIBN121.medium[2] <--> VIFIBN120.medium[2];
+        VIFIBN122.medium[2] <--> VIFIBN123.medium[2];
+        VIFIBN121.medium[3] <--> VIFIBN122.medium[3];
         //     VIFIBN6.medium[1] <--> VIFIBN7.medium[1];
-        VIFIBNGL2.medium[4] <--> VIFIBNGL4.medium[3];
-        VIFIBNGL3.medium[4] <--> VIFIBNGL1.medium[3];
+        VIFIBN121.medium[4] <--> VIFIBN123.medium[3];
+        VIFIBN122.medium[4] <--> VIFIBN120.medium[3];
         VIFIBN55.medium[0] <--> VIFIBN45.medium[1];
-        VIFIBNGL3.medium[5] <--> VIFIBN58.medium[1];
-        VIFIBNGL1.medium[4] <--> VIFIBN99.medium[1];
+        VIFIBN122.medium[5] <--> VIFIBN58.medium[1];
+        VIFIBN120.medium[4] <--> VIFIBN99.medium[1];
 
 
         VIFIBN67.medium[1] <--> VIFIBN72.medium[0];
         VIFIBN72.medium[1] <--> VIFIBN50.medium[1];
         VIFIBN29.medium[1] <--> VIFIBN23.medium[1];
-        VIFIBNGL1.medium[5] <--> VIFIBN14.medium[0];
+        VIFIBN120.medium[5] <--> VIFIBN14.medium[0];
         VIFIBN28.medium[0] <--> VIFIBN16.medium[1];
         VIFIBN45.medium[0] <--> VIFIBN38.medium[1];
-        VIFIBN47.medium[1] <--> VIFIBNGL2.medium[5];
-        VIFIBNGL2.medium[6] <--> VIFIBN41.medium[0];
+        VIFIBN47.medium[1] <--> VIFIBN121.medium[5];
+        VIFIBN121.medium[6] <--> VIFIBN41.medium[0];
         VIFIBN36.medium[1] <--> VIFIBN28.medium[1];
         VIFIBN49.medium[0] <--> VIFIBN57.medium[1];
         VIFIBN74.medium[1] <--> VIFIBN84.medium[0];
         VIFIBN79.medium[0] <--> VIFIBN87.medium[0];
         VIFIBN87.medium[1] <--> VIFIBN67.medium[0];
-        VIFIBNGL3.medium[6] <--> VIFIBN85.medium[0];
+        VIFIBN122.medium[6] <--> VIFIBN85.medium[0];
         VIFIBN103.medium[1] <--> VIFIBN113.medium[1];
         VIFIBN96.medium[1] <--> VIFIBN94.medium[0];
         VIFIBN101.medium[1] <--> VIFIBN115.medium[1];
         VIFIBN102.medium[0] <--> VIFIBN116.medium[1];
         VIFIBN116.medium[0] <--> VIFIBN99.medium[0];
-        VIFIBNGL4.medium[4] <--> VIFIBN100.medium[1];
-        VIFIBNGL1.medium[6] <--> VIFIBNGL4.medium[5];
-        VIFIBNGL4.medium[6] <--> VIFIBN114.medium[1];
+        VIFIBN123.medium[4] <--> VIFIBN100.medium[1];
+        VIFIBN120.medium[6] <--> VIFIBN123.medium[5];
+        VIFIBN123.medium[6] <--> VIFIBN114.medium[1];
         VIFIBN66.medium[0] <--> VIFIBN43.medium[1];
         VIFIBN15.medium[0] <--> VIFIBN17.medium[0];
         VIFIBN9.medium[1] <--> VIFIBN6.medium[1];
