@@ -56,9 +56,25 @@ public:
     RMTQueue * getNext(RMTPort * port);
     void recDelete(cPacket * p);
 
+    //Monitor usage
+    double getPortUsage(RMTPort*);
+    double getPortUsageP(RMTPort*);
+    double getQueueUsage(RMTPort*, string);
+    double getQueueUsageP(RMTPort*, string);
+
 protected:
     void handleMessage(cMessage * msg);
     void recIDelete(cPacket * p);
+
+    //Monitor usage
+    int MonitoredLen;
+    map<RMTPort *, list<simtime_t> > inPortTimes;
+    map<RMTPort *, list<long> > inPortData;
+    map<RMTPort *, long > inPortAgData;
+    map<RMTPort *, map<string, list<simtime_t> > > inQueueTimes;
+    map<RMTPort *, map<string, list<long> > > inQueueData;
+    map<RMTPort *, map<string, long > > inQueueAgData;
+
 
 private:
     QTASch * scheduler;

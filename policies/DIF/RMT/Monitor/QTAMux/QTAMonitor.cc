@@ -87,6 +87,8 @@ void QTAMonitor::onPolicyInit(){
     } else {
         baseMux = new Mux0(this, nullptr);
     }
+
+    MonitoredLen = par("MonitoredLen").longValue();
 }
 
 void QTAMonitor::postQueueCreation(RMTQueue* queue) {
@@ -190,6 +192,28 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
 
     received[shaper->port][queue->getName()]++;
 
+    RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+    const cPacket * pdu = queue->getLastPDU();
+    long pLen = pdu->getBitLength ();
+    inPortTimes[port].push_back(simTime());
+    inQueueTimes[port][queue->getName()].push_back(simTime());
+
+    inPortData[port].push_back(pLen);
+    inPortAgData[port] += pLen;
+    inQueueData[port][queue->getName()].push_back(pLen);
+    inQueueAgData[port][queue->getName()] += pLen;
+
+    if(inPortTimes[port].size() > MonitoredLen) {
+        inPortTimes[port].pop_front();
+        inPortAgData[port] -= inPortData[port].front();
+        inPortData[port].pop_front();
+    }
+
+    if(inQueueTimes[port][queue->getName()].size() > MonitoredLen) {
+        inQueueTimes[port][queue->getName()].pop_front();
+        inQueueAgData[port][queue->getName()] -= inQueueData[port][queue->getName()].front();
+        inQueueData[port][queue->getName()].pop_front();
+    }
 }
 
 RMTQueue * QTAMonitor::getNext(RMTPort * port) {
@@ -217,6 +241,32 @@ void QTAMonitor::recIDelete(cPacket * p) {
     cPacket * enc = p->decapsulate();
     if(enc != nullptr) { recIDelete(enc); }
     delete p;
+}
+
+double QTAMonitor::getPortUsage(RMTPort*p){
+    if(inPortTimes[p].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inPortTimes[p].front();
+    double tDif = dif.dbl();
+    return inPortAgData[p] / tDif;
+}
+
+double QTAMonitor::getPortUsageP(RMTPort*p){
+    if(inPortTimes[p].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inPortTimes[p].front();
+    double tDif = dif.dbl();
+    return inPortTimes[p].size() / tDif;
+}
+double QTAMonitor::getQueueUsage(RMTPort*p, string q){
+    if(inQueueTimes[p][q].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inQueueTimes[p][q].front();
+    double tDif = dif.dbl();
+    return inQueueAgData[p][q] / tDif;
+}
+double QTAMonitor::getQueueUsageP(RMTPort*p, string q) {
+    if(inQueueTimes[p][q].size() < MonitoredLen/2) { return 0.0; }
+    simtime_t dif = simTime() - inQueueTimes[p][q].front();
+    double tDif = dif.dbl();
+    return inQueueTimes[p][q].size() / tDif;
 }
 
 }

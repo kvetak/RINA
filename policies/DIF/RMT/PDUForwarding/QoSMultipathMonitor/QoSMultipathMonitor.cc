@@ -32,7 +32,7 @@ namespace QoSMultipathMonitor {
 
     void iQoSMultipathMonitor::onPolicyInit() {
 
-        mon = getRINAModule<ModularMonitor::ModularMonitor *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_QMONITOR});
+        mon = getRINAModule<QTAMux::QTAMonitor *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_QMONITOR});
 
         cXMLElement* Xml = NULL;
         if (par("QoS_BW").xmlValue() != NULL && par("QoS_BW").xmlValue()->hasChildren()){

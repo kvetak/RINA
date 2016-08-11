@@ -34,6 +34,7 @@ simple QTAMonitor like IntRMTQMonitorPolicy
         double defRate = default(1.0);
         xml shapersData = default(xml("<shapersData/>"));
         xml muxData = default(xml("<muxData/>"));
+        int MonitoredLen = default(100);
         
         bool printAtEnd = default(false);
 }

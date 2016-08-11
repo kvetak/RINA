@@ -23,7 +23,7 @@
 #pragma once
 
 #include "IntPDUForwarding.h"
-#include "ModularMonitor.h"
+#include "QTAMonitor.h"
 #include "MultipathStructs.h"
 
 #include <map>
@@ -63,7 +63,7 @@ namespace QoSMultipathMonitor {
         virtual void preReplacePort(RMTPort * oldP, RMTPort * newP, const int bw) = 0;
 
 
-        ModularMonitor::ModularMonitor * mon;
+        QTAMux::QTAMonitor * mon;
 
     };
 
