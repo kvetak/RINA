@@ -97,3 +97,8 @@ void RTTEstimatorPolicyBase::defaultAction(DTPState* dtpState, DTCPState* dtcpSt
     RTO = dtpState->getRtt() + (double)dtpState->getQoSCube()->getATime()/(double)1000 + DTP_EPSILON;
 
 }
+
+void RTTEstimatorPolicyBase::setRto(double rto)
+{
+  RTO = rto;
+}
