@@ -28,7 +28,7 @@ CACEMgmt::CACEMgmt(DAFEnrollment *outerClass) {
 }
 
 void CACEMgmt::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
-    Enter_Method("authenticate()");
+    //Enter_Method("authenticate()");
 
     //check and validate expected auth type
     if (msg->getAuth().authType == this->outerClass->authType) {
@@ -54,7 +54,7 @@ void CACEMgmt::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect*
 }
 
 void CACEMgmt::startCACE(Flow* flow) {
-    Enter_Method("startCACE()");
+    //Enter_Method("startCACE()");
 
     //auto entry = DAFEnrollmentStateTableEntry(apnip->first, apnip->second, DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
     //StateTable->insert(entry);
@@ -111,7 +111,7 @@ void CACEMgmt::startCACE(Flow* flow) {
 }
 
 void CACEMgmt::insertStateTableEntry(Flow* flow) {
-    Enter_Method("insertStateTableEntry()");
+    //Enter_Method("insertStateTableEntry()");
     //insert only first flow created (management flow)
     if(StateTable->findEntryByDstAPN(APN(flow->getDstAddr().getApn().getName().c_str())) != NULL) {
         return;
@@ -120,7 +120,7 @@ void CACEMgmt::insertStateTableEntry(Flow* flow) {
 }
 
 void CACEMgmt::receivePositiveConnectResponse(CDAPMessage* msg) {
-    Enter_Method("receivePositiveConnectResponse()");
+    //Enter_Method("receivePositiveConnectResponse()");
 
     //signalizeEnrolled();
 
@@ -140,7 +140,7 @@ void CACEMgmt::receivePositiveConnectResponse(CDAPMessage* msg) {
 }
 
 void CACEMgmt::receiveNegativeConnectResponse(CDAPMessage* msg) {
-    Enter_Method("receiveNegativeConnectResponse()");
+    //Enter_Method("receiveNegativeConnectResponse()");
 
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
@@ -165,7 +165,7 @@ void CACEMgmt::receiveNegativeConnectResponse(CDAPMessage* msg) {
 }
 
 void CACEMgmt::receiveConnectRequest(CDAPMessage* msg) {
-    Enter_Method("receiveConnectRequest()");
+    //Enter_Method("receiveConnectRequest()");
 
     CDAP_M_Connect* cmsg = check_and_cast<CDAP_M_Connect*>(msg);
 
@@ -199,23 +199,8 @@ void CACEMgmt::receiveConnectRequest(CDAPMessage* msg) {
 }
 
 void CACEMgmt::processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
-    Enter_Method("processNewConReq()");
-
-    //TODO: probably change values, this is retry
-
-    CDAP_M_Connect* msg = new CDAP_M_Connect(DAF_MSG_CONREQRETRY);
-
-    authValue_t aValue;
-    aValue.authName = this->outerClass->authName;
-    aValue.authPassword = this->outerClass->authPassword;
-    aValue.authOther = this->outerClass->authOther;
-
-    auth_t auth;
-    auth.authType = this->outerClass->authType;
-    auth.authValue = aValue;
-
-    msg->setAuth(auth);
-    msg->setAbsSyntax(GPB);
+    CDAP_M_Connect_R* msg = new CDAP_M_Connect_R(DAF_MSG_CONRESPOS);
+    CDAP_M_Connect* cmsg1 = check_and_cast<CDAP_M_Connect*>(cmsg);
 
     APNamingInfo src = APNamingInfo(entry->getLocal().getApn(),
                 entry->getLocal().getApinstance(),
@@ -227,6 +212,17 @@ void CACEMgmt::processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessag
             entry->getRemote().getAename(),
             entry->getRemote().getAeinstance());
 
+    result_t result;
+    result.resultValue = R_SUCCESS;
+
+    auth_t auth;
+    auth.authType = cmsg1->getAuth().authType;
+    auth.authValue = cmsg1->getAuth().authValue;
+
+    msg->setAbsSyntax(GPB);
+    msg->setResult(result);
+    msg->setAuth(auth);
+
     msg->setSrc(src);
     msg->setDst(dst);
 
@@ -236,8 +232,8 @@ void CACEMgmt::processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessag
     //send data to ribd to send
     outerClass->signalizeCACESendData(msg);
 
-    //change state to auth after send retry
-    entry->setCACEConStatus(DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
+    entry->setCACEConStatus(DAFEnrollmentStateTableEntry::CON_ESTABLISHED);
+    entry->setDAFEnrollmentStatus(DAFEnrollmentStateTableEntry::ENROLL_WAIT_START_ENROLLMENT);
 }
 
 void CACEMgmt::processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg) {
@@ -281,7 +277,7 @@ void CACEMgmt::processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessag
 }
 
 void CACEMgmt::processNewConReq(DAFEnrollmentStateTableEntry* entry) {
-    Enter_Method("processNewConReq()");
+    //Enter_Method("processNewConReq()");
 
     //TODO: probably change values, this is retry
 

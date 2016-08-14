@@ -23,15 +23,13 @@
 #ifndef DAF_ENROLLMENT_CACEBASE_H_
 #define DAF_ENROLLMENT_CACEBASE_H_
 
-//#include "Flow.h"
-//#include "CDAPMessage_m.h"
-#include "DAFEnrollment.h"
-//#include "DAFEnrollmentStateTableEntry.h"
-//#include "DAFEnrollmentStateTable.h"
+#include "Flow.h"
+#include "CDAPMessage_m.h"
+//#include "DAFEnrollment.h"
+#include "DAFEnrollmentStateTableEntry.h"
+#include "DAFEnrollmentStateTable.h"
 
-class DAFEnrollment;
 class CACEBase {
-friend class DAFEnrollment;
 public:
     CACEBase();
     virtual void startCACE(Flow* flow) = 0;

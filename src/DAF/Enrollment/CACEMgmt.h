@@ -24,8 +24,10 @@
 #define DAF_ENROLLMENT_CACEMGMT_H_
 
 #include "CACEBase.h"
+#include "DAFEnrollment.h"
 
-class CACEBase;
+class DAFEnrollment;
+
 class CACEMgmt : public CACEBase {
 public:
     CACEMgmt();
@@ -40,7 +42,7 @@ public:
     void processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
     void processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
     void processNewConReq(DAFEnrollmentStateTableEntry* entry);
-    ~CACEMgmt();
+    virtual ~CACEMgmt();
 protected:
     DAFEnrollment *outerClass;
 };

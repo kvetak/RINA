@@ -190,7 +190,7 @@ void LisDAFEnrollmentConResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
-        enrollment->receivePositiveConnectResponse(msg);
+        enrollment->cace->receivePositiveConnectResponse(msg);
     else
         EV << "Received not a CDAPMessage!" << endl;
 }
@@ -199,7 +199,7 @@ void LisDAFEnrollmentConResNega::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
-        enrollment->receiveNegativeConnectResponse(msg);
+        enrollment->cace->receiveNegativeConnectResponse(msg);
     else
         EV << "Received not a CDAPMessage!" << endl;
 }
@@ -208,7 +208,7 @@ void LisDAFEnrollmentConReq::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj, cObject* detail) {
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)
-        enrollment->receiveConnectRequest(msg);
+        enrollment->cace->receiveConnectRequest(msg);
     else
         EV << "Received not a CDAPMessage!" << endl;
 }

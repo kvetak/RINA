@@ -237,7 +237,7 @@ void DAFEnrollment::initSignalsAndListeners() {
     lisDAFEnrollmentConReq = new LisDAFEnrollmentConReq(this);
     catcher1->subscribe(SIG_RIBD_ConnectionRequest, lisDAFEnrollmentConReq);
 }
-
+/*
 void DAFEnrollment::startCACE(Flow* flow) {
     Enter_Method("startCACE()");
 
@@ -284,7 +284,7 @@ void DAFEnrollment::startCACE(Flow* flow) {
     src.ApInst = entry.getLocal().getApinstance();
     src.ApName = entry.getLocal().getApn().getName();
     */
-
+/*
     msg->setSrc(src);
     msg->setDst(dst);
 
@@ -310,7 +310,7 @@ void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
     //signalizeEnrolled();
 
     /* this is commented only for testing ---> refactoring of adress is need to be done*/
-    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
+/*    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
@@ -383,7 +383,7 @@ void DAFEnrollment::receiveConnectRequest(CDAPMessage* msg) {
 
     authenticate(entry, cmsg);
 }
-
+*/
 /*   enrollment initiator */
 
 void DAFEnrollment::startEnrollment(DAFEnrollmentStateTableEntry* entry) {
@@ -578,7 +578,7 @@ void DAFEnrollment::processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry*
     entry->setDAFEnrollmentStatus(DAFEnrollmentStateTableEntry::ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT);
 }
 
-void DAFEnrollment::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
+/*void DAFEnrollment::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
     Enter_Method("authenticate()");
 
     //check and validate expected auth type
@@ -723,7 +723,7 @@ void DAFEnrollment::processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPM
     //increase number of connects
     entry->increaseCurrentConnectRetries();
 }
-
+*/
 void DAFEnrollment::signalizeCACESendData(CDAPMessage* cmsg) {
     emit(sigDAFEnrollmentCACESendData, cmsg);
 }
@@ -737,6 +737,8 @@ void DAFEnrollment::signalizeStartEnrollmentResponse(DAFEnrollmentObj* obj) {
 }
 
 void DAFEnrollment::signalizeStopEnrollmentRequest(DAFEnrollmentObj* obj) {
+    //TODO: move following line somewhere else
+    updateEnrollmentDisplay(ENICON_ENROLLED);
     emit(sigDAFEnrollmentStopEnrollReq, obj);
 }
 
@@ -907,7 +909,7 @@ void DAFEnrollment::receiveAllocationResponsePositive(Flow* flow) {
     DAFEnrollmentStateTableEntry entry = DAFEnrollmentStateTableEntry(flow->getSrcApni(),flow->getDstApni(), DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
     StateTable->insert(entry);
 
-    startCACE(flow);
+    cace->startCACE(flow);
 
 }
 

@@ -69,8 +69,8 @@ class LisDAFEnrollmentConResNega;
 class LisDAFEnrollmentConReq;
 class LisDAFEnrollmentRequest;
 class LisDAFEnrollmentAllReqFromFai;
-class CACEMgmt;
 
+class CACEMgmt;
 typedef std::list<APNIPair> APNIPairs;
 typedef std::map<simtime_t, APNIPairs*> DAFEnrollCommands;
 
