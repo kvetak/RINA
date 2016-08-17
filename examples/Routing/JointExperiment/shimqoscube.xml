@@ -6,7 +6,7 @@
 			<CostTime>5</CostTime>
 			<CostBits>5</CostBits>
 			
-			<AverageBandwidth>10000000000</AverageBandwidth>
+			<AverageBandwidth>1073741824</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
 			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>

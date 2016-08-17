@@ -650,6 +650,12 @@ namespace FullPathMonitor {
         EV <<endl;
         EV <<"Number of Successful reroutes: "<< numberOfReroutes<<endl;
         EV << "-----------------" << endl;
-
+        EV <<"Scheduling Info" << endl;
+        for(auto it:nodeDataBase){
+            for(auto it2 : it.second.schedulerInfo){
+                EV << it2.first->getFullPath()<<" -> "<<(it2.second.totalUsage/1073741824) <<endl;
+            }
+        }
+        EV << "-----------------" << endl;
     }
 }
