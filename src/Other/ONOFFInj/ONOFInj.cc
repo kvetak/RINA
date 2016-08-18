@@ -16,11 +16,11 @@
 //double voice_f::idle_time = 9.0;
 //double voice_f::burst_time = 3.0;
 
-int voice_f::min_pdu_len = 100;
-int voice_f::max_pdu_len = 300;
-double voice_f::interval = 0.02;
-double voice_f::idle_time = 9.0;
-double voice_f::burst_time = 3.0;
+int min_pdu_len;
+int max_pdu_len;
+double interval;
+double idle_time;
+double burst_time;
 
 double client_t::ackT = 0.1;
 int video_f::request_size = 50;
@@ -50,11 +50,11 @@ Inj_PDU * ONOFInj::genPDU(const pduReq & req) {
 
 
 void ONOFInj::initialize() {
-    voice_f::min_pdu_len = (int)par("voice_min_pdu_len").doubleValue();
-    voice_f::max_pdu_len = (int)par("voice_max_pdu_len").doubleValue();
-    voice_f::interval = par("voice_interval").doubleValue();
-    voice_f::idle_time = par("voice_idle_time").doubleValue();
-    voice_f::burst_time = par("voice_burst_time").doubleValue();
+    min_pdu_len = (int)par("voice_min_pdu_len").doubleValue();
+    max_pdu_len = (int)par("voice_max_pdu_len").doubleValue();
+    interval = par("voice_interval").doubleValue();
+    idle_time = par("voice_idle_time").doubleValue();
+    burst_time = par("voice_burst_time").doubleValue();
 
 
     //Init ini/fin times
@@ -216,7 +216,14 @@ void ONOFInj::startFlows() {
         if (n == "" || n == src) { continue; }
         for (int i = 0; i < par("voice_flows").longValue(); i++) {
             voice_f * f = new voice_f(nextFlowId, n, par("voice_qos").stdstringValue());
+
+            f->idle_time=par("voice_idle_time").doubleValue();
+            f->interval=par("voice_interval").doubleValue();
+            f->max_pdu_len=(int)par("voice_max_pdu_len").doubleValue();
+            f->min_pdu_len=(int)par("voice_min_pdu_len").doubleValue();
+            f->burst_time=par("voice_burst_time").doubleValue();
             f->at.f = f;
+
             senders[nextFlowId] = f;
 
 
@@ -228,7 +235,7 @@ void ONOFInj::startFlows() {
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
-            sendDirect(Monmsg, uniform(0.0, voice_f::idle_time + voice_f::burst_time), 0, targetModule, "radioIn");
+            sendDirect(Monmsg, uniform(0.0, idle_time + burst_time), 0, targetModule, "radioIn");
 
             //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
             nextFlowId++;

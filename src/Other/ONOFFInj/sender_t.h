@@ -31,8 +31,8 @@ protected:
 
 class voice_f : public sender_t {
 public :
-    static int min_pdu_len, max_pdu_len;
-    static double interval, idle_time, burst_time;
+    int min_pdu_len, max_pdu_len;
+    double interval, idle_time, burst_time;
 
     voice_f(int fid, string dst, string qos):
     sender_t(fid, dst, qos){}
@@ -45,13 +45,13 @@ public :
 
 class voice_fb : public sender_t {
 public :
-    static int min_pdu_len, max_pdu_len;
-    static double interval, min_idle_time, max_idle_time, min_burst_time, max_burst_time;
+    int min_pdu_len, max_pdu_len;
+    double interval, min_idle_time, max_idle_time, min_burst_time, max_burst_time;
 
     voice_fb(int fid, string dst, string qos):
         sender_t(fid, dst, qos){}
 
-    virtual int getPDUSize() { return uniform(voice_f::min_pdu_len, voice_f::max_pdu_len); }
+    virtual int getPDUSize() { return uniform(voice_fb::min_pdu_len, voice_fb::max_pdu_len); }
     virtual double getInterval() { return interval; }
     virtual double getNextOn() { return simTime().dbl() + uniform(min_idle_time, max_idle_time); }
     virtual void setNextUntil() { until += (int)ceil(uniform(min_burst_time, max_burst_time)*interval); }

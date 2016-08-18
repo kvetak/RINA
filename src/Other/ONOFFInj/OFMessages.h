@@ -8,7 +8,7 @@ using namespace std;
 class sender_d : public Inj_data {
 public:
     sender_d(int f, int l, seq_t s):
-        Inj_data(f, l, s){}
+        Inj_data(l, f, s){}
 };
 
 class client_d : public Inj_data {
