@@ -24,17 +24,27 @@
 #define DAF_ENROLLMENT_CACEGENERIC_H_
 
 #include "CACEBase.h"
+#include "AE.h"
+
+class AE;
 
 class CACEGeneric : public CACEBase {
 public:
     CACEGeneric();
-    CACEGeneric(void *outerClass);
+    CACEGeneric(AE *outerClass);
     void startCACE(Flow* flow);
     void insertStateTableEntry(Flow* flow);
+    void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg);
     void receivePositiveConnectResponse(CDAPMessage* msg);
     void receiveNegativeConnectResponse(CDAPMessage* msg);
     void receiveConnectRequest(CDAPMessage* msg);
+
+    void processConResPosi(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPMessage* cmsg);
+    void processNewConReq(DAFEnrollmentStateTableEntry* entry);
     virtual ~CACEGeneric();
+protected:
+    AE* outerClass;
 };
 
 #endif /* DAF_ENROLLMENT_CACEGENERIC_H_ */

@@ -29,6 +29,8 @@ AE::AE() :
 {
     FlowObject = NULL;
     connectionState = NIL;
+    maxConRetries = 3;
+    authType = AUTH_NONE;
 }
 
 AE::~AE() {
@@ -197,6 +199,10 @@ void AE::insertFlow() {
     //if (!status) {
     //    error("Gate inconsistency during creation of a new flow!");
     //}
+}
+
+void AE::CACEFinished() {
+
 }
 
 void AE::start(Flow* flow) {

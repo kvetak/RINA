@@ -59,7 +59,7 @@ void CACEMgmt::startCACE(Flow* flow) {
     //auto entry = DAFEnrollmentStateTableEntry(apnip->first, apnip->second, DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
     //StateTable->insert(entry);
 
-    auto entry = StateTable->findEntryByDstAPN(flow->getDstApni().getApn());
+    auto entry = StateTable->findEntryByDstAPNI(flow->getDstApni());
 
     CDAP_M_Connect* msg = new CDAP_M_Connect(DAF_MSG_CONREQ);
 
@@ -113,7 +113,7 @@ void CACEMgmt::startCACE(Flow* flow) {
 void CACEMgmt::insertStateTableEntry(Flow* flow) {
     //Enter_Method("insertStateTableEntry()");
     //insert only first flow created (management flow)
-    if(StateTable->findEntryByDstAPN(APN(flow->getDstAddr().getApn().getName().c_str())) != NULL) {
+    if(StateTable->findEntryByDstAPNI(flow->getDstApni()) != NULL) {
         return;
     }
     StateTable->insert(DAFEnrollmentStateTableEntry(flow->getSrcApni(), flow->getDstApni(), DAFEnrollmentStateTableEntry::CON_CONNECTPENDING));
@@ -126,7 +126,11 @@ void CACEMgmt::receivePositiveConnectResponse(CDAPMessage* msg) {
 
     /* this is commented only for testing ---> refactoring of adress is need to be done*/
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
-    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
+    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPNI(APNamingInfo(
+            cmsg->getSrc().getApn(),
+            cmsg->getSrc().getApinstance(),
+            cmsg->getSrc().getAename(),
+            cmsg->getSrc().getAeinstance()));
 
     //check appropriate state
     if (entry->getCACEConStatus() != DAFEnrollmentStateTableEntry::CON_AUTHENTICATING) {
@@ -143,7 +147,11 @@ void CACEMgmt::receiveNegativeConnectResponse(CDAPMessage* msg) {
     //Enter_Method("receiveNegativeConnectResponse()");
 
     CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
-    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
+    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPNI(APNamingInfo(
+            cmsg->getSrc().getApn(),
+            cmsg->getSrc().getApinstance(),
+            cmsg->getSrc().getAename(),
+            cmsg->getSrc().getAeinstance()));
 
     //check appropriate state
     if (entry->getCACEConStatus() != DAFEnrollmentStateTableEntry::CON_AUTHENTICATING) {
@@ -173,7 +181,11 @@ void CACEMgmt::receiveConnectRequest(CDAPMessage* msg) {
              cmsg->getDst(), cmsg->getSrc(), DAFEnrollmentStateTableEntry::CON_CONNECTPENDING);
     StateTable->insert(ent);
 
-    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
+    DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPNI(APNamingInfo(
+            cmsg->getSrc().getApn(),
+            cmsg->getSrc().getApinstance(),
+            cmsg->getSrc().getAename(),
+            cmsg->getSrc().getAeinstance()));
 
     if (!entry) {
         EV << "DAFEnrollment status not found for "

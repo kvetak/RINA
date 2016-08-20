@@ -65,6 +65,20 @@ DAFEnrollmentStateTableEntry* DAFEnrollmentStateTable::findEntryByDstAPN(const A
     return NULL;
 }
 
+DAFEnrollmentStateTableEntry* DAFEnrollmentStateTable::findEntryByDstAPNI(const APNamingInfo& apni) {
+    for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {
+        DAFEnrollmentStateTableEntry est = *it;
+
+        if (est.getRemote().getApn() == apni.getApn() &&
+            est.getRemote().getAeinstance() == apni.getAeinstance() &&
+            est.getRemote().getAename() == apni.getAename() &&
+            est.getRemote().getApinstance() == apni.getApinstance()) {
+            return &(*it);
+        }
+    }
+    return NULL;
+}
+
 void DAFEnrollmentStateTable::handleMessage(cMessage *msg)
 {
 

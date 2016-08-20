@@ -40,10 +40,6 @@ const char* DAF_PAR_AUTH_PASS       = "authPassword";
 const char* DAF_PAR_CON_RETRIES     = "maxConRetries";
 const char* DAF_PAR_ISSELFENROL     = "isSelfEnrolled";
 
-const char* DAF_MSG_CONREQ                = "Connect/Auth";
-const char* DAF_MSG_CONREQRETRY           = "ConnectRetry/Auth";
-const char* DAF_MSG_CONRESPOS             = "Connect+/Auth";
-const char* DAF_MSG_CONRESNEG             = "Connect-/Auth";
 const char* DAF_MSG_ENRLCON               = "Enrol-Connect";
 const char* DAF_MSG_ENRLREL               = "Enrol-Release";
 

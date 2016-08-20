@@ -15,12 +15,14 @@
 
 #include <CACEBase.h>
 
-CACEBase::CACEBase() {
-    // TODO Auto-generated constructor stub
+const char* DAF_MSG_CONREQ                = "Connect/Auth";
+const char* DAF_MSG_CONREQRETRY           = "ConnectRetry/Auth";
+const char* DAF_MSG_CONRESPOS             = "Connect+/Auth";
+const char* DAF_MSG_CONRESNEG             = "Connect-/Auth";
 
+CACEBase::CACEBase() {
 }
 
 CACEBase::~CACEBase() {
-    // TODO Auto-generated destructor stub
 }
 

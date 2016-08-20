@@ -37,9 +37,13 @@
 #include "CDAPMessage_m.h"
 #include "APIReqObj.h"
 #include "APIResult.h"
+#include "CACEGeneric.h"
+
+class CACEGeneric;
 
 class AE : public AEBase
 {
+  friend class CACEGeneric;
   public:
     AE();
     virtual ~AE();
@@ -57,6 +61,7 @@ class AE : public AEBase
     void receiveAllocationResponsePositive(Flow* flow);
 
     virtual void afterOnStart();
+    void CACEFinished();
     void start(Flow *flow);
 
 
@@ -67,6 +72,7 @@ class AE : public AEBase
   protected:
     IRM* Irm;
     cModule* Cdap;
+    //CACEGeneric* Cace;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

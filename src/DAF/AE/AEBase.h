@@ -99,6 +99,7 @@ class AEBase : public cSimpleModule
     std::string authName;
     std::string authPassword;
     std::string authOther;
+    int maxConRetries;
 
     QoSReq QoSRequirements;
 

@@ -49,10 +49,6 @@
 #include "DAFEnrollmentBase.h"
 #include "CACEMgmt.h"
 
-extern const char* DAF_MSG_CONREQ;
-extern const char* DAF_MSG_CONREQRETRY;
-extern const char* DAF_MSG_CONRESPOS;
-extern const char* DAF_MSG_CONRESNEG;
 extern const char* DAF_MSG_ENRLCON;
 extern const char* DAF_MSG_ENRLREL;
 

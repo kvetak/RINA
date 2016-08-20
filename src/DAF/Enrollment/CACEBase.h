@@ -25,9 +25,13 @@
 
 #include "Flow.h"
 #include "CDAPMessage_m.h"
-//#include "DAFEnrollment.h"
 #include "DAFEnrollmentStateTableEntry.h"
 #include "DAFEnrollmentStateTable.h"
+
+extern const char* DAF_MSG_CONREQ;
+extern const char* DAF_MSG_CONREQRETRY;
+extern const char* DAF_MSG_CONRESPOS;
+extern const char* DAF_MSG_CONRESNEG;
 
 class CACEBase {
 public:
