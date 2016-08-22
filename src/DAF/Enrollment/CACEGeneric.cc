@@ -56,8 +56,9 @@ void CACEGeneric::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Conne
 void CACEGeneric::startCACE(Flow* flow) {
     //Enter_Method("startCACE()");
 
-    //auto entry = DAFEnrollmentStateTableEntry(apnip->first, apnip->second, DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
-    //StateTable->insert(entry);
+    DAFEnrollmentStateTableEntry entryr = DAFEnrollmentStateTableEntry(flow->getSrcApni(),flow->getDstApni(), DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
+    StateTable->insert(entryr);
+
 
     auto entry = StateTable->findEntryByDstAPNI(flow->getDstApni());
 

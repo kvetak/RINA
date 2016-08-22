@@ -56,6 +56,7 @@ void AE::initialize() {
 void AE::initPointers() {
     Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
     Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
+    Cace = new CACEGeneric(this);
 
     if (!Cdap)
         error("Pointers to Cdap !");
@@ -202,6 +203,14 @@ void AE::insertFlow() {
 }
 
 void AE::CACEFinished() {
+    changeConStatus(ESTABLISHED);
+
+    //send response to AP Instance
+    APIResult *obj = new APIResult();
+    obj->setInvokeId(startInvokeId);
+    obj->setCDAPConId(cdapConId);
+    obj->setAPIResType(APIResult::A_GET_OPEN);
+    signalizeAEAPAPI(obj);
 
 }
 
@@ -271,6 +280,19 @@ void AE::receiveData(CDAPMessage* msg) {
         Enter_Method("processMReadR()");
         processMReadR(msg);
     }
+    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)) {
+        Enter_Method("processMConnectR()");
+        CDAP_M_Connect_R* cmsg = dynamic_cast<CDAP_M_Connect_R*>(msg);
+        if (!cmsg->getResult().resultValue) {
+           Cace->receivePositiveConnectResponse(msg);
+        }
+        else {
+           Cace->receiveNegativeConnectResponse(msg);
+        }
+    }
+    else if (dynamic_cast<CDAP_M_Connect*>(msg)) {
+        Cace->receiveConnectRequest(msg);
+    }
     //M_WRITE_Request
     //else if (dynamic_cast<CDAP_M_Write*>(msg)) {
     //    processMWrite(msg);
@@ -327,16 +349,8 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     //Interconnect IRM and IPC
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
-    //TODO: Change connection status to connection pending
-    changeConStatus(ESTABLISHED);
-
-    //send response to AP Instance
-    //TODO: do this after cace
-    APIResult *obj = new APIResult();
-    obj->setInvokeId(startInvokeId);
-    obj->setCDAPConId(cdapConId);
-    obj->setAPIResType(APIResult::A_GET_OPEN);
-    signalizeAEAPAPI(obj);
+    //CACE starts here!
+    this->Cace->startCACE(flow);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {

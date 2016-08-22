@@ -72,7 +72,7 @@ class AE : public AEBase
   protected:
     IRM* Irm;
     cModule* Cdap;
-    //CACEGeneric* Cace;
+    CACEGeneric* Cace;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

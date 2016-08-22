@@ -71,7 +71,7 @@ void CDAPSplitter::handleMessage(cMessage *msg)
         if (dynamic_cast<CDAP_M_Connect*>(msg) ||  dynamic_cast<CDAP_M_Connect_R*>(msg) ||
             dynamic_cast<CDAP_M_Release*>(msg) ||  dynamic_cast<CDAP_M_Release_R*>(msg) )
         {
-            out = gateHalf(GATE_CACEIO, cGate::OUTPUT);
+            out = gateHalf(GATE_CDAPIO, cGate::OUTPUT);
         }
 
         //Pass it to the Auth module
