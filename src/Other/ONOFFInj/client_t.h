@@ -56,10 +56,10 @@ public :
 
 class video_f : public client_t {
 public :
-    static int request_size;
-    static double idle_time;
-    static int request_len;
-    static double request_interval;
+    int request_size;
+    double idle_time;
+    int request_len;
+    double request_interval;
 
     simtime_t lastTime;
 
@@ -68,14 +68,14 @@ public :
         lastTime = -500.0;
     }
 
-    virtual int getPDUSize() { return video_f::request_size; }
+    virtual int getPDUSize() { return request_size; }
     virtual simtime_t getNextOn(simtime_t ct) {
-        lastTime += video_f::idle_time;
+        lastTime += idle_time;
         if(lastTime < ct) { lastTime = ct; }
         return lastTime;
     }
-    virtual void setNextUntil() { until += video_f::request_len;  nextRq = until; }
-    virtual void setNextRate() { interval = video_f::request_interval; }
+    virtual void setNextUntil() { until += request_len;  nextRq = until; }
+    virtual void setNextRate() { interval = request_interval; }
 };
 
 
@@ -94,7 +94,7 @@ public :
         lastTime = -500.0;
     }
 
-    virtual int getPDUSize() { return video_f::request_size; }
+    virtual int getPDUSize() { return request_size; }
     virtual simtime_t getNextOn(simtime_t ct) { return ct; }
     virtual void setNextUntil() { until = A + data_f::request_len;  nextRq = A + data_f::between_len; }
     virtual void setNextRate() { interval = data_f::request_interval; }

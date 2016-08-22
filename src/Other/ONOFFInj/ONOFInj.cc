@@ -16,17 +16,17 @@
 //double voice_f::idle_time = 9.0;
 //double voice_f::burst_time = 3.0;
 
-int min_pdu_len;
-int max_pdu_len;
-double interval;
-double idle_time;
-double burst_time;
+//int min_pdu_len;
+//int max_pdu_len;
+//double interval;
+//double idle_time;
+//double burst_time;
 
 double client_t::ackT = 0.1;
-int video_f::request_size = 50;
-double video_f::idle_time = 9.0;
-int video_f::request_len = 2000;
-double video_f::request_interval = 0.01;
+//int video_f::request_size = 50;
+//double video_f::idle_time = 9.0;
+//int video_f::request_len = 2000;
+//double video_f::request_interval = 0.01;
 
 double server_t::ackT = 0.1;
 int server_t::pdu_size = 1350;
@@ -50,11 +50,11 @@ Inj_PDU * ONOFInj::genPDU(const pduReq & req) {
 
 
 void ONOFInj::initialize() {
-    min_pdu_len = (int)par("voice_min_pdu_len").doubleValue();
-    max_pdu_len = (int)par("voice_max_pdu_len").doubleValue();
-    interval = par("voice_interval").doubleValue();
-    idle_time = par("voice_idle_time").doubleValue();
-    burst_time = par("voice_burst_time").doubleValue();
+//    min_pdu_len = (int)par("voice_min_pdu_len").doubleValue();
+//    max_pdu_len = (int)par("voice_max_pdu_len").doubleValue();
+//    interval = par("voice_interval").doubleValue();
+//    idle_time = par("voice_idle_time").doubleValue();
+//    burst_time = par("voice_burst_time").doubleValue();
 
 
     //Init ini/fin times
@@ -235,13 +235,18 @@ void ONOFInj::startFlows() {
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
-            sendDirect(Monmsg, uniform(0.0, idle_time + burst_time), 0, targetModule, "radioIn");
+            sendDirect(Monmsg, uniform(0.0, f->idle_time + f->burst_time), 0, targetModule, "radioIn");
 
             //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
             nextFlowId++;
         }
         for (int i = 0; i < par("client_flows").longValue(); i++) {
             video_f * f = new video_f(nextFlowId, n, par("client_qos").stdstringValue());
+            f->request_size = uniform(par("client_min_data").doubleValue(), par("client_min_data").doubleValue());
+            f->idle_time = par("client_idle_time").doubleValue();
+            f->request_len = par("client_pdu_len").doubleValue();
+            f->request_interval = 1/uniform(par("client_min_rate").doubleValue(), par("client_max_rate").doubleValue());
+
             f->at.f = f;
             f->rt.f = f;
             f->kt.f = f;
@@ -258,7 +263,7 @@ void ONOFInj::startFlows() {
             Monmsg->rsv_ReqInfo.qos = f->QoS;
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
-            sendDirect(Monmsg, uniform(0.0, video_f::idle_time), 0, targetModule, "radioIn");
+            sendDirect(Monmsg, uniform(0.0, f->idle_time), 0, targetModule, "radioIn");
 
             nextFlowId++;
             //scheduleAt( simTime() + uniform(0.0, video_f::idle_time), &f->at);
