@@ -26,7 +26,7 @@ namespace FullPathMonitor {
             double QoSWeight;
             string nodeID;
             RMTPort * port;
-            int freeBW;
+            double freeBW;
             stepInfo(){
                 TotalWeight=0.0;
                 QoSWeight=0.0;
@@ -40,7 +40,7 @@ namespace FullPathMonitor {
             //list< pair<pair<TotalWeight,QoSWeight>,pair<nodeID, Port>>> steps;
             bool ok;
             string qos;
-            int BW;
+            double BW;
             string src;
             string dst;
             int flowID;
@@ -108,12 +108,12 @@ namespace FullPathMonitor {
         unsigned numberOfAppearances (vector<RMTPort *> Vector, RMTPort * Port);
         PathInfo selectBetterReroute (PathInfo orgPath, vector<PathInfo> posiblePaths);
         void UpdateBW(vector<stepInfo> orgPath, vector<stepInfo> dstPath, BWcontrol& BWdata, string qos);
-        vector<PathInfo> orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates);
+        vector<PathInfo> orderCandidatebyJam (vector<pair<int,double>> jams, vector<PathInfo> candidates);
         void AddBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
         void RemoveBW(vector<stepInfo> Path, BWcontrol& BWdata, string qos);
         void ApplyChanges (map<int,RerouteInfo> changeList);
 
-        map<string, int> QoS_BWreq;
+        map<string, double> QoS_BWreq;
         BWcontrol BWControl;
         map<string, RegisterInfo> nodeDataBase;
         //vector<PathInfo> posiblePaths;

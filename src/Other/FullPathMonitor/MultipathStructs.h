@@ -13,12 +13,12 @@ using namespace std;
 
 struct entryT {
     RMTPort * p;
-    int BW;
+    double BW;
     entryT(){
         p = nullptr;
         BW = 0;
     }
-    entryT(RMTPort * _p, int _bw){
+    entryT(RMTPort * _p, double _bw){
         p = _p;
         BW = _bw;
     }
@@ -28,7 +28,7 @@ struct cEntry {
 
     RMTPort * p;
 
-    int reqBW;
+    double reqBW;
 
     string QoS;
 
@@ -58,7 +58,7 @@ struct cEntry {
 
 struct UsedBW {
 
-    int bw;
+    double bw;
 
     UsedBW() {
 
@@ -90,19 +90,19 @@ struct BWcontrol {
 
     }
 
-    int getBWbyQoS(RMTPort * port, string QoS) {
+    double getBWbyQoS(RMTPort * port, string QoS) {
 
         return BW[port][QoS].bw;
 
     }
 
-    void addBW(RMTPort * port, string QoS, int bw) {
+    void addBW(RMTPort * port, string QoS, double bw) {
 
         BW[port][QoS].bw = BW[port][QoS].bw + bw;
 
     }
 
-    void removeBW(RMTPort * port, string QoS, int bw) {
+    void removeBW(RMTPort * port, string QoS, double bw) {
 
         BW[port][QoS].bw = BW[port][QoS].bw - bw;
 
@@ -124,11 +124,11 @@ struct Movement {
 
     int flow;
 
-    int reqBW;
+    double reqBW;
 
     string qos;
 
-    Movement(RMTPort * Org, RMTPort * Dst, int Flow, int ReqBW, string QoS) {
+    Movement(RMTPort * Org, RMTPort * Dst, int Flow, double ReqBW, string QoS) {
 
         org = Org;
 
@@ -148,9 +148,9 @@ struct RerouteInfo {
 
     vector<Movement> movements;
 
-    map<RMTPort *, int> ports; //map<port, BW>
+    map<RMTPort *, double> ports; //map<port, BW>
 
-    void addMov(RMTPort * org, RMTPort * dst, int flow, int reqBW, string qos) {
+    void addMov(RMTPort * org, RMTPort * dst, int flow, double reqBW, string qos) {
 
         Movement mov(org, dst, flow, reqBW, qos);
 

@@ -220,7 +220,7 @@ RMTQueue * QTAMonitor::getNext(RMTPort * port) {
     Mux * mux = muxs[port];
     if(mux == nullptr) { error("!!! QTAMonitor, mux not started!"); }
     RMTQueue * q = mux->getNext();
-    if(q!=nullptr) {
+    if((q!=nullptr)&&(q->getLength()>0)){
         cPacket * p = const_cast<cPacket*>(q->getFirstPDU());
         long arrival = PDUarrival[p];
         PDUarrival.erase(p);

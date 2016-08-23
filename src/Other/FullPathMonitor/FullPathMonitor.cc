@@ -181,7 +181,7 @@ namespace FullPathMonitor {
 
         BWcontrol BWaux = BWControl;
         map<int,RerouteInfo> changeList; //map<flowid,RerouteInfo>
-        vector<pair<int,int>> jams(reroutePaths.size(),make_pair(0, 0));//pair<numberofJams, minBW>
+        vector<pair<int,double>> jams(reroutePaths.size(),make_pair(0, 0));//pair<numberofJams, minBW>
         PathInfo finalPath;
         finalPath.ok=false;
 
@@ -194,7 +194,7 @@ namespace FullPathMonitor {
             }
         }
         vector<PathInfo> candidatesReroute;
-        vector<pair<int,int>> candidatesjams;
+        vector<pair<int,double>> candidatesjams;
         int min = INFINITY;
         for(unsigned int i = 0; i<reroutePaths.size(); i++){
             if(jams[i].first<min){
@@ -341,7 +341,7 @@ namespace FullPathMonitor {
         }
     }
 
-    vector<FullPathMonitor::PathInfo> FullPathMonitor::orderCandidatebyJam (vector<pair<int,int>> jams, vector<PathInfo> candidates){
+    vector<FullPathMonitor::PathInfo> FullPathMonitor::orderCandidatebyJam (vector<pair<int,double>> jams, vector<PathInfo> candidates){
 
         vector<PathInfo> orderedPaths;
         while(candidates.size()>0){
@@ -611,7 +611,7 @@ namespace FullPathMonitor {
     }
     void FullPathMonitor::finish(){
 
-        map<RMTPort *, map<string, int>> portUsage;
+        map<RMTPort *, map<string, double>> portUsage;
         for(auto it : orderedCache.List){
             for(auto it2 : it.steps){
                 if((portUsage.count(it2.port)>0)and(portUsage[it2.port].count(it.qos)>0)){

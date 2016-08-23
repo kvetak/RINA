@@ -39,7 +39,7 @@ void SimpleQoSGenerator::insertedFlow(const Address &addr, const QoSCube &qos, R
 
     if (port != nullptr)
     {
-        int bw = qos.getAvgBand();
+        double bw = qos.getAvgBand();
         if(e->best.p == nullptr) {
             fwd->setPort(port, bw);
             e->best.BW = bw;

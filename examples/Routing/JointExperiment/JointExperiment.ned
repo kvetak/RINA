@@ -110,7 +110,16 @@ network JointExperiment
             @display("p=1037,111");
         }
         Exit: OFInjRouter {
-            @display("p=580,41");
+            @display("p=450,41");
+        }
+        Exit2: OFInjRouter {
+            @display("p=534,41");
+        }
+        Exit3: OFInjRouter {
+            @display("p=618,41");
+        }
+        Exit4: OFInjRouter {
+            @display("p=696,41");
         }
     connections:
 
@@ -142,7 +151,12 @@ network JointExperiment
         AS2.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
         AS3.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS6.medium++;
         AS4.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> AS5.medium++;
-        AS5.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> Exit.medium++;
-        AS6.medium++ <--> DatarateChannel {  datarate = 1Gbps; } <--> Exit.medium++;
-
+        AS5.medium++ <--> Exit.medium++;
+        AS6.medium++ <--> Exit.medium++;
+        AS5.medium++ <--> Exit2.medium++;
+        AS6.medium++ <--> Exit2.medium++;
+        AS5.medium++ <--> Exit3.medium++;
+        AS6.medium++ <--> Exit3.medium++;
+        AS5.medium++ <--> Exit4.medium++;
+        AS6.medium++ <--> Exit4.medium++;
 }
