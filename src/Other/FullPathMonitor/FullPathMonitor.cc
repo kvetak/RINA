@@ -61,7 +61,7 @@ namespace FullPathMonitor {
                         steps.push_back(it.steps[i].port);
                     }
                     for(unsigned j=0; j < correctPaths.size(); j++){
-                        if(numberOfAppearances(steps,correctPaths[j].steps[i].port)<correctPaths.size()){
+                        if(numberOfAppearances(steps,correctPaths[j].steps[i].port)){
                             if(auxweightTotal[j]>correctPaths[j].steps[i].TotalWeight){
                                 auxweightTotal[j]=correctPaths[j].steps[i].TotalWeight;
                             }

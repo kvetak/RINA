@@ -104,6 +104,8 @@ protected:
 
     map<RMTPort *, WeightInfo> weights; //map<qos, map<port, weight>>
 
+    map<int, int> translateId; //map<flowid, flowidreal>
+
     BWcontrol BWControl;
 
     double cleanCache_t;

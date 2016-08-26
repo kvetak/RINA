@@ -242,9 +242,9 @@ void ONOFInj::startFlows() {
         }
         for (int i = 0; i < par("client_flows").longValue(); i++) {
             video_f * f = new video_f(nextFlowId, n, par("client_qos").stdstringValue());
-            f->request_size = uniform(par("client_min_data").doubleValue(), par("client_min_data").doubleValue());
+            f->request_size = par("client_pdu_len").doubleValue();
             f->idle_time = par("client_idle_time").doubleValue();
-            f->request_len = par("client_pdu_len").doubleValue();
+            f->request_len = uniform(par("client_min_data").doubleValue(), par("client_max_data").doubleValue());
             f->request_interval = 1/uniform(par("client_min_rate").doubleValue(), par("client_max_rate").doubleValue());
 
             f->at.f = f;
