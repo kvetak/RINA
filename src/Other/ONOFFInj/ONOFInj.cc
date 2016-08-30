@@ -30,6 +30,7 @@ double client_t::ackT = 0.1;
 
 double server_t::ackT = 0.1;
 int server_t::pdu_size = 1350;
+int nextFlowId = 0;
 
 Define_Module(ONOFInj);
 
@@ -89,7 +90,7 @@ void ONOFInj::initialize() {
     src = ipc->par("ipcAddress").stdstringValue();
     srcAddr = Address(src.c_str(), dif.c_str());
     dstAddr = Address("", dif.c_str());
-    nextFlowId = 0;
+    //nextFlowId = 0;
     connID.setDstCepId(-1);
     header = par("header_size").longValue();
     received = 0;

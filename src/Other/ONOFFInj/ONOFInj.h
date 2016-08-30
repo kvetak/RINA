@@ -48,7 +48,7 @@ public :
     Address srcAddr, dstAddr;
 
     //Id for next created flow
-    int nextFlowId;
+    //int nextFlowId;
 
     //Flows
     map<int, sender_t *> senders;
