@@ -48,30 +48,20 @@ vector<RMTPort * > QoSMultipathMonitor_Simple::lookup(const PDU * pdu){
     int srccepid=pdu->getConnId().getSrcCepId();
 
     auto auxPdu = *pdu;
-    auto infPdu = auxPdu.getEncapsulatedMsg();
-    auto infPdu2 = infPdu->getEncapsulatedMsg();
+    //auto infPdu = infPdu->getEncapsulatedMsg();
+    //auto infPdu = infPdu->getEncapsulatedMsg();
 
     if(auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg() != nullptr){
 
-        auto decapsulatedPdu=auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg()->decapsulate();
+        //auto pdu4 = pdu3->decapsulate();
 
-        if(decapsulatedPdu->getEncapsulatedMsg() != nullptr)
-        {
+        //auto pdu5 = pdu4->getEncapsulatedMsg();
+        //auto pdu6 = pdu5->getEncapsulatedMsg();
 
-            //auto pdu4 = auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg()->decapsulate();
 
-            //auto pdu5 = pdu4->getEncapsulatedMsg();
-            //auto pdu6 = dynamic_cast<PDU*>(pdu5->getEncapsulatedMsg());
-            PDU* infPdu = dynamic_cast<PDU*>(decapsulatedPdu->getEncapsulatedMsg()->getEncapsulatedMsg());
-            srccepid=infPdu->getConnId().getSrcCepId();
-            translateId[pdu->getConnId().getSrcCepId()]=srccepid;
-        }
-        else{
-            srccepid=translateId[pdu->getConnId().getSrcCepId()];
 
-        }
-
-        //PDU* infPdu = dynamic_cast<PDU*>(auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg()->decapsulate()->getEncapsulatedMsg()->getEncapsulatedMsg());
+        PDU* infPdu = dynamic_cast<PDU*>(auxPdu.getEncapsulatedMsg()->getEncapsulatedMsg()->decapsulate()->getEncapsulatedMsg()->getEncapsulatedMsg());
+        srccepid=infPdu->getConnId().getSrcCepId();
     }
     cEntry * e = &cache[dstAddr][srccepid];
     next = e->p;
