@@ -63,6 +63,10 @@ class Delimiting : public cSimpleModule
     /* Queues for data passing from FAI (up) to EFCPI (down) */
     std::vector<PDUData*> pduDataQOut;
 
+     /* Signals and receivers */
+    simsignal_t sigDelimitCompSDURcvd;
+    simsignal_t sigDelimitCompSDUDelay;
+
 
 
     unsigned int sduSeqNum;

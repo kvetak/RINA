@@ -25,7 +25,17 @@ package rina.src.DIF.Delimiting;
 
 simple Delimiting
 {
-    @display("i=block/subqueue");
+    
+    
+    parameters:
+        @display("i=block/subqueue");
+//        @signal[Delimiting-CompleteSDURcvd](type=cMessage);
+        @signal[delDelay](type=cMessage);
+//        @signal[Delimiting-CompleteSDUDelay](type=int);
+        @signal[delimitDelay](type=int);
+        @statistic[delDelay](title="delay"; source="messageAge(delDelay)"; unit=s; record=histogram,vector; interpolationmode=none);
+        @statistic[delimitDelay](title="delay2"; source="delimitDelay"; unit=s; record=histogram,vector; interpolationmode=none);
+        
     
     gates:
         inout northIo; //towards FAI

@@ -149,6 +149,10 @@ extern const char* SIG_RIBD_RoutingUpdate;
 extern const char* SIG_EFCP_StopSending;
 extern const char* SIG_EFCP_StartSending;
 
+//Delimiting
+extern const char* SIG_Delimit_Comp_SDU_Rcvd;
+extern const char* SIG_Delimit_Comp_SDU_Delay;
+
 //VAR
 extern const char* SIG_VAR_ViFIB_Slave2Master;
 extern const char* SIG_VAR_ViFIB_Master2Slave;

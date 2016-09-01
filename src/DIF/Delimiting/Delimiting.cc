@@ -28,6 +28,8 @@
  */
 
 #include "Delimiting.h"
+#include "RINASignals.h"
+#include "ResultFilters.h"
 
 Define_Module(Delimiting);
 
@@ -46,6 +48,9 @@ void Delimiting::initialize(int step){
   sduSeqNum = 1;
 
   delimitingTimer = new DelimitingDelimitTimer;
+
+  sigDelimitCompSDURcvd = registerSignal("delDelay");
+  sigDelimitCompSDUDelay = registerSignal("delimitDelay");
 
 }
 
@@ -384,6 +389,9 @@ void Delimiting::handleMsgFromEfcpi(UserDataField* userDataField)
   //TODO A1: This is only if immediate = true, otherwise we should wait for some kind of read()
   for(auto it = sduDataQIn.begin(); it != sduDataQIn.end(); it = sduDataQIn.erase(it))
   {
+    emit(sigDelimitCompSDURcvd,(*it));
+//    emit(sigDelimitCompSDUDelay, simTime() - (*it)->getCreationTime());
+    emit(sigDelimitCompSDUDelay, 10);
     send((*it), northO);
   }
 }
