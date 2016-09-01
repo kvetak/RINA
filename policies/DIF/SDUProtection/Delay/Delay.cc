@@ -24,7 +24,12 @@
 
 Register_Class(Delay);
 
-void Delay::onPolicyInit(){}
+void Delay::onPolicyInit(){
+    inDelayTime= par("inDelayTime").doubleValue();
+    outDelayTime = par("outDelayTime").doubleValue();
+    inDelay = par("inDelay").boolValue();
+    outDelay = par("outDelay").boolValue();
+}
 
 void Delay::processPDU(cMessage* msg)
 {
@@ -32,18 +37,14 @@ void Delay::processPDU(cMessage* msg)
   if (!opp_strcmp(msg->getArrivalGate()->getName(), "protect$i"))
     {
 
-      if(par("inDelay").boolValue()){
-        delay = 1;
-      }
 
-      sendDelayed(msg, delay, gate("protect$o"));
+
+      sendDelayed(msg, inDelayTime, gate("protect$o"));
     }
     else if (!opp_strcmp(msg->getArrivalGate()->getName(), "unprotect$i"))
     {
 
-      if(par("outDelay").boolValue()){
-        delay = 1;
-      }
-      sendDelayed(msg, delay, gate("unprotect$o"));
+
+      sendDelayed(msg, outDelayTime, gate("unprotect$o"));
     }
 }

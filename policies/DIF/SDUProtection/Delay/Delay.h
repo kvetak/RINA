@@ -31,6 +31,12 @@ protected:
     // Called after initialize
     void onPolicyInit();
     virtual void processPDU(cMessage* msg);
+
+private:
+    double inDelayTime;
+    double outDelayTime;
+    bool inDelay;
+    bool outDelay;
 };
 
 #endif /* Delay_H_ */

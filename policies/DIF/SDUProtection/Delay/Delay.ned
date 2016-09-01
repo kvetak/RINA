@@ -28,6 +28,8 @@ simple Delay like IntSDUProtection
     parameters:
         bool inDelay = default(false);
         bool outDelay = default(false);
+        double inDelayTime  @unit(s) = default(0.0s);
+        double outDelayTime @unit(s) = default(0.0s);
     
     gates:
     	inout protect;
