@@ -136,6 +136,9 @@ const char* SIG_RIBD_RoutingUpdate              = "Routing-Update";
 const char* SIG_EFCP_StopSending                = "EFCP-StopSending";
 const char* SIG_EFCP_StartSending               = "EFCP-StartSending";
 
+const char* SIG_Delimit_Comp_SDU_Rcvd           = "Delimiting-CompleteSDURcvd";
+const char* SIG_Delimit_Comp_SDU_Delay          = "Delimiting-CompleteSDUDelay";
+
 
 //VAR
 const char* SIG_VAR_ViFIB_Slave2Master          = "VAR-ViFIB-Slave2Master";
