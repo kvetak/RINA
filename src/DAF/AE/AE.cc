@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include "AE.h"
-
+#include "Socket.h"
 Define_Module(AE);
 
 AE::AE() :
@@ -154,6 +154,10 @@ bool AE::createBindings(Flow& flow) {
     //Get Socket CDAP Gates
     cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
     cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
+    //Dirty hack
+    Socket* socket = dynamic_cast<Socket*>(SocketMod);
+    socket->setFlow(&flow);
 
 
     //CDAPParent Module gates

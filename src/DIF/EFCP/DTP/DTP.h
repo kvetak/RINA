@@ -26,6 +26,9 @@
 #include <omnetpp.h>
 #include <vector>
 
+#include "RINASignals.h"
+#include "ExternConsts.h"
+
 #include "DTPState.h"
 #include "DTPTimers_m.h"
 #include "DTCP.h"

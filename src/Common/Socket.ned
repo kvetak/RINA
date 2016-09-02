@@ -27,6 +27,8 @@ simple Socket
     parameters:
         @display("i=block/queue");
         @class(Socket);
+        @signal[Socket-QueueInfo](type=QueueInfo?);
+        
     gates:
         inout cdapIo;
         inout southIo[];

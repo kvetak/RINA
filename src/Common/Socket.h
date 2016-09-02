@@ -32,13 +32,28 @@
 
 #include <omnetpp.h>
 #include "QueueInfo.h"
+#include <queue>
+#include "Flow.h"
 
 class Socket : public cSimpleModule
 {
+private:
+    bool readImm;
+    std::queue<cMessage*> toAE;
+    Flow* flow;
+
+    //signals
+    simsignal_t sigSocketQueueInfo;
+
+    int inputQCapacity; // input from network
+
   public:
     Socket();
     virtual ~Socket();
     void handleMessage(cMessage* msg);
+    void initialize(int step);
+    Flow* getFlow() const;
+    void setFlow(Flow* flow);
 };
 
 #endif /* SOCKET_H_ */

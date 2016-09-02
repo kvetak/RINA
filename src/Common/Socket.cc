@@ -34,6 +34,23 @@ Define_Module(Socket);
 
 Socket::Socket()
 {
+    readImm = true;
+    inputQCapacity = 10;
+}
+
+Flow* Socket::getFlow() const {
+    return flow;
+}
+
+void Socket::initialize(int step) {
+
+    if(step == 2){
+        sigSocketQueueInfo = registerSignal(SIG_Socket_QueueInfo);
+    }
+}
+
+void Socket::setFlow(Flow* flow) {
+    this->flow = flow;
 }
 
 Socket::~Socket()
@@ -43,7 +60,15 @@ Socket::~Socket()
 void Socket::handleMessage(cMessage* msg) {
   std::string str = msg->getArrivalGate()->getName();
   if(strstr(msg->getArrivalGate()->getName(), "southIo$i") != NULL){
-    send(msg,"cdapIo$o");
+
+      if(readImm){
+          send(msg,"cdapIo$o");
+      }else{
+          toAE.push(msg);
+          //emit notify AE, there is msg waiting to be read
+          //emit notify EFCP
+
+      }
   }
   else { //if(strstr(msg->getArrivalGate()->getName(), "cdapIo$i") != NULL){
     send(msg,"southIo$o", 0);
