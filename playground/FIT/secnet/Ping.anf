@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scave:Analysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:scave="http://www.omnetpp.org/omnetpp/scave">
+  <inputs>
+    <inputs name="/rina/playground/FIT/secnet/results/SDU_Size-0.vec"/>
+    <inputs name="/rina/playground/FIT/secnet/results/SDU_Size-1.vec"/>
+    <inputs name="/rina/playground/FIT/secnet/results/SDU_Size-2.vec"/>
+    <inputs name="/rina/playground/FIT/secnet/results/SDU_Size.sca"/>
+  </inputs>
+  <datasets>
+    <datasets name="delDelay">
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size-0.vec) AND attr:configname(Ping) AND attr:runnumber(0) AND module(secnet.host1.ipcProcess1.efcp.delimiting_47954) AND name(delDelay:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size-2.vec) AND attr:configname(Ping) AND attr:runnumber(2) AND module(secnet.host1.ipcProcess1.efcp.delimiting_52932) AND name(delDelay:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size-1.vec) AND attr:configname(Ping) AND attr:runnumber(1) AND module(secnet.host1.ipcProcess1.efcp.delimiting_39053) AND name(delDelay:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Apply" operation="mean"/>
+      <items xsi:type="scave:ScatterChart" name="" xDataPattern="module(secnet.host1.ipcProcess1.efcp.delimiting_39053) AND name(delDelay:vector)">
+        <isoDataPattern>module(secnet.host1.ipcProcess1.efcp.delimiting_39053) AND name(delDelay:vector)</isoDataPattern>
+        <isoDataPattern>module(secnet.host1.ipcProcess1.efcp.delimiting_47954) AND name(delDelay:vector)</isoDataPattern>
+        <isoDataPattern>module(secnet.host1.ipcProcess1.efcp.delimiting_52932) AND name(delDelay:vector)</isoDataPattern>
+      </items>
+    </datasets>
+    <datasets name="delDelayMean">
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size-0.vec) AND attr:configname(Ping) AND attr:runnumber(0) AND module(secnet.host1.ipcProcess1.efcp.delimiting_47954) AND name(delDelay:vector)" type="VECTOR"/>
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size-1.vec) AND attr:configname(Ping) AND attr:runnumber(1) AND module(secnet.host1.ipcProcess1.efcp.delimiting_39053) AND name(delDelay:vector)" type="VECTOR"/>
+      <items xsi:type="scave:LineChart" name="" lineNameFormat="">
+        <properties name="Line.Type" value="Linear"/>
+      </items>
+    </datasets>
+    <datasets name="delDelayMeanScalar">
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size.sca) AND attr:configname(Ping) AND attr:runnumber(0) AND module(secnet.host1.ipcProcess1.efcp.delimiting_47954) AND name(delDelay:histogram:mean)"/>
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size.sca) AND attr:configname(Ping) AND attr:runnumber(1) AND module(secnet.host1.ipcProcess1.efcp.delimiting_39053) AND name(delDelay:histogram:mean)"/>
+      <items xsi:type="scave:Add" filterPattern="file(/rina/playground/FIT/secnet/results/SDU_Size.sca) AND attr:configname(Ping) AND attr:runnumber(2) AND module(secnet.host1.ipcProcess1.efcp.delimiting_52932) AND name(delDelay:histogram:mean)"/>
+      <items xsi:type="scave:BarChart" name="">
+        <groupByFields>run</groupByFields>
+      </items>
+      <items xsi:type="scave:HistogramChart" name="">
+        <properties name="Axes.Grid" value="None"/>
+        <properties name="Hist.Data" value="Count"/>
+      </items>
+    </datasets>
+  </datasets>
+  <chartSheets>
+    <chartSheets name="default" charts="//@datasets/@datasets.1/@items.2 //@datasets/@datasets.0/@items.4 //@datasets/@datasets.2/@items.3 //@datasets/@datasets.2/@items.4"/>
+  </chartSheets>
+</scave:Analysis>

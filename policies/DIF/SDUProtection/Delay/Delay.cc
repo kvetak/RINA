@@ -34,17 +34,19 @@ void Delay::onPolicyInit(){
 void Delay::processPDU(cMessage* msg)
 {
   double delay = 0;
+  cPacket* packet = dynamic_cast<cPacket*>(msg);
+
   if (!opp_strcmp(msg->getArrivalGate()->getName(), "protect$i"))
     {
+      delay = inDelayTime * packet->getByteLength()/900;
 
 
-
-      sendDelayed(msg, inDelayTime, gate("protect$o"));
+      sendDelayed(msg, delay, gate("protect$o"));
     }
     else if (!opp_strcmp(msg->getArrivalGate()->getName(), "unprotect$i"))
     {
 
-
-      sendDelayed(msg, outDelayTime, gate("unprotect$o"));
+        delay = outDelayTime * packet->getByteLength()/900;
+      sendDelayed(msg, delay, gate("unprotect$o"));
     }
 }

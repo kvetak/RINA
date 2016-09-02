@@ -224,6 +224,8 @@ void AEPing::processMRead(CDAPMessage* msg) {
         obj.objectVal = (cObject*)(&myPath);
         pong->setObject(obj);
 
+        pong->setByteLength(msg->getByteLength());
+
         sendData(FlowObject, pong);
     }
 }
