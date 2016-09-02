@@ -30,6 +30,8 @@
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
+#include "RINASignals.h"
+#include "ExternConsts.h"
 #include <omnetpp.h>
 #include "QueueInfo.h"
 #include <queue>
