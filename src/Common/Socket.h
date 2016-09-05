@@ -49,6 +49,8 @@ private:
 
     int inputQCapacity; // input from network
 
+    QueueInfo* makeQueueInfo();
+
   public:
     Socket();
     virtual ~Socket();
@@ -56,6 +58,12 @@ private:
     void initialize(int step);
     Flow* getFlow() const;
     void setFlow(Flow* flow);
+
+  protected:
+    int numInitStages() const
+    {
+      return 4;
+    }
 };
 
 #endif /* SOCKET_H_ */

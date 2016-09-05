@@ -116,6 +116,11 @@ void EFCP::initialize(int step){
   lisEFCPCongestFromRA = new LisEFCPCongestFromRA(efcpTable);
   getParentModule()->getParentModule()->subscribe(SIG_RA_ExecuteSlowdown, lisEFCPCongestFromRA);
 
+  lisEFCPQueueInfoFromAE = new LisEFCPQueueInfoFromAE(efcpTable);
+  getParentModule()->getParentModule()->getParentModule()->subscribe(SIG_Socket_QueueInfo, lisEFCPQueueInfoFromAE);
+
+
+
 }
 
 

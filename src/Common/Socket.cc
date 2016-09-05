@@ -57,20 +57,36 @@ Socket::~Socket()
 {
 }
 
+QueueInfo* Socket::makeQueueInfo()
+{
+
+  QueueInfo* qi = new QueueInfo();
+  qi->setCapacity(inputQCapacity);
+  qi->setOccupied(toAE.size());
+  qi->setFlow(flow);
+  return qi;
+}
+
 void Socket::handleMessage(cMessage* msg) {
   std::string str = msg->getArrivalGate()->getName();
   if(strstr(msg->getArrivalGate()->getName(), "southIo$i") != NULL){
 
       if(readImm){
           send(msg,"cdapIo$o");
+          QueueInfo* qi = makeQueueInfo();
+              emit(sigSocketQueueInfo, qi);
       }else{
           toAE.push(msg);
           //emit notify AE, there is msg waiting to be read
           //emit notify EFCP
+      QueueInfo* qi = makeQueueInfo();
+          emit(sigSocketQueueInfo, qi);
 
       }
   }
   else { //if(strstr(msg->getArrivalGate()->getName(), "cdapIo$i") != NULL){
     send(msg,"southIo$o", 0);
+    QueueInfo* qi = makeQueueInfo();
+        emit(sigSocketQueueInfo, qi);
   }
 }

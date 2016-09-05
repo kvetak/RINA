@@ -38,7 +38,8 @@ class QueueInfo : public cObject
   private:
     Flow* flow;
     unsigned int capacity;
-    unsigned int free;
+    unsigned int occupied;
+//    unsigned int free;
 
   public:
     QueueInfo();
@@ -48,7 +49,8 @@ class QueueInfo : public cObject
     Flow* getFlow() const;
     void setFlow(Flow* flow);
     unsigned int getFree() const;
-    void setFree(unsigned int free);
+    unsigned int getOccupied() const;
+    void setOccupied(unsigned int occupied);
 };
 
 #endif /* QUEUEINFO_H_ */

@@ -55,15 +55,26 @@ void QueueInfo::setFlow(Flow* flow)
   this->flow = flow;
 }
 
-unsigned int QueueInfo::getFree() const
+unsigned int QueueInfo::getOccupied() const
 {
-  return free;
+  return occupied;
 }
 
-void QueueInfo::setFree(unsigned int free)
+void QueueInfo::setOccupied(unsigned int occupied)
 {
-  this->free = free;
+  this->occupied = occupied;
 }
+
+unsigned int QueueInfo::getFree() const
+{
+  if(occupied > capacity){
+    return 0;
+  }else{
+    return capacity - occupied;
+  }
+
+}
+
 
 QueueInfo::~QueueInfo()
 {

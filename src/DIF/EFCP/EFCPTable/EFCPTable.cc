@@ -76,12 +76,12 @@ EFCPTableEntry* EFCPTable::getEntryByFlow(const Flow* flow){
   for(TEFCPTable::iterator it = this->efcpTable.begin(); it != efcpTable.end(); ++it){
 
 
-    if((*it)->getFlow() == flow){
+    if((*it)->getFlow()->getConId() == flow->getConId()){
       return (*it);
     }
   }
 
-  return NULL;
+  return nullptr;
 
 }
 

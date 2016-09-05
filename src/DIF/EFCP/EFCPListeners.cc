@@ -76,8 +76,14 @@ void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cOb
 void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
 
+  //TODO
+  return;
   QueueInfo* qi = (QueueInfo*) obj;
   EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
+
+  if(entry == nullptr){
+    return;
+  }
   DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
 
   if(dtp != NULL){
