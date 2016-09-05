@@ -37,12 +37,13 @@ typedef vector<index_t> vPortsIndex;
 typedef vPortsIndex vGroups;
 typedef map<addr_t, index_t> addrIndex;
 
+
 enum exception_m { UNREACHABLE, COMMON, ANY, GROUP, INVERSE, INVERSEGROUP };
 
 struct mask_t {
     addr_t v;
     unsigned char l;
-    mask_t(const addr_t & _v, const maskl_t &_l) : v(_v), l(_l) {}
+    mask_t(const addr_t & _v, const unsigned char &_l) : v(_v), l(_l) {}
 
     bool operator<(const mask_t & o) const {
         if(l > o.l) { return true; }
@@ -76,7 +77,6 @@ struct grouprange_t {
         group(_group), first(_first), total(_total) {};
 };
 
-
 inline addr_t parseRawAddr(const string & raw) { return std::stoul (raw, nullptr, 16);}
 
 
@@ -87,3 +87,12 @@ inline addr_t getAddr(const addr_t & zone, const addr_t & id) { return id | (zon
 
 inline rand_t hashFlow(addr_t src, addr_t dst, addr_t src_cepid, addr_t dst_cepid) { return src ^ dst ^ src_cepid ^ dst_cepid; }
 
+
+struct addr_s {
+    addr_t addr;
+    addr_t Z;
+    addr_t Id;
+
+    addr_s(const addr_t & raw) :
+        addr(raw), Z(getZone(raw)), Id(getIdentifier(raw)) {}
+};

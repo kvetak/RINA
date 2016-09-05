@@ -120,6 +120,11 @@ void GREFWD::removePort(const index_t & index) {
 void GREFWD::addException(const mask_t & mask, const exception_t & e) {
     exceptions[mask] = e;
 }
+
+void GREFWD::setExceptions(const map<mask_t, exception_t> & _exceptions) {
+    exceptions = _exceptions;
+}
+
 void GREFWD::removeException(const mask_t & mask) {
     exceptions.erase(mask);
 }
@@ -139,24 +144,62 @@ void GREFWD::finish() {
         linkFails |= (ports[i] == nullptr);
     }
 
-    if(linkFails) {
+    if(linkFails || !exceptions.empty()) {
         cout <<getFullPath()<<endl;
-        for(unsigned int i = 0; i< ports.size(); i++) {
-            cout << "Port " << (int)i << " => "<< (ports[i]?"OK":"NULL")<<endl;
-        }
-        for(unsigned int i = 1; i < groups.size(); i++) {
-            cout << "Group " << (int)i << " :";
-            for(auto g : groups[i]) {
-                cout << " "<< (int)g ;
+        if(linkFails) {
+            for(unsigned int i = 0; i< ports.size(); i++) {
+                cout << "Port " << (int)i << " => "<< (ports[i]?"OK":"NULL")<<endl;
             }
-            cout <<endl;
+            for(unsigned int i = 1; i < groups.size(); i++) {
+                cout << "Group " << (int)i << " :";
+                for(auto g : groups[i]) {
+                    cout << " "<< (int)g ;
+                }
+                cout <<endl;
+            }
+            cout << "Neis"<<endl;
+            for(auto ni : neiId) {
+                cout<<hex<< (int)ni.first << " -> "<< (int)ni.second <<endl;
+            }
         }
-        cout << "Neis"<<endl;
-        for(auto ni : neiId) {
-            cout<<hex<< (int)ni.first << " -> "<< (int)ni.second <<endl;
+        if(!exceptions.empty()) {
+            cout << "Exceptions"<<endl;
+            for(auto me : exceptions) {
+                cout << "  "<< me.first.v << "\\"<< (int)me.first.l << endl;
+                switch(me.second.mode) {
+                    case COMMON : { // Listing possible neighbours
+                        cout << "     - COMMON : ";
+                        for(auto i : me.second.list ) {
+                            cout << (int)i<< " ";
+                        }
+                        cout << endl;
+                    } break;
+                    case ANY : { // Any neighbour possible
+                        cout << "     - ANY ";
+                    } break;
+                    case GROUP : { // Only Group neighbour possible
+                        cout << "     - GROUP "<<(int)me.second.group<<endl;
+                    } break;
+                    case INVERSE : { // Any neighbour - Exceptions possible
+                        cout << "     - INVERSE : ";
+                        for(auto i : me.second.list ) {
+                            cout << (int)i<< " ";
+                        }
+                        cout << endl;
+                    } break;
+                    case INVERSEGROUP : { // Group neighbour - Exceptions possible
+                        cout << "     - INVERSE - GROUP "<<(int)me.second.group<<" : ";
+                        for(auto i : me.second.list ) {
+                            cout << (int)i<< " ";
+                        }
+                        cout << endl;
+                    } break;
+                    case UNREACHABLE :
+                        cout << "     - UNREACHABLE ";
+                }
+            }
         }
     }
-
     exceptions.clear();
     ports.clear();
 }

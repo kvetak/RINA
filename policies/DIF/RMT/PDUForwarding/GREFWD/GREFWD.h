@@ -53,6 +53,7 @@ public:
 
     //Adding or removing exceptions
     void addException(const mask_t & mask, const exception_t & e);
+    void setExceptions(const map<mask_t, exception_t> & _exceptions);
     void removeException(const mask_t & mask);
 
 protected:

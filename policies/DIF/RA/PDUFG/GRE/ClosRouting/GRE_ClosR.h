@@ -33,6 +33,18 @@ using namespace std;
 
 typedef unsigned short mType;
 
+struct Errors {
+    map<addr_t, map<addr_t, set<addr_t> > > PT2F;
+    map<addr_t, map<addr_t, set<addr_t> > > PF2T;
+    map<addr_t, map<addr_t, set<addr_t> > > PF2S;
+    map<addr_t, map<addr_t, set<addr_t> > > FP2T;
+    map<addr_t, map<addr_t, set<addr_t> > > FP2S;
+    map<addr_t, map<addr_t, set<addr_t> > > FS2P;
+    map<addr_t, set<addr_t> > F2P;
+    map<addr_t, set<addr_t> > P2F;
+    map<addr_t, vector<bool> > P;
+};
+
 class GRE_ClosR: public IntPDUFG, public FailureNode {
 public:
     virtual void insertedFlow(const Address & addr, const QoSCube & qos, port_t port);

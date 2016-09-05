@@ -28,9 +28,9 @@ void GRE_ClosR::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * 
 
     fwd->addPort(id, port);
     bool changeStatus = (neiPorts[d] == nullptr);
+    aliveNeis[id] = true;
     neiPorts[d] = port;
     if(changeStatus){
-        aliveNeis[id] = true;
         resetNeiGroups();
 
         rt->onLink(neiLinks[d]);
@@ -52,23 +52,6 @@ void GRE_ClosR::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * p
     routingUpdated();
 }
 
-//Routing has processes a routing update
-void GRE_ClosR::routingUpdated(){
-    cout << hex;
-    cout << "Routing updated "<< (myaddr) << endl;
-    nodesStatus st = rt->getProblems();
-    for(elink_t & l : st.ownFailures) {
-        cout << "  - Own " << l
-                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
-                << endl;
-    }
-    for(elink_t & l : st.othersFailures) {
-        cout <<"  - Others " << l
-                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
-                << endl;
-    }
-    cout << dec;
-}
 
 // Called after initialize
 void GRE_ClosR::onPolicyInit(){
@@ -125,4 +108,24 @@ string GRE_ClosR::getRaw(const addr_t & dst_addr) {
     return dst_raw;
 }
 
+//Routing has processes a routing update
+void GRE_ClosR::routingUpdated(){
+    nodesStatus st = rt->getProblems();
+
+    cout << hex;
+    cout << "Routing updated "<< (myaddr) << endl;
+    for(elink_t & l : st.ownFailures) {
+        cout << "  - Own " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    for(elink_t & l : st.othersFailures) {
+        cout <<"  - Others " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    cout << dec;
+
+
+}
 }
