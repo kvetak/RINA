@@ -66,6 +66,39 @@ bool isPrefix(std::string prefix, std::string s) {
     return std::mismatch(prefix.begin(), prefix.end(), s.begin()).first == prefix.end();
 }
 
+int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst) {
+    int r = 0;
+    for(int i = 0; i< A.size(); i++) {
+        if(A[i] || B[i]) {
+            dst[i] = true;
+            r++;
+        } else {
+            dst[i] = false;
+        }
+    }
+    return r;
+}
+
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B) {
+    for(int i = 0; i< A.size(); i++) {
+        if(A[i] && !B[i]) { return false;}
+    }
+    return true;
+}
+
+int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst){
+    int r = 0;
+    for(int i = 0; i< A.size(); i++) {
+        if(A[i] && B[i]) {
+            dst[i] = true;
+            r++;
+        } else {
+            dst[i] = false;
+        }
+    }
+    return r;
+}
+
 void setPolicyDisplayString(cModule* mod, const char* str)
 {
     if (ev.isGUI())

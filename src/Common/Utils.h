@@ -56,6 +56,25 @@ std::string join(const std::vector<std::string> &elems, const unsigned int n, co
  */
 bool isPrefix(std::string prefix, std::string s);
 
+
+/*
+ * A OR B into dst
+ * return number of true positions
+ */
+int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst);
+
+/*
+ * A AND B into dst
+ * return number of true positions
+ */
+int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst);
+
+/*
+ * A included into B
+ * return true if each true position in A is true in B
+ */
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B);
+
 /**
  * Display the selected policy next to given policy module.
  *
