@@ -27,10 +27,10 @@ Define_Module(AEMonitor);
 AEMonitor::AEMonitor() {
     object_t object;
     object.objectClass = "int";
-    object.objectName = "time";
+    object.objectName = "ping";
     int time = 0;
     object.objectVal = (cObject*)(&time);
-    obj = object;
+    objPing = object;
 }
 
 AEMonitor::~AEMonitor() {
@@ -45,35 +45,66 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
     object.objectInstance = -1;
     object.objectVal = NULL;
     ping->setObject(object);
-    ping->setByteLength(50);
+    ping->setByteLength((int)par("size").longValue());
 
     //Send message
     sendData(FlowObject, ping);
 }
 
+bool AEMonitor::onA_write(APIReqObj* obj) {
+    CDAP_M_Write* write = new CDAP_M_Write("M_WRITE(stream)");
+    write->setObject(*obj->getObj());
+    write->setByteLength((int)par("size").longValue());
+
+    //Send message
+    sendData(FlowObject, write);
+}
 
 void AEMonitor::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
     object_t object = msg1->getObject();
 
-    if ( strstr(object.objectName.c_str(), obj.objectName.c_str()) ) {
+    if ( strstr(object.objectName.c_str(), objPing.objectName.c_str()) ) {
         CDAP_M_Read_R* pong = new CDAP_M_Read_R("M_READ_R(ping)");
         object_t object;
-        object.objectName = obj.objectName;
+        object.objectName = objPing.objectName;
         object.objectClass = "int";
         object.objectInstance = -1;
-        object.objectVal = (cObject*)(obj.objectVal);
+        object.objectVal = (cObject*)(objPing.objectVal);
         pong->setObject(object);
-        pong->setByteLength(50);
+        pong->setByteLength((int)par("size").longValue());
 
         //inc object val
-        obj.objectVal += 1;
+        objPing.objectVal += 1;
 
         //Send message
         sendData(FlowObject, pong);
     }
     else
         delete msg;
+}
+
+void AEMonitor::processMWrite(CDAPMessage* msg) {
+    CDAP_M_Write* msg1 = check_and_cast<CDAP_M_Write*>(msg);
+    object_t obj = msg1->getObject();
+
+    objStream = obj;
+
+    CDAP_M_Write_R* wr = new CDAP_M_Write_R("M_WRITE_R(stream)");
+    object_t object;
+    object.objectName = objStream.objectName;
+    object.objectClass = objStream.objectClass;
+    object.objectInstance = objStream.objectInstance;
+    object.objectVal = objStream.objectVal;
+
+    result_t result;
+    result.resultValue = 0;
+
+    wr->setObject(object);
+    wr->setResult(result);
+
+    //Send message
+    sendData(FlowObject, wr);
 }
 
 void AEMonitor::processMReadR(CDAPMessage* msg) {
@@ -84,6 +115,18 @@ void AEMonitor::processMReadR(CDAPMessage* msg) {
     res->setObj(&object);
     res->setCDAPConId(cdapConId);
     res->setAPIResType(APIResult::A_GET_READ);
+
+    signalizeAEAPAPI(res);
+}
+
+void AEMonitor::processMWriteR(CDAPMessage* msg) {
+    CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
+    object_t object = msg1->getObject();
+
+    APIResult *res = new APIResult();
+    res->setObj(&object);
+    res->setCDAPConId(cdapConId);
+    res->setAPIResType(APIResult::A_GET_WRITE);
 
     signalizeAEAPAPI(res);
 }

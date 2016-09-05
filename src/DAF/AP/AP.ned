@@ -28,4 +28,5 @@ simple AP like APInst
         @display("i=block/telnet");        
         @class(AP);
         @signal[AE-Enrolled];
+        @signal[AP-AE-API];
 }

@@ -30,4 +30,6 @@ simple AEMonitor extends AE like IAE
         @class(AEMonitor);
         @signal[AP-AE-API];
         @signal[AE-AP-API];
+        
+        int size	@unit(B) = default(512B);
 }

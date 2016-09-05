@@ -32,6 +32,7 @@
 #define __RINA_DAFENROLLMENTSTATETABLE_H_
 
 #include <omnetpp.h>
+#include <string>
 #include "Flow.h"
 #include "DAFEnrollmentStateTableEntry.h"
 

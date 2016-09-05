@@ -32,11 +32,9 @@ APPing::~APPing() {
 
 void APPing::initialize() {
     AP::initialize();
-    if (!strcmp(this->getModuleByPath("^")->par("apName").stringValue(),"App1")) {
+    if (strcmp(par("dstApName").stringValue(),"AppErr")) {
         m1 = new cMessage("start");
-        //cMessage* m2 = new cMessage("start");
-        scheduleAt(simTime() + 20, m1);
-        //scheduleAt(simTime() + 25, m2);
+        scheduleAt(simTime() + par("startAt").longValue(), m1);
     }
 }
 
@@ -44,7 +42,7 @@ void APPing::handleMessage(cMessage *msg) {
     if(msg->isSelfMessage()) {
         if ( !strcmp(msg->getName(), "start") ) {
             invokeId = getNewInvokeID();
-            a_open(invokeId, "App2", "0", "AEMonitor", "-1");
+            a_open(invokeId, par("dstApName").stringValue(), "0", "AEMonitor", "-1");
         }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();
@@ -56,11 +54,11 @@ void APPing::handleMessage(cMessage *msg) {
 void APPing::onA_getOpen(APIResult* result) {
     if (result->getInvokeId() == invokeId) {
         conID = result->getCDAPConId();
-        a_read(conID, "time");
+        a_read(conID, "ping");
     }
 }
 
 void APPing::onA_getRead(APIResult* result) {
     value = (int*)(result->getObj()->objectVal);
-    a_read(conID, "time");
+    a_read(conID, "ping");
 }

@@ -75,8 +75,7 @@ void AP::onClose(APIResult* result) {
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
     if (this->isEnrolled == this->EnrollmentState::NOT_ENROLLED) {
         APNIPair* apnip = new APNIPair(
-                //TODO: change this App1 name to something configured probably!!!!!!
-        APNamingInfo(APN("App1"),
+        APNamingInfo(APN(this->getParentModule()->par("apName").stringValue()),
                     "0",
                     "Mgmt",
                     "0"),

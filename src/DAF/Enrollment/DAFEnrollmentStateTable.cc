@@ -58,7 +58,8 @@ void DAFEnrollmentStateTable::insert(DAFEnrollmentStateTableEntry entry) {
 DAFEnrollmentStateTableEntry* DAFEnrollmentStateTable::findEntryByDstAPN(const APN& apn) {
     for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {
         DAFEnrollmentStateTableEntry est = *it;
-        if (est.getRemote().getApn() == apn) {
+        if (est.getRemote().getApn() == apn &&
+                strstr(est.getRemote().getAename().c_str(), "mgmt")) {
             return &(*it);
         }
     }
@@ -88,7 +89,8 @@ bool DAFEnrollmentStateTable::isEnrolled(const APN& myApn) {
     for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {
         DAFEnrollmentStateTableEntry est = *it;
         if (est.getLocal().getApn() == myApn
-                && est.getDAFEnrollmentStatus() == DAFEnrollmentStateTableEntry::ENROLL_ENROLLED) {
+                && est.getDAFEnrollmentStatus() == DAFEnrollmentStateTableEntry::ENROLL_ENROLLED
+                && strstr(est.getRemote().getAename().c_str(), "mgmt")) {
             return true;
         }
     }

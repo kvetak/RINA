@@ -298,13 +298,13 @@ void AE::receiveData(CDAPMessage* msg) {
         Cace->receiveConnectRequest(msg);
     }
     //M_WRITE_Request
-    //else if (dynamic_cast<CDAP_M_Write*>(msg)) {
-    //    processMWrite(msg);
-    //}
+    else if (dynamic_cast<CDAP_M_Write*>(msg)) {
+        processMWrite(msg);
+    }
     //M_WRITE_Response
-    //else if (dynamic_cast<CDAP_M_Write_R*>(msg)) {
-    //    processMWriteR(msg);
-    //}
+    else if (dynamic_cast<CDAP_M_Write_R*>(msg)) {
+        processMWriteR(msg);
+    }
 
     delete msg;
 }
@@ -469,7 +469,12 @@ bool AE::deleteBindings(Flow& flow) {
 }
 
 void AE::processMReadR(CDAPMessage* msg) {
+}
 
+void AE::processMWrite(CDAPMessage* msg) {
+}
+
+void AE::processMWriteR(CDAPMessage* msg) {
 }
 
 

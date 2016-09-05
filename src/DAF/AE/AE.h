@@ -125,6 +125,8 @@ class AE : public AEBase
 
     virtual void processMRead(CDAPMessage* msg);
     virtual void processMReadR(CDAPMessage* msg);
+    virtual void processMWrite(CDAPMessage* msg);
+    virtual void processMWriteR(CDAPMessage* msg);
 
 };
 

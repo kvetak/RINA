@@ -31,11 +31,15 @@ public:
     AEMonitor();
     virtual ~AEMonitor();
     bool onA_read(APIReqObj* obj);
+    bool onA_write(APIReqObj* obj);
 
 private:
     void processMRead(CDAPMessage* msg);
     void processMReadR(CDAPMessage* msg);
-    object_t obj;
+    void processMWrite(CDAPMessage* msg);
+    void processMWriteR(CDAPMessage* msg);
+    object_t objPing;
+    object_t objStream;
 };
 
 #endif /* AEMONITOR_H_ */
