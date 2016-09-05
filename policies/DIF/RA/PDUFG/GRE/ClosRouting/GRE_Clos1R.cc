@@ -235,7 +235,7 @@ void GRE_ClosR1::routingUpdated() {
             //Check good paths
             vector<bool> valids = group2;
             for(auto _s : p2S.second) {
-                valids[_s-t] = false;
+                valids[_s] = false;
             }
             list.clear();
             for (addr_t i = 0; i < s; i++) {
