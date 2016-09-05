@@ -29,6 +29,8 @@
 
 #include <QueueInfo.h>
 
+Register_Class(QueueInfo);
+
 QueueInfo::QueueInfo()
 {
   // TODO Auto-generated constructor stub
