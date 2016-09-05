@@ -33,7 +33,19 @@ using namespace std;
 
 // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
 vector<RMTPort * > MiniTable::lookup(const PDU * pdu){
-    return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
+    vector<RMTPort* > ret;
+    string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
+    FWDTableIt it = table.find(dstAddr);
+
+    if(it != table.end()){
+        ret.push_back(it->second);
+    } else {
+        std::cout << this->getFullPath()<<endl;
+        std::cout << pdu->getDstAddr() << " not found "<<endl;
+        std::cout << toString() <<endl;
+    }
+
+    return ret;
 }
 vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos){
 
@@ -43,9 +55,6 @@ vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos)
 
     if(it != table.end()){
         ret.push_back(it->second);
-    } else {
-    //    std::cout << this->getFullPath()<<endl;
-    //    std::cout << dst << " not found "<<endl;
     }
 
     return ret;
