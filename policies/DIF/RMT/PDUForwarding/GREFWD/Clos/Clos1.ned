@@ -29,4 +29,6 @@ simple Clos1 like IntPDUForwarding
     parameters:
         @class(GRE::Clos1);
         @display("i=block/socket");
+        
+    	bool printAtEnd = default(false);
 }

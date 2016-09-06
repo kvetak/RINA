@@ -77,8 +77,9 @@ vPorts GREFWD::lookup(const Address &dst, const std::string& qos) {
         port_t & p = ports[i];
         if(p != nullptr) {
             ret.push_back(p);
-            return ret;
+            //return ret;
         }
+        return ret; //??
     }
 
     // Compute flow "hash"
@@ -139,16 +140,15 @@ void GREFWD::onPolicyInit() {
 void GREFWD::finish() {
     preFinish();
 
-    bool linkFails = false;
-    for(unsigned int i = 0; i< ports.size(); i++) {
-        linkFails |= (ports[i] == nullptr);
-    }
 
-    if(linkFails || !exceptions.empty()) {
+    if(par("printAtEnd").boolValue()) {
+
+        cout << hex;
+        cout << "Forwarding policy at "<<myaddr<<endl;
         cout <<getFullPath()<<endl;
-        if(linkFails) {
+
             for(unsigned int i = 0; i< ports.size(); i++) {
-                cout << "Port " << (int)i << " => "<< (ports[i]?"OK":"NULL")<<endl;
+                cout << "Port " << (int)i << " => "<< (ports[i]!=nullptr? "OK":"NULL")<<endl;
             }
             for(unsigned int i = 1; i < groups.size(); i++) {
                 cout << "Group " << (int)i << " :";
@@ -161,7 +161,7 @@ void GREFWD::finish() {
             for(auto ni : neiId) {
                 cout<<hex<< (int)ni.first << " -> "<< (int)ni.second <<endl;
             }
-        }
+
         if(!exceptions.empty()) {
             cout << "Exceptions"<<endl;
             for(auto me : exceptions) {
@@ -195,11 +195,13 @@ void GREFWD::finish() {
                         cout << endl;
                     } break;
                     case UNREACHABLE :
-                        cout << "     - UNREACHABLE ";
+                        cout << "     - UNREACHABLE "<<endl;
                 }
             }
         }
-    }
+        cout<<endl;
+        cout <<dec;
+     }
     exceptions.clear();
     ports.clear();
 }

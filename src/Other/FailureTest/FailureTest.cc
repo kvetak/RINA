@@ -33,7 +33,7 @@ void FailureTest::finish(){
 void FailureTest::handleMessage(cMessage * msg) {
     if(msg == killTimer) {
         if(alive.size() <= c) {
-            cout << "Kill all"<<endl;
+            cout << simTime() <<" - Kill all " <<alive.size()<<endl;
             for(auto & link : alive) {
                 for(auto m : link2Nodes[link]) {
                     m->killLink(link);

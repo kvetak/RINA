@@ -222,7 +222,7 @@ void GRE_ClosR0::routingUpdated() {
     for (auto pT2F : e.PT2F) {
         if(pT2F.second.empty()) { continue; }
         if (pT2F.first == zone) {
-            cout << "  current = skip "<< endl;
+//            cout << "  current = skip "<< endl;
 //            continue;
         }
         vector<bool> validsPod;

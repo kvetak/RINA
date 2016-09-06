@@ -30,4 +30,5 @@ simple GREFWD like IntPDUForwarding
         @class(GRE::GREFWD);
         @display("i=block/socket");
     	
+    	bool printAtEnd = default(false);
 }

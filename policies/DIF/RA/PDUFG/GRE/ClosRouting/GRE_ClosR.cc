@@ -36,6 +36,7 @@ void GRE_ClosR::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * 
         rt->onLink(neiLinks[d]);
         routingUpdated();
     }
+
 }
 void GRE_ClosR::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
     std::string dst = addr.getIpcAddress().getName();

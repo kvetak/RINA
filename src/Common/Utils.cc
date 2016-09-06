@@ -68,7 +68,7 @@ bool isPrefix(std::string prefix, std::string s) {
 
 int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst) {
     int r = 0;
-    for(int i = 0; i< A.size(); i++) {
+    for(unsigned int i = 0; i< A.size(); i++) {
         if(A[i] || B[i]) {
             dst[i] = true;
             r++;
@@ -80,7 +80,7 @@ int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> 
 }
 
 bool includedBv(std::vector<bool> & A, std::vector<bool> & B) {
-    for(int i = 0; i< A.size(); i++) {
+    for(unsigned int i = 0; i< A.size(); i++) {
         if(A[i] && !B[i]) { return false;}
     }
     return true;
@@ -88,7 +88,7 @@ bool includedBv(std::vector<bool> & A, std::vector<bool> & B) {
 
 int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst){
     int r = 0;
-    for(int i = 0; i< A.size(); i++) {
+    for(unsigned int i = 0; i< A.size(); i++) {
         if(A[i] && B[i]) {
             dst[i] = true;
             r++;

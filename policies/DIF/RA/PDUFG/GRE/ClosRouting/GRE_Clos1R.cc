@@ -221,11 +221,13 @@ void GRE_ClosR1::routingUpdated() {
     set<addr_t> disP;
     //Search disconnected Fabrics
     for(auto p2T : e.FP2T[ident]) {
+        if(p2T.first == zone) { continue; } // skip own pod
         if(p2T.second.size() >= t) {
             disP.insert(p2T.first);
         }
     }
     for(auto p2S : e.FP2S[ident]) {
+        if(p2S.first == zone) { continue; } // skip own pod
         if(p2S.second.size() + m2Sc >= p) {
             disP.insert(p2S.first);
         }
@@ -238,13 +240,22 @@ void GRE_ClosR1::routingUpdated() {
                 valids[_s] = false;
             }
             list.clear();
+
+            cout<< myaddr << " "<< p2S.first<<endl;
             for (addr_t i = 0; i < s; i++) {
+                cout << (group2[i] ? "1":"0")<<"-"<< (valids[i] ? "1":"0")<<endl;
                 if (valids[i]) {
                     list.push_back(i+t);
                 }
             }
-            exceptions[mask_t(getAddr(p2S.first, 0), 8)] =
-                    exception_t(COMMON, 0, list);
+            if(list.empty()) {
+                ///Unreachable Pod p
+                exceptions[mask_t(getAddr(p2S.first, 0), 8)] =
+                        exception_t();
+            } else {
+                exceptions[mask_t(getAddr(p2S.first, 0), 8)] =
+                        exception_t(COMMON, 0, list);
+            }
 
         }
     }
