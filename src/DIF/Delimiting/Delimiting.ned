@@ -32,7 +32,7 @@ simple Delimiting
 //        @signal[Delimiting-CompleteSDURcvd](type=cMessage);
         @signal[delDelay](type=cMessage);
 //        @signal[Delimiting-CompleteSDUDelay](type=int);
-        @signal[delimitDelay](type=int);
+        @signal[delimitDelay](type=long);
         @statistic[delDelay](title="delay"; source="messageAge(delDelay)"; unit=s; record=histogram,vector; interpolationmode=none);
         @statistic[delimitDelay](title="delay2"; source="delimitDelay"; unit=s; record=histogram,vector; interpolationmode=none);
         
