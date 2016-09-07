@@ -58,6 +58,8 @@ vPorts GREFWD::lookup(const PDU * pdu) {
     // Query next output port to reach destination with hash h
     port_t p = getNext(d, h);
     if(p != nullptr) { ret.push_back(p); }
+
+
     return ret;
 }
 

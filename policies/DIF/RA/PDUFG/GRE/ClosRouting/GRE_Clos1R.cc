@@ -210,7 +210,7 @@ void GRE_ClosR1::routingUpdated() {
 
     //Check problems reaching other Pods
     //Remove spines disconnected to all other nodes from group 2
-    for(auto s2F : e.FS2P) {
+    for(auto s2F : e.FS2P[ident]) {
         if(s2F.second.size() + 1 >= p) {
             group2[s2F.first] = false;
         }
@@ -241,9 +241,7 @@ void GRE_ClosR1::routingUpdated() {
             }
             list.clear();
 
-            cout<< myaddr << " "<< p2S.first<<endl;
             for (addr_t i = 0; i < s; i++) {
-                cout << (group2[i] ? "1":"0")<<"-"<< (valids[i] ? "1":"0")<<endl;
                 if (valids[i]) {
                     list.push_back(i+t);
                 }
