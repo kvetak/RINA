@@ -5,8 +5,14 @@
 		<QoS id="2" bw="107374182" />
 		<QoS id="3" bw="10737418" />
 		<QoS id="4" bw="0" />
-		<QoS id="A" bw="1048576" />
-		<QoS id="B" bw="0" />
-		<QoS id="C" bw="0" />
+		<QoS id="B1" bw="0" />
+		<QoS id="C1" bw="0" />
+		<QoS id="D1" bw="0" />
+		<QoS id="B2" bw="0" />
+		<QoS id="C2" bw="0" />
+		<QoS id="D2" bw="0" />
+		<QoS id="B3" bw="0" />
+		<QoS id="C3" bw="0" />
+		<QoS id="D3" bw="0" />
 		<QoS id="rerouteQoS" bw="0" />
 	</QOS_BW>

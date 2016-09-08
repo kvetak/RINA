@@ -14,58 +14,51 @@
     		urgency = "0" 
     		cherish = "0" />
     	 	
-    	<shaper id="outQ_A" 
+    	<shaper id="outQ_B1" 
     		type="0" 
     		urgency = "1" 
     		cherish = "1" />
     	 	
-    	<shaper id="outQ_B" 
+    	<shaper id="outQ_C1" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_D1" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "3" />
+    		
+    	<shaper id="outQ_B2" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_C2" 
     		type="0" 
     		urgency = "2" 
     		cherish = "2" />
     	 	
-    	<shaper id="outQ_C" 
+    	<shaper id="outQ_D2" 
     		type="0" 
     		urgency = "2" 
-    		cherish = "4" />
+    		cherish = "2" />
+    		
+    	<shaper id="outQ_B3" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_C3" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_D3" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "3" />
     </shapers>
-    
-    <shapersB>
-    	<shaper id="outQ_M" 
-    		type="0" 
-    		urgency = "0" 
-    		cherish = "0" />
-    	<shaper id="outQ_MA" 
-    		type="0" 
-    		urgency = "0" 
-    		cherish = "0" />
-    	<shaper id="outQ_mgmt" 
-    		type="0" 
-    		urgency = "0" 
-    		cherish = "0" />
-    	 	
-    	<shaper id="outQ_A" 
-    		type="0" 
-    		urgency = "1" 
-    		cherish = "1" />
-    	 	
-    	<shaper id="outQ_B" 
-    		type="0" 
-    		urgency = "2" 
-    		cherish = "2" />
-    	 	
-    	<shaper id="outQ_C" 
-    		type="3" 
-    		urgency = "2" 
-    		cherish = "4" 
-    		header = "88"
-    		rtvar = "0.1"
-    		intervalSize = "100">
-    		<CU r = "5000000" C = "2" U = "2" />
-    		<CU r = "10000000" C = "3" U = "2" />
-    		<CU r = "20000000" C = "4" U = "3" />
-    	</shaper>
-    </shapersB>
     
     <mux
     	type = "1"
