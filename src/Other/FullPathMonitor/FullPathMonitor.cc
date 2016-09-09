@@ -629,14 +629,35 @@ namespace FullPathMonitor {
             EV << it.first->getFullPath()<<endl;
             for(auto it2 : it.second){
                 EV<<"QoS: " << it2.first <<" "<<it2.second<< " flows" << endl;
-                if(it2.first == "1"){
-                    sum = sum + (0.4*(float)it2.second);
+                if(it2.first == "B1"){
+                    sum = sum + (0.004882*(float)it2.second);
                 }
-                else if(it2.first == "2"){
-                    sum = sum + (0.1*(float)it2.second);
+                else if(it2.first == "B2"){
+                    sum = sum + (0.004882*(float)it2.second);
                 }
-                else if(it2.first == "3"){
-                    sum = sum + (0.01*(float)it2.second);
+                else if(it2.first == "B3"){
+                    sum = sum + (0.000976*(float)it2.second);
+                }
+                else if(it2.first == "C1"){
+                    sum = sum + (0*(float)it2.second);
+                }
+                else if(it2.first == "C2"){
+                    sum = sum + (0.000976*(float)it2.second);
+                }
+                else if(it2.first == "C3"){
+                    sum = sum + (0*(float)it2.second);
+                }
+                else if(it2.first == "D1"){
+                    sum = sum + (0.000244*(float)it2.second);
+                }
+                else if(it2.first == "D2"){
+                    sum = sum + (0*(float)it2.second);
+                }
+                else if(it2.first == "D3"){
+                    sum = sum + (0.004882*(float)it2.second);
+                }
+                else if(it2.first == "MA"){
+                    sum = sum + (0.000244*(float)it2.second);
                 }
             }
             EV<<endl;
