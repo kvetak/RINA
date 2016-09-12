@@ -36,9 +36,10 @@ void LisAPAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         const APNamingInfo dstApni = flow->getSrcApni();
-        if (ap->getCurrentAEInstNum(dstApni.getAename()) < std::stoi(dstApni.getAeinstance()) ||
+        if (std::strcmp(dstApni.getAename().c_str(),""))
+            if (ap->getCurrentAEInstNum(dstApni.getAename()) < std::stoi(dstApni.getAeinstance()) ||
                 std::stoi(dstApni.getAeinstance()) == -1)
-            { ap->receiveAllocationRequestFromFAI(flow); }
+                { ap->receiveAllocationRequestFromFAI(flow); }
     }
     else
         EV << "APListener received unknown object!" << endl;
