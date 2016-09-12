@@ -75,7 +75,7 @@
 		</QosCube>
 		
 		<QosCube id="B2">
-			<Delay>100</Delay>	
+			<Delay>2000</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
 			<CostTime>3</CostTime>
 			<CostBits>3</CostBits>
@@ -100,7 +100,7 @@
 		</QosCube>
 		
 		<QosCube id="B3">
-			<Delay>100</Delay>	
+			<Delay>3000</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
 			<CostTime>3</CostTime>
 			<CostBits>3</CostBits>
@@ -125,7 +125,7 @@
 		</QosCube>
 		
 		<QosCube id="C1">
-			<Delay>1000</Delay>	
+			<Delay>4000</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>

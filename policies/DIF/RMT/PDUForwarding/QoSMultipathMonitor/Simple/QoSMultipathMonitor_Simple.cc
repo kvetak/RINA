@@ -119,7 +119,9 @@ RMTPort * QoSMultipathMonitor_Simple::portLookup(const string& dst, const string
         }
     }
 
-    if(possibles.empty()) { return nullptr; }
+    if(possibles.empty()) {
+        return nullptr;
+    }
 
     int r = intuniform(0, count);
     for(const entryT & e : possibles) {

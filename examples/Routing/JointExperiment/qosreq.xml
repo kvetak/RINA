@@ -3,12 +3,6 @@
 		<QosReq id="1"> 
 			<Delay>10</Delay>	
 		</QosReq>
-		<QosReq id="2"> 
-			<Delay>100</Delay>	
-		</QosReq>
-		<QosReq id="3"> 
-			<Delay>1000</Delay>	
-		</QosReq>
 		<QosReq id="inf"> 
 			<Delay>10</Delay>
 			<AverageBandwidth>1073741824000000000</AverageBandwidth>
