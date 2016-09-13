@@ -24,31 +24,7 @@
 			<WinOn>0</WinOn>
 			<RateOn>0</RateOn>				
 		</QosCube>
-		<QosCube id="A">
-			<Delay>10</Delay>	
-			<PDUDroppingProbability>0.0000001</PDUDroppingProbability>			
-			<CostTime>4</CostTime>
-			<CostBits>4</CostBits>
 			
-			<AverageBandwidth>1073741824</AverageBandwidth>
-			<AverageSDUBandwidth>1000000</AverageSDUBandwidth>
-			<PeakBandwidthDuration>240000000</PeakBandwidthDuration>
-			<PeakSDUBandwidthDuration>2000000</PeakSDUBandwidthDuration>
-			<BurstPeriod>100000000</BurstPeriod>
-			<BurstDuration>10000000</BurstDuration>
-			<UndetectedBitError>0.01</UndetectedBitError>
-			<MaxSDUSize>1500</MaxSDUSize>
-			<PartialDelivery>0</PartialDelivery>
-			<IncompleteDelivery>0</IncompleteDelivery>
-			<ForceOrder>0</ForceOrder>
-			<MaxAllowableGap>0</MaxAllowableGap>
-			<Jitter>500000</Jitter>
-			<ATime>0</ATime>
-			<RxOn>0</RxOn>
-			<WinOn>0</WinOn>
-			<RateOn>0</RateOn>		
-		</QosCube>
-		
 		<QosCube id="B1">
 			<Delay>100</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
@@ -75,7 +51,7 @@
 		</QosCube>
 		
 		<QosCube id="B2">
-			<Delay>2000</Delay>	
+			<Delay>200</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
 			<CostTime>3</CostTime>
 			<CostBits>3</CostBits>
@@ -100,7 +76,7 @@
 		</QosCube>
 		
 		<QosCube id="B3">
-			<Delay>3000</Delay>	
+			<Delay>300</Delay>	
 			<PDUDroppingProbability>0.000001</PDUDroppingProbability>			
 			<CostTime>3</CostTime>
 			<CostBits>3</CostBits>
@@ -125,7 +101,7 @@
 		</QosCube>
 		
 		<QosCube id="C1">
-			<Delay>4000</Delay>	
+			<Delay>400</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
@@ -150,7 +126,7 @@
 		</QosCube>
 		
 		<QosCube id="C2">
-			<Delay>1000</Delay>	
+			<Delay>500</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
@@ -175,7 +151,7 @@
 		</QosCube>
 		
 		<QosCube id="C3">
-			<Delay>1000</Delay>	
+			<Delay>600</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
@@ -200,7 +176,7 @@
 		</QosCube>
 		
 		<QosCube id="D1">
-			<Delay>1</Delay>	
+			<Delay>700</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
@@ -225,7 +201,7 @@
 		</QosCube>
 		
 		<QosCube id="D2">
-			<Delay>1</Delay>	
+			<Delay>800</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>
@@ -250,7 +226,7 @@
 		</QosCube>
 		
 		<QosCube id="D3">
-			<Delay>1</Delay>	
+			<Delay>900</Delay>	
 			<PDUDroppingProbability>0.001</PDUDroppingProbability>			
 			<CostTime>1</CostTime>
 			<CostBits>1</CostBits>

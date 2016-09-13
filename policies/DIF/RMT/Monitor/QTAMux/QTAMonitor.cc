@@ -184,17 +184,9 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
     if(queue->getType() == RMTQueue::INPUT) { return; }
 
     cPacket * p = const_cast<cPacket*>(queue->getLastPDU());
-    PDUarrival[p] = currentPDU;
-
-    PS * shaper = shapers[queue];
-    if(shaper == nullptr) { error("!!! QTAMonitor, queue P/S not configured!"); }
-    shaper->inserted();
-
-    received[shaper->port][queue->getName()]++;
 
     RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
-    const cPacket * pdu = queue->getLastPDU();
-    long pLen = pdu->getBitLength ();
+    long pLen = p->getBitLength ();
     inPortTimes[port].push_back(simTime());
     inQueueTimes[port][queue->getName()].push_back(simTime());
 
@@ -214,6 +206,17 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
         inQueueAgData[port][queue->getName()] -= inQueueData[port][queue->getName()].front();
         inQueueData[port][queue->getName()].pop_front();
     }
+
+    PDUarrival[p] = currentPDU;
+
+    PS * shaper = shapers[queue];
+    if(shaper == nullptr) { error("!!! QTAMonitor, queue P/S not configured!"); }
+    shaper->inserted();
+
+    received[shaper->port][queue->getName()]++;
+
+
+    //const cPacket * pdu = queue->getLastPDU();
 }
 
 RMTQueue * QTAMonitor::getNext(RMTPort * port) {

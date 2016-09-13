@@ -239,7 +239,12 @@ void RMT::postQueueArrival(cObject* obj)
     }
 
     // invoke monitor policy
-    qMonPolicy->postPDUInsertion(queue);
+    if(queue->getLength()>0){
+        qMonPolicy->postPDUInsertion(queue);
+    }
+    else{
+        return;
+    }
 
     // invoke maxQueue policy if applicable
     if (queue->getLength() >= queue->getThreshLength())

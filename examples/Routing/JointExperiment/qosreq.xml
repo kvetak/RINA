@@ -3,6 +3,37 @@
 		<QosReq id="1"> 
 			<Delay>10</Delay>	
 		</QosReq>
+		<QosReq id="2"> 
+			<Delay>100</Delay>	
+		</QosReq>
+		<QosReq id="3"> 
+			<Delay>200</Delay>	
+		</QosReq>
+		<QosReq id="4"> 
+			<Delay>300</Delay>	
+		</QosReq>
+		<QosReq id="5"> 
+			<Delay>400</Delay>	
+		</QosReq>
+		<QosReq id="6"> 
+			<Delay>500</Delay>	
+		</QosReq>
+		<QosReq id="7"> 
+			<Delay>600</Delay>	
+		</QosReq>
+		<QosReq id="8"> 
+			<Delay>700</Delay>	
+		</QosReq>
+		<QosReq id="9"> 
+			<Delay>800</Delay>	
+		</QosReq>
+		<QosReq id="10"> 
+			<Delay>900</Delay>	
+		</QosReq>
+		<QosReq id="11"> 
+			<Delay>1</Delay>	
+		</QosReq>
+
 		<QosReq id="inf"> 
 			<Delay>10</Delay>
 			<AverageBandwidth>1073741824000000000</AverageBandwidth>
