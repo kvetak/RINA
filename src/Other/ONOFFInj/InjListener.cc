@@ -24,7 +24,7 @@ void InjListener::initialize() {
 
 void InjListener::finish(){
     cout << "Listener finish"<<endl;
-    cout << "VOICE"<<endl;
+    cout << "VOICE STATS"<<endl;
     for(auto src_ : voiceStats) {
         for(auto dst_ : src_.second) {
             for(auto flow_ : dst_.second) {
@@ -37,19 +37,32 @@ void InjListener::finish(){
             }
         }
     }
-    cout << "DATA"<<endl;
-    for(auto src_ : dataStart) {
+    cout << "DATA STATS"<<endl;
+    for(auto src_ : dataStats) {
         for(auto dst_ : src_.second) {
             for(auto flow_ : dst_.second) {
                 cout << "Flow "
                         << src_.first << " -> " << dst_.first
                         << " ["<< flow_.first<< "]"
                         << endl;
-                cout << "  request : "<< flow_.second
-                        << " / received "<< dataEnd[src_.first][dst_.first][flow_.first]<< endl;
+                cout << "  Min/Max : "<< flow_.second.min_lat*1000.0 << "ms/"<<flow_.second.max_lat*1000.0 << "ms"<< endl;
+                cout << "  Avg - count : "<< (flow_.second.sum_lat/flow_.second.count)*1000.0 << "ms - "<<flow_.second.count<< endl;
             }
         }
     }
+//    cout << "DATA"<<endl;
+//    for(auto src_ : dataStart) {
+//        for(auto dst_ : src_.second) {
+//            for(auto flow_ : dst_.second) {
+//                cout << "Flow "
+//                        << src_.first << " -> " << dst_.first
+//                        << " ["<< flow_.first<< "]"
+//                        << endl;
+//                cout << "  request : "<< flow_.second
+//                        << " / received "<< dataEnd[src_.first][dst_.first][flow_.first]<< endl;
+//            }
+//        }
+//    }
     cout <<endl;
 }
 
@@ -63,5 +76,9 @@ void InjListener::dataRequestStarted(string src, string dst, int flow){
 }
 void InjListener::dataRequestEnded(string src, string dst, int flow){
     dataEnd[src][dst][flow]++;
+   // cout <<simTime()<< " - Data req end "<< src << " -> "<< dst << " + "<< flow<<endl;
+}
+void InjListener::dataReceived(string src, string dst, string qos, simtime_t lat){
+    dataStats[src][dst][qos].add(lat);
    // cout <<simTime()<< " - Data req end "<< src << " -> "<< dst << " + "<< flow<<endl;
 }

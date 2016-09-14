@@ -26,9 +26,11 @@ public:
     void voiceReceived(string src, string dst, int flow, simtime_t lat);
     void dataRequestStarted(string src, string dst, int flow);
     void dataRequestEnded(string src, string dst, int flow);
+    void dataReceived(string src, string dst, string qos, simtime_t lat);
 
 protected:
     map<string, map<string, map<int, voiceFlowStat> > > voiceStats;
+    map<string, map<string, map<string, voiceFlowStat> > > dataStats;
     map<string, map<string, map<int, long long> > > dataStart, dataEnd;
 
 };

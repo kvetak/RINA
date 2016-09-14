@@ -197,6 +197,7 @@ void ONOFInj::receiveData(const string & _src, const string & _qos, shared_ptr<I
             cout << "Received data for unknown app"<< endl;
         }
         app->receive(this, d, simTime().dbl() > fin);
+        InjListener::instance->dataReceived(_src, src, _qos, simTime() - d->t0);
     }
 }
 
