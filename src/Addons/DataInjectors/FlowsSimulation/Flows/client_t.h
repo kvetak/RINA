@@ -161,7 +161,6 @@ public :
                 between_len(_between_len), lastTime(-500.0) {}
 
     virtual simtime_t getNextOn(simtime_t ct) { return ct; }
-    virtual void setNextUntil() { until = A + request_len;  nextRq = A + between_len;
-    cout << " ******************************************************"<< until << " *** "<< nextRq<<endl;}
+    virtual void setNextUntil() { until = A + request_len;  nextRq = A + between_len;}
     virtual void setNextRate() { interval = request_interval; }
 };

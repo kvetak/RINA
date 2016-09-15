@@ -24,6 +24,7 @@
 #pragma once
 
 #include <map>
+#include <fstream>
 #include "RMTQMonitorBase.h"
 
 #include "QTAMux/PS.h"
@@ -66,10 +67,31 @@ private:
     Mux * baseMux;
     map<RMTPort *, Mux *> muxs;
 
-    long currentPDU;
-    map<cPacket *, long> PDUarrival;
+    //Stats
+    string nodeName;
 
-    map<RMTPort*, map<string, long long> > received, sent;
+    bool recordStats;
+    bool saveStats;
+    bool pdu_IO, data_IO, pdu_IOi, data_IOi;
+
+    double record_interval, last_interval;
+    long long currentInterval;
+    cMessage * intervalM;
+
+    set<string> recordedQoS;
+    map<RMTPort*, map<string, long long> >
+        qos_pdu_IO_in, qos_pdu_IO_out, qos_pdu_IO_drop,
+        qos_data_IO_in, qos_data_IO_out, qos_data_IO_drop,
+        qos_pdu_IOi_in, qos_pdu_IOi_out, qos_pdu_IOi_drop,
+        qos_data_IOi_in, qos_data_IOi_out, qos_data_IOi_drop;
+
+    map<RMTPort*, string> PortName;
+    map<RMTPort*, fstream> PortStream;
+    map<const PDU *, RMTPort *>PDU2Port;
+
+    void printInterval();
+    void printSummary();
+    void coutSummary();
 };
 
 }

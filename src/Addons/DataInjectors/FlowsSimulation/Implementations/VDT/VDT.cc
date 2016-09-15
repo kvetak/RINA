@@ -93,20 +93,7 @@ void VDT::postInitialize() {
     D_OFF_Duration_VAR = par("D_OFF_Duration_VAR").doubleValue();
     D_Interval = D_Data_PDUSize / D_ON_FlowRate;
     D_RequestSize = (int)ceil(D_AVG_FlowRate * D_OFF_Duration_AVG / D_Data_PDUSize);
-/*
-    video_c(int fid, string dst, string qos,
-            int _request_size, int _data_size, int _data_len, double _data_interval,
-            double _idle_time ):
 
-    video_c * f = new video_c(fid, s_dst, D_QOS,
-            D_Request_PDUSize - headers, D_Data_PDUSize - headers, D_Interval, D_RequestSize,
-            D_OFF_Duration_AVG);
-*/
-    cout << " D_Request_PDUSize - headers "<< D_Request_PDUSize - headers<<endl;
-    cout << " D_Data_PDUSize - headers "<< D_Data_PDUSize - headers<<endl;
-    cout << " D_Interval "<< D_Interval<<endl;
-    cout << " D_RequestSize "<< D_RequestSize<<endl;
-    cout << " D_OFF_Duration_AVG "<< D_OFF_Duration_AVG<<endl;
 
 // Transfer parameters initialization
     T_QOS = par("T_QOS").stdstringValue();
@@ -116,9 +103,6 @@ void VDT::postInitialize() {
     T_WINDOW_MAX = par("T_WINDOW_MAX").longValue();
     T_WINDOW_UPDATE = par("T_WINDOW_UPDATE").longValue();
     T_Interval = T_Data_PDUSize / T_AVG_FlowRate;
-
-    cout << " T_WINDOW_MAX "<< T_WINDOW_MAX<<endl;
-    cout << " T_WINDOW_UPDATE "<< T_WINDOW_UPDATE<<endl;
 
 
 // XML :: Read Flows <src == src, dst, V, D, T>

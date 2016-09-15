@@ -21,12 +21,16 @@ src/Makefile.vc
 /examples/*/results/
 /examples/*/*/results/
 /examples/*/*/*/results/
+/examples/*/stats/
+/examples/*/*/stats/
+/examples/*/*/*/stats/
 *.sca
 *.vec
 *.vci
 *.elog
 .computed/
 *.csv
+*.stats
 
 # Misceleanous
 *.pyc
