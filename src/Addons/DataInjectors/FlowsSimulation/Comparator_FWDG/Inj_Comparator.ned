@@ -1,5 +1,6 @@
 //
-// The MIT License (MIT)
+
+// // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
 //
@@ -21,55 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
+import rina.policies.DIF.RA.AddressComparator.IntAddressComparator;
 
-#include <map>
-#include "RMTQMonitorBase.h"
+package rina.src.Addons.DataInjectors.FlowsSimulation.Comparator_FWDG;
 
-#include "QTAMux/PS.h"
-#include "QTAMux/Mux.h"
-
-class QTASch;
-
-namespace QTAMux {
-using namespace std;
-
-class PSSched : public cMessage {
-public :
-    PSSched(PS * _ps);
-    PS * ps;
-};
-
-class QTAMonitor: public RMTQMonitorBase {
-public:
-    void onPolicyInit();
-    void postQueueCreation(RMTQueue* queue);
-    void postPDUInsertion(RMTQueue* queue);
-    void preQueueRemoval(RMTQueue* queue);
-    void finish();
-
-    cMessage * schedulePS(PS * ps, simtime_t t);
-    void callMux(RMTPort * port);
-
-    RMTQueue * getNext(RMTPort * port);
-    void recDelete(cPacket * p);
-
-protected:
-    void handleMessage(cMessage * msg);
-    void recIDelete(cPacket * p);
-
-private:
-    QTASch * scheduler;
-    map<string, PS *> baseShapers;
-    map<RMTQueue *, PS *> shapers;
-
-    Mux * baseMux;
-    map<RMTPort *, Mux *> muxs;
-
-    long currentPDU;
-    map<cPacket *, long> PDUarrival;
-
-    map<RMTPort*, map<string, long long> > received, sent;
-};
-
+simple Inj_Comparator like IntAddressComparator
+{
+    parameters:
+        @display("i=block/socket");
 }

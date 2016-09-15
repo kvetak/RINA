@@ -20,7 +20,7 @@
 #include "AEConstantMsgs.h"
 #include "UserDataField.h"
 #include "PDUData.h"
-#include "InfectionSignals.h"
+//#include "InfectionSignals.h"
 
 namespace ModularMonitor {
 
@@ -34,7 +34,7 @@ void ModularMonitor::onPolicyInit(){
 
     emitSignals = par("signal").boolValue();
     if(emitSignals) {
-        signal = registerSignal("ModularSignal");
+     //   signal = registerSignal("ModularSignal");
     }
 }
 
@@ -58,10 +58,11 @@ void ModularMonitor::postPDUInsertion(RMTQueue* queue) {
                 if(inPos.find(pdu) == inPos.end()) {
                     inPos[pdu] = portServed[port];
                 }
-
+/*
                 if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
                     emit(signal, new HopRcvMsg(p->getConnId().getQoSId(), this));
                 }
+*/
             }
             break;
     }
@@ -78,10 +79,10 @@ void ModularMonitor::onMessageDrop(RMTQueue* queue, const cPacket* pdu) {
             outOutModule->pduDropped(queue, pdu, port);
             outDropModule->pduDropped(queue, pdu, port);
 
-            if(emitSignals) {
+            if(emitSignals) {/*
                 if(const PDU * p = dynamic_cast<const PDU*>(pdu)) {
                     emit(signal, new HopLossMsg(p->getConnId().getQoSId(), this));
-                }
+                }*/
                 inTime.erase(pdu);
                 inPos.erase(pdu);
             }
@@ -108,12 +109,14 @@ void ModularMonitor::prePDURelease(RMTQueue* queue) {
                     inTime.erase(pdu);
                     inPos.erase(pdu);
                     emit(signal, new HopDelayMsg(qos, hdel, this));
+                    /*
                     if(InfectedDataTransferPDU * idt =
                             dynamic_cast<InfectedDataTransferPDU * >(
                                     const_cast<PDU*>(pdu))) {
                         idt->addPSTdelay(hdel);
                         idt->setHopCount(idt->getHopCount()+1);
                     }
+                    */
                 }
             }
             portServed[port]++;

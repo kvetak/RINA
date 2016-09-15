@@ -18,7 +18,7 @@
 #include <IntPDUFG.h>
 #include "GREFWD/Clos/Clos.h"
 #include "eRouting.h"
-#include "FailureTest.h"
+#include "FailureSimulation.h"
 
 #include <IntMMForwarding.h>
 #include <TSimpleRouting/IntTSimpleRouting.h>

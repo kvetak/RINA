@@ -1,68 +1,68 @@
 package rina.examples.UPC.DCa;
 
-import rina.src.Other.EthChannel.EthChannel;
-import rina.src.Other.ConnectivityTest.ConnectivityTestSwitch;
-import rina.src.Other.ConnectivityTest.ConnectivityTestListener;
-import rina.src.Other.FailureTest.FailureTest;
+import rina.src.Addons.Channels.EthChannel.EthChannel;
+import rina.src.Addons.Actions.FailureSimulation.FailureSimulation;
+import rina.src.Addons.DataInjectors.ReachabilityTest.ReachabilityTest_Switch;
+import rina.src.Addons.DataInjectors.ReachabilityTest.ReachabilityTest_Listener;
 
 network net
 {
     @display("bgb=833,343");
     submodules:
 //Testers first -> Needs to be innitialized first!!
-        listener: ConnectivityTestListener {
+        listener: ReachabilityTest_Listener {
             @display("p=64,44");
         }
-        fails: FailureTest {
+        fails: FailureSimulation {
             @display("i=device/clock");
         }
 //Next nodes
-        _0_0: ConnectivityTestSwitch {
+        _0_0: ReachabilityTest_Switch {
             @display("p=161,55");
         }
-        _0_1: ConnectivityTestSwitch {
+        _0_1: ReachabilityTest_Switch {
             @display("p=258,55");
         }
-        _1_1: ConnectivityTestSwitch {
+        _1_1: ReachabilityTest_Switch {
             @display("p=665,55");
         }
-        _1_0: ConnectivityTestSwitch {
+        _1_0: ReachabilityTest_Switch {
             @display("p=568,55");
         }
-        _2_0: ConnectivityTestSwitch {
+        _2_0: ReachabilityTest_Switch {
             @display("p=161,172");
         }
-        _2_1: ConnectivityTestSwitch {
+        _2_1: ReachabilityTest_Switch {
             @display("p=258,172");
         }
-        _3_0: ConnectivityTestSwitch {
+        _3_0: ReachabilityTest_Switch {
             @display("p=568,172");
         }
-        _3_1: ConnectivityTestSwitch {
+        _3_1: ReachabilityTest_Switch {
             @display("p=665,172");
         }
-        _2_2: ConnectivityTestSwitch {
+        _2_2: ReachabilityTest_Switch {
             @display("p=64,271");
         }
-        _2_3: ConnectivityTestSwitch {
+        _2_3: ReachabilityTest_Switch {
             @display("p=161,271");
         }
-        _2_4: ConnectivityTestSwitch {
+        _2_4: ReachabilityTest_Switch {
             @display("p=258,271");
         }
-        _2_5: ConnectivityTestSwitch {
+        _2_5: ReachabilityTest_Switch {
             @display("p=355,271");
         }
-        _3_2: ConnectivityTestSwitch {
+        _3_2: ReachabilityTest_Switch {
             @display("p=471,271");
         }
-        _3_3: ConnectivityTestSwitch {
+        _3_3: ReachabilityTest_Switch {
             @display("p=568,271");
         }
-        _3_4: ConnectivityTestSwitch {
+        _3_4: ReachabilityTest_Switch {
             @display("p=665,271");
         }
-        _3_5: ConnectivityTestSwitch {
+        _3_5: ReachabilityTest_Switch {
             @display("p=762,271");
         }
     connections:

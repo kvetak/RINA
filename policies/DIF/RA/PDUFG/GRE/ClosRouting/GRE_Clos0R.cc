@@ -43,8 +43,8 @@ void GRE_ClosR0::postPolicyInit() {
         string dst_raw = getRaw(dst_addr);
         rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
 
-        if (FailureTest::instance) {
-            FailureTest::instance->registerLink(to_string(dst_link), this);
+        if (FailureSimulation::instance) {
+            FailureSimulation::instance->registerLink(to_string(dst_link), this);
         }
     }
 }

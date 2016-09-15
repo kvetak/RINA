@@ -27,12 +27,12 @@
 #include "MultilevelQoS/MultilevelQoS.h"
 #include "QoSCube.h"
 #include "RABase.h"
-#include "ONOFInj.h"
+#include "Inj_FWDG.h"
 
 namespace OFStaticGenerator {
 
 
-class OFStaticGenerator: public IntPDUFG {
+class OFStaticGenerator: public IntPDUFG, public Inj_FWDG {
 public:
     // A new flow has been inserted/or removed
     virtual void insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port);
@@ -40,8 +40,6 @@ public:
 
     //Routing has processes a routing update
     virtual void routingUpdated();
-
-    ONOFInj * inj;
 
 protected:
     // Called after initialize

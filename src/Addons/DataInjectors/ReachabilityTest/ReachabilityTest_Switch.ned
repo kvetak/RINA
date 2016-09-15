@@ -1,4 +1,3 @@
-//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -21,55 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#pragma once
 
-#include <map>
-#include "RMTQMonitorBase.h"
+package rina.src.Addons.DataInjectors.ReachabilityTest;
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
 
-#include "QTAMux/PS.h"
-#include "QTAMux/Mux.h"
+module ReachabilityTest_Switch
+{
+    parameters:
+        @display("i=abstract/switch;bgb=391,325");
+        @node;
 
-class QTASch;
+    gates:
+        inout medium[];
 
-namespace QTAMux {
-using namespace std;
+    submodules:
+        ipcProcess0[sizeof(medium)]: IPCProcess;
+        ipcProcess1: IPCProcess {
+            @display("p=104,141;i=,#FFB000");
+            relay = true;
+        }
+        
+        difAllocator: DIFAllocator {
+            @display("p=104,53");
+        }
+        
+        test: ReachabilityTest {
+            @display("p=260,245");
+            infectedIPC = default("ipcProcess1");
+        }
+        
+    connections allowunconnected:
 
-class PSSched : public cMessage {
-public :
-    PSSched(PS * _ps);
-    PS * ps;
-};
-
-class QTAMonitor: public RMTQMonitorBase {
-public:
-    void onPolicyInit();
-    void postQueueCreation(RMTQueue* queue);
-    void postPDUInsertion(RMTQueue* queue);
-    void preQueueRemoval(RMTQueue* queue);
-    void finish();
-
-    cMessage * schedulePS(PS * ps, simtime_t t);
-    void callMux(RMTPort * port);
-
-    RMTQueue * getNext(RMTPort * port);
-    void recDelete(cPacket * p);
-
-protected:
-    void handleMessage(cMessage * msg);
-    void recIDelete(cPacket * p);
-
-private:
-    QTASch * scheduler;
-    map<string, PS *> baseShapers;
-    map<RMTQueue *, PS *> shapers;
-
-    Mux * baseMux;
-    map<RMTPort *, Mux *> muxs;
-
-    long currentPDU;
-    map<cPacket *, long> PDUarrival;
-
-    map<RMTPort*, map<string, long long> > received, sent;
-};
-
+        // Every IPC Process is connected to its medium and the Relay IPC.
+        for i=0..sizeof(medium)-1 {
+            ipcProcess1.southIo++ <--> ipcProcess0[i].northIo++;
+            ipcProcess0[i].southIo++ <--> medium[i];
+        }
 }

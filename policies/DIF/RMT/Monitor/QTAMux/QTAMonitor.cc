@@ -198,11 +198,13 @@ RMTQueue * QTAMonitor::getNext(RMTPort * port) {
     RMTQueue * q = mux->getNext();
     if(q!=nullptr) {
         cPacket * p = const_cast<cPacket*>(q->getFirstPDU());
-        long arrival = PDUarrival[p];
+        //long arrival = PDUarrival[p];
         PDUarrival.erase(p);
+        /*
         if(InfectedDataTransferPDU * cPdu = dynamic_cast< InfectedDataTransferPDU*>(p)) {
             cPdu->pstDelay += currentPDU-arrival;
         }
+        */
         sent[port][q->getName()]++;
         currentPDU++;
     }
