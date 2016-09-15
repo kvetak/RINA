@@ -8,7 +8,7 @@ PDU_Req sender_t::act(Inj_t * parent, bool fin) {
             }
         } else if(!fin) {
             setNextUntil();
-            return act(parent, fin);
+            parent->scheduleAt(getNextOn(), &at);
         }
         return PDU_Req();
 }

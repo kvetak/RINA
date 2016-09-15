@@ -42,7 +42,7 @@ public :
     virtual int getPDUSize() { return uniform(voice_f::min_pdu_len, voice_f::max_pdu_len); }
     virtual double getInterval() { return interval; }
     virtual double getNextOn() { return simTime().dbl() + idle_time; }
-    virtual void setNextUntil() { until += (int)ceil(burst_time*interval); }
+    virtual void setNextUntil() { until += (int)ceil(burst_time/interval); }
 };
 
 class voice_fb : public sender_t {
@@ -56,7 +56,7 @@ public :
     virtual int getPDUSize() { return uniform(voice_f::min_pdu_len, voice_f::max_pdu_len); }
     virtual double getInterval() { return interval; }
     virtual double getNextOn() { return simTime().dbl() + uniform(min_idle_time, max_idle_time); }
-    virtual void setNextUntil() { until += (int)ceil(uniform(min_burst_time, max_burst_time)*interval); }
+    virtual void setNextUntil() { until += (int)ceil(uniform(min_burst_time, max_burst_time)/interval); }
 };
 
 class voice_c : public sender_t {
@@ -73,5 +73,7 @@ public :
     virtual int getPDUSize() { return uniform(min_pdu_len, max_pdu_len); }
     virtual double getInterval() { return interval; }
     virtual double getNextOn() { return simTime().dbl() + uniform(min_idle_time, max_idle_time); }
-    virtual void setNextUntil() { until += (int)ceil(uniform(min_burst_time, max_burst_time)*interval); }
+    virtual void setNextUntil() {
+        until += (int)ceil(uniform(min_burst_time, max_burst_time)/interval);
+    }
 };
