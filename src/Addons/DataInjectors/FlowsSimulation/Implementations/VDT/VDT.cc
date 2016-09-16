@@ -78,10 +78,9 @@ void VDT::postInitialize() {
     V_ON_Duration_VAR = par("V_ON_Duration_VAR").doubleValue();
     V_OFF_Duration_AVG = par("V_OFF_Duration_AVG").doubleValue();
     V_OFF_Duration_VAR = par("V_OFF_Duration_VAR").doubleValue();
-    V_Interval = ((V_PDUSize_min + V_PDUSize_max) / 2.0)
-            * ((V_ON_Duration_AVG + V_OFF_Duration_AVG) / V_ON_Duration_AVG)
-            / V_AVG_FlowRate;
-
+    V_Interval = (V_PDUSize_min + V_PDUSize_max)
+            * V_ON_Duration_AVG
+            / (2.0 * V_AVG_FlowRate * (V_ON_Duration_AVG + V_OFF_Duration_AVG));
 
 // Data request parameters initialization
     D_QOS = par("D_QOS").stdstringValue();
@@ -124,7 +123,6 @@ void VDT::postInitialize() {
         unsigned int s_T = atoi(n->getAttribute("T"));
 
         for(unsigned int i = 0; i < s_V; i++) {
-            cout << "flow :: " << fid <<endl;
             voice_c * f = new voice_c(fid, s_dst, V_QOS,
                     V_PDUSize_min - headers, V_PDUSize_max - headers, V_Interval,
                     V_OFF_Duration_AVG - V_OFF_Duration_VAR, V_OFF_Duration_AVG + V_OFF_Duration_VAR,
@@ -132,7 +130,8 @@ void VDT::postInitialize() {
             f->at.f = f;
             senders[fid] = f;
             fid++;
-            scheduleAt( iniT + uniform(0.0, V_OFF_Duration_AVG), &f->at);
+            simtime_t init = iniT + uniform(0.0, V_OFF_Duration_AVG);
+            scheduleAt( init, &f->at);
         }
 
         if(s_D % 2 == 1) {

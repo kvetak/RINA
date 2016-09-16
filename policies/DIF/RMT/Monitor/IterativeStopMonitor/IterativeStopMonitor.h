@@ -52,6 +52,7 @@ using namespace std;
             simsignal_t stopSignal, startSignal;
 
             long recData;
+            long inPort;
     };
 
 }

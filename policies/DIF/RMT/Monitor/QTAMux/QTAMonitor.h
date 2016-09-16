@@ -43,6 +43,9 @@ public :
 
 class QTAMonitor: public RMTQMonitorBase {
 public:
+    string nodeName;
+
+
     void onPolicyInit();
     void postQueueCreation(RMTQueue* queue);
     void postPDUInsertion(RMTQueue* queue);
@@ -68,7 +71,6 @@ private:
     map<RMTPort *, Mux *> muxs;
 
     //Stats
-    string nodeName;
 
     bool recordStats;
     bool saveStats;
@@ -88,6 +90,7 @@ private:
     map<RMTPort*, string> PortName;
     map<RMTPort*, fstream> PortStream;
     map<const PDU *, RMTPort *>PDU2Port;
+    map<const PDU *, simtime_t>PDU2Arrival;
 
     void printInterval();
     void printSummary();

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<Configuration>
+    <shapers>
+    	<shaper id="outQ_M" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_MA" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_mgmt" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	 	
+    	<shaper id="outQ_A" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_B" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_C" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "3" />
+    </shapers>
+    
+    
+    <mux
+    	type = "1"
+    	maxU = "3"
+    	maxC = "3">
+    	<CTh
+    		C = "0"
+    		ath = "200"
+    		th = "200"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "1"
+    		ath = "120"
+    		th = "120"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "2"
+    		ath = "120"
+    		th = "110"
+    		p = "0.1"
+    	/>
+    	<CTh
+    		C = "3"
+    		ath = "100"
+    		th = "90"
+    		p = "0.1"
+    	/>
+    </mux>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

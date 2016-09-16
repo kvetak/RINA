@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<flows>
+	<set src = "A" dst = "B" V="20" D ="0" T="0" />
+	<set src = "B" dst = "A" V="0" D ="40" T="40" />
+</flows>

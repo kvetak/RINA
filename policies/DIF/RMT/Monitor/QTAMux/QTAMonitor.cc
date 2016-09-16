@@ -291,6 +291,7 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
             recordedQoS.insert(qos);
             RMTPort * port = shaper->port;
             PDU2Port[c] = port;
+            PDU2Arrival[c] = simTime();
 
             if (pdu_IO) {
                 qos_pdu_IO_in[port][qos]++;
@@ -323,6 +324,12 @@ RMTQueue * QTAMonitor::getNext(RMTPort * port) {
             string qos = c->getConnId().getQoSId();
             recordedQoS.insert(qos);
             PDU2Port.erase(c);
+/*
+            if(nodeName == "A") {
+                cout << "\t"<< (simTime() - PDU2Arrival[c])<<endl;
+            }
+*/
+            PDU2Arrival.erase(c);
 
             if (pdu_IO) {
                 qos_pdu_IO_out[port][qos]++;

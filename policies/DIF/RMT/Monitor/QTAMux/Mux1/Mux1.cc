@@ -91,12 +91,20 @@ void Mux1::add(RMTQueue * q, char urgency, char cherish) {
         return;
     }
 
+
     if(urgency > maxU) { urgency = maxU; }
     if(urgency < 0) { urgency = 0; }
 
     count++;
     UQ[urgency].push(q);
-
+    /*
+if(parent->nodeName == "A") {
+    cout << (int)urgency << " // " << (int)count
+            << " || "<< UQ[1].size()
+            << " // "<< UQ[2].size()
+            << " // "<< UQ[3].size()<<endl;
+}
+*/
     if(count == 1 && port->isOutputReady()) {
         parent->callMux(port);
     }
@@ -109,6 +117,14 @@ RMTQueue * Mux1::getNext() {
         RMTQueue * rq = UQ[i].front();
         UQ[i].pop();
         count --;
+        /*
+if(parent->nodeName == "A") {
+        cout << "-----Out "<< i<< " // " << (int)count
+                << " || "<< UQ[1].size()
+                << " // "<< UQ[2].size()
+                << " // "<< UQ[3].size()<<endl;
+}
+*/
         return rq;
     }
     return nullptr;

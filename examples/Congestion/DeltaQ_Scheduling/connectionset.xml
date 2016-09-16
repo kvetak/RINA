@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="A_Fabric" dst="B_Fabric" qosReq="1"/>
+  </SimTime>
+  
+  <SimTime t="10">
+    <Connection src="A_Net" dst="B_Net" qosReq="3"/>
+  </SimTime>
+  
+  <SimTime t="20">
+    <Connection src="A_Net" dst="B_Net" qosReq="2"/>
+  </SimTime>
+  
+  <SimTime t="30">
+    <Connection src="A_Net" dst="B_Net" qosReq="1"/>
+  </SimTime>
+</ConnectionSet>

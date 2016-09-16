@@ -65,6 +65,7 @@ void IterativeStopMonitor::preQueueRemoval(RMTQueue* queue) {
 void IterativeStopMonitor::postPDUInsertion(RMTQueue* queue) {
     if(     queue->getType() == RMTQueue::OUTPUT) {
         recData += queue->getLastPDU()->getBitLength();
+        inPort++;
     }
         if(     queue->getType() == RMTQueue::OUTPUT
                 && strcmp(queue->getName(), "outQ_noflow")
@@ -76,6 +77,10 @@ void IterativeStopMonitor::postPDUInsertion(RMTQueue* queue) {
 }
 
 void IterativeStopMonitor::postPDURelease(RMTQueue* queue) {
+    if(     queue->getType() == RMTQueue::OUTPUT) {
+        inPort--;
+    }
+
     if(     queue->getType() == RMTQueue::OUTPUT
             && strcmp(queue->getName(), "outQ_noflow")
             && queue->getLength() <= restartAt) {
