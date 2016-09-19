@@ -23,6 +23,7 @@ struct trace_t {
     unsigned char type;
     long long pduId;
     long long globalFlowId;
+    int len;
     double time;
 };
 
@@ -34,16 +35,16 @@ public:
 
     static VDT_Listener * instance;
 
-    void voiceSent          (string src, string dst, string QoS, int flow, long long id);
-    void voiceRecv          (string src, string dst, string QoS, int flow, simtime_t lat, long long id);
+    void voiceSent          (string src, string dst, string QoS, int flow , long long id, int len);
+    void voiceRecv          (string src, string dst, string QoS, int flow, simtime_t lat, long long id, int len);
 
     void requestEnd         (string src, string dst, string QoS, int flow, simtime_t duration);
 
-    void requestSent           (string src, string dst, string QoS, int flow, long long id);
-    void requestRecv           (string src, string dst, string QoS, int flow, simtime_t lat, long long id);
+    void requestSent           (string src, string dst, string QoS, int flow, long long id, int len);
+    void requestRecv           (string src, string dst, string QoS, int flow, simtime_t lat, long long id, int len);
 
-    void dataSent           (string src, string dst, string QoS, int flow, long long id);
-    void dataRecv           (string src, string dst, string QoS, int flow, simtime_t lat, long long id);
+    void dataSent           (string src, string dst, string QoS, int flow, long long id, int len);
+    void dataRecv           (string src, string dst, string QoS, int flow, simtime_t lat, long long id, int len);
 
 protected:
     //SRC-DST-QoS-FlowId -> Stats

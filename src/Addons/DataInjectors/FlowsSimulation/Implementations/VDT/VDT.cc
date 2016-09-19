@@ -8,12 +8,12 @@ void VDT::receiveData(const string & _src, const string & _qos, shared_ptr<Flow_
 
     if(shared_ptr<sender_d> d = dynamic_pointer_cast < sender_d > (data)) {
         // Received Data from sender
-        VDT_Listener::instance->voiceRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId);
+        VDT_Listener::instance->voiceRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
 
     } else if(shared_ptr<client_d> d = dynamic_pointer_cast < client_d > (data)) {
         // Received Data from client -> server
 
-        VDT_Listener::instance->requestRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId);
+        VDT_Listener::instance->requestRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
 
         server_t * app = servers[_src][d->flow];
         if(app == nullptr) {
@@ -28,7 +28,7 @@ void VDT::receiveData(const string & _src, const string & _qos, shared_ptr<Flow_
     } else if(shared_ptr<server_d> d = dynamic_pointer_cast < server_d > (data)) {
         // Received Data from server -> client
 
-        VDT_Listener::instance->dataRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId);
+        VDT_Listener::instance->dataRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
 
         client_t * app = clients[_src][d->flow];
         if(app == nullptr) { error("Received data for unknown server."); }
@@ -56,13 +56,13 @@ void VDT::handleMessage(cMessage *msg) {
 
             if(dynamic_cast < sender_d *> (r.data)) {
                 // Sent Voice Data
-                VDT_Listener::instance->voiceSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId);
+                VDT_Listener::instance->voiceSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
             } else if(dynamic_cast < client_d *> (r.data)) {
                 // Sent data
-                VDT_Listener::instance->requestSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId);
+                VDT_Listener::instance->requestSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
             } else if(dynamic_cast < server_d *> (r.data)) {
                 // Sent request
-                VDT_Listener::instance->dataSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId);
+                VDT_Listener::instance->dataSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
             }
         }
     }

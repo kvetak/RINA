@@ -63,6 +63,8 @@ void VDT_Listener::finish(){
         t.time = simTime().dbl();
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
+        tracer.close();
+        flowsInfo.close();
     }
 }
 
@@ -91,25 +93,27 @@ void VDT_Listener::coutStats(const map<string, map<string, map<string, map<int, 
     }
 }
 
-void VDT_Listener::voiceSent(string src, string dst, string qos, int flow, long long id) {
+void VDT_Listener::voiceSent(string src, string dst, string qos, int flow, long long id, int len) {
     voice[src][dst][qos][flow].add();
     if(recordTrace) {
         trace_t t;
         t.type = 0;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
 }
-void VDT_Listener::voiceRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
+void VDT_Listener::voiceRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id, int len) {
     voice[src][dst][qos][flow].add(lat);
     if(recordTrace) {
         trace_t t;
         t.type = 1;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
@@ -123,7 +127,7 @@ void VDT_Listener::requestEnd(string src, string dst, string qos, int flow, simt
 }
 
 
-void VDT_Listener::requestSent(string src, string dst, string qos, int flow, long long id) {
+void VDT_Listener::requestSent(string src, string dst, string qos, int flow, long long id, int len) {
     request[src][dst][qos][flow].add();
 
     if(recordTrace) {
@@ -131,25 +135,27 @@ void VDT_Listener::requestSent(string src, string dst, string qos, int flow, lon
         t.type = 0;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
 }
-void VDT_Listener::requestRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
+void VDT_Listener::requestRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id, int len) {
     request[src][dst][qos][flow].add(lat);
     if(recordTrace) {
         trace_t t;
         t.type = 1;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
 }
 
-void VDT_Listener::dataSent(string src, string dst, string qos, int flow, long long id) {
+void VDT_Listener::dataSent(string src, string dst, string qos, int flow, long long id, int len) {
     data[src][dst][qos][flow].add();
 
     if(recordTrace) {
@@ -157,18 +163,20 @@ void VDT_Listener::dataSent(string src, string dst, string qos, int flow, long l
         t.type = 0;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
 }
-void VDT_Listener::dataRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
+void VDT_Listener::dataRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id, int len) {
     data[src][dst][qos][flow].add(lat);
     if(recordTrace) {
         trace_t t;
         t.type = 1;
         t.time = simTime().dbl();
         t.pduId = id;
+        t.len = len;
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
