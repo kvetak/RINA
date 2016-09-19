@@ -32,6 +32,8 @@ public :
     }
     map<string, map<string, RMTPort * > > ports;
 
+    long long pduId;
+
 /** Basic data **/
 
     //Infected IPCP information
@@ -49,6 +51,7 @@ public :
     // finT < iniT -> Abort process
 
 /** Extended functionality **/
+
 
 
     //Request finalized

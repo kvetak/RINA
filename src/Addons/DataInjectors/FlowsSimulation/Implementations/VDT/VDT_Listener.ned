@@ -27,4 +27,6 @@ simple VDT_Listener {
         @display("i=device/antennatower");
         
         string logFile = default("");
+        
+        bool recordTrace = default(false);
 }

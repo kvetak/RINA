@@ -23,6 +23,19 @@ void stats::add(simtime_t lat) {
 
 void VDT_Listener::initialize() {
     VDT_Listener::instance = this;
+
+    recordTrace = par("recordTrace").boolValue();
+    if(recordTrace){
+        tracer.open("stats/"
+                + string(ev.getConfigEx()->getActiveConfigName())+"-"
+                + to_string(ev.getConfigEx()->getActiveRunNumber())
+                + ".trace", fstream::out | fstream::binary);
+        flowsInfo.open("stats/"
+                + string(ev.getConfigEx()->getActiveConfigName())+"-"
+                + to_string(ev.getConfigEx()->getActiveRunNumber())
+                + ".traceinfo", fstream::out);
+        nextGlobal = 1;
+    }
 }
 
 
@@ -43,6 +56,14 @@ void VDT_Listener::finish(){
     cout << "Data"<<endl;
     coutStats(data);
     cout << endl;
+
+    if(recordTrace) {
+        trace_t t;
+        t.type = 255;
+        t.time = simTime().dbl();
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
 
 
@@ -70,31 +91,100 @@ void VDT_Listener::coutStats(const map<string, map<string, map<string, map<int, 
     }
 }
 
-void VDT_Listener::voiceSent(string src, string dst, string qos, int flow) {
+void VDT_Listener::voiceSent(string src, string dst, string qos, int flow, long long id) {
     voice[src][dst][qos][flow].add();
+    if(recordTrace) {
+        trace_t t;
+        t.type = 0;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
-void VDT_Listener::voiceRecv(string src, string dst, string qos, int flow, simtime_t lat) {
+void VDT_Listener::voiceRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
     voice[src][dst][qos][flow].add(lat);
+    if(recordTrace) {
+        trace_t t;
+        t.type = 1;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
 
 void VDT_Listener::requestEnd(string src, string dst, string qos, int flow, simtime_t duration) {
     fullRequest[src][dst][qos][flow].add();
     fullRequest[src][dst][qos][flow].add(duration);
+
 }
 
 
-void VDT_Listener::requestSent(string src, string dst, string qos, int flow) {
+void VDT_Listener::requestSent(string src, string dst, string qos, int flow, long long id) {
     request[src][dst][qos][flow].add();
+
+    if(recordTrace) {
+        trace_t t;
+        t.type = 0;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
-void VDT_Listener::requestRecv(string src, string dst, string qos, int flow, simtime_t lat) {
+void VDT_Listener::requestRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
     request[src][dst][qos][flow].add(lat);
+    if(recordTrace) {
+        trace_t t;
+        t.type = 1;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
 
-void VDT_Listener::dataSent(string src, string dst, string qos, int flow) {
+void VDT_Listener::dataSent(string src, string dst, string qos, int flow, long long id) {
     data[src][dst][qos][flow].add();
+
+    if(recordTrace) {
+        trace_t t;
+        t.type = 0;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
 }
-void VDT_Listener::dataRecv(string src, string dst, string qos, int flow, simtime_t lat) {
+void VDT_Listener::dataRecv(string src, string dst, string qos, int flow, simtime_t lat, long long id) {
     data[src][dst][qos][flow].add(lat);
+    if(recordTrace) {
+        trace_t t;
+        t.type = 1;
+        t.time = simTime().dbl();
+        t.pduId = id;
+        t.globalFlowId = getGlobal(src, dst, qos, flow);
+        tracer.write((char*)&t, sizeof(trace_t));
+        tracer.flush();
+    }
+}
+
+
+long long VDT_Listener::getGlobal(string src, string dst, string qos, int flowId) {
+    long long & id = globalFlowIds[src][dst][qos][flowId];
+    if (id <= 0) {
+        id = nextGlobal++;
+
+        flowsInfo << id << " " << src << " " << dst << " "  << qos << " "  << flowId << endl;
+        flowsInfo.flush();
+    }
+    return id;
 }
 
 

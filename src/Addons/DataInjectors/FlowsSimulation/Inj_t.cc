@@ -13,6 +13,7 @@ Flow_PDU * Inj_t::genPDU(const PDU_Req & req) {
     dstAddr = Address(req.f->dstAddr.c_str(), dif.c_str());
     pdu->setDstAddr(dstAddr);
     pdu->setDstApn(dstAddr.getApn());
+    req.data->pduId = pduId++;
     pdu->xdata = shared_ptr < Flow_Data > (req.data);
     pdu->setByteLength(pdu->xdata->len);
     return pdu;
@@ -55,6 +56,8 @@ void Inj_t::initialize() {
     connID.setDstCepId(-1);
 
     headers = par("headers_size").longValue();
+
+    pduId = 0;
 
     postInitialize();
 }

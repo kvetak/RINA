@@ -145,7 +145,10 @@ void QTAMonitor::postQueueCreation(RMTQueue* queue) {
                 PortName[port] = name;
                 auto & out = PortStream[port];
 
-                out.open("stats/" + nodeName + "."+name+".stats", fstream::out);
+                out.open("stats/"
+                        + string(ev.getConfigEx()->getActiveConfigName())+"-"
+                        + to_string(ev.getConfigEx()->getActiveRunNumber())+"."
+                        + nodeName + "."+name+".stats", fstream::out);
                 if (!out.is_open()) {
                     string eMessage = "Error Creating stats file \"stats/"
                             + nodeName + "."+name+".stats\"";
