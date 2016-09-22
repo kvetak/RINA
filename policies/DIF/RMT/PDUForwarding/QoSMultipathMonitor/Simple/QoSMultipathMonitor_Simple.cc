@@ -106,28 +106,21 @@ vector<RMTPort * > QoSMultipathMonitor_Simple::lookup(const Address &dst, const 
 
 RMTPort * QoSMultipathMonitor_Simple::portLookup(const string& dst, const string& qos) {
     if(dst == "") { return nullptr; }
-    int reqBW = QoS_BWreq[qos];
     vector<entryT> * entries = & table[dst];
 
     vector<entryT> possibles;
 
-    int count = 0;
     for(const entryT & e : *entries) {
-        if(e.BW >= reqBW) {
-            count += e.BW;
             possibles.push_back(e);
-        }
     }
 
     if(possibles.empty()) {
         return nullptr;
     }
 
-    int r = intuniform(0, count);
-    for(const entryT & e : possibles) {
-        if(r<e.BW) { return e.p; }
-        else { r -= e.BW; }
-    }
+    int r = intuniform(0, possibles.size()-1);
+
+    return possibles[r].p;
 
     error("Entries found but none returned");
     return nullptr;

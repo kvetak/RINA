@@ -238,9 +238,9 @@ void ONOFInj::startFlows() {
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
             //sendDirect(Monmsg, uniform(0.0, f->idle_time + f->burst_time), 0, targetModule, "radioIn");
-            sendDirect(Monmsg, uniform(0.0, 9), 0, targetModule, "radioIn");
+            //sendDirect(Monmsg, uniform(0.0, 9), 0, targetModule, "radioIn");
 
-            //scheduleAt( simTime() + uniform(0.0, voice_f::idle_time + voice_f::burst_time), &f->at);
+            scheduleAt( simTime() + uniform(0.0, 9), &f->at);
             nextFlowId++;
         }
         for (int i = 0; i < par("client_flows").longValue(); i++) {
@@ -267,10 +267,10 @@ void ONOFInj::startFlows() {
             cModule *targetModule = getModuleByPath("fullPathMonitor");
             take(Monmsg);
             //sendDirect(Monmsg, uniform(0.0, f->idle_time), 0, targetModule, "radioIn");
-            sendDirect(Monmsg, uniform(0.0, 9), 0, targetModule, "radioIn");
+            //sendDirect(Monmsg, uniform(0.0, 9), 0, targetModule, "radioIn");
 
             nextFlowId++;
-            //scheduleAt( simTime() + uniform(0.0, video_f::idle_time), &f->at);
+            scheduleAt( simTime() + uniform(0.0, 9), &f->at);
         }
     }
 }
