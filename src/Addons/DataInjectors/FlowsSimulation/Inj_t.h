@@ -28,7 +28,7 @@ public :
     inline void setPort(const string & dst, const string & qos, RMTPort * p) { ports[dst][qos] = p; }
     inline bool portReady(string dst, string qos) {
         RMTPort * p = ports[dst][qos];
-        return (p != nullptr && p->isOutputReady());
+        return (p != nullptr && p->isOutputReady() && p->isInputReady());
     }
     map<string, map<string, RMTPort * > > ports;
 

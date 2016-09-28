@@ -50,7 +50,6 @@ protected:
     vector<int> CATh, CTh;
     vector<double> CDprob;
     vector<queue<RMTQueue *> > UQ;
-    long count;
 };
 
 }

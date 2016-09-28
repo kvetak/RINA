@@ -43,6 +43,10 @@ public:
     virtual void add(RMTQueue * q, char urgency, char cherish) = 0;
     virtual RMTQueue * getNext() = 0;
 
+    virtual void addedQueue(RMTQueue * q) {}
+
+    long count;
+
 protected:
     QTAMonitor * parent;
     RMTPort * port;

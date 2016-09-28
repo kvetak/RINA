@@ -5,6 +5,8 @@ PDU_Req server_t::act(Inj_t * parent, bool fin) {
     PDU_Req ret;
     ret.f = this;
 
+    double nextIn = interval;
+
     if(parent->portReady(dstAddr, QoS)) {
         if(sendSN) {
             sendSN = false;
@@ -16,10 +18,12 @@ PDU_Req server_t::act(Inj_t * parent, bool fin) {
                 parent->scheduleAt(nextRet, &rt);
             }
         }
+    } else {
+        nextIn /= 3.0;
     }
 
     if(seq < until) {
-        parent->scheduleAt(simTime() + interval, &at);
+        parent->scheduleAt(simTime() + nextIn, &at);
     }
 
     if(ret.data != nullptr) {

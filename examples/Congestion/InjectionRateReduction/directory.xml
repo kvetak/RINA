@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="A_Fabric">
+      <DIF difName="AB" ipcAddress="A" />
+    </APN>
+    <APN apn="B_Fabric">
+      <DIF difName="AB" ipcAddress="B" />
+    </APN>
+    
+    
+    <APN apn="A_Net">
+      <DIF difName="Fabric" ipcAddress="A" />
+    </APN>
+    <APN apn="B_Net">
+      <DIF difName="Fabric" ipcAddress="B" />
+    </APN>
+    
+  </Directory>
+</DA>

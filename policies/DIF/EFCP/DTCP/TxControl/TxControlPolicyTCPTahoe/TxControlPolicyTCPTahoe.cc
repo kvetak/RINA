@@ -52,6 +52,9 @@ void TxControlPolicyTCPTahoe::slowDown() {
         ssthresh = snd_cwnd;
         slowedDown = true;
         emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
+        std::cout << "slowedDown : "  << snd_cwnd << ssthresh << endl;
+    } else {
+        std::cout << "already slowedDown"<< endl;
     }
 }
 

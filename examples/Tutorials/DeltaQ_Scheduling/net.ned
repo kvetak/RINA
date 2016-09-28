@@ -16,13 +16,13 @@ channel myT2F extends DatarateChannel
 {
     parameters:
         datarate = 200Mbps;
-        delay = 1us;
+        delay = 10us;
 }
 channel myF2S extends DatarateChannel
 {
     parameters:
         datarate = 1Gbps;
-        delay = 1us;
+        delay = 10us;
 }
 
 
@@ -56,6 +56,6 @@ network net
         A.medium++ <--> myT2F <--> D.medium++;
         B.medium++ <--> myT2F <--> D.medium++;
         C.medium++ <--> myT2F <--> E.medium++;
-        D.medium++ <--> myT2F <--> F.medium++;
-        E.medium++ <--> myT2F <--> F.medium++;
+        D.medium++ <--> myF2S <--> F.medium++;
+        E.medium++ <--> myF2S <--> F.medium++;
 }

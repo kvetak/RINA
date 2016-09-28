@@ -1,4 +1,39 @@
 <?xml version="1.0"?>
 <flows>
-	<set src = "A" dst = "B" V="1" D ="1" T="1" />
+	<set src = "A" dst = "B" V="15" D ="0" T="0" />
+	<set src = "A" dst = "C" V="15" D ="0" T="0" />
+	<set src = "A" dst = "D" V="1" D ="0" T="0" />
+	<set src = "A" dst = "E" V="4" D ="0" T="0" />
+	<set src = "A" dst = "F" V="5" D ="0" T="0" />
+	
+	<set src = "B" dst = "A" V="0" D ="30" T="30" />
+	<set src = "B" dst = "C" V="0" D ="0" T="0" />
+	<set src = "B" dst = "D" V="0" D ="50" T="50" />
+	<set src = "B" dst = "E" V="0" D ="0" T="0" />
+	<set src = "B" dst = "F" V="0" D ="0" T="0" />
+	
+	<set src = "C" dst = "A" V="0" D ="30" T="30" />
+	<set src = "C" dst = "B" V="0" D ="0" T="0" />
+	<set src = "C" dst = "D" V="0" D ="8" T="8" />
+	<set src = "C" dst = "E" V="0" D ="32" T="32" />
+	<set src = "C" dst = "F" V="0" D ="10" T="10" />
+	
+	<set src = "D" dst = "A" V="0" D ="2" T="2" />
+	<set src = "D" dst = "B" V="25" D ="0" T="0" />
+	<set src = "D" dst = "C" V="4" D ="0" T="0" />
+	<set src = "D" dst = "E" V="32" D ="0" T="0" />
+	<set src = "D" dst = "F" V="140" D ="0" T="0" />
+	
+	<set src = "E" dst = "A" V="0" D ="8" T="8" />
+	<set src = "E" dst = "B" V="0" D ="0" T="0" />
+	<set src = "E" dst = "C" V="16" D ="0" T="0" />
+	<set src = "E" dst = "D" V="0" D ="64" T="64" />
+	<set src = "E" dst = "F" V="0" D ="280" T="280" />
+	
+	<set src = "F" dst = "A" V="0" D ="10" T="10" />
+	<set src = "F" dst = "B" V="0" D ="0" T="0" />
+	<set src = "F" dst = "C" V="5" D ="0" T="0" />
+	<set src = "F" dst = "D" V="0" D ="280" T="280" />
+	<set src = "F" dst = "E" V="140" D ="0" T="0" />
+	
 </flows>

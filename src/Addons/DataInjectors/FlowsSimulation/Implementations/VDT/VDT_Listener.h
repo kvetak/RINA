@@ -51,6 +51,7 @@ protected:
     map<string, map<string, map<string, map<int, stats> > > >
         voice, fullRequest, request, data;
 
+    void outStats(const map<string, map<string, map<string, map<int, stats> > > > & st, fstream & out);
     void coutStats(const map<string, map<string, map<string, map<int, stats> > > > & st);
 
 

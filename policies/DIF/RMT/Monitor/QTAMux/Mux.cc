@@ -27,7 +27,9 @@ namespace QTAMux {
 using namespace std;
 
 Mux::Mux (QTAMonitor * _parent) :
-    parent(_parent) {}
+    parent(_parent) {
+    count = 0;
+}
 
 Mux::~Mux() {}
 

@@ -48,7 +48,6 @@ protected:
     int maxU, maxC;
     vector<int> CTh;
     vector<queue<RMTQueue *> > UQ;
-    long count;
 };
 
 }

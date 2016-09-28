@@ -130,6 +130,12 @@ class RMTQueue : public cSimpleModule
     void markCongestionOnLast();
 
     /**
+     * Marks the first PDU in a queue with a congestion bit.
+     */
+    void markCongestionOnFirst();
+
+
+    /**
      * Spews out some information about queue state.
      */
     std::string info() const;

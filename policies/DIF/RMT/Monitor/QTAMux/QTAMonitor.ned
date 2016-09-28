@@ -34,6 +34,7 @@ simple QTAMonitor like IntRMTQMonitorPolicy
         double defRate = default(1.0);
         xml shapersData = default(xml("<shapersData/>"));
         xml muxData = default(xml("<muxData/>"));
+        xml ecnData = default(xml("<ecnData/>"));
         
         
         string nodeName = default("");

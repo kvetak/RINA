@@ -29,6 +29,7 @@
 #include "QTAMux/PS3/PS3.h"
 #include "QTAMux/Mux0/Mux0.h"
 #include "QTAMux/Mux1/Mux1.h"
+#include "QTAMux/Mux2/Mux2.h"
 
 namespace QTAMux {
 using namespace std;
@@ -91,6 +92,9 @@ void QTAMonitor::onPolicyInit() {
         case 1:
             baseMux = new Mux1(this, Xml);
             break;
+        case 2:
+            baseMux = new Mux2(this, Xml);
+            break;
         default:
             baseMux = new Mux0(this, Xml);
         }
@@ -124,6 +128,7 @@ void QTAMonitor::onPolicyInit() {
         }
 
     }
+
 
 }
 
@@ -182,6 +187,8 @@ void QTAMonitor::postQueueCreation(RMTQueue* queue) {
             name = "default";
         }
         shapers[queue] = baseShapers[name]->clone(port, queue, mux);
+
+        mux->addedQueue(queue);
     }
 }
 

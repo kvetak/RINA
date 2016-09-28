@@ -28,7 +28,7 @@ namespace QTAMux {
 using namespace std;
 
 Mux1::Mux1 (QTAMonitor * _parent, cXMLElement* config) :
-        Mux(_parent), count(0) {
+        Mux(_parent) {
     maxU = 10; maxC = 10;
     if(config != nullptr) {
         maxU = atoi(config->getAttribute("maxU"));
@@ -67,7 +67,7 @@ Mux1::Mux1 (QTAMonitor * _parent, cXMLElement* config) :
 }
 
 Mux1::Mux1 (QTAMonitor * _parent, int _maxU, int _maxC,  vector<int> & _CATh, vector<int> & _CTh, vector<double> & _CDprob) :
-    Mux(_parent), maxU(_maxU), maxC(_maxC), CATh(_CATh), CTh(_CTh), CDprob(_CDprob), count(0) {
+    Mux(_parent), maxU(_maxU), maxC(_maxC), CATh(_CATh), CTh(_CTh), CDprob(_CDprob) {
     for(int i = 0; i <= maxU; i++) {
         UQ.push_back(queue<RMTQueue *>());
     }
@@ -97,14 +97,6 @@ void Mux1::add(RMTQueue * q, char urgency, char cherish) {
 
     count++;
     UQ[urgency].push(q);
-    /*
-if(parent->nodeName == "A") {
-    cout << (int)urgency << " // " << (int)count
-            << " || "<< UQ[1].size()
-            << " // "<< UQ[2].size()
-            << " // "<< UQ[3].size()<<endl;
-}
-*/
     if(count == 1 && port->isOutputReady()) {
         parent->callMux(port);
     }
@@ -117,14 +109,6 @@ RMTQueue * Mux1::getNext() {
         RMTQueue * rq = UQ[i].front();
         UQ[i].pop();
         count --;
-        /*
-if(parent->nodeName == "A") {
-        cout << "-----Out "<< i<< " // " << (int)count
-                << " || "<< UQ[1].size()
-                << " // "<< UQ[2].size()
-                << " // "<< UQ[3].size()<<endl;
-}
-*/
         return rq;
     }
     return nullptr;

@@ -222,6 +222,23 @@ void RMTQueue::markCongestionOnLast()
     }
 }
 
+void RMTQueue::markCongestionOnFirst()
+{
+    cPacket* msg = queue.front();
+
+    if (dynamic_cast<PDU*>(msg) != nullptr)
+    {
+        PDU* pdu = (PDU*) msg;
+        pdu->setFlags(pdu->getFlags() | ECN_FLAG);
+    }
+    else
+    {
+        EV << "The message isn't a PDU, cannot apply marking!" << endl;
+    }
+}
+
+
+
 
 int RMTQueue::getLength() const
 {

@@ -21,11 +21,13 @@ DTCPECNSlowDownPolicyTCP::~DTCPECNSlowDownPolicyTCP() {
 
 DTCPECNSlowDownPolicyTCP::DTCPECNSlowDownPolicyTCP() {
     // TODO Auto-generated constructor stub
+    std::cout << "Hello?????????????"<< endl;
 
 }
 
 void DTCPECNSlowDownPolicyTCP::initialize(int step)
 {
+    std::cout << "Hello!!!"<< endl;
     tcpPolicy = check_and_cast<TxControlPolicyTCPTahoe *>(getModuleByPath("^.^.efcp.txControlPolicy"));
 }
 

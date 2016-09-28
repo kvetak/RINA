@@ -40,22 +40,47 @@ void VDT_Listener::initialize() {
 
 
 void VDT_Listener::finish(){
-    cout << "Listener finish"<<endl;
-    cout << "Voice"<<endl;
-    coutStats(voice);
-    cout << endl;
+    fstream out;
+    out.open("stats/"
+            + string(ev.getConfigEx()->getActiveConfigName())+"-"
+            + to_string(ev.getConfigEx()->getActiveRunNumber())
+            + ".results", fstream::out);
 
-    cout << "Full request"<<endl;
-    coutStats(fullRequest);
-    cout << endl;
+    out << "Voice"<<endl;
+    outStats(voice, out);
+    out << endl;
 
-    cout << "Requests"<<endl;
-    coutStats(request);
-    cout << endl;
+    out << "Full request"<<endl;
+    outStats(fullRequest, out);
+    out << endl;
 
-    cout << "Data"<<endl;
-    coutStats(data);
-    cout << endl;
+    out << "Requests"<<endl;
+    outStats(request, out);
+    out << endl;
+
+    out << "Data"<<endl;
+    outStats(data, out);
+    out << endl;
+
+
+    if(par("printAtEnd").boolValue()) {
+        cout << "Listener finish"<<endl;
+        cout << "Voice"<<endl;
+        coutStats(voice);
+        cout << endl;
+
+        cout << "Full request"<<endl;
+        coutStats(fullRequest);
+        cout << endl;
+
+        cout << "Requests"<<endl;
+        coutStats(request);
+        cout << endl;
+
+        cout << "Data"<<endl;
+        coutStats(data);
+        cout << endl;
+    }
 
     if(recordTrace) {
         trace_t t;
@@ -68,6 +93,30 @@ void VDT_Listener::finish(){
     }
 }
 
+
+void VDT_Listener::outStats(const map<string, map<string, map<string, map<int, stats> > > > & st, fstream & out) {
+
+    for(auto src_ : st) {
+        for(auto dst_ : src_.second) {
+            for(auto qos_ : dst_.second) {
+                for(auto flow_ : qos_.second) {
+                    const stats & stat = flow_.second;
+                    out << ":: "<< src_.first << " -> "<< dst_.first
+                            << " \\ "<< qos_.first << " ["<<flow_.first<<"]"<<endl;
+                    out << "   min/avg/max | "
+                            << stat.min_lat*1000.0 << " / "
+                            << (stat.sum_lat/stat.countRecv)*1000.0 << " / "
+                            << stat.max_lat*1000.0  << " ms"<< endl;
+                    out << "   sent/recv/% | "
+                            << stat.countSent << " / "
+                            << stat.countRecv << " / "
+                            << (100.0*stat.countRecv/stat.countSent) << " %"<< endl;
+
+                }
+            }
+        }
+    }
+}
 
 void VDT_Listener::coutStats(const map<string, map<string, map<string, map<int, stats> > > > & st) {
 

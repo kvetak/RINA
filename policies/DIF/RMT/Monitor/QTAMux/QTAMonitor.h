@@ -70,6 +70,9 @@ private:
     Mux * baseMux;
     map<RMTPort *, Mux *> muxs;
 
+    map<string, int> baseEcnTh;
+    map<RMTQueue *, int> ecnTh;
+
     //Stats
 
     bool recordStats;
