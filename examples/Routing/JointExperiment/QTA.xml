@@ -16,48 +16,48 @@
     	 	
     	<shaper id="outQ_B1" 
     		type="0" 
-    		urgency = "1" 
-    		cherish = "1" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_C1" 
     		type="0" 
-    		urgency = "1" 
-    		cherish = "2" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_D1" 
     		type="0" 
-    		urgency = "1" 
-    		cherish = "3" />
+    		urgency = "0" 
+    		cherish = "0" />
     		
     	<shaper id="outQ_B2" 
     		type="0" 
-    		urgency = "2" 
-    		cherish = "1" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_C2" 
     		type="0" 
-    		urgency = "2" 
-    		cherish = "2" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_D2" 
     		type="0" 
-    		urgency = "2" 
-    		cherish = "2" />
+    		urgency = "0" 
+    		cherish = "0" />
     		
     	<shaper id="outQ_B3" 
     		type="0" 
-    		urgency = "3" 
-    		cherish = "1" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_C3" 
     		type="0" 
-    		urgency = "3" 
-    		cherish = "2" />
+    		urgency = "0" 
+    		cherish = "0" />
     	 	
     	<shaper id="outQ_D3" 
     		type="0" 
-    		urgency = "3" 
-    		cherish = "3" />
+    		urgency = "0" 
+    		cherish = "0" />
     </shapers>
     
     <mux
