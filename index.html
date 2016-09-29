@@ -8,76 +8,171 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>	
 
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>Rina by kvetak</title>
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+/**
+************************************************************
+*************** THIS IS THE NAVIGATION CODE ****************
+************************************************************
+**/
+
+$(function() {
+    // Stick the #nav to the top of the window
+    var nav = $('#nav');
+    var navHomeY = nav.offset().top;
+    var isFixed = false;
+    var $w = $(window);
+    $w.scroll(function() {
+        var scrollTop = $w.scrollTop();
+        var shouldBeFixed = scrollTop > navHomeY;
+        if (shouldBeFixed && !isFixed) {
+            nav.css({
+                position: 'fixed',
+                top: 0,
+                left: nav.offset().left,
+                width: nav.width()
+            });
+            isFixed = true;
+        }
+        else if (!shouldBeFixed && isFixed)
+        {
+            nav.css({
+                position: 'static'
+            });
+            isFixed = false;
+        }
+    });
+});
+
+
+/**
+************************************************************
+*** THIS IS THE ADD-IN SMOOTH SCROLLING CODE ***************
+*** (see: http://www.dwuser.com/education/content/quick-guide-adding-smooth-scrolling-to-your-webpages/ )
+************************************************************
+**/
+
+
+/**
+ * SmoothScroll
+ * This helper script created by DWUser.com.  Copyright 2012 DWUser.com.  
+ * Dual-licensed under the GPL and MIT licenses.  
+ * All individual scripts remain property of their copyrighters.
+ * Date: 10-Sep-2012
+ * Version: 1.0.1
+ */
+if (!window['jQuery']) alert('The jQuery library must be included before the smoothscroll.js file.  The plugin will not work propery.');
+
+/**
+ * jQuery.ScrollTo - Easy element scrolling using jQuery.
+ * Copyright (c) 2007-2012 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Dual licensed under MIT and GPL.
+ * @author Ariel Flesler
+ * @version 1.4.3.1
+ */
+;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
+
+/**
+ * jQuery.LocalScroll
+ * Copyright (c) 2007-2010 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+ * Dual licensed under MIT and GPL.
+ * Date: 05/31/2010
+ * @author Ariel Flesler
+ * @version 1.2.8b
+ **/
+;(function(b){function g(a,e,d){var h=e.hash.slice(1),f=document.getElementById(h)||document.getElementsByName(h)[0];if(f){a&&a.preventDefault();var c=b(d.target);if(!(d.lock&&c.is(":animated")||d.onBefore&&!1===d.onBefore(a,f,c))){d.stop&&c._scrollable().stop(!0);if(d.hash){var a=f.id==h?"id":"name",g=b("<a> </a>").attr(a,h).css({position:"absolute",top:b(window).scrollTop(),left:b(window).scrollLeft()});f[a]="";b("body").prepend(g);location=e.hash;g.remove();f[a]=h}c.scrollTo(f,d).trigger("notify.serialScroll",
+[f])}}}var i=location.href.replace(/#.*/,""),c=b.localScroll=function(a){b("body").localScroll(a)};c.defaults={duration:1E3,axis:"y",event:"click",stop:!0,target:window,reset:!0};c.hash=function(a){if(location.hash){a=b.extend({},c.defaults,a);a.hash=!1;if(a.reset){var e=a.duration;delete a.duration;b(a.target).scrollTo(0,a);a.duration=e}g(0,location,a)}};b.fn.localScroll=function(a){function e(){return!!this.href&&!!this.hash&&this.href.replace(this.hash,"")==i&&(!a.filter||b(this).is(a.filter))}
+a=b.extend({},c.defaults,a);return a.lazy?this.bind(a.event,function(d){var c=b([d.target,d.target.parentNode]).filter(e)[0];c&&g(d,c,a)}):this.find("a,area").filter(e).bind(a.event,function(b){g(b,this,a)}).end().end()}})(jQuery);
+
+// Initialize all .smoothScroll links
+jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
+
+
+
+});//]]>  
+
+</script>	
+	
+	
+    <title>RINASim by PouzinSociety</title>
+	
   </head>
 
   <body>
     <header>
       <div class="inner">
-        <h1>Rina</h1>
-        <h2>RINA Simulator</h2>
-        <a href="https://github.com/kvetak/RINA" class="button"><small>View project on</small> GitHub</a>
+        <h1>RINASim</h1>
+        <h2>Recursive InterNetwork Architecture Simulator</h2>
+        <a href="https://github.com/kvetak/RINA" class="button"><small>View project's</small> Git repo</a>
       </div>
     </header>
 
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h1>
-<a id="rina-simulator" class="anchor" href="#rina-simulator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RINA Simulator</h1>
+		<div id="navWrap">
+			<div id="nav">
+				<ul>
+					<li><a href="#welcome" class="smoothScroll">Welcome</a></li>					
+					<li><a href="#install" class="smoothScroll">Installation</a></li>					
+					<li><a href="#authors" class="smoothScroll">Authors</a></li>
+					<li><a href="#references" class="smoothScroll">References</a></li>					
+					<li><a href="#motivation" class="smoothScroll">Theory</a></li>
+				</ul>    
+				<br class="clearLeft" />
+			</div>
+		</div>	
 
-<h3>
-<a id="version-changelog" class="anchor" href="#version-changelog" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version changelog</h3>
+<h2><a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and Resources</h2>
 
-<ul>
-<li>October 2015-February 2016 - Trento meeting version, Fragmentation/Concatenation in Delimiting, 
-                            DAF level Enrollment, scenario split</li>
-<li>July-September 2015 - RIBd notifiers, pre-EFCPv6 updates, CDAPProcessingBase interface,
-                    merging partner's contribution (namely routing and congestion control),
-                    added Hop Count to PDU header<br>
-</li>
-<li>May/June 2015 - Enrollment, (N-1)-data/management separation, MIT relicensing,
-              EFCPv4+ updates, separation of QoSCubes and QoS requirements,
-              change of QoSCube-id datatype, source code split between
-              policies and src, PDU headers for (N)-management frames,
-              multiple AEs within single AP communication </li>
-<li>April 2015    - Routing policies prototypes, traceback packet file, CDAP redesign</li>
-<li>March 2015    - Slowdown/Pushupnotif congestion control, basic statistics,
-              flow lifecycle, AEStream/ExtendedPing</li>
-<li>February 2015 - After-Ghent release with FA policies</li>
-<li>January 2015  - Ghent meeting with EFCP, RMT, RA, PDUFTG and policies</li>
-<li>November 2014 - Brussels RV1 with AllNodes examples</li>
-<li>October 2014  - Madrid F2F meeting with working SimpleRelay and TwoCSs scenarios</li>
-</ul>
+<p>RINASim is developed in OMNeT 4.6, but its source codes are fully backward compatible with older (i.e., 4.5) and also newer (i.e., 5.0) OMNeT versions that support C++11 language standard and GCC 4.9.2 compiler. All source codes (including master and other thematic branches) are publicly available on the project’s <a href="https://github.com/kvetak/RINA">GitHub repository</a>. Apart from this official channel for source codes, RINASim stable release snapshots are periodically published on <a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">Open Source Project repository</a></p>
 
-<h3>
-<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources</h3>
+<p>In order to make RINASim more available for general public, we have prepared virtual machine with preinstalled OMNeT++ 4.6 containing always stable and the most current version of RINASim. <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" target="_blank">Out-of-the-box virtual machine</a> is generic OVA appliance, which should be compatible with widely used virtualization softwares (so far tested in VMWare Workstation and ESXi solutions).</p>
+
+<p>Manual installating and building RINASim from the source code is pretty simple. Follow these steps:</p>
+
+<h2><a id="authors" class="anchor" href="#authors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors</h2>
+
+<p>All contributing members with their affiliations summarized at one place:</p>
 
 <ul>
-<li><a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">OpenSourceProject Git with archived RINASim releases</a></li>
-<li><a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip">VMWare Out-of-the-box virtual machine with RINASim</a></li>
-<li>
-<a href="http://ict-pristine.eu/">PRISTINE webpage</a><br>
-</li>
-<li><a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim">Developer's mailing-list</a></li>
-<li><a href="http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf">Deliverable 2.4 describing RINASim January 2015 functionality</a></li>
-<li><a href="http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf">Deliverable 2.6 describing RINASim December 2015 functionality</a></li>
+	<li>Vladimír Veselý (<a href="https://github.com/kvetak" target="_blank">@kvetak</a>) - Brno University of Technology (CZ)</li>
+	<li>Marcel Marek (<a href="https://github.com/screw" target="_blank">@screw</a>) - Brno University of Technology (CZ) + University of Oslo (NO)</li>
+	<li>Kamil Jeřábek (<a href="https://github.com/kjerabek" target="_blank">@kjerabek</a>) - Brno University of Technology (CZ) </li>
+	<li>Tomáš Hykel (<a href="https://github.com/thykel" target="_blank">@thykel</a>) - Brno University of Technology (CZ)</li>
+	<li>Sergio Leon Gaixas (<a href="https://github.com/gaixas" target="_blank">@gaixas</a>) - 	Universitat Politècnica de Catalunya (ES)</li>
+	<li>Peyman Teymoori (<a href="https://github.com/peyman-t" target="_blank">@peyman-t</a>) - University of Oslo (NO)</li>
+	<li>Ehsan Elahi (<a href="https://github.com/ehsanzahoor" target="_blank">@ehsanzahoor</a>) - TSSG in the Waterford Institute of Technology (IE)</li>
+	<li>Kewin Rausch (<a href="https://github.com/kewinrausch" target="_blank">@kewinrausch</a>) - CREATE-NET (IT)</li>
+	<li>Fatma Hrizi (<a href="https://github.com/fatmahrizi" target="_blank">@fatmahrizi</a>) - Telecom SudParis (FR)</li>
 </ul>
 
-<h3>
-<a id="papers" class="anchor" href="#papers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Papers</h3>
+<p>The easiest way how to reach developers is to join dedicated <a href="https://join.skype.com/ueEghGdKrdx5" target="_blank">Skype group</a>. More passive option is to subscribe yourself to the <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" target="_blank">official mailing-list</a>.</p>
+
+<h2><a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h2>
+
+<p>Here is the growing list of papers and publications citing RINASim as employed tool:</p>
 
 <ul>
-<li><a href="http://arxiv.org/abs/1509.03550">V.Vesely, M.Marek, T.Hykel, O.Rysavy; Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator</a></li>
+	<li>S. L. Gaixas, J. Perelló, D. Careglio, E. Grasa, N. Davies and P. Thompson. <i>Assuring Absolute QoS Guarantees for Heterogeneous Services in RINA Networks with ΔQ</i>. IEEE NetCloud 2016, December 2016.</li>
+	<li>E. Elahi, J. Barron, M. Crotty, M. Ponce de Leon, R. Mijumbi, S. Davy, D. Staessens and S. Vrijders. <i>On Load Management in Service Oriented Networks</i>. IEEE Cloudnet 2016, October 2016.</li>
+	<li>P. Teymoori et al., <i>Congestion control in the recursive InterNetworking Architecture (RINA)</i>, 2016 IEEE International Conference on Communications (ICC), Kuala Lumpur, 2016, pp. 1-7. doi: 10.1109/ICC.2016.7510818. Available from: <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7510818&isnumber=7510595" target="_blank">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7510818&isnumber=7510595</a></li>
+	<li>F. Hrizi, A. Laouiti and H. Chaouchi, <i>SFR: Scalable forwarding with RINA for distributed clouds</i>, Network of the Future (NOF), 2015 6th International Conference on the, Montreal, QC, 2015, pp. 1-6. doi: 10.1109/NOF.2015.7333311. Available from: <a href=" http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7333311&isnumber=7333276
+" target="_blank">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7333311&isnumber=7333276</a></li>
+	<li>VESELÝ Vladimír, MAREK Marcel, HYKEL Tomáš, RYŠAVÝ Ondřej, LICHTNER Ondrej and JEŘÁBEK Kamil. <i>Deliverable 2.6: RINASim - advanced functionality</i>. Brno, 2015. Available from: <a href="http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf" target="_blank">http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf</a>.</li>
+	<li>VESELÝ Vladimír, MAREK Marcel, HYKEL Tomáš and RYŠAVÝ Ondřej. <i>Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator</i>. In: Proceedings of 2nd OMNeT++ Community Summit. Ithaca, NY: Cornell University Library, 2015, pp. 1-4. ISSN 2331-8422. Available from: <a href="https://arxiv.org/abs/1509.03550" target="_blank">https://arxiv.org/abs/1509.03550</a></li>
+	<li>VESELÝ Vladimír, MAREK Marcel, HYKEL Tomáš, RYŠAVÝ Ondřej and LICHTNER Ondrej. <i>Deliverable 2.4: RINASim - basic functionality</i>. Brno, 2015. Available from: <a href="http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf" target="_blank">http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf</a></li>
 </ul>
 
-<h3>
-<a id="directory-structure" class="anchor" href="#directory-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directory structure</h3>
+ 	
+
+<h2><a id="directory-structure" class="anchor" href="#directory-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directory structure</h2>
 
 <pre><code>/examples                   ... scenarios testing RINA stack
     /Basics                 ... simple testing scenarios
@@ -191,21 +286,63 @@
             /SimpleDV              ... a simple distance vector-like protocol
             /SimpleLS              ... a simple link-state-like protocol
 </code></pre>
+
         </section>
 
         <aside id="sidebar">
+		  <p class="repo-owner">source code available</p>
           <a href="https://github.com/kvetak/RINA/zipball/master" class="button">
             <small>Download</small>
-            .zip file
+            .zip 
           </a>
           <a href="https://github.com/kvetak/RINA/tarball/master" class="button">
             <small>Download</small>
-            .tar.gz file
+            .tar.gz 
+          </a>
+          <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" class="button">
+            <small>Download</small>
+            VM's OVA
+          </a>
+		  
+		  <hr>
+		  <p class="repo-owner">belongs to</p>
+		  <a href="http://omnetpp.org/" class="button web">
+            <small>simulator</small>
+            OMNeT++
+          </a>
+		  <a href="http://www.pouzinsociety.org/" class="button web">
+            <small>Pouzin Society</small>
+            PSoc
+          </a>
+		  <a href="http://ict-pristine.eu/" class="button web">
+            <small>FP7 EU grant</small>
+            PRISTINE
           </a>
 
-          <p class="repo-owner"><a href="https://github.com/kvetak/RINA"></a> is maintained by <a href="https://github.com/kvetak">kvetak</a>.</p>
+		  <hr>
+		  <p class="repo-owner">get in contact with developers</p>
+		  <a href="http://www.fit.vutbr.cz/~ivesely/index.php.en" class="button person">
+            <small>official</small>
+            mailing-list
+          </a>
+		  <a href="https://join.skype.com/ueEghGdKrdx5" class="button person">
+            <small>Skype</small>
+            group chat
+          </a>
+		  
+		  <hr>
+		  <p class="repo-owner">is maintained and managed by<br>Ing. Vladimír Veselý, Ph.D.</p>
+		  <a href="http://www.fit.vutbr.cz/~ivesely/index.php.en" class="button person">
+            <small>personal profile at</small>
+            university
+          </a>
+		  <a href="https://github.com/kvetak" class="button person">
+            <small>account profile at</small>
+            GitHub
+          </a>
+		  
+		  <p><small>This page was generated by <a href="https://pages.github.com" target="_blank">GitHub Pages</a>, uses altered Architect theme by <a href="https://twitter.com/jasonlong" target="_blank">Jason Long</a> and smooth-scrolling menu described by <a href="http://www.dwuser.com/education/content/creating-a-floating-navigation-menu/" target="_blank">Nathan Rohler.</small></p>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
         </aside>
       </div>
     </div>
