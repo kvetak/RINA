@@ -437,6 +437,7 @@ body {
 }
 
 p {
+  text-align: justify;
   margin-top: 0;
 }
 
@@ -451,7 +452,7 @@ header {
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif;
-  background: rgba(0, 160, 176, 1) url(../images/header-bg-orange.png) 0 0 repeat-x;
+  background: rgba(0, 160, 176, 1) url(../images/header-bg-teal.png) 0 0 repeat-x;
   border-bottom: solid 1px rgba(0, 160, 176, 1);
 }
 
@@ -485,7 +486,7 @@ header h2 {
 
 img.logoimg {
 	float: left; 
-	width: 190px;
+	height: 200px;
 }
 
 #content-wrapper {
@@ -544,18 +545,30 @@ header a.button {
 aside a.button {
   display: block;
   width: 138px;
-  padding-left: 64px;
+  padding-left: 78px;
   margin-bottom: 20px;
   font-size: 21px;
-  background: rgba(0, 160, 176, 1) url(../images/download-button-orange.png) 0 0 no-repeat;
+  background: transparent url(../images/downloadl-button-teal.png) 0 0 no-repeat;
+}
+
+aside a.button.vm {
+  background: transparent url(../images/vm-button-teal.png) 0 0 no-repeat;
 }
 
 aside a.button.web {
-  background: rgba(0, 160, 176, 1) url(../images/web-button.png) 0 0 no-repeat;
+  background: transparent url(../images/link-button-teal.png) 0 0 no-repeat;
 }
 
 aside a.button.person {
-  background: rgba(0, 160, 176, 1) url(../images/button-person.png) 0 0 no-repeat;
+  background: transparent url(../images/presonal-button-teal.png) 0 0 no-repeat;
+}
+
+aside a.button.mail {
+  background: transparent url(../images/mail-button-teal.png) 0 0 no-repeat;
+}
+
+aside a.button.skype {
+  background: transparent url(../images/skype-button-teal.png) 0 0 no-repeat;
 }
 
 code, pre {

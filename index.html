@@ -22,6 +22,7 @@
   <body>
     <header>
       <div class="inner">
+	  <img class="logoimg" src="images/RINASim-logo-glow.png">
         <h1>RINASim</h1>
         <h2>Recursive InterNetwork Architecture Simulator</h2>
         <a href="https://github.com/kvetak/RINA" class="button"><small>View project's</small> Git repo</a>
@@ -47,7 +48,7 @@
 		
 <h2><a id="welcome" class="anchor" href="#welcome" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to the official RINASim web page</h2>
 
-<p><a href="http://csr.bu.edu/rina/" target="_blank">Recursive InterNetwork Architecture (RINA)</a> as the new (and complete) clean-slate architecture (outlined in the <a href="https://www.amazon.com/Patterns-Network-Architecture-Fundamentals-paperback/dp/0137063385" target="_blank">book</a> by <a href="https://en.wikipedia.org/wiki/John_Day_(computer_scientist)" target="_blank">prof. John Day</a>) tries to touch and codify every part of communication within computer networks. Therefore, RINA’s knowledge base spans from high-level reference model description to low-level characterization of each component functionality. <a href="http://www.pouzinsociety.org/" target="_blank">Pouzin Society</a> is a formal body in charge of maintaining specifications with <a href="https://www.fit.vutbr.cz/.en" target="_blank">Faculty of Information technoloy at Brno University of Technology</a> as one of its members (and also core developer of RINASim).</p>
+<p><a href="http://csr.bu.edu/rina/" target="_blank">Recursive InterNetwork Architecture (RINA)</a> as the new (and complete) clean-slate architecture (outlined in the <a href="https://www.amazon.com/Patterns-Network-Architecture-Fundamentals-paperback/dp/0137063385" target="_blank">book</a> by <a href="https://en.wikipedia.org/wiki/John_Day_(computer_scientist)" target="_blank">prof. John Day</a>) tries to touch and codify every part of communication within computer networks. Therefore, RINA’s knowledge base spans from high-level reference model description to low-level characterization of each component functionality. <a href="http://www.pouzinsociety.org/" target="_blank">Pouzin Society</a> is a formal body in charge of maintaining specifications with <a href="https://www.fit.vutbr.cz/.en" target="_blank">Faculty of Information Technology at Brno University of Technology</a> as one of its members (and also a core developer of RINASim).</p>
 
 <p>RINASim is a stand-alone framework for OMNeT++ discrete event simulator environment. RINASim is coded from scratch and independent on another library. The main purpose is to offer the community with reliable and the most up-to-date tool (in the sense of RINA specification compliance) for simulating RINA-based computer networks. RINASim at its current state represents an entirely working implementation of the simulation environment for RINA. The simulator contains all mechanisms of RINA according to the current specification. The main goals of RINASim are to allow:</p> 
 
@@ -62,7 +63,7 @@
 
 <p>RINASim is developed in OMNeT 4.6, but its source codes are fully backward compatible with older (i.e., 4.5) and also newer (i.e., 5.0) OMNeT versions that support C++11 language standard and GCC 4.9.2 compiler. All source codes (including master and other thematic branches) are publicly available on the project’s <a href="https://github.com/kvetak/RINA">GitHub repository</a>. Apart from this official channel for source codes, RINASim stable release snapshots are periodically published on <a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">Open Source Project repository</a></p>
 
-<p>In order to make RINASim more available for general public, we have prepared virtual machine with preinstalled OMNeT++ 4.6 containing always stable and the most current version of RINASim. <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" target="_blank">Out-of-the-box virtual machine</a> is generic OVA appliance, which should be compatible with widely used virtualization softwares (so far tested in VMWare Workstation and ESXi solutions).</p>
+<p>In order to make RINASim more available for general public, we have prepared a virtual machine with preinstalled OMNeT++ 4.6 containing always stable and the most current version of RINASim. <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" target="_blank">Out-of-the-box virtual machine</a> is generic OVA appliance, which should be compatible with widely used virtualization softwares (so far tested in VMWare Workstation and ESXi solutions).</p>
 
 <p>Manual installating and building RINASim from the source code is pretty simple. Follow these steps:</p>
 
@@ -89,7 +90,7 @@
 	<li>Fatma Hrizi (<a href="https://github.com/fatmahrizi" target="_blank">@fatmahrizi</a>) - Telecom SudParis (FR)</li>
 </ul>
 
-<p>The easiest way how to reach developers is to join dedicated <a href="https://join.skype.com/ueEghGdKrdx5" target="_blank">Skype group</a>. More passive option is to subscribe yourself to the <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" target="_blank">official mailing-list</a>.</p>
+<p>The easiest way how to reach developers is to join dedicated <a href="https://join.skype.com/ueEghGdKrdx5" target="_blank">Skype group</a>. The more passive option is to subscribe yourself to the <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" target="_blank">official mailing-list</a>.</p>
 
 <h2><a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h2>
 
@@ -153,11 +154,11 @@
 
 <img src="images/policies.png" style="display: block;margin: 0 auto;"> 
 
-<p>Each policy varies in its implementation and subsequent impact on e.g., packet processing, management functionality. Generally if you want more details, you need to dive deep into specification and source code :-)</p>
+<p>Each policy varies in its implementation and the subsequent impact on packet processing, management functionality and other aspects of RINA stack functionality. Generally, if you want more details, you need to dive deep into specification and source code :-)</p>
 
 <h2><a id="theory" class="anchor" href="#theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Theory</h2> 
 
-<p>The purpose of this section is to provide future RINASim user with a short introduction to RINA concepts (or more accurately <i>executive summary</i>). These concepts and ideas formulates the design and development of the whole RINASim.</p>
+<p>The purpose of this section is to provide future RINASim user with a short introduction to RINA concepts (or more accurately <i>executive summary</i>). These concepts and ideas formulate the design and development of the whole RINASim.</p>
 
 <h3><a id="natureapp" class="anchor" href="#natureapp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nature of applications and application protocols</h3> 
 
@@ -258,7 +259,7 @@
             <small>Download</small>
             .tar.gz 
           </a>
-          <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" class="button">
+          <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" class="button vm">
             <small>Download</small>
             VM's OVA
           </a>
@@ -280,11 +281,11 @@
 
 		  <hr>
 		  <p class="repo-owner">get in contact with developers</p>
-		  <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" class="button person">
+		  <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" class="button mail">
             <small>official</small>
             mailing-list
           </a>
-		  <a href="https://join.skype.com/ueEghGdKrdx5" class="button person">
+		  <a href="https://join.skype.com/ueEghGdKrdx5" class="button skype">
             <small>Skype</small>
             group chat
           </a>
