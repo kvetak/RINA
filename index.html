@@ -9,97 +9,12 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>	
-
+	<script type='text/javascript' src='javascripts/main.js'></script>
+	
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-<script type='text/javascript'>//<![CDATA[ 
-$(window).load(function(){
-/**
-************************************************************
-*************** THIS IS THE NAVIGATION CODE ****************
-************************************************************
-**/
-
-$(function() {
-    // Stick the #nav to the top of the window
-    var nav = $('#nav');
-    var navHomeY = nav.offset().top;
-    var isFixed = false;
-    var $w = $(window);
-    $w.scroll(function() {
-        var scrollTop = $w.scrollTop();
-        var shouldBeFixed = scrollTop > navHomeY;
-        if (shouldBeFixed && !isFixed) {
-            nav.css({
-                position: 'fixed',
-                top: 0,
-                left: nav.offset().left,
-                width: nav.width()
-            });
-            isFixed = true;
-        }
-        else if (!shouldBeFixed && isFixed)
-        {
-            nav.css({
-                position: 'static'
-            });
-            isFixed = false;
-        }
-    });
-});
-
-
-/**
-************************************************************
-*** THIS IS THE ADD-IN SMOOTH SCROLLING CODE ***************
-*** (see: http://www.dwuser.com/education/content/quick-guide-adding-smooth-scrolling-to-your-webpages/ )
-************************************************************
-**/
-
-
-/**
- * SmoothScroll
- * This helper script created by DWUser.com.  Copyright 2012 DWUser.com.  
- * Dual-licensed under the GPL and MIT licenses.  
- * All individual scripts remain property of their copyrighters.
- * Date: 10-Sep-2012
- * Version: 1.0.1
- */
-if (!window['jQuery']) alert('The jQuery library must be included before the smoothscroll.js file.  The plugin will not work propery.');
-
-/**
- * jQuery.ScrollTo - Easy element scrolling using jQuery.
- * Copyright (c) 2007-2012 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
- * Dual licensed under MIT and GPL.
- * @author Ariel Flesler
- * @version 1.4.3.1
- */
-;(function($){var h=$.scrollTo=function(a,b,c){$(window).scrollTo(a,b,c)};h.defaults={axis:'xy',duration:parseFloat($.fn.jquery)>=1.3?0:1,limit:true};h.window=function(a){return $(window)._scrollable()};$.fn._scrollable=function(){return this.map(function(){var a=this,isWin=!a.nodeName||$.inArray(a.nodeName.toLowerCase(),['iframe','#document','html','body'])!=-1;if(!isWin)return a;var b=(a.contentWindow||a).document||a.ownerDocument||a;return/webkit/i.test(navigator.userAgent)||b.compatMode=='BackCompat'?b.body:b.documentElement})};$.fn.scrollTo=function(e,f,g){if(typeof f=='object'){g=f;f=0}if(typeof g=='function')g={onAfter:g};if(e=='max')e=9e9;g=$.extend({},h.defaults,g);f=f||g.duration;g.queue=g.queue&&g.axis.length>1;if(g.queue)f/=2;g.offset=both(g.offset);g.over=both(g.over);return this._scrollable().each(function(){if(e==null)return;var d=this,$elem=$(d),targ=e,toff,attr={},win=$elem.is('html,body');switch(typeof targ){case'number':case'string':if(/^([+-]=)?\d+(\.\d+)?(px|%)?$/.test(targ)){targ=both(targ);break}targ=$(targ,this);if(!targ.length)return;case'object':if(targ.is||targ.style)toff=(targ=$(targ)).offset()}$.each(g.axis.split(''),function(i,a){var b=a=='x'?'Left':'Top',pos=b.toLowerCase(),key='scroll'+b,old=d[key],max=h.max(d,a);if(toff){attr[key]=toff[pos]+(win?0:old-$elem.offset()[pos]);if(g.margin){attr[key]-=parseInt(targ.css('margin'+b))||0;attr[key]-=parseInt(targ.css('border'+b+'Width'))||0}attr[key]+=g.offset[pos]||0;if(g.over[pos])attr[key]+=targ[a=='x'?'width':'height']()*g.over[pos]}else{var c=targ[pos];attr[key]=c.slice&&c.slice(-1)=='%'?parseFloat(c)/100*max:c}if(g.limit&&/^\d+$/.test(attr[key]))attr[key]=attr[key]<=0?0:Math.min(attr[key],max);if(!i&&g.queue){if(old!=attr[key])animate(g.onAfterFirst);delete attr[key]}});animate(g.onAfter);function animate(a){$elem.animate(attr,f,g.easing,a&&function(){a.call(this,e,g)})}}).end()};h.max=function(a,b){var c=b=='x'?'Width':'Height',scroll='scroll'+c;if(!$(a).is('html,body'))return a[scroll]-$(a)[c.toLowerCase()]();var d='client'+c,html=a.ownerDocument.documentElement,body=a.ownerDocument.body;return Math.max(html[scroll],body[scroll])-Math.min(html[d],body[d])};function both(a){return typeof a=='object'?a:{top:a,left:a}}})(jQuery);
-
-/**
- * jQuery.LocalScroll
- * Copyright (c) 2007-2010 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
- * Dual licensed under MIT and GPL.
- * Date: 05/31/2010
- * @author Ariel Flesler
- * @version 1.2.8b
- **/
-;(function(b){function g(a,e,d){var h=e.hash.slice(1),f=document.getElementById(h)||document.getElementsByName(h)[0];if(f){a&&a.preventDefault();var c=b(d.target);if(!(d.lock&&c.is(":animated")||d.onBefore&&!1===d.onBefore(a,f,c))){d.stop&&c._scrollable().stop(!0);if(d.hash){var a=f.id==h?"id":"name",g=b("<a> </a>").attr(a,h).css({position:"absolute",top:b(window).scrollTop(),left:b(window).scrollLeft()});f[a]="";b("body").prepend(g);location=e.hash;g.remove();f[a]=h}c.scrollTo(f,d).trigger("notify.serialScroll",
-[f])}}}var i=location.href.replace(/#.*/,""),c=b.localScroll=function(a){b("body").localScroll(a)};c.defaults={duration:1E3,axis:"y",event:"click",stop:!0,target:window,reset:!0};c.hash=function(a){if(location.hash){a=b.extend({},c.defaults,a);a.hash=!1;if(a.reset){var e=a.duration;delete a.duration;b(a.target).scrollTo(0,a);a.duration=e}g(0,location,a)}};b.fn.localScroll=function(a){function e(){return!!this.href&&!!this.hash&&this.href.replace(this.hash,"")==i&&(!a.filter||b(this).is(a.filter))}
-a=b.extend({},c.defaults,a);return a.lazy?this.bind(a.event,function(d){var c=b([d.target,d.target.parentNode]).filter(e)[0];c&&g(d,c,a)}):this.find("a,area").filter(e).bind(a.event,function(b){g(b,this,a)}).end().end()}})(jQuery);
-
-// Initialize all .smoothScroll links
-jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
-
-
-
-});//]]>  
-
-</script>	
-	
-	
     <title>RINASim by PouzinSociety</title>
 	
   </head>
@@ -123,19 +38,40 @@ jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
 					<li><a href="#install" class="smoothScroll">Installation</a></li>					
 					<li><a href="#authors" class="smoothScroll">Authors</a></li>
 					<li><a href="#references" class="smoothScroll">References</a></li>					
-					<li><a href="#motivation" class="smoothScroll">Theory</a></li>
+					<li><a href="#resources" class="smoothScroll">Resources</a></li>
+					<li><a href="#theory" class="smoothScroll">Theory</a></li>
 				</ul>    
 				<br class="clearLeft" />
 			</div>
 		</div>	
+		
+<h2><a id="welcome" class="anchor" href="#welcome" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to the official RINASim web page</h2>
 
-<h2><a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation and Resources</h2>
+<p><a href="http://csr.bu.edu/rina/" target="_blank">Recursive InterNetwork Architecture (RINA)</a> as the new (and complete) clean-slate architecture (outlined in the <a href="https://www.amazon.com/Patterns-Network-Architecture-Fundamentals-paperback/dp/0137063385" target="_blank">book</a> by <a href="https://en.wikipedia.org/wiki/John_Day_(computer_scientist)" target="_blank">prof. John Day</a>) tries to touch and codify every part of communication within computer networks. Therefore, RINA’s knowledge base spans from high-level reference model description to low-level characterization of each component functionality. <a href="http://www.pouzinsociety.org/" target="_blank">Pouzin Society</a> is a formal body in charge of maintaining specifications with <a href="https://www.fit.vutbr.cz/.en" target="_blank">Faculty of Information technoloy at Brno University of Technology</a> as one of its members (and also core developer of RINASim).</p>
+
+<p>RINASim is a stand-alone framework for OMNeT++ discrete event simulator environment. RINASim is coded from scratch and independent on another library. The main purpose is to offer the community with reliable and the most up-to-date tool (in the sense of RINA specification compliance) for simulating RINA-based computer networks. RINASim at its current state represents an entirely working implementation of the simulation environment for RINA. The simulator contains all mechanisms of RINA according to the current specification. The main goals of RINASim are to allow:</p> 
+
+<ol>
+<li>researchers to prototype and test new policies and mechanisms in native and full-compliant RINA environment - <i>scientific goal</i>;</li>
+<li>others to visualize and understand RINA principles - <i>educational goal</i>.</li>
+</ol>
+
+<p>RINASim started as one of <a href="http://ict-pristine.eu/" blank="_blank">FP7 EU PRISTINE</a> deliverables and continues beyond the end of the project. RINASim is the open environment that can be extended with experimental features. The simulator helps to evaluate new features and to compare them with existing methods. We encourage anyone interested in RINA to step in and contribute.</p>
+
+<h2><a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>RINASim is developed in OMNeT 4.6, but its source codes are fully backward compatible with older (i.e., 4.5) and also newer (i.e., 5.0) OMNeT versions that support C++11 language standard and GCC 4.9.2 compiler. All source codes (including master and other thematic branches) are publicly available on the project’s <a href="https://github.com/kvetak/RINA">GitHub repository</a>. Apart from this official channel for source codes, RINASim stable release snapshots are periodically published on <a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">Open Source Project repository</a></p>
 
 <p>In order to make RINASim more available for general public, we have prepared virtual machine with preinstalled OMNeT++ 4.6 containing always stable and the most current version of RINASim. <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" target="_blank">Out-of-the-box virtual machine</a> is generic OVA appliance, which should be compatible with widely used virtualization softwares (so far tested in VMWare Workstation and ESXi solutions).</p>
 
 <p>Manual installating and building RINASim from the source code is pretty simple. Follow these steps:</p>
+
+<ol>
+<li>Just clone or download <a href="https://github.com/kvetak/RINA" target="_blank">the main branch</a>.</li>
+<li><a href="https://omnetpp.org/pmwiki/index.php?n=Main.HowToImportSimulations" target="_blank">Import the project</a> into OMNeT++ (it is named <code>rina</code>).</li>
+<li>Compile the project, which creates one static library (<code>librinasimcore</code> containing simulation core) and one dynamic library (<code>librinasim</code> also containing various policies linked together with core).</li>
+<li>Play with RINASim. Check the source codes in <code>/src</code> and <code>/policies</code> folders. Run fingerprinted scenarios and demonstrations in <code>/examples</code> folder or check work-in-progress in <code>/playground</code> folder.</li>
+</ol>
 
 <h2><a id="authors" class="anchor" href="#authors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors</h2>
 
@@ -160,6 +96,7 @@ jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
 <p>Here is the growing list of papers and publications citing RINASim as employed tool:</p>
 
 <ul>
+	<li>VESELÝ, Vladimír. <i>A NEW DAWN OF NAMING, ADDRESSING AND ROUTING ON THE INTERNET</i>. Brno, 2016. Available from: <a href="http://www.fit.vutbr.cz/study/DP/PD.php?id=515" target="_blank">http://www.fit.vutbr.cz/study/DP/PD.php?id=515</a>. PhD. Thesis. Brno University of Technology, Faculty of Information Technology. 2016-04-12. Supervisor Švéda Miroslav.</li>
 	<li>S. L. Gaixas, J. Perelló, D. Careglio, E. Grasa, N. Davies and P. Thompson. <i>Assuring Absolute QoS Guarantees for Heterogeneous Services in RINA Networks with ΔQ</i>. IEEE NetCloud 2016, December 2016.</li>
 	<li>E. Elahi, J. Barron, M. Crotty, M. Ponce de Leon, R. Mijumbi, S. Davy, D. Staessens and S. Vrijders. <i>On Load Management in Service Oriented Networks</i>. IEEE Cloudnet 2016, October 2016.</li>
 	<li>P. Teymoori et al., <i>Congestion control in the recursive InterNetworking Architecture (RINA)</i>, 2016 IEEE International Conference on Communications (ICC), Kuala Lumpur, 2016, pp. 1-7. doi: 10.1109/ICC.2016.7510818. Available from: <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7510818&isnumber=7510595" target="_blank">http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7510818&isnumber=7510595</a></li>
@@ -170,122 +107,144 @@ jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
 	<li>VESELÝ Vladimír, MAREK Marcel, HYKEL Tomáš, RYŠAVÝ Ondřej and LICHTNER Ondrej. <i>Deliverable 2.4: RINASim - basic functionality</i>. Brno, 2015. Available from: <a href="http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf" target="_blank">http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf</a></li>
 </ul>
 
- 	
 
-<h2><a id="directory-structure" class="anchor" href="#directory-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directory structure</h2>
+<h2><a id="resources" class="anchor" href="#resources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resources</h2>
 
-<pre><code>/examples                   ... scenarios testing RINA stack
-    /Basics                 ... simple testing scenarios
-    /Congestion             ... congestion control
-    /Demos                  ... use-cases for tutorials and demo sessions
-    /LB                     ... load-balancing
-    /Routing                ... routing in topologies
+<p>In order to make navigation easier, we are providing you with a few tips where things are and what kind of policies are implemented.</p>
 
-/playground                 ... unsupported/obsolete scenarios
+<h3><a id="directory-structure" class="anchor" href="#directory-structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Directory structure</h3>
 
-/src                        ... source codes' folder
-    /Common                 ... shared basic classes
-    /CS                     ... computing system simulation nodes
-    /DAF                    ... DAF components
-    /DIF                    ... DIF component
-    /Other                  ... non-essential user-requested core components
+<p>The project is spread in following folders. 
 
-/policies                   ... all programable RINA policies
+<ul>
+	<li><code>/playground</code> ... unsupported/obsolete scenarios</li>
+	<li><code>/examples</code> ... scenarios testing RINA stack
+		<ul>
+			<li><code>/Basics</code>... simple testing</li>
+			<li><code>/Congestion</code>... congestion control</li>
+			<li><code>/Demos</code>... use-cases for tutorials and demo sessions</li>
+			<li><code>/LB</code>... load-balancing</li>
+			<li><code>/Routing</code>... routing in various topologies</li>
+		</ul>
+	</li>
 
-/scripts
-    fingerprints.sh         ... batch for checking/updating fingerprints
-    slocstats.sh            ... counts source lines of code
-</code></pre>
+	<li><code>/policies</code> ... all programable RINA policies</li>
+	<li><code>/src</code> ... core source codes' folder
+			<ul>
+			<li><code>/Common</code>... shared basic classes</li>
+			<li><code>/CS</code>... computing system simulation nodes</li>
+			<li><code>/DAF</code>... DAF components</li>
+			<li><code>/DIF</code>... DIF component</li>
+			<li><code>/Other</code>... non-essential user-requested core components</li>
+		</ul>
+	</li>
 
-<h3>
-<a id="available-policies" class="anchor" href="#available-policies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available policies</h3>
+	<li><code>/scripts</code> ... scenarios testing RINA stack
+		<ul>
+			<li><code>fingerprints.sh</code>... batch for checking/updating fingerprints</li>
+			<li><code>slocstats.sh</code>... counts source lines of code</li>
+		</ul>
+	</li>	
+</ul>
 
-<pre><code>/DAF                           ... DAF policies
-/DIF                           ... DIF policies
-    /FA                        ... policies related to FA modules
-        /AllocateRetry             ... what happen when M_CREATE is resend by Flow Allocator
-            /LimitedRetries        ... when retransmit treshold is met, allocation is 
-                                       discontinued
-        /MultilevelQoS             ... when a flow request a new n-1 flow, how its requirements are 
-                                       mapped to n-1 requirements *not used yet
-        /NewFlowRequest            ... when new flow is being allocated, how are its 
-                                       requirements mapped to RA QoSCubes
-            /ScoreComparer         ... QoSCube with best score wins
-            /MinComparer           ... QoSCube with minimal feasibility wins
-    /RA                            ... policies related to RA modules
-        /AddressComparator         ... policy used for determining whether a PDU address
-                                       matches the IPCP's address  
-            /ExactMatch            ... exact matching
-            /PrefixMatch           ... matching based on address prefix
-        /PDUFG                     ... PDU Forwarding Generator providing data used by the 
-                                       PDU Forwarding policy 
-            /BiDomainGenerator     ... populates forwarding policy with entries on the form samePrefix.Id -&gt; port and distinctPrefix.* -&gt; port
-            /LatGenerator          ... inform of flow metrics to routing as latency (based on n-1 
-                                       QoS cube) instead of hops
-            /MSimpleGenerator      ... inform of flow metrics to routing as hops, populates forwarding
-                                       policy with all existing best next hops
-            /QoSDomainGenerator    ... populates forwarding policy with best next hop per dst + QoS
-            /SimpleGenerator       ... inform of flow metrics to routing as hops
-            /SingleDomainGenerator ... inform of flow metrics to routing as hops, 
-                                       variation using Domain based routing
-            /StaticGenerator       ... load forwarding information from XML configuration 
-        /QueueAlloc                ... (N-1)-port queue allocation strategy
-            /QueuePerNCU           ... one queue per (N)-Cherish/Urgency class
-            /QueuePerNFlow         ... one queue per (N)-flow 
-            /QueuePerNQoS          ... one queue per (N)-QoS cube
-            /SingleQueue           ... one queue for all
-        /QueueIDGen                ... companion policy to QueueAlloc; returns queue ID 
-                                       for given PDU or Flow object 
-            /IDPerNCU              ... used with QueueAlloc::QueuePerNCU
-            /IDPerNFlow            ... used with QueueAlloc::QueuePerNFlow
-            /IDPerNQoS             ... used with QueueAlloc::QueuePerNQoS
-            /SingleID              ... used with QueueAlloc::SingleQueue
-    /RMT                           ... policies related to RMT modules
-        /MaxQueue                  ... policy invoked when a queue size grows over its
-                                       threshold 
-            /DumbMaxQ              ... request drop probability to monitor, drop random on that.
-                                       used with "SmartMonitor"s 
-            /ECNMarker             ... if queue size &gt;= threshold, apply ECN marking on 
-                                       new PDUs; if size &gt;= max, drop
-            **/PortMaxQ              ...  to remove!!**
-            /ReadRateReducer       ... if queue size &gt;= allowed maximum, stop receiving data
-                                       from input ports 
-            /REDDropper            ... used with Monitor::REDMonitor; Random Early Detection
-                                       implementation
-            /TailDrop              ... if queue size &gt;= allowed maximum, drop new PDUs
-            /UpstreamNotifier      ... if queue size &gt;= allowed maximum, send a notification 
-                                       to the PDU sender
-        /Monitor                   ... state-keeping policy invoked on various queue events 
-            /BEMonitor             ... Best-effort as SmartMonitor using multiple queues
-            /DLMonitor             ... Dela/Loss monitor implementation as SmartMonitor
-            /eDLMonitor            ... enhanced-Dela/Loss monitor implementation as SmartMonitor
-            /REDMonitor            ... used with MaxQueue::REDDropper; Random Early Detection 
-                                       implementation
-            /DummyMonitor          ... noop
-            /SmartMonitor          ... monitor interface for use with dumbMaxQ/dumbSch.
-                                       can be queried for drop probability and next queue
-        /PDUForwarding             ... policy used to decide where to forward a PDU
-            /DomainTabl            ... a table with {domain:{prefix, QoS} -&gt; 
-                                       { Table:{dstAddr -&gt; port}, default:port } }
-            /MiniTable             ... a table with {dstAddr -&gt; port} mappings
-            /MultiMiniTable        ... a table with {dstAddr -&gt; vectior&lt;port&gt;} mappings
-            /QoSTable              ... a table with {(dstAddr, QoS) -&gt; port} mappings
-            /SimpleTable           ... a table with {(dstAddr, QoS) -&gt; port} mappings
-        /Scheduler                 ... policy deciding which (N-1)-port queue should be 
-                                       processed next
-            /DumbSch               ... query the monitor for the next queue to serve.
-                                       used with "SmartMonitor"s
-            /LongestQFirst         ... pick the queue which contains the most PDUs 
-    /Routing                       ... routing policies
-        /DomainRouting             ... routing policy based on domains. A domain is defined as a sub-set
-                                       of the DIF, with its own metrics and routing algorithm.
-            /DV                    ... simple distance vector algorithm for DomainRouting
-            /LS                    ... simple link-state algorithm for DomainRouting
-        /DummyRouting              ... noop
-        /SimpleRouting
-            /SimpleDV              ... a simple distance vector-like protocol
-            /SimpleLS              ... a simple link-state-like protocol
-</code></pre>
+<h3><a id="available-policies" class="anchor" href="#available-policies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available policies</h3>
+
+<p>RINA itself is based on the idea of separating mechanisms and policies. There is a limited number of mechanisms but possible infinity ways how to conduct them via programable policies. Here is ever expanding list of available RINASim policies:</p>
+
+<img src="images/policies.png" style="display: block;margin: 0 auto;"> 
+
+<p>Each policy varies in its implementation and subsequent impact on e.g., packet processing, management functionality. Generally if you want more details, you need to dive deep into specification and source code :-)</p>
+
+<h2><a id="theory" class="anchor" href="#theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Theory</h2> 
+
+<p>The purpose of this section is to provide future RINASim user with a short introduction to RINA concepts (or more accurately <i>executive summary</i>). These concepts and ideas formulates the design and development of the whole RINASim.</p>
+
+<h3><a id="natureapp" class="anchor" href="#natureapp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nature of applications and application protocols</h3> 
+
+<p>Is application a part of IPC environment or not? The set of Internet applications was rather simplistic before WWW – one application with a single instance using only one protocol. Hence, there is nearly no distinction between an application and its networking part. However, the web completely changed this situation – one application protocol may be used by more than one application and also one application may have many application protocols.</p>
+
+<p>Following terms are recognized in the frame of RINA, and their relationship is depicted in below:</p>
+
+<ul>
+<li><b>Application Process (AP)</b> – Program instantiation to accomplish some purpose;</li>
+<li><b>Application Entity (AE)</b> – AE is the part of AP, which represents application protocol and application aspects concerned with communication.</li>
+</ul>
+
+<img src="images/D26-APAE.png" style="display: block;margin: 0 auto;">
+
+<p>There may be multiple instances of the Application Process in the same system. AP may have multiple AEs, each one may process different application protocol. There also may be more than one instance of each AE type within a single AP.
+</p>
+<p>All application protocols are stateless; the state is and should be maintained in the application. Thus, all application protocols modify shared state external to the protocol itself on various objects (e.g. data, file, HW peripherals). Because of that, there is only one application protocol that contains trivial operations (e.g., read/write, start/stop). Data transfer protocols modify state internal to the protocol, the only external effect is the delivery of SDUs.</p>
+
+
+
+<h3><a id="coreterm" class="anchor" href="#coreterm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Core terms</h3> 
+<p>The data transport and internetworking tasks together (generally known as networking) constitute inter-process communication (IPC). IPC between two APs on the same operating system needs to locate processes, evaluate permission, pass data, schedule tasks and manage memory. IPC between two APs on different systems works similarly plus adding functionality to overcome the lack of shared memory.
+</p>
+<p>In traditional networking stack, the layer provides a service to the layer immediately above it. As RINA name suggests, recursion and repeating of patterns is the main feature of the whole architecture. Layer recursion became more popular even in TCP/IP with technologies like Virtual Private Networks (VPNs) or overlay networks (e.g., OTV). Recursion is a natural thing whenever we need to affect the scope of communicating parties. However, so far it was just recursion of repeating functions in existing layers. RINA is based on following core ideas:
+</p>
+
+<ul>
+<li><i>“Networking is interprocess communication…and IPC only!”</i></li>
+<li><i>“Application Processes communicate via a service provided by a distributed application that provides IPC. The application processes that make up this Distributed IPC Facility provide a protocol that implements an IPC mechanism, and a protocol for managing distributed IPC (routing, security and other management tasks)!”</i></li>
+</ul>
+
+<p>In ISO/OSI or TCP/IP, there is a set of layers each with completely different functions. RINA on the other hand yields idea of the single generic layer with fixed mechanisms but configurable policies. This layer is in RINA called <b>Distributed IPC Facility (DIF)</b> – a set of cooperating APs providing IPC. There is not a fixed number of DIFs in RINA; we can stack them according to application or network needs. From the DIF point of view actual stack depth is irrelevant, DIF must know only (N+1)-layer above and (N-1)-layer below. DIF stacking partitions network into smaller, thus, more manageable parts.
+</p>
+
+<p>The concept of RINA layer could be further generalized to <b>Distributed Application Facility (DAF)</b> – a set of cooperating APs in one or more computing systems, which exchange information using IPC and maintain shared state. A DIF is a DAF that does only IPC. Distributed Application Process (DAP) is a member of a DAF. IPC Process (IPCP) is special AP within DIF delivering inter-process communication. IPCP is an instantiation of DIF membership; computing system can perform IPC with other DIF members via its IPC process within this DIF. An IPCP is specialized DAP. The relationship between all newly defined terms is depicted in figure below:
+</p>
+
+<img src="images/D26-DAPDAF.png" style="display: block;margin: 0 auto;">
+
+<p>DIF limits and encloses cooperating processes in the one scope. However, its functionality is more general and versatile apart from rigid TCP/IP layers with dedicated functionality (i.e., datalink layer for adjacent node communication, a transport layer for reliable data transfer between applications). DIF provides IPC to either another DIF or to DAF. Therefore, DIF uses a single application protocol with generic primitive operations to support inter-DIF communication.
+</p>
+
+<h3><a id="covscl" class="anchor" href="#covscl" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Connection-oriented vs. connection-less</h3> 
+<p>The clash between connection-oriented and connectionless approaches (that also corrupted ISO/OSI tendencies) is from RINA perspective quite easy to settle. Connection-oriented and connectionless communication are both just functions of the layer that should not be visible to applications. Both approaches are equal, and it depends on application requirements which one to use. On the one hand, connectionless is characterized by the maximal dissemination of the state information and dynamic resource allocation. On the other hand, connection-oriented limits the dissemination and tends toward static resource allocation. The first one is good for low volume stochastic traffic. The second one is useful for scenarios with deterministic traffic flows.
+</p>
+
+<p>If the applications request the allocation of communication resources, then layer determines what mechanisms and policies to use. Allocation is accompanied with access rights and description of QoS demands (e.g., what minimum bandwidth or delay is needed for correct operation of application).
+</p>
+
+<h3><a id="deltat" class="anchor" href="#deltat" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Delta-t synchronization</h3> 
+<p>All properly designed data transfer protocols are soft-state. There is no need for explicit state synchronization (hard-state) and tools like SYNs and FINs are unnecessary.
+</p>
+<p>Initial synchronization of communicating parties is done with the help of Delta-t protocol. Delta-t was developed by Richard Watson, who proposed time-based synchronization technique. He proved that conditions for distributed synchronization were met if the following three timers are realized: a) <b>Maximum Packet Lifetime (MPL)</b>; b) <b>Maximum time to attempt retransmission</b> a.k.a. maximum period during sender is holding PDU for retransmission while waiting for a positive acknowledgment (a.k.a. R-timer); c) <b>Maximum time before Acknowledgement</b> (a.k.a. A-timer).
+</p>
+<p>Delta-t assumes that all connections exist all the time. Synchronization state is maintained only during the activity, but after 2-3 MPL periods without any traffic it may be discarded which effectively resets the connection. Because of that, there are no hard-state (with explicit synchronization) protocols only soft-state ones. Delta-t postulates that port allocation and synchronization are distinct.
+</p>
+
+<h3><a id="separation" class="anchor" href="#separation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Separation of mechanism and policy</h3> 
+<p>We understand term mechanism as the fixed part and policy as the flexible part of IPC. Just to remind the reader that mechanism is fixed, the policy is flexible part of any IPC.
+</p>
+<p>If we clearly separate them, we discover that there are two types of mechanisms:
+</p>
+<ul>
+<li><b>tightly-bound</b> that must be associated with every PDU, which handle fundamental aspects of data transfers;
+</li>
+<li><b>loosely-bound</b> that may be associated with some data transfer PDUs, which provide additional features (namely reliability and flow control).
+</li>
+</ul>
+<p>Both groups are coupled through state-vector maintained separately per flow; every active flow has its state-vector holding state information. For instance, the behavior of retransmission and flow control can be heavily influenced by chosen policies and they can be used independently on each other.
+</p>
+<p>This implies that only single generic data transfer protocol based on Delta-t is needed, which may be governed by different transfer control policies. This data transfer protocol modifies state internal to its PM, where application protocol (carried inside) modifies state external to PM.</p>
+
+<h3><a id="naming-addressing" class="anchor" href="#naming-addressing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Naming and addressing</h3> 
+<p>Application Process communicates in order to share state. We mentioned that AP consists of AEs. We need to differentiate between different APs and also different AEs within the same AP. Thus, RINA is using <b>Application Process Name (APN)</b> as globally unambiguous, location-independent, system-dependent name. <b>Application Process Instance Identifier (APIid)</b> differentiates between multiple instances of the same AP in the system. <b>Application Entity Instance Identifier (AEI-id)</b>, which is unambiguous for a single AP, helps us to identify different AE instances of same <b>Application Entity Name (AEN)</b> within AP. <b>Application Naming Information (ANI)</b> references a complete set of identifiers to name particular application; it consists of four-tuple APN, API-id, AEN, and AEI-id. The only required part of ANI is APN; others are optional. Distributed Application Name (DAN) is globally unambiguous name for a set of system-independent APs.
+</p>
+
+<img src="images/D26-ids.png" style="display: block;margin: 0 auto;">
+
+<p>IPC Process has APN to identify it among other DIF members. An RINA <b>address</b> is a synonym for IPCP’s APN with a scope limited to the layer and structured to facilitate forwarding. APN is useful for management purposes but not for forwarding. Address structure may be topologically dependent (indicating the nearness of IPCPs). APN and address are simply two different means to locate an object in different context. There are two local identifiers important for IPCP functionality – port-id and connection-endpoint-id. <b>Port-id</b> binds this (N)-IPCP and (N+1)-IPCP/AP; both of them use the same port-id when passing messages. Port-id is returned as a handle to the communication allocator and is unambiguous within a computing system. <b>Connection-endpoint-id (CEP-id)</b> identifies a shared state of one communication endpoint. Since there may be more than one flow between the same IPCP pair, it is necessary to distinguish them. For this purpose, Connection-id is formed by combining source and destination CEPids with QoS requirements descriptor. CEP-id is unambiguous within IPCP and Connectionid is unambiguous between a given pair of IPCPs. Figure below depicts all relevant identifiers between two IPCPs.
+</p>
+<p>Watson’s delta-t implies port-id and CEP-id in order to help separate port allocation and synchronization. RINA’s <b>connection</b> is a shared state between N-PMs – ends identified by CEP-ids. RINA’s <b>flow</b> is when connection ends are bound to ports identified by port-ids. The lifetimes of flow and its connection(s) are independent of each other.
+</p>
+<p>The relationship between node and PoA is relative – node address is (N)-address, and its PoA is (N-1)-address. Routes are sequences of (N)-addresses, where (N)-layer routes based on this addresses (not according to (N-1)-addresses). Hence, the layer itself should assign addresses because it understands address structure.</p>
+
+
+
+
 
         </section>
 
@@ -321,7 +280,7 @@ jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
 
 		  <hr>
 		  <p class="repo-owner">get in contact with developers</p>
-		  <a href="http://www.fit.vutbr.cz/~ivesely/index.php.en" class="button person">
+		  <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" class="button person">
             <small>official</small>
             mailing-list
           </a>
@@ -350,3 +309,4 @@ jQuery(function($){ $.localScroll({filter:'.smoothScroll'}); });
   
   </body>
 </html>
+
