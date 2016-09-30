@@ -881,7 +881,7 @@ footer a:hover {
     display: inline;
     font-size: 13px;
   }  
-  aside a.button {
+  aside a.button, aside a.button.person, aside a.button.skype,  aside a.button.web, aside a.button.mail, aside a.button.vm  {
     position: relative;
     display: inline-block;
     width: auto;
@@ -899,25 +899,8 @@ footer a:hover {
     -webkit-border-radius: 5px;
   }
 
-aside a.button.web {
-    position: relative;
-    display: inline-block;
-    width: auto;
-    height: auto;
-    padding: 5px 10px;
-    margin-top: 15px;
-    font-size: 13px;
-    line-height: 1;
-    color: #ffffff;
-    text-align: center;
-    background-color: rgba(0, 160, 176, 1);
-    background-image: none;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
 
-aside a.button.person {
+aside {
     position: relative;
     display: inline-block;
     width: auto;
