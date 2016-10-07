@@ -71,7 +71,7 @@ protected:
     port_t getNext(const addr_t & a, const rand_t & r);
 
     // * Virtual function for printing useful info
-    virtual string toString() { return ""; };
+    virtual string toString();
 
     // Address of the node
     addr_t myaddr;

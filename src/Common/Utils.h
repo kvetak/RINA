@@ -75,6 +75,19 @@ int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & ds
  */
 bool includedBv(std::vector<bool> & A, std::vector<bool> & B);
 
+/*
+ * A included into B
+ * return true if each true position in A is true in B
+ * sets C as the intersection between A & B
+ */
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & C);
+
+
+/*
+ * Iterate distance matrix DM
+ */
+void iterateDM(unsigned char ** DM, unsigned int l, unsigned char inf);
+
 /**
  * Display the selected policy next to given policy module.
  *

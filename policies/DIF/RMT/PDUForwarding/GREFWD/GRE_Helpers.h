@@ -24,6 +24,9 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <map>
+#include <RMTPort.h>
 
 using namespace std;
 
@@ -96,3 +99,7 @@ struct addr_s {
     addr_s(const addr_t & raw) :
         addr(raw), Z(getZone(raw)), Id(getIdentifier(raw)) {}
 };
+
+string getRawAddr_t(const addr_t & dst_addr);
+
+bool subAddrSet(const set<addr_t> & search, const set<addr_t> & in);

@@ -38,6 +38,8 @@ simple RMTQueue
         
         @statistic[rmtqueue-size](title="RMTQueue Size"; source=RMTQueue_Length; record=vector);
         @statistic[rmtqueue-drop](title="dropped PDUs"; source=count(RMTQueue_Drop); record=last);
+        
+        bool printAtEnd = default(false);
     gates:
         input inputGate;
         output outputGate;        

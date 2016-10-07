@@ -20,16 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+package rina.policies.DIF.RMT.PDUForwarding.DefaultGW;
 
 import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-simple Clos2 like IntPDUForwarding
+simple DefaultGW like IntPDUForwarding
 {
     parameters:
-        @class(GRE::Clos2);
         @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
+    	@signal[PDUFT_Length](type="long");
+    	@statistic[pduft-length](title="PDUFT Size"; source=PDUFT_Length; record=vector);
+    	
+    	
+        bool printAtEnd = default(false);
 }

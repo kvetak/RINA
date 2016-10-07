@@ -31,4 +31,5 @@ simple Clos1 like IntPDUForwarding
         @display("i=block/socket");
         
     	bool printAtEnd = default(false);
+    	int TTL = default(245);
 }

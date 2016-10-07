@@ -31,6 +31,7 @@ protected:
     map<string, vector<FailureNode *> > link2Nodes;
 
     cMessage * killTimer, * resurrectTimer;
+    simtime_t interKill;
     unsigned int c;
 
 };

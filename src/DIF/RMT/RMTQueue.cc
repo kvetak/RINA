@@ -41,7 +41,7 @@ RMTQueue::~RMTQueue()
 void RMTQueue::finish()
 {
     size_t pduCount = queue.size();
-    if (pduCount)
+    if (pduCount && par("printAtEnd").boolValue())
     {
         EV << "Queue " << getFullPath() << " still contains " << pduCount
            << " unprocessed PDUs!" << endl;

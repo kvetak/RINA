@@ -31,7 +31,7 @@ vPorts GREFWD::lookup(const PDU * pdu) {
 
     PDU * pd = const_cast<PDU*>(pdu);
     auto hc = pd->getHopCount();
-    if(hc <= 245) { return ret; }
+    if(hc <= par("TTL").longValue()) { return ret; }
     pd->setHopCount(hc-1);
 
     //Patch for empty lookup bug
@@ -58,7 +58,6 @@ vPorts GREFWD::lookup(const PDU * pdu) {
     // Query next output port to reach destination with hash h
     port_t p = getNext(d, h);
     if(p != nullptr) { ret.push_back(p); }
-
 
     return ret;
 }
@@ -137,6 +136,71 @@ void GREFWD::onPolicyInit() {
     myaddr = parseRawAddr(rawAddr);
 
     postPolicyInit();
+}
+
+string GREFWD::toString() {
+    std::ostringstream os;
+
+    os << hex;
+    os << "Forwarding policy at "<<myaddr<<endl;
+    os <<getFullPath()<<endl;
+
+        for(unsigned int i = 0; i< ports.size(); i++) {
+            os << "\tPort " << (int)i << " => "<< (ports[i]!=nullptr? "OK":"NULL")<<endl;
+        }
+        for(unsigned int i = 1; i < groups.size(); i++) {
+            os << "\tGroup " << (int)i << " :";
+            for(auto g : groups[i]) {
+                os << " "<< (int)g ;
+            }
+            os <<endl;
+        }
+        os << "\tNeis"<<endl;
+        for(auto ni : neiId) {
+            os<<hex<< "\t\t"<<(int)ni.first << " -> "<< (int)ni.second <<endl;
+        }
+
+    if(!exceptions.empty()) {
+        os << "\tExceptions"<<endl;
+        for(auto me : exceptions) {
+            os << "\t  "<< me.first.v << "\\"<< (int)me.first.l << endl;
+            switch(me.second.mode) {
+                case COMMON : { // Listing possible neighbours
+                    os << "\t     - COMMON : ";
+                    for(auto i : me.second.list ) {
+                        os << (int)i<< " ";
+                    }
+                    os << endl;
+                } break;
+                case ANY : { // Any neighbour possible
+                    os << "\t     - ANY ";
+                } break;
+                case GROUP : { // Only Group neighbour possible
+                    os << "\t     - GROUP "<<(int)me.second.group<<endl;
+                } break;
+                case INVERSE : { // Any neighbour - Exceptions possible
+                    os << "\t     - INVERSE : ";
+                    for(auto i : me.second.list ) {
+                        os << (int)i<< " ";
+                    }
+                    os << endl;
+                } break;
+                case INVERSEGROUP : { // Group neighbour - Exceptions possible
+                    os << "\t     - INVERSE - GROUP "<<(int)me.second.group<<" : ";
+                    for(auto i : me.second.list ) {
+                        os << (int)i<< " ";
+                    }
+                    os << endl;
+                } break;
+                case UNREACHABLE :
+                    os << "\t     - UNREACHABLE "<<endl;
+            }
+        }
+    }
+    os<<endl;
+    os <<dec;
+
+    return os.str();
 }
 
 void GREFWD::finish() {
@@ -336,7 +400,8 @@ port_t GREFWD::getNext(const addr_t & a, const rand_t & r) {
 exception_p  GREFWD::getException(const addr_t & a) {
     for( auto & me : exceptions) {
         const mask_t & m = me.first;
-        if(!((a ^ m.v) >> m.l)) { return & me.second; }
+        if(!((a ^ m.v) >> m.l)) {
+            return & me.second; }
     }
     return nullptr;
 }

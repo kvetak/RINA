@@ -20,16 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+#pragma once
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+#include <omnetpp.h>
+#include <vector>
+#include <string>
 
-simple Clos2 like IntPDUForwarding
+#include "AddressComparatorBase.h"
+
+class EndPoint : public AddressComparatorBase
 {
-    parameters:
-        @class(GRE::Clos2);
-        @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
-}
+    public:
+        virtual bool matchesThisIPC(const Address& addr, PDU * pdu);
+    protected:
+        virtual void onPolicyInit();
+};
+

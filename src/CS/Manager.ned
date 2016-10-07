@@ -20,16 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+//
+// <h1>BorderRouter simulation module</h1> 
+//
+// This models simulates border router node that has five different rank DIFs:
+//  * 1x (N+1)-DIF <i>relayIpc</i> is used as bridge between <i>ipcProccesses</i> for relaying
+//  * 3x (N)-DIF <i>ipcProcess1/2/3</i> 
+//  * 1x (N-1)-DIF <i>bottomIpc</i> 
+//
+// It also contains <i>DIFAllocator</i> module as NameSpaceManager interface
+//
+// @author Vladimir Vesely (ivesely@fit.vutbr.cz)
+// @date Last refactorized and documented on 2015-01-12
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+package rina.src.CS;
 
-simple Clos2 like IntPDUForwarding
+import rina.src.DAF.DA.DIFAllocator;
+import rina.src.DIF.IPCProcess;
+
+module Manager
 {
     parameters:
-        @class(GRE::Clos2);
-        @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
+        @display("i=abstract/switch;bgb=391,325");
+        @node;
+
+    gates:
+        inout medium[1];
+
+    submodules:
+        ipcProcess0[1]: IPCProcess {
+            @display("p=104,245");
+        }
+        ipcProcess1: IPCProcess {
+            @display("p=104,141;i=,#FFB000");
+            relay = true;
+        }
+
+        difAllocator: DIFAllocator {
+            @display("p=104,53");
+        }
+
+    connections allowunconnected:
+        ipcProcess1.southIo++ <--> ipcProcess0[0].northIo++;
+        ipcProcess0[0].southIo++ <--> medium[0];
 }

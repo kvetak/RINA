@@ -20,16 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+#include "GRE_Helpers.h"
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
 
-simple Clos2 like IntPDUForwarding
-{
-    parameters:
-        @class(GRE::Clos2);
-        @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
+string getRawAddr_t(const addr_t & dst_addr) {
+    stringstream sstream;
+    sstream << hex << dst_addr;
+    string dst_raw = sstream.str();
+    while(dst_raw.size()<4) { dst_raw = "0"+dst_raw; }
+    return dst_raw;
+}
+
+bool subAddrSet(const set<addr_t> & search, const set<addr_t> & in) {
+    auto ita = search.begin();
+    auto itb = in.end();
+
+    while(ita != search.end() && itb != in.end()) {
+        if(*ita == *itb) { ita++; itb++; }
+        else if(*ita > *itb) { itb++; }
+        else { return false; }
+    }
+    return ita == search.end();
 }

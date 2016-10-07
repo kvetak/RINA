@@ -120,7 +120,7 @@ void RMT::initialize()
 void RMT::finish()
 {
     size_t pduCount = invalidPDUs.size();
-    if (pduCount)
+    if (pduCount && par("printAtEnd").boolValue())
     {
         EV << "RMT " << this->getFullPath() << " still contains " << pduCount
            << " unprocessed PDUs!" << endl;
@@ -446,17 +446,20 @@ void RMT::relayPDUToPort(PDU* pdu)
     {
         EV << "!!! Empty PDUForwarding policy lookup result!" << endl
            << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
+           << "PDU srcAddr = " << pdu->getSrcAddr().getApn().getName()
+           << ", dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
 
-        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
-           << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
-           << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
-           << "PDUForwarding contents: " << endl << fwd->toString()
-           << "Hop count: " << endl << pdu->getHopCount() << endl;
-
+        if(par("coutLookError").boolValue()) {
+            std::cout << simTime() << " :: !!! Empty PDUForwarding policy lookup result!" << endl
+               << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
+               << "PDU srcAddr = " << pdu->getSrcAddr().getApn().getName()
+               << ", dstAddr = " << pdu->getDstAddr().getApn().getName()
+               << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
+               << "PDUForwarding contents: " << endl << fwd->toString()
+               << "Hop count: "  << pdu->getHopCount() << endl << endl;
+        }
         invalidPDUs.push_back(pdu);
     }
 
@@ -524,12 +527,10 @@ void RMT::relayPDUToEFCPI(PDU* pdu)
  *
  * @param msg either a PDU or a CDAP message
  */
-void RMT::processMessage(cMessage* msg)
-{
+void RMT::processMessage(cMessage* msg) {
     PDU* pdu = dynamic_cast<PDU*>(msg);
 
-    if (pdu != nullptr)
-    { // PDU arrival
+    if (pdu != nullptr) { // PDU arrival
         cModule* senderModule = msg->getArrivalGate()->getPathStartGate()->getOwnerModule();
 
         if (dynamic_cast<RMTQueue*>(senderModule) != nullptr)
@@ -561,8 +562,10 @@ void RMT::processMessage(cMessage* msg)
     }
     else
     {
-        EV << this->getFullPath() << " message type not supported" << endl;
-        invalidPDUs.push_back(msg);
+        if(par("deleteIfNotValid").boolValue()) {
+            EV << this->getFullPath() << " message type not supported" << endl;
+            invalidPDUs.push_back(msg);
+        }
     }
 }
 
@@ -570,8 +573,12 @@ void RMT::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
     {
+        if(par("deleteIfNotValid").boolValue()) {
         // ?
         invalidPDUs.push_back(msg);
+        } else {
+            delete msg;
+        }
     }
     else
     {

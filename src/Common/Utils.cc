@@ -86,6 +86,16 @@ bool includedBv(std::vector<bool> & A, std::vector<bool> & B) {
     return true;
 }
 
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & C) {
+    bool ret = true;
+    for(unsigned int i = 0; i< A.size(); i++) {
+        C[i] = A[i] && B[i];
+        ret &= B[i] || !A[i];
+    }
+    return ret;
+}
+
+
 int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst){
     int r = 0;
     for(unsigned int i = 0; i< A.size(); i++) {
@@ -97,6 +107,28 @@ int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & ds
         }
     }
     return r;
+}
+
+
+void iterateDM(unsigned char ** DM, unsigned int l, unsigned char inf) {
+    bool changes = true;
+    while(changes) {
+        changes = false;
+        for(unsigned int i = 0; i < l; i++) {
+            for(unsigned int j = 0; j < l; j++) {
+                if(i == j) { continue; }
+                unsigned char dij = DM[i][j];
+                for(unsigned int k = 0; k< l; k++) {
+                    if(i == k || j == k) { continue; }
+                    if(DM[i][k] > dij + DM[j][k]) {
+                        DM[i][k] = dij + DM[j][k];
+                        DM[k][i] = dij + DM[j][k];
+                        changes = true;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void setPolicyDisplayString(cModule* mod, const char* str)

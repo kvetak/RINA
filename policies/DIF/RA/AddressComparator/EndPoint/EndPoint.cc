@@ -20,16 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+#include "EndPoint.h"
+#include "Utils.h"
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+Define_Module(EndPoint);
 
-simple Clos2 like IntPDUForwarding
-{
-    parameters:
-        @class(GRE::Clos2);
-        @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
+void EndPoint::onPolicyInit() {}
+
+bool EndPoint::matchesThisIPC(const Address& addr, PDU * pdu) {
+    return pdu->getSrcAddr().getIpcAddress().getName() != thisIPCAddr.getIpcAddress().getName();
 }

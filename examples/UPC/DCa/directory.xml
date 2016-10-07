@@ -39,6 +39,8 @@
     <APN apn="0202_F">
       <DIF difName="20_22" ipcAddress="2" />
       <DIF difName="21_22" ipcAddress="2" />
+      
+      <DIF difName="02_FE" ipcAddress="2" />
     </APN>
     <APN apn="0203_F">
       <DIF difName="20_23" ipcAddress="2" />
@@ -51,6 +53,8 @@
     <APN apn="0205_F">
       <DIF difName="20_25" ipcAddress="2" />
       <DIF difName="21_25" ipcAddress="2" />
+      
+      <DIF difName="02_FD" ipcAddress="2" />
     </APN>
     
     
@@ -78,14 +82,32 @@
     <APN apn="0303_F">
       <DIF difName="30_33" ipcAddress="2" />
       <DIF difName="31_33" ipcAddress="2" />
+      
+      <DIF difName="03_FD" ipcAddress="2" />
     </APN>
     <APN apn="0304_F">
       <DIF difName="30_34" ipcAddress="2" />
       <DIF difName="31_34" ipcAddress="2" />
+      
+      <DIF difName="03_FE" ipcAddress="2" />
     </APN>
     <APN apn="0305_F">
       <DIF difName="30_35" ipcAddress="2" />
       <DIF difName="31_35" ipcAddress="2" />
+    </APN>
+    
+    
+    <APN apn="02FE_F">
+      <DIF difName="02_FE" ipcAddress="3" />
+    </APN>
+    <APN apn="02FD_F">
+      <DIF difName="02_FD" ipcAddress="3" />
+    </APN>
+    <APN apn="03FE_F">
+      <DIF difName="03_FE" ipcAddress="3" />
+    </APN>
+    <APN apn="03FD_F">
+      <DIF difName="03_FD" ipcAddress="3" />
     </APN>
   </Directory>
 </DA>

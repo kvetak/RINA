@@ -32,9 +32,13 @@ void Clos0::setZone(const addr_t & v) { A = v; }
 void Clos0::setSpines(const index_t & v) { B = v; }
 grouprange_t Clos0::execRule(const addr_t & a) {
     addr_t z = getZone(a);
-    if(z == A) {return grouprange_t(1, 0, groups[1].size()); }
-    else if(z < B) {return grouprange_t(0, z, 1); }
-    else {return grouprange_t(2, 0, groups[2].size()); }
+    if(z == A) {                                                    // Same zone
+        return grouprange_t(1, 0, groups[1].size());
+    } else if(z < B) {                                              // Specific Spine set
+        return grouprange_t(0, z, 1);
+    } else {                                                        // Other Pod
+        return grouprange_t(2, 0, groups[2].size());
+    }
 }
 
 void Clos1::setZone(const addr_t & v) { A = v; }
@@ -43,20 +47,19 @@ void Clos1::setNumSpines(const addr_t & v) { C = v; }
 grouprange_t Clos1::execRule(const addr_t & a) {
     addr_t z = getZone(a);
     addr_t id = getIdentifier(a);
-    if(z == A) {
-        if(id<C) {return grouprange_t(1, 0, groups[1].size()); }
-        else {return grouprange_t(1, id-C, 1); }
-    } else if(z == B) {return grouprange_t(2, id, 1); }
-    else if (z < C){return grouprange_t(1, 0, groups[1].size()); }
-    else {return grouprange_t(2, 0, groups[2].size()); }
+
+    if(z == A) { return grouprange_t(1, 0, groups[1].size()); }     // Same zone (no directly connected
+    else if(z == B) {return grouprange_t(2, id, 1); }               // Spine of spine set
+    else if (z < C){return grouprange_t(1, 0, groups[1].size()); }  // Other spine set
+    else {return grouprange_t(2, 0, groups[2].size()); }            // Other Pod
 }
 
 void Clos2::setPadding(const index_t & v) { A = v; }
 void Clos2::setNumPods(const index_t & v) { B = v; }
 grouprange_t Clos2::execRule(const addr_t & a) {
     addr_t z = getZone(a);
-    if(z < A) { return grouprange_t(0, 0, B); }
-    else { return grouprange_t(0, z-A, 1); }
+    if(z < A) { return grouprange_t(0, 0, B); }                     // Other spine
+    else { return grouprange_t(0, z-A, 1); }                        // To a Pod
 }
 
 }

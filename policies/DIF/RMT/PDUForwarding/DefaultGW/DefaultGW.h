@@ -20,16 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package rina.policies.DIF.RMT.PDUForwarding.GREFWD.Clos;
+#pragma once
 
-import rina.policies.DIF.RMT.PDUForwarding.IntPDUForwarding;
+#include <IntPDUForwarding.h>
 
-simple Clos2 like IntPDUForwarding
-{
-    parameters:
-        @class(GRE::Clos2);
-        @display("i=block/socket");
-        
-    	bool printAtEnd = default(false);
-    	int TTL = default(245);
-}
+using namespace std;
+
+class DefaultGW: public IntPDUForwarding {
+
+public:
+    // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
+    vector<RMTPort * > lookup(const PDU * pdu);
+    vector<RMTPort * > lookup(const Address &dst, const std::string& qos);
+
+    // Returns a representation of the Forwarding Knowledge
+    string toString();
+
+    //Insert/Remove an entry
+    void setGW(RMTPort * port);
+
+    void finish();
+
+protected:
+    vector<RMTPort*>ret;
+
+    // Called after initialize
+    void onPolicyInit();
+};
+

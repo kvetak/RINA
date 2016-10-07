@@ -577,7 +577,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
     Address addrs = Address(dstAPN.getName());
-    PDUFGNeighbor* e = fwdtg->getNextNeighbor(addrs, qosID);
+    PDUFGNeighbor* e = nullptr;//fwdtg->getNextNeighbor(addrs, qosID);
 
     if(e)
     {
