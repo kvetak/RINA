@@ -20,30 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULT_H_
-#define APIRESULT_H_
 
-#include "APIObjBase.h"
+package rina.src.DAF.AP.APStream;
+import rina.src.DAF.AP.AP;
+import rina.src.DAF.AP.APInst;
 
-class APIResult : public APIObjBase {
-public:
-    APIResult();
-    virtual ~APIResult();
+simple APStream extends AP like APInst
+{
+    parameters:
+        @class(APStream);
+        
+        int startAt @unit(s) = default(0s);
+        int stopAt  @unit(s) = default(0s);
+        double interval @unit(s) = default(0.1s);
+        
 
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, DELETE};
+        string dstApName = default("AppErr");
+        
+}
 
-    void setAPIResType(APIResult::APIResType type);
-    APIResult::APIResType getAPIResType();
 
-    void setObj(object_t *obj);
-    object_t *getObj();
-
-    void setObjName(std::string objName);
-    std::string getObjName();
-private:
-    APIResType type;
-    std::string objName;
-    object_t *obj;
-};
-
-#endif /* APIRESULT_H_ */

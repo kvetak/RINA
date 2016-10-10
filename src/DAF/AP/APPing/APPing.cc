@@ -35,6 +35,9 @@ void APPing::initialize() {
     if (strcmp(par("dstApName").stringValue(),"AppErr")) {
         m1 = new cMessage("start");
         scheduleAt(simTime() + par("startAt").longValue(), m1);
+
+        m2 = new cMessage("stop");
+        scheduleAt(simTime() + par("stopAt").longValue(), m2);
     }
 }
 
@@ -43,6 +46,9 @@ void APPing::handleMessage(cMessage *msg) {
         if ( !strcmp(msg->getName(), "start") ) {
             invokeId = getNewInvokeID();
             a_open(invokeId, par("dstApName").stringValue(), "0", "AEMonitor", "-1");
+        }
+        else if (!strcmp(msg->getName(), "stop")) {
+            a_close(conID);
         }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();

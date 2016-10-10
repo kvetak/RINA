@@ -270,6 +270,10 @@ void AE::apiSwitcher(APIReqObj *obj) {
         Enter_Method("onA_write()");
         onA_write(obj);
     }
+    if (obj->getAPIReqType() == APIReqObj::A_CLOSE) {
+        Enter_Method("onA_close()");
+        sendDeallocationRequest(FlowObject);
+    }
 }
 
 void AE::receiveData(CDAPMessage* msg) {
@@ -437,35 +441,65 @@ bool AE::deleteBindings(Flow& flow) {
     cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle1);
     cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle1);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
-    cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle2);
-    cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle2);
+    //Get Socket South Gates
+    //TODO: when more connections, change index system
+    cModule* SocketMod = this->getModuleByPath("^.socket");
+    cGate* gSocketIn = SocketMod->gateHalf(GATE_SOUTHIO, cGate::INPUT, 0);
+    cGate* gSocketOut = SocketMod->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, 0);
 
-    //Get AE gates
-    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
+    cGate* gAeInstIn = gSocketIn->getPreviousGate();
+    cGate* gAeInstOut = gSocketOut->getNextGate();
 
-    //CDAPParent Module gates
-    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    cGate* gAeIn = gAeInstIn->getPreviousGate();
+    cGate* gAeOut = gAeInstOut->getNextGate();
+
+    cGate* gApIn = gAeIn->getPreviousGate();
+
+
+    cModule* CdapMod = this->getModuleByPath("^.commonDistributedApplicationProtocol");
+    cGate* gCdapIn = CdapMod->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gCdapOut = CdapMod->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+
+    cGate* gCdapSocketOut = gCdapIn->getPreviousGate();
 
     //Disconnect gates
+    gCdapSocketOut->disconnect();
+    gCdapOut->disconnect();
+
+    gSocketOut->disconnect();
+    gAeInstIn->disconnect();
+
+    gAeInstOut->disconnect();
+
+    gAeIn->disconnect();
+    gAeOut->disconnect();
+    gApIn->disconnect();
+
+
     gIrmOut->disconnect();
     gIrmModOut->disconnect();
-    gApIn->disconnect();
-    gAeIn->disconnect();
-    gCdapParentIn->disconnect();
-
-    gCdapParentOut->disconnect();
-    gAeOut->disconnect();
-    gApOut->disconnect();
     gIrmModIn->disconnect();
     gIrmIn->disconnect();
 
+
+    APIResult *del = new APIResult();
+    del->setAPIResType(APIResult::DELETE);
+    del->setObjName(this->getModuleByPath("^")->getFullName());
+    signalizeAEAPAPI(del);
+
+
     //Return true if all dynamically created gates are disconnected
-    return !gIrmIn->isConnected() && !gIrmOut->isConnected()
-            && !gAeIn->isConnected() && !gAeOut->isConnected()
-            && !gCdapParentIn->isConnected() && !gCdapParentOut->isConnected();
+    return !gIrmIn->isConnected()
+            && !gIrmOut->isConnected()
+            && !gIrmModIn->isConnected()
+            && !gIrmModOut->isConnected()
+            && !gApIn->isConnected()
+            && !gAeOut->isConnected()
+            && !gAeIn->isConnected()
+            && !gAeInstOut->isConnected()
+            && !gSocketOut->isConnected()
+            && !gCdapOut->isConnected()
+            && !gCdapSocketOut->isConnected();
 }
 
 void AE::processMReadR(CDAPMessage* msg) {

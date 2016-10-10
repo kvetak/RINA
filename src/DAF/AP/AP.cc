@@ -105,6 +105,11 @@ bool AP::a_open(int invokeID, Flow* flow){
 }
 
 bool AP::a_close(int CDAPConn, int invokeID) {
+    APIReqObj* obj = new APIReqObj();
+    obj->setCDAPConId(CDAPConn);
+    obj->setAPIReqType(APIReqObj::A_CLOSE);
+
+    this->signalizeAPAEAPI(obj);
 }
 
 bool AP::a_read(int CDAPConn, std::string objName, int invokeID) {
@@ -259,6 +264,19 @@ void AP::receiveAllocationRequestFromFAI(Flow* flow) {
  */
 }
 
+bool AP::deleteIAE(APIResult* result) {
+    //TODO: repair this crap
+    std::string ae = result->getObjName().substr(0,result->getObjName().find("_",0));
+    cModule* aen = this->getModuleByPath("^")->getSubmodule(ae.c_str());
+    std::string iaes = result->getObjName();
+    cModule* iaen = aen->getSubmodule(iaes.c_str());
+    //iaen->getSubmodule("socket")->callFinish();
+    //iaen->getSubmodule("socket")->deleteModule();
+    //aen->callFinish();
+    //aen->deleteModule();
+    return true;
+}
+
 void AP::resultAssign(APIResult* result) {
     if (result->getAPIResType() == APIResult::A_GET_OPEN) {
         Enter_Method("onA_getOpen()");
@@ -271,6 +289,9 @@ void AP::resultAssign(APIResult* result) {
     else if (result->getAPIResType() == APIResult::A_GET_WRITE) {
         Enter_Method("onA_getWrite()");
         onA_getWrite(result);
+    }
+    else if (result->getAPIResType() == APIResult::DELETE) {
+        deleteIAE(result);
     }
 }
 

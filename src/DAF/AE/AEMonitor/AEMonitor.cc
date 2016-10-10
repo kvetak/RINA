@@ -120,7 +120,7 @@ void AEMonitor::processMReadR(CDAPMessage* msg) {
 }
 
 void AEMonitor::processMWriteR(CDAPMessage* msg) {
-    CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
+    CDAP_M_Write_R* msg1 = check_and_cast<CDAP_M_Write_R*>(msg);
     object_t object = msg1->getObject();
 
     APIResult *res = new APIResult();

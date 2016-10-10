@@ -20,30 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULT_H_
-#define APIRESULT_H_
 
-#include "APIObjBase.h"
+#ifndef DAF_AP_APSTREAM_APSTREAM_H_
+#define DAF_AP_APSTREAM_APSTREAM_H_
 
-class APIResult : public APIObjBase {
+#include <omnetpp.h>
+#include "AP.h"
+
+#include "RINASignals.h"
+
+class APStream : public AP {
 public:
-    APIResult();
-    virtual ~APIResult();
-
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, DELETE};
-
-    void setAPIResType(APIResult::APIResType type);
-    APIResult::APIResType getAPIResType();
-
-    void setObj(object_t *obj);
-    object_t *getObj();
-
-    void setObjName(std::string objName);
-    std::string getObjName();
+    APStream();
+    virtual ~APStream();
+    void initialize();
+    void handleMessage(cMessage *msg);
 private:
-    APIResType type;
-    std::string objName;
-    object_t *obj;
+    void onA_getOpen(APIResult* result);
+
+    int *value;
+    int invokeId;
+    unsigned long conID;
+    cMessage* m1;
+    cMessage* m2;
 };
 
-#endif /* APIRESULT_H_ */
+#endif /* DAF_AP_APSTREAM_APSTREAM_H_ */

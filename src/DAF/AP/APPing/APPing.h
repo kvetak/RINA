@@ -43,6 +43,7 @@ private:
     int invokeId;
     unsigned long conID;
     cMessage* m1;
+    cMessage* m2;
 };
 
 #endif /* APPING_H_ */

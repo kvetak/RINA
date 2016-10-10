@@ -83,6 +83,7 @@ private:
     ConnectionRequests ConReqStack;
 
     bool createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID);
+    bool deleteIAE(APIResult* result);
 
     void signalizeAPAEAPI(APIReqObj* obj);
 };

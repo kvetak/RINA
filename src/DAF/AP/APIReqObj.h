@@ -27,7 +27,7 @@
 
 class APIReqObj : public APIObjBase {
 public:
-    enum APIReqType {A_READ, A_WRITE};
+    enum APIReqType {A_READ, A_WRITE, A_CLOSE};
     APIReqObj();
     virtual ~APIReqObj();
 
