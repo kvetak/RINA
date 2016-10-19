@@ -290,7 +290,7 @@ void AP::resultAssign(APIResult* result) {
         Enter_Method("onA_getWrite()");
         onA_getWrite(result);
     }
-    else if (result->getAPIResType() == APIResult::DELETE) {
+    else if (result->getAPIResType() == APIResult::D_DELETE) {
         deleteIAE(result);
     }
 }

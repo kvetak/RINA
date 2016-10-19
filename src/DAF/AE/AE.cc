@@ -483,7 +483,7 @@ bool AE::deleteBindings(Flow& flow) {
 
 
     APIResult *del = new APIResult();
-    del->setAPIResType(APIResult::DELETE);
+    del->setAPIResType(APIResult::D_DELETE);
     del->setObjName(this->getModuleByPath("^")->getFullName());
     signalizeAEAPAPI(del);
 

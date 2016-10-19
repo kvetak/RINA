@@ -75,7 +75,7 @@ LisRoutingRecv::LisRoutingRecv(IntRouting * _module){
     module = _module;
 }
 
-void LisRoutingRecv::receiveSignal(cComponent *src, simsignal_t id, cObject *obj){
+void LisRoutingRecv::receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *details){
     EV << "RoutingUpdate initiated by " << src->getFullPath()
        << " and processed by " << module->getFullPath() << endl;
 

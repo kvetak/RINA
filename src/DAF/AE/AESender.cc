@@ -24,23 +24,23 @@
 
 Define_Module(AESender);
 
-PingMsg::PingMsg(){
+PingMsgg::PingMsgg(){
     pingAt = simTime();
 }
 
-PingMsg * PingMsg::dup() const {
-    auto *t = new PingMsg(*this);
+PingMsgg * PingMsgg::dup() const {
+    auto *t = new PingMsgg(*this);
     t->pingAt = pingAt;
     return t;
 }
 
-PongMsg::PongMsg(simtime_t _pingAt){
+PongMsgg::PongMsgg(simtime_t _pingAt){
     pingAt = _pingAt;
     pongAt = simTime();
 }
 
-PongMsg * PongMsg::dup() const {
-       auto *t = new PongMsg(pingAt);
+PongMsgg * PongMsgg::dup() const {
+       auto *t = new PongMsgg(pingAt);
        t->pongAt = pongAt;
        return t;
    }
@@ -223,7 +223,7 @@ void AESender::handleSelfMessage(cMessage *msg) {
                 int msgSize = size + intuniform(-sizevar,sizevar);
                 msgWait += uniform(-ratevar,ratevar);
                 //Create PING messsage
-                CDAP_M_Read* ping = new PingMsg();
+                CDAP_M_Read* ping = new PingMsgg();
 
             //    std::cout << "sendPing"<<endl;
                 ping->setByteLength(msgSize);
@@ -250,9 +250,9 @@ void AESender::handleMessage(cMessage *msg)
 }
 
 void AESender::processMRead(CDAPMessage* msg) {
-    PingMsg* ping = check_and_cast<PingMsg*>(msg);
+    PingMsgg* ping = check_and_cast<PingMsgg*>(msg);
     if(ping){
-        PongMsg* pong = new PongMsg(ping->pingAt);
+        PongMsgg* pong = new PongMsgg(ping->pingAt);
         pong->setByteLength(msg->getByteLength());
 
         sendData(FlowObject, pong);
@@ -275,7 +275,7 @@ void AESender::processMRead(CDAPMessage* msg) {
 }
 
 void AESender::processMReadR(CDAPMessage* msg) {
-    PongMsg* pong = check_and_cast<PongMsg*>(msg);
+    PongMsgg* pong = check_and_cast<PongMsgg*>(msg);
     if(pong){
         received++;
         receivedSize += msg->getByteLength();

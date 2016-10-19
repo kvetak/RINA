@@ -32,18 +32,18 @@
 #include <map>
 
 
-class PingMsg : public CDAP_M_Read {
+class PingMsgg : public CDAP_M_Read {
 public:
-    PingMsg();
+    PingMsgg();
     simtime_t pingAt;
-    virtual PingMsg *dup() const;
+    virtual PingMsgg *dup() const;
 };
 
-class PongMsg : public CDAP_M_Read_R {
+class PongMsgg : public CDAP_M_Read_R {
 public:
-    PongMsg(simtime_t pingAt);
+    PongMsgg(simtime_t pingAt);
     simtime_t pingAt, pongAt;
-    virtual PongMsg *dup() const;
+    virtual PongMsgg *dup() const;
 };
 
 class AESender : public AE

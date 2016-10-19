@@ -66,7 +66,7 @@ private:
 class LisRoutingRecv : public cListener {
 public:
     LisRoutingRecv(IntRouting * _module);
-    void receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *details);
 protected:
     IntRouting * module;
 };

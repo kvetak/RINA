@@ -30,7 +30,7 @@ public:
     APIResult();
     virtual ~APIResult();
 
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, DELETE};
+    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, D_DELETE};
 
     void setAPIResType(APIResult::APIResType type);
     APIResult::APIResType getAPIResType();
