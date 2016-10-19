@@ -50,6 +50,13 @@ void APPing::handleMessage(cMessage *msg) {
         else if (!strcmp(msg->getName(), "stop")) {
             a_close(conID);
         }
+        else if (!strcmp(msg->getName(), "ping")) {
+            if (par("stopAt").doubleValue() < (simTime().dbl()+1)) {
+                a_read(conID, "ping");
+                m2 = new cMessage("ping");
+                scheduleAt(simTime() + par("interval"), m2);
+            }
+        }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();
         delete(msg);
@@ -61,10 +68,12 @@ void APPing::onA_getOpen(APIResult* result) {
     if (result->getInvokeId() == invokeId) {
         conID = result->getCDAPConId();
         a_read(conID, "ping");
+
+        m2 = new cMessage("ping");
+        scheduleAt(simTime() + par("interval"), m2);
     }
 }
 
 void APPing::onA_getRead(APIResult* result) {
     value = (int*)(result->getObj()->objectVal);
-    a_read(conID, "ping");
 }

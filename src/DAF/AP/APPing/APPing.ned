@@ -33,6 +33,7 @@ simple APPing extends AP like APInst
         int startAt @unit(s) = default(0s);
         int stopAt  @unit(s) = default(0s);
         int pingAt  @unit(s) = default(0s);
+        double interval @unit(s) = default(1s);
 
         string dstApName = default("AppErr");
         
