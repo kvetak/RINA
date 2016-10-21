@@ -99,9 +99,12 @@ bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::strin
     }
     else
         return createIAE(APName, APInst, AEName, AEInst, NULL, invokeID);
+
+    return false;
 }
 
 bool AP::a_open(int invokeID, Flow* flow){
+    return false;
 }
 
 bool AP::a_close(int CDAPConn, int invokeID) {
@@ -110,6 +113,7 @@ bool AP::a_close(int CDAPConn, int invokeID) {
     obj->setAPIReqType(APIReqObj::A_CLOSE);
 
     this->signalizeAPAEAPI(obj);
+    return true;
 }
 
 bool AP::a_read(int CDAPConn, std::string objName, int invokeID) {
@@ -120,6 +124,7 @@ bool AP::a_read(int CDAPConn, std::string objName, int invokeID) {
     obj->setAPIReqType(APIReqObj::A_READ);
 
     this->signalizeAPAEAPI(obj);
+    return true;
 }
 
 bool AP::a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID) {
@@ -131,24 +136,31 @@ bool AP::a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID)
     req->setAPIReqType(APIReqObj::A_WRITE);
 
     this->signalizeAPAEAPI(req);
+    return true;
 }
 
 APIRetObj* AP::a_getopen_r(int invokeID) {
+    return NULL;
 }
 
 APIRetObj* AP::a_getclose_r(int CDAPConn, int invokeID) {
+    return NULL;
 }
 
 bool AP::a_read_r(int CDAPconn, int invokeID, std::string objName, object_t *obj, bool complete) {
+    return false;
 }
 
 APIRetObj* AP::a_get_read_r(int CDAPConn, int invokeID) {
+    return NULL;
 }
 
 bool AP::a_cancelread_r(int CDAPConn, int invokeID) {
+    return false;
 }
 
 APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj){
+    return NULL;
 }
 
 bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID) {
@@ -266,10 +278,10 @@ void AP::receiveAllocationRequestFromFAI(Flow* flow) {
 
 bool AP::deleteIAE(APIResult* result) {
     //TODO: repair this crap
-    std::string ae = result->getObjName().substr(0,result->getObjName().find("_",0));
-    cModule* aen = this->getModuleByPath("^")->getSubmodule(ae.c_str());
-    std::string iaes = result->getObjName();
-    cModule* iaen = aen->getSubmodule(iaes.c_str());
+    //std::string ae = result->getObjName().substr(0,result->getObjName().find("_",0));
+    //cModule* aen = this->getModuleByPath("^")->getSubmodule(ae.c_str());
+    //std::string iaes = result->getObjName();
+    //cModule* iaen = aen->getSubmodule(iaes.c_str());
     //iaen->getSubmodule("socket")->callFinish();
     //iaen->getSubmodule("socket")->deleteModule();
     //aen->callFinish();

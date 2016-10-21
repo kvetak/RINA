@@ -49,6 +49,8 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
 
     //Send message
     sendData(FlowObject, ping);
+
+    return true;
 }
 
 bool AEMonitor::onA_write(APIReqObj* obj) {
@@ -58,6 +60,8 @@ bool AEMonitor::onA_write(APIReqObj* obj) {
 
     //Send message
     sendData(FlowObject, write);
+
+    return true;
 }
 
 void AEMonitor::processMRead(CDAPMessage* msg) {
