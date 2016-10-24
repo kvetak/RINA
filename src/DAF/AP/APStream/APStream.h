@@ -38,7 +38,8 @@ public:
 private:
     void onA_getOpen(APIResult* result);
 
-    int *value;
+    //TODO: Vesely -> Jerabek: Unused variable
+    //int *value;
     int invokeId;
     unsigned long conID;
     cMessage* m1;

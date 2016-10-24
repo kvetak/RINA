@@ -20,10 +20,10 @@ bool DAFEnrollmentNotifierBase::isMessageProcessable(CDAPMessage* msg) {
     bool status =   (
             ( dynamic_cast<CDAP_M_Connect*>(msg) ) ||
             ( dynamic_cast<CDAP_M_Connect_R*>(msg) ) ||
-            ( dynamic_cast<CDAP_M_Start*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Start*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Start_R*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Start_R*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Stop*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Stop*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Stop_R*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Stop_R*>(msg)->getObject().objectVal) )
+            ( dynamic_cast<CDAP_M_Start*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Start*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Start_R*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Start_R*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Stop*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Stop*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Stop_R*>(msg) && dynamic_cast<DAFEnrollmentObj*>(dynamic_cast<CDAP_M_Stop_R*>(msg)->getObjectItem().objectVal) )
                     )
                     ? true : false;
     return status;

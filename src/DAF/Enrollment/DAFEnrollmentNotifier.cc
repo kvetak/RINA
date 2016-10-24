@@ -108,7 +108,7 @@ void DAFEnrollmentNotifier::sendStartEnrollmentRequest(DAFEnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -133,7 +133,7 @@ void DAFEnrollmentNotifier::sendStartEnrollmentResponse(DAFEnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -159,7 +159,7 @@ void DAFEnrollmentNotifier::sendStopEnrollmentRequest(DAFEnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -184,7 +184,7 @@ void DAFEnrollmentNotifier::sendStopEnrollmentResponse(DAFEnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -274,7 +274,7 @@ void DAFEnrollmentNotifier::processMConnectR(CDAP_M_Connect_R* msg) {
 
 void DAFEnrollmentNotifier::processMStart(CDAP_M_Start* msg) {
 //    EV << "Received M_Start";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
@@ -284,7 +284,7 @@ void DAFEnrollmentNotifier::processMStart(CDAP_M_Start* msg) {
 
 void DAFEnrollmentNotifier::processMStartR(CDAP_M_Start_R* msg) {
 //    EV << "Received M_Start_R";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
@@ -294,7 +294,7 @@ void DAFEnrollmentNotifier::processMStartR(CDAP_M_Start_R* msg) {
 
 void DAFEnrollmentNotifier::processMStop(CDAP_M_Stop* msg) {
 //    EV << "Received M_Stop";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {
@@ -304,7 +304,7 @@ void DAFEnrollmentNotifier::processMStop(CDAP_M_Stop* msg) {
 
 void DAFEnrollmentNotifier::processMStopR(CDAP_M_Stop_R* msg) {
 //    EV << "Received M_Stop_R";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //Enrollment
     if (dynamic_cast<DAFEnrollmentObj*>(object.objectVal)) {

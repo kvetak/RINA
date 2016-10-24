@@ -44,12 +44,14 @@ class IRMListeners : public cListener {
 class LisIRMAllocReq : public IRMListeners {
   public:
     LisIRMAllocReq(IRM* nirm) : IRMListeners(nirm){};
+    using IRMListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisIRMDeallocReq : public IRMListeners {
   public:
     LisIRMDeallocReq(IRM* nirm) : IRMListeners(nirm){};
+    using IRMListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 

@@ -153,7 +153,9 @@ bool AE::createBindings(Flow& flow) {
 
     //Get Socket CDAP Gates
     cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
-    cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
 
     //Dirty hack
     Socket* socket = dynamic_cast<Socket*>(SocketMod);
@@ -161,8 +163,10 @@ bool AE::createBindings(Flow& flow) {
 
 
     //CDAPParent Module gates
-    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     //Connect gates together
     gIrmOut->connectTo(gIrmModOut);
@@ -200,10 +204,11 @@ void AE::insertFlow() {
     Irm->newFlow(FlowObject);
 
     //Interconnect IRM and AE
+
     bool status = createBindings(*FlowObject);
-    //if (!status) {
-    //    error("Gate inconsistency during creation of a new flow!");
-    //}
+    if (!status) {
+        EV << "Gate inconsistency during creation of a new flow!" << endl;
+    }
 }
 
 void AE::CACEFinished() {
@@ -429,7 +434,8 @@ bool AE::deleteBindings(Flow& flow) {
     EV << this->getFullPath() << " deleted bindings" << endl;
 
     int handle1 = Irm->getIrmGateHandle(&flow);
-    int handle2 = Irm->getApGateHandle(&flow);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //int handle2 = Irm->getApGateHandle(&flow);
     if (handle1 == VAL_UNDEF_HANDLE)
         error("Delete gates before flow allocation is impossible!");
 
@@ -524,9 +530,13 @@ void AE::afterOnStart() {
 
 
 bool AE::onA_read(APIReqObj* obj) {
+    //TODO: Vesely -> Jerabek: RESOLVE!
+    return false;
 }
 
 bool AE::onA_write(APIReqObj* obj) {
+    //TODO: Vesely -> Jerabek: RESOLVE!
+    return false;
 }
 
 

@@ -46,6 +46,7 @@ class PDUData : public PDUData_Base
     PDUData(const char *name=nullptr, int kind=0);
     PDUData(const PDUData& other);
     virtual ~PDUData();
+    using PDUData_Base::encapsulate;
     virtual void encapsulate(Data* data);
     virtual Data *decapsulate();
     virtual void forEachChild(cVisitor *v);

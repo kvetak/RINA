@@ -44,54 +44,63 @@ class AEListeners : public cListener {
 class LisAEReceiveData : public AEListeners {
   public:
     LisAEReceiveData(AE* nae) : AEListeners(nae){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
+    using AEListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail) override;
 };
 
 class LisAEAllReqFromFai : public AEListeners {
   public:
     LisAEAllReqFromFai(AE* nae) : AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEDeallReqFromFai : public AEListeners {
   public:
     LisAEDeallReqFromFai(AE* nae) : AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEAllResPosi : public AEListeners {
   public:
     LisAEAllResPosi(AE* nae) : AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEAllResNega : public AEListeners {
   public:
     LisAEAllResNega(AE* nae) : AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEConResPosi : public AEListeners {
   public:
     LisAEConResPosi(AE* nae) :  AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEConResNega : public AEListeners {
   public:
     LisAEConResNega(AE* nae) :  AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAERelRes : public AEListeners {
   public:
     LisAERelRes(AE* nae) :  AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEEnrolled : public AEListeners {
   public:
     LisAEEnrolled(AE* nae) :  AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, long obj, cObject *detail);
 };
 
@@ -99,6 +108,7 @@ class LisAEEnrolled : public AEListeners {
 class LisAPAEAPI : public AEListeners {
   public:
     LisAPAEAPI(AE* nae) :  AEListeners(nae){};
+    using AEListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 

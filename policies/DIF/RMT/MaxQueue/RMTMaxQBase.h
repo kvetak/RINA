@@ -105,22 +105,26 @@ class RMTMaxQBase : public cSimpleModule
     /**
      * Signal used for disabling an incoming PDU's arrival port.
      */
-    simsignal_t sigRMTPortDrainDisable;
+    //FIXME: Vesely: Unused variable commented
+    //simsignal_t sigRMTPortDrainDisable;
 
     /**
      * Signal used for enabling an incoming PDU's arrival port.
      */
-    simsignal_t sigRMTPortDrainEnable;
+    //FIXME: Vesely: Unused variable commented
+    //simsignal_t sigRMTPortDrainEnable;
 
     /**
      * Signal used for speeding up an incoming PDU's arrival port drain rate.
      */
-    simsignal_t sigRMTPortDrainSpeedUp;
+    //FIXME: Vesely: Unused variable commented
+    //simsignal_t sigRMTPortDrainSpeedUp;
 
     /**
      * Signal used for slowing down an incoming PDU's arrival port drain rate.
      */
-    simsignal_t sigRMTPortDrainSlowDown;
+    //FIXME: Vesely: Unused variable commented
+    //simsignal_t sigRMTPortDrainSlowDown;
 };
 
 #endif /* RMTMAXQBASE_H_ */

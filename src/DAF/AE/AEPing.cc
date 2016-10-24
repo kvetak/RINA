@@ -187,7 +187,7 @@ void AEPing::onPing() {
     obj.objectClass = "string";
     obj.objectInstance = -1;
     obj.objectVal = (cObject*)(&myPath);
-    ping->setObject(obj);
+    ping->setObjectItem(obj);
     ping->setByteLength(size);
 
     //Send message
@@ -205,7 +205,7 @@ void AEPing::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
 
     EV << "Received M_Read";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     if ( strstr(object.objectName.c_str(), VAL_MODULEPATH) ) {
@@ -222,7 +222,7 @@ void AEPing::processMRead(CDAPMessage* msg) {
         obj.objectClass = "string";
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)(&myPath);
-        pong->setObject(obj);
+        pong->setObjectItem(obj);
 
         sendData(FlowObject, pong);
     }
@@ -232,7 +232,7 @@ void AEPing::processMReadR(CDAPMessage* msg) {
     CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
 
     EV << "Received M_Read_R";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     if ( strstr(object.objectName.c_str(), VAL_MODULEPATH) ) {

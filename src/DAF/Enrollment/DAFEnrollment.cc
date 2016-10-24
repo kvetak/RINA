@@ -49,8 +49,7 @@ const char* DAF_ELEM_CONNECT      = "Connect";
 const char* DAF_ELEM_RELEASE      = "Release";
 const char* DAF_ATTR_TIME         = "t";
 
-DAFEnrollment::DAFEnrollment() :
-        StateTable(NULL), cace(NULL)//, aemgmt(NULL)
+DAFEnrollment::DAFEnrollment() : cace(NULL), StateTable(NULL)//, aemgmt(NULL)
 {
 }
 
@@ -106,9 +105,12 @@ void DAFEnrollment::initialize()
 }
 
 void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
-    cModule* Cdap = module->getModuleByPath("^.commonDistributedApplicationProtocol");
-    cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cModule* Cdap = module->getModuleByPath("^.commonDistributedApplicationProtocol");
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     //Get Socket South Gates
     cModule* SocketMod = module->getModuleByPath("^.socket");
@@ -117,8 +119,10 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
 
     //Get Socket CDAP Gates
-    cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
-    cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
 
 
     cModule* aeMgmt = module->getModuleByPath("^");
@@ -265,9 +269,8 @@ void DAFEnrollment::startCACE(Flow* flow) {
             entry->getRemote().getApinstance(),
             entry->getRemote().getAename(),
             entry->getRemote().getAeinstance());
-    /*
-     * XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
-     *                      exactly the same ADT in RINASim source codes.
+    //XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
+    //                      exactly the same ADT in RINASim source codes.
     naming_t dst;
     dst.AEInst = entry.getRemote().getAeinstance();
     dst.AEName = entry.getRemote().getAename();
@@ -279,8 +282,8 @@ void DAFEnrollment::startCACE(Flow* flow) {
     src.AEName = entry.getLocal().getAename();
     src.ApInst = entry.getLocal().getApinstance();
     src.ApName = entry.getLocal().getApn().getName();
-    */
-/*
+
+
     msg->setSrc(src);
     msg->setDst(dst);
 
@@ -305,8 +308,8 @@ void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
 
     //signalizeEnrolled();
 
-    /* this is commented only for testing ---> refactoring of adress is need to be done*/
-/*    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
+    // this is commented only for testing ---> refactoring of adress is need to be done
+    //    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
@@ -410,7 +413,7 @@ void DAFEnrollment::receiveStartEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -444,7 +447,7 @@ void DAFEnrollment::receiveStopEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -501,7 +504,7 @@ void DAFEnrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -537,7 +540,7 @@ void DAFEnrollment::receiveStopEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state

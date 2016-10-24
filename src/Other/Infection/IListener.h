@@ -95,6 +95,7 @@ namespace IListener {
                 map<string, double> QoSDelay, QoSJitter;
 
                 void initialize();
+                using cListener::receiveSignal;
                 virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
                 void print(ofstream &out);
                 void printHopInfo(ofstream &out);

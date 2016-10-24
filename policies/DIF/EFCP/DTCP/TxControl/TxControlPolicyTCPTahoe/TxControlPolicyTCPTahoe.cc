@@ -69,7 +69,8 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
             ackRcvd = ackPolicy->numOfAcked;
 
             if(state == STATE_SLOW_START && n > 10)
-                n = n ; //5;
+            //FIXME: Vesely -> Marek: Resolve!
+                n = 5 ; //5 instead of n = n;
 
             if(snd_cwnd >= ssthresh)
                 state = STATE_CNG_AVOID;

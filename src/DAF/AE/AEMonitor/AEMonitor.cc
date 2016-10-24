@@ -44,7 +44,7 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
     object.objectClass = "int";
     object.objectInstance = -1;
     object.objectVal = NULL;
-    ping->setObject(object);
+    ping->setObjectItem(object);
     ping->setByteLength((int)par("size").longValue());
 
     //Send message
@@ -55,7 +55,7 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
 
 bool AEMonitor::onA_write(APIReqObj* obj) {
     CDAP_M_Write* write = new CDAP_M_Write("M_WRITE(stream)");
-    write->setObject(*obj->getObj());
+    write->setObjectItem(*obj->getObj());
     write->setByteLength((int)par("size").longValue());
 
     //Send message
@@ -66,7 +66,7 @@ bool AEMonitor::onA_write(APIReqObj* obj) {
 
 void AEMonitor::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
 
     if ( strstr(object.objectName.c_str(), objPing.objectName.c_str()) ) {
         CDAP_M_Read_R* pong = new CDAP_M_Read_R("M_READ_R(ping)");
@@ -75,7 +75,7 @@ void AEMonitor::processMRead(CDAPMessage* msg) {
         object.objectClass = "int";
         object.objectInstance = -1;
         object.objectVal = (cObject*)(objPing.objectVal);
-        pong->setObject(object);
+        pong->setObjectItem(object);
         pong->setByteLength((int)par("size").longValue());
 
         //inc object val
@@ -90,7 +90,7 @@ void AEMonitor::processMRead(CDAPMessage* msg) {
 
 void AEMonitor::processMWrite(CDAPMessage* msg) {
     CDAP_M_Write* msg1 = check_and_cast<CDAP_M_Write*>(msg);
-    object_t obj = msg1->getObject();
+    object_t obj = msg1->getObjectItem();
 
     objStream = obj;
 
@@ -104,7 +104,7 @@ void AEMonitor::processMWrite(CDAPMessage* msg) {
     result_t result;
     result.resultValue = 0;
 
-    wr->setObject(object);
+    wr->setObjectItem(object);
     wr->setResult(result);
 
     //Send message
@@ -113,7 +113,7 @@ void AEMonitor::processMWrite(CDAPMessage* msg) {
 
 void AEMonitor::processMReadR(CDAPMessage* msg) {
     CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
 
     APIResult *res = new APIResult();
     res->setObj(&object);
@@ -125,7 +125,7 @@ void AEMonitor::processMReadR(CDAPMessage* msg) {
 
 void AEMonitor::processMWriteR(CDAPMessage* msg) {
     CDAP_M_Write_R* msg1 = check_and_cast<CDAP_M_Write_R*>(msg);
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
 
     APIResult *res = new APIResult();
     res->setObj(&object);

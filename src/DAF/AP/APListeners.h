@@ -43,10 +43,12 @@ class APListeners : public cListener {
 class LisAPAllReqFromFai : public APListeners {
   public:
     LisAPAllReqFromFai(AP* nap) : APListeners(nap){};
+    using APListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisAEAPAPI : public APListeners {
+    using APListeners::receiveSignal;
   public:
     LisAEAPAPI(AP* nap) : APListeners(nap){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
@@ -55,6 +57,7 @@ class LisAEAPAPI : public APListeners {
 class LisAPEnrolled : public APListeners {
   public:
     LisAPEnrolled(AP* nap) :  APListeners(nap){};
+    using APListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, long obj, cObject *detail);
 };
 

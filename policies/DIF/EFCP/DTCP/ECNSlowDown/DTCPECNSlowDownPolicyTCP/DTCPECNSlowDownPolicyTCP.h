@@ -28,6 +28,7 @@ public:
 
 protected:
     TxControlPolicyTCPTahoe *tcpPolicy;
+    using ECNSlowDownPolicyBase::initialize;
     virtual void initialize(int step);
 };
 

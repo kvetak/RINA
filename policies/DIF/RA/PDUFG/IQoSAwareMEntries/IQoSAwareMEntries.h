@@ -53,7 +53,8 @@ private:
     set<string> urgentQoS;
     map<string, int> dstLat;
     map<string, double> dstDLat;
-    bool maUrgent;
+    //FIXME: Vesely: Unused variable commented
+    //bool maUrgent;
     int maxLat;
 };
 

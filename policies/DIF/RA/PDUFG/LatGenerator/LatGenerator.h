@@ -63,7 +63,8 @@ protected:
     virtual void onPolicyInit();
 
 private:
-    DA * difA;
+    //FIXME: Vesely: Unused variable commented
+    //DA * difA;
     MiniTable::MiniTable * fwd;
     IntSimpleRouting * rt;
 

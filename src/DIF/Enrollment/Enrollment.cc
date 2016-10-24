@@ -321,7 +321,7 @@ void Enrollment::receiveStartEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -355,7 +355,7 @@ void Enrollment::receiveStopEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -409,7 +409,7 @@ void Enrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -445,7 +445,7 @@ void Enrollment::receiveStopEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    EnrollmentObj* enrollRec = (check_and_cast<EnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     EnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state

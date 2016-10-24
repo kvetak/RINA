@@ -64,7 +64,8 @@ private:
     DA * difA;
     QoSTable::QoSTable * fwd;
     DMRnms::Routing * rt;
-    int nDom;
+    //FIXME: Vesely: Unused variable commented
+    //int nDom;
 
     QNTable neighbours;
     QoSCubeSet cubes;

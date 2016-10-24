@@ -63,6 +63,7 @@ protected:
 
     //Statistic signals
     simsignal_t sigStatTCPTahoeCWND;
+    using TxControlPolicyBase::initialize;
     virtual void initialize(int step);
 };
 

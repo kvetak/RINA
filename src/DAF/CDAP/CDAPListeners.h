@@ -44,6 +44,7 @@ class CDAPListeners : public cListener {
 class LisCDAPSendData : public CDAPListeners {
   public:
     LisCDAPSendData(CDAP* ncdap): CDAPListeners(ncdap){};
+    using CDAPListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 

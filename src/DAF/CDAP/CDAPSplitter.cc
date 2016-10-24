@@ -61,7 +61,7 @@ void CDAPSplitter::handleMessage(cMessage *msg)
     }
 
     //Output gate pointer
-    cGate* out;
+    cGate* out = nullptr;
 
     //Received from south gates
     if ( strstr(msg->getArrivalGate()->getName(), GATE_SOUTHIO) != NULL ) {

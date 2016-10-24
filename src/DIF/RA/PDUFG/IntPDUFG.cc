@@ -45,7 +45,8 @@ PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std:
         EV << "Invalid search at "<< ipcAddr << endl;
     } else {
         RMTPorts ports = fwd->lookup(destination, qos);
-        if(ports.size() >= 0){
+        //TODO: Vesely : Changed tautological comparison from >=0 to >0
+        if(ports.size() > 0){
             for(RMTPorts::iterator it = ports.begin(); it != ports.end(); it++){
                 RMTPort * p = (*it);
                 for(EIter it2 = neiState.begin(); it2 != neiState.end(); ++it2 ){

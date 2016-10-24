@@ -44,6 +44,7 @@ class RAListeners : public cListener
 
 class LisRACreFlow : public RAListeners
 {
+    using RAListeners::receiveSignal;
   public:
     LisRACreFlow(RABase* nra) : RAListeners(nra){};
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
@@ -53,6 +54,7 @@ class LisRAAllocResPos : public RAListeners
 {
   public:
     LisRAAllocResPos(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -61,6 +63,7 @@ class LisRACreAllocResPos : public RAListeners
 {
   public:
     LisRACreAllocResPos(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -68,6 +71,7 @@ class LisRACreResPosi : public RAListeners
 {
   public:
     LisRACreResPosi(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -75,6 +79,7 @@ class LisRADelFlow : public RAListeners
 {
   public:
     LisRADelFlow(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -82,6 +87,7 @@ class LisEFCPStopSending : public RAListeners
 {
   public:
     LisEFCPStopSending(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -89,6 +95,7 @@ class LisEFCPStartSending : public RAListeners
 {
   public:
     LisEFCPStartSending(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -96,6 +103,7 @@ class LisRMTSlowdownRequest : public RAListeners
 {
   public:
     LisRMTSlowdownRequest(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
@@ -103,6 +111,7 @@ class LisRIBCongNotif : public RAListeners
 {
   public:
     LisRIBCongNotif(RABase* nra) : RAListeners(nra){};
+    using RAListeners::receiveSignal;
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 

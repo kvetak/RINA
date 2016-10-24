@@ -41,7 +41,7 @@ class AEConstantListenerModule : public cListener {
     AEConstantListenerModule();
     void print();
     void print(ofstream &out);
-
+    using cListener::receiveSignal;
     virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
 
   private:
