@@ -175,6 +175,9 @@ void DTP::initialize(int step)
 
     }
 
+    //set initial value for RTO based on RTT from .ned
+    rttEstimatorPolicy->setRto(state->getRtt());
+
   }
 
 }

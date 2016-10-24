@@ -47,7 +47,7 @@ class RTTEstimatorPolicyBase : public EFCPPolicy
 //    virtual bool run(DTPState* dtpState, DTCPState* dtcpState) = 0;
     double RTO;     // Retransmission timeout
     double getRTO();
-
+    void setRto(double rto);
 
   protected:
     virtual void initialize(){};

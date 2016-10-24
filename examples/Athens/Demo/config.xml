@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <Configuration>
-	<Host id="host1">
+	<Host id="hostA">
 		<DA>
 			<Directory>
-				<APN apn="App1">
+				<APN apn="SourceA">
 					<DIF difName="Layer11" ipcAddress="11" />
 				</APN>
-				<APN apn="App2">
+				<APN apn="DestinationB">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>				
 				<APN apn="11_Layer11">
@@ -27,13 +27,13 @@
 			</NeighborTable>
 		</DA>	
 	</Host>
-	<Host id="host2">
+	<Host id="hostB">
 		<DA>
 			<Directory>
-				<APN apn="App1">
+				<APN apn="SourceA">
 					<DIF difName="Layer11" ipcAddress="11" />
 				</APN>
-				<APN apn="App2">
+				<APN apn="DestinationB">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>				
 				<APN apn="11_Layer11">
@@ -52,23 +52,22 @@
 					<Neighbor apn="33_Layer11" />
 				</APN>			
 			</NeighborTable>
-			
-		</DA>
+		</DA>	
 		<Enrollment>
 			<Preenrollment>
 	            <SimTime t="5">
 	                <Connect src="22_Layer11" dst="33_Layer11" />
 	            </SimTime>
 			</Preenrollment>
-		</Enrollment>	
+		</Enrollment>		
 	</Host>
-	<Router id="interiorRouter"> 	
+	<Router id="switch">
 		<DA>
 			<Directory>
-				<APN apn="App1">
+				<APN apn="SourceA">
 					<DIF difName="Layer11" ipcAddress="11" />
 				</APN>
-				<APN apn="App2">
+				<APN apn="DestinationB">
 					<DIF difName="Layer11" ipcAddress="22" />
 				</APN>			
 				<APN apn="11_Layer11">
@@ -82,9 +81,8 @@
 					<DIF difName="Layer02" ipcAddress="4" />
 				</APN>								
 			</Directory>			
-		</DA>
+		</DA>		
 	</Router>
-	
 	<QoSCubesSet>
 		<QoSCube id="QoSCube_WithoutDTCP">
 			<AverageBandwidth>10000000</AverageBandwidth>
@@ -103,7 +101,7 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>					
+			<CostBits>0</CostBits>
 		</QoSCube>
 		<QoSCube id="QoSCube_WithDTCP">
 			<AverageBandwidth>10000000</AverageBandwidth>

@@ -134,6 +134,25 @@ RMTPort* RMTModuleAllocator::addPort(Flow* flow)
         portDisp.setTagArg("i2", 0, "status/execute");
     }
 
+    // initialize SDU protection
+    std::ostringstream sdupInstanceName, sdupPolicyType;
+    const char* sdupParam = getParentModule()->par("sdupPolicyName");
+    sdupPolicyType << "rina.policies.DIF.SDUProtection." << sdupParam << "." << sdupParam;
+    sdupInstanceName << "sdup" << portCount;
+    moduleType = cModuleType::get(sdupPolicyType.str().c_str());
+    cModule* sdup = check_and_cast<IntSDUProtection*>(
+            moduleType->createScheduleInit(sdupInstanceName.str().c_str(), portWrapper));
+
+    // modify the position a little
+    cDisplayString& sdupDisp = sdup->getDisplayString();
+    sdupDisp.setTagArg("p", 0, 150);
+    sdupDisp.setTagArg("p", 1, 228);
+    sdupDisp.setTagArg("i", 0, "block/encrypt");
+    sdupDisp.setTagArg("is", 0, "s");
+
+    interconnectModules(port, sdup, std::string("protect"), std::string("protect"));
+    interconnectModules(port, sdup, std::string("unprotect"), std::string("unprotect"));
+
     return port;
 }
 

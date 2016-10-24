@@ -49,7 +49,10 @@ bool NeighborTableEntry::operator ==(const NeighborTableEntry& other) const {
 
 std::string NeighborTableEntry::info() const {
     std::ostringstream os;
-    os << "APN: " << Apn << ", Neighbors: " << Neigbors;
+    os << "APN: " << Apn << ", Neighbors: ";
+    for (auto n : Neigbors){
+        os << "\n\t" << n.info();
+    }
     return os.str();
 }
 

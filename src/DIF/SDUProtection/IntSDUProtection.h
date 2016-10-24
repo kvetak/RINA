@@ -20,38 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Author: Kewin Rausch <kewin.rausch@create-net.org>
+#ifndef INTSDUPROTECTION_H_
+#define INTSDUPROTECTION_H_
 
-package rina.src.CS;
+#include <omnetpp.h>
+#include <Utils.h>
+#include <ExternConsts.h>
 
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
-
-module InteriorRouterNInt
+class IntSDUProtection  : public cSimpleModule
 {
-    parameters:
-        @display("i=abstract/switch;bgb=1310,325");
-        @node;
-		int numOfInterfaces = default(1);
-    gates:
-        inout medium[numOfInterfaces];
+public:
+    void initialize();
+    virtual void onPolicyInit() = 0;
 
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess {
-            @display("p=104,245,r,150");
-        }
-        relayIpc: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-    connections allowunconnected:
+protected:
+    void handleMessage(cMessage* msg) { processPDU(msg); };
+    virtual void processPDU(cMessage* msg) = 0;
+};
 
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            relayIpc.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
-}
+#endif /* INTSDUPROTECTION_H_ */

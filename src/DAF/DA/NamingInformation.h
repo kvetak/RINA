@@ -56,6 +56,8 @@ class NamingInformation : public cSimpleModule
 
     void parseConfig(cXMLElement* config);
 
+    void udateDisplayString();
+
 };
 
 #endif

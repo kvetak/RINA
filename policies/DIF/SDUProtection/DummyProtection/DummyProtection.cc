@@ -20,38 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Author: Kewin Rausch <kewin.rausch@create-net.org>
+#include <DummyProtection.h>
 
-package rina.src.CS;
+Register_Class(DummyProtection);
 
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
+void DummyProtection::onPolicyInit(){}
 
-module InteriorRouterNInt
+void DummyProtection::processPDU(cMessage* msg)
 {
-    parameters:
-        @display("i=abstract/switch;bgb=1310,325");
-        @node;
-		int numOfInterfaces = default(1);
-    gates:
-        inout medium[numOfInterfaces];
-
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess {
-            @display("p=104,245,r,150");
-        }
-        relayIpc: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-    connections allowunconnected:
-
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            relayIpc.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
+    if (!opp_strcmp(msg->getArrivalGate()->getName(), "protect$i"))
+    {
+        send(msg, "protect$o");
+    }
+    else if (!opp_strcmp(msg->getArrivalGate()->getName(), "unprotect$i"))
+    {
+        send(msg, "unprotect$o");
+    }
 }

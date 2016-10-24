@@ -68,5 +68,4 @@ class DirectoryEntry {
 //Free function
 std::ostream& operator<< (std::ostream& os, const DirectoryEntry& dte);
 
-
 #endif /* DIRECTORYENTRY_H_ */

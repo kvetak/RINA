@@ -90,20 +90,39 @@ void AEStream::handleMessage(cMessage *msg)
         this->handleSelfMessage(msg);
 }
 
+void AEStream::onStart(){
+
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(APN(srcApName),
+                    srcApInstance,
+                    srcAeName,
+                    srcAeInstance),
+        APNamingInfo(APN(dstApName),
+                    dstApInstance,
+                    dstAeName,
+                    dstAeInstance));
+
+    emit(sigAEEnrolled, apnip);
+}
+
+void AEStream::afterOnStart() {
+        //Flow
+    APNamingInfo src = this->getApni();
+    APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
+                                     this->dstAeName, this->dstAeInstance);
+
+    FlowObject = new Flow(src, dst);
+    FlowObject->setQosRequirements(this->getQoSRequirements());
+
+    //Insert it to the Flows ADT
+    insertFlow();
+
+    sendAllocationRequest(FlowObject);
+}
+
 void AEStream::handleSelfMessage(cMessage* msg) {
     if ( !strcmp(msg->getName(), TIM_START) ) {
-        //Flow
-        APNamingInfo src = this->getApni();
-        APNamingInfo dst = APNamingInfo( APN(this->dstApName), this->dstApInstance,
-                                         this->dstAeName, this->dstAeInstance);
-
-        FlowObject = new Flow(src, dst);
-        FlowObject->setQosRequirements(this->getQoSRequirements());
-
-        //Insert it to the Flows ADT
-        insertFlow();
-
-        sendAllocationRequest(FlowObject);
+        onStart();
     }
     else if ( !strcmp(msg->getName(), TIM_STOP) ) {
         sendDeallocationRequest(FlowObject);

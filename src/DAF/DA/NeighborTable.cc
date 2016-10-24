@@ -28,11 +28,19 @@ const char*   ELEM_NEIGHBOR        = "Neighbor";
 
 Define_Module(NeighborTable);
 
+void NeighborTable::updateDisplayString() {
+    std::ostringstream description;
+    description << NeiTable.size() << " entries";
+    this->getDisplayString().setTagArg("t", 0, description.str().c_str());
+    this->getDisplayString().setTagArg("t", 1, "t");
+}
+
 void NeighborTable::initialize()
 {
     //Parse XML config
     parseConfig(par(PAR_CONFIGDATA).xmlValue());
 
+    updateDisplayString();
     //Init watchers
     WATCH_LIST(NeiTable);
 }

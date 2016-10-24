@@ -736,7 +736,7 @@ void Enrollment::handleMessage(cMessage *msg)
     if (msg->isSelfMessage()) {
         if ( !opp_strcmp(msg->getName(), MSG_ENRLCON) ) {
             APNIPairs* apnip = PreenrollConnects[simTime()];
-
+            EV << "Preallocation at time " << simTime() << " has " << apnip->size() << " elements" << endl;
             while (!apnip->empty())
             {
                 APNIPair pair = apnip->front();

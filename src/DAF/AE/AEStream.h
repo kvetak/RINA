@@ -67,6 +67,9 @@ class AEStream : public AE
     virtual void handleMessage(cMessage *msg);
     void handleSelfMessage(cMessage* msg);
 
+    void onStart();
+    void afterOnStart();
+
     void prepareAllocateRequest();
     void prepareStreamData();
     void prepareDeallocateRequest();

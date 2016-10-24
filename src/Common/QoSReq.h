@@ -130,6 +130,11 @@ class QoSReq {
      */
     int costBits;               //measured in $/Mb
 
+    /**
+     * @brief Attribute holding resiliency information, see PRISTINE D4.3 for more
+     */
+    int resiliencyFactor;
+
 
   public:
     /**
@@ -361,6 +366,23 @@ class QoSReq {
      * @param costBits A new value measured in $/bit
      */
     void setCostBits(double costBits);
+
+    /**
+     * @brief Gets Resiliency Factor parameter
+     * @param costBits A new value measured in $/bit
+     */
+    int getResiliencyFactor() const {
+        return resiliencyFactor;
+    }
+
+    /**
+     * @brief Sets Resiliency Factor  parameter
+     * @param resiliencyFactor A new value measured in $/bit
+     */
+    void setResiliencyFactor(int resiliencyFactor) {
+        this->resiliencyFactor = resiliencyFactor;
+    }
+
 
     /**
      * @brief Prints QoSReq information as string

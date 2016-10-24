@@ -42,7 +42,7 @@ QoSCube::QoSCube() : qoSId(VAL_UNDEF_QOSID),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_DEFAULT_QOS), delay(VAL_DEFAULT_QOS), jitter(VAL_DEFAULT_QOS),
         costTime(VAL_DEFAULT_QOS), costBits(VAL_DEFAULT_QOS), aTime(VAL_DEFAULT_QOS),
-        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet()), resiliencyFactor(VAL_DEFAULT_QOS)
 {
 }
 
@@ -52,7 +52,7 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
         partDeliv(false), incompleteDeliv(false), forceOrder(false),
         maxAllowGap(VAL_QOSPARDONOTCARE), delay(VAL_QOSPARDONOTCARE), jitter(VAL_QOSPARDONOTCARE),
         costTime(VAL_QOSPARDONOTCARE), costBits(VAL_QOSPARDONOTCARE), aTime(VAL_DEFAULT_QOS),
-        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet())
+        rxOn(false), windowFCOn(false), rateFCOn(false), efcpPolicies(new EFCPPolicySet()), resiliencyFactor(VAL_QOSPARDONOTCARE)
 {
   for (cXMLElementList::iterator jt = attrs.begin(); jt != attrs.end(); ++jt)
   {
@@ -175,6 +175,12 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
     else if (!strcmp(n->getTagName(), ELEM_EFCPPOL))
     {
       efcpPolicies->init(n);
+    }
+    else if(!strcmp(n->getTagName(), ELEM_RESILIENCYFACTOR))
+    {
+        resiliencyFactor = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDONOTCARE;
+        if (resiliencyFactor < 0)
+            resiliencyFactor = VAL_QOSPARDONOTCARE;
     }
   }
 }
@@ -454,6 +460,12 @@ std::string QoSCube::info() const {
 
     os << "\n   A-Time = ";
         os << this->getATime() << "ms";
+
+    os << "\n   resiliency factor = ";
+    if ( this->getResiliencyFactor() < 0 )
+        os << STR_DONOTCARE;
+    else
+        os << this->getResiliencyFactor() << " usecs";
 
     return os.str();
 }

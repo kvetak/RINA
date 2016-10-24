@@ -415,7 +415,7 @@
             <MaxSDUSize>1500</MaxSDUSize>
             <PartialDelivery>0</PartialDelivery>
             <IncompleteDelivery>0</IncompleteDelivery>
-            <ForceOrder>1</ForceOrder>
+            <ForceOrder>0</ForceOrder>
             <MaxAllowableGap>0</MaxAllowableGap>
             <Delay>1000000</Delay>
             <Jitter>500000</Jitter>

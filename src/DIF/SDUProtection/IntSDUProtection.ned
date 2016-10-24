@@ -20,38 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Author: Kewin Rausch <kewin.rausch@create-net.org>
+package rina.src.DIF.SDUProtection;
 
-package rina.src.CS;
-
-import rina.src.DAF.DA.DIFAllocator;
-import rina.src.DIF.IPCProcess;
-
-module InteriorRouterNInt
+moduleinterface IntSDUProtection
 {
     parameters:
-        @display("i=abstract/switch;bgb=1310,325");
-        @node;
-		int numOfInterfaces = default(1);
-    gates:
-        inout medium[numOfInterfaces];
+        @display("i=block/encrypt");
 
-    submodules:
-        ipcProcess0[sizeof(medium)]: IPCProcess {
-            @display("p=104,245,r,150");
-        }
-        relayIpc: IPCProcess {
-            @display("p=104,141;i=,#FFB000");
-            relay = true;
-        }
-        difAllocator: DIFAllocator {
-            @display("p=104,53");
-        }
-    connections allowunconnected:
-
-        // Every IPC Process is connected to its medium and the Relay IPC.
-        for i=0..sizeof(medium)-1 {
-            relayIpc.southIo++ <--> ipcProcess0[i].northIo++;
-            ipcProcess0[i].southIo++ <--> medium[i];
-        }
+	gates:
+    	inout protect;
+    	inout unprotect;
 }
