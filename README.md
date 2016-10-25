@@ -1,7 +1,9 @@
-RINA Simulator
+﻿RINA Simulator
 ====
 
 ###Version changelog
+* October 2016 - Socket and CDAP API added, compilable on OMNeT++ 5.0
+* August 2016 - The last release compatible with OMNeT++ 4.6
 * October 2015-February 2016 - Trento meeting version, Fragmentation/Concatenation in Delimiting, 
 								DAF level Enrollment, scenario split
 * July-September 2015 - RIBd notifiers, pre-EFCPv6 updates, CDAPProcessingBase interface,
@@ -21,15 +23,25 @@ RINA Simulator
 * October 2014  - Madrid F2F meeting with working SimpleRelay and TwoCSs scenarios
 
 ###Resources
-* [OpenSourceProject Git with archived RINASim releases](https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/)
+* [RINASim official project webpage](http://rinasim.omnetpp.org)
 * [VMWare Out-of-the-box virtual machine with RINASim](http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip)
-* [PRISTINE webpage](http://ict-pristine.eu/)	 
+* [Doxygen source code documentation](http://nes.fit.vutbr.cz/ivesely/doxy/)
 * [Developer's mailing-list](https://www.fit.vutbr.cz/mailman/listinfo/rinasim)
 * [Deliverable 2.4 describing RINASim January 2015 functionality](http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf)
 * [Deliverable 2.6 describing RINASim December 2015 functionality](http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf)
+* [PRISTINE webpage](http://ict-pristine.eu/)	 
+* [OpenSourceProject Git with archived RINASim releases](https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/)
 
 ###Papers
-* [V.Vesely, M.Marek, T.Hykel, O.Rysavy; Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator](http://arxiv.org/abs/1509.03550)
+
+* VESELY, Vladimir. A NEW DAWN OF NAMING, ADDRESSING AND ROUTING ON THE INTERNET. Brno, 2016. Available from: http://www.fit.vutbr.cz/study/DP/PD.php?id=515. PhD. Thesis. Brno University of Technology, Faculty of Information Technology. 2016-04-12. Supervisor Sveda Miroslav.
+* S. L. Gaixas, J. Perello, D. Careglio, E. Grasa, N. Davies and P. Thompson. Assuring Absolute QoS Guarantees for Heterogeneous Services in RINA Networks with delta-Q. IEEE NetCloud 2016, December 2016.
+* E. Elahi, J. Barron, M. Crotty, M. Ponce de Leon, R. Mijumbi, S. Davy, D. Staessens and S. Vrijders. On Load Management in Service Oriented Networks. IEEE Cloudnet 2016, October 2016.
+* P. Teymoori et al., Congestion control in the recursive InterNetworking Architecture (RINA), 2016 IEEE International Conference on Communications (ICC), Kuala Lumpur, 2016, pp. 1-7. doi: 10.1109/ICC.2016.7510818. Available from: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7510818&isnumber=7510595
+* F. Hrizi, A. Laouiti and H. Chaouchi, SFR: Scalable forwarding with RINA for distributed clouds, Network of the Future (NOF), 2015 6th International Conference on the, Montreal, QC, 2015, pp. 1-6. doi: 10.1109/NOF.2015.7333311. Available from: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7333311&isnumber=7333276
+* VESELY Vladimir, MAREK Marcel, HYKEL TomaS, RYSAVY Ondrej, LICHTNER Ondrej and JERABEK Kamil. Deliverable 2.6: RINASim - advanced functionality. Brno, 2015. Available from: http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d26-rina_sim-draft.pdf.
+* VESELY Vladimir, MAREK Marcel, HYKEL Tomas and RYSAVY Ondrej. Skip This Paper - RINASim: Your Recursive InterNetwork Architecture Simulator. In: Proceedings of 2nd OMNeT++ Community Summit. Ithaca, NY: Cornell University Library, 2015, pp. 1-4. ISSN 2331-8422. Available from: https://arxiv.org/abs/1509.03550
+* VESELY Vladimir, MAREK Marcel, HYKEL TomaS, RYSAVY Ondrej and LICHTNER Ondrej. Deliverable 2.4: RINASim - basic functionality. Brno, 2015. Available from: http://ict-pristine.eu/wp-content/uploads/2013/12/pristine-d24-rinasim-v1_0.pdf
 
 ###Directory structure
 
