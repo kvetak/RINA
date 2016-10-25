@@ -25,8 +25,8 @@ Stream::Stream(){
     id = nextId++;
     wt = 0.03;
     brt = 8.0;
-    rng = &uniform;
-    rngb = &uniform;
+    //rng = &uniform;
+    //rngb = &uniform;
 
     pduS=1024;
     varPduS=0;
@@ -145,14 +145,14 @@ void AEBStream::doIni() {
             } else if ( !strcmp(n->getTagName(), "rng") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setRNG(&uniform);
+                    //st.setRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setRNG(&minMaxNormal);
                 }
             } else if ( !strcmp(n->getTagName(), "rngb") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setBRNG(&uniform);
+                    //st.setBRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setBRNG(&minMaxNormal);
                 }

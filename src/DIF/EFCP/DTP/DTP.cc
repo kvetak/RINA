@@ -92,6 +92,15 @@ void DTP::runCongestionNotificationPolicy()
   dtcp->runECNSlowDownPolicy(state);
 }
 
+void DTP::handleQueueInfoFromSocket(QueueInfo* queueInfo)
+{
+  handleQueueInfo(queueInfo);
+}
+
+void DTP::handleQueueInfo(QueueInfo* queueInfo)
+{
+}
+
 void DTP::initSignalsAndListeners()
 {
   //Signals that this module is emmiting
@@ -233,7 +242,7 @@ void DTP::flushAllQueuesAndPrepareToDie()
  */
 void DTP::redrawGUI()
 {
-  if (!ev.isGUI())
+  if (!getEnvir()->isGUI())
   {
     return;
   }
@@ -1774,4 +1783,9 @@ void DTP::setDTCP(DTCP* dtcp)
 void DTP::setState(DTPState* state)
 {
   this->state = state;
+}
+
+void DTP::handleQueueInfoFromRMT(QueueInfo* queueInfo)
+{
+  handleQueueInfo(queueInfo);
 }

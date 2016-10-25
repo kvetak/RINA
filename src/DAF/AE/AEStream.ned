@@ -26,10 +26,6 @@ simple AEStream extends AE like IAE
 { 
     parameters:
         @class(AEStream);
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
                        
         int 	startAt 		@unit(s) = default(0s);
         int 	stopAt  		@unit(s) = default(0s);

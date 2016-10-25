@@ -162,21 +162,15 @@ QoSCube::QoSCube(cXMLElementList& attrs) : qoSId(VAL_UNDEF_QOSID),
     }
     else if (!strcmp(n->getTagName(), ELEM_RXON))
     {
-      rxOn = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-      if (rxOn < 0)
-        rxOn = VAL_DEFAULT_QOS;
+        rxOn = (atoi(n->getNodeValue()) == 1) ? true : VAL_QOSPARDEFBOOL;
     }
     else if (!strcmp(n->getTagName(), ELEM_WINON))
     {
-      windowFCOn = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-      if (windowFCOn < 0)
-        windowFCOn = VAL_DEFAULT_QOS;
+        windowFCOn = (atoi(n->getNodeValue()) == 1) ? true : VAL_QOSPARDEFBOOL;
     }
     else if (!strcmp(n->getTagName(), ELEM_RATEON))
     {
-      rateFCOn = n->getNodeValue() ? atoi(n->getNodeValue()) : VAL_QOSPARDEFBOOL;
-      if (rateFCOn < 0)
-        rateFCOn = VAL_DEFAULT_QOS;
+        rateFCOn = (atoi(n->getNodeValue()) == 1) ? true : VAL_QOSPARDEFBOOL;
     }
     else if (!strcmp(n->getTagName(), ELEM_EFCPPOL))
     {

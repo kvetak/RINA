@@ -32,7 +32,7 @@ CACEListeners::~CACEListeners() {
 }
 
 void LisCACESendData::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cace->getFullPath() << endl;
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)

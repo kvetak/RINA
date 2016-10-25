@@ -68,7 +68,7 @@ bool isPrefix(std::string prefix, std::string s) {
 
 void setPolicyDisplayString(cModule* mod, const char* str)
 {
-    if (ev.isGUI())
+    if (getEnvir()->isGUI())
     {
         cDisplayString& disp = mod->getDisplayString();
         disp.setTagArg("t", 1, "t");

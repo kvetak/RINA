@@ -71,7 +71,7 @@ void RoutingNotifier::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
 
-    cdapm->setObject(flowobj);
+    cdapm->setObjectItem(flowobj);
 
     //TODO: Vesely - Work more on InvokeId
 
@@ -84,7 +84,7 @@ void RoutingNotifier::receiveRoutingUpdateFromRouting(IntRoutingUpdate * info)
 
 void RoutingNotifier::processMWrite(CDAP_M_Write* msg)
 {
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 
     if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))
     {

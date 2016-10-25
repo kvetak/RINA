@@ -25,7 +25,7 @@ class RoutingNotifierListeners : public cListener
     public:
         RoutingNotifierListeners(RoutingNotifierBase* rnb);
         virtual ~RoutingNotifierListeners();
-        virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj)
+        virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail)
         {
             EV << "Signal to RoutingNotifierBase initiated by " << src->getFullPath() << endl;
         }
@@ -37,7 +37,7 @@ class LisRIBDRoutingUpdate : public RoutingNotifierListeners
 {
     public:
         LisRIBDRoutingUpdate(RoutingNotifierBase* nribd) : RoutingNotifierListeners(nribd) {};
-        virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+        virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 #endif /* ROUTINGNOTIFIERLISTENERES_H_ */

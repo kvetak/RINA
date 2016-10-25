@@ -13,25 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.Basics.TwoCSsMultipleAEs;
+#include <CACEBase.h>
 
-import ned.DatarateChannel;
-import rina.src.CS.HostNAPNAE;
+const char* DAF_MSG_CONREQ                = "Connect/Auth";
+const char* DAF_MSG_CONREQRETRY           = "ConnectRetry/Auth";
+const char* DAF_MSG_CONRESPOS             = "Connect+/Auth";
+const char* DAF_MSG_CONRESNEG             = "Connect-/Auth";
 
-network TwoCSsMultipleAEs
-{
-    @display("bgb=325,196");
-    submodules:
-        hostA: HostNAPNAE {
-            @display("p=82,92");
-            numOfAPs = 1;
-            numOfAEs = 2;
-        }
-        hostB: HostNAPNAE {
-            @display("p=231,92");
-			numOfAPs = 1;
-            numOfAEs = 2;
-        }
-    connections allowunconnected:
-        hostA.medium <--> DatarateChannel {delay = 0.1s; ber = 0; } <--> hostB.medium;
+CACEBase::CACEBase() {
 }
+
+CACEBase::~CACEBase() {
+}
+

@@ -233,22 +233,23 @@ void DTCPState::setRcvBuffersPercentFree(unsigned int rcvBuffersPercentFree)
   this->rcvBuffersPercentFree = rcvBuffersPercentFree;
 }
 
-void DTCPState::deleteRxTimer(unsigned int seqNum)
-{
-  std::vector<DTCPRxExpiryTimer*>::iterator it;
-  for (it = rxQ.begin(); it != rxQ.end();)
-  {
-    if (seqNum == (*it)->getPdu()->getSeqNum())
-    {
-      delete (*it)->getPdu();
-      cancelEvent((*it));
-      delete (*it);
-      rxQ.erase(it);
-      return;
-    }
-    ++it;
-  }
-}
+//void DTCPState::deleteRxTimer(unsigned int seqNum)
+//{
+//  std::vector<DTCPRxExpiryTimer*>::iterator it;
+//  for (it = rxQ.begin(); it != rxQ.end();)
+//  {
+//    if (seqNum == (*it)->getPdu()->getSeqNum())
+//    {
+//      delete (*it)->getPdu();
+////      take((*it));
+//      cancelEvent((*it));
+//      delete (*it);
+//      rxQ.erase(it);
+//      return;
+//    }
+//    ++it;
+//  }
+//}
 
 unsigned int DTCPState::getDataReXmitMax() const
 {
@@ -290,6 +291,7 @@ void DTCPState::clearRxQ()
         take((*it)->getPdu());
         delete (*it)->getPdu();
       }
+      drop((*it));
       cancelAndDelete((*it));
       it = rxQ.erase(it);
     }

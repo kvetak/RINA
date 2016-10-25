@@ -45,7 +45,8 @@ private:
     double alpha;
     double flightSize;
     double sendCredit;
-    double cwnd;
+    //FIXME: Vesely: Unused variable commented
+    //double cwnd;
 
     simsignal_t sigStatRate;
     simsignal_t sigStatFlightSize;

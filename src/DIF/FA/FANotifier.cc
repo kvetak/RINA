@@ -18,8 +18,10 @@
 const char* MSG_FLO             = "Flow";
 const char* MSG_FLOPOSI         = "Flow+";
 const char* MSG_FLONEGA         = "Flow-";
-const int   VAL_FLOWPOSI        = 1;
-const int   VAL_FLOWNEGA        = 0;
+//FIXME: Vesely: Unused variable commented
+//const int   VAL_FLOWPOSI        = 1;
+//FIXME: Vesely: Unused variable commented
+//const int   VAL_FLOWNEGA        = 0;
 const char* VAL_FLREQ           = "Request  ";
 const char* VAL_FLREQPOSI       = "Response+  ";
 const char* VAL_FLREQNEGA       = "Response-  ";
@@ -105,7 +107,7 @@ void FANotifier::sendCreateRequestFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Append src/dst address for RMT "routing"
     mcref->setSrcAddr(flow->getSrcNeighbor());
@@ -135,7 +137,7 @@ void FANotifier::sendDeleteRequestFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mdereqf->setObject(flowobj);
+    mdereqf->setObjectItem(flowobj);
 
     //Append src/dst address for RMT "routing"
     mdereqf->setSrcAddr(flow->getSrcNeighbor());
@@ -165,7 +167,7 @@ void FANotifier::sendCreateResponseNegative(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -198,7 +200,7 @@ void FANotifier::sendCreateResponsePostive(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -231,7 +233,7 @@ void FANotifier::sendDeleteResponseFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mderesf->setObject(flowobj);
+    mderesf->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -295,7 +297,7 @@ void FANotifier::signalizeDeleteResponseFlow(Flow* flow) {
 
 void FANotifier::processMCreate(CDAP_M_Create* msg) {
 //    EV << "Received M_Create";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     if (dynamic_cast<Flow*>(object.objectVal)) {
         Flow* fl = (check_and_cast<Flow*>(object.objectVal))->dup();
@@ -308,7 +310,7 @@ void FANotifier::processMCreate(CDAP_M_Create* msg) {
 
 void FANotifier::processMCreateR(CDAP_M_Create_R* msg) {
 //    EV << "Received M_Create_R";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //CreateResponseFlow
     if (dynamic_cast<Flow*>(object.objectVal)) {
@@ -326,7 +328,7 @@ void FANotifier::processMCreateR(CDAP_M_Create_R* msg) {
 
 void FANotifier::processMDelete(CDAP_M_Delete* msg) {
 //    EV << "Received M_Delete";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //DeleteRequest Flow
     if (dynamic_cast<Flow*>(object.objectVal)) {
@@ -338,7 +340,7 @@ void FANotifier::processMDelete(CDAP_M_Delete* msg) {
 
 void FANotifier::processMDeleteR(CDAP_M_Delete_R* msg) {
 //    EV << "Received M_Delete_R";
-    object_t object = msg->getObject();
+    object_t object = msg->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
     //DeleteResponseFlow
     if (dynamic_cast<Flow*>(object.objectVal)) {

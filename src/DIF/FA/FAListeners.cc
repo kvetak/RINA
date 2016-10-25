@@ -22,7 +22,7 @@
 
 #include "FAListeners.h"
 
-void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "AllocateRequest initiated by " << src->getFullPath()
        << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -34,7 +34,7 @@ void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 }
 
 void LisFADeallocReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeallocateRequest initiated by " << src->getFullPath()
        << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -51,7 +51,7 @@ void LisFADeallocReq::receiveSignal(cComponent* src, simsignal_t id,
  * @param id
  * @param obj
  */
-void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "CreateRequest initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
@@ -63,7 +63,7 @@ void LisFACreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
 
 
 void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "NM1FlowCreated initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow
@@ -84,7 +84,7 @@ void LisFACreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAAllocFinMgmt::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocFinMgmt initiated by " << src->getFullPath() << " and processed by " << fa->getFullPath() << endl;
 
     /*

@@ -31,7 +31,6 @@
 #define DTPSTATE_H_
 
 #include <omnetpp.h>
-#include <cobject.h>
 #include <queue>
 #include <vector>
 #include "Utils.h"

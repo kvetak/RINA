@@ -71,6 +71,10 @@ class AEBase : public cSimpleModule
     }
 
     const int getAuthType();
+    const unsigned long getCdapConId();
+    void setCdapConId(unsigned long cdapConId);
+    const int getStartInvokeId();
+    void setStartInvokeId(int invokeId);
     const std::string& getAuthName() const;
     const std::string& getAuthPassword() const;
     const std::string& getAuthOther() const;
@@ -80,6 +84,8 @@ class AEBase : public cSimpleModule
     void setFlowObject(Flow* flowObject);
 
   protected:
+    int startInvokeId;
+    unsigned long cdapConId;
     //Flows flows;
     Flow* FlowObject;
     APNamingInfo apni;
@@ -93,6 +99,7 @@ class AEBase : public cSimpleModule
     std::string authName;
     std::string authPassword;
     std::string authOther;
+    int maxConRetries;
 
     QoSReq QoSRequirements;
 

@@ -34,7 +34,7 @@ class IRMListeners : public cListener {
     IRMListeners(IRM* nirm);
     virtual ~IRMListeners();
 
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b, cObject *detail) {
         EV << "Signal to IRM initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -44,13 +44,15 @@ class IRMListeners : public cListener {
 class LisIRMAllocReq : public IRMListeners {
   public:
     LisIRMAllocReq(IRM* nirm) : IRMListeners(nirm){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using IRMListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisIRMDeallocReq : public IRMListeners {
   public:
     LisIRMDeallocReq(IRM* nirm) : IRMListeners(nirm){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using IRMListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 

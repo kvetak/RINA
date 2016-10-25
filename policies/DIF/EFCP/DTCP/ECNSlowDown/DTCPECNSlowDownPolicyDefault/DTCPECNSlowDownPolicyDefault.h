@@ -26,6 +26,7 @@ public:
     virtual bool run(DTPState* dtpState, DTCPState* dtcpState);
 
 protected:
+    using ECNSlowDownPolicyBase::initialize;
     virtual void initialize(int step);
 };
 

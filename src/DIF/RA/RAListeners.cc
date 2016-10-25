@@ -32,7 +32,7 @@ RAListeners::~RAListeners()
     ra = nullptr;
 }
 
-void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow)
@@ -41,7 +41,7 @@ void LisRACreFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     }
 }
 
-void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow && !flow->isDdtFlag())
@@ -50,7 +50,7 @@ void LisRAAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* o
     }
 }
 
-void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow && !flow->isDdtFlag())
@@ -59,7 +59,7 @@ void LisRACreAllocResPos::receiveSignal(cComponent* src, simsignal_t id, cObject
     }
 }
 
-void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
@@ -72,7 +72,7 @@ void LisRACreResPosi::receiveSignal(cComponent* src, simsignal_t id, cObject* ob
     }
 }
 
-void LisRADelFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRADelFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     const APN& dstApn = flow->getDstApni().getApn();
@@ -85,7 +85,7 @@ void LisRADelFlow::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
     }
 }
 
-void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     auto item = ra->getFlowTable()->lookup(flow);
@@ -96,7 +96,7 @@ void LisEFCPStopSending::receiveSignal(cComponent* src, simsignal_t id, cObject*
     }
 }
 
-void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     Flow* flow = dynamic_cast<Flow*>(obj);
     auto item = ra->getFlowTable()->lookup(flow);
@@ -107,7 +107,7 @@ void LisEFCPStartSending::receiveSignal(cComponent* src, simsignal_t id, cObject
     }
 }
 
-void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     cPacket* pdu = dynamic_cast<cPacket*>(obj);
     if (pdu)
@@ -116,7 +116,7 @@ void LisRMTSlowdownRequest::receiveSignal(cComponent* src, simsignal_t id, cObje
     }
 }
 
-void LisRIBCongNotif::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisRIBCongNotif::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
     ra->signalizeSlowdownRequestToEFCP(obj);
 }

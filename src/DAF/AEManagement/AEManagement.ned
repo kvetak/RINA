@@ -22,15 +22,15 @@ module AEManagement
     parameters:
         @display("bgb=400,350;i=block/cogwheel,#888A85,50");
     gates:
-        inout southIo;
+        inout southIo[];
     submodules:
         //aemanagement: AEmanagementModule {
         //    parameters:
         //        @display("p=100,150");
         //}
-        enrollment: DAFEnrollmentModule {
-            parameters:
-                @display("p=100,50");
-        }
+        //enrollment: DAFEnrollmentModule {
+        //    parameters:
+        //        @display("p=100,50");
+        //}
     connections allowunconnected:
 }

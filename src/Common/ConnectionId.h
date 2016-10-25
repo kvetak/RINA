@@ -24,7 +24,7 @@
 #define CONNECTIONID_H_
 
 //Standard libraries
-#include <cobject.h>
+#include <omnetpp.h>
 #include <string>
 
 //RINASim libraries

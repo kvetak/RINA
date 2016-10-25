@@ -63,20 +63,21 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
 
     if( state != STATE_STARTING_SLOW_START ) {
         if( ackPolicy->numOfAcked > ackRcvd ) {
-            uint32 n = 0;
+            uint32_t n = 0;
             n = ackPolicy->numOfAcked - ackRcvd;
             flightSize -= n;
             ackRcvd = ackPolicy->numOfAcked;
 
             if(state == STATE_SLOW_START && n > 10)
-                n = n ; //5;
+            //FIXME: Vesely -> Marek: Resolve!
+                n = 5 ; //5 instead of n = n;
 
             if(snd_cwnd >= ssthresh)
                 state = STATE_CNG_AVOID;
 
 //            int old_cwnd = snd_cwnd;
 
-            for (uint32 i = 0; i < n; i++) {       // Appropriate Byte Counting
+            for (uint32_t i = 0; i < n; i++) {       // Appropriate Byte Counting
                 if(state == STATE_SLOW_START)
                     snd_cwnd += 1;
                 if(state == STATE_CNG_AVOID)

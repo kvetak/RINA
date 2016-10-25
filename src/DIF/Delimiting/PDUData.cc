@@ -65,22 +65,22 @@ void PDUData::encapsulate(Data* data)
   switch(data->getDataType()){
     case DATA_SDU_COMPLETE:
     {
-      completeSDU_var = true;
+      completeSDU = true;
       break;
     }
     case DATA_FIRST_FRAG:
     {
-      firstFragment_var = true;
+      firstFragment = true;
       break;
     }
     case DATA_MIDDLE_FRAG:
     {
-      midFragment_var = true;
+      midFragment = true;
       break;
     }
     case DATA_LAST_FRAG:
     {
-      lastFragment_var = true;
+      lastFragment = true;
       break;
     }
   }

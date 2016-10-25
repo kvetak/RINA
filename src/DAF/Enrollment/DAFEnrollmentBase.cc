@@ -24,11 +24,8 @@
 #include <DAFEnrollmentBase.h>
 
 DAFEnrollmentBase::DAFEnrollmentBase() {
-    // TODO Auto-generated constructor stub
-
 }
 
 DAFEnrollmentBase::~DAFEnrollmentBase() {
-    // TODO Auto-generated destructor stub
 }
 

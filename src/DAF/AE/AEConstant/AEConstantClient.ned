@@ -29,10 +29,6 @@ simple AEConstantClient extends AE like IAE
 {
     parameters:
         @class(AEConstantClient);
-        string dstApName = default("AppErr");
-        string dstApInstance = default("0");
-        string dstAeName = default("AeErr");
-        string dstAeInstance = default("0");
         
         int startAt  = default(0);
         

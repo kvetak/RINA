@@ -24,11 +24,14 @@
  * RINASignals.h
  *
  *  Created on: 21. 7. 2014
- *      Author: Mordeth
+ *      Author: Vladimir Vesely, Marcel Marek, Tomas Hykel, Kamil Jerabek
  */
 
 #ifndef RINASIGNALS_H_
 #define RINASIGNALS_H_
+
+//AP
+extern const char* SIG_AP_AE_API;
 
 //AE
 extern const char* SIG_AE_AllocateRequest;
@@ -37,6 +40,11 @@ extern const char* SIG_AE_DataSend;
 extern const char* SIG_AE_ConnectionRequest;
 extern const char* SIG_AE_ReleaseRequest;
 extern const char* SIG_AE_Enrolled;
+
+extern const char* SIG_AE_AP_API;
+
+//Socket
+extern const char* SIG_Socket_QueueInfo;
 
 //RIBd
 extern const char* SIG_RIBD_DataSend;
@@ -140,6 +148,7 @@ extern const char* SIG_RMT_PortPDURcvd;
 extern const char* SIG_RMT_PortPDUSent;
 extern const char* SIG_RMT_PortReadyToServe;
 extern const char* SIG_RMT_PortReadyForRead;
+extern const char* SIG_RMT_QueueInfo;
 
 // PDUFTG
 extern const char* SIG_PDUFTG_FwdInfoUpdate;

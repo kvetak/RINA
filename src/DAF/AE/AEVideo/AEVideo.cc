@@ -26,7 +26,7 @@ Stream::Stream(){
     wt = 0.03;
     brt = 8.0;
     varFrameS = 0.0;
-    rng = &uniform;
+    //rng = &uniform;
 }
 
 void Stream::setFps(double val) {
@@ -115,7 +115,7 @@ void AEVideo::doIni() {
             } else if ( !strcmp(n->getTagName(), "rng") ) {
                 string nodeVal = n->getNodeValue();
                 if(nodeVal == "uniform"){
-                    st.setRNG(&uniform);
+                    //st.setRNG(&uniform);
                 } else if(nodeVal == "normal"){
                     st.setRNG(&minMaxNormal);
                 }

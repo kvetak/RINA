@@ -110,8 +110,8 @@ CDAPConnectionState AEBase::getConStatus(){
 
 void AEBase::initNamingInfo() {
     //Source info
-    srcApName = this->getModuleByPath("^.^")->par(PAR_APNAME).stdstringValue();
-    srcApInstance = this->getModuleByPath("^.^")->par(PAR_APINSTANCE).stdstringValue();
+    srcApName = this->getModuleByPath("^.^.^")->par(PAR_APNAME).stdstringValue();
+    srcApInstance = this->getModuleByPath("^.^.^")->par(PAR_APINSTANCE).stdstringValue();
     srcAeName = this->par(PAR_AENAME).stdstringValue();
     srcAeInstance = this->par(PAR_AEINSTANCE).stdstringValue();
 
@@ -190,3 +190,19 @@ bool AEBase::hasFlow(const Flow* flow) {
     return FlowObject ? *FlowObject == *flow : false;
 }
 
+
+const unsigned long AEBase::getCdapConId() {
+    return this->cdapConId;
+}
+void AEBase::setCdapConId(unsigned long cdapConId) {
+    this->cdapConId = cdapConId;
+}
+
+
+const int AEBase::getStartInvokeId() {
+    return this->startInvokeId;
+}
+
+void AEBase::setStartInvokeId(int invokeId) {
+    this->startInvokeId = invokeId;
+}

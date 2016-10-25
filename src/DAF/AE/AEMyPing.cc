@@ -66,7 +66,7 @@ void AEMyPing::onPing() {
     obj.objectClass = "timestamps_t";
     obj.objectInstance = -1;
     obj.objectVal = (cObject*)(ts);
-    ping->setObject(obj);
+    ping->setObjectItem(obj);
     ping->setByteLength(size);
 
     //Send message
@@ -80,7 +80,7 @@ void AEMyPing::onStop() {
 
 void AEMyPing::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
 
     //Produce message to the console
     EV << "Received M_Read with object '" << object.objectName
@@ -106,7 +106,7 @@ void AEMyPing::processMRead(CDAPMessage* msg) {
         obj.objectClass = "timestamps_t";
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)(ts);
-        pong->setObject(obj);
+        pong->setObjectItem(obj);
         pong->setByteLength(msg1->getByteLength());
 
         //Send message
@@ -117,7 +117,7 @@ void AEMyPing::processMRead(CDAPMessage* msg) {
 
 void AEMyPing::processMReadR(CDAPMessage* msg) {
     CDAP_M_Read_R* msg1 = check_and_cast<CDAP_M_Read_R*>(msg);
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
 
     EV << "Received M_Read with object '" << object.objectName
             << "' of class '" << object.objectClass << "'" << endl;

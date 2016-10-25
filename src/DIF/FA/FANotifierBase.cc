@@ -34,10 +34,10 @@ void FANotifierBase::initMyAddress() {
 bool FANotifierBase::isMessageProcessable(CDAPMessage* msg) {
     Enter_Method_Silent();
     bool status =   (
-            ( dynamic_cast<CDAP_M_Create*>(msg)   && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Create*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Create_R*>(msg) && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Create_R*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Delete*>(msg)   && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Delete*>(msg)->getObject().objectVal) ) ||
-            ( dynamic_cast<CDAP_M_Delete_R*>(msg) && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Delete_R*>(msg)->getObject().objectVal) )
+            ( dynamic_cast<CDAP_M_Create*>(msg)   && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Create*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Create_R*>(msg) && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Create_R*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Delete*>(msg)   && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Delete*>(msg)->getObjectItem().objectVal) ) ||
+            ( dynamic_cast<CDAP_M_Delete_R*>(msg) && dynamic_cast<Flow*>(dynamic_cast<CDAP_M_Delete_R*>(msg)->getObjectItem().objectVal) )
                     )
                     ? true : false;
     return status;

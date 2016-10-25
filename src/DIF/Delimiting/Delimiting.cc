@@ -115,7 +115,7 @@ void Delimiting::processMsgFromFAI(SDUData* sduData)
   if(sduData->getByteLength() > maxFlowPDUSize)
   {
     /* We need to fragment */
-    int64 length = sduData->getByteLength();
+    int64_t length = sduData->getByteLength();
     Data* data = new Data;
     data->setDataType(DATA_FIRST_FRAG);
     data->encapsulate(sduData);
@@ -192,13 +192,13 @@ void Delimiting::processMsgFromFAI(SDUData* sduData)
     }else{
 
       PDUData* pduData = pduDataQOut.back();
-      int64 pduDatalength = pduData->getByteLength();
-      int64 restLength = maxFlowPDUSize - pduDatalength;
+      int64_t pduDatalength = pduData->getByteLength();
+      int64_t restLength = maxFlowPDUSize - pduDatalength;
 
       if(restLength < sduData->getByteLength())
       {
         //We need to fragment
-        int64 length = sduData->getByteLength();
+        int64_t length = sduData->getByteLength();
         Data* data = new Data();
         data->setDataType(DATA_FIRST_FRAG);
         data->encapsulate(sduData);

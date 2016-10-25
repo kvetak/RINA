@@ -24,11 +24,11 @@
 #define SDU_H_
 
 #include <omnetpp.h>
-#include <cobject.h>
 #include <vector>
 #include "EFCP_defs.h"
 #include "CDAPMessage_m.h"
 #include "SDU_m.h"
+
 
 
 #define SDU_SEQ_NUM_PRESENT 0x08

@@ -114,7 +114,7 @@ void RIBd::sendCreateRequestFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Append src/dst address for RMT "routing"
     mcref->setSrcAddr(flow->getSrcNeighbor());
@@ -144,7 +144,7 @@ void RIBd::sendDeleteRequestFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mdereqf->setObject(flowobj);
+    mdereqf->setObjectItem(flowobj);
 
     //Append src/dst address for RMT "routing"
     mdereqf->setSrcAddr(flow->getSrcNeighbor());
@@ -174,7 +174,7 @@ void RIBd::sendCreateResponseNegative(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -207,7 +207,7 @@ void RIBd::sendCreateResponsePostive(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mcref->setObject(flowobj);
+    mcref->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -240,7 +240,7 @@ void RIBd::sendDeleteResponseFlow(Flow* flow) {
     flowobj.objectVal = flow;
     //TODO: Vesely - Assign appropriate values
     flowobj.objectInstance = VAL_DEFINSTANCE;
-    mderesf->setObject(flowobj);
+    mderesf->setObjectItem(flowobj);
 
     //Prepare result object
     result_t resultobj;
@@ -471,7 +471,7 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
     condesobj.objectVal = conDesc;
     //TODO: Vesely - Assign appropriate values
     condesobj.objectInstance = VAL_DEFINSTANCE;
-    mstarcon->setObject(condesobj);
+    mstarcon->setObjectItem(condesobj);
 
     //Generate InvokeId
     mstarcon->setInvokeID(DONTCARE_INVOKEID);
@@ -504,7 +504,7 @@ void RIBd::sendCongestionNotification(PDU* pdu) {
 //    //TODO: Vesely - Assign appropriate values
 //    flowobj.objectInstance = VAL_DEFINSTANCE;
 //
-//    cdapm->setObject(flowobj);
+//    cdapm->setObjectItem(flowobj);
 //
 //    //TODO: Vesely - Work more on InvokeId
 //
@@ -584,7 +584,7 @@ void RIBd::sendStartEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -609,7 +609,7 @@ void RIBd::sendStartEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -635,7 +635,7 @@ void RIBd::sendStopEnrollmentRequest(EnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -660,7 +660,7 @@ void RIBd::sendStopEnrollmentResponse(EnrollmentObj* obj) {
     enrollobj.objectName = os.str();
     enrollobj.objectVal = obj;
     enrollobj.objectInstance = VAL_DEFINSTANCE;
-    msg->setObject(enrollobj);
+    msg->setObjectItem(enrollobj);
 
     //TODO: check and rework generate invoke id
     //msg->setInvokeID(getNewInvokeId());
@@ -707,7 +707,7 @@ void RIBd::processMCreate(CDAPMessage* msg) {
     CDAP_M_Create* msg1 = check_and_cast<CDAP_M_Create*>(msg);
 
     EV << "Received M_Create";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
 //    //CreateRequest Flow
@@ -724,7 +724,7 @@ void RIBd::processMCreateR(CDAPMessage* msg) {
     CDAP_M_Create_R* msg1 = check_and_cast<CDAP_M_Create_R*>(msg);
 
     EV << "Received M_Create_R";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
 //    //CreateResponseFlow
@@ -759,7 +759,7 @@ void RIBd::processMDeleteR(CDAPMessage* msg) {
     CDAP_M_Delete_R* msg1 = check_and_cast<CDAP_M_Delete_R*>(msg);
 
     EV << "Received M_Delete_R";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
 //    //DeleteResponseFlow
@@ -802,7 +802,7 @@ void RIBd::processMStart(CDAPMessage* msg) {
     CDAP_M_Start* msg1 = check_and_cast<CDAP_M_Start*>(msg);
 
     EV << "Received M_Start";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //CongestionNotification CongestDescr
@@ -824,7 +824,7 @@ void RIBd::processMStartR(CDAPMessage* msg) {
     CDAP_M_Start_R* msg1 = check_and_cast<CDAP_M_Start_R*>(msg);
 
     EV << "Received M_Start_R";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
@@ -837,7 +837,7 @@ void RIBd::processMStop(CDAPMessage* msg) {
     CDAP_M_Stop* msg1 = check_and_cast<CDAP_M_Stop*>(msg);
 
     EV << "Received M_Stop";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
@@ -850,7 +850,7 @@ void RIBd::processMStopR(CDAPMessage* msg) {
     CDAP_M_Stop_R* msg1 = check_and_cast<CDAP_M_Stop_R*>(msg);
 
     EV << "Received M_Stop_R";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "'" << endl;
 
     //Enrollment
@@ -864,7 +864,7 @@ void RIBd::processMStopR(CDAPMessage* msg) {
 //    CDAP_M_Write * msg1 = check_and_cast<CDAP_M_Write *>(msg);
 //
 //    EV << "Received M_Write";
-//    object_t object = msg1->getObject();
+//    object_t object = msg1->getObjectItem();
 //    EV << " with object '" << object.objectClass << "'" << endl;
 //
 //    if (dynamic_cast<IntRoutingUpdate *>(object.objectVal))

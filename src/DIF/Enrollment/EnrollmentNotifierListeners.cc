@@ -24,7 +24,7 @@ EnrollmentNotifierListeners::~EnrollmentNotifierListeners() {
 }
 
 void LisRIBDRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "ReceiveCACEData initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
@@ -36,7 +36,7 @@ void LisRIBDRcvCACE::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDRcvEnrollCACE::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "Send CACE from Enrollment" << endl;
     CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
     if (cimsg) {
@@ -47,7 +47,7 @@ void LisRIBDRcvEnrollCACE::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStaEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StartEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
@@ -59,7 +59,7 @@ void LisRIBDStaEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStaEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StartEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
@@ -71,7 +71,7 @@ void LisRIBDStaEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStoEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StopEnrollmentRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
@@ -83,7 +83,7 @@ void LisRIBDStoEnrolReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStoEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StopEnrollmentResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     EnrollmentObj* enroll = dynamic_cast<EnrollmentObj*>(obj);
@@ -95,7 +95,7 @@ void LisRIBDStoEnrolRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStaOperReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StartOperationRequest initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     OperationObj* oper = dynamic_cast<OperationObj*>(obj);
@@ -107,7 +107,7 @@ void LisRIBDStaOperReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDStaOperRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "StartOperationResponse initiated by " << src->getFullPath()
        << " and processed by " << enb->getFullPath() << endl;
     OperationObj* oper = dynamic_cast<OperationObj*>(obj);

@@ -233,7 +233,7 @@ packet CDAP_M_Create extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;	
@@ -247,7 +247,7 @@ packet CDAP_M_Create_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;	
 		
-	object_t object;	
+	object_t objectItem;	
 	
 	string filter;
 	
@@ -266,7 +266,7 @@ packet CDAP_M_Delete extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;		
@@ -280,7 +280,7 @@ packet CDAP_M_Delete_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 			
-	object_t object;
+	object_t objectItem;
 	
 	string filter;
 	
@@ -299,7 +299,7 @@ packet CDAP_M_Read extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;			
@@ -313,7 +313,7 @@ packet CDAP_M_Read_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 			
-	object_t object;
+	object_t objectItem;
 	
 	string filter;
 	
@@ -358,7 +358,7 @@ packet CDAP_M_Write extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;			
@@ -372,7 +372,7 @@ packet CDAP_M_Write_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 			
-	object_t object;
+	object_t objectItem;
 	
 	string filter;
 	
@@ -391,7 +391,7 @@ packet CDAP_M_Start extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;			
@@ -405,7 +405,7 @@ packet CDAP_M_Start_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 			
-	object_t object;
+	object_t objectItem;
 	
 	string filter;
 	
@@ -424,7 +424,7 @@ packet CDAP_M_Stop extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 		
-	object_t object;
+	object_t objectItem;
 	
 	int32 scope;
 	string filter;		
@@ -438,7 +438,7 @@ packet CDAP_M_Stop_R extends CDAPMessage {
 	int32 flags enum(flagValues_t);
 	int32 version;
 			
-	object_t object;
+	object_t objectItem;
 	
 	string filter;
 	

@@ -30,7 +30,6 @@
 #define DTCP_H_
 
 #include <omnetpp.h>
-#include <csimplemodule.h>
 
 //#include "RXControl.h"
 #include "DTCPState.h"
@@ -105,8 +104,9 @@ class DTCP: public cSimpleModule {
     void startReliableCPDUTimer();
     void stopReliableCPDUTimer();
 
-public:
 
+public:
+    void deleteRxTimer(unsigned int seqNum);
     DTCP();
     virtual ~DTCP();
 

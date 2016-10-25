@@ -32,6 +32,7 @@
 #define __RINA_DAFENROLLMENTSTATETABLE_H_
 
 #include <omnetpp.h>
+#include <string>
 #include "Flow.h"
 #include "DAFEnrollmentStateTableEntry.h"
 
@@ -44,6 +45,7 @@ class DAFEnrollmentStateTable : public cSimpleModule
   public:
     void insert(DAFEnrollmentStateTableEntry entry);
     DAFEnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
+    DAFEnrollmentStateTableEntry* findEntryByDstAPNI(const APNamingInfo& apni);
     bool isEnrolled(const APN& myApn);
     bool isEmpty();
 

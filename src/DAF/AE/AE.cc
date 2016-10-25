@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include "AE.h"
-
+#include "Socket.h"
 Define_Module(AE);
 
 AE::AE() :
@@ -29,6 +29,8 @@ AE::AE() :
 {
     FlowObject = NULL;
     connectionState = NIL;
+    maxConRetries = 3;
+    authType = AUTH_NONE;
 }
 
 AE::~AE() {
@@ -36,48 +38,6 @@ AE::~AE() {
     FlowObject = NULL;
     Irm = NULL;
     Cdap = NULL;
-}
-
-void AE::initSignalsAndListeners() {
-    cModule* catcher1 = this->getParentModule();
-    cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^");//->getSubmodule("managementApplicationEntity")->getSubmodule("enrollment");
-
-
-    //Signals that this module is emitting
-    sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
-    sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
-    sigAESendData      = registerSignal(SIG_AE_DataSend);
-    sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
-    sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
-    sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
-    sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
-    sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
-
-
-    //Signals that this module is processing
-    lisAERcvData = new LisAEReceiveData(this);
-    catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
-
-    //  AllocationRequest from FAI
-    lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
-    catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
-
-    //  Enrollment
-    lisAEEnrolled = new LisAEEnrolled(this);
-    catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
-
-    //  DeallocationRequest from FAI
-    lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
-    catcher2->subscribe(SIG_FAI_DeallocateRequest, lisAEDeallReqFromFai);
-    lisAEDeallResFromFai = new LisAEDeallReqFromFai(this);
-    catcher2->subscribe(SIG_FAI_DeallocateResponse, lisAEDeallResFromFai);
-
-    lisAEAllResPosi = new LisAEAllResPosi(this);
-    catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
-
-    lisAEAllResNega = new LisAEAllResNega(this);
-    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
 }
 
 void AE::initialize() {
@@ -92,6 +52,66 @@ void AE::initialize() {
     WATCH(FlowObject);
     WATCH(connectionState);
 }
+
+void AE::initPointers() {
+    Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
+    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
+    Cace = new CACEGeneric(this);
+
+    if (!Cdap)
+        error("Pointers to Cdap !");
+    if (!Irm || !Cdap)
+        error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
+}
+
+void AE::initSignalsAndListeners() {
+    cModule* catcher1 = this->getParentModule();
+    cModule* catcher2 = this->getModuleByPath("^.^.^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
+
+
+    //Signals that this module is emitting
+    sigAEAllocReq      = registerSignal(SIG_AE_AllocateRequest);
+    sigAEDeallocReq    = registerSignal(SIG_AE_DeallocateRequest);
+    sigAESendData      = registerSignal(SIG_AE_DataSend);
+    sigAEAllocResPosi  = registerSignal(SIG_AERIBD_AllocateResponsePositive);
+    sigAEAllocResNega  = registerSignal(SIG_AERIBD_AllocateResponseNegative);
+    sigAEConReq        = registerSignal(SIG_AE_ConnectionRequest);
+    sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
+    sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
+    sigAEAPAPI         = registerSignal(SIG_AE_AP_API);
+
+
+    //Signals that this module is processing
+    lisAERcvData = new LisAEReceiveData(this);
+    catcher1->subscribe(SIG_CDAP_DateReceive, lisAERcvData);
+
+    //TODO: solve problem with dynamic creation when listener is called (can not subscribe to the same signal)
+    //  AllocationRequest from FAI
+    //lisAEAllReqFromFai = new LisAEAllReqFromFai(this);
+    //catcher2->subscribe(SIG_FAI_AllocateRequest, lisAEAllReqFromFai);
+
+    //  Enrollment
+    lisAEEnrolled = new LisAEEnrolled(this);
+    //catcher3->subscribe(SIG_AEMGMT_ConnectionResponsePositive, lisAEEnrolled);
+
+    // AP-AE API
+    lisAPAEAPI = new LisAPAEAPI(this);
+    catcher3->subscribe(SIG_AP_AE_API, lisAPAEAPI);
+
+    //  DeallocationRequest from FAI
+    lisAEDeallReqFromFai = new LisAEDeallReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_DeallocateRequest, lisAEDeallReqFromFai);
+    lisAEDeallResFromFai = new LisAEDeallReqFromFai(this);
+    catcher2->subscribe(SIG_FAI_DeallocateResponse, lisAEDeallResFromFai);
+
+    lisAEAllResPosi = new LisAEAllResPosi(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponsePositive, lisAEAllResPosi);
+
+    lisAEAllResNega = new LisAEAllResNega(this);
+    catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
+}
+
 
 void AE::handleMessage(cMessage* msg) {
 }
@@ -108,26 +128,57 @@ bool AE::createBindings(Flow& flow) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
+    cModule* ApMon = this->getModuleByPath("^.^.^");
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
 
     //Get AE gates
-    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
+    cModule* AeMod = this->getModuleByPath("^.^");
+    cGate* gAeIn;
+    cGate* gAeOut;
+    AeMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gAeIn, *&gAeOut);
+
+    //Get AE instance gates
+    cModule* AeInstanceMod = this->getModuleByPath("^");
+    cGate* gAeInstIn;
+    cGate* gAeInstOut;
+    AeInstanceMod->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&gAeInstIn, *&gAeInstOut);
+
+    //Get Socket South Gates
+    cModule* SocketMod = this->getModuleByPath("^.socket");
+    cGate* gSocketIn;
+    cGate* gSocketOut;
+    SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
+
+    //Get Socket CDAP Gates
+    cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
+
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
+    //Dirty hack
+    Socket* socket = dynamic_cast<Socket*>(SocketMod);
+    socket->setFlow(&flow);
+
 
     //CDAPParent Module gates
-    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
 
     //Connect gates together
     gIrmOut->connectTo(gIrmModOut);
     gIrmModOut->connectTo(gApIn);
     gApIn->connectTo(gAeIn);
-    gAeIn->connectTo(gCdapParentIn);
+    gAeIn->connectTo(gAeInstIn);
+    gAeInstIn->connectTo(gSocketIn);
+    //gSocketCdapIn->connectTo(gCdapParentIn);
 
-    gCdapParentOut->connectTo(gAeOut);
+    //gCdapParentOut->connectTo(gSocketCdapOut);
+    gSocketOut->connectTo(gAeInstOut);
+    gAeInstOut->connectTo(gAeOut);
     gAeOut->connectTo(gApOut);
     gApOut->connectTo(gIrmModIn);
     gIrmModIn->connectTo(gIrmIn);
@@ -140,18 +191,11 @@ bool AE::createBindings(Flow& flow) {
     return gIrmIn->isConnected()
            && gAeIn->isConnected()
            && gIrmModIn->isConnected()
-           && gApIn->isConnected();
+           && gApIn->isConnected()
+           && gAeInstIn->isConnected()
+           && gSocketCdapIn->isConnected();
 }
 
-void AE::initPointers() {
-    Irm = getRINAModule<IRM*>(this, 3, {MOD_IPCRESMANAGER, MOD_IRM});
-    Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
-
-    if (!Cdap)
-        error("Pointers to Cdap !");
-    if (!Irm || !Cdap)
-        error("Pointers to Irm or ConnectionTable or Cdap are not initialized!");
-}
 
 void AE::insertFlow() {
     //Add a new flow to
@@ -160,29 +204,115 @@ void AE::insertFlow() {
     Irm->newFlow(FlowObject);
 
     //Interconnect IRM and AE
+
     bool status = createBindings(*FlowObject);
     if (!status) {
-        error("Gate inconsistency during creation of a new flow!");
+        EV << "Gate inconsistency during creation of a new flow!" << endl;
     }
 }
 
-void AE::signalizeAllocateRequest(Flow* flow) {
-    emit(sigAEAllocReq, flow);
+void AE::CACEFinished() {
+    changeConStatus(ESTABLISHED);
+
+    //send response to AP Instance
+    APIResult *obj = new APIResult();
+    obj->setInvokeId(startInvokeId);
+    obj->setCDAPConId(cdapConId);
+    obj->setAPIResType(APIResult::A_GET_OPEN);
+    signalizeAEAPAPI(obj);
+
 }
 
-void AE::signalizeDeallocateRequest(Flow* flow) {
-    emit(sigAEDeallocReq, flow);
+void AE::start(Flow* flow) {
+    if (flow) {
+        signalizeAllocateResponsePositive(flow);
+        FlowObject = flow;
+        insertFlow();
+
+        //Interconnect IRM and IPC
+        bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
+
+        //Change connection status
+        if (status) {
+            changeConStatus(CONNECTION_PENDING);
+            this->signalizeAllocateResponsePositive(FlowObject);
+        }
+        else {
+            EV << "IRM was unable to create bindings!" << endl;
+        }
+    }
+    else {
+        APNamingInfo src = this->getApni();
+
+        std::string dstApName     = this->par("dstApName").stringValue();
+        std::string dstApInstance = this->par("dstApInstance").stringValue();
+        std::string dstAeName     = this->par("dstAeName").stringValue();
+        std::string dstAeInstance = this->par("dstAeInstance").stringValue();
+
+        APNamingInfo dst = APNamingInfo( APN(dstApName), dstApInstance,
+                                         dstAeName, dstAeInstance);
+
+        //Create a flow
+        FlowObject = new Flow(src, dst);
+        //TODO: change configuration of qos
+        FlowObject->setQosRequirements(this->getQoSRequirements());
+
+        //Notify IRM about a new flow
+        insertFlow();
+
+        //Call flow allocation request
+        sendAllocationRequest(FlowObject);
+    }
+}
+
+
+void AE::apiSwitcher(APIReqObj *obj) {
+    if (obj->getAPIReqType() == APIReqObj::A_READ) {
+        Enter_Method("onA_read()");
+        onA_read(obj);
+    }
+    else if (obj->getAPIReqType() == APIReqObj::A_WRITE) {
+        Enter_Method("onA_write()");
+        onA_write(obj);
+    }
+    if (obj->getAPIReqType() == APIReqObj::A_CLOSE) {
+        Enter_Method("onA_close()");
+        sendDeallocationRequest(FlowObject);
+    }
 }
 
 void AE::receiveData(CDAPMessage* msg) {
     Enter_Method("receiveData()");
     //M_READ_Request
     if (dynamic_cast<CDAP_M_Read*>(msg)) {
+        Enter_Method("processMRead()");
         processMRead(msg);
     }
     //M_READ_Response
     else if (dynamic_cast<CDAP_M_Read_R*>(msg)) {
+        Enter_Method("processMReadR()");
         processMReadR(msg);
+    }
+    else if (dynamic_cast<CDAP_M_Connect_R*>(msg)) {
+        Enter_Method("processMConnectR()");
+        CDAP_M_Connect_R* cmsg = dynamic_cast<CDAP_M_Connect_R*>(msg);
+        if (!cmsg->getResult().resultValue) {
+           Cace->receivePositiveConnectResponse(msg);
+        }
+        else {
+           Cace->receiveNegativeConnectResponse(msg);
+        }
+    }
+    else if (dynamic_cast<CDAP_M_Connect*>(msg)) {
+        Cace->receiveConnectRequest(msg);
+    }
+    //M_WRITE_Request
+    else if (dynamic_cast<CDAP_M_Write*>(msg)) {
+        processMWrite(msg);
+    }
+    //M_WRITE_Response
+    else if (dynamic_cast<CDAP_M_Write_R*>(msg)) {
+        processMWriteR(msg);
     }
 
     delete msg;
@@ -190,15 +320,14 @@ void AE::receiveData(CDAPMessage* msg) {
 
 void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     Enter_Method("receiveAllocationRequestFromFai()");
-    //EV << this->getFullPath() << " received AllocationRequest from FAI" << endl;
 
     if ( QoSRequirements.compare(flow->getQosRequirements()) ) {
+
         //Initialize flow within AE
         FlowObject = flow;
         insertFlow();
-        //EV << "======================" << endl << flow->info() << endl;
-        //Interconnect IRM and IPC
 
+        //Interconnect IRM and IPC
         bool status = Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
         //Change connection status
@@ -216,14 +345,6 @@ void AE::receiveAllocationRequestFromFAI(Flow* flow) {
     }
 }
 
-void AE::signalizeSendData(cMessage* msg) {
-    EV << "Emits SendData signal for message " << msg->getName() << endl;
-    emit(sigAESendData, msg);
-}
-
-void AE::signalizeAllocateResponsePositive(Flow* flow) {
-    emit(sigAEAllocResPosi, flow);
-}
 
 void AE::receiveAllocationResponseNegative(Flow* flow) {
     Enter_Method("receiveAllocationResponseNegative()");
@@ -241,8 +362,8 @@ void AE::receiveAllocationResponsePositive(Flow* flow) {
     //Interconnect IRM and IPC
     Irm->receiveAllocationResponsePositiveFromIpc(flow);
 
-    //Change connection status
-    changeConStatus(CONNECTION_PENDING);
+    //CACE starts here!
+    this->Cace->startCACE(flow);
 }
 
 void AE::sendAllocationRequest(Flow* flow) {
@@ -258,9 +379,6 @@ void AE::sendDeallocationRequest(Flow* flow) {
     Irm->receiveDeallocationRequestFromAe(flow);
 }
 
-void AE::signalizeAllocateResponseNegative(Flow* flow) {
-    emit(sigAEAllocResNega, flow);
-}
 
 void AE::sendData(Flow* flow, CDAPMessage* msg) {
     //Retrieve handle from ConTab record
@@ -316,7 +434,8 @@ bool AE::deleteBindings(Flow& flow) {
     EV << this->getFullPath() << " deleted bindings" << endl;
 
     int handle1 = Irm->getIrmGateHandle(&flow);
-    int handle2 = Irm->getApGateHandle(&flow);
+    //TODO: Vesely -> Jerabek: Unused variable!
+    //int handle2 = Irm->getApGateHandle(&flow);
     if (handle1 == VAL_UNDEF_HANDLE)
         error("Delete gates before flow allocation is impossible!");
 
@@ -328,39 +447,105 @@ bool AE::deleteBindings(Flow& flow) {
     cGate* gIrmModIn = IrmMod->gateHalf(GATE_NORTHIO,cGate::INPUT, handle1);
     cGate* gIrmModOut = IrmMod->gateHalf(GATE_NORTHIO,cGate::OUTPUT, handle1);
 
-    cModule* ApMon = this->getModuleByPath("^.^");
-    cGate* gApIn = ApMon->gateHalf(GATE_SOUTHIO,cGate::INPUT, handle2);
-    cGate* gApOut = ApMon->gateHalf(GATE_SOUTHIO,cGate::OUTPUT, handle2);
+    //Get Socket South Gates
+    //TODO: when more connections, change index system
+    cModule* SocketMod = this->getModuleByPath("^.socket");
+    cGate* gSocketIn = SocketMod->gateHalf(GATE_SOUTHIO, cGate::INPUT, 0);
+    cGate* gSocketOut = SocketMod->gateHalf(GATE_SOUTHIO, cGate::OUTPUT, 0);
 
-    //Get AE gates
-    cGate* gAeIn = this->getParentModule()->gateHalf(GATE_AEIO, cGate::INPUT);
-    cGate* gAeOut = this->getParentModule()->gateHalf(GATE_AEIO, cGate::OUTPUT);
+    cGate* gAeInstIn = gSocketIn->getPreviousGate();
+    cGate* gAeInstOut = gSocketOut->getNextGate();
 
-    //CDAPParent Module gates
-    cGate* gCdapParentIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapParentOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    cGate* gAeIn = gAeInstIn->getPreviousGate();
+    cGate* gAeOut = gAeInstOut->getNextGate();
+
+    cGate* gApIn = gAeIn->getPreviousGate();
+
+
+    cModule* CdapMod = this->getModuleByPath("^.commonDistributedApplicationProtocol");
+    cGate* gCdapIn = CdapMod->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    cGate* gCdapOut = CdapMod->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+
+    cGate* gCdapSocketOut = gCdapIn->getPreviousGate();
 
     //Disconnect gates
+    gCdapSocketOut->disconnect();
+    gCdapOut->disconnect();
+
+    gSocketOut->disconnect();
+    gAeInstIn->disconnect();
+
+    gAeInstOut->disconnect();
+
+    gAeIn->disconnect();
+    gAeOut->disconnect();
+    gApIn->disconnect();
+
+
     gIrmOut->disconnect();
     gIrmModOut->disconnect();
-    gApIn->disconnect();
-    gAeIn->disconnect();
-    gCdapParentIn->disconnect();
-
-    gCdapParentOut->disconnect();
-    gAeOut->disconnect();
-    gApOut->disconnect();
     gIrmModIn->disconnect();
     gIrmIn->disconnect();
 
+
+    APIResult *del = new APIResult();
+    del->setAPIResType(APIResult::D_DELETE);
+    del->setObjName(this->getModuleByPath("^")->getFullName());
+    signalizeAEAPAPI(del);
+
+
     //Return true if all dynamically created gates are disconnected
-    return !gIrmIn->isConnected() && !gIrmOut->isConnected()
-            && !gAeIn->isConnected() && !gAeOut->isConnected()
-            && !gCdapParentIn->isConnected() && !gCdapParentOut->isConnected();
+    return !gIrmIn->isConnected()
+            && !gIrmOut->isConnected()
+            && !gIrmModIn->isConnected()
+            && !gIrmModOut->isConnected()
+            && !gApIn->isConnected()
+            && !gAeOut->isConnected()
+            && !gAeIn->isConnected()
+            && !gAeInstOut->isConnected()
+            && !gSocketOut->isConnected()
+            && !gCdapOut->isConnected()
+            && !gCdapSocketOut->isConnected();
 }
 
 void AE::processMReadR(CDAPMessage* msg) {
+}
 
+void AE::processMWrite(CDAPMessage* msg) {
+}
+
+void AE::processMWriteR(CDAPMessage* msg) {
+}
+
+
+void AE::connect(){
+    APNIPair* apnip = new APNIPair(
+        APNamingInfo(),
+        APNamingInfo());
+    emit(sigAEEnrolled, apnip);
+}
+
+void AE::afterOnStart() {
+}
+
+
+bool AE::onA_read(APIReqObj* obj) {
+    //TODO: Vesely -> Jerabek: RESOLVE!
+    return false;
+}
+
+bool AE::onA_write(APIReqObj* obj) {
+    //TODO: Vesely -> Jerabek: RESOLVE!
+    return false;
+}
+
+
+void AE::signalizeAllocateRequest(Flow* flow) {
+    emit(sigAEAllocReq, flow);
+}
+
+void AE::signalizeDeallocateRequest(Flow* flow) {
+    emit(sigAEDeallocReq, flow);
 }
 
 void AE::signalizeConnectionRequest(CDAPMessage* msg){
@@ -371,12 +556,19 @@ void AE::signalizeReleaseRequest(CDAPMessage* msg){
     emit(sigAERelReq, msg);
 }
 
-void AE::connect(){
-    APNIPair* apnip = new APNIPair(
-        APNamingInfo(),
-        APNamingInfo());
-    emit(sigAEEnrolled, apnip);
+void AE::signalizeAllocateResponseNegative(Flow* flow) {
+    emit(sigAEAllocResNega, flow);
 }
 
-void AE::afterOnStart() {
+void AE::signalizeSendData(cMessage* msg) {
+    EV << "Emits SendData signal for message " << msg->getName() << endl;
+    emit(sigAESendData, msg);
+}
+
+void AE::signalizeAllocateResponsePositive(Flow* flow) {
+    emit(sigAEAllocResPosi, flow);
+}
+
+void AE::signalizeAEAPAPI(APIResult* obj) {
+    emit(sigAEAPAPI, obj);
 }

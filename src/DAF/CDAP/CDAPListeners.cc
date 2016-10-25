@@ -32,7 +32,7 @@ CDAPListeners::~CDAPListeners() {
 }
 
 void LisCDAPSendData::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "SendData initiated by " << src->getFullPath() << " and processed by " << cdap->getFullPath() << endl;
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
     if (msg)

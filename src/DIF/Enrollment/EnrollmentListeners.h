@@ -37,83 +37,94 @@
 
 class Enrollment;
 class EnrollmentListeners : public cListener {
-public:
+  public:
     EnrollmentListeners(Enrollment* nenrollment);
     virtual ~EnrollmentListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject *detail) {
                EV << "Signal to Enrollment initiated by " << src->getFullPath() << endl;
         }
-protected:
+  protected:
     Enrollment* enrollment;
 };
 
 
 class LisEnrollmentAllResPosi : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentAllResPosi(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 
 class LisEnrollmentGetFlowFromFaiCreResPosi : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentGetFlowFromFaiCreResPosi(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 
 class LisEnrollmentStartEnrollReq : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStartEnrollReq(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentStartEnrollRes : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStartEnrollRes(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentStopEnrollReq : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStopEnrollReq(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentStopEnrollRes : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStopEnrollRes(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentStopOperationReq : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStopOperationReq(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentStartOperationRes : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentStartOperationRes(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentConResPosi : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentConResPosi(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentConResNega : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentConResNega(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 class LisEnrollmentConReq : public EnrollmentListeners {
-public:
+  public:
     LisEnrollmentConReq(Enrollment* nenrollment): EnrollmentListeners(nenrollment){};
-    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj);
+    using EnrollmentListeners::receiveSignal;
+    virtual void receiveSignal(cComponent *src, simsignal_t id,  cObject *obj, cObject* detail);
 };
 
 

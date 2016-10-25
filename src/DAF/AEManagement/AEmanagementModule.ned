@@ -25,14 +25,15 @@ package rina.src.DAF.AEManagement;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.Enrollment.DAFEnrollmentNotifier;
 import rina.src.DIF.FA.FANotifier;
+import rina.src.Common.Socket;
 
 module AEmanagementModule
 {
     parameters:
-        @display("i=block/control;bgb=271,300");
+        @display("i=block/control;bgb=271,380");
 
     gates:
-        inout aeIo;
+        inout aeIo[];
 
     submodules:
         commonDistributedApplicationProtocol: CommonDistributedApplicationProtocol {
@@ -44,11 +45,12 @@ module AEmanagementModule
                 @display("p=135,118");
         }
 
-        //faNotifier: FANotifier {
-        //    @display("p=73,50");
-        //}
+        socket: Socket {
+            @display("p=135,300");
+        }
         enrollmentNotifier: DAFEnrollmentNotifier {
             @display("p=203,50");
         }
     connections allowunconnected:
+        socket.cdapIo <--> commonDistributedApplicationProtocol.southIo;
 }

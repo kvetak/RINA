@@ -40,10 +40,6 @@ const char* DAF_PAR_AUTH_PASS       = "authPassword";
 const char* DAF_PAR_CON_RETRIES     = "maxConRetries";
 const char* DAF_PAR_ISSELFENROL     = "isSelfEnrolled";
 
-const char* DAF_MSG_CONREQ                = "Connect/Auth";
-const char* DAF_MSG_CONREQRETRY           = "ConnectRetry/Auth";
-const char* DAF_MSG_CONRESPOS             = "Connect+/Auth";
-const char* DAF_MSG_CONRESNEG             = "Connect-/Auth";
 const char* DAF_MSG_ENRLCON               = "Enrol-Connect";
 const char* DAF_MSG_ENRLREL               = "Enrol-Release";
 
@@ -53,13 +49,13 @@ const char* DAF_ELEM_CONNECT      = "Connect";
 const char* DAF_ELEM_RELEASE      = "Release";
 const char* DAF_ATTR_TIME         = "t";
 
-DAFEnrollment::DAFEnrollment() :
-        StateTable(NULL)//, aemgmt(NULL)
+DAFEnrollment::DAFEnrollment() : cace(NULL), StateTable(NULL)//, aemgmt(NULL)
 {
 }
 
 DAFEnrollment::~DAFEnrollment(){
     StateTable = NULL;
+    cace = NULL;
     //aemgmt = NULL;
 }
 
@@ -90,8 +86,10 @@ void DAFEnrollment::initialize()
         else
             { updateEnrollmentDisplay(ENICON_NOTENROLLED); }
     }
-    apName = this->getModuleByPath("^.^.^")->par("apName").stringValue();
-    apInstance = this->getModuleByPath("^.^.^")->par("apInstance").stringValue();
+
+
+    apName = this->getModuleByPath("^.^")->par("apName").stringValue();
+    apInstance = this->getModuleByPath("^.^")->par("apInstance").stringValue();
     authType = par(DAF_PAR_AUTH_TYPE);
     authName = this->par(DAF_PAR_AUTH_NAME).stringValue();
     authPassword = this->par(DAF_PAR_AUTH_PASS).stringValue();
@@ -99,22 +97,43 @@ void DAFEnrollment::initialize()
 
     maxConRetries = this->par(DAF_PAR_CON_RETRIES);
 
+    cace = new CACEMgmt(this);
+
     WATCH_MAP(PreenrollConnects);
     WATCH_MAP(PreenrollReleases);
+
 }
 
 void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
-    cModule* Cdap = module->getModuleByPath("^.commonDistributedApplicationProtocol");
-    cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cModule* Cdap = module->getModuleByPath("^.commonDistributedApplicationProtocol");
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gCdapIn = Cdap->gateHalf(GATE_SOUTHIO, cGate::INPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gCdapOut = Cdap->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+
+    //Get Socket South Gates
+    cModule* SocketMod = module->getModuleByPath("^.socket");
+    cGate* gSocketIn;
+    cGate* gSocketOut;
+    SocketMod->getOrCreateFirstUnconnectedGatePair("southIo", false, true, *&gSocketIn, *&gSocketOut);
+
+    //Get Socket CDAP Gates
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gSocketCdapIn = SocketMod->gateHalf("cdapIo", cGate::INPUT);
+    //FIXME: Vesely: Unused variable commented
+    //cGate* gSocketCdapOut = SocketMod->gateHalf("cdapIo", cGate::OUTPUT);
+
 
     cModule* aeMgmt = module->getModuleByPath("^");
-    cGate* gaeMgmtIn = aeMgmt->gateHalf("aeIo", cGate::INPUT);
-    cGate* gaeMgmtOut = aeMgmt->gateHalf("aeIo", cGate::OUTPUT);
+    cGate* gaeMgmtIn;
+    cGate* gaeMgmtOut;
+    aeMgmt->getOrCreateFirstUnconnectedGatePair("aeIo", false, true, *&gaeMgmtIn, *&gaeMgmtOut);
 
-    cModule* aeMgmtParent = this->getModuleByPath("^.^");
-    cGate* gaeMgmtParentIn = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::INPUT);
-    cGate* gaeMgmtParentOut = aeMgmtParent->gateHalf(GATE_SOUTHIO, cGate::OUTPUT);
+    cModule* aeMgmtParent = module->getModuleByPath("^.^");
+    cGate* gaeMgmtParentIn;
+    cGate* gaeMgmtParentOut;
+    aeMgmtParent->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gaeMgmtParentIn, *&gaeMgmtParentOut);
 
     //Create new gates
     cGate* gIrmIn;
@@ -126,7 +145,7 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     cGate* gIrmModOut;
     IrmMod->getOrCreateFirstUnconnectedGatePair(GATE_NORTHIO, false, true, *&gIrmModIn, *&gIrmModOut);
 
-    cModule* ApMon = this->getModuleByPath("^.^.^");
+    cModule* ApMon = module->getModuleByPath("^.^.^");
     cGate* gApIn;
     cGate* gApOut;
     ApMon->getOrCreateFirstUnconnectedGatePair(GATE_SOUTHIO, false, true, *&gApIn, *&gApOut);
@@ -136,9 +155,11 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
     gIrmModOut->connectTo(gApIn);
     gApIn->connectTo(gaeMgmtParentIn);
     gaeMgmtParentIn->connectTo(gaeMgmtIn);
-    gaeMgmtIn->connectTo(gCdapIn);
+    gaeMgmtIn->connectTo(gSocketIn);
+    //gSocketCdapIn->connectTo(gCdapIn);
 
-    gCdapOut->connectTo(gaeMgmtOut);
+    //gCdapOut->connectTo(gSocketCdapOut);
+    gSocketOut->connectTo(gaeMgmtOut);
     gaeMgmtOut->connectTo(gaeMgmtParentOut);
     gaeMgmtParentOut->connectTo(gApOut);
     gApOut->connectTo(gIrmModIn);
@@ -151,14 +172,14 @@ void DAFEnrollment::createBindings(Flow* flow, DAFEnrollmentNotifier* module) {
 void DAFEnrollment::initPointers(){
     StateTable = check_and_cast<DAFEnrollmentStateTable*>(getModuleByPath("^.enrollmentStateTable"));
     //aemgmt = check_and_cast<AEMgmt*>( getModuleByPath("^.^.aemanagement.aemgmt") );
-    Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
+    Irm = check_and_cast<IRM*>( getModuleByPath("^.^.^")->getSubmodule(MOD_IPCRESMANAGER)->getSubmodule(MOD_IRM) );
     //FlowAlloc = check_and_cast<FABase*>( getModuleByPath("^.^.flowAllocator.fa") );
 }
 
 void DAFEnrollment::initSignalsAndListeners() {
     cModule* catcher1 = this->getModuleByPath("^.^");
-    cModule* catcher2 = this->getModuleByPath("^.^.^");
-    cModule* catcher3 = this->getModuleByPath("^.^.^.^");
+    cModule* catcher2 = this->getModuleByPath("^.^");
+    cModule* catcher3 = this->getModuleByPath("^.^.^");
 
     sigDAFEnrollmentCACESendData   = registerSignal(SIG_ENROLLMENT_CACEDataSend);
     sigDAFEnrollmentSendData       = registerSignal(SIG_ENROLLMENT_DataSend);
@@ -216,7 +237,7 @@ void DAFEnrollment::initSignalsAndListeners() {
     lisDAFEnrollmentConReq = new LisDAFEnrollmentConReq(this);
     catcher1->subscribe(SIG_RIBD_ConnectionRequest, lisDAFEnrollmentConReq);
 }
-
+/*
 void DAFEnrollment::startCACE(Flow* flow) {
     Enter_Method("startCACE()");
 
@@ -248,9 +269,8 @@ void DAFEnrollment::startCACE(Flow* flow) {
             entry->getRemote().getApinstance(),
             entry->getRemote().getAename(),
             entry->getRemote().getAeinstance());
-    /*
-     * XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
-     *                      exactly the same ADT in RINASim source codes.
+    //XXX: Vesely@Jerabek> Removing unnecessary *.msg ADT when there exists
+    //                      exactly the same ADT in RINASim source codes.
     naming_t dst;
     dst.AEInst = entry.getRemote().getAeinstance();
     dst.AEName = entry.getRemote().getAename();
@@ -262,7 +282,7 @@ void DAFEnrollment::startCACE(Flow* flow) {
     src.AEName = entry.getLocal().getAename();
     src.ApInst = entry.getLocal().getApinstance();
     src.ApName = entry.getLocal().getApn().getName();
-    */
+
 
     msg->setSrc(src);
     msg->setDst(dst);
@@ -288,8 +308,8 @@ void DAFEnrollment::receivePositiveConnectResponse(CDAPMessage* msg) {
 
     //signalizeEnrolled();
 
-    /* this is commented only for testing ---> refactoring of adress is need to be done*/
-    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
+    // this is commented only for testing ---> refactoring of adress is need to be done
+    //    CDAP_M_Connect_R* cmsg = check_and_cast<CDAP_M_Connect_R*>(msg);
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(cmsg->getSrc().getApn());
 
     //check appropriate state
@@ -362,7 +382,7 @@ void DAFEnrollment::receiveConnectRequest(CDAPMessage* msg) {
 
     authenticate(entry, cmsg);
 }
-
+*/
 /*   enrollment initiator */
 
 void DAFEnrollment::startEnrollment(DAFEnrollmentStateTableEntry* entry) {
@@ -393,7 +413,7 @@ void DAFEnrollment::receiveStartEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -427,7 +447,7 @@ void DAFEnrollment::receiveStopEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -484,7 +504,7 @@ void DAFEnrollment::receiveStartEnrollmentRequest(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -520,7 +540,7 @@ void DAFEnrollment::receiveStopEnrollmentResponse(CDAPMessage* msg) {
         return;
     }
 
-    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObject().objectVal))->dup();
+    DAFEnrollmentObj* enrollRec = (check_and_cast<DAFEnrollmentObj*>(smsg->getObjectItem().objectVal))->dup();
     DAFEnrollmentStateTableEntry* entry = StateTable->findEntryByDstAPN(APN(enrollRec->getSrcAddress().getApn().getName().c_str()));
 
     //check for appropriate state
@@ -557,7 +577,7 @@ void DAFEnrollment::processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry*
     entry->setDAFEnrollmentStatus(DAFEnrollmentStateTableEntry::ENROLL_WAIT_STOP_RESPONSE_ENROLLMENT);
 }
 
-void DAFEnrollment::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
+/*void DAFEnrollment::authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) {
     Enter_Method("authenticate()");
 
     //check and validate expected auth type
@@ -702,7 +722,7 @@ void DAFEnrollment::processConResNega(DAFEnrollmentStateTableEntry* entry, CDAPM
     //increase number of connects
     entry->increaseCurrentConnectRetries();
 }
-
+*/
 void DAFEnrollment::signalizeCACESendData(CDAPMessage* cmsg) {
     emit(sigDAFEnrollmentCACESendData, cmsg);
 }
@@ -716,6 +736,8 @@ void DAFEnrollment::signalizeStartEnrollmentResponse(DAFEnrollmentObj* obj) {
 }
 
 void DAFEnrollment::signalizeStopEnrollmentRequest(DAFEnrollmentObj* obj) {
+    //TODO: move following line somewhere else
+    updateEnrollmentDisplay(ENICON_ENROLLED);
     emit(sigDAFEnrollmentStopEnrollReq, obj);
 }
 
@@ -886,7 +908,7 @@ void DAFEnrollment::receiveAllocationResponsePositive(Flow* flow) {
     DAFEnrollmentStateTableEntry entry = DAFEnrollmentStateTableEntry(flow->getSrcApni(),flow->getDstApni(), DAFEnrollmentStateTableEntry::CON_AUTHENTICATING);
     StateTable->insert(entry);
 
-    startCACE(flow);
+    cace->startCACE(flow);
 
 }
 
@@ -898,7 +920,7 @@ DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
     ostr << "mgmtae_" << currentMgmtAEInstanceId;
 
     //Instantiate module
-    cModule *module = moduleType->create(ostr.str().c_str(), this->getParentModule()->getParentModule());
+    cModule *module = moduleType->create(ostr.str().c_str(), this->getModuleByPath("^.^.aeManagement"));
 
     module->finalizeParameters();
     module->buildInside();

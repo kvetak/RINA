@@ -15,7 +15,7 @@
 
 package rina.src.DAF;
 
-import rina.src.DAF.AE.ApplicationEntity;
+//import rina.src.DAF.AE.ApplicationEntity;
 
 module ApplicationProcessNAE
 {
@@ -30,9 +30,9 @@ module ApplicationProcessNAE
         
     submodules:
 
-        applicationEntity[numOfAE]: ApplicationEntity {
-            @display("p=112,81,r,150");
-        }
+        //applicationEntity[numOfAE]: ApplicationEntity {
+        //    @display("p=112,81,r,150");
+        //}
     
     connections allowunconnected:
 }

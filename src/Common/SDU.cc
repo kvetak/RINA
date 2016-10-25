@@ -30,7 +30,7 @@
 
 SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
 {
-   fSeqNum_var = seqNum_var = fOffset_var = fSize_var = this->offset_var = this->size_var = 0;
+   fSeqNum = seqNum = fOffset = fSize = offset = size = 0;
 
 }
 
@@ -56,11 +56,11 @@ unsigned int SDU::getSize() const
 {
 //  if (dataType_var == SDU_COMPLETE_TYPE)
   {
-    return size_var;
+    return size;
   }
 //  else if (dataType_var == SDU_FRAGMENT_TYPE)
   {
-    return fSize_var;
+    return fSize;
 //  }else{
     return 0; //PANIC!
   }
@@ -70,13 +70,13 @@ unsigned int SDU::getSize() const
  */
 unsigned int SDU::getAbsoluteSize() const
 {
-  return size_var;
+  return size;
 
 }
 
 unsigned int SDU::getRestSize()const
 {
-  return size_var - offset_var;
+  return size - offset;
 }
 
 //void SDU::setSize(unsigned int size)
@@ -126,7 +126,7 @@ bool SDU::addUserData(cPacket* msg){
     //TODO A1 check current SDU size
   take(msg);
   this->mUserData_var.push_back(msg);
-  size_var += msg->getByteLength();
+  this->size += msg->getByteLength();
 
   return true;
 }
@@ -155,7 +155,7 @@ std::vector<SDU*> SDU::fragment(unsigned int size){
 
   std::vector<SDU*> frags;
   SDU* tmp;
-  for(unsigned int i = 0; i* size < this->size_var; i++){
+  for(unsigned int i = 0; i* size < this->size; i++){
     tmp = this->genFragment(size, i, i*size);
     frags.push_back(tmp);
   }
@@ -172,16 +172,16 @@ SDU* SDU::genFragment(unsigned int size, unsigned int fSeqNum, unsigned int fOff
 }
 
 void SDU::setFragment(unsigned int fSize, unsigned int fSeqNum, unsigned int fOffset){
-  fSize_var = fSize;
-  fSeqNum_var = fSeqNum;
-  fOffset_var = fOffset;
+  this->fSize = fSize;
+  this->fSeqNum = fSeqNum;
+  this->fOffset = fOffset;
 //  dataType_var = SDU_FRAGMENT_TYPE;
   if(fSeqNum == 0){
-    fragType_var = SDU_FRAG_FIRST;
-  }else if(fSize + fOffset == this->size_var){
-    fragType_var = SDU_FRAG_LAST;
+    this->fragType = SDU_FRAG_FIRST;
+  }else if(fSize + fOffset == this->size){
+    this->fragType = SDU_FRAG_LAST;
   }else{
-    fragType_var = SDU_FRAG_MIDDLE;
+    this->fragType = SDU_FRAG_MIDDLE;
   }
 }
 

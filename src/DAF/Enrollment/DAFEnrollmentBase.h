@@ -37,10 +37,10 @@ public:
     virtual ~DAFEnrollmentBase();
     //virtual void startCACE(APNIPair* apnip) = 0;
     virtual void startEnrollment(DAFEnrollmentStateTableEntry* entry) = 0;
-    virtual void insertStateTableEntry(Flow* flow) = 0;
-    virtual void receivePositiveConnectResponse(CDAPMessage* msg) = 0;
-    virtual void receiveNegativeConnectResponse(CDAPMessage* msg) = 0;
-    virtual void receiveConnectRequest(CDAPMessage* msg) = 0;
+    //virtual void insertStateTableEntry(Flow* flow) = 0;
+    //virtual void receivePositiveConnectResponse(CDAPMessage* msg) = 0;
+    //virtual void receiveNegativeConnectResponse(CDAPMessage* msg) = 0;
+    //virtual void receiveConnectRequest(CDAPMessage* msg) = 0;
 
     virtual void receiveStartEnrollmentRequest(CDAPMessage* msg) = 0;
     virtual void receiveStartEnrollmentResponse(CDAPMessage* msg) = 0;
@@ -54,7 +54,7 @@ protected:
 
     virtual void parseConfig(cXMLElement* config) = 0;
 
-    virtual void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) = 0;
+    //virtual void authenticate(DAFEnrollmentStateTableEntry* entry, CDAP_M_Connect* msg) = 0;
 };
 
 #endif /* DAFENROLLMENTBASE_H_ */

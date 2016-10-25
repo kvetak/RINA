@@ -321,6 +321,22 @@ void DTCP::nackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
   }
 }
 
+void DTCP::deleteRxTimer(unsigned int seqNum) {
+    std::vector<DTCPRxExpiryTimer*>* rxQ = dtcpState->getRxQ();
+    std::vector<DTCPRxExpiryTimer*>::iterator it;
+    for (it = rxQ->begin(); it != rxQ->end();) {
+        if (seqNum == (*it)->getPdu()->getSeqNum()) {
+            delete (*it)->getPdu();
+            //      take((*it));
+            cancelEvent((*it));
+            delete (*it);
+            rxQ->erase(it);
+            return;
+        }
+        ++it;
+    }
+    return;
+}
 
 void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 {
@@ -342,8 +358,7 @@ void DTCP::ackPDU(unsigned int startSeqNum, unsigned int endSeqNum)
 
     if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum)
     {
-      dtcpState->deleteRxTimer(seqNum);
-
+      deleteRxTimer(seqNum);
       continue;
     }
     index++;
@@ -378,8 +393,9 @@ void DTCP::pushBackToRxQ(DataTransferPDU* pdu)
   DTCPRxExpiryTimer* rxExpTimer = new DTCPRxExpiryTimer("DTCPRxExpiryTimer");
   take(pdu);
   rxExpTimer->setPdu(pdu);
-  dtcpState->pushBackToRxQ(rxExpTimer);
   schedule(rxExpTimer);
+  dtcpState->pushBackToRxQ(rxExpTimer);
+
 }
 
 void DTCP::clearRxQ(){
@@ -603,7 +619,7 @@ void DTCP::redrawGUI()
 {
 //    return;
   Enter_Method_Silent();
-  if (!ev.isGUI())
+  if (!getEnvir()->isGUI())
   {
       return;
   }

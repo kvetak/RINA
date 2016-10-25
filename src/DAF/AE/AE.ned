@@ -27,11 +27,18 @@ simple AE like IAE
     parameters:
         @display("i=block/socket");        
         @class(AE);
+        string dstApName = default("AppErr");
+        string dstApInstance = default("0");
+        string dstAeName = default("AeErr");
+        string dstAeInstance = default("0");
+        bool initiator = default(true);
         
         @signal[AEorRIBd-AllocateResponsePositive];
         @signal[AEorRIBd-AllocateResponseNegative];
         @signal[AE-DataSend];
         @signal[AE-Enrolled];
+        @signal[AE-AP-API];
+        @signal[AP-AE-API];
         
         string aeName = default("AeErr");
         string aeInstance = default("0");

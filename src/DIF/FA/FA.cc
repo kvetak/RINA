@@ -462,8 +462,8 @@ FAI* FA::createFAI(Flow* flow) {
     cModuleType *moduleType = cModuleType::get("rina.src.DIF.FA.FAI");
 
     //Prepare parameters
-    int portId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
-    int cepId = ev.getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
+    int portId = getEnvir()->getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_PORTID);
+    int cepId = getEnvir()->getRNG(RANDOM_NUMBER_GENERATOR)->intRand(MAX_CEPID);
 
     //Create a name
     std::ostringstream ostr;

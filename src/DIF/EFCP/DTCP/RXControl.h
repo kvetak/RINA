@@ -31,7 +31,7 @@
 #ifndef RXCONTROL_H_
 #define RXCONTROL_H_
 
-#include <csimplemodule.h>
+#include <omnetpp.h>
 
 /*
  *

@@ -25,7 +25,7 @@ class EnrollmentNotifierListeners : public cListener {
   public:
     EnrollmentNotifierListeners(EnrollmentNotifierBase* nenb);
     virtual ~EnrollmentNotifierListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail) {
                EV << "Signal to EnrollmentNotifierBase initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -35,49 +35,49 @@ class EnrollmentNotifierListeners : public cListener {
 class LisRIBDRcvCACE: public EnrollmentNotifierListeners {
   public:
     LisRIBDRcvCACE(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDRcvEnrollCACE: public EnrollmentNotifierListeners {
   public:
     LisRIBDRcvEnrollCACE(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStaEnrolReq: public EnrollmentNotifierListeners {
   public:
     LisRIBDStaEnrolReq(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStaEnrolRes: public EnrollmentNotifierListeners {
   public:
     LisRIBDStaEnrolRes(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStoEnrolReq: public EnrollmentNotifierListeners {
   public:
     LisRIBDStoEnrolReq(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStoEnrolRes: public EnrollmentNotifierListeners {
   public:
     LisRIBDStoEnrolRes(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStaOperReq: public EnrollmentNotifierListeners {
   public:
     LisRIBDStaOperReq(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisRIBDStaOperRes: public EnrollmentNotifierListeners {
   public:
     LisRIBDStaOperRes(EnrollmentNotifierBase* nenb) : EnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 

@@ -44,7 +44,7 @@ EFCPListeners::~EFCPListeners()
 
 }
 
-void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
+void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
 {
 
   CongestionDescriptor* cd = (CongestionDescriptor*) obj;
@@ -55,8 +55,40 @@ void LisEFCPCongestFromRA::receiveSignal(cComponent* src, simsignal_t id, cObjec
   }else{
     //Error
   }
+}
 
 
+void LisEFCPQueueInfoFromRMT::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
+{
+
+  QueueInfo* qi = (QueueInfo*) obj;
+  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
+  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
+
+  if(dtp != NULL){
+    dtp->handleQueueInfoFromRMT(qi);
+  }else{
+    //Error
+  }
+}
 
 
+void LisEFCPQueueInfoFromAE::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail)
+{
+
+  //TODO
+  return;
+  QueueInfo* qi = (QueueInfo*) obj;
+  EFCPTableEntry* entry = efcpTable->getEntryByFlow(qi->getFlow());
+
+  if(entry == nullptr){
+    return;
+  }
+  DTP* dtp = (*(entry->getEfcpiTab()->begin()))->getDtp();
+
+  if(dtp != NULL){
+    dtp->handleQueueInfoFromSocket(qi);
+  }else{
+    //Error
+  }
 }

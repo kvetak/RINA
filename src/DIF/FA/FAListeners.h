@@ -35,7 +35,7 @@ class FAListeners : public cListener {
     };
     virtual ~FAListeners(){};
 
-    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, bool b, cObject *detail) {
         EV << "Signal to FA initiated by " << src->getFullPath() << endl;
     }
 
@@ -45,14 +45,16 @@ class LisFAAllocReq : public FAListeners
 {
   public:
     LisFAAllocReq(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using FAListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisFAAllocFinMgmt : public FAListeners
 {
   public:
     LisFAAllocFinMgmt(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using FAListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 
@@ -60,21 +62,24 @@ class LisFACreFloPosi : public FAListeners
 {
   public:
     LisFACreFloPosi(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using FAListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisFADeallocReq : public FAListeners
 {
   public:
     LisFADeallocReq(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using FAListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
 class LisFACreReq : public FAListeners
 {
   public:
     LisFACreReq(FABase* sfa) : FAListeners(sfa){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    using FAListeners::receiveSignal;
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 /*
 class LisFACreRes : public FAListeners

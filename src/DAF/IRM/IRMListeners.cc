@@ -31,7 +31,7 @@ IRMListeners::~IRMListeners() {
     irm = NULL;
 }
 
-void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "AllocationRequest initiated by " << src->getFullPath()
        << " and processed by " << irm->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -44,7 +44,7 @@ void LisIRMAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj
        EV << "IRMListener received unknown object!" << endl;
 }
 
-void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+void LisIRMDeallocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "DeallocationRequest initiated by " << src->getFullPath()
        << " and processed by " << irm->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);

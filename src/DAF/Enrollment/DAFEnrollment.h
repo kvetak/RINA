@@ -47,11 +47,8 @@
 #include "FABase.h"
 #include "IRM.h"
 #include "DAFEnrollmentBase.h"
+#include "CACEMgmt.h"
 
-extern const char* DAF_MSG_CONREQ;
-extern const char* DAF_MSG_CONREQRETRY;
-extern const char* DAF_MSG_CONRESPOS;
-extern const char* DAF_MSG_CONRESNEG;
 extern const char* DAF_MSG_ENRLCON;
 extern const char* DAF_MSG_ENRLREL;
 
@@ -69,11 +66,13 @@ class LisDAFEnrollmentConReq;
 class LisDAFEnrollmentRequest;
 class LisDAFEnrollmentAllReqFromFai;
 
+class CACEMgmt;
 typedef std::list<APNIPair> APNIPairs;
 typedef std::map<simtime_t, APNIPairs*> DAFEnrollCommands;
 
 class DAFEnrollment : public DAFEnrollmentBase
 {
+  friend class CACEMgmt;
   public:
     enum IconEnrolStatus {ENICON_ENROLLED, ENICON_FLOWMIS, ENICON_NOTENROLLED};
 
@@ -101,8 +100,8 @@ class DAFEnrollment : public DAFEnrollmentBase
     void checkEnrolled(APNIPair* apnip);
 
 
-
     IRM* Irm;
+    CACEMgmt* cace;
   protected:
     void initPointers();
     void initSignalsAndListeners();

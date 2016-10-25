@@ -21,6 +21,7 @@ class FlowContainer : public cMessage {
 
 class FlowListener : public cSimpleModule, cListener {
     public:
+        using cListener::receiveSignal;
         void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
     protected:
         void initialize();

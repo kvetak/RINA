@@ -135,7 +135,7 @@ void AEStream::handleSelfMessage(cMessage* msg) {
         obj.objectClass = "string";
         obj.objectInstance = -1;
         obj.objectVal = (cObject*)("0123456789abcdef");
-        data->setObject(obj);
+        data->setObjectItem(obj);
         data->setByteLength(size);
 
         //Send message
@@ -173,7 +173,7 @@ void AEStream::processMRead(CDAPMessage* msg) {
     CDAP_M_Read* msg1 = check_and_cast<CDAP_M_Read*>(msg);
 
     EV << "Received data M_DATA";
-    object_t object = msg1->getObject();
+    object_t object = msg1->getObjectItem();
     EV << " with object '" << object.objectClass << "' and value '" << object.objectVal << "'" << endl;
 
 }

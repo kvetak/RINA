@@ -29,6 +29,12 @@ moduleinterface IAE
         @class(AE);
         string aeName;
         string aeInstance;
+        string dstApName;
+        string dstApInstance;
+        string dstAeName;
+        string dstAeInstance;
+        
+        bool initiator;
         
         //QoS -> Default DoNotCare value -1
         int averageBandwidth @unit(bps); //bits/s

@@ -44,11 +44,11 @@ public:
     float snd_cwnd;            ///< congestion window
     float ssthresh;            ///< slow start threshold
 
-    uint32 state;
-    uint32 rxSent;
-    uint32 ackRcvd;
-    uint32 packetSize;
-    uint32 flightSize;
+    uint32_t state;
+    uint32_t rxSent;
+    uint32_t ackRcvd;
+    uint32_t packetSize;
+    uint32_t flightSize;
 
     bool slowedDown;
 
@@ -63,6 +63,7 @@ protected:
 
     //Statistic signals
     simsignal_t sigStatTCPTahoeCWND;
+    using TxControlPolicyBase::initialize;
     virtual void initialize(int step);
 };
 

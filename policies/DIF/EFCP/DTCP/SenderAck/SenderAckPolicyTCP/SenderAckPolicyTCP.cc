@@ -14,6 +14,7 @@
 // 
 
 #include <SenderAckPolicyTCP.h>
+#include <DTCP.h>
 Register_Class(SenderAckPolicyTCP);
 
 SenderAckPolicyTCP::SenderAckPolicyTCP() {
@@ -40,6 +41,7 @@ void SenderAckPolicyTCP::ackPDU(DTPState* dtpState, DTCPState* dtcpState, unsign
 {
     bool startTrue = false;
     bool notFound = true;
+    DTCP* dtcp = getRINAModule<DTCP*>(this, 1, {MOD_DTCP});
     if(!endSeqNum){
         startTrue = true;
         endSeqNum = startSeqNum;
@@ -56,7 +58,7 @@ void SenderAckPolicyTCP::ackPDU(DTPState* dtpState, DTCPState* dtcpState, unsign
         //TODO A2 This is weird. Why value from MAX(Ack/Nack, NextAck -1) What does NextAck-1 got to do with it?
         if ((seqNum >= startSeqNum || startTrue) && seqNum <= endSeqNum + gap)
         {
-            dtcpState->deleteRxTimer(seqNum);
+            dtcp->deleteRxTimer(seqNum);
             numOfAcked++;
             notFound = false;
             continue;

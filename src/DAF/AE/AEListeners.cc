@@ -32,7 +32,7 @@ AEListeners::~AEListeners() {
 }
 
 void LisAEReceiveData::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "ReceiveData initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     CDAPMessage* msg = dynamic_cast<CDAPMessage*>(obj);
@@ -44,7 +44,7 @@ void LisAEReceiveData::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -61,7 +61,7 @@ void LisAEAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocateResponsePositive initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -74,7 +74,7 @@ void LisAEAllResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocateResponseNegative initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -87,7 +87,7 @@ void LisAEAllResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeallocationRequest{fromFAI} initiated by " << src->getFullPath()
        << " and processed by " << ae->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -104,14 +104,14 @@ void LisAEDeallReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAEConResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
 
     ae->changeConStatus(ESTABLISHED);
     //TODO: signalize that result is available --> api call
 }
 
 void LisAEConResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
 
     ae->changeConStatus(CONNECTION_PENDING);
     //TODO: signalize that result is available --> api call
@@ -119,15 +119,25 @@ void LisAEConResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisAERelRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
 
     ae->changeConStatus(NIL);
     //TODO: signalize that ae can close flow, result is available --> api call
 }
 
 void LisAEEnrolled::receiveSignal(cComponent* src, simsignal_t id,
-        long obj) {
+        long obj, cObject *detail) {
 
     //TODO: checks before call
-    ae->afterOnStart();
+    //ae->afterOnStart();
+}
+
+void LisAPAEAPI::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj, cObject *detail) {
+    EV << "APIRequest initiated by " << src->getFullPath()
+       << " and processed by " << ae->getFullPath() << endl;
+    APIReqObj* apiObj = dynamic_cast<APIReqObj*>(obj);
+    if (apiObj->getCDAPConId() == ae->getCdapConId()) {
+        ae->apiSwitcher(apiObj);
+    }
 }

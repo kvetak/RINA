@@ -34,7 +34,7 @@ FAIListeners::~FAIListeners() {
 }
 
 void LisFAIAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocateResponsePositive initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
     if (fai->getFlow() == fl)
@@ -42,7 +42,7 @@ void LisFAIAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAIAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocateResponseNegative initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
     //EV << "Emitted" << endl << fl->info() << endl << endl << "Recv" << fai->getFlow()->info() << endl;
@@ -51,7 +51,7 @@ void LisFAIAllocResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAIAllocReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocateRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
     if ( fai->getFlow()->compare(*fl) )
@@ -65,7 +65,7 @@ void LisFAICreReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 */
 void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateResponsePositive initiated by " << src->getFullPath()
        << " and processed by " << fai->getFullPath() << endl;
 
@@ -86,7 +86,7 @@ void LisFAICreResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateResponseNegative initiated by " << src->getFullPath()
        << " and processed by " << fai->getFullPath() << endl;
 
@@ -102,7 +102,7 @@ void LisFAICreResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeleteResponse initiated by " << src->getFullPath()
        << " and processed by " << fai->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -116,7 +116,7 @@ void LisFAIDelRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeleteRequest initiated by " << src->getFullPath() << " and processed by " << fai->getFullPath() << endl;
     Flow* fl = dynamic_cast<Flow*>(obj);
 //    EV << fl->info() << endl << "=================="<< endl << fai->getFlow()->info();
@@ -132,7 +132,7 @@ void LisFAIDelReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateResponsePositiveNminusOne initiated by " << src->getFullPath()
        << " and processed by " << fai->getFullPath() << endl;
 
@@ -153,7 +153,7 @@ void LisFAICreResPosiNminusOne::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisFAICreResNegaNminusOne::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     Flow* flow = dynamic_cast<Flow*>(obj);
     if (flow) {
         if (fai->getFa()->getMyAddress().getApn() == flow->getSrcApni().getApn() )

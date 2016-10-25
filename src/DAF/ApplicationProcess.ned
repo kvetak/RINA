@@ -25,29 +25,40 @@ package rina.src.DAF;
 import rina.src.Common.Test;
 import rina.src.DAF.AE.AEPing;
 import rina.src.DAF.AEManagement.AEManagement;
-import rina.src.DAF.AE.ApplicationEntity;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DAF.IRM.ConnectionTable;
 import rina.src.DAF.IRM.IRM;
-import rina.src.DIF.RIB.RIBDaemon;
 import rina.src.DIF.RMT.RMT;
+import rina.src.DAF.AP.APInst;
+import rina.src.DAF.RIB.DAFRIBDaemon;
+import rina.src.DAF.AE.ApplicationEntity;
+import rina.src.DAF.Enrollment.DAFEnrollmentModule;
 
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=340,180;i=misc/node,yellow,30");
+        @display("bgb=400,220;i=misc/node,yellow,30");
         string apName = default("App");
         string apInstance = default("0");
+        string apType = default("AP");
     gates:
         inout southIo[];
     submodules:
-        applicationEntity: ApplicationEntity {
-            @display("p=89,60");
+        apInst: <apType> like APInst {
+            @display("p=35,35");
         }
-        
-        apManagement: AEManagement {
-            @display("p=240,60");
+
+        ribDaemon: DAFRIBDaemon {
+            @display("p=200,60;i=block/segm");
+        }
+
+        enrollment: DAFEnrollmentModule {
+            @display("p=325,60");
+        }
+
+        aeManagement: ApplicationEntity {
+            @display("p=200,150;i=block/cogwheel");
         }
     connections allowunconnected:
 }

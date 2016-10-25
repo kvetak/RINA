@@ -25,7 +25,7 @@ class DAFEnrollmentNotifierListeners : public cListener {
   public:
     DAFEnrollmentNotifierListeners(DAFEnrollmentNotifierBase* nenb);
     virtual ~DAFEnrollmentNotifierListeners();
-    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj) {
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail) {
                EV << "Signal to DAFEnrollmentNotifierBase initiated by " << src->getFullPath() << endl;
     }
   protected:
@@ -35,49 +35,49 @@ class DAFEnrollmentNotifierListeners : public cListener {
 class LisDAFEnrollmentNotifierRcvCACE: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierRcvCACE(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierRcvEnrollCACE: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierRcvEnrollCACE(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStaEnrolReq: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStaEnrolReq(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStaEnrolRes: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStaEnrolRes(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStoEnrolReq: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStoEnrolReq(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStoEnrolRes: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStoEnrolRes(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStaOperReq: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStaOperReq(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 class LisDAFEnrollmentNotifierStaOperRes: public DAFEnrollmentNotifierListeners {
   public:
     LisDAFEnrollmentNotifierStaOperRes(DAFEnrollmentNotifierBase* nenb) : DAFEnrollmentNotifierListeners(nenb) {};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject* detail);
 };
 
 

@@ -23,7 +23,7 @@ FANotifierListeners::~FANotifierListeners() {
     fanb = NULL;
 }
 
-void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj) {
+void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "CreateRequest initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -34,7 +34,7 @@ void LisRIBDCreReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj)
 }
 
 void LisRIBDAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "AllocationRequest{fromFAI} initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -51,7 +51,7 @@ void LisRIBDAllReqFromFai::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDCreResNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateResponseFlowNegative initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -62,7 +62,7 @@ void LisRIBDCreResNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateResponseFlowPositive initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -73,7 +73,7 @@ void LisRIBDCreResPosi::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDDelReq::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeleteRequest initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -84,7 +84,7 @@ void LisRIBDDelReq::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDDelRes::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "DeleteResponse initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -95,7 +95,7 @@ void LisRIBDDelRes::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDCreFloNega::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateFlowNegative initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
@@ -107,7 +107,7 @@ void LisRIBDCreFloNega::receiveSignal(cComponent* src, simsignal_t id,
 }
 
 void LisRIBDCreFloPosi::receiveSignal(cComponent* src, simsignal_t id,
-        cObject* obj) {
+        cObject* obj, cObject *detail) {
     EV << "CreateFlowPositive initiated by " << src->getFullPath()
        << " and processed by " << fanb->getFullPath() << endl;
     Flow* flow = dynamic_cast<Flow*>(obj);
