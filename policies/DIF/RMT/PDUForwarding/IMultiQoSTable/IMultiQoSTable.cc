@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #include <IMultiQoSTable/IMultiQoSTable.h>
-#include "InfectionSignals.h"
 
 
 Register_Class(IMultiQoSTable::IMultiQoSTable);
@@ -79,11 +78,12 @@ vector<RMTPort * > IMultiQoSTable::lookup(const PDU * pdu){
     if(cd.next != nullptr) {
         ret.push_back(cd.next);
         cd.expiration = ex;
-
+/*
         if(const InfectedDataTransferPDU * cipdu = dynamic_cast<const InfectedDataTransferPDU*>(pdu)) {
             InfectedDataTransferPDU * ipdu = const_cast<InfectedDataTransferPDU *>(cipdu);
             ipdu->pathDelay += portDelay[cd.next];
         }
+        */
     } else {
         cache.erase(fId);
     }
@@ -113,7 +113,7 @@ string IMultiQoSTable::toString(){
     for(const auto &qosTable : table) {
         os << "\tQoS :" << qosTable.first << endl;
         for(const auto & entry : qosTable.second) {
-            os << "\t\tQoS :" << entry.first << "  ->  ";
+            os << "\t\tDst :" << entry.first << "  ->  ";
             for(RMTPort * p : entry.second){
                 os << p->getParentModule()->getName() << "   ";
 
@@ -135,7 +135,7 @@ RMTPort * IMultiQoSTable::search(const string & dst, const string & qos) {
         if(pS <= 0) { return nullptr; }
         if(pS == 1) { return vR.front(); }
 
-        int k = intuniform(0, pS-1);
+        int k = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, pS-1);
         return vR[k];
     } else {
         return search(dst, MA2QoS);

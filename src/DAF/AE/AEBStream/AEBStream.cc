@@ -169,7 +169,7 @@ void AEBStream::doFin(){}
 void AEBStream::iniCom(){
     for(sVecIt it = streams.begin(); it != streams.end(); it++){
         it->setState(false);
-        scheduleAt(uniform(simTime(), simTime()+startVar), new  Stream_Timer(it->getid()) );
+        scheduleAt(omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), simTime(), simTime()+startVar), new  Stream_Timer(it->getid()) );
     }
 }
 
@@ -180,7 +180,7 @@ void AEBStream::processMsg(_AESInt_self * msg){
         int data;
         if(s->getState()){
             data = s->getPDU();
-            if(uniform(0,1) < s->getBurstProb()){ s->setState(true); }
+            if(omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0,1) < s->getBurstProb()){ s->setState(true); }
         } else {
             data = s->getBurst();
             s->setState(false);

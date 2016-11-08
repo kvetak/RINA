@@ -130,12 +130,21 @@ class RMTQueue : public cSimpleModule
     void markCongestionOnLast();
 
     /**
+     * Marks the first PDU in a queue with a congestion bit.
+     */
+    void markCongestionOnFirst();
+
+    /**
      * Spews out some information about queue state.
      */
     std::string info() const;
 
     void setFlow(Flow *);
     const Flow* getFlow() const;
+
+
+    cPacket* dropLast();
+    cPacket* dropFirst();
 
   protected:
     virtual void initialize();
@@ -160,7 +169,6 @@ class RMTQueue : public cSimpleModule
     void setType(queueType type);
 
     void enqueuePDU(cPacket* pdu);
-    cPacket* dropLast();
 
     cGate* getOutputGate() const;
     cGate* getInputGate() const;

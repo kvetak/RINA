@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="10_Core" dst="0_Core" qosReq="1"/>
+    <Connection src="10_Core" dst="11_Core" qosReq="1"/>
+    <Connection src="10_Core" dst="20_Core" qosReq="1"/>
+    
+    <Connection src="20_Core" dst="0_Core" qosReq="1"/>
+    <Connection src="20_Core" dst="21_Core" qosReq="1"/>
+  </SimTime>
+  
+</ConnectionSet>

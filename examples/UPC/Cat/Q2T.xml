@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Q2T>
+  <QoS id="MGMT-QoSCube" T="1" />
+  <QoS id="MA" T="1" />
+  <QoS id="A1" T="1" />
+  <QoS id="B1" T="0" />
+  <QoS id="C1" T="0" />
+  <QoS id="A2" T="1" />
+  <QoS id="B2" T="0" />
+  <QoS id="C2" T="0" />
+  <QoS id="A3" T="1" />
+  <QoS id="B3" T="0" />
+  <QoS id="C3" T="0" />
+</Q2T>

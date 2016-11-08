@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="11_1">
+      <DIF difName="w1" ipcAddress="11" />
+    </APN>
+    <APN apn="10_1">
+      <DIF difName="w1" ipcAddress="10" />
+    </APN>
+    <APN apn="21_2">
+      <DIF difName="w2" ipcAddress="21" />
+    </APN>
+    <APN apn="20_2">
+      <DIF difName="w2" ipcAddress="20" />
+    </APN>
+  
+    <APN apn="0_Core">
+      <DIF difName="01" ipcAddress="0" />
+      <DIF difName="02" ipcAddress="0" />
+    </APN>
+    
+    <APN apn="11_Core">
+      <DIF difName="1" ipcAddress="11" />
+    </APN>
+    <APN apn="10_Core">
+      <DIF difName="01" ipcAddress="10" />
+      <DIF difName="12" ipcAddress="10" />
+      <DIF difName="1" ipcAddress="10" />
+    </APN>
+    
+    <APN apn="21_Core">
+      <DIF difName="2" ipcAddress="21" />
+    </APN>
+    <APN apn="20_Core">
+      <DIF difName="02" ipcAddress="20" />
+      <DIF difName="12" ipcAddress="20" />
+      <DIF difName="2" ipcAddress="20" />
+    </APN>
+    
+    
+    <APN apn="0_Net">
+      <DIF difName="Core" ipcAddress="0" />
+    </APN>
+    <APN apn="11_Net">
+      <DIF difName="Core" ipcAddress="11" />
+    </APN>
+    <APN apn="21_Net">
+      <DIF difName="Core" ipcAddress="21" />
+    </APN>
+  </Directory>
+</DA>

@@ -175,7 +175,7 @@ void AEData::doFin(){}
 void AEData::iniCom(){
     for(sVecIt it = streams.begin(); it != streams.end(); it++){
         it->setWaiting();
-        scheduleAt(uniform(simTime(), simTime()+startVar), new  State_Change(it->getid(), true) );
+        scheduleAt(omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), simTime(), simTime()+startVar), new  State_Change(it->getid(), true) );
     }
 }
 

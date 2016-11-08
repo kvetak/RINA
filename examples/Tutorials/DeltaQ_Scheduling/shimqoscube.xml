@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+	<QoSCubesSet>
+		<QosCube id="A">
+			<Delay>1</Delay>	
+			<PDUDroppingProbability>0.00000001</PDUDroppingProbability>			
+			<CostTime>5</CostTime>
+			<CostBits>5</CostBits>
+			
+			<AverageBandwidth>10000000000</AverageBandwidth>
+			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
+			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+			<PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+			<BurstPeriod>10000000</BurstPeriod>
+			<BurstDuration>1000000</BurstDuration>
+			<UndetectedBitError>0.01</UndetectedBitError>
+			<MaxSDUSize>5000</MaxSDUSize>
+			<PartialDelivery>0</PartialDelivery>
+			<IncompleteDelivery>0</IncompleteDelivery>
+			<ForceOrder>0</ForceOrder>
+			<MaxAllowableGap>0</MaxAllowableGap>
+			<Jitter>500000</Jitter>
+			<ATime>0</ATime>
+			<RxOn>0</RxOn>
+			<WinOn>0</WinOn>
+			<RateOn>0</RateOn>				
+		</QosCube>
+	</QoSCubesSet>

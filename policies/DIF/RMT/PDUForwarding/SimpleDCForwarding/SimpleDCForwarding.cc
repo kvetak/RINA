@@ -46,7 +46,7 @@ namespace NSPSimpleDC {
         vector<Port> possible = search(n_addr);
         vector<Port> ret;
         if(possible.size() > 0) {
-            int k = intuniform(0, possible.size()-1);
+            int k = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, possible.size()-1);
             ret.push_back(possible[k]);
         }
 
@@ -63,7 +63,7 @@ namespace NSPSimpleDC {
         vector<Port> possible = search(n_addr);
         vector<Port> ret;
         if(possible.size() > 0) {
-            int k = intuniform(0, possible.size()-1);
+            int k = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, possible.size()-1);
             ret.push_back(possible[k]);
         }
         return ret;

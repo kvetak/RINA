@@ -46,7 +46,7 @@ vector<RMTPort * > MultiMiniTable::lookup(const Address &dst, const std::string&
     FWDTableIt it = table.find(dstAddr);
 
     if(it != table.end()){
-        int i = intuniform(0, it->second.size()-1);
+        int i = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, it->second.size()-1);
         ret.push_back(it->second.at(i));
     }
   /*

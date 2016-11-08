@@ -26,4 +26,5 @@ moduleinterface IntRouting
 {
     parameters:
         @display("i=block/socket");
+        @signal[Routing-Update](type=cPacket?);
 }

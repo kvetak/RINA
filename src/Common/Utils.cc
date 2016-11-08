@@ -66,6 +66,71 @@ bool isPrefix(std::string prefix, std::string s) {
     return std::mismatch(prefix.begin(), prefix.end(), s.begin()).first == prefix.end();
 }
 
+int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst) {
+    int r = 0;
+    for(unsigned int i = 0; i< A.size(); i++) {
+        if(A[i] || B[i]) {
+            dst[i] = true;
+            r++;
+        } else {
+            dst[i] = false;
+        }
+    }
+    return r;
+}
+
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B) {
+    for(unsigned int i = 0; i< A.size(); i++) {
+        if(A[i] && !B[i]) { return false;}
+    }
+    return true;
+}
+
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & C) {
+    bool ret = true;
+    for(unsigned int i = 0; i< A.size(); i++) {
+        C[i] = A[i] && B[i];
+        ret &= B[i] || !A[i];
+    }
+    return ret;
+}
+
+
+int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst){
+    int r = 0;
+    for(unsigned int i = 0; i< A.size(); i++) {
+        if(A[i] && B[i]) {
+            dst[i] = true;
+            r++;
+        } else {
+            dst[i] = false;
+        }
+    }
+    return r;
+}
+
+
+void iterateDM(unsigned char ** DM, unsigned int l, unsigned char inf) {
+    bool changes = true;
+    while(changes) {
+        changes = false;
+        for(unsigned int i = 0; i < l; i++) {
+            for(unsigned int j = 0; j < l; j++) {
+                if(i == j) { continue; }
+                unsigned char dij = DM[i][j];
+                for(unsigned int k = 0; k< l; k++) {
+                    if(i == k || j == k) { continue; }
+                    if(DM[i][k] > dij + DM[j][k]) {
+                        DM[i][k] = dij + DM[j][k];
+                        DM[k][i] = dij + DM[j][k];
+                        changes = true;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void setPolicyDisplayString(cModule* mod, const char* str)
 {
     if (getEnvir()->isGUI())
@@ -102,4 +167,14 @@ void interconnectModules(cModule* m1, cModule* m2, std::string n1, std::string n
         m1Out->connectTo(m2In);
         m2Out->connectTo(m1In);
     }
+}
+
+int m_iuniform(int min, int max) {
+    return omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), min, max);
+}
+double m_duniform(double min, double max) {
+    return omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), min, max);
+}
+simtime_t m_tuniform(simtime_t min, simtime_t max) {
+    return omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), min, max);
 }

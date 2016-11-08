@@ -218,7 +218,7 @@ RMTQueue* eDLMonitor::getNextOutput(RMTPort* port){
         if(!it->second.empty()){
             tit = it;
             double tP = probs[it->first];
-            if(tP <= 0 || tP < uniform(0,1) ){
+            if(tP <= 0 || tP < omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0,1) ){
                 q = it->second.front();
                 it->second.pop_front();
             }
