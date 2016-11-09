@@ -31,7 +31,10 @@ vPorts GREFWD::lookup(const PDU * pdu) {
 
     PDU * pd = const_cast<PDU*>(pdu);
     auto hc = pd->getHopCount();
-    if(hc <= par("TTL").longValue()) { return ret; }
+    if(hc <= par("TTL").longValue()) {
+        cout << "Over TTL"<<endl;
+        return ret;
+    }
     pd->setHopCount(hc-1);
 
     //Patch for empty lookup bug

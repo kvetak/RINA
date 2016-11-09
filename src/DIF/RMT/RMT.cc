@@ -434,13 +434,22 @@ void RMT::relayPDUToPort(PDU* pdu)
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
 
-        std::cout << "!!! Empty PDUForwarding policy lookup result!" << endl
+        if(par("coutLookError").boolValue()) {
+        std::cout << "!!! Empty PDUForwarding policy lookup result! " << simTime() << endl
            << "At " << getParentModule()->getParentModule()->par("ipcAddress").stdstringValue() << endl
-           << "PDU dstAddr = " << pdu->getDstAddr().getApn().getName()
+           << "PDU srcAddr = " << pdu->getSrcAddr().getApn().getName()
+           << ", dstAddr = " << pdu->getDstAddr().getApn().getName()
            << ", qosId = " <<  pdu->getConnId().getQoSId() << endl
+           << "TTL = " <<  pdu->getHopCount() << endl
            << "PDUForwarding contents: " << endl << fwd->toString() << endl;
+        }
 
-        invalidPDUs.push_back(pdu);
+
+        if(par("printAtEnd").boolValue()) {
+            invalidPDUs.push_back(pdu);
+        } else {
+            recDel(pdu);
+        }
     }
 
     PDU* outPDU = nullptr;
@@ -545,7 +554,9 @@ void RMT::processMessage(cMessage* msg)
     else
     {
         EV << this->getFullPath() << " message type not supported" << endl;
-        invalidPDUs.push_back(msg);
+        if(par("deleteIfNotValid").boolValue()) {
+            invalidPDUs.push_back(msg);
+        }
     }
 }
 
@@ -554,7 +565,9 @@ void RMT::handleMessage(cMessage *msg)
     if (msg->isSelfMessage())
     {
         // ?
-        invalidPDUs.push_back(msg);
+        if(par("deleteIfNotValid").boolValue()) {
+            invalidPDUs.push_back(msg);
+        }
     }
     else
     {

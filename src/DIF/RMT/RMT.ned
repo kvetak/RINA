@@ -31,6 +31,8 @@ simple RMT
 		@signal[RMT-ErrornousPacket](type=cObject?);
 		
 		bool printAtEnd = default(false);
+		bool coutLookError = default(false);
+		bool deleteIfNotValid = default(false);
 		
     gates:
         //inout efcpIo;

@@ -49,6 +49,19 @@ void RoutingManager::onPolicyInit() {
         DM[i] = new unsigned char [f+t];
     }
 
+    for (addr_t i = 0; i < f; i++) {
+        DM[i][i] = 0;
+        for (addr_t j = i+1; j < f; j++) {
+            DM[i][j] = 2;
+            DM[j][i] = 2;
+        }
+        for (addr_t j = 0; j < t; j++) {
+            addr_t j2 = j+f;
+            DM[i][j2] = 1;
+            DM[j2][i] = 1;
+        }
+    }
+
 }
 
 void RoutingManager::setMyA(const addr_t & a) {
@@ -655,16 +668,6 @@ void RoutingManager::computeExceptions() {
             if(DM[i][j2] != 1) {
                 info.v1[j] = false;
                 info.connectedDown--;
-            } else {
-                unsigned int c = 0;
-                for(addr_t k = 0; k< f; k++) {
-                    if(DM[k][j2] == 1) {
-                        c++;
-                    }
-                }
-                if(c<=1) {
-                    info.v1[j] = false;
-                }
             }
         }
         if(info.connectedDown <= 0) {
@@ -717,7 +720,9 @@ void RoutingManager::computeExceptions() {
         if(info.problems > disconnected_fabs_down) {
             problematic_tors.insert(i+f);
         }
+
     }
+
 
     //Compute in-Pod exceptions
     // SRC:ToR

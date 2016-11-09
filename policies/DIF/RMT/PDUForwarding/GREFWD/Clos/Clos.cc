@@ -31,12 +31,16 @@ namespace GRE {
 void Clos0::setZone(const addr_t & v) { A = v; }
 void Clos0::setSpines(const index_t & v) { B = v; }
 grouprange_t Clos0::execRule(const addr_t & a) {
+    //cout << "Clos 0"<<endl;
     addr_t z = getZone(a);
     if(z == A) {                                                    // Same zone
+        //cout << "use " << 1 << " , " << 0 << " , " << groups[1].size() <<endl;
         return grouprange_t(1, 0, groups[1].size());
     } else if(z < B) {                                              // Specific Spine set
+        //cout << "use " << 0 << " , " << z << " , " << 1 <<endl;
         return grouprange_t(0, z, 1);
     } else {                                                        // Other Pod
+        //cout << "use " << 2 << " , " << 0 << " , " << groups[2].size() <<endl;
         return grouprange_t(2, 0, groups[2].size());
     }
 }
@@ -45,21 +49,35 @@ void Clos1::setZone(const addr_t & v) { A = v; }
 void Clos1::setIdentifier(const addr_t & v) { B = v; }
 void Clos1::setNumSpines(const addr_t & v) { C = v; }
 grouprange_t Clos1::execRule(const addr_t & a) {
+    //cout << "Clos 1 - "<< A << " " << B << " " << C <<endl;
     addr_t z = getZone(a);
     addr_t id = getIdentifier(a);
 
-    if(z == A) { return grouprange_t(1, 0, groups[1].size()); }     // Same zone (no directly connected
-    else if(z == B) {return grouprange_t(2, id, 1); }               // Spine of spine set
-    else if (z < C){return grouprange_t(1, 0, groups[1].size()); }  // Other spine set
-    else {return grouprange_t(2, 0, groups[2].size()); }            // Other Pod
+    if(z == A) {
+        //cout << "use " << 1 << " , " << 0 << " , " << groups[1].size() <<endl;
+        return grouprange_t(1, 0, groups[1].size()); }     // Same zone (no directly connected
+    else if(z == B) {
+        //cout << "use " << 2 << " , " << id << " , " << 1 <<endl;
+        return grouprange_t(2, id, 1); }               // Spine of spine set
+    else if (z < C){
+        //cout << "use " << 1 << " , " << 0 << " , " << groups[1].size() <<endl;
+        return grouprange_t(1, 0, groups[1].size()); }  // Other spine set
+    else {
+        //cout << "use " << 2 << " , " << 0 << " , " << groups[2].size() <<endl;
+        return grouprange_t(2, 0, groups[2].size()); }            // Other Pod
 }
 
 void Clos2::setPadding(const index_t & v) { A = v; }
 void Clos2::setNumPods(const index_t & v) { B = v; }
 grouprange_t Clos2::execRule(const addr_t & a) {
+    //cout << "Clos 2"<<endl;
     addr_t z = getZone(a);
-    if(z < A) { return grouprange_t(0, 0, B); }                     // Other spine
-    else { return grouprange_t(0, z-A, 1); }                        // To a Pod
+    if(z < A) {
+        //cout << "use " << 0 << " , " << 0 << " , " << B <<endl;
+        return grouprange_t(0, 0, B); }                     // Other spine
+    else {
+        //cout << "use " << 0 << " , " << (z-A) << " , " << 1 <<endl;
+        return grouprange_t(0, z-A, 1); }                        // To a Pod
 }
 
 }

@@ -25,10 +25,8 @@ CT_PDU * ReachabilityTest::genPDU(const string & dst, const string & _QoS, const
 
 void ReachabilityTest::initialize() {
     //Init ini/fin times
-    double iniT = par("ini").doubleValue();
-    if (iniT < 0 || par("infectedIPC").stdstringValue() == "") { return; }
-    interval = par("interval").doubleValue();
 
+    if (par("infectedIPC").stdstringValue() == "") { return; }
     //Get IPCP
     cModule * ipc = this->getParentModule()->getSubmodule(par("infectedIPC").stringValue());
     if (ipc == nullptr) { return; }
@@ -47,6 +45,7 @@ void ReachabilityTest::initialize() {
     cModule *ac = ipc->getSubmodule("resourceAllocator")->getSubmodule( "addressComparator");
     if (ReachabilityTest_Comparator * oac = dynamic_cast<ReachabilityTest_Comparator*>(ac)) { oac->p = this; }
 
+
     //Init node info
     dif = ipc->par("difName").stdstringValue();
     src = ipc->par("ipcAddress").stdstringValue();
@@ -60,6 +59,9 @@ void ReachabilityTest::initialize() {
     split(nodes_raw, ' ', remaining);
     random_shuffle ( remaining.begin(), remaining.end() );
 
+    double iniT = par("ini").doubleValue();
+    if (iniT < 0) { return; }
+    interval = par("interval").doubleValue();
     scheduleAt(iniT+omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, interval), &nextSend);
 }
 

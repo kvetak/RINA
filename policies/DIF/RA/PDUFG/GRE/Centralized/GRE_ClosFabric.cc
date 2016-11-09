@@ -215,7 +215,7 @@ void GRE_ClosFabric::onPolicyInit() {
 
     fwd->setZone(zone);
     fwd->setIdentifier(ident);
-    fwd->setNumSpines(s);
+    fwd->setNumSpines(f);
 
     fwd->addPort(f + t - 1, nullptr);
     fwd->setGroup(1, vPortsIndex());
@@ -287,6 +287,15 @@ void GRE_ClosFabric::resetNeiGroups() {
             neis.push_back(d);
         }
     }
+    /*
+    if(simTime() > 99.0 && neis.empty()) {
+        cout << "I'm " << getFullPath()<<endl;
+
+        for (addr_t d = 0; d < t; d++) {
+            cout << r_v1[d]<< " & " << aliveNeis[d] << " -> " << v1[d] << endl;
+        }
+    }
+    */
     fwd->setGroup(1, neis);
 
     neis.clear();

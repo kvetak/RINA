@@ -29,7 +29,8 @@ Define_Module(ReachabilityTest_Comparator);
 
 bool ReachabilityTest_Comparator::matchesThisIPC(const Address& addr, PDU * pdu) {
     if(addr == thisIPCAddr) {
-        if(CT_PDU *inf = dynamic_cast<CT_PDU * >(pdu)){
+        CT_PDU *inf = dynamic_cast<CT_PDU * >(pdu);
+        if(p!= nullptr && inf!= nullptr){
             p->receiveData(inf->getSrcAddr().getIpcAddress().getName(),
                     inf->getConnId().getQoSId(),
                     inf->getConnId().getSrcCepId(),
