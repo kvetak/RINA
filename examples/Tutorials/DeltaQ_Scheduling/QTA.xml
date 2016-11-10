@@ -107,6 +107,50 @@
     	<queueEcn id="outQ_B3" th="10" ath="5" thprob="0.2" />
     	<queueEcn id="outQ_C3" th="10" ath="5" thprob="0.2" />
     </mux>
+    
+    <muxBE
+    	type = "4"
+    	th = "200"
+    	MaxE = "10">
+    </muxBE>
+    
+    <muxWFQ3
+    	type = "5"
+    	defaultTh = "200"
+    	maxU = "3"
+    	MaxE = "10">
+    	
+    	<queue id="outQ_M" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_MA" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_mgmt" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	
+    	<queue id="outQ_A1" th = "60" rTkBit="90" sTkBit="200" maxTk="600" priority = "2" />
+    	<queue id="outQ_B2" th = "100" rTkBit="80" sTkBit="200" maxTk="600" priority = "2" />
+    	<queue id="outQ_C3" th = "40" rTkBit="30" sTkBit="200" maxTk="600" priority = "3" />
+    </muxWFQ3>
+    
+    <muxWFQ9
+    	type = "5"
+    	defaultTh = "200"
+    	maxU = "3"
+    	MaxE = "10">
+    	
+    	
+    	<queue id="outQ_M" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_MA" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_mgmt" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	
+    	<queue id="outQ_A1" th = "35" rTkBit="90" sTkBit="500" maxTk="600" priority = "1"/>
+    	<queue id="outQ_B1" th = "35" rTkBit="70" sTkBit="500" maxTk="600" priority = "2"/>
+    	<queue id="outQ_C1" th = "35" rTkBit="50" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_A2" th = "20" rTkBit="75" sTkBit="500" maxTk="600" priority = "2"/>
+    	<queue id="outQ_B2" th = "20" rTkBit="55" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_C2" th = "20" rTkBit="30" sTkBit="500" maxTk="600" priority = "4"/>
+    	<queue id="outQ_A3" th = "15" rTkBit="60" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_B3" th = "15" rTkBit="40" sTkBit="500" maxTk="600" priority = "4"/>
+    	<queue id="outQ_C3" th = "15" rTkBit="20" sTkBit="500" maxTk="600" priority = "5"/>
+    	
+    </muxWFQ9>
 </Configuration>
 
 

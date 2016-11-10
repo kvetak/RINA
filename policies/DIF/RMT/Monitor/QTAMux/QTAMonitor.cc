@@ -31,6 +31,8 @@
 #include "QTAMux/Mux1/Mux1.h"
 #include "QTAMux/Mux2/Mux2.h"
 #include "QTAMux/Mux3/Mux3.h"
+#include "QTAMux/Mux4/Mux4.h"
+#include "QTAMux/Mux5/Mux5.h"
 
 namespace QTAMux {
 using namespace std;
@@ -98,6 +100,12 @@ void QTAMonitor::onPolicyInit() {
             break;
         case 3:
             baseMux = new Mux3(this, Xml);
+            break;
+        case 4:
+            baseMux = new Mux4(this, Xml);
+            break;
+        case 5:
+            baseMux = new Mux5(this, Xml);
             break;
         default:
             baseMux = new Mux0(this, Xml);
@@ -388,7 +396,12 @@ RMTQueue * QTAMonitor::getNext(RMTPort * port) {
     RMTQueue * q = mux->getNext();
 
     if (q != nullptr && recordStats) {
-        if (const PDU * c = dynamic_cast<const PDU*>(q->getFirstPDU())) {
+        const cPacket * p = q->getFirstPDU();
+        if(p == nullptr) {
+            cout << "Queue empty!!!"<<endl;
+            error("queue empty??");
+        }
+        if (const PDU * c = dynamic_cast<const PDU*>(p)) {
             int len = c->getByteLength();
             string qos = c->getConnId().getQoSId();
             if(qos != "MGMT-QoSCube") {
