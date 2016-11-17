@@ -29,6 +29,8 @@ simple DomainRouting like IntRouting
     parameters:
         @display("i=block/socket");
         @class(DMRnms::Routing);
+		//Mandatory signal to implement
+        @signal[Routing-Update](type=IntRoutingUpdate?); 
         
         bool printAtEnd = default(false);
 }

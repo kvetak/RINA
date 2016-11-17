@@ -29,6 +29,8 @@
 
 #include <IntRoutingUpdate.h>
 
+Register_Class(IntRoutingUpdate);
+
 IntRoutingUpdate::IntRoutingUpdate(){}
 IntRoutingUpdate::IntRoutingUpdate(const Address &addr){
     dstAddr = addr;

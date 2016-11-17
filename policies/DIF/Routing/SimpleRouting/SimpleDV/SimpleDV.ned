@@ -29,6 +29,9 @@ simple SimpleDV like IntRouting
     parameters:
         @class(SimpleDV::SimpleDV);
         @display("i=block/socket");
+		//Mandatory signal to implement
+        @signal[Routing-Update](type=IntRoutingUpdate?); 
+        
         string myAddr = default("");
         int infMetric = default(32);
         
