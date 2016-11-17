@@ -80,7 +80,7 @@ void AEConstantServer::handleSelfMessage(cMessage *msg) {
     if(count < stopAt) {
         PingMsg* ping = new PingMsg(count >= countStart && count < countEnd);
 
-        int msgSize = size + intuniform(-sizevar,sizevar);
+        int msgSize = size + omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), -sizevar,sizevar);
         ping->setByteLength(msgSize);
 
         if(ping->counted) {
@@ -90,7 +90,7 @@ void AEConstantServer::handleSelfMessage(cMessage *msg) {
         //Send message
         sendData(FlowObject, ping);
         count++;
-        double wtime = (msgSize+40)*wperbit*uniform(1-wvar, 1+wvar);
+        double wtime = (msgSize+40)*wperbit*omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 1-wvar, 1+wvar);
         scheduleAt(simTime() + wtime, msg);
 
     } else if(count == stopAt) {

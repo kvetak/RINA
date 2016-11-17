@@ -36,7 +36,7 @@ IDegrad::IDegrad(double i):
 int IDegrad::getRandomPriority (int def){
     int p = def;
 
-    double t = 0, lim = uniform(NULL,0,1);
+    double t = 0, lim = uniform(omnetpp::getEnvir()->getRNG(0), 0,1);
     for(PPlistIt it = PPs.begin(); it != PPs.end(); it++){
         p = it->priority;
         t += it->probability;
@@ -97,7 +97,7 @@ Times L::getTimes(double wt, int size) {
         if(rate!=LLONG_MAX){ t.serveT = ((double)size)/((double)rate); }
         if(space && sprate!=LLONG_MAX){
             double avg = ((double)size)/((double)sprate);
-            t.spaceT =  avg*uniform(NULL, 1-spvar, 1+spvar);
+            t.spaceT =  avg*uniform(omnetpp::getEnvir()->getRNG(0),  1-spvar, 1+spvar);
         }
     }
 

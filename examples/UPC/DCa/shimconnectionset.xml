@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="0202_F" dst="0200_F" qosReq="1"/>
+    <Connection src="0203_F" dst="0200_F" qosReq="1"/>
+    <Connection src="0204_F" dst="0200_F" qosReq="1"/>
+    <Connection src="0205_F" dst="0200_F" qosReq="1"/>
+    
+    <Connection src="0202_F" dst="0201_F" qosReq="1"/>
+    <Connection src="0203_F" dst="0201_F" qosReq="1"/>
+    <Connection src="0204_F" dst="0201_F" qosReq="1"/>
+    <Connection src="0205_F" dst="0201_F" qosReq="1"/>
+    
+    <Connection src="0302_F" dst="0300_F" qosReq="1"/>
+    <Connection src="0303_F" dst="0300_F" qosReq="1"/>
+    <Connection src="0304_F" dst="0300_F" qosReq="1"/>
+    <Connection src="0305_F" dst="0300_F" qosReq="1"/>
+    
+    <Connection src="0302_F" dst="0301_F" qosReq="1"/>
+    <Connection src="0303_F" dst="0301_F" qosReq="1"/>
+    <Connection src="0304_F" dst="0301_F" qosReq="1"/>
+    <Connection src="0305_F" dst="0301_F" qosReq="1"/>
+    
+    <Connection src="0200_F" dst="0000_F" qosReq="1"/>
+    <Connection src="0300_F" dst="0000_F" qosReq="1"/>
+    <Connection src="0200_F" dst="0001_F" qosReq="1"/>
+    <Connection src="0300_F" dst="0001_F" qosReq="1"/>
+    
+    <Connection src="0201_F" dst="0100_F" qosReq="1"/>
+    <Connection src="0301_F" dst="0100_F" qosReq="1"/>
+    <Connection src="0201_F" dst="0101_F" qosReq="1"/>
+    <Connection src="0301_F" dst="0101_F" qosReq="1"/>
+    
+    
+    <Connection src="02FE_F" dst="0202_F" qosReq="1"/>
+    <Connection src="02FD_F" dst="0205_F" qosReq="1"/>
+    
+    <Connection src="03FE_F" dst="0304_F" qosReq="1"/>
+    <Connection src="03FD_F" dst="0303_F" qosReq="1"/>
+  </SimTime>
+</ConnectionSet>

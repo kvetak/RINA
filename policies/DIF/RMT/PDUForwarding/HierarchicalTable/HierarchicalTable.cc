@@ -86,7 +86,7 @@ vector<RMTPort * > HierarchicalTable::lookup(const Address &dst, const std::stri
     }
 
     if(found != NULL && !found->empty()) {
-        ret.push_back((*found)[intuniform(0, found->size()-1)]);
+        ret.push_back((*found)[omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, found->size()-1)]);
     } else if(direct.find(dst) != direct.end()) {
         ret.push_back(direct[dst]);
     }

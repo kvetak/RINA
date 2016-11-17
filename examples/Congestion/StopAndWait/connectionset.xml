@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-    <ConnectionSet>
-            <!-- Allocate management flows. -->
-            <SimTime t="0">
-                <Connection src="1_Core" dst="2_Core" qosReq="1"/>
-            </SimTime>
-    </ConnectionSet>

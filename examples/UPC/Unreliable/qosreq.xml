@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+	<QoSReqSet>	
+		<QosReq id="1"> 
+			<Delay>10</Delay>	
+		</QosReq>
+		<QosReq id="2"> 
+			<Delay>100</Delay>	
+		</QosReq>
+		<QosReq id="3"> 
+			<Delay>1000</Delay>	
+		</QosReq>
+	</QoSReqSet>
+	

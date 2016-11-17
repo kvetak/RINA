@@ -46,7 +46,7 @@ bool DumbMaxQ::run(RMTQueue* queue)
 
     if( dp <= 0 ) { drop = false; }
     if( dp >= 1 ) { drop = true; }
-    else { drop = dp >= uniform(0,1); }
+    else { drop = dp >= omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0,1.0); }
 
     std::string qos = ((PDU*)queue->getLastPDU())->getConnId().getQoSId();
     if(drop) {

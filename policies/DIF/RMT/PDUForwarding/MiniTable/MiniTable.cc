@@ -33,7 +33,19 @@ using namespace std;
 
 // Lookup function, return a list of RMTPorts to forward a PDU/Address+qos.
 vector<RMTPort * > MiniTable::lookup(const PDU * pdu){
-    return lookup(pdu->getDstAddr(), pdu->getConnId().getQoSId());
+    vector<RMTPort* > ret;
+    string dstAddr = pdu->getDstAddr().getIpcAddress().getName();
+    FWDTableIt it = table.find(dstAddr);
+
+    if(it != table.end()){
+        ret.push_back(it->second);
+    } else {
+        std::cout << this->getFullPath()<<endl;
+        std::cout << pdu->getDstAddr() << " not found "<<endl;
+        std::cout << toString() <<endl;
+    }
+
+    return ret;
 }
 vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos){
 
@@ -43,9 +55,6 @@ vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos)
 
     if(it != table.end()){
         ret.push_back(it->second);
-    } else {
-    //    std::cout << this->getFullPath()<<endl;
-    //    std::cout << dst << " not found "<<endl;
     }
 
     return ret;
@@ -55,7 +64,7 @@ vector<RMTPort * > MiniTable::lookup(const Address &dst, const std::string& qos)
 string MiniTable::toString(){
     std::ostringstream os;
 
-    os << this->getName()<<endl;
+    os << this->getFullPath()<<endl;
     for(FWDTableIt tIt = table.begin(); tIt != table.end(); tIt++){
         os << "\t" <<tIt->first << "  ->  " <<tIt->second->getFullPath() << endl;
     }
@@ -65,12 +74,14 @@ string MiniTable::toString(){
 
 //Insert/Remove an entry
 void MiniTable::insert(const Address &addr, RMTPort * port){
+
     insert(addr.getIpcAddress().getName(), port);
 }
 void MiniTable::remove(const Address &addr){
     remove(addr.getIpcAddress().getName());
 }
 void MiniTable::insert(const string &addr, RMTPort * port){
+
     table[addr] = port;
 }
 void MiniTable::remove(const string &addr){

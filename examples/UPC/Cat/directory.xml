@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="0_Core">
+      <DIF difName="0-1" ipcAddress="0" />
+      <DIF difName="0-2" ipcAddress="0" />
+      <DIF difName="0-3" ipcAddress="0" />
+      <DIF difName="0-8" ipcAddress="0" />
+    </APN>
+    <APN apn="0_Net">
+      <DIF difName="Core" ipcAddress="0" />
+    </APN>
+    <APN apn="1_Core">
+      <DIF difName="0-1" ipcAddress="1" />
+      <DIF difName="1-2" ipcAddress="1" />
+      <DIF difName="1-4" ipcAddress="1" />
+      <DIF difName="1-8" ipcAddress="1" />
+    </APN>
+    <APN apn="1_Net">
+      <DIF difName="Core" ipcAddress="1" />
+    </APN>
+    <APN apn="2_Core">
+      <DIF difName="0-2" ipcAddress="2" />
+      <DIF difName="1-2" ipcAddress="2" />
+      <DIF difName="2-6" ipcAddress="2" />
+      <DIF difName="2-3" ipcAddress="2" />
+    </APN>
+    <APN apn="2_Net">
+      <DIF difName="Core" ipcAddress="2" />
+    </APN>
+    <APN apn="3_Core">
+      <DIF difName="0-3" ipcAddress="3" />
+      <DIF difName="2-3" ipcAddress="3" />
+      <DIF difName="3-5" ipcAddress="3" />
+    </APN>
+    <APN apn="3_Net">
+      <DIF difName="Core" ipcAddress="3" />
+    </APN>
+    <APN apn="4_Core">
+      <DIF difName="1-4" ipcAddress="4" />
+      <DIF difName="4-6" ipcAddress="4" />
+      <DIF difName="4-7" ipcAddress="4" />
+      <DIF difName="4-10" ipcAddress="4" />
+    </APN>
+    <APN apn="4_Net">
+      <DIF difName="Core" ipcAddress="4" />
+    </APN>
+    <APN apn="5_Core">
+      <DIF difName="3-5" ipcAddress="5" />
+      <DIF difName="5-6" ipcAddress="5" />
+    </APN>
+    <APN apn="5_Net">
+      <DIF difName="Core" ipcAddress="5" />
+    </APN>
+    <APN apn="6_Core">
+      <DIF difName="2-6" ipcAddress="6" />
+      <DIF difName="4-6" ipcAddress="6" />
+      <DIF difName="5-6" ipcAddress="6" />
+      <DIF difName="6-10" ipcAddress="6" />
+      <DIF difName="6-7" ipcAddress="6" />
+    </APN>
+    <APN apn="6_Net">
+      <DIF difName="Core" ipcAddress="6" />
+    </APN>
+    <APN apn="7_Core">
+      <DIF difName="4-7" ipcAddress="7" />
+      <DIF difName="6-7" ipcAddress="7" />
+      <DIF difName="7-8" ipcAddress="7" />
+      <DIF difName="7-9" ipcAddress="7" />
+      <DIF difName="7-10" ipcAddress="7" />
+    </APN>
+    <APN apn="7_Net">
+      <DIF difName="Core" ipcAddress="7" />
+    </APN>
+    <APN apn="8_Core">
+      <DIF difName="0-8" ipcAddress="8" />
+      <DIF difName="1-8" ipcAddress="8" />
+      <DIF difName="7-8" ipcAddress="8" />
+      <DIF difName="8-9" ipcAddress="8" />
+    </APN>
+    <APN apn="8_Net">
+      <DIF difName="Core" ipcAddress="8" />
+    </APN>
+    <APN apn="9_Core">
+      <DIF difName="7-9" ipcAddress="9" />
+      <DIF difName="8-9" ipcAddress="9" />
+    </APN>
+    <APN apn="9_Net">
+      <DIF difName="Core" ipcAddress="9" />
+    </APN>
+    <APN apn="10_Core">
+      <DIF difName="4-10" ipcAddress="10" />
+      <DIF difName="6-10" ipcAddress="10" />
+      <DIF difName="7-10" ipcAddress="10" />
+    </APN>
+    <APN apn="10_Net">
+      <DIF difName="Core" ipcAddress="10" />
+    </APN>
+  </Directory>
+</DA>

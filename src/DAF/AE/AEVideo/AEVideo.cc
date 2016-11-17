@@ -134,7 +134,7 @@ void AEVideo::doFin(){
 
 void AEVideo::iniCom(){
     for(sVecIt it = streams.begin(); it != streams.end(); it++){
-        scheduleAt(uniform(simTime(), simTime()+startVar), new  Stream_Timer(it->getid()) );
+        scheduleAt(omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), simTime(), simTime()+startVar), new  Stream_Timer(it->getid()) );
     }
 }
 

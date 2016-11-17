@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<flows>
+	<set src = "A" dst = "B" V="4" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "B" dst = "A" V="0" D ="4" T="8"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "A" dst = "B" V="4" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "B" dst = "A" V="0" D ="12" T="12"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "A" dst = "B" V="8" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "B" dst = "A" V="0" D ="12" T="15"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "A" dst = "C" V="4" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "C" dst = "A" V="0" D ="4" T="8"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "A" dst = "C" V="4" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "C" dst = "A" V="0" D ="12" T="12"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "A" dst = "C" V="8" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "C" dst = "A" V="0" D ="12" T="15"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "A" dst = "D" V="1" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "D" dst = "A" V="0" D ="1" T="1"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "A" dst = "D" V="1" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "D" dst = "A" V="0" D ="1" T="1"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "A" dst = "D" V="1" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "D" dst = "A" V="0" D ="1" T="1"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "A" dst = "E" V="1" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "E" dst = "A" V="0" D ="1" T="2"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "A" dst = "E" V="1" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "E" dst = "A" V="0" D ="3" T="3"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "A" dst = "E" V="2" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "E" dst = "A" V="0" D ="3" T="4"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "A" dst = "F" V="2" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "F" dst = "A" V="0" D ="2" T="3"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "A" dst = "F" V="2" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "F" dst = "A" V="0" D ="4" T="4"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "A" dst = "F" V="3" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "F" dst = "A" V="0" D ="4" T="5"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "D" dst = "B" V="7" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "B" dst = "D" V="0" D ="7" T="13"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "D" dst = "B" V="7" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "B" dst = "D" V="0" D ="19" T="19"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "D" dst = "B" V="13" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "B" dst = "D" V="0" D ="19" T="25"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "D" dst = "C" V="1" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "C" dst = "D" V="0" D ="1" T="2"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "D" dst = "C" V="1" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "C" dst = "D" V="0" D ="3" T="3"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "D" dst = "C" V="2" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "C" dst = "D" V="0" D ="3" T="4"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "D" dst = "E" V="8" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "E" dst = "D" V="0" D ="8" T="16"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "D" dst = "E" V="8" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "E" dst = "D" V="0" D ="24" T="24"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "D" dst = "E" V="16" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "E" dst = "D" V="0" D ="24" T="32"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "D" dst = "F" V="35" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "F" dst = "D" V="0" D ="35" T="70"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "D" dst = "F" V="35" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "F" dst = "D" V="0" D ="105" T="105"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "D" dst = "F" V="70" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "F" dst = "D" V="0" D ="105" T="140"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "E" dst = "C" V="4" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "C" dst = "E" V="0" D ="4" T="8"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "E" dst = "C" V="4" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "C" dst = "E" V="0" D ="12" T="12"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "E" dst = "C" V="8" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "C" dst = "E" V="0" D ="12" T="16"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "F" dst = "C" V="2" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "C" dst = "F" V="0" D ="2" T="3"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "F" dst = "C" V="2" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "C" dst = "F" V="0" D ="4" T="4"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "F" dst = "C" V="3" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "C" dst = "F" V="0" D ="4" T="5"  Vq="A3" Dq="B3" Tq="C3"/>
+	
+	<set src = "F" dst = "E" V="35" D ="0" T="0" Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "E" dst = "F" V="0" D ="35" T="70"  Vq="A1" Dq="B1" Tq="C1"/>
+	<set src = "F" dst = "E" V="35" D ="0" T="0" Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "E" dst = "F" V="0" D ="105" T="105"  Vq="A2" Dq="B2" Tq="C2"/>
+	<set src = "F" dst = "E" V="70" D ="0" T="0" Vq="A3" Dq="B3" Tq="C3"/>
+	<set src = "E" dst = "F" V="0" D ="105" T="140"  Vq="A3" Dq="B3" Tq="C3"/>
+</flows>

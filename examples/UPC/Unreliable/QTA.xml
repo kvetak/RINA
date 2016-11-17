@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<Configuration>
+    <shapers>
+    	<shaper id="outQ_M" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_MA" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_mgmt" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	 	
+    	<shaper id="outQ_A" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_B" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_C" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "3" />
+    </shapers>
+    
+    
+    <mux
+    	type = "2"
+    	maxU = "3"
+    	maxC = "3"
+    	defaultEthTh = "10">
+    	<CTh
+    		C = "0"
+    		ath = "200"
+    		th = "200"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "1"
+    		ath = "180"
+    		th = "180"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "2"
+    		ath = "160"
+    		th = "140"
+    		p = "0.1"
+    	/>
+    	<CTh
+    		C = "3"
+    		ath = "150"
+    		th = "120"
+    		p = "0.1"
+    	/>
+    	
+    	<queueEcn id="outQ_M" th="100" />
+    	<queueEcn id="outQ_MA" th="100" />
+    	<queueEcn id="outQ_mgmt" th="100" />
+    	<queueEcn id="outQ_A" th="10" />
+    	<queueEcn id="outQ_B" th="50" />
+    	<queueEcn id="outQ_C" th="10" />
+    </mux>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

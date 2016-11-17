@@ -99,7 +99,7 @@ RMTQueue * MM_eDL_Out::getnextQueue(RMTPort * p) {
             selP = pQ.first;
 
        //     std::cout << selP << " => " << prioritySkip[selP] << endl;
-            if(uniform(0.0, 1.0) >= prioritySkip[selP]) { break; }
+            if(omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, 1.0) >= prioritySkip[selP]) { break; }
         }
     }
 

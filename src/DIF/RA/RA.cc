@@ -488,6 +488,7 @@ void RA::createNM1Flow(Flow *flow)
 {
     Enter_Method("createNM1Flow()");
 
+    fa->invokeNewFlowRequestPolicy(flow);
     const APN& dstApn = flow->getDstApni().getApn();
     const std::string& qosID = flow->getConId().getQoSId();
 
@@ -499,7 +500,8 @@ void RA::createNM1Flow(Flow *flow)
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+                e->getDestAddr().getApn().getName(),
+                e->getQoSCube().getQosId());
 
         if(fi)
         {
@@ -572,12 +574,14 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?
     //
     Address addrs = Address(dstAPN.getName());
+    /*
     PDUFGNeighbor* e = fwdtg->getNextNeighbor(addrs, qosID);
 
     if(e)
     {
         NM1FlowTableItem * fi = flowTable->findFlowByDstAddr(
-            e->getDestAddr().getApn().getName(), qosID);
+                e->getPort()->getFlow()->getDstAddr().getApn().getName(),
+                e->getPort()->getFlow()->getConId().getQoSId());
 
         if(fi)
         {
@@ -587,7 +591,7 @@ void RA::createNM1FlowWithoutAllocate(Flow* flow)
     //
     // End flow exists check.
     //
-
+     */
 
     // Ask DA which IPC to use to reach dst App
     const Address* ad = difAllocator->resolveApnToBestAddress(dstAPN);
@@ -764,6 +768,7 @@ bool RA::bindNFlowToNM1Flow(Flow* flow)
     if (te)
     {
         neighAddr = te->getDestAddr().getApn().getName();
+        qosID = te->getQoSCube().getQosId();
     }
 
     auto nm1FlowItem = flowTable->findFlowByDstApni(neighAddr, qosID);

@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<Configuration>
+    <shapers>
+    	<shaper id="outQ_M" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_MA" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	<shaper id="outQ_mgmt" 
+    		type="0" 
+    		urgency = "0" 
+    		cherish = "0" />
+    	 	
+    	<shaper id="outQ_A1" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_B1" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_C1" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "1" />
+    	 	
+    	<shaper id="outQ_A2" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_B2" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_C2" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "2" />
+    	 	
+    	<shaper id="outQ_A3" 
+    		type="0" 
+    		urgency = "1" 
+    		cherish = "3" />
+    	 	
+    	<shaper id="outQ_B3" 
+    		type="0" 
+    		urgency = "2" 
+    		cherish = "3" />
+    	 	
+    	<shaper id="outQ_C3" 
+    		type="0" 
+    		urgency = "3" 
+    		cherish = "3" />
+    </shapers>
+    
+    
+    <mux
+    	type = "3"
+    	maxU = "3"
+    	maxC = "3"
+    	defaultEthTh = "10"
+    	defaultEthATh = "5"
+    	defaultEthThprob = "0.2">
+    	<CTh
+    		C = "0"
+    		ath = "200"
+    		th = "200"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "1"
+    		ath = "180"
+    		th = "180"
+    		p = "1.0"
+    	/>
+    	<CTh
+    		C = "2"
+    		ath = "160"
+    		th = "140"
+    		p = "0.1"
+    	/>
+    	<CTh
+    		C = "3"
+    		ath = "150"
+    		th = "120"
+    		p = "0.1"
+    	/>
+    	
+    	<queueEcn id="outQ_M" th="120" ath="100" thprob="0.2" />
+    	<queueEcn id="outQ_MA" th="120" ath="100" thprob="0.2" />
+    	<queueEcn id="outQ_mgmt" th="120" ath="100" thprob="0.2" />
+    	
+    	<queueEcn id="outQ_A1" th="100" ath="50" thprob="0.2" />
+    	<queueEcn id="outQ_B1" th="100" ath="50" thprob="0.2" />
+    	<queueEcn id="outQ_C1" th="100" ath="50" thprob="0.2" />
+    	<queueEcn id="outQ_A2" th="50" ath="25" thprob="0.2" />
+    	<queueEcn id="outQ_B2" th="50" ath="25" thprob="0.2" />
+    	<queueEcn id="outQ_C2" th="50" ath="25" thprob="0.2" />
+    	<queueEcn id="outQ_A3" th="10" ath="5" thprob="0.2" />
+    	<queueEcn id="outQ_B3" th="10" ath="5" thprob="0.2" />
+    	<queueEcn id="outQ_C3" th="10" ath="5" thprob="0.2" />
+    </mux>
+    
+    <muxBE
+    	type = "4"
+    	th = "200"
+    	MaxE = "10">
+    </muxBE>
+    
+    <muxWFQ3
+    	type = "5"
+    	defaultTh = "200"
+    	maxU = "3"
+    	MaxE = "10">
+    	
+    	<queue id="outQ_M" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_MA" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_mgmt" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	
+    	<queue id="outQ_A1" th = "60" rTkBit="90" sTkBit="200" maxTk="600" priority = "2" />
+    	<queue id="outQ_B2" th = "100" rTkBit="80" sTkBit="200" maxTk="600" priority = "2" />
+    	<queue id="outQ_C3" th = "40" rTkBit="30" sTkBit="200" maxTk="600" priority = "3" />
+    </muxWFQ3>
+    
+    <muxWFQ9
+    	type = "5"
+    	defaultTh = "200"
+    	maxU = "3"
+    	MaxE = "10">
+    	
+    	
+    	<queue id="outQ_M" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_MA" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	<queue id="outQ_mgmt" th = "200" rTkBit="1" sTkBit="0" maxTk="1" priority = "0" />
+    	
+    	<queue id="outQ_A1" th = "35" rTkBit="90" sTkBit="500" maxTk="600" priority = "1"/>
+    	<queue id="outQ_B1" th = "35" rTkBit="70" sTkBit="500" maxTk="600" priority = "2"/>
+    	<queue id="outQ_C1" th = "35" rTkBit="50" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_A2" th = "20" rTkBit="75" sTkBit="500" maxTk="600" priority = "2"/>
+    	<queue id="outQ_B2" th = "20" rTkBit="55" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_C2" th = "20" rTkBit="30" sTkBit="500" maxTk="600" priority = "4"/>
+    	<queue id="outQ_A3" th = "15" rTkBit="60" sTkBit="500" maxTk="600" priority = "3"/>
+    	<queue id="outQ_B3" th = "15" rTkBit="40" sTkBit="500" maxTk="600" priority = "4"/>
+    	<queue id="outQ_C3" th = "15" rTkBit="20" sTkBit="500" maxTk="600" priority = "5"/>
+    	
+    </muxWFQ9>
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

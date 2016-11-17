@@ -34,6 +34,8 @@ simple RA
         @signal[RA-InvokeSlowdown](type=cPacket?);
         @signal[RA-MgmtFlowAllocated](type=APNIPair?);
         @signal[RA-MgmtFlowDeallocated](type=Flow?);
+        @signal[Routing-Update](type=cPacket?);
+       
 
         xml qoscubesData = default(xml("<QoSCube/>"));
         xml qosReqData = default(xml("<QoSReq/>"));

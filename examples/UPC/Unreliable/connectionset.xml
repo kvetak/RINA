@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="10_Core" dst="0_Core" qosReq="1"/>
+    <Connection src="10_Core" dst="11_Core" qosReq="1"/>
+    <Connection src="10_Core" dst="20_Core" qosReq="1"/>
+    
+    <Connection src="20_Core" dst="0_Core" qosReq="1"/>
+    <Connection src="20_Core" dst="21_Core" qosReq="1"/>
+  </SimTime>
+  
+  
+  <SimTime t="11">
+    <Connection src="11_Net" dst="21_Net" qosReq="3"/>
+    <Connection src="11_Net" dst="0_Net" qosReq="3"/>
+    <Connection src="21_Net" dst="0_Net" qosReq="3"/>
+  </SimTime>
+  
+  <SimTime t="12">
+    <Connection src="11_Net" dst="21_Net" qosReq="2"/>
+    <Connection src="11_Net" dst="0_Net" qosReq="2"/>
+    <Connection src="21_Net" dst="0_Net" qosReq="2"/>
+  </SimTime>
+  
+  <SimTime t="13">
+    <Connection src="11_Net" dst="21_Net" qosReq="1"/>
+    <Connection src="11_Net" dst="0_Net" qosReq="1"/>
+    <Connection src="21_Net" dst="0_Net" qosReq="1"/>
+  </SimTime>
+  
+</ConnectionSet>

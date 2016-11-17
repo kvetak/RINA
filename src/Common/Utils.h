@@ -56,6 +56,38 @@ std::string join(const std::vector<std::string> &elems, const unsigned int n, co
  */
 bool isPrefix(std::string prefix, std::string s);
 
+
+/*
+ * A OR B into dst
+ * return number of true positions
+ */
+int intersectBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst);
+
+/*
+ * A AND B into dst
+ * return number of true positions
+ */
+int unionBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & dst);
+
+/*
+ * A included into B
+ * return true if each true position in A is true in B
+ */
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B);
+
+/*
+ * A included into B
+ * return true if each true position in A is true in B
+ * sets C as the intersection between A & B
+ */
+bool includedBv(std::vector<bool> & A, std::vector<bool> & B, std::vector<bool> & C);
+
+
+/*
+ * Iterate distance matrix DM
+ */
+void iterateDM(unsigned char ** DM, unsigned int l, unsigned char inf);
+
 /**
  * Display the selected policy next to given policy module.
  *
@@ -100,5 +132,8 @@ modType getRINAModule(  cModule* curMod,
     return (nullCheck ? check_and_cast<modType>(mod) : dynamic_cast<modType>(mod));
 }
 
+int m_iuniform(int min, int max);
+double m_duniform(double min, double max);
+simtime_t m_tuniform(simtime_t min, simtime_t max);
 
 #endif /* UTILS_H_ */

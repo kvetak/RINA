@@ -1,0 +1,267 @@
+<?xml version="1.0"?>
+<FWDT>
+	<Node id="0">
+		<Tset>
+			<entry dst="1" T="0" next="1"/>
+			<entry dst="2" T="0" next="2"/>
+			<entry dst="3" T="0" next="3"/>
+			<entry dst="4" T="0" next="1"/>
+			<entry dst="5" T="0" next="3"/>
+			<entry dst="6" T="0" next="2"/>
+			<entry dst="7" T="0" next="8"/>
+			<entry dst="8" T="0" next="8"/>
+			<entry dst="9" T="0" next="8"/>
+			<entry dst="10" T="0" next="8"/>
+			<entry dst="1" T="1" next="1"/>
+			<entry dst="2" T="1" next="2"/>
+			<entry dst="3" T="1" next="3"/>
+			<entry dst="4" T="1" next="1"/>
+			<entry dst="5" T="1" next="3"/>
+			<entry dst="6" T="1" next="2"/>
+			<entry dst="7" T="1" next="1"/>
+			<entry dst="8" T="1" next="8"/>
+			<entry dst="9" T="1" next="8"/>
+			<entry dst="10" T="1" next="1"/>
+	</Tset>
+	</Node>
+	<Node id="1">
+		<Tset>
+			<entry dst="0" T="0" next="0"/>
+			<entry dst="2" T="0" next="2"/>
+			<entry dst="3" T="0" next="0"/>
+			<entry dst="4" T="0" next="4"/>
+			<entry dst="5" T="0" next="2"/>
+			<entry dst="6" T="0" next="4"/>
+			<entry dst="7" T="0" next="8"/>
+			<entry dst="8" T="0" next="8"/>
+			<entry dst="9" T="0" next="8"/>
+			<entry dst="10" T="0" next="4"/>
+			<entry dst="0" T="1" next="0"/>
+			<entry dst="2" T="1" next="2"/>
+			<entry dst="3" T="1" next="2"/>
+			<entry dst="4" T="1" next="4"/>
+			<entry dst="5" T="1" next="2"/>
+			<entry dst="6" T="1" next="2"/>
+			<entry dst="7" T="1" next="4"/>
+			<entry dst="8" T="1" next="8"/>
+			<entry dst="9" T="1" next="8"/>
+			<entry dst="10" T="1" next="4"/>
+	</Tset>
+	</Node>
+	<Node id="2">
+		<Tset>
+			<entry dst="0" T="0" next="0"/>
+			<entry dst="1" T="0" next="1"/>
+			<entry dst="3" T="0" next="3"/>
+			<entry dst="4" T="0" next="6"/>
+			<entry dst="5" T="0" next="6"/>
+			<entry dst="6" T="0" next="6"/>
+			<entry dst="7" T="0" next="6"/>
+			<entry dst="8" T="0" next="1"/>
+			<entry dst="9" T="0" next="1"/>
+			<entry dst="10" T="0" next="6"/>
+			<entry dst="0" T="1" next="0"/>
+			<entry dst="1" T="1" next="1"/>
+			<entry dst="3" T="1" next="3"/>
+			<entry dst="4" T="1" next="1"/>
+			<entry dst="5" T="1" next="3"/>
+			<entry dst="6" T="1" next="6"/>
+			<entry dst="7" T="1" next="1"/>
+			<entry dst="8" T="1" next="1"/>
+			<entry dst="9" T="1" next="1"/>
+			<entry dst="10" T="1" next="1"/>
+	</Tset>
+	</Node>
+	<Node id="3">
+		<Tset>
+			<entry dst="0" T="0" next="0"/>
+			<entry dst="1" T="0" next="0"/>
+			<entry dst="2" T="0" next="2"/>
+			<entry dst="4" T="0" next="5"/>
+			<entry dst="5" T="0" next="5"/>
+			<entry dst="6" T="0" next="2"/>
+			<entry dst="7" T="0" next="0"/>
+			<entry dst="8" T="0" next="0"/>
+			<entry dst="9" T="0" next="0"/>
+			<entry dst="10" T="0" next="5"/>
+			<entry dst="0" T="1" next="0"/>
+			<entry dst="1" T="1" next="2"/>
+			<entry dst="2" T="1" next="2"/>
+			<entry dst="4" T="1" next="2"/>
+			<entry dst="5" T="1" next="5"/>
+			<entry dst="6" T="1" next="5"/>
+			<entry dst="7" T="1" next="2"/>
+			<entry dst="8" T="1" next="0"/>
+			<entry dst="9" T="1" next="0"/>
+			<entry dst="10" T="1" next="2"/>
+	</Tset>
+	</Node>
+	<Node id="4">
+		<Tset>
+			<entry dst="0" T="0" next="1"/>
+			<entry dst="1" T="0" next="1"/>
+			<entry dst="2" T="0" next="6"/>
+			<entry dst="3" T="0" next="6"/>
+			<entry dst="5" T="0" next="6"/>
+			<entry dst="6" T="0" next="6"/>
+			<entry dst="7" T="0" next="7"/>
+			<entry dst="8" T="0" next="7"/>
+			<entry dst="9" T="0" next="7"/>
+			<entry dst="10" T="0" next="10"/>
+			<entry dst="0" T="1" next="1"/>
+			<entry dst="1" T="1" next="1"/>
+			<entry dst="2" T="1" next="1"/>
+			<entry dst="3" T="1" next="1"/>
+			<entry dst="5" T="1" next="1"/>
+			<entry dst="6" T="1" next="6"/>
+			<entry dst="7" T="1" next="7"/>
+			<entry dst="8" T="1" next="1"/>
+			<entry dst="9" T="1" next="1"/>
+			<entry dst="10" T="1" next="10"/>
+	</Tset>
+	</Node>
+	<Node id="5">
+		<Tset>
+			<entry dst="0" T="0" next="3"/>
+			<entry dst="1" T="0" next="3"/>
+			<entry dst="2" T="0" next="3"/>
+			<entry dst="3" T="0" next="3"/>
+			<entry dst="4" T="0" next="6"/>
+			<entry dst="6" T="0" next="6"/>
+			<entry dst="7" T="0" next="6"/>
+			<entry dst="8" T="0" next="3"/>
+			<entry dst="9" T="0" next="6"/>
+			<entry dst="10" T="0" next="6"/>
+			<entry dst="0" T="1" next="3"/>
+			<entry dst="1" T="1" next="3"/>
+			<entry dst="2" T="1" next="3"/>
+			<entry dst="3" T="1" next="3"/>
+			<entry dst="4" T="1" next="3"/>
+			<entry dst="6" T="1" next="6"/>
+			<entry dst="7" T="1" next="3"/>
+			<entry dst="8" T="1" next="3"/>
+			<entry dst="9" T="1" next="3"/>
+			<entry dst="10" T="1" next="6"/>
+	</Tset>
+	</Node>
+	<Node id="6">
+		<Tset>
+			<entry dst="0" T="0" next="2"/>
+			<entry dst="1" T="0" next="2"/>
+			<entry dst="2" T="0" next="2"/>
+			<entry dst="3" T="0" next="2"/>
+			<entry dst="4" T="0" next="4"/>
+			<entry dst="5" T="0" next="5"/>
+			<entry dst="7" T="0" next="10"/>
+			<entry dst="8" T="0" next="4"/>
+			<entry dst="9" T="0" next="10"/>
+			<entry dst="10" T="0" next="10"/>
+			<entry dst="0" T="1" next="2"/>
+			<entry dst="1" T="1" next="2"/>
+			<entry dst="2" T="1" next="2"/>
+			<entry dst="3" T="1" next="5"/>
+			<entry dst="4" T="1" next="4"/>
+			<entry dst="5" T="1" next="5"/>
+			<entry dst="7" T="1" next="4"/>
+			<entry dst="8" T="1" next="2"/>
+			<entry dst="9" T="1" next="2"/>
+			<entry dst="10" T="1" next="10"/>
+	</Tset>
+	</Node>
+	<Node id="7">
+		<Tset>
+			<entry dst="0" T="0" next="8"/>
+			<entry dst="1" T="0" next="8"/>
+			<entry dst="2" T="0" next="10"/>
+			<entry dst="3" T="0" next="8"/>
+			<entry dst="4" T="0" next="4"/>
+			<entry dst="5" T="0" next="10"/>
+			<entry dst="6" T="0" next="10"/>
+			<entry dst="8" T="0" next="8"/>
+			<entry dst="9" T="0" next="9"/>
+			<entry dst="10" T="0" next="10"/>
+			<entry dst="0" T="1" next="4"/>
+			<entry dst="1" T="1" next="4"/>
+			<entry dst="2" T="1" next="4"/>
+			<entry dst="3" T="1" next="4"/>
+			<entry dst="4" T="1" next="4"/>
+			<entry dst="5" T="1" next="4"/>
+			<entry dst="6" T="1" next="4"/>
+			<entry dst="8" T="1" next="8"/>
+			<entry dst="9" T="1" next="9"/>
+			<entry dst="10" T="1" next="10"/>
+	</Tset>
+	</Node>
+	<Node id="8">
+		<Tset>
+			<entry dst="0" T="0" next="0"/>
+			<entry dst="1" T="0" next="1"/>
+			<entry dst="2" T="0" next="1"/>
+			<entry dst="3" T="0" next="0"/>
+			<entry dst="4" T="0" next="7"/>
+			<entry dst="5" T="0" next="0"/>
+			<entry dst="6" T="0" next="7"/>
+			<entry dst="7" T="0" next="7"/>
+			<entry dst="9" T="0" next="9"/>
+			<entry dst="10" T="0" next="7"/>
+			<entry dst="0" T="1" next="0"/>
+			<entry dst="1" T="1" next="1"/>
+			<entry dst="2" T="1" next="1"/>
+			<entry dst="3" T="1" next="0"/>
+			<entry dst="4" T="1" next="1"/>
+			<entry dst="5" T="1" next="0"/>
+			<entry dst="6" T="1" next="1"/>
+			<entry dst="7" T="1" next="7"/>
+			<entry dst="9" T="1" next="9"/>
+			<entry dst="10" T="1" next="1"/>
+	</Tset>
+	</Node>
+	<Node id="9">
+		<Tset>
+			<entry dst="0" T="0" next="8"/>
+			<entry dst="1" T="0" next="8"/>
+			<entry dst="2" T="0" next="8"/>
+			<entry dst="3" T="0" next="8"/>
+			<entry dst="4" T="0" next="7"/>
+			<entry dst="5" T="0" next="7"/>
+			<entry dst="6" T="0" next="7"/>
+			<entry dst="7" T="0" next="7"/>
+			<entry dst="8" T="0" next="8"/>
+			<entry dst="10" T="0" next="7"/>
+			<entry dst="0" T="1" next="8"/>
+			<entry dst="1" T="1" next="8"/>
+			<entry dst="2" T="1" next="8"/>
+			<entry dst="3" T="1" next="8"/>
+			<entry dst="4" T="1" next="8"/>
+			<entry dst="5" T="1" next="8"/>
+			<entry dst="6" T="1" next="8"/>
+			<entry dst="7" T="1" next="7"/>
+			<entry dst="8" T="1" next="8"/>
+			<entry dst="10" T="1" next="7"/>
+	</Tset>
+	</Node>
+	<Node id="10">
+		<Tset>
+			<entry dst="0" T="0" next="4"/>
+			<entry dst="1" T="0" next="4"/>
+			<entry dst="2" T="0" next="6"/>
+			<entry dst="3" T="0" next="6"/>
+			<entry dst="4" T="0" next="4"/>
+			<entry dst="5" T="0" next="6"/>
+			<entry dst="6" T="0" next="6"/>
+			<entry dst="7" T="0" next="7"/>
+			<entry dst="8" T="0" next="7"/>
+			<entry dst="9" T="0" next="7"/>
+			<entry dst="0" T="1" next="4"/>
+			<entry dst="1" T="1" next="4"/>
+			<entry dst="2" T="1" next="4"/>
+			<entry dst="3" T="1" next="4"/>
+			<entry dst="4" T="1" next="4"/>
+			<entry dst="5" T="1" next="6"/>
+			<entry dst="6" T="1" next="6"/>
+			<entry dst="7" T="1" next="7"/>
+			<entry dst="8" T="1" next="4"/>
+			<entry dst="9" T="1" next="7"/>
+	</Tset>
+	</Node>
+</FWDT>

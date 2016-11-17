@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ConnectionSet>
+  <SimTime t="0">
+    <Connection src="A_Fabric" dst="D_Fabric" qosReq="1"/>
+    <Connection src="B_Fabric" dst="D_Fabric" qosReq="1"/>
+    <Connection src="C_Fabric" dst="E_Fabric" qosReq="1"/>
+    <Connection src="D_Fabric" dst="F_Fabric" qosReq="1"/>
+    <Connection src="E_Fabric" dst="F_Fabric" qosReq="1"/>
+  </SimTime>
+  
+  <SimTime t="110">
+    <Connection src="A_Net" dst="B_Net" qosReq="9"/>
+    <Connection src="A_Net" dst="C_Net" qosReq="9"/>
+    <Connection src="A_Net" dst="D_Net" qosReq="9"/>
+    <Connection src="A_Net" dst="E_Net" qosReq="9"/>
+    <Connection src="A_Net" dst="F_Net" qosReq="9"/>
+    <Connection src="B_Net" dst="C_Net" qosReq="9"/>
+    <Connection src="B_Net" dst="D_Net" qosReq="9"/>
+    <Connection src="B_Net" dst="E_Net" qosReq="9"/>
+    <Connection src="B_Net" dst="F_Net" qosReq="9"/>
+    <Connection src="C_Net" dst="D_Net" qosReq="9"/>
+    <Connection src="C_Net" dst="E_Net" qosReq="9"/>
+    <Connection src="C_Net" dst="F_Net" qosReq="9"/>
+    <Connection src="D_Net" dst="E_Net" qosReq="9"/>
+    <Connection src="D_Net" dst="F_Net" qosReq="9"/>
+    <Connection src="E_Net" dst="F_Net" qosReq="9"/>
+  </SimTime>
+  
+  <SimTime t="120">
+    <Connection src="A_Net" dst="B_Net" qosReq="4"/>
+    <Connection src="A_Net" dst="C_Net" qosReq="4"/>
+    <Connection src="A_Net" dst="D_Net" qosReq="4"/>
+    <Connection src="A_Net" dst="E_Net" qosReq="4"/>
+    <Connection src="A_Net" dst="F_Net" qosReq="4"/>
+    <Connection src="B_Net" dst="C_Net" qosReq="4"/>
+    <Connection src="B_Net" dst="D_Net" qosReq="4"/>
+    <Connection src="B_Net" dst="E_Net" qosReq="4"/>
+    <Connection src="B_Net" dst="F_Net" qosReq="4"/>
+    <Connection src="C_Net" dst="D_Net" qosReq="4"/>
+    <Connection src="C_Net" dst="E_Net" qosReq="4"/>
+    <Connection src="C_Net" dst="F_Net" qosReq="4"/>
+    <Connection src="D_Net" dst="E_Net" qosReq="4"/>
+    <Connection src="D_Net" dst="F_Net" qosReq="4"/>
+    <Connection src="E_Net" dst="F_Net" qosReq="4"/>
+  </SimTime>
+  
+  <SimTime t="130">
+    <Connection src="A_Net" dst="B_Net" qosReq="2"/>
+    <Connection src="A_Net" dst="C_Net" qosReq="2"/>
+    <Connection src="A_Net" dst="D_Net" qosReq="2"/>
+    <Connection src="A_Net" dst="E_Net" qosReq="2"/>
+    <Connection src="A_Net" dst="F_Net" qosReq="2"/>
+    <Connection src="B_Net" dst="C_Net" qosReq="2"/>
+    <Connection src="B_Net" dst="D_Net" qosReq="2"/>
+    <Connection src="B_Net" dst="E_Net" qosReq="2"/>
+    <Connection src="B_Net" dst="F_Net" qosReq="2"/>
+    <Connection src="C_Net" dst="D_Net" qosReq="2"/>
+    <Connection src="C_Net" dst="E_Net" qosReq="2"/>
+    <Connection src="C_Net" dst="F_Net" qosReq="2"/>
+    <Connection src="D_Net" dst="E_Net" qosReq="2"/>
+    <Connection src="D_Net" dst="F_Net" qosReq="2"/>
+    <Connection src="E_Net" dst="F_Net" qosReq="2"/>
+  </SimTime>
+</ConnectionSet>

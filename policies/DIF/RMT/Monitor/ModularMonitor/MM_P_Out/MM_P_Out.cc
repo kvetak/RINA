@@ -75,7 +75,7 @@ RMTQueue * MM_P_Out::getnextQueue(RMTPort * p) {
 
     if(sumPrior<=0) { return NULL; }
 
-    int until = intuniform(0, sumPrior);
+    int until = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, sumPrior);
     sumPrior = 0;
     RMTQueue * q = NULL;
     for(auto pQ : portQueues[p]){

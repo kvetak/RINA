@@ -209,19 +209,19 @@ void AESender::handleSelfMessage(cMessage *msg) {
 
         //Schedule ComRequest
         cMessage* m = new cMessage(S_TIM_COM);
-        scheduleAt(simTime()+sendAfter+uniform(0,rate), m);
+        scheduleAt(simTime()+sendAfter+omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0,rate), m);
     }
     else if ( !strcmp(msg->getName(), S_TIM_STOP) ) {
         sendDeallocationRequest(FlowObject);
     }
     else if ( !strcmp(msg->getName(), S_TIM_COM) ) {
         if(stopAt > simTime()){
-            int tburst = intuniform(1,pduburst);
+            int tburst = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 1,pduburst);
 
             double msgWait = tburst*rate;
             for(int i = 0; i < tburst; i++){
-                int msgSize = size + intuniform(-sizevar,sizevar);
-                msgWait += uniform(-ratevar,ratevar);
+                int msgSize = size + omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), -sizevar,sizevar);
+                msgWait += omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), -ratevar,ratevar);
                 //Create PING messsage
                 CDAP_M_Read* ping = new PingMsgg();
 

@@ -179,7 +179,7 @@ void MM_DQ_Out::pduInsertered(RMTQueue * q, RMTPort * p) {
             qd->lastUrgency = maxPriority-qc->defPriority;
         } else {
             int cPrio = qc->defPriority;
-            double r = uniform(0,1);
+            double r = omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0,1);
 
             for(UrgLimit & ul : dl->urgList) {
                 if(ul.limit < r) { cPrio = ul.urg; }

@@ -1,0 +1,136 @@
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
+
+#include "GRE_Clos2R.h"
+
+namespace GRE_Clos {
+
+Register_Class(GRE_ClosR2);
+
+using namespace std;
+using namespace common_GraphCL;
+
+// A new flow has been inserted/or removed
+void GRE_ClosR2::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
+    string dst = addr.getIpcAddress().getName();
+    addr_t d = parseRawAddr(dst);
+    index_t id = getZone(d)-f;
+
+    fwd->addPort(id, port);
+
+    neiPortsCurrent[d] = port;
+    neiPorts[d].insert(port);
+    if(neiPorts[d].size() == 1){
+        //aliveNeis[id] = true;
+        //resetNeiGroups();
+
+        //Start Link
+        rt->onLink(neiLinks[d]);
+    }
+
+    neiPortsCurrent[d] = port;
+    neiPorts[d].insert(port);
+}
+void GRE_ClosR2::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * port){
+    std::string dst = addr.getIpcAddress().getName();
+    addr_t d = parseRawAddr(dst);
+    index_t id = getZone(d)-f;
+
+    neiPorts[d].erase(port);
+    if(neiPorts[d].size() <= 0){
+        fwd->removePort(id);
+        fwd->unsetNeighbour(d);
+        neiPortsCurrent[d] = nullptr;
+
+        //Stop Link
+        rt->offLink(neiLinks[d]);
+    } else {
+        if(neiPortsCurrent[d] == port) {
+            port_t p = * neiPorts[d].begin();
+            neiPortsCurrent[d] = p;
+            fwd->addPort(id, port);
+        }
+    }
+}
+
+//Routing has processes a routing update
+void GRE_ClosR2::routingUpdated(){
+    cout << hex;
+    cout << "Routing updated "<< (myaddr) << endl;
+    nodesStatus st = rt->getProblems();
+    for(elink_t & l : st.ownFailures) {
+        cout << "  - Own " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    for(elink_t & l : st.othersFailures) {
+        cout <<"  - Others " << l
+                << " - "<< (getESrc(l))<< " -> "<< (getEDst(l))
+                << endl;
+    }
+    cout << dec;
+}
+
+// Called after initialize
+void GRE_ClosR2::onPolicyInit(){
+    f = par("fabrics").longValue();
+    p = par("pods").longValue();
+    s = par("spines").longValue();
+    t = par("tors").longValue();
+
+    //Set Forwarding policy
+    fwd = getRINAModule<Clos2 *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
+
+    string dif = getModuleByPath("^.^")->par("difName").stringValue();
+    rawAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
+    myaddr = parseRawAddr(rawAddr);
+    zone = getZone(myaddr);
+
+    fwd->setPadding(f);
+    fwd->setNumPods(p);
+
+    fwd->addPort(p-1, nullptr);
+    for(addr_t d = 0; d < p; d++) {
+        fwd->setNeighbour(getAddr(d+f, zone),d);
+    }
+
+    //Set Routing policy
+    rt = getRINAModule<eRouting *>(this, 2, {MOD_POL_ROUTING});
+
+    for(addr_t d = 0; d < p; d++) {
+        addr_t dst_addr = getAddr(d+f, zone);
+        elink_t dst_link = getELink(myaddr, dst_addr);
+
+        std::stringstream sstream;
+        sstream << std::hex << dst_addr;
+        std::string dst_raw = sstream.str();
+        while(dst_raw.size()<4) { dst_raw = "0"+dst_raw; }
+
+        rt->registerLink(dst_link, Address(dst_raw.c_str(), dif.c_str()));
+        neiLinks[dst_addr] = dst_link;
+
+        if(FailureTest::instance) { FailureTest::instance->registerLink(to_string(dst_link), this); }
+    }
+}
+
+void GRE_ClosR2::killLink(const string & link) {
+    rt->offLink(stoi(link));
+}
+
+void GRE_ClosR2::resurrectLink(const string &  link) {
+    rt->onLink(stoi(link));
+}
+
+}

@@ -191,9 +191,33 @@ cPacket* RMTQueue::dropLast()
     return dropped;
 }
 
+cPacket* RMTQueue::dropFirst()
+{
+    cPacket* dropped = queue.front();
+    bubble("Dropping a PDU...");
+    queue.pop_front();
+    redrawGUI();
+    return dropped;
+}
+
 void RMTQueue::markCongestionOnLast()
 {
     cPacket* msg = queue.back();
+
+    if (dynamic_cast<PDU*>(msg) != nullptr)
+    {
+        PDU* pdu = (PDU*) msg;
+        pdu->setFlags(pdu->getFlags() | ECN_FLAG);
+    }
+    else
+    {
+        EV << "The message isn't a PDU, cannot apply marking!" << endl;
+    }
+}
+
+void RMTQueue::markCongestionOnFirst()
+{
+    cPacket* msg = queue.front();
 
     if (dynamic_cast<PDU*>(msg) != nullptr)
     {

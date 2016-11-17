@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="0000_F">
+      <DIF difName="00_20" ipcAddress="0" />
+      <DIF difName="00_30" ipcAddress="0" />
+    </APN>
+    <APN apn="0001_F">
+      <DIF difName="01_20" ipcAddress="0" />
+      <DIF difName="01_30" ipcAddress="0" />
+    </APN>
+    
+    <APN apn="0100_F">
+      <DIF difName="10_21" ipcAddress="0" />
+      <DIF difName="10_31" ipcAddress="0" />
+    </APN>
+    <APN apn="0101_F">
+      <DIF difName="11_21" ipcAddress="0" />
+      <DIF difName="11_31" ipcAddress="0" />
+    </APN>
+    
+    <APN apn="0200_F">
+      <DIF difName="00_20" ipcAddress="1" />
+      <DIF difName="01_20" ipcAddress="1" />
+      <DIF difName="20_22" ipcAddress="1" />
+      <DIF difName="20_23" ipcAddress="1" />
+      <DIF difName="20_24" ipcAddress="1" />
+      <DIF difName="20_25" ipcAddress="1" />
+    </APN>
+    <APN apn="0201_F">
+      <DIF difName="10_21" ipcAddress="1" />
+      <DIF difName="11_21" ipcAddress="1" />
+      <DIF difName="21_22" ipcAddress="1" />
+      <DIF difName="21_23" ipcAddress="1" />
+      <DIF difName="21_24" ipcAddress="1" />
+      <DIF difName="21_25" ipcAddress="1" />
+    </APN>
+    
+    <APN apn="0202_F">
+      <DIF difName="20_22" ipcAddress="2" />
+      <DIF difName="21_22" ipcAddress="2" />
+      
+      <DIF difName="02_FE" ipcAddress="2" />
+    </APN>
+    <APN apn="0203_F">
+      <DIF difName="20_23" ipcAddress="2" />
+      <DIF difName="21_23" ipcAddress="2" />
+    </APN>
+    <APN apn="0204_F">
+      <DIF difName="20_24" ipcAddress="2" />
+      <DIF difName="21_24" ipcAddress="2" />
+    </APN>
+    <APN apn="0205_F">
+      <DIF difName="20_25" ipcAddress="2" />
+      <DIF difName="21_25" ipcAddress="2" />
+      
+      <DIF difName="02_FD" ipcAddress="2" />
+    </APN>
+    
+    
+    <APN apn="0300_F">
+      <DIF difName="00_30" ipcAddress="1" />
+      <DIF difName="01_30" ipcAddress="1" />
+      <DIF difName="30_32" ipcAddress="1" />
+      <DIF difName="30_33" ipcAddress="1" />
+      <DIF difName="30_34" ipcAddress="1" />
+      <DIF difName="30_35" ipcAddress="1" />
+    </APN>
+    <APN apn="0301_F">
+      <DIF difName="10_31" ipcAddress="1" />
+      <DIF difName="11_31" ipcAddress="1" />
+      <DIF difName="31_32" ipcAddress="1" />
+      <DIF difName="31_33" ipcAddress="1" />
+      <DIF difName="31_34" ipcAddress="1" />
+      <DIF difName="31_35" ipcAddress="1" />
+    </APN>
+    
+    <APN apn="0302_F">
+      <DIF difName="30_32" ipcAddress="2" />
+      <DIF difName="31_32" ipcAddress="2" />
+    </APN>
+    <APN apn="0303_F">
+      <DIF difName="30_33" ipcAddress="2" />
+      <DIF difName="31_33" ipcAddress="2" />
+      
+      <DIF difName="03_FD" ipcAddress="2" />
+    </APN>
+    <APN apn="0304_F">
+      <DIF difName="30_34" ipcAddress="2" />
+      <DIF difName="31_34" ipcAddress="2" />
+      
+      <DIF difName="03_FE" ipcAddress="2" />
+    </APN>
+    <APN apn="0305_F">
+      <DIF difName="30_35" ipcAddress="2" />
+      <DIF difName="31_35" ipcAddress="2" />
+    </APN>
+    
+    
+    <APN apn="02FE_F">
+      <DIF difName="02_FE" ipcAddress="3" />
+    </APN>
+    <APN apn="02FD_F">
+      <DIF difName="02_FD" ipcAddress="3" />
+    </APN>
+    <APN apn="03FE_F">
+      <DIF difName="03_FE" ipcAddress="3" />
+    </APN>
+    <APN apn="03FD_F">
+      <DIF difName="03_FD" ipcAddress="3" />
+    </APN>
+  </Directory>
+</DA>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<flows>
+	<set src = "A" dst = "B" V="2" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "A" dst = "C" V="2" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "A" dst = "D" V="1" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "A" dst = "E" V="1" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "A" dst = "F" V="1" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	
+	<set src = "B" dst = "A" V="0" D ="3" T="3" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "B" dst = "C" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "B" dst = "D" V="0" D ="5" T="5" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "B" dst = "E" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "B" dst = "F" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	
+	<set src = "C" dst = "A" V="0" D ="3" T="3" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "C" dst = "B" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "C" dst = "D" V="0" D ="1" T="1" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "C" dst = "E" V="0" D ="4" T="4" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "C" dst = "F" V="0" D ="1" T="1" Vq="A2" Dq="B1" Tq="C3"/>
+	
+	<set src = "D" dst = "A" V="0" D ="1" T="1" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "D" dst = "B" V="3" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "D" dst = "C" V="1" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "D" dst = "E" V="4" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "D" dst = "F" V="14" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	
+	<set src = "E" dst = "A" V="0" D ="1" T="1" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "E" dst = "B" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "E" dst = "C" V="2" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "E" dst = "D" V="0" D ="7" T="7" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "E" dst = "F" V="0" D ="28" T="28" Vq="A2" Dq="B1" Tq="C3"/>
+	
+	<set src = "F" dst = "A" V="0" D ="1" T="1" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "F" dst = "B" V="0" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "F" dst = "C" V="1" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "F" dst = "D" V="0" D ="28" T="28" Vq="A2" Dq="B1" Tq="C3"/>
+	<set src = "F" dst = "E" V="14" D ="0" T="0" Vq="A2" Dq="B1" Tq="C3"/>
+</flows>

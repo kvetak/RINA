@@ -122,11 +122,11 @@ vector<RMTPort * > MultiQoSTable::lookup(const Address &dst, const std::string& 
 string MultiQoSTable::toString(){
     std::ostringstream os;
 
-    os << this->getName()<<endl;
+    os << this->getFullPath()<<endl;
     for(const auto &qosTable : table) {
         os << "\tQoS :" << qosTable.first << endl;
         for(const auto & entry : qosTable.second) {
-            os << "\t\tQoS :" << entry.first << "  ->  ";
+            os << "\t\tDst :" << entry.first << "  ->  ";
             for(RMTPort * p : entry.second){
                 os << p->getParentModule()->getName() << "   ";
 
@@ -148,7 +148,7 @@ RMTPort * MultiQoSTable::search(const string & dst, const string & qos) {
         if(pS <= 0) { return nullptr; }
         if(pS == 1) { return vR.front(); }
 
-        int k = intuniform(0, pS-1);
+        int k = omnetpp::intuniform(omnetpp::getEnvir()->getRNG(0), 0, pS-1);
         return vR[k];
     } else {
         return search(dst, MA2QoS);
@@ -157,6 +157,7 @@ RMTPort * MultiQoSTable::search(const string & dst, const string & qos) {
 
 //Insert/Remove an entry
 void MultiQoSTable::addReplace(const std::string &addr, const std::string &qosId, std::vector<RMTPort * > ports) {
+
     vector<RMTPort*> old;
 
     for(RMTPort * p : table[qosId][addr]) {

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<DA>
+  <Directory>
+    <APN apn="A_Fabric">
+      <DIF difName="AD" ipcAddress="A" />
+    </APN>
+    <APN apn="B_Fabric">
+      <DIF difName="BD" ipcAddress="B" />
+    </APN>
+    <APN apn="C_Fabric">
+      <DIF difName="CE" ipcAddress="C" />
+    </APN>
+    <APN apn="D_Fabric">
+      <DIF difName="AD" ipcAddress="D" />
+      <DIF difName="BD" ipcAddress="D" />
+      <DIF difName="DF" ipcAddress="D" />
+    </APN>
+    <APN apn="E_Fabric">
+      <DIF difName="CE" ipcAddress="E" />
+      <DIF difName="EF" ipcAddress="E" />
+    </APN>
+    <APN apn="F_Fabric">
+      <DIF difName="DF" ipcAddress="F" />
+      <DIF difName="EF" ipcAddress="F" />
+    </APN>
+    
+    
+    <APN apn="A_Net">
+      <DIF difName="Fabric" ipcAddress="A" />
+    </APN>
+    <APN apn="B_Net">
+      <DIF difName="Fabric" ipcAddress="B" />
+    </APN>
+    <APN apn="C_Net">
+      <DIF difName="Fabric" ipcAddress="C" />
+    </APN>
+    <APN apn="D_Net">
+      <DIF difName="Fabric" ipcAddress="D" />
+    </APN>
+    <APN apn="E_Net">
+      <DIF difName="Fabric" ipcAddress="E" />
+    </APN>
+    <APN apn="F_Net">
+      <DIF difName="Fabric" ipcAddress="F" />
+    </APN>
+    
+    
+  </Directory>
+</DA>
