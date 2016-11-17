@@ -22,9 +22,6 @@ simple RoutingNotifier
 {
     parameters:
     	@display("i=block/departure;is=s");
-<<<<<<< HEAD
         @signal[Routing-Update](type=cPacket?);
-=======
     	@signal[Routing-UpdateReceived](type=IntRoutingUpdate?);
->>>>>>> refs/remotes/origin/master
 }
