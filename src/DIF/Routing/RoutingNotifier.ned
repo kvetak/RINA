@@ -22,4 +22,5 @@ simple RoutingNotifier
 {
     parameters:
     	@display("i=block/departure;is=s");
+    	@signal[Routing-UpdateReceived](type=IntRoutingUpdate?);
 }

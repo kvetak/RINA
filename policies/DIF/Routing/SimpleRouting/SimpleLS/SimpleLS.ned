@@ -29,6 +29,9 @@ simple SimpleLS like IntRouting
     parameters:
         @class(SimpleLS::SimpleLS);
         @display("i=block/socket");
+		//Mandatory signal to implement
+        @signal[Routing-Update](type=IntRoutingUpdate?); 
+        
         string myAddr = default("");
         int infMetric = default(32);
         

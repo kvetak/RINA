@@ -26,4 +26,6 @@ moduleinterface IntRouting
 {
     parameters:
         @display("i=block/socket");
+        //Mandatory signal to implement
+        @signal[Routing-Update](type=IntRoutingUpdate?);        
 }
