@@ -38,7 +38,11 @@ class MockEFCPI : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
 
 
+
+
   private:
+    virtual ~MockEFCPI();
+
     /* To RIBd */
     cGate* northI;
     cGate* northO;

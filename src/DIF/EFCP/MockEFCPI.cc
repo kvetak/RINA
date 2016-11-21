@@ -79,3 +79,11 @@ void MockEFCPI::handleMessage(cMessage *msg)
   }
 
 }
+
+MockEFCPI::~MockEFCPI()
+{
+  delete connID;
+
+
+
+}

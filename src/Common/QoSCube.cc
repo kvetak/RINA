@@ -467,6 +467,9 @@ std::string QoSCube::info() const {
     else
         os << this->getResiliencyFactor() << " usecs";
 
+    os << "\n  EFCP Policy Set:";
+       os << this->getEfcpPolicies();
+
     return os.str();
 }
 

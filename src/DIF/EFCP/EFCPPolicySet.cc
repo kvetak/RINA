@@ -295,3 +295,84 @@ bool EFCPPolicySet::init(cXMLElement* parent)
   return true;
 }
 
+
+std::string EFCPPolicySet::info() const {
+    std::ostringstream os;
+
+    os << "\n   Inititial Seq Num = ";
+        os << this->getInitialSeqNum();
+
+        os << "\n   RcvrInactiv = ";
+        os << this->getRcvrInactiv();
+
+        os << "\n   RTT = ";
+        os << this->getRttEstimat();
+
+        os << "\n   SenderInactiv = ";
+        os << this->getSenderInactiv();
+
+        os << "\n   SndFcOverrun = ";
+        os << this->getSndFcOverrun();
+
+        os << "\n   RcvFcOverrun = ";
+        os << this->getRcvFcOverrun();
+
+        os << "\n   LostControlPDU = ";
+        os << this->getLostControlPdu();
+
+        os << "\n   NoOverridePeak = ";
+        os << this->getNoOverridePeak();
+
+        os << "\n   NoRateSlowDown = ";
+        os << this->getNoRateSlowDown();
+
+        os << "\n   RateReduction = ";
+        os << this->getRateReduction();
+
+        os << "\n   RcvrAck = ";
+        os << this->getRcvrAck();
+
+        os << "\n   RcvrAckControl = ";
+        os << this->getRcvrControlAck();
+
+
+        os << "\n   RcvrFC = ";
+        os << this->getRcvrFc();
+
+        os << "\n   ReceivingFC = ";
+        os << this->getReceivingFc();
+
+        os << "\n   ReconcileFC = ";
+        os << this->getReconcileFc();
+
+        os << "\n   SenderAck = ";
+        os << this->getSenderAck();
+
+        os << "\n   SendingAck = ";
+                os << this->getSendingAck();
+
+        os << "\n   TxControl = ";
+        os << this->getTxControl();
+
+        os << "\n   RxTimerExpiry = ";
+        os << this->getRxTimerExpiry();
+
+        os << "\n   ECN = ";
+        os << this->getEcn();
+
+        os << "\n   ECNSlowDown = ";
+        os << this->getEcnSlowDown();
+
+
+
+    return os.str();
+}
+
+
+std::ostream& operator <<(std::ostream& os, const EFCPPolicySet& efcpPolicySet) {
+    return os << efcpPolicySet.info();
+}
+
+std::ostream& operator <<(std::ostream& os, const EFCPPolicySet* efcpPolicySet) {
+    return os << efcpPolicySet->info();
+}

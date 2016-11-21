@@ -268,6 +268,7 @@ std::vector<DTCPRxExpiryTimer*>* DTCPState::getRxQ()
 
 void DTCPState::pushBackToRxQ(DTCPRxExpiryTimer* timer)
 {
+
   rxQ.push_back(timer);
 }
 
@@ -291,9 +292,13 @@ void DTCPState::clearRxQ()
         take((*it)->getPdu());
         delete (*it)->getPdu();
       }
-      drop((*it));
-      cancelAndDelete((*it));
-      it = rxQ.erase(it);
+//      drop((*it));
+//      if((*it)->isScheduled()){
+//        take((*it));
+//        cancelAndDelete((*it));
+//      }
+        it = rxQ.erase(it);
+
     }
 }
 

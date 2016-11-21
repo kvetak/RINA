@@ -84,6 +84,11 @@ class EFCPPolicySet
     const char* getRcvFcOverrun() const;
     const char* getEcn() const;
     const char* getEcnSlowDown() const;
+
+    std::string info() const;
 };
+
+std::ostream& operator<< (std::ostream& os, const EFCPPolicySet& efcpPolicySet);
+std::ostream& operator<< (std::ostream& os, const EFCPPolicySet* efcpPolicySet);
 
 #endif /* EFCPPOLICYSET_H_ */

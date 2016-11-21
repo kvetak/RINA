@@ -416,12 +416,18 @@
             <PartialDelivery>0</PartialDelivery>
             <IncompleteDelivery>0</IncompleteDelivery>
             <ForceOrder>0</ForceOrder>
+            <RxOn>1</RxOn>
             <MaxAllowableGap>0</MaxAllowableGap>
             <Delay>1000000</Delay>
             <Jitter>500000</Jitter>
             <CostTime>0</CostTime>
             <CostBits>0</CostBits>
             <ATime>0</ATime>
+            <EFCPPolicySet>
+				<SenderAck>SenderAckPolicyTCP</SenderAck>
+				<RTTEstimator>RTTEstimatorPolicyTCP</RTTEstimator>
+				<TxControl>TxControlPolicyTCPTahoe</TxControl>
+			</EFCPPolicySet>
         </QosCube>
 	</QoSCubesSet>
 </Configuration>
