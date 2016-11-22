@@ -54,14 +54,22 @@ protected:
     void outStats(const map<string, map<string, map<string, map<int, stats> > > > & st, fstream & out);
     void coutStats(const map<string, map<string, map<string, map<int, stats> > > > & st);
 
+    void outDelays(fstream & out);
 
     bool recordTrace;
     fstream tracer;
     fstream flowsInfo;
 
+    bool recordTimes;
+    int interval_digits;
+    map<string, map<double, long long> > srcDstQoS_delay;
+
     //SRC-DST-QoS-FlowId -> globalFlowId
     map<string, map<string, map<string, map<int, long long> > > > globalFlowIds;
     long long nextGlobal;
     long long getGlobal(string src, string dst, string qos, int flowId);
+
+    double dround(double a, int ndigits);
 };
+
 

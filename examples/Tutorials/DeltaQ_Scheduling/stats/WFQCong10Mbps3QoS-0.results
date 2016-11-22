@@ -1,0 +1,98 @@
+Voice
+:: A -> B \ A2 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 10 / 0 / 0 %
+:: A -> B \ A2 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 1 / 0 / 0 %
+:: A -> C \ A2 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 1 / 0 / 0 %
+:: A -> C \ A2 [3]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 10 / 0 / 0 %
+
+Full request
+
+Requests
+:: B -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 4 / 0 / 0 %
+:: B -> A \ B1 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 4 / 0 / 0 %
+:: B -> A \ B1 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 3 / 0 / 0 %
+:: B -> A \ C3 [3]
+   min/avg/max | 0.02176 / 0.0252784 / 0.02884 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [4]
+   min/avg/max | 0.02176 / 0.0252803 / 0.0311114 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [5]
+   min/avg/max | 0.02176 / 0.0252784 / 0.02884 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [6]
+   min/avg/max | 0.02176 / 0.0252784 / 0.02884 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [7]
+   min/avg/max | 0.02176 / 0.0252784 / 0.02884 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 4 / 0 / 0 %
+:: C -> A \ B1 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 4 / 0 / 0 %
+:: C -> A \ B1 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 3 / 0 / 0 %
+:: C -> A \ C3 [3]
+   min/avg/max | 0.042112 / 0.0462531 / 0.0535441 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [4]
+   min/avg/max | 0.042112 / 0.0462507 / 0.05044 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [5]
+   min/avg/max | 0.042112 / 0.0462507 / 0.05044 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [6]
+   min/avg/max | 0.042112 / 0.0462519 / 0.0516745 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [7]
+   min/avg/max | 0.042112 / 0.046334 / 0.050608 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+
+Data
+:: A -> B \ C3 [3]
+   min/avg/max | 0.185312 / 0.330368 / 0.577471 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [4]
+   min/avg/max | 0.35936 / 0.359377 / 0.76208 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [5]
+   min/avg/max | 0.14 / 0.177632 / 0.817321 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [6]
+   min/avg/max | 0.172885 / 0.172897 / 0.661018 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [7]
+   min/avg/max | 0.166258 / 0.166328 / 0.76208 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [3]
+   min/avg/max | 0.358651 / 0.358797 / 1.10468 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [4]
+   min/avg/max | 0.255587 / 0.405336 / 1.1059 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [5]
+   min/avg/max | 0.260635 / 0.361732 / 0.947132 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [6]
+   min/avg/max | 0.361171 / 0.361288 / 0.98384 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [7]
+   min/avg/max | 0.202315 / 0.243417 / 0.92048 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+

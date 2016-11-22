@@ -42,14 +42,19 @@ simple QTAMonitor like IntRMTQMonitorPolicy
         
         bool recordStats = default(false);
         bool saveStats = default(false);
+        
         bool pdu_IO = default(false);
         bool data_IO = default(false);
+        
         bool pdu_IOi = default(false);
         bool data_IOi = default(false);
+        
         bool pdu_in_IO = default(false);
         bool data_in_IO = default(false);
+        
         bool pdu_in_IOi = default(false);
         bool data_in_IOi = default(false);
+        
         double record_interval = default(0.1);	//s
         double first_interval = default(0.0); 	//s
         double last_interval = default(10.0); 	//s

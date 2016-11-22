@@ -28,4 +28,6 @@ simple VDT_Listener {
         
         bool recordTrace = default(false);
         bool printAtEnd = default(false);
+        bool recordDelay = default(false);
+        int interval_digits = default(2);
 }

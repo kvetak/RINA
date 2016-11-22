@@ -12,8 +12,9 @@ public:
     seq_t seq;      // Sequence number
     simtime_t t0;   // Creation time
     long long pduId;// PDU Id
+    bool listen;
 
     virtual ~Flow_Data(){}
     Flow_Data(int f, int l, seq_t s):
-        flow(f), len(l), seq(s), t0(simTime()), pduId(0) {}
+        flow(f), len(l), seq(s), t0(simTime()), pduId(0), listen(false) {}
 };

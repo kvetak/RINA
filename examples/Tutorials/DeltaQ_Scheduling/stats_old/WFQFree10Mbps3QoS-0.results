@@ -1,0 +1,1223 @@
+Voice
+:: A -> B \ A2 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 489153 / 0 / 0 %
+:: A -> B \ A2 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 489648 / 0 / 0 %
+:: A -> C \ A2 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 503114 / 0 / 0 %
+:: A -> C \ A2 [3]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 505386 / 0 / 0 %
+:: A -> D \ A2 [4]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 499212 / 0 / 0 %
+:: A -> E \ A2 [5]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 497104 / 0 / 0 %
+:: A -> F \ A2 [6]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 500328 / 0 / 0 %
+:: D -> B \ A2 [3]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 505531 / 0 / 0 %
+:: D -> B \ A2 [4]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 501959 / 0 / 0 %
+:: D -> B \ A2 [5]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 511622 / 0 / 0 %
+:: D -> C \ A2 [6]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 490954 / 0 / 0 %
+:: D -> E \ A2 [7]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 515257 / 0 / 0 %
+:: D -> E \ A2 [8]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 490315 / 0 / 0 %
+:: D -> E \ A2 [9]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 501037 / 0 / 0 %
+:: D -> E \ A2 [10]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 490554 / 0 / 0 %
+:: D -> F \ A2 [11]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 500692 / 0 / 0 %
+:: D -> F \ A2 [12]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 511139 / 0 / 0 %
+:: D -> F \ A2 [13]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 508806 / 0 / 0 %
+:: D -> F \ A2 [14]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 499616 / 0 / 0 %
+:: D -> F \ A2 [15]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 492125 / 0 / 0 %
+:: D -> F \ A2 [16]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 497585 / 0 / 0 %
+:: D -> F \ A2 [17]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 492125 / 0 / 0 %
+:: D -> F \ A2 [18]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 490192 / 0 / 0 %
+:: D -> F \ A2 [19]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 484152 / 0 / 0 %
+:: D -> F \ A2 [20]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 492763 / 0 / 0 %
+:: D -> F \ A2 [21]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 500383 / 0 / 0 %
+:: D -> F \ A2 [22]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 506766 / 0 / 0 %
+:: D -> F \ A2 [23]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 491792 / 0 / 0 %
+:: D -> F \ A2 [24]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 503838 / 0 / 0 %
+:: E -> C \ A2 [3]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 506389 / 0 / 0 %
+:: E -> C \ A2 [4]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 497636 / 0 / 0 %
+:: F -> C \ A2 [3]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 495266 / 0 / 0 %
+:: F -> E \ A2 [78]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 498484 / 0 / 0 %
+:: F -> E \ A2 [79]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 482656 / 0 / 0 %
+:: F -> E \ A2 [80]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 488746 / 0 / 0 %
+:: F -> E \ A2 [81]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 502857 / 0 / 0 %
+:: F -> E \ A2 [82]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 506415 / 0 / 0 %
+:: F -> E \ A2 [83]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 504553 / 0 / 0 %
+:: F -> E \ A2 [84]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 506522 / 0 / 0 %
+:: F -> E \ A2 [85]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 501283 / 0 / 0 %
+:: F -> E \ A2 [86]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 505611 / 0 / 0 %
+:: F -> E \ A2 [87]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 507602 / 0 / 0 %
+:: F -> E \ A2 [88]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 501709 / 0 / 0 %
+:: F -> E \ A2 [89]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 508652 / 0 / 0 %
+:: F -> E \ A2 [90]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 498531 / 0 / 0 %
+:: F -> E \ A2 [91]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 508018 / 0 / 0 %
+
+Full request
+
+Requests
+:: B -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> A \ B1 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> A \ B1 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> A \ C3 [3]
+   min/avg/max | 0.02176 / 0.0248614 / 0.028 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [4]
+   min/avg/max | 0.02176 / 0.0248623 / 0.0294314 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [5]
+   min/avg/max | 0.02176 / 0.0248614 / 0.028 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [6]
+   min/avg/max | 0.02176 / 0.0248614 / 0.028 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> A \ C3 [7]
+   min/avg/max | 0.02176 / 0.0248614 / 0.028 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ B1 [8]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> D \ B1 [9]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> D \ B1 [10]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> D \ B1 [11]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> D \ B1 [12]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: B -> D \ C3 [13]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [14]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [15]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [16]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [17]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [18]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [19]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: B -> D \ C3 [20]
+   min/avg/max | 0.01088 / 0.0124311 / 0.0146489 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> A \ B1 [1]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> A \ B1 [2]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> A \ C3 [3]
+   min/avg/max | 0.042112 / 0.0458362 / 0.053778 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [4]
+   min/avg/max | 0.042112 / 0.045835 / 0.0514494 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [5]
+   min/avg/max | 0.042112 / 0.0475166 / 0.052228 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [6]
+   min/avg/max | 0.042112 / 0.0458351 / 0.0519084 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> A \ C3 [7]
+   min/avg/max | 0.042112 / 0.0458337 / 0.0496 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> D \ B1 [8]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> D \ C3 [9]
+   min/avg/max | 0.031232 / 0.033403 / 0.0356 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> D \ C3 [10]
+   min/avg/max | 0.031232 / 0.033403 / 0.0356 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ B1 [11]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> E \ B1 [12]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> E \ B1 [13]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> E \ B1 [14]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> E \ C3 [15]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ C3 [16]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ C3 [17]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ C3 [18]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ C3 [19]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> E \ C3 [20]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> F \ B1 [21]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: C -> F \ C3 [22]
+   min/avg/max | 0.021056 / 0.0229169 / 0.0248 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: C -> F \ C3 [23]
+   min/avg/max | 0.021056 / 0.0229169 / 0.0248 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: D -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: D -> A \ C3 [1]
+   min/avg/max | 0.01088 / 0.0124318 / 0.0157925 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: D -> A \ C3 [2]
+   min/avg/max | 0.01088 / 0.0124307 / 0.014 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> A \ C3 [1]
+   min/avg/max | 0.031232 / 0.0334031 / 0.0358339 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> A \ C3 [2]
+   min/avg/max | 0.031232 / 0.033403 / 0.0356 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ B1 [5]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [6]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [7]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [8]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [9]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [10]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ B1 [11]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> D \ C3 [12]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [13]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [14]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [15]
+   min/avg/max | 0.020352 / 0.021369 / 0.0224 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [16]
+   min/avg/max | 0.020352 / 0.0209724 / 0.0218708 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [17]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [18]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [19]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [20]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [21]
+   min/avg/max | 0.020352 / 0.0209723 / 0.0216 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [22]
+   min/avg/max | 0.020352 / 0.021369 / 0.0224 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> D \ C3 [23]
+   min/avg/max | 0.020352 / 0.021369 / 0.0224 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ B1 [24]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [25]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [26]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [27]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [28]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [29]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [30]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [31]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [32]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [33]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [34]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [35]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [36]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [37]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [38]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [39]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [40]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [41]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [42]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [43]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [44]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [45]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [46]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [47]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [48]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [49]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [50]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ B1 [51]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: E -> F \ C3 [52]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [53]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [54]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [55]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [56]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [57]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [58]
+   min/avg/max | 0.010176 / 0.0104862 / 0.0108148 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [59]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [60]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [61]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [62]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [63]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [64]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [65]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [66]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [67]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [68]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [69]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [70]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [71]
+   min/avg/max | 0.010176 / 0.0104862 / 0.0108933 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [72]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [73]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [74]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [75]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [76]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [77]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [78]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [79]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [80]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [81]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [82]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [83]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [84]
+   min/avg/max | 0.010176 / 0.0104864 / 0.0112071 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [85]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [86]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [87]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [88]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [89]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [90]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [91]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [92]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [93]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [94]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [95]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [96]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: E -> F \ C3 [97]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> A \ B1 [0]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> A \ C3 [1]
+   min/avg/max | 0.021056 / 0.0229169 / 0.0248 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> A \ C3 [2]
+   min/avg/max | 0.021056 / 0.0229169 / 0.0248 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ B1 [4]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [5]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [6]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [7]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [8]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [9]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [10]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [11]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [12]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [13]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [14]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [15]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [16]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [17]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [18]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [19]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [20]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [21]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [22]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [23]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [24]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [25]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [26]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [27]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [28]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [29]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [30]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ B1 [31]
+   min/avg/max | 5e+08 / -nan / 0 ms
+   sent/recv/% | 100 / 0 / 0 %
+:: F -> D \ C3 [32]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [33]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [34]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [35]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [36]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [37]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [38]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [39]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [40]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [41]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [42]
+   min/avg/max | 0.010176 / 0.0104866 / 0.0114949 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [43]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [44]
+   min/avg/max | 0.010176 / 0.0104862 / 0.010896 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [45]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [46]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [47]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [48]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [49]
+   min/avg/max | 0.010176 / 0.0104865 / 0.0114045 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [50]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [51]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [52]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [53]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [54]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [55]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [56]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [57]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [58]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [59]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [60]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [61]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [62]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [63]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [64]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [65]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [66]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [67]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [68]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [69]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [70]
+   min/avg/max | 0.010176 / 0.0104864 / 0.0112137 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [71]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [72]
+   min/avg/max | 0.010176 / 0.0104863 / 0.0109809 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [73]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [74]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [75]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [76]
+   min/avg/max | 0.010176 / 0.0104861 / 0.0108 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+:: F -> D \ C3 [77]
+   min/avg/max | 0.010176 / 0.0104862 / 0.0108545 ms
+   sent/recv/% | 1680 / 1680 / 100 %
+
+Data
+:: A -> B \ C3 [3]
+   min/avg/max | 0.14 / 0.256006 / 0.557544 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [4]
+   min/avg/max | 0.356 / 0.356009 / 0.752 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [5]
+   min/avg/max | 0.236 / 0.252516 / 0.801595 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [6]
+   min/avg/max | 0.176851 / 0.176863 / 0.647812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> B \ C3 [7]
+   min/avg/max | 0.296 / 0.296007 / 0.752 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [3]
+   min/avg/max | 0.3944 / 0.394413 / 1.0904 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [4]
+   min/avg/max | 0.24 / 0.454181 / 1.14725 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [5]
+   min/avg/max | 0.195427 / 0.255443 / 0.996212 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [6]
+   min/avg/max | 0.3344 / 0.334413 / 1.0904 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> C \ C3 [7]
+   min/avg/max | 0.255427 / 0.255443 / 0.9104 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> D \ C3 [1]
+   min/avg/max | 0.25 / 0.250006 / 0.466 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> D \ C3 [2]
+   min/avg/max | 0.07 / 0.0700069 / 0.346 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> E \ C3 [1]
+   min/avg/max | 0.176122 / 0.176134 / 0.8164 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> E \ C3 [2]
+   min/avg/max | 0.114 / 0.248128 / 0.696712 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> F \ C3 [1]
+   min/avg/max | 0.116 / 0.224005 / 0.537374 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: A -> F \ C3 [2]
+   min/avg/max | 0.092 / 0.200006 / 0.61996 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [13]
+   min/avg/max | 0.07 / 0.0700039 / 0.286 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [14]
+   min/avg/max | 0.07 / 0.0700039 / 0.286 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [15]
+   min/avg/max | 0.07 / 0.0865097 / 0.312536 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [16]
+   min/avg/max | 0.07 / 0.0700012 / 0.149494 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [17]
+   min/avg/max | 0.07 / 0.0700016 / 0.169223 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [18]
+   min/avg/max | 0.07 / 0.0700059 / 0.346 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [19]
+   min/avg/max | 0.07 / 0.0700077 / 0.406 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> B \ C3 [20]
+   min/avg/max | 0.07 / 0.0700052 / 0.346 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> C \ C3 [9]
+   min/avg/max | 0.124539 / 0.124548 / 0.467512 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> C \ C3 [10]
+   min/avg/max | 0.114 / 0.161436 / 0.583179 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [12]
+   min/avg/max | 0.0472 / 0.0472061 / 0.2904 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [13]
+   min/avg/max | 0.044 / 0.0712068 / 0.428973 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [14]
+   min/avg/max | 0.0472 / 0.0472063 / 0.3024 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [15]
+   min/avg/max | 0.0472 / 0.083208 / 0.476498 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [16]
+   min/avg/max | 0.0469292 / 0.0469379 / 0.422129 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [17]
+   min/avg/max | 0.058122 / 0.0581289 / 0.3624 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [18]
+   min/avg/max | 0.058122 / 0.0581299 / 0.3984 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [19]
+   min/avg/max | 0.044 / 0.0440059 / 0.3144 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [20]
+   min/avg/max | 0.0712 / 0.0952075 / 0.42532 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [21]
+   min/avg/max | 0.058122 / 0.0581286 / 0.3144 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [22]
+   min/avg/max | 0.0592 / 0.0952073 / 0.428696 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> E \ C3 [23]
+   min/avg/max | 0.044 / 0.0592069 / 0.414338 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [32]
+   min/avg/max | 0.031878 / 0.0318818 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [33]
+   min/avg/max | 0.022 / 0.0220052 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [34]
+   min/avg/max | 0.034 / 0.0340044 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [35]
+   min/avg/max | 0.046 / 0.0460041 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [36]
+   min/avg/max | 0.034 / 0.0340051 / 0.2532 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [37]
+   min/avg/max | 0.022 / 0.0220053 / 0.250063 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [38]
+   min/avg/max | 0.046 / 0.0460047 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [39]
+   min/avg/max | 0.022 / 0.0220045 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [40]
+   min/avg/max | 0.034 / 0.0340046 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [41]
+   min/avg/max | 0.022 / 0.0220044 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [42]
+   min/avg/max | 0.0333051 / 0.0333096 / 0.180505 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [43]
+   min/avg/max | 0.022 / 0.0220047 / 0.254817 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [44]
+   min/avg/max | 0.033904 / 0.0339088 / 0.229104 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [45]
+   min/avg/max | 0.022 / 0.0220049 / 0.243017 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [46]
+   min/avg/max | 0.022 / 0.022005 / 0.1932 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [47]
+   min/avg/max | 0.046 / 0.0460043 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [48]
+   min/avg/max | 0.0302439 / 0.0580016 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [49]
+   min/avg/max | 0.022 / 0.022005 / 0.27262 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [50]
+   min/avg/max | 0.022 / 0.023655 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [51]
+   min/avg/max | 0.031878 / 0.0318819 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [52]
+   min/avg/max | 0.0502664 / 0.0580023 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [53]
+   min/avg/max | 0.046 / 0.0580036 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [54]
+   min/avg/max | 0.022 / 0.0220049 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [55]
+   min/avg/max | 0.022 / 0.0428015 / 0.214 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [56]
+   min/avg/max | 0.034 / 0.0340053 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [57]
+   min/avg/max | 0.058 / 0.0580025 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [58]
+   min/avg/max | 0.034 / 0.0460037 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [59]
+   min/avg/max | 0.022 / 0.0580033 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [60]
+   min/avg/max | 0.046 / 0.0460042 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [61]
+   min/avg/max | 0.022 / 0.0228048 / 0.241982 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [62]
+   min/avg/max | 0.022 / 0.0220048 / 0.235562 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [63]
+   min/avg/max | 0.022 / 0.0304821 / 0.21368 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [64]
+   min/avg/max | 0.034 / 0.0340047 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [65]
+   min/avg/max | 0.0390854 / 0.0580018 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [66]
+   min/avg/max | 0.031878 / 0.0318813 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [67]
+   min/avg/max | 0.022 / 0.0220045 / 0.242522 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [68]
+   min/avg/max | 0.022 / 0.0220048 / 0.190327 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [69]
+   min/avg/max | 0.022 / 0.0220042 / 0.206161 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [70]
+   min/avg/max | 0.034 / 0.0340049 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [71]
+   min/avg/max | 0.031878 / 0.0318819 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [72]
+   min/avg/max | 0.022 / 0.0220039 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [73]
+   min/avg/max | 0.022 / 0.0220046 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [74]
+   min/avg/max | 0.022 / 0.0460041 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [75]
+   min/avg/max | 0.022 / 0.0220049 / 0.2412 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [76]
+   min/avg/max | 0.022 / 0.0220041 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: D -> F \ C3 [77]
+   min/avg/max | 0.022 / 0.0220051 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [15]
+   min/avg/max | 0.07 / 0.158137 / 0.213112 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [16]
+   min/avg/max | 0.07 / 0.070004 / 0.226 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [17]
+   min/avg/max | 0.07 / 0.0700059 / 0.286 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [18]
+   min/avg/max | 0.106 / 0.111028 / 0.255112 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [19]
+   min/avg/max | 0.07 / 0.0700042 / 0.226 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: E -> C \ C3 [20]
+   min/avg/max | 0.07 / 0.123028 / 0.226 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> C \ C3 [22]
+   min/avg/max | 0.100227 / 0.100235 / 0.4552 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> C \ C3 [23]
+   min/avg/max | 0.1192 / 0.119206 / 0.375366 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [52]
+   min/avg/max | 0.022 / 0.0220042 / 0.204302 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [53]
+   min/avg/max | 0.045471 / 0.0580018 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [54]
+   min/avg/max | 0.022 / 0.0220031 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [55]
+   min/avg/max | 0.022 / 0.022002 / 0.183495 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [56]
+   min/avg/max | 0.022 / 0.0220028 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [57]
+   min/avg/max | 0.022 / 0.022003 / 0.1452 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [58]
+   min/avg/max | 0.022 / 0.0220025 / 0.1092 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [59]
+   min/avg/max | 0.022 / 0.022004 / 0.1932 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [60]
+   min/avg/max | 0.022 / 0.0220041 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [61]
+   min/avg/max | 0.0257732 / 0.0257772 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [62]
+   min/avg/max | 0.032922 / 0.0329235 / 0.0852 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [63]
+   min/avg/max | 0.022 / 0.0220027 / 0.1212 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [64]
+   min/avg/max | 0.022 / 0.0220021 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [65]
+   min/avg/max | 0.046 / 0.0460025 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [66]
+   min/avg/max | 0.022 / 0.0460038 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [67]
+   min/avg/max | 0.034 / 0.0340031 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [68]
+   min/avg/max | 0.0308 / 0.0308036 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [69]
+   min/avg/max | 0.022 / 0.022003 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [70]
+   min/avg/max | 0.034 / 0.0340029 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [71]
+   min/avg/max | 0.022 / 0.022003 / 0.1572 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [72]
+   min/avg/max | 0.046 / 0.0460031 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [73]
+   min/avg/max | 0.046 / 0.0460039 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [74]
+   min/avg/max | 0.046 / 0.0460029 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [75]
+   min/avg/max | 0.022 / 0.0225769 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [76]
+   min/avg/max | 0.022 / 0.0220027 / 0.1212 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [77]
+   min/avg/max | 0.032922 / 0.0329237 / 0.0856898 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [78]
+   min/avg/max | 0.034 / 0.034003 / 0.1692 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [79]
+   min/avg/max | 0.022 / 0.0220042 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [80]
+   min/avg/max | 0.022 / 0.0220035 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [81]
+   min/avg/max | 0.022 / 0.022002 / 0.0972 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [82]
+   min/avg/max | 0.034 / 0.0340034 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [83]
+   min/avg/max | 0.046 / 0.0460022 / 0.1452 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [84]
+   min/avg/max | 0.0325149 / 0.0325171 / 0.132793 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [85]
+   min/avg/max | 0.022 / 0.0220024 / 0.1212 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [86]
+   min/avg/max | 0.0257732 / 0.0257773 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [87]
+   min/avg/max | 0.022 / 0.0220043 / 0.2052 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [88]
+   min/avg/max | 0.0291608 / 0.0460019 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [89]
+   min/avg/max | 0.022 / 0.0220046 / 0.2292 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [90]
+   min/avg/max | 0.022 / 0.0220025 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [91]
+   min/avg/max | 0.022 / 0.0220021 / 0.0972 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [92]
+   min/avg/max | 0.022 / 0.0220038 / 0.1932 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [93]
+   min/avg/max | 0.034 / 0.0340023 / 0.1332 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [94]
+   min/avg/max | 0.022 / 0.0220036 / 0.1812 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [95]
+   min/avg/max | 0.022 / 0.0300037 / 0.1932 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [96]
+   min/avg/max | 0.046 / 0.0460024 / 0.2172 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+:: F -> E \ C3 [97]
+   min/avg/max | 0.022 / 0.0220039 / 0.1932 ms
+   sent/recv/% | 84301 / 84301 / 100 %
+

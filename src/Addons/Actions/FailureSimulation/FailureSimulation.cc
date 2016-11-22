@@ -1,5 +1,7 @@
 #include "FailureSimulation.h"
 
+#include <omnetpp.h>
+
 FailureSimulation * FailureSimulation::instance = nullptr;
 
 Define_Module(FailureSimulation);

@@ -102,7 +102,7 @@ void MM_maxPST_Out::queueCreated(RMTQueue * q, RMTPort * p) {
     qPrePrio[q] = qName2PrePrio[qv[1]];
     qPostPrio[q] = qName2PostPrio[qv[1]];
 
-    cout << "queue : " << q->getName() << " | Threshold " << th <<endl ;
+    ///cout << "queue : " << q->getName() << " | Threshold " << th <<endl ;
 }
 
 RMTQueue * MM_maxPST_Out::getnextQueue(RMTPort * p) {

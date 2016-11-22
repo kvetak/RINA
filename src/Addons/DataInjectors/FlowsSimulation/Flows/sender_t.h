@@ -14,8 +14,8 @@ public :
     int until;
 
     ~sender_t(){}
-    sender_t(int fid, string dst, string qos):
-      Flow_t(fid, dst, qos), seq (0), until(0) {
+    sender_t(int fid, string dst, string qos, bool _listen):
+      Flow_t(fid, dst, qos, _listen), seq (0), until(0) {
         seq = -1;
         simTime();
         at.type = action;
@@ -36,8 +36,8 @@ public :
     static int min_pdu_len, max_pdu_len;
     static double interval, idle_time, burst_time;
 
-    voice_f(int fid, string dst, string qos):
-    sender_t(fid, dst, qos){}
+    voice_f(int fid, string dst, string qos, bool _listen):
+    sender_t(fid, dst, qos, _listen){}
 
     virtual int getPDUSize() {  return uniform(omnetpp::getEnvir()->getRNG(0),  voice_f::min_pdu_len, voice_f::max_pdu_len); }
     virtual double getInterval() { return interval; }
@@ -50,8 +50,8 @@ public :
     static int min_pdu_len, max_pdu_len;
     static double interval, min_idle_time, max_idle_time, min_burst_time, max_burst_time;
 
-    voice_fb(int fid, string dst, string qos):
-        sender_t(fid, dst, qos){}
+    voice_fb(int fid, string dst, string qos, bool _listen):
+        sender_t(fid, dst, qos, _listen){}
 
     virtual int getPDUSize() {  return uniform(omnetpp::getEnvir()->getRNG(0),  voice_f::min_pdu_len, voice_f::max_pdu_len); }
     virtual double getInterval() { return interval; }
@@ -64,9 +64,9 @@ public :
     int min_pdu_len, max_pdu_len;
     double interval, min_idle_time, max_idle_time, min_burst_time, max_burst_time;
 
-    voice_c(int fid, string dst, string qos, int _min_pdu_len, int _max_pdu_len, double _interval,
+    voice_c(int fid, string dst, string qos, bool _listen, int _min_pdu_len, int _max_pdu_len, double _interval,
             double _min_idle_time, double _max_idle_time, double _min_burst_time, double _max_burst_time):
-        sender_t(fid, dst, qos), min_pdu_len(_min_pdu_len), max_pdu_len(_max_pdu_len), interval(_interval),
+        sender_t(fid, dst, qos, _listen), min_pdu_len(_min_pdu_len), max_pdu_len(_max_pdu_len), interval(_interval),
         min_idle_time(_min_idle_time), max_idle_time(_max_idle_time), min_burst_time(_min_burst_time), max_burst_time(_max_burst_time)
         {}
 

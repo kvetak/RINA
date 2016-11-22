@@ -1,4 +1,5 @@
 #include "VDT_Listener.h"
+#include <math.h>
 
 VDT_Listener * VDT_Listener::instance = nullptr;
 
@@ -35,6 +36,13 @@ void VDT_Listener::initialize() {
                 + ".traceinfo", fstream::out);
         nextGlobal = 1;
     }
+    recordTimes = par("recordDelay").boolValue();
+    interval_digits = par("interval_digits").longValue();
+    if(recordTimes) {
+        cout << "Record delays with "<< interval_digits << " digits"<<endl;
+    } else {
+        cout << "Don't record delays" << endl;
+    }
 }
 
 
@@ -61,6 +69,16 @@ void VDT_Listener::finish(){
     outStats(data, out);
     out << endl;
 
+    out.close();
+
+    if(recordTimes) {
+        out.open("stats/"
+                + string(omnetpp::getEnvir()->getConfigEx()->getActiveConfigName())+"-"
+                + to_string(omnetpp::getEnvir()->getConfigEx()->getActiveRunNumber())
+                + ".delay.results", fstream::out);
+        outDelays(out);
+        out.close();
+    }
 
     if(par("printAtEnd").boolValue()) {
         cout << "Listener finish"<<endl;
@@ -141,6 +159,20 @@ void VDT_Listener::coutStats(const map<string, map<string, map<string, map<int, 
     }
 }
 
+void VDT_Listener::outDelays(fstream & out) {
+    for(auto & t : srcDstQoS_delay) {
+        long long count = 0;
+        long double sum = 0;
+        out << "--" << t.first << "--" << endl;
+        for(auto & v : t.second) {
+            out << v.first*1000 << "\t" << v.second << endl;
+            count += v.second;
+            sum += v.second * v.first;
+        }
+        out << "=>" << (sum*1000/count)<< endl << endl;
+    }
+}
+
 void VDT_Listener::voiceSent(string src, string dst, string qos, int flow, long long id, int len) {
     voice[src][dst][qos][flow].add();
     if(recordTrace) {
@@ -165,6 +197,11 @@ void VDT_Listener::voiceRecv(string src, string dst, string qos, int flow, simti
         t.globalFlowId = getGlobal(src, dst, qos, flow);
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
+    }
+    if(recordTimes) {
+        string sdq = src+" -> " + dst + " with QoS " + qos;
+        double interval = dround(lat.dbl(), interval_digits);
+        srcDstQoS_delay[sdq][interval]++;
     }
 }
 
@@ -201,6 +238,11 @@ void VDT_Listener::requestRecv(string src, string dst, string qos, int flow, sim
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
+    if(recordTimes) {
+        string sdq = src+" -> " + dst + " with QoS " + qos;
+        double interval = dround(lat.dbl(), interval_digits);
+        srcDstQoS_delay[sdq][interval]++;
+    }
 }
 
 void VDT_Listener::dataSent(string src, string dst, string qos, int flow, long long id, int len) {
@@ -229,6 +271,11 @@ void VDT_Listener::dataRecv(string src, string dst, string qos, int flow, simtim
         tracer.write((char*)&t, sizeof(trace_t));
         tracer.flush();
     }
+    if(recordTimes) {
+        string sdq = src+" -> " + dst + " with QoS " + qos;
+        double interval = dround(lat.dbl(), interval_digits);
+        srcDstQoS_delay[sdq][interval]++;
+    }
 }
 
 
@@ -244,4 +291,18 @@ long long VDT_Listener::getGlobal(string src, string dst, string qos, int flowId
 }
 
 
+
+
+double VDT_Listener::dround(double a, int ndigits) {
+
+  int    exp_base10 = round(log10(a));
+  double man_base10 = a*pow(10.0,-exp_base10);
+  double factor     = pow(10.0,-ndigits+1);
+  double truncated_man_base10 = man_base10 - fmod(man_base10,factor);
+  double rounded_remainder    = fmod(man_base10,factor)/factor;
+
+  rounded_remainder = rounded_remainder > 0.5 ? 1.0*factor : 0.0;
+
+  return (truncated_man_base10 + rounded_remainder)*pow(10.0,exp_base10) ;
+}
 

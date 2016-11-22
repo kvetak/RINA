@@ -101,7 +101,7 @@ void Mux2::addedQueue(RMTQueue * q) {
         ecnQTh[q] = defaultEcnTh;
 
     }
-    cout << "Queue "<< q->getName() << " Th "<< ecnQTh[q] << " vs "<< defaultEcnTh <<endl;
+    //cout << "Queue "<< q->getName() << " Th "<< ecnQTh[q] << " vs "<< defaultEcnTh <<endl;
 }
 
 void Mux2::add(RMTQueue * q, char urgency, char cherish) {

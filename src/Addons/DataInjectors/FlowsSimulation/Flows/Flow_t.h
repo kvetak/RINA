@@ -13,9 +13,10 @@ public :
     int flowId;
     string dstAddr;
     string QoS;
+    bool listen;
 
-    Flow_t(int fid, string da, string q) :
-        flowId(fid), dstAddr(da), QoS(q) {}
+    Flow_t(int fid, string da, string q, bool _listen) :
+        flowId(fid), dstAddr(da), QoS(q), listen(_listen) {}
     virtual ~Flow_t(){}
 
     virtual PDU_Req act(Inj_t * parent, bool fin);

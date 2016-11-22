@@ -9,16 +9,19 @@ void VDT::receiveData(const string & _src, const string & _qos, shared_ptr<Flow_
 
     if(shared_ptr<sender_d> d = dynamic_pointer_cast < sender_d > (data)) {
         // Received Data from sender
-        VDT_Listener::instance->voiceRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
 
+        if(data->listen) {
+            VDT_Listener::instance->voiceRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
+        }
     } else if(shared_ptr<client_d> d = dynamic_pointer_cast < client_d > (data)) {
         // Received Data from client -> server
 
-        VDT_Listener::instance->requestRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
-
+        if(data->listen) {
+            VDT_Listener::instance->requestRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
+        }
         server_t * app = servers[_src][d->flow];
         if(app == nullptr) {
-            app = new server_t(d->flow, _src, _qos);
+            app = new server_t(d->flow, _src, _qos, d->listen);
             app->at.f = app;
             app->rt.f = app;
             app->st.f = app;
@@ -29,7 +32,9 @@ void VDT::receiveData(const string & _src, const string & _qos, shared_ptr<Flow_
     } else if(shared_ptr<server_d> d = dynamic_pointer_cast < server_d > (data)) {
         // Received Data from server -> client
 
-        VDT_Listener::instance->dataRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
+        if(data->listen) {
+            VDT_Listener::instance->dataRecv(_src, src, _qos, d->flow, simTime() - d->t0, d->pduId, d->len);
+        }
 
         client_t * app = clients[_src][d->flow];
         if(app == nullptr) { error("Received data for unknown server."); }
@@ -56,15 +61,17 @@ void VDT::handleMessage(cMessage *msg) {
         if(r.data != nullptr) {
             send(genPDU(r), "g$o");
 
-            if(dynamic_cast < sender_d *> (r.data)) {
-                // Sent Voice Data
-                VDT_Listener::instance->voiceSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
-            } else if(dynamic_cast < client_d *> (r.data)) {
-                // Sent data
-                VDT_Listener::instance->requestSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
-            } else if(dynamic_cast < server_d *> (r.data)) {
-                // Sent request
-                VDT_Listener::instance->dataSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
+            if(r.f->listen) {
+                if(dynamic_cast < sender_d *> (r.data)) {
+                    // Sent Voice Data
+                    VDT_Listener::instance->voiceSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
+                } else if(dynamic_cast < client_d *> (r.data)) {
+                    // Sent data
+                    VDT_Listener::instance->requestSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
+                } else if(dynamic_cast < server_d *> (r.data)) {
+                    // Sent request
+                    VDT_Listener::instance->dataSent(src, r.f->dstAddr, r.f->QoS, r.f->flowId, r.data->pduId, r.data->len);
+                }
             }
         }
     }
@@ -116,6 +123,8 @@ void VDT::postInitialize() {
     int fid = 0;
     cXMLElementList flowsXML = Xml->getChildrenByTagName("set");
     for (cXMLElement * n : flowsXML) {
+        bool listen_ = ((string)n->getAttribute("listen")) != "0";
+
         string s_src = n->getAttribute("src");
         if (s_src != src) { continue; }
 
@@ -133,24 +142,24 @@ void VDT::postInitialize() {
         string t_qos = n->getAttribute("Tq");
         if(t_qos == "") { t_qos = T_QOS; }
 
-        cout << "\tFlows "<<src << " -> "<< s_dst<< " "<< s_V<<"/" <<s_D<<"/" <<s_T<<endl;
+        cout << "\tFlows "<<src << " -> "<< s_dst<< " "<< s_V<<"/" <<s_D<<"/" <<s_T
+                << " : listen = " << (listen_? "true":"false")<<endl;
 
         for(unsigned int i = 0; i < s_V; i++) {
-            voice_c * f = new voice_c(fid, s_dst, v_qos,
+            voice_c * f = new voice_c(fid, s_dst, v_qos, listen_,
                     V_PDUSize_min - headers, V_PDUSize_max - headers, V_Interval,
                     V_OFF_Duration_AVG - V_OFF_Duration_VAR, V_OFF_Duration_AVG + V_OFF_Duration_VAR,
                     V_ON_Duration_AVG - V_ON_Duration_VAR, V_ON_Duration_AVG + V_ON_Duration_VAR);
             f->at.f = f;
             senders[fid] = f;
             fid++;
-cout << omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, V_OFF_Duration_AVG) <<endl;
             simtime_t init = iniT + omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, V_OFF_Duration_AVG);
-cout << "Here" <<endl;
+
             scheduleAt( init, &f->at);
         }
 
         if(s_D % 2 == 1) {
-            video_c * f = new video_c(fid, s_dst, d_qos,
+            video_c * f = new video_c(fid, s_dst, d_qos, listen_,
                     D_Request_PDUSize - headers, D_Data_PDUSize - headers, D_RequestSize,
                     D_Interval, D_OFF_Duration_AVG);
             f->at.f = f;
@@ -163,7 +172,7 @@ cout << "Here" <<endl;
         for(unsigned int i = 1; i < s_D; i+=2) {
             double R = omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, D_OFF_Duration_VAR);
 
-            video_c * f = new video_c(fid, s_dst, d_qos,
+            video_c * f = new video_c(fid, s_dst, d_qos, listen_,
                     D_Request_PDUSize - headers, D_Data_PDUSize - headers, D_RequestSize,
                     D_Interval, D_OFF_Duration_AVG + R);
             f->at.f = f;
@@ -172,7 +181,7 @@ cout << "Here" <<endl;
             clients[s_dst][fid] = f;
             fid++;
             scheduleAt( iniT + omnetpp::uniform(omnetpp::getEnvir()->getRNG(0), 0.0, D_OFF_Duration_AVG), &f->at);
-            f = new video_c(fid, s_dst, d_qos,
+            f = new video_c(fid, s_dst, d_qos, listen_,
                     D_Request_PDUSize - headers, D_Data_PDUSize - headers, D_RequestSize,
                     D_Interval, D_OFF_Duration_AVG - R);
             f->at.f = f;
@@ -184,7 +193,7 @@ cout << "Here" <<endl;
         }
 
         for(unsigned int i = 0; i < s_T; i++) {
-            data_c * f = new data_c(fid, s_dst, t_qos,
+            data_c * f = new data_c(fid, s_dst, t_qos, listen_,
                     T_Request_PDUSize - headers, T_Data_PDUSize - headers,
                     T_Interval, T_WINDOW_MAX, T_WINDOW_UPDATE);
             f->at.f = f;

@@ -15,6 +15,7 @@ Flow_PDU * Inj_t::genPDU(const PDU_Req & req) {
     pdu->setDstAddr(dstAddr);
     pdu->setDstApn(dstAddr.getApn());
     req.data->pduId = pduId++;
+    req.data->listen = req.f->listen;
     pdu->xdata = shared_ptr < Flow_Data > (req.data);
     pdu->setByteLength(pdu->xdata->len);
     return pdu;

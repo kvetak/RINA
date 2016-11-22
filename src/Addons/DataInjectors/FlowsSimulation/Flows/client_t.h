@@ -27,8 +27,8 @@ public :
 
 
     ~client_t(){}
-    client_t(int fid, string dst, string qos, int _data_size=1000, int _request_size = 20, double _ackT = 0.1):
-      Flow_t(fid, dst, qos) {
+    client_t(int fid, string dst, string qos, bool _listen, int _data_size=1000, int _request_size = 20, double _ackT = 0.1):
+      Flow_t(fid, dst, qos, _listen) {
         seq = -1;
 
         until = 0;
@@ -78,8 +78,8 @@ public :
 
     simtime_t lastTime;
 
-    video_f(int fid, string dst, string qos):
-        client_t(fid, dst, qos){
+    video_f(int fid, string dst, string qos, bool _listen):
+        client_t(fid, dst, qos, _listen){
         lastTime = -500.0;
     }
 
@@ -102,9 +102,9 @@ public :
 
     simtime_t lastTime;
 
-    video_c(int fid, string dst, string qos,
+    video_c(int fid, string dst, string qos, bool _listen,
             int _request_size, int _data_size, int _data_len, double _data_interval, double _idle_time ):
-        client_t(fid, dst, qos, _data_size, _request_size),
+        client_t(fid, dst, qos, _listen, _data_size, _request_size),
         data_len(_data_len), data_interval(_data_interval), idle_time(_idle_time), lastTime(-500.0) {
      //   setNextUntil();
      //   setNextRate();
@@ -120,7 +120,9 @@ public :
 
     virtual void end(Inj_t * parent){ };
     virtual void completeRequest(Inj_t * parent){
-        parent->requestComplete(this, lastTime);
+        if(this->listen) {
+            parent->requestComplete(this, lastTime);
+        }
     };
 };
 
@@ -133,8 +135,8 @@ public :
 
     simtime_t lastTime;
 
-    data_f(int fid, string dst, string qos):
-        client_t(fid, dst, qos){
+    data_f(int fid, string dst, string qos, bool _listen):
+        client_t(fid, dst, qos, _listen){
         lastTime = -500.0;
     }
 
@@ -153,10 +155,10 @@ public :
 
     simtime_t lastTime;
 
-    data_c(int fid, string dst, string qos,
+    data_c(int fid, string dst, string qos, bool _listen,
             int _request_size, int _data_size, double _request_interval,
             int _request_len, int _between_len):
-                client_t(fid, dst, qos, _data_size, _request_size),
+                client_t(fid, dst, qos, _listen, _data_size, _request_size),
                 request_interval(_request_interval), request_len(_request_len),
                 between_len(_between_len), lastTime(-500.0) {}
 

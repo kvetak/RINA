@@ -34,8 +34,8 @@ public :
     simtime_t next_reset;
 
     ~server_t(){}
-    server_t(int fid, string dst, string qos, double _ackT = 0.1):
-      Flow_t(fid, dst, qos), seq (0), until(false), interval(0) {
+    server_t(int fid, string dst, string qos, bool _listen, double _ackT = 0.1):
+      Flow_t(fid, dst, qos, _listen), seq (0), until(false), interval(0) {
         seq = -1;
         acked = -1;
         sN = -1;

@@ -195,7 +195,7 @@ void QTAMonitor::postQueueCreation(RMTQueue* queue) {
                 out.close();
                 out.clear();
 
-
+/*
                 n = "stats/"
                         + string(omnetpp::getEnvir()->getConfigEx()->getActiveConfigName())+"-"
                         + to_string(omnetpp::getEnvir()->getConfigEx()->getActiveRunNumber())+"."
@@ -220,7 +220,7 @@ void QTAMonitor::postQueueCreation(RMTQueue* queue) {
                 out << endl;
                 out.close();
                 out.clear();
-
+*/
             }
         }
 
@@ -329,7 +329,7 @@ void QTAMonitor::handleMessage(cMessage * msg) {
 void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
     if (queue->getType() == RMTQueue::INPUT) {
         if (recordStats) {
-            RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
+            //RMTPort* port = rmtAllocator->getQueueToPortMapping(queue);
             const PDU * pdu = dynamic_cast<const PDU*> (queue->getLastPDU());
             if(pdu == nullptr) {
                 error("Something \"not PDU\" inserted into RMT queue");
@@ -338,6 +338,7 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
             if(qos != "MGMT-QoSCube") {
                 recordedQoS.insert(qos);
             }
+            /*
             if (pdu_in_IO) {
                 qos_pdu_in_IO[port][qos]++;
             }
@@ -350,6 +351,7 @@ void QTAMonitor::postPDUInsertion(RMTQueue* queue) {
             if (data_in_IOi) {
                 qos_data_in_IOi[port][qos] += pdu->getByteLength();
             }
+            */
         }
         return;
     }
@@ -529,6 +531,7 @@ void QTAMonitor::printInterval() {
         }
     }
 
+    /*
     if (pdu_in_IO || data_in_IO) {
         for(auto it = PortStream_in.begin(); it != PortStream_in.end(); it++) {
             out.open(it->second, ofstream::out | ofstream::app);
@@ -567,6 +570,7 @@ void QTAMonitor::printInterval() {
             qos_data_in_IOi.clear();
         }
     }
+    */
 
     currentInterval++;
 }
@@ -639,6 +643,7 @@ void QTAMonitor::printSummary() {
         }
     }
 
+    /*
     if (pdu_in_IO || data_in_IO) {
         for(auto it = PortStream_in.begin(); it != PortStream_in.end(); it++) {
             out.open(it->second, ofstream::out | ofstream::app);
@@ -683,6 +688,7 @@ void QTAMonitor::printSummary() {
             out.clear();
         }
     }
+    */
 }
 
 void QTAMonitor::coutSummary() {

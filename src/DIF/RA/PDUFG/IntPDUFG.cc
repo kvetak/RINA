@@ -33,10 +33,11 @@ void IntPDUFG::initialize(){
 
     //Set Forwarding policy
     fwd = getRINAModule<IntPDUForwarding *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});
-    onPolicyInit();
 
     ipcAddr = Address( getModuleByPath("^.^")->par("ipcAddress").stringValue(),
                 getModuleByPath("^.^")->par("difName").stringValue());
+
+    onPolicyInit();
 }
 
 PDUFGNeighbor * IntPDUFG::getNextNeighbor(const Address &destination, const std::string& qos){
