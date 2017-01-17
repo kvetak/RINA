@@ -22,9 +22,7 @@
 #include "REDMonitor.h"
 
 using namespace omnetpp;
-/**
- * TODO - Generated class
- */
+
 class BLUEDropper : public RMTMaxQBase
 {
 public:

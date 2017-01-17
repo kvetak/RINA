@@ -31,6 +31,7 @@ typedef std::map<RMTQueue*, double> REDParamMap;
 class REDMonitor : public RMTQMonitorBase
 {
   friend class REDDropper;
+  friend class BLUEDropper;
 
   public:
     virtual void postPDUInsertion(RMTQueue* queue);

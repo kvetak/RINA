@@ -102,6 +102,10 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
+			<ATime>4</ATime>
+			<RxOn>1</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>	
 		</QoSCube>
 		<QoSCube id="QoSCube_WithDTCP">
 			<AverageBandwidth>10000000</AverageBandwidth>
@@ -120,7 +124,11 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>					
+			<CostBits>0</CostBits>
+			<ATime>4</ATime>
+			<RxOn>1</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>				
 		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>
