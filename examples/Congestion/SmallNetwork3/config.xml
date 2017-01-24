@@ -417,6 +417,8 @@
             <IncompleteDelivery>0</IncompleteDelivery>
             <ForceOrder>0</ForceOrder>
             <RxOn>1</RxOn>
+            <WinOn>1</WinOn>
+			<RateOn>0</RateOn>
             <MaxAllowableGap>0</MaxAllowableGap>
             <Delay>1000000</Delay>
             <Jitter>500000</Jitter>
