@@ -423,6 +423,8 @@
             <CostTime>0</CostTime>
             <CostBits>0</CostBits>
             <ATime>0</ATime>
+            <WinOn>1</WinOn>
+            <RateOn>0</RateOn>
             <EFCPPolicySet>
 				<SenderAck>SenderAckPolicyTCP</SenderAck>
 				<RTTEstimator>RTTEstimatorPolicyTCP</RTTEstimator>
