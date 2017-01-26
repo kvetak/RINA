@@ -65,13 +65,13 @@ bool MinComparer::isFeasibility(const QoSReq requirements, const QoSCube cube) c
     if(!cube.isForceOrder() && requirements.isForceOrder())
         return false;
 
-    if (requirements.getMaxAllowGap() != VAL_QOSPARDONOTCARE && requirements.getMaxAllowGap() > cube.getMaxAllowGap())
+    if (requirements.getMaxAllowGap() != VAL_QOSPARDONOTCARE && requirements.getMaxAllowGap() < cube.getMaxAllowGap())
         return false;
 
     if (requirements.getDelay() != VAL_QOSPARDONOTCARE && requirements.getDelay() < cube.getDelay())
         return false;
 
-    if (requirements.getJitter() != VAL_QOSPARDONOTCARE && requirements.getJitter() > cube.getJitter())
+    if (requirements.getJitter() != VAL_QOSPARDONOTCARE && requirements.getJitter() < cube.getJitter())
         return false;
 
     if (requirements.getCostTime() != VAL_QOSPARDONOTCARE && requirements.getCostTime() < cube.getCostTime())
