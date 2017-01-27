@@ -3,8 +3,8 @@
 #include <string>
 #include <map>
 
-#include <IntTSimpleRouting.h>
-#include "common/DV_Module.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
+#include "DIF/Routing/common/DV_Module.h"
 
 
 namespace TSimpleDV {

@@ -23,7 +23,7 @@
 #ifndef APISOCKETOBJ_H_
 #define APISOCKETOBJ_H_
 
-#include "APIObjBase.h"
+#include "DAF/AP/APIObjBase.h"
 
 class APISocketObj : public APIObjBase {
 public:

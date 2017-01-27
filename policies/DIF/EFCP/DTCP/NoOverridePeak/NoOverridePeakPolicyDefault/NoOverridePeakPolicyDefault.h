@@ -30,7 +30,7 @@
 #ifndef NOOVERRIDEPEAKPOLICYDEFAULT_H_
 #define NOOVERRIDEPEAKPOLICYDEFAULT_H_
 
-#include <NoOverridePeakPolicyBase.h>
+#include "DIF/EFCP/DTCP/NoOverridePeak/NoOverridePeakPolicyBase.h"
 
 class NoOverridePeakPolicyDefault : public NoOverridePeakPolicyBase
 {

@@ -26,9 +26,9 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPListeners.h"
+#include "DAF/CDAP/CDAPListeners.h"
 #include "Common/RINASignals.h"
-#include "CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 #include "Common/ExternConsts.h"
 
 

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ExternConsts.h>
+#include "Common/ExternConsts.h"
 
 //Static module names
 const char* MOD_CDAP            = "commonDistributedApplicationProtocol";

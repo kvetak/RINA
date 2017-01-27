@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <IntPDUForwarding.h>
-#include "GRE_Helpers.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GRE_Helpers.h"
 
 namespace GRE {
 

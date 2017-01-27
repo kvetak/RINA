@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include "Int_MM_Out_Module.h"
-#include "SM_Burst.h"
+#include "DIF/RMT/Monitor/ModularMonitor/Int_MM_Out_Module.h"
+#include "DIF/RMT/Monitor/ModularMonitor/SM_Burst/SM_Burst.h"
 
 #include <string>
 #include <map>

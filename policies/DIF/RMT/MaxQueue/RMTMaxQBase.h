@@ -26,10 +26,10 @@
 #include <omnetpp.h>
 
 #include "Common/RINASignals.h"
-#include "RMTQueue.h"
-#include "RMTQMonitorBase.h"
-#include "AddressComparatorBase.h"
-#include "RMTModuleAllocator.h"
+#include "DIF/RMT/RMTQueue.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
 
 
 /**

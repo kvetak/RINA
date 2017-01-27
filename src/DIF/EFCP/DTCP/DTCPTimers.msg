@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 cplusplus {{
-#include "DataTransferPDU.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
 typedef DataTransferPDU* DTPDU_p;
 }}
 class noncobject DTPDU_p;

@@ -35,7 +35,7 @@
 #include <omnetpp.h>
 
 //#include "Common/CongestionDescriptor.h"
-#include "EFCPTable.h"
+#include "DIF/EFCP/EFCPTable/EFCPTable.h"
 
 class EFCPListeners : public cListener
 {

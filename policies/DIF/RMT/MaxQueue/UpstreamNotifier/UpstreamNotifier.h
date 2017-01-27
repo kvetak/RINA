@@ -24,7 +24,7 @@
 #ifndef UPSTREAMNOTIFIER_H_
 #define UPSTREAMNOTIFIER_H_
 
-#include "RMTMaxQBase.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
 
 class UpstreamNotifier : public RMTMaxQBase
 {

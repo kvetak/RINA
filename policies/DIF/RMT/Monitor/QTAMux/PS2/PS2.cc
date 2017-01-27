@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "QTAMux/PS2/PS2.h"
+#include "DIF/RMT/Monitor/QTAMux/PS2/PS2.h"
 #include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
 
 namespace QTAMux {

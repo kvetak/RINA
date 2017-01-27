@@ -29,7 +29,7 @@
  */
 
 
-#include <EnrollmentObj.h>
+#include "DIF/Enrollment/EnrollmentObj.h"
 
 EnrollmentObj::EnrollmentObj() {
 }

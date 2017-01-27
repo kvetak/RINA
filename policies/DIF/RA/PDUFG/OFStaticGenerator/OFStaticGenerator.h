@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include <SimpleTable.h>
-#include "MultilevelQoS/MultilevelQoS.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.h"
+#include "DIF/FA/MultilevelQoS/MultilevelQoS.h"
 #include "Common/QoSCube.h"
-#include "RABase.h"
-#include "Inj_FWDG.h"
+#include "DIF/RA/RABase.h"
+#include "Addons/DataInjectors/FlowsSimulation/Comparator_FWDG/Inj_FWDG.h"
 
 namespace OFStaticGenerator {
 

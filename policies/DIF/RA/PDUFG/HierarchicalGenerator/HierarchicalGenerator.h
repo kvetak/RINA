@@ -16,9 +16,9 @@
 #ifndef HierarchicalGenerator_H_
 #define HierarchicalGenerator_H_
 
-#include <IntPDUFG.h>
-#include <HierarchicalTable.h>
-#include <TDomainRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/HierarchicalTable/HierarchicalTable.h"
+#include "DIF/Routing/TDomainRouting/TDomainRouting.h"
 
 #include <map>
 #include <set>

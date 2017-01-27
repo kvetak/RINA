@@ -23,7 +23,7 @@
 #ifndef SimpleDV_H_
 #define SimpleDV_H_
 
-#include <IntSimpleRouting.h>
+#include "DIF/Routing/SimpleRouting/IntSimpleRouting.h"
 
 namespace SimpleDV {
 

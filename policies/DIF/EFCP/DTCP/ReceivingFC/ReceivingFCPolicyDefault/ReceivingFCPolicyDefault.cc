@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ReceivingFCPolicyDefault/ReceivingFCPolicyDefault.h>
+#include "DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyDefault/ReceivingFCPolicyDefault.h"
 
 Register_Class(ReceivingFCPolicyDefault);
 

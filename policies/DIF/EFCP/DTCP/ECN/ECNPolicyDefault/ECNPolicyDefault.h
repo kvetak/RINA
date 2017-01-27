@@ -30,7 +30,7 @@
 #ifndef ECNPOLICYDEFAULT_H_
 #define ECNPOLICYDEFAULT_H_
 
-#include "ECNPolicyBase.h"
+#include "DIF/EFCP/DTCP/ECN/ECNPolicyBase.h"
 
 class ECNPolicyDefault : public ECNPolicyBase
 {

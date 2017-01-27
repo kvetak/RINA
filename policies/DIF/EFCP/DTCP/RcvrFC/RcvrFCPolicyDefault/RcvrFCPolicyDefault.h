@@ -30,7 +30,7 @@
 #ifndef RCVRFCPOLICYDEFAULT_H_
 #define RCVRFCPOLICYDEFAULT_H_
 
-#include <RcvrFCPolicyBase.h>
+#include "DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h"
 
 class RcvrFCPolicyDefault : public RcvrFCPolicyBase
 {

@@ -24,7 +24,7 @@
 #ifndef ECNMARKER_H_
 #define ECNMARKER_H_
 
-#include "RMTMaxQBase.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
 
 class ECNMarker : public RMTMaxQBase
 {

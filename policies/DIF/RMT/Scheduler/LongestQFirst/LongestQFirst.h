@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
 
 class LongestQFirst : public RMTSchedulingBase
 {

@@ -30,11 +30,11 @@
 #ifndef RCVRACKPOLICYLG_H_
 #define RCVRACKPOLICYLG_H_
 
-#include <RcvrAckPolicyBase.h>
+#include "DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h"
 
-#include "DataTransferPDU.h"
-#include "ControlPDU_m.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
+#include "DIF/EFCP/DTP/DTP.h"
 
 
 class RcvrAckPolicyLG : public RcvrAckPolicyBase

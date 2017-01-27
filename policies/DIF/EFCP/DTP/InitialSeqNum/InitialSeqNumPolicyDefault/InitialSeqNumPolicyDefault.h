@@ -30,7 +30,7 @@
 #ifndef INITIALSEQNUMPOLICYDEFAULT_H_
 #define INITIALSEQNUMPOLICYDEFAULT_H_
 
-#include "InitialSeqNumPolicyBase.h"
+#include "DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyBase.h"
 
 class InitialSeqNumPolicyDefault : public InitialSeqNumPolicyBase
 {

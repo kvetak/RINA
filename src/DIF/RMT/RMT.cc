@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <RMT.h>
+#include "DIF/RMT/RMT.h"
 
 // shared access to trace logger
 #ifndef RMT_TRACING

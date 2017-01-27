@@ -22,8 +22,8 @@
 #include "Common/CDAPProcessingBase.h"
 #include "Common/ExternConsts.h"
 #include "Common/RINASignals.h"
-#include "EnrollmentObj.h"
-#include "OperationObj.h"
+#include "DIF/Enrollment/EnrollmentObj.h"
+#include "DIF/Enrollment/OperationObj.h"
 
 class EnrollmentNotifierBase : public cSimpleModule, public CDAPProcessingBase {
   public:

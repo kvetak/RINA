@@ -30,8 +30,8 @@
 #ifndef SENDERACKLGPOLICY_H_
 #define SENDERACKLGPOLICY_H_
 
-#include <SenderAckPolicyBase.h>
-#include "TxControlPolicyLG.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyLG/TxControlPolicyLG.h"
 
 class SenderAckPolicyLG : public SenderAckPolicyBase
 {

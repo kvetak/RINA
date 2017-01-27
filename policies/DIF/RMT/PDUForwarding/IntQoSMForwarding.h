@@ -23,7 +23,7 @@
 #pragma once
 
 #include <omnetpp.h>
-#include "IntPDUForwarding.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 #include <vector>
 
 class IntQoSMForwarding  : public IntPDUForwarding {

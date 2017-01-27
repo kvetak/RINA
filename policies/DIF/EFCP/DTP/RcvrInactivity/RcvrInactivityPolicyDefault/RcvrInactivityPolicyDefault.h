@@ -31,7 +31,7 @@
 #ifndef RCVRINACTIVITYPOLICYDEFAULT_H_
 #define RCVRINACTIVITYPOLICYDEFAULT_H_
 
-#include "RcvrInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyBase.h"
 
 class RcvrInactivityPolicyDefault : public RcvrInactivityPolicyBase
 {

@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "RMTQMonitorBase.h"
-#include "IterativeScheduling.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/RMT/Scheduler/IterativeScheduling/IterativeScheduling.h"
 
 #include <string>
 #include <map>

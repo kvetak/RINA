@@ -24,8 +24,8 @@
 #ifndef ECNMARKERLG_H_
 #define ECNMARKERLG_H_
 
-#include "RMTMaxQBase.h"
-#include "DataTransferPDU.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
 
 
 class ECNMarkerLG : public RMTMaxQBase

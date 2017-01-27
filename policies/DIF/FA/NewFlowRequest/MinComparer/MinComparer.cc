@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include <MinComparer.h>
+#include "DIF/FA/NewFlowRequest/MinComparer/MinComparer.h"
 
 Define_Module(MinComparer);
 

@@ -18,8 +18,8 @@
 
 #include <string>
 
-#include <IntRoutingUpdate.h>
-#include <PLLSCommon.h>
+#include "DIF/Routing/IntRoutingUpdate.h"
+#include "DIF/Routing/PortsLoadRouting/PortsLoadLS/PLLSCommon.h"
 
 class PortsLoadRU : public IntRoutingUpdate
 {

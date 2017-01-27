@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DumbMaxQ.h>
+#include "DIF/RMT/MaxQueue/DumbMaxQ/DumbMaxQ.h"
 
 
 Define_Module(DumbMaxQ);

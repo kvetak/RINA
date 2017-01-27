@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <EnrollmentNotifierBase.h>
+#include "DIF/Enrollment/EnrollmentNotifierBase.h"
 
 bool EnrollmentNotifierBase::isMessageProcessable(CDAPMessage* msg) {
     Enter_Method_Silent();

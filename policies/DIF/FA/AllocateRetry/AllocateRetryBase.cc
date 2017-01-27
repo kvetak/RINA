@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AllocateRetry/AllocateRetryBase.h>
+#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
 
 Define_Module(AllocateRetryBase);
 

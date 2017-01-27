@@ -27,7 +27,7 @@
 
 #include "Common/Flow.h"
 #include "DIF/FA/FABase.h"
-#include "RMTPort.h"
+#include "DIF/RMT/RMTPort.h"
 
 class NM1FlowTableItem
 {

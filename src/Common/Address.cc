@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <Address.h>
+#include "Common/Address.h"
 
 const Address Address::UNSPECIFIED_ADDRESS("");
 

@@ -17,9 +17,9 @@
 #define DAFENROLLMENTNOTIFIER_H_
 
 #include <omnetpp.h>
-#include "AEMgmtBase.h"
-#include "DAFEnrollmentNotifierListeners.h"
-#include "DAFEnrollmentNotifierBase.h"
+#include "DAF/AEManagement/AEMgmtBase.h"
+#include "DAF/Enrollment/DAFEnrollmentNotifierListeners.h"
+#include "DAF/Enrollment/DAFEnrollmentNotifierBase.h"
 #include "Common/Flow.h"
 
 extern const char* DAF_MSG_ENROLLMENT;

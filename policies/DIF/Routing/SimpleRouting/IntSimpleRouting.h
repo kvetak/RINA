@@ -23,7 +23,7 @@
 #ifndef IntSimpleRouting_H_
 #define IntSimpleRouting_H_
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 #include <string>
 
 

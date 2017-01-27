@@ -16,11 +16,11 @@
 #ifndef RTTESTIMATORPOLICYTCP_H_
 #define RTTESTIMATORPOLICYTCP_H_
 
-#include <RTTEstimatorPolicyBase.h>
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyBase.h"
 
-#include "DTPState.h"
-#include "DTCPState.h"
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTP/DTPState.h"
+#include "DIF/EFCP/DTCP/DTCPState.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 #include "math.h"
 
 #define STATE_FIRST     1

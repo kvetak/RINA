@@ -28,12 +28,12 @@
 //RINASim libraries
 
 #include "Common/ExternConsts.h"
-#include "CDAPMessage_m.h"
-#include "EnrollmentObj.h"
-#include "OperationObj.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DIF/Enrollment/EnrollmentObj.h"
+#include "DIF/Enrollment/OperationObj.h"
 #include "Common/CongestionDescriptor.h"
 #include "Common/PDU.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 
 class RIBdBase : public cSimpleModule {

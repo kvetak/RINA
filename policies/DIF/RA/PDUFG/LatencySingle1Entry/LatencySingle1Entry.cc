@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <LatencySingle1Entry/LatencySingle1Entry.h>
+#include "DIF/RA/PDUFG/LatencySingle1Entry/LatencySingle1Entry.h"
 #include "Common/APN.h"
 
 

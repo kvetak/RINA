@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 
-#include "IntRouting.h"
+#include "DIF/Routing/IntRouting.h"
 
 class IntBbPDUFWDG;
 

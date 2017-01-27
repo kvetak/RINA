@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "SimpleDCForwarding.h"
+#include "DIF/RMT/PDUForwarding/SimpleDCForwarding/SimpleDCForwarding.h"
 
 namespace NSPSimpleDC {
 

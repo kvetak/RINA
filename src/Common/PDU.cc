@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <PDU.h>
+#include "Common/PDU.h"
 
 Register_Class(PDU);
 

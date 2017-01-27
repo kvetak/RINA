@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IntDCRouting.h"
+#include "DIF/Routing/DCRouting/IntDCRouting.h"
 
 
 namespace NSPSimpleDC {

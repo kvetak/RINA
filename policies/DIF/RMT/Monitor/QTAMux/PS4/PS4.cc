@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "QTAMux/PS4/PS4.h"
+#include "DIF/RMT/Monitor/QTAMux/PS4/PS4.h"
 #include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
 
 namespace QTAMux {

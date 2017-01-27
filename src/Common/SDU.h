@@ -25,9 +25,9 @@
 
 #include <omnetpp.h>
 #include <vector>
-#include "EFCP_defs.h"
-#include "CDAPMessage_m.h"
-#include "SDU_m.h"
+#include "DIF/EFCP/EFCP_defs.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "Common/SDU_m.h"
 
 
 

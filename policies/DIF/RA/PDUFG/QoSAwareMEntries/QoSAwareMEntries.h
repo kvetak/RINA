@@ -15,9 +15,9 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include <IntQoSMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntQoSMForwarding.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
 
 #include <map>
 #include <set>

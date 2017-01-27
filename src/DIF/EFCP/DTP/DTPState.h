@@ -34,14 +34,14 @@
 #include <queue>
 #include <vector>
 #include "Common/Utils.h"
-#include "EFCP_defs.h"
-#include "DataTransferPDU.h"
+#include "DIF/EFCP/EFCP_defs.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
 
 
 #include "Common/PDU.h"
 
 /* Dirty hacks */
-#include "DTPTimers_m.h"
+#include "DIF/EFCP/DTP/DTPTimers_m.h"
 /* End dirty hacks */
 
 

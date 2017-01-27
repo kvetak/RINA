@@ -16,7 +16,7 @@
 #ifndef REDUPSTREAMNOTIFIER_H_
 #define REDUPSTREAMNOTIFIER_H_
 
-#include <RMTMaxQBase.h>
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
 
 class REDUpstreamNotifier: public RMTMaxQBase {
 public:

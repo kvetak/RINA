@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <LatGenerator/LatGenerator.h>
+#include "DIF/RA/PDUFG/LatGenerator/LatGenerator.h"
 #include "Common/APN.h"
 
 #include <stdio.h>

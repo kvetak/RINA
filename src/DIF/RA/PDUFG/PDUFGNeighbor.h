@@ -28,7 +28,7 @@
 #include <omnetpp.h>
 
 #include "Common/Address.h"
-#include "RMTPort.h"
+#include "DIF/RMT/RMTPort.h"
 
 // How is considered a neighbor for the PDUFTG module.
 //

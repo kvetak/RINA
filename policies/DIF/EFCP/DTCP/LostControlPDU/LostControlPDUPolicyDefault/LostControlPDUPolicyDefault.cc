@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <LostControlPDUPolicyDefault/LostControlPDUPolicyDefault.h>
+#include "DIF/EFCP/DTCP/LostControlPDU/LostControlPDUPolicyDefault/LostControlPDUPolicyDefault.h"
 
 Register_Class(LostControlPDUPolicyDefault)
 

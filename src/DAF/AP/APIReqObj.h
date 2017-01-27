@@ -23,7 +23,7 @@
 #ifndef APIREQOBJ_H_
 #define APIREQOBJ_H_
 
-#include "APIObjBase.h"
+#include "DAF/AP/APIObjBase.h"
 
 class APIReqObj : public APIObjBase {
 public:

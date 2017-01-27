@@ -22,12 +22,12 @@
 
 #pragma once
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 #include <vector>
 #include <set>
 #include <map>
 #include <queue>
-#include "DCAddr.h"
+#include "DIF/RMT/PDUForwarding/SimpleDCForwarding/DCAddr.h"
 
 namespace NSPSimpleDC {
 

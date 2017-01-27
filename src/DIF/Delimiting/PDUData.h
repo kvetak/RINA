@@ -31,9 +31,9 @@
 #ifndef PDUDATA_H_
 #define PDUDATA_H_
 #include <omnetpp.h>
-#include <PDUData_m.h>
+#include "DIF/Delimiting/PDUData_m.h"
 #include <vector>
-#include <Data.h>
+#include "DIF/Delimiting/Data.h"
 
 class PDUData : public PDUData_Base
 {

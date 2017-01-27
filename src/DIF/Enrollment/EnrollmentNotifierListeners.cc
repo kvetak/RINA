@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <EnrollmentNotifierListeners.h>
+#include "DIF/Enrollment/EnrollmentNotifierListeners.h"
 
 EnrollmentNotifierListeners::EnrollmentNotifierListeners(EnrollmentNotifierBase* nenb) : enb(nenb)
 {

@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ECNMarkerLG.h>
+#include "DIF/RMT/MaxQueue/ECNMarkerLG/ECNMarkerLG.h"
 
 const char * ECN_MARKER = "ECN_MARKER";
 

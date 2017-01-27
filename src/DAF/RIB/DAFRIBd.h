@@ -29,12 +29,12 @@
 //RINASim libraries
 #include "Common/Utils.h"
 #include "Common/CDAPProcessingBase.h"
-#include "DAFRIBdBase.h"
+#include "DAF/RIB/DAFRIBdBase.h"
 #include "Common/ExternConsts.h"
-#include "DAFRIBdListeners.h"
+#include "DAF/RIB/DAFRIBdListeners.h"
 #include "Common/RINASignals.h"
 #include "Common/PDU.h"
-#include "EnrollmentNotifier.h"
+#include "DIF/Enrollment/EnrollmentNotifier.h"
 
 class DAFRIBd : public DAFRIBdBase {
 public:

@@ -2,8 +2,8 @@
 
 #include <omnetpp.h>
 #include <memory>
-#include "DataTransferPDU.h"
-#include "Flow_Data.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
+#include "Addons/DataInjectors/FlowsSimulation/PDUandData/Flow_Data.h"
 
 using namespace std;
 

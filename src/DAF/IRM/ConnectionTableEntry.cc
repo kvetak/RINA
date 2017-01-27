@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ConnectionTableEntry.h>
+#include "DAF/IRM/ConnectionTableEntry.h"
 
 ConnectionTableEntry::ConnectionTableEntry()
     :  //FlowObject(NULL)

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <CDAPMsgLog.h>
+#include "DAF/CDAP/CDAPMsgLog.h"
 
 Define_Module(CDAPMsgLog);
 

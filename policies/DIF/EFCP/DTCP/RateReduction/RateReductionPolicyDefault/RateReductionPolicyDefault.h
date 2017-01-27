@@ -30,7 +30,7 @@
 #ifndef RATEREDUCTIONPOLICYDEFAULT_H_
 #define RATEREDUCTIONPOLICYDEFAULT_H_
 
-#include <RateReductionPolicyBase.h>
+#include "DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h"
 
 class RateReductionPolicyDefault : public RateReductionPolicyBase
 {

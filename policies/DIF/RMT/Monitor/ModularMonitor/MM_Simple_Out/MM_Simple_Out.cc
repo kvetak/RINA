@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_Simple_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_Simple_Out/MM_Simple_Out.h"
 
 namespace MM_Simple_Out {
 

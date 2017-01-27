@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <NM1FlowTableItem.h>
+#include "DIF/RA/NM1FlowTableItem.h"
 
 NM1FlowTableItem::NM1FlowTableItem(Flow* flow, FABase* fa, RMTPort* port, std::string gateName)
 :   flow(flow), fa(fa), rmtPort(port), gateName(gateName), conStatus(CON_CONNECTPENDING)

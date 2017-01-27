@@ -24,12 +24,12 @@
 #define QoSDomainGenerator_H_
 
 #include "Common/Utils.h"
-#include <IntPDUFG.h>
-#include <QoSTable/QoSTable.h>
-#include <DomainRouting/Routing.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/QoSTable/QoSTable.h"
+#include "DIF/Routing/DomainRouting/Routing.h"
 #include "Common/QoSCube.h"
 #include "DIF/RA/RA.h"
-#include "MultilevelQoS.h"
+#include "DIF/FA/MultilevelQoS/MultilevelQoS.h"
 
 
 #include <map>

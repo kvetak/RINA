@@ -36,13 +36,13 @@
 #include <omnetpp.h>
 
 #include "Common/Flow.h"
-#include "EFCPTable.h"
+#include "DIF/EFCP/EFCPTable/EFCPTable.h"
 #include "Common/ExternConsts.h"
-#include "EFCP_defs.h"
+#include "DIF/EFCP/EFCP_defs.h"
 #include "DIF/RA/RA.h"
-#include "EFCPListeners.h"
-//#include "EFCPInstance.h"
-//#include "Delimiting.h"
+#include "DIF/EFCP/EFCPListeners.h"
+//#include "DIF/EFCP/EFCPInstance.h"
+//#include "DIF/Delimiting/Delimiting.h"
 
 
 //class EFCPInstance;

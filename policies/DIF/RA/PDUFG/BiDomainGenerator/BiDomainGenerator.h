@@ -23,9 +23,9 @@
 #ifndef BiDomainGenerator_H_
 #define BiDomainGenerator_H_
 
-#include <IntPDUFG.h>
-#include <DomainTable/DomainTable.h>
-#include <DomainRouting/Routing.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/DomainTable/DomainTable.h"
+#include "DIF/Routing/DomainRouting/Routing.h"
 
 #include <map>
 #include <set>

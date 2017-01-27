@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <NewFlowRequest/NewFlowRequestBase.h>
+#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
 
 Define_Module(NewFlowRequestBase);
 

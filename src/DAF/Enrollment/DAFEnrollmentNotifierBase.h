@@ -20,8 +20,8 @@
 #include "Common/CDAPProcessingBase.h"
 #include "Common/ExternConsts.h"
 #include "Common/RINASignals.h"
-#include "DAFEnrollmentObj.h"
-#include "DAFOperationObj.h"
+#include "DAF/Enrollment/DAFEnrollmentObj.h"
+#include "DAF/Enrollment/DAFOperationObj.h"
 #include "Common/Flow.h"
 
 class DAFEnrollmentNotifierBase : public cSimpleModule, public CDAPProcessingBase {

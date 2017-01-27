@@ -30,7 +30,7 @@
 #ifndef TXCONTROLPOLICYDEFAULT_H_
 #define TXCONTROLPOLICYDEFAULT_H_
 
-#include "TxControlPolicyBase.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h"
 
 class TxControlPolicyDefault : public TxControlPolicyBase
 {

@@ -27,7 +27,7 @@
 
 #include <omnetpp.h>
 
-#include "QueueAllocBase.h"
+#include "DIF/RA/QueueAlloc/QueueAllocBase.h"
 
 class QueuePerNFlow : public QueueAllocBase
 {

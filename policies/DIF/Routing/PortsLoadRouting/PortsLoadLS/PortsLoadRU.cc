@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <PortsLoadRU.h>
+#include "DIF/Routing/PortsLoadRouting/PortsLoadLS/PortsLoadRU.h"
 
 PortsLoadRU::PortsLoadRU(
         const Address &_addr,

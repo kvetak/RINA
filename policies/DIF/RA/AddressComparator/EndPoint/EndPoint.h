@@ -26,7 +26,7 @@
 #include <vector>
 #include <string>
 
-#include "AddressComparatorBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
 
 class EndPoint : public AddressComparatorBase
 {

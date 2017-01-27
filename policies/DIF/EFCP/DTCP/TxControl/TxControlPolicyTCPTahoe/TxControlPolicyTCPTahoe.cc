@@ -19,7 +19,7 @@
  * @brief
  * @detail
  */
-#include <TxControlPolicyTCPTahoe.h>
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyTCPTahoe/TxControlPolicyTCPTahoe.h"
 Register_Class(TxControlPolicyTCPTahoe);
 TxControlPolicyTCPTahoe::TxControlPolicyTCPTahoe() {
     // TODO Auto-generated constructor stub

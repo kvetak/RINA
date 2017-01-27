@@ -19,9 +19,9 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "EnrollmentNotifierBase.h"
-#include "EnrollmentNotifierListeners.h"
-#include "RIBdBase.h"
+#include "DIF/Enrollment/EnrollmentNotifierBase.h"
+#include "DIF/Enrollment/EnrollmentNotifierListeners.h"
+#include "DIF/RIB/RIBdBase.h"
 
 extern const char* MSG_ENROLLMENT;
 

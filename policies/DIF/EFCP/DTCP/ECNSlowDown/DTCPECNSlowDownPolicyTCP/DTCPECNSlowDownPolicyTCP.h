@@ -16,8 +16,8 @@
 #ifndef DTCPECNSLOWDOWNPOLICYTCP_H_
 #define DTCPECNSLOWDOWNPOLICYTCP_H_
 
-#include <ECNSlowDownPolicyBase.h>
-#include "TxControlPolicyTCPTahoe.h"
+#include "DIF/EFCP/DTCP/ECNSlowDown/ECNSlowDownPolicyBase.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyTCPTahoe/TxControlPolicyTCPTahoe.h"
 
 class DTCPECNSlowDownPolicyTCP: public ECNSlowDownPolicyBase {
 public:

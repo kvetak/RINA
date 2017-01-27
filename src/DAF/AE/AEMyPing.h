@@ -26,7 +26,7 @@
 //Standard library
 #include <omnetpp.h>
 //RINASim library
-#include "AEPing.h"
+#include "DAF/AE/AEPing.h"
 
 struct timestamps_t {
     simtime_t t1;

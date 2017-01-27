@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <FAIBase.h>
+#include "DIF/FA/FAIBase.h"
 
 FAIBase::FAIBase() : FlowObject(NULL), degenerateDataTransfer(false)
 {

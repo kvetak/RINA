@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <StatGen/StatGen.h>
+#include "DIF/RA/PDUFG/StatGen/StatGen.h"
 
 Register_Class(StatGen);
 

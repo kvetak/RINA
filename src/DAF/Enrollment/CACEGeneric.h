@@ -23,8 +23,8 @@
 #ifndef DAF_ENROLLMENT_CACEGENERIC_H_
 #define DAF_ENROLLMENT_CACEGENERIC_H_
 
-#include "CACEBase.h"
-#include "AE.h"
+#include "DAF/Enrollment/CACEBase.h"
+#include "DAF/AE/AE.h"
 
 class AE;
 

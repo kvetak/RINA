@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <APStream/APStream.h>
+#include "DAF/AP/APStream/APStream.h"
 
 Define_Module(APStream);
 

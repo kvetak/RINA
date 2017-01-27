@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <NeighborTableEntry.h>
+#include "DAF/DA/NeighborTableEntry.h"
 
 NeighborTableEntry::NeighborTableEntry(const APN& napn) :
     Apn(napn)

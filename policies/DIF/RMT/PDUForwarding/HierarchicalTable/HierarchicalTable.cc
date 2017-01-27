@@ -1,4 +1,4 @@
-#include <HierarchicalTable/HierarchicalTable.h>
+#include "DIF/RMT/PDUForwarding/HierarchicalTable/HierarchicalTable.h"
 
 
 Register_Class(HierarchicalTable::HierarchicalTable);

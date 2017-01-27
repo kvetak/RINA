@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TDomainRouting.h"
+#include "DIF/Routing/TDomainRouting/TDomainRouting.h"
 
 class int_TDomain : public tDomain::TDomainRouting<int> { public : int_TDomain(); };
 class uint_TDomain : public tDomain::TDomainRouting<unsigned int> { public : uint_TDomain(); };

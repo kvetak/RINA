@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <Socket.h>
+#include "Common/Socket.h"
 #include <string>
 
 Define_Module(Socket);

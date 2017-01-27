@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <MultiMiniTable/MultiMiniTable.h>
+#include "DIF/RMT/PDUForwarding/MultiMiniTable/MultiMiniTable.h"
 
 
 Register_Class(MultiMiniTable::MultiMiniTable);

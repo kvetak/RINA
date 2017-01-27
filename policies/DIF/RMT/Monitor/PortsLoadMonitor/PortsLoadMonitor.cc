@@ -20,7 +20,7 @@
 #define RATESMONITOR_SELFMSG "RMT_MonitorPolicy_PortsLoad"
 
 #include <stdio.h>
-#include <PortsLoadMonitor.h>
+#include "DIF/RMT/Monitor/PortsLoadMonitor/PortsLoadMonitor.h"
 
 Define_Module(PortsLoadMonitor);
 

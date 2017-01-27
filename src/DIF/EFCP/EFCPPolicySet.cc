@@ -30,7 +30,7 @@
  * @detail
  */
 
-#include <EFCPPolicySet.h>
+#include "DIF/EFCP/EFCPPolicySet.h"
 
 const char* ELEM_INITSEQNUM            = "InitialSeqNum";
 const char* DEFAULT_INITSEQNUM         = "InitialSeqNumPolicyDefault";

@@ -27,8 +27,8 @@
  *      Author: gaixas1
  */
 
-#include "DomainRouting/LS/LS.h"
-#include "DomainRouting/Routing.h"
+#include "DIF/Routing/DomainRouting/LS/LS.h"
+#include "DIF/Routing/DomainRouting/Routing.h"
 
 namespace DMRnmsLS {
 

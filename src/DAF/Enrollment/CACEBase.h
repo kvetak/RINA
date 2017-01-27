@@ -24,9 +24,9 @@
 #define DAF_ENROLLMENT_CACEBASE_H_
 
 #include "Common/Flow.h"
-#include "CDAPMessage_m.h"
-#include "DAFEnrollmentStateTableEntry.h"
-#include "DAFEnrollmentStateTable.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/Enrollment/DAFEnrollmentStateTableEntry.h"
+#include "DAF/Enrollment/DAFEnrollmentStateTable.h"
 
 extern const char* DAF_MSG_CONREQ;
 extern const char* DAF_MSG_CONREQRETRY;

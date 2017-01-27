@@ -32,7 +32,7 @@
 
 #include <omnetpp.h>
 
-#include "EFCPPolicy.h"
+#include "DIF/EFCP/EFCPPolicy.h"
 
 class RxTimerExpiryPolicyBase : public EFCPPolicy
 {

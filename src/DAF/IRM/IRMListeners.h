@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "IRM.h"
+#include "DAF/IRM/IRM.h"
 
 class IRM;
 class IRMListeners : public cListener {

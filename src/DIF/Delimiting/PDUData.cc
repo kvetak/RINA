@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include <PDUData.h>
+#include "DIF/Delimiting/PDUData.h"
 Register_Class(PDUData);
 PDUData::PDUData(const char* name, int kind): PDUData_Base(name, kind)
 {

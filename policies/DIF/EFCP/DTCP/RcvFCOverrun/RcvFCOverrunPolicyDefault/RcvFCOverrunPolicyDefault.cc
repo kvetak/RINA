@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <RcvFCOverrunPolicyDefault.h>
+#include "DIF/EFCP/DTCP/RcvFCOverrun/RcvFCOverrunPolicyDefault/RcvFCOverrunPolicyDefault.h"
 
 Register_Class(RcvFCOverrunPolicyDefault);
 

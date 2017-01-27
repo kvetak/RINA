@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <UpstreamNotifier.h>
+#include "DIF/RMT/MaxQueue/UpstreamNotifier/UpstreamNotifier.h"
 
 Define_Module(UpstreamNotifier);
 

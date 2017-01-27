@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_psDQ_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_psDQ_Out/MM_psDQ_Out.h"
 
 namespace MM_psDQ_Out {
 

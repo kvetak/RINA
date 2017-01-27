@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "GRE_ClosR.h"
+#include "DIF/RA/PDUFG/GRE/ClosRouting/GRE_ClosR.h"
 
 namespace GRE_Clos {
 

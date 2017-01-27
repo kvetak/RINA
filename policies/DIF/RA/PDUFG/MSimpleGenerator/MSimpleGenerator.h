@@ -23,9 +23,9 @@
 #ifndef MSimpleGenerator_H_
 #define MSimpleGenerator_H_
 
-#include <IntPDUFG.h>
-#include <IntMMForwarding.h>
-#include <SimpleRouting/IntSimpleRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
+#include "DIF/Routing/SimpleRouting/IntSimpleRouting.h"
 
 #include <map>
 #include <set>

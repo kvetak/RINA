@@ -30,7 +30,7 @@
 #ifndef RECEIVINGFCPOLICYDEFAULT_H_
 #define RECEIVINGFCPOLICYDEFAULT_H_
 
-#include <ReceivingFCPolicyBase.h>
+#include "DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h"
 
 class ReceivingFCPolicyDefault : public ReceivingFCPolicyBase
 {

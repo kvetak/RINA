@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include <Q2FwdT.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/Q2FwdT/Q2FwdT.h"
 
 
 class StatGen: public IntPDUFG {

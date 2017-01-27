@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <QoSAwareMEntries/QoSAwareMEntries.h>
+#include "DIF/RA/PDUFG/QoSAwareMEntries/QoSAwareMEntries.h"
 #include "Common/APN.h"
 
 

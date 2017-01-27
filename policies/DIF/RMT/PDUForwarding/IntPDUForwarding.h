@@ -28,7 +28,7 @@
 #include <vector>
 
 #include "Common/PDU.h"
-#include "RMTPort.h"
+#include "DIF/RMT/RMTPort.h"
 
 class IntPDUForwarding  : public cSimpleModule {
 public:

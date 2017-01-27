@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include <EnrollmentStateTableEntry.h>
+#include "DIF/Enrollment/EnrollmentStateTableEntry.h"
 
 const int VAL_NOCONRETRY    = 0;
 

@@ -33,7 +33,7 @@
 
 #include <omnetpp.h>
 #include "Common/Flow.h"
-#include "EnrollmentStateTableEntry.h"
+#include "DIF/Enrollment/EnrollmentStateTableEntry.h"
 
 typedef std::list<EnrollmentStateTableEntry> EnrollStateTable;
 typedef EnrollStateTable::iterator EnrollStateTableIter;

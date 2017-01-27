@@ -23,7 +23,7 @@
 #ifndef QoSIdComparer_H_
 #define QoSIdComparer_H_
 
-#include <MultilevelQoS/MultilevelQoS.h>
+#include "DIF/FA/MultilevelQoS/MultilevelQoS.h"
 
 class QoSIdComparer : public MultilevelQoS {
   public:

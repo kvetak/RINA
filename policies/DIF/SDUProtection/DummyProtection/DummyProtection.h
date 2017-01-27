@@ -23,7 +23,7 @@
 #ifndef DUMMYPROTECTION_H_
 #define DUMMYPROTECTION_H_
 
-#include <IntSDUProtection.h>
+#include "DIF/SDUProtection/IntSDUProtection.h"
 
 class DummyProtection : public IntSDUProtection {
 

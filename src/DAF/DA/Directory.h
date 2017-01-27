@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "DirectoryEntry.h"
+#include "DAF/DA/DirectoryEntry.h"
 #include "Common/ExternConsts.h"
 
 typedef std::list<DirectoryEntry> TDirectory;

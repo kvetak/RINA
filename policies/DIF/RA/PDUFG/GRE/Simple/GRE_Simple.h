@@ -15,11 +15,11 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "GREFWD.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GREFWD.h"
 
-#include <IntMMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
 
 #include <map>
 #include <set>

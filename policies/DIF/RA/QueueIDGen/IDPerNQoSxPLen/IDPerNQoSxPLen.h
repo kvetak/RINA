@@ -23,7 +23,7 @@
 #pragma once
 
 #include <omnetpp.h>
-#include "QueueIDGenBase.h"
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
 
 #include <map>
 

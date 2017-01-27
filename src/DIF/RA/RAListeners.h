@@ -25,10 +25,10 @@
 
 
 #include <omnetpp.h>
-#include "RABase.h"
-#include "NM1FlowTable.h"
-#include "NM1FlowTableItem.h"
-#include "RMTQueue.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/RA/NM1FlowTable.h"
+#include "DIF/RA/NM1FlowTableItem.h"
+#include "DIF/RMT/RMTQueue.h"
 
 class RAListeners : public cListener
 {

@@ -20,8 +20,8 @@
 
 #include <map>
 
-#include "RMTQMonitorBase.h"
-#include <WeightedFairQMonitor/FlowParams.h>
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/RMT/Monitor/WeightedFairQMonitor/FlowParams.h"
 
 
 namespace FWQ {

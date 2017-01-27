@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <VoidDCGenerator/VoidDCGenerator.h>
+#include "DIF/RA/PDUFG/VoidDCGenerator/VoidDCGenerator.h"
 #include "Common/APN.h"
 
 

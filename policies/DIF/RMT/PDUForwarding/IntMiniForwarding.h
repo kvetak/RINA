@@ -24,7 +24,7 @@
 #define IntMiniForwarding_H_
 
 #include <omnetpp.h>
-#include "IntPDUForwarding.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 class IntMiniForwarding  : public IntPDUForwarding {
 public:

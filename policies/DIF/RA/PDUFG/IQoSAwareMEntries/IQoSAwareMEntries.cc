@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <IQoSAwareMEntries/IQoSAwareMEntries.h>
+#include "DIF/RA/PDUFG/IQoSAwareMEntries/IQoSAwareMEntries.h"
 #include "Common/APN.h"
 
 

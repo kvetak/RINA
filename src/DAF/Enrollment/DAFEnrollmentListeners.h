@@ -32,7 +32,7 @@
 #ifndef DAFENROLLMENTLISTENERS_H_
 #define DAFENROLLMENTLISTENERS_H_
 
-#include "DAFEnrollment.h"
+#include "DAF/Enrollment/DAFEnrollment.h"
 
 class DAFEnrollment;
 class DAFEnrollmentListeners : public cListener {

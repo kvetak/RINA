@@ -7,9 +7,9 @@
 
 #include "DIF/RMT/RMTPort.h"
 
-#include "Flow_Data.h"
-#include "PDU_Req.h"
-#include "Flow_PDU.h"
+#include "Addons/DataInjectors/FlowsSimulation/PDUandData/Flow_Data.h"
+#include "Addons/DataInjectors/FlowsSimulation/PDUandData/PDU_Req.h"
+#include "Addons/DataInjectors/FlowsSimulation/PDUandData/Flow_PDU.h"
 
 class Flow_t;
 

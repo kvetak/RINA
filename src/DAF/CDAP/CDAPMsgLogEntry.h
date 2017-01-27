@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 #include "Common/ExternConsts.h"
 
 class CDAPMsgLogEntry {

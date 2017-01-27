@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <AuthListeners.h>
+#include "DAF/CDAP/AuthListeners.h"
 #include "DAF/CDAP/CDAPMessage_m.h"
 #include "DAF/CDAP/Auth.h"
 

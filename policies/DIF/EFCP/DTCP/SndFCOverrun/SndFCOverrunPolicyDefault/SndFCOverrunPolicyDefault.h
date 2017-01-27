@@ -30,7 +30,7 @@
 #ifndef SNDFCOVERRUNPOLICYDEFAULT_H_
 #define SNDFCOVERRUNPOLICYDEFAULT_H_
 
-#include <SndFCOverrunPolicyBase.h>
+#include "DIF/EFCP/DTCP/SndFCOverrun/SndFCOverrunPolicyBase.h"
 
 class SndFCOverrunPolicyDefault : public SndFCOverrunPolicyBase
 {

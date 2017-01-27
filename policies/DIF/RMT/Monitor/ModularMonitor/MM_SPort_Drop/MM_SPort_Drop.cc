@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_SPort_Drop.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_SPort_Drop/MM_SPort_Drop.h"
 
 namespace MM_SPort_Drop {
 

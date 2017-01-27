@@ -22,14 +22,14 @@
 
 #pragma once
 
-#include <IntPDUForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 #include <map>
 #include <string>
 #include <vector>
 #include <map>
 
-#include "DCAddr.h"
+#include "DIF/RMT/PDUForwarding/SimpleDCForwarding/DCAddr.h"
 
 namespace NSPSimpleDC {
 

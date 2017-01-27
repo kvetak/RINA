@@ -30,7 +30,7 @@
 #ifndef ECNSLOWDOWNPOLICYDEFAULT_H_
 #define ECNSLOWDOWNPOLICYDEFAULT_H_
 
-#include "ECNSlowDownPolicyBase.h"
+#include "DIF/EFCP/DTCP/ECNSlowDown/ECNSlowDownPolicyBase.h"
 
 class ECNSlowDownPolicyDefault : public ECNSlowDownPolicyBase
 {

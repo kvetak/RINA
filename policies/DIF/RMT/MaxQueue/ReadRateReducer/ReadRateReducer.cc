@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <ReadRateReducer.h>
+#include "DIF/RMT/MaxQueue/ReadRateReducer/ReadRateReducer.h"
 
 Define_Module(ReadRateReducer);
 

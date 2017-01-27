@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <QoSTable/QoSTable.h>
+#include "DIF/RMT/PDUForwarding/QoSTable/QoSTable.h"
 
 
 Register_Class(QoSTable::QoSTable);

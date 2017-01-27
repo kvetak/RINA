@@ -3,7 +3,7 @@
 #include <omnetpp.h>
 
 #include <vector>
-#include "ChangingErrorChannel.h"
+#include "Addons/Channels/ChangingErrorChannel/ChangingErrorChannel.h"
 
 using namespace std;
 

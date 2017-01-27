@@ -34,7 +34,7 @@
 //Standard libraries
 #include <map>
 #include <string>
-#include <APNamingInfo.h>
+#include "Common/APNamingInfo.h"
 #include <omnetpp.h>
 //RINASim libraries
 //#include <DFFMapping.h>

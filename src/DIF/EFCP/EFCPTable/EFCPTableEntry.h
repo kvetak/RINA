@@ -36,8 +36,8 @@
 
 //#include "DIF/FA/FAI.h"
 #include "Common/Flow.h"
-#include "EFCPInstance.h"
-#include "Delimiting.h"
+#include "DIF/EFCP/EFCPInstance.h"
+#include "DIF/Delimiting/Delimiting.h"
 
 //class EFCPInstance;
 

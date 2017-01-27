@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <OFStaticGenerator/OFStaticGenerator.h>
+#include "DIF/RA/PDUFG/OFStaticGenerator/OFStaticGenerator.h"
 #include "Common/APN.h"
 
 

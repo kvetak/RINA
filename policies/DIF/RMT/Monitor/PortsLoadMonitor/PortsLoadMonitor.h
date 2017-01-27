@@ -21,8 +21,8 @@
 // Comment to remove the enhanced debugging.
 //#define PORTSLOADMONITOR_ENHANCED_DEBUG
 
-#include "RMTQMonitorBase.h"
-#include "RMTModuleAllocator.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
 
 // Will map (link --> input + output bytes).
 typedef std::map<RMTPort *, int64_t> PortsMap;

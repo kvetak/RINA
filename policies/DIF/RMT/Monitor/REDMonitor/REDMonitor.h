@@ -24,7 +24,7 @@
 #ifndef REDMONITOR_H_
 #define REDMONITOR_H_
 
-#include "RMTQMonitorBase.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
 
 typedef std::map<RMTQueue*, double> REDParamMap;
 

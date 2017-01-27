@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TSimpleDV.h"
+#include "DIF/Routing/TSimpleRouting/TSimpleDV/TSimpleDV.h"
 
 class int_TSimpleDV : public TSimpleDV::TSimpleDV<int> { public : int_TSimpleDV(); };
 class uint_TSimpleDV : public TSimpleDV::TSimpleDV<unsigned int> { public : uint_TSimpleDV(); };

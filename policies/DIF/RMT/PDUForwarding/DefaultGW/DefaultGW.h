@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <IntPDUForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 using namespace std;
 

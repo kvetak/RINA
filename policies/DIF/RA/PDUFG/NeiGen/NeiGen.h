@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "NeiTable.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/NeiTable/NeiTable.h"
 
 typedef RMTPort * port_t;
 

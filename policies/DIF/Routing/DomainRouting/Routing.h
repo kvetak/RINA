@@ -23,7 +23,7 @@
 #ifndef DomainRouting_H_
 #define DomainRouting_H_
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 
 #include "Common/Address.h"
 
@@ -31,7 +31,7 @@
 #include <map>
 #include <string>
 
-#include <DomainRouting/rModule.h>
+#include "DIF/Routing/DomainRouting/rModule.h"
 
 namespace DMRnms {
 

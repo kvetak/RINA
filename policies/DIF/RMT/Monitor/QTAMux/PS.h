@@ -24,9 +24,9 @@
 #pragma once
 
 #include <map>
-#include "QTAMux/Mux.h"
-#include "RMTPort.h"
-#include "RMTQueue.h"
+#include "Mux.h"
+#include "DIF/RMT/RMTPort.h"
+#include "DIF/RMT/RMTQueue.h"
 
 namespace QTAMux {
 using namespace std;

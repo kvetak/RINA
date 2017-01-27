@@ -15,13 +15,13 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "GREFWD/Clos/Clos.h"
-#include "eRouting.h"
-#include "FailureSimulation.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/Clos/Clos.h"
+#include "DIF/Routing/eRouting/eRouting.h"
+#include "Addons/Actions/FailureSimulation/FailureSimulation.h"
 
-#include <IntMMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
 
 #include <map>
 #include <set>

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <DAFEnrollmentNotifier.h>
+#include "DAF/Enrollment/DAFEnrollmentNotifier.h"
 
 
 const char* DAF_MSG_ENROLLMENT      = "Enrollment";

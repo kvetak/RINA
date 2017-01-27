@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "PDUFGNeighbor.h"
-#include "IntPDUForwarding.h"
+#include "DIF/RA/PDUFG/PDUFGNeighbor.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 #include "DAF/DA/DA.h"
 #include "Common/QoSCube.h"
 

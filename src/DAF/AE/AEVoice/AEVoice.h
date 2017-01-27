@@ -16,7 +16,7 @@
 #ifndef __RINA_AEVoice_H_
 #define __RINA_AEVoice_H_
 
-#include "AESInt.h"
+#include "DAF/AE/AESInt.h"
 #include <vector>
 
 namespace AEVoice {

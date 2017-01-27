@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_maxWP_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_maxWP_Out/MM_maxWP_Out.h"
 #include <limits.h>
 
 namespace MM_maxWP_Out {

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DefaultGW.h>
+#include "DIF/RMT/PDUForwarding/DefaultGW/DefaultGW.h"
 #include <iostream>
 #include <sstream>
 

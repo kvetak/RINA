@@ -24,8 +24,8 @@
 #define INTSDUPROTECTION_H_
 
 #include <omnetpp.h>
-#include <Utils.h>
-#include <ExternConsts.h>
+#include "Common/Utils.h"
+#include "Common/ExternConsts.h"
 
 class IntSDUProtection  : public cSimpleModule
 {

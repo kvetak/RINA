@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <RcvrFCPolicyDefault/RcvrFCPolicyDefault.h>
+#include "DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefault/RcvrFCPolicyDefault.h"
 
 Register_Class(RcvrFCPolicyDefault);
 

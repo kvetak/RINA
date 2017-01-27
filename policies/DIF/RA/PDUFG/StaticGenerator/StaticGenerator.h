@@ -23,11 +23,11 @@
 #ifndef STATICGENERATOR_H_
 #define STATICGENERATOR_H_
 
-#include <IntPDUFG.h>
-#include <SimpleTable.h>
-#include "MultilevelQoS/MultilevelQoS.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.h"
+#include "DIF/FA/MultilevelQoS/MultilevelQoS.h"
 #include "Common/QoSCube.h"
-#include "RABase.h"
+#include "DIF/RA/RABase.h"
 
 namespace StaticGenerator {
 

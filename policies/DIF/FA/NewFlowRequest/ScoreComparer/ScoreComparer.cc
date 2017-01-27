@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include <ScoreComparer.h>
+#include "DIF/FA/NewFlowRequest/ScoreComparer/ScoreComparer.h"
 
 Define_Module(ScoreComparer);
 

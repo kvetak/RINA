@@ -1,8 +1,8 @@
 #pragma once
 
 #include <omnetpp.h>
-#include "RMTQueue.h"
-#include "RMTPort.h"
+#include "DIF/RMT/RMTQueue.h"
+#include "DIF/RMT/RMTPort.h"
 
 class Int_MM_Drop_Module : public cSimpleModule
 {

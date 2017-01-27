@@ -16,9 +16,9 @@
 #ifndef __PORTSLOADLS_H
 #define __PORTSLOADLS_H
 
-#include <IntPortsLoadRouting.h>
-#include <PortsLoadRU.h>
-#include <PLLSCommon.h>
+#include "DIF/Routing/PortsLoadRouting/IntPortsLoadRouting.h"
+#include "DIF/Routing/PortsLoadRouting/PortsLoadLS/PortsLoadRU.h"
+#include "DIF/Routing/PortsLoadRouting/PortsLoadLS/PLLSCommon.h"
 
 class PortsLoadLS : public IntPortsLoadRouting
 {

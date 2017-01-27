@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_maxPST_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_maxPST_Out/MM_maxPST_Out.h"
 #include "Common/Utils.h"
 
 namespace MM_maxPST_Out {

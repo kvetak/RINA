@@ -30,7 +30,7 @@
  *      Mark ECN per flow : drop N of flow X, mark next N arriving at flow X
  */
 
-#include "QTAMux/Mux.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux.h"
 #include <vector>
 #include <map>
 #include <queue>

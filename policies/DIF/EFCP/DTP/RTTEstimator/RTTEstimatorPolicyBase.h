@@ -33,8 +33,8 @@
 
 #include <omnetpp.h>
 
-#include "EFCPPolicy.h"
-#include "EFCP_defs.h"
+#include "DIF/EFCP/EFCPPolicy.h"
+#include "DIF/EFCP/EFCP_defs.h"
 
 /*
  *

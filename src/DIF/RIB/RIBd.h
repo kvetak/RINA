@@ -36,15 +36,15 @@
 //RINASim libraries
 #include "Common/Utils.h"
 #include "Common/CDAPProcessingBase.h"
-#include "RIBdBase.h"
+#include "DIF/RIB/RIBdBase.h"
 #include "Common/ExternConsts.h"
-#include "RIBdListeners.h"
+#include "DIF/RIB/RIBdListeners.h"
 #include "Common/RINASignals.h"
 #include "Common/PDU.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 #include "DIF/FA/FANotifier.h"
-#include "EnrollmentNotifier.h"
-#include "RoutingNotifier.h"
+#include "DIF/Enrollment/EnrollmentNotifier.h"
+#include "DIF/Routing/RoutingNotifier.h"
 
 //Constants
 extern const char* MSG_CONGEST;

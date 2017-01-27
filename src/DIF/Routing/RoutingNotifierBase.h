@@ -22,7 +22,7 @@
 #include "Common/CDAPProcessingBase.h"
 #include "Common/ExternConsts.h"
 #include "Common/RINASignals.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 class RoutingNotifierBase : public cSimpleModule, public CDAPProcessingBase {
   public:

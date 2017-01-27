@@ -16,10 +16,10 @@
 #ifndef __PORTSLOADGENERATOR_H
 #define __PORTSLOADGENERATOR_H
 
-#include <IntPDUFG.h>
-#include <PortsLoadMonitor.h>
-#include <SimpleTable/SimpleTable.h>
-#include <IntPortsLoadRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/Monitor/PortsLoadMonitor/PortsLoadMonitor.h"
+#include "DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.h"
+#include "DIF/Routing/PortsLoadRouting/IntPortsLoadRouting.h"
 
 #include <map>
 #include <set>

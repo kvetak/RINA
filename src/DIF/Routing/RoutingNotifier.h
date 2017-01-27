@@ -19,9 +19,9 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "RoutingNotifierBase.h"
-#include "RoutingNotifierListeners.h"
-#include "RIBdBase.h"
+#include "DIF/Routing/RoutingNotifierBase.h"
+#include "DIF/Routing/RoutingNotifierListeners.h"
+#include "DIF/RIB/RIBdBase.h"
 
 extern const char* MSG_ROUTINGUPDATE;
 

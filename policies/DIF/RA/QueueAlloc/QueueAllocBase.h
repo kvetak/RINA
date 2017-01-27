@@ -25,10 +25,10 @@
 
 #include <omnetpp.h>
 #include "Common/Flow.h"
-#include "RMTModuleAllocator.h"
-#include "RMTPort.h"
-#include "RABase.h"
-#include "QueueIDGenBase.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
+#include "DIF/RMT/RMTPort.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
 
 /**
  * Noop base class for the RA queue allocation policy

@@ -30,7 +30,7 @@
 #ifndef RXTIMEREXPIRYPOLICYDEFAULT_H_
 #define RXTIMEREXPIRYPOLICYDEFAULT_H_
 
-#include <RxTimerExpiryPolicyBase.h>
+#include "DIF/EFCP/DTCP/RxTimerExpiry/RxTimerExpiryPolicyBase.h"
 
 
 

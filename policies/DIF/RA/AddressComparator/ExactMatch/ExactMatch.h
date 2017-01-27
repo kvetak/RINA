@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 
-#include "AddressComparatorBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
 
 class ExactMatch : public AddressComparatorBase
 {

@@ -26,13 +26,13 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "IRMListeners.h"
-#include "ConnectionTable.h"
+#include "DAF/IRM/IRMListeners.h"
+#include "DAF/IRM/ConnectionTable.h"
 #include "Common/RINASignals.h"
 #include "DAF/DA/DA.h"
 #include "DIF/FA/FABase.h"
 #include "Common/ExternConsts.h"
-#include "SDUData_m.h"
+#include "Common/SDUData_m.h"
 
 extern const int VAL_UNDEF_HANDLE;
 extern const char* SIG_STAT_IRM_UP;

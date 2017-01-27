@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <DQMonitor.h>
+#include "DIF/RMT/Monitor/DQMonitor/DQMonitor.h"
 
 namespace DQMonitor {
 

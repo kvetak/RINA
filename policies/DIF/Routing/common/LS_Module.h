@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/Routing_Alg.h"
-#include "common/GraphCL.h"
+#include "DIF/Routing/common/Routing_Alg.h"
+#include "DIF/Routing/common/GraphCL.h"
 
 namespace common_LSModule {
 

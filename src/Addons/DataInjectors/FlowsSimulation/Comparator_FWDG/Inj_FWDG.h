@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "Addons/DataIniectors/FlowSimulation/Inj_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Inj_t.h"
 
 class Inj_FWDG {
 public:

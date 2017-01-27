@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "RMTMaxQBase.h"
-#include "SmartMonitor.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
 
 #include <map>
 

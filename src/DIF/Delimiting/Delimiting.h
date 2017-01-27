@@ -31,11 +31,11 @@
 #define DELIMITING_H_
 
 #include <omnetpp.h>
-#include "SDUData_m.h"
-#include "UserDataField.h"
+#include "Common/SDUData_m.h"
+#include "DIF/Delimiting/UserDataField.h"
 #include "Common/Utils.h"
 #include "Common/ExternConsts.h"
-#include "DelimitingTimers_m.h"
+#include "DIF/Delimiting/DelimitingTimers_m.h"
 
 #define DELIMITING_MODULE_NAME "delimiting"
 

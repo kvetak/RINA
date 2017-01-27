@@ -27,7 +27,7 @@
  *      Author: gaixas1
  */
 
-#include <IntRoutingUpdate.h>
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 Register_Class(IntRoutingUpdate);
 

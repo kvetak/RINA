@@ -27,7 +27,7 @@
 #include <omnetpp.h>
 //RINASim library
 #include "Common/Utils.h"
-#include "NFlowTableEntry.h"
+#include "DIF/FA/NFlowTableEntry.h"
 
 typedef std::list<NFlowTableEntry> TFAITable;
 typedef std::list<NFlowTableEntry*> TFAIPtrs;

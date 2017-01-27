@@ -15,11 +15,11 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include <IntMMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
 
-#include "IDPerNQoSxPLen.h"
+#include "DIF/RA/QueueIDGen/IDPerNQoSxPLen/IDPerNQoSxPLen.h"
 
 #include <map>
 #include <set>

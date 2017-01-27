@@ -31,7 +31,7 @@
 #define DOMAINMODULE_H_
 
 #include <omnetpp.h>
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 
 #include <string>
 

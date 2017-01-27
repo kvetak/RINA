@@ -31,7 +31,7 @@
 #ifndef SENDERINACTIVITYPOLICYDEFAULT_H_
 #define SENDERINACTIVITYPOLICYDEFAULT_H_
 
-#include "SenderInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyBase.h"
 
 class SenderInactivityPolicyDefault : public SenderInactivityPolicyBase
 {

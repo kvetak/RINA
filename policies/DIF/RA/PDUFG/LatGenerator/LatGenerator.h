@@ -23,9 +23,9 @@
 #ifndef LatGenerator_H_
 #define LatGenerator_H_
 
-#include <IntPDUFG.h>
-#include <MiniTable/MiniTable.h>
-#include <SimpleRouting/IntSimpleRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/MiniTable/MiniTable.h"
+#include "DIF/Routing/SimpleRouting/IntSimpleRouting.h"
 
 #include <map>
 #include <set>

@@ -30,8 +30,8 @@
 #ifndef EFCPINSTANCE_H_
 #define EFCPINSTANCE_H_
 
-#include "DTP.h"
-#include "DTCP.h"
+#include "DIF/EFCP/DTP/DTP.h"
+#include "DIF/EFCP/DTCP/DTCP.h"
 
 //class DTP;
 //class DTCP;

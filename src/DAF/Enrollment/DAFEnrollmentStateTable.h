@@ -34,7 +34,7 @@
 #include <omnetpp.h>
 #include <string>
 #include "Common/Flow.h"
-#include "DAFEnrollmentStateTableEntry.h"
+#include "DAF/Enrollment/DAFEnrollmentStateTableEntry.h"
 
 typedef std::list<DAFEnrollmentStateTableEntry> DAFEnrollStateTable;
 typedef DAFEnrollStateTable::iterator DAFEnrollStateTableIter;

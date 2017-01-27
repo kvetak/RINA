@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "RIBdBase.h"
+#include "DIF/RIB/RIBdBase.h"
 
 class RIBdListeners : public cListener {
   public:

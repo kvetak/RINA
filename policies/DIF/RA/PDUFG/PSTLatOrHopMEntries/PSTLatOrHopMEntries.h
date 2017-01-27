@@ -15,8 +15,8 @@
 
 #pragma once
 
-#include "SimpleLatOrHopMEntries.h"
-#include "IPLSPDUFG.h"
+#include "DIF/RA/PDUFG/SimpleLatOrHopMEntries/SimpleLatOrHopMEntries.h"
+#include "DIF/RA/PDUFG/IPLSPDUFG/IPLSPDUFG.h"
 
 namespace NSPPSTLatOrHopMEntries {
 

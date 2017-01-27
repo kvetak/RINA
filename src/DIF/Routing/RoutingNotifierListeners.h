@@ -17,8 +17,8 @@
 #define ROUTINGNOTIFIERLISTENERES_H_
 
 #include <omnetpp.h>
-#include "IntRoutingUpdate.h"
-#include "RoutingNotifierBase.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
+#include "DIF/Routing/RoutingNotifierBase.h"
 
 class RoutingNotifierListeners : public cListener
 {

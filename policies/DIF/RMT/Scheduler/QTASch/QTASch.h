@@ -17,8 +17,8 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
-#include "QTAMonitor.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
+#include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
 
 class QTASch : public RMTSchedulingBase {
 public:

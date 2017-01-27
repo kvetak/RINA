@@ -23,8 +23,8 @@
 #ifndef DAF_ENROLLMENT_CACEMGMT_H_
 #define DAF_ENROLLMENT_CACEMGMT_H_
 
-#include "CACEBase.h"
-#include "DAFEnrollment.h"
+#include "DAF/Enrollment/CACEBase.h"
+#include "DAF/Enrollment/DAFEnrollment.h"
 
 class DAFEnrollment;
 

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <HopsSingle1Entry/HopsSingle1Entry.h>
+#include "DIF/RA/PDUFG/HopsSingle1Entry/HopsSingle1Entry.h"
 #include "Common/APN.h"
 
 

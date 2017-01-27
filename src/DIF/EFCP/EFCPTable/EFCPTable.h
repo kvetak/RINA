@@ -32,7 +32,7 @@
 
 #include <omnetpp.h>
 
-#include "EFCPTableEntry.h"
+#include "DIF/EFCP/EFCPTable/EFCPTableEntry.h"
 
 
 

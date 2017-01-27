@@ -16,7 +16,7 @@
 #ifndef CDAPPROCESSING_H_
 #define CDAPPROCESSING_H_
 
-#include "CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 #include "Common/ExternConsts.h"
 #include "Common/Utils.h"
 

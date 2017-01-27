@@ -5,8 +5,8 @@
 
 #include <omnetpp.h>
 
-#include "common/Routing_Module.h"
-#include "common/nhLMetric.h"
+#include "DIF/Routing/common/Routing_Module.h"
+#include "DIF/Routing/common/nhLMetric.h"
 
 namespace common_Routing {
 

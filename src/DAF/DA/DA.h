@@ -27,10 +27,10 @@
 #include <omnetpp.h>
 #include "Common/Utils.h"
 //RINASim libraries
-#include "Directory.h"
-#include "NamingInformation.h"
-#include "NeighborTable.h"
-#include "SearchTable.h"
+#include "DAF/DA/Directory.h"
+#include "DAF/DA/NamingInformation.h"
+#include "DAF/DA/NeighborTable.h"
+#include "DAF/DA/SearchTable.h"
 #include "DIF/FA/FABase.h"
 #include "Common/ExternConsts.h"
 

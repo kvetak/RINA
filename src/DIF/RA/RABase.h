@@ -27,7 +27,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "Common/QoSCube.h"
-#include "NM1FlowTable.h"
+#include "DIF/RA/NM1FlowTable.h"
 #include "Common/Flow.h"
 
 typedef std::list<QoSCube> QoSCubeSet;

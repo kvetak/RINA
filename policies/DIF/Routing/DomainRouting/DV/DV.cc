@@ -27,8 +27,8 @@
  *      Author: gaixas1
  */
 
-#include "DomainRouting/DV/DV.h"
-#include "DomainRouting/Routing.h"
+#include "DIF/Routing/DomainRouting/DV/DV.h"
+#include "DIF/Routing/DomainRouting/Routing.h"
 
 namespace DMRnmsDV {
 

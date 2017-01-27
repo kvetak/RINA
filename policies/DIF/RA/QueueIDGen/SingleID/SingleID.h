@@ -24,7 +24,7 @@
 #define SingleID_H_
 
 #include <omnetpp.h>
-#include "QueueIDGenBase.h"
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
 
 class SingleID : public QueueIDGenBase
 {

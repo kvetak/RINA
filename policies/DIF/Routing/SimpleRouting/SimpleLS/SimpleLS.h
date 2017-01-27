@@ -23,7 +23,7 @@
 #ifndef SimpleLS_H_
 #define SimpleLS_H_
 
-#include <IntSimpleRouting.h>
+#include "DIF/Routing/SimpleRouting/IntSimpleRouting.h"
 
 #include <vector>
 #include <map>

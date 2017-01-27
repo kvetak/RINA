@@ -25,10 +25,10 @@
 
 #include <map>
 #include <fstream>
-#include "RMTQMonitorBase.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
 
-#include "QTAMux/PS.h"
-#include "QTAMux/Mux.h"
+#include "DIF/RMT/Monitor/QTAMux/PS.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux.h"
 
 class QTASch;
 

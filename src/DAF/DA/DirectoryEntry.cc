@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DirectoryEntry.h>
+#include "DAF/DA/DirectoryEntry.h"
 
 /*
 DirectoryEntry::DirectoryEntry() :

@@ -30,7 +30,7 @@
 #ifndef SENDINGACKPOLICYDEFAULT_H_
 #define SENDINGACKPOLICYDEFAULT_H_
 
-#include "SendingAckPolicyBase.h"
+#include "DIF/EFCP/DTCP/SendingAck/SendingAckPolicyBase.h"
 
 class SendingAckPolicyDefault : public SendingAckPolicyBase
 {

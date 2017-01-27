@@ -37,7 +37,7 @@
 #define ECN_FLAG 0x01
 
 #include <omnetpp.h>
-#include "PDU_m.h"
+#include "Common/PDU_m.h"
 
 class PDU : public PDU_Base
 {

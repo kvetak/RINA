@@ -19,7 +19,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "AE.h"
+#include "DAF/AE/AE.h"
 
 
 #include <map>

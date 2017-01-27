@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <SndFCOverrunPolicyDefault.h>
+#include "DIF/EFCP/DTCP/SndFCOverrun/SndFCOverrunPolicyDefault/SndFCOverrunPolicyDefault.h"
 
 Register_Class(SndFCOverrunPolicyDefault);
 

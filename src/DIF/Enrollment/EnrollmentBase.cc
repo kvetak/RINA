@@ -21,7 +21,7 @@
  * @detail
  */
 
-#include <EnrollmentBase.h>
+#include "DIF/Enrollment/EnrollmentBase.h"
 
 EnrollmentBase::EnrollmentBase() {
     // TODO Auto-generated constructor stub

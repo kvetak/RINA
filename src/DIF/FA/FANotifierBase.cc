@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <FANotifierBase.h>
+#include "DIF/FA/FANotifierBase.h"
 
 const Address& FANotifierBase::getMyAddress() const {
     return MyAddress;

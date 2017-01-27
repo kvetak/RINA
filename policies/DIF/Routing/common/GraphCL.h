@@ -8,7 +8,7 @@
 #include <set>
 #include <map>
 
-#include "common/nhLMetric.h"
+#include "DIF/Routing/common/nhLMetric.h"
 
 namespace common_GraphCL {
 

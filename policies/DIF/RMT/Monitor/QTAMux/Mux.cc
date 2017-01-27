@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "QTAMux/Mux.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux.h"
 
 namespace QTAMux {
 using namespace std;

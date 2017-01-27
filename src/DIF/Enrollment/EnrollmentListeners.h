@@ -33,7 +33,7 @@
 #ifndef ENROLLMENTLISTENERS_H_
 #define ENROLLMENTLISTENERS_H_
 
-#include "Enrollment.h"
+#include "DIF/Enrollment/Enrollment.h"
 
 class Enrollment;
 class EnrollmentListeners : public cListener {

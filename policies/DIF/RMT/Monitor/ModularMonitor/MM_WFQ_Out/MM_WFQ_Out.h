@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "Int_MM_Out_Module.h"
+#include "DIF/RMT/Monitor/ModularMonitor/Int_MM_Out_Module.h"
 
 #include <string>
 #include <map>

@@ -24,7 +24,7 @@
 #ifndef eDLMonitor_H_
 #define eDLMonitor_H_
 
-#include "SmartMonitor.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
 
 #include <string>
 #include <map>

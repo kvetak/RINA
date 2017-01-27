@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DummyRouting/DummyRouting.h>
+#include "DIF/Routing/DummyRouting/DummyRouting.h"
 
 Register_Class(DummyRouting);
 

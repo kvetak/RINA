@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <REDUpstreamNotifier.h>
+#include "DIF/RMT/MaxQueue/REDUpstreamNotifier/REDUpstreamNotifier.h"
 
 Define_Module(REDUpstreamNotifier);
 

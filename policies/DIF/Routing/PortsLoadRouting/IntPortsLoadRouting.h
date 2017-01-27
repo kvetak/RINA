@@ -16,7 +16,7 @@
 #ifndef __INTPORTSLOADROUTING_H
 #define __INTPORTSLOADROUTING_H
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 #include <string>
 
 typedef std::pair<std::string, std::string> qosPaddr;

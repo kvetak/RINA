@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include <RXControl.h>
+#include "DIF/EFCP/DTCP/RXControl.h"
 
 RXControl::RXControl()
 {

@@ -24,10 +24,10 @@
 
 #include <omnetpp.h>
 
-#include "TxControlPolicyBase.h"
-#include "SenderAckPolicyTCP.h"
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyTCP/SenderAckPolicyTCP.h"
+#include "DIF/EFCP/DTP/DTPState.h"
+#include "DIF/EFCP/DTCP/DTCPState.h"
 
 #define MAX_SSTHRESH    1000000000      ///< slow start threshold
 #define RST_WND         1               ///< restart window

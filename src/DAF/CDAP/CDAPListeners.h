@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAP.h"
+#include "DAF/CDAP/CDAP.h"
 
 class CDAP;
 class CDAPListeners : public cListener {

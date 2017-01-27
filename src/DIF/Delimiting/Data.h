@@ -31,7 +31,7 @@
 #define DATA_H_
 
 #include <omnetpp.h>
-#include "Data_m.h"
+#include "DIF/Delimiting/Data_m.h"
 
 class Data : public Data_Base
   {

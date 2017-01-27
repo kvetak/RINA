@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include <ConnectionTableEntry.h>
+#include "ConnectionTableEntry.h"
 
 typedef std::list<ConnectionTableEntry> TConTable;
 typedef TConTable::iterator TCTIter;

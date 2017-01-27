@@ -25,9 +25,9 @@
 
 #include <omnetpp.h>
 
-#include "RMTPort.h"
-#include "RMTQueue.h"
-#include "RMTModuleAllocator.h"
+#include "DIF/RMT/RMTPort.h"
+#include "DIF/RMT/RMTQueue.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
 
 /* FIXME: circular dependencies */
 class RMTModuleAllocator;

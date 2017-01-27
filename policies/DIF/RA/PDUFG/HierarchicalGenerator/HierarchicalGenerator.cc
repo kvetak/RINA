@@ -13,9 +13,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <HierarchicalGenerator/HierarchicalGenerator.h>
+#include "DIF/RA/PDUFG/HierarchicalGenerator/HierarchicalGenerator.h"
 #include "Common/APN.h"
-#include <Utils.h>
+#include "Common/Utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>

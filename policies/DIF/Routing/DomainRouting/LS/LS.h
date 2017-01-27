@@ -30,7 +30,7 @@
 #ifndef LS_H_
 #define LS_H_
 
-#include <DomainRouting/rModule.h>
+#include "DIF/Routing/DomainRouting/rModule.h"
 
 namespace DMRnmsLS {
 

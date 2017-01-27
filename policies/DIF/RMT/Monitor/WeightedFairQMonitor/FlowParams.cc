@@ -5,7 +5,7 @@
  *      Author: gaixas1
  */
 
-#include <WeightedFairQMonitor/FlowParams.h>
+#include "DIF/RMT/Monitor/WeightedFairQMonitor/FlowParams.h"
 
 namespace FWQ {
 

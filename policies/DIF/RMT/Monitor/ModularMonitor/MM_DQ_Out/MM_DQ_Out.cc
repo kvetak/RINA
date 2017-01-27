@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_DQ_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_DQ_Out/MM_DQ_Out.h"
 
 namespace MM_DQ_Out {
 

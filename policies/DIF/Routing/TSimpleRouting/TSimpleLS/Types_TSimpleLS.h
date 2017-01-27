@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TSimpleLS.h"
+#include "DIF/Routing/TSimpleRouting/TSimpleLS/TSimpleLS.h"
 
 class int_TSimpleLS : public TSimpleLS::TSimpleLS<int> { public : int_TSimpleLS(); };
 class uint_TSimpleLS : public TSimpleLS::TSimpleLS<unsigned int> { public : uint_TSimpleLS(); };

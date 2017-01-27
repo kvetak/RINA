@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include <DirectoryForwardingTable.h>
+#include "DIF/NSM/DirectoryForwardingTable.h"
 
 Define_Module(DirectoryForwardingTable);
 

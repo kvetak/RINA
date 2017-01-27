@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "GREFWD.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GREFWD.h"
 
 namespace GRE {
 /**

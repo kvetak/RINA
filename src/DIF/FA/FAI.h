@@ -35,8 +35,8 @@
 #include "DIF/FA/FABase.h"
 #include "DIF/FA/FAIListeners.h"
 #include "Common/RINASignals.h"
-#include "EFCP.h"
-#include "AllocateRetryBase.h"
+#include "DIF/EFCP/EFCP.h"
+#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
 
 //#include "PushBackChannel.h"
 

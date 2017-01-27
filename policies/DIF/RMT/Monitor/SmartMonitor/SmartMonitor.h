@@ -30,7 +30,7 @@
 #ifndef SMARTMONITOR_H_
 #define SMARTMONITOR_H_
 
-#include "RMTQMonitorBase.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
 
 struct queueStat {
     int ocupation;

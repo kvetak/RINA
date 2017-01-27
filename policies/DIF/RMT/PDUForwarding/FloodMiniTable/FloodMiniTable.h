@@ -23,7 +23,7 @@
 #ifndef FloodMiniTable_H_
 #define FloodMiniTable_H_
 
-#include <IntMMForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
 
 #include <map>
 #include <string>

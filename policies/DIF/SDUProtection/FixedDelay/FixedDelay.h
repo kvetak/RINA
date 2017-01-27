@@ -23,7 +23,7 @@
 #ifndef DELAY_H_
 #define DELAY_H_
 
-#include <IntSDUProtection.h>
+#include "DIF/SDUProtection/IntSDUProtection.h"
 
 class FixedDelay : public IntSDUProtection {
 

@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "QTAMux/PS0/PS0.h"
+#include "DIF/RMT/Monitor/QTAMux/PS0/PS0.h"
 
 namespace QTAMux {
 using namespace std;

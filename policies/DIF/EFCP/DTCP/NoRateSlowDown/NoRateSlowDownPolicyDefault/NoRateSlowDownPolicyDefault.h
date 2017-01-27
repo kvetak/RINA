@@ -30,7 +30,7 @@
 #ifndef NORATESLOWDOWNPOLICYDEFAULT_H_
 #define NORATESLOWDOWNPOLICYDEFAULT_H_
 
-#include <NoRateSlowDownPolicyBase.h>
+#include "DIF/EFCP/DTCP/NoRateSlowDown/NoRateSlowDownPolicyBase.h"
 
 class NoRateSlowDownPolicyDefault : public NoRateSlowDownPolicyBase
 {

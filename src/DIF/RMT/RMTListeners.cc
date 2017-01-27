@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <RMTListeners.h>
+#include "DIF/RMT/RMTListeners.h"
 
 RMTListeners::RMTListeners(RMTBase* rmt) : rmt(rmt)
 {

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <FANotifierListeners.h>
+#include "DIF/FA/FANotifierListeners.h"
 
 FANotifierListeners::FANotifierListeners(FANotifierBase* nfanb) : fanb(nfanb)
 {

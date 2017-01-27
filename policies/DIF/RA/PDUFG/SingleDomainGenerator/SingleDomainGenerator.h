@@ -23,9 +23,9 @@
 #ifndef SingleDomainGenerator_H_
 #define SingleDomainGenerator_H_
 
-#include <IntPDUFG.h>
-#include <IntMiniForwarding.h>
-#include <DomainRouting/Routing.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntMiniForwarding.h"
+#include <DIF/Routing/DomainRouting/Routing.h>
 
 #include <map>
 #include <set>

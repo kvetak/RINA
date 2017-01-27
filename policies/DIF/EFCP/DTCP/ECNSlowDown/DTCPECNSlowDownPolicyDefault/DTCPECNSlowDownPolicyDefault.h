@@ -16,7 +16,7 @@
 #ifndef DTCPECNSLOWDOWNPOLICYDEFAULT_H_
 #define DTCPECNSLOWDOWNPOLICYDEFAULT_H_
 
-#include <ECNSlowDownPolicyBase.h>
+#include "DIF/EFCP/DTCP/ECNSlowDown/ECNSlowDownPolicyBase.h"
 
 class DTCPECNSlowDownPolicyDefault: public ECNSlowDownPolicyBase {
 public:

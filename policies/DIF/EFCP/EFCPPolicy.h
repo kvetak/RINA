@@ -34,8 +34,8 @@
 
 #include <omnetpp.h>
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "DIF/EFCP/DTP/DTPState.h"
+#include "DIF/EFCP/DTCP/DTCPState.h"
 
 class EFCPPolicy : public cSimpleModule
 {

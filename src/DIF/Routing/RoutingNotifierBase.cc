@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <RoutingNotifierBase.h>
+#include "DIF/Routing/RoutingNotifierBase.h"
 
 bool RoutingNotifierBase::isMessageProcessable(CDAPMessage* msg)
 {

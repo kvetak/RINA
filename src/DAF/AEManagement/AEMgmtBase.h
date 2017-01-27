@@ -28,12 +28,12 @@
 //RINASim libraries
 #include "Common/ExternConsts.h"
 #include "Common/Flow.h"
-#include "CDAPMessage_m.h"
-#include "DAFEnrollmentObj.h"
-#include "DAFOperationObj.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/Enrollment/DAFEnrollmentObj.h"
+#include "DAF/Enrollment/DAFOperationObj.h"
 #include "Common/CongestionDescriptor.h"
 #include "Common/PDU.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 
 class AEMgmtBase : public cSimpleModule {

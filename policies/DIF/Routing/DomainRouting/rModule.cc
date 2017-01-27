@@ -27,8 +27,8 @@
  *      Author: gaixas1
  */
 
-#include <DomainRouting/rModule.h>
-#include <DomainRouting/Routing.h>
+#include "DIF/Routing/DomainRouting/rModule.h"
+#include "DIF/Routing/DomainRouting/Routing.h"
 
 namespace DMRnms {
 

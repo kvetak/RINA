@@ -30,7 +30,7 @@
 #ifndef LOSTCONTROLPDUPOLICYDEFAULT_H_
 #define LOSTCONTROLPDUPOLICYDEFAULT_H_
 
-#include <LostControlPDUPolicyBase.h>
+#include "DIF/EFCP/DTCP/LostControlPDU/LostControlPDUPolicyBase.h"
 
 class LostControlPDUPolicyDefault : public LostControlPDUPolicyBase
 {

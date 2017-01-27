@@ -20,11 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DomainTable/DomainTable.h>
+#include "DIF/RMT/PDUForwarding/DomainTable/DomainTable.h"
 
 
 
-#include <Utils.h>
+#include "Common/Utils.h"
 #include <sstream>
 
 namespace DomainTable {

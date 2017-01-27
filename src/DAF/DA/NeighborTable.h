@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 //RINASim libraries
-#include "NeighborTableEntry.h"
+#include "DAF/DA/NeighborTableEntry.h"
 #include "Common/ExternConsts.h"
 
 typedef std::list<NeighborTableEntry> NeighborEntries;

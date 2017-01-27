@@ -19,7 +19,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "EnrollmentNotifierBase.h"
+#include "DIF/Enrollment/EnrollmentNotifierBase.h"
 
 class EnrollmentNotifierListeners : public cListener {
   public:

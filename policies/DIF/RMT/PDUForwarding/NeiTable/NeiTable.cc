@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <NeiTable/NeiTable.h>
+#include "DIF/RMT/PDUForwarding/NeiTable/NeiTable.h"
 #include <iostream>
 
 Register_Class(NeiTable);

@@ -30,7 +30,7 @@
 #ifndef TXCONTROLPOLICYLG_H_
 #define TXCONTROLPOLICYLG_H_
 
-#include "TxControlPolicyBase.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h"
 
 #define INITIAL_RATE    0.04
 #define ALPHA           0.1

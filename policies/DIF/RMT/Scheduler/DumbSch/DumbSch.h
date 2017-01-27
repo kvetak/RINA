@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
-#include "SmartMonitor.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
 
 class DumbSch : public RMTSchedulingBase
 {

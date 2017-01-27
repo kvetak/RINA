@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <InitialSeqNum/InitialSeqNumPolicyBase.h>
+#include "DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyBase.h"
 
 InitialSeqNumPolicyBase::InitialSeqNumPolicyBase()
 {

@@ -25,9 +25,9 @@
 
 #include <omnetpp.h>
 
-#include "IntPDUFG.h"
-#include "IntBbPDUForwarding.h"
-#include "IntBbRouting.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntBbPDUForwarding.h"
+#include "DIF/Routing/IntBbRouting.h"
 
 class IntBbPDUFG  : public IntPDUFG {
 public:

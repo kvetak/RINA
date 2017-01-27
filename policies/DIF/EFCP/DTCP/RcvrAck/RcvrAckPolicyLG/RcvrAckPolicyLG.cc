@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <RcvrAckPolicyLG/RcvrAckPolicyLG.h>
+#include "DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyLG/RcvrAckPolicyLG.h"
 
 const char * ECN_MARKED_DATA = "ECN_MARKED_DATA";
 

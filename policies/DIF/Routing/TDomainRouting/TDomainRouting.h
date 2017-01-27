@@ -3,12 +3,12 @@
 #include <string>
 #include <map>
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 
-#include "common/nhLMetric.h"
-#include "common/Routing_Module.h"
-#include "common/LS_Module.h"
-#include "common/DV_Module.h"
+#include "DIF/Routing/common/nhLMetric.h"
+#include "DIF/Routing/common/Routing_Module.h"
+#include "DIF/Routing/common/LS_Module.h"
+#include "DIF/Routing/common/DV_Module.h"
 
 using namespace std;
 using namespace common_LSModule;

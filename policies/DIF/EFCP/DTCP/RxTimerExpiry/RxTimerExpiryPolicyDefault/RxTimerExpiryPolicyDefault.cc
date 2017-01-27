@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <RxTimerExpiryPolicyDefault.h>
+#include "DIF/EFCP/DTCP/RxTimerExpiry/RxTimerExpiryPolicyDefault/RxTimerExpiryPolicyDefault.h"
 
 Register_Class(RxTimerExpiryPolicyDefault);
 

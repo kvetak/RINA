@@ -28,7 +28,7 @@
 //RINASim libraries
 #include "Common/Utils.h"
 #include "DIF/FA/NFlowTable.h"
-#include "CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 
 class RIBdSplitter : public cSimpleModule
 {

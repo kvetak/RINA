@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <WeightedFairQMonitor.h>
+#include "DIF/RMT/Monitor/WeightedFairQMonitor/WeightedFairQMonitor.h"
 
 Define_Module(FWQ::WeightedFairQMonitor);
 

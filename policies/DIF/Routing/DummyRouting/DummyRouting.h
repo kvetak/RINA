@@ -23,7 +23,7 @@
 #ifndef DummyRouting_H_
 #define DummyRouting_H_
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 
 class DummyRouting: public IntRouting {
 public:

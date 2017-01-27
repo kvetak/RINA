@@ -24,7 +24,7 @@
 #define __RINA_SEARCHTABLE_H_
 
 #include <omnetpp.h>
-#include "SearchTableEntry.h"
+#include "DAF/DA/SearchTableEntry.h"
 #include "Common/ExternConsts.h"
 
 typedef std::list<SearchTableEntry> SearchEntries;

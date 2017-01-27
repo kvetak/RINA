@@ -16,9 +16,9 @@
 //
 #pragma once
 
-#include "SmartMonitor.h"
-#include "Int_MM_Out_Module.h"
-#include "Int_MM_Drop_Module.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
+#include "DIF/RMT/Monitor/ModularMonitor/Int_MM_Out_Module.h"
+#include "DIF/RMT/Monitor/ModularMonitor/Int_MM_Drop_Module.h"
 
 namespace ModularMonitor {
 

@@ -24,7 +24,7 @@
 #define APIOBJBASE_H_
 
 #include <omnetpp.h>
-#include "CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 
 class APIObjBase : public cObject {
 public:

@@ -34,8 +34,8 @@
 
 #include <omnetpp.h>
 
-#include "EFCPPolicy.h"
-#include "InitialSeqNumPolicyBase.h"
+#include "DIF/EFCP/EFCPPolicy.h"
+#include "DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyBase.h"
 
 /*
  *

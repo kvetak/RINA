@@ -27,10 +27,10 @@
 
 #include "Common/Utils.h"
 #include "Common/ExternConsts.h"
-#include "RMTQueue.h"
-#include "RMTPort.h"
-#include "RMTQMonitorBase.h"
-#include "IntSDUProtection.h"
+#include "DIF/RMT/RMTQueue.h"
+#include "DIF/RMT/RMTPort.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/SDUProtection/IntSDUProtection.h"
 
 
 class RMTQMonitorBase; /* FIXME: circular dependency */

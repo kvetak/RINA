@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <SimpleTable/SimpleTable.h>
+#include "DIF/RMT/PDUForwarding/SimpleTable/SimpleTable.h"
 #include <iostream>
 
 Register_Class(SimpleTable::SimpleTable);

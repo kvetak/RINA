@@ -31,7 +31,7 @@
 #ifndef RTTESTIMATORPOLICYDEFAULT_H_
 #define RTTESTIMATORPOLICYDEFAULT_H_
 
-#include "RTTEstimatorPolicyBase.h"
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyBase.h"
 
 class RTTEstimatorPolicyDefault : public RTTEstimatorPolicyBase
 {

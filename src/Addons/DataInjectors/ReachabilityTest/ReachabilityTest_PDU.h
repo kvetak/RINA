@@ -2,7 +2,7 @@
 
 #include <omnetpp.h>
 #include <memory>
-#include "DataTransferPDU.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
 
 using namespace std;
 

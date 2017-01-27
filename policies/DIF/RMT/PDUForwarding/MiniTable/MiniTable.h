@@ -23,7 +23,7 @@
 #ifndef MiniTable_H_
 #define MiniTable_H_
 
-#include <IntMiniForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntMiniForwarding.h"
 
 #include <map>
 #include <string>

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <DTCPECNSlowDownPolicyDefault/DTCPECNSlowDownPolicyDefault.h>
+#include "DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyDefault/DTCPECNSlowDownPolicyDefault.h"
 
 DTCPECNSlowDownPolicyDefault::~DTCPECNSlowDownPolicyDefault() {
     // TODO Auto-generated destructor stub

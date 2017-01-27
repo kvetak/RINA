@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <SenderAckPolicyTCP.h>
-#include <DTCP.h>
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyTCP/SenderAckPolicyTCP.h"
+#include "DIF/EFCP/DTCP/DTCP.h"
 Register_Class(SenderAckPolicyTCP);
 
 SenderAckPolicyTCP::SenderAckPolicyTCP() {

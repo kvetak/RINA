@@ -19,7 +19,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "DAFEnrollmentNotifierBase.h"
+#include "DAF/Enrollment/DAFEnrollmentNotifierBase.h"
 
 class DAFEnrollmentNotifierListeners : public cListener {
   public:

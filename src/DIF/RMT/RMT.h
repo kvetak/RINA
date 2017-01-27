@@ -40,16 +40,16 @@
 #include "Common/PDU.h"
 #include "Common/Utils.h"
 
-#include "IntPDUForwarding.h"
-#include "QueueAllocBase.h"
-#include "AddressComparatorBase.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
+#include "DIF/RA/QueueAlloc/QueueAllocBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
 
-#include "RMTBase.h"
-#include "RMTListeners.h"
-#include "RMTModuleAllocator.h"
-#include "RMTSchedulingBase.h"
-#include "RMTQMonitorBase.h"
-#include "RMTMaxQBase.h"
+#include "DIF/RMT/RMTBase.h"
+#include "DIF/RMT/RMTListeners.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
 
 // mapping of cepIDs to output gates
 typedef std::map<int, cGate*> EfcpiMapping;

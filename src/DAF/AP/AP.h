@@ -24,10 +24,10 @@
 #define AP_H_
 
 #include <omnetpp.h>
-#include "APBase.h"
-#include "APListeners.h"
-#include "AE.h"
-#include "APIReqObj.h"
+#include "DAF/AP/APBase.h"
+#include "DAF/AP/APListeners.h"
+#include "DAF/AE/AE.h"
+#include "DAF/AP/APIReqObj.h"
 
 class LisAPAllReqFromFai;
 class LisAEAPAPI;

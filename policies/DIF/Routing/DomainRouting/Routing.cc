@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DomainRouting/Routing.h>
+#include "DIF/Routing/DomainRouting/Routing.h"
 
-#include "DomainRouting/DV/DV.h"
-#include "DomainRouting/LS/LS.h"
+#include "DIF/Routing/DomainRouting/DV/DV.h"
+#include "DIF/Routing/DomainRouting/LS/LS.h"
 
 namespace DMRnms {
 

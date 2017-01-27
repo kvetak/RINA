@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <QueueInfo.h>
+#include "Common/QueueInfo.h"
 
 Register_Class(QueueInfo);
 

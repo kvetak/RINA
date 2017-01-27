@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <SimpleDCGenerator/SimpleDCGenerator.h>
+#include "DIF/RA/PDUFG/SimpleDCGenerator/SimpleDCGenerator.h"
 #include "Common/APN.h"
 
 

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <QoSDomainGenerator/QoSDomainGenerator.h>
+#include "DIF/RA/PDUFG/QoSDomainGenerator/QoSDomainGenerator.h"
 #include "Common/APN.h"
 
 #include <stdio.h>

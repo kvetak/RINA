@@ -16,7 +16,7 @@
 #ifndef HierarchicalTable_H_
 #define HierarchicalTable_H_
 
-#include <IntMMForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntMMForwarding.h"
 
 #include <map>
 #include <string>

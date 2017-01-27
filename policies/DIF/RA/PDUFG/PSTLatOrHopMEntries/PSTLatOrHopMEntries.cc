@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <PSTLatOrHopMEntries.h>
+#include "DIF/RA/PDUFG/PSTLatOrHopMEntries/PSTLatOrHopMEntries.h"
 #include "Common/APN.h"
 #include "DIF/RA/QueueIDGen/IDPerNQoSxPLen/IDPerNQoSxPLen.h"
 

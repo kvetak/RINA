@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "DAFRIBdBase.h"
+#include "DAF/RIB/DAFRIBdBase.h"
 
 class DAFRIBdListeners : public cListener {
 public:

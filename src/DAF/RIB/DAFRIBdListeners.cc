@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <RIB/DAFRIBdListeners.h>
+#include "DAF/RIB/DAFRIBdListeners.h"
 
 DAFRIBdListeners::DAFRIBdListeners(DAFRIBdBase* nribd) : ribd(nribd) {
 }

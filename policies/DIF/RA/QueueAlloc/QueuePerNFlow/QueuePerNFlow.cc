@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <QueuePerNFlow.h>
+#include "DIF/RA/QueueAlloc/QueuePerNFlow/QueuePerNFlow.h"
 
 Define_Module(QueuePerNFlow);
 

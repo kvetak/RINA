@@ -24,7 +24,7 @@
 #ifndef TKMonitor_H_
 #define TKMonitor_H_
 
-#include "SmartMonitor.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
 
 #include <string>
 #include <map>

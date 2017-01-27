@@ -18,9 +18,9 @@
 #ifndef DQMonitor_H_
 #define DQMonitor_H_
 
-#include "SmartMonitor.h"
+#include "DIF/RMT/Monitor/SmartMonitor/SmartMonitor.h"
 
-#include "dlCUInfo.h"
+#include "DIF/RMT/Monitor/DQMonitor/dlCUInfo.h"
 
 #include <string>
 #include <map>

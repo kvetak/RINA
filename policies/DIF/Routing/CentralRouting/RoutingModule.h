@@ -3,7 +3,7 @@
 #include <map>
 #include <set>
 
-#include "GRE_Helpers.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GRE_Helpers.h"
 
 using namespace std;
 

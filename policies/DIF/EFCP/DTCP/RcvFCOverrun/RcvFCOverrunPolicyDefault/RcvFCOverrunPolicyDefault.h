@@ -30,7 +30,7 @@
 #ifndef RCVFCOVERRUNPOLICYDEFAULT_H_
 #define RCVFCOVERRUNPOLICYDEFAULT_H_
 
-#include <RcvFCOverrunPolicyBase.h>
+#include "DIF/EFCP/DTCP/RcvFCOverrun/RcvFCOverrunPolicyBase.h"
 
 class RcvFCOverrunPolicyDefault : public RcvFCOverrunPolicyBase
 {

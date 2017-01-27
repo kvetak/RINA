@@ -28,16 +28,16 @@
 #include <sstream>
 //RINASim libraries
 #include "Common/Utils.h"
-#include "AEBase.h"
-#include "AEListeners.h"
+#include "DAF/AE/AEBase.h"
+#include "DAF/AE/AEListeners.h"
 #include "Common/RINASignals.h"
-#include "IRM.h"
-#include "ConnectionTable.h"
+#include "DAF/IRM/IRM.h"
+#include "DAF/IRM/ConnectionTable.h"
 #include "Common/ExternConsts.h"
-#include "CDAPMessage_m.h"
-#include "APIReqObj.h"
-#include "APIResult.h"
-#include "CACEGeneric.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/AP/APIReqObj.h"
+#include "DAF/AP/APIResult.h"
+#include "DAF/Enrollment/CACEGeneric.h"
 
 class CACEGeneric;
 

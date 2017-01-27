@@ -25,7 +25,7 @@
 #define IDPerNQoS_H_
 
 #include <omnetpp.h>
-#include "QueueIDGenBase.h"
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
 
 class IDPerNFlow : public QueueIDGenBase
 {

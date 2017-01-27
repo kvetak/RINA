@@ -24,8 +24,8 @@
 #define APLISTENERS_H_
 
 #include <omnetpp.h>
-#include "AP.h"
-#include "APIResult.h"
+#include "DAF/AP/AP.h"
+#include "DAF/AP/APIResult.h"
 
 class AP;
 class APListeners : public cListener {

@@ -23,7 +23,7 @@
 #ifndef QOSCUBECOMPARER_H_
 #define QOSCUBECOMPARER_H_
 
-#include <NewFlowRequest/NewFlowRequestBase.h>
+#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
 
 class ScoreComparer : public NewFlowRequestBase {
   public:

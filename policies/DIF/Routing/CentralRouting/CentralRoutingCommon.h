@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RoutingModule.h"
-#include "eLink.h"
-#include "GRE_Helpers.h"
+#include "DIF/Routing/CentralRouting/RoutingModule.h"
+#include "DIF/Routing/eRouting/eLink.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GRE_Helpers.h"
 
 #define R_INZONE_CHANGES 1
 #define R_EXCEPTIONS_CHANGES 2

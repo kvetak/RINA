@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPMsgLogEntry.h"
+#include "DAF/CDAP/CDAPMsgLogEntry.h"
 
 typedef std::list<CDAPMsgLogEntry> TMessageLog;
 typedef TMessageLog::iterator TMLIter;

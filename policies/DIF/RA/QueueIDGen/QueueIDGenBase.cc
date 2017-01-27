@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <QueueIDGen/QueueIDGenBase.h>
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
 
 Define_Module(QueueIDGenBase);
 

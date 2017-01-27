@@ -23,7 +23,7 @@
 #ifndef MultiQoSTable_H_
 #define MultiQoSTable_H_
 
-#include <IntQoSMForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntQoSMForwarding.h"
 
 #include <map>
 #include <string>

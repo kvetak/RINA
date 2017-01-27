@@ -18,8 +18,8 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
-#include "DQMonitor.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
+#include "DIF/RMT/Monitor/DQMonitor/DQMonitor.h"
 
 class DQSch : public RMTSchedulingBase
 {

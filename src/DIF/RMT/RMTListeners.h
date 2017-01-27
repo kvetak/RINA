@@ -24,7 +24,7 @@
 #define RMTLISTENERS_H_
 
 #include <omnetpp.h>
-#include "RMTBase.h"
+#include "DIF/RMT/RMTBase.h"
 
 class RMTListeners : public cListener
 {

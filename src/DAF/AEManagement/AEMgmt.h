@@ -34,15 +34,15 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "AEMgmtBase.h"
+#include "DAF/AEManagement/AEMgmtBase.h"
 #include "Common/ExternConsts.h"
-#include "AEMgmtListeners.h"
-#include "DAFEnrollmentNotifierBase.h"
+#include "DAF/AEManagement/AEMgmtListeners.h"
+#include "DAF/Enrollment/DAFEnrollmentNotifierBase.h"
 #include "DIF/FA/FANotifier.h"
 #include "Common/CDAPProcessingBase.h"
 #include "Common/RINASignals.h"
 #include "Common/PDU.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 //Constants
 //extern const char* DAF_MSG_ENROLLMENT;

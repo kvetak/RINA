@@ -14,7 +14,7 @@
 //
 // NOTE: Procedures are sorted by name.
 
-#include <PortsLoadGenerator.h>
+#include "DIF/RA/PDUFG/PortsLoadGenerator/PortsLoadGenerator.h"
 #include "Common/APN.h"
 
 #define PORTSLOAD_GENERATOR_TIMEOUT     "PDUFG_RateGenerator"

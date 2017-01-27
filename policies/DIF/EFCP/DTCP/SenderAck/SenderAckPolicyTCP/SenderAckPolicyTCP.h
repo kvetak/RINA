@@ -16,12 +16,12 @@
 #ifndef SENDERACKPOLICYTCP_H_
 #define SENDERACKPOLICYTCP_H_
 
-#include "SenderAckPolicyBase.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h"
 
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 
-#include "DTPState.h"
-#include "DTCPState.h"
+#include "DIF/EFCP/DTP/DTPState.h"
+#include "DIF/EFCP/DTCP/DTCPState.h"
 
 class SenderAckPolicyTCP : public SenderAckPolicyBase {
 public:

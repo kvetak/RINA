@@ -21,7 +21,7 @@
 //RINASim libraries
 #include "DIF/FA/FANotifierBase.h"
 #include "DIF/FA/FANotifierListeners.h"
-#include "RIBdBase.h"
+#include "DIF/RIB/RIBdBase.h"
 
 class FANotifier : public FANotifierBase {
   public:

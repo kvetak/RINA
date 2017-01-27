@@ -28,9 +28,9 @@
 //RINASim libraries
 
 #include "Common/ExternConsts.h"
-#include "CDAPMessage_m.h"
-#include "DAFEnrollmentObj.h"
-#include "DAFOperationObj.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/Enrollment/DAFEnrollmentObj.h"
+#include "DAF/Enrollment/DAFOperationObj.h"
 #include "Common/PDU.h"
 
 class DAFRIBdBase : public cSimpleModule {

@@ -24,8 +24,8 @@
 #ifndef READRATEREDUCER_H_
 #define READRATEREDUCER_H_
 
-#include "RMTMaxQBase.h"
-#include "IntPDUForwarding.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 class ReadRateReducer : public RMTMaxQBase
 {

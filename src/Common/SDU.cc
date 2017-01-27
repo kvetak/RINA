@@ -26,7 +26,7 @@
  * @brief
  * @detail
  */
-#include <SDU.h>
+#include "Common/SDU.h"
 
 SDU::SDU(const char *name, int kind) : SDU_Base(name, kind)
 {

@@ -24,7 +24,7 @@
 #define __RINA_LIMITEDRETRIES_H_
 
 #include <omnetpp.h>
-#include "AllocateRetryBase.h"
+#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
 
 class LimitedRetries : public AllocateRetryBase
 {

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <DAFEnrollmentNotifierBase.h>
+#include "DAF/Enrollment/DAFEnrollmentNotifierBase.h"
 
 bool DAFEnrollmentNotifierBase::isMessageProcessable(CDAPMessage* msg) {
     Enter_Method_Silent();

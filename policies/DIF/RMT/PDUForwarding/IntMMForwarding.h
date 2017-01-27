@@ -24,7 +24,7 @@
 #define IntMMForwarding_H_
 
 #include <omnetpp.h>
-#include "IntPDUForwarding.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 #include <vector>
 
 class IntMMForwarding  : public IntPDUForwarding {

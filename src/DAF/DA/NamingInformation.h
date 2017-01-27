@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 //RINASim libraries
-#include "NamingInformationEntry.h"
+#include "DAF/DA/NamingInformationEntry.h"
 #include "Common/ExternConsts.h"
 
 typedef std::list<NamingInformationEntry> NamingInformations;

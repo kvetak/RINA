@@ -26,9 +26,9 @@
 #include <omnetpp.h>
 #include <string>
 #include "Common/Flow.h"
-#include "APIResult.h"
-#include "APIRetObj.h"
-#include "CDAPMessage_m.h"
+#include "DAF/AP/APIResult.h"
+#include "DAF/AP/APIRetObj.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
 #include <map>
 #include "Common/ExternConsts.h"
 #include "Common/RINASignals.h"

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <PLQoSAwareMEntries/PLQoSAwareMEntries.h>
+#include "DIF/RA/PDUFG/PLQoSAwareMEntries/PLQoSAwareMEntries.h"
 #include "Common/APN.h"
 
 

@@ -18,9 +18,9 @@
 
 #include <omnetpp.h>
 
-#include "RMTSchedulingBase.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
 
-#include <WeightedFairQMonitor/WeightedFairQMonitor.h>
+#include "DIF/RMT/Monitor/WeightedFairQMonitor/WeightedFairQMonitor.h"
 
 namespace FWQ {
 

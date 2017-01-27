@@ -30,7 +30,7 @@
 #ifndef RECONCILEFCDEFAULTPOLICY_H_
 #define RECONCILEFCDEFAULTPOLICY_H_
 
-#include <ReconcileFCPolicyBase.h>
+#include "DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h"
 
 class ReconcileFCPolicyDefault : public ReconcileFCPolicyBase
 {

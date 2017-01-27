@@ -25,7 +25,7 @@
 #define APPING_H_
 
 #include <omnetpp.h>
-#include "AP.h"
+#include "DAF/AP/AP.h"
 
 #include "Common/RINASignals.h"
 

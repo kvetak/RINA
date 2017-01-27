@@ -39,12 +39,12 @@
 #include "Common/Flow.h"
 #include "DIF/FA/NFlowTable.h"
 #include "Common/RINASignals.h"
-#include "EFCP.h"
+#include "DIF/EFCP/EFCP.h"
 #include "Common/ExternConsts.h"
 #include "DAF/DA/DA.h"
-#include "RABase.h"
-#include "NewFlowRequestBase.h"
-#include "EnrollmentStateTable.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
+#include "DIF/Enrollment/EnrollmentStateTable.h"
 
 //Constants
 

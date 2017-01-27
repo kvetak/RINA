@@ -30,7 +30,7 @@
 
 #include <list>
 
-#include "QTAMux/PS.h"
+#include "DIF/RMT/Monitor/QTAMux/PS.h"
 
 
 namespace QTAMux {

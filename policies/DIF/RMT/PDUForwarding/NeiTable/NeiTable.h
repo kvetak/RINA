@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <IntMiniForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntMiniForwarding.h"
 #include <map>
 #include <string>
 #include <vector>

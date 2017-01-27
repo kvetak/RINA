@@ -21,18 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "QTAMux/QTAMonitor.h"
-#include "QTASch/QTASch.h"
-#include "QTAMux/PS0/PS0.h"
-#include "QTAMux/PS1/PS1.h"
-#include "QTAMux/PS2/PS2.h"
-#include "QTAMux/PS3/PS3.h"
-#include "QTAMux/Mux0/Mux0.h"
-#include "QTAMux/Mux1/Mux1.h"
-#include "QTAMux/Mux2/Mux2.h"
-#include "QTAMux/Mux3/Mux3.h"
-#include "QTAMux/Mux4/Mux4.h"
-#include "QTAMux/Mux5/Mux5.h"
+#include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
+#include "DIF/RMT/Scheduler/QTASch/QTASch.h"
+#include "DIF/RMT/Monitor/QTAMux/PS0/PS0.h"
+#include "DIF/RMT/Monitor/QTAMux/PS1/PS1.h"
+#include "DIF/RMT/Monitor/QTAMux/PS2/PS2.h"
+#include "DIF/RMT/Monitor/QTAMux/PS3/PS3.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux0/Mux0.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux1/Mux1.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux2/Mux2.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux3/Mux3.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux4/Mux4.h"
+#include "DIF/RMT/Monitor/QTAMux/Mux5/Mux5.h"
 
 namespace QTAMux {
 using namespace std;

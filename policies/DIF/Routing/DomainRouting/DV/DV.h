@@ -30,7 +30,7 @@
 #ifndef DV_H_
 #define DV_H_
 
-#include <DomainRouting/rModule.h>
+#include "DIF/Routing/DomainRouting/rModule.h"
 
 namespace DMRnmsDV {
 

@@ -27,8 +27,8 @@
 #include <omnetpp.h>
 #include "Common/RINASignals.h"
 #include "Common/Flow.h"
-#include "CDAPMessage_m.h"
-#include "EnrollmentStateTableEntry.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DIF/Enrollment/EnrollmentStateTableEntry.h"
 
 class EnrollmentBase : public cSimpleModule {
 public:

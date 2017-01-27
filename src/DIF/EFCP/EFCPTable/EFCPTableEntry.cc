@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include <EFCPTable/EFCPTableEntry.h>
+#include "DIF/EFCP/EFCPTable/EFCPTableEntry.h"
 
 EFCPTableEntry::EFCPTableEntry()
 {

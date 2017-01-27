@@ -29,26 +29,26 @@
 #include "Common/RINASignals.h"
 #include "Common/ExternConsts.h"
 
-#include "DTPState.h"
-#include "DTPTimers_m.h"
-#include "DTCP.h"
+#include "DIF/EFCP/DTP/DTPState.h"
+#include "DIF/EFCP/DTP/DTPTimers_m.h"
+#include "DIF/EFCP/DTCP/DTCP.h"
 //#include "Common/PDU.h"
-#include "DataTransferPDU.h"
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTP/DataTransferPDU.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 #include "Common/SDU.h"
-#include "RMT.h"
+#include "DIF/RMT/RMT.h"
 
 #include "DIF/RA/RA.h"
-#include "SDUData_m.h"
+#include "Common/SDUData_m.h"
 
 #include "Common/QueueInfo.h"
 
 
 /* Policies */
-#include "RcvrInactivityPolicyBase.h"
-#include "SenderInactivityPolicyBase.h"
-#include "InitialSeqNumPolicyBase.h"
-#include "RTTEstimatorPolicyBase.h"
+#include "DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyBase.h"
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyBase.h"
 
 //#include "SDUs.h"
 

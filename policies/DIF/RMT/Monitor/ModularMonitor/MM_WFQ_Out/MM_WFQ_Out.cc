@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_WFQ_Out.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_WFQ_Out/MM_WFQ_Out.h"
 
 namespace MM_WFQ_Out {
 

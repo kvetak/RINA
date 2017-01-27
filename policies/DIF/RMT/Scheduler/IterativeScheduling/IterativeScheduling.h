@@ -16,7 +16,7 @@
 #pragma once
 
 #include <omnetpp.h>
-#include "RMTSchedulingBase.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
 #include <map>
 #include <set>
 

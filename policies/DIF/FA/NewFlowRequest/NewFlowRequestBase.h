@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 
 #include "Common/Flow.h"
-#include "RABase.h"
+#include "DIF/RA/RABase.h"
 
 class NewFlowRequestBase : public cSimpleModule {
   public:

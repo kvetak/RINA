@@ -26,8 +26,8 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPMessage_m.h"
-#include "CDAPMsgLog.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/CDAP/CDAPMsgLog.h"
 
 class CDAPSplitter : public cSimpleModule
 {

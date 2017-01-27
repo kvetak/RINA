@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DummyMonitor.h>
+#include "DIF/RMT/Monitor/DummyMonitor/DummyMonitor.h"
 
 Define_Module(DummyMonitor);
 

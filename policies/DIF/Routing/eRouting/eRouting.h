@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include <IntRouting.h>
+#include "DIF/Routing/IntRouting.h"
 #include <map>
-#include "eLink.h"
+#include "DIF/Routing/eRouting/eLink.h"
 
 using namespace std;
 

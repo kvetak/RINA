@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <DummyProtection.h>
+#include "DIF/SDUProtection/DummyProtection/DummyProtection.h"
 
 Register_Class(DummyProtection);
 

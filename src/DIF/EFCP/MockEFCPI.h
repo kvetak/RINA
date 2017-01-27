@@ -24,9 +24,9 @@
 #define __RINA_MOCKEFCP_H_
 
 #include <omnetpp.h>
-//#include "DataTransferPDU.h"
-#include "CDAPMessage_m.h"
-#include "ManagementPDU_m.h"
+//#include "DIF/EFCP/DTP/DataTransferPDU.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DIF/EFCP/ManagementPDU_m.h"
 
 
 

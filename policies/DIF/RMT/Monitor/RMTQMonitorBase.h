@@ -24,10 +24,10 @@
 #define RMTQMONITORBASE_H_
 
 #include <omnetpp.h>
-#include "RMTSchedulingBase.h"
-#include "AddressComparatorBase.h"
-#include "RMTModuleAllocator.h"
-#include "RMTQueue.h"
+#include "DIF/RMT/Scheduler/RMTSchedulingBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
+#include "DIF/RMT/RMTModuleAllocator.h"
+#include "DIF/RMT/RMTQueue.h"
 #include "Common/PDU.h"
 
 /* FIXME: circular dependencies */

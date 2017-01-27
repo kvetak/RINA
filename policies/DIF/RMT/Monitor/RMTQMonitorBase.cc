@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <RMTQMonitorBase.h>
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
 
 Define_Module(RMTQMonitorBase);
 

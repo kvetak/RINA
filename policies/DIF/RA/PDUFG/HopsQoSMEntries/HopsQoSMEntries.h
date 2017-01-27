@@ -16,9 +16,9 @@
 #ifndef SimpleGenerator_H_
 #define SimpleGenerator_H_
 
-#include <IntPDUFG.h>
-#include <IntQoSMForwarding.h>
-#include <TSimpleRouting/IntTSimpleRouting.h>
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/RMT/PDUForwarding/IntQoSMForwarding.h"
+#include "DIF/Routing/TSimpleRouting/IntTSimpleRouting.h"
 
 #include <map>
 #include <set>

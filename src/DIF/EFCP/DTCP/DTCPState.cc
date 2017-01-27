@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include <DTCPState.h>
+#include "DIF/EFCP/DTCP/DTCPState.h"
 
 Define_Module(DTCPState);
 

@@ -23,7 +23,7 @@
 #ifndef MinComparer_H_
 #define MinComparer_H_
 
-#include <NewFlowRequest/NewFlowRequestBase.h>
+#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
 
 class MinComparer : public NewFlowRequestBase {
   public:

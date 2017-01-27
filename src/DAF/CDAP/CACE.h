@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 #include "Common/RINASignals.h"
-#include "CDAPMessage_m.h"
-#include "CACEListeners.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/CDAP/CACEListeners.h"
 #include "Common/ExternConsts.h"
 
 class LisCACESendData;

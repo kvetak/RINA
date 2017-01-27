@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Addons/DataIniectors/FlowSimulation/Inj_t.h"
-#include "Flows/sender_t.h"
-#include "Flows/client_t.h"
-#include "Flows/server_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Inj_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Flows/sender_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Flows/client_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Flows/server_t.h"
 
 class VDT : public Inj_t {
 public :

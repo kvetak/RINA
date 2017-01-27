@@ -24,7 +24,7 @@
 #ifndef DUMMYMONITOR_H_
 #define DUMMYMONITOR_H_
 
-#include "RMTQMonitorBase.h"
+#include "DIF/RMT/Monitor/RMTQMonitorBase.h"
 
 class DummyMonitor : public RMTQMonitorBase
 {

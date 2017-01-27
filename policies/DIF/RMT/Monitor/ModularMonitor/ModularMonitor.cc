@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <ModularMonitor.h>
+#include "DIF/RMT/Monitor/ModularMonitor/ModularMonitor.h"
 #include "DIF/RMT/Monitor/ModularMonitor/ModularMonitorSignals.h"
 #include "DAF/AE/AEConstant/AEConstantMsgs.h"
 #include "DIF/Delimiting/UserDataField.h"

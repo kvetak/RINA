@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <WeightedFairQ/WeightedFairQ.h>
+#include "DIF/RMT/Scheduler/WeightedFairQ/WeightedFairQ.h"
 
 Define_Module(FWQ::WeightedFairQ);
 

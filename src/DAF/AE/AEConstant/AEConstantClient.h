@@ -26,9 +26,9 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "AE.h"
+#include "DAF/AE/AE.h"
 
-#include "AEConstantMsgs.h"
+#include "DAF/AE/AEConstant/AEConstantMsgs.h"
 
 #include <map>
 

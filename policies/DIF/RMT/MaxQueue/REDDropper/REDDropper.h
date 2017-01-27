@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "RMTMaxQBase.h"
-#include "REDMonitor.h"
+#include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
+#include "DIF/RMT/Monitor/REDMonitor/REDMonitor.h"
 
 class REDDropper : public RMTMaxQBase
 {

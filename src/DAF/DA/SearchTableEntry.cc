@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <SearchTableEntry.h>
+#include "DAF/DA/SearchTableEntry.h"
 
 SearchTableEntry::SearchTableEntry(const APN& napn) : Apn(napn)
 {

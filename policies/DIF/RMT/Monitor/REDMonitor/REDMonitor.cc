@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <REDMonitor.h>
+#include "DIF/RMT/Monitor/REDMonitor/REDMonitor.h"
 
 Define_Module(REDMonitor);
 

@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 
-#include "NM1FlowTableItem.h"
+#include "DIF/RA/NM1FlowTableItem.h"
 
 typedef std::list<NM1FlowTableItem> FlTable;
 typedef FlTable::iterator FlTableIter;

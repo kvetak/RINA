@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include <SimpleDV/SimpleDV.h>
+#include "DIF/Routing/SimpleRouting/SimpleDV/SimpleDV.h"
 
 namespace SimpleDV {
 

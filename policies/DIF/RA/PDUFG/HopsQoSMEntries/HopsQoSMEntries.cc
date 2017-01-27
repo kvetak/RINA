@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include <HopsQoSMEntries/HopsQoSMEntries.h>
+#include "DIF/RA/PDUFG/HopsQoSMEntries/HopsQoSMEntries.h"
 #include "Common/APN.h"
 
 

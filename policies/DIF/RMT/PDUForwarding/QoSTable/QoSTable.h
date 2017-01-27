@@ -23,7 +23,7 @@
 #ifndef QoSTable_H_
 #define QoSTable_H_
 
-#include <IntPDUForwarding.h>
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 #include <map>
 #include <string>

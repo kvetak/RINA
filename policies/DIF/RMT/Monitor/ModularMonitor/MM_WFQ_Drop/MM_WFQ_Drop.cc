@@ -15,7 +15,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
-#include <MM_WFQ_Drop.h>
+#include "DIF/RMT/Monitor/ModularMonitor/MM_WFQ_Drop/MM_WFQ_Drop.h"
 
 namespace MM_WFQ_Drop {
 

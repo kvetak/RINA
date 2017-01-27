@@ -15,12 +15,12 @@
 
 #pragma once
 
-#include <IntPDUFG.h>
-#include "CentralRouting/RoutingManager.h"
-#include "GRE_Helpers.h"
-#include "DefaultGW.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
+#include "DIF/Routing/CentralRouting/RoutingManager.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GRE_Helpers.h"
+#include "DIF/RMT/PDUForwarding/DefaultGW/DefaultGW.h"
 
-#include "FailureSimulation/FailureSimulation.h"
+#include "Addons/Actions/FailureSimulation/FailureSimulation.h"
 
 
 using namespace std;

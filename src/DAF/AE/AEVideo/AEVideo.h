@@ -16,7 +16,7 @@
 #ifndef __RINA_AEVideo_H_
 #define __RINA_AEVideo_H_
 
-#include "AESInt.h"
+#include "DAF/AE/AESInt.h"
 #include <vector>
 
 namespace AEVideo {
