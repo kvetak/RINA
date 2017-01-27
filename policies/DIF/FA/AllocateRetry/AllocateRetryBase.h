@@ -24,8 +24,8 @@
 #define ALLOCATERETRYBASE_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
-#include "Flow.h"
+#include "Common/Utils.h"
+#include "Common/Flow.h"
 
 class AllocateRetryBase : public cSimpleModule {
   public:

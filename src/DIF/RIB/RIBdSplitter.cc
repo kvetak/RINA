@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "RIBdSplitter.h"
+#include "DIF/RIB/RIBdSplitter.h"
 
 Define_Module(RIBdSplitter);
 

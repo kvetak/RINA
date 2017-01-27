@@ -29,7 +29,7 @@
  */
 
 
-#include "DAFEnrollment.h"
+#include "DAF/Enrollment/DAFEnrollment.h"
 
 Define_Module(DAFEnrollment);
 

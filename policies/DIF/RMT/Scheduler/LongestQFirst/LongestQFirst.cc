@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "LongestQFirst.h"
+#include "DIF/RMT/Scheduler/LongestQFirst/LongestQFirst.h"
 
 Define_Module(LongestQFirst);
 

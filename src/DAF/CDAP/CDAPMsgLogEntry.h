@@ -27,7 +27,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "CDAPMessage_m.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 class CDAPMsgLogEntry {
   public:

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "Inj_Comparator.h"
-#include "Inj_t.h"
-#include "Flow_PDU.h"
+#include "Addons/DataInjectors/FlowsSimulation/Comparator_FWDG/Inj_Comparator.h"
+#include "Addons/DataInjectors/FlowsSimulation/Inj_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/PDUandData/Flow_PDU.h"
 
 Define_Module(Inj_Comparator);
 

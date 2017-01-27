@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "Clos.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/Clos/Clos.h"
 
 Register_Class(GRE::Clos0);
 Register_Class(GRE::Clos1);

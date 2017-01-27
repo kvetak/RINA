@@ -25,7 +25,7 @@
 
 #include <IntRouting.h>
 
-#include "Address.h"
+#include "Common/Address.h"
 
 #include <vector>
 #include <map>

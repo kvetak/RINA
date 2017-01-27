@@ -26,8 +26,8 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "Utils.h"
-#include "NFlowTable.h"
+#include "Common/Utils.h"
+#include "DIF/FA/NFlowTable.h"
 #include "CDAPMessage_m.h"
 
 class RIBdSplitter : public cSimpleModule

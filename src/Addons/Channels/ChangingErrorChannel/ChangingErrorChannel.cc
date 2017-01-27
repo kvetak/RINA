@@ -1,5 +1,5 @@
-#include "ChangingErrorChannel.h"
-#include "ChangerErrorChannel.h"
+#include "Addons/Channels/ChangingErrorChannel/ChangingErrorChannel.h"
+#include "Addons/Channels/ChangingErrorChannel/ChangerErrorChannel.h"
 Define_Channel(ChangingErrorChannel);
 
 ChangingErrorChannel::ChangingErrorChannel() : cDatarateChannel() { }

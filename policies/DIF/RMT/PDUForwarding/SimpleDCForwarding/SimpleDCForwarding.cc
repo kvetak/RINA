@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "SimpleDCForwarding.h"
+#include "DIF/RMT/PDUForwarding/SimpleDCForwarding/SimpleDCForwarding.h"
 #include <sstream>
-#include "Utils.h"
+#include "Common/Utils.h"
 
 namespace NSPSimpleDC {
 

@@ -1,4 +1,4 @@
-#include "EthChannel.h"
+#include "Addons/Channels/EthChannel/EthChannel.h"
 
 Define_Channel(EthChannel);
 

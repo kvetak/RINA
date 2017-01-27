@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #include "QTAMux/PS3/PS3.h"
-#include "QTAMonitor.h"
+#include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
 
 namespace QTAMux {
 using namespace std;

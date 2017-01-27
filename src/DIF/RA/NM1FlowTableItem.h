@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "Flow.h"
-#include "FABase.h"
+#include "Common/Flow.h"
+#include "DIF/FA/FABase.h"
 #include "RMTPort.h"
 
 class NM1FlowTableItem

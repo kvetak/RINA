@@ -32,7 +32,7 @@
 #define __RINA_ENROLLMENTSTATETABLE_H_
 
 #include <omnetpp.h>
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "EnrollmentStateTableEntry.h"
 
 typedef std::list<EnrollmentStateTableEntry> EnrollStateTable;

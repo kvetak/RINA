@@ -27,7 +27,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 
 #define ANY_QOS "*"
 

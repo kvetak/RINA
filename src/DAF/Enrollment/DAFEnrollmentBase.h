@@ -25,11 +25,11 @@
 #define DAFENROLLMENTBASE_H_
 
 #include <omnetpp.h>
-#include "RINASignals.h"
-#include "Flow.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
 #include "CDAPMessage_m.h"
 #include "DAFEnrollmentStateTableEntry.h"
-#include "QoSReq.h"
+#include "Common/QoSReq.h"
 
 class DAFEnrollmentBase : public cSimpleModule {
 public:

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "FAListeners.h"
+#include "DIF/FA/FAListeners.h"
 
 void LisFAAllocReq::receiveSignal(cComponent* src, simsignal_t id, cObject* obj, cObject *detail) {
     EV << "AllocateRequest initiated by " << src->getFullPath()

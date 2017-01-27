@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "IterativeScheduling.h"
+#include "DIF/RMT/Scheduler/IterativeScheduling/IterativeScheduling.h"
 
 
 namespace IterativeScheduling {

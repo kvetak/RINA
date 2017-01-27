@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AE.h"
-#include "Socket.h"
+#include "DAF/AE/AE.h"
+#include "Common/Socket.h"
 Define_Module(AE);
 
 AE::AE() :

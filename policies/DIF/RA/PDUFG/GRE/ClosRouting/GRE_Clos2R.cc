@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "GRE_Clos2R.h"
+#include "DIF/RA/PDUFG/GRE/ClosRouting/GRE_Clos2R.h"
 
 namespace GRE_Clos {
 

@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include "IntDCRouting.h"
+#include "DIF/Routing/DCRouting/IntDCRouting.h"
 
 namespace NSPSimpleDC {
 

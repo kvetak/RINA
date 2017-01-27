@@ -27,10 +27,10 @@
 #include <string>
 #include <sstream>
 //RINASim libraries
-#include "APNamingInfo.h"
-#include "ConnectionId.h"
-#include "Address.h"
-#include "QoSReq.h"
+#include "Common/APNamingInfo.h"
+#include "Common/ConnectionId.h"
+#include "Common/Address.h"
+#include "Common/QoSReq.h"
 
 extern const int VAL_UNDEF_PORTID;
 extern const int VAL_MGMT_PORTID;

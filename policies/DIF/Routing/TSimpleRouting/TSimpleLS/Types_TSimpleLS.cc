@@ -1,6 +1,6 @@
 #include <omnetpp.h>
 
-#include "Types_TSimpleLS.h"
+#include "DIF/Routing/TSimpleRouting/TSimpleLS/Types_TSimpleLS.h"
 
 int_TSimpleLS::int_TSimpleLS() {}
 uint_TSimpleLS::uint_TSimpleLS() {}

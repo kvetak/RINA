@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AEMgmtListeners.h"
-#include "IntRoutingUpdate.h"
+#include "DAF/AEManagement/AEMgmtListeners.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 
 AEMgmtListeners::AEMgmtListeners(AEMgmtBase* naemgmt) : aemgmt(naemgmt)

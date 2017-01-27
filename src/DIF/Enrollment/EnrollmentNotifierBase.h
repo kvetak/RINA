@@ -19,9 +19,9 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPProcessingBase.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+#include "Common/CDAPProcessingBase.h"
+#include "Common/ExternConsts.h"
+#include "Common/RINASignals.h"
 #include "EnrollmentObj.h"
 #include "OperationObj.h"
 

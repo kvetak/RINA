@@ -25,7 +25,7 @@
 #include <IntPDUFG.h>
 #include <SimpleTable.h>
 #include "MultilevelQoS/MultilevelQoS.h"
-#include "QoSCube.h"
+#include "Common/QoSCube.h"
 #include "RABase.h"
 #include "Inj_FWDG.h"
 

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "RMTPort.h"
+#include "DIF/RMT/RMTPort.h"
 
 const char* SIG_STAT_RMTPORT_UP = "RMTPort_PassUp";
 const char* SIG_STAT_RMTPORT_DOWN = "RMTPort_PassDown";

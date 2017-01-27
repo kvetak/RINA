@@ -14,7 +14,7 @@
 // 
 
 #include <HierarchicalGenerator/HierarchicalGenerator.h>
-#include "APN.h"
+#include "Common/APN.h"
 #include <Utils.h>
 
 #include <stdio.h>

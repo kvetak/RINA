@@ -34,15 +34,15 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "Utils.h"
-#include "CDAPProcessingBase.h"
+#include "Common/Utils.h"
+#include "Common/CDAPProcessingBase.h"
 #include "RIBdBase.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "RIBdListeners.h"
-#include "RINASignals.h"
-#include "PDU.h"
+#include "Common/RINASignals.h"
+#include "Common/PDU.h"
 #include "IntRoutingUpdate.h"
-#include "FANotifier.h"
+#include "DIF/FA/FANotifier.h"
 #include "EnrollmentNotifier.h"
 #include "RoutingNotifier.h"
 

@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "ECNPolicyDefault.h"
+#include "DIF/EFCP/DTCP/ECN/ECNPolicyDefault/ECNPolicyDefault.h"
 Register_Class(ECNPolicyDefault);
 
 ECNPolicyDefault::ECNPolicyDefault()

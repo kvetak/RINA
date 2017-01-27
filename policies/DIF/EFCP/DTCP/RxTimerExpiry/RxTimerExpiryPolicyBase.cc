@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "RxTimerExpiryPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/RxTimerExpiry/RxTimerExpiryPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 
 
 RxTimerExpiryPolicyBase::RxTimerExpiryPolicyBase()

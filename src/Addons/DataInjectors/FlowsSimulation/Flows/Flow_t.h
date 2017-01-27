@@ -2,7 +2,7 @@
 
 #include <omnetpp.h>
 #include <string>
-#include "Inj_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Inj_t.h"
 
 
 using namespace std;

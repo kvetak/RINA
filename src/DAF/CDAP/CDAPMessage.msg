@@ -23,8 +23,8 @@
 // THE SOFTWARE.
 
 cplusplus {{
-    #include "APNamingInfo.h"
-    #include "Address.h"
+    #include "Common/APNamingInfo.h"
+    #include "Common/Address.h"
     typedef cObject* ObjectPtr;
 }}
 

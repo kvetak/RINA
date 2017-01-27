@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "TxControlPolicyLG.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyLG/TxControlPolicyLG.h"
 
 const char * Tx_LG_RATE = "Tx_LG_RATE";
 const char * Tx_FLIGHT_SIZE = "Tx_LG_FLIGHT_SIZE";

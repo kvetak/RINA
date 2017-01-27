@@ -27,8 +27,8 @@
  *      Author: Marcel Marek
  */
 
-#include "RTTEstimatorPolicyDefault.h"
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyDefault/RTTEstimatorPolicyDefault.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 
 Register_Class(RTTEstimatorPolicyDefault);
 

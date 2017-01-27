@@ -21,8 +21,8 @@
 // THE SOFTWARE.
 
 #include <AuthListeners.h>
-#include "CDAPMessage_m.h"
-#include "Auth.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/CDAP/Auth.h"
 
 AuthListeners::AuthListeners(Auth* nauth): auth(nauth)
 {

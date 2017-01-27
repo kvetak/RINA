@@ -33,8 +33,8 @@
 #include <omnetpp.h>
 #include "SDUData_m.h"
 #include "UserDataField.h"
-#include "Utils.h"
-#include "ExternConsts.h"
+#include "Common/Utils.h"
+#include "Common/ExternConsts.h"
 #include "DelimitingTimers_m.h"
 
 #define DELIMITING_MODULE_NAME "delimiting"

@@ -35,11 +35,11 @@
  */
 #include <omnetpp.h>
 
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "EFCPTable.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "EFCP_defs.h"
-#include "RA.h"
+#include "DIF/RA/RA.h"
 #include "EFCPListeners.h"
 //#include "EFCPInstance.h"
 //#include "Delimiting.h"

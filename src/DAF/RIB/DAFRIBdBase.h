@@ -27,11 +27,11 @@
 #include <omnetpp.h>
 //RINASim libraries
 
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "CDAPMessage_m.h"
 #include "DAFEnrollmentObj.h"
 #include "DAFOperationObj.h"
-#include "PDU.h"
+#include "Common/PDU.h"
 
 class DAFRIBdBase : public cSimpleModule {
 public:

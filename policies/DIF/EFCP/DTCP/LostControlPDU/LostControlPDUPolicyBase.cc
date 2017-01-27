@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "LostControlPDUPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/LostControlPDU/LostControlPDUPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 LostControlPDUPolicyBase::LostControlPDUPolicyBase()
 {
 

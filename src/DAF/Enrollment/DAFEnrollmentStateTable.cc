@@ -29,7 +29,7 @@
  */
 
 
-#include "DAFEnrollmentStateTable.h"
+#include "DAF/Enrollment/DAFEnrollmentStateTable.h"
 
 const char* DAF_DAF_ELEM_ENSTATETAB   = "DAFEnrollmentStateTable";
 const char* DAF_ELEM_ENSTATE      = "State";

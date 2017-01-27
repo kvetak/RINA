@@ -24,10 +24,10 @@
 #define ADDRESSCOMPARATORBASE_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
-#include "ExternConsts.h"
-#include "Address.h"
-#include "PDU.h"
+#include "Common/Utils.h"
+#include "Common/ExternConsts.h"
+#include "Common/Address.h"
+#include "Common/PDU.h"
 
 /**
  * Noop base class for the RA address comparator policy

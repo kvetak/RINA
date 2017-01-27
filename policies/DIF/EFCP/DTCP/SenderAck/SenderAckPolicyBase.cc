@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "SenderAckPolicyBase.h"
-#include "DTCP.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyBase.h"
+#include "DIF/EFCP/DTCP/DTCP.h"
 
 SenderAckPolicyBase::SenderAckPolicyBase()
 {

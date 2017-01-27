@@ -19,8 +19,8 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "FANotifierBase.h"
-#include "FANotifierListeners.h"
+#include "DIF/FA/FANotifierBase.h"
+#include "DIF/FA/FANotifierListeners.h"
 #include "RIBdBase.h"
 
 class FANotifier : public FANotifierBase {

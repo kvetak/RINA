@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "RcvrAckPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/RcvrAck/RcvrAckPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 
 RcvrAckPolicyBase::RcvrAckPolicyBase()
 {

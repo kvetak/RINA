@@ -27,8 +27,8 @@
  *      Author: Marcel Marek
  */
 
-#include "RTTEstimatorPolicyLG.h"
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyLG/RTTEstimatorPolicyLG.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 
 const char * RTT_RTO_ESTIMATOR = "RTT_RTO_ESTIMATOR";
 

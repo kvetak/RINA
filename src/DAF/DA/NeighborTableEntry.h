@@ -24,7 +24,7 @@
 #define NEIGHBORTABLEENTRY_H_
 
 //RINASim libraries
-#include "APN.h"
+#include "Common/APN.h"
 
 class NeighborTableEntry {
   public:

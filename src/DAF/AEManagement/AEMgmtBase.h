@@ -26,13 +26,13 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "ExternConsts.h"
-#include "Flow.h"
+#include "Common/ExternConsts.h"
+#include "Common/Flow.h"
 #include "CDAPMessage_m.h"
 #include "DAFEnrollmentObj.h"
 #include "DAFOperationObj.h"
-#include "CongestionDescriptor.h"
-#include "PDU.h"
+#include "Common/CongestionDescriptor.h"
+#include "Common/PDU.h"
 #include "IntRoutingUpdate.h"
 
 

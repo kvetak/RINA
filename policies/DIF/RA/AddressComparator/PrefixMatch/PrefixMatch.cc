@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "PrefixMatch.h"
-#include "Utils.h"
+#include "DIF/RA/AddressComparator/PrefixMatch/PrefixMatch.h"
+#include "Common/Utils.h"
 
 Define_Module(PrefixMatch);
 

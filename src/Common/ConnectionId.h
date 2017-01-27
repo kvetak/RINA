@@ -28,7 +28,7 @@
 #include <string>
 
 //RINASim libraries
-#include "QoSCube.h"
+#include "Common/QoSCube.h"
 
 //Consts
 extern const int VAL_UNDEF_CEPID;

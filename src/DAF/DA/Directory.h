@@ -27,7 +27,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "DirectoryEntry.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 typedef std::list<DirectoryEntry> TDirectory;
 typedef TDirectory::iterator TDirIter;

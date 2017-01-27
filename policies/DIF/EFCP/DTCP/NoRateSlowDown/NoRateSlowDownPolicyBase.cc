@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "NoRateSlowDownPolicyBase.h"
+#include "DIF/EFCP/DTCP/NoRateSlowDown/NoRateSlowDownPolicyBase.h"
 
 NoRateSlowDownPolicyBase::NoRateSlowDownPolicyBase()
 {

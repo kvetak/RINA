@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "QoSCube.h"
-#include "Flow.h"
+#include "Common/QoSCube.h"
+#include "Common/Flow.h"
 
 class MultilevelQoS : public cSimpleModule {
   public:

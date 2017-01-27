@@ -17,8 +17,8 @@
 #define CDAPPROCESSING_H_
 
 #include "CDAPMessage_m.h"
-#include "ExternConsts.h"
-#include "Utils.h"
+#include "Common/ExternConsts.h"
+#include "Common/Utils.h"
 
 /**
  * @brief Abstract class implementing processing of any CDAP message

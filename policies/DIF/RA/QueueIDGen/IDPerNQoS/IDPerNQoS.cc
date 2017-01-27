@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "IDPerNQoS.h"
+#include "DIF/RA/QueueIDGen/IDPerNQoS/IDPerNQoS.h"
 
 Define_Module(IDPerNQoS);
 

@@ -26,10 +26,10 @@
 #include <omnetpp.h>
 #include <queue>
 
-#include "RINASignals.h"
-#include "PDU.h"
+#include "Common/RINASignals.h"
+#include "Common/PDU.h"
 
-#include "Flow.h"
+#include "Common/Flow.h"
 
 class RMTQueue : public cSimpleModule
 {

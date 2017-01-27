@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "FlowKiller.h"
+#include "Addons/Actions/FlowKiller/FlowKiller.h"
 
 Define_Module(FlowKiller);
 

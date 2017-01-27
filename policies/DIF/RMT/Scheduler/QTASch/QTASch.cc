@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "QTASch.h"
+#include "DIF/RMT/Scheduler/QTASch/QTASch.h"
 
 Define_Module(QTASch);
 

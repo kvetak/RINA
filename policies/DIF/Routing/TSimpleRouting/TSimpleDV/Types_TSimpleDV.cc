@@ -1,6 +1,6 @@
 #include <omnetpp.h>
 
-#include "Types_TSimpleDV.h"
+#include "DIF/Routing/TSimpleRouting/TSimpleDV/Types_TSimpleDV.h"
 
 int_TSimpleDV::int_TSimpleDV() {}
 uint_TSimpleDV::uint_TSimpleDV() {}

@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include "IDPerNFlow.h"
+#include "DIF/RA/QueueIDGen/IDPerNFlow/IDPerNFlow.h"
 
 Define_Module(IDPerNFlow);
 

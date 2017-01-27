@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "RateReductionPolicyDefault.h"
+#include "DIF/EFCP/DTCP/RateReduction/RateReductionPolicyDefault/RateReductionPolicyDefault.h"
 
 Register_Class(RateReductionPolicyDefault);
 

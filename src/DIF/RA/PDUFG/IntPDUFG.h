@@ -27,8 +27,8 @@
 
 #include "PDUFGNeighbor.h"
 #include "IntPDUForwarding.h"
-#include "DA.h"
-#include "QoSCube.h"
+#include "DAF/DA/DA.h"
+#include "Common/QoSCube.h"
 
 // This is mapped as string --> port because Address do not have <, > operators overloads.
 typedef std::list<PDUFGNeighbor *> NeighborState;

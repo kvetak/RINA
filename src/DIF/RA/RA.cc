@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include "RA.h"
+#include "DIF/RA/RA.h"
 
 Define_Module(RA);
 

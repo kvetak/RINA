@@ -35,13 +35,13 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "AEMgmtBase.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "AEMgmtListeners.h"
 #include "DAFEnrollmentNotifierBase.h"
-#include "FANotifier.h"
-#include "CDAPProcessingBase.h"
-#include "RINASignals.h"
-#include "PDU.h"
+#include "DIF/FA/FANotifier.h"
+#include "Common/CDAPProcessingBase.h"
+#include "Common/RINASignals.h"
+#include "Common/PDU.h"
 #include "IntRoutingUpdate.h"
 
 //Constants

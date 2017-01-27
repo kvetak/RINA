@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "SenderInactivityPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 SenderInactivityPolicyBase::SenderInactivityPolicyBase()
 {
 

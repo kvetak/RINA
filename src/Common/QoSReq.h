@@ -27,8 +27,8 @@
 //Standard libraries
 #include <vector>
 //RINASim libraries
-#include "ExternConsts.h"
-#include "QoSCube.h"
+#include "Common/ExternConsts.h"
+#include "Common/QoSCube.h"
 
 extern const char* STR_DONOTCARE;
 extern const char* STR_YES;

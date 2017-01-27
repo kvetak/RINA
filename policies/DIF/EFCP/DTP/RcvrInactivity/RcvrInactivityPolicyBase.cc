@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "RcvrInactivityPolicyBase.h"
+#include "DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyBase.h"
 
 RcvrInactivityPolicyBase::RcvrInactivityPolicyBase()
 {

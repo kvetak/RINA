@@ -32,7 +32,7 @@
 #define USERDATAFIELD_H_
 #include <omnetpp.h>
 #include <vector>
-#include "SDU.h"
+#include "Common/SDU.h"
 #include "UserDataField_m.h"
 
 

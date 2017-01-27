@@ -26,22 +26,22 @@
 #include <omnetpp.h>
 #include <vector>
 
-#include "RINASignals.h"
-#include "ExternConsts.h"
+#include "Common/RINASignals.h"
+#include "Common/ExternConsts.h"
 
 #include "DTPState.h"
 #include "DTPTimers_m.h"
 #include "DTCP.h"
-//#include "PDU.h"
+//#include "Common/PDU.h"
 #include "DataTransferPDU.h"
 #include "ControlPDU_m.h"
-#include "SDU.h"
+#include "Common/SDU.h"
 #include "RMT.h"
 
-#include "RA.h"
+#include "DIF/RA/RA.h"
 #include "SDUData_m.h"
 
-#include "QueueInfo.h"
+#include "Common/QueueInfo.h"
 
 
 /* Policies */

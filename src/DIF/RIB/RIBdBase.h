@@ -27,12 +27,12 @@
 #include <omnetpp.h>
 //RINASim libraries
 
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "CDAPMessage_m.h"
 #include "EnrollmentObj.h"
 #include "OperationObj.h"
-#include "CongestionDescriptor.h"
-#include "PDU.h"
+#include "Common/CongestionDescriptor.h"
+#include "Common/PDU.h"
 #include "IntRoutingUpdate.h"
 
 

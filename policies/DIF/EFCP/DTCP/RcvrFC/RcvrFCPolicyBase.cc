@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "RcvrFCPolicyBase.h"
+#include "DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyBase.h"
 
 RcvrFCPolicyBase::RcvrFCPolicyBase()
 {

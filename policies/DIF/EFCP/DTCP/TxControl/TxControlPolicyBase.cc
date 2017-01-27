@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "TxControlPolicyBase.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyBase.h"
 
 TxControlPolicyBase::TxControlPolicyBase()
 {

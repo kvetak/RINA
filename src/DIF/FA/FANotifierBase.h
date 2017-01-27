@@ -19,10 +19,10 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "CDAPProcessingBase.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
-#include "Flow.h"
+#include "Common/CDAPProcessingBase.h"
+#include "Common/ExternConsts.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
 
 
 class FANotifierBase : public cSimpleModule, public CDAPProcessingBase {

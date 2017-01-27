@@ -28,10 +28,10 @@
 //RINASim libraries
 #include "IRMListeners.h"
 #include "ConnectionTable.h"
-#include "RINASignals.h"
-#include "DA.h"
-#include "FABase.h"
-#include "ExternConsts.h"
+#include "Common/RINASignals.h"
+#include "DAF/DA/DA.h"
+#include "DIF/FA/FABase.h"
+#include "Common/ExternConsts.h"
 #include "SDUData_m.h"
 
 extern const int VAL_UNDEF_HANDLE;

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "ExactMatch.h"
+#include "DIF/RA/AddressComparator/ExactMatch/ExactMatch.h"
 
 Define_Module(ExactMatch);
 

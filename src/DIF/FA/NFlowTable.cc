@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "NFlowTable.h"
+#include "DIF/FA/NFlowTable.h"
 
 //Statistic collextion
 const char* SIG_STAT_FT_SIZE             = "FT_FlowTableSize";

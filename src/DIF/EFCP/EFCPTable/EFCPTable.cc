@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "EFCPTable.h"
+#include "DIF/EFCP/EFCPTable/EFCPTable.h"
 
 Define_Module(EFCPTable);
 

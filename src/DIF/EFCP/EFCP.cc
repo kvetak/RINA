@@ -27,7 +27,7 @@
  * @brief
  * @detail
  */
-#include "EFCP.h"
+#include "DIF/EFCP/EFCP.h"
 Define_Module(EFCP);
 
 #define ECN_POLICY_PREFIX "rina.policies.DIF.EFCP.DTCP.ECN."

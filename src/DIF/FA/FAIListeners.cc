@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "FAI.h"
-#include "FAIListeners.h"
+#include "DIF/FA/FAI.h"
+#include "DIF/FA/FAIListeners.h"
 
 FAIListeners::FAIListeners(FAI* nfai) {
     this->fai = nfai;

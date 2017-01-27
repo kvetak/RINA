@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "IntPDUForwarding.h"
+#include "DIF/RMT/PDUForwarding/IntPDUForwarding.h"
 
 IntPDUForwarding::IntPDUForwarding(){}
 

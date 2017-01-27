@@ -16,10 +16,10 @@
 //
 
 #include <ModularMonitor.h>
-#include "ModularMonitorSignals.h"
-#include "AEConstantMsgs.h"
-#include "UserDataField.h"
-#include "PDUData.h"
+#include "DIF/RMT/Monitor/ModularMonitor/ModularMonitorSignals.h"
+#include "DAF/AE/AEConstant/AEConstantMsgs.h"
+#include "DIF/Delimiting/UserDataField.h"
+#include "DIF/Delimiting/PDUData.h"
 //#include "InfectionSignals.h"
 
 namespace ModularMonitor {

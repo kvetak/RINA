@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "SenderAckPolicyDefault.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyDefault/SenderAckPolicyDefault.h"
 
 Register_Class(SenderAckPolicyDefault);
 

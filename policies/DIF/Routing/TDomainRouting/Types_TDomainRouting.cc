@@ -1,6 +1,6 @@
 #include <omnetpp.h>
 
-#include "Types_TDomainRouting.h"
+#include "DIF/Routing/TDomainRouting/Types_TDomainRouting.h"
 
 int_TDomain::int_TDomain() {}
 uint_TDomain::uint_TDomain() {}

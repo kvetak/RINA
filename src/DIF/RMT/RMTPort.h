@@ -26,12 +26,12 @@
 #include <omnetpp.h>
 #include <algorithm>
 
-#include "Utils.h"
-#include "RINASignals.h"
-#include "Flow.h"
-#include "RMTQueue.h"
-#include "QueueIDGenBase.h"
-#include "SDUData_m.h"
+#include "Common/Utils.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
+#include "DIF/RMT/RMTQueue.h"
+#include "DIF/RA/QueueIDGen/QueueIDGenBase.h"
+#include "Common/SDUData_m.h"
 
 class RMTPort : public cSimpleModule
 {

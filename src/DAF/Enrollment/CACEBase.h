@@ -23,7 +23,7 @@
 #ifndef DAF_ENROLLMENT_CACEBASE_H_
 #define DAF_ENROLLMENT_CACEBASE_H_
 
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "CDAPMessage_m.h"
 #include "DAFEnrollmentStateTableEntry.h"
 #include "DAFEnrollmentStateTable.h"

@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "GRE_ManagerClos.h"
+#include "DIF/RA/PDUFG/GRE/Centralized/GRE_ManagerClos.h"
 
 Register_Class(GRE_ManagerClos);
 

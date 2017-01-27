@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "SendingAckPolicyDefault.h"
+#include "DIF/EFCP/DTCP/SendingAck/SendingAckPolicyDefault/SendingAckPolicyDefault.h"
 
 Register_Class(SendingAckPolicyDefault);
 

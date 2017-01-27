@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "CDAP.h"
-#include "CDAPListeners.h"
+#include "DAF/CDAP/CDAP.h"
+#include "DAF/CDAP/CDAPListeners.h"
 
 CDAPListeners::CDAPListeners(CDAP* ncdap): cdap(ncdap)
 {

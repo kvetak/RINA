@@ -14,8 +14,8 @@
 // 
 
 #include <PSTLatOrHopMEntries.h>
-#include "APN.h"
-#include "IDPerNQoSxPLen.h"
+#include "Common/APN.h"
+#include "DIF/RA/QueueIDGen/IDPerNQoSxPLen/IDPerNQoSxPLen.h"
 
 
 

@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 #include "RMTQueue.h"
 #include "RMTQMonitorBase.h"
 #include "AddressComparatorBase.h"

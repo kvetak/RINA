@@ -29,7 +29,7 @@
  */
 
 
-#include "EnrollmentStateTable.h"
+#include "DIF/Enrollment/EnrollmentStateTable.h"
 
 const char* ELEM_ENSTATETAB   = "EnrollmentStateTable";
 const char* ELEM_ENSTATE      = "State";

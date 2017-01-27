@@ -33,7 +33,7 @@
 
 #include <omnetpp.h>
 #include <string>
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "DAFEnrollmentStateTableEntry.h"
 
 typedef std::list<DAFEnrollmentStateTableEntry> DAFEnrollStateTable;

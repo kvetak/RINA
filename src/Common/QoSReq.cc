@@ -27,7 +27,7 @@
  * @brief
  * @detail
  */
-#include "QoSReq.h"
+#include "Common/QoSReq.h"
 
 const char* STR_REQDONOTCARE = "do-not-care";
 const char* STR_REQYES = "yes";

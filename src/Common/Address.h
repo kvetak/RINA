@@ -27,8 +27,8 @@
 #include <string>
 #include <sstream>
 //RINASim libraries
-#include "APN.h"
-#include "DAP.h"
+#include "Common/APN.h"
+#include "Common/DAP.h"
 
 /**
  * @brief Address class holds IPC Process identification

@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "NoOverridePeakPolicyDefault.h"
+#include "DIF/EFCP/DTCP/NoOverridePeak/NoOverridePeakPolicyDefault/NoOverridePeakPolicyDefault.h"
 
 Register_Class(NoOverridePeakPolicyDefault)
 

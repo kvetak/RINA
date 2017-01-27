@@ -1,4 +1,4 @@
-#include "ChangerErrorChannel.h"
+#include "Addons/Channels/ChangingErrorChannel/ChangerErrorChannel.h"
 
 map<string, vector<ChangingErrorChannel *> > ChangerErrorChannel::channels =
         map<string, vector<ChangingErrorChannel *> >();

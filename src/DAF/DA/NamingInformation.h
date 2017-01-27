@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "NamingInformationEntry.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 typedef std::list<NamingInformationEntry> NamingInformations;
 typedef NamingInformations::iterator NamingItem;

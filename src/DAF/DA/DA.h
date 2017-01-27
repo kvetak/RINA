@@ -25,14 +25,14 @@
 
 //Standard libraries
 #include <omnetpp.h>
-#include "Utils.h"
+#include "Common/Utils.h"
 //RINASim libraries
 #include "Directory.h"
 #include "NamingInformation.h"
 #include "NeighborTable.h"
 #include "SearchTable.h"
-#include "FABase.h"
-#include "ExternConsts.h"
+#include "DIF/FA/FABase.h"
+#include "Common/ExternConsts.h"
 
 //Constants
 extern const char* MOD_DIRECTORY;

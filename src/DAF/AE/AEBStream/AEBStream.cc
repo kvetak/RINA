@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "AEBStream.h"
+#include "DAF/AE/AEBStream/AEBStream.h"
 
 namespace AEBStream {
 

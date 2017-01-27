@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "CDAPSplitter.h"
+#include "DAF/CDAP/CDAPSplitter.h"
 
 Define_Module(CDAPSplitter);
 

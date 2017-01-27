@@ -27,7 +27,7 @@
  *      Author: Marcel Marek
  */
 
-#include "SenderInactivityPolicyDefault.h"
+#include "DIF/EFCP/DTP/SenderInactivity/SenderInactivityPolicyDefault/SenderInactivityPolicyDefault.h"
 
 Register_Class(SenderInactivityPolicyDefault);
 

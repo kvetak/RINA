@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "Auth.h"
+#include "DAF/CDAP/Auth.h"
 
 Define_Module(Auth);
 

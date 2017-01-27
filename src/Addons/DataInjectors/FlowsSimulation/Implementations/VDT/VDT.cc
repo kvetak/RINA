@@ -1,5 +1,5 @@
-#include "VDT.h"
-#include "VDT_Listener.h"
+#include "Addons/DataInjectors/FlowsSimulation/Implementations/VDT/VDT.h"
+#include "Addons/DataInjectors/FlowsSimulation/Implementations/VDT/VDT_Listener.h"
 
 Define_Module(VDT);
 

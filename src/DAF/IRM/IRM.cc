@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include "IRM.h"
+#include "DAF/IRM/IRM.h"
 
 const int VAL_UNDEF_HANDLE = -1;
 const char* SIG_STAT_IRM_UP = "IRM_PassUp";

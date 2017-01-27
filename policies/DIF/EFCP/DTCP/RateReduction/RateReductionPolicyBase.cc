@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "RateReductionPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/RateReduction/RateReductionPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 
 RateReductionPolicyBase::RateReductionPolicyBase()
 {

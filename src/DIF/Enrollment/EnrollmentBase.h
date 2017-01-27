@@ -25,8 +25,8 @@
 #define ENROLLMENTBASE_H_
 
 #include <omnetpp.h>
-#include "RINASignals.h"
-#include "Flow.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
 #include "CDAPMessage_m.h"
 #include "EnrollmentStateTableEntry.h"
 

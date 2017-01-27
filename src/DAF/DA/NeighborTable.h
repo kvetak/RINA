@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "NeighborTableEntry.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 typedef std::list<NeighborTableEntry> NeighborEntries;
 typedef NeighborEntries::iterator NeiEntryItem;

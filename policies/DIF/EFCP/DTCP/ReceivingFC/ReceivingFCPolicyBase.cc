@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "ReceivingFCPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/ReceivingFC/ReceivingFCPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 
 ReceivingFCPolicyBase::ReceivingFCPolicyBase()
 {

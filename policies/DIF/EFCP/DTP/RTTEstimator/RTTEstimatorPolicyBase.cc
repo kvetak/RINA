@@ -28,8 +28,8 @@
  * @detail
  */
 
-#include "RTTEstimatorPolicyBase.h"
-#include "ControlPDU_m.h"
+#include "DIF/EFCP/DTP/RTTEstimator/RTTEstimatorPolicyBase.h"
+#include "DIF/EFCP/DTCP/ControlPDU_m.h"
 
 RTTEstimatorPolicyBase::RTTEstimatorPolicyBase()
 {

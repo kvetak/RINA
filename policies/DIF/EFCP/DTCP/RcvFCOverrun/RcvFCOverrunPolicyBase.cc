@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "RcvFCOverrunPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/RcvFCOverrun/RcvFCOverrunPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 RcvFCOverrunPolicyBase::RcvFCOverrunPolicyBase()
 {
 

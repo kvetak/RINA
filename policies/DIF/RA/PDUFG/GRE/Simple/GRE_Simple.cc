@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "GRE_Simple.h"
+#include "DIF/RA/PDUFG/GRE/Simple/GRE_Simple.h"
 
 namespace GRE_Simple {
 

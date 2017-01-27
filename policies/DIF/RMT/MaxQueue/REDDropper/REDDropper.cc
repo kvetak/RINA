@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "REDDropper.h"
+#include "DIF/RMT/MaxQueue/REDDropper/REDDropper.h"
 
 Define_Module(REDDropper);
 

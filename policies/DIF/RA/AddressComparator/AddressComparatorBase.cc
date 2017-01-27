@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AddressComparatorBase.h"
+#include "DIF/RA/AddressComparator/AddressComparatorBase.h"
 
 Define_Module(AddressComparatorBase);
 

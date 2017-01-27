@@ -25,7 +25,7 @@
 
 #include <omnetpp.h>
 #include "SearchTableEntry.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 typedef std::list<SearchTableEntry> SearchEntries;
 typedef SearchEntries::iterator SearchItem;

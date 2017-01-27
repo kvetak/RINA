@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "LimitedRetries.h"
+#include "DIF/FA/AllocateRetry/LimitedRetries/LimitedRetries.h"
 
 Define_Module(LimitedRetries);
 

@@ -32,7 +32,7 @@
 #define DTCPSTATE_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
+#include "Common/Utils.h"
 #include <DTCPTimers_m.h>
 
 /*

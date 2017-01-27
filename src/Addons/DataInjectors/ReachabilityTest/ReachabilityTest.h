@@ -6,7 +6,7 @@
 
 #include <ConnectionId.h>
 #include <Address.h>
-#include <RMTPort.h>
+#include "DIF/RMT/RMTPort.h"
 
 #include "ReachabilityTest_PDU.h"
 

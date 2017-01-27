@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "IRM.h"
-#include "IRMListeners.h"
+#include "DAF/IRM/IRM.h"
+#include "DAF/IRM/IRMListeners.h"
 
 IRMListeners::IRMListeners(IRM* nirm) {
     this->irm = nirm;

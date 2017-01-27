@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include <OFStaticGenerator/OFStaticGenerator.h>
-#include "APN.h"
+#include "Common/APN.h"
 
 
 namespace OFStaticGenerator {

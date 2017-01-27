@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "SenderAckPolicyLG.h"
-#include "DTCP.h"
+#include "DIF/EFCP/DTCP/SenderAck/SenderAckPolicyLG/SenderAckPolicyLG.h"
+#include "DIF/EFCP/DTCP/DTCP.h"
 
 const char * ECN_MARKED_CTRL = "ECN_MARKED_CTRL";
 const char * APPR_LOAD = "APPR_LOAD";

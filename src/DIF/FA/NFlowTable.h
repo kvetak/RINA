@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim library
-#include "Utils.h"
+#include "Common/Utils.h"
 #include "NFlowTableEntry.h"
 
 typedef std::list<NFlowTableEntry> TFAITable;

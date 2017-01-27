@@ -34,9 +34,9 @@
 //Standard libraries
 #include <vector>
 //RINASim libraries
-#include "Policy.h"
-#include "ExternConsts.h"
-#include "EFCPPolicySet.h"
+#include "Common/Policy.h"
+#include "Common/ExternConsts.h"
+#include "DIF/EFCP/EFCPPolicySet.h"
 
 extern const char*          STR_DONOTCARE;
 extern const char*          STR_YES;

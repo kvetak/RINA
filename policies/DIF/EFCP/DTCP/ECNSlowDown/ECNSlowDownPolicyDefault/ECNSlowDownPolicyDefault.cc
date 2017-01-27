@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "ECNSlowDownPolicyDefault.h"
+#include "DIF/EFCP/DTCP/ECNSlowDown/ECNSlowDownPolicyDefault/ECNSlowDownPolicyDefault.h"
 Register_Class(ECNSlowDownPolicyDefault);
 
 ECNSlowDownPolicyDefault::ECNSlowDownPolicyDefault()

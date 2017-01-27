@@ -33,12 +33,12 @@
 #include <omnetpp.h>
 #include <queue>
 #include <vector>
-#include "Utils.h"
+#include "Common/Utils.h"
 #include "EFCP_defs.h"
 #include "DataTransferPDU.h"
 
 
-#include "PDU.h"
+#include "Common/PDU.h"
 
 /* Dirty hacks */
 #include "DTPTimers_m.h"

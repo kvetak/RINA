@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "EnrollmentNotifier.h"
+#include "DIF/Enrollment/EnrollmentNotifier.h"
 
 const char* MSG_ENROLLMENT      = "Enrollment";
 

@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AEConstantListener.h"
-#include "AEConstantMsgs.h"
-#include "ModularMonitorSignals.h"
+#include "DAF/AE/AEConstant/AEConstantListener.h"
+#include "DAF/AE/AEConstant/AEConstantMsgs.h"
+#include "DIF/RMT/Monitor/ModularMonitor/ModularMonitorSignals.h"
 
 #include <iostream>
 #include <fstream>

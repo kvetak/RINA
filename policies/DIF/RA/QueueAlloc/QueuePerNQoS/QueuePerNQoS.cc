@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 
-#include "QueuePerNQoS.h"
+#include "DIF/RA/QueueAlloc/QueuePerNQoS/QueuePerNQoS.h"
 
 Define_Module(QueuePerNQoS);
 

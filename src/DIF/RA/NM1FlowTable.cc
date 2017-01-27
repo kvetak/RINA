@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "NM1FlowTable.h"
+#include "DIF/RA/NM1FlowTable.h"
 
 Define_Module(NM1FlowTable);
 

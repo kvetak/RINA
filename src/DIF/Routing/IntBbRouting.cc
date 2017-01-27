@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "IntBbRouting.h"
+#include "DIF/Routing/IntBbRouting.h"
 
 void IntBbRouting::insertFlow(const Address &dst){
     insertFlow(dst, 0, 1);

@@ -30,7 +30,7 @@
 #ifndef INTROUTINGUPDATE_H_
 #define INTROUTINGUPDATE_H_
 
-#include "Address.h"
+#include "Common/Address.h"
 
 class IntRoutingUpdate : public cObject {
 protected:

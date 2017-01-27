@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "RIBdListeners.h"
-#include "IntRoutingUpdate.h"
+#include "DIF/RIB/RIBdListeners.h"
+#include "DIF/Routing/IntRoutingUpdate.h"
 
 
 RIBdListeners::RIBdListeners(RIBdBase* nribd) : ribd(nribd)

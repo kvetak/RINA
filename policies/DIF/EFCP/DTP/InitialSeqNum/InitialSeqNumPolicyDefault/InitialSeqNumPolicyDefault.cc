@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "InitialSeqNumPolicyDefault.h"
+#include "DIF/EFCP/DTP/InitialSeqNum/InitialSeqNumPolicyDefault/InitialSeqNumPolicyDefault.h"
 
 Register_Class(InitialSeqNumPolicyDefault);
 

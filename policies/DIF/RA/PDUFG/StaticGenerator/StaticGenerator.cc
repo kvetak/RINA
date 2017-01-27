@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include <StaticGenerator/StaticGenerator.h>
-#include "APN.h"
+#include "Common/APN.h"
 
 
 namespace StaticGenerator {

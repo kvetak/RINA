@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "FAI.h"
+#include "DIF/FA/FAI.h"
 
 const char*     TIM_CREREQ          = "CreateRequestTimer";
 const char*     MOD_ALLOCRETRYPOLICY= "allocateRetryPolicy";

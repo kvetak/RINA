@@ -26,7 +26,7 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "NFlowTable.h"
+#include "DIF/FA/NFlowTable.h"
 
 extern const char* TIM_FAPENDFLOWS;
 

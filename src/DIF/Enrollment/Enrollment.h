@@ -32,19 +32,19 @@
 #define __RINA_ENROLLMENT_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
-#include "RINASignals.h"
-#include "Flow.h"
+#include "Common/Utils.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
 #include "CDAPMessage_m.h"
 #include "ConnectionTable.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "EnrollmentListeners.h"
 #include "EnrollmentStateTable.h"
-#include "Address.h"
+#include "Common/Address.h"
 #include "RIBd.h"
 #include "EnrollmentObj.h"
 #include "OperationObj.h"
-#include "FABase.h"
+#include "DIF/FA/FABase.h"
 
 extern const char* MSG_CONREQ;
 extern const char* MSG_CONREQRETRY;

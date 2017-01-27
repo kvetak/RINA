@@ -24,7 +24,7 @@
 #define FALISTENERS_H_
 
 #include <omnetpp.h>
-#include "FABase.h"
+#include "DIF/FA/FABase.h"
 
 class FAListeners : public cListener {
   protected:

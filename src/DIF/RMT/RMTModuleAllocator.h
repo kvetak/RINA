@@ -25,8 +25,8 @@
 
 #include <omnetpp.h>
 
-#include "Utils.h"
-#include "ExternConsts.h"
+#include "Common/Utils.h"
+#include "Common/ExternConsts.h"
 #include "RMTQueue.h"
 #include "RMTPort.h"
 #include "RMTQMonitorBase.h"

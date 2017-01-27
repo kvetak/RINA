@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "Delimiting.h"
+#include "DIF/Delimiting/Delimiting.h"
 
 Define_Module(Delimiting);
 

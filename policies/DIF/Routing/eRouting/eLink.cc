@@ -1,5 +1,5 @@
 
-#include "eLink.h"
+#include "DIF/Routing/eRouting/eLink.h"
 
 elink_t getELink(const eaddr_t & a, const eaddr_t & b) {
     return (a<=b)?

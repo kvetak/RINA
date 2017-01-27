@@ -27,7 +27,7 @@
 #include <omnetpp.h>
 #include "AP.h"
 
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 
 class APStream : public AP {
 public:

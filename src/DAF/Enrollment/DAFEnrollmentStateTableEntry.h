@@ -34,7 +34,7 @@
 
 #include <omnetpp.h>
 #include <string>
-#include "Flow.h"
+#include "Common/Flow.h"
 
 extern const int VAL_NOCONRETRY;
 

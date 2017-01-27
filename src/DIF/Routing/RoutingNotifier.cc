@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "RoutingNotifier.h"
+#include "DIF/Routing/RoutingNotifier.h"
 
 Define_Module(RoutingNotifier);
 

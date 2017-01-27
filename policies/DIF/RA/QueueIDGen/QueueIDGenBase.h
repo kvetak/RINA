@@ -24,9 +24,9 @@
 #define QUEUEIDGENBASE_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
-#include "Flow.h"
-#include "PDU.h"
+#include "Common/Utils.h"
+#include "Common/Flow.h"
+#include "Common/PDU.h"
 
 /**
  * Noop base class for the RA queue ID generator.

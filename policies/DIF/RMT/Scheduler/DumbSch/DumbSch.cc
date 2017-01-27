@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "DumbSch.h"
+#include "DIF/RMT/Scheduler/DumbSch/DumbSch.h"
 
 Define_Module(DumbSch);
 

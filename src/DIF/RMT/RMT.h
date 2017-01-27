@@ -34,11 +34,11 @@
 #include <fstream>
 #include <bitset>
 
-#include "RINASignals.h"
-#include "ExternConsts.h"
-#include "Address.h"
-#include "PDU.h"
-#include "Utils.h"
+#include "Common/RINASignals.h"
+#include "Common/ExternConsts.h"
+#include "Common/Address.h"
+#include "Common/PDU.h"
+#include "Common/Utils.h"
 
 #include "IntPDUForwarding.h"
 #include "QueueAllocBase.h"

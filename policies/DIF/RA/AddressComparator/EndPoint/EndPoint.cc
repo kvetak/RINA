@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "EndPoint.h"
-#include "Utils.h"
+#include "DIF/RA/AddressComparator/EndPoint/EndPoint.h"
+#include "Common/Utils.h"
 
 Define_Module(EndPoint);
 

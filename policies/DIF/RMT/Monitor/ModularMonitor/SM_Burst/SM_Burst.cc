@@ -1,4 +1,4 @@
-#include "SM_Burst.h"
+#include "DIF/RMT/Monitor/ModularMonitor/SM_Burst/SM_Burst.h"
 
 namespace ModularMonitor {
 

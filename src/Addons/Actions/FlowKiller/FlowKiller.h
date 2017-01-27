@@ -2,9 +2,9 @@
 
 #include <omnetpp.h>
 
-#include "RINASignals.h"
-#include "Flow.h"
-#include "RA.h"
+#include "Common/RINASignals.h"
+#include "Common/Flow.h"
+#include "DIF/RA/RA.h"
 #include <set>
 
 using namespace std;

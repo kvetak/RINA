@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AEPing.h"
+#include "DAF/AE/AEPing.h"
 
 Define_Module(AEPing);
 

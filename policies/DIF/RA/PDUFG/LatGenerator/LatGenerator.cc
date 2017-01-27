@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include <LatGenerator/LatGenerator.h>
-#include "APN.h"
+#include "Common/APN.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -24,7 +24,7 @@
 #define QUEUEALLOCBASE_H_
 
 #include <omnetpp.h>
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "RMTModuleAllocator.h"
 #include "RMTPort.h"
 #include "RABase.h"

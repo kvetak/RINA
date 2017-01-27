@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 
 #include "QTAMux/PS1/PS1.h"
-#include "QTAMonitor.h"
+#include "DIF/RMT/Monitor/QTAMux/QTAMonitor.h"
 
 namespace QTAMux {
 using namespace std;

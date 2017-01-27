@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "Flow.h"
+#include "Common/Flow.h"
 
 const int VAL_UNDEF_PORTID = -1;
 const int VAL_MGMT_PORTID = 0;

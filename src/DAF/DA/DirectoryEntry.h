@@ -24,9 +24,9 @@
 #define DIRECTORYENTRY_H_
 
 //RINASim libraries
-//#include "APNamingInfo.h"
-//#include "FABase.h"
-#include "Address.h"
+//#include "Common/APNamingInfo.h"
+//#include "DIF/FA/FABase.h"
+#include "Common/Address.h"
 
 
 

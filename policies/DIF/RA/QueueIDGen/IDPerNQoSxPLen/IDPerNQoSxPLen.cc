@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "IDPerNQoSxPLen.h"
-#include "IPLSPDUFG.h"
+#include "DIF/RA/QueueIDGen/IDPerNQoSxPLen/IDPerNQoSxPLen.h"
+#include "DIF/RA/PDUFG/IPLSPDUFG/IPLSPDUFG.h"
 
 using namespace std;
 

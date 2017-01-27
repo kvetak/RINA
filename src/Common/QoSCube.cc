@@ -27,7 +27,7 @@
  * @brief
  * @detail
  */
-#include "QoSCube.h"
+#include "Common/QoSCube.h"
 
 const char* STR_DONOTCARE = "do-not-care";
 const char* STR_YES = "yes";

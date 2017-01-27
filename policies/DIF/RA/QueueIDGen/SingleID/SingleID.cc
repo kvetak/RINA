@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "SingleID.h"
+#include "DIF/RA/QueueIDGen/SingleID/SingleID.h"
 
 Define_Module(SingleID);
 

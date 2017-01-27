@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "ECNSlowDownPolicyBase.h"
+#include "DIF/EFCP/DTCP/ECNSlowDown/ECNSlowDownPolicyBase.h"
 
 ECNSlowDownPolicyBase::ECNSlowDownPolicyBase()
 {

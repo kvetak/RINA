@@ -17,12 +17,12 @@
 #define DAFENROLLMENTNOTIFIERBASE_H_
 
 #include <omnetpp.h>
-#include "CDAPProcessingBase.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
+#include "Common/CDAPProcessingBase.h"
+#include "Common/ExternConsts.h"
+#include "Common/RINASignals.h"
 #include "DAFEnrollmentObj.h"
 #include "DAFOperationObj.h"
-#include "Flow.h"
+#include "Common/Flow.h"
 
 class DAFEnrollmentNotifierBase : public cSimpleModule, public CDAPProcessingBase {
 public:

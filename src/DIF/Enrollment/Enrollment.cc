@@ -29,7 +29,7 @@
  */
 
 
-#include "Enrollment.h"
+#include "DIF/Enrollment/Enrollment.h"
 
 Define_Module(Enrollment);
 

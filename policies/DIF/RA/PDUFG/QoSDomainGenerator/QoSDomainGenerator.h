@@ -23,12 +23,12 @@
 #ifndef QoSDomainGenerator_H_
 #define QoSDomainGenerator_H_
 
-#include "Utils.h"
+#include "Common/Utils.h"
 #include <IntPDUFG.h>
 #include <QoSTable/QoSTable.h>
 #include <DomainRouting/Routing.h>
-#include "QoSCube.h"
-#include "RA.h"
+#include "Common/QoSCube.h"
+#include "DIF/RA/RA.h"
 #include "MultilevelQoS.h"
 
 

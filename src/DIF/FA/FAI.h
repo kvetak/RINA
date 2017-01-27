@@ -31,10 +31,10 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "FAIBase.h"
-#include "FABase.h"
-#include "FAIListeners.h"
-#include "RINASignals.h"
+#include "DIF/FA/FAIBase.h"
+#include "DIF/FA/FABase.h"
+#include "DIF/FA/FAIListeners.h"
+#include "Common/RINASignals.h"
 #include "EFCP.h"
 #include "AllocateRetryBase.h"
 

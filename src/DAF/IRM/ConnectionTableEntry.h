@@ -26,8 +26,8 @@
 //Standard libraries
 #include <string>
 //RINASim libraries
-#include "Flow.h"
-#include "FABase.h"
+#include "Common/Flow.h"
+#include "DIF/FA/FABase.h"
 
 class ConnectionTableEntry {
   public:

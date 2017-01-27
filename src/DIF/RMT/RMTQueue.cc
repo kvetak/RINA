@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "RMTQueue.h"
+#include "DIF/RMT/RMTQueue.h"
 
 const char* SIG_STAT_RMTQUEUE_LENGTH = "RMTQueue_Length";
 const char* SIG_STAT_RMTQUEUE_DROP = "RMTQueue_Drop";

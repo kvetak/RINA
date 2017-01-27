@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "NFlowTableEntry.h"
+#include "DIF/FA/NFlowTableEntry.h"
 
 NFlowTableEntry::NFlowTableEntry() :
     fai(NULL), flow(NULL),

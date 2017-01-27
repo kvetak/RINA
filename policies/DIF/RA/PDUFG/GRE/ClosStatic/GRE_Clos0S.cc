@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "GRE_Clos0S.h"
+#include "DIF/RA/PDUFG/GRE/ClosStatic/GRE_Clos0S.h"
 
 namespace GRE_Clos {
 

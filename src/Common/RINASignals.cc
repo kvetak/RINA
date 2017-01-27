@@ -27,7 +27,7 @@
  *      Author: Mordeth
  */
 
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 
 const char* SIG_AP_AE_API                       = "AP-AE-API";
 

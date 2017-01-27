@@ -22,9 +22,9 @@
 
 cplusplus {{
 #define PDU_HEADER_LEN 10
-#include "Address.h"
-#include "APN.h"
-#include "ConnectionId.h"
+#include "Common/Address.h"
+#include "Common/APN.h"
+#include "Common/ConnectionId.h"
 //#include "UserDataField.h"
 
 //typedef cMessage* cMessagePtr;

@@ -31,22 +31,22 @@
 #define __RINA_RA_H_
 
 #include <omnetpp.h>
-#include "Utils.h"
-#include "ExternConsts.h"
-#include "RINASignals.h"
-#include "DA.h"
-#include "FABase.h"
-#include "RMT.h"
-#include "RMTPort.h"
+#include "Common/Utils.h"
+#include "Common/ExternConsts.h"
+#include "Common/RINASignals.h"
+#include "DAF/DA/DA.h"
+#include "DIF/FA/FABase.h"
+#include "DIF/RMT/RMT.h"
+#include "DIF/RMT/RMTPort.h"
 
-#include "RABase.h"
-#include "RAListeners.h"
-#include "NM1FlowTable.h"
-#include "QueueAllocBase.h"
-#include "CongestionDescriptor.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/RA/RAListeners.h"
+#include "DIF/RA/NM1FlowTable.h"
+#include "DIF/RA/QueueAlloc/QueueAllocBase.h"
+#include "Common/CongestionDescriptor.h"
 
 /* Forwarding and routing stuff... */
-#include "IntPDUFG.h"
+#include "DIF/RA/PDUFG/IntPDUFG.h"
 
 
 

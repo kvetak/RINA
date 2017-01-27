@@ -1,6 +1,6 @@
-#include "Inj_t.h"
-#include "Inj_Comparator.h"
-#include "Inj_FWDG.h"
+#include "Addons/DataInjectors/FlowsSimulation/Inj_t.h"
+#include "Addons/DataInjectors/FlowsSimulation/Comparator_FWDG/Inj_Comparator.h"
+#include "Addons/DataInjectors/FlowsSimulation/Comparator_FWDG/Inj_FWDG.h"
 #include "./Flows/Flow_t.h"
 
 Flow_PDU * Inj_t::genPDU(const PDU_Req & req) {

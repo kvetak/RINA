@@ -28,7 +28,7 @@
 #include <sstream>
 
 //RINASim libraries
-#include "APN.h"
+#include "Common/APN.h"
 
 /**
  * @brief APNamingInfo holds complete naming info for particular application process.

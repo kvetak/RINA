@@ -22,7 +22,7 @@
 
 // Author: Kewin Rausch (kewin.rausch@create-net.org)
 
-#include "PDUFGNeighbor.h"
+#include "DIF/RA/PDUFG/PDUFGNeighbor.h"
 
 PDUFGNeighbor::PDUFGNeighbor()
 {

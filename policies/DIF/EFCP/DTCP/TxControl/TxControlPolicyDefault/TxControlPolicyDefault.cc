@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "TxControlPolicyDefault.h"
+#include "DIF/EFCP/DTCP/TxControl/TxControlPolicyDefault/TxControlPolicyDefault.h"
 
 Register_Class(TxControlPolicyDefault);
 

@@ -27,13 +27,13 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "Utils.h"
-#include "CDAPProcessingBase.h"
+#include "Common/Utils.h"
+#include "Common/CDAPProcessingBase.h"
 #include "DAFRIBdBase.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "DAFRIBdListeners.h"
-#include "RINASignals.h"
-#include "PDU.h"
+#include "Common/RINASignals.h"
+#include "Common/PDU.h"
 #include "EnrollmentNotifier.h"
 
 class DAFRIBd : public DAFRIBdBase {

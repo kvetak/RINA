@@ -13,7 +13,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "AEVideo.h"
+#include "DAF/AE/AEVideo/AEVideo.h"
 
 namespace AEVideo {
 

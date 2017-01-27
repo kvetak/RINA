@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "ReconcileFCPolicyBase.h"
+#include "DIF/EFCP/DTCP/ReconcileFC/ReconcileFCPolicyBase.h"
 
 ReconcileFCPolicyBase::ReconcileFCPolicyBase()
 {

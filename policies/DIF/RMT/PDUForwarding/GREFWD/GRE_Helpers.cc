@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "GRE_Helpers.h"
+#include "DIF/RMT/PDUForwarding/GREFWD/GRE_Helpers.h"
 
 
 string getRawAddr_t(const addr_t & dst_addr) {

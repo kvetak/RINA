@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include "AEMgmt.h"
+#include "DAF/AEManagement/AEMgmt.h"
 
 const char* DAF_PAR_USEFANOTIF          = "useFANotifier";
 const char* DAF_PAR_USEENROLLNOTIF      = "useEnrollmentNotifier";

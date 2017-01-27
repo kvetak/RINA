@@ -34,8 +34,8 @@
 #include <vector>
 #include <string>
 
-//#include "FAI.h"
-#include "Flow.h"
+//#include "DIF/FA/FAI.h"
+#include "Common/Flow.h"
 #include "EFCPInstance.h"
 #include "Delimiting.h"
 

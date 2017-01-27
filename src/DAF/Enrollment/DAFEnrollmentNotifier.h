@@ -20,7 +20,7 @@
 #include "AEMgmtBase.h"
 #include "DAFEnrollmentNotifierListeners.h"
 #include "DAFEnrollmentNotifierBase.h"
-#include "Flow.h"
+#include "Common/Flow.h"
 
 extern const char* DAF_MSG_ENROLLMENT;
 extern const int DAF_VAL_DEFINSTANCE;

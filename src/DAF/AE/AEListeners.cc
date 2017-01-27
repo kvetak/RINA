@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "AE.h"
-#include "AEListeners.h"
+#include "DAF/AE/AE.h"
+#include "DAF/AE/AEListeners.h"
 
 AEListeners::AEListeners(AE* nae) : ae(nae)
 {

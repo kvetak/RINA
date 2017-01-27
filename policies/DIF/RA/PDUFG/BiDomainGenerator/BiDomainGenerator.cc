@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #include <BiDomainGenerator/BiDomainGenerator.h>
-#include "APN.h"
+#include "Common/APN.h"
 #include <Utils.h>
 
 

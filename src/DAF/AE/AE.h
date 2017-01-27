@@ -27,13 +27,13 @@
 #include <omnetpp.h>
 #include <sstream>
 //RINASim libraries
-#include "Utils.h"
+#include "Common/Utils.h"
 #include "AEBase.h"
 #include "AEListeners.h"
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 #include "IRM.h"
 #include "ConnectionTable.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 #include "CDAPMessage_m.h"
 #include "APIReqObj.h"
 #include "APIResult.h"

@@ -24,10 +24,10 @@
 #define __RINA_CACE_H_
 
 #include <omnetpp.h>
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 #include "CDAPMessage_m.h"
 #include "CACEListeners.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 class LisCACESendData;
 class CACE : public cSimpleModule

@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include "RIBd.h"
+#include "DIF/RIB/RIBd.h"
 
 const char* MSG_CONGEST         = "Congestion";
 //const char* MSG_ROUTINGUPDATE   = "RoutingUpdate";

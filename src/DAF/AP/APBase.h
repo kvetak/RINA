@@ -25,13 +25,13 @@
 
 #include <omnetpp.h>
 #include <string>
-#include "Flow.h"
+#include "Common/Flow.h"
 #include "APIResult.h"
 #include "APIRetObj.h"
 #include "CDAPMessage_m.h"
 #include <map>
-#include "ExternConsts.h"
-#include "RINASignals.h"
+#include "Common/ExternConsts.h"
+#include "Common/RINASignals.h"
 
 class APBase : public cSimpleModule {
 public:

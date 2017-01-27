@@ -27,9 +27,9 @@
 #include <omnetpp.h>
 //RINASim libraries
 #include "CDAPListeners.h"
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 #include "CDAPMessage_m.h"
-#include "ExternConsts.h"
+#include "Common/ExternConsts.h"
 
 
 class LisCDAPSendData;

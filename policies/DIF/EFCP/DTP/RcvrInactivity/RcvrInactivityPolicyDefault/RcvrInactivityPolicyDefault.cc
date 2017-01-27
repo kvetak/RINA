@@ -28,7 +28,7 @@
  * @detail
  */
 
-#include "RcvrInactivityPolicyDefault.h"
+#include "DIF/EFCP/DTP/RcvrInactivity/RcvrInactivityPolicyDefault/RcvrInactivityPolicyDefault.h"
 
 Register_Class(RcvrInactivityPolicyDefault);
 

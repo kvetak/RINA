@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "CDAPMsgLogEntry.h"
+#include "DAF/CDAP/CDAPMsgLogEntry.h"
 
 CDAPMsgLogEntry::CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag) :
         opCode(opc), invokeId(invoke), processedAt(simTime()), sndFlag(srflag)

@@ -28,7 +28,7 @@
 #include "AddressComparatorBase.h"
 #include "RMTModuleAllocator.h"
 #include "RMTQueue.h"
-#include "PDU.h"
+#include "Common/PDU.h"
 
 /* FIXME: circular dependencies */
 class RMTSchedulingBase;

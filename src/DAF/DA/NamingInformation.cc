@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "NamingInformation.h"
+#include "DAF/DA/NamingInformation.h"
 
 //Constants
 const char*   ELEM_NAMINGTABLE     = "NamingInfo";

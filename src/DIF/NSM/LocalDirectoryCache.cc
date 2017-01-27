@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "LocalDirectoryCache.h"
+#include "DIF/NSM/LocalDirectoryCache.h"
 
 Define_Module(LocalDirectoryCache);
 

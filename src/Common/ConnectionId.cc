@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "ConnectionId.h"
+#include "Common/ConnectionId.h"
 
 //Consts
 const int VAL_UNDEF_CEPID = -1;

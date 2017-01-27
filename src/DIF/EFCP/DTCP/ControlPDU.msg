@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 cplusplus {{
-#include "PDU.h"
+#include "Common/PDU.h"
 }}
 packet PDU;
 

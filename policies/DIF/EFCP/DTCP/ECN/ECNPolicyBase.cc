@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "ECNPolicyBase.h"
+#include "DIF/EFCP/DTCP/ECN/ECNPolicyBase.h"
 
 ECNPolicyBase::ECNPolicyBase()
 {

@@ -24,7 +24,7 @@
 #define SEARCHTABLEENTRY_H_
 
 //RINASim libraries
-#include "APN.h"
+#include "Common/APN.h"
 
 class SearchTableEntry {
   public:

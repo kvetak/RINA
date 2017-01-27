@@ -27,7 +27,7 @@
  * @detail
  */
 
-#include "NoOverridePeakPolicyBase.h"
+#include "DIF/EFCP/DTCP/NoOverridePeak/NoOverridePeakPolicyBase.h"
 
 NoOverridePeakPolicyBase::NoOverridePeakPolicyBase()
 {

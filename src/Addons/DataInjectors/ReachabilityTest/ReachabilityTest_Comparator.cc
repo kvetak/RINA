@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "ReachabilityTest_Comparator.h"
-#include "ReachabilityTest_PDU.h"
-#include "ReachabilityTest.h"
+#include "Addons/DataInjectors/ReachabilityTest/ReachabilityTest_Comparator.h"
+#include "Addons/DataInjectors/ReachabilityTest/ReachabilityTest_PDU.h"
+#include "Addons/DataInjectors/ReachabilityTest/ReachabilityTest.h"
 
 Define_Module(ReachabilityTest_Comparator);
 

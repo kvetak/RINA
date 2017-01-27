@@ -26,10 +26,10 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim libraries
-#include "APNamingInfo.h"
-#include "Flow.h"
-#include "ExternConsts.h"
-#include "QoSReq.h"
+#include "Common/APNamingInfo.h"
+#include "Common/Flow.h"
+#include "Common/ExternConsts.h"
+#include "Common/QoSReq.h"
 
 typedef std::list<Flow> Flows;
 typedef Flows::iterator TFlowsIter;

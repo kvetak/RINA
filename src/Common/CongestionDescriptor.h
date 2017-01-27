@@ -23,7 +23,7 @@
 #ifndef CONGESTIONDESCRIPTOR_H_
 #define CONGESTIONDESCRIPTOR_H_
 
-#include "ConnectionId.h"
+#include "Common/ConnectionId.h"
 
 class CongestionDescriptor : public cObject {
   public:

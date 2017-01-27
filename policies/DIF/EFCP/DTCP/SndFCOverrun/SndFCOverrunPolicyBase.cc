@@ -27,8 +27,8 @@
  * @detail
  */
 
-#include "SndFCOverrunPolicyBase.h"
-#include "DTP.h"
+#include "DIF/EFCP/DTCP/SndFCOverrun/SndFCOverrunPolicyBase.h"
+#include "DIF/EFCP/DTP/DTP.h"
 SndFCOverrunPolicyBase::SndFCOverrunPolicyBase()
 {
 

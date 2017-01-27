@@ -27,9 +27,9 @@
 
 #include <vector>
 #include <string>
-#include "RINASignals.h"
+#include "Common/RINASignals.h"
 #include "IntRoutingUpdate.h"
-#include "Address.h"
+#include "Common/Address.h"
 #include "IntPDUFG.h"
 
 class LisRoutingRecv;

@@ -1,6 +1,6 @@
 
-#include "DCAddr.h"
-#include "Utils.h"
+#include "DIF/RMT/PDUForwarding/SimpleDCForwarding/DCAddr.h"
+#include "Common/Utils.h"
 
 namespace NSPSimpleDC {
 
