@@ -51,7 +51,7 @@ void APPing::handleMessage(cMessage *msg) {
             a_close(conID);
         }
         else if (!strcmp(msg->getName(), "ping")) {
-            if (par("stopAt").doubleValue() < (simTime().dbl()+1)) {
+            if ((simTime().dbl()+1) < par("stopAt").doubleValue() ) {
                 a_read(conID, "ping");
                 m2 = new cMessage("ping");
                 scheduleAt(simTime() + par("interval"), m2);
