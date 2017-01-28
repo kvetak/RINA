@@ -23,7 +23,7 @@
 
 package rina.src.Addons.DataInjectors.CS;
 
-import rina.src.DAF.AE.AEVideo.AEVideo;
+import rina.playground.DAF.AE.AEVideo.AEVideo;
 import rina.src.DAF.DA.DIFAllocator;
 import rina.src.DIF.IPCProcess;
 

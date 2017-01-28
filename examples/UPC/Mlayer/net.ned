@@ -2,7 +2,6 @@ package rina.examples.UPC.Mlayer;
 
 import ned.DatarateChannel;
 import rina.src.CS.Host3NAPMInt;
-import rina.src.DAF.AE.AEConstant.AEConstantListener;
 
 network net
 {

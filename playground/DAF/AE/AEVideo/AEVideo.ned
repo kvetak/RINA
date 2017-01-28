@@ -13,20 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.src.DAF.AE;
+package rina.playground.DAF.AE.AEVideo;
 
-simple AESint extends AE like IAE
-{
+import rina.playground.DAF.AE.AESint;
+
+simple AEVideo extends AESint
+{ 
     parameters:
+        @class(AEVideo::AEVideo);
         
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
-        int sendAfter  @unit(s) = default(0s);
-        int stopAfter  @unit(s) = default(0s);
-        
-        int maxPDUsize = default(1024);
-        
-        bool printAtEnd = default(false);
-        bool recTimes = default(false);
-        
+        double startVar = default(0.0); 
+        xml streamList =  default(xml("<Streams/>"));     
+    
 }

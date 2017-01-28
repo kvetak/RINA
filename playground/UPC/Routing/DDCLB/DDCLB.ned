@@ -1,4 +1,3 @@
-//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -13,11 +12,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-package rina.examples.LB.DDCLB;
+package rina.playground.UPC.Routing.DDCLB;
 
 import rina.src.CS.HostNAP;
-import rina.src.CS.HostNAPNAE;
-import rina.src.DAF.AE.AEData.AEData;
+//import rina.src.CS.HostNAPNAE;
+//import rina.src.DAF.AE.AEData.AEData;
 import rina.src.CS.InteriorRouterNInt;
 
 
@@ -145,16 +144,16 @@ network DDCLB
         }
 
 
-        H_0_1: HostNAPNAE {
-            @display("p=91,569");
-            numOfAPs = 1;
-            numOfAEs = 1;
-        }
-        H_1_2: HostNAPNAE {
-            @display("p=454,569");
-            numOfAPs = 1;
-            numOfAEs = 1;
-        }
+//        H_0_1: HostNAPNAE {
+//            @display("p=91,569");
+//            numOfAPs = 1;
+//            numOfAEs = 1;
+//        }
+//        H_1_2: HostNAPNAE {
+//            @display("p=454,569");
+//            numOfAPs = 1;
+//            numOfAEs = 1;
+//        }
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;
         T_0_1.medium++ <--> A_0_0.medium++;
@@ -240,6 +239,6 @@ network DDCLB
         A_3_2.medium++ <--> S_2_0.medium++;
         A_3_2.medium++ <--> S_2_1.medium++;
         A_3_2.medium++ <--> S_2_2.medium++;
-        H_1_2.medium <--> T_1_2.medium++;
-        H_0_1.medium <--> T_0_1.medium++;
+//        H_1_2.medium <--> T_1_2.medium++;
+//        H_0_1.medium <--> T_0_1.medium++;
 }

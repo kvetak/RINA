@@ -15,7 +15,6 @@
 
 package rina.examples.Routing.DDC;
 
-import rina.src.DAF.AE.AEData.AEData;
 import rina.src.CS.InteriorRouterNInt;
 
 

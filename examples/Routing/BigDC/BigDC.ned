@@ -18,7 +18,6 @@
 package rina.examples.Routing.BigDC;
 
 import ned.DatarateChannel;
-import rina.src.DAF.AE.AEData.AEData;
 import rina.src.CS.InteriorRouterNInt;
 
 network BigDC

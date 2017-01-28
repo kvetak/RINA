@@ -23,7 +23,6 @@
 package rina.src.DAF;
 
 import rina.src.Common.Test;
-import rina.src.DAF.AE.AEPing;
 import rina.src.DAF.AEManagement.AEManagement;
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DAF.DA.DIFAllocator;

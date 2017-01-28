@@ -20,7 +20,6 @@ import ned.DatarateChannel;
 import rina.src.CS.HostNAP;
 import rina.src.CS.InteriorRouterNInt;
 
-import rina.src.DAF.AE.AEConstant.AEConstantListener;
 
 network RCoreNet
 {
