@@ -1,7 +1,8 @@
-﻿RINA Simulator
+#RINA Simulator
 ====
 
 ###Version changelog
+* January 2017 - Refactored examples, towards OMNeT++ 5.1 compatibility
 * October 2016 - Socket and CDAP API added, compilable on OMNeT++ 5.0
 * August 2016 - The last release compatible with OMNeT++ 4.6
 * October 2015-February 2016 - Trento meeting version, Fragmentation/Concatenation in Delimiting, 
