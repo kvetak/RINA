@@ -122,7 +122,7 @@ void AEBase::initNamingInfo() {
 void AEBase::initialize()
 {
     initNamingInfo();
-    initQoSRequiremets();
+    initQoSRequirements();
 }
 
 const QoSReq& AEBase::getQoSRequirements() const {
@@ -133,7 +133,7 @@ void AEBase::setQoSRequirements(const QoSReq& qoSRequirements) {
     QoSRequirements = qoSRequirements;
 }
 
-void AEBase::initQoSRequiremets() {
+void AEBase::initQoSRequirements() {
     //Check whether module has all QoS parameters
     if (! (hasPar(PAR_AVGBW) &&
            hasPar(PAR_AVGSDUBW) &&

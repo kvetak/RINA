@@ -120,7 +120,7 @@ class AEBase : public cSimpleModule
     void setQoSRequirements(const QoSReq& qoSRequirements);
 
     void initNamingInfo();
-    void initQoSRequiremets();
+    void initQoSRequirements();
 
     void insertFlow(Flow& flow);
 
