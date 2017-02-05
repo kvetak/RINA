@@ -224,6 +224,8 @@ void AE::CACEFinished() {
 }
 
 void AE::start(Flow* flow) {
+    initQoSRequirements();
+
     if (flow) {
         signalizeAllocateResponsePositive(flow);
         FlowObject = flow;
