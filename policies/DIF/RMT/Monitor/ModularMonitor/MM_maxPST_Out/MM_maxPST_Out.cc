@@ -48,7 +48,8 @@ void MM_maxPST_Out::initialize() {
 
         if(th < 0) { th = 0; }
         if(p1 < 0) { p1 = 0; }
-        if(p2 < p2) { p2 = p1; }
+        //Vesely: if(p2 < p2) -> if(p2 < p1)
+        if(p2 < p1) { p2 = p1; }
 
 
         qName2Threshold[id] = th;

@@ -27,6 +27,7 @@ Define_Module(QoSIdComparer);
 void QoSIdComparer::initialize() {
     mHops = par("maxHops").longValue();
     mlBandw = par("mulBandw").longValue();
+    setPolicyDisplayString(this);
 }
 
 

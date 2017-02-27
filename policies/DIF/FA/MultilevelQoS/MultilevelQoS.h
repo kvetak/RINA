@@ -24,7 +24,7 @@
 #define MultilevelQoS_H_
 
 #include <omnetpp.h>
-
+#include "Common/Utils.h"
 #include "Common/QoSCube.h"
 #include "Common/Flow.h"
 

@@ -45,7 +45,8 @@ protected:
     virtual void onPolicyInit();
 
 private:
-    DA * difA;
+    //Vesely - Commented unused variable
+    //DA * difA;
     GREFWD * fwd;
     IntTSimpleRouting<mType> * rt;
 

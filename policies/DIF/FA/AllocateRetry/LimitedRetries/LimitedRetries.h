@@ -30,6 +30,9 @@ class LimitedRetries : public AllocateRetryBase
 {
   public:
     virtual bool run(Flow& flow);
+  protected:
+    virtual void initialize() {setPolicyDisplayString(this);};
+    virtual void handleMessage(cMessage *msg) {return;};
 };
 
 #endif

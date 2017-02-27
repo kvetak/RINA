@@ -20,23 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
+package rina.examples.Webinars.FAPolicyTest;
 
-Define_Module(AllocateRetryBase);
+import ned.DatarateChannel;
+import rina.src.CS.TestHost1AP;
 
-bool AllocateRetryBase::run(Flow& flow) {
-    Enter_Method("invokeAllocateRetryPolicy()");
-    //Increment number of retries
-    flow.setCreateFlowRetries( flow.getCreateFlowRetries() + 1 );
-    //Allow unlimited number of retries
-    return true;
-}
-
-void AllocateRetryBase::handleMessage(cMessage* msg) {
-    return;
-}
-
-void AllocateRetryBase::initialize() {
-    setPolicyDisplayString(this);
-    return;
+network FAPolicyTest
+{
+    @display("bgb=342,157");
+    submodules:
+        hostA: TestHost1AP {
+            @display("p=98,65");
+        }
+        hostB: TestHost1AP {
+            @display("p=230,65");
+        }
+    connections:
+        hostA.medium <--> DatarateChannel {delay = 0.4s; ber = 0; datarate = 10Mbps; } <--> hostB.medium;
 }

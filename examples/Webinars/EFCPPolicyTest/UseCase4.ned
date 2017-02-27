@@ -20,20 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef ALLOCATERETRYBASE_H_
-#define ALLOCATERETRYBASE_H_
+package rina.examples.Webinars.EFCPPolicyTest;
 
-#include <omnetpp.h>
-#include "Common/Utils.h"
-#include "Common/Flow.h"
+import ned.DatarateChannel;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter2Int;
 
-class AllocateRetryBase : public cSimpleModule {
-  public:
-    virtual bool run(Flow& flow) = 0;
-
-  protected:
-    virtual void handleMessage(cMessage *msg) = 0;
-    virtual void initialize() = 0;
-};
-
-#endif /* ALLOCATERETRYBASE_H_ */
+network EFCPPolicyTest
+{
+    @display("bgb=338,200");
+    submodules:
+        hostA: Host1AP {
+            @display("p=66,98");
+        }
+        hostB: Host1AP {
+            @display("p=270,98");
+        }
+        switch: InteriorRouter2Int {
+            @display("p=167,98");
+        }
+    connections:
+        hostA.medium <--> DatarateChannel {  datarate = 100Mbps; delay = 100us; ber = 0; } <--> switch.medium[0];
+        switch.medium[1] <--> DatarateChannel {  datarate = 100Mbps; delay = 5s; ber = 0; } <--> hostB.medium;
+}

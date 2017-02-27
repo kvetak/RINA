@@ -27,8 +27,8 @@ Define_Module(QoSMinComparer);
 void QoSMinComparer::initialize() {
     mHops = par("maxHops").longValue();
     mlBandw = par("mulBandw").longValue();
+    setPolicyDisplayString(this);
 }
-
 
 bool QoSMinComparer::isValid(const QoSCube &upperQoS, const QoSCube &lowerQoS) {
     if(upperQoS.getAvgBand()*mlBandw > lowerQoS.getAvgBand()) return false;

@@ -46,7 +46,7 @@ struct M5QinfoStat {
         priority = 1000;
     }
     M5QinfoStat(bool _enoughTk, int _priority) {
-        enoughTk = enoughTk;
+        enoughTk = _enoughTk; //Vesely: added _enoughTh
         priority = _priority;
     }
     bool compare(const M5QinfoStat & o) const;
