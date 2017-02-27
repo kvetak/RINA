@@ -70,21 +70,20 @@ void DAFEnrollment::initialize()
     initPointers();
 
     //Perform self-enrollment
-    bool isSelfEnrol = false;//par(DAF_PAR_ISSELFENROL).boolValue();
+    bool isSelfEnrol = par(DAF_PAR_ISSELFENROL).boolValue();
     if (isSelfEnrol) {
+        //Vesely -> Jerabek: WTF?
+        /*
         StateTable->insert(DAFEnrollmentStateTableEntry(
                 APNamingInfo(FlowAlloc->getMyAddress().getApn()),
                 APNamingInfo(FlowAlloc->getMyAddress().getApn()),
                 DAFEnrollmentStateTableEntry::CON_ESTABLISHED,
                 DAFEnrollmentStateTableEntry::ENROLL_ENROLLED));
+        */
         updateEnrollmentDisplay(ENICON_ENROLLED);
     }
     else {
-        //TODO: Work more on checking of N-1 flow existence
-        if (StateTable->isEnrolled(FlowAlloc->getMyAddress().getApn()))
-            { updateEnrollmentDisplay(ENICON_FLOWMIS); }
-        else
-            { updateEnrollmentDisplay(ENICON_NOTENROLLED); }
+        updateEnrollmentDisplay(ENICON_NOTENROLLED);
     }
 
 
@@ -839,7 +838,8 @@ void DAFEnrollment::handleMessage(cMessage *msg)
                 APNIPair pair = apnip->front();
                 auto entry = StateTable->findEntryByDstAPN(pair.second.getApn());
                 if (!entry) {
-                    FlowAlloc->receiveMgmtAllocateRequest(pair.first, pair.second);
+                    //Vesely -> Jerabek: WTF?
+                    //FlowAlloc->receiveMgmtAllocateRequest(pair.first, pair.second);
                 }
                 apnip->pop_front();
             }

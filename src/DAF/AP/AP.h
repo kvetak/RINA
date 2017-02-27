@@ -69,7 +69,6 @@ protected:
     virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0);
     virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
 
-
     void insertAEReq(Flow req);
 private:
     simsignal_t sigAPAEAPI;

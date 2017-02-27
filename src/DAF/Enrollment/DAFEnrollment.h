@@ -120,7 +120,8 @@ class DAFEnrollment : public DAFEnrollmentBase
     void createFlow(APNIPair* apnip);
     DAFEnrollmentNotifier* createMgmtAE(Flow* flow);
 
-    FABase* FlowAlloc;
+    //Vesely -> Jerabek: WTF?
+    //FABase* FlowAlloc;
 
     DAFEnrollCommands PreenrollConnects;
     DAFEnrollCommands PreenrollReleases;

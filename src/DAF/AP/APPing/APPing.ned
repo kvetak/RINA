@@ -30,11 +30,13 @@ simple APPing extends AP like APInst
     parameters:
         @class(APPing);
         
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
+        int startAt @unit(s) = default(-1s);
+        int stopAt  @unit(s) = default(-1s);
         int pingAt  @unit(s) = default(0s);
         double interval @unit(s) = default(1s);
 
-        string dstApName = default("AppErr");
-        
+        string dstApName = default("AppERROR");
+        string dstApInstance = default("0");
+        string dstAeName = default("AEMonitor");
+        string dstAeInstance = default("-1");
 }

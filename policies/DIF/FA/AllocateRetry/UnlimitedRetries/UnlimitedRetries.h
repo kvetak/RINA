@@ -21,7 +21,7 @@
 
 using namespace omnetpp;
 
-class UnlimitedRetries : public cSimpleModule
+class UnlimitedRetries : public AllocateRetryBase
 {
   public:
     virtual bool run(Flow& flow);

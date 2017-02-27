@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 package rina.policies.DIF.SDUProtection.FixedDelay;
-import rina.src.DIF.SDUProtection.IntSDUProtection;
+import rina.policies.DIF.SDUProtection.IntSDUProtection;
 
 simple FixedDelay like IntSDUProtection
 {

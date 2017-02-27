@@ -37,6 +37,10 @@ module FlowAllocator
     gates:
 
     submodules:
+        allocateRetryPolicy: <allocRetryPolicyType> like IAllocateRetry {
+            @display("p=357,154");
+        }
+        
         fa: FA {
             @display("p=75,64");
         }
@@ -47,10 +51,6 @@ module FlowAllocator
 
         newFlowRequestPolicy: <newFlowReqPolicyType> like INewFlowRequest {
             @display("p=357,64");
-        }
-
-        allocateRetryPolicy: <allocRetryPolicyType> like IAllocateRetry {
-            @display("p=357,154");
         }
 
         qosComparerPolicy: <qosComparerPolicyType> like IAMultilevelQoS {

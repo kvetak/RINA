@@ -490,7 +490,8 @@ void RA::createNM1Flow(Flow *flow)
 
     fa->invokeNewFlowRequestPolicy(flow);
     const APN& dstApn = flow->getDstApni().getApn();
-    const std::string& qosID = flow->getConId().getQoSId();
+    //Vesely - Commenting unused variable
+    //const std::string& qosID = flow->getConId().getQoSId();
 
     //
     // A flow already exists from this ipc to the destination one(passing through a neighbor)?

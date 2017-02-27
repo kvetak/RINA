@@ -74,6 +74,7 @@ void AP::onClose(APIResult* result) {
 
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
     if (this->isEnrolled == this->EnrollmentState::NOT_ENROLLED) {
+        //Vesely -> Jerabek: Je zde duvod k hardcodovani hodnot?
         APNIPair* apnip = new APNIPair(
         APNamingInfo(APN(this->getParentModule()->par("apName").stringValue()),
                     "0",

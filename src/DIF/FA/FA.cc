@@ -121,7 +121,7 @@ const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmt
 }
 bool FA::isMalformedFlow(Flow* flow) {
     //TODO: Vesely - Simulate malformed
-    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "AppERR") )
+    if ( !strcmp(flow->getDstApni().getApn().getName().c_str(), "AppMALFORMED") )
         return true;
     return false;
 }
@@ -380,39 +380,49 @@ bool FA::receiveCreateFlowRequestFromRibd(Flow* flow) {
     }
     //...if not then forward CreateRequest Flow to next neighbor
     else {
-        EV << "Forwarding M_CREATE(flow)" << endl;
-
-        //Before that reverse SRC-DST information back
-        flow->swapFlow();
-        //Insert new Flow into FAITable
-        N_flowTable->insertNew(flow);
-        //Change neighbor addresses
-        setNeighborAddresses(flow);
-        //Change status to forward
-        N_flowTable->changeAllocStatus(flow, NFlowTableEntry::FORWARDING);
-
-        //Decrement HopCount
-        flow->setHopCount(flow->getHopCount() - 1);
-        if (!flow->getHopCount()) {
-            //TODO: Vesely - More granular error
-            N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_ERR);
-            //Schedule M_Create_R(Flow)
+        //App is not local but it should be (based on DA)
+        if (flow->getSrcAddr() == this->getMyAddress()) {
+            EV << "Rejecting flow allocation, APN not present on this system!" << endl;
             this->signalizeCreateFlowResponseNegative(flow);
             return false;
         }
-
-        // bind this flow to a suitable (N-1)-flow
-        RABase* raModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
-        status = raModule->bindNFlowToNM1Flow(flow);
-
-        //EV << "status: " << status << endl;
-        if (status == true) {
-            // flow is already allocated
-            receiveNM1FlowCreated(flow);
-        }
-        //else WAIT until allocation of N-1 flow is completed
+        //
         else {
-            EV << "FA waits until N-1 IPC allocates auxilliary N-1 flow" << endl;
+            EV << "Forwarding M_CREATE(flow)" << endl;
+
+            //Before that reverse SRC-DST information back
+            flow->swapFlow();
+            //Insert new Flow into FAITable
+            N_flowTable->insertNew(flow);
+            //Change neighbor addresses
+            setNeighborAddresses(flow);
+            //Change status to forward
+            N_flowTable->changeAllocStatus(flow, NFlowTableEntry::FORWARDING);
+
+            //Decrement HopCount
+            flow->setHopCount(flow->getHopCount() - 1);
+            if (!flow->getHopCount()) {
+                //TODO: Vesely - More granular error
+                N_flowTable->changeAllocStatus(flow, NFlowTableEntry::ALLOC_ERR);
+                //Schedule M_Create_R(Flow)
+                EV << "Hopcount decremented to zero!" << endl;
+                this->signalizeCreateFlowResponseNegative(flow);
+                return false;
+            }
+
+            // bind this flow to a suitable (N-1)-flow
+            RABase* raModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
+            status = raModule->bindNFlowToNM1Flow(flow);
+
+            //EV << "status: " << status << endl;
+            if (status == true) {
+                // flow is already allocated
+                receiveNM1FlowCreated(flow);
+            }
+            //else WAIT until allocation of N-1 flow is completed
+            else {
+                EV << "FA waits until N-1 IPC allocates auxilliary N-1 flow" << endl;
+            }
         }
     }
     return status;

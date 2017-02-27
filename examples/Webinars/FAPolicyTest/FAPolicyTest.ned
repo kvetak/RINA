@@ -36,5 +36,5 @@ network FAPolicyTest
             @display("p=230,65");
         }
     connections:
-        hostA.medium <--> DatarateChannel {delay = 0.4s; ber = 0; datarate = 10Mbps; } <--> hostB.medium;
+        hostA.medium <--> DatarateChannel {delay = 0.1s; datarate = 10Mbps; } <--> hostB.medium;
 }

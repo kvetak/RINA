@@ -32,7 +32,9 @@ APPing::~APPing() {
 
 void APPing::initialize() {
     AP::initialize();
-    if (strcmp(par("dstApName").stringValue(),"AppErr")) {
+    if (strcmp(par("dstApName").stringValue(),"AppERROR") ||
+            m2 <= m1 || m1 < 0
+       ) {
         m1 = new cMessage("start");
         scheduleAt(simTime() + par("startAt").longValue(), m1);
 
@@ -45,7 +47,11 @@ void APPing::handleMessage(cMessage *msg) {
     if(msg->isSelfMessage()) {
         if ( !strcmp(msg->getName(), "start") ) {
             invokeId = getNewInvokeID();
-            a_open(invokeId, par("dstApName").stringValue(), "0", "AEMonitor", "-1");
+            /*Vesely -> Jerabek: WTF???
+             */
+            //a_open(invokeId, par("dstApName").stringValue(), "0", "AEMonitor", "-1");
+            a_open(invokeId, par("dstApName").stringValue(), par("dstApInstance").stringValue(),
+                             par("dstAeName").stringValue(), par("dstAeInstance").stringValue());
         }
         else if (!strcmp(msg->getName(), "stop")) {
             a_close(conID);
