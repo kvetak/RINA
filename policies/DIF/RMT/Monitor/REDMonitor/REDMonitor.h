@@ -37,7 +37,31 @@ class REDMonitor : public RMTQMonitorBase
     virtual void postQueueCreation(RMTQueue* queue);
     virtual void preQueueRemoval(RMTQueue* queue);
 
-  private:
+    const REDParamMap& getAvgLengths() const {
+        return qAvgLengths;
+    }
+
+    void setAvgLengths(const REDParamMap& avgLengths) {
+        qAvgLengths = avgLengths;
+    }
+
+    const REDParamMap& getCounters() const {
+        return qCounters;
+    }
+
+    void setCounters(const REDParamMap& counters) {
+        qCounters = counters;
+    }
+
+    const REDParamMap& getWeights() const {
+        return qWeights;
+    }
+
+    void setWeights(const REDParamMap& weights) {
+        qWeights = weights;
+    }
+
+  public:
     REDParamMap qAvgLengths;
     REDParamMap qWeights;
     REDParamMap qCounters;

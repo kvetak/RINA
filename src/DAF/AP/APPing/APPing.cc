@@ -32,14 +32,16 @@ APPing::~APPing() {
 
 void APPing::initialize() {
     AP::initialize();
-    if (strcmp(par("dstApName").stringValue(),"AppERROR") ||
-            m2 <= m1 || m1 < 0
+    long t1 = par("startAt").longValue();
+    long t2 = par("stopAt").longValue();
+    if (strcmp(par("dstApName").stringValue(),"AppERROR") &&
+            t2 > t1 && t1 > 0 && t2 > 0
        ) {
         m1 = new cMessage("start");
-        scheduleAt(simTime() + par("startAt").longValue(), m1);
+        scheduleAt(simTime() + t1, m1);
 
         m2 = new cMessage("stop");
-        scheduleAt(simTime() + par("stopAt").longValue(), m2);
+        scheduleAt(simTime() + t2, m2);
     }
 }
 

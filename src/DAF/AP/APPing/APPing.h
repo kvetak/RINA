@@ -26,8 +26,9 @@
 
 #include <omnetpp.h>
 #include "DAF/AP/AP.h"
-
 #include "Common/RINASignals.h"
+
+using namespace omnetpp;
 
 class APPing : public AP {
 public:

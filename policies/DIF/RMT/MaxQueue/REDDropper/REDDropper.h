@@ -24,7 +24,6 @@
 #define __RINA_REDDROPPER_H_
 
 #include <omnetpp.h>
-
 #include "DIF/RMT/MaxQueue/RMTMaxQBase.h"
 #include "DIF/RMT/Monitor/REDMonitor/REDMonitor.h"
 
