@@ -122,7 +122,7 @@
 
 <h4>Task 3: Unifying naming and addressing</h4>
 <p>The current RINASim uses strings with fixed syntax (<i>address_dif/daf-name</i>) for AP and IPCP names. Nevertheless, RINA addressing theory is so flexible that it supports: 1) both flat and hierarchical spaces; 2) neat addressing tricks like synonyms and whatevercast names.</p>
-<p>This is a bigger task that contains independent subtasks:</p>
+<p>This is a bigger task that contains independent subtasks. Fulfillin just a single subtask would be a great achievment:</p>
 <ul>
 <li>DIF Allocator is being bothered whenever name/address resolution is needed. Specifications are speaking about NameSpace Manager component, which contains a resolution cache. Your goal would be to implement this cache.</li>
 <li>Extend the functionality of core classes (e.g., in folder <code>/src/Common</code> classes like APN, APNamingInfo, Address) related to addressing and naming. The update should offer programmable syntax and semantics of Address class.</li>
@@ -132,6 +132,11 @@
 <h4>Task 4: Doxygen documentation</h4>
 <p>Any good framework needs a strong coding documentation. RINASim is using Doxygen but not everything is well-documented (thanks to the laziness of original authors ʘ‿ʘ).</p>
 <p>This task is for anyone curious about how RINA works. Your job would be to compare behavior described in the specification and observed in RINASim. Basically, you can pick any RINASim component that interests you, execute related scenarios and append Doxygen documentation to the parts of source code that are missing it.</p>
+
+<h4>Task 5: Hardware-in-the-loop (HWIL) simulation</h4>
+<p>Since OMNeT++ is based on C/C++, it offers communication with your network interface card (NIC) by leveraging libpcap library. INET framework supports an external interface which allows you to connect your simulation module with the real network. Your simulated router can exchange data with the real network devices.</p>
+<p>Your task would be to integrate relevant external interface modules from INET framework and bind them with libpcap library. Following next, you will create a new RINA nodes which will bridge their connection to medium directly to your NIC. As the last step, you will create a simple scenario with two RINASim nodes working in the HWIL.</p>
+
 
 <h2><a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h2>
 
