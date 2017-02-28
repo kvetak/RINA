@@ -124,8 +124,8 @@
 <p>The current RINASim uses strings with fixed syntax (<i>address_dif/daf-name</i>) for AP and IPCP names. Nevertheless, RINA addressing theory is so flexible that it supports: 1) both flat and hierarchical spaces; 2) neat addressing tricks like synonyms and whatevercast names.</p>
 <p>This is a bigger task that contains independent subtasks:</p>
 <ul>
-<li>DIF Allocator is being bothered whenever name/address resolution is needed. Specifications are speaking about NameSpace Manager component, which contains a resolution cache. Your goal would be this cache implementation.</li>
-<li>Extend the functionality of core classes (e.g., in folder /src/Common classes like APN, APNamingInfo, Address) related to addressing and naming. The update should offer programmable syntax and semantics of Address class.</li>
+<li>DIF Allocator is being bothered whenever name/address resolution is needed. Specifications are speaking about NameSpace Manager component, which contains a resolution cache. Your goal would be to implement this cache.</li>
+<li>Extend the functionality of core classes (e.g., in folder <code>/src/Common</code> classes like APN, APNamingInfo, Address) related to addressing and naming. The update should offer programmable syntax and semantics of Address class.</li>
 <li>DIF Allocator changes are needed to fully-compliant support of whatevercast names and synonyms. You should refactorize DA component and create relevant scenarios demonstrating a new functionality.</li>
 </ul>
 
