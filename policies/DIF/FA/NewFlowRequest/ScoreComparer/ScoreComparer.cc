@@ -47,10 +47,10 @@ short ScoreComparer::countFeasibilityScore(const QoSReq& requirements, const QoS
         (requirements.getBurstDuration() <= cube.getBurstDuration()) ? score++ : score--;
 
     if (requirements.getUndetectedBitErr() != VAL_QOSPARDONOTCARE)
-        (requirements.getUndetectedBitErr() <= cube.getUndetectedBitErr()) ? score++ : score--;
+        (requirements.getUndetectedBitErr() >= cube.getUndetectedBitErr()) ? score++ : score--;
 
     if (requirements.getPduDropProbability() != VAL_QOSPARDONOTCARE)
-        (requirements.getPduDropProbability() <= cube.getPduDropProbability()) ? score++ : score--;
+        (requirements.getPduDropProbability() >= cube.getPduDropProbability()) ? score++ : score--;
 
     if (requirements.getMaxSduSize() != VAL_QOSPARDONOTCARE)
         (requirements.getMaxSduSize() <= cube.getMaxSduSize()) ? score++ : score--;
@@ -62,19 +62,19 @@ short ScoreComparer::countFeasibilityScore(const QoSReq& requirements, const QoS
     (requirements.isForceOrder() == cube.isForceOrder()) ? score++ : score--;
 
     if (requirements.getMaxAllowGap() != VAL_QOSPARDONOTCARE)
-        (requirements.getMaxAllowGap() <= cube.getMaxAllowGap()) ? score++ : score--;
+        (requirements.getMaxAllowGap() >= cube.getMaxAllowGap()) ? score++ : score--;
 
     if (requirements.getDelay() != VAL_QOSPARDONOTCARE)
-        (requirements.getDelay() <= cube.getDelay()) ? score++ : score--;
+        (requirements.getDelay() >= cube.getDelay()) ? score++ : score--;
 
     if (requirements.getJitter() != VAL_QOSPARDONOTCARE)
-        (requirements.getJitter() <= cube.getJitter()) ? score++ : score--;
+        (requirements.getJitter() >= cube.getJitter()) ? score++ : score--;
 
     if (requirements.getCostTime() != VAL_QOSPARDONOTCARE)
-        (requirements.getCostTime() <= cube.getCostTime()) ? score++ : score--;
+        (requirements.getCostTime() >= cube.getCostTime()) ? score++ : score--;
 
     if (requirements.getCostBits() != VAL_QOSPARDONOTCARE)
-        (requirements.getCostBits() <= cube.getCostBits()) ? score++ : score--;
+        (requirements.getCostBits() >= cube.getCostBits()) ? score++ : score--;
 
     return score;
 }
