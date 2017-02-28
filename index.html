@@ -37,8 +37,9 @@
 			<div id="nav">
 				<ul>
 					<li><a href="#welcome" class="smoothScroll">Welcome</a></li>					
-					<li><a href="#install" class="smoothScroll">Installation</a></li>					
+					<li><a href="#install" class="smoothScroll">Install</a></li>					
 					<li><a href="#authors" class="smoothScroll">Authors</a></li>
+					<li><a href="#opencall" class="smoothScroll">Open Call</a></li>
 					<li><a href="#references" class="smoothScroll">References</a></li>					
 					<li><a href="#resources" class="smoothScroll">Resources</a></li>
 					<li><a href="#theory" class="smoothScroll">Theory</a></li>
@@ -62,7 +63,7 @@
 
 <h2><a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>RINASim is developed in OMNeT 5.0. <a href="https://github.com/kvetak/RINA/releases/tag/August2016-v4" target="_blank">August2016's RINASim release</a> is the last one compatible with OMNeT++ 4.6. The current trend is to make RINASim operatable on any OMNeT versions that support C++11 language standard and GCC 4.9.2 compiler (which includes also OMNeT++ 5.1). All source codes (including master and other thematic branches) are publicly available on the project’s <a href="https://github.com/kvetak/RINA">GitHub repository</a>. Apart from this official channel for source codes, RINASim stable release snapshots are periodically published on <a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">Open Source Project repository</a></p>
+<p>RINASim is developed in OMNeT 5.0 and <a href="https://github.com/kvetak/RINA/releases/tag/February2017" target="_blank">February2017</a> is the most up-to-date release. <a href="https://github.com/kvetak/RINA/releases/tag/August2016-v4" target="_blank">August2016's</a> release is the last one compatible with OMNeT++ 4.6. The current trend is to make RINASim operatable on any OMNeT versions that support C++11 language standard and GCC 4.9.2 compiler (which includes also OMNeT++ 5.1). All source codes (including master and other thematic branches) are publicly available on the project’s <a href="https://github.com/kvetak/RINA">GitHub repository</a>. Apart from this official channel for source codes, RINASim stable release snapshots are periodically published on <a href="https://opensourceprojects.eu/p/pristine/rinasimulator/rinasim/ci/b323f721944033c9f31924c02e2b67ba9c92c712/tree/">Open Source Project repository</a></p>
 
 <p>In order to make RINASim more available for general public, we have prepared a virtual machine with preinstalled OMNeT++ 4.6 containing always stable and the most current version of RINASim. <a href="http://nes.fit.vutbr.cz/ivesely/vm/RINASim.zip" target="_blank">Out-of-the-box virtual machine</a> is generic OVA appliance, which should be compatible with widely used virtualization softwares (so far tested in VMWare Workstation and ESXi solutions).</p>
 
@@ -93,6 +94,44 @@
 </ul>
 
 <p>The easiest way how to reach developers is to join dedicated <a href="https://join.skype.com/ueEghGdKrdx5" target="_blank">Skype group</a>. The more passive option is to subscribe yourself to the <a href="https://www.fit.vutbr.cz/mailman/listinfo/rinasim" target="_blank">official mailing-list</a>.</p>
+
+<h2><a id="opencall" class="anchor" href="#opencall" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Open Call for Collaboration</h2>
+
+<p>Dear all RINA enthusiasts!</p>
+
+<p>RINASim is currently (28th February 2017) the most advanced framework for discrete event simulation of native RINA networks. We would like to preserve this status and continue extending RINASim features with your help. Hence, we are looking for new collaborators willing to participate on RINASim development.</p> 
+
+<p>If you are the researcher and/or student with at least one of the following traits then you are the perfect match for this job:</p>
+
+<ul>
+<li>general interest in RINA;</li>
+<li>basic knowledge of C/C++;</li>
+<li>ability to decompose problems to finite-state machines;</li>
+<li>systematic approach to troubleshooting.</li>
+</ul>
+
+<p>Developer’s work is an ongoing process. Hence, here is the task list of the most eminent problems which we would like to address shortly (in Q2/Q3 of 2017).</p>
+
+<h4>Task 1: Teaching RINASim materials for newbies</h4>
+<p>The learning curve for RINASim is pretty steep right now. We would love to make RINASim more user-friendly for newcomers and help them with their initial steps.</p>
+<p>We are intentionally looking for somebody, who does not have a lot of experience with coding. We need entry level material for a new RINASim user that will explain: 1) the meaning of various RINASim components (FA, RMT, DA, EFCP, RA); 2) scenario setup using <code>config.xml</code> and <code>omnetpp.ini</code> files; 3) annotate basic scenarios in folder <code>/examples/Demos</code>. All created materials will be publicly available on this web page.</p>
+
+<h4>Task 2: Real data-link layer simulation modules</h4>
+<p>The first step on the long road to compare RINA with classical TCP/IP stack is to support realistic data-link layer simulation models within RINASim.</p>
+<p>This task is suitable for anyone with previous coding experience with OMNeT++ and/or NS2/3 tools. The goal is to migrate available Ethernet and PPP interface models from the <a href="https://inet.omnetpp.org/" target="_blank">INET framework</a> into RINASim. It is expected that you will alter high-level RINASim nodes and bridge the gap between the medium link and the bottommost IPC processes.</p>
+
+<h4>Task 3: Unifying naming and addressing</h4>
+<p>The current RINASim uses strings with fixed syntax (<i>address_dif/daf-name</i>) for AP and IPCP names. Nevertheless, RINA addressing theory is so flexible that it supports: 1) both flat and hierarchical spaces; 2) neat addressing tricks like synonyms and whatevercast names.</p>
+<p>This is a bigger task that contains independent subtasks:</p>
+<ul>
+<li>DIF Allocator is being bothered whenever name/address resolution is needed. Specifications are speaking about NameSpace Manager component, which contains a resolution cache. Your goal would be this cache implementation.</li>
+<li>Extend the functionality of core classes (e.g., in folder /src/Common classes like APN, APNamingInfo, Address) related to addressing and naming. The update should offer programmable syntax and semantics of Address class.</li>
+<li>DIF Allocator changes are needed to fully-compliant support of whatevercast names and synonyms. You should refactorize DA component and create relevant scenarios demonstrating a new functionality.</li>
+</ul>
+
+<h4>Task 4: Doxygen documentation</h4>
+<p>Any good framework needs a strong coding documentation. RINASim is using Doxygen but not everything is well-documented (thanks to the laziness of original authors ʘ‿ʘ).</p>
+<p>This task is for anyone curious about how RINA works. Your job would be to compare behavior described in the specification and observed in RINASim. Basically, you can pick any RINASim component that interests you, execute related scenarios and append Doxygen documentation to the parts of source code that are missing it.</p>
 
 <h2><a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h2>
 
