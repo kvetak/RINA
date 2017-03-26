@@ -25,6 +25,7 @@
 #define APPING_H_
 
 #include <omnetpp.h>
+#include <queue>
 #include "DAF/AP/AP.h"
 #include "Common/RINASignals.h"
 
@@ -41,10 +42,18 @@ private:
     void onA_getRead(APIResult* result);
 
     int *value;
-    int invokeId;
-    unsigned long conID;
+    int *invokeId;
+    unsigned long *conID;
+    int currentID;
+    int connections;
     cMessage* m1;
     cMessage* m2;
+    std::queue<int> conIDsPing;
+
+    std::vector<std::string> dstApNames;
+    std::vector<std::string> dstApInstances;
+    std::vector<std::string> dstAeNames;
+    std::vector<std::string> dstAeInstances;
 };
 
 #endif /* APPING_H_ */

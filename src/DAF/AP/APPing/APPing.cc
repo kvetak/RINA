@@ -32,11 +32,29 @@ APPing::~APPing() {
 
 void APPing::initialize() {
     AP::initialize();
+    currentID = 0;
     long t1 = par("startAt").longValue();
     long t2 = par("stopAt").longValue();
+
     if (strcmp(par("dstApName").stringValue(),"AppERROR") &&
             t2 > t1 && t1 > 0 && t2 > 0
        ) {
+        //get all names
+        dstApNames = cStringTokenizer(par("dstApName").stringValue()).asVector();
+        dstApInstances = cStringTokenizer(par("dstApInstance").stringValue()).asVector();
+        dstAeNames = cStringTokenizer(par("dstAeName").stringValue()).asVector();
+        dstAeInstances = cStringTokenizer(par("dstAeInstance").stringValue()).asVector();
+
+        if (dstApNames.size() != dstApInstances.size() ||
+                dstApInstances.size() != dstAeNames.size() ||
+                dstAeNames.size() != dstAeInstances.size())
+        {
+            EV << "Number of destination data is not equal" << endl;
+            return;
+        }
+
+        connections = dstApInstances.size();
+
         m1 = new cMessage("start");
         scheduleAt(simTime() + t1, m1);
 
@@ -46,23 +64,51 @@ void APPing::initialize() {
 }
 
 void APPing::handleMessage(cMessage *msg) {
+    int connID;
+
     if(msg->isSelfMessage()) {
         if ( !strcmp(msg->getName(), "start") ) {
-            invokeId = getNewInvokeID();
-            /*Vesely -> Jerabek: WTF???
-             */
-            //a_open(invokeId, par("dstApName").stringValue(), "0", "AEMonitor", "-1");
-            a_open(invokeId, par("dstApName").stringValue(), par("dstApInstance").stringValue(),
-                             par("dstAeName").stringValue(), par("dstAeInstance").stringValue());
+
+            std::vector<std::string>::iterator itApNames = dstApNames.begin();
+            std::vector<std::string>::iterator itApInstances = dstApInstances.begin();
+            std::vector<std::string>::iterator itAeNames = dstAeNames.begin();
+            std::vector<std::string>::iterator itAeInstances = dstAeInstances.begin();
+            int i = 0;
+
+            invokeId = new int[connections];
+            conID = new unsigned long[connections];
+            int invId;
+
+            while(itApNames != dstApNames.end()){
+                invId = getNewInvokeID();
+                invokeId[i] = invId;
+                i++;
+
+                a_open(invId, *itApNames, *itApInstances,
+                                *itAeNames, *itAeInstances);
+
+                itApNames++;
+                itApInstances++;
+                itAeNames++;
+                itAeInstances++;
+            }
         }
         else if (!strcmp(msg->getName(), "stop")) {
-            a_close(conID);
+            for (int i = 0; i < connections; i++){
+                a_close(conID[i]);
+            }
+
+
         }
         else if (!strcmp(msg->getName(), "ping")) {
             if ((simTime().dbl()+1) < par("stopAt").doubleValue() ) {
-                a_read(conID, "ping");
+                connID = conIDsPing.front();
+                conIDsPing.pop();
+
+                a_read(connID, "ping");
                 m2 = new cMessage("ping");
                 scheduleAt(simTime() + par("interval"), m2);
+                conIDsPing.push(connID);
             }
         }
         else
@@ -73,13 +119,18 @@ void APPing::handleMessage(cMessage *msg) {
 
 
 void APPing::onA_getOpen(APIResult* result) {
-    if (result->getInvokeId() == invokeId) {
-        conID = result->getCDAPConId();
-        a_read(conID, "ping");
+    int connID;
+
+    //if (result->getInvokeId() == invokeId) {
+        connID = result->getCDAPConId();
+        a_read(connID, "ping");
 
         m2 = new cMessage("ping");
         scheduleAt(simTime() + par("interval"), m2);
-    }
+        conID[currentID] = connID;
+        currentID++;
+        conIDsPing.push(connID);
+    //}
 }
 
 void APPing::onA_getRead(APIResult* result) {
