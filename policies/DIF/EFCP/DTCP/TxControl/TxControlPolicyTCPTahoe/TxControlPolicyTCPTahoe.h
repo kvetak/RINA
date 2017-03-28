@@ -50,7 +50,8 @@ public:
     uint32_t packetSize;
     uint32_t flightSize;
 
-    bool slowedDown;
+    double lastSlowDownTime;
+    double rtt;
 
     TxControlPolicyTCPTahoe();
     virtual ~TxControlPolicyTCPTahoe();

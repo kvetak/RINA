@@ -14,6 +14,7 @@
 // 
 
 #include "DIF/EFCP/DTCP/ECNSlowDown/DTCPECNSlowDownPolicyTCP/DTCPECNSlowDownPolicyTCP.h"
+Register_Class(DTCPECNSlowDownPolicyTCP);
 
 DTCPECNSlowDownPolicyTCP::~DTCPECNSlowDownPolicyTCP() {
     // TODO Auto-generated destructor stub
@@ -26,7 +27,7 @@ DTCPECNSlowDownPolicyTCP::DTCPECNSlowDownPolicyTCP() {
 
 void DTCPECNSlowDownPolicyTCP::initialize(int step)
 {
-    tcpPolicy = check_and_cast<TxControlPolicyTCPTahoe *>(getModuleByPath("^.^.efcp.txControlPolicy"));
+    tcpPolicy = getRINAModule<TxControlPolicyTCPTahoe *>(this, 1, {"txControlPolicy"});
 }
 
 bool DTCPECNSlowDownPolicyTCP::run(DTPState* dtpState, DTCPState* dtcpState)

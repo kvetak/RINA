@@ -40,18 +40,17 @@ void TxControlPolicyTCPTahoe::initialize(int step)
     if(step == 0){
         sigStatTCPTahoeCWND = registerSignal("TCP_Tahoe_CWND");
     }
-    slowedDown = false;
     packetSize = par("packetSize").longValue();
     ackPolicy = check_and_cast<SenderAckPolicyTCP *>(getModuleByPath("^.senderAckPolicy"));//^.^.efcp
 }
 
 void TxControlPolicyTCPTahoe::slowDown() {
-    if(! slowedDown ) {
+    if((simTime().dbl() - lastSlowDownTime) > 2 * rtt ) {
+        lastSlowDownTime = simTime().dbl();
+
         state = STATE_CNG_AVOID;
         snd_cwnd = std::max(int(snd_cwnd / 2), 2);
         ssthresh = snd_cwnd;
-        slowedDown = true;
-        emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
     }
 }
 
@@ -60,6 +59,7 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
     int sendCredit = 0;
     double time = simTime().dbl();
     time = time + 1;
+    rtt = dtpState->getRtt();
 
     if( state != STATE_STARTING_SLOW_START ) {
         if( ackPolicy->numOfAcked > ackRcvd ) {
@@ -106,8 +106,7 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
     if(snd_cwnd > dtcpState->getRcvCredit())
         state = STATE_CNG_AVOID;
 
-    if(sendCredit > 0)
-        emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
+    emit(sigStatTCPTahoeCWND, snd_cwnd * packetSize);
 
     // -------------  adding packets to send queue
     std::vector<DataTransferPDU*>::iterator it;
@@ -123,15 +122,13 @@ bool TxControlPolicyTCPTahoe::run(DTPState* dtpState, DTCPState* dtcpState)
         for (it = pduQ->begin(); it != pduQ->end() && (*it)->getSeqNum() <= dtcpState->getSndRightWinEdge() && sentNo <= sendCredit; sentNo++) {
             dtpState->pushBackToPostablePDUQ((*it));
             flightSize++;
-            slowedDown = false;
             it = pduQ->erase(it);
         }
     }
 
-    dtcpState->setClosedWindow(true);
-//    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen() || (sentNo > sendCredit) ) {
-//        dtcpState->setClosedWindow(true);
-//    }
+    if (!dtpState->getGeneratedPDUQ()->empty() || dtcpState->getClosedWinQueLen() >= dtcpState->getMaxClosedWinQueLen() || (sentNo > sendCredit) ) {
+        dtcpState->setClosedWindow(true);
+    }
 
     return false;
 }

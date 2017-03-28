@@ -431,6 +431,7 @@
 				<SenderAck>SenderAckPolicyTCP</SenderAck>
 				<RTTEstimator>RTTEstimatorPolicyTCP</RTTEstimator>
 				<TxControl>TxControlPolicyTCPTahoe</TxControl>
+				<ECNSlowDown>DTCPECNSlowDownPolicyTCP</ECNSlowDown>
 			</EFCPPolicySet>
         </QosCube>
 	</QoSCubesSet>
