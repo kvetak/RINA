@@ -20,35 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef DAFRIBDBASE_H_
-#define DAFRIBDBASE_H_
+#ifndef DAF_RIB_RIB_RIB_H_
+#define DAF_RIB_RIB_RIB_H_
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
+#include "DAF/RIB/RIB/Tree/RIBTreeNode.h"
+#include "DAF/RIB/RIB/Tree/RIBTreeNodeObj.h"
 
-#include "Common/ExternConsts.h"
-#include "DAF/CDAP/CDAPMessage_m.h"
-#include "DAF/Enrollment/DAFEnrollmentObj.h"
-#include "DAF/Enrollment/DAFOperationObj.h"
-#include "Common/PDU.h"
-
-class DAFRIBdBase : public cSimpleModule {
+class RIB {
 public:
-    DAFRIBdBase();
-    virtual ~DAFRIBdBase();
+    RIB();
+    virtual ~RIB();
 
-    virtual void receiveData(CDAPMessage* flow) = 0;
-    virtual void signalizeSendData(CDAPMessage* msg) = 0;
+    virtual bool createAE(std::string AEName);
+    virtual bool createIAE(std::string IAEName, AEBase* ae);
+    virtual bool deleteAE(std::string AEName);
+    virtual bool deleteIAE(std::string IAEName);
 
-    long getNewInvokeId();
+    virtual object_t* createObj(int CDAPConn, object_t *obj);
+    virtual object_t* deleteObj(int CDAPConn, std::string objName);
+    virtual object_t* writeObj(int CDAPConn, object_t *obj);
+    virtual object_t* readObj(int CDAPConn, std::string objName);
+
 protected:
+    virtual object_t* findObj(int CDAPConn, std::string objName);
 
-    //SimpleModule overloads
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
-
-    RIBBase* rib;
+    RIBTreeNodeObj *objRoot;
+    RIBTreeNode *treeRoot;
 };
 
-#endif /* DAFRIBDBASE_H_ */
+#endif /* DAF_RIB_RIB_RIB_H_ */

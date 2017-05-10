@@ -33,6 +33,7 @@ import rina.src.DAF.AP.APInst;
 import rina.src.DAF.RIB.DAFRIBDaemon;
 import rina.src.DAF.AE.ApplicationEntity;
 import rina.src.DAF.Enrollment.DAFEnrollmentModule;
+import rina.src.DAF.RIB.RIB.ResourceInformationBase;
 
 module ApplicationProcess
 {
@@ -49,7 +50,7 @@ module ApplicationProcess
         }
 
         ribDaemon: DAFRIBDaemon {
-            @display("p=200,60;i=block/segm");
+            @display("p=120,60;i=block/segm");
         }
 
         enrollment: DAFEnrollmentModule {
@@ -59,5 +60,10 @@ module ApplicationProcess
         aeManagement: ApplicationEntity {
             @display("p=200,150;i=block/cogwheel");
         }
+        
+        rib: ResourceInformationBase {
+            @display("p=200,60");
+        }
+        
     connections allowunconnected:
 }

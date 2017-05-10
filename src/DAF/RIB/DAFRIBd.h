@@ -35,12 +35,32 @@
 #include "Common/RINASignals.h"
 #include "Common/PDU.h"
 #include "DIF/Enrollment/EnrollmentNotifier.h"
+#include "DAF/AE/AEBase.h"
 
 class DAFRIBd : public DAFRIBdBase {
+    enum SubscriptionOption {READ, WRITE};
+    enum SubscriptionOperation {NOTIFY, STORE};
+    enum SubscriptionWhen {ON_REQUEST, ON_CHANGE};
 public:
   virtual void receiveData(CDAPMessage* cimsg);
 
   virtual void signalizeSendData(CDAPMessage* msg);
+
+
+  /* subscription API */
+  void createSubscription(DAFRIBd::SubscriptionOption option,
+          DAFRIBd::SubscriptionWhen when,
+          DAFRIBd::SubscriptionOperation operation,
+          std::string obj,
+          std::string member,
+          int subscId);
+
+  void deleteSubscription(int subscId);
+  void readSubscription(int subscId);
+
+  /* create&delete IAE in RIB */
+  void createIAE(AEBase* iae);
+  void deleteIAE(AEBase* iae);
 
 protected:
   EnrollmentNotifierBase* EnrollNotif;
@@ -53,11 +73,24 @@ protected:
   void initSignalsAndListeners();
   void initPointers();
 
+  void createObj(AEBase* iae, std::string objName, object_t *obj);
+  void deleteObj(AEBase* iae, std::string objName);
+
+  void sendMsg(int CDAPConn, CDAPMessage* msg);
+  void recvMsg(int CDAPConn, CDAPMessage* msg);
+
   //Signals
-  simsignal_t sigDAFRIBDSendData;
+  //simsignal_t sigDAFRIBDSendData;
+
+  simsignal_t sigRIBDAE;
+
 
   //Listeners
-  LisDAFRIBDRcvData*             lisDAFRIBDRcvData;
+  //LisDAFRIBDRcvData*             lisDAFRIBDRcvData;
+  LisDAFAERIBD* lisDAFAERIBD;
+
+  LisDAFIAECreate* lisDAFIAECreate;
+  LisDAFIAEDelete* lisDAFIAEDelete;
 
 };
 

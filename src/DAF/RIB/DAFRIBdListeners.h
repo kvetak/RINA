@@ -45,4 +45,10 @@ class LisDAFRIBDRcvData : public DAFRIBdListeners {
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
+class LisDAFAERIBD : public DAFRIBdListeners {
+  public:
+    LisDAFAERIBD(DAFRIBdBase* nribd) : DAFRIBdListeners(nribd) {};
+    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
+};
+
 #endif /* DAFRIBDLISTENERS_H_ */

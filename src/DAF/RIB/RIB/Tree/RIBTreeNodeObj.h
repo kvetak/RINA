@@ -1,3 +1,4 @@
+//
 // The MIT License (MIT)
 //
 // Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
@@ -20,35 +21,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef DAFRIBDBASE_H_
-#define DAFRIBDBASE_H_
+#ifndef DAF_RIB_RIB_TREE_RIBTREENODEOBJ_H_
+#define DAF_RIB_RIB_TREE_RIBTREENODEOBJ_H_
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
-
-#include "Common/ExternConsts.h"
-#include "DAF/CDAP/CDAPMessage_m.h"
-#include "DAF/Enrollment/DAFEnrollmentObj.h"
-#include "DAF/Enrollment/DAFOperationObj.h"
-#include "Common/PDU.h"
-
-class DAFRIBdBase : public cSimpleModule {
+class RIBTreeNodeObj {
 public:
-    DAFRIBdBase();
-    virtual ~DAFRIBdBase();
+    RIBTreeNodeObj();
+    RIBTreeNodeObj(RIBTreeNodeObj *parent);
+    RIBTreeNodeObj(std::string path);
+    virtual ~RIBTreeNodeObj();
 
-    virtual void receiveData(CDAPMessage* flow) = 0;
-    virtual void signalizeSendData(CDAPMessage* msg) = 0;
+    RIBTreeNodeObj *search(std::string name);
+    RIBTreeNodeObj *searchExactMatch(std::string name);
 
-    long getNewInvokeId();
+    RIBTreeNodeObj *create(RIBTreeNodeObj* node);
+    void deleteNode(std::string name);
+
+    std::string getNameFromPath(std::string path);
+
+    RIBTreeNodeObj *getLeftChild();
+    RIBTreeNodeObj *getRightChild();
+    RIBTreeNodeObj *getParentNode();
+
+    std::string getName();
+
+    void setLeftChild(RIBTreeNodeObj *node);
+    void setRightChild(RIBTreeNodeObj *node);
+    void setParentNode(RIBTreeNodeObj *node);
+
+    std::string getPath();
+
 protected:
+    RIBTreeNodeObj *parent;
 
-    //SimpleModule overloads
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
+    RIBTreeNodeObj *leftChild;
+    RIBTreeNodeObj *rightChild;
 
-    RIBBase* rib;
+    std::string name;
+    std::string path;
 };
 
-#endif /* DAFRIBDBASE_H_ */
+#endif /* DAF_RIB_RIB_TREE_RIBTREENODEOBJ_H_ */

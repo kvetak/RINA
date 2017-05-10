@@ -43,6 +43,9 @@ extern const char* SIG_AE_Enrolled;
 
 extern const char* SIG_AE_AP_API;
 
+extern const char* SIG_RIBDAE;
+extern const char* SIG_AERIBD;
+
 //Socket
 extern const char* SIG_Socket_QueueInfo;
 

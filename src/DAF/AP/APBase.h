@@ -43,6 +43,10 @@ public:
     virtual void onA_getOpen(APIResult* result) = 0;
     virtual void onA_getRead(APIResult* result) = 0;
     virtual void onA_getWrite(APIResult* result) = 0;
+    virtual void onA_getCreate(APIResult* result) = 0;
+    virtual void onA_getDelete(APIResult* result) = 0;
+    virtual void onA_getStart(APIResult* result) = 0;
+    virtual void onA_getStop(APIResult* result) = 0;
     virtual void onClose(APIResult* result) = 0;
 
 protected:
@@ -53,6 +57,16 @@ protected:
     virtual bool a_close(int CDAPConn, int invokeID = 0) = 0;
     virtual bool a_read(int CDAPConn, std::string objName, int invokeID = 0) = 0;
     virtual bool a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID = 0) = 0;
+    virtual bool a_cancelread(int CDAPConn, int invokeID = 0) = 0;
+
+    virtual bool a_create(int CDAPConn, std::string clas, std::string objectname, object_t *obj = NULL, int invokeID = 0) = 0;
+    virtual bool a_delete(int CDAPConn, std::string objectname, int invokeID = 0) = 0;
+
+    virtual bool a_start(int CDAPConn, std::string objectname, object_t* objectvalue = NULL, int invokeID = 0) = 0;
+    virtual bool a_stop(int CDAPConn, std::string objectname, object_t* objectvalue = NULL, int invokeID = 0) = 0;
+
+    //virtual APIRetObj* a_create_r(int CDAPConn, int invokeID = 0) = 0;
+    //virtual APIRetObj* a_delete_r(int CDAPConn, int invokeID = 0) = 0;
 
     virtual APIRetObj* a_getopen_r(int invokeID) = 0;
     virtual APIRetObj* a_getclose_r(int CDAPConn, int invokeID = 0) = 0;

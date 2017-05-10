@@ -40,3 +40,15 @@ void LisDAFRIBDRcvData::receiveSignal(cComponent* src, simsignal_t id,
     else
         EV << "DAFRIBdListener received unknown object!" << endl;
 }
+
+void LisDAFAERIBD::receiveSignal(cComponent* src, simsignal_t id,
+        cObject* obj, cObject *detail) {
+    EV << "ReceiveData initiated by " << src->getFullPath()
+       << " and processed by " << ribd->getFullPath() << endl;
+    CDAPMessage* cimsg = dynamic_cast<CDAPMessage*>(obj);
+    if (cimsg) {
+        ribd->receiveData(cimsg);
+    }
+    else
+        EV << "DAFRIBdListener received unknown object!" << endl;
+}

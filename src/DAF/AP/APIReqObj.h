@@ -27,7 +27,10 @@
 
 class APIReqObj : public APIObjBase {
 public:
-    enum APIReqType {A_READ, A_WRITE, A_CLOSE};
+    enum APIReqType {A_READ, A_WRITE, A_CLOSE,
+        A_CREATE, A_DELETE, A_START, A_STOP,
+        A_CANCELREAD};
+
     APIReqObj();
     virtual ~APIReqObj();
 
@@ -39,10 +42,14 @@ public:
 
     void setObjName(std::string objName);
     std::string getObjName();
+
+    void setClas(std::string clas);
+    std::string getClas();
 private:
     APIReqType type;
     object_t *obj;
     std::string objName;
+    std::string clas;
 };
 
 #endif /* APIREQOBJ_H_ */

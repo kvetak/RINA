@@ -72,6 +72,20 @@ void AP::onA_getWrite(APIResult* result) {
 void AP::onClose(APIResult* result) {
 }
 
+void AP::onA_getCreate(APIResult* result) {
+}
+
+void AP::onA_getDelete(APIResult* result) {
+}
+
+void AP::onA_getStart(APIResult* result) {
+}
+
+void AP::onA_getStop(APIResult* result) {
+}
+
+
+
 bool AP::a_open(int invokeID, std::string APName, std::string APInst, std::string AEName, std::string AEInst) {
     if (this->isEnrolled == this->EnrollmentState::NOT_ENROLLED) {
         //Vesely -> Jerabek: Je zde duvod k hardcodovani hodnot?
@@ -139,6 +153,68 @@ bool AP::a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID)
     this->signalizeAPAEAPI(req);
     return true;
 }
+
+bool AP::a_cancelread(int CDAPConn, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_CANCELREAD);
+
+    this->signalizeAPAEAPI(req);
+    return true;
+}
+
+bool AP::a_create(int CDAPConn, std::string clas, std::string objectname, object_t *obj, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setClas(clas);
+    req->setObjName(objectname);
+    req->setObj(obj);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_CREATE);
+
+    this->signalizeAPAEAPI(req);
+    return true;
+}
+
+bool AP::a_delete(int CDAPConn, std::string objectname, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_DELETE);
+
+    this->signalizeAPAEAPI(req);
+    return true;
+}
+
+bool AP::a_start(int CDAPConn, std::string objectname, object_t* objectvalue, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setObjName(objectname);
+    req->setObj(objectvalue);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_START);
+
+    this->signalizeAPAEAPI(req);
+    return true;
+}
+
+bool AP::a_stop(int CDAPConn, std::string objectname, object_t* objectvalue, int invokeID) {
+    APIReqObj *req = new APIReqObj();
+    req->setCDAPConId(CDAPConn);
+    req->setObjName(objectname);
+    req->setObj(objectvalue);
+    req->setInvokeId(invokeID);
+    req->setAPIReqType(APIReqObj::A_START);
+
+    this->signalizeAPAEAPI(req);
+    return true;
+}
+
+
+
+
+
 
 APIRetObj* AP::a_getopen_r(int invokeID) {
     return NULL;

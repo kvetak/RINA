@@ -80,6 +80,7 @@ void AE::initSignalsAndListeners() {
     sigAERelReq        = registerSignal(SIG_AE_ReleaseRequest);
     sigAEEnrolled      = registerSignal(SIG_AE_Enrolled);
     sigAEAPAPI         = registerSignal(SIG_AE_AP_API);
+    sigAERIBD          = registerSignal(SIG_AERIBD);
 
 
     //Signals that this module is processing
@@ -110,6 +111,8 @@ void AE::initSignalsAndListeners() {
 
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
+
+    lis
 }
 
 
@@ -532,12 +535,10 @@ void AE::afterOnStart() {
 
 
 bool AE::onA_read(APIReqObj* obj) {
-    //TODO: Vesely -> Jerabek: RESOLVE!
     return false;
 }
 
 bool AE::onA_write(APIReqObj* obj) {
-    //TODO: Vesely -> Jerabek: RESOLVE!
     return false;
 }
 

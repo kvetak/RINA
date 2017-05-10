@@ -20,48 +20,71 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "APIReqObj.h"
+#include <RIB/RIB.h>
 
-APIReqObj::APIReqObj() {
+RIB::RIB() {
     // TODO Auto-generated constructor stub
 
 }
 
-APIReqObj::~APIReqObj() {
+RIB::~RIB() {
     // TODO Auto-generated destructor stub
 }
 
+/*
+ * @AEName - expects format "/ae"
+ */
+bool RIB::createAE(std::string AEName) {
+    RIBTreeNode *node = new RIBTreeNode(AEName);
 
-
-void APIReqObj::setAPIReqType(APIReqType type) {
-    this->type = type;
+    if (this->treeRoot == NULL) {
+        this->treeRoot = node;
+    }
+    else {
+        this->treeRoot->create(node);
+    }
 }
 
-APIReqObj::APIReqType APIReqObj::getAPIReqType() {
-    return this->type;
+bool RIB::createIAE(std::string IAEName, AEBase* ae) {
+    RIBTreeNode *node = new RIBTreeNode(AEName);
+    node->setAE(ae);
+
+    if (this->treeRoot == NULL) {
+        this->treeRoot = node;
+    }
+    else {
+        this->treeRoot->create(node);
+    }
 }
 
-
-void APIReqObj::setObj(object_t *obj) {
-    this->obj = obj;
+bool RIB::deleteAE(std::string AEName) {
+    if (this->treeRoot != NULL) {
+        this->treeRoot->deleteNode(AEName);
+    }
 }
 
-object_t *APIReqObj::getObj() {
-    return this->obj;
+bool RIB::deleteIAE(std::string IAEName) {
+    if (this->treeRoot != NULL) {
+        this->treeRoot->deleteNode(AEName);
+    }
 }
 
-void APIReqObj::setObjName(std::string objName) {
-    this->objName = objName;
+object_t* RIB::createObj(int CDAPConn, object_t *obj) {
+    return NULL;
 }
 
-std::string APIReqObj::getObjName() {
-    return this->objName;
+object_t* RIB::deleteObj(int CDAPConn, object_t *obj) {
+    return NULL;
 }
 
-void APIReqObj::setClas(std::string clas) {
-    this->clas = clas;
+object_t* RIB::writeObj(int CDAPConn, object_t *obj) {
+    return NULL;
 }
 
-std::string APIReqObj::getClas() {
-    return this->clas;
+object_t* RIB::readObj(int CDAPConn, std::string objName) {
+    return NULL;
+}
+
+object_t* RIB::findObj(int CDAPConn, std::string objName) {
+    return NULL;
 }

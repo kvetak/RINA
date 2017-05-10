@@ -97,6 +97,9 @@ class AE : public AEBase
     //API AE-AP Signals
     simsignal_t sigAEAPAPI;
 
+    //API AE-RIBD Signals
+    simsignal_t sigAERIBD;
+
     //Listeners
     LisAEReceiveData* lisAERcvData;
     LisAEAllReqFromFai* lisAEAllReqFromFai;

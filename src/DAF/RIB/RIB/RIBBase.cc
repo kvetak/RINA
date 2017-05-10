@@ -20,35 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef DAFRIBDBASE_H_
-#define DAFRIBDBASE_H_
+#include <RIB/RIBBase.h>
 
-//Standard libraries
-#include <omnetpp.h>
-//RINASim libraries
+RIBBase::RIBBase() {
+    // TODO Auto-generated constructor stub
 
-#include "Common/ExternConsts.h"
-#include "DAF/CDAP/CDAPMessage_m.h"
-#include "DAF/Enrollment/DAFEnrollmentObj.h"
-#include "DAF/Enrollment/DAFOperationObj.h"
-#include "Common/PDU.h"
+}
 
-class DAFRIBdBase : public cSimpleModule {
-public:
-    DAFRIBdBase();
-    virtual ~DAFRIBdBase();
+RIBBase::~RIBBase() {
+    // TODO Auto-generated destructor stub
+}
 
-    virtual void receiveData(CDAPMessage* flow) = 0;
-    virtual void signalizeSendData(CDAPMessage* msg) = 0;
-
-    long getNewInvokeId();
-protected:
-
-    //SimpleModule overloads
-    virtual void initialize() = 0;
-    virtual void handleMessage(cMessage *msg) = 0;
-
-    RIBBase* rib;
-};
-
-#endif /* DAFRIBDBASE_H_ */

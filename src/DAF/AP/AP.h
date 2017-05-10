@@ -45,6 +45,10 @@ public:
     virtual void onA_getOpen(APIResult* result);
     virtual void onA_getRead(APIResult* result);
     virtual void onA_getWrite(APIResult* result);
+    virtual void onA_getCreate(APIResult* result);
+    virtual void onA_getDelete(APIResult* result);
+    virtual void onA_getStart(APIResult* result);
+    virtual void onA_getStop(APIResult* result);
     virtual void onClose(APIResult* result);
     void receiveAllocationRequestFromFAI(Flow* flow);
 
@@ -61,6 +65,13 @@ protected:
     virtual bool a_close(int CDAPConn, int invokeID = 0);
     virtual bool a_read(int CDAPConn, std::string objName, int invokeID = 0);
     virtual bool a_write(int CDAPConn, std::string objName, object_t *obj, int invokeID = 0);
+    virtual bool a_cancelread(int CDAPConn, int invokeID = 0);
+
+    virtual bool a_create(int CDAPConn, std::string clas, std::string objectname, object_t *obj = NULL, int invokeID = 0);
+    virtual bool a_delete(int CDAPConn, std::string objectname, int invokeID = 0);
+
+    virtual bool a_start(int CDAPConn, std::string objectname, object_t* objectvalue = NULL, int invokeID = 0);
+    virtual bool a_stop(int CDAPConn, std::string objectname, object_t* objectvalue = NULL, int invokeID = 0);
 
     virtual APIRetObj* a_getopen_r(int invokeID);
     virtual APIRetObj* a_getclose_r(int CDAPConn, int invokeID = 0);

@@ -40,6 +40,9 @@ const char* SIG_AE_Enrolled                     = "AE-Enrolled";
 
 const char* SIG_AE_AP_API                       = "AE-AP-API";
 
+const char* SIG_RIBDAE                          = "RIBd-AE";
+const char* SIG_AERIBD                          = "AE-RIBd";
+
 const char* SIG_Socket_QueueInfo                = "Socket-QueueInfo";
 
 const char* SIG_RIBD_DataSend                   = "RIBd-DataSend";
