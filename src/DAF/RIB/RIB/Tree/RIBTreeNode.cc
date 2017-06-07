@@ -60,7 +60,7 @@ RIBTreeNode::~RIBTreeNode() {
     this->rightChild = NULL;
     this->objRoot = NULL;
     this->subLevelRoot = NULL;
-    this->ae = NULL
+    this->ae = NULL;
 }
 
 /*
@@ -68,7 +68,7 @@ RIBTreeNode::~RIBTreeNode() {
  */
 std::string RIBTreeNode::getNameFromPath(std::string path) {
     std::string tmp = path;
-    while (tmp.find("/") != string::npos) {
+    while (tmp.find("/") != std::string::npos) {
         tmp = tmp.substr(tmp.find("/")+1);
     }
 
@@ -83,7 +83,7 @@ RIBTreeNode *RIBTreeNode::search(std::string name) {
     int cmp = 0;
 
     for (;;) {
-        cmp = strcmp(name, tmp->getName());
+        cmp = strcmp(name.c_str(), tmp->getName().c_str());
 
         if (cmp == 0) {
             break;
@@ -98,7 +98,7 @@ RIBTreeNode *RIBTreeNode::search(std::string name) {
             if (this->rightChild == NULL)
                 break;
             else
-                tmp = this-rightChild;
+                tmp = this->rightChild;
         }
     }
 
@@ -114,7 +114,7 @@ RIBTreeNode *RIBTreeNode::searchExactMatch(std::string name) {
 
     tmp = this->search(name);
 
-    if (!strcmp(name, tmp->getName()))
+    if (!strcmp(name.c_str(), tmp->getName().c_str()))
         return tmp;
     else
         return NULL;
@@ -131,7 +131,7 @@ RIBTreeNode *RIBTreeNode::searchByPathExactMatch(std::string path) {
     tmp = this->searchByPath(path);
 
     if (tmp) {
-        if (!strcmp(name, tmp->getName())) {
+        if (!strcmp(name.c_str(), tmp->getName().c_str())) {
             return tmp;
         }
         else
@@ -171,7 +171,7 @@ RIBTreeNode *RIBTreeNode::searchByPath(std::string path) {
 }
 
 RIBTreeNode *RIBTreeNode::create(RIBTreeNode *node) {
-    RIBTreeNode *tmp = this->findByPath(node->getPath());
+    RIBTreeNode *tmp = this->searchByPath(node->getPath());
     int cond;
     RIBTreeNode *child = NULL;
     std::string tmpName;
@@ -181,18 +181,18 @@ RIBTreeNode *RIBTreeNode::create(RIBTreeNode *node) {
 
         tmpName = tmpName.substr(0, tmpName.find_last_of("/\\"));
 
-        tmp = this->findByPathExactMatch(tmpName);
+        tmp = this->searchByPathExactMatch(tmpName);
 
         if (tmp != NULL) {
             tmp->setSubLevelRoot(node);
         }
         return NULL;
     }
-    else if(!strcmp(tmp->getName(), node->getName())) {
+    else if(!strcmp(tmp->getName().c_str(), node->getName().c_str())) {
         return tmp;
     }
     else {
-       cond = strcmp(tmp->getName(), node->getName());
+       cond = strcmp(tmp->getName().c_str(), node->getName().c_str());
 
        node->setParentNode(tmp);
 
@@ -206,7 +206,7 @@ RIBTreeNode *RIBTreeNode::create(RIBTreeNode *node) {
        }
 
        if (child != NULL) {
-           cond = strcmp(node->getName(), child->getName());
+           cond = strcmp(node->getName().c_str(), child->getName().c_str());
 
            if (cond < 0) {
                node->setLeftChild(child);
@@ -233,7 +233,7 @@ std::queue<std::string> RIBTreeNode::parsePath(std::string path) {
     std::string tmpPath = path;
     std::string tmp;
 
-    while (tmpPath.find("/") != string::npos) {
+    while (tmpPath.find("/") != std::string::npos) {
         tmpPath = tmpPath.substr(tmpPath.find("/")+1);
         tmp = tmpPath.substr(0, tmpPath.find("/"));
         que.push(tmp);

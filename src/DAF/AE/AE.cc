@@ -112,7 +112,6 @@ void AE::initSignalsAndListeners() {
     lisAEAllResNega = new LisAEAllResNega(this);
     catcher2->subscribe(SIG_FAI_AllocateResponseNegative, lisAEAllResNega);
 
-    lis
 }
 
 

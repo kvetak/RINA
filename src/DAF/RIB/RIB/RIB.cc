@@ -46,15 +46,30 @@ bool RIB::createAE(std::string AEName) {
 }
 
 bool RIB::createIAE(std::string IAEName, AEBase* ae) {
-    RIBTreeNode *node = new RIBTreeNode(AEName);
+    RIBTreeNode *node = new RIBTreeNode(IAEName);
+    RIBTreeNode *tmpNode = NULL;
     node->setAE(ae);
 
+    std::string tmpname= IAEName;
+    tmpname = tmpname.substr(0, tmpname.find_last_of("/\\"));
+
     if (this->treeRoot == NULL) {
-        this->treeRoot = node;
+        return false;
     }
     else {
-        this->treeRoot->create(node);
+        tmpNode = this->treeRoot->searchByPathExactMatch(tmpname);
+        if (!tmpNode) {
+            return false;
+        }
+
+        if (tmpNode->getSubLevelRoot() == NULL) {
+            tmpNode->setSubLevelRoot(node);
+        }
+        else{
+            tmpNode->create(node);
+        }
     }
+    return true;
 }
 
 bool RIB::deleteAE(std::string AEName) {
@@ -65,7 +80,7 @@ bool RIB::deleteAE(std::string AEName) {
 
 bool RIB::deleteIAE(std::string IAEName) {
     if (this->treeRoot != NULL) {
-        this->treeRoot->deleteNode(AEName);
+        this->treeRoot->deleteNode(IAEName);
     }
 }
 
@@ -73,7 +88,7 @@ object_t* RIB::createObj(int CDAPConn, object_t *obj) {
     return NULL;
 }
 
-object_t* RIB::deleteObj(int CDAPConn, object_t *obj) {
+object_t* RIB::deleteObj(int CDAPConn, std::string objName) {
     return NULL;
 }
 

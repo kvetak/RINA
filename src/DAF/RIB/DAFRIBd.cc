@@ -89,7 +89,7 @@ void DAFRIBd::signalizeSendData(CDAPMessage* msg) {
     msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
-    emit(sigDAFRIBDSendData, msg);
+    //emit(sigDAFRIBDSendData, msg);
 }
 
 
@@ -98,7 +98,7 @@ void DAFRIBd::createIAE(AEBase* iae) {
 }
 
 void DAFRIBd::deleteIAE(AEBase* iae) {
-    this->rib->deleteIAE(iae->getAPni().getApn().getName());
+    this->rib->deleteIAE(iae->getApni().getApn().getName());
 }
 
 void DAFRIBd::createObj(AEBase* iae, std::string objName, object_t *obj) {

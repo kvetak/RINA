@@ -24,6 +24,8 @@
 #ifndef DAF_RIB_RIB_TREE_RIBTREENODEOBJ_H_
 #define DAF_RIB_RIB_TREE_RIBTREENODEOBJ_H_
 
+#include <omnetpp.h>
+
 class RIBTreeNodeObj {
 public:
     RIBTreeNodeObj();

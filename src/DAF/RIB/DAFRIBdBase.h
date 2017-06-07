@@ -32,14 +32,36 @@
 #include "DAF/Enrollment/DAFEnrollmentObj.h"
 #include "DAF/Enrollment/DAFOperationObj.h"
 #include "Common/PDU.h"
+#include "DAF/RIB/RIB/RIBBase.h"
 
 class DAFRIBdBase : public cSimpleModule {
 public:
+    enum SubscriptionOption {READ, WRITE};
+    enum SubscriptionOperation {NOTIFY, STORE};
+    enum SubscriptionWhen {ON_REQUEST, ON_CHANGE};
     DAFRIBdBase();
     virtual ~DAFRIBdBase();
 
     virtual void receiveData(CDAPMessage* flow) = 0;
     virtual void signalizeSendData(CDAPMessage* msg) = 0;
+
+    /* subscription API */
+    virtual void createSubscription(DAFRIBdBase::SubscriptionOption option,
+            DAFRIBdBase::SubscriptionWhen when,
+            DAFRIBdBase::SubscriptionOperation operation,
+            std::string obj,
+            std::string member,
+            int subscId) = 0;
+
+    virtual void deleteSubscription(int subscId) = 0;
+    virtual void readSubscription(int subscId) = 0;
+
+    virtual void createObj(AEBase* iae, std::string objName, object_t *obj) = 0;
+    virtual void deleteObj(AEBase* iae, std::string objName) = 0;
+
+    /* create&delete IAE in RIB */
+    virtual void createIAE(AEBase* iae) = 0;
+    virtual void deleteIAE(AEBase* iae) = 0;
 
     long getNewInvokeId();
 protected:
@@ -47,6 +69,8 @@ protected:
     //SimpleModule overloads
     virtual void initialize() = 0;
     virtual void handleMessage(cMessage *msg) = 0;
+
+
 
     RIBBase* rib;
 };

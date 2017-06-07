@@ -51,7 +51,7 @@ RIBTreeNodeObj::~RIBTreeNodeObj() {
 
 std::string RIBTreeNodeObj::getNameFromPath(std::string path) {
     std::string tmp = path;
-    while (tmp.find("/") != string::npos) {
+    while (tmp.find("/") != std::string::npos) {
         tmp = tmp.substr(tmp.find("/")+1);
     }
 
@@ -66,7 +66,7 @@ RIBTreeNodeObj *RIBTreeNodeObj::search(std::string name) {
     int cmp = 0;
 
     for (;;) {
-        cmp = strcmp(name, tmp->getName());
+        cmp = strcmp(name.c_str(), tmp->getName().c_str());
 
         if (cmp == 0) {
             break;
@@ -81,7 +81,7 @@ RIBTreeNodeObj *RIBTreeNodeObj::search(std::string name) {
             if (this->rightChild == NULL)
                 break;
             else
-                tmp = this-rightChild;
+                tmp = this->rightChild;
         }
     }
 
@@ -93,11 +93,10 @@ RIBTreeNodeObj *RIBTreeNodeObj::search(std::string name) {
  */
 RIBTreeNodeObj *RIBTreeNodeObj::searchExactMatch(std::string name) {
     RIBTreeNodeObj *tmp = this;
-    int cmp = 0;
 
     tmp = this->search(name);
 
-    if (!strcmp(name, tmp->getName()))
+    if (!strcmp(name.c_str(), tmp->getName().c_str()))
         return tmp;
     else
         return NULL;
@@ -108,7 +107,7 @@ RIBTreeNodeObj *RIBTreeNodeObj::create(RIBTreeNodeObj *node) {
     int cond;
     RIBTreeNodeObj *child;
 
-    cond = strcmp(tmp->getName(), node->getName());
+    cond = strcmp(tmp->getName().c_str(), node->getName().c_str());
     if (!cond) {
         return NULL;
     }
@@ -125,7 +124,7 @@ RIBTreeNodeObj *RIBTreeNodeObj::create(RIBTreeNodeObj *node) {
         }
 
         if (child != NULL) {
-            cond = strcmp(node->getName(), child->getName());
+            cond = strcmp(node->getName().c_str(), child->getName().c_str());
 
             if (cond < 0) {
                 node->setLeftChild(child);

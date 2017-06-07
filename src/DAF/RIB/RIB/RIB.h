@@ -25,8 +25,10 @@
 
 #include "DAF/RIB/RIB/Tree/RIBTreeNode.h"
 #include "DAF/RIB/RIB/Tree/RIBTreeNodeObj.h"
+#include "DAF/CDAP/CDAPMessage_m.h"
+#include "DAF/RIB/RIB/RIBBase.h"
 
-class RIB {
+class RIB : public RIBBase {
 public:
     RIB();
     virtual ~RIB();

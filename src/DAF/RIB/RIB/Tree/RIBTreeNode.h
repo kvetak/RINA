@@ -24,9 +24,10 @@
 #ifndef DAF_RIB_RIB_TREE_RIBTREENODE_H_
 #define DAF_RIB_RIB_TREE_RIBTREENODE_H_
 
-#include "Tree/RIBTreeNodeObj.h"
 #include <omnetpp.h>
 #include <queue>
+#include "Tree/RIBTreeNodeObj.h"
+#include "DAF/AE/AEBase.h"
 
 class RIBTreeNode {
 public:
@@ -54,6 +55,7 @@ public:
     std::string getPath();
 
     std::queue<std::string> parsePath(std::string path);
+    std::string getNameFromPath(std::string path);
 
     void setLeftChild(RIBTreeNode *node);
     void setRightChild(RIBTreeNode *node);

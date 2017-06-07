@@ -38,9 +38,6 @@
 #include "DAF/AE/AEBase.h"
 
 class DAFRIBd : public DAFRIBdBase {
-    enum SubscriptionOption {READ, WRITE};
-    enum SubscriptionOperation {NOTIFY, STORE};
-    enum SubscriptionWhen {ON_REQUEST, ON_CHANGE};
 public:
   virtual void receiveData(CDAPMessage* cimsg);
 
@@ -48,9 +45,9 @@ public:
 
 
   /* subscription API */
-  void createSubscription(DAFRIBd::SubscriptionOption option,
-          DAFRIBd::SubscriptionWhen when,
-          DAFRIBd::SubscriptionOperation operation,
+  void createSubscription(DAFRIBdBase::SubscriptionOption option,
+          DAFRIBdBase::SubscriptionWhen when,
+          DAFRIBdBase::SubscriptionOperation operation,
           std::string obj,
           std::string member,
           int subscId);
@@ -62,6 +59,9 @@ public:
   void createIAE(AEBase* iae);
   void deleteIAE(AEBase* iae);
 
+  void createObj(AEBase* iae, std::string objName, object_t *obj);
+  void deleteObj(AEBase* iae, std::string objName);
+
 protected:
   EnrollmentNotifierBase* EnrollNotif;
 
@@ -72,9 +72,6 @@ protected:
 
   void initSignalsAndListeners();
   void initPointers();
-
-  void createObj(AEBase* iae, std::string objName, object_t *obj);
-  void deleteObj(AEBase* iae, std::string objName);
 
   void sendMsg(int CDAPConn, CDAPMessage* msg);
   void recvMsg(int CDAPConn, CDAPMessage* msg);
@@ -89,8 +86,8 @@ protected:
   //LisDAFRIBDRcvData*             lisDAFRIBDRcvData;
   LisDAFAERIBD* lisDAFAERIBD;
 
-  LisDAFIAECreate* lisDAFIAECreate;
-  LisDAFIAEDelete* lisDAFIAEDelete;
+  //LisDAFIAECreate* lisDAFIAECreate;
+  //LisDAFIAEDelete* lisDAFIAEDelete;
 
 };
 

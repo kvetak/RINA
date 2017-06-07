@@ -39,7 +39,7 @@ public:
     virtual bool deleteIAE(std::string IAEName) = 0;
 
     virtual object_t* createObj(int CDAPConn, object_t *obj) = 0;
-    virtual object_t* deleteObj(int CDAPConn, object_t *obj) = 0;
+    virtual object_t* deleteObj(int CDAPConn, std::string objName) = 0;
     virtual object_t* writeObj(int CDAPConn, object_t *obj) = 0;
     virtual object_t* readObj(int CDAPConn, std::string objName) = 0;
 
