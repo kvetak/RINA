@@ -12,6 +12,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
+/**
+ * @file RcvrFCPolicyDefaultWithCounters.cc
+ * @author Kleber Leal (kal2@cin.ufpe.br)
+ * @date Jun 19, 2017
+ * @brief This policy registers the goodput and number os packets received
+ * @detail
+ */
 
 #include <RcvrFCPolicyDefaultWithCounters/RcvrFCPolicyDefaultWithCounters.h>
 Register_Class(RcvrFCPolicyDefaultWithCounters);
