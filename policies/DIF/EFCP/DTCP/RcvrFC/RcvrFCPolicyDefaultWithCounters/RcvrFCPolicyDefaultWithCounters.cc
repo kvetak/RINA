@@ -33,7 +33,7 @@ RcvrFCPolicyDefaultWithCounters::~RcvrFCPolicyDefaultWithCounters() {
 }
 
 void RcvrFCPolicyDefaultWithCounters::initialize() {
-    sigStatPktRcvd = registerSignal("packets-received");
+    sigStatPktRcvd = registerSignal("packets_received");
     sigStatGoodput = registerSignal("goodput");
     pktRcvd = 0;
     lastPktRcvd = 0;

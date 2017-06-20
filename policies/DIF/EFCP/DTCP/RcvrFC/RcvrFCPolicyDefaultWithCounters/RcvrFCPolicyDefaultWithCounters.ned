@@ -27,8 +27,8 @@ simple RcvrFCPolicyDefaultWithCounters like IntRcvrFCPolicy
         string policyName = "RcvrFC Default with counters";
         @display("i=block/socket");
         
-        @signal[packets-received](type=unsigned long);
-        @statistic[packets-received](title="Number os packets received"; source=packets-received; record=last);
+        @signal[packets_received](type=unsigned long);
+        @statistic[packets-received](title="Number os packets received"; source=packets_received; record=last);
         
         @signal[goodput](type=unsigned long);
         @statistic[goodput](title="Goodput"; source=goodput; record=vector);
