@@ -811,6 +811,7 @@ void RIBd::processMStart(CDAPMessage* msg) {
         congdesc->getConnectionId().swapCepIds();
         EV << "\n===========\n" << congdesc->getConnectionId().info();
         signalizeCongestionNotification(congdesc);
+        delete msg;
     }
     /*
     //Enrollment
