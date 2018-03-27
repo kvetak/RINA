@@ -51,7 +51,7 @@ all:
 # TODO: atrocious, rewrite
 #	$(Q)test -f src/Makefile -a -f policies/Makefile || make makefiles
 	$(qecho) Creating library librinasimcore ...
-	$(Q)if [ -d $(PROJECT_OUTPUT_DIR) ]; then \
+#	$(Q)if [ -d $(PROJECT_OUTPUT_DIR) ]; then \
 		find $(PROJECT_OUTPUT_DIR) -type f -name "librinasim.*" -exec rm -rf {} \;; fi
 	$(Q)cd src && $(MAKE) all
 	$(qecho) Creating library librinasim ...
@@ -87,7 +87,7 @@ msgheaders:
 clean: cleansrc cleanpolicies
 	$(qecho) Cleaning project ...
 	$(Q)rm -rf $(O)
-	$(Q)rm -f librinasim.so librinasim.dll librinasimcore.a librinasimcore.lib
+	$(Q)rm -f ./policies/librinasim.so ./policies/librinasim.dll ./src/librinasimcore.a ./src/librinasimcore.lib
 
 cleanall: clean
 	$(Q)rm -rf $(PROJECT_OUTPUT_DIR)
