@@ -41,7 +41,7 @@ typedef vPortsIndex vGroups;
 typedef map<addr_t, index_t> addrIndex;
 
 
-enum exception_m { UNREACHABLE, COMMON, ANY, GROUP, INVERSE, INVERSEGROUP };
+enum exception_m { UNREACHABLE = 1, COMMON = 2, ANY = 3, GROUPA = 4, INVERSE = 5, INVERSEGROUP = 6};
 
 struct mask_t {
     addr_t v;

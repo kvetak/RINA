@@ -8,11 +8,11 @@ namespace NSPSimpleDC {
 
     DCAddr::DCAddr(): type(-1), a(0), b(0){}
 
-    DCAddr::DCAddr(const int & _type, const int & _a, const int & _b):
+    DCAddr::DCAddr(const int &_type, const int &_a, const int &_b):
             type(_type), a(_a), b(_b){}
 
-    DCAddr::DCAddr(const string & s_addr) {
-        vector<string> s_vec = split(s_addr, '.');
+    DCAddr::DCAddr(const string &saddr) {
+        vector<string> s_vec = split(saddr, '.');
         if(s_vec.size() != 3) {
             type = -1;
         } else {
