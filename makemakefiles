@@ -1,0 +1,12 @@
+#
+# Usage:
+#    make -f makemakefiles
+# or, for Microsoft Visual C++:
+#    nmake -f makemakefiles MMOPT=-n
+#
+
+MAKEMAKE=opp_makemake $(MMOPT)
+
+all:
+	cd src && $(MAKEMAKE) --make-lib -f --deep -o rinasimcore -O out -I../policies -L../out/$$\(CONFIGNAME\)/policies
+	cd policies && $(MAKEMAKE) --make-so -f --deep -o rinasim -O out -L../out/$$\(CONFIGNAME\)/src -lrinasimcore$$\(D\)
