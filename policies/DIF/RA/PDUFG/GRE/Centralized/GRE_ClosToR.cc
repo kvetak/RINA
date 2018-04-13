@@ -85,7 +85,7 @@ void GRE_ClosToR::killLink(const string & link) {
     addr_t index = (a_i < f) ? a_i : f;
 
     //Do nothing if port is not set or already down
-    if (neiPorts[a] <= nullptr || !aliveNeis[index]) {
+    if (neiPorts[a] == nullptr || !aliveNeis[index]) {
         return;
     }
 
@@ -105,7 +105,7 @@ void GRE_ClosToR::resurrectLink(const string & link) {
     addr_t index = (a_i < f) ? a_i : f;
 
     //Do nothing if port is not set or already down
-    if (neiPorts[a] <= nullptr || !aliveNeis[index]) {
+    if (neiPorts[a] == nullptr || !aliveNeis[index]) {
         return;
     }
 

@@ -178,7 +178,7 @@ string GREFWD::toString() {
                 case ANY : { // Any neighbour possible
                     os << "\t     - ANY ";
                 } break;
-                case GROUP : { // Only Group neighbour possible
+                case GROUPA : { // Only Group neighbour possible
                     os << "\t     - GROUP "<<(int)me.second.group<<endl;
                 } break;
                 case INVERSE : { // Any neighbour - Exceptions possible
@@ -246,7 +246,7 @@ void GREFWD::finish() {
                     case ANY : { // Any neighbour possible
                         cout << "     - ANY ";
                     } break;
-                    case GROUP : { // Only Group neighbour possible
+                    case GROUPA : { // Only Group neighbour possible
                         cout << "     - GROUP "<<(int)me.second.group<<endl;
                     } break;
                     case INVERSE : { // Any neighbour - Exceptions possible
@@ -300,7 +300,7 @@ port_t GREFWD::getNext(const addr_t & a, const rand_t & r) {
                     R = (R+1)%T;
                 }
             } break;
-            case GROUP : { // Only Group neighbour possible
+            case GROUPA : { // Only Group neighbour possible
                 vPortsIndex & G = groups[ep->group];
                 int T = G.size();
                 if(T <= 0) { return nullptr; }

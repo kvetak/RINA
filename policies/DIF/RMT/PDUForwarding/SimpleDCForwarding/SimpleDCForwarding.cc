@@ -32,8 +32,8 @@ namespace NSPSimpleDC {
 
         //Search cache
 
-        string s_addr = pdu->getDstAddr().getIpcAddress().getName();
-        DCAddr n_addr = DCAddr(s_addr);
+        string saddr = pdu->getDstAddr().getIpcAddress().getName();
+        DCAddr n_addr = DCAddr(saddr);
 
         PDU * p = const_cast<PDU*>(pdu);
         p->setHopCount(p->getHopCount()+1);
@@ -55,8 +55,8 @@ namespace NSPSimpleDC {
     }
 
     vector<Port> iSimpleDCForwarding::lookup(const Address & dst, const std::string & qos) {
-        string s_addr = dst.getIpcAddress().getName();
-        DCAddr n_addr = DCAddr(s_addr);
+        string saddr = dst.getIpcAddress().getName();
+        DCAddr n_addr = DCAddr(saddr);
 
         if(n_addr.type < 0) {  return vector<Port>(); }
 
