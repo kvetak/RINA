@@ -20,7 +20,7 @@
  * @detail
  */
 
-#include <RcvrFCPolicyDefaultWithCounters/RcvrFCPolicyDefaultWithCounters.h>
+#include "DIF/EFCP/DTCP/RcvrFC/RcvrFCPolicyDefaultWithCounters/RcvrFCPolicyDefaultWithCounters.h"
 Register_Class(RcvrFCPolicyDefaultWithCounters);
 
 RcvrFCPolicyDefaultWithCounters::RcvrFCPolicyDefaultWithCounters() {
