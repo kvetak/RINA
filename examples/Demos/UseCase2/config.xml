@@ -13,7 +13,7 @@
 		</DA>
 	</Host>	
 	<QoSCubesSet>
-		<QoSCube id="QoSCube_WithoutDTCP">
+		<QoSCube id="QoSCube_Unreliable">
 			<AverageBandwidth>10000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
@@ -31,8 +31,12 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
+			<ATime>0</ATime>
+			<RxOn>0</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>	
 		</QoSCube>
-		<QoSCube id="QoSCube_WithDTCP">
+		<QoSCube id="QoSCube_Reliable">
 			<AverageBandwidth>10000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>20000000</PeakBandwidthDuration>
@@ -49,7 +53,11 @@
 			<Delay>1000000</Delay>
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
-			<CostBits>0</CostBits>					
+			<CostBits>0</CostBits>
+			<ATime>0</ATime>
+			<RxOn>1</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>						
 		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>
