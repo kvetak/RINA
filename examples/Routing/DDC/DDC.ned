@@ -20,7 +20,7 @@ import rina.src.CS.InteriorRouterNInt;
 
 network DDC
 {
-    @display("bgb=1109,510");
+    @display("bgb=1139.4337,563.45624");
     submodules:
 
         T_0_0: InteriorRouterNInt {
@@ -140,7 +140,7 @@ network DDC
         S_2_2: InteriorRouterNInt {
             @display("p=954,172");
         }
-       
+
     connections:
         T_0_0.medium++ <--> A_0_0.medium++;
         T_0_1.medium++ <--> A_0_0.medium++;
