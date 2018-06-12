@@ -37,7 +37,7 @@
 	</Host>
 	
 	<QoSCubesSet>
-		<QoSCube id="1">
+		<QoSCube id="QoSCube-Unreliable">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
@@ -55,9 +55,12 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
+			<ATime>0</ATime>
+			<RxOn>0</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>							
 		</QoSCube>
-		<QoSCube id="2">
+		<QoSCube id="QoSCube-Reliable">
 			<AverageBandwidth>12000000</AverageBandwidth>
 			<AverageSDUBandwidth>1000</AverageSDUBandwidth>
 			<PeakBandwidthDuration>24000000</PeakBandwidthDuration>
@@ -75,7 +78,10 @@
 			<Jitter>500000</Jitter>
 			<CostTime>0</CostTime>
 			<CostBits>0</CostBits>
-			<ATime>0</ATime>						
+			<ATime>0</ATime>
+			<RxOn>1</RxOn>
+			<WinOn>1</WinOn>
+			<RateOn>0</RateOn>							
 		</QoSCube>		
 	</QoSCubesSet>
 </Configuration>
