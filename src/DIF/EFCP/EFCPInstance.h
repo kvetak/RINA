@@ -51,4 +51,6 @@ class EFCPInstance
     void setDtp(DTP* dtp);
 };
 
+std::ostream& operator<< (std::ostream& os, const EFCPInstance* instance);
+
 #endif /* EFCPINSTANCE_H_ */

@@ -43,7 +43,7 @@ EFCPTableEntry::~EFCPTableEntry()
 
 std::string EFCPTableEntry::info() const {
     std::ostringstream os;
-    os << "TODO";
+    os << this->flow->info() << "\n" << "EFCPTanleEntry TODO";
     return os.str();
 }
 
@@ -85,4 +85,8 @@ bool EFCPTableEntry::flushDTPs()
   }
   //TODO B2 return value based EFCPI deallocation status
   return true;
+}
+
+std::ostream& operator<< (std::ostream& os, const EFCPTableEntry* entry){
+    return os << entry->info();
 }

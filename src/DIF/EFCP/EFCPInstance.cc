@@ -65,3 +65,7 @@ EFCPInstance::~EFCPInstance()
 
 }
 
+std::ostream& operator<< (std::ostream& os, const EFCPInstance* instance){
+    return os << "EFCPInstance TODO"; //intance.info();
+}
+

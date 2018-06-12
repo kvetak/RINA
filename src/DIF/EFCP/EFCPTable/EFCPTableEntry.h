@@ -64,4 +64,6 @@ class EFCPTableEntry
     bool flushDTPs();
 };
 
+std::ostream& operator<< (std::ostream& os, const EFCPTableEntry* entry);
+
 #endif /* EFCPTABLEENTRY_H_ */
