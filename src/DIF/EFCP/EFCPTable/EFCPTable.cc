@@ -50,7 +50,7 @@ void EFCPTable::handleMessage(cMessage* msg){
 
 void EFCPTable::initialize(){
 
-//  WATCH_LIST(efcpTable);
+  WATCH_VECTOR(efcpTable);
 }
 
 std::string EFCPTable::info() const {
