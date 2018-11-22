@@ -57,6 +57,9 @@ void AE::initPointers() {
     Irm = getRINAModule<IRM*>(this, 4, {MOD_IPCRESMANAGER, MOD_IRM});
     Cdap = getRINAModule<cModule*>(this, 1, {MOD_CDAP});
     Cace = new CACEGeneric(this);
+    raft = check_and_cast<RAFT*>(this->getModuleByPath("^.^.^.ribDaemon.raft.raft"));
+    rib = check_and_cast<RIBBase*>(this->getModuleByPath("^.^.^.rib.rib"));
+
 
     if (!Cdap)
         error("Pointers to Cdap !");
@@ -279,9 +282,13 @@ void AE::apiSwitcher(APIReqObj *obj) {
         Enter_Method("onA_write()");
         onA_write(obj);
     }
-    if (obj->getAPIReqType() == APIReqObj::A_CLOSE) {
+    else if (obj->getAPIReqType() == APIReqObj::A_CLOSE) {
         Enter_Method("onA_close()");
         sendDeallocationRequest(FlowObject);
+    }
+    else if (obj->getAPIReqType() == APIReqObj::A_CREATE) {
+        Enter_Method("onA_create()");
+        onA_create(obj);
     }
 }
 
@@ -317,6 +324,14 @@ void AE::receiveData(CDAPMessage* msg) {
     //M_WRITE_Response
     else if (dynamic_cast<CDAP_M_Write_R*>(msg)) {
         processMWriteR(msg);
+    }
+    //M_CREATE_Request
+    else if (dynamic_cast<CDAP_M_Create*>(msg)) {
+        processMCreate(msg);
+    }
+    //M_CREATE_Response
+    else if (dynamic_cast<CDAP_M_Create_R*>(msg)) {
+        processMCreateR(msg);
     }
 
     delete msg;
@@ -521,6 +536,12 @@ void AE::processMWrite(CDAPMessage* msg) {
 void AE::processMWriteR(CDAPMessage* msg) {
 }
 
+void AE::processMCreate(CDAPMessage* msg) {
+}
+
+void AE::processMCreateR(CDAPMessage* msg) {
+}
+
 
 void AE::connect(){
     APNIPair* apnip = new APNIPair(
@@ -538,6 +559,10 @@ bool AE::onA_read(APIReqObj* obj) {
 }
 
 bool AE::onA_write(APIReqObj* obj) {
+    return false;
+}
+
+bool AE::onA_create(APIReqObj* obj) {
     return false;
 }
 

@@ -20,34 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULT_H_
-#define APIRESULT_H_
+#ifndef DAF_RIB_RIB_SIMPLERIB_SIMPLERIBOBJ_H_
+#define DAF_RIB_RIB_SIMPLERIB_SIMPLERIBOBJ_H_
 
-#include "DAF/AP/APIObjBase.h"
+#include <omnetpp.h>
+#include "DAF/CDAP/CDAPMessage_m.h"
 
-class APIResult : public APIObjBase {
+using namespace omnetpp;
+
+class SimpleRIBObj {
 public:
-    APIResult();
-    virtual ~APIResult();
+    SimpleRIBObj(object_t *appObject, std::string path, int CDAPConnId);
+    virtual ~SimpleRIBObj();
+    std::string info() const;
 
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, D_DELETE, A_GET_CREATE};
+    object_t *appObject;
 
-    void setAPIResType(APIResult::APIResType type);
-    APIResult::APIResType getAPIResType();
+    std::string name;
+    std::string path;
 
-    void setObj(object_t *obj);
-    object_t *getObj();
-
-    void setResult(result_t *res);
-    result_t *getResult();
-
-    void setObjName(std::string objName);
-    std::string getObjName();
-private:
-    APIResType type;
-    std::string objName;
-    object_t *obj;
-    result_t *res;
+    int cdapConnId;
 };
 
-#endif /* APIRESULT_H_ */
+//Free function
+std::ostream& operator<< (std::ostream& os, const SimpleRIBObj& obj);
+
+#endif /* DAF_RIB_RIB_SIMPLERIB_SIMPLERIBOBJ_H_ */

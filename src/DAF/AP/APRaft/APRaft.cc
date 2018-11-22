@@ -1,40 +1,35 @@
-// The MIT License (MIT)
 //
-// Copyright (c) 2014-2016 Brno University of Technology, PRISTINE project
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
 
-#include "APPing.h"
+#include "APRaft.h"
 
-Define_Module(APPing);
+Define_Module(APRaft);
 
-APPing::APPing() {
+
+
+APRaft::APRaft() {
 }
 
-APPing::~APPing() {
+APRaft::~APRaft() {
 }
 
-void APPing::initialize() {
+void APRaft::initialize() {
     AP::initialize();
-    currentID = 0;
     long t1 = par("startAt").longValue();
     long t2 = par("stopAt").longValue();
+    this->currentID = 0;
 
     if (strcmp(par("dstApName").stringValue(),"AppERROR") &&
             t2 > t1 && t1 > 0 && t2 > 0
@@ -64,7 +59,7 @@ void APPing::initialize() {
     }
 }
 
-void APPing::handleMessage(cMessage *msg) {
+void APRaft::handleMessage(cMessage *msg) {
     int connID;
 
     if(msg->isSelfMessage()) {
@@ -107,15 +102,26 @@ void APPing::handleMessage(cMessage *msg) {
 
 
         }
-        else if (!strcmp(msg->getName(), "ping")) {
+        else if (!strcmp(msg->getName(), "create")) {
             if ((simTime().dbl()+1) < par("stopAt").doubleValue() ) {
-                connID = conIDsPing.front();
-                conIDsPing.pop();
-
-                a_read(connID, "ping");
-                m2 = new cMessage("ping");
-                scheduleAt(simTime() + par("interval"), m2);
-                conIDsPing.push(connID);
+                object_t *obj = new object_t();
+                obj->objectClass = "int";
+                obj->objectInstance = 0;
+                obj->objectName = "raft";
+                cObject* x = (cObject*)(new int(10));
+                obj->objectVal = x;
+                a_create(conID[0], "int", "raft", obj);
+            }
+        }
+        else if (!strcmp(msg->getName(), "write")) {
+            if ((simTime().dbl()+1) < par("stopAt").doubleValue() ) {
+                object_t *obj = new object_t();
+                obj->objectClass = "int";
+                obj->objectInstance = 1;
+                obj->objectName = "raft";
+                cObject* x = (cObject*)(new int(5));
+                obj->objectVal = x;
+                a_write(conID[0], "raft", obj);
             }
         }
         else
@@ -125,21 +131,21 @@ void APPing::handleMessage(cMessage *msg) {
 }
 
 
-void APPing::onA_getOpen(APIResult* result) {
+void APRaft::onA_getOpen(APIResult* result) {
     int connID;
 
-    //if (result->getInvokeId() == invokeId) {
-        connID = result->getCDAPConId();
-        a_read(connID, "ping");
+    this->conID[currentID] = result->getCDAPConId();
+    this->currentID++;
 
-        m2 = new cMessage("ping");
-        scheduleAt(simTime() + par("interval"), m2);
-        conID[currentID] = connID;
-        currentID++;
-        conIDsPing.push(connID);
-    //}
+    m3 = new cMessage("create");
+    scheduleAt(simTime() + 10, m3);
 }
 
-void APPing::onA_getRead(APIResult* result) {
-    value = (int*)(result->getObj()->objectVal);
+void APRaft::onA_getRead(APIResult* result) {
+
+}
+
+void APRaft::onA_getCreate(APIResult* result) {
+    cMessage *msg = new cMessage("write");
+    scheduleAt(simTime()+1, msg);
 }

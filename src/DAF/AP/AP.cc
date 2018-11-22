@@ -240,6 +240,10 @@ APIRetObj* AP::a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::
     return NULL;
 }
 
+APIRetObj* AP::a_getcreate_r(int CDAPconn, int invokeID) {
+    return NULL;
+}
+
 bool AP::createIAE(std::string APName, std::string APInst, std::string AEName, std::string AEInst, Flow* flow, int invokeID) {
     std::string str = "^."+AEName;
     cModule *submodule, *module = this->getModuleByPath(str.c_str());
@@ -381,6 +385,10 @@ void AP::resultAssign(APIResult* result) {
     }
     else if (result->getAPIResType() == APIResult::D_DELETE) {
         deleteIAE(result);
+    }
+    else if (result->getAPIResType() == APIResult::A_GET_CREATE) {
+        Enter_Method("onA_getCreate()");
+        onA_getCreate(result);
     }
 }
 

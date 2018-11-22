@@ -52,3 +52,11 @@ void APIResult::setObjName(std::string objName) {
 std::string APIResult::getObjName() {
     return this->objName;
 }
+
+void APIResult::setResult(result_t *res) {
+    this->res = res;
+}
+
+result_t *APIResult::getResult() {
+    return this->res;
+}

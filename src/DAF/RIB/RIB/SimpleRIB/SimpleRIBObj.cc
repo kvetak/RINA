@@ -20,34 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULT_H_
-#define APIRESULT_H_
+#include <SimpleRIB/SimpleRIBObj.h>
 
-#include "DAF/AP/APIObjBase.h"
+SimpleRIBObj::SimpleRIBObj(object_t *appObject, std::string path, int CDAPConnId) {
+    this->appObject = appObject;
+    this->path = path;
+    this->name = path;
+    this->cdapConnId = CDAPConnId;
+}
 
-class APIResult : public APIObjBase {
-public:
-    APIResult();
-    virtual ~APIResult();
+std::string SimpleRIBObj::info() const {
+    std::ostringstream os;
+    os << "ObjectName: " << appObject->objectName << "\n";
+    os << "ObjectClass: " << appObject->objectClass << "\n";
+    os << "ObjectInstance: " << appObject->objectInstance << "\n";
+    std::string str(appObject->objectClass.c_str());
 
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, D_DELETE, A_GET_CREATE};
+    if (!str.compare("int")) {
+        int *x = (int*)(appObject->objectVal);
+        os << "ObjectValue: " << *x << "\n";
+    }
+    return os.str();
+}
 
-    void setAPIResType(APIResult::APIResType type);
-    APIResult::APIResType getAPIResType();
 
-    void setObj(object_t *obj);
-    object_t *getObj();
+std::ostream& operator <<(std::ostream& os, const SimpleRIBObj& obj) {
+    return os << obj.info();
+}
 
-    void setResult(result_t *res);
-    result_t *getResult();
+SimpleRIBObj::~SimpleRIBObj() {
+    // TODO Auto-generated destructor stub
+}
 
-    void setObjName(std::string objName);
-    std::string getObjName();
-private:
-    APIResType type;
-    std::string objName;
-    object_t *obj;
-    result_t *res;
-};
-
-#endif /* APIRESULT_H_ */

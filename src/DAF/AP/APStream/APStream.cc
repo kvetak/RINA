@@ -54,7 +54,6 @@ void APStream::handleMessage(cMessage *msg) {
                 m2 = new cMessage("stream");
                 scheduleAt(simTime() + par("interval"), m2);
             }
-
         }
         else
             EV << this->getFullPath() << " received unknown self-message " << msg->getName();

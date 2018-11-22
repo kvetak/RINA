@@ -26,9 +26,9 @@
 #include <omnetpp.h>
 #include "DAF/AE/AEBase.h"
 #include "DAF/CDAP/CDAPMessage_m.h"
+using namespace omnetpp;
 
-
-class RIBBase {
+class RIBBase : public cSimpleModule  {
 public:
     RIBBase();
     virtual ~RIBBase();

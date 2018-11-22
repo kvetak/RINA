@@ -20,34 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#ifndef APIRESULT_H_
-#define APIRESULT_H_
+package rina.examples.Basics.SmallNetworkRaft;
+import rina.src.CS.Host1AP;
+import rina.src.CS.InteriorRouter3Int;
 
-#include "DAF/AP/APIObjBase.h"
 
-class APIResult : public APIObjBase {
-public:
-    APIResult();
-    virtual ~APIResult();
+network SmallNetworkRaft
+{
+    @display("bgb=586,372");
+    submodules:
+        host1: Host1AP {
+            @display("p=92,83");
+        }
+        host2: Host1AP {
+            @display("p=92,252");
+        }
+        host3: Host1AP {
+            @display("p=275,83");
+        }
+        host4: Host1AP {
+            @display("p=473,83");
+        }
+        host5: Host1AP {
+            @display("p=473,252");
+        }
+        router1: InteriorRouter3Int {
+            @display("p=166,165");
+        }
+        router2: InteriorRouter3Int {
+            @display("p=275,165");
+        }
+        router3: InteriorRouter3Int {
+            @display("p=388,165");
+        }
 
-    enum APIResType {A_GET_OPEN, A_GET_READ, A_GET_WRITE, D_DELETE, A_GET_CREATE};
+    connections:
+        router1.medium[0] <--> host1.medium;
+        router1.medium[1] <--> host2.medium;
+        router1.medium[2] <--> router2.medium[0];
+        router2.medium[1] <--> router3.medium[0];
+        router2.medium[2] <--> host3.medium;
+        router3.medium[1] <--> host4.medium;
+        router3.medium[2] <--> host5.medium;
 
-    void setAPIResType(APIResult::APIResType type);
-    APIResult::APIResType getAPIResType();
-
-    void setObj(object_t *obj);
-    object_t *getObj();
-
-    void setResult(result_t *res);
-    result_t *getResult();
-
-    void setObjName(std::string objName);
-    std::string getObjName();
-private:
-    APIResType type;
-    std::string objName;
-    object_t *obj;
-    result_t *res;
-};
-
-#endif /* APIRESULT_H_ */
+}

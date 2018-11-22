@@ -38,7 +38,7 @@ import rina.src.DAF.RIB.RIB.ResourceInformationBase;
 module ApplicationProcess
 {
     parameters:
-        @display("bgb=400,220;i=misc/node,yellow,30");
+        @display("bgb=500,270;i=misc/node,yellow,30");
         string apName = default("App");
         string apInstance = default("0");
         string apType = default("AP");
@@ -50,20 +50,21 @@ module ApplicationProcess
         }
 
         ribDaemon: DAFRIBDaemon {
-            @display("p=120,60;i=block/segm");
+            @display("p=275,60;i=block/segm");
         }
 
         enrollment: DAFEnrollmentModule {
-            @display("p=325,60");
+            @display("p=400,60");
         }
 
         aeManagement: ApplicationEntity {
-            @display("p=200,150;i=block/cogwheel");
+            @display("p=350,180;i=block/cogwheel");
         }
         
         rib: ResourceInformationBase {
-            @display("p=200,60");
+            @display("p=150,60");
         }
+        
         
     connections allowunconnected:
 }

@@ -22,8 +22,8 @@
 
 #include "DAF/CDAP/CDAPMsgLogEntry.h"
 
-CDAPMsgLogEntry::CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag) :
-        opCode(opc), invokeId(invoke), processedAt(simTime()), sndFlag(srflag)
+CDAPMsgLogEntry::CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag, std::string name) :
+        opCode(opc), invokeId(invoke), processedAt(simTime()), sndFlag(srflag), name(name)
 {
 }
 
@@ -39,7 +39,8 @@ std::string CDAPMsgLogEntry::info() const {
     os << (sndFlag ? "Sent " : "Received " )
        << getOpCodeString() << "(" << (int)opCode
        << ")\ninvokeId: " << invokeId << endl
-       << "processed at: " << this->processedAt;
+       << "processed at: " << this->processedAt << endl
+       << "msgname: " << name;
     return os.str();
 }
 

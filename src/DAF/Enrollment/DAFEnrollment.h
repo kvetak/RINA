@@ -98,6 +98,7 @@ class DAFEnrollment : public DAFEnrollmentBase
     void createBindings(Flow *flow, DAFEnrollmentNotifier* module);
 
     void checkEnrolled(APNIPair* apnip);
+    void createFlow(APNIPair* apnip);
 
 
     IRM* Irm;
@@ -117,7 +118,6 @@ class DAFEnrollment : public DAFEnrollmentBase
     void processNewConReq(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentImmediate(DAFEnrollmentStateTableEntry* entry);
     void processStopEnrollmentResponse(DAFEnrollmentStateTableEntry* entry);
-    void createFlow(APNIPair* apnip);
     DAFEnrollmentNotifier* createMgmtAE(Flow* flow);
 
     //Vesely -> Jerabek: WTF?

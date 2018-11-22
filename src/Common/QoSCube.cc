@@ -234,11 +234,11 @@ QoSCube::~QoSCube() {
 }
 
 const QoSCube QoSCube::MANAGEMENT(VAL_MGMTQOSID,
-                                  12000, 10,
-                                  24000, 20,
-                                  10000, 10000,
+                                  120, 10,
+                                  240, 20,
+                                  100, 100,
                                   0.0, 0.0,
-                                  1500,
+                                  150,
                                   false, false, true,
                                   0, 0, 0,
                                   0, 0,

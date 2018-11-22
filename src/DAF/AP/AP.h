@@ -79,6 +79,7 @@ protected:
     virtual APIRetObj* a_get_read_r(int CDAPConn, int invokeID);
     virtual bool a_cancelread_r(int CDAPConn, int invokeID = 0);
     virtual APIRetObj* a_getwrite_r(int CDAPconn, int invokeID, APIResult* result, std::string objName, object_t *obj = NULL);
+    virtual APIRetObj* a_getcreate_r(int CDAPconn, int invokeID);
 
     void insertAEReq(Flow req);
 private:

@@ -24,6 +24,7 @@ package rina.src.DAF.RIB;
 
 import rina.src.DAF.CDAP.CommonDistributedApplicationProtocol;
 import rina.src.DIF.Enrollment.EnrollmentNotifier;
+import rina.src.DAF.RIB.RAFT.Raft;
 
 module DAFRIBDaemon
 {
@@ -40,9 +41,14 @@ module DAFRIBDaemon
                 @display("p=125,100");
         }
 
-//        enrollmentNotifier: EnrollmentNotifier {
-//            @display("p=60,30");
-//        }
+        raft: Raft {
+            parameters:
+                @display("p=125,200;i=block/cogwheel");
+        }
+
+    //        enrollmentNotifier: EnrollmentNotifier {
+    //            @display("p=60,30");
+    //        }
     connections allowunconnected:
 }
 

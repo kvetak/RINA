@@ -43,7 +43,9 @@
 #include "Common/RINASignals.h"
 #include "Common/PDU.h"
 #include "DIF/Routing/IntRoutingUpdate.h"
+#include "DAF/RIB/RAFT/RAFT.h"
 
+class RAFT;
 //Constants
 //extern const char* DAF_MSG_ENROLLMENT;
 
@@ -73,6 +75,9 @@ class AEMgmt : public AEMgmtBase {
 
     //Listeners
     LisAEMgmtRcvData*             lisAEMgmtRcvData;
+
+    RAFT *raft;
+
 };
 
 #endif /* AEMGMT_H_ */

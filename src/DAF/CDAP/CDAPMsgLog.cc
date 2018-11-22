@@ -35,7 +35,7 @@ CDAPMsgLog::~CDAPMsgLog() {
 }
 
 void CDAPMsgLog::insert(CDAPMessage* cdapmsg, bool srflag) {
-    MsgLog.push_back(CDAPMsgLogEntry(cdapmsg->getOpCode(), cdapmsg->getInvokeID(), srflag));
+    MsgLog.push_back(CDAPMsgLogEntry(cdapmsg->getOpCode(), cdapmsg->getInvokeID(), srflag, cdapmsg->getName()));
 }
 
 void CDAPMsgLog::initialize() {

@@ -39,10 +39,11 @@ void AEMgmt::initialize() {
     //Init signals and listeners
     initSignalsAndListeners();
 
+    initNamingInfo();
     //Init pointers
     initPointers();
 
-    initNamingInfo();
+    raft->checkAndAddIAE(this);
 }
 
 void AEMgmt::handleMessage(cMessage *msg) {
@@ -61,6 +62,8 @@ void AEMgmt::initPointers() {
         useEnrollmentNotifier = true;
         this->par(DAF_PAR_USEENROLLNOTIF) = true;
     }
+
+    raft = check_and_cast<RAFT*>(getModuleByPath("^.^.^.ribDaemon.raft.raft"));
 }
 
 void AEMgmt::receiveData(CDAPMessage* msg) {
@@ -70,6 +73,9 @@ void AEMgmt::receiveData(CDAPMessage* msg) {
     //EnrollmentNotifier processing
     if (useEnrollmentNotifier && DAFEnrollNotif->isMessageProcessable(msg)) {
         DAFEnrollNotif->receiveMessage(msg);
+    }
+    else {
+        raft->receiveData(msg);
     }
 
     //delete msg;
@@ -94,7 +100,7 @@ void AEMgmt::signalizeSendData(CDAPMessage* msg) {
         return;
     }
 
-    msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
+    //msg->setBitLength(msg->getBitLength() + msg->getHeaderBitLength());
     //Pass message to CDAP
     EV << "Emits SendData signal for message " << msg->getName() << endl;
     emit(sigRIBDSendData, msg);

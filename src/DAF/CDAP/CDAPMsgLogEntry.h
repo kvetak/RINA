@@ -34,7 +34,7 @@ class CDAPMsgLogEntry {
 
 
     //(De)Constructor
-    CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag);
+    CDAPMsgLogEntry(unsigned char opc, long invoke, bool srflag, std::string name);
     virtual ~CDAPMsgLogEntry();
 
     std::string info() const;
@@ -56,6 +56,7 @@ class CDAPMsgLogEntry {
     long invokeId;
     simtime_t processedAt;
     bool sndFlag;
+    std::string name;
 
 };
 

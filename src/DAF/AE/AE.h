@@ -38,6 +38,8 @@
 #include "DAF/AP/APIReqObj.h"
 #include "DAF/AP/APIResult.h"
 #include "DAF/Enrollment/CACEGeneric.h"
+#include "DAF/RIB/RAFT/RAFT.h"
+#include "DAF/RIB/RIB/RIBBase.h"
 
 class CACEGeneric;
 
@@ -68,11 +70,14 @@ class AE : public AEBase
 
     virtual bool onA_read(APIReqObj* obj);
     virtual bool onA_write(APIReqObj* obj);
+    virtual bool onA_create(APIReqObj* obj);
 
   protected:
     IRM* Irm;
     cModule* Cdap;
     CACEGeneric* Cace;
+    RAFT* raft;
+    RIBBase *rib;
 
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -130,6 +135,8 @@ class AE : public AEBase
     virtual void processMReadR(CDAPMessage* msg);
     virtual void processMWrite(CDAPMessage* msg);
     virtual void processMWriteR(CDAPMessage* msg);
+    virtual void processMCreate(CDAPMessage* msg);
+    virtual void processMCreateR(CDAPMessage* msg);
 
 };
 

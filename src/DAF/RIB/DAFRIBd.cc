@@ -119,7 +119,9 @@ void DAFRIBd::createSubscription(DAFRIBd::SubscriptionOption option,
         std::string obj,
         std::string member,
         int subscId) {
-    //TODO:
+    if (DAFRIBd::SubscriptionOption::READ == option) {
+
+    }
 }
 
 void DAFRIBd::deleteSubscription(int subscId) {

@@ -883,10 +883,12 @@ void DAFEnrollment::createFlow(APNIPair* apnip) {
                                     "mgmt",
                                     std::to_string(currentMgmtAEInstanceId));
 
+    currentMgmtAEInstanceId += 1;
+    std::string dstinstID = std::to_string(rand() % 30000);
     APNamingInfo dst = APNamingInfo(apnip->second.getApn(),
                                     apnip->second.getApinstance(),
                                     "mgmt",
-                                    "0");
+                                    dstinstID);//"0");
 
     //Create a flow
     Flow* flow = new Flow(src,dst);
@@ -917,7 +919,8 @@ DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
 
     //Create a name
     std::ostringstream ostr;
-    ostr << "mgmtae_" << currentMgmtAEInstanceId;
+    //ostr << "mgmtae_" << currentMgmtAEInstanceId;
+    ostr << "mgmtae_" << flow->getSrcApni().getAeinstance();
 
     //Instantiate module
     cModule *module = moduleType->create(ostr.str().c_str(), this->getModuleByPath("^.^.aeManagement"));
@@ -926,7 +929,7 @@ DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
     module->buildInside();
 
     cModule *aemgmt = module->getSubmodule("aemgmt");
-    aemgmt->par("aeInstance") = std::to_string(currentMgmtAEInstanceId);
+    aemgmt->par("aeInstance") = flow->getSrcApni().getAeinstance();//std::to_string(currentMgmtAEInstanceId);
     aemgmt->par("dstApName") = flow->getDstApni().getApn().getName();
     aemgmt->par("dstApInstance") = flow->getDstApni().getApinstance();
     aemgmt->par("dstAeName") = flow->getDstApni().getAename();
@@ -936,7 +939,7 @@ DAFEnrollmentNotifier* DAFEnrollment::createMgmtAE(Flow* flow) {
     //module->scheduleStart(simTime());
     module->callInitialize();
 
-    currentMgmtAEInstanceId += 1;
+
 
     DAFEnrollmentNotifier* enrollNotif = dynamic_cast<DAFEnrollmentNotifier*>(module->getSubmodule("enrollmentNotifier"));
     enrollNotif->setFlow(flow);
