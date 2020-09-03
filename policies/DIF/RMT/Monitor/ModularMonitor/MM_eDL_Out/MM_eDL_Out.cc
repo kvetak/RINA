@@ -22,7 +22,7 @@ namespace MM_eDL_Out {
 Define_Module(MM_eDL_Out);
 
 void MM_eDL_Out::initialize() {
-    defaultPriority = par("defPriority").longValue();
+    defaultPriority = par("defPriority");
     if(defaultPriority < 0) { error("Error at eDL_Out. defPriority must be >=0!"); }
 
     maxPriority = defaultPriority;

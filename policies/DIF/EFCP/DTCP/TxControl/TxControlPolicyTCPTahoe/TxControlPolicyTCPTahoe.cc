@@ -40,7 +40,7 @@ void TxControlPolicyTCPTahoe::initialize(int step)
     if(step == 0){
         sigStatTCPTahoeCWND = registerSignal("TCP_Tahoe_CWND");
     }
-    packetSize = par("packetSize").longValue();
+    packetSize = par("packetSize");
     ackPolicy = check_and_cast<SenderAckPolicyTCP *>(getModuleByPath("^.senderAckPolicy"));//^.^.efcp
 }
 

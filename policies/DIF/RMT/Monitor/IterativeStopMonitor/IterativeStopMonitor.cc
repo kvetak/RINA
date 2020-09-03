@@ -31,8 +31,8 @@ Define_Module(IterativeStopMonitor);
 
 void IterativeStopMonitor::onPolicyInit(){
     schedMod= getRINAModule<IterativeScheduling*>(this, 1, {MOD_POL_RMT_SCHEDULER});
-    stopAt = par("stopAt").longValue();
-    restartAt = par("restartAt").longValue();
+    stopAt = par("stopAt");
+    restartAt = par("restartAt");
 
     stopSignal = registerSignal(SIG_EFCP_StopSending);
     startSignal = registerSignal(SIG_EFCP_StartSending);

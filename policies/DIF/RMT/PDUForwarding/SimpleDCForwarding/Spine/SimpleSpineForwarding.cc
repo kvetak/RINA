@@ -34,10 +34,10 @@ namespace NSPSimpleDC {
 
 
     void SimpleSpineForwarding::onPolicyInit() {
-        upCount = par("upCount").longValue();
+        upCount = par("upCount");
         if(upCount < 0) { upCount = 0; }
 
-        downCount = par("downCount").longValue();
+        downCount = par("downCount");
         if(downCount < 0) { downCount = 0; }
 
         portsArray = new Port[upCount+downCount];

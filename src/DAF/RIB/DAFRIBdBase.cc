@@ -29,7 +29,8 @@ DAFRIBdBase::~DAFRIBdBase() {
 }
 
 long DAFRIBdBase::getNewInvokeId() {
-    long newinvoke = getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID).longValue() + 1;
+    long newinvoke =
+        static_cast<long>(getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID)) + 1;
     getParentModule()->getSubmodule(MOD_CDAP)->par(PAR_CURINVOKEID) = newinvoke;
     return newinvoke;
 }

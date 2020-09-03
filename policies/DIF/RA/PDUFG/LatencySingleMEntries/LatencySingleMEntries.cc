@@ -37,16 +37,16 @@ bool portMetric::operator < (const portMetric &other) const {
 void LatencySingleMEntries::insertedFlow(const Address &addr, const QoSCube &qos, RMTPort * port){
     string dst = addr.getIpcAddress().getName();
 
-    mType metric = qos.getDelay()/par("redLinkCost").longValue();
+    mType metric = qos.getDelay() / static_cast<long>(par("redLinkCost"));
 
-    if(metric < par("minLinkCost").longValue()) {
-        metric = par("minLinkCost").longValue();
-    } else if(metric > par("maxLinkCost").longValue()) {
-        metric = par("maxLinkCost").longValue();
+    if(metric < static_cast<long>(par("minLinkCost"))) {
+        metric = par("minLinkCost");
+    } else if(metric > static_cast<long>(par("maxLinkCost"))) {
+        metric = par("maxLinkCost");
     }
 
     if(qos.getQosId() == qos.MANAGEMENT.getQosId() || qos.getQosId() == VAL_UNDEF_QOSID) {
-        metric = par("maxLinkCost").longValue();
+        metric = par("maxLinkCost");
     }
 
     neighbours[dst].insert(portMetric(port, metric));
@@ -72,7 +72,7 @@ void LatencySingleMEntries::removedFlow(const Address &addr, const QoSCube& qos,
         neighbours.erase(dst);
         routingUpdated();
     } else {
-        unsigned short min = par("maxLinkCost").longValue();
+        unsigned short min = par("maxLinkCost");
         for(portMetric mt : neighbours[dst]) {
             if(min >= mt.metric) { min = mt.metric; }
         }

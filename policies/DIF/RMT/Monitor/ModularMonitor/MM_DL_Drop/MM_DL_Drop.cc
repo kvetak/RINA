@@ -23,7 +23,7 @@ Define_Module(MM_DL_Drop);
 
 void MM_DL_Drop::initialize() {
 
-    defaultThreshold = par("defThreshold").longValue();
+    defaultThreshold = par("defThreshold");
     if(defaultThreshold <= 0) { error("Error at DL_Drop. defThreshold must be >0!"); }
 
     cXMLElement* Xml = NULL;

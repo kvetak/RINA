@@ -29,14 +29,14 @@ simple APStream extends AP like APInst
 {
     parameters:
         @class(APStream);
-        
-        int startAt @unit(s) = default(0s);
-        int stopAt  @unit(s) = default(0s);
+
+        double startAt @unit(s) = default(0s);
+        double stopAt  @unit(s) = default(0s);
         double interval @unit(s) = default(0.1s);
-        
+
 
         string dstApName = default("AppErr");
-        
+
 }
 
 

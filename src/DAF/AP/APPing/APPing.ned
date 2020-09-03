@@ -29,10 +29,10 @@ simple APPing extends AP like APInst
 {
     parameters:
         @class(APPing);
-        
-        int startAt @unit(s) = default(-1s);
-        int stopAt  @unit(s) = default(-1s);
-        int pingAt  @unit(s) = default(0s);
+
+        double startAt @unit(s) = default(-1s);
+        double stopAt  @unit(s) = default(-1s);
+        double pingAt  @unit(s) = default(0s);
         double interval @unit(s) = default(1s);
 
         string dstApName = default("AppERROR");

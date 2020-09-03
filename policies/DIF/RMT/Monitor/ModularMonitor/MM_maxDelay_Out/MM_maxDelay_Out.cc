@@ -22,7 +22,7 @@ namespace MM_maxDelay_Out {
 Define_Module(MM_maxDelay_Out);
 
 void MM_maxDelay_Out::initialize() {
-    defaultMaxDel = par("defDelay").longValue();
+    defaultMaxDel = par("defDelay");
     if(defaultMaxDel < 0) { error("Error at DL_Out. defDelay must be >=0!"); }
 
 

@@ -22,7 +22,7 @@ namespace MM_DL_Out {
 Define_Module(MM_DL_Out);
 
 void MM_DL_Out::initialize() {
-    defaultPriority = par("defPriority").longValue();
+    defaultPriority = par("defPriority");
     if(defaultPriority < 0) { error("Error at DL_Out. defPriority must be >=0!"); }
 
     maxPriority = defaultPriority;

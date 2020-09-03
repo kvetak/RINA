@@ -34,7 +34,7 @@ namespace NSPSimpleDC {
 
 
     void SimpleTORForwarding::onPolicyInit() {
-        upCount = par("upCount").longValue();
+        upCount = par("upCount");
         if(upCount < 0) { upCount = 0; }
         portsArray = new Port[upCount];
         for(int i = 0; i<upCount; i++) { portsArray[i] = nullptr; }

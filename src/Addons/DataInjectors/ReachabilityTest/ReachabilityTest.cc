@@ -53,7 +53,7 @@ void ReachabilityTest::initialize() {
     dstAddr = Address("", dif.c_str());
     connID.setDstCepId(-1);
     QoS = par("QoS").stdstringValue();
-    header = par("header_size").longValue();
+    header = par("header_size");
 
     string nodes_raw = par("nodes").stdstringValue();
     split(nodes_raw, ' ', remaining);

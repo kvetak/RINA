@@ -22,7 +22,7 @@ namespace MM_P_Out {
 Define_Module(MM_P_Out);
 
 void MM_P_Out::initialize() {
-    defaultPriority = par("defPriority").longValue();
+    defaultPriority = par("defPriority");
     if(defaultPriority < 0) { error("Error at P_Out. defPriority must be >=0!"); }
 
 

@@ -41,7 +41,7 @@ QueueConfig::QueueConfig(string _id, int _absThreshold){
 
 void MM_PDQ_Drop::initialize() {
 
-    defaultThreshold = par("defaultThreshold").longValue();
+    defaultThreshold = par("defaultThreshold");
     if(defaultThreshold < 0) { error("Error at DL_Drop. defThreshold must be >= 0!"); }
 
     cXMLElement* Xml = NULL;

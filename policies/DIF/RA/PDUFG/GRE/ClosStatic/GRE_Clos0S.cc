@@ -65,7 +65,7 @@ void GRE_ClosS0::routingUpdated(){}
 
 // Called after initialize
 void GRE_ClosS0::onPolicyInit(){
-    f = par("fabrics").longValue();
+    f = par("fabrics");
 
     //Set Forwarding policy
     fwd = getRINAModule<Clos0 *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});

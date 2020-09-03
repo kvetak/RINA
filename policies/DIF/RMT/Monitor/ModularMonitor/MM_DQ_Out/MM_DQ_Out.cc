@@ -49,10 +49,10 @@ QueueData::QueueData(){
 
 
 void MM_DQ_Out::initialize() {
-    defaultPriority = par("defPriority").longValue();
+    defaultPriority = par("defPriority");
     if(defaultPriority < 0) { error("Error at eDL_Out. defPriority must be >=0!"); }
 
-    int rateUnit = par("rateUnit").longValue();
+    int rateUnit = par("rateUnit");
     if(defaultPriority < 0) { error("Error at eDL_Out. defPriority must be >=0!"); }
 
     maxPriority = defaultPriority;

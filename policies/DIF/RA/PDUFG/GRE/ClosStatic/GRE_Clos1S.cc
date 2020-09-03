@@ -75,9 +75,9 @@ void GRE_ClosS1::routingUpdated(){}
 
 // Called after initialize
 void GRE_ClosS1::onPolicyInit(){
-    f = par("spineS").longValue();
-    t = par("TEs").longValue();
-    s = par("spines").longValue();
+    f = par("spineS");
+    t = par("TEs");
+    s = par("spines");
 
     //Set Forwarding policy
     fwd = getRINAModule<Clos1 *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});

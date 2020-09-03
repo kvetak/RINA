@@ -36,7 +36,7 @@ void RMTSchedulingBase::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage() && !opp_strcmp(msg->getFullName(), "processPort"))
     { // TODO: this is lousy, think of something better
-        RMTQueueType direction = (RMTQueueType)msg->par("direction").longValue();
+        RMTQueueType direction = static_cast<RMTQueueType>(static_cast<long>(msg->par("direction")));
         const char* portName = msg->par("portName").stringValue();
         RMTPort* port = rmtAllocator->getPort(portName);
         if (port != NULL)
@@ -65,7 +65,7 @@ void RMTSchedulingBase::scheduleReinvocation(simtime_t time, RMTPort* port, RMTQ
     msg->par("portName").setStringValue(port->getParentModule()->getFullName());
 
     msg->addPar("direction");
-    msg->par("direction").setLongValue(direction);
+    msg->par("direction") = direction;
 
     scheduleAt(time, msg);
 }
