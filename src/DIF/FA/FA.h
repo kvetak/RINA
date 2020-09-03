@@ -89,7 +89,8 @@ class FA : public FABase
 
   protected:
     //SimpleModule overloads
-    virtual void initialize();
+    virtual void initialize(int stage);
+    virtual int numInitStages() const { return 1; };
     virtual void handleMessage(cMessage *msg);
     void initPointers();
 

@@ -60,7 +60,8 @@ class FABase : public cSimpleModule {
     Address MyAddress;
 
     //SimpleModule overloads
-    virtual void initialize() = 0;
+    virtual void initialize(int stage) = 0;
+    virtual int numInitStages() const = 0;
     virtual void handleMessage(cMessage *msg) = 0;
 
     void initMyAddress();
