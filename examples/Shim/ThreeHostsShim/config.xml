@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<Configuration>
+  <Host id="host1">
+    <DA>
+      <Directory>
+        <APN apn="App1">
+          <DIF difName="Layer1" ipcAddress="21" />
+        </APN>
+        <APN apn="21_Layer1">
+          <DIF difName="50" ipcAddress="11" />
+        </APN>
+        <APN apn="App2">
+          <DIF difName="Layer1" ipcAddress="22" />
+        </APN>
+        <APN apn="22_Layer1">
+          <DIF difName="50" ipcAddress="12" />
+          <DIF difName="60" ipcAddress="13" />
+        </APN>
+        <APN apn="App3">
+          <DIF difName="Layer1" ipcAddress="23" />
+        </APN>
+        <APN apn="23_Layer1">
+          <DIF difName="60" ipcAddress="14" />
+        </APN>
+      </Directory>
+      <NeighborTable>
+        <APN apn="23_Layer1">
+          <Neighbor apn="22_Layer1" />
+        </APN>
+      </NeighborTable>
+    </DA>
+    <Enrollment>
+      <Preenrollment>
+        <SimTime t="0">
+          <Connect src="21_Layer1" dst="22_Layer1" />
+        </SimTime>
+      </Preenrollment>
+    </Enrollment>
+  </Host>
+  <Host id="host2">
+    <DA>
+      <Directory>
+        <APN apn="App1">
+          <DIF difName="Layer1" ipcAddress="21" />
+        </APN>
+        <APN apn="21_Layer1">
+          <DIF difName="50" ipcAddress="11" />
+        </APN>
+        <APN apn="App2">
+          <DIF difName="Layer1" ipcAddress="22" />
+        </APN>
+        <APN apn="22_Layer1">
+          <DIF difName="50" ipcAddress="12" />
+          <DIF difName="60" ipcAddress="13" />
+        </APN>
+        <APN apn="App3">
+          <DIF difName="Layer1" ipcAddress="23" />
+        </APN>
+        <APN apn="23_Layer1">
+          <DIF difName="60" ipcAddress="14" />
+        </APN>
+      </Directory>
+    </DA>
+  </Host>
+  <Host id="host3">
+    <DA>
+      <Directory>
+        <APN apn="App1">
+          <DIF difName="Layer1" ipcAddress="21" />
+        </APN>
+        <APN apn="21_Layer1">
+          <DIF difName="50" ipcAddress="11" />
+        </APN>
+        <APN apn="App2">
+          <DIF difName="Layer1" ipcAddress="22" />
+        </APN>
+        <APN apn="22_Layer1">
+          <DIF difName="50" ipcAddress="12" />
+          <DIF difName="60" ipcAddress="13" />
+        </APN>
+        <APN apn="App3">
+          <DIF difName="Layer1" ipcAddress="23" />
+        </APN>
+        <APN apn="23_Layer1">
+          <DIF difName="60" ipcAddress="14" />
+        </APN>
+      </Directory>
+      <NeighborTable>
+        <APN apn="21_Layer1">
+          <Neighbor apn="22_Layer1" />
+        </APN>
+      </NeighborTable>
+    </DA>
+    <Enrollment>
+      <Preenrollment>
+        <SimTime t="0">
+          <Connect src="23_Layer1" dst="22_Layer1" />
+        </SimTime>
+      </Preenrollment>
+    </Enrollment>
+  </Host>
+
+  <QoSReqSet>
+    <QosReq id="unreliable">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <PDUDroppingProbability>0</PDUDroppingProbability>
+      <MaxSDUSize>1489</MaxSDUSize>
+      <PartialDelivery>1</PartialDelivery>
+      <IncompleteDelivery>1</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>
+      <RxOn>0</RxOn>
+      <WinOn>0</WinOn>
+      <RateOn>0</RateOn>
+    </QosReq>
+  </QoSReqSet>
+  <QoSCubesSet>
+    <QoSCube id="unreliable">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <PDUDroppingProbability>0</PDUDroppingProbability>
+      <MaxSDUSize>1489</MaxSDUSize>
+      <PartialDelivery>1</PartialDelivery>
+      <IncompleteDelivery>1</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>
+      <RxOn>0</RxOn>
+      <WinOn>0</WinOn>
+      <RateOn>0</RateOn>
+    </QoSCube>
+  </QoSCubesSet>
+</Configuration>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<Configuration>
+  <Host id="hosts50">
+    <DA>
+      <Directory>
+        <APN apn="App1">
+          <DIF difName="Layer1" ipcAddress="11" />
+        </APN>
+        <APN apn="11_Layer1">
+          <DIF difName="50" ipcAddress="1" />
+        </APN>
+        <APN apn="App2">
+          <DIF difName="Layer1" ipcAddress="12" />
+        </APN>
+        <APN apn="12_Layer1">
+          <DIF difName="50" ipcAddress="2" />
+        </APN>
+      </Directory>
+    </DA>
+  </Host>
+  <Host id="hosts60">
+    <DA>
+      <Directory>
+        <APN apn="App3">
+          <DIF difName="Layer2" ipcAddress="21" />
+        </APN>
+        <APN apn="21_Layer1">
+          <DIF difName="60" ipcAddress="1" />
+        </APN>
+        <APN apn="App4">
+          <DIF difName="Layer2" ipcAddress="22" />
+        </APN>
+        <APN apn="22_Layer1">
+          <DIF difName="60" ipcAddress="2" />
+        </APN>
+      </Directory>
+    </DA>
+  </Host>
+
+  <QoSCubesSet>
+    <QoSCube id="unreliable">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <PDUDroppingProbability>0</PDUDroppingProbability>
+      <MaxSDUSize>1500</MaxSDUSize>
+      <PartialDelivery>1</PartialDelivery>
+      <IncompleteDelivery>1</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>
+    </QoSCube>
+  </QoSCubesSet>
+</Configuration>
