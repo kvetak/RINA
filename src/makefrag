@@ -1,1 +1,6 @@
-CXXFLAGS=-std=c++11 -Wall -Wno-deprecated-declarations -DAUTOIMPORT_OMNETPP_NAMESPACE 
+CXXFLAGS=-std=c++17 -Wall -Wextra -Wno-deprecated-declarations -Wno-inconsistent-missing-override -DAUTOIMPORT_OMNETPP_NAMESPACE
+
+#
+# Use the older message compiler. New compiler was introduced in OMNeT++ 5.3
+#
+MSGC:=$(MSGC) --msg4
