@@ -34,7 +34,7 @@ namespace NSPSimpleDC {
 
 
     void SimpleEdgeForwarding::onPolicyInit() {
-        downCount = par("downCount").longValue();
+        downCount = par("downCount");
         if(downCount < 0) { downCount = 0; }
         portsArray = new Port[downCount];
         for(int i = 0; i<downCount; i++) { portsArray[i] = nullptr; }

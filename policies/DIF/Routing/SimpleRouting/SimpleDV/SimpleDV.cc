@@ -205,7 +205,7 @@ void SimpleDV::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = par("infMetric").longValue();
+    infMetric = par("infMetric");
 
     scheduledUpdate = false;
     scheduleUpdate();

@@ -87,7 +87,7 @@ void TKMonitor::onPolicyInit(){
         TKs[inf.id] = inf;
     }
 
-    tokensPDU = par("tokensPDU").longValue();
+    tokensPDU = par("tokensPDU");
 }
 
 void TKMonitor::postPDUInsertion(RMTQueue* queue) {

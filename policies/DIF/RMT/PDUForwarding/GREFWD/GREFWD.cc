@@ -31,7 +31,7 @@ vPorts GREFWD::lookup(const PDU * pdu) {
 
     PDU * pd = const_cast<PDU*>(pdu);
     auto hc = pd->getHopCount();
-    if(hc <= par("TTL").longValue()) {
+    if(hc <= static_cast<long>(par("TTL"))) {
         cout << "Over TTL"<<endl;
         return ret;
     }

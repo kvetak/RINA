@@ -33,8 +33,8 @@ APPing::~APPing() {
 void APPing::initialize() {
     AP::initialize();
     currentID = 0;
-    long t1 = par("startAt").longValue();
-    long t2 = par("stopAt").longValue();
+    double t1 = static_cast<double>(par("startAt"));
+    double t2 = static_cast<double>(par("stopAt"));
 
     if (strcmp(par("dstApName").stringValue(),"AppERROR") &&
             t2 > t1 && t1 > 0 && t2 > 0
@@ -101,7 +101,7 @@ void APPing::handleMessage(cMessage *msg) {
 
         }
         else if (!strcmp(msg->getName(), "ping")) {
-            if ((simTime().dbl()+1) < par("stopAt").doubleValue() ) {
+            if ((simTime().dbl()+1) < static_cast<double>(par("stopAt")) ) {
                 connID = conIDsPing.front();
                 conIDsPing.pop();
 

@@ -47,6 +47,6 @@ void QueuePerNQoSxPLen::onNM1PortInit(RMTPort* port) {
 
 
 void QueuePerNQoSxPLen::onPolicyInit() {
-    maxHCount = par("maxHCount").longValue();
+    maxHCount = par("maxHCount");
     if(maxHCount <= 0) { maxHCount = 1; }
 }

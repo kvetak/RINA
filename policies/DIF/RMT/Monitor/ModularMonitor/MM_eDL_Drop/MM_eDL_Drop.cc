@@ -23,10 +23,10 @@ Define_Module(MM_eDL_Drop);
 
 void MM_eDL_Drop::initialize() {
 
-    defaultThreshold = par("defThreshold").longValue();
+    defaultThreshold = par("defThreshold");
     if(defaultThreshold <= 0) { error("Error at DL_Drop. defThreshold must be >0!"); }
 
-    defaultAbsThreshold = par("defAbsThreshold").longValue();
+    defaultAbsThreshold = par("defAbsThreshold");
     if(defaultAbsThreshold <= 0) { error("Error at DL_Drop. defAbsThreshold must be >0!"); }
 
     defaultDropProb = par("defDropProb").doubleValue();

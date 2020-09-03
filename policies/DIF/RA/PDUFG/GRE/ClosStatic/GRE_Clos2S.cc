@@ -59,8 +59,8 @@ void GRE_ClosS2::routingUpdated(){}
 
 // Called after initialize
 void GRE_ClosS2::onPolicyInit(){
-    p = par("pods").longValue();
-    s = par("spineS").longValue();
+    p = par("pods");
+    s = par("spineS");
 
     //Set Forwarding policy
     fwd = getRINAModule<Clos2 *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});

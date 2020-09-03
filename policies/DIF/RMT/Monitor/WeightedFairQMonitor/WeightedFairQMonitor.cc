@@ -25,11 +25,11 @@ using namespace std;
 
 void WeightedFairQMonitor::onPolicyInit(){
     // Default Bandwith for Queues not linked to flows or with undefined bandwith
-    defBW = par("defBW").longValue();
+    defBW = par("defBW");
 
     // Queue sizes for lock and release EFCPi
-    stopQAt = par("stopQAt").longValue();
-    startQAt = par("startQAt").longValue();
+    stopQAt = par("stopQAt");
+    startQAt = par("startQAt");
 }
 
 void WeightedFairQMonitor::postQueueCreation(RMTQueue* queue){

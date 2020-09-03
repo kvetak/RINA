@@ -93,7 +93,7 @@ void DA::initialize()
 bool DA::isDifLocalToIpc(const std::string difName, cModule* ipc) {
     cModule* top = ipc->getParentModule();
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule *submodp = *j;
         if (isIpcXLocalToIpcY(submodp, ipc)
                 && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.c_str())                    //...has a given DIF name
            )
@@ -119,7 +119,7 @@ bool DA::isIpcXLocalToIpcY(cModule* ipcX, cModule* ipcY) {
 bool DA::isAppLocal(const APN& apn) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule* submodp = j();
+        cModule* submodp = *j;
         if ( (submodp->hasPar(PAR_APNAME)
                 && !opp_strcmp(submodp->par(PAR_APNAME), apn.getName().c_str() ) )
 //             ||
@@ -134,7 +134,7 @@ bool DA::isAppLocal(const APN& apn) {
 bool DA::isDifLocal(const DAP& difName) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule* submodp = j();
+        cModule* submodp = *j;
         if (submodp->hasPar(PAR_DIFNAME)
             && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.getName().c_str())
            ) {
@@ -148,7 +148,7 @@ bool DA::isDifLocal(const DAP& difName) {
 bool DA::isIpcLocal(cModule* ipc) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule* submodp = j();
+        cModule* submodp = *j;
         if (submodp == ipc)
             return true;
     }
@@ -158,7 +158,7 @@ bool DA::isIpcLocal(cModule* ipc) {
 cModule* DA::getDifMember(const DAP& difName) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule* submodp = j();
+        cModule* submodp = *j;
         if (submodp->hasPar(PAR_DIFNAME)
             && !opp_strcmp(submodp->par(PAR_DIFNAME), difName.getName().c_str())
            )
@@ -170,7 +170,7 @@ cModule* DA::getDifMember(const DAP& difName) {
 cModule* DA::findIpc(const Address& addr) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule *submodp = *j;
         if (submodp->hasPar(PAR_IPCADDR) && submodp->hasPar(PAR_DIFNAME)) {
             Address adr = Address(submodp->par(PAR_IPCADDR), submodp->par(PAR_DIFNAME));
             if (adr == addr)
@@ -204,7 +204,7 @@ void DA::handleMessage(cMessage *msg)
 cModule* DA::findApp(const APN& apn) {
     cModule* top = this->getModuleByPath("^.^");
     for (cModule::SubmoduleIterator j(top); !j.end(); j++) {
-        cModule *submodp = j();
+        cModule *submodp = *j;
         if (submodp->hasPar(PAR_APNAME) && !strcmp(submodp->par(PAR_APNAME), apn.getName().c_str()) ) {
             return submodp;
         }

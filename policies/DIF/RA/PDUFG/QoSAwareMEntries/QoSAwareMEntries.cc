@@ -125,7 +125,7 @@ void QoSAwareMEntries::onPolicyInit(){
     mType infMetric = par("infinite");
     rt->setInfinite(infMetric);
 
-    maxLat = par("maxLat").longValue();
+    maxLat = par("maxLat");
 
     string myAddr = getModuleByPath("^.^")->par("ipcAddress").stringValue();
 

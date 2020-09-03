@@ -56,10 +56,10 @@ void GRE_ClosR::removedFlow(const Address &addr, const QoSCube& qos, RMTPort * p
 
 // Called after initialize
 void GRE_ClosR::onPolicyInit(){
-    f = par("fabrics").longValue();
-    p = par("pods").longValue();
-    s = par("spines").longValue();
-    t = par("tors").longValue();
+    f = par("fabrics");
+    p = par("pods");
+    s = par("spines");
+    t = par("tors");
 
     //Set Forwarding policy
     fwd = getRINAModule<GREFWD *>(this, 2, {MOD_RELAYANDMUX, MOD_POL_RMT_PDUFWD});

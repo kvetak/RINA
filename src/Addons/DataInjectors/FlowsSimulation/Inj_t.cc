@@ -56,7 +56,7 @@ void Inj_t::initialize() {
     dstAddr = Address("", dif.c_str());
     connID.setDstCepId(-1);
 
-    headers = par("headers_size").longValue();
+    headers = par("headers_size");
 
     pduId = 0;
 

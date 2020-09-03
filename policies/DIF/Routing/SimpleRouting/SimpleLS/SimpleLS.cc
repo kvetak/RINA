@@ -230,7 +230,7 @@ void SimpleLS::onPolicyInit(){
         myAddr = myAddress.getIpcAddress().getName();
     }
 
-    infMetric = par("infMetric").longValue();
+    infMetric = par("infMetric");
     secId = 1;
 }
 

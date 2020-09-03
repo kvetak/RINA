@@ -10,7 +10,7 @@ void FailureSimulation::initialize() {
     killTimer = new cMessage("Kill Time");
     resurrectTimer = new cMessage("Resurrect Time");
 
-    c = par("amount").longValue();
+    c = par("amount");
     double tK = par("killAt").doubleValue();
     double tR = par("resurrectAt").doubleValue();
     interKill = par("interKill").doubleValue();

@@ -73,8 +73,8 @@ void VDT::handleMessage(cMessage *msg) {
 void VDT::postInitialize() {
 // Voice parameters initialization
     V_QOS = par("V_QOS").stdstringValue();
-    V_PDUSize_min = par("V_PDUSize_min").longValue();
-    V_PDUSize_max = par("V_PDUSize_max").longValue();
+    V_PDUSize_min = par("V_PDUSize_min");
+    V_PDUSize_max = par("V_PDUSize_max");
     V_AVG_FlowRate = par("V_AVG_FlowRate").doubleValue()*1000.0/8.0;
     V_ON_Duration_AVG = par("V_ON_Duration_AVG").doubleValue();
     V_ON_Duration_VAR = par("V_ON_Duration_VAR").doubleValue();
@@ -86,8 +86,8 @@ void VDT::postInitialize() {
 
 // Data request parameters initialization
     D_QOS = par("D_QOS").stdstringValue();
-    D_Request_PDUSize = par("D_Request_PDUSize").longValue();
-    D_Data_PDUSize = par("D_Data_PDUSize").longValue();
+    D_Request_PDUSize = par("D_Request_PDUSize");
+    D_Data_PDUSize = par("D_Data_PDUSize");
     D_AVG_FlowRate = par("D_AVG_FlowRate").doubleValue()*1000.0/8.0;
     D_ON_FlowRate = par("D_ON_FlowRate").doubleValue()*1000.0/8.0;
     D_OFF_Duration_AVG = par("D_OFF_Duration_AVG").doubleValue();
@@ -98,11 +98,11 @@ void VDT::postInitialize() {
 
 // Transfer parameters initialization
     T_QOS = par("T_QOS").stdstringValue();
-    T_Request_PDUSize = par("T_Request_PDUSize").longValue();
-    T_Data_PDUSize = par("T_Data_PDUSize").longValue();
+    T_Request_PDUSize = par("T_Request_PDUSize");
+    T_Data_PDUSize = par("T_Data_PDUSize");
     T_AVG_FlowRate = par("T_AVG_FlowRate").doubleValue()*1000.0/8.0;
-    T_WINDOW_MAX = par("T_WINDOW_MAX").longValue();
-    T_WINDOW_UPDATE = par("T_WINDOW_UPDATE").longValue();
+    T_WINDOW_MAX = par("T_WINDOW_MAX");
+    T_WINDOW_UPDATE = par("T_WINDOW_UPDATE");
     T_Interval = T_Data_PDUSize / T_AVG_FlowRate;
 
 

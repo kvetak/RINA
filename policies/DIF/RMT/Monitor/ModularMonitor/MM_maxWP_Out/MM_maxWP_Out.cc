@@ -23,7 +23,7 @@ namespace MM_maxWP_Out {
 Define_Module(MM_maxWP_Out);
 
 void MM_maxWP_Out::initialize() {
-    defaultMaxWP = par("defWP").longValue();
+    defaultMaxWP = par("defWP");
     if(defaultMaxWP < 0) { error("Error at DL_Out. defWP must be >=0!"); }
 
 

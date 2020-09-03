@@ -45,7 +45,7 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
     object.objectInstance = -1;
     object.objectVal = NULL;
     ping->setObjectItem(object);
-    ping->setByteLength((int)par("size").longValue());
+    ping->setByteLength((int)par("size"));
 
     //Send message
     sendData(FlowObject, ping);
@@ -56,7 +56,7 @@ bool AEMonitor::onA_read(APIReqObj* obj) {
 bool AEMonitor::onA_write(APIReqObj* obj) {
     CDAP_M_Write* write = new CDAP_M_Write("M_WRITE(stream)");
     write->setObjectItem(*obj->getObj());
-    write->setByteLength((int)par("size").longValue());
+    write->setByteLength((int)par("size"));
 
     //Send message
     sendData(FlowObject, write);
@@ -76,7 +76,7 @@ void AEMonitor::processMRead(CDAPMessage* msg) {
         object.objectInstance = -1;
         object.objectVal = (cObject*)(objPing.objectVal);
         pong->setObjectItem(object);
-        pong->setByteLength((int)par("size").longValue());
+        pong->setByteLength((int)par("size"));
 
         //inc object val
         objPing.objectVal += 1;

@@ -24,8 +24,8 @@ Define_Module(MM_maxPST_Out);
 
 void MM_maxPST_Out::initialize() {
 
-    maxTH = par("maxTH").longValue();
-    margin = par("margin").longValue();
+    maxTH = par("maxTH");
+    margin = par("margin");
 
     cXMLElement* Xml = NULL;
     if (par("data").xmlValue() != NULL && par("data").xmlValue()->hasChildren()){
