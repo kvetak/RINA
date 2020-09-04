@@ -1,0 +1,189 @@
+<?xml version="1.0"?>
+<Configuration>
+  <Host id="hosts1">
+    <DA>
+      <Directory>
+        <APN apn="App11">
+          <DIF difName="Layer11" ipcAddress="11" />
+        </APN>
+        <APN apn="App12">
+          <DIF difName="Layer11" ipcAddress="12" />
+        </APN>
+        <APN apn="App13">
+          <DIF difName="Layer11" ipcAddress="13" />
+        </APN>
+        <APN apn="App21">
+          <DIF difName="Layer11" ipcAddress="21" />
+        </APN>
+        <APN apn="App22">
+          <DIF difName="Layer11" ipcAddress="22" />
+        </APN>
+        <APN apn="App23">
+          <DIF difName="Layer11" ipcAddress="23" />
+        </APN>
+        <APN apn="11_Layer11">
+          <DIF difName="50" ipcAddress="1" />
+        </APN>
+        <APN apn="12_Layer11">
+          <DIF difName="50" ipcAddress="2" />
+        </APN>
+        <APN apn="13_Layer11">
+          <DIF difName="50" ipcAddress="3" />
+        </APN>
+        <APN apn="21_Layer11">
+          <DIF difName="60" ipcAddress="1" />
+        </APN>
+        <APN apn="22_Layer11">
+          <DIF difName="60" ipcAddress="2" />
+        </APN>
+        <APN apn="23_Layer11">
+          <DIF difName="60" ipcAddress="3" />
+        </APN>
+        <APN apn="33_Layer11">
+          <DIF difName="50" ipcAddress="4" />
+          <DIF difName="60" ipcAddress="4" />
+        </APN>
+      </Directory>
+      <NeighborTable>
+        <APN apn="21_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+        <APN apn="22_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+        <APN apn="23_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+      </NeighborTable>
+    </DA>
+  </Host>
+  <Host id="hosts2">
+    <DA>
+      <Directory>
+        <APN apn="App11">
+          <DIF difName="Layer11" ipcAddress="11" />
+        </APN>
+        <APN apn="App12">
+          <DIF difName="Layer11" ipcAddress="12" />
+        </APN>
+        <APN apn="App13">
+          <DIF difName="Layer11" ipcAddress="13" />
+        </APN>
+        <APN apn="App21">
+          <DIF difName="Layer11" ipcAddress="21" />
+        </APN>
+        <APN apn="App22">
+          <DIF difName="Layer11" ipcAddress="22" />
+        </APN>
+        <APN apn="App23">
+          <DIF difName="Layer11" ipcAddress="23" />
+        </APN>
+        <APN apn="11_Layer11">
+          <DIF difName="50" ipcAddress="1" />
+        </APN>
+        <APN apn="12_Layer11">
+          <DIF difName="50" ipcAddress="2" />
+        </APN>
+        <APN apn="13_Layer11">
+          <DIF difName="50" ipcAddress="3" />
+        </APN>
+        <APN apn="21_Layer11">
+          <DIF difName="60" ipcAddress="1" />
+        </APN>
+        <APN apn="22_Layer11">
+          <DIF difName="60" ipcAddress="2" />
+        </APN>
+        <APN apn="23_Layer11">
+          <DIF difName="60" ipcAddress="3" />
+        </APN>
+        <APN apn="33_Layer11">
+          <DIF difName="50" ipcAddress="4" />
+          <DIF difName="60" ipcAddress="4" />
+        </APN>
+      </Directory>
+      <NeighborTable>
+        <APN apn="11_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+        <APN apn="12_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+        <APN apn="13_Layer11">
+          <Neighbor apn="33_Layer11" />
+        </APN>
+      </NeighborTable>
+    </DA>
+  </Host>
+  <Router id="interiorRouter">
+    <DA>
+      <Directory>
+        <APN apn="App11">
+          <DIF difName="Layer11" ipcAddress="11" />
+        </APN>
+        <APN apn="App12">
+          <DIF difName="Layer11" ipcAddress="12" />
+        </APN>
+        <APN apn="App13">
+          <DIF difName="Layer11" ipcAddress="13" />
+        </APN>
+        <APN apn="App21">
+          <DIF difName="Layer11" ipcAddress="21" />
+        </APN>
+        <APN apn="App22">
+          <DIF difName="Layer11" ipcAddress="22" />
+        </APN>
+        <APN apn="App23">
+          <DIF difName="Layer11" ipcAddress="23" />
+        </APN>
+        <APN apn="11_Layer11">
+          <DIF difName="50" ipcAddress="1" />
+        </APN>
+        <APN apn="12_Layer11">
+          <DIF difName="50" ipcAddress="2" />
+        </APN>
+        <APN apn="13_Layer11">
+          <DIF difName="50" ipcAddress="3" />
+        </APN>
+        <APN apn="21_Layer11">
+          <DIF difName="60" ipcAddress="1" />
+        </APN>
+        <APN apn="22_Layer11">
+          <DIF difName="60" ipcAddress="2" />
+        </APN>
+        <APN apn="23_Layer11">
+          <DIF difName="60" ipcAddress="3" />
+        </APN>
+        <APN apn="33_Layer11">
+          <DIF difName="50" ipcAddress="4" />
+          <DIF difName="60" ipcAddress="4" />
+        </APN>
+      </Directory>
+    </DA>
+  </Router>
+
+  <QoSCubesSet>
+    <QoSCube id="unreliable">
+      <AverageBandwidth>12000000</AverageBandwidth>
+      <AverageSDUBandwidth>1000</AverageSDUBandwidth>
+      <PeakBandwidthDuration>24000000</PeakBandwidthDuration>
+      <PeakSDUBandwidthDuration>2000</PeakSDUBandwidthDuration>
+      <BurstPeriod>10000000</BurstPeriod>
+      <BurstDuration>1000000</BurstDuration>
+      <UndetectedBitError>0.01</UndetectedBitError>
+      <PDUDroppingProbability>0</PDUDroppingProbability>
+      <MaxSDUSize>1500</MaxSDUSize>
+      <PartialDelivery>1</PartialDelivery>
+      <IncompleteDelivery>1</IncompleteDelivery>
+      <ForceOrder>0</ForceOrder>
+      <MaxAllowableGap>0</MaxAllowableGap>
+      <Delay>1000000</Delay>
+      <Jitter>500000</Jitter>
+      <CostTime>0</CostTime>
+      <CostBits>0</CostBits>
+      <ATime>0</ATime>
+      <RxOn>0</RxOn>
+      <WinOn>0</WinOn>
+      <RateOn>0</RateOn>
+    </QoSCube>
+  </QoSCubesSet>
+</Configuration>

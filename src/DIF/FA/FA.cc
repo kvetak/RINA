@@ -82,12 +82,14 @@ void FA::initSignalsAndListeners() {
 
 }
 
-void FA::initialize() {
-    initPointers();
-    initSignalsAndListeners();
+void FA::initialize(int stage) {
+    if (stage == 0) {
+        initPointers();
+        initSignalsAndListeners();
 
-    //Setup MyAddress
-    initMyAddress();
+        //Setup MyAddress
+        initMyAddress();
+    }
 }
 //XXX: Vesely - Dirty! Needs refactoring...
 const Address FA::getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow) {
