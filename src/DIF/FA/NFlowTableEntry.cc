@@ -22,28 +22,25 @@
 
 #include "DIF/FA/NFlowTableEntry.h"
 
+//RINASim libraries
+#include "DIF/FA/FAIBase.h"
+#include "Common/Flow.h"
+
+
 NFlowTableEntry::NFlowTableEntry() :
-    fai(NULL), flow(NULL),
+    fai(nullptr), flow(nullptr),
     allocStatus(this->UNKNOWN),
     timeCreated(0), timeDeleted(0)
 {
 }
 
-NFlowTableEntry::NFlowTableEntry(Flow* nflow): fai(NULL), allocStatus(this->UNKNOWN) {
+NFlowTableEntry::NFlowTableEntry(Flow* nflow): fai(nullptr), allocStatus(this->UNKNOWN) {
     this->flow           = nflow;
     this->timeCreated    = simTime();
     this->timeDeleted    = 0;
 }
 
-NFlowTableEntry::~NFlowTableEntry() {
-    this->fai       = NULL;
-    this->flow      = NULL;
-    allocStatus     = this->UNKNOWN;
-    timeCreated     = 0;
-    timeDeleted     = 0;
-}
-
-std::string NFlowTableEntry::info() const {
+std::string NFlowTableEntry::str() const {
     std::ostringstream os;
     os << "STATUS: " << this->getAllocateStatusString() << endl;
     if ( this->getFai() )
@@ -60,7 +57,7 @@ std::string NFlowTableEntry::info() const {
 }
 
 std::ostream& operator <<(std::ostream& os, const NFlowTableEntry& fte) {
-    return os << fte.info();
+    return os << fte.str();
 }
 
 FAIBase* NFlowTableEntry::getFai() const {
@@ -90,8 +87,6 @@ std::string NFlowTableEntry::getAllocateStatusString() const {
         case FORWARDED:         return "allocation forwarded";
         default:                return "UNKNOWN";
     }
-//    static std::string AllocateStatusStrings[] = {"Pending", "Allocation Positive", "Allocation Negative"};
-//    return AllocateStatusStrings[];
 }
 
 void NFlowTableEntry::setAllocateStatus(EAllocateStatus allocateStatus) {

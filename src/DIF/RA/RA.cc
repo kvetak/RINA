@@ -671,16 +671,14 @@ void RA::postNM1FlowAllocation(NM1FlowTableItem* ftItem)
     // mark this flow as connected and update info
     ftItem->setConnectionStatus(NM1FlowTableItem::CON_ESTABLISHED);
     RMTPort* port = ftItem->getRMTPort();
+    Flow* flow = ftItem->getFlow();
     port->setOutputReady();
     port->setInputReady();
-    port->setFlow(ftItem->getFlow());
+    port->setFlow(flow);
 
-    // if this is a management flow, notify the Enrollment module
-    if (ftItem->getFlow()->isManagementFlow())
-    {
-        APNIPair* apnip = new APNIPair(ftItem->getFlow()->getSrcApni(), ftItem->getFlow()->getDstApni());
-        signalizeMgmtAllocToEnrollment(apnip);
-    }
+    // if not already enrolled, attempt to enroll
+    if (flow->isManagementFlow())
+        enrollment->startCACE(APNIPair(flow->getSrcApni(), flow->getDstApni()));
 }
 
 void RA::removeNM1FlowBindings(NM1FlowTableItem* ftItem)

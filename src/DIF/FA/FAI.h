@@ -28,15 +28,12 @@
 #ifndef FAI_H_
 #define FAI_H_
 
-//Standard libraries
+// Standard libraries
 #include <omnetpp.h>
-//RINASim libraries
+
+// RINASim libraries
 #include "DIF/FA/FAIBase.h"
-#include "DIF/FA/FABase.h"
 #include "DIF/FA/FAIListeners.h"
-#include "Common/RINASignals.h"
-#include "DIF/EFCP/EFCP.h"
-#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
 
 //#include "PushBackChannel.h"
 
@@ -44,7 +41,35 @@
 extern const char* TIM_CREREQ;
 extern const char* MOD_ALLOCRETRYPOLICY;
 
+class FABase;
+class EFCP;
+class AllocateRetryBase;
+
 class FAI : public FAIBase  {
+  private:
+    int localPortId;
+    int localCEPId;
+    int remotePortId;
+    int remoteCEPId;
+
+    EFCP* efcp;
+    AllocateRetryBase* AllocRetryPolicy;
+
+    cMessage* creReqTimer;
+    //double creReqTimeout;
+
+    FABase* fa;
+
+    //Listeners
+    LisFAIAllocResNega*  lisAllocResNega = nullptr;
+    LisFAIAllocResPosi*  lisAllocResPosi = nullptr;
+    LisFAICreResNega*    lisCreResNega = nullptr;
+    LisFAICreResPosi*    lisCreResPosi = nullptr;
+    LisFAIDelReq*        lisDelReq = nullptr;
+    LisFAIDelRes*        lisDelRes = nullptr;
+    LisFAICreResPosiNminusOne* lisCreResPosiNmO = nullptr;
+    LisFAICreResNegaNminusOne* lisCreResNegaNmO = nullptr;
+
   public:
     FAI();
     virtual ~FAI();
@@ -64,11 +89,10 @@ class FAI : public FAIBase  {
     virtual void receiveCreateFlowResponsePositiveFromNminusOne();
     virtual void receiveCreateFlowResponseNegativeFromNminusOne();
 
-
     void postInitialize(FABase* fa, Flow* fl, EFCP* efcp);
 
     const FABase* getFa() const {
-        return FaModule;
+        return fa;
     }
 
     int getLocalCepId() const;
@@ -80,57 +104,11 @@ class FAI : public FAIBase  {
     int getRemotePortId() const;
     void setRemotePortId(int remotePortId);
 
-  protected:
-    int localPortId;
-    int localCEPId;
-    int remotePortId;
-    int remoteCEPId;
-
-    AllocateRetryBase* AllocRetryPolicy;
-
-    cMessage* creReqTimer;
-    //double creReqTimeout;
-
-    FABase* FaModule;
-
-    //Signals
-    simsignal_t sigFAIAllocReq;
-    simsignal_t sigFAIDeallocReq;
-    simsignal_t sigFAIDeallocRes;
-    simsignal_t sigFAIAllocResPosi;
-    simsignal_t sigFAIAllocResNega;
-    simsignal_t sigFAICreReq;
-    simsignal_t sigFAIDelReq;
-    simsignal_t sigFAIDelRes;
-    simsignal_t sigFAICreResNega;
-    simsignal_t sigFAICreResPosi;
-
-    //Listeners
-    LisFAIAllocReq*      lisAllocReq;
-    LisFAIAllocResNega*  lisAllocResNega;
-    LisFAIAllocResPosi*  lisAllocResPosi;
-    LisFAICreResNega*    lisCreResNega;
-    LisFAICreResPosi*    lisCreResPosi;
-    LisFAIDelReq*        lisDelReq;
-    LisFAIDelRes*        lisDelRes;
-    LisFAICreResPosiNminusOne* lisCreResPosiNmO;
-    LisFAICreResNegaNminusOne* lisCreResNegaNmO;
-
+  private:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
 
-  private:
-    EFCP* EfcpModule;
-
     void initSignalsAndListeners();
-
-    bool createEFCPI();
-    void createNorthGates();
-    bool createBindings();
-    bool deleteBindings();
-
-    bool invokeAllocateRetryPolicy();
-
     void signalizeCreateFlowRequest();
     void signalizeCreateFlowResponsePositive();
     void signalizeCreateFlowResponseNegative();
@@ -141,8 +119,13 @@ class FAI : public FAIBase  {
     void signalizeDeallocateResponseFromFai();
     void signalizeAllocateResponseNegative();
     void signalizeAllocateResponsePositive();
-    void signalizeAllocateRequestToOtherFais(Flow* flow);
 
+    bool createEFCPI();
+    void createNorthGates();
+    bool createBindings();
+    bool deleteBindings();
+
+    bool invokeAllocateRetryPolicy();
 };
 
 //Free function

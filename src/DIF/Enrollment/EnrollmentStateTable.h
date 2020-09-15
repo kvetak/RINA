@@ -44,6 +44,7 @@ class EnrollmentStateTable : public cSimpleModule
   public:
     void insert(EnrollmentStateTableEntry entry);
     EnrollmentStateTableEntry* findEntryByDstAPN(const APN& apn);
+    bool isConnectedTo(const APN &apn);
     bool isEnrolled(const APN& myApn);
 
   protected:

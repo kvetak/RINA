@@ -29,40 +29,47 @@
 #ifndef FA_H_
 #define FA_H_
 
-//Standard libraries
+// Standard libraries
 #include <omnetpp.h>
-#include <string>
-//RINASim libraries
+
+// RINASim libraries
 #include "DIF/FA/FABase.h"
-#include "DIF/FA/FAListeners.h"
-#include "DIF/FA/FAI.h"
-#include "Common/Flow.h"
-#include "DIF/FA/NFlowTable.h"
-#include "Common/RINASignals.h"
-#include "DIF/EFCP/EFCP.h"
 #include "Common/ExternConsts.h"
-#include "DAF/DA/DA.h"
-#include "DIF/RA/RABase.h"
-#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
-#include "DIF/Enrollment/EnrollmentStateTable.h"
 
-//Constants
+// Forward declarations
+class DA;
+class EFCP;
+class EnrollmentStateTable;
+class Enrollment;
+class FAI;
+class Flow;
+class NewFlowRequestBase;
+class NFlowTable;
+class RABase;
+class QoSReq;
 
-extern const int RANDOM_NUMBER_GENERATOR;
-extern const int MAX_PORTID;
-extern const int MAX_CEPID;
-extern const char* MOD_NEWFLOWREQPOLICY;
-
-class FA : public FABase
+class FA : public FABase, public cListener
 {
   public:
-    FA();
-    virtual ~FA();
+    // Signals
+    static const simsignal_t createRequestForwardSignal;
+    static const simsignal_t createResponseNegativeSignal;
+
+  private:
+    EFCP* efcp = nullptr;
+    DA* difAllocator = nullptr;
+    RABase* raModule = nullptr;
+    NewFlowRequestBase* nFloReqPolicy = nullptr;
+    Enrollment* enrollment = nullptr;
+    EnrollmentStateTable* enrollmentStateTable = nullptr;
+
+  public:
+    FA() = default;
 
     virtual bool receiveAllocateRequest(Flow* flow);
     virtual bool receiveMgmtAllocateRequest(Flow* mgmtflow);
     virtual bool receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst);
-    virtual bool receiveMgmtAllocateFinish();
+    virtual bool receiveMgmtAllocateFinish(APNIPair *apnip);
     virtual void receiveNM1FlowCreated(Flow* flow);
     virtual bool receiveDeallocateRequest(Flow* flow);
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow);
@@ -74,45 +81,25 @@ class FA : public FABase
 
     bool invokeNewFlowRequestPolicy(Flow* flow);
 
-    //Signals
-    simsignal_t sigFACreReqFwd;
-    simsignal_t sigFACreResNega;
-    simsignal_t sigFACreResPosiFwd;
-    simsignal_t sigFAAllocFinMgmt;
-
-    //Listeners
-    //LisFAAllocReq*      lisAllocReq;
-    //LisFADeallocReq*    lisDeallocReq;
-    LisFAAllocFinMgmt*  lisEnrollFin;
-    LisFACreFloPosi*    lisCreFloPosi;
-    LisFACreReq*        lisCreReq;
-
-  protected:
-    //SimpleModule overloads
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    void initPointers();
-
   private:
-    EFCP* Efcp;
-    DA* DifAllocator;
-    RABase* RaModule;
-    NewFlowRequestBase* NFloReqPolicy;
-    EnrollmentStateTable* Enrollment;
+    //SimpleModule overloads
+    virtual void initialize(int stage);
+    virtual int numInitStages() const { return 1; };
+    virtual void handleMessage(cMessage *msg);
+
+    //cListener overload
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
+
+    void initPointers();
+    void initSignalsAndListeners();
 
     bool isMalformedFlow(Flow* flow);
     FAI* createFAI(Flow* flow);
-
-    void initSignalsAndListeners();
-
-    void signalizeCreateFlowRequestForward(Flow* flow);
-    void signalizeCreateFlowResponseNegative(Flow* flow);
 
     const Address getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow);
 
     bool changeDstAddresses(Flow* flow, bool useNeighbor);
     bool changeSrcAddress(Flow* flow, bool useNeighbor);
-
 };
 
 #endif /* FLOWALLOCATOR_H_ */

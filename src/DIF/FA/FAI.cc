@@ -22,27 +22,41 @@
 
 #include "DIF/FA/FAI.h"
 
+#include "Common/RINASignals.h"
+#include "DIF/FA/FABase.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/RMT/RMT.h"
+#include "DIF/FA/NFlowTable.h"
+#include "DIF/EFCP/EFCP.h"
+#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
+
 const char*     TIM_CREREQ          = "CreateRequestTimer";
 const char*     MOD_ALLOCRETRYPOLICY= "allocateRetryPolicy";
 
 Define_Module(FAI);
 
-FAI::FAI() : FAIBase() {
-    FaModule = NULL;
-    //creReqTimer = NULL;
+FAI::FAI()
+    : FAIBase(),
+      localPortId(VAL_UNDEF_PORTID),
+      localCEPId(VAL_UNDEF_PORTID),
+      remotePortId(VAL_UNDEF_PORTID),
+      remoteCEPId(VAL_UNDEF_CEPID),
+      efcp(nullptr),
+      fa(nullptr)
+{
 }
 
 FAI::~FAI() {
-    FaModule = NULL;
-    FlowObject = NULL;
-    degenerateDataTransfer = false;
-    localPortId     = VAL_UNDEF_PORTID;
-    localCEPId      = VAL_UNDEF_CEPID;
-    remotePortId    = VAL_UNDEF_PORTID;
-    remoteCEPId     = VAL_UNDEF_CEPID;
-
-    //if (creReqTimer)
-    //    cancelAndDelete(creReqTimer);
+    if (lisDelRes != nullptr) {
+        delete lisAllocResNega;
+        delete lisAllocResPosi;
+        delete lisCreResNega;
+        delete lisCreResPosi;
+        delete lisCreResNegaNmO;
+        delete lisCreResPosiNmO;
+        delete lisDelReq;
+        delete lisDelRes;
+    }
 }
 
 void FAI::initialize() {
@@ -51,39 +65,38 @@ void FAI::initialize() {
     remotePortId = par(PAR_REMOTEPORTID);
     remoteCEPId  = par(PAR_REMOTECEPID);
 
-    //creReqTimeout = par(PAR_CREREQTIMEOUT).doubleValue();
-
     AllocRetryPolicy = getRINAModule<AllocateRetryBase*>(this, 1, {MOD_ALLOCRETRYPOLICY});
 
     WATCH(degenerateDataTransfer);
-    WATCH_PTR(FlowObject);
+    WATCH_PTR(flowObject);
 
     initSignalsAndListeners();
 }
 
 void FAI::postInitialize(FABase* fa, Flow* fl, EFCP* efcp) {
     //Initialize pointers! It cannot be done during model creation :(
-    this->FaModule = fa;
-    this->FlowObject = fl;
-    this->EfcpModule = efcp;
+    this->fa = fa;
+    this->flowObject = fl;
+    this->efcp = efcp;
 }
+
 
 bool FAI::receiveAllocateRequest() {
     Enter_Method("receiveAllocateRequest()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::ALLOC_PEND) {
         EV << "Cannot allocate flow which is not in pending state" << endl;
         return false;
     }
 
     //Invoke NewFlowReqPolicy
-    bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
+    bool status = this->fa->invokeNewFlowRequestPolicy(this->flowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -91,7 +104,7 @@ bool FAI::receiveAllocateRequest() {
     status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
@@ -99,17 +112,15 @@ bool FAI::receiveAllocateRequest() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
         return false;
     }
 
-    //EV << "!!!!!!" << FlowObject->info() << endl << FlowObject->getDstNeighbor() << endl;
-
     // bind this flow to a suitable (N-1)-flow
     RABase* raModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
 
-    status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(FlowObject);
+    status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(flowObject);
     //IF flow is already available then schedule M_Create(Flow)
     if (status) {
         this->signalizeCreateFlowRequest();
@@ -123,8 +134,8 @@ bool FAI::receiveAllocateResponsePositive() {
     Enter_Method("receiveAllocateResponsePositive()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::ALLOC_PEND) {
         EV << "Cannot continue allocation of flow which is not in pending state" << endl;
         return false;
@@ -135,7 +146,7 @@ bool FAI::receiveAllocateResponsePositive() {
     bool status = this->createEFCPI();
     if (!status) {
         EV << "createEFCP() failed" << endl;
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         //Schedule negative M_Create_R(Flow)
         this->signalizeCreateFlowResponseNegative();
         return false;
@@ -145,7 +156,7 @@ bool FAI::receiveAllocateResponsePositive() {
     status = this->createBindings();
     if (!status) {
         EV << "createBindings() failed" << endl;
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         //Schedule M_Create_R(Flow-)
         this->signalizeCreateFlowResponseNegative();
         return false;
@@ -153,9 +164,9 @@ bool FAI::receiveAllocateResponsePositive() {
 
     // bind this flow to a suitable (N-1)-flow
     RABase* raModule = getRINAModule<RABase*>(this, 2, {MOD_RESALLOC, MOD_RA});
-    status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(FlowObject);
+    status = isDegenerateDataTransfer() ? true : raModule->bindNFlowToNM1Flow(flowObject);
 
-    ft->changeAllocStatus(FlowObject, NFlowTableEntry::TRANSFER);
+    ft->changeAllocStatus(flowObject, NFlowTableEntry::TRANSFER);
     //Signalizes M_Create_R(flow)
     if (status) {
         this->signalizeCreateFlowResponsePositive();
@@ -167,14 +178,14 @@ bool FAI::receiveAllocateResponsePositive() {
 void FAI::receiveAllocateResponseNegative() {
     Enter_Method("receiveAllocateResponseNegative()");
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::ALLOC_PEND) {
         EV << "Cannot continue allocation of flow which is not in pending state" << endl;
         return;
     }
 
-    ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+    ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
 
     //IF it is not DDT then retry M_CREATE
     //if (!isDegenerateDataTransfer())
@@ -185,19 +196,19 @@ bool FAI::receiveCreateRequest() {
     Enter_Method("receiveCreateRequest()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::ALLOC_PEND) {
         EV << "Cannot allocate flow which is not in pending state" << endl;
         return false;
     }
 
     //Invoke NewFlowReqPolicy
-    bool status = this->FaModule->invokeNewFlowRequestPolicy(this->FlowObject);
+    bool status = this->fa->invokeNewFlowRequestPolicy(this->flowObject);
     if (!status){
         EV << "invokeNewFlowPolicy() failed"  << endl;
         //Schedule negative M_Create_R(Flow)
-        ft->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        ft->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         this->signalizeCreateFlowResponseNegative();
         return false;
     }
@@ -216,8 +227,8 @@ bool FAI::receiveDeallocateRequest() {
     Enter_Method("receiveDeallocateRequest()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::DEALLOC_PEND) {
         EV << "Cannot deallocate flow which is not in deallocate pending state" << endl;
         return false;
@@ -236,17 +247,17 @@ void FAI::receiveDeleteRequest(Flow* flow) {
     Enter_Method("receiveDeleteRequest()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::TRANSFER) {
         EV << "Cannot deallocate flow which is not in transfer state" << endl;
         return;
     }
 
-    ft->changeAllocStatus(FlowObject, NFlowTableEntry::DEALLOC_PEND);
+    ft->changeAllocStatus(flowObject, NFlowTableEntry::DEALLOC_PEND);
 
     //Get deallocation invokeId from Request
-    FlowObject->setDeallocInvokeId(flow->getDeallocInvokeId());
+    flowObject->setDeallocInvokeId(flow->getDeallocInvokeId());
 
     //Notify application
     signalizeDeallocateRequestFromFai();
@@ -257,7 +268,7 @@ void FAI::receiveDeleteRequest(Flow* flow) {
     //Signalizes M_Delete_R(Flow)
     this->signalizeDeleteFlowResponse();
 
-    ft->changeAllocStatus(FlowObject, NFlowTableEntry::DEALLOCATED);
+    ft->changeAllocStatus(flowObject, NFlowTableEntry::DEALLOCATED);
     fte->setTimeDeleted(simTime());
 }
 
@@ -274,7 +285,7 @@ bool FAI::receiveCreateResponseNegative() {
     //...otherwise signalize to AE or RIBd failure
     else  {
         EV << "invokeAllocateRetryPolicy() failed"  << endl;
-        FaModule->getNFlowTable()->changeAllocStatus(FlowObject, NFlowTableEntry::ALLOC_NEGA);
+        fa->getNFlowTable()->changeAllocStatus(flowObject, NFlowTableEntry::ALLOC_NEGA);
         this->signalizeAllocateResponseNegative();
     }
 
@@ -286,26 +297,19 @@ bool FAI::receiveCreateResponsePositive(Flow* flow) {
     //TODO: Vesely - D-Base-2011-015.pdf, p.9
     //              Create bindings. WTF? Bindings should be already created!''
 
-    //cancelEvent(creReqTimer);
-
     //Change dstCep-Id and dstPortId according to new information
-    FlowObject->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
-    FlowObject->setDstPortId(flow->getDstPortId());
+    flowObject->getConnectionId().setDstCepId(flow->getConId().getDstCepId());
+    flowObject->setDstPortId(flow->getDstPortId());
     remotePortId = flow->getDstPortId();
     remoteCEPId = flow->getConId().getDstCepId();
     par(PAR_REMOTEPORTID) = remotePortId;
     par(PAR_REMOTECEPID) = remoteCEPId;
 
     //Change status
-    FaModule->getNFlowTable()->changeAllocStatus(FlowObject, NFlowTableEntry::TRANSFER);
+    fa->getNFlowTable()->changeAllocStatus(flowObject, NFlowTableEntry::TRANSFER);
 
-    //if (FlowObject->isManagementFlowLocalToIPCP()) {
-    //    signalizeAllocateRequestToOtherFais( FlowObject );
-    //}
-    //else {
-        //Pass Allocate Response to AE or RIBd
-        this->signalizeAllocateResponsePositive();
-    //}
+    //Pass Allocate Response to AE or RIBd
+    this->signalizeAllocateResponsePositive();
 
     //FIXME: Vesely - always true
     return true;
@@ -315,8 +319,8 @@ void FAI::receiveDeleteResponse() {
     Enter_Method("receiveDeleteResponse()");
 
     //Check for proper FSM state
-    NFlowTable* ft = FaModule->getNFlowTable();
-    NFlowTableEntry* fte = ft->findEntryByFlow(FlowObject);
+    NFlowTable* ft = fa->getNFlowTable();
+    NFlowTableEntry* fte = ft->findEntryByFlow(flowObject);
     if (fte->getAllocateStatus() != NFlowTableEntry::DEALLOC_PEND) {
         EV << "Cannot deallocate flow which is not in deallocatre pending state" << endl;
         return;
@@ -325,7 +329,7 @@ void FAI::receiveDeleteResponse() {
     //Notify application
     signalizeDeallocateRequestFromFai();
 
-    ft->changeAllocStatus(FlowObject, NFlowTableEntry::DEALLOCATED);
+    ft->changeAllocStatus(flowObject, NFlowTableEntry::DEALLOCATED);
     fte->setTimeDeleted(simTime());
 }
 
@@ -357,14 +361,14 @@ std::ostream& operator<< (std::ostream& os, const FAI& fai) {
 bool FAI::createEFCPI() {
     EV << this->getFullPath() << " attempts to create EFCP instance" << endl;
     //Create EFCPI for local bindings
-    EFCPInstance* efcpi = EfcpModule->createEFCPI(FlowObject, localCEPId, localPortId);
+    EFCPInstance* efcpi = efcp->createEFCPI(flowObject, localCEPId, localPortId);
     return efcpi ? true : false;
 }
 
 bool FAI::createBindings() {
     EV << this->getFullPath() << " attempts to bind EFCP and RMT" << endl;
 
-    cModule* IPCModule = FaModule->getModuleByPath("^.^");
+    cModule* IPCModule = fa->getModuleByPath("^.^");
 
     std::ostringstream nameEfcpNorth;
     nameEfcpNorth << GATE_APPIO_ << localPortId;
@@ -373,7 +377,7 @@ bool FAI::createBindings() {
     cGate* gateEfcpUpOut = efcpModule->gateHalf(nameEfcpNorth.str().c_str(), cGate::OUTPUT);
 
     //Management Flow should be connected with RIBd
-    if (FlowObject->isManagementFlowLocalToIPCP()) {
+    if (flowObject->isManagementFlowLocalToIPCP()) {
         std::ostringstream ribdName;
         ribdName << GATE_EFCPIO_ << localPortId;
         cModule* ribdModule = getRINAModule<cModule*>(IPCModule, 0, {MOD_RIBDAEMON});
@@ -440,10 +444,10 @@ bool FAI::deleteBindings() {
     EV << this->getFullPath() << " attempts to disconnect bindings between EFCP, IPC and RMT" << endl;
 
     //Flush All messages in EFCPI
-    EfcpModule->deleteEFCPI(this->getFlow());
+    efcp->deleteEFCPI(this->getFlow());
 
     //Management flow
-    if (FlowObject->isManagementFlowLocalToIPCP()) {
+    if (flowObject->isManagementFlowLocalToIPCP()) {
         std::ostringstream ribdName;
         ribdName << GATE_EFCPIO_ << localPortId;
         cModule* ribdModule = getRINAModule<cModule*>(this, 2, {MOD_RIBDAEMON});
@@ -461,7 +465,7 @@ bool FAI::deleteBindings() {
     }
     //Data flow
     else {
-        cModule* IPCModule = FaModule->getModuleByPath("^.^");
+        cModule* IPCModule = fa->getModuleByPath("^.^");
         std::ostringstream nameIpcDown;
         nameIpcDown << GATE_NORTHIO_ << localPortId;
         cGate* gateIpcDownIn = IPCModule->gateHalf(nameIpcDown.str().c_str(), cGate::INPUT);
@@ -514,31 +518,13 @@ bool FAI::invokeAllocateRetryPolicy() {
 void FAI::initSignalsAndListeners() {
     cModule* catcher2 = this->getModuleByPath("^.^");
     cModule* catcher3 = this->getModuleByPath("^.^.^");
-    //Signals that module emits
-    sigFAIAllocReq      = registerSignal(SIG_FAI_AllocateRequest);
-    sigFAIDeallocReq    = registerSignal(SIG_FAI_DeallocateRequest);
-    sigFAIDeallocRes    = registerSignal(SIG_FAI_DeallocateResponse);
-    sigFAIAllocResPosi  = registerSignal(SIG_FAI_AllocateResponsePositive);
-    sigFAIAllocResNega  = registerSignal(SIG_FAI_AllocateResponseNegative);
-    sigFAICreReq        = registerSignal(SIG_FAI_CreateFlowRequest);
-    sigFAIDelReq        = registerSignal(SIG_FAI_DeleteFlowRequest);
-    sigFAIDelRes        = registerSignal(SIG_FAI_DeleteFlowResponse);
-    sigFAICreResNega    = registerSignal(SIG_FAI_CreateFlowResponseNegative);
-    sigFAICreResPosi    = registerSignal(SIG_FAI_CreateFlowResponsePositive);
-
     //Signals that module processes
-    //  AllocationRequest
-    this->lisAllocReq       = new LisFAIAllocReq(this);
-    catcher3->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
     //  AllocationRespNegative
     this->lisAllocResNega   = new LisFAIAllocResNega(this);
     catcher3->subscribe(SIG_AERIBD_AllocateResponseNegative, this->lisAllocResNega);
     //  AllocationRespPositive
     this->lisAllocResPosi   = new LisFAIAllocResPosi(this);
     catcher3->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
-//    //  CreateFlowRequest
-//    this->lisCreReq         = new LisFAICreReq(this);
-//    catcher->subscribe(SIG_FAI_CreateFlowRequest, this->lisCreReq);
     //  CreateFlowResponseNegative
     this->lisCreResNega     = new LisFAICreResNega(this);
     catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);
@@ -560,49 +546,45 @@ void FAI::initSignalsAndListeners() {
     //DeleteResponseFlow
     lisDelRes = new LisFAIDelRes(this);
     catcher2->subscribe(SIG_RIBD_DeleteResponseFlow, lisDelRes);
-
 }
 
 void FAI::signalizeCreateFlowRequest() {
-    //creReqTimer = new cMessage(TIM_CREREQ);
-    //Start timer
-    //scheduleAt(simTime() + creReqTimeout, creReqTimer);
     //Signalize RIBd to send M_CREATE(flow)
-    emit(this->sigFAICreReq, FlowObject);
+    emit(this->createRequestSignal, flowObject);
 }
 
 void FAI::signalizeDeleteFlowResponse() {
-    emit(this->sigFAIDelRes, this->FlowObject);
+    emit(this->deleteResponseSignal, this->flowObject);
 
 }
 
 void FAI::signalizeCreateFlowResponsePositive() {
-    emit(this->sigFAICreResPosi, FlowObject);
+    emit(this->createResponsePositiveSignal, flowObject);
 }
 
 void FAI::signalizeCreateFlowResponseNegative() {
-    emit(this->sigFAICreResNega, FlowObject);
+    emit(this->createResponseNegativeSignal, flowObject);
 }
 
 void FAI::signalizeAllocationRequestFromFai() {
-    EV << "Trying to notify " << FlowObject->getSrcApni() << endl;
-    emit(sigFAIAllocReq, FlowObject);
+    EV << "Trying to notify " << flowObject->getSrcApni() << endl;
+    emit(allocateRequestSignal, flowObject);
 }
 
 void FAI::signalizeDeleteFlowRequest() {
-    emit(this->sigFAIDelReq, this->FlowObject);
+    emit(this->deleteRequestSignal, this->flowObject);
 }
 
 void FAI::signalizeAllocateResponseNegative() {
-    emit(this->sigFAIAllocResNega, this->FlowObject);
+    emit(this->allocateResponseNegativeSignal, this->flowObject);
 }
 
 void FAI::signalizeDeallocateRequestFromFai() {
-    emit(this->sigFAIDeallocReq, this->FlowObject);
+    emit(this->deallocateRequestSignal, this->flowObject);
 }
 
 void FAI::signalizeDeallocateResponseFromFai() {
-    emit(this->sigFAIDeallocRes, this->FlowObject);
+    emit(this->deallocateResponseSignal, this->flowObject);
 }
 
 int FAI::getLocalCepId() const {
@@ -638,12 +620,12 @@ void FAI::setRemotePortId(int remotePortId) {
 }
 
 void FAI::signalizeAllocateResponsePositive() {
-    emit(this->sigFAIAllocResPosi, this->FlowObject);
+    emit(this->allocateResponsePositiveSignal, this->flowObject);
 }
 
 void FAI::createNorthGates() {
     //Management flow
-    if (FlowObject->isManagementFlowLocalToIPCP()) {
+    if (flowObject->isManagementFlowLocalToIPCP()) {
         std::ostringstream ribdName;
         ribdName << GATE_EFCPIO_ << localPortId;
         cModule* ribdModule = getRINAModule<cModule*>(this, 2, {MOD_RIBDAEMON});
@@ -656,7 +638,7 @@ void FAI::createNorthGates() {
     else {
         std::ostringstream nameIpcDown;
         nameIpcDown << GATE_NORTHIO_ << localPortId;
-        cModule* IPCModule = FaModule->getModuleByPath("^.^");
+        cModule* IPCModule = fa->getModuleByPath("^.^");
         IPCModule->addGate(nameIpcDown.str().c_str(), cGate::INOUT, false);
     }
     return;

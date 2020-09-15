@@ -23,34 +23,33 @@
 
 #include "DIF/FA/FABase.h"
 
+#include "DIF/FA/NFlowTable.h"
+#include "Common/ExternConsts.h"
+#include "Common/APNamingInfo.h"
+
+const int FABase::RANDOM_NUMBER_GENERATOR = 0;
+const int FABase::MAX_PORTID = 65535;
+const int FABase::MAX_CEPID  = 65535;
 const char* TIM_FAPENDFLOWS = "FA-PendingFlows";
 
-FABase::FABase() {
-    this->N_flowTable = NULL;
-}
-
-FABase::~FABase() {
-    this->N_flowTable = NULL;
-}
-
 NFlowTable* FABase::getNFlowTable() const {
-    return N_flowTable;
+    return nFlowTable;
 }
 
 void FABase::initMyAddress() {
-    //Setup MyAddress
+    //Setup myAddress
     cModule* ipc = this->getModuleByPath("^.^");
-    MyAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
-    EV << "SrcAddress that this FA will use is " << MyAddress << endl;
+    myAddress = Address(ipc->par(PAR_IPCADDR), ipc->par(PAR_DIFNAME));
+    EV << "SrcAddress that this FA will use is " << myAddress << endl;
 
     std::ostringstream description;
-    description << "address: " << MyAddress.getIpcAddress()
-                << "\ndif: " << MyAddress.getDifName();
+    description << "address: " << myAddress.getIpcAddress()
+                << "\ndif: " << myAddress.getDifName();
     ipc->getDisplayString().setTagArg("t", 0, description.str().c_str());
     ipc->getDisplayString().setTagArg("t", 1, "r");
 }
 
 
 const Address& FABase::getMyAddress() const {
-    return MyAddress;
+    return myAddress;
 }

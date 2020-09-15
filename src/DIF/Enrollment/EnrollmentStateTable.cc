@@ -69,6 +69,16 @@ void EnrollmentStateTable::handleMessage(cMessage *msg)
 
 }
 
+bool EnrollmentStateTable::isConnectedTo(const APN &apn) {
+    for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {
+        EnrollmentStateTableEntry est = *it;
+        if (est.getRemote().getApn() == apn &&
+            est.getCACEConStatus() == EnrollmentStateTableEntry::CON_ESTABLISHED) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool EnrollmentStateTable::isEnrolled(const APN& myApn) {
     for(auto it = StateTable.begin(); it != StateTable.end(); ++it) {

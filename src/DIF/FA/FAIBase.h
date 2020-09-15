@@ -25,13 +25,32 @@
 
 //Standard libraries
 #include <omnetpp.h>
-//RINASim libraries
-#include "Common/Flow.h"
+
+class Flow;
 
 class FAIBase : public cSimpleModule {
   public:
+    //Signals
+    static const simsignal_t allocateRequestSignal;
+    static const simsignal_t deallocateRequestSignal;
+    static const simsignal_t deallocateResponseSignal;
+    static const simsignal_t allocateResponsePositiveSignal;
+    static const simsignal_t allocateResponseNegativeSignal;
+    static const simsignal_t createRequestSignal;
+    static const simsignal_t deleteRequestSignal;
+    static const simsignal_t deleteResponseSignal;
+    static const simsignal_t createResponseNegativeSignal;
+    static const simsignal_t createResponsePositiveSignal;
+
+  protected:
+    Flow* flowObject;
+    bool degenerateDataTransfer;
+
+  public:
     FAIBase();
     virtual ~FAIBase();
+
+    virtual std::string str() const = 0;
 
     virtual bool receiveAllocateRequest() = 0;
     virtual bool receiveAllocateResponsePositive() = 0;
@@ -46,8 +65,8 @@ class FAIBase : public cSimpleModule {
     virtual void receiveCreateFlowResponsePositiveFromNminusOne() = 0;
     virtual void receiveCreateFlowResponseNegativeFromNminusOne() = 0;
 
-    Flow* getFlow()  {
-        return FlowObject;
+    Flow* getFlow() const {
+        return flowObject;
     }
 
     bool isDegenerateDataTransfer() const {
@@ -59,14 +78,9 @@ class FAIBase : public cSimpleModule {
     }
 
   protected:
-    Flow* FlowObject;
-    bool degenerateDataTransfer;
-
     //SimpleModule overloads
     virtual void initialize() = 0;
     virtual void handleMessage(cMessage *msg) = 0;
-
-
 };
 
 #endif /* FAIBASE_H_ */

@@ -117,11 +117,6 @@ void Enrollment::initSignalsAndListeners() {
     sigEnrollmentStopEnrollRes  = registerSignal(SIG_ENROLLMENT_StopEnrollmentResponse);
     sigEnrollmentStartOperReq   = registerSignal(SIG_ENROLLMENT_StartOperationRequest);
     sigEnrollmentStartOperRes   = registerSignal(SIG_ENROLLMENT_StartOperationResponse);
-    sigEnrollmentFinish         = registerSignal(SIG_ENROLLMENT_Finished);
-
-    lisEnrollmentAllResPosi = new LisEnrollmentAllResPosi(this);
-    catcher1->subscribe(SIG_FA_MgmtFlowAllocated, lisEnrollmentAllResPosi);
-    catcher1->subscribe(SIG_RA_MgmtFlowAllocated, lisEnrollmentAllResPosi);
 
     //lisEnrollmentGetFlowFromFaiCreResPosi = new LisEnrollmentGetFlowFromFaiCreResPosi(this);
     //catcher1->subscribe(SIG_FAI_CreateFlowResponsePositive, lisEnrollmentGetFlowFromFaiCreResPosi);

@@ -26,7 +26,6 @@
 //Standard libraries
 #include <omnetpp.h>
 //RINASim library
-#include "Common/Utils.h"
 #include "DIF/FA/NFlowTableEntry.h"
 
 typedef std::list<NFlowTableEntry> TFAITable;
@@ -38,17 +37,21 @@ typedef TFAIPtrs::iterator TFTPtrsIter;
 //Statistic collextion
 extern const char* SIG_STAT_FT_SIZE;
 
+class APN;
+class Address;
+class APNIPair;
+
 class NFlowTable : public cSimpleModule
 {
   public:
-    std::string info() const;
+    ~NFlowTable() override;
+    virtual std::string str() const;
     void insertNew(Flow* flow);
     void insert(const NFlowTableEntry& entry);
     void removeByFlow(Flow* flow);
-    unsigned const int getSize() const;
+    unsigned int getSize() const;
     NFlowTableEntry* findEntryByFlow(const Flow* flow);
     NFlowTableEntry* findEntryByApns(const APN& srcApn, const APN& dstApn);
-    NFlowTableEntry* findMgmtEntry(const Flow* flow);
     NFlowTableEntry* findMgmtEntryByDstAddr(const Address& addr);
     NFlowTableEntry* findMgmtEntryByDstNeighbor(const Address& addr);
     NFlowTableEntry* findMgmtEntryByDstApni(const APN& dstApn);
@@ -58,6 +61,7 @@ class NFlowTable : public cSimpleModule
     NFlowTableEntry* findEntryBySrcAddressAndFwd(const APN& apname);
     NFlowTableEntry* findEntryByFai(FAIBase* fai);
     NFlowTableEntry* findEntryByInvokeId(long invId);
+    NFlowTableEntry* findEntryByApnisAndQosId(const APN &srcApn, const APN &dstApn, const std::string &qosId);
     void setFaiToFlow(FAIBase* fai, Flow* flow);
     void changeAllocStatus(Flow* flow, NFlowTableEntry::EAllocateStatus status);
     void changeAllocStatus(FAIBase* fai, NFlowTableEntry::EAllocateStatus status);
@@ -74,12 +78,5 @@ class NFlowTable : public cSimpleModule
   private:
     TFAITable NFlowTab;
 };
-
-//Free functions
-/*
-std::ostream& operator<< (std::ostream& os, const FlowTable& ft);
-std::ostream& operator<< (std::ostream& os, const TFlowTable& ft);
-std::ostream& operator<< (std::ostream& os, const TFlowTableEntry& fte);
-*/
 
 #endif
