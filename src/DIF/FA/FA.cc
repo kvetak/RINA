@@ -226,11 +226,14 @@ bool FA::receiveAllocateRequest(Flow* flow) {
     }
 
     //Check whether local IPCP is enrolled into DIF
+    // FIXME the below statement is incorrect.
     //Successful enrollment implies existence of N-1 mgmt-flow, if not then
     //FA needs to init allocation of N-1 mgmt-flow
-    if (!flow->isDdtFlag() && !Enrollment->isEnrolled(MyAddress.getApn())) {
-        EV << "IPCP not enrolled to DIF, thus executing enrollment!" << endl;
-        receiveMgmtAllocateRequest(APNamingInfo(MyAddress.getApn()), APNamingInfo(flow->getDstNeighbor().getApn()));
+    if (!flow->isDdtFlag() &&
+        !enrollmentStateTable->isConnectedTo(flow->getDstNeighbor().getApn())) {
+        EV << "IPCP not connected to remote IPC, executing CACE" << endl;
+        receiveMgmtAllocateRequest(APNamingInfo(myAddress.getApn()),
+                                   APNamingInfo(flow->getDstNeighbor().getApn()));
     }
 
     //Is malformed?
@@ -252,12 +255,9 @@ bool FA::receiveAllocateRequest(Flow* flow) {
 
     //Postpone allocation request until management flow is ready
     bool status;
-    if ( flow->isDdtFlag() || Enrollment->isEnrolled(MyAddress.getApn())
-       ){
+    if (flow->isDdtFlag() || enrollmentStateTable->isConnectedTo(flow->getDstNeighbor().getApn())) {
         status = fai->receiveAllocateRequest();
-    }
-    else
-    {
+    } else {
         status = true;
         EV << "Management flow is not ready!" << endl;
     }
