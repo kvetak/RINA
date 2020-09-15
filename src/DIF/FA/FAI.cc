@@ -519,18 +519,12 @@ void FAI::initSignalsAndListeners() {
     cModule* catcher2 = this->getModuleByPath("^.^");
     cModule* catcher3 = this->getModuleByPath("^.^.^");
     //Signals that module processes
-    //  AllocationRequest
-    this->lisAllocReq       = new LisFAIAllocReq(this);
-    catcher3->subscribe(SIG_toFAI_AllocateRequest, this->lisAllocReq);
     //  AllocationRespNegative
     this->lisAllocResNega   = new LisFAIAllocResNega(this);
     catcher3->subscribe(SIG_AERIBD_AllocateResponseNegative, this->lisAllocResNega);
     //  AllocationRespPositive
     this->lisAllocResPosi   = new LisFAIAllocResPosi(this);
     catcher3->subscribe(SIG_AERIBD_AllocateResponsePositive, this->lisAllocResPosi);
-//    //  CreateFlowRequest
-//    this->lisCreReq         = new LisFAICreReq(this);
-//    catcher->subscribe(SIG_FAI_CreateFlowRequest, this->lisCreReq);
     //  CreateFlowResponseNegative
     this->lisCreResNega     = new LisFAICreResNega(this);
     catcher3->subscribe(SIG_RIBD_CreateFlowResponseNegative, this->lisCreResNega);

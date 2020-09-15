@@ -54,22 +54,11 @@ void FA::initPointers() {
 }
 
 void FA::initSignalsAndListeners() {
+    // tbh should be N-1 IPC Process
     cModule* catcher3 = this->getModuleByPath("^.^.^");
-    cModule* catcher2 = this->getModuleByPath("^.^");
 
     //AllocateResponsePositive
-    lisCreFloPosi = new LisFACreFloPosi(this);
-    catcher3->subscribe(SIG_FAI_AllocateResponsePositive, lisCreFloPosi);
-
-    //CreateRequestFlow
-    lisCreReq = new LisFACreReq(this);
-    catcher2->subscribe(SIG_RIBD_CreateRequestFlow, lisCreReq);
-
-    //Allocate after management flow is prepared (enrollment done)
-    lisEnrollFin = new LisFAAllocFinMgmt(this);
-    //catcher2->subscribe(SIG_FAI_AllocateFinishManagement, lisAllocFinMgmt);
-    catcher2->subscribe(SIG_ENROLLMENT_Finished, lisEnrollFin);
-
+    catcher3->subscribe(FAI::allocateResponsePositiveSignal, this);
 }
 
 void FA::initialize(int stage) {
@@ -319,8 +308,14 @@ bool FA::receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst) {
     return status;
 }
 
-bool FA::receiveMgmtAllocateFinish() {
+bool FA::receiveMgmtAllocateFinish(APNIPair *apnip) {
     Enter_Method("receiveAllocFinishMgmt()");
+    EV << "AllocFinMgmt initiated" << endl;
+
+    TFAIPtrs entries = nFlowTable->findEntriesAffectedByMgmt(apnip);
+    for (auto &entry : entries)
+        pendingFlows.push(entry->getFlow());
+
     scheduleAt(simTime(), new cMessage(TIM_FAPENDFLOWS) );
     //TODO: Vesely - Fix unused return value
     return true;
@@ -509,10 +504,24 @@ void FA::deinstantiateFai(Flow* flow) {
     //Prepare deinstantitation self-message
 }
 
-void FA::signalizeCreateFlowRequestForward(Flow* flow) {
-    emit(this->sigFACreReqFwd, flow);
-}
+void FA::receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *) {
+    if (id != FAI::allocateResponsePositiveSignal)
+        throw cRuntimeError("Flow allocator received unsupported signal type");
 
-void FA::signalizeCreateFlowResponseNegative(Flow* flow) {
-    emit(this->sigFACreResNega, flow);
+    EV << "Received positive allocation response from " << src->getFullPath() << endl;
+    Flow *flow = dynamic_cast<Flow *>(obj);
+    if (flow == nullptr) {
+        throw cRuntimeError("Flow allocator received ");
+    } else if (myAddress.getApn() != flow->getSrcApni().getApn()) {
+        EV << "Allocation response not intended for this FA." << endl;
+        return;
+    } else if (flow->isManagementFlowLocalToIPCP()) {
+        EV << "Management flow allocated!" << endl;
+        return;
+    }
+
+    // TODO split this into separate functions
+    TFAIPtrs entries = nFlowTable->findEntriesByDstNeighborAndFwd(flow->getDstApni().getApn());
+    for (auto &entry : entries)
+        receiveNM1FlowCreated(entry->getFlow());
 }

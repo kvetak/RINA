@@ -28,6 +28,9 @@
 class FANotifierBase : public cSimpleModule, public CDAPProcessingBase {
   public:
 
+    static const simsignal_t allocateResponsePositiveSignal;
+    static const simsignal_t allocateResponseNegativeSignal;
+
     virtual void sendCreateRequestFlow(Flow* flow) = 0;
     virtual void sendCreateResponseNegative(Flow* flow) = 0;
     virtual void sendCreateResponsePostive(Flow* flow) = 0;

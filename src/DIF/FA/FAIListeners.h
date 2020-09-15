@@ -53,21 +53,6 @@ class LisFAIAllocResNega : public FAIListeners
     void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
 };
 
-class LisFAIAllocReq : public FAIListeners
-{
-  public:
-    LisFAIAllocReq(FAI* nfai) : FAIListeners(nfai){};
-    using FAIListeners::receiveSignal;
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
-};
-/*
-class LisFAICreReq : public FAIListeners
-{
-  public:
-    LisFAICreReq(FAI* nfai) : FAIListeners(nfai){};
-    void virtual receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
-};
-*/
 class LisFAICreResPosi : public FAIListeners
 {
   public:
