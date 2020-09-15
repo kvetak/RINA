@@ -28,21 +28,22 @@
 #ifndef FAI_H_
 #define FAI_H_
 
-//Standard libraries
+// Standard libraries
 #include <omnetpp.h>
-//RINASim libraries
+
+// RINASim libraries
 #include "DIF/FA/FAIBase.h"
-#include "DIF/FA/FABase.h"
 #include "DIF/FA/FAIListeners.h"
-#include "Common/RINASignals.h"
-#include "DIF/EFCP/EFCP.h"
-#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
 
 //#include "PushBackChannel.h"
 
 //Constants
 extern const char* TIM_CREREQ;
 extern const char* MOD_ALLOCRETRYPOLICY;
+
+class FABase;
+class EFCP;
+class AllocateRetryBase;
 
 class FAI : public FAIBase  {
   public:

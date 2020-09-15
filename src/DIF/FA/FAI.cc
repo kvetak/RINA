@@ -22,6 +22,14 @@
 
 #include "DIF/FA/FAI.h"
 
+#include "Common/RINASignals.h"
+#include "DIF/FA/FABase.h"
+#include "DIF/RA/RABase.h"
+#include "DIF/RMT/RMT.h"
+#include "DIF/FA/NFlowTable.h"
+#include "DIF/EFCP/EFCP.h"
+#include "DIF/FA/AllocateRetry/AllocateRetryBase.h"
+
 const char*     TIM_CREREQ          = "CreateRequestTimer";
 const char*     MOD_ALLOCRETRYPOLICY= "allocateRetryPolicy";
 

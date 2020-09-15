@@ -22,10 +22,18 @@
 
 #include "DIF/FA/FA.h"
 
+#include "Common/Flow.h"
+#include "Common/RINASignals.h"
+#include "DAF/DA/DA.h"
+#include "DIF/EFCP/EFCP.h"
+#include "DIF/Enrollment/Enrollment.h"
+#include "DIF/Enrollment/EnrollmentStateTable.h"
+#include "DIF/FA/FAI.h"
+#include "DIF/FA/NFlowTable.h"
+#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
+#include "DIF/RA/RABase.h"
+
 //Constants
-const int RANDOM_NUMBER_GENERATOR = 0;
-const int MAX_PORTID = 65535;
-const int MAX_CEPID  = 65535;
 const char* MOD_NEFFLOWREQPOLICY = "newFlowRequestPolicy";
 
 Define_Module(FA);

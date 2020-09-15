@@ -25,23 +25,27 @@
 
 //Standard libraries
 #include <omnetpp.h>
+#include <queue>
 //RINASim libraries
-#include "DIF/FA/NFlowTable.h"
+#include "Common/Address.h"
 
 extern const char* TIM_FAPENDFLOWS;
 
+class APNamingInfo;
+class APNIPair;
+class NFlowTable;
+class Flow;
+
 class FABase : public cSimpleModule {
   public:
+    FABase() = default;
 
-    FABase();
-    virtual ~FABase();
-
-    std::list<Flow*> PendingFlows;
+    std::queue<Flow*> pendingFlows;
 
     virtual bool receiveAllocateRequest(Flow* flow) = 0;
     virtual bool receiveMgmtAllocateRequest(Flow* mgmtflow) = 0;
     virtual bool receiveMgmtAllocateRequest(APNamingInfo src, APNamingInfo dst) = 0;
-    virtual bool receiveMgmtAllocateFinish() = 0;
+    virtual bool receiveMgmtAllocateFinish(APNIPair *apnip) = 0;
     virtual void receiveNM1FlowCreated(Flow* flow) = 0;
     //virtual void receiveCreateResponseFlowPositiveFromRibd(Flow* flow) = 0;
     virtual bool receiveCreateFlowRequestFromRibd(Flow* flow) = 0;
@@ -55,16 +59,20 @@ class FABase : public cSimpleModule {
     NFlowTable* getNFlowTable() const;
     const Address& getMyAddress() const;
 
+    static const int RANDOM_NUMBER_GENERATOR;
+    static const int MAX_PORTID;
+    static const int MAX_CEPID;
+
   protected:
-    NFlowTable* N_flowTable;
-    Address MyAddress;
+    NFlowTable* nFlowTable = nullptr;
+    Address myAddress;
 
     //SimpleModule overloads
-    virtual void initialize() = 0;
+    virtual void initialize(int stage) override = 0;
+    virtual int numInitStages() const = 0;
     virtual void handleMessage(cMessage *msg) = 0;
 
     void initMyAddress();
-
 };
 
 

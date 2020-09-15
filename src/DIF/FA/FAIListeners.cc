@@ -20,18 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#include "DIF/FA/FAI.h"
 #include "DIF/FA/FAIListeners.h"
+#include "Common/Flow.h"
+#include "DIF/FA/FABase.h"
+#include "DIF/FA/FAI.h"
 
-FAIListeners::FAIListeners(FAI* nfai) {
-    this->fai = nfai;
+FAIListeners::FAIListeners(FAI* nfai) : fai(nfai) {}
 
-}
-
-FAIListeners::~FAIListeners() {
-
-
-}
+FAIListeners::~FAIListeners() {}
 
 void LisFAIAllocResPosi::receiveSignal(cComponent* src, simsignal_t id,
         cObject* obj, cObject *detail) {

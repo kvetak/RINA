@@ -29,35 +29,39 @@
 #ifndef FA_H_
 #define FA_H_
 
-//Standard libraries
+// Standard libraries
 #include <omnetpp.h>
-#include <string>
-//RINASim libraries
-#include "DIF/FA/FABase.h"
-#include "DIF/FA/FAListeners.h"
-#include "DIF/FA/FAI.h"
-#include "Common/Flow.h"
-#include "DIF/FA/NFlowTable.h"
-#include "Common/RINASignals.h"
-#include "DIF/EFCP/EFCP.h"
-#include "Common/ExternConsts.h"
-#include "DAF/DA/DA.h"
-#include "DIF/RA/RABase.h"
-#include "DIF/FA/NewFlowRequest/NewFlowRequestBase.h"
-#include "DIF/Enrollment/EnrollmentStateTable.h"
 
-//Constants
+// RINASim libraries
+#include "DIF/FA/FABase.h"
+#include "Common/ExternConsts.h"
+
+// Forward declarations
+class DA;
+class EFCP;
+class EnrollmentStateTable;
+class Enrollment;
+class FAI;
+class Flow;
+class NewFlowRequestBase;
+class NFlowTable;
+class RABase;
+class QoSReq;
+
+class FA : public FABase, public cListener
+{
+  public:
+    // Signals
+    static const simsignal_t createRequestForwardSignal;
+    static const simsignal_t createResponseNegativeSignal;
 
 extern const int RANDOM_NUMBER_GENERATOR;
 extern const int MAX_PORTID;
 extern const int MAX_CEPID;
 extern const char* MOD_NEWFLOWREQPOLICY;
 
-class FA : public FABase
-{
   public:
-    FA();
-    virtual ~FA();
+    FA() = default;
 
     virtual bool receiveAllocateRequest(Flow* flow);
     virtual bool receiveMgmtAllocateRequest(Flow* mgmtflow);

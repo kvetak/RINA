@@ -23,7 +23,7 @@
 #ifndef FAILISTENERS_H_
 #define FAILISTENERS_H_
 
-#include "DIF/FA/FAI.h"
+#include <omnetpp.h>
 
 class FAI;
 class FAIListeners : public cListener {
