@@ -25,9 +25,9 @@
 
 //Standard libraries
 #include <omnetpp.h>
-#include <string>
-//RINASim libraries
-#include "DIF/FA/FAIBase.h"
+
+class FAIBase;
+class Flow;
 
 class NFlowTableEntry {
   public:
@@ -40,11 +40,10 @@ class NFlowTableEntry {
 
     NFlowTableEntry();
     NFlowTableEntry(Flow* nflow);
-    virtual ~NFlowTableEntry();
 
     bool operator== (const NFlowTableEntry& other) const;
 
-    std::string info() const;
+    std::string str() const;
 
     std::string getAllocateStatusString() const;
     FAIBase* getFai() const;
