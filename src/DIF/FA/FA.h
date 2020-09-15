@@ -55,10 +55,13 @@ class FA : public FABase, public cListener
     static const simsignal_t createRequestForwardSignal;
     static const simsignal_t createResponseNegativeSignal;
 
-extern const int RANDOM_NUMBER_GENERATOR;
-extern const int MAX_PORTID;
-extern const int MAX_CEPID;
-extern const char* MOD_NEWFLOWREQPOLICY;
+  private:
+    EFCP* efcp = nullptr;
+    DA* difAllocator = nullptr;
+    RABase* raModule = nullptr;
+    NewFlowRequestBase* nFloReqPolicy = nullptr;
+    Enrollment* enrollment = nullptr;
+    EnrollmentStateTable* enrollmentStateTable = nullptr;
 
   public:
     FA() = default;
@@ -93,30 +96,23 @@ extern const char* MOD_NEWFLOWREQPOLICY;
 
   protected:
     //SimpleModule overloads
-    virtual void initialize();
+    virtual void initialize(int stage);
+    virtual int numInitStages() const { return 1; };
     virtual void handleMessage(cMessage *msg);
-    void initPointers();
 
-  private:
-    EFCP* Efcp;
-    DA* DifAllocator;
-    RABase* RaModule;
-    NewFlowRequestBase* NFloReqPolicy;
-    EnrollmentStateTable* Enrollment;
+    //cListener overload
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj, cObject *detail);
+
+    void initPointers();
+    void initSignalsAndListeners();
 
     bool isMalformedFlow(Flow* flow);
     FAI* createFAI(Flow* flow);
-
-    void initSignalsAndListeners();
-
-    void signalizeCreateFlowRequestForward(Flow* flow);
-    void signalizeCreateFlowResponseNegative(Flow* flow);
 
     const Address getAddressFromDa(const APN& apn, bool useNeighbor, bool isMgmtFlow);
 
     bool changeDstAddresses(Flow* flow, bool useNeighbor);
     bool changeSrcAddress(Flow* flow, bool useNeighbor);
-
 };
 
 #endif /* FLOWALLOCATOR_H_ */
