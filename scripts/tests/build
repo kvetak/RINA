@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -oeu pipefail
+
+make makefiles
+make MODE=release -j$(nproc) all
