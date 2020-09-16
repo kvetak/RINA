@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker run -t -v "$(pwd):/root/models" -w "/root/models" -u "$(id -u):$(id -g)" omnetpp/inet:o5.6.2-4.2.0 "$@"
